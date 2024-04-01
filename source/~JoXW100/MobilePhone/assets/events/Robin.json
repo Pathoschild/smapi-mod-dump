@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "events": [
+    {
+      "name": "Robin-event-0",
+      "location": "HaleyHouse",
+      "eventId": "60367",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Robin-event-1",
+      "location": "Town",
+      "eventId": "611173/Hn pamHouseUpgrade/o Penny",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Robin-event-2",
+      "location": "Town",
+      "eventId": "611173/Hn pamHouseUpgrade",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Robin-event-3",
+      "location": "ScienceHouse",
+      "eventId": "33",
+      "night": false,
+      "mail": null
+    }
+  ]
+}

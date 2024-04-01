@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+{
+  "message.config-reloaded": "Yapılandırma dosyası yeniden yüklendi.",
+
+  "config.shops.pierres-general-shop.name": "Pierre'in Dükkanı",
+  "config.shops.pierres-general-shop.tooltip": "Pierre'in dükkanı her zaman hizmete açıktır.",
+  "config.shops.blacksmith-shop.name": "Demirci",
+  "config.shops.blacksmith-shop.tooltip": "Clint'in demirci dükkanı her zaman hizmete açıktır.",
+  "config.shops.saloon-shop.name": "Yıldızkaydı Bar Salonu",
+  "config.shops.saloon-shop.tooltip": "Yıldızkaydı bar salonu her zaman hizmete açıktır.",
+  "config.shops.hospital-shop.name": "Hastane",
+  "config.shops.hospital-shop.tooltip": "Hastanenin hizmeti her zaman herkese açıktır.",
+  "config.shops.ice-cream-shop.name": "Dondurma Dükkanı",
+  "config.shops.ice-cream-shop.tooltip": "Dondurma dükkanını her zaman hizmete açıktır",
+  "config.shops.bookseller-shop.name": "Kitap Satıcısının Dükkanı",
+  "config.shops.bookseller-shop.tooltip": "Kitap satıcısının dükkanı her zaman hizmete açıktır.",
+
+  "config.shops.willys-fish-shop.name": "Willy'nin Balıkçı Dükkanı",
+  "config.shops.willys-fish-shop.tooltip": "Willy'nin balıkçı dükkanı her zaman hizmete açıktır.",
+
+  "config.shops.carpenters-shop.name": "Marangoz",
+  "config.shops.carpenters-shop.tooltip": "Robin'in marangoz dükkanı her zaman hizmete açıktır.",
+
+  "config.shops.marnies-animal-shop.name": "Marnie'nin Hayvan Dükkanı",
+  "config.shops.marnies-animal-shop.tooltip": "Marnie'nin hayvan dükkanı her zaman hizmete açıktır.",
+  "config.shops.traveling-merchant-shop.name": "Seyyar Tüccar",
+  "config.shops.traveling-merchant-shop.tooltip": "Seyyar tüccar her zaman hizmete açıktır (sadece yük arabası ormandayken).",
+
+  "config.shops.sandy-oasis-shop.name": "Vaha",
+  "config.shops.sandy-oasis-shop.tooltip": "Sandy'nin Vahası her zaman hizmete açıktır",
+
+  "config.shops.resort-bar-shop.name": "Tatil Barı",
+  "config.shops.resort-bar-shop.tooltip": "Tatil barı her zaman hizmete açıktır."
+}

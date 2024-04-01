@@ -8,26 +8,16 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BitwiseJonMods
 {
     public class ModEntry : Mod
     {
         private ModConfig _config;
-        private bool _tractorModFound = false;
 
         public override void Entry(IModHelper helper)
         {
@@ -38,12 +28,9 @@ namespace BitwiseJonMods
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
-            _tractorModFound = this.Helper.ModRegistry.IsLoaded("Pathoschild.TractorMod");
-
             BitwiseJonMods.Common.Utility.Log(string.Format("Config BuildUsesResources={0}", _config.BuildUsesResources));
             BitwiseJonMods.Common.Utility.Log(string.Format("Config ToggleInstantBuildMenuButton={0}", _config.ToggleInstantBuildMenuButton));
             BitwiseJonMods.Common.Utility.Log(string.Format("Config PerformInstantHouseUpgradeButton={0}", _config.PerformInstantHouseUpgradeButton));
-            BitwiseJonMods.Common.Utility.Log(string.Format("Tractor Mod Found={0}", _tractorModFound));
 
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
@@ -62,7 +49,6 @@ namespace BitwiseJonMods
                     BitwiseJonMods.Common.Utility.Log(string.Format("User clicked Instant Upgrade key={0}", _config.PerformInstantHouseUpgradeButton));
                     HandleInstantUpgradeButtonClick();
                 }
-
             }
         }
 
@@ -70,17 +56,7 @@ namespace BitwiseJonMods
         {
             if (Context.IsPlayerFree && Game1.activeClickableMenu == null)
             {
-                if (_tractorModFound)
-                {
-                    //Get tractor blueprint from carpenter menu
-                    var carpenterMenu = new CarpenterMenu();
-                    Game1.activeClickableMenu = (IClickableMenu)carpenterMenu;
-                    Game1.delayedActions.Add(new DelayedAction(100, new DelayedAction.delayedBehavior(this.getTractorBlueprintFromCarpenterMenu)));
-                }
-                else
-                {
-                    activateInstantBuildMenu();
-                }
+                activateInstantBuildMenu();
             }
             else if (Game1.activeClickableMenu is InstantBuildMenu)
             {
@@ -148,15 +124,15 @@ namespace BitwiseJonMods
                 return;
             }
 
-            //See StardewValley.Locations.1GameLocation.houseUpgradeAccept()
+            //See StardewValley.Locations.GameLocation.houseUpgradeAccept()
             BitwiseJonMods.Common.Utility.Log("BuildUsesResources=true so checking if player has the resources to complete upgrade.");
             switch (Game1.player.HouseUpgradeLevel)
             {
                 case 0:
-                    if (Game1.player.Money >= 10000 && Game1.player.hasItemInInventory(388, 450, 0))
+                    if (Game1.player.Money >= 10000 && Game1.player.Items.ContainsId("(O)388", 450))
                     {
                         Game1.player.Money -= 10000;
-                        Game1.player.removeItemsFromInventory(388, 450);
+                        Game1.player.Items.ReduceId("(O)388", 450);
                         CompleteHouseUpgrade();
                         break;
                     }
@@ -168,14 +144,14 @@ namespace BitwiseJonMods
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_NotEnoughWood1"));
                     break;
                 case 1:
-                    if (Game1.player.Money >= 50000 && Game1.player.hasItemInInventory(709, 150, 0))
+                    if (Game1.player.Money >= 65000 && Game1.player.Items.ContainsId("(O)709", 100))
                     {
-                        Game1.player.Money -= 50000;
-                        Game1.player.removeItemsFromInventory(709, 150);
+                        Game1.player.Money -= 65000;
+                        Game1.player.Items.ReduceId("(O)709", 100);
                         CompleteHouseUpgrade();
                         break;
                     }
-                    if (Game1.player.Money < 50000)
+                    if (Game1.player.Money < 65000)
                     {
                         Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:NotEnoughMoney3"));
                         break;
@@ -208,56 +184,13 @@ namespace BitwiseJonMods
             ++Game1.player.HouseUpgradeLevel;
             homeOfFarmer.setMapForUpgradeLevel(Game1.player.HouseUpgradeLevel);
 
-            //Cabins automatically change their appearance for all players, but the main house texture has to be changed manually.
-            if (!(homeOfFarmer is Cabin))
-            {
-                //Use reflection to update house texture in otherwise private variable of Farm class.
-                var houseSource = Helper.Reflection.GetField<NetRectangle>(Game1.getFarm(), "houseSource");
-                var rect = new Microsoft.Xna.Framework.Rectangle(0, 144 * (Game1.player.HouseUpgradeLevel == 3 ? 2 : Game1.player.HouseUpgradeLevel), 160, 144);
-                houseSource.GetValue().Value = rect;
-            }
-
             Game1.stats.checkForBuildingUpgradeAchievements();
             BitwiseJonMods.Common.Utility.Log($"Upgrade complete! New upgrade level: {Game1.player.HouseUpgradeLevel}");
         }
 
-        private void activateInstantBuildMenu(BluePrint tractorBlueprint = null)
+        private void activateInstantBuildMenu()
         {
-            Game1.activeClickableMenu = (IClickableMenu)new InstantBuildMenu(_config, tractorBlueprint);
-        }
-
-        private void getTractorBlueprintFromCarpenterMenu()
-        {
-            BluePrint tractorBlueprint = null;
-
-            try
-            {
-                //jon, 11/27/19: For some reason, this is no longer showing the tractor garage image even though the blueprint is loading from the carpenter menu
-                //  correctly.  It shows the default stable instead.
-                IClickableMenu menu = Game1.activeClickableMenu is CarpenterMenu ? (CarpenterMenu)Game1.activeClickableMenu : null;
-
-                if (menu != null)
-                {
-                    var blueprints = this.Helper.Reflection
-                        .GetField<List<BluePrint>>(menu, "blueprints")
-                        .GetValue();
-
-                    var tractorModName = "Tractor Garage";
-                    tractorBlueprint = blueprints.SingleOrDefault(b => b.displayName == tractorModName);
-                    if (tractorBlueprint == null) BitwiseJonMods.Common.Utility.Log(string.Format("Could not load Tractor blueprint since it did not exist in Carpenter menu with display name '{0}'.", tractorModName));
-                    menu.exitThisMenu();
-                }
-                else
-                {
-                    BitwiseJonMods.Common.Utility.Log("Unable to get Carpenter menu as active game menu. Might be another type.");
-                }
-            }
-            catch (Exception ex)
-            {
-                BitwiseJonMods.Common.Utility.Log(string.Format("Exception trying to load Tractor blueprint, probably due to an incompatibility with another mod: {0}", ex.Message), LogLevel.Error);
-            }
-
-            activateInstantBuildMenu(tractorBlueprint);
+            Game1.activeClickableMenu = (IClickableMenu)new InstantBuildMenu(_config);
         }
     }
 }

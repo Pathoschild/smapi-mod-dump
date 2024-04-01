@@ -1,0 +1,10 @@
+﻿Aquarium,Custom_ExteriorMuseum,39,6,Aqua,/images/locations/cust_aquarium.jpg,Cherry.StardewAquarium
+Railroad,Railroad,32,42,Railroad,/images/locations/railway_stn.jpg,Cherry.TrainStation
+ES Housing,Custom_ESClearingHouse,25,20,ESHousing,/images/locations/es_housing.jpg,LemurKat.EastScarpe.SMAPI
+ES Town,Custom_EastScarpe,12,72,ESTown,/images/locations/es_town.jpg,LemurKat.EastScarpe.SMAPI
+ES Orchard,Custom_ESOrchard,14,18,ESOrachard,/images/locations/es_orchard.jpg,LemurKat.EastScarpe.SMAPI
+RSV Car In,Custom_Ridgeside_RSVCableCar,20,10,RSVCarIn,/images/locations/rsv_cable_in.jpg,Rafseazz.RidgesideVillage
+RSV Car Out,Custom_Ridgeside_RSVCliff,39,20,RSVCarOt,/images/locations/rsv_cable_out.jpg,Rafseazz.RidgesideVillage
+RSV Village,Custom_Ridgeside_RidgesideVillage,138,26,RSVTown,/images/locations/rsv_town.jpg,Rafseazz.RidgesideVillage
+RSV Ridge,Custom_Ridgeside_Ridge,40,46,RSVRidge,/images/locations/rsv_ridge.jpg,Rafseazz.RidgesideVillage
+RSV Forest,Custom_Ridgeside_RidgeForest,80,143,RSVForest,/images/locations/rsv_forest.jpg,Rafseazz.RidgesideVillage

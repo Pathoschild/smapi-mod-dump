@@ -1,0 +1,8 @@
+﻿{
+	"Name": "StardewFPS",
+	"Author": "Lake1059",
+	"Version": "1.0",
+	"UniqueID": "Lake1059.StardewFPS",
+	"EntryDll": "StardewFPS.dll",
+	"UpdateKeys": [ "Nexus:20801","Github:Lake1059/StardewFPS" ]
+}

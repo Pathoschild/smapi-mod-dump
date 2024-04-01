@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20985
+IDs: NeverToxic.SelfServe
+update keys: Nexus:20985, GitHub:Dunc4nNT/StardewMods

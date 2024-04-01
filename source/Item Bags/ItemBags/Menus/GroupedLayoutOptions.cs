@@ -102,12 +102,12 @@ namespace ItemBags.Menus
         public bool ShowValueColumn { get; }
 
         /// <summary>Key = Item Id, then Item Quality, Value = The bounds of that item's slot, relative to <see cref="TopLeftScreenPosition"/>. Use <see cref="SlotBounds"/> when rendering to screen space.</summary>
-        public OrderedDictionary<int, Dictionary<ColumnType, Rectangle>> RelativeSlotBounds { get; private set; }
+        public OrderedDictionary<string, Dictionary<ColumnType, Rectangle>> RelativeSlotBounds { get; private set; }
         /// <summary>Key = Item Id, then Item Quality, Value = The bounds of that item's slot</summary>
-        public OrderedDictionary<int, Dictionary<ColumnType, Rectangle>> SlotBounds { get; private set; }
+        public OrderedDictionary<string, Dictionary<ColumnType, Rectangle>> SlotBounds { get; private set; }
         public event EventHandler<ItemSlotRenderedEventArgs> OnItemSlotRendered;
 
-        public Dictionary<int, Dictionary<ObjectQuality, Object>> Placeholders { get; private set; }
+        public Dictionary<string, Dictionary<ObjectQuality, Object>> Placeholders { get; private set; }
 
         public ReadOnlyCollection<Rectangle> RelativeColumnHeaderBounds { get; private set; }
         public ReadOnlyCollection<Rectangle> ColumnHeaderBounds { get; private set; }
@@ -128,10 +128,10 @@ namespace ItemBags.Menus
                 if (RelativeSlotBounds != null)
                 {
                     //  Shift every Rectangle over by the new TopLeft point
-                    OrderedDictionary<int, Dictionary<ColumnType, Rectangle>> Temp = new OrderedDictionary<int, Dictionary<ColumnType, Rectangle>>();
+                    OrderedDictionary<string, Dictionary<ColumnType, Rectangle>> Temp = new OrderedDictionary<string, Dictionary<ColumnType, Rectangle>>();
                     foreach (var KVP in RelativeSlotBounds)
                     {
-                        int ItemId = KVP.Key;
+                        string ItemId = KVP.Key;
                         Dictionary<ColumnType, Rectangle> RelativePositions = KVP.Value;
                         Dictionary<ColumnType, Rectangle> TranslatedPositions = new Dictionary<ColumnType, Rectangle>();
                         foreach (var KVP2 in RelativePositions)
@@ -455,7 +455,7 @@ namespace ItemBags.Menus
             if (Menu == null)
             {
                 this.GroupedObjects = new ReadOnlyCollection<AllowedObject>(new List<AllowedObject>());
-                this.Placeholders = new Dictionary<int, Dictionary<ObjectQuality, Object>>();
+                this.Placeholders = new Dictionary<string, Dictionary<ObjectQuality, Object>>();
             }
             else
             {
@@ -468,7 +468,7 @@ namespace ItemBags.Menus
                 List<ObjectQuality> Qualities = Enum.GetValues(typeof(ObjectQuality)).Cast<ObjectQuality>().ToList();
 
                 //  Create an item with quantity=0 for each Item that the Bag is capable of storing
-                this.Placeholders = new Dictionary<int, Dictionary<ObjectQuality, Object>>();
+                this.Placeholders = new Dictionary<string, Dictionary<ObjectQuality, Object>>();
                 foreach (AllowedObject Item in GroupedObjects)
                 {
                     if (Item.IsBigCraftable)
@@ -499,7 +499,7 @@ namespace ItemBags.Menus
             //  Set quantities of the placeholder items to match the corresponding amount of the item currently stored in the bag
             foreach (Object Item in Bag.Contents)
             {
-                if (Placeholders.TryGetValue(Item.ParentSheetIndex, out Dictionary<ObjectQuality, Object> Group))
+                if (Placeholders.TryGetValue(Item.ItemId, out Dictionary<ObjectQuality, Object> Group))
                 {
                     ObjectQuality Quality = (ObjectQuality)Item.Quality;
                     if (Group.TryGetValue(Quality, out Object Placeholder))
@@ -540,7 +540,7 @@ namespace ItemBags.Menus
             this.RelativeBounds = new Rectangle(0, 0, RequiredWidth, RequiredHeight);
 
             //  Create the cells within each row/column
-            OrderedDictionary<int, Dictionary<ColumnType, Rectangle>> SlotBounds = new OrderedDictionary<int, Dictionary<ColumnType, Rectangle>>();
+            OrderedDictionary<string, Dictionary<ColumnType, Rectangle>> SlotBounds = new OrderedDictionary<string, Dictionary<ColumnType, Rectangle>>();
             for (int i = 0; i < GroupedObjects.Count; i++)
             {
                 AllowedObject Group = GroupedObjects[i];
@@ -613,7 +613,7 @@ namespace ItemBags.Menus
             //  Draw cells
             foreach (var KVP in SlotBounds)
             {
-                int ItemId = KVP.Key;
+                string ItemId = KVP.Key;
 
                 foreach (var KVP2 in KVP.Value)
                 {
@@ -684,7 +684,7 @@ namespace ItemBags.Menus
             if (HoveredSlot.HasValue)
             {
                 //  Get the hovered Item Id and ColumnType
-                int? ItemId = null;
+                string ItemId = null;
                 ColumnType? Column = null;
                 foreach (var KVP in SlotBounds)
                 {
@@ -698,15 +698,15 @@ namespace ItemBags.Menus
                         }
                     }
 
-                    if (ItemId.HasValue && Column.HasValue)
+                    if (!string.IsNullOrEmpty(ItemId) && Column.HasValue)
                         break;
                 }
 
-                if (ItemId.HasValue && Column.HasValue)
+                if (!string.IsNullOrEmpty(ItemId) && Column.HasValue)
                 {
                     if (Column == ColumnType.RowValue)
                     {
-                        List<Object> Items = Placeholders[ItemId.Value].Values.ToList();
+                        List<Object> Items = Placeholders[ItemId].Values.ToList();
                         List<int> Quantities = Items.Select(x => x.Stack).ToList();
                         List<int> SingleValues = Items.Select(x => ItemBag.GetSingleItemPrice(x)).ToList();
                         List<int> MultipliedValues = Items.Select(x => x.Stack * ItemBag.GetSingleItemPrice(x)).ToList();
@@ -777,7 +777,7 @@ namespace ItemBags.Menus
                     }
                     else
                     {
-                        Object HoveredItem = Placeholders[ItemId.Value][ConvertColumnTypeToObjectQuality(Column.Value)];
+                        Object HoveredItem = Placeholders[ItemId][ConvertColumnTypeToObjectQuality(Column.Value)];
                         Rectangle Location;
                         if (IsNavigatingWithGamepad)
                             Location = HoveredSlot.Value; //new Rectangle(HoveredSlot.Value.Right, HoveredSlot.Value.Bottom, 1, 1);
@@ -794,7 +794,7 @@ namespace ItemBags.Menus
             if (HoveredSlot.HasValue)
             {
                 //  Get the hovered Item Id and ColumnType
-                int? ItemId = null;
+                string ItemId = null;
                 ColumnType? Column = null;
                 foreach (var KVP in SlotBounds)
                 {
@@ -808,13 +808,13 @@ namespace ItemBags.Menus
                         }
                     }
 
-                    if (ItemId.HasValue && Column.HasValue)
+                    if (!string.IsNullOrEmpty(ItemId) && Column.HasValue)
                         break;
                 }
 
-                if (ItemId.HasValue && Column.HasValue && Column != ColumnType.RowValue)
+                if (!string.IsNullOrEmpty(ItemId) && Column.HasValue && Column != ColumnType.RowValue)
                 {
-                    Object HoveredItem = Placeholders[ItemId.Value][ConvertColumnTypeToObjectQuality(Column.Value)];
+                    Object HoveredItem = Placeholders[ItemId][ConvertColumnTypeToObjectQuality(Column.Value)];
                     return HoveredItem;
                 }
                 else

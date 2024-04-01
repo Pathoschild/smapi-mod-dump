@@ -11,10 +11,10 @@
 using System;
 using System.Xml.Serialization;
 using BridgeOnTheWater;
+using DecidedlyShared.Constants;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PortableBridges.TerrainFeatures;
-using DecidedlyShared.Constants;
 using StardewValley;
 
 namespace PortableBridges.Tool
@@ -31,11 +31,9 @@ namespace PortableBridges.Tool
         {
         }
 
-        public override Item getOne()
+        protected override Item GetOneNew()
         {
-            Item tool = new BridgePlacementTool();
-
-            return tool;
+            throw new NotImplementedException();
         }
 
         protected override string loadDisplayName()

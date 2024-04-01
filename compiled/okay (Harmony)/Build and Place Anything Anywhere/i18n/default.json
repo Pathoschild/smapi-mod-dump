@@ -1,0 +1,47 @@
+{
+  "Message.ConfigReloaded": "Configuration file reloaded.",
+
+  // Furniture Configs
+
+  "Config.AnythingAnywhere.Furniture.Title": "Furniture",
+  "Config.AnythingAnywhere.EnableFurniture.Name": "Enable Furniture",
+  "Config.AnythingAnywhere.EnableFurniture.Description": "Enables placing furniture at any location.",
+  "Config.AnythingAnywhere.EnableRugTweaks.Name": "Enable Rug Tweaks",
+  "Config.AnythingAnywhere.EnableRugTweaks.Description": "Enables picking up rugs with furniture on top of them and placing rugs under anything (including walls for now).",
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Name": "Wall Furniture Indoors",
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Description": "Enables placing wall furniture at any location inside decoratable locations.",
+  "Config.AnythingAnywhere.EnableFreePlace.Name": "Enable Free Place",
+  "Config.AnythingAnywhere.EnableFreePlace.Description": "Enables placing furniture at any location, even in walls.",
+
+  // Building Configs
+
+  "Config.AnythingAnywhere.Building.Title": "Buildings",
+  "Config.AnythingAnywhere.EnableBuilding.Name": "Enable Building",
+  "Config.AnythingAnywhere.EnableBuilding.Description": "Enables the building features of this mod.",
+  "Config.AnythingAnywhere.BuildMenu.Name": "Build Anywhere Menu",
+  "Config.AnythingAnywhere.BuildMenu.Description": "Opens up the carpenter menu anywhere.",
+  "Config.AnythingAnywhere.WizardBuildMenu.Name": "Wizard Build Menu",
+  "Config.AnythingAnywhere.WizardBuildMenu.Description": "Opens up the Wizards build menu anywhere.",
+  "Config.AnythingAnywhere.EnableFreeBuild.Name": "Enable Free Build",
+  "Config.AnythingAnywhere.EnableFreeBuild.Description": "Enables building at any location, even in walls.",
+
+  // Other Config
+
+  "Config.AnythingAnywhere.Other.Title": "Other",
+  "Config.AnythingAnywhere.TableTweakKeybind.Name": "Table Tweak Bind",
+  "Config.AnythingAnywhere.TableTweakKeybind.Description": "If enabled, you have to press this button/button combo to pick up or place items on tables. (placing furniture onto tables will delete the furniture)",
+  "Config.AnythingAnywhere.EnableTableTweak.Name": "Enable Table Tweak",
+  "Config.AnythingAnywhere.EnableTableTweak.Description": "Enables needing to hold down the table tweak bind to pick up or place items onto tables.",
+  "Config.AnythingAnywhere.EnableMiniObilisk.Name": "Mini-Obilisk",
+  "Config.AnythingAnywhere.EnableMiniObilisk.Description": "Enables placing 2 mini-obilisks per location.",
+  "Config.AnythingAnywhere.UseJukeboxAnywhere.Name": "Jukebox Functionality",
+  "Config.AnythingAnywhere.UseJukeboxAnywhere.Description": "Enables jukebox functionality anywhere. (except in the rain)",
+
+  // Player Messages
+  "Message.AnythingAnywhere.TableRemoval": "Hold down {{keybind}} to remove object from table.",
+  "Message.AnythingAnywhere.TableAddition": "Hold down {{keybind}} to add object to table.",
+  "Message.AnythingAnywhere.NoMagicInk": "You need Magic Ink to open the Wizard's Build Menu"
+}
+
+
+

@@ -1,0 +1,26 @@
+﻿{
+    // Translation provided by: <leave your name or nexus/discord username here>
+
+    // Boolean options.
+    HarvestWithSwordName: "Harvest with sword",     HarvestWithSwordTooltip: "Whether a sword can be used as a scythe.",
+    AllForageName:        "Scythe all forage",      AllForageTooltip:        "Whether the scythe should work too on forage not above tilled soil. This might cause issues with the Tractor mod.",
+
+    // Plucking Scythe
+    PluckingScytheName:   "Plucking with scythe",   PluckingScytheTooltip:   "Whether you can still pluck plants while wielding a scythe.",
+    PS_Never:   "Cannot pluck when wielding a scythe",
+    PS_Invalid: "Only if the scythe cannot harvest it",
+    PS_Always:  "Always pluck the crop",
+
+    // Harvest Mode
+    HarvestModeSection: "Harvest mode",
+    HM_Hand:   "By hand",
+    HM_Irid:   "Vanilla behavior",
+    HM_Gold:   "By hand or golden scythe",
+    HM_Both:   "By hand or any scythe",
+    HM_Scythe: "Only with a scythe",
+    HM_None:   "Crop cannot be harvested",
+    PluckableCropsName:   "Hand harvested crops",   PluckableCropsTooltip:   "How crops that normally can only be harvested by hand can be harvested.", 
+    ScythableCropsName:   "Scythe harvested crops", ScythableCropsTooltip:   "How crops that normally can only be harvested with a scythe can be harvested.",
+    FlowersName:          "Flowers",                FlowersTooltip:          "How flowers can be harvested.",
+    ForageName:           "Forage",                 ForageTooltip:           "How forage can be harvested.",
+}

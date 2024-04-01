@@ -9,7 +9,14 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release for Stardew Valley 1.6
+## 1.11.9
+Released 26 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed tool animation speed applied to new strafing feature.
+
+## 1.11.8
+Released 19 March 2024 for SMAPI 4.0.0 or later.
+
 * Updated for Stardew Valley 1.6.
 * Improved translations. Thanks to angel4killer (updated Russian) and EmWhyKay (updated Turkish)!
 

@@ -11,216 +11,213 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System.Collections.Generic;
-using System.Linq;
 using StardewModdingAPI;
 
-namespace AudioDescription
+namespace AudioDescription;
+
+internal static class ConfigInfo
 {
-    internal static class ConfigInfo
+    internal static void SaveLoaded(object sender, SaveLoadedEventArgs e)
     {
-        internal static void SaveLoaded(object sender, SaveLoadedEventArgs e)
+        ModEntry.MuteIcon = Game1.content.Load<Texture2D>("LooseSprites/mute_voice_icon");
+
+        //ModEntry._lastTrack = Game1.currentSong.Name;
+
+        ModEntry.AllowedCues?.Clear();
+
+        if (ModEntry.Config.Environment)
         {
-            ModEntry.MuteIcon = Game1.content.Load<Texture2D>("LooseSprites/mute_voice_icon");
-
-            //ModEntry._lastTrack = Game1.currentSong.Name;
-
-            ModEntry.AllowedCues?.Clear();
-
-            if (ModEntry.Config.Environment)
+            ModEntry.AllowedCues?.AddRange(new List<string>
             {
-                ModEntry.AllowedCues?.AddRange(new List<string>
-                {
-                    "doorClose",
-                    "cricketsAmbient",
-                    "boulderCrack",
-                    "dropItemInWater",
-                    "explosion",
-                    "crafting",
-                    "stoneCrack",
-                    "wind",
-                    "SpringBirds",
-                    "Ship",
-                    "phone",
-                    "thunder",
-                    "crickets",
-                    "cavedrip",
-                    "treethud",
-                    "treecrack",
-                    "leafrustle",
-                    "crystal",
-                    "potterySmash",
-                    "busDriveOff",
-                    "Stadium_cheer",
-                    "submarine_landing",
-                    "thunder_small",
-                    "trainWhistle",
-                    "distantTrain",
-                    "Meteorite",
-                    "bubbles",
-                    "boulderBreak",
-                    "dirtyHit",
-                    "newArtifact",
-                    "secret1",
-                    "jingle1",
-                    "waterSlosh",
-                    "robotSoundEffects",
-                    "robotBLASTOFF",
-                    "slosh",
-                    "cameraNoise",
-                    "mouseClick",
-                    "whistle",
-                    "barrelBreak",
-                    "cracklingFire"
-                });
-            }
+                "doorClose",
+                "cricketsAmbient",
+                "boulderCrack",
+                "dropItemInWater",
+                "explosion",
+                "crafting",
+                "stoneCrack",
+                "wind",
+                "SpringBirds",
+                "Ship",
+                "phone",
+                "thunder",
+                "crickets",
+                "cavedrip",
+                "treethud",
+                "treecrack",
+                "leafrustle",
+                "crystal",
+                "potterySmash",
+                "busDriveOff",
+                "Stadium_cheer",
+                "submarine_landing",
+                "thunder_small",
+                "trainWhistle",
+                "distantTrain",
+                "Meteorite",
+                "bubbles",
+                "boulderBreak",
+                "dirtyHit",
+                "newArtifact",
+                "secret1",
+                "jingle1",
+                "waterSlosh",
+                "robotSoundEffects",
+                "robotBLASTOFF",
+                "slosh",
+                "cameraNoise",
+                "mouseClick",
+                "whistle",
+                "barrelBreak",
+                "cracklingFire"
+            });
+        }
 
-            if (ModEntry.Config.NPCs)
+        if (ModEntry.Config.NPCs)
+        {
+            ModEntry.AllowedCues?.AddRange(new List<string>
             {
-                ModEntry.AllowedCues?.AddRange(new List<string>
-                {
-                    "ghost",
-                    "cluck",
-                    "Duggy",
-                    "rabbit",
-                    "goat",
-                    "cow",
-                    "pig",
-                    "croak",
-                    "batScreech",
-                    "seagulls",
-                    "shadowDie",
-                    "owl",
-                    "dogs",
-                    "Duck",
-                    "sheep",
-                    "killAnimal",
-                    "junimoMeep1",
-                    "dogWhining",
-                    "crow",
-                    "rooster",
-                    "dog_pant",
-                    "dog_bark",
-                    "cat",
-                    "parrot",
-                    "fireball",
-                    "flameSpellHit",
-                    "flameSpell",
-                    "monsterdead",
-                    "rockGolemSpawn",
-                    "shadowpeep",
-                    "batFlap",
-                    "dustMeep",
-                    "serpentDie",
-                    "cacklingWitch"
-                });
-            }
+                "ghost",
+                "cluck",
+                "Duggy",
+                "rabbit",
+                "goat",
+                "cow",
+                "pig",
+                "croak",
+                "batScreech",
+                "seagulls",
+                "shadowDie",
+                "owl",
+                "dogs",
+                "Duck",
+                "sheep",
+                "killAnimal",
+                "junimoMeep1",
+                "dogWhining",
+                "crow",
+                "rooster",
+                "dog_pant",
+                "dog_bark",
+                "cat",
+                "parrot",
+                "fireball",
+                "flameSpellHit",
+                "flameSpell",
+                "monsterdead",
+                "rockGolemSpawn",
+                "shadowpeep",
+                "batFlap",
+                "dustMeep",
+                "serpentDie",
+                "cacklingWitch"
+            });
+        }
 
-            if (ModEntry.Config.FishingCatch)
+        if (ModEntry.Config.FishingCatch)
+        {
+            ModEntry.AllowedCues?.AddRange(new List<string>
             {
-                ModEntry.AllowedCues?.AddRange(new List<string>
-                {
-                    "fishBite",
-                    "FishHit",
-                    "fishEscape",
-                    "fishSlap"
-                });
-            }
+                "fishBite",
+                "FishHit",
+                "fishEscape",
+                "fishSlap"
+            });
+        }
 
-            if (ModEntry.Config.ItemSounds)
+        if (ModEntry.Config.ItemSounds)
+        {
+            ModEntry.AllowedCues?.AddRange(new List<string>
             {
-                ModEntry.AllowedCues?.AddRange(new List<string>
-                {
-                    "cut",
-                    "axe",
-                    "wateringCan",
-                    "openChest",
-                    "parry",
-                    "clank",
-                    "toyPiano",
-                    "trashcan",
-                    "trashcanlid",
-                    "scissors",
-                    "Milking",
-                    "breakingGlass",
-                    "glug",
-                    "doorCreakReverse",
-                    "openBox",
-                    "axchop",
-                    "seeds",
-                    //"detector",
-                    "crit"
-                });
-            }
+                "cut",
+                "axe",
+                "wateringCan",
+                "openChest",
+                "parry",
+                "clank",
+                "toyPiano",
+                "trashcan",
+                "trashcanlid",
+                "scissors",
+                "Milking",
+                "breakingGlass",
+                "glug",
+                "doorCreakReverse",
+                "openBox",
+                "axchop",
+                "seeds",
+                //"detector",
+                "crit"
+            });
+        }
 
-            if (ModEntry.Config.PlayerSounds)
+        if (ModEntry.Config.PlayerSounds)
+        {
+            ModEntry.AllowedCues?.AddRange(new List<string>
             {
-                ModEntry.AllowedCues?.AddRange(new List<string>
-                {
-                    "eat",
-                    "gulp",
-                    "powerup",
-                    "toolCharge",
-                    "sipTea",
-                    "slingshot",
-                    "woodWhack",
-                    "stairsdown",
-                    "fallDown",
-                    "doorCreak",
-                    "doorOpen",
-                    "pickUpItem",
-                    "furnace",
-                    "discoverMineral"
-                });
-            }
+                "eat",
+                "gulp",
+                "powerup",
+                "toolCharge",
+                "sipTea",
+                "slingshot",
+                "woodWhack",
+                "stairsdown",
+                "fallDown",
+                "doorCreak",
+                "doorOpen",
+                "pickUpItem",
+                "furnace",
+                "discoverMineral"
+            });
+        }
 
-            if (ModEntry.Config.Minigames)
+        if (ModEntry.Config.Minigames)
+        {
+            ModEntry.AllowedCues?.AddRange(new List<string>
             {
-                ModEntry.AllowedCues?.AddRange(new List<string>
-                {
-                    "Cowboy_Secret",
-                    "Cowboy_monsterDie",
-                    "Cowboy_gunshot",
-                    "cowboy_dead",
-                    "Cowboy_Footstep",
-                    "Cowboy_undead",
-                    "cowboy_powerup",
-                    "cowboy_gunload",
-                    "Pickup_Coin15",
-                    "cowboy_monsterhit",
-                    "cowboy_gopher",
-                    "cowboy_explosion"
+                "Cowboy_Secret",
+                "Cowboy_monsterDie",
+                "Cowboy_gunshot",
+                "cowboy_dead",
+                "Cowboy_Footstep",
+                "Cowboy_undead",
+                "cowboy_powerup",
+                "cowboy_gunload",
+                "Pickup_Coin15",
+                "cowboy_monsterhit",
+                "cowboy_gopher",
+                "cowboy_explosion"
 
-                });
-            }
+            });
+        }
 
-            if (string.IsNullOrWhiteSpace(ModEntry.Config.Blacklist)) return;
+        if (string.IsNullOrWhiteSpace(ModEntry.Config.Blacklist)) return;
             
-            var cleanlist = ParseBlackList();
-            foreach (var sound in cleanlist)
-            {
-                ModEntry.AllowedCues?.Remove(sound);
-            }
-        }
-
-        private static List<string> ParseBlackList()
+        var cleanlist = ParseBlackList();
+        foreach (var sound in cleanlist)
         {
-            ModEntry.Mon.Log("Getting raw blacklist.");
-            var blacklistRaw = ModEntry.Config.Blacklist;
-            if (blacklistRaw is null)
-            {
-                ModEntry.Mon.Log("No characters in blacklist.");
-            }
-
-            var charsToRemove = new string[] { "-", ",", ".", ";", "\"", "\'", "/" };
-            foreach (var c in charsToRemove)
-            {
-                blacklistRaw = blacklistRaw?.Replace(c," "); //string.Empty erased them. this ensures they still have a separator
-            }
-            ModEntry.Mon.Log($"Raw blacklist: \n {blacklistRaw} \nWill be parsed to list now.", LogLevel.Debug);
-            var blacklistParsed = blacklistRaw?.Split(' ').ToList();
-
-            return blacklistParsed;
+            ModEntry.AllowedCues?.Remove(sound);
         }
+    }
+
+    private static List<string> ParseBlackList()
+    {
+        ModEntry.Mon.Log("Getting raw blacklist.");
+        var blacklistRaw = ModEntry.Config.Blacklist;
+        if (blacklistRaw is null)
+        {
+            ModEntry.Mon.Log("No characters in blacklist.");
+        }
+
+        var charsToRemove = new string[] { "-", ",", ".", ";", "\"", "\'", "/" };
+        foreach (var c in charsToRemove)
+        {
+            blacklistRaw = blacklistRaw?.Replace(c," "); //string.Empty erased them. this ensures they still have a separator
+        }
+        ModEntry.Mon.Log($"Raw blacklist: \n {blacklistRaw} \nWill be parsed to list now.", LogLevel.Debug);
+        var blacklistParsed = blacklistRaw?.Split(' ').ToList();
+
+        return blacklistParsed;
     }
 }

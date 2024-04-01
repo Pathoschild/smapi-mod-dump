@@ -21,7 +21,7 @@ namespace AnimalHusbandryMod.animals.events
     {
 
         public override string NpcName => "Emily";
-        public override int? RequiredEvent => 463391;
+        public override string RequiredEvent => "463391";
         public override string GetAct(AnimalContestItem animalContestInfo, List<AnimalContestItem> history)
         {
             return GetAct(!history.Exists(h => h.Contenders.Contains(NpcName)));

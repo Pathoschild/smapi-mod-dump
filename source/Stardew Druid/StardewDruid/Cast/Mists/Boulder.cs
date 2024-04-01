@@ -19,8 +19,8 @@ namespace StardewDruid.Cast.Mists
 
         private ResourceClump resourceClump;
 
-        public Boulder(Vector2 target, Rite rite, ResourceClump ResourceClump)
-            : base(target, rite)
+        public Boulder(Vector2 target,  ResourceClump ResourceClump)
+            : base(target)
         {
 
             resourceClump = ResourceClump;
@@ -48,7 +48,7 @@ namespace StardewDruid.Cast.Mists
 
             castCost = 24;
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector * 64 + new Vector2(32));
 
         }
 

@@ -12,22 +12,17 @@ using ContentPatcher;
 using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Enums;
 using StardewValley;
-using StardewValley.Characters;
-using StardewValley.TerrainFeatures;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using xTile;
-using xTile.Layers;
-using xTile.Tiles;
 
 namespace ichortower_HatMouseLacey
 {
@@ -76,7 +71,20 @@ namespace ichortower_HatMouseLacey
          * the exterior patches is applied (this loads different assets for the
          * house and storefront, instead of just different colors).
          */
-         public Retexture MatchRetexture = Retexture.Auto;
+        public Retexture MatchRetexture = Retexture.Auto;
+
+        /*
+         * SeasonalOutfits controls whether Lacey's summer and fall outfits are
+         * enabled. Spring is the default outfit, and winter isn't available
+         * to control since it's vanilla behavior.
+         */
+        public bool SeasonalOutfits { get; set; } = false;
+
+         /*
+          * WeddingAttire lets you choose what Lacey will wear when you marry
+          * her: Dress or Tuxedo.
+          */
+         public Outfit WeddingAttire = Outfit.Dress;
     }
 
     public enum Palette {
@@ -94,7 +102,12 @@ namespace ichortower_HatMouseLacey
         WaybackPT,
         ElleTown,
         YriYellog,
-        FlowerValley
+        FlowerValley,
+    }
+
+    public enum Outfit {
+        Dress,
+        Tuxedo,
     }
 
     internal sealed class ModEntry : Mod
@@ -123,14 +136,21 @@ namespace ichortower_HatMouseLacey
          */
         public static string RetextureDetected = "Vanilla";
 
-        public static IMonitor MONITOR;
-        public static IModHelper HELPER;
+        /*
+         * Set to true when GMCM saves our config during gameplay and any of
+         * the appearance settings have been changed.
+         * When this happens, we run the console command `patch update` to
+         * force a context update.
+         */
+        public static bool ConfigForcePatchUpdate = false;
 
         /*
-         * Lacey's internal name. Please ensure that this matches her internal
-         * name in the NPCDispositions file.
+         * Set to true when GMCM saves our config during gameplay and the
+         * SeasonalOutfits option, specifically, has been changed.
+         * When this happens, we tell Lacey to choose a new outfit right away.
          */
-        public static string LCInternalName = "HatMouseLacey";
+        public static bool ConfigForceClothesChange = false;
+
 
         /*
          * Entry point.
@@ -140,17 +160,23 @@ namespace ichortower_HatMouseLacey
          */
         public override void Entry(IModHelper helper)
         {
-            ModEntry.MONITOR = this.Monitor;
-            ModEntry.HELPER = helper;
+            HML.Monitor = Monitor;
+            HML.Manifest = ModManifest;
+            HML.ModHelper = helper;
             ModEntry.Config = helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
             helper.Events.Specialized.LoadStageChanged += this.OnLoadStageChanged;
             helper.Events.Content.AssetRequested += LCCompat.OnAssetRequested;
-            helper.ConsoleCommands.Add("lacey_map_repair", "\nReloads Forest map objects in the vicinity of Lacey's cabin,\nto fix the bushes in saves from before installation.\nYou shouldn't need to run this, but it's safe to do so.", this.LaceyMapRepair);
-            helper.ConsoleCommands.Add("mousify_child", "\nSets or unsets mouse child status on one of your children.\nUse this if your config settings weren't right and you got the wrong children,\nor just to morph your kids for fun.\n\nUsage: mousify_child <name> <variant>\n    where <variant> is -1 (human), 0 (grey), or 1 (brown).", this.MousifyChild);
-            helper.ConsoleCommands.Add("hat_string", "\nprints hat string to console", this.GetHatString);
+
+            // see ConsoleCommands.cs
+            helper.ConsoleCommands.Add(HML.CommandWord,
+                    "Run a Hat Mouse Lacey command. 'hatmouselacey help' for details.",
+                    ConsoleCommands.Main);
+
+            GameLocation.RegisterTileAction($"{HML.CPId}_PhotoMessage",
+                    this.PhotoMessage);
 
             /*
              * Apply Harmony patches by getting all the methods in Patcher
@@ -166,13 +192,26 @@ namespace ichortower_HatMouseLacey
                 foreach (var func in funcs) {
                     string[] split = func.Name.Split("__");
                     if (split.Length < 3) {
-                        MONITOR.Log($"bad Patcher function name '{func.Name}'", LogLevel.Warn);
+                        Log.Warn($"bad Patcher function name '{func.Name}'");
                         continue;
                     }
-                    string fqn = "StardewValley." + split[0].Replace("_", ".");
-                    Type t = sdv.GetType(fqn);
+                    Type t;
+                    string fqn;
+                    string[] nested = split[0].Split("_nest_");
+                    if (nested.Length > 1) {
+                        fqn = "StardewValley." + nested[0].Replace("_", ".");
+                        t = sdv.GetType(fqn);
+                        for (int i = 1; i < nested.Length; ++i) {
+                            t = t.GetNestedType(nested[i]);
+                            fqn += "+" + nested[i];
+                        }
+                    }
+                    else {
+                        fqn = "StardewValley." + split[0].Replace("_", ".");
+                        t = sdv.GetType(fqn);
+                    }
                     if (t is null) {
-                        MONITOR.Log($"type not found: '{fqn}'", LogLevel.Warn);
+                        Log.Warn($"type not found: '{fqn}'");
                         continue;
                     }
                     List<Type> args = new List<Type>();
@@ -192,9 +231,8 @@ namespace ichortower_HatMouseLacey
                             args.ToArray(),
                             null);
                     if (m is null) {
-                        MONITOR.Log($"within type '{fqn}': method not found: " +
-                                $"'{split[1]}({string.Join(", ", args)})'",
-                                LogLevel.Warn);
+                        Log.Warn($"within type '{fqn}': method not found: " +
+                                $"'{split[1]}({string.Join(", ", args)})'");
                         continue;
                     }
                     var hm = new HarmonyMethod(typeof(Patcher), func.Name);
@@ -205,141 +243,51 @@ namespace ichortower_HatMouseLacey
                         harmony.Patch(original: m, postfix: hm);
                     }
                     else {
-                        MONITOR.Log($"Not applying unimplemented patch type '{split[2]}'",
-                                LogLevel.Warn);
+                        Log.Warn($"Not applying unimplemented patch type '{split[2]}'");
                         continue;
                     }
-                    MONITOR.Log($"Patched ({split[2]}) {t.FullName}.{m.Name}", LogLevel.Trace);
+                    Log.Trace($"Patched ({split[2]}) {t.FullName}.{m.Name}");
                 }
             }
             catch (Exception e) {
-                MONITOR.Log($"Caught exception while applying Harmony patches:\n{e}",
-                        LogLevel.Warn);
+                Log.Warn($"Caught exception while applying Harmony patches:\n{e}");
             }
         }
 
-        /*
-         * Reset terrain features (grass, trees, bushes) around Lacey's cabin
-         * by reloading them from the (patched) map data.
-         * This is to make sure the save file reflects the final map, even on
-         * older saves.
-         */
-        private void LaceyMapRepair(string command, string[] args)
+
+        private bool PhotoMessage(GameLocation location, string[] args,
+                Farmer player, Point tile)
         {
-            this.Monitor.Log($"Reloading terrain features near Lacey's house", LogLevel.Trace);
-            /* This is the rectangle to reset. It should include every tile
-             * that we hit with terrain-feature map patches. */
-            var rect = new Microsoft.Xna.Framework.Rectangle(25, 89, 15, 11);
-            GameLocation forest = Game1.getLocationFromName("Forest");
-            if (forest is null || forest.map is null) {
-                return;
+            if (args.Length != 3 && args.Length != 5) {
+                Log.Error($"'{args[0]}': incorrect argument count" +
+                        $" (expected 3 or 5, got {args.Length})");
+                return false;
             }
-            Layer paths = forest.map.GetLayer("Paths");
-            if (paths is null) {
-                return;
+            int x = tile.X;
+            int y = tile.Y;
+            int dx = 0;
+            int dy = 0;
+            string err;
+            if (args.Length == 5 &&
+                    (!ArgUtility.TryGetInt(args, 3, out dx, out err) ||
+                     !ArgUtility.TryGetInt(args, 4, out dy, out err))) {
+                Log.Error($"{args[0]}': parse failure: {err}");
+                return false;
             }
-            // forest.largeTerrainFeatures is the bushes
-            var largeToRemove = new List<LargeTerrainFeature>();
-            foreach (var feature in forest.largeTerrainFeatures) {
-                Vector2 pos = feature.tilePosition.Value;
-                if (pos.X >= rect.X && pos.X <= rect.X+rect.Width &&
-                        pos.Y >= rect.Y && pos.Y <= rect.Y+rect.Height) {
-                    largeToRemove.Add(feature);
-                }
+            x += dx;
+            y += dy;
+            // 0: action type
+            // 1: image asset (game asset path)
+            // 2: text key (from StringsFromMaps)
+            string key = args[2].Replace("\"", "");
+            if (key != "") {
+                key = "Strings\\StringsFromMaps:" + key;
             }
-            foreach (var doomed in largeToRemove) {
-                forest.largeTerrainFeatures.Remove(doomed);
-            }
-            for (int x = rect.X; x < rect.X+rect.Width; ++x) {
-                for (int y = rect.Y; y < rect.Y+rect.Height; ++y) {
-                    Tile t = paths.Tiles[x, y];
-                    if (t is null) {
-                        continue;
-                    }
-                    if (t.TileIndex >= 24 && t.TileIndex <= 26) {
-                        forest.largeTerrainFeatures.Add(
-                                new StardewValley.TerrainFeatures.Bush(
-                                new Vector2(x,y), 26 - t.TileIndex, forest));
-                    }
-                }
-            }
-            // forest.terrainFeatures includes grass and trees
-            var smallToRemove = new List<Vector2>();
-            foreach (var feature in forest.terrainFeatures.Pairs) {
-                Vector2 pos = feature.Key;
-                if ((feature.Value is Grass || feature.Value is Tree) &&
-                        pos.X >= rect.X && pos.X <= rect.X+rect.Width &&
-                        pos.Y >= rect.Y && pos.Y <= rect.Y+rect.Height) {
-                    smallToRemove.Add(pos);
-                }
-            }
-            foreach (var doomed in smallToRemove) {
-                forest.terrainFeatures.Remove(doomed);
-            }
-            for (int x = rect.X; x < rect.X+rect.Width; ++x) {
-                for (int y = rect.Y; y < rect.Y+rect.Height; ++y) {
-                    Tile t = paths.Tiles[x, y];
-                    if (t is null) {
-                        continue;
-                    }
-                    if (t.TileIndex >= 9 && t.TileIndex <= 11) {
-                        int treeType = t.TileIndex - 8 +
-                                (Game1.currentSeason.Equals("winter") && t.TileIndex < 11 ? 3 : 0);
-                        forest.terrainFeatures.Add(new Vector2(x,y),
-                                new Tree(treeType, 5));
-                    }
-                    else if (t.TileIndex == 12) {
-                        forest.terrainFeatures.Add(new Vector2(x,y),
-                                new Tree(6, 5));
-                    }
-                    else if (t.TileIndex == 31 || t.TileIndex == 32) {
-                        forest.terrainFeatures.Add(new Vector2(x,y),
-                                new Tree(40 - t.TileIndex, 5));
-                    }
-                    else if (t.TileIndex == 22) {
-                        forest.terrainFeatures.Add(new Vector2(x,y),
-                                new Grass(1, 3));
-                    }
-                }
-            }
+            ImageDialog img = new(x, y, args[1].Replace("\"", ""), key);
+            Game1.activeClickableMenu = img;
+            return true;
         }
 
-        private void MousifyChild(string command, string[] args)
-        {
-            if (args.Length < 2) {
-                this.Monitor.Log($"Usage: mousify_child <name> <variant>", LogLevel.Warn);
-                return;
-            }
-            if (Game1.player == null) {
-                return;
-            }
-            Child child = null;
-            try {
-                foreach (var ch in Game1.player.getChildren()) {
-                    if (ch.Name.Equals(args[0])) {
-                        child = ch;
-                        break;
-                    }
-                }
-            }
-            catch {}
-            if (child == null) {
-                this.Monitor.Log($"Could not find your child named '{args[0]}'.", LogLevel.Warn);
-                return;
-            }
-            string variant = args[1];
-            if (variant != "-1" && variant != "0" && variant != "1") {
-                this.Monitor.Log($"Unrecognized variant '{variant}'. Using 0 instead.", LogLevel.Warn);
-                variant = "0";
-            }
-            child.modData[$"{LCInternalName}/ChildVariant"] = variant;
-            child.reloadSprite();
-        }
-
-        private void GetHatString(string command, string[] args)
-        {
-            this.Monitor.Log($"'{LCHatString.GetCurrentHatString(Game1.player)}'", LogLevel.Warn);
-        }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
@@ -350,43 +298,21 @@ namespace ichortower_HatMouseLacey
              * and if that's necessary we rebuild Lacey's schedule immediately,
              * meaning this won't do anything.
              */
-            NPC Lacey = Game1.getCharacterFromName(LCInternalName);
-            if (Lacey.Schedule is null) {
-                this.Monitor.Log($"Regenerating Lacey's schedule", LogLevel.Trace);
-                Lacey.Schedule = Lacey.getSchedule(Game1.dayOfMonth);
-                Lacey.checkSchedule(Game1.timeOfDay);
-            }
-
-            /*
-             * When loading a save, this will attempt to convert the saved hat
-             * commentary list and cruelty score from releases <= 1.0.4, where
-             * they used the save data (main farmer only, barfs for farmhands).
-             * They will be converted to use modData, which is safe for MP.
-             */
-            if (Game1.IsMasterGame) {
-                LCHatsShown hs = HELPER.Data.ReadSaveData<LCHatsShown>("HatsShown");
-                if (hs != null) {
-                    foreach (int id in hs.ids) {
-                        var obj = new StardewValley.Objects.Hat(id);
-                        LCModData.AddShownHat($"SV|{obj.Name}");
-                    }
-                    HELPER.Data.WriteSaveData<LCHatsShown>("HatsShown", null);
-                }
-                LCCrueltyScore cs = HELPER.Data.ReadSaveData<LCCrueltyScore>("CrueltyScore");
-                if (cs != null) {
-                    LCModData.CrueltyScore = cs.val;
-                    HELPER.Data.WriteSaveData<LCCrueltyScore>("CrueltyScore", null);
-                }
+            NPC Lacey = Game1.getCharacterFromName(HML.LaceyInternalName);
+            if (Lacey != null && Lacey.Schedule is null && !Lacey.isMarried()) {
+                Log.Trace($"Regenerating Lacey's schedule");
+                Lacey.TryLoadSchedule();
             }
         }
 
         /*
          * Register Content Patcher tokens (for config mirroring).
          * Register GMCM entries.
-         * Load the custom .ogg music tracks into the soundBank.
          */
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            LCEventCommands.Register();
+            LCActions.Register();
             var cpapi = this.Helper.ModRegistry.GetApi<IContentPatcherAPI>(
                     "Pathoschild.ContentPatcher");
             cpapi.RegisterToken(this.ModManifest, "AlwaysAdopt", () => {
@@ -394,6 +320,12 @@ namespace ichortower_HatMouseLacey
             });
             cpapi.RegisterToken(this.ModManifest, "DTF", () => {
                 return new[] {$"{Config.DTF}"};
+            });
+            cpapi.RegisterToken(this.ModManifest, "WeddingAttire", () => {
+                return new[] {$"{Config.WeddingAttire.ToString()}"};
+            });
+            cpapi.RegisterToken(this.ModManifest, "SeasonalOutfits", () => {
+                return new[] {$"{Config.SeasonalOutfits}"};
             });
             cpapi.RegisterToken(this.ModManifest, "RecolorConfig", () => {
                 return new[] {$"{Config.RecolorPalette.ToString()}"};
@@ -416,8 +348,10 @@ namespace ichortower_HatMouseLacey
             cpapi.RegisterToken(this.ModManifest, "SVRThreeForest", () => {
                 return new[] {$"{ModEntry.CompatSVR3Forest}"};
             });
-            this.Monitor.Log($"Registered Content Patcher tokens for config options",
-                    LogLevel.Trace);
+            Log.Trace($"Registered Content Patcher tokens for config options");
+            cpapi.RegisterToken(this.ModManifest, "FatherName", () => new[]{"Fletcher"});
+            cpapi.RegisterToken(this.ModManifest, "MotherName", () => new[]{"Diana"});
+            cpapi.RegisterToken(this.ModManifest, "SisterName", () => new[]{"Melody"});
 
             var cmapi = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>(
                     "spacechase0.GenericModConfigMenu");
@@ -427,7 +361,17 @@ namespace ichortower_HatMouseLacey
                     reset: () => ModEntry.Config = new ModConfig(),
                     save: () => {
                         this.Helper.WriteConfig(ModEntry.Config);
-                        LCCompat.DetectModMatching();
+                        if (Game1.gameMode != Game1.titleScreenGameMode) {
+                            LCCompat.DetectModMatching();
+                            if (ConfigForcePatchUpdate) {
+                                LCCompat.QueueConsoleCommand.Value("patch update");
+                            }
+                            if (ConfigForceClothesChange) {
+                                LCCompat.QueueConsoleCommand.Value("hatmouselacey change_clothes");
+                            }
+                        }
+                        ConfigForcePatchUpdate = false;
+                        ConfigForceClothesChange = false;
                     }
                 );
                 cmapi.AddSectionTitle(
@@ -439,15 +383,15 @@ namespace ichortower_HatMouseLacey
                     mod: this.ModManifest,
                     name: () => "AlwaysAdopt",
                     tooltip: () => this.Helper.Translation.Get("gmcm.alwaysadopt.tooltip"),
-                    getValue: () => ModEntry.Config.AlwaysAdopt,
-                    setValue: value => ModEntry.Config.AlwaysAdopt = value
+                    getValue: () => Config.AlwaysAdopt,
+                    setValue: value => Config.AlwaysAdopt = value
                 );
                 cmapi.AddBoolOption(
                     mod: this.ModManifest,
                     name: () => "DTF",
                     tooltip: () => this.Helper.Translation.Get("gmcm.dtf.tooltip"),
-                    getValue: () => ModEntry.Config.DTF,
-                    setValue: value => ModEntry.Config.DTF = value
+                    getValue: () => Config.DTF,
+                    setValue: value => Config.DTF = value
                 );
                 cmapi.AddSectionTitle(
                     mod: this.ModManifest,
@@ -462,8 +406,11 @@ namespace ichortower_HatMouseLacey
                     allowedValues: colorNames,
                     getValue: () => Config.RecolorPalette.ToString(),
                     setValue: value => {
-                        Config.RecolorPalette = (Palette)
-                                Enum.Parse(typeof(Palette), value);
+                        var v = (Palette)Enum.Parse(typeof(Palette), value);
+                        if (Config.RecolorPalette != v) {
+                            ConfigForcePatchUpdate = true;
+                        }
+                        Config.RecolorPalette = v;
                     }
                 );
                 List<string> trimmed = new List<string>(colorNames);
@@ -475,8 +422,11 @@ namespace ichortower_HatMouseLacey
                     allowedValues: trimmed.ToArray(),
                     getValue: () => Config.InteriorPalette.ToString(),
                     setValue: value => {
-                        Config.InteriorPalette = (Palette)
-                                Enum.Parse(typeof(Palette), value);
+                        var v = (Palette)Enum.Parse(typeof(Palette), value);
+                        if (Config.InteriorPalette != v) {
+                            ConfigForcePatchUpdate = true;
+                        }
+                        Config.InteriorPalette = v;
                     }
                 );
                 cmapi.AddTextOption(
@@ -486,27 +436,47 @@ namespace ichortower_HatMouseLacey
                     allowedValues: Enum.GetNames<Retexture>(),
                     getValue: () => Config.MatchRetexture.ToString(),
                     setValue: value => {
-                        Config.MatchRetexture = (Retexture)
-                                Enum.Parse(typeof(Retexture), value);
+                        var v = (Retexture)Enum.Parse(typeof(Retexture), value);
+                        if (Config.MatchRetexture != v) {
+                            ConfigForcePatchUpdate = true;
+                        }
+                        Config.MatchRetexture = v;
                     }
                 );
-                this.Monitor.Log($"Registered Generic Mod Config Menu entries",
-                        LogLevel.Trace);
+                cmapi.AddSectionTitle(
+                    mod: this.ModManifest,
+                    text: () => this.Helper.Translation.Get("gmcm.outfitssection.text"),
+                    tooltip: null
+                );
+                cmapi.AddBoolOption(
+                    mod: this.ModManifest,
+                    name: () => "SeasonalOutfits",
+                    tooltip: () => this.Helper.Translation.Get("gmcm.seasonaloutfits.tooltip"),
+                    getValue: () => Config.SeasonalOutfits,
+                    setValue: value => {
+                        if (Config.SeasonalOutfits != value) {
+                            ConfigForcePatchUpdate = true;
+                            ConfigForceClothesChange = true;
+                        }
+                        Config.SeasonalOutfits = value;
+                    }
+                );
+                cmapi.AddTextOption(
+                    mod: this.ModManifest,
+                    name: () => "WeddingAttire",
+                    tooltip: () => this.Helper.Translation.Get("gmcm.weddingattire.tooltip"),
+                    allowedValues: Enum.GetNames<Outfit>(),
+                    getValue: () => Config.WeddingAttire.ToString(),
+                    setValue: value => {
+                        var v = (Outfit)Enum.Parse(typeof(Outfit), value);
+                        if (Config.WeddingAttire != v) {
+                            ConfigForcePatchUpdate = true;
+                        }
+                        Config.WeddingAttire = v;
+                    }
+                );
+                Log.Trace($"Registered Generic Mod Config Menu entries");
             }
-
-            Dictionary<string, string> songs = new Dictionary<string, string>(){
-                    {"HML_Confession", "Confession.ogg"},
-                    {"HML_Lonely", "Lonely.ogg"},
-                    {"HML_Upbeat", "Upbeat.ogg"},
-            };
-            Thread t = new Thread((ThreadStart)delegate {
-                var l = new LCMusicLoader();
-                foreach (var song in songs) {
-                    var path = Path.Combine(this.Helper.DirectoryPath, "assets", song.Value);
-                    l.LoadOggSong(song.Key, path);
-                }
-            });
-            t.Start();
         }
 
         /*
@@ -520,30 +490,21 @@ namespace ichortower_HatMouseLacey
         }
 
         /*
-         * Early in the save load, check config values from other mods and set
-         * Content Patcher tokens to reflect them, in order to prevent users
-         * from having to manually keep configs in sync (annoying and
-         * error-prone).
-         *
-         * Used for:
-         *   Stardew Valley Reimagined 3 (forest map edit is a config setting)
-         *   Recolor and retexture detection and matching (see Compatibility.cs)
-         *
-         * Later in the save load, check whether we need to run the map repair
-         * function, and run it if we do. In this case, we also immediately
-         * rebuild Lacey's schedule, so her pathing will be correct right away
-         * on the modified map.
+         * Special stuff which has to run during the save load for technical
+         * reasons (typically to preempt loading the maps to completion).
+         *   - Snarf other mod data and set CP tokens
+         *   - Migrate 1.5 Lacey data to 1.6
+         *   - Run the map repair function if needed
          */
         private void OnLoadStageChanged(object sender, LoadStageChangedEventArgs e)
         {
-            // this used to use CreatedBasicInfo, but due to an unsolved
-            // timing (?) problem, it caused wrong patches to apply and
-            // persist until relaunching the game.
-            // moving it slightly later seems to solve it.
+            // This early stage is suitable for checking the status of other
+            // mods and enabling the appropriate compatibility patches (by
+            // setting tokens for the CP pack to use).
             if (e.NewStage == LoadStage.CreatedInitialLocations ||
                     e.NewStage == LoadStage.SaveLoadedBasicInfo) {
                 try {
-                    var modInfo = HELPER.ModRegistry.Get("DaisyNiko.SVR3");
+                    var modInfo = HML.ModHelper.ModRegistry.Get("DaisyNiko.SVR3");
                     var modPath = (string)modInfo.GetType().GetProperty("DirectoryPath")
                         .GetValue(modInfo);
                     var jConfig = JObject.Parse(File.ReadAllText(Path.Combine(modPath, "config.json")));
@@ -556,42 +517,43 @@ namespace ichortower_HatMouseLacey
 
                 LCCompat.DetectModMatching();
             }
+            // Migrate 1.5 Lacey data to the new internal names for 1.6.
+            // Naturally, this applies only when loading existing saves, and
+            // not when creating new ones.
+            if (e.NewStage == LoadStage.SaveLoadedBasicInfo) {
+                LCSaveMigrator save = new();
+                save.MigrateOldSaveData();
+            }
+            // Check the Forest map to see if specific terrain features which
+            // should be gone are still around. If they are, run the map
+            // repair function to clean up.
             if (e.NewStage == LoadStage.Preloaded) {
-                /* check for specific terrain features that should be gone */
                 GameLocation forest = Game1.getLocationFromName("Forest");
                 if (forest != null) {
                     bool doClean = false;
-                    if (forest.terrainFeatures.ContainsKey(new Vector2(29, 97))) {
+                    if (forest.terrainFeatures.ContainsKey(new Vector2(29f, 97f))) {
                         doClean = true;
                     }
                     if (!doClean) {
                         foreach (var feature in forest.largeTerrainFeatures) {
-                            Vector2 pos = feature.tilePosition.Value;
-                            if (pos.X == 29 && pos.Y == 96) {
+                            if (feature.Tile == new Vector2(29f, 96f)) {
                                 doClean = true;
                                 break;
                             }
                         }
                     }
                     if (doClean) {
-                        LaceyMapRepair("", null);
-                        NPC Lacey = Game1.getCharacterFromName(LCInternalName);
-                        Lacey.Schedule = Lacey.getSchedule(Game1.dayOfMonth);
-                        Lacey.checkSchedule(Game1.timeOfDay);
+                        ConsoleCommands.MapRepair("", null);
+                        // also rebuild Lacey's schedule, since the features
+                        // have changed and will affect pathing.
+                        NPC Lacey = Game1.getCharacterFromName(HML.LaceyInternalName);
+                        if (Lacey != null) {
+                            Lacey.TryLoadSchedule();
+                        }
                     }
                 }
             }
         }
-
-        /* Unused since CP handles this
-        private void NewMapHandler(object sender, LoadStageChangedEventArgs e)
-        {
-            if (e.NewStage == LoadStage.SaveAddedLocations ||
-                    e.NewStage == LoadStage.CreatedInitialLocations) {
-                Game1.locations.Add(new GameLocation("Maps\\MouseHouse", "MouseHouse"));
-            }
-        }
-        */
 
     }
 }

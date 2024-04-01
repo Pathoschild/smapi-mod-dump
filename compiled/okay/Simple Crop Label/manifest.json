@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Simple Crop Label",
+  "Author": "TheMusketeer",
+  "Version": "6.0.0",
+  "MinimumApiVersion": "4.0.1",
+  "Description": "Identify crops and trees on farm",
+  "UniqueID": "SimpleCropLabel",
+  "UpdateKeys": [ "Nexus:314" ],
+  "PerSaveConfigs": false,
+  "EntryDll": "SimpleCropLabel.dll"
+}

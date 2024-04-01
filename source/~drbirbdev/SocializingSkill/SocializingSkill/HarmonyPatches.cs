@@ -17,6 +17,10 @@ using HarmonyLib;
 using SpaceCore;
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.Delegates;
+using StardewValley.GameData.Shops;
+using StardewValley.Internal;
+using StardewValley.Menus;
 using StardewValley.Quests;
 using StardewValley.SpecialOrders.Rewards;
 
@@ -32,31 +36,36 @@ class Dialogue_ChooseResponse
         List<NPCDialogueResponse> ___playerResponses,
         bool ___quickResponse)
     {
-
         try
         {
             foreach (var playerResponse in ___playerResponses)
             {
-                if (playerResponse.responseKey == null || response.responseKey == null || !playerResponse.responseKey.Equals(response.responseKey))
+                if (playerResponse.responseKey == null || response.responseKey == null ||
+                    !playerResponse.responseKey.Equals(response.responseKey))
                 {
                     continue;
                 }
+
                 if (__instance.answerQuestionBehavior != null)
                 {
                     return;
                 }
+
                 if (___quickResponse)
                 {
                     return;
                 }
+
                 if (Game1.isFestival())
                 {
                     return;
                 }
+
                 if (playerResponse.friendshipChange <= 0)
                 {
                     return;
                 }
+
                 Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromEvents);
             }
         }
@@ -69,10 +78,10 @@ class Dialogue_ChooseResponse
 
 // Smooth Talker Profession
 //  - adjust friendship change during dialogue
-[HarmonyPatch(typeof(NPCDialogueResponse), MethodType.Constructor, [typeof(string), typeof(int), typeof(string), typeof(string)])]
+[HarmonyPatch(typeof(NPCDialogueResponse), MethodType.Constructor,
+    [typeof(string), typeof(int), typeof(string), typeof(string), typeof(string)])]
 class NpcDialogueResponse_Constructor
 {
-
     internal static void Postfix(
         int friendshipChange,
         NPCDialogueResponse __instance)
@@ -88,22 +97,26 @@ class NpcDialogueResponse_Constructor
             {
                 if (friendshipChange < 0)
                 {
-                    __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerPrestigeNegativeMultiplier);
+                    __instance.friendshipChange =
+                        (int)(friendshipChange * ModEntry.Config.SmoothTalkerPrestigeNegativeMultiplier);
                 }
                 else
                 {
-                    __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerPrestigePositiveMultiplier);
+                    __instance.friendshipChange =
+                        (int)(friendshipChange * ModEntry.Config.SmoothTalkerPrestigePositiveMultiplier);
                 }
             }
             else
             {
                 if (friendshipChange < 0)
                 {
-                    __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerNegativeMultiplier);
+                    __instance.friendshipChange =
+                        (int)(friendshipChange * ModEntry.Config.SmoothTalkerNegativeMultiplier);
                 }
                 else
                 {
-                    __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerPositiveMultiplier);
+                    __instance.friendshipChange =
+                        (int)(friendshipChange * ModEntry.Config.SmoothTalkerPositiveMultiplier);
                 }
             }
         }
@@ -178,28 +191,6 @@ class Event_CommandFriendship
     }
 }
 
-
-[HarmonyPatch(typeof(Quest), nameof(Quest.questComplete))]
-class Quest_CheckIfComplete
-{
-    static void Prefix(Quest __instance)
-    {
-        try
-        {
-            if (__instance.completed.Value)
-            {
-                return;
-            }
-
-            Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromQuests);
-        }
-        catch (Exception e)
-        {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
-        }
-    }
-}
-
 // Helpful Profession
 //  - Increase quest rewards
 [HarmonyPatch]
@@ -222,7 +213,7 @@ class Quest_GetMoneyReward
 
             if (Game1.player.HasProfession("Helpful", true))
             {
-                __result = (int)(__result * ModEntry.Config.HelpfulRewardMultiplier * 2);
+                __result = (int)(__result * ModEntry.Config.HelpfulPrestigeRewardMultiplier);
             }
             else
             {
@@ -236,32 +227,33 @@ class Quest_GetMoneyReward
     }
 }
 
-// TODO: other shop constructors
 // Haggler Profession
 //  - Decrease shop prices if friends with the owner
-/*[HarmonyPatch(typeof(ShopMenu), MethodType.Constructor, new Type[] { typeof(string), typeof(ShopData), typeof(ShopOwnerData), typeof(NPC), typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(bool) })]
+[HarmonyPatch(typeof(ShopMenu), MethodType.Constructor, [
+    typeof(string),
+    typeof(ShopData),
+    typeof(ShopOwnerData),
+    typeof(NPC),
+    typeof(Func<ISalable, Farmer, int, bool>),
+    typeof(Func<ISalable, bool>),
+    typeof(bool)
+])]
 class ShopMenu_Constructor1
 {
-    internal static void Postfix(int currency, NPC owner, ShopMenu __instance)
+    internal static void Postfix(NPC owner, ShopMenu __instance)
     {
         try
         {
-            if (!Game1.player.HasCustomProfession(SocializingSkill.Haggler))
+            if (!Game1.player.HasProfession("Haggler"))
             {
                 return;
             }
-            if (currency != 0)
+
+            if (owner?.Name == null)
             {
                 return;
             }
-            if (owner == null)
-            {
-                return;
-            }
-            if (owner.Name == null)
-            {
-                return;
-            }
+
             if (!Game1.player.friendshipData.ContainsKey(owner.Name))
             {
                 return;
@@ -272,18 +264,20 @@ class ShopMenu_Constructor1
             {
                 return;
             }
+
             if (heartLevel > 10)
             {
                 heartLevel = 10;
             }
 
-            int discountPercent = (heartLevel - ModEntry.Config.HagglerMinHeartLevel + 1) * ModEntry.Config.HagglerDiscountPercentPerHeartLevel;
-            if (Game1.player.HasCustomPrestigeProfession(SocializingSkill.Haggler))
+            int discountPercent = (heartLevel - ModEntry.Config.HagglerMinHeartLevel + 1) *
+                                  ModEntry.Config.HagglerDiscountPercentPerHeartLevel;
+            if (Game1.player.HasProfession("Haggler", true))
             {
-                discountPercent += 10;
+                discountPercent += ModEntry.Config.HagglerPrestigeDiscountPercent;
             }
 
-            float discount = (100f - discountPercent) / 100;
+            float discount = (100f - discountPercent) / 100f;
 
             foreach (KeyValuePair<ISalable, ItemStockInformation> item in __instance.itemPriceAndStock)
             {
@@ -294,10 +288,10 @@ class ShopMenu_Constructor1
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
     }
-}*/
+}
 
 // Skill perk
 //  - Reduce friendship decay
@@ -331,15 +325,19 @@ class Farmer_ResetFriendshipForNewDay
                 {
                     single = true;
                 }
-                if (__instance.spouse != null && name.Equals(__instance.spouse) && !__instance.hasPlayerTalkedToNPC(name))
+
+                if (__instance.spouse != null && name.Equals(__instance.spouse) &&
+                    !__instance.hasPlayerTalkedToNPC(name))
                 {
                     __instance.changeFriendship(20, i);
                 }
-                else if (__instance.friendshipData[name].IsDating() && !__instance.hasPlayerTalkedToNPC(name) && __instance.friendshipData[name].Points < 2500)
+                else if (__instance.friendshipData[name].IsDating() && !__instance.hasPlayerTalkedToNPC(name) &&
+                         __instance.friendshipData[name].Points < 2500)
                 {
                     __instance.changeFriendship(10, i);
                 }
-                else if ((!single && __instance.friendshipData[name].Points < 2500) || (single && __instance.friendshipData[name].Points < 2000))
+                else if ((!single && __instance.friendshipData[name].Points < 2500) ||
+                         (single && __instance.friendshipData[name].Points < 2000))
                 {
                     __instance.changeFriendship(2, i);
                 }
@@ -382,7 +380,7 @@ class Npc_GrantConversationFriendship
 
             if (who.HasProfession("Friendly", true))
             {
-                who.changeFriendship((int)(ModEntry.Config.FriendlyExtraFriendship * 1.5), __instance);
+                who.changeFriendship(ModEntry.Config.FriendlyPrestigeExtraFriendship, __instance);
             }
             else
             {
@@ -412,51 +410,76 @@ class Npc_CheckAction
             {
                 return;
             }
+
             if (__instance.IsInvisible || __instance.isSleeping.Value || !who.CanMove)
             {
                 return;
             }
+
             if (!who.HasProfession("Beloved"))
             {
                 return;
             }
-            ModEntry.BelovedCheckedToday.Value ??= [];
-            if (ModEntry.BelovedCheckedToday.Value.Contains(__instance.Name))
+
+            ModEntry.BELOVED_CHECKED_TODAY.Value ??= [];
+            if (!ModEntry.BELOVED_CHECKED_TODAY.Value.Add(__instance.Name))
             {
                 return;
             }
-            ModEntry.BelovedCheckedToday.Value.Add(__instance.Name);
 
-            int giftPercentChance = ModEntry.Config.BelovedGiftPercentChance;
-            if (who.HasProfession("Beloved", true))
+            int baseChance = who.HasProfession("Beloved", true)
+                ? ModEntry.Config.BelovedPrestigeGiftPercentChance
+                : ModEntry.Config.BelovedGiftPercentChance;
+
+            Random belovedRandom =
+                Utility.CreateDaySaveRandom(3701 * Game1.hash.GetDeterministicHashCode(__instance.Name));
+
+            if (baseChance < belovedRandom.Next(100))
             {
-                giftPercentChance *= 2;
+                return;
             }
 
-            //TODO: 1.6 update NPC gifts.  Use Item Queries maybe?
-            /*            int rarity = 1;
-                        if (rarity < 0)
-                        {
-                            return;
-                        }
-                        // Get a gift from Beloved profession
+            List<Assets.BelovedEntry> data = ModEntry.Assets.BelovedData.GetValueOrDefault(__instance.Name, []);
+            data.AddRange(ModEntry.Assets.BelovedData.GetValueOrDefault("default", []));
 
-                        string heartLevel = who.getFriendshipHeartLevelForNPC(__instance.Name).ToString();
+            Item selected = ItemRegistry.Create("(O)168");
+            Dialogue dialogue = new(__instance, ModEntry.Instance.I18N.Get(""));
+            foreach (Assets.BelovedEntry entry in data)
+            {
+                if (string.IsNullOrWhiteSpace(entry.Id))
+                {
+                    Log.Error($"Ignored item entry with no Id field for {__instance.Name}");
+                    continue;
+                }
 
-                        string dropString = Utilities.GetRandomDropStringFromLootTable(ModEntry.Assets.BelovedTable, __instance.Name, heartLevel, rarity.ToString());
-                        Item gift = Utilities.ParseDropString(dropString);
+                ItemQueryContext itemQueryContext =
+                    new ItemQueryContext(__instance.currentLocation, who, belovedRandom);
 
-                        string dialogue = rarity switch
-                        {
-                            0 => (string)ModEntry.Instance.I18n.Get("dialogue.beloved"),
-                            1 => (string)ModEntry.Instance.I18n.Get("dialogue.beloved.rare", new { name = Game1.player.displayName }),
-                            _ => (string)ModEntry.Instance.I18n.Get("dialogue.beloved.superrare"),
-                        };
-                        __instance.CurrentDialogue.Push(new Dialogue(__instance, dialogue));
-                        Game1.drawDialogue(__instance);
-                        // Game1.player.addItemByMenuIfNecessary(gift);
-                        __result = true;
-            */
+                Item result = ItemQueryResolver.TryResolveRandomItem(entry, itemQueryContext);
+
+                GameStateQueryContext context = new(__instance.currentLocation, who, result, null, belovedRandom, null,
+                    new Dictionary<string, object>
+                    {
+                        {"NPC", __instance}
+                    });
+
+                if (!GameStateQuery.CheckConditions(entry.Condition, context))
+                {
+                    continue;
+                }
+
+                selected = result;
+                if (entry.Dialogue is not null)
+                {
+                    dialogue = new Dialogue(__instance, entry.Dialogue);
+                }
+
+                break;
+            }
+
+            __instance.CurrentDialogue.Push(dialogue);
+            Game1.drawDialogue(__instance);
+            Game1.player.addItemByMenuIfNecessary(selected);
         }
         catch (Exception e)
         {

@@ -18,6 +18,7 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using StardewValley.BellsAndWhistles;
 
 namespace MailFrameworkMod
 {
@@ -35,7 +36,7 @@ namespace MailFrameworkMod
         /// </summary>
         public static void UpdateMailBox()
         {
-            List<Letter> newLetters = MailDao.GetValidatedLetters();
+            List<Letter> newLetters = MailRepository.GetValidatedLetters();
             newLetters.RemoveAll((l)=>Letters.Value.Contains(l));
             try
             {
@@ -152,13 +153,24 @@ namespace MailFrameworkMod
 
             if (ShownLetter.Value != null)
             {
-                var activeClickableMenu = new LetterViewerMenuExtended(ShownLetter.Value.TranslatedText.Replace("@", Game1.player.Name),ShownLetter.Value.Id);
-                MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(ShownLetter.Value.WhichBG);
+                var activeClickableMenu = new LetterViewerMenu(ShownLetter.Value.TranslatedText, ShownLetter.Value.Id)
+                {
+                    whichBG = ShownLetter.Value.WhichBG,
+
+                };
                 if (ShownLetter.Value.LetterTexture != null)
                 {
                     activeClickableMenu.letterTexture = ShownLetter.Value.LetterTexture;
                 }
-                activeClickableMenu.TextColor = ShownLetter.Value.TextColor;
+
+                if (ShownLetter.Value.CustomTextColor.HasValue)
+                {
+                    activeClickableMenu.customTextColor = ShownLetter.Value.CustomTextColor;
+                }
+                else if (ShownLetter.Value.TextColor.HasValue)
+                {
+                    activeClickableMenu.customTextColor = SpriteText.getColorFromIndex(ShownLetter.Value.TextColor.Value);
+                }
                 if (ShownLetter.Value.UpperRightCloseButtonTexture != null &&
                     activeClickableMenu.upperRightCloseButton != null)
                 {
@@ -215,9 +227,14 @@ namespace MailFrameworkMod
                         );
                         activeClickableMenu.backButton.rightNeighborID = 104;
                         activeClickableMenu.forwardButton.leftNeighborID = 104;
-                        activeClickableMenu.populateClickableComponentList();
-                        activeClickableMenu.snapToDefaultClickableComponent();
-                    });
+                    }
+                );
+                if (attachments.Count > 0 && Game1.options.SnappyMenus)
+                {
+                    activeClickableMenu.populateClickableComponentList();
+                    activeClickableMenu.snapToDefaultClickableComponent();
+                }
+
                 if (ShownLetter.Value.Recipe != null)
                 {
                     string recipe = ShownLetter.Value.Recipe;
@@ -226,19 +243,6 @@ namespace MailFrameworkMod
                     if (recipeString != null)
                     {
                         string learnedRecipe = recipe;
-                        
-                        string[] strArray = recipeString.Split('/');
-                        if (strArray.Length < dataArrayI18NSize)
-                        {
-                            if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
-                            {
-                                MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' does not have a internationalized name. The default name will be used.", LogLevel.Warn);
-                            }
-                        }
-                        else if (strArray[strArray.Length - 1] != "null")
-                        {
-                            learnedRecipe = strArray[strArray.Length - 1];
-                        }
                         
                         activeClickableMenu.cookingOrCrafting = cookingOrCraftingText;
                         activeClickableMenu.learnedRecipe = learnedRecipe;
@@ -255,14 +259,14 @@ namespace MailFrameworkMod
             }
         }
 
-        private static void GetAndLearnRecipe(string recipe, out string recipeString, out int dataArrayI18NSize,
+        private static void GetAndLearnRecipe(string recipe, out string learnedRecipe, out int dataArrayI18NSize,
             out string cookingOrCraftingText)
         {
             Dictionary<string, string> cookingData =
                 MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/CookingRecipes"));
             Dictionary<string, string> craftingData =
                 MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/CraftingRecipes"));
-            recipeString = null;
+            learnedRecipe = null;
             dataArrayI18NSize = 0;
             cookingOrCraftingText = null;
             if (cookingData.ContainsKey(recipe))
@@ -272,9 +276,9 @@ namespace MailFrameworkMod
                     Game1.player.cookingRecipes.Add(recipe, 0);
                 }
 
-                recipeString = cookingData[recipe];
+                learnedRecipe = new CraftingRecipe(recipe, isCookingRecipe: true).DisplayName;
                 dataArrayI18NSize = 5;
-                cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
+                cookingOrCraftingText =  Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
             }
             else if (craftingData.ContainsKey(recipe))
             {
@@ -283,7 +287,7 @@ namespace MailFrameworkMod
                     Game1.player.craftingRecipes.Add(recipe, 0);
                 }
 
-                recipeString = craftingData[recipe];
+                learnedRecipe = new CraftingRecipe(recipe, isCookingRecipe: false).DisplayName;
                 dataArrayI18NSize = 6;
                 cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_crafting");
             }
@@ -372,16 +376,25 @@ namespace MailFrameworkMod
                 {
                     if (clickableComponent.containsPoint(x, y))
                     {
-                        Letter letter = MailDao.FindLetter(clickableComponent.name.Split(' ')[0]);
+                        Letter letter = MailRepository.FindLetter(clickableComponent.name.Split(' ')[0]);
                         if (letter != null && !letter.AutoOpen)
                         {
-                            LetterViewerMenuExtended letterViewerMenu = new LetterViewerMenuExtended(letter.TranslatedText.Replace("@", Game1.player.Name), letter.Id, true);
-                            MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(letterViewerMenu, "whichBG").SetValue(letter.WhichBG);
+                            LetterViewerMenu letterViewerMenu = new LetterViewerMenu(letter.TranslatedText, letter.Id, true)
+                            {
+                                whichBG = letter.WhichBG
+                            };
                             if (letter.LetterTexture != null)
                             {
                                 letterViewerMenu.letterTexture = letter.LetterTexture;
                             }
-                            letterViewerMenu.TextColor = letter.TextColor;
+                            if (letter.CustomTextColor.HasValue)
+                            {
+                                letterViewerMenu.customTextColor = letter.CustomTextColor;
+                            }
+                            else if (letter.TextColor.HasValue)
+                            {
+                                letterViewerMenu.customTextColor = SpriteText.getColorFromIndex(letter.TextColor.Value);
+                            }
                             if (letter.UpperRightCloseButtonTexture != null &&
                                 letterViewerMenu.upperRightCloseButton != null)
                             {

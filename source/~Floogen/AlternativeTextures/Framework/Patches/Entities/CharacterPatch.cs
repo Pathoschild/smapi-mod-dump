@@ -54,7 +54,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
                 child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(child)}");
                 if (child.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                 {
-                    child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(location);
+                    child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(location).ToString();
                     child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME], "_", child.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                 }
 
@@ -65,7 +65,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
                 horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(horse)}");
                 if (horse.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                 {
-                    horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(location);
+                    horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(location).ToString();
                     horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME], "_", horse.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                 }
 

@@ -1,0 +1,6 @@
+{
+  "pronoun.male": "He",
+  "pronoun.female": "She",
+  "notification-message.basic": "It's {name} birthday!",
+  "notification-message.recommend-gift":" {pronoun} likes {gift}."
+}

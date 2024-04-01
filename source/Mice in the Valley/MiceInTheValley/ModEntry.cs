@@ -79,13 +79,13 @@ namespace MiceInTheValley {
                 // Pick a random terrain feature and check its usability.
                 int index = Game1.random.Next(location.largeTerrainFeatures.Count);
                 if (location.largeTerrainFeatures.Count > 0 && location.largeTerrainFeatures[index] is Bush) {
-                    position = location.largeTerrainFeatures[index].tilePosition;
+                    position = location.largeTerrainFeatures[index].Tile;
                     int num2 = Game1.random.Next(5, 12);
                     bool doIt = true;
                     for (int i = 0; i < num2; i++) {
                         position -= direction;
                         Rectangle rectangle = new Rectangle((int) position.X * 64, (int) position.Y * 64, 64, 64);
-                        bool placeable = location.isTileLocationTotallyClearAndPlaceable(position);
+                        bool placeable = location.CanSpawnCharacterHere(position);
                         if (!location.largeTerrainFeatures[index].getBoundingBox().Intersects(rectangle) && !placeable) {
                             doIt = false;
 

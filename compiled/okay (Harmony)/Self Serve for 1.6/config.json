@@ -1,0 +1,17 @@
+{
+  "Keys": {
+    "ReloadConfig": "None"
+  },
+  "PierresGeneralShop": true,
+  "WillysFishShop": true,
+  "IceCreamShop": true,
+  "BlacksmithShop": true,
+  "CarpentersShop": true,
+  "MarniesAnimalShop": true,
+  "HospitalShop": true,
+  "SaloonShop": true,
+  "BooksellerShop": true,
+  "TravelingMerchantShop": true,
+  "ResortBarShop": true,
+  "SandyOasisShop": true
+}

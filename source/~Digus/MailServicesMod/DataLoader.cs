@@ -35,7 +35,7 @@ namespace MailServicesMod
             I18N = modHelper.Translation;
             ModConfig = Helper.ReadConfig<ModConfig>();
 
-            MailDao.SaveLetter(
+            MailRepository.SaveLetter(
                 new Letter(
                     "MailServiceMod.DeliveryQuestsInfo"
                     , "Shipment.Quest.DeliveryQuestsLetter"
@@ -48,7 +48,7 @@ namespace MailServicesMod
                 }
             );
 
-            MailDao.SaveLetter(
+            MailRepository.SaveLetter(
                 new Letter(
                     "MailServiceMod.ToolUpgradeInfo"
                     , "Shipment.Clint.UpgradeLetter"
@@ -61,11 +61,11 @@ namespace MailServicesMod
                 }
             );
 
-            MailDao.SaveLetter(
+            MailRepository.SaveLetter(
                 new Letter(
                     "MailServiceMod.GiftShipmentInfo"
                     , "Shipment.Wizard.GiftShipmentLetter"
-                    , (l) => !DataLoader.ModConfig.DisableGiftService && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.eventsSeen.Contains(112)
+                    , (l) => !DataLoader.ModConfig.DisableGiftService && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.eventsSeen.Contains("112")
                     , (l) => Game1.player.mailReceived.Add(l.Id)
                 )
                 {
@@ -75,7 +75,7 @@ namespace MailServicesMod
                 }
             );
 
-            MailDao.SaveLetter(
+            MailRepository.SaveLetter(
                 new Letter(
                     "MailServiceMod.MarlonRecoveryReward"
                     , "Delivery.Marlon.RecoveryRewardLetter"
@@ -93,7 +93,7 @@ namespace MailServicesMod
                 }
             );
 
-            MailDao.SaveLetter(
+            MailRepository.SaveLetter(
                 new Letter(
                     "MailServicesMod.MarlonRecoveryOffer"
                     , "Delivery.Marlon.RecoveryOfferLetter"
@@ -141,7 +141,7 @@ namespace MailServicesMod
                 DynamicItems = (l) => Game1.player.toolBeingUpgraded.Value != null ? new List<Item> { Game1.player.toolBeingUpgraded.Value } : new List<Item>(),
                 I18N = I18N
             };
-            MailDao.SaveLetter(upgradeLetter);
+            MailRepository.SaveLetter(upgradeLetter);
 
             Letter recoveryLetter = new Letter(
                 ItemRecoveryMailId
@@ -158,7 +158,7 @@ namespace MailServicesMod
                 DynamicItems = (l) => GuildRecoveryController.GetItemsToRecover(),
                 I18N = I18N
             };
-            MailDao.SaveLetter(recoveryLetter);
+            MailRepository.SaveLetter(recoveryLetter);
         }
 
         public static void SaveRecoveryConfig(Farmer player, bool enableRecoveryService, bool? recoveryAllItems = null, bool? recoveryForFree = null)

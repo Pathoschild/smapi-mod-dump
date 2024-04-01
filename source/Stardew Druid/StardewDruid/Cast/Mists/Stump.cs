@@ -21,8 +21,8 @@ namespace StardewDruid.Cast.Mists
 
         private string resourceType;
 
-        public Stump(Vector2 target, Rite rite, ResourceClump ResourceClump, string ResourceType)
-            : base(target, rite)
+        public Stump(Vector2 target,  ResourceClump ResourceClump, string ResourceType)
+            : base(target)
         {
 
             resourceClump = ResourceClump;
@@ -51,7 +51,7 @@ namespace StardewDruid.Cast.Mists
 
             castFire = true;
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector * 64 + new Vector2(32));
 
             return;
 

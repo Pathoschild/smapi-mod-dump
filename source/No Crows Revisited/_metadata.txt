@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/siweipancc/StardewMods
+   Git: https://github.com/siweipancc/StardewMods.git
+
+mods:
+   No Crows Revisited
+
+latest commit:
+   commit 780c2e2b406e60b6226e73446f9e4c3016d9aa44
+   Author: siweipancc <siweipancc@hotmail.com>
+   Date:   Fri Mar 29 15:34:11 2024 +0800
+   
+       fix[Resources Generators]: broken script
+   

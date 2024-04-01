@@ -10,7 +10,6 @@
 
 using ItemBags.Bags;
 using ItemBags.Helpers;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +26,7 @@ namespace ItemBags.Persistence
     public class StoreableBagItem
     {
         [XmlElement("Id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         //[DefaultValue(false)]                                               // Uncomment this to make the serialized JSON and/or XML file smaller
         //[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]  // Uncomment this to make the serialized JSON file smaller
@@ -35,13 +34,11 @@ namespace ItemBags.Persistence
         public bool HasQualities { get; set; }
 
         /// <summary>If null, all qualities are accepted</summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlArray("Qualities")]
         [XmlArrayItem("Quality")]
         public ObjectQuality[] Qualities { get; set; }
 
         [DefaultValue(false)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("IsBigCraftable")]
         public bool IsBigCraftable { get; set; }
 
@@ -50,8 +47,11 @@ namespace ItemBags.Persistence
             InitializeDefaults();
         }
 
-        /// <param name="Qualities">If null, all Qualities will be included</param>
         public StoreableBagItem(int Id, bool HasQualities, IEnumerable<ObjectQuality> Qualities = null, bool IsBigCraftable = false)
+            : this(Id.ToString(), HasQualities, Qualities, IsBigCraftable) { }
+
+        /// <param name="Qualities">If null, all Qualities will be included</param>
+        public StoreableBagItem(string Id, bool HasQualities, IEnumerable<ObjectQuality> Qualities = null, bool IsBigCraftable = false)
         {
             InitializeDefaults();
 
@@ -66,7 +66,7 @@ namespace ItemBags.Persistence
 
         private void InitializeDefaults()
         {
-            this.Id = -1;
+            this.Id = null;
             this.HasQualities = true;
             this.IsBigCraftable = false;
             this.Qualities = null;

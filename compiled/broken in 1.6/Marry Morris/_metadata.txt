@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12824
-IDs: Yoshimax.MarryMorrisCode
-update keys: Nexus:12824, GitHub:yoshimax2/MarryMorris

@@ -6,9 +6,9 @@ mods:
    Convenient Chests
 
 latest commit:
-   commit 82f864f865f12f853133f47a19eb39d1f2339628
-   Author: aEnigmatic <aenigmatic@users.noreply.github.com>
-   Date:   Fri Feb 14 12:49:51 2020 +0100
+   commit f2e636d8fbe857e944e1f11efad508b92bfff9e8
+   Author: aenigmatic <aenigmatic@users.github.com>
+   Date:   Thu Mar 28 17:26:47 2024 +0100
    
-       Update manifest
+       Version bump
    

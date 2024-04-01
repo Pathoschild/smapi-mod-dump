@@ -10,14 +10,15 @@
 
 {
   "profiles": {
-    "WhoLivesHere-v1.5": {
-      "commandName": "Project"
-    },
     "Profile 1": {
       "commandName": "Executable",
       "executablePath": "Q:\\StardewModdingAPI.exe",
       "commandLineArgs": "--mods-path \"Mods-Testing-RealtyAlone\"",
       "workingDirectory": "q:\\"
+    },
+    "Profile 2": {
+      "commandName": "Executable",
+      "executablePath": "Q:\\StardewModdingAPI.exe"
     }
   }
 }

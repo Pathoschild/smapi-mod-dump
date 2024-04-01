@@ -1,0 +1,12 @@
+{
+  "TravelByScepter": true,
+  "TravelByMagicSword": true,
+  "MagicSwordIds": [
+    15,
+    14,
+    4,
+    62
+  ],
+  "TravelLocations": [],
+  "TravelListPageSize": 9
+}

@@ -1,0 +1,31 @@
+{
+    // Config settings
+    "config.option.failed_harvest.name": "Empêche la récolte dans le vide",
+    "config.option.failed_harvest.description": "Empêche l'action de traire/tondre si aucun animal n'est sélectionné. Note: Désactive cela si l'option 'Tap-to-move & Auto-Attack' sur Android est activée.",
+    "config.option.animal_produce.name": "Afficher la reproduction animal",
+    "config.option.animal_produce.description": "Affiche la reproduction au dessus de l'animal s'il est prêt à être récolté.",
+    "config.option.hearts_animal.name": "Affiche les coeurs des animeaux",
+    "config.option.hearts_animal.description": "Affiche les coeurs des animeaux de la ferme (vaches, canards, etc.) qui n'ont pas encore été caressés.",
+    "config.option.hearts_pet.name": "Afficher les coeurs familiers",
+    "config.option.hearts_pet.description": "Affiche les coeurs au dessus des animeaux de compagnie (chiens, chats, etc.) qui n'on pas encore été caressés.",
+    "config.option.hearts_enabled.name": "[!] Active les coeurs",
+    "config.option.hearts_enabled.description": "Autorise les coeurs à être affichés au dessus des animeaux. Attention: Désactiver ceci masquera TOUS les coeurs flottants activés",
+    "config.option.hearts_max_friendship.name": "Cacher les coeurs au maximum",
+    "config.option.hearts_max_friendship.description": "Cache les coeurs quand l'affection avec un animal est au maximum. Attention: Soyez prudent car l'amitié se dégradera si vous ne caressez pas les animeaux !",
+
+    // Other messages
+    "notification.inventory_full": "Inventaire plein",
+
+    "action.out_of_range.milk": "traite",
+    "action.out_of_range.shear": "tonte",
+    "notification.out_of_range": "Hors de portée ({{ranchActionPresent}})",
+
+    "product.milk": "Lait",
+    "product.wool": "Laine",
+
+    "notification.util_action": "Bébé {{Name}} va produire {{Product}} dans {{Days}} jours.",
+
+    "action.unable.milk": "traire",
+    "action.unable.shear": "tondre",
+    "notification.unable": "Rien n'a {{Action}}"
+}

@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+[{
+	"ShakeOff": 296,
+	"StartSeason": "spring",
+	"StartDay": 15,
+	"EndDay": 18
+}, {
+	"ShakeOff": 410,
+	"StartSeason": "fall",
+	"StartDay": 8,
+	"EndDay": 11
+}]

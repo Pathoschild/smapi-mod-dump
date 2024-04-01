@@ -2,11 +2,11 @@
   "ActivateKey": "P",
   "CycleLeftKey": "OemOpenBrackets",
   "CycleRightKey": "OemCloseBrackets",
-  "enableCalendar": true,
-  "enableDailyQuests": true,
-  "enableSpecialOrders": true,
-  "enableQiSpecialOrders": true,
-  "enableJournal": false,
+  "EnableCalendar": true,
+  "EnableDailyQuests": true,
+  "EnableSpecialOrders": true,
+  "EnableQiSpecialOrders": true,
+  "EnableJournal": false,
   "SpecialOrdersBeforeUnlocked": false,
   "QiBeforeUnlocked": false
 }

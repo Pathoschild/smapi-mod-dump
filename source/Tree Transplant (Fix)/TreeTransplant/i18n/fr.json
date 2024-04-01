@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/siweipancc/TreeTransplant
+**
+*************************************************/
+
+{
+  "Menu_DefaultText": "Choisis un arbre à transplanter.",
+  "Menu_PlacementText": "Choisis un nouvel emplacement pour l'arbre.",
+  "Menu_InvalidPlace": "Impossible de déplacer ici !",
+  "Menu_InvalidCap": "Impossible de déplacer un arbre avec un saigneur !",
+  "Carpenter_Option": "Transplanter un arbre"
+}

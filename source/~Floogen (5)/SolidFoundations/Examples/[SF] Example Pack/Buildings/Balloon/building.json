@@ -50,7 +50,7 @@
           "Duration": 250
         }
       ],
-      "Condition": "WEATHER Here sunny"
+      "Condition": "WEATHER Here Sun"
     }
   ],
   "DefaultAction": "Dialogue This is a buildable air balloon. Neat!"

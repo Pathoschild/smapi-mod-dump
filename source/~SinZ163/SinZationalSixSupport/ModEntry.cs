@@ -26,6 +26,11 @@ namespace SinZational_Six_Support
         private static ModEntry OGInstance;
         private static bool HasBootstrapped = false;
 
+        private static readonly Dictionary<string, BackwardsCompatManifest> Mods = new()
+        {
+            ["SuperAardvark.AntiSocial"] = new BackwardsCompatManifest("SuperAardvark.AntiSocial", "Anti Social NPC's", "Anti Social NPC's", "SinZSixSupport", new SemanticVersion("9.9.9"))
+        };
+
         public ModEntry()
         {
             // Due to SMAPI checking that there is exactly one Mod class in the assembly
@@ -47,35 +52,40 @@ namespace SinZational_Six_Support
         public static void ModRegistryAddPostfix(object __instance, object metadata)
         {
             if (HasBootstrapped) return;
-            HasBootstrapped = true;
 
             var manifestProp = metadata.GetType().GetProperty("Manifest");
             var OGManifest = manifestProp.GetValue(metadata) as IManifest;
             if (OGManifest.UniqueID == "SinZ.SixSupport")
             {
-                var modRegistryAddMethod = __instance.GetType().GetMethod("Add");
+                HasBootstrapped = true;
 
-                // Following will be in a loop eventually for all the mods we want to impersonate
+                var modRegistryAddMethod = __instance.GetType().GetMethod("Add");
                 var TModMetadata = Type.GetType("StardewModdingAPI.Framework.ModLoading.ModMetadata,StardewModdingAPI");
-                var manifest = new BackwardsCompatManifest("SuperAardvark.AntiSocial", "Anti Social NPC's", "Anti Social NPC's", "SinZSixSupport", new SemanticVersion("9.9.9"));
-                var modMetadata = Activator.CreateInstance(TModMetadata, new object[]
+                var modMetadataAddModMethod = TModMetadata.GetMethod("SetMod", new Type[] { typeof(IMod), Type.GetType("StardewModdingAPI.Framework.ModHelpers.TranslationHelper,StardewModdingAPI") });
+
+                var setModManifest = typeof(ModEntry).GetProperty(nameof(ModEntry.ModManifest));
+                var setHelper = typeof(ModEntry).GetProperty(nameof(ModEntry.Helper));
+                var setMonitor = typeof(ModEntry).GetProperty(nameof(ModEntry.Monitor));
+
+                foreach (var manifest in Mods.Values)
+                {
+                    var modMetadata = Activator.CreateInstance(TModMetadata, new object[]
                     {
-                        "Anti Social NPC's", // Display Name
+                        manifest.Name,
                         metadata.GetType().GetProperty("DirectoryPath").GetValue(metadata),
                         metadata.GetType().GetProperty("RootPath").GetValue(metadata),
                         manifest,
                         null, //dataRecords (info from metadata.json)
                         false //isIgnored
-                    }
-                );
-                var modMetadataAddModMethod = TModMetadata.GetMethod("SetMod", new Type[] { typeof(IMod), Type.GetType("StardewModdingAPI.Framework.ModHelpers.TranslationHelper,StardewModdingAPI") });
-                IMod modInstance = new ModEntry();
-                typeof(ModEntry).GetProperty(nameof(ModEntry.ModManifest)).SetValue(modInstance, manifest);
-                typeof(ModEntry).GetProperty(nameof(ModEntry.Helper)).SetValue(modInstance, OGInstance.Helper);
-                // TODO: Make my own Monitor
-                typeof(ModEntry).GetProperty(nameof(ModEntry.Monitor)).SetValue(modInstance, OGInstance.Monitor);
-                modMetadataAddModMethod.Invoke(modMetadata, new object[] { modInstance, OGInstance.Helper.Translation });
-                modRegistryAddMethod.Invoke(__instance, new object[] { modMetadata });
+                    });
+                    var modInstance = new ModEntry();
+                    setModManifest.SetValue(modInstance, manifest);
+                    setHelper.SetValue(modInstance, OGInstance.Helper);
+                    // TODO: Make my own Monitor
+                    setMonitor.SetValue(modInstance, OGInstance.Monitor);
+                    modMetadataAddModMethod.Invoke(modMetadata, new object[] { modInstance, OGInstance.Helper.Translation });
+                    modRegistryAddMethod.Invoke(__instance, new object[] { modMetadata });
+                }
             }
         }
 

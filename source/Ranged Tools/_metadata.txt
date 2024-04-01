@@ -6,9 +6,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit db0b81d8cbdbafc759286d9ba8e210bcb4b97e42
+   commit 619c11e87685613b29aee13f4a7e457419e44bc4
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Sat Feb 17 13:41:12 2024 -0800
+   Date:   Thu Mar 21 14:35:21 2024 -0700
    
-       1.5.7 update (resized weapon hitbox vs. monsters)
+       1.6.1 update (fixed patching of damageMonster)
    

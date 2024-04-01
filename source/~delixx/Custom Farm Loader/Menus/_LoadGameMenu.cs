@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -186,6 +186,14 @@ namespace Custom_Farm_Loader.Menus
                     6 => Game1.content.LoadString("Strings\\UI:Character_FarmBeach"),
                     _ => ""
                 };
+
+                name = name.Split("_").First();
+                CachedFarmTypeNames.Add(whichFarm, name);
+                return name;
+            }
+
+            if(whichFarm == "MeadowlandsFarm") {
+                name = Game1.content.LoadString("Strings/1_6_Strings:Farm_Ranching_Description");
 
                 name = name.Split("_").First();
                 CachedFarmTypeNames.Add(whichFarm, name);

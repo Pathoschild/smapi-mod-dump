@@ -1,0 +1,10 @@
+{
+  "Name": "Warp to Player",
+  "Author": "lesbiansheep",
+  "Version": "1.2.0",
+  "Description": "Warp to another player",
+  "UniqueID": "lesbiansheep.WarpToPlayer",
+  "EntryDll": "WarpToPlayer.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21075" ]
+}

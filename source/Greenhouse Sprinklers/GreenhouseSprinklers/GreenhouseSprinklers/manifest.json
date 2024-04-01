@@ -11,7 +11,7 @@
 {
   "Name": "Greenhouse Sprinklers",
   "Author": "Bpendragon",
-  "Version": "3.0.0-alpha-20240309-2",
+  "Version": "3.0.1",
   "Description": "Pay Robin off to add automatic sprinklers to the greenhouse, allowing 100% utilization",
   "UniqueID": "Bpendragon.GreenhouseSprinklers",
   "EntryDll": "GreenhouseSprinklers.dll",

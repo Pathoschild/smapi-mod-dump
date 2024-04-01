@@ -1,18 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\Build\SDV-1.5.6.targets" />
-    <Import Project="..\Build\Common.csproj" />
-    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
+    <Import Project="..\Build\Latest.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
     <PropertyGroup>
         <Name>Carry Your Pet</Name>
         <Description>Allows you to carry your pet around.</Description>
         <MinimumApiVersion>3.15.0</MinimumApiVersion>
         <UpdateKeys>Nexus:13009</UpdateKeys>
-        <Version>1.2.0</Version>
+        <Version>1.3.0</Version>
     </PropertyGroup>
 
     <PropertyGroup>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Update="release-notes.md">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

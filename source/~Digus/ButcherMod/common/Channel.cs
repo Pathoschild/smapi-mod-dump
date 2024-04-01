@@ -25,5 +25,6 @@ namespace AnimalHusbandryMod.common
         Rectangle GetScreenSourceRectangle { get; }
         bool CheckChannelDay();
         String[] GetEpisodesText();
+        void ReloadEpisodes();
     }
 }

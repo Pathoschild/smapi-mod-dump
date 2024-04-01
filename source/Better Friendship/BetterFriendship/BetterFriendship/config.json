@@ -17,5 +17,6 @@
   "DisplayGenericGiftPrompts": true,
   "OnlyHighestQuality": false,
   "SpousePromptsOverride": false,
-  "DisplayBubbles": true
+  "DisplayBubbles": true,
+  "BubbleDisplayRange": 3
 }

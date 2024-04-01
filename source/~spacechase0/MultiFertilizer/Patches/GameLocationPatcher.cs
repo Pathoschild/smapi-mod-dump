@@ -49,7 +49,7 @@ namespace MultiFertilizer.Patches
                 return;
 
             // get fertilizer
-            if (toPlace?.Category != SObject.fertilizerCategory || !DirtHelper.TryGetFertilizer(toPlace.ParentSheetIndex, out FertilizerData fertilizer))
+            if (toPlace?.Category != SObject.fertilizerCategory || !DirtHelper.TryGetFertilizer(toPlace.ItemID, out FertilizerData fertilizer))
                 return;
 
             // check if we can apply it

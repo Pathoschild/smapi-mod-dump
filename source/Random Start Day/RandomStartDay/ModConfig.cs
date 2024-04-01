@@ -10,32 +10,31 @@
 
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using StardewValley.ItemTypeDefinitions;
 using System;
 using System.Threading;
 
 class ModConfig
 {
-    public bool disableAll { get; set; }
+    public bool DisableAll { get; set; }
 
-    public bool isRandomSeedUsed { get; set; }
 
     // reset other randomize options only when isRandomSeedUsed is TRUE
-    public string[] allowedSeasons { get; set; }
-    public bool avoidFestivalDay { get; set; }
-    public bool alwaysStartAt1st { get; set; }
+    public bool[] AllowSpringSummerFallWinter { get; set; }
+    public bool AvoidFestivalDay { get; set; }
+    public bool AlwaysStartAt1st { get; set; }
 
-    public bool useSeasonalSeeds { get; set; }
-    public bool useWinter28toYear1 { get; set; }
+    public bool UseWheatSeeds { get; set; }
+    public bool UseWinter28toYear1 { get; set; }
 
     public ModConfig()
     {
-        this.disableAll = false;
-        this.isRandomSeedUsed = true;
-        this.allowedSeasons = new string[] { "spring", "summer", "fall", "winter" };
-        this.avoidFestivalDay = false;
-        this.alwaysStartAt1st = false;
+        this.DisableAll = false;
+        this.AllowSpringSummerFallWinter = new bool[] { true,true,true,true };
+        this.AvoidFestivalDay = false;
+        this.AlwaysStartAt1st = false;
 
-        this.useSeasonalSeeds = true;
-        this.useWinter28toYear1 = true;
+        this.UseWheatSeeds = true;
+        this.UseWinter28toYear1 = true;
     }
 }

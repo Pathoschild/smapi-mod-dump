@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20874
+IDs: qixing.AutoGrabTruffles
+update keys: Nexus:20874, GitHub:qixing-jk/QiXingAutoGrabTruffles

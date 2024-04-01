@@ -4,14 +4,14 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-gacha-geodes
+** Source repository: https://gitlab.com/delixx/stardew-valley/gacha-geodes
 **
 *************************************************/
 
 {
   "Name": "Gacha Geodes",
   "Author": "DeLiXx",
-  "Version": "2.0.0-alpha.24058",
+  "Version": "2.0.0",
   "Description": "Balances out Geode drop chances to favor missing minerals",
   "UniqueID": "DLX.Geodes",
   "EntryDll": "Gacha Geodes.dll",

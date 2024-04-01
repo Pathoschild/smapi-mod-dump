@@ -3,7 +3,7 @@
     <AssemblyName>AnimalsNeedWater</AssemblyName>
     <RootNamespace>AnimalsNeedWater</RootNamespace>
     <Version>1.4.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 

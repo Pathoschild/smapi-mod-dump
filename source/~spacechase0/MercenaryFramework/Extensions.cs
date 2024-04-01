@@ -37,7 +37,7 @@ namespace MercenaryFramework
     {
         public static void Postfix(Farmer __instance)
         {
-            __instance.NetFields.AddFields(__instance.GetCurrentMercenaries());
+            __instance.NetFields.AddField(__instance.GetCurrentMercenaries(), "CurrentMercenaries");
         }
     }
 

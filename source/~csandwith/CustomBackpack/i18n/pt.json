@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "backpack-upgrade-x": "Melhorar a mochila -- {0} espaços",
+  "buy-backpack-for-x": "Comprar ({0:#,##0} ouros)",
+  "farmer-bought-x": "{{0}} comprou a {0}."
+}

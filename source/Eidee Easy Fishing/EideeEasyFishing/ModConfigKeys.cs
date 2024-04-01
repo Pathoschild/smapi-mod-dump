@@ -18,7 +18,7 @@ namespace EideeEasyFishing
 
         public ModConfigKeys(SButton reloadConfig)
         {
-            this.ReloadConfig = reloadConfig;
+            ReloadConfig = reloadConfig;
         }
     }
 }

@@ -31,8 +31,8 @@ namespace StardewDruid.Event.Challenge
 
         public BigBat bossMonster;
 
-        public Aquifer(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite, quest)
+        public Aquifer(Vector2 target,  Quest quest)
+            : base(target, quest)
         {
             
         }
@@ -42,7 +42,7 @@ namespace StardewDruid.Event.Challenge
 
             cues = DialogueData.DialogueScene(questData.name);
 
-            challengeSpawn = new() { 99, };
+            challengeSpawn = new() { 5, };
 
             challengeFrequency = 2;
 
@@ -101,7 +101,7 @@ namespace StardewDruid.Event.Challenge
 
             }
 
-            Game1.addHUDMessage(new HUDMessage($"Stand your ground until the rite completes", "2"));
+            Mod.instance.CastMessage("Stand your ground until the rite completes", 2);
 
             SetTrack("tribal");
 
@@ -111,7 +111,9 @@ namespace StardewDruid.Event.Challenge
 
         public override void MinutesLeft(int minutes)
         {
-            Game1.addHUDMessage(new HUDMessage($"{minutes} minutes left until cleanup complete", "2"));
+
+            Mod.instance.CastMessage($"{minutes} minutes left until cleanup complete", 2);
+
         }
 
         public override void RemoveMonsters()
@@ -120,7 +122,7 @@ namespace StardewDruid.Event.Challenge
             if (bossMonster != null)
             {
 
-                riteData.castLocation.characters.Remove(bossMonster);
+                Mod.instance.rite.castLocation.characters.Remove(bossMonster);
 
                 bossMonster = null;
 
@@ -139,15 +141,14 @@ namespace StardewDruid.Event.Challenge
                 if (trashCollected < 12)
                 {
 
-                    Game1.addHUDMessage(new HUDMessage($"Try again to collect more trash", ""));
+                    Mod.instance.CastMessage("Try again tomorrow to collect more trash");
 
                     Mod.instance.ReassignQuest(questData.name);
 
                 }
                 else
                 {
-
-                    Game1.addHUDMessage(new HUDMessage($"Collected {trashCollected} pieces of trash!", ""));
+                    Mod.instance.CastMessage($"Collected {trashCollected} pieces of trash!", 2);
 
                     EventComplete();
 
@@ -156,11 +157,11 @@ namespace StardewDruid.Event.Challenge
 
                         List<string> NPCIndex = VillagerData.VillagerIndex("mountain");
 
-                        Game1.addHUDMessage(new HUDMessage($"You have gained favour with the mountain residents and their friends", ""));
+                        Mod.instance.CastMessage("You have gained favour with the mountain residents and their friends",1,true);
 
                         ModUtility.UpdateFriendship(Game1.player,NPCIndex);
 
-                        Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "The rite disturbed the bats. ALL the bats." };
+                        Mod.instance.dialogue["Effigy"].AddSpecial("Effigy", "Aquifer");
 
                     }
 
@@ -183,16 +184,26 @@ namespace StardewDruid.Event.Challenge
             if (ladders.Count > 0)
             {
                 Layer layer = targetLocation.map.GetLayer("Buildings");
-                int x = (int)ladders.First<Vector2>().X;
-                int y = (int)ladders.First<Vector2>().Y;
+
+                int x = (int)ladders.First().X;
+
+                int y = (int)ladders.First().Y;
+
                 if (layer.Tiles[x, y] == null)
                 {
+                    
                     layer.Tiles[x, y] = new StaticTile(layer, targetLocation.map.TileSheets[0], 0, 173);
+                    
                     Game1.player.TemporaryPassableTiles.Add(new Microsoft.Xna.Framework.Rectangle(x * 64, y * 64, 64, 64));
+                    
                     Mod.instance.CastMessage("A way down has appeared");
+                
                 }
+            
             }
+            
             base.EventRemove();
+        
         }
 
         public override void EventInterval()
@@ -220,25 +231,16 @@ namespace StardewDruid.Event.Challenge
 
             }
 
-            List<Vector2> rockFalls = new();
-
-            riteData.castLevel = randomIndex.Next(2, 4);
-
-            riteData.CastRockfall();
-
-            riteData.CastEffect();
-
             if (activeCounter == 20)
             {
-                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(11, new(30, 13));
 
-                bossMonster = theMonster as BigBat;
+                bossMonster = new(new Vector2(30, 13),Mod.instance.CombatModifier());
 
                 bossMonster.posturing.Set(true);
 
-                riteData.castLocation.characters.Add(bossMonster);
+                Mod.instance.rite.castLocation.characters.Add(bossMonster);
 
-                bossMonster.update(Game1.currentGameTime, riteData.castLocation);
+                bossMonster.update(Game1.currentGameTime, Mod.instance.rite.castLocation);
 
             }
 
@@ -256,17 +258,16 @@ namespace StardewDruid.Event.Challenge
                 {
 
                     case 39:
+
                         bossMonster.posturing.Set(false);
-                        bossMonster.focusedOnFarmers = true; break;
 
+                        bossMonster.focusedOnFarmers = true; 
+                        
+                        break;
 
-                    case 57:
+                    case 58:
 
-                        Cast.Weald.Rockfall rockFall = new(bossMonster.getTileLocation(), riteData, Mod.instance.DamageLevel());
-
-                        rockFall.challengeCast = true;
-
-                        rockFall.CastEffect();
+                        ModUtility.AnimateRockfall(targetLocation, bossMonster.Tile, 0);
 
                         break;
 
@@ -276,7 +277,9 @@ namespace StardewDruid.Event.Challenge
 
                         break;
 
-                    default: break;
+                    default: 
+                        
+                        break;
 
                 }
 
@@ -328,7 +331,7 @@ namespace StardewDruid.Event.Challenge
 
                 throwObject = new(targetPlayer, trashVector * 64, objectIndex, 0);
 
-                throwObject.objectInstance = new Ring(objectIndex);
+                throwObject.objectInstance = new Ring(objectIndex.ToString());
 
             }
             else if (trashCollected == 16)
@@ -338,7 +341,7 @@ namespace StardewDruid.Event.Challenge
 
                 throwObject = new(targetPlayer, trashVector * 64, objectIndex, 0);
 
-                throwObject.objectInstance = new Ring(objectIndex);
+                throwObject.objectInstance = new Ring( objectIndex.ToString());
 
             }
             else
@@ -352,7 +355,7 @@ namespace StardewDruid.Event.Challenge
 
             targetPlayer.currentLocation.playSound("pullItemFromWater");
 
-            bool targetDirection = targetPlayer.getTileLocation().X >= trashVector.X;
+            bool targetDirection = targetPlayer.Tile.X >= trashVector.X;
 
             Utility.addSprinklesToLocation(targetLocation, (int)trashVector.X, (int)trashVector.Y, 2, 2, 1000, 200, new Color(0.8f, 1f, 0.8f, 0.75f));
 

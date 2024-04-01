@@ -1,0 +1,9 @@
+{
+	EachNightName:  "Ежедневно",		EachNightTooltip:  "Настраивает разложение почвы ежедневно",
+	EachSeasonName: "Ежесезонно",		EachSeasonTooltip: "Настраивает разложение почвы ежесезонно",
+	GreenhouseName: "Теплица",		GreenhouseTooltip: "Настраивает разложение почвы в теплице",
+	IslandName:     "Имбирный остров",	IslandTooltip:     "Настраивает разложение почвы на Имбирном острове",
+	NonFarmName:    "Вне фермы",		NonFarmTooltip:    "Настраивает разложение почвы вне фермы",
+	DryingRateName: "Скорость разложения",	DryingRateTooltip: "Вероятность разложения почвы. Обычно это: {{rate}} (={{percentage}}%).",
+	DelayName:      "Задержка разложения",	DelayTooltip:      "Количество дней подряд, за которое почва без полива разлагается.",
+}

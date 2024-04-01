@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Mon": "Hello",
+  "Tue": "Hello",
+  "Wed": "Hello",
+  "Thu": "Hello",
+  "Fri": "Hello",
+  "Sat": "Hello",
+  "Sun": "Hello",
+  "spring_12": "Ah, I bet my daughter wins the egg hunt every year!$h",
+  "spring_23": "Oh, how I miss dancing with my beloved.$s",
+  "summer_10": "I'll carefully monitor how the soup is prepared tomorrow from afar so my loved ones don't suffer from any stomach pains.$a",
+  "summer_27": "I miss having Ezekiel's embrace as we watch the magical glow of the jellyfish...$s#$b#I hope he's alright...$s",
+  "fall_15": "The fair, huh? So many tourists then.#$b#I'll be on the lookout for spies.",
+  "fall_19": "My romance with Ezekiel all started from a silly contest between boys and girls at the village gathering.$h#$b#Oh, how I miss those simpler times.",
+  "fall_26": "Spirit's Eve, huh? Maybe I can sneak in with some costume.$h",
+  "winter_7": "The fishing festival... Oh, memories.$s",
+  "winter_24": "I hope my family enjoys the Winter Star tomorrow.#$b#I'll celebrate with them from afar.$h",
+  "winter_27": "Tell my beloved Ezekiel that everything's going to be fine whenever you can, okay?#$b#He needs to hear it.$s",
+}

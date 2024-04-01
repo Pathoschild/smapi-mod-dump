@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/GiftTasteHelper
+**
+*************************************************/
+
+{
+  "tooltip.title.favorite": "Cadeaux préférés",
+  "tooltip.title.none": "Aucun cadeau connu",
+
+  "options.display": "Affichage",
+  "options.showOnCalendar": "Afficher sur le Calendrier",
+  "options.showOnCalendar.desc": "Afficher l'infobulle sur le calendrier en passant sur les aniversaires'",
+  "options.showOnSocialPage": "Afficher sur la page Social",
+  "options.showOnSocialPage.desc": "Affiche l'infobulle sur la page Social en passat sur les PNJs",
+  "options.showOnlyKnownGifts": "Uniquement les cadeaux connus",
+  "options.showOnlyKnownGifts.desc": "Affiche uniquement les cadeaux connus, déjà offert aux PNJs",
+  "options.showUniversalGifts": "Afficher les cadeaux universels",
+  "options.showUniversalGifts.desc": "Affiche les cadeaux universels dans l'infobulle",
+  "options.showGiftsForUnmetNPCs": "Afficher les PNJs non-recontrés",
+  "options.showGiftsForUnmetNPCs.desc": "Affiche les cadeaux pour les PNJs encore non-rencontrés",
+  "options.hideTooltipWhenNoGiftsKnown": "Cacher quand l'infobulle est vide",
+  "options.hideTooltipWhenNoGiftsKnown.desc": "Cache l'infobulle quand aucun cadeau n'est connu",
+  "options.colorizeUniversalGiftNames": "Coloriser le nom des universels",
+  "options.colorizeUniversalGiftNames.desc": "Colorise le nom des cadeaux universels",
+  "options.other": "Autre",
+  "options.maxGiftsToDisplay": "Cadeau maximum à afficher",
+  "options.maxGiftsToDisplay.desc": "Nombre de cadeau maximum à afficher (0 pour aucune limite)",
+  "options.shareKnownGiftsWithAllSaves": "Partager entre les sauvegardes",
+  "options.shareKnownGiftsWithAllSaves.desc": "Partage la liste des cadeaux connus entre toutes les sauvegardes"
+}

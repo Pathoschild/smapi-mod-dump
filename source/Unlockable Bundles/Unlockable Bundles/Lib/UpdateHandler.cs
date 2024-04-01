@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+** Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
 **
 *************************************************/
 
@@ -174,8 +174,14 @@ namespace Unlockable_Bundles.Lib
                     ModData.Instance = transferData.Value;
                     var applyList = transferData.Key;
 
-                    foreach (var unlockable in applyList)
-                        applyUnlockable(unlockable);
+                    //If the world isn't ready at this point (which it might be) the map patches aren't being applied
+                    //In that case we apply them in ShopPlacement.DayStarted
+                    //Yeah I know, it's becoming a bit of a back and forth mess and I should refactor the networking from this class
+                    if (Context.IsWorldReady)
+                        foreach (var unlockable in applyList)
+                            applyUnlockable(unlockable);
+                    else
+                        ShopPlacement.UnappliedMapPatches = applyList;
                 }
 
                 ModEntry._API.raiseIsReady(new API.IsReadyEventArgs(Game1.player));

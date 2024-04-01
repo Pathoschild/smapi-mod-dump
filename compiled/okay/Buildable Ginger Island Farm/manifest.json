@@ -1,0 +1,10 @@
+{
+	"Name": "Buildable Ginger Island Farm",
+	"Author": "mouahrara",
+	"Version": "1.0.0",
+	"Description": "Turn the Ginger Island farm into a buildable location.",
+	"UniqueID": "mouahrara.BuildableGingerIslandFarm",
+	"EntryDll": "BuildableGingerIslandFarm.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:20600" ]
+}

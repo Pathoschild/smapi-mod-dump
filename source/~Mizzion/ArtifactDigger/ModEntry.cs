@@ -20,7 +20,7 @@ using MyStardewMods.Common;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 using StardewValley.Tools;
-using GenericModConfigMenu;
+using Mizzion.Stardew.Common.Integrations.GenericModConfigMenu;
 using StardewModdingAPI.Utilities;
 
 

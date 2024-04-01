@@ -1,0 +1,19 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "UniqueID": "voltaek.HoneyHarvestSync",
+  "Name": "Honey Harvest Sync",
+  "Author": "voltaek",
+  "Version": "2.0.1",
+  "Description": "Ready-for-harvest bee houses show the flower that will flavor its honey or the artisan honey you'll receive.",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "HoneyHarvestSync.dll",
+  "UpdateKeys": [
+    "Nexus:20493"
+  ]
+}

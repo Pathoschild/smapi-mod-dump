@@ -90,6 +90,9 @@ For swords and clubs.
 > The movement velocity for special attack slick moves. Swords and clubs. Controls the speed and distance of the slide.
 
 ## Changlog
+v1.4.0
+* Updates for Stardew Valley 1.6 and SMAPI 4.
+
 v1.3.0
 * The controller fix option has been removed. This mod no longer looks at, uses, the controller cursor for facing direction changes during controller use.
 * Some features connected to the mouse cursor fix are now independent of that fix/feature being enabled. e.g. Slick moves.

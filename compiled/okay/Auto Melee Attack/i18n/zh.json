@@ -1,0 +1,12 @@
+{
+  "config.SkipRockCrab.label": "跳过岩石蟹",
+  "config.SkipRockCrab.tooltip": "是否跳过岩石蟹, 默认关闭, 会尽最大限度避免无限攻击的问题",
+  "config.DetectTiles.label": "检测距离",
+  "config.DetectTiles.tooltip": "多远的距离的怪物视为有效目标.",
+  "config.Toggle.label": "切换热键",
+  "config.Toggle.tooltip": "切换热键, 你可以在游戏中随时开启或者关闭自动攻击.",
+  "message.toggle.enable": "自动攻击已开启",
+  "message.toggle.disabled": "自动攻击已关闭",
+  "config.section.also.title": "还包括下边的(忽略)",
+  "message.target.missed": "已忽略的目标"
+}

@@ -1,0 +1,22 @@
+{
+  "EnableMod": true,
+  "RoommateKisses": false,
+  "MinHeartsForMarriageKiss": 9,
+  "MinHeartsForDatingKiss": 6,
+  "HeartsForFriendship": 5,
+  "UnlimitedDailyKisses": true,
+  "DatingKisses": true,
+  "FriendHugs": true,
+  "SpouseKissChance0to1": 0.1,
+  "CustomKissSound": "kiss.wav",
+  "CustomHugSound": "",
+  "CustomKissFrames": "Sam:36,Penny:35",
+  "MaxDistanceToKiss": 200.0,
+  "MinSpouseKissIntervalSeconds": 10.0,
+  "AllowPlayerSpousesToKiss": true,
+  "AllowNPCRelativesToHug": true,
+  "AllowNPCSpousesToKiss": true,
+  "AllowRelativesToKiss": false,
+  "AllowNonDateableNPCsToHugAndKiss": false,
+  "UseNonDateableNPCsKissFrames": false
+}

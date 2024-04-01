@@ -10,7 +10,7 @@
   "UniqueID": "DecidedlyHuman.MappingExtensionsAndExtraProperties",
   "Name": "Mapping Extensions and Extra Properties (MEEP)",
   "Author": "DecidedlyHuman",
-  "Version": "2.2.5-beta",
+  "Version": "2.3.2",
   "Description": "Extra map features and tile/map properties to spice up your custom maps.",
   "MinimumApiVersion": "3.18.0",
   "EntryDll": "MappingExtensionsAndExtraProperties.dll",

@@ -423,7 +423,7 @@ namespace BankOfFerngill
             {
                 e.Edit(asset =>
                 {
-                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                    var data = asset.AsDictionary<string, string>().Data;
                     //Now we add the mail.
                     data["bankStockTanked"] = _i18N.Get("bank.events.stockTanked", new {player_name = Game1.player.Name, lost_amt = _lostAmt });
                     data["bankStockRose"] = _i18N.Get("bank.events.stockRose", new {player_name = Game1.player.Name, gain_amt = _gainedAmt });
@@ -681,7 +681,7 @@ namespace BankOfFerngill
         {
             try
             {
-                int loanAmt = int.Parse(val);
+                var loanAmt = int.Parse(val);
                 if (loanAmt > _maxLoan)
                 {
                     Game1.showGlobalMessage(_i18N.Get("bank.getLoan.canGetThatMuch", new { amt = loanAmt}));
@@ -710,7 +710,7 @@ namespace BankOfFerngill
         {
             try
             {
-                int amtLoanPay = int.Parse(val);
+                var amtLoanPay = int.Parse(val);
                 if (amtLoanPay > _bankData.LoanedMoney - _bankData.MoneyPaidBack)
                 {
                     Game1.showGlobalMessage(_i18N.Get("bank.payLoan.DontOweThatMuch",new { loan_owed = _bankData.LoanedMoney - _bankData.MoneyPaidBack }));
@@ -778,10 +778,10 @@ namespace BankOfFerngill
 
         private static string FormatString(string val, int width)
         {
-            int maxWidth = width;//UiWidth - 10;
-            string outer = "";
+            var maxWidth = width;//UiWidth - 10;
+            var outer = "";
 
-            foreach (string ori in val.Replace("\r\n", "\n").Split('\n'))
+            foreach (var ori in val.Replace("\r\n", "\n").Split('\n'))
             {
                 var line = "";
                 foreach (var word in ori.Split(' '))

@@ -37,8 +37,8 @@ namespace AnimalHusbandryMod.animals.events
             this.position = location;
             this.initialPosition = this.position;
             this.scale = 4f;
-            this.id = 5858586f;
-            this._random = new Random((int)((long)Game1.uniqueIDForThisGame * 100000 + SDate.Now().Year * 1000 + Utility.getSeasonNumber(SDate.Now().Season) * 100 + SDate.Now().Day));
+            this.id = 5858586;
+            this._random = new Random((int)((long)Game1.uniqueIDForThisGame * 100000 + SDate.Now().Year * 1000 + SDate.Now().SeasonIndex * 100 + SDate.Now().Day));
         }
 
         public override bool update(GameTime time)

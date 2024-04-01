@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-namespace ConvenientChests.CategorizeChests.Framework
-{
-    internal enum ItemType
-    {
+namespace ConvenientChests.CategorizeChests.Framework {
+    public enum ItemType {
         BigCraftable,
         Boots,
         Fish,
@@ -23,6 +21,10 @@ namespace ConvenientChests.CategorizeChests.Framework
         Tool,
         Wallpaper,
         Weapon,
-        Gate
+        Gate,
+        Trinket,
+        Shirt,
+        Pants,
+        Mannequin,
     }
 }

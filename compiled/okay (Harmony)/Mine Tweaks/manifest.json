@@ -1,0 +1,17 @@
+{
+	"Name": "Mine Tweaks",
+	"Author": "Shockah",
+	"Version": "2.0.0",
+	"Description": "Tweaks for various things in the mines.",
+	"UniqueID": "Shockah.MineTweaks",
+	"EntryDll": "MineTweaks.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:16859" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "3.0.0"
+		}
+	]
+}

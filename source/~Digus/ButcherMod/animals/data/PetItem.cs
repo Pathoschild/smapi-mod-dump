@@ -20,13 +20,13 @@ namespace AnimalHusbandryMod.animals.data
     {
         public int MinimumDaysBetweenTreats { get; set; }
         public object[] LikedTreats { get; set; }
-        public ISet<int> LikedTreatsId { get; set; }
+        public ISet<string> LikedTreatsId { get; set; }
 
         public PetItem()
         {
             MinimumDaysBetweenTreats = 1;
             LikedTreats = new object[] { 130, 639, 136 };
-            LikedTreatsId = new HashSet<int>();
+            LikedTreatsId = new HashSet<string>();
         }
     }
 }

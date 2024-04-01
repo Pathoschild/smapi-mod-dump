@@ -20,7 +20,7 @@ namespace CaveOfMemories.Framework.Models
 {
     public class LimitedEvent : Event
     {
-        public LimitedEvent(string eventString, int eventID = -1, Farmer farmerActor = null) : base(eventString, eventID, farmerActor)
+        public LimitedEvent(string eventString, string eventID = null, Farmer farmerActor = null) : base(eventString, null, eventID, farmerActor)
         {
 
         }
@@ -50,45 +50,6 @@ namespace CaveOfMemories.Framework.Models
             Game1.pauseTime = 0f;
 
             this.endBehaviors(new string[1] { "end" }, Game1.currentLocation);
-        }
-
-        public override void command_addCookingRecipe(GameLocation location, GameTime time, string[] split)
-        {
-            this.CurrentCommand++;
-        }
-
-        public override void command_addCraftingRecipe(GameLocation location, GameTime time, string[] split)
-        {
-            this.CurrentCommand++;
-        }
-
-        public override void command_awardFestivalPrize(GameLocation location, GameTime time, string[] split)
-        {
-            this.CurrentCommand++;
-        }
-
-        public override void command_addTool(GameLocation location, GameTime time, string[] split)
-        {
-            base.CurrentCommand++;
-        }
-
-        public override void command_removeItem(GameLocation location, GameTime time, string[] split)
-        {
-            base.CurrentCommand++;
-        }
-
-        public override void command_mail(GameLocation location, GameTime time, string[] split)
-        {
-            base.CurrentCommand++;
-        }
-        public override void command_hostMail(GameLocation location, GameTime time, string[] split)
-        {
-            base.CurrentCommand++;
-        }
-
-        public override void command_addMailReceived(GameLocation location, GameTime time, string[] split)
-        {
-            base.CurrentCommand++;
         }
     }
 }

@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <AssemblyName>ConfigureMachineOutputs</AssemblyName>
     <RootNamespace>ConfigureMachineOutputs</RootNamespace>
-    <Version>2.0.4</Version>
-    <TargetFramework>net452</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
-
+    <Version>2.1.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
-
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
+    <None Remove="Framework\Patches\CheckForActionPatch.cs.txt" />
+    <None Remove="Framework\Patches\PerformObjectDropInActionPatch.c.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Framework\Patches\CheckForActionPatch.cs.txt" />
+    <Compile Include="Framework\Patches\PerformObjectDropInActionPatch.c.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
+  <Import Project="..\..\Common\Common\Common.projitems" Label="Shared" />
 </Project>

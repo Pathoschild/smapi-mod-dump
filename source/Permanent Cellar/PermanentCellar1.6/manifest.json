@@ -11,11 +11,11 @@
 {
   "Name": "Permanent Cellar",
   "Author": "CyanFire",
-  "Version": "1.1.0-alpha.20240112",
+  "Version": "1.1.5",
   "Description": "Makes the cellar accessable for all farmhouse/cabin sizes, custom maps & multiplayer compatible",
   "UniqueID": "CF.PermanentCellar",
   "EntryDll": "PermanentCellar.dll",
-  "MinimumApiVersion": "3.14.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:17257" ],
   "Dependencies": [
     {

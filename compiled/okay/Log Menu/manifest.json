@@ -1,7 +1,7 @@
 {
   "Name": "Log Menu",
   "Author": "JareBear",
-  "Version": "1.2.0-alpha.20240316",
+  "Version": "1.2.0",
   "Description": "Adds a Log Menu that displays previously seen in-game dialogue lines.",
   "UniqueID": "JareBear.LogMenu",
   "EntryDll": "LogMenu.dll",

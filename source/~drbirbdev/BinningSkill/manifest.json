@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "drbirbdev.BinningSkill",
+  "Name": "BinningSkill",
+  "Author": "drbirbdev",
+  "Version": "2.0.5",
+  "Description": "Adds a skill related to digging through trashcans.",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "BinningSkill.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "DaLion.Overhaul",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "drbirbdev.BirbCore"
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.21.0"
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:14073"
+  ]
+}

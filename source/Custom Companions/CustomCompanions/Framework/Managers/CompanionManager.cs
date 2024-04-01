@@ -136,7 +136,7 @@ namespace CustomCompanions.Framework.Managers
             {
                 if (location.characters != null && !location.characters.Contains(companion))
                 {
-                    companion.ResetForNewLocation(location, who.getTileLocation());
+                    companion.ResetForNewLocation(location, who.Tile);
                     location.characters.Add(companion);
                 }
             }

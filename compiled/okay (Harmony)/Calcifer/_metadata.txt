@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20628
+IDs: sophie.Calcifer
+update keys: Nexus:20628, GitHub:sophiesalacia/StardewMods

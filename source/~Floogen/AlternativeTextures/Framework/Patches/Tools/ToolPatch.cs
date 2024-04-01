@@ -19,13 +19,13 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using static AlternativeTextures.Framework.Models.AlternativeTextureModel;
 using Object = StardewValley.Object;
 
@@ -230,15 +230,71 @@ namespace AlternativeTextures.Framework.Patches.Tools
         {
             if (location is Farm farm && isSprayCan is false)
             {
-                var targetedBuilding = farm.getBuildingAt(new Vector2(x / 64, y / 64));
-                if (farm.GetHouseRect().Contains(new Vector2(x / 64, y / 64)))
+                var farmerHouse = farm.GetMainFarmHouse();
+
+                // Check for mailbox
+                var mailboxPosition = farm.GetMainMailboxPosition();
+                if (PatchTemplate.IsPositionNearMailbox(location, mailboxPosition, x / 64, y / 64))
                 {
+                    var modelType = AlternativeTextureModel.TextureType.Building;
+                    if (!location.modData.ContainsKey("AlternativeTextureName.Mailbox") || !location.modData["AlternativeTextureName.Mailbox"].Contains("Mailbox"))
+                    {
+                        var textureModel = new AlternativeTextureModel() { Owner = AlternativeTextures.DEFAULT_OWNER, Season = Game1.currentSeason };
+
+                        location.modData["AlternativeTextureOwner.Mailbox"] = textureModel.Owner;
+                        location.modData["AlternativeTextureName.Mailbox"] = String.Concat(textureModel.Owner, ".", $"{modelType}_{"Mailbox"}_{Game1.currentSeason}");
+
+                        if (!String.IsNullOrEmpty(textureModel.Season))
+                        {
+                            location.modData["AlternativeTextureSeason.Mailbox"] = Game1.currentSeason;
+                        }
+
+                        location.modData["AlternativeTextureVariation.Mailbox"] = "-1";
+                    }
+
+                    bool usedSecondaryTile = string.IsNullOrEmpty(location.doesTileHaveProperty(x / 64, y / 64, "Action", "Buildings")) && location.doesTileHaveProperty(x / 64, (y + 64) / 64, "Action", "Buildings") == "Mailbox";
+                    var mailboxObj = new Object("100", 1, isRecipe: false, -1)
+                    {
+                        TileLocation = new Vector2(x / 64, (y + (usedSecondaryTile ? 64 : 0)) / 64)
+                    };
+
+                    foreach (string key in location.modData.Keys)
+                    {
+                        mailboxObj.modData[key] = location.modData[key];
+                    }
+
+                    var modelName = mailboxObj.modData["AlternativeTextureName.Mailbox"].Replace($"{mailboxObj.modData["AlternativeTextureOwner.Mailbox"]}.", String.Empty);
+                    if (mailboxObj.modData.ContainsKey("AlternativeTextureSeason.Mailbox") && !String.IsNullOrEmpty(mailboxObj.modData["AlternativeTextureSeason.Mailbox"]))
+                    {
+                        modelName = GetModelNameWithoutSeason(modelName, mailboxObj.modData["AlternativeTextureSeason.Mailbox"]);
+                    }
+
+                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                    {
+                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                        return CancelUsing(who);
+                    }
+
+                    // Display texture menu
+                    Game1.activeClickableMenu = new PaintBucketMenu(mailboxObj, mailboxObj.TileLocation * 64f, TextureType.Craftable, modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: false, textureOwnerKey: "AlternativeTextureOwner.Mailbox", textureNameKey: "AlternativeTextureName.Mailbox", textureVariationKey: "AlternativeTextureVariation.Mailbox", textureSeasonKey: "AlternativeTextureSeason.Mailbox", textureDisplayNameKey: "AlternativeTextureDisplayName.Mailbox");
+
+                    return CancelUsing(who);
+                }
+
+
+                var targetedBuilding = farm.getBuildingAt(new Vector2(x / 64, y / 64));
+
+                bool isFarmerHouse = false;
+                if (farmerHouse == targetedBuilding)
+                {
+                    isFarmerHouse = true;
+
                     targetedBuilding = new Building();
                     targetedBuilding.buildingType.Value = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel}";
-                    targetedBuilding.tileX.Value = farm.GetHouseRect().X;
-                    targetedBuilding.tileY.Value = farm.GetHouseRect().Y;
-                    targetedBuilding.tilesWide.Value = farm.GetHouseRect().Width;
-                    targetedBuilding.tilesHigh.Value = farm.GetHouseRect().Height;
+                    targetedBuilding.tileX.Value = farmerHouse.tileX.Value;
+                    targetedBuilding.tileY.Value = farmerHouse.tileY.Value;
+                    targetedBuilding.tilesWide.Value = farmerHouse.tilesWide.Value;
+                    targetedBuilding.tilesHigh.Value = farmerHouse.tilesHigh.Value;
 
                     var modelType = AlternativeTextureModel.TextureType.Building;
                     if (!farm.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) || !farm.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Contains(targetedBuilding.buildingType.Value))
@@ -266,36 +322,46 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     var modelName = targetedBuilding.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{targetedBuilding.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
                     if (targetedBuilding.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(targetedBuilding.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                     {
-                        modelName = modelName.Replace($"_{targetedBuilding.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                        modelName = GetModelNameWithoutSeason(modelName, targetedBuilding.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                     }
 
                     if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                     {
-                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
-                        return CancelUsing(who);
+                        if (targetedBuilding.GetData() is var data && data is not null && data.Skins is not null && data.Skins.Count > 0)
+                        {
+                            // Skip no texture warning
+                        }
+                        else
+                        {
+                            Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                            return CancelUsing(who);
+                        }
                     }
 
                     // Verify this building has a texture we can target
-                    if (!farm.GetHouseRect().Contains(new Vector2(x / 64, y / 64)))
+                    if (isFarmerHouse is false)
                     {
                         var texturePath = PathUtilities.NormalizePath(Path.Combine(targetedBuilding.textureName() + ".png"));
                         try
                         {
-                            _ = _helper.Content.Load<Texture2D>(Path.Combine(targetedBuilding.textureName()), ContentSource.GameContent);
+                            _ = _helper.GameContent.Load<Texture2D>(Path.Combine(targetedBuilding.textureName()));
                             _monitor.Log($"{modelName} has a targetable texture within Buildings: {texturePath}", LogLevel.Trace);
                         }
                         catch (ContentLoadException ex)
                         {
                             Game1.addHUDMessage(new HUDMessage(AlternativeTextures.modHelper.Translation.Get("messages.warning.custom_building_not_supported", new { itemName = modelName }), 3));
+                            _monitor.Log($"Failed to load texture for {modelName} at the path {texturePath}: {ex}", LogLevel.Trace);
                             return CancelUsing(who);
                         }
                     }
+
                     // Display texture menu
-                    var buildingObj = new Object(100, 1, isRecipe: false, -1)
+                    var buildingObj = new Object(targetedBuilding.buildingType.Value, 1, isRecipe: false, -1)
                     {
-                        TileLocation = new Vector2(targetedBuilding.tileX, targetedBuilding.tileY),
-                        modData = targetedBuilding.modData
+                        TileLocation = new Vector2(targetedBuilding.tileX.Value, targetedBuilding.tileY.Value)
                     };
+                    buildingObj.modData.SetFromSerialization(targetedBuilding.modData);
+
                     Game1.activeClickableMenu = GetMenu(buildingObj, buildingObj.TileLocation * 64f, GetTextureType(targetedBuilding), modelName, _helper.Translation.Get("tools.name.paint_bucket"), textureTileWidth: targetedBuilding.tilesWide, isSprayCan: isSprayCan);
 
                     return CancelUsing(who);
@@ -312,13 +378,15 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     AssignDefaultModData(targetedObject, instanceSeasonName, true);
                 }
 
+                var itemId = $"{GetTextureType(targetedObject)}_{targetedObject.ItemId}_{Game1.currentSeason}";
                 var modelName = targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
                 if (targetedObject.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                 {
-                    modelName = modelName.Replace($"_{targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                    itemId = GetModelNameWithoutSeason(itemId, targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
+                    modelName = GetModelNameWithoutSeason(modelName, targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                 }
 
-                if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                if (AlternativeTextures.textureManager.GetAvailableTextureModels(itemId, modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                 {
                     var instanceSeasonName = $"{GetTextureType(targetedObject)}_{GetObjectName(targetedObject)}_{Game1.currentSeason}";
                     AssignDefaultModData(targetedObject, instanceSeasonName, true);
@@ -326,10 +394,11 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     modelName = targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
                     if (targetedObject.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                     {
-                        modelName = modelName.Replace($"_{targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                        itemId = GetModelNameWithoutSeason(itemId, targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
+                        modelName = GetModelNameWithoutSeason(modelName, targetedObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                     }
 
-                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(itemId, modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                     {
                         Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                         return CancelUsing(who);
@@ -347,16 +416,16 @@ namespace AlternativeTextures.Framework.Patches.Tools
             {
                 if (!giantCrop.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
                 {
-                    var instanceName = Game1.objectInformation.ContainsKey(giantCrop.parentSheetIndex.Value) ? Game1.objectInformation[giantCrop.parentSheetIndex.Value].Split('/')[0] : String.Empty;
+                    var instanceName = Game1.objectData.ContainsKey(giantCrop.Id) ? Game1.objectData[giantCrop.Id].Name : String.Empty;
                     instanceName = $"{AlternativeTextureModel.TextureType.GiantCrop}_{instanceName}";
-                    var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(giantCrop.currentLocation)}";
+                    var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(giantCrop.Location)}";
                     AssignDefaultModData(targetedResouceClump, instanceSeasonName, true);
                 }
 
                 var modelName = targetedResouceClump.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{targetedResouceClump.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
                 if (targetedResouceClump.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(targetedResouceClump.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                 {
-                    modelName = modelName.Replace($"_{targetedResouceClump.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                    modelName = GetModelNameWithoutSeason(modelName, targetedResouceClump.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                 }
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
@@ -366,11 +435,11 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 }
 
                 // Display texture menu
-                var terrainObj = new Object(100, 1, isRecipe: false, -1)
+                var terrainObj = new Object("100", 1, isRecipe: false, -1)
                 {
-                    TileLocation = targetedResouceClump.tile.Value,
-                    modData = targetedResouceClump.modData
+                    TileLocation = targetedResouceClump.Tile
                 };
+                terrainObj.modData.SetFromSerialization(targetedResouceClump.modData);
 
                 Game1.activeClickableMenu = GetMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedResouceClump), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
@@ -400,15 +469,14 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     else if (targetedTerrain is FruitTree fruitTree)
                     {
                         Dictionary<int, string> data = Game1.content.Load<Dictionary<int, string>>("Data\\fruitTrees");
-                        var saplingIndex = data.FirstOrDefault(d => int.Parse(d.Value.Split('/')[0]) == fruitTree.treeType).Key;
-                        var saplingName = Game1.objectInformation.ContainsKey(saplingIndex) ? Game1.objectInformation[saplingIndex].Split('/')[0] : String.Empty;
+                        var saplingName = Game1.fruitTreeData.ContainsKey(fruitTree.treeId) ? Game1.objectData[fruitTree.treeId].Name : String.Empty;
 
                         var instanceSeasonName = $"{AlternativeTextureModel.TextureType.FruitTree}_{saplingName}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";
                         AssignDefaultModData(targetedTerrain, instanceSeasonName, true);
                     }
                     else if (targetedTerrain is HoeDirt dirt && dirt.crop is not null)
                     {
-                        var instanceName = Game1.objectInformation.ContainsKey(dirt.crop.netSeedIndex.Value) ? Game1.objectInformation[dirt.crop.netSeedIndex.Value].Split('/')[0] : String.Empty;
+                        var instanceName = Game1.objectData.ContainsKey(dirt.crop.netSeedIndex.Value) ? Game1.objectData[dirt.crop.netSeedIndex.Value].Name : String.Empty;
                         var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Crop}_{instanceName}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";
                         AssignDefaultModData(targetedTerrain, instanceSeasonName, true);
                     }
@@ -431,7 +499,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 var modelName = targetedTerrain.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{targetedTerrain.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
                 if (targetedTerrain.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(targetedTerrain.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                 {
-                    modelName = modelName.Replace($"_{targetedTerrain.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                    modelName = GetModelNameWithoutSeason(modelName, targetedTerrain.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                 }
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
@@ -441,11 +509,11 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 }
 
                 // Display texture menu
-                var terrainObj = new Object(100, 1, isRecipe: false, -1)
+                var terrainObj = new Object("100", 1, isRecipe: false, -1)
                 {
-                    TileLocation = new Vector2(x, y) / 64f,
-                    modData = targetedTerrain.modData
+                    TileLocation = new Vector2(x, y) / 64f
                 };
+                terrainObj.modData.SetFromSerialization(targetedTerrain.modData);
 
                 Game1.activeClickableMenu = GetMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedTerrain), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
@@ -456,8 +524,8 @@ namespace AlternativeTextures.Framework.Patches.Tools
             {
                 Point tile = new Point(x / 64, y / 64);
 
-                var wallId = decoratableLocation.getWallForRoomAt(tile);
-                if (wallId != -1)
+                var wallId = decoratableLocation.GetWallpaperID(tile.X, tile.Y);
+                if (string.IsNullOrEmpty(wallId) is false)
                 {
                     if (!decoratableLocation.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) || !decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Contains("Wallpaper"))
                     {
@@ -466,9 +534,9 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     }
 
                     var modelName = decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
-                    if (decoratableLocation.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
+                    if (decoratableLocation.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !string.IsNullOrEmpty(decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                     {
-                        modelName = modelName.Replace($"_{decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                        modelName = GetModelNameWithoutSeason(modelName, decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                     }
 
                     if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
@@ -478,18 +546,18 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     }
 
                     // Display texture menu
-                    var locationObj = new Object(100, 1, isRecipe: false, -1)
+                    var locationObj = new Object("100", 1, isRecipe: false, -1)
                     {
-                        TileLocation = Utility.PointToVector2(tile),
-                        modData = decoratableLocation.modData
+                        TileLocation = Utility.PointToVector2(tile)
                     };
+                    locationObj.modData.SetFromSerialization(decoratableLocation.modData);
                     Game1.activeClickableMenu = GetMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
                     return CancelUsing(who);
                 }
 
-                var floorId = decoratableLocation.getFloorAt(tile);
-                if (floorId != -1)
+                var floorId = decoratableLocation.GetFloorID(tile.X, tile.Y);
+                if (string.IsNullOrEmpty(floorId) is false)
                 {
                     if (!decoratableLocation.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) || !decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Contains("Floor"))
                     {
@@ -500,7 +568,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     var modelName = decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Replace($"{decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER]}.", String.Empty);
                     if (decoratableLocation.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                     {
-                        modelName = modelName.Replace($"_{decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                        modelName = GetModelNameWithoutSeason(modelName, decoratableLocation.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                     }
 
                     if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
@@ -510,63 +578,12 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     }
 
                     // Display texture menu
-                    var locationObj = new Object(100, 1, isRecipe: false, -1)
+                    var locationObj = new Object("100", 1, isRecipe: false, -1)
                     {
-                        TileLocation = Utility.PointToVector2(tile),
-                        modData = decoratableLocation.modData
+                        TileLocation = Utility.PointToVector2(tile)
                     };
+                    locationObj.modData.SetFromSerialization(decoratableLocation.modData);
                     Game1.activeClickableMenu = GetMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
-
-                    return CancelUsing(who);
-                }
-            }
-
-            // Check for mailbox
-            if (location.doesTileHaveProperty(x / 64, y / 64, "Action", "Buildings") == "Mailbox" || location.doesTileHaveProperty(x / 64, (y + 64) / 64, "Action", "Buildings") == "Mailbox")
-            {
-                if (AlternativeTextures.locationsToMailboxTileIds.ContainsKey(location.Name) && (AlternativeTextures.locationsToMailboxTileIds[location.Name].Contains(location.getTileIndexAt(new Point(x / 64, y / 64), "Buildings")) is true || AlternativeTextures.locationsToMailboxTileIds[location.Name].Contains(location.getTileIndexAt(new Point(x / 64, (y + 64) / 64), "Buildings")) is true))
-                {
-                    var modelType = AlternativeTextureModel.TextureType.Building;
-                    if (!location.modData.ContainsKey("AlternativeTextureName.Mailbox") || !location.modData["AlternativeTextureName.Mailbox"].Contains("Mailbox"))
-                    {
-                        var textureModel = new AlternativeTextureModel() { Owner = AlternativeTextures.DEFAULT_OWNER, Season = Game1.currentSeason };
-
-                        location.modData["AlternativeTextureOwner.Mailbox"] = textureModel.Owner;
-                        location.modData["AlternativeTextureName.Mailbox"] = String.Concat(textureModel.Owner, ".", $"{modelType}_{"Mailbox"}_{Game1.currentSeason}");
-
-                        if (!String.IsNullOrEmpty(textureModel.Season))
-                        {
-                            location.modData["AlternativeTextureSeason.Mailbox"] = Game1.currentSeason;
-                        }
-
-                        location.modData["AlternativeTextureVariation.Mailbox"] = "-1";
-                    }
-
-                    bool usedSecondaryTile = string.IsNullOrEmpty(location.doesTileHaveProperty(x / 64, y / 64, "Action", "Buildings")) && location.doesTileHaveProperty(x / 64, (y + 64) / 64, "Action", "Buildings") == "Mailbox";
-                    var mailboxObj = new Object(100, 1, isRecipe: false, -1)
-                    {
-                        TileLocation = new Vector2(x / 64, (y + (usedSecondaryTile ? 64 : 0)) / 64)
-                    };
-
-                    foreach (string key in location.modData.Keys)
-                    {
-                        mailboxObj.modData[key] = location.modData[key];
-                    }
-
-                    var modelName = mailboxObj.modData["AlternativeTextureName.Mailbox"].Replace($"{mailboxObj.modData["AlternativeTextureOwner.Mailbox"]}.", String.Empty);
-                    if (mailboxObj.modData.ContainsKey("AlternativeTextureSeason.Mailbox") && !String.IsNullOrEmpty(mailboxObj.modData["AlternativeTextureSeason.Mailbox"]))
-                    {
-                        modelName = modelName.Replace($"_{mailboxObj.modData["AlternativeTextureSeason.Mailbox"]}", String.Empty);
-                    }
-
-                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
-                    {
-                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
-                        return CancelUsing(who);
-                    }
-
-                    // Display texture menu
-                    Game1.activeClickableMenu = new PaintBucketMenu(mailboxObj, mailboxObj.TileLocation * 64f, TextureType.Craftable, modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: false, textureOwnerKey: "AlternativeTextureOwner.Mailbox", textureNameKey: "AlternativeTextureName.Mailbox", textureVariationKey: "AlternativeTextureVariation.Mailbox", textureSeasonKey: "AlternativeTextureSeason.Mailbox", textureDisplayNameKey: "AlternativeTextureDisplayName.Mailbox");
 
                     return CancelUsing(who);
                 }
@@ -596,23 +613,32 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                 if (character.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
                 {
-                    modelName = modelName.Replace($"_{character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}", String.Empty);
+                    modelName = GetModelNameWithoutSeason(modelName, character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
                 }
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                 {
-                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
-                    return CancelUsing(who);
+                    if ((character is Pet pet && pet.GetPetData() is var petData && petData is not null && petData.Breeds is not null) || (character is FarmAnimal animal && animal.GetAnimalData() is var animalData && animalData is not null && animalData.Skins is not null))
+                    {
+                        // Skip no texture warning
+                    }
+                    else
+                    {
+                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                        return CancelUsing(who);
+                    }
                 }
 
                 // Display texture menu
-                var obj = new Object(100, 1, isRecipe: false, -1)
+                var obj = new Object("100", 1, isRecipe: false, -1)
                 {
                     Name = character.Name,
                     displayName = character.displayName,
-                    TileLocation = character.getTileLocation(),
-                    modData = character.modData
+                    TileLocation = character.Tile,
+                    Location = location
                 };
+                obj.modData.SetFromSerialization(character.modData);
+
                 Game1.activeClickableMenu = new PaintBucketMenu(obj, obj.TileLocation * 64f, GetTextureType(character), modelName, uiTitle: _helper.Translation.Get("tools.name.scissors"));
 
                 return CancelUsing(who);

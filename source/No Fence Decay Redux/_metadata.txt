@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/EnderTedi/No-Fence-Decay-Redux
+   Git: https://github.com/EnderTedi/No-Fence-Decay-Redux.git
+
+mods:
+   No Fence Decay Redux
+
+latest commit:
+   commit 032b7ba1d3bf24d03742014e3428ba9faaece7fa
+   Author: EnderTedi <endertedi2@gmail.com>
+   Date:   Sun Mar 24 12:20:03 2024 +0100
+   
+       Add comments
+   

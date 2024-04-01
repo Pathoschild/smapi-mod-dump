@@ -1,6 +1,6 @@
 urls:
-   web: https://gitlab.com/delixx/stardew-valley-desert-bloom-farm
-   Git: https://gitlab.com/delixx/stardew-valley-desert-bloom-farm.git
+   web: https://gitlab.com/delixx/stardew-valley/desert-bloom-farm
+   Git: https://gitlab.com/delixx/stardew-valley/desert-bloom-farm.git
 
 mods:
    Desert Bloom Farm

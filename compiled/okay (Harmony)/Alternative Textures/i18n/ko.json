@@ -1,0 +1,31 @@
+{
+  // Tools
+  "tools.name.paint_bucket": "페인트 물통",
+  "tools.name.paint_brush": "페인트 붓",
+  "tools.name.scissors": "페인트 가위",
+  "tools.name.spray_can": "스프레이 캔",
+  "tools.name.catalogue": "텍스처 카탈로그",
+
+  "tools.description.paint_bucket": "지원되는 개체에 다른 텍스처를 적용할 수 있게 해줍니다.",
+  "tools.description.paint_brush": "텍스처를 복사하여 동일한 유형의 다른 개체에 적용할 수 있게 해줍니다.",
+  "tools.description.scissors": "모든 개체에 다른 텍스처를 적용할 수 있게 해줍니다.",
+  "tools.description.spray_can": "일정 반경 내의 객체에 무작위 텍스처를 적용할 수 있게 해줍니다.",
+  "tools.description.catalogue": "모든 대체 가능한 텍스처를 나열합니다.",
+
+  // Messages
+  "messages.warning.no_textures_for_season": "{{itemName}}에는 이 시즌을 위한 대체 텍스처가 없습니다!",
+  "messages.warning.paint_not_placeable": "그 위에 페인트를 칠할 수 없습니다!",
+  "messages.warning.brush_is_empty": "붓에 복사된 텍스처가 없습니다! 개체를 우클릭하여 텍스처를 복사하세요.",
+  "messages.warning.spray_can_is_empty": "스프레이 캔에 설정된 텍스처가 없습니다! 개체를 우클릭하여 적용할 텍스처를 선택하세요.",
+  "messages.warning.spray_can_not_supported": "이 개체는 스프레이 캔을 지원하지 않습니다.",
+  "messages.warning.brush_not_supported": "붓은 이 개체로부터 텍스처를 복사할 수 없습니다.",
+  "messages.warning.invalid_copied_texture": "복사된 텍스처 {{textureName}} 은(는) 이 개체에 유효하지 않습니다!",
+  "messages.warning.custom_building_not_supported": "이 사용자 정의 건물 ({{itemName}}) 은(는) 텍스처 변화를 지원하지 않습니다.",
+  "messages.info.texture_copied": "텍스처 복사!",
+  "messages.info.cleared_brush": "붓 초기화!",
+
+  // UI
+  "ui.labels.catalogue": "카탈로그",
+  "ui.labels.paint_brush.copied": "텍스처를 붓에 복사했습니다!",
+  "ui.labels.paint_brush.not_found": "텍스처를 복사할 수 없습니다: 인벤토리에 페인트 브러시가 없습니다!"
+}

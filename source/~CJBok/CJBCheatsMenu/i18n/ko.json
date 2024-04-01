@@ -93,7 +93,6 @@
     "skills.increase-foraging": "채집 레벨 UP: {{currentLevel}}",
     "skills.increase-fishing": "낚시 레벨 UP: {{currentLevel}}",
     "skills.increase-combat": "전투 레벨 UP: {{currentLevel}}",
-    "skills.reset": "스킬 초기화!",
 
     // professions
     "professions.title": "직업 변경",
@@ -134,6 +133,7 @@
     *********/
     "weather.title": "내일의 날씨",
     "weather.current": "현재 설정된 내일의 날씨",
+    "weather.explanation": "Click a button below to set the weather for tomorrow (and only tomorrow). This tab has zero effect on weather otherwise.", // TODO
     "weather.sunny": "맑음",
     "weather.raining": "비",
     "weather.lightning": "폭풍(번개)",
@@ -173,6 +173,7 @@
     // forest
     "warp-section.forest": "숲",
     "warp.hats": "모자쥐 상점",
+    "warp.mastery-cave": "Mastery Cave", // TODO
     "warp.ranch": "마니의 목장",
     "warp.secret-woods": "비밀의 숲",
     "warp.wizard-tower": "마법사의 탑",

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Mobile Phone Continued",
+  "Author": "JoXW, aedenthorn",
+  "Version": "4.0.3",
+  "Description": "Gives you a mobile phone.",
+  "UniqueID": "JoXW.MobilePhone",
+  "EntryDll": "MobilePhone.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21017" ]
+}

@@ -19,6 +19,7 @@ using Netcode;
 using BetterJunimos.Abilities;
 using StardewModdingAPI;
 using StardewValley.Buildings;
+using StardewValley.Pathfinding;
 
 namespace BetterJunimos.Patches {
     /* foundCropEndFunction
@@ -48,7 +49,7 @@ namespace BetterJunimos.Patches {
             if (!Context.IsMainPlayer) return true;
 
             var id = ___netHome.Value;
-            var pos = __instance.getTileLocation();
+            var pos = __instance.Tile;
 
             // if (__instance.currentLocation.IsGreenhouse) {
             //     BetterJunimos.SMonitor.Log($"PatchTryToHarvestHere: #{__instance.whichJunimoFromThisHut} looking in {__instance.currentLocation.Name} at [{pos.X} {pos.Y}]", LogLevel.Trace);
@@ -184,7 +185,7 @@ namespace BetterJunimos.Patches {
         }
     }
 
-    // pathFindToNewCrop_doWork - completely replace 
+    // pathfindToNewCrop - completely replace 
     // Remove the max distance boundary
     [HarmonyPriority(Priority.Low)]
     public class PatchPathfindDoWork {
@@ -241,7 +242,6 @@ namespace BetterJunimos.Patches {
                     __instance.currentLocation,
                     __instance.foundCropEndFunction,
                     -1,
-                    false,
                     __instance.reachFirstDestinationFromHut,
                     100,
                     Point.Zero);

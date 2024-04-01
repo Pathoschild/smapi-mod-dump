@@ -1,0 +1,13 @@
+﻿{
+    "Name": "Mushroom Log Additions",
+    "Author": "justastranger",
+    "Version": "1.1.0",
+    "Description": "Allows more trees to affect the output of Mushroom Stumps.",
+    "UniqueID": "JAS.MushroomLogAdditions",
+    "EntryDll": "MushroomLogAdditions.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "GitHub:justastranger/MushroomLogAdditions",
+        "ModDrop:1539617"
+    ]
+}

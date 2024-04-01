@@ -47,6 +47,6 @@ namespace BetterJunimos.Abilities {
          * Does this action require specific items (or SObject.SeedsCategory, etc)?
          * Return empty list if no item needed
          */
-        List<int> RequiredItems();
+        List<string> RequiredItems();
     }
 }

@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "DynamicTokens": [
         {
             "Name": "Recycler",
@@ -75,6 +75,13 @@
         {
             "Action": "Include",
             "FromFile": "data/garbage_cans.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "data/garbage_cans_sve.json",
+            "When": {
+                "HasMod": "FlashShifter.SVECode"
+            }
         },
         // Profession related patches
         {

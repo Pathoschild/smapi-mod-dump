@@ -12,9 +12,12 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Monsters;
+using StardewValley.Pathfinding;
 using StardewValley.Projectiles;
 using System;
+using System.Xml.Serialization;
 
 namespace FarmTypeManager
 {
@@ -23,10 +26,11 @@ namespace FarmTypeManager
         /// <summary>A subclass of Stardew's Skeleton class, adjusted for use by this mod.</summary>
         public class SkeletonFTM : Skeleton
         {
-            /*** New fields ***/
+            /*** Net fields ***/
 
             /// <summary>True if this monster's normal ranged attack behavior should be enabled.</summary>
-            public bool RangedAttacks { get; set; } = true;
+            [XmlElement("FTM_rangedAttacks")]
+            public readonly NetBool rangedAttacks = new NetBool(value: true);
 
             /*** Reflected fields ***/
 
@@ -94,7 +98,14 @@ namespace FarmTypeManager
             public SkeletonFTM(Vector2 position, bool isMage = false, bool rangedAttacks = true)
                 : base(position, isMage)
             {
-                RangedAttacks = rangedAttacks;
+                this.rangedAttacks.Value = rangedAttacks;
+            }
+
+            /// <summary>Initialize any net fields added by this subclass.</summary>
+            protected override void initNetFields()
+            {
+                base.initNetFields();
+                NetFields.AddField(rangedAttacks, "rangedAttacks");
             }
 
             /// <summary>A modified version of the base monster class's method.</summary>
@@ -107,22 +118,20 @@ namespace FarmTypeManager
             /// </remarks>
             public override void behaviorAtGameTick(GameTime time)
             {
-                if (Player == null) //if this was somehow called while no farmers exist
-                {
-                    return; //do nothing
-                }
+                if (Player == null) { return; } //if this was somehow called while no farmers exist, do nothing
+
                 if (!throwing.Value)
                 {
                     Monster_behaviorAtGameTick(time); //replace inaccessible "base" call with a local copy
                 }
-                if (!this.spottedPlayer && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.getTileLocation(), base.Player.getTileLocation(), moveTowardPlayerThreshold.Value)) //replace 8 with the threshold value (a.k.a. sight range)
+                if (!spottedPlayer && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.Tile, base.Player.Tile, moveTowardPlayerThreshold.Value)) //replace 8 with the threshold value (sight range)
                 {
-                    base.controller = new PathFindController(this, base.currentLocation, new Point(base.Player.getStandingX() / 64, base.Player.getStandingY() / 64), -1, null, 200);
-                    this.spottedPlayer = true;
-                    if (base.controller == null || base.controller.pathToEndPoint == null || base.controller.pathToEndPoint.Count == 0)
+                    controller = new PathFindController(this, base.currentLocation, base.Player.TilePoint, -1, null, 200);
+                    spottedPlayer = true;
+                    if (controller == null || controller.pathToEndPoint == null || controller.pathToEndPoint.Count == 0)
                     {
-                        this.Halt();
-                        base.facePlayer(base.Player);
+                        Halt();
+                        facePlayer(base.Player);
                     }
                     base.currentLocation.playSound("skeletonStep");
                     base.IsWalkingTowardPlayer = true;
@@ -137,89 +146,92 @@ namespace FarmTypeManager
                             base.stopGlowing();
                         }
                     }
-                    this.Sprite.Animate(time, 20, 5, 150f);
-                    if (this.Sprite.currentFrame == 24)
+                    if (Sprite.Animate(time, 20, 4, 150f))
                     {
                         this.throwing.Value = false;
                         this.Sprite.currentFrame = 0;
                         this.faceDirection(2);
                         Vector2 v = StardewValley.Utility.getVelocityTowardPlayer(new Point((int)base.Position.X, (int)base.Position.Y), 8f, base.Player);
-                        if (this.isMage.Value)
+                        if (isMage.Value)
                         {
-                            if (Game1.random.NextDouble() < 0.5)
+                            if (Game1.random.NextBool())
                             {
-                                base.currentLocation.projectiles.Add(new DebuffingProjectile(19, 14, 4, 4, (float)Math.PI / 16f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), base.currentLocation, this));
+                                base.currentLocation.projectiles.Add(new DebuffingProjectile("19", 14, 4, 4, (float)Math.PI / 16f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), base.currentLocation, this));
                             }
                             else
                             {
-                                base.currentLocation.projectiles.Add(new BasicProjectile(base.DamageToFarmer * 2, 9, 0, 4, 0f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), "flameSpellHit", "flameSpell", explode: false, damagesMonsters: false, base.currentLocation, this));
+                                base.currentLocation.projectiles.Add(new BasicProjectile(base.DamageToFarmer * 2, 9, 0, 4, 0f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), "flameSpellHit", "flameSpell", null, explode: false, damagesMonsters: false, base.currentLocation, this));
                             }
                         }
                         else
                         {
-                            base.currentLocation.projectiles.Add(new BasicProjectile(base.DamageToFarmer, 4, 0, 0, (float)Math.PI / 16f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), "skeletonHit", "skeletonStep", explode: false, damagesMonsters: false, base.currentLocation, this));
+                            base.currentLocation.projectiles.Add(new BasicProjectile(base.DamageToFarmer, 4, 0, 0, (float)Math.PI / 16f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), "skeletonHit", "skeletonStep", null, explode: false, damagesMonsters: false, base.currentLocation, this));
                         }
                     }
-                } //check the ranged attacks setting before attempting to start throwing
-                else if (RangedAttacks && this.spottedPlayer && base.controller == null && Game1.random.NextDouble() < (isMage.Value ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.getTileLocation(), base.Player.getTileLocation(), 8))
+                }
+                //check the ranged attacks setting before attempting to start throwing, and replace 8 with the threshold value (sight range)
+                else if (rangedAttacks.Value && spottedPlayer && controller == null && Game1.random.NextDouble() < (isMage.Value ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.Tile, base.Player.Tile, moveTowardPlayerThreshold.Value))
                 {
-                    this.throwing.Value = true;
-                    this.Halt();
-                    this.Sprite.currentFrame = 20;
-                    base.shake(750);
+                    throwing.Value = true;
+                    Halt();
+                    Sprite.currentFrame = 20;
+                    shake(750);
                 }
                 else if (this.withinPlayerThreshold(2))
                 {
-                    base.controller = null;
+                    controller = null;
                 }
-                else if (this.spottedPlayer && base.controller == null && this.controllerAttemptTimer <= 0)
+                else if (spottedPlayer && controller == null && controllerAttemptTimer <= 0)
                 {
-                    base.controller = new PathFindController(this, base.currentLocation, new Point(base.Player.getStandingX() / 64, base.Player.getStandingY() / 64), -1, null, 200);
-                    this.controllerAttemptTimer = (base.wildernessFarmMonster ? 2000 : 1000);
-                    if (base.controller == null || base.controller.pathToEndPoint == null || base.controller.pathToEndPoint.Count == 0)
+                    controller = new PathFindController(this, base.currentLocation, base.Player.TilePoint, -1, null, 200);
+                    controllerAttemptTimer = (base.wildernessFarmMonster ? 2000 : 1000);
+                    if (controller == null || controller.pathToEndPoint == null || controller.pathToEndPoint.Count == 0)
                     {
-                        this.Halt();
+                        Halt();
                     }
                 }
                 else if (base.wildernessFarmMonster)
                 {
-                    this.spottedPlayer = true;
+                    spottedPlayer = true;
                     base.IsWalkingTowardPlayer = true;
                 }
-                this.controllerAttemptTimer -= time.ElapsedGameTime.Milliseconds;
+                controllerAttemptTimer -= time.ElapsedGameTime.Milliseconds;
             }
 
             /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
             private void Monster_behaviorAtGameTick(GameTime time)
             {
-                if (base.timeBeforeAIMovementAgain > 0f)
+                if (timeBeforeAIMovementAgain > 0f)
                 {
-                    base.timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+                    timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
                 }
-                if (this.Player?.isRafting != true || !this.withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
+                if (Player?.isRafting != true || !withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
                 {
                     return;
                 }
-                if (Math.Abs(this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y) > 192)
+                IsWalkingTowardPlayer = false;
+                Point monsterPixel = StandingPixel;
+                Point playerPixel = Player.StandingPixel;
+                if (Math.Abs(playerPixel.Y - monsterPixel.Y) > 192)
                 {
-                    if (this.Player.GetBoundingBox().Center.X - this.GetBoundingBox().Center.X > 0)
+                    if (playerPixel.X - monsterPixel.X > 0)
                     {
-                        this.SetMovingLeft(b: true);
+                        SetMovingLeft(b: true);
                     }
                     else
                     {
-                        this.SetMovingRight(b: true);
+                        SetMovingRight(b: true);
                     }
                 }
-                else if (this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y > 0)
+                else if (playerPixel.Y - monsterPixel.Y > 0)
                 {
-                    this.SetMovingUp(b: true);
+                    SetMovingUp(b: true);
                 }
                 else
                 {
-                    this.SetMovingDown(b: true);
+                    SetMovingDown(b: true);
                 }
-                this.MovePosition(time, Game1.viewport, base.currentLocation);
+                MovePosition(time, Game1.viewport, currentLocation);
             }
         }
     }

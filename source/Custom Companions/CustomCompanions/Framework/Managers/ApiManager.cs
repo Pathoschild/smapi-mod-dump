@@ -19,7 +19,6 @@ namespace CustomCompanions.Framework.Managers
         private static ISaveAnywhereApi saveAnywhereApi;
         private static IContentPatcherAPI contentPatcherApi;
         private static IJsonAssetsApi jsonAssetsApi;
-        private static IWearMoreRingsApi wearMoreRingsApi;
 
         internal static bool HookIntoJsonAssets(IModHelper helper)
         {
@@ -32,20 +31,6 @@ namespace CustomCompanions.Framework.Managers
             }
 
             monitor.Log("Successfully hooked into spacechase0.JsonAssets.", LogLevel.Debug);
-            return true;
-        }
-
-        internal static bool HookIntoIWMR(IModHelper helper)
-        {
-            wearMoreRingsApi = helper.ModRegistry.GetApi<IWearMoreRingsApi>("bcmpinc.WearMoreRings");
-
-            if (wearMoreRingsApi is null)
-            {
-                monitor.Log("Failed to hook into bcmpinc.WearMoreRings.", LogLevel.Error);
-                return false;
-            }
-
-            monitor.Log("Successfully hooked into bcmpinc.WearMoreRings.", LogLevel.Debug);
             return true;
         }
 
@@ -85,11 +70,6 @@ namespace CustomCompanions.Framework.Managers
         internal static IJsonAssetsApi GetJsonAssetsApi()
         {
             return jsonAssetsApi;
-        }
-
-        internal static IWearMoreRingsApi GetIWMRApi()
-        {
-            return wearMoreRingsApi;
         }
 
         internal static ISaveAnywhereApi GetSaveAnywhereApi()

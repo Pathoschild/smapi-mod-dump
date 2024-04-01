@@ -127,11 +127,11 @@ namespace FishingTrawler.GameLocations
         public override void UpdateWhenCurrentLocation(GameTime time)
         {
             // Handle playing splash sound and animation if the hull is flooded enough
-            Vector2 playerStandingPosition = new Vector2(Game1.player.getStandingX() / 64, Game1.player.getStandingY() / 64);
+            Vector2 playerStandingPosition = new Vector2(Game1.player.StandingPixel.X / 64, Game1.player.StandingPixel.Y / 64);
             if (lastTouchActionLocation.Equals(Vector2.Zero) && map.GetLayer(FLOOD_WATER_LAYER).Properties["@Opacity"] > 0f)
             {
                 string touchActionProperty = doesTileHaveProperty((int)playerStandingPosition.X, (int)playerStandingPosition.Y, "CustomTouchAction", FLOOD_WATER_LAYER);
-                lastTouchActionLocation = new Vector2(Game1.player.getStandingX() / 64, Game1.player.getStandingY() / 64);
+                lastTouchActionLocation = new Vector2(Game1.player.StandingPixel.X / 64, Game1.player.StandingPixel.Y / 64);
 
                 if (touchActionProperty != null)
                 {
@@ -237,7 +237,7 @@ namespace FishingTrawler.GameLocations
             // Check to see if player is standing in front of stairs before using  
             if (String.IsNullOrEmpty(doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings")) is false)
             {
-                if (who.getTileX() != 9 || (who.getTileY() != 6 && who.getTileY() != 5))
+                if (who.Tile.X != 9 || (who.Tile.Y != 6 && who.Tile.Y != 5))
                 {
                     return false;
                 }
@@ -275,7 +275,7 @@ namespace FishingTrawler.GameLocations
             // Check to see if player is standing in front of stairs before using            
             if (String.IsNullOrEmpty(doesTileHaveProperty(xTile, yTile, "Action", "Buildings")) is false)
             {
-                if (who.getTileX() != 9 || (who.getTileY() != 6 && who.getTileY() != 5))
+                if (who.Tile.X != 9 || (who.Tile.Y != 6 && who.Tile.Y != 5))
                 {
                     Game1.mouseCursorTransparency = 0.5f;
                 }
@@ -320,7 +320,7 @@ namespace FishingTrawler.GameLocations
         #region Boat leak event methods
         private bool IsWithinRangeOfLeak(int tileX, int tileY, Farmer who)
         {
-            if (who.getTileY() != 4 || !Enumerable.Range(who.getTileX() - 1, 3).Contains(tileX))
+            if (who.Tile.Y != 4 || !Enumerable.Range((int)(who.Tile.X - 1), 3).Contains(tileX))
             {
                 return false;
             }

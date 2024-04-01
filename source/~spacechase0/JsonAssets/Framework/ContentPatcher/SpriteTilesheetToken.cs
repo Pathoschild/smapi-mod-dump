@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JsonAssets.Data;
+using Microsoft.Xna.Framework;
 
 namespace JsonAssets.Framework.ContentPatcher
 {
@@ -56,7 +57,7 @@ namespace JsonAssets.Framework.ContentPatcher
                 return this.Tilesheets.Values.Select(p => p.ToString()).ToArray();
 
             return this.Tilesheets.TryGetValue(input, out string value) && !string.IsNullOrEmpty(value)
-                ? new[] { value }
+                ? new[] { $"JA/{Type}/{input}" }
                 : Array.Empty<string>();
         }
 

@@ -23,7 +23,7 @@ public readonly struct IntPoint : IEquatable<IntPoint>
 	public static readonly IntPoint Top = new(0, -1);
 	public static readonly IntPoint Bottom = new(0, 1);
 
-	private static readonly IntPoint[] NeighborOffsetsArray = new[] { Left, Right, Top, Bottom };
+	private static readonly IntPoint[] NeighborOffsetsArray = [Left, Right, Top, Bottom];
 
 	public static IEnumerable<IntPoint> NeighborOffsets
 		=> NeighborOffsetsArray;

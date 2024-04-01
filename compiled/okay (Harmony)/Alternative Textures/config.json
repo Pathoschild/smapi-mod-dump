@@ -1,0 +1,15 @@
+{
+  "OutputTextureDataToLog": false,
+  "UseRandomTexturesWhenSpawningArtifactSpots": true,
+  "UseRandomTexturesWhenPlacingFlooring": false,
+  "UseRandomTexturesWhenPlacingFruitTree": true,
+  "UseRandomTexturesWhenPlacingTree": true,
+  "UseRandomTexturesWhenPlacingHoeDirt": true,
+  "UseRandomTexturesWhenPlacingGrass": true,
+  "UseRandomTexturesWhenPlacingFurniture": false,
+  "UseRandomTexturesWhenPlacingObject": false,
+  "UseRandomTexturesWhenPlacingFarmAnimal": true,
+  "UseRandomTexturesWhenPlacingMonster": true,
+  "UseRandomTexturesWhenPlacingBuilding": false,
+  "DisabledTextures": []
+}

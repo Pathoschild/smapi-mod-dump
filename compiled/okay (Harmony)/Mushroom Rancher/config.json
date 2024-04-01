@@ -1,0 +1,13 @@
+{
+  "HutchInterior": 1,
+  "RandomizeMonsterPositionInHutch": true,
+  "RandomizeMonsterPositionOnlyAffectsLivingMushrooms": true,
+  "IncubatorDuration": 2,
+  "IncubatorDurationIsInDaysInsteadOfMinutes": true,
+  "IncubatorIsAffectedByCoopmaster": true,
+  "IncubatorWobblesWhileIncubating": true,
+  "IncubatorAdditionalRequiredItemID": "(O)773",
+  "IncubatorAdditionalRequiredItemCount": 5,
+  "IncubatorRecipe": "709 1 388 20",
+  "IncubatorRecipeUnlock": "Foraging 6"
+}

@@ -1,0 +1,10 @@
+{
+  "Name": "Seed Maker Quality",
+  "Author": "Speshkitty",
+  "Version": "1.0.4",
+  "Description": "Adjusts seeds received from a seed maker",
+  "UniqueID": "speshkitty.seedmakerquality",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21000" ],
+  "EntryDLL": "SeedMakerQuality.dll"
+}

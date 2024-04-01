@@ -1,0 +1,6 @@
+{
+    ResetModifiersCommand: "Clears buffs, then resets and reapplies the modifiers applied by boots & rings.",
+    DestroyRingChestsCommand: "Removes any remaining ring chests used for storing player's rings. Any items contained therein will be dropped at your feet.",
+    OpenForgeCommand: "Открывает меню кузницы.",
+    RingsName: "Кольца", RingsTooltip: "Устанавливает, сколько слотов будет выделено под кольца.", 
+}

@@ -8,12 +8,8 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using System.Text;
 using DecidedlyShared.Logging;
-using DecidedlyShared.Ui;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using xTile;
 using xTile.Dimensions;
@@ -44,9 +40,9 @@ public class TilePropertyHandler
         return this.TryGetTileProperty(x, y, location, "Buildings", key, out tileProperty);
     }
 
-    public bool TryGetPropertyFromString(string keyToCheck, string property, out PropertyValue stringProperty)
+    public bool TryGetPropertyFromString(string keyToCheck, string property, out PropertyValue tileProperty)
     {
-        stringProperty = null;
+        tileProperty = "";
 
         string[] splitProperty = property.Split(" ");
 
@@ -63,7 +59,7 @@ public class TilePropertyHandler
             args.Append($"{splitProperty[i]} ");
         }
 
-        stringProperty = new PropertyValue(args.ToString());
+        tileProperty = args.ToString();
 
         return true;
     }
@@ -72,7 +68,7 @@ public class TilePropertyHandler
         out PropertyValue tileProperty)
     {
         // We need a default assignment.
-        tileProperty = null;
+        tileProperty = "";
 
         if (location == null)
             return false;

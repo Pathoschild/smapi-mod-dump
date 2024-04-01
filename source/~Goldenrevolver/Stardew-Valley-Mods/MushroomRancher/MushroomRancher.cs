@@ -17,7 +17,6 @@ using StardewValley.Buildings;
 using StardewValley.Monsters;
 using System;
 using xTile;
-using StardewObject = StardewValley.Object;
 
 namespace MushroomRancher
 {
@@ -62,7 +61,7 @@ namespace MushroomRancher
 
             foreach (var item in Enum.GetValues(typeof(HutchType)))
             {
-                maps[(int)item] = Helper.ModContent.Load<Map>($"assets/{item}_hutch.tmx");
+                maps[(int)item] = (int)item == 0 ? null : Helper.ModContent.Load<Map>($"assets/{item}_hutch.tmx");
                 waterTextures[(int)item] = Helper.ModContent.Load<Texture2D>($"assets/water_spots_{item}.png");
             }
         }
@@ -93,8 +92,8 @@ namespace MushroomRancher
         public static DustSpirit CreateFriendlyLivingMushroom(Vector2 vector)
         {
             var monster = new DustSpirit(vector, false);
-            monster.DamageToFarmer = 0;
             monster.Speed /= 2;
+            monster.DamageToFarmer = 0;
             monster.farmerPassesThrough = true;
             monster.objectsToDrop.Clear();
             monster.objectsToDrop.Add(MushroomRancher.redMushroomId);
@@ -108,11 +107,11 @@ namespace MushroomRancher
             return monster;
         }
 
-        public static RockCrab CreateFriendlyMagmaCap(Vector2 vector, MushroomRancher mod)
+        public static RockCrab CreateFriendlyMagmaCap(Vector2 vector)
         {
             var monster = new RockCrab(vector, "False Magma Cap");
-            monster.DamageToFarmer = 0;
             monster.Speed /= 2;
+            monster.DamageToFarmer = 0;
             monster.farmerPassesThrough = true;
             monster.objectsToDrop.Clear();
             monster.objectsToDrop.Add(MushroomRancher.magmaCapId);
@@ -127,14 +126,6 @@ namespace MushroomRancher
             {
                 if (building?.indoors?.Value is SlimeHutch hutch)
                 {
-                    if (hutch.Objects.TryGetValue(new Vector2(1, 4), out StardewObject incubator))
-                    {
-                        if (incubator != null && incubator.Name.Equals("Slime Incubator"))
-                        {
-                            incubator.Fragility = Config.RemovableSlimeHutchIncubator ? StardewObject.fragility_Removable : StardewObject.fragility_Indestructable;
-                        }
-                    }
-
                     for (int i = 0; i < hutch.characters.Count; i++)
                     {
                         if (hutch.characters[i] is DustSpirit)
@@ -145,7 +136,7 @@ namespace MushroomRancher
                         else if (hutch.characters[i] is RockCrab && hutch.characters[i].Name.Equals("False Magma Cap"))
                         {
                             var pos = hutch.characters[i].Position;
-                            hutch.characters[i] = CreateFriendlyMagmaCap(pos, this);
+                            hutch.characters[i] = CreateFriendlyMagmaCap(pos);
                         }
                     }
                 }

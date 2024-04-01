@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -19,14 +18,8 @@ namespace BetterRanching
 	{
 		public static bool CanBeRanched(this FarmAnimal animal, string toolName)
 		{
-			return animal.currentProduce.Value > 0 && animal.age.Value >= animal.ageWhenMature.Value &&
-			       animal.toolUsedForHarvest.Value.Equals(toolName);
-		}
-
-		public static FarmAnimal GetSelectedAnimal(this IAnimalLocation location, Rectangle rectangle)
-		{
-			return location.Animals.Values
-				.FirstOrDefault(farmAnimal => farmAnimal.GetBoundingBox().Intersects(rectangle));
+			return animal.currentProduce.Value != null && animal.isAdult() &&
+			       animal.GetAnimalData().HarvestTool == toolName;
 		}
 
 		public static void OverwriteState(this IInputHelper input, SButton button, string message = null)

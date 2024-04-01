@@ -1,0 +1,10 @@
+{
+  "Name": "AutoFishing",
+  "Author": "Tibbles",
+  "Version": "2.1.0", // fixed locally
+  "Description": "Auto catch, auto cast and auto hit",
+  "UniqueID": "Tibbles.AutoFishing",
+  "EntryDll": "AutoFishing.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5235" ]
+}

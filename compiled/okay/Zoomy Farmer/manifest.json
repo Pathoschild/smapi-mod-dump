@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Zoomy Farmer",
   "Author": "Geko_X",
-  "Version": "1.5",
+  "Version": "1.6.1",
   "Description": "Lets the farmer sprint!",
   "UniqueID": "gekox.zoomyFarmer",
   "EntryDll": "ZoomyFarmer.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": ["Nexus:6031"]
 }

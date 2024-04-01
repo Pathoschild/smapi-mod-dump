@@ -37,10 +37,11 @@ namespace HappyHomeDesigner.Patches
 				return;
 			}
 
-			harmony.Patch(
+			if (!harmony.TryPatch(
 				bedFurn.GetMethod("drawInMenu", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly),
 				transpiler: new(typeof(DGA), nameof(AddBedFront))
-			);
+			))
+				return;
 
 			ModEntry.monitor.Log("Successfully patched DGA", LogLevel.Debug);
 
@@ -54,12 +55,11 @@ namespace HappyHomeDesigner.Patches
 				return;
 			}
 
-			harmony.Patch(
+			if (harmony.TryPatch(
 				bedFurn.GetMethod("drawInMenu", BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public),
 				new(atFurn, "DrawInMenuPrefix")
-			);
-
-			ModEntry.monitor.Log("Succesfully patched DGA-AT", LogLevel.Debug);
+			))
+				ModEntry.monitor.Log("Succesfully patched DGA-AT", LogLevel.Debug);
 		}
 
 		public static IEnumerable<CodeInstruction> AddBedFront(IEnumerable<CodeInstruction> codes, ILGenerator gen)

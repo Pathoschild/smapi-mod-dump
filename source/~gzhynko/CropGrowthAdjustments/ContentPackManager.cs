@@ -73,7 +73,7 @@ namespace CropGrowthAdjustments
                     }
                     
                     // first try to get directly from game data
-                    adjustment.CropProduceItemId = Utility.GetItemIdByName(adjustment.CropProduceName, helper);
+                    adjustment.CropProduceItemId = int.Parse(Utility.GetItemIdByName(adjustment.CropProduceName, helper));
 
                     // then try to get from JsonAssets API
                     if (adjustment.CropProduceItemId == -1 && jsonAssetsApi != null)
@@ -106,14 +106,14 @@ namespace CropGrowthAdjustments
                 {
                     if(adjustment.SpecialSpritesForSeasons == null || adjustment.SpecialSpritesForSeasons.Count == 0) continue;
                     
-                    var cropData =  Utility.GetCropDataForProduceItemId(adjustment.CropProduceItemId, helper);
+                    var cropData =  Utility.GetCropDataForProduceItemId(adjustment.CropProduceItemId.ToString(), helper);
                     if(cropData == null)
                     {
                         ModEntry.ModMonitor.Log($"{contentPack.ContentPack.Manifest.Name} - Unable to get the crop data for {adjustment.CropProduceName}. Special sprites won't work.", LogLevel.Error);
                         continue;
                     }
-                    
-                    adjustment.RowInCropSpriteSheet = int.Parse(cropData[2]);
+
+                    adjustment.RowInCropSpriteSheet = cropData.SpriteIndex;
                 }
             }
         }

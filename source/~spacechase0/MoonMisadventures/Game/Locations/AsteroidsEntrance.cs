@@ -29,7 +29,7 @@ namespace MoonMisadventures.Game.Locations
         {
             base.resetLocalState();
 
-            if ( Game1.player.getTileY() == 1 )
+            if ( Game1.player.Tile.Y == 1 )
             {
                 Game1.player.Position = new Vector2( 25.5f * Game1.tileSize, 19 * Game1.tileSize );
             }
@@ -56,7 +56,7 @@ namespace MoonMisadventures.Game.Locations
                 switch ( qa )
                 {
                     case "GargoyleEntrance_Yes":
-                        performTouchAction( "MagicWarp " + AsteroidsDungeon.BaseLocationName + "1 0 0", Game1.player.getTileLocation() );
+                        performTouchAction( "MagicWarp " + AsteroidsDungeon.BaseLocationName + "1 0 0", Game1.player.Tile );
                         return true;
                 }
             }

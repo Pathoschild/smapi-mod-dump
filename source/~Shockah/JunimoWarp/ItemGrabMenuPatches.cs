@@ -9,239 +9,234 @@
 *************************************************/
 
 using HarmonyLib;
-using Nanoray.Shrike.Harmony;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Nanoray.Shrike;
+using Nanoray.Shrike.Harmony;
 using Shockah.Kokoro;
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using System.Reflection.Emit;
-using System.Collections.Generic;
 using StardewValley.Menus;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 
-namespace Shockah.JunimoWarp
+namespace Shockah.JunimoWarp;
+
+internal class ItemGrabMenuPatches
 {
-	internal class ItemGrabMenuPatches
+	private const int WarpButtonID = 1567601; // {NexusID}01
+
+	private static ModEntry Instance
+		=> ModEntry.Instance;
+
+	private static readonly ConditionalWeakTable<ItemGrabMenu, ClickableTextureComponent> WarpButtons = [];
+
+	internal static void Apply(Harmony harmony)
 	{
-		private const int WarpButtonID = 1567601; // {NexusID}01
+		harmony.TryPatch(
+			monitor: Instance.Monitor,
+			original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.RepositionSideButtons)),
+			transpiler: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(RepositionSideButtons_Transpiler))
+		);
 
-		private static JunimoWarp Instance
-			=> JunimoWarp.Instance;
+		harmony.TryPatch(
+			monitor: Instance.Monitor,
+			original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), [typeof(SpriteBatch)]),
+			transpiler: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(draw_Transpiler))
+		);
 
-		private static readonly ConditionalWeakTable<ItemGrabMenu, ClickableTextureComponent> WarpButtons = new();
+		harmony.TryPatch(
+			monitor: Instance.Monitor,
+			original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.performHoverAction)),
+			postfix: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(performHoverAction_Postfix)),
+			transpiler: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(performHoverAction_Transpiler))
+		);
 
-		internal static void Apply(Harmony harmony)
+		harmony.TryPatch(
+			monitor: Instance.Monitor,
+			original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.receiveLeftClick)),
+			postfix: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(receiveLeftClick_Postfix))
+		);
+
+		harmony.TryPatch(
+			monitor: Instance.Monitor,
+			original: () => AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.populateClickableComponentList)),
+			postfix: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(IClickableMenu_populateClickableComponentList_Postfix))
+		);
+	}
+
+	public static ClickableTextureComponent ObtainWarpButton(ItemGrabMenu menu)
+	{
+		if (!WarpButtons.TryGetValue(menu, out var button))
 		{
-			harmony.TryPatch(
-				monitor: Instance.Monitor,
-				original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.RepositionSideButtons)),
-				transpiler: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(RepositionSideButtons_Transpiler))
-			);
-
-			harmony.TryPatch(
-				monitor: Instance.Monitor,
-				original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new Type[] { typeof(SpriteBatch) }),
-				transpiler: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(draw_Transpiler))
-			);
-
-			harmony.TryPatch(
-				monitor: Instance.Monitor,
-				original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.performHoverAction)),
-				postfix: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(performHoverAction_Postfix)),
-				transpiler: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(performHoverAction_Transpiler))
-			);
-
-			harmony.TryPatch(
-				monitor: Instance.Monitor,
-				original: () => AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.receiveLeftClick)),
-				postfix: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(receiveLeftClick_Postfix))
-			);
-
-			harmony.TryPatch(
-				monitor: Instance.Monitor,
-				original: () => AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.populateClickableComponentList)),
-				postfix: new HarmonyMethod(typeof(ItemGrabMenuPatches), nameof(IClickableMenu_populateClickableComponentList_Postfix))
-			);
-		}
-
-		public static ClickableTextureComponent ObtainWarpButton(ItemGrabMenu menu)
-		{
-			if (!WarpButtons.TryGetValue(menu, out var button))
+			button = new ClickableTextureComponent("", new Rectangle(menu.xPositionOnScreen + menu.width, menu.yPositionOnScreen + menu.height / 3 - 64, 64, 64), "", Instance.Helper.Translation.Get("junimoWarp.tooltip"), Game1.mouseCursors, new Rectangle(108, 491, 16, 16), 4f)
 			{
-				button = new ClickableTextureComponent("", new Rectangle(menu.xPositionOnScreen + menu.width, menu.yPositionOnScreen + menu.height / 3 - 64, 64, 64), "", Instance.Helper.Translation.Get("junimoWarp.tooltip"), Game1.mouseCursors, new Rectangle(108, 491, 16, 16), 4f)
-				{
-					myID = WarpButtonID,
-					leftNeighborID = 53912,
-					region = 15923
-				};
-				WarpButtons.AddOrUpdate(menu, button);
-			}
-			return button;
+				myID = WarpButtonID,
+				leftNeighborID = 53912,
+				region = 15923
+			};
+			WarpButtons.AddOrUpdate(menu, button);
 		}
+		return button;
+	}
 
-		private static IEnumerable<CodeInstruction> RepositionSideButtons_Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
+	private static IEnumerable<CodeInstruction> RepositionSideButtons_Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
+	{
+		try
 		{
-			try
+			return new SequenceBlockMatcher<CodeInstruction>(instructions)
+				.Find(
+					ILMatches.Newobj(AccessTools.DeclaredConstructor(typeof(List<ClickableComponent>), [])),
+					ILMatches.Stloc<List<ClickableComponent>>(originalMethod).CreateLdlocInstruction(out var ldlocSideButtons)
+				)
+				.Insert(
+					SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.JustInsertion,
+					new CodeInstruction(OpCodes.Ldarg_0),
+					ldlocSideButtons,
+					new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ItemGrabMenuPatches), nameof(RepositionSideButtons_Transpiler_ModifySideButtons)))
+				)
+				.AllElements();
+		}
+		catch (Exception ex)
+		{
+			Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
+			return instructions;
+		}
+	}
+
+	public static void RepositionSideButtons_Transpiler_ModifySideButtons(ItemGrabMenu menu, List<ClickableComponent> sideButtons)
+	{
+		if (menu.context is not Chest chest)
+			return;
+		if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
+			return;
+		sideButtons.Add(ObtainWarpButton(menu));
+	}
+
+	private static IEnumerable<CodeInstruction> draw_Transpiler(IEnumerable<CodeInstruction> instructions)
+	{
+		try
+		{
+			return new SequenceBlockMatcher<CodeInstruction>(instructions)
+				.Find(
+					ILMatches.Ldarg(0),
+					ILMatches.Ldfld(AccessTools.Field(typeof(MenuWithInventory), nameof(MenuWithInventory.hoverText))),
+					ILMatches.Brfalse
+				)
+				.PointerMatcher(SequenceMatcherRelativeElement.First)
+				.ExtractLabels(out var labels)
+				.Insert(
+					SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.JustInsertion,
+
+					new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
+					new CodeInstruction(OpCodes.Ldarg_1),
+					new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ItemGrabMenuPatches), nameof(draw_Transpiler_DrawWarpButton)))
+				)
+				.AllElements();
+		}
+		catch (Exception ex)
+		{
+			Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
+			return instructions;
+		}
+	}
+
+	public static void draw_Transpiler_DrawWarpButton(ItemGrabMenu menu, SpriteBatch b)
+	{
+		if (menu.context is not Chest chest)
+			return;
+		if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
+			return;
+		ObtainWarpButton(menu).draw(b);
+	}
+
+	private static IEnumerable<CodeInstruction> performHoverAction_Transpiler(IEnumerable<CodeInstruction> instructions)
+	{
+		try
+		{
+			return new SequenceBlockMatcher<CodeInstruction>(instructions)
+				.Find(
+					ILMatches.Ldarg(0),
+					ILMatches.Ldarg(1),
+					ILMatches.Ldarg(2),
+					ILMatches.Call("performHoverAction")
+				)
+				.Insert(
+					SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.JustInsertion,
+
+					new CodeInstruction(OpCodes.Ldarg_0),
+					new CodeInstruction(OpCodes.Ldarg_1),
+					new CodeInstruction(OpCodes.Ldarg_2),
+					new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ItemGrabMenuPatches), nameof(performHoverAction_Transpiler_TryHoverWarpButton)))
+				)
+				.AllElements();
+		}
+		catch (Exception ex)
+		{
+			Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
+			return instructions;
+		}
+	}
+
+	public static void performHoverAction_Transpiler_TryHoverWarpButton(ItemGrabMenu menu, int x, int y)
+	{
+		if (menu.context is not Chest chest)
+			return;
+		if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
+			return;
+		ObtainWarpButton(menu).tryHover(x, y, 0.25f);
+	}
+
+	private static void performHoverAction_Postfix(ItemGrabMenu __instance, int x, int y)
+	{
+		if (__instance.context is not Chest chest)
+			return;
+		if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
+			return;
+
+		var button = ObtainWarpButton(__instance);
+		button.tryHover(x, y);
+		if (button.containsPoint(x, y))
+			__instance.hoverText = button.hoverText;
+	}
+
+	private static void receiveLeftClick_Postfix(ItemGrabMenu __instance, int x, int y)
+	{
+		if (__instance.context is not Chest chest)
+			return;
+		if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
+			return;
+
+		var button = ObtainWarpButton(__instance);
+		if (button.containsPoint(x, y))
+		{
+			Game1.exitActiveMenu();
+
+			if (Instance.Config.RequiredEmptyChest)
 			{
-				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsGuidAnchorable()
-					.Find(
-						ILMatches.Newobj(AccessTools.DeclaredConstructor(typeof(List<ClickableComponent>), Array.Empty<Type>())),
-						ILMatches.Stloc<List<ClickableComponent>>(originalMethod.GetMethodBody()!.LocalVariables).WithAutoAnchor(out Guid sideButtonsStlocPointer)
-					)
-					.PointerMatcher(sideButtonsStlocPointer)
-					.CreateLdlocInstruction(out var ldlocSideButtons)
-					.Insert(
-						SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.JustInsertion,
-
-						new CodeInstruction(OpCodes.Ldarg_0),
-						ldlocSideButtons,
-						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ItemGrabMenuPatches), nameof(RepositionSideButtons_Transpiler_ModifySideButtons)))
-					)
-					.AllElements();
+				foreach (var item in __instance.ItemsToGrabMenu.actualInventory)
+					if (item is not null && item.Stack > 0)
+					{
+						Kokoro.ModEntry.Instance.QueueObjectDialogue(Instance.Helper.Translation.Get("junimoWarp.notEmpty.message"));
+						return;
+					}
 			}
-			catch (Exception ex)
+
+			Instance.RequestNextWarp(Game1.player.currentLocation, new((int)chest.TileLocation.X, (int)chest.TileLocation.Y), (warpLocation, warpPoint) =>
 			{
-				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
-				return instructions;
-			}
+				ModEntry.AnimatePlayerWarp(warpLocation, warpPoint);
+			});
 		}
+	}
 
-		public static void RepositionSideButtons_Transpiler_ModifySideButtons(ItemGrabMenu menu, List<ClickableComponent> sideButtons)
-		{
-			if (menu.context is not Chest chest)
-				return;
-			if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
-				return;
-			sideButtons.Add(ObtainWarpButton(menu));
-		}
-
-		private static IEnumerable<CodeInstruction> draw_Transpiler(IEnumerable<CodeInstruction> instructions)
-		{
-			try
-			{
-				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.Find(
-						ILMatches.Ldarg(0),
-						ILMatches.Ldfld(AccessTools.Field(typeof(MenuWithInventory), nameof(MenuWithInventory.hoverText))),
-						ILMatches.Brfalse
-					)
-					.PointerMatcher(SequenceMatcherRelativeElement.First)
-					.ExtractLabels(out var labels)
-					.Insert(
-						SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.JustInsertion,
-
-						new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
-						new CodeInstruction(OpCodes.Ldarg_1),
-						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ItemGrabMenuPatches), nameof(draw_Transpiler_DrawWarpButton)))
-					)
-					.AllElements();
-			}
-			catch (Exception ex)
-			{
-				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
-				return instructions;
-			}
-		}
-
-		public static void draw_Transpiler_DrawWarpButton(ItemGrabMenu menu, SpriteBatch b)
-		{
-			if (menu.context is not Chest chest)
-				return;
-			if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
-				return;
-			ObtainWarpButton(menu).draw(b);
-		}
-
-		private static IEnumerable<CodeInstruction> performHoverAction_Transpiler(IEnumerable<CodeInstruction> instructions)
-		{
-			try
-			{
-				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.Find(
-						ILMatches.Ldarg(0),
-						ILMatches.Ldarg(1),
-						ILMatches.Ldarg(2),
-						ILMatches.Call("performHoverAction")
-					)
-					.Insert(
-						SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.JustInsertion,
-
-						new CodeInstruction(OpCodes.Ldarg_0),
-						new CodeInstruction(OpCodes.Ldarg_1),
-						new CodeInstruction(OpCodes.Ldarg_2),
-						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ItemGrabMenuPatches), nameof(performHoverAction_Transpiler_TryHoverWarpButton)))
-					)
-					.AllElements();
-			}
-			catch (Exception ex)
-			{
-				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
-				return instructions;
-			}
-		}
-
-		public static void performHoverAction_Transpiler_TryHoverWarpButton(ItemGrabMenu menu, int x, int y)
-		{
-			if (menu.context is not Chest chest)
-				return;
-			if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
-				return;
-			ObtainWarpButton(menu).tryHover(x, y, 0.25f);
-		}
-
-		private static void performHoverAction_Postfix(ItemGrabMenu __instance, int x, int y)
-		{
-			if (__instance.context is not Chest chest)
-				return;
-			if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
-				return;
-
-			var button = ObtainWarpButton(__instance);
-			button.tryHover(x, y);
-			if (button.containsPoint(x, y))
-				__instance.hoverText = button.hoverText;
-		}
-
-		private static void receiveLeftClick_Postfix(ItemGrabMenu __instance, int x, int y)
-		{
-			if (__instance.context is not Chest chest)
-				return;
-			if (chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest)
-				return;
-
-			var button = ObtainWarpButton(__instance);
-			if (button.containsPoint(x, y))
-			{
-				Game1.exitActiveMenu();
-
-				if (Instance.Config.RequiredEmptyChest)
-				{
-					foreach (var item in __instance.ItemsToGrabMenu.actualInventory)
-						if (item is not null && item.Stack > 0)
-						{
-							Kokoro.Kokoro.Instance.QueueObjectDialogue(Instance.Helper.Translation.Get("junimoWarp.notEmpty.message"));
-							return;
-						}
-				}
-
-				Instance.RequestNextWarp(Game1.player.currentLocation, new((int)chest.TileLocation.X, (int)chest.TileLocation.Y), (warpLocation, warpPoint) =>
-				{
-					JunimoWarp.AnimatePlayerWarp(warpLocation, warpPoint);
-				});
-			}
-		}
-
-		private static void IClickableMenu_populateClickableComponentList_Postfix(IClickableMenu __instance)
-		{
-			if (__instance is not ItemGrabMenu menu)
-				return;
-			menu.allClickableComponents.Add(ObtainWarpButton(menu));
-		}
+	private static void IClickableMenu_populateClickableComponentList_Postfix(IClickableMenu __instance)
+	{
+		if (__instance is not ItemGrabMenu menu)
+			return;
+		menu.allClickableComponents.Add(ObtainWarpButton(menu));
 	}
 }

@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace CropGrowthAdjustments.Types
 {
@@ -26,14 +29,43 @@ namespace CropGrowthAdjustments.Types
         [JsonIgnore]
         public int RowInCropSpriteSheet { get; set; }
         
-        public List<string> GetSeasonsToGrowIn()
+        public List<Season> GetSeasonsToGrowIn()
         {
-            return SeasonsToGrowIn.Split(',').ToList().Select(e => e.Trim()).ToList();
+            return ParseSeasons(SeasonsToGrowIn);
         }
         
-        public List<string> GetSeasonsToProduceIn()
+        public List<Season> GetSeasonsToProduceIn()
         {
-            return SeasonsToProduceIn.Split(',').ToList().Select(e => e.Trim()).ToList();
+            return ParseSeasons(SeasonsToProduceIn);
+        }
+
+        private List<Season> ParseSeasons(string seasonsString)
+        {
+            var split = seasonsString.Split(',');
+            var result = new List<Season>();
+            foreach (var seasonString in split)
+            {
+                switch (seasonString.Trim().ToLower())
+                {
+                    case "spring": 
+                        result.Add(Season.Spring);
+                        break;
+                    case "summer": 
+                        result.Add(Season.Summer);
+                        break;
+                    case "fall": 
+                        result.Add(Season.Fall);
+                        break;
+                    case "winter": 
+                        result.Add(Season.Winter);
+                        break;
+                    default:
+                        ModEntry.ModMonitor.Log($"Unknown season in Crop Adjustment: {seasonString}", LogLevel.Warn);
+                        break;
+                }
+            }
+            
+            return result;
         }
         
         public List<string> GetLocationsWithDefaultSeasonBehavior()

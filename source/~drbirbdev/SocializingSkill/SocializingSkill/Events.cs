@@ -57,7 +57,7 @@ internal class Events
     [SEvent.DayStarted]
     private void DayStarted(object sender, DayStartedEventArgs e)
     {
-        ModEntry.BelovedCheckedToday.Value = [];
+        ModEntry.BELOVED_CHECKED_TODAY.Value = [];
     }
 
     // Grant XP from quest completion
@@ -73,31 +73,8 @@ internal class Events
     private static void SpaceEvents_AfterGiftGiven(object sender, SpaceCore.Events.EventArgsGiftGiven e)
     {
         int taste = e.Npc.getGiftTasteForThisItem(e.Gift);
-        if (Game1.player.HasProfession("Gifter"))
-        {
-            int extraFriendship = 0;
-            if (Game1.player.HasProfession("Gifter", true))
-            {
-                extraFriendship += 20;
-            }
 
-            switch (taste)
-            {
-                case 0:
-                    extraFriendship += ModEntry.Config.GifterLovedGiftExtraFriendship;
-                    break;
-                case 2:
-                    extraFriendship += ModEntry.Config.GifterLikedGiftExtraFriendship;
-                    break;
-                case 8:
-                    extraFriendship += ModEntry.Config.GifterNeutralGiftExtraFriendship;
-                    break;
-            }
-
-            Game1.player.changeFriendship(extraFriendship, e.Npc);
-        }
-
-        if (taste > 2)
+        if (taste is 4 or 6)
         {
             return;
         }
@@ -114,5 +91,31 @@ internal class Events
         }
 
         Skills.AddExperience(Game1.player, "drbirbdev.Socializing", (int)exp);
+
+        if (!Game1.player.HasProfession("Gifter"))
+        {
+            return;
+        }
+
+        int extraFriendship = 0;
+        if (Game1.player.HasProfession("Gifter", true))
+        {
+            extraFriendship += ModEntry.Config.GifterPrestigeExtraFriendship;
+        }
+
+        switch (taste)
+        {
+            case 0:
+                extraFriendship += ModEntry.Config.GifterLovedGiftExtraFriendship;
+                break;
+            case 2:
+                extraFriendship += ModEntry.Config.GifterLikedGiftExtraFriendship;
+                break;
+            case 8:
+                extraFriendship += ModEntry.Config.GifterNeutralGiftExtraFriendship;
+                break;
+        }
+
+        Game1.player.changeFriendship(extraFriendship, e.Npc);
     }
 }

@@ -6,11 +6,11 @@ mods:
    Last Day to Plant
 
 latest commit:
-   commit 83e16ed9223c5632f23336ce58096668ab29589d
+   commit e1289a60547e57f4d68be118ba145f638e2b583b
    Author: Daylon Crider <dmcrider@users.noreply.github.com>
-   Date:   Sat May 20 10:37:30 2023 -0700
+   Date:   Sun Mar 24 15:29:41 2024 -0700
    
-       Merge pull request #21 from dmcrider/patch-may-2023
+       Merge pull request #22 from dmcrider/v1-6
        
-       Fixed #20
+       v2.0 - StardewValley v1.6
    

@@ -11,25 +11,27 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
+using StardewValley.Buffs;
 
 namespace CopperStill.ModPatches {
     internal static class TipsyBuff {
-        private const int Tipsy = 17;
-
         public static void Register(IModHelper helper) {
             var harmony = new Harmony(helper.ModContent.ModID);
             harmony.Patch(
-                original: AccessTools.Method(typeof(BuffsDisplay), "tryToAddDrinkBuff"),
-                prefix: new HarmonyMethod(typeof(TipsyBuff), nameof(Prefix_TryToAddDrinkBuff))
+                original: AccessTools.Method(typeof(BuffManager), "Apply"),
+                prefix: new HarmonyMethod(typeof(TipsyBuff), nameof(Prefix_BuffManager_Apply))
             );
         }
 
-        private static bool Prefix_TryToAddDrinkBuff(BuffsDisplay __instance, Buff b) {
-            if (b.source.Contains("Brandy") || b.source.Contains("Vodka") || b.source.Contains("Gin")
-                || b.source.Contains("Tequila") || b.source.Contains("Moonshine") || b.source.Contains("Whiskey")
+        private static bool Prefix_BuffManager_Apply(
+            BuffManager __instance, Buff buff
+        ) {
+            if (buff.id != Buff.tipsy &&
+                (buff.source.Contains("Brandy") || buff.source.Contains("Vodka") || buff.source.Contains("Gin")
+                || buff.source.Contains("Tequila") || buff.source.Contains("Moonshine") || buff.source.Contains("Whiskey")
+                || buff.source.Contains("Rum") || buff.source.Contains("Soju") || buff.source.Contains("Sake"))
             ) {
-                __instance.addOtherBuff(new Buff(Tipsy));
+                __instance.Apply(new Buff(Buff.tipsy));
                 return false;
             }
             return true;

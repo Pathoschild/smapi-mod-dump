@@ -39,15 +39,21 @@ namespace ConvenientChests.CategorizeChests.Framework.Persistence
         {
             Address = address;
             AcceptedItems = data.AcceptedItemKinds
-                .GroupBy(i => i.ItemType)
-                .ToDictionary(
-                    g => g.Key,
-                    g => string.Join(",", g.Select(i => i.ObjectIndex))
-                );
+                                .GroupBy(i => i.GetItemType())
+                                .ToDictionary(
+                                              g => g.Key,
+                                              g => string.Join(",", g.Select(i => i.ItemId))
+                                             );
         }
 
 
-        public HashSet<ItemKey> GetItemSet() =>
-            new HashSet<ItemKey>(AcceptedItems.SelectMany(e => e.Value.Split(',').Select(i => new ItemKey(e.Key, int.Parse(i)))));
+        public HashSet<ItemKey> GetItemSet()
+            => AcceptedItems
+              .Select(e => new {
+                   Type = e.Key,
+                   ItemIDs = e.Value.Split(','),
+               })
+              .SelectMany(e => e.ItemIDs.Select(itemId => new ItemKey(e.Type.GetTypeDefinition(), itemId)))
+              .ToHashSet();
     }
 }

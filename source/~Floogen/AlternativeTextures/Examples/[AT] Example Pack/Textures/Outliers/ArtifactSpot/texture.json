@@ -10,7 +10,7 @@
 
 {
   "ItemName": "Artifact Spot",
-  "Type": "Craftable",
+  "Type": "ArtifactSpot",
   "TextureWidth": 16,
   "TextureHeight": 16,
   "Variations": 2

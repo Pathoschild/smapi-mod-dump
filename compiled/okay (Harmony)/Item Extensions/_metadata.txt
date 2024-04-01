@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20357
+IDs: mistyspring.ItemExtensions
+update keys: Nexus:20357, GitHub:misty-spring/StardewMods

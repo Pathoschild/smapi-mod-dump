@@ -15,11 +15,14 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Tools;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Menus;
 using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Helpers;
-using static StardewValley.Minigames.MineCart;
+using System.Linq;
+using StardewValley.Internal;
+//using xTile.Dimensions;
 
 namespace BetterButterflyHutch
 {
@@ -95,17 +98,17 @@ namespace BetterButterflyHutch
             System.Reflection.MethodInfo mInfo;
 
             // must use a patch to perform this action.
-            mInfo = harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Locations.Desert), nameof(StardewValley.Locations.Desert.getDesertMerchantTradeStock)),
-                                  postfix: new HarmonyMethod(typeof(DesertTraderPatches), nameof(DesertTraderPatches.getDesertMerchantTradeStock_Postfix))
+            mInfo = harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Locations.Desert), nameof(StardewValley.Locations.Desert.OnDesertTrader)),
+                                  postfix: new HarmonyMethod(typeof(DesertTraderPatches), nameof(DesertTraderPatches.OnDesertTrader_Postfix))
                                  );
 
             if (Config.UseHarmony)
             {
                 try
                 {
-                    mInfo = harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Objects.Furniture), nameof(StardewValley.Objects.Furniture.resetOnPlayerEntry)),
-                                          prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.resetOnPlayerEntry_Prefix)),
-                                          postfix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.resetOnPlayerEntry_Postfix))
+                    mInfo = harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Objects.Furniture), nameof(StardewValley.Objects.Furniture.actionOnPlayerEntryOrPlacement)),
+                                          prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.actionOnPlayerEntryOrPlacement_Prefix)),
+                                          postfix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.actionOnPlayerEntryOrPlacement_Postfix))
                                          );
                 }
                 catch (Exception ex)
@@ -247,19 +250,19 @@ namespace BetterButterflyHutch
                 // the Desert LocationContext is the same as valley/town. there are really only two contexts. valley/town and island.
                 // we spawn in more sensible conditions.
 
-                bool island = loc.GetLocationContext() == StardewValley.GameLocation.LocationContext.Island;
-                bool desert = loc.Name.Equals("Desert", StringComparison.Ordinal);
+                bool island = loc.InIslandContext();
+                bool desert = loc.InDesertContext();
                 bool isClear = !(Game1.IsRainingHere(loc) || Game1.IsLightningHere(loc) || Game1.IsSnowingHere(loc) || Game1.IsDebrisWeatherHere(loc));
 
                 bool spawn = island || desert || (!Game1.currentSeason.Equals("winter", StringComparison.Ordinal) || Config.WinterButterflies);
                 spawn = spawn && (isClear || desert);
-                spawn = spawn && !Game1.isStartingToGetDarkOut();
+                spawn = spawn && !Game1.isStartingToGetDarkOut(loc);
 
                 return spawn;
             }
             else
             {
-                if (Config.NightButterflies || !Game1.isStartingToGetDarkOut())
+                if (Config.NightButterflies || !Game1.isStartingToGetDarkOut(loc))
                     return true;
                 return false;
             }
@@ -281,14 +284,14 @@ namespace BetterButterflyHutch
 
                 if (CanSpawn(location))
                 {
-                    bool island = location.GetLocationContext() == GameLocation.LocationContext.Island;
+                    bool island = location.InIslandContext();
                     if (!location.IsOutdoors && Config.IslandButterflies)
                         island = true;
 
                     do
                     {
                         Vector2 v = new Vector2(tile.X + (float)Game1.random.Next(1, 3), tile.Y - 2f + (float)Game1.random.Next(-1, 2));
-                        location.addCritter(new Butterfly(v, island).setStayInbounds(true));
+                        location.addCritter(new Butterfly(location, v, islandButterfly: island, forceSummerButterfly: false).setStayInbounds(true));
                     } while (Game1.random.NextDouble() < 0.8);
                 }
             }
@@ -334,7 +337,7 @@ namespace BetterButterflyHutch
             // if the hutch did not spawn anything, then we will not
             if (hutchCount > 0)
             {
-                bool island = loc.GetLocationContext() == StardewValley.GameLocation.LocationContext.Island;
+                bool island = loc.InIslandContext();
                 int min = 0;
                 int max = 0;
 
@@ -390,7 +393,7 @@ namespace BetterButterflyHutch
                     }
 
                     for (int i = 0; i < spawnCount; i++)
-                        loc.addCritter(new Butterfly(loc.getRandomTile(), island).setStayInbounds(true));
+                        loc.addCritter(new Butterfly(loc, loc.getRandomTile(), islandButterfly: island, forceSummerButterfly: false).setStayInbounds(true));
                 }
             }
             //else
@@ -409,13 +412,14 @@ namespace BetterButterflyHutch
             {
                 GameLocation loc = e.NewLocation;
 
+                // we can't distinguish from ambient and hutch spawns. this only matters outdoors.
+                // if there are multiple hutches, we cannot distinguish spawns from individual hutches
+                int count = CountButterflies(loc);
+
                 foreach (StardewValley.Object obj in loc.furniture)
                 {
                     if (obj.ParentSheetIndex == HutchIdx)
                     {
-                        // we can't distinguish from ambient and hutch spawns. only matters outdoors.
-                        // if there are multiple hutches, we cannot distinguish spawns from individual hutches
-                        int count = CountButterflies(loc);
                         if (Debug)
                             Log.Debug($"Found Hutch at {loc.Name}, Outdoors={loc.IsOutdoors}, Game Butterflies={count}");
 
@@ -432,9 +436,9 @@ namespace BetterButterflyHutch
             private static int Before;
 
             [HarmonyPrefix]
-            [HarmonyPatch(nameof(StardewValley.Objects.Furniture.resetOnPlayerEntry))]
+            [HarmonyPatch(nameof(StardewValley.Objects.Furniture.actionOnPlayerEntryOrPlacement))]
             [HarmonyPatch(new Type[] { typeof(GameLocation), typeof(bool) })]
-            public static bool resetOnPlayerEntry_Prefix(StardewValley.Objects.Furniture __instance, GameLocation environment, bool dropDown)
+            public static bool actionOnPlayerEntryOrPlacement_Prefix(StardewValley.Objects.Furniture __instance, GameLocation environment, bool dropDown)
             {
                 try
                 {
@@ -444,15 +448,15 @@ namespace BetterButterflyHutch
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Failed in {nameof(resetOnPlayerEntry_Prefix)}:\n{ex}");
+                    Log.Error($"Failed in {nameof(actionOnPlayerEntryOrPlacement_Prefix)}:\n{ex}");
                     return true;
                 }
             }
 
             [HarmonyPostfix]
-            [HarmonyPatch(nameof(StardewValley.Objects.Furniture.resetOnPlayerEntry))]
+            [HarmonyPatch(nameof(StardewValley.Objects.Furniture.actionOnPlayerEntryOrPlacement))]
             [HarmonyPatch(new Type[] { typeof(GameLocation), typeof(bool) })]
-            public static void resetOnPlayerEntry_Postfix(StardewValley.Objects.Furniture __instance, GameLocation environment, bool dropDown)
+            public static void actionOnPlayerEntryOrPlacement_Postfix(StardewValley.Objects.Furniture __instance, GameLocation environment, bool dropDown)
             {
                 try
                 {
@@ -461,7 +465,7 @@ namespace BetterButterflyHutch
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Failed in {nameof(resetOnPlayerEntry_Postfix)}:\n{ex}");
+                    Log.Error($"Failed in {nameof(actionOnPlayerEntryOrPlacement_Postfix)}:\n{ex}");
                 }
             }
         }
@@ -470,24 +474,30 @@ namespace BetterButterflyHutch
         public class DesertTraderPatches
         {
             [HarmonyPostfix]
-            [HarmonyPatch(nameof(StardewValley.Locations.Desert.getDesertMerchantTradeStock))]
+            [HarmonyPatch(nameof(StardewValley.Locations.Desert.OnDesertTrader))]
             [HarmonyPatch(new Type[] { typeof(Farmer) })]
-            public static void getDesertMerchantTradeStock_Postfix(StardewValley.Locations.Desert __instance, ref Dictionary<ISalable, int[]> __result, Farmer who)
+            public static void OnDesertTrader_Postfix(StardewValley.Locations.Desert __instance)
             {
                 try
                 {
-                    foreach (var item in __result)
+                    if (Game1.activeClickableMenu is ShopMenu shop)
                     {
-                        if (item.Key.Name.Equals("Butterfly Hutch", StringComparison.OrdinalIgnoreCase))
+                        foreach (var item in shop.forSale)
                         {
-                            item.Value[StardewValley.Menus.ShopMenu.extraTradeItemCountIndex] = Config.NumBatWings;
-                            return;
+                            if (item.Name.Equals("Butterfly Hutch", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var itemPriceAndStock = shop.itemPriceAndStock;
+                                var stock = itemPriceAndStock[item];
+                                stock.TradeItemCount = Config.NumBatWings;
+                                itemPriceAndStock[item] = stock;
+                                return;
+                            }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Failed in {nameof(getDesertMerchantTradeStock_Postfix)}:\n{ex}");
+                    Log.Error($"Failed in {nameof(OnDesertTrader_Postfix)}:\n{ex}");
                 }
             }
         }

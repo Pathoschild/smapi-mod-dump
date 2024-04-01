@@ -24,7 +24,7 @@ namespace ItemBags.Community_Center
     public class BundleReward
     {
         public BundleTask Task { get; }
-        public int Id { get; }
+        public string Id { get; }
         public int Quantity { get; }
 
         private BundleRewardType RewardType { get; }
@@ -46,7 +46,7 @@ namespace ItemBags.Community_Center
             Furniture
         }
 
-        public BundleReward(BundleTask Task, int Id, int Quantity, BundleRewardType Type)
+        public BundleReward(BundleTask Task, string Id, int Quantity, BundleRewardType Type)
         {
             this.Task = Task;
             this.Id = Id;
@@ -78,7 +78,7 @@ namespace ItemBags.Community_Center
             else
                 throw new NotImplementedException(string.Format("Unrecognized Bundle Reward Type: {0}", Entries[0]));
 
-            this.Id = int.Parse(Entries[1]);
+            this.Id = Entries[1];
             this.Quantity = int.Parse(Entries[2]);
         }
 

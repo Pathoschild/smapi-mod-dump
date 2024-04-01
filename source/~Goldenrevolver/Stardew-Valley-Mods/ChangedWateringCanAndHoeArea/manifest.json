@@ -15,6 +15,6 @@
   "Description": "Changed watering can and hoe area to be more like in Harvest Moon FoMT",
   "UniqueID": "Goldenrevolver.ChangedWateringCanAndHoeArea",
   "EntryDll": "ChangedWateringCanAndHoeArea.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:7851" ]
 }

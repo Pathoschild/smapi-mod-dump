@@ -19,8 +19,8 @@ namespace StardewDruid.Cast.Mists
         public int targetIndex { get; set; }
 
 
-        public Totem(Vector2 target, Rite rite, int TargetIndex)
-            : base(target, rite)
+        public Totem(Vector2 target,  int TargetIndex)
+            : base(target)
         {
 
             targetIndex = TargetIndex;
@@ -33,7 +33,7 @@ namespace StardewDruid.Cast.Mists
 
             int extractionChance = 1;
 
-            if (!riteData.castTask.ContainsKey("masterTotem"))
+            if (!Mod.instance.rite.castTask.ContainsKey("masterTotem"))
             {
 
                 Mod.instance.UpdateTask("lessonTotem", 1);
@@ -58,7 +58,7 @@ namespace StardewDruid.Cast.Mists
 
             Vector2 boltVector = new(targetVector.X, targetVector.Y - 2);
 
-            ModUtility.AnimateBolt(targetLocation, boltVector);
+            ModUtility.AnimateBolt(targetLocation, boltVector * 64 + new Vector2(32));
 
             return;
 

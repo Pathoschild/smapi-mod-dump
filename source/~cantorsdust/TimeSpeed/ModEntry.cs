@@ -138,7 +138,7 @@ namespace TimeSpeed
             if (!this.ShouldEnable())
                 return;
 
-            this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
+            this.UpdateScaleForDay(Game1.season, Game1.dayOfMonth);
             this.UpdateTimeFreeze(clearPreviousOverrides: true);
             this.UpdateSettingsForLocation(Game1.currentLocation);
         }
@@ -248,7 +248,7 @@ namespace TimeSpeed
         private void ReloadConfig()
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
+            this.UpdateScaleForDay(Game1.season, Game1.dayOfMonth);
             this.UpdateSettingsForLocation(Game1.currentLocation);
             this.Notifier.ShortNotify(I18n.Message_ConfigReloaded());
         }
@@ -377,7 +377,7 @@ namespace TimeSpeed
         /// <summary>Update the time settings for the given date.</summary>
         /// <param name="season">The current season.</param>
         /// <param name="dayOfMonth">The current day of month.</param>
-        private void UpdateScaleForDay(string season, int dayOfMonth)
+        private void UpdateScaleForDay(Season season, int dayOfMonth)
         {
             this.AdjustTime = this.Config.ShouldScale(season, dayOfMonth);
         }

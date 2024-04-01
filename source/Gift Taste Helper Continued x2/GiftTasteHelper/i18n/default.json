@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/GiftTasteHelper
+**
+*************************************************/
+
+{
+  "tooltip.title.favorite": "Favorite Gifts",
+  "tooltip.title.none": "No Known Gifts",
+
+  "options.display": "Display",
+  "options.showOnCalendar": "Show on Calendar",
+  "options.showOnCalendar.desc": "Show tooltip on Calendar when mouse hovering birthday",
+  "options.showOnSocialPage": "Show on Social page",
+  "options.showOnSocialPage.desc": "Show tooltip on Social page when mouse hovering NPCs",
+  "options.showOnlyKnownGifts": "Show only known gifts",
+  "options.showOnlyKnownGifts.desc": "Show only gifts that you already gived to this NPCs",
+  "options.showUniversalGifts": "Show Universal gifts",
+  "options.showUniversalGifts.desc": "Show Universal gifts on tooltip",
+  "options.showGiftsForUnmetNPCs": "Show gifts for unmet NPCs",
+  "options.showGiftsForUnmetNPCs.desc": "Show gifts for NPCs that you haven't already met",
+  "options.hideTooltipWhenNoGiftsKnown": "Hide when no gifts known",
+  "options.hideTooltipWhenNoGiftsKnown.desc": "Hide tooltip when there is no gifts known",
+  "options.colorizeUniversalGiftNames": "Colorize Universal gift names",
+  "options.colorizeUniversalGiftNames.desc": "Colorize Universal gift names",
+  "options.other": "Other",
+  "options.maxGiftsToDisplay": "Max gifts to display",
+  "options.maxGiftsToDisplay.desc": "Max gifts to display on Tooltip. (0 is no limit)",
+  "options.shareKnownGiftsWithAllSaves": "Share known gifts with all saves",
+  "options.shareKnownGiftsWithAllSaves.desc": "Share known gifts with all saves"
+}

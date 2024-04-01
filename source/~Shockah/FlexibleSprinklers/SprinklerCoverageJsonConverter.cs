@@ -36,7 +36,7 @@ internal sealed class SprinklerCoverageJsonConverter : JsonConverter<ISet<IntPoi
 		}
 		if (lineList is not null)
 		{
-			HashSet<IntPoint> newPointSet = new();
+			HashSet<IntPoint> newPointSet = [];
 			if (lineList.Count == 0)
 				return newPointSet;
 

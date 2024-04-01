@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AnimalsNeedWater",
+  "Author": "GZhynko",
+  "Version": "1.5.3",
+  "Description": "Adds functionality to water troughs located in animal houses.",
+  "UniqueID": "GZhynko.AnimalsNeedWater",
+  "EntryDll": "AnimalsNeedWater.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "Nexus:6196" ]
+}

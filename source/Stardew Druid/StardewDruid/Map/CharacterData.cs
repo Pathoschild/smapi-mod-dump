@@ -13,12 +13,14 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Character;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Quests;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using xTile;
 
 namespace StardewDruid.Map
 {
@@ -79,8 +81,37 @@ namespace StardewDruid.Map
 
         }
 
+        public static void CharacterDefault(string characterName, string characterStart)
+        {
 
-        public static void CharacterLoad(string characterName, string startMap)
+            if (!Context.IsMainPlayer)
+            {
+
+                return;
+
+            }
+
+            string startMap = characterStart;
+
+            if (characterStart == "Follow")
+            {
+
+                startMap = "Farm";
+
+            }
+
+            if (Mod.instance.characters.ContainsKey(characterName))
+            {
+
+                Mod.instance.characters[characterName].DefaultMap = startMap;
+
+                Mod.instance.characters[characterName].DefaultPosition = WarpData.WarpStart(startMap);
+
+            }
+
+        }
+
+        public static void CharacterLoad(string characterName, string characterStart)
         {
             
             if (!Context.IsMainPlayer)
@@ -88,6 +119,15 @@ namespace StardewDruid.Map
             
                 return; 
             
+            }
+
+            string startMap = characterStart;
+
+            if (characterStart == "Follow")
+            {
+
+                startMap = "Farm";
+
             }
 
             if (Mod.instance.characters.ContainsKey(characterName))
@@ -104,7 +144,7 @@ namespace StardewDruid.Map
             if (characterName == "Effigy")
             {
 
-                Vector2 position = CharacterPosition(startMap);
+                Vector2 position = WarpData.WarpStart(startMap);
 
                 Effigy npcEffigy = new(position, startMap);
 
@@ -116,7 +156,13 @@ namespace StardewDruid.Map
 
                 npcEffigy.update(Game1.currentGameTime, startLocation);
 
-                if (startMap == "Farm")
+                if (characterStart == "Follow")
+                {
+
+                    npcEffigy.SwitchFollowMode(Game1.player);
+
+                }
+                else if(startMap == "Farm")
                 {
 
                     npcEffigy.SwitchRoamMode();
@@ -131,7 +177,7 @@ namespace StardewDruid.Map
                 if (Game1.player.caveChoice.Value == 0 && Game1.player.totalMoneyEarned > 25000 && Game1.player.totalMoneyEarned < 30000)
                 {
 
-                    Mod.instance.dialogue["Effigy"].specialDialogue.Add("Demetrius", new() { "I had a peculiar visitor", "Did you meet Demetrius?", });
+                    Mod.instance.dialogue["Effigy"].AddSpecial("Effigy", "Demetrius");
 
                 }
 
@@ -142,7 +188,7 @@ namespace StardewDruid.Map
             if (characterName == "Jester")
             {
 
-                Vector2 position = CharacterPosition(startMap);
+                Vector2 position = WarpData.WarpStart(startMap);
 
                 Jester npcJester = new(position, startMap);
 
@@ -154,7 +200,13 @@ namespace StardewDruid.Map
 
                 npcJester.update(Game1.currentGameTime, startLocation);
 
-                if (startMap == "Farm")
+                if (characterStart == "Follow")
+                {
+
+                    npcJester.SwitchFollowMode(Game1.player);
+
+                }
+                else if (startMap == "Farm")
                 {
 
                     npcJester.SwitchRoamMode();
@@ -172,7 +224,7 @@ namespace StardewDruid.Map
             if (characterName == "Shadowtin")
             {
 
-                Vector2 position = CharacterPosition(startMap);
+                Vector2 position = WarpData.WarpStart(startMap);
 
                 Shadowtin npcShadowtin = new(position, startMap);
 
@@ -184,7 +236,13 @@ namespace StardewDruid.Map
 
                 npcShadowtin.update(Game1.currentGameTime, startLocation);
 
-                if (startMap == "Farm")
+                if (characterStart == "Follow")
+                {
+
+                    npcShadowtin.SwitchFollowMode(Game1.player);
+
+                }
+                else if (startMap == "Farm")
                 {
 
                     npcShadowtin.SwitchRoamMode();
@@ -208,71 +266,6 @@ namespace StardewDruid.Map
 
         }
 
-        /*public static AnimatedSprite CharacterSprite(string characterName)
-        {
-
-            AnimatedSprite characterSprite = new();
-
-            characterSprite.spriteTexture = CharacterTexture(characterName);
-
-            characterSprite.textureName.Set("18465_" + characterName);
-
-            characterSprite.loadedTexture = "18465_" + characterName;
-
-            switch (characterName)
-            {
-
-                case "Jester":
-
-                    characterSprite.SpriteHeight = 32;
-
-                    characterSprite.SpriteWidth = 32;
-
-                    characterSprite.framesPerAnimation = 6;
-
-                    break;
-
-                case "Disembodied":
-
-                    characterSprite.SpriteHeight = 16;
-
-                    characterSprite.SpriteWidth = 16;
-
-                    break;
-
-                case "Effigy":
-
-
-                    characterSprite.SpriteHeight = 32;
-
-                    characterSprite.SpriteWidth = 16;
-
-                    break;
-
-                case "Shadowtin":
-
-                    characterSprite.SpriteHeight = 32;
-
-                    characterSprite.SpriteWidth = 32;
-
-                    break;
-
-                default: // Dragon
-
-                    characterSprite.SpriteHeight = 64;
-
-                    characterSprite.SpriteWidth = 64;
-
-                    //characterSprite.framesPerAnimation = 6;
-
-                    break;
-
-            }
-
-            return characterSprite;
-
-        }*/
-
         public static Texture2D CharacterPortrait(string characterName)
         {
             Texture2D characterPortrait;
@@ -280,7 +273,6 @@ namespace StardewDruid.Map
             switch (characterName)
             {
                 case "Jester":
-                case "Effigy":
                 case "Shadowtin":
 
                     characterPortrait = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", characterName + "Portrait.png"));
@@ -288,7 +280,9 @@ namespace StardewDruid.Map
                     break;
 
                 default:
-                    characterPortrait = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "DisembodiedPortrait.png"));
+
+                    characterPortrait = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "EffigyPortrait.png"));
+
                     break;
 
             }
@@ -342,53 +336,13 @@ namespace StardewDruid.Map
 
         }
 
-        public static Vector2 CharacterPosition(string defaultMap = "FarmCave")
-        {
-
-            switch (defaultMap)
-            {
-
-                case "Mountain":
-
-                    return new Vector2(6176, 1728);
-
-                case "18465_Crypt":
-
-                    return new Vector2(1280, 448);
-
-                default:
-
-                    Dictionary<string, Vector2> farmPositions = new() { ["FarmCave"] = new Vector2(6, 6) * 64, ["Farm"] = Vector2.One * 64 };
-
-                    foreach (Warp warp in Game1.getFarm().warps)
-                    {
-
-                        if (warp.TargetName == "FarmCave")
-                        {
-
-                            Vector2 cavePosition = new Vector2(warp.TargetX, warp.TargetY - 2) * 64;
-
-                            Vector2 farmPosition = new Vector2(warp.X, warp.Y + 4) * 64;
-
-                            farmPositions = new() { ["FarmCave"] = cavePosition, ["Farm"] = farmPosition, };
-
-                        }
-
-                    }
-
-                    return farmPositions[defaultMap];
-
-            }
-
-        }
-
         public static StardewDruid.Character.Actor DisembodiedVoice(GameLocation location, Vector2 position)
         {
 
             Actor actor = new Actor(position, location.Name, "Disembodied");
             actor.SwitchSceneMode();
-            actor.IsInvisible = true;
-            actor.eventActor = true;
+            //actor.IsInvisible = true;
+            //actor.eventActor = true;
             actor.collidesWithOtherCharacters.Value = true;
             actor.farmerPassesThrough = true;
             return actor;
@@ -410,7 +364,20 @@ namespace StardewDruid.Map
                     location = locate,
                 };
 
-                Mod.instance.EventQuery(queryData, "CharacterRelocate");
+                string queryString = locate == "Follow" ? "CharacterFollow" : "CharacterRelocate";
+
+                Mod.instance.EventQuery(queryData, queryString);
+
+                return;
+
+            }
+
+            CharacterDefault(name, locate);
+
+            if (locate == "Follow")
+            {
+                
+                Mod.instance.characters[name].SwitchFollowMode();
 
                 return;
 
@@ -441,49 +408,45 @@ namespace StardewDruid.Map
                 {
                     name = name,
                     longId = Game1.player.UniqueMultiplayerID,
+                    value = eventQuery,
                 };
 
-                Mod.instance.EventQuery(queryData, eventQuery);
+                Mod.instance.EventQuery(queryData, "CharacterCommand");
 
             }
 
         }
 
-        public static void QueryContinue(QueryData queryData)
+        public static void QueryCommand(QueryData queryData)
         {
 
-            Mod.instance.characters[queryData.name].DeactivateStandby();
+            switch (queryData.value)
+            {
 
-            Mod.instance.CastMessage(queryData.name + " on task for "+ Game1.getFarmer(queryData.longId).Name);
+                case "CharacterContinue":
+                    Mod.instance.characters[queryData.name].DeactivateStandby();
 
-        }
+                    Mod.instance.CastMessage(queryData.name + " on task for " + Game1.getFarmer(queryData.longId).Name);
+                    break;
+                case "CharacterStandby":
+                    Mod.instance.characters[queryData.name].ActivateStandby();
 
-        public static void QueryStandby(QueryData queryData)
-        {
+                    Mod.instance.CastMessage(queryData.name + " stands by for " + Game1.getFarmer(queryData.longId).Name);
+                    break;
+                case "CharacterFollow":
+                    Farmer follow = Game1.getFarmer(queryData.longId);
 
-            Mod.instance.characters[queryData.name].ActivateStandby();
+                    Mod.instance.characters[queryData.name].SwitchFollowMode(follow);
 
-            Mod.instance.CastMessage(queryData.name + " stands by for " + Game1.getFarmer(queryData.longId).Name);
+                    Mod.instance.CastMessage(queryData.name + " is following " + follow.Name);
+                    break;
+                case "CharacterRelocate":
+                    RelocateTo(queryData.name, queryData.location);
 
-        }
+                    Mod.instance.CastMessage(queryData.name + " sent to " + queryData.location + " by " + Game1.getFarmer(queryData.longId).Name);
+                    break;
 
-        public static void QueryFollow(QueryData queryData)
-        {
-
-            Farmer follow = Game1.getFarmer(queryData.longId);
-
-            Mod.instance.characters[queryData.name].SwitchFollowMode(follow);
-
-            Mod.instance.CastMessage(queryData.name + " is following " + follow.Name);
-
-        }
-
-        public static void QueryRelocate(QueryData queryData)
-        {
-
-            RelocateTo(queryData.name, queryData.location);
-
-            Mod.instance.CastMessage(queryData.name + " sent to " + queryData.location + " by " + Game1.getFarmer(queryData.longId).Name);
+            }
 
         }
 
@@ -495,7 +458,7 @@ namespace StardewDruid.Map
         public int Manners;
         public int SocialAnxiety;
         public int Optimism;
-        public int Gender;
+        public StardewValley.Gender Gender;
         public bool datable;
         public string Birthday_Season;
         public int Birthday_Day;

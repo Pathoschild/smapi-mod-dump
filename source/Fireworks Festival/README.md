@@ -28,8 +28,8 @@ Voyage of the Fireworks Festival
 * The fireworks require a variety of ingredients to make them, which you can largely make with the Chemizer, a new machine you learn how to craft at Mining Level 6
 
 # How to Install This Mod
-* Install Dynamic Game Assets, Content Patcher, and their dependencies
-* Download this mod from Nexus: https://www.nexusmods.com/stardewvalley/mods/15261
+* Install Content Patcher
+* Download this mod from Nexus: https://www.nexusmods.com/stardewvalley/mods/15261 or the releases tab on Github
 * If you are updating the mod, please **delete the old mod entirely** first
 * Unzip and place into Mods folder
 
@@ -61,16 +61,15 @@ Black powder requires:
 For full crafting details, see the section below.
 
 # Known Bugs
-* DGA is not compatible with Lookup Anything. If you use Lookup Anything on the items or the Chemizer, you will get nonsense (Weeds error item). 
-* DGA recipes do not show up in the crafting menu if you have Custom Crafting Stations installed. I believe this is something to do with how it tries to remove recipes for its stations. 
+* No known bugs currently.
 
 # Translations
-To translate this mod, there are *exactly* 2 files that must be translated. There is `default.json` in the `i18n` folder in the `[CP] Fireworks Festival` and `[DGA] Fireworks Festival` folders. Please do not translate anything in the `content.json` files or you may cause problems in the mod. 
+To translate this mod, there is *exactly* 1 file that must be translated. There is `default.json` in the `i18n` folder in the `[CP] Fireworks Festival` folder. Please do not translate anything in the `content.json` or other json files or you may cause problems in the mod. 
 
 # Mod Compatibility
 * This should be generally compatible with other mods, including recolors
 * There is built-in NPC compatibility for: Jasper, Jessie and Juliet, Mister Ginger, Jean and Jorts. There is planned future compatibility for Always Raining in the Valley NPCs. If you have an NPC mod, you can look through the NPCcompat.json for examples of how to add your NPC to the map and add dialogue. The .tmx file for the map has red dots on the Paths layer where NPCs currently stand, and in the future it is planned to add the festival map to the [Custom NPC Tiles spreadsheet](https://stardewmodding.miraheze.org/wiki/Custom_NPC_Tiles).
-* Unless another mod adds a festival on Summer 20, you should be good to go (I checked the mods I know of that add festivals, Surfing Festival, Ridgeside, and SVE all seem to not have festivals on this day.)
+* Unless another mod adds a festival on Summer 20, you should be good to go (I checked the mods I know of that add festivals, Surfing Festival, Ridgeside, and SVE all seem to not have festivals on this day.) The new passive festival added in 1.6 doesn't seem to conflict, but bug reports are welcome. 
 * This is compatible with multiplayer, but may not be compatible with splitscreen
 * This is not compatible with mobile
 

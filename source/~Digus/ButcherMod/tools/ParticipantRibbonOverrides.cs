@@ -19,19 +19,19 @@ using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Tools;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.tools
 {
     public class ParticipantRibbonOverrides : ToolOverridesBase
     {
-        internal static string ParticipantRibbonKey = "DIGUS.ANIMALHUSBANDRYMOD/ParticipantRibbon";
+        public const string ParticipantRibbonItemId = "DIGUS.ANIMALHUSBANDRYMOD.ParticipantRibbon";
+        internal const string ParticipantRibbonKey = "DIGUS.ANIMALHUSBANDRYMOD/ParticipantRibbon";
 
         internal static readonly Dictionary<string, FarmAnimal> Animals = new Dictionary<string, FarmAnimal>();
         internal static readonly Dictionary<string, Pet> Pets = new Dictionary<string, Pet>();
 
-        public static int InitialParentTileIndex = 520;
-        public static int IndexOfMenuItemView = 520;
-        public static bool getOne(MilkPail __instance, ref Item __result)
+        public static bool GetOneNew(GenericTool __instance, ref Item __result)
         {
             if (!IsParticipantRibbon(__instance)) return true;
 
@@ -39,14 +39,14 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static void loadDisplayName(MilkPail __instance, ref string __result)
+        public static void loadDisplayName(GenericTool __instance, ref string __result)
         {
             if (!IsParticipantRibbon(__instance)) return;
 
             __result = DataLoader.i18n.Get("Tool.ParticipantRibbon.Name");
         }
 
-        public static void loadDescription(MilkPail __instance, ref string __result)
+        public static void loadDescription(GenericTool __instance, ref string __result)
         {
             if (!IsParticipantRibbon(__instance)) return;
 
@@ -67,7 +67,7 @@ namespace AnimalHusbandryMod.tools
             __result = false;
         }
 
-        public static bool beginUsing(MilkPail __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
+        public static bool beginUsing(GenericTool __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
         {
             if (!IsParticipantRibbon(__instance)) return true;
 
@@ -177,7 +177,7 @@ namespace AnimalHusbandryMod.tools
                         pet.playContentSound();
                     }
                     pet.Halt();
-                    pet.CurrentBehavior = 0;
+                    pet.CurrentBehavior = "SitDown";
                     pet.Halt();
                     pet.Sprite.setCurrentAnimation(
                         new List<FarmerSprite.AnimationFrame>() { new FarmerSprite.AnimationFrame(18, 200) });
@@ -227,15 +227,11 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static bool DoFunction(MilkPail __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
+        public static void DoFunction(GenericTool __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
         {
-            if (!IsParticipantRibbon(__instance)) return true;
+            if (!IsParticipantRibbon(__instance)) return;
 
             string participantRibbonId = __instance.modData[ParticipantRibbonKey];
-
-            BaseToolDoFunction(__instance, location, x, y, power, who);
-            __instance.CurrentParentTileIndex = InitialParentTileIndex;
-            __instance.indexOfMenuItemView.Value = IndexOfMenuItemView;
 
             Animals.TryGetValue(participantRibbonId, out FarmAnimal animal);
             if (animal != null)
@@ -268,14 +264,35 @@ namespace AnimalHusbandryMod.tools
             who.UsingTool = false;
             who.canReleaseTool = true;
 
-            DataLoader.Helper.Reflection.GetMethod(__instance, "finish").Invoke();
+            return;
+        }
 
+        public static bool drawTool(Farmer f, int currentToolIndex)
+        {
+            Tool correntTool = f.CurrentTool;
+            if (!IsParticipantRibbon(correntTool)) return true;
+            correntTool.draw(Game1.spriteBatch);
+            return false;
+        }
+
+        public static bool endUsing(GameLocation location, Farmer who)
+        {
+            Tool correntTool = who.CurrentTool;
+            if (!IsParticipantRibbon(correntTool)) return true;
+
+            who.stopJittering();
+            who.canReleaseTool = false;
+            int addedAnimationMultiplayer = ((!(who.Stamina <= 0f)) ? 1 : 2);
+            if (Game1.isAnyGamePadButtonBeingPressed() || !who.IsLocalPlayer)
+            {
+                who.lastClick = who.GetToolLocation();
+            }
             return false;
         }
 
         private static bool IsParticipantRibbon(Item tool)
         {
-            return tool.modData.ContainsKey(ParticipantRibbonKey);
+            return tool?.modData?.ContainsKey(ParticipantRibbonKey) ?? false;
         }
 
     }

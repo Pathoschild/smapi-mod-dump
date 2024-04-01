@@ -1,0 +1,10 @@
+{
+  "name": "Custom Locks Updated",
+  "author": "Rokugin",
+  "version": "1.0.1",
+  "description": "Allows access to shops and homes based on player configuration.",
+  "uniqueID": "Rokugin.CustomLocksUpdated",
+  "entryDLL": "CustomLocksUpdated.dll",
+  "minimumapiversion": "4.0.0",
+  "updatekeys": [ "Nexus:21148" ]
+}

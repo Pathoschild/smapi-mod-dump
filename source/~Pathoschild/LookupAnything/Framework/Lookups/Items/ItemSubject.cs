@@ -21,6 +21,7 @@ using Pathoschild.Stardew.LookupAnything.Framework.Data;
 using Pathoschild.Stardew.LookupAnything.Framework.DebugFields;
 using Pathoschild.Stardew.LookupAnything.Framework.Fields;
 using Pathoschild.Stardew.LookupAnything.Framework.Models;
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
@@ -139,6 +140,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     this.Type = objData.TypeKey != null ? I18n.GetByKey(objData.TypeKey) : this.Type;
                     showInventoryFields = objData.ShowInventoryFields ?? showInventoryFields;
                 }
+            }
+
+            // show item ID
+            {
+                IModInfo? fromMod = this.GameHelper.TryGetModFromItemId(item.ItemId);
+                if (fromMod != null)
+                    yield return new GenericField(I18n.Item_CustomItem(), I18n.Item_CustomItem_Summary(modName: fromMod.Manifest.Name));
             }
 
             // don't show data for dead crop
@@ -498,10 +506,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 yield break;
 
             var data = new CropDataParser(crop, isPlanted: !isSeed);
-            bool isForage = CommonHelper.IsItemId(crop.whichForageCrop.Value) && crop.fullyGrown.Value; // show crop fields for growing mixed seeds
+            bool isForage = CommonHelper.IsItemId(crop.whichForageCrop.Value, allowZero: false) && crop.fullyGrown.Value; // show crop fields for growing mixed seeds
 
             // add next-harvest field
-            if (!isSeed)
+            if (!isSeed && !isForage)
             {
                 // get next harvest
                 SDate nextHarvest = data.GetNextHarvest();
@@ -690,7 +698,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 // output item
                 if (heldObj != null)
                 {
-
                     string summary = minutesLeft <= 0
                     ? I18n.Item_Contents_Ready(name: heldObj.DisplayName)
                     : I18n.Item_Contents_Partial(name: heldObj.DisplayName, time: this.Stringify(TimeSpan.FromMinutes(minutesLeft)));

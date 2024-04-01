@@ -1,0 +1,31 @@
+{
+  "Name": "Item Bags",
+  "Author": "SlayerDharok",
+  "Version": "3.0.4",
+  "Description": "Adds bag items which can store multiple items in a single inventory space",
+  "UniqueID": "SlayerDharok.Item_Bags",
+  "EntryDll": "ItemBags.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:5382" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true,
+      "MinimumVersion": "1.18.1"
+    },
+    {
+      "UniqueID": "Entoarox.EntoaroxFramework",
+      "IsRequired": false,
+      "MinimumVersion": "2.5.5"
+    },
+    {
+      "UniqueID": "alja.CCCB",
+      "IsRequired": false,
+      "MinimumVersion": "3.1.0"
+    }
+  ]
+}

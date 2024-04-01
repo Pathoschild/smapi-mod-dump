@@ -42,7 +42,7 @@ namespace FishingTrawler.Objects
 
             if (!who.hasOrWillReceiveMail("FishingTrawler_IntroductionsMurphy"))
             {
-                CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.introduction", playerTerm), this));
+                CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.introduction", playerTerm)));
                 Game1.drawDialogue(this);
 
                 who.modData[ModDataKeys.MURPHY_WAS_GREETED_TODAY_KEY] = "true";
@@ -52,19 +52,19 @@ namespace FishingTrawler.Objects
             {
                 if (Game1.IsRainingHere(currentLocation) || Game1.IsSnowingHere(currentLocation))
                 {
-                    CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.greeting_rainy", playerTerm), this));
+                    CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.greeting_rainy", playerTerm)));
                     Game1.drawDialogue(this);
                     Game1.afterDialogues = AskQuestionAfterGreeting;
                 }
                 else if (currentLocation is IslandSouthEast)
                 {
-                    CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.greeting_island", playerTerm), this));
+                    CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.greeting_island", playerTerm)));
                     Game1.drawDialogue(this);
                     Game1.afterDialogues = AskQuestionAfterGreeting;
                 }
                 else
                 {
-                    CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.greeting", playerTerm), this));
+                    CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.greeting", playerTerm)));
                     Game1.drawDialogue(this);
                     Game1.afterDialogues = AskQuestionAfterGreeting;
                 }
@@ -73,7 +73,7 @@ namespace FishingTrawler.Objects
             }
             else if (who.modData[ModDataKeys.MURPHY_WAS_GREETED_TODAY_KEY].ToLower() == "true" && who.modData[ModDataKeys.MURPHY_HAS_SEEN_FLAG_KEY].ToLower() == "false" && PlayerHasUnidentifiedFlagInInventory(who))
             {
-                CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.reward_explanation_flags", playerTerm), this));
+                CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.reward_explanation_flags", playerTerm)));
                 Game1.drawDialogue(this);
                 Game1.afterDialogues = TakeAndIdentifyFlag;
 
@@ -87,22 +87,27 @@ namespace FishingTrawler.Objects
             else if (who.modData[ModDataKeys.MURPHY_SAILED_TODAY_KEY].ToLower() == "true" && who.modData[ModDataKeys.MURPHY_FINISHED_TALKING_KEY].ToLower() == "false")
             {
                 string tripState = who.modData[ModDataKeys.MURPHY_WAS_TRIP_SUCCESSFUL_KEY].ToLower() == "true" ? "successful" : "failure";
-                CurrentDialogue.Push(new Dialogue(GetDialogue(string.Concat("dialogue.after_trip_", tripState), playerTerm), this));
+                CurrentDialogue.Push(new Dialogue(this, null, GetDialogue(string.Concat("dialogue.after_trip_", tripState), playerTerm)));
                 Game1.drawDialogue(this);
 
                 who.modData[ModDataKeys.MURPHY_FINISHED_TALKING_KEY] = "true";
             }
             else if (who.modData[ModDataKeys.MURPHY_FINISHED_TALKING_KEY].ToLower() == "true" && PlayerHasUnidentifiedFlagInInventory(who))
             {
-                CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.identify_flag", playerTerm), this));
+                CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.identify_flag", playerTerm)));
                 Game1.drawDialogue(this);
                 Game1.afterDialogues = TakeAndIdentifyFlag;
             }
             else if (who.modData[ModDataKeys.MURPHY_FINISHED_TALKING_KEY].ToLower() == "true")
             {
-                CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.trip_finished", playerTerm), this));
+                CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.trip_finished", playerTerm)));
                 Game1.drawDialogue(this);
             }
+        }
+
+        public override void ChooseAppearance(LocalizedContentManager content = null)
+        {
+            return;
         }
 
         public override bool checkAction(Farmer who, GameLocation l)
@@ -117,7 +122,7 @@ namespace FishingTrawler.Objects
             return true;
         }
 
-        public override void tryToReceiveActiveObject(Farmer who)
+        public override bool tryToReceiveActiveObject(Farmer who, bool probe = false)
         {
             who.Halt();
             who.faceGeneralDirection(getStandingPosition(), 0, opposite: false, useTileCalculations: false);
@@ -127,7 +132,7 @@ namespace FishingTrawler.Objects
                 var ancientFlagType = AncientFlag.GetFlagType(who.CurrentItem);
                 if (ancientFlagType == FlagType.Unknown)
                 {
-                    return;
+                    return false;
                 }
 
                 string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
@@ -137,11 +142,11 @@ namespace FishingTrawler.Objects
 
                 if (FishingTrawler.GetHoistedFlag() == FlagType.Unknown)
                 {
-                    CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.given_flag_to_hoist", playerTerm), this));
+                    CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.given_flag_to_hoist", playerTerm)));
                 }
                 else
                 {
-                    CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.given_flag_to_hoist_return_old", playerTerm), this));
+                    CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.given_flag_to_hoist_return_old", playerTerm)));
                     who.addItemByMenuIfNecessary(AncientFlag.CreateInstance(FishingTrawler.GetHoistedFlag()));
 
                     // Set their toolbar to one to avoid player accidentally giving back the flag they just got?
@@ -150,7 +155,11 @@ namespace FishingTrawler.Objects
 
                 Game1.drawDialogue(this);
                 FishingTrawler.SetHoistedFlag(ancientFlagType);
+
+                return true;
             }
+
+            return false;
         }
 
         private void ConfirmFirstTrip(Farmer who)
@@ -169,7 +178,7 @@ namespace FishingTrawler.Objects
         {
             string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
 
-            CurrentDialogue.Push(new Dialogue(GetMinigameExplanation(playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetMinigameExplanation(playerTerm)));
             Game1.drawDialogue(this);
 
             if (!who.hasOrWillReceiveMail("PeacefulEnd.FishingTrawler_minigameExplanation"))
@@ -219,7 +228,7 @@ namespace FishingTrawler.Objects
             // Verify main player has empty spot for bucket and fuel stacks
             if (who.freeSpotsInInventory() < 2)
             {
-                CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.full_inventory", playerTerm), this));
+                CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.full_inventory", playerTerm)));
                 Game1.drawDialogue(this);
                 return;
             }
@@ -234,7 +243,7 @@ namespace FishingTrawler.Objects
             // Check if any deckhands have open menus
             //List<Farmer> deckhands = ModEntry.trawlerObject.GetFarmersToDepart(true);
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.start_departure", playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.start_departure", playerTerm)));
             Game1.afterDialogues = delegate () { FishingTrawler.trawlerObject.StartDeparture(who); };
             Game1.drawDialogue(this);
         }
@@ -243,7 +252,7 @@ namespace FishingTrawler.Objects
         {
             string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.how_to_hoist_flag", playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.how_to_hoist_flag", playerTerm)));
             Game1.drawDialogue(this);
         }
 
@@ -259,7 +268,7 @@ namespace FishingTrawler.Objects
                 }
             }
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.what_flag_is_hoisted" + (FishingTrawler.GetHoistedFlag() == FlagType.Unknown ? "_None" : ""), flagName), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.what_flag_is_hoisted" + (FishingTrawler.GetHoistedFlag() == FlagType.Unknown ? "_None" : ""), flagName)));
             Game1.drawDialogue(this);
         }
 
@@ -267,7 +276,7 @@ namespace FishingTrawler.Objects
         {
             string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.remove_current_flag", playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.remove_current_flag", playerTerm)));
             Game1.drawDialogue(this);
 
             Game1.player.addItemByMenuIfNecessary(AncientFlag.CreateInstance(FishingTrawler.GetHoistedFlag()));
@@ -278,7 +287,7 @@ namespace FishingTrawler.Objects
         {
             string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.identify_flag", playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.identify_flag", playerTerm)));
             Game1.drawDialogue(this);
             Game1.afterDialogues = TakeAndIdentifyFlag;
         }
@@ -287,7 +296,7 @@ namespace FishingTrawler.Objects
         {
             string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.multiple_deckhands", playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.multiple_deckhands", playerTerm)));
             Game1.drawDialogue(this);
         }
 
@@ -295,7 +304,7 @@ namespace FishingTrawler.Objects
         {
             string playerTerm = GetDialogue("dialogue.player_title." + (who.IsMale ? "male" : "female"));
 
-            CurrentDialogue.Push(new Dialogue(GetDialogue("dialogue.goodbye", playerTerm), this));
+            CurrentDialogue.Push(new Dialogue(this, null, GetDialogue("dialogue.goodbye", playerTerm)));
             Game1.drawDialogue(this);
         }
 

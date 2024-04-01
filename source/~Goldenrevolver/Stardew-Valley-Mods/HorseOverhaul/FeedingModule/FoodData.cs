@@ -31,14 +31,14 @@ namespace HorseOverhaul
 
         public static bool IsDairyProduct(Item item)
         {
-            // TODO check if this also applies for Items or only objects in all languages, if so, cast
-            if (item.Name.ToLower().Contains("mayonnaise") || item.Name.ToLower().Contains("cheese"))
+            if (item.Name?.ToLower().Contains("mayonnaise") == true
+                || item.Name?.ToLower().Contains("cheese") == true)
             {
                 return true;
             }
             else
             {
-                return item.Category == StardewObject.MilkCategory || item.Category == StardewObject.EggCategory;
+                return item.Category is StardewObject.MilkCategory or StardewObject.EggCategory;
             }
         }
 

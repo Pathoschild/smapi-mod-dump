@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewValley;
 using System;
 
 namespace StardewDruid.Cast.Mists
@@ -16,13 +17,13 @@ namespace StardewDruid.Cast.Mists
     internal class Water : CastHandle
     {
 
-        public Water(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Water(Vector2 target)
+            : base(target)
         {
 
             castCost = 8;
 
-            if (rite.caster.FishingLevel >= 6)
+            if (Game1.player.FishingLevel >= 6)
             {
 
                 castCost = 4;
@@ -36,7 +37,7 @@ namespace StardewDruid.Cast.Mists
 
             castCost = Math.Max(8, 48 - (targetPlayer.FishingLevel * 3));
 
-            Event.World.Fishspot fishspotEvent = new(targetVector, riteData);
+            Fishspot fishspotEvent = new(targetVector);
 
             fishspotEvent.EventTrigger();
 

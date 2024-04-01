@@ -11,17 +11,35 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using Pathoschild.Stardew.Common;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Triggers;
+using SObject = StardewValley.Object;
 
 namespace ContentPatcher.Framework.TriggerActions
 {
     /// <summary>Implements the <c>Pathoschild.ContentPatcher_MigrateIds</c> trigger action.</summary>
     internal class MigrateIdsAction
     {
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The Json Assets mapped ID types, with their corresponding <see cref="ItemRegistry"/> data types.</summary>
+        private readonly Dictionary<string, string[]> JsonAssetsTypes = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["big-craftables"] = new[] { ItemRegistry.type_bigCraftable },
+            ["clothing"] = new[] { ItemRegistry.type_pants, ItemRegistry.type_shirt },
+            ["hats"] = new[] { ItemRegistry.type_hat },
+            ["objects"] = new[] { ItemRegistry.type_object },
+            ["weapons"] = new[] { ItemRegistry.type_weapon }
+        };
+
+
         /*********
         ** Public methods
         *********/
@@ -89,8 +107,6 @@ namespace ContentPatcher.Framework.TriggerActions
                     error = $"required index 1 has unknown ID type '{type}'";
                     return false;
             }
-
-
         }
 
 
@@ -181,15 +197,11 @@ namespace ContentPatcher.Framework.TriggerActions
         {
             // validate & index item IDs
             var mapQualifiedIds = new Dictionary<string, ItemMetadata>();
-            var mapLocalIds = new Dictionary<string, ItemMetadata>();
+            var mapLocalObjectIds = new Dictionary<string, ItemMetadata>();
+            var jsonAssetMap = new Lazy<Dictionary<string, Dictionary<string, string>>>(this.LoadJsonAssetsMap);
             foreach ((string oldId, string newId) in mapRawIds)
             {
-                if (!ItemRegistry.IsQualifiedItemId(oldId))
-                {
-                    error = $"the old item ID \"{oldId}\" must be a qualified item ID (like {ItemRegistry.type_object}{oldId})";
-                    return false;
-                }
-
+                // get new data
                 ItemMetadata data = ItemRegistry.ResolveMetadata(newId);
                 if (data is null)
                 {
@@ -197,15 +209,49 @@ namespace ContentPatcher.Framework.TriggerActions
                     return false;
                 }
 
-                mapQualifiedIds[data.QualifiedItemId] = data;
-                mapLocalIds[data.LocalItemId] = data;
+                // map json Assets ID
+                if (this.TryReadJsonAssetsId(oldId, jsonAssetMap, out string[] oldIds, out error))
+                {
+                    foreach (string id in oldIds)
+                    {
+                        mapQualifiedIds[id] = data;
+
+                        if (data.TypeIdentifier == ItemRegistry.type_object)
+                            mapLocalObjectIds[data.LocalItemId] = data;
+                    }
+                    continue;
+                }
+                if (error != null)
+                    return false;
+
+                // else map qualified ID
+                {
+                    if (!ItemRegistry.IsQualifiedItemId(oldId))
+                    {
+                        error = $"the old item ID \"{oldId}\" must be a qualified item ID (like {ItemRegistry.type_object}{oldId}) or a Json Assets ID in the form \"JsonAssets:<type>:<name>\"";
+                        return false;
+                    }
+
+                    mapQualifiedIds[data.QualifiedItemId] = data;
+
+                    if (data.TypeIdentifier == ItemRegistry.type_object)
+                        mapLocalObjectIds[data.LocalItemId] = data;
+                }
             }
 
             // migrate items
             Utility.ForEachItem(item =>
             {
                 if (mapQualifiedIds.TryGetValue(item.QualifiedItemId, out ItemMetadata? data))
+                {
+                    if (int.TryParse(item.ItemId, out int oldIndex) && item.ParentSheetIndex == oldIndex)
+                        item.ParentSheetIndex = data.GetParsedData()?.SpriteIndex ?? item.ParentSheetIndex;
+
                     item.ItemId = data.LocalItemId;
+
+                    if (item is SObject obj)
+                        obj.reloadSprite();
+                }
 
                 return true;
             });
@@ -216,7 +262,7 @@ namespace ContentPatcher.Framework.TriggerActions
                 // artifacts (unqualified IDs)
                 foreach ((string oldId, int[] oldValue) in player.archaeologyFound.Pairs.ToArray())
                 {
-                    if (mapLocalIds.TryGetValue(oldId, out ItemMetadata? data))
+                    if (mapLocalObjectIds.TryGetValue(oldId, out ItemMetadata? data))
                     {
                         player.archaeologyFound.Remove(oldId);
                         player.archaeologyFound.TryAdd(data.LocalItemId, oldValue);
@@ -238,7 +284,7 @@ namespace ContentPatcher.Framework.TriggerActions
                 {
                     foreach ((string oldId, int oldValue) in giftedItems.ToArray())
                     {
-                        if (mapLocalIds.TryGetValue(oldId, out ItemMetadata? data))
+                        if (mapLocalObjectIds.TryGetValue(oldId, out ItemMetadata? data))
                         {
                             giftedItems.Remove(oldId);
                             giftedItems.TryAdd(data.LocalItemId, oldValue);
@@ -249,7 +295,7 @@ namespace ContentPatcher.Framework.TriggerActions
                 // minerals (unqualified IDs)
                 foreach ((string oldId, int oldValue) in player.mineralsFound.Pairs.ToArray())
                 {
-                    if (mapLocalIds.TryGetValue(oldId, out ItemMetadata? data))
+                    if (mapLocalObjectIds.TryGetValue(oldId, out ItemMetadata? data))
                     {
                         player.mineralsFound.Remove(oldId);
                         player.mineralsFound.TryAdd(data.LocalItemId, oldValue);
@@ -259,7 +305,7 @@ namespace ContentPatcher.Framework.TriggerActions
                 // shipped (unqualified IDs)
                 foreach ((string oldId, int oldValue) in player.basicShipped.Pairs.ToArray())
                 {
-                    if (mapLocalIds.TryGetValue(oldId, out ItemMetadata? data))
+                    if (mapLocalObjectIds.TryGetValue(oldId, out ItemMetadata? data))
                     {
                         player.basicShipped.Remove(oldId);
                         player.basicShipped.TryAdd(data.LocalItemId, oldValue);
@@ -349,6 +395,91 @@ namespace ContentPatcher.Framework.TriggerActions
                 }
             }
 
+            error = null;
+            return true;
+        }
+
+        /// <summary>Load the Json Assets ID map for the current save, indexed by entity type.</summary>
+        private Dictionary<string, Dictionary<string, string>> LoadJsonAssetsMap()
+        {
+            Dictionary<string, Dictionary<string, string>> data = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (string type in this.JsonAssetsTypes.Keys)
+            {
+                Dictionary<string, string>? map = null;
+
+                try
+                {
+                    string path = Path.Combine(StardewModdingAPI.Constants.CurrentSavePath!, "JsonAssets", $"ids-{type}.json");
+
+                    if (File.Exists(path))
+                    {
+                        string json = File.ReadAllText(path);
+                        map = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                    }
+                }
+                catch
+                {
+                    // if the ID map is invalid, just ignore it
+                }
+
+                data[type] = map.ToNonNullCaseInsensitive();
+            }
+
+            return data;
+        }
+
+        /// <summary>Try to map a raw ID as a Json Assets item specifier.</summary>
+        /// <param name="rawId">The raw ID to parse.</param>
+        /// <param name="jsonAssetsMap">The Json Assets ID map loaded via <see cref="LoadJsonAssetsMap"/>.</param>
+        /// <param name="oldIds">The old IDs in the save file to match, if found.</param>
+        /// <param name="error">The error message indicating why the format is invalid, if applicable.</param>
+        /// <returns>Returns true if the ID was successfully parsed as a Json Assets item specifier and found in the Json Assets ID map, else false.</returns>
+        private bool TryReadJsonAssetsId(string rawId, Lazy<Dictionary<string, Dictionary<string, string>>> jsonAssetsMap, out string[] oldIds, out string? error)
+        {
+            // not a Json Assets ID
+            if (rawId?.StartsWith("JsonAssets", StringComparison.OrdinalIgnoreCase) is not true)
+            {
+                oldIds = Array.Empty<string>();
+                error = null;
+                return false;
+            }
+
+            // extract parts
+            string type, name;
+            {
+                string[] parts = rawId.Split(':', 3, StringSplitOptions.TrimEntries);
+                if (parts.Length != 3)
+                {
+                    oldIds = Array.Empty<string>();
+                    error = $"the old item ID \"{rawId}\" is not a valid Json Assets item specifier. It must have the form \"JsonAssets:<type>:<name>\", where the type is one of [{string.Join(", ", this.JsonAssetsTypes.Keys)}].";
+                    return false;
+                }
+
+                type = parts[1];
+                name = parts[2];
+            }
+
+            // get mapped item ID types
+            if (!this.JsonAssetsTypes.TryGetValue(type, out string[]? typeIds))
+            {
+                oldIds = Array.Empty<string>();
+                error = $"the old item ID \"{rawId}\" has invalid Json Assets type '{type}'. This must be one of [{string.Join(", ", this.JsonAssetsTypes.Keys)}].";
+                return false;
+            }
+
+            // item not mapped
+            if (!jsonAssetsMap.Value.TryGetValue(type, out Dictionary<string, string>? map) || !map.TryGetValue(name, out string? newId))
+            {
+                oldIds = Array.Empty<string>();
+                error = null;
+                return false;
+            }
+
+            // map item
+            oldIds = typeIds.Length > 0
+                ? typeIds.Select(prefix => prefix + newId).ToArray()
+                : new[] { newId };
             error = null;
             return true;
         }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21155
+IDs: zack20136.ChestFeatureSet
+update keys: Nexus:21155, GitHub:zack20136/ChestFeatureSet

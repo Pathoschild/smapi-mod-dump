@@ -28,12 +28,12 @@ namespace AlvadeasWitchTower
         {
             if (Game1.currentLocation.NameOrUniqueName == "Custom_WalWitchtower")
             {
-                Game1.changeMusicTrack("none", music_context: Game1.MusicContext.Default);
+                Game1.changeMusicTrack("none", music_context: StardewValley.GameData.MusicContext.Default);
             }
 
             if (Game1.currentLocation.NameOrUniqueName == "Custom_WalWitchtowerCave")
             {
-                Game1.changeMusicTrack("none", music_context: Game1.MusicContext.Default);
+                Game1.changeMusicTrack("none", music_context: StardewValley.GameData.MusicContext.Default);
             }
         }
     }

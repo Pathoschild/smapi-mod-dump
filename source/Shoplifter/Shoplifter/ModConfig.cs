@@ -25,5 +25,6 @@ namespace Shoplifter
         public uint DaysBannedFor { get; set; } = 3;
         public uint CatchesBeforeBan { get; set; } = 3;
         public uint CaughtRadius { get; set; } = 5;
+        public float RareStockChance { get; set; } = 0f;
     }
 }

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Zamiell/stardew-valley-mods
+**
+*************************************************/
+
+{
+  "Name": "Highlighted Objects",
+  "Author": "Zamiel",
+  "Version": "1.0.0",
+  "Description": "Objects are highlighted when empty to be easily recognizable",
+  "UniqueID": "Zamiel.HighlightedObjects",
+  "EntryDll": "HighlightedObjects.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "GitHub:Zamiell/stardew-valley-mods" ]
+}

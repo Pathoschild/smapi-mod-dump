@@ -11,11 +11,11 @@
 {
   "Name": "Fishnets - Automate",
   "Author": "MindMeltMax",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "An Automate integration for fishnets",
   "UniqueID": "MindMeltMax.Fishnets.Automate",
   "EntryDll": "Fishnets - Automate.dll",
-  "MinimumApiVersion": "3.15.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "nexus:13819@Automate" ],
   "Dependencies":
   [

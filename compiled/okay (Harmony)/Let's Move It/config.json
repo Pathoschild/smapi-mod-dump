@@ -1,0 +1,8 @@
+{
+  "ModEnabled": true,
+  "ProtectOverwrite": true,
+  "Sound": "shwip",
+  "ModKey": "LeftAlt",
+  "MoveKey": "MouseLeft",
+  "CancelKey": "Escape"
+}

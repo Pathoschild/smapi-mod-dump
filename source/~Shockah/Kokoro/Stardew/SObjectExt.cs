@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using StardewValley;
 using StardewValley.Objects;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using SObject = StardewValley.Object;
 
 namespace Shockah.Kokoro.Stardew;
@@ -43,19 +41,6 @@ public static class SObjectExt
 			return crabPot.bait.Value;
 		if (self is WoodChipper woodChipper && woodChipper.depositedItem.Value is not null)
 			return woodChipper.depositedItem.Value;
-		return null;
-	}
-
-	public static GameLocation? FindGameLocation(this SObject self, GameLocation? potentialLocation = null)
-	{
-		static bool IsObjectInLocation(SObject @object, GameLocation location)
-			=> (@object is Furniture furniture && location.furniture.Contains(furniture)) || location.Objects.Values.Contains(@object);
-
-		if (potentialLocation is not null && IsObjectInLocation(self, potentialLocation))
-			return potentialLocation;
-		foreach (GameLocation location in GameExt.GetAllLocations())
-			if (IsObjectInLocation(self, location))
-				return location;
 		return null;
 	}
 }

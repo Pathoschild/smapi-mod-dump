@@ -1,0 +1,10 @@
+﻿{
+  "Name": "The Return of Immersive Scarecrows",
+  "Author": "lucaskfreitas",
+  "Version": "1.0.7",
+  "Description": "Immersive Scarecrows (originally by aedenthorn) made compatible with Stardew Valley 1.6",
+  "UniqueID": "lucaskfreitas.ImmersiveScarecrows",
+  "EntryDll": "ImmersiveScarecrows.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20701" ]
+}

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/philosquare/SDVSkipFishingMinigame2
+   Git: https://github.com/philosquare/SDVSkipFishingMinigame2.git
+
+mods:
+   Skip Fishing Minigame 2
+
+latest commit:
+   commit 4a6da6d239e99dbf555278391ed09311328de628
+   Author: philosquare <philosquare@github.com>
+   Date:   Sun Mar 31 11:06:19 2024 +0800
+   
+       manifest
+   

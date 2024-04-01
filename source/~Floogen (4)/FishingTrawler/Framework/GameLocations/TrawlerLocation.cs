@@ -38,9 +38,9 @@ namespace FishingTrawler.Framework.GameLocations
 
         internal bool IsWithinRangeOfTile(int tileX, int tileY, int xDistance, int yDistance, Farmer who)
         {
-            if (Enumerable.Range(who.getTileX() - xDistance, (xDistance * 2) + 1).Contains(tileX))
+            if (Enumerable.Range((int)(who.Tile.X - xDistance), (xDistance * 2) + 1).Contains(tileX))
             {
-                if (Enumerable.Range(who.getTileY() - yDistance, (yDistance * 2) + 1).Contains(tileY))
+                if (Enumerable.Range((int)(who.Tile.Y - yDistance), (yDistance * 2) + 1).Contains(tileY))
                 {
                     return true;
                 }
@@ -91,10 +91,10 @@ namespace FishingTrawler.Framework.GameLocations
             base.cleanupBeforePlayerExit();
         }
 
-        public override bool isTileOccupiedForPlacement(Vector2 tileLocation, StardewValley.Object toPlace = null)
+        public override bool CanItemBePlacedHere(Vector2 tile, bool itemIsPassable = false, CollisionMask collisionMask = CollisionMask.All, CollisionMask ignorePassables = CollisionMask.Buildings | CollisionMask.Characters | CollisionMask.Farmers | CollisionMask.Flooring | CollisionMask.Furniture | CollisionMask.TerrainFeatures | CollisionMask.LocationSpecific, bool useFarmerTile = false, bool ignorePassablesExactly = false)
         {
             // Preventing player from placing items here
-            return true;
+            return false;
         }
     }
 }

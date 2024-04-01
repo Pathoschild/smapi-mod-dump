@@ -1,0 +1,130 @@
+﻿{
+  // Notification messages
+  "travelingMerchant": "Traveling Merchant has arrived",
+  "queenSauce": "Queen of Sauce airs today!",
+  "checkLiving": "Living off the Land airs today!",
+  "noSignal": "There is no TV signal today...",
+  "checkRerun": "Queen of Sauce (re-run) airs today!",
+  "luckyDay": "Lucky Day!",
+  "unluckyDay": "Unlucky Day!",
+
+  // Festivals
+  "fMsg": "{{fest}} Today!",
+  "festival": "Festival",
+  "EggFestival": "Egg Festival",
+  "FlowerDance": "Flower Dance",
+  "Luau": "Luau",
+  "MoonlightJellies": "Dance of the Moonlight Jellies",
+  "ValleyFair": "Stardew Valley Fair",
+  "SpiritsEve": "Spirit's Eve",
+  "IceFestival": "Festival of Ice",
+  "WinterStar": "Feast of the Winter Star",
+  "NightMarket": "Night Market",
+  "TroutDerby": "Trout Derby",
+  "DesertFestival": "Desert Festival",
+  "SquidFest": "SquidFest",
+  "SecretSantaReminder": "{{charName}} is your secret santa",
+
+  "Salmonberry": "Salmonberry season",
+  "Seashells": "Seashells on the seashore",
+  "Blackberry": "Blackberry season",
+
+  // Weathers
+  "weather-rain": "rain",
+  "weather-sunny": "sunny",
+  "weather-tstorm": "thunderstorms",
+  "weather-snow": "snow",
+  "weather-wind": "windy",
+  "weather-festival": "sunny for the {{festivalName}}",
+  "weather-wedding": "wedding",
+  "weather-greenrain": "green rain",
+
+
+  // Locations
+  "CaveMushroom": "Cave Mushrooms ready for harvest",
+  "CaveFruit": "Cave Fruits ready for harvest",
+
+  "birthday": "{{charName}}'s birthday!",
+  "weather": "Tommorow's weather is {{weather}}.",
+  "weatherGingerIsland": "Tommorow's weather on Ginger Island is {{weather}}",
+  "bookseller": "The bookseller is in town!",
+  "birthdayReminder": "Don't forget to give {{charName}} a birthday gift today!",
+  "toolPickup": "{{toolName}} is ready for pickup",
+  "springOnion": "{{count}} spring onions growing in the Forest",
+  "readyHarvest": "{{cropName}} ready for harvest",
+  "greenhouse_crops": "Greenhouse crops ready for harvest",
+  "autoGrabber": "The auto grabber has items for harvest",
+  "hayMessage": "Silos report {{hayAmt}} pieces of hay",
+  "noHayMessage": "No hay in the silos.",
+  "FishPond": "Fish Ponds ready for harvest.",
+  "festivalReminder": "Today's festival ends in 2 hours, at {{time}}",
+
+  //GMCM fields
+  "gmcmNotDurTitle": "Notification Duration",
+  "gmcmNotDurDesc": "The amount of ticks the messages appear. Note that 7000 ticks is 10 minutes. This value is clamped between 0 and 14000 ticks",
+  "gmcmNotifTimeTitle": "Notification Time",
+  "gmcmNotifTimeDesc": "The time the day start notifications appear. We recommend you leave this at 6am. Clamped between 6am and 2pm.",
+  "gmcmNotifOnBirthTitle": "Notify on Birthdays",
+  "gmcmNotifOnBirthDesc": "Turn this on to be notified about birthdays",
+  "gmcmNotifOnBirthRemindTitle": "Birthday Notification Reminder",
+  "gmcmNotifOnBirthRemindDesc": "Turn this on to be reminded to give a gift that day",
+  "gmcmNotifOnBirthRemindTimeTitle": "Birthday Reminder Time",
+  "gmcmNotifOnBirthRemindTimeDesc": "The time the birthday reminder notification will appear. Clamped between 9am and 7pm. (most NPCs will not be available after this point). Note that values ending in 60-99 will not work in game.",
+  "gmcmNotifOnFestivalTitle": "Festival Notifications",
+  "gmcmNotifOnFestivalDesc": "Turn this on to be told it's a festival today",
+  "gmcmNotifOnHUNBTitle": "Hide Unknown NPC Birhdays",
+  "gmcmNotifOnHUNBDesc": "When enabled, if you haven't met them, you won't get any birthday notificaitons.",
+  "gmcmNotifGingerWeatherTitle": "Display Ginger Island Weather",
+  "gmcmNotifGingerWeatherDesc": "Controls the weather display for Ginger Island (if you've reached it)",
+
+  "gmcmNotifOnFestReminTitle": "Festival Reminders",
+  "gmcmNotifOnFestReminDesc": "Reminded 2 hours to closing of the festival. (Will not trigger for Dance of the Moonlit Jellies, or Spirit Eve)",
+  "gmcmNotifOnMerchantTitle": "Traveling Merchant Notifications",
+  "gmcmNotifOnMerchantDesc": "Turn this on to be told if the traveling merchant has arrived",
+
+  "gmcmNotifyBooksellerTitle": "Bookseller Arrival Notification",
+  "gmcmNotifyBooksellerDesc": "Turn this on to be told if the bookseller has arrived",
+
+  "gmcmNotifOnToolTitle": "Tool Upgrade Notifications",
+  "gmcmNotifOnToolDesc": "Turn this on to be told if you have a tool waiting to be picked up.",
+
+  "gmcmNotifOnGLuckTitle": "Max Luck Notifications",
+  "gmcmNotifOnGLucklDesc": "Turn this on to be told if you have maximum luck that day.",
+
+  "gmcmNotifOnBLuckTitle": "Min Luck Notifications",
+  "gmcmNotifOnBLucklDesc": "Turn this on to be told if your have minimum luck that day.",
+
+  "gmcmNotifShowHayCountTitle": "Show Daily Hay Count",
+  "gmcmNotifShowHayCountDesc": "Turn this on to get notifications for hay counts daily.",
+  "gmcmNotifEmptyHayTitle": "Show Empty Hay",
+  "gmcmNotifEmptyHayDesc": "Turn this on to get notifications if you are out of hay. Note this must be on to be told if you are out of hay.",
+
+  "gmcmNotifWeatNDTitle": "Show Weather Next Day",
+  "gmcmNotifWeatNDDesc": "Turn this on to get notifications to see what the weather is the next day",
+  "gmcmRemindTimeForNWDTitle": "Reminder Time for Weather",
+  "gmcmRemindTimeForNWDDesc": "The time the birthday reminder notification appear. Clamped between 9am and 2am",
+
+  "gmcmNotifTVChanTitle": "Notify for TV Channels",
+  "gmcmNotifTVChanDesc": "Turn this on to get notifications for today's TV channels.",
+  "gmcmNotifSpringOnionTitle": "Show Spring Onion Count",
+  "gmcmNotifSpringOnionDesc": "Turn this on to get notifications for the spring onion count.",
+
+  "gmcmNotifFarmCaveTitle": "Notify for Farm Cave",
+  "gmcmNotifFarmCaveDesc": "Turn this on to get notifications for farm cave harvest.",
+  "gmcmNotifGreenCropTitle": "Notify for Greenhouse Crops",
+  "gmcmNotifGreenCropDesc": "Turn this on to get notifications for greenhouse crops harvest.",
+
+  "gmcmNotifFarmProdTitle": "Notify for Farm Production",
+  "gmcmNotifFarmProdDesc": "Turn this on to get notifications for production on the farm",
+
+  "gmcmNotifShedProdTitle": "Notify for Shed Production",
+  "gmcmNotifShedProdDesc": "Turn this on to get notifications for machines in the shed",
+  "gmcmNotifGreenProdTitle": "Notify for Greenhouse Production",
+  "gmcmNotifGreenProdDesc": "Turn this on to get notifications for machines in the greenhouse.",
+
+  "gmcmNotifCellarProdTitle": "Notify for Cellar Production",
+  "gmcmNotifCellarProdDesc": "Turn this on to get notifications for machines in the cellar.",
+  "gmcmNotifBarnProdTitle": "Notify for Barn Production",
+  "gmcmNotifBarnProdDesc": "Turn this on to get notifications for machines in the barn."
+}
+

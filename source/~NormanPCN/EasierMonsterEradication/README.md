@@ -79,3 +79,6 @@ v1.0.0:
 
  v1.0.1
  Fix issues with the Api for Mod authors
+
+ v1.1.0
+ Updates for Stardew Valley 1.6 and SMAPI 4.

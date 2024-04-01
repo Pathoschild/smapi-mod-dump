@@ -1,0 +1,36 @@
+{
+  "label.main-options": "Main Options",
+  "label.main-options.tooltip": "Basic Configurations",
+
+  "option.enable-auto-watering": "Enable Auto Watering",
+  "option.enable-auto-watering.tooltip": "Check to enable auto watering",
+
+  "option.auto-fertilizing": "Auto Fertilizing",
+  "option.auto-fertilizing.tooltip": "Choose which kind of fertilizer to be automatically applied. Disabled by default.",
+  "option.auto-fertilizing.item.disabled": "Disabled",
+  "option.auto-fertilizing.item.remove-all-fertilizer": "Remove all fertilizer",
+  "option.auto-fertilizing.item.basic-fertilizer": "Basic Fertilizer",
+  "option.auto-fertilizing.item.quality-fertilizer": "Quality Fertilizer",
+  "option.auto-fertilizing.item.basic-retaining-soil": "Basic Retaining Soil",
+  "option.auto-fertilizing.item.quality-retaining-soil": "Quality Retaining Soil",
+  "option.auto-fertilizing.item.speed-gro": "Speed-Gro",
+  "option.auto-fertilizing.item.deluxe-speed-gro": "Deluxe Speed-Gro",
+  "option.auto-fertilizing.item.hyper-speed-gro": "Hyper Speed-Gro",
+  "option.auto-fertilizing.item.deluxe-fertilizer": "Deluxe Fertilizer",
+  "option.auto-fertilizing.item.deluxe-retaining-soil": "Deluxe Retaining Soil",
+
+  "option.water-now-key": "Water Now Key",
+  "option.water-now-key.tooltip": "Press the key to manually water all crops. Still works even when Auto Watering is disabled.",
+
+  "label.days-to-water": "Days to water",
+  "label.days-to-water.tooltip": "Choose days to auto water, only functional if Auto Watering is enabled.",
+
+  "option.days-to-water.sunday": "Sunday",
+  "option.days-to-water.monday": "Monday",
+  "option.days-to-water.tuesday": "Tuesday",
+  "option.days-to-water.wednesday": "Wednesday",
+  "option.days-to-water.thursday": "Thursday",
+  "option.days-to-water.friday": "Friday",
+  "option.days-to-water.saturday": "Saturday",
+  "option.days-to-water.tooltip": "Check to auto water on this day.",
+}

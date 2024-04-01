@@ -1,4 +1,4 @@
-﻿// Copyright 2022 Jamie Taylor
+﻿// Copyright 2022-2024 Jamie Taylor
 {
     // Strings used in the config menu
     "config.install-gmcm-options": "If you install the GMCM Options mod then you will be able to configure colors in this menu.",
@@ -44,6 +44,12 @@
     "config.beehouse.show-others.tooltip": "Show ranges of already placed beehouses when holding a beehouse.",
     "config.beehouse.tint.tooltip": "Color of the highlight for beehouse range",
 
+    "config.mushroom-log": "Mushroom Logs",
+    "config.mushroom-log.enable.tooltip": "Enable mushroom log range highlighting",
+    "config.mushroom-log.hotkey.tooltip": "Hold this key to show mushroom log ranges",
+    "config.mushroom-log.show-others.tooltip": "Show ranges of already placed mushroom log when holding a mushroom log.",
+    "config.mushroom-log.tint.tooltip": "Color of the highlight for mushroom log range",
+
     "config.bomb": "Bombs",
     "config.bomb.enable.tooltip": "Enable bomb range highlighting",
     "config.bomb.held": "Held bombs",
@@ -61,6 +67,7 @@
     "config.bomb.outer.enable.tooltip": "The outer range is where crops are destroyed, flooring is disrupted, and the player takes damage",
     "config.bomb.outer.tint": "Outer range color",
     "config.bomb.outer.tint.tooltip": "Color of the highlight for bomb outer range",
+
     // console messages
     "message.install-gmcm-options": "You have the Generic Mod Menu Config mod installed, but not GMCM Options.  If you install GMCM Options (https://www.nexusmods.com/stardewvalley/mods/10505) then you will be able to configure colors from inside the {{modName}} configuration menu."
 

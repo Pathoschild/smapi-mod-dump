@@ -34,7 +34,7 @@ namespace FishingTrawler.Framework.Objects.Items.Rewards
 
     public class AncientFlag
     {
-        private const int PIRATE_FLAG_BASE_ID = 1900;
+        private const string PIRATE_FLAG_BASE_ID = "1900";
 
         public static Furniture CreateInstance(FlagType flagType = FlagType.Unknown)
         {

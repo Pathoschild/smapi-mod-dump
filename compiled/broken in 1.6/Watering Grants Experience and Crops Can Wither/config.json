@@ -1,9 +1,0 @@
-{
-  "WateringExperienceAmount": 1,
-  "WateringChanceToGetXP": 100,
-  "ForageSeedWateringGrantsForagingXP": false,
-  "CropsCanDieWithoutWater": false,
-  "DaysWithoutWaterForChanceToDie": 3,
-  "ChanceToDieWhenLeftForTooLong": 100,
-  "CantRefillCanWithSaltWater": true
-}

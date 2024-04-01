@@ -77,11 +77,9 @@ namespace SkullCavernToggle
             frontlayer.Tiles[2, 3] = new StaticTile(frontlayer, tilesheet, BlendMode.Alpha, 16);
             buildingslayer.Tiles[2, 4] = new StaticTile(buildingslayer, tilesheet, BlendMode.Alpha, 32);
 
-            // Apply properties to middle tile, these don't do anything but show shrine can be interacted with
-            int index = location.map.TileSheets.IndexOf(tilesheet);
-
-            location.setMapTileIndex(2, 3, 0, "Buildings", index);
-            location.setMapTile(2, 3, 0, "Buildings", "SnakeShrine", index);
+            // Apply properties to tiles            
+            location.setTileProperty(2, 3, "Buildings", "Action", "SnakeShrine");
+            location.setTileProperty(2, 4, "Buildings", "Action", "SnakeShrine");
         }
     }
 }

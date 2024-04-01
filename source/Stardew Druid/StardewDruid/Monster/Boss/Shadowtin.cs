@@ -22,7 +22,7 @@ using System.IO;
 
 namespace StardewDruid.Monster.Boss
 {
-    public class Shadowtin : Dragon
+    public class Shadowtin : Boss
     {
         
         public Queue<Vector2> blastZone;
@@ -33,10 +33,29 @@ namespace StardewDruid.Monster.Boss
         {
         }
 
-        public Shadowtin(Vector2 vector, int CombatModifier)
-          : base(vector, CombatModifier, "Shadowtin")
+        public Shadowtin(Vector2 vector, int CombatModifier, string useName = "Shadowtin")
+          : base(vector, CombatModifier, useName)
         {
             
+        }
+
+        public override void BaseMode()
+        {
+
+            if(realName.Value == "Shadowtin")
+            {
+                MaxHealth = Math.Max(10000, combatModifier * 500);
+
+                Health = MaxHealth;
+
+                DamageToFarmer = Math.Max(10, Math.Min(60, combatModifier * 3));
+
+                return;
+
+            }
+
+            base.BaseMode();
+
         }
 
         public override void LoadOut()
@@ -46,8 +65,10 @@ namespace StardewDruid.Monster.Boss
 
             MaxHealth *= 2;
 
-            BaseWalk();
+            ShadowWalk();
+
             ShadowFlight();
+            
             ShadowSpecial();
 
             overHead = new(16, -144);
@@ -56,59 +77,74 @@ namespace StardewDruid.Monster.Boss
 
         }
 
+        public virtual void ShadowWalk()
+        {
+            
+            characterTexture = MonsterData.MonsterTexture(realName.Value);
+
+            walkCeiling = 5;
+
+            walkFloor = 0;
+
+            walkInterval = 12;
+
+            gait = 2;
+
+            overHead = new(0, -128);
+
+            idleFrames = FrameSeries(32, 32, 0, 0, 1);
+
+            walkFrames = FrameSeries(32, 32, 0, 128);
+
+        }
 
         public virtual void ShadowFlight()
         {
 
-            flightIncrement = 9;
+            flightInterval = 9;
 
             flightSpeed = 12;
 
             flightHeight = 2;
 
-            flightCeiling = 4;
+            flightCeiling = 2;
 
             flightFloor = 1;
 
-            flightLast = 4;
+            flightLast = 3;
 
             flightTexture = characterTexture;
 
             flightFrames = new Dictionary<int, List<Rectangle>>()
             {
-                [0] = new List<Rectangle>()
+                [0] = new()
                 {
-                    new Rectangle(0, 160, 64, 32),
-                    new Rectangle(64, 128, 64, 32),
-                    new Rectangle(0, 128, 64, 32),
-                    new Rectangle(64, 160, 64, 32),
-                    new Rectangle(0, 160, 64, 32),
+                    new(0, 192, 32, 32),
+                    new(32, 64, 32, 32),
+                    new(32, 64, 32, 32),
+                    new(0, 192, 32, 32),
                 },
-
-                [1] = new List<Rectangle>()
+                [1] = new()
                 {
-                    new Rectangle(64, 128, 64, 32),
-                    new Rectangle(0, 128, 64, 32),
-                    new Rectangle(64, 160, 64, 32),
-                    new Rectangle(0, 160, 64, 32),
-                    new Rectangle(64, 128, 64, 32),
+                    new(0, 160, 32, 32),
+                    new(32, 32, 32, 32),
+                    new(32, 32, 32, 32),
+                    new(0, 160, 32, 32),
                 },
-                [2] = new List<Rectangle>()
+                [2] = new()
                 {
-                    new Rectangle(0, 128, 64, 32),
-                    new Rectangle(64, 160, 64, 32),
-                    new Rectangle(0, 160, 64, 32),
-                    new Rectangle(64, 128, 64, 32),
-                    new Rectangle(0, 128, 64, 32),
+                    new(0, 128, 32, 32),
+                    new(32, 0, 32, 32),
+                    new(32, 0, 32, 32),
+                    new(0, 128, 32, 32),
                 },
-                [3] = new List<Rectangle>()
+                [3] = new()
                 {
-                    new Rectangle(64, 160, 64, 32),
-                    new Rectangle(0, 160, 64, 32),
-                    new Rectangle(64, 128, 64, 32),
-                    new Rectangle(0, 128, 64, 32),
-                    new Rectangle(64, 160, 64, 32),
-                }
+                    new(0, 224, 32, 32),
+                    new(32, 96, 32, 32),
+                    new(32, 96, 32, 32),
+                    new(0, 224, 32, 32),
+                },
             };
 
         }
@@ -122,7 +158,7 @@ namespace StardewDruid.Monster.Boss
 
             abilities = 2;
 
-            cooldownInterval = 48;
+            cooldownInterval = 60;
 
             specialCeiling = 1;
 
@@ -136,34 +172,81 @@ namespace StardewDruid.Monster.Boss
 
             barrageThreshold = 544;
 
-            barrageColor = "Red";
-
-            barrages = new();
+            specialInterval = 30;
 
             specialTexture = characterTexture;
 
             specialFrames = new Dictionary<int, List<Rectangle>>()
             {
-                [0] = new List<Rectangle>()
+                [0] = new()
                 {
-                    new Rectangle(0, 160, 64, 32),
-                    new Rectangle(0, 160, 64, 32),
+
+                    new(64, 64, 32, 32),
+                    new(96, 64, 32, 32),
+
                 },
-                [1] = new List<Rectangle>()
+                [1] = new()
                 {
-                    new Rectangle(64, 128, 64, 32),
-                    new Rectangle(64, 128, 64, 32),
+
+                    new(64, 32, 32, 32),
+                    new(96, 32, 32, 32),
+
                 },
-                [2] = new List<Rectangle>()
+                [2] = new()
                 {
-                    new Rectangle(0, 128, 64, 32),
-                    new Rectangle(0, 128, 64, 32),
+
+                    new(64, 0, 32, 32),
+                    new(96, 0, 32, 32),
+
                 },
-                [3] = new List<Rectangle>()
+                [3] = new()
                 {
-                    new Rectangle(64, 160, 64, 32),
-                    new Rectangle(64, 160, 64, 32),
-                }
+
+                    new(64, 96, 32, 32),
+                    new(96, 96, 32, 32),
+
+                },
+
+            };
+
+            specialScheme = SpellHandle.schemes.ether;
+
+            sweepSet = true;
+
+            sweepInterval = 9;
+
+            sweepTexture = characterTexture;
+
+            sweepFrames = new()
+            {
+                [0] = new()
+                {
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                },
+                [1] = new()
+                {
+                    new Rectangle(0, 384, 64, 64),
+                    new Rectangle(64, 384, 64, 64),
+                    new Rectangle(128, 384, 64, 64),
+                    new Rectangle(192, 384, 64, 64),
+                },
+                [2] = new()
+                {
+                    new Rectangle(0, 256, 64, 64),
+                    new Rectangle(64, 256, 64, 64),
+                    new Rectangle(128, 256, 64, 64),
+                    new Rectangle(192, 256, 64, 64),
+                },
+                [3] = new()
+                {
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                },
             };
 
         }
@@ -188,7 +271,7 @@ namespace StardewDruid.Monster.Boss
         public override Rectangle GetBoundingBox()
         {
             Vector2 position = Position;
-            return new Rectangle((int)position.X - 16, (int)position.Y - netFlightHeight.Value - 32, 96, 96);
+            return new Rectangle((int)position.X - 16, (int)position.Y - flightHeight - 32, 96, 96);
         }
 
         public override void draw(SpriteBatch b, float alpha = 1f)
@@ -200,57 +283,51 @@ namespace StardewDruid.Monster.Boss
 
             Vector2 localPosition = getLocalPosition(Game1.viewport);
 
-            float drawLayer = Game1.player.getDrawLayer();
+            float drawLayer = (float)StandingPixel.Y / 10000f;
 
-            if (IsEmoting && !Game1.eventUp)
-            {
-                Vector2 emotePosition = localPosition;
-                emotePosition.Y -= 32 + Sprite.SpriteHeight * 4;
-                b.Draw(Game1.emoteSpriteSheet, localPosition, new Rectangle?(new Rectangle(CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, 0, drawLayer);
-            }
+            DrawEmote(b, localPosition, drawLayer);
 
-            if (netFlightActive.Value)
+            int shadowOffset = 0;
+
+            if (netSweepActive.Value)
             {
 
-                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 64f - netFlightHeight.Value), new Rectangle?(flightFrames[netDirection.Value][netFlightFrame.Value]), Color.White, 0, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 64f), new Rectangle?(sweepFrames[netDirection.Value][sweepFrame]), Color.White, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
+
+                shadowOffset = 64;
 
             }
             else if (netSpecialActive.Value)
             {
 
-                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 64f), new Rectangle?(specialFrames[netDirection.Value][0]), Color.White, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 64f), new Rectangle?(specialFrames[netDirection.Value][specialFrame]), Color.White, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
+                
+                shadowOffset = 64;
+
+            }
+            else if (netFlightActive.Value)
+            {
+
+                b.Draw(characterTexture, new Vector2(localPosition.X - 32f, localPosition.Y - 64f - flightHeight), new Rectangle?(flightFrames[netDirection.Value][flightFrame]), Color.White, 0, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
+
+            }
+            else if (netHaltActive.Value)
+            {
+
+                b.Draw(characterTexture, new Vector2(localPosition.X - 32f, localPosition.Y - 64f), new Rectangle?(idleFrames[netDirection.Value][0]), Color.White, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
 
             }
             else
             {
 
-                b.Draw(characterTexture, new Vector2(localPosition.X - 32f, localPosition.Y - 64f), new Rectangle?(walkFrames[netDirection.Value][netWalkFrame.Value]), Color.White, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(characterTexture, new Vector2(localPosition.X - 32f, localPosition.Y - 64f), new Rectangle?(walkFrames[netDirection.Value][walkFrame]), Color.White, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0, drawLayer);
 
             }
 
-            b.Draw(Game1.shadowTexture, new(localPosition.X, localPosition.Y + 32f), new Rectangle?(Game1.shadowTexture.Bounds), Color.White, 0.0f, Vector2.Zero, 4f, 0, drawLayer - 1E-06f);
+            b.Draw(Game1.shadowTexture, new(localPosition.X - shadowOffset, localPosition.Y + 32f), new Rectangle?(Game1.shadowTexture.Bounds), Color.White, 0.0f, Vector2.Zero, 4f, 0, drawLayer - 1E-06f);
 
         }
 
-        public override void PerformSpecial()
-        {
-            behaviourActive = behaviour.special;
-
-            behaviourTimer = 72;
-
-            netSpecialActive.Set(true);
-
-            List<Vector2> zero = BlastTarget();
-
-            BarrageHandle fireball = new(currentLocation, zero[0], zero[1], 3, 1, "Red", DamageToFarmer);
-
-            fireball.type = BarrageHandle.barrageType.fireball;
-
-            fireball.monster = this;
-
-            barrages.Add(fireball);
-
-        }
     }
 
 }

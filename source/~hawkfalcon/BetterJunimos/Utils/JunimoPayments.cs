@@ -26,7 +26,7 @@ namespace BetterJunimos.Utils {
         }
 
         public bool ReceivePaymentItems(JunimoHut hut) {
-            var chest = hut.output.Value;
+            var chest = hut.GetOutputChest();
             var paidForage = ReceiveItems(chest, _payment.DailyWage.ForagedItems, Util.ForageCategory);
             var paidFlowers = ReceiveItems(chest, _payment.DailyWage.Flowers, Util.FlowerCategory);
             var paidFruit = ReceiveItems(chest, _payment.DailyWage.Fruit, Util.FruitCategory);
@@ -67,7 +67,7 @@ namespace BetterJunimos.Utils {
             if (paidSoFar == needed) return true;
 
             foreach (var unused in Enumerable.Range(paidSoFar, needed)) {
-                var foundItem = chest.items.FirstOrDefault(item => item != null && item.Category == type);
+                var foundItem = chest.Items.FirstOrDefault(item => item != null && item.Category == type);
                 if (foundItem == null) continue;
                 items.Add(foundItem.ParentSheetIndex);
                 Util.RemoveItemFromChest(chest, foundItem);

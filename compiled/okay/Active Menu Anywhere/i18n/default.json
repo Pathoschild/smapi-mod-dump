@@ -1,0 +1,30 @@
+﻿{
+    // Tab
+    "Tab.Farm": "Farm",
+    "Tab.Town1": "Town1",
+    "Tab.Town2": "Town2",
+    "Tab.Mountain": "Mountain",
+    "Tab.Forest": "Forest",
+    "Tab.Beach": "Beach",
+    "Tab.Desert": "Desert",
+    "Tab.GingerIsland": "GingerIsland",
+    "Tab.SVE": "SVE",
+    "Tab.RSV": "RSV",
+    // Tip
+    "Tip.Unfinished": "Unfinished",
+    "Tip.Unavailable": "Currently unavailable",
+    /*
+    "Tip.FishShop": "Unlocked",
+    "Tip.ClubCard":"Unlocked",
+    "Tip.BusStop":"Unlocked",
+    */
+    // BillboardMenu
+    "BillboardMenu.Calendar": "Calendar",
+    "BillboardMenu.DailyQuest": "DailyQuest",
+    // ClintMenu
+    "ClintMenu.Receive": "Receive Tool",
+    "ClintMenu.Unfinished": "Tool is unfinished",
+    // Config
+    "Config.MenuKey_Name": "Menu Key",
+    "Config.DefaultMenuTabID": "Default Menu Tab"
+}

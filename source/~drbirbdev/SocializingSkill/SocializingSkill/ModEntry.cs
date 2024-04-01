@@ -25,7 +25,7 @@ public class ModEntry : Mod
 
     internal ITranslationHelper I18N => this.Helper.Translation;
 
-    internal static readonly PerScreen<List<string>> BelovedCheckedToday = new();
+    internal static readonly PerScreen<HashSet<string>> BELOVED_CHECKED_TODAY = new();
 
     public override void Entry(IModHelper helper)
     {

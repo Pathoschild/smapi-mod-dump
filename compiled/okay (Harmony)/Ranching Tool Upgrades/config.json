@@ -1,0 +1,7 @@
+{
+  "PailBuyCost": 1000,
+  "ShearsBuyCost": 1000,
+  "ExtraFriendshipBase": 2,
+  "QualityBumpChanceBase": 0.05,
+  "ExtraProduceChance": 0.1
+}

@@ -17,24 +17,30 @@ namespace CustomTokens
     public class DeathAndExhaustionTokens
     {
         
-        internal void UpdateDeathAndExhaustionTokens(IModHelper helper, IMonitor monitor, PerScreen<PlayerData> data, ModConfig config, Update update)
+        internal void UpdateDeathAndExhaustionTokens(IMonitor monitor, PerScreen<PlayerData> data, ModConfig config, Update update)
         {
-            // Update tracker if player died, is married and tracker should update
-            if (Game1.player.stats.timesUnconscious > ModEntry.deathcounter && Game1.player.isMarried() == true)
+            if (Game1.killScreen == true && update.updatedeath == true)
             {
-                // Increment tracker
-                data.Value.DeathCountMarried++;
-                ModEntry.deathcounter++;
+                if (Game1.player.isMarriedOrRoommates() == true)
+                {
+                    data.Value.DeathCountMarried++;
+                    // Display trace information in SMAPI log
+                    if (config.ResetDeathCountMarriedWhenDivorced == true)
+                    {
+                        monitor.Log($"{Game1.player.Name} has died {data.Value.DeathCountMarried} time(s) since last marriage.");
+                    }
+                    else
+                    {
+                        monitor.Log($"{Game1.player.Name} has died {data.Value.DeathCountMarried} time(s) whilst married.");
+                    }
+                }
 
-                // Display trace information in SMAPI log
-                if (config.ResetDeathCountMarriedWhenDivorced == true)
-                {
-                    monitor.Log($"{Game1.player.Name} has died {data.Value.DeathCountMarried} time(s) since last marriage.");
-                }
-                else
-                {
-                    monitor.Log($"{Game1.player.Name} has died {data.Value.DeathCountMarried} time(s) whilst married.");
-                }
+                update.updatedeath = false;
+            }
+
+            else if(Game1.killScreen == false && update.updatedeath == false)
+            {
+                update.updatedeath = true;
             }
 
             // Has player passed out?

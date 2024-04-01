@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/siweipancc/StardewMods
+**
+*************************************************/
+
+{
+  "config.SkipRockCrab.label": "Skip Rock Crab",
+  "config.SkipRockCrab.tooltip": "Skip attach Rock Crab, when disabled, will try best to avoid for-ever attach. default: false",
+  "config.DetectTiles.label": "Detect Tiles Range",
+  "config.DetectTiles.tooltip": "How far a monster is taken account.",
+  "config.Toggle.label": "Toggle",
+  "config.Toggle.tooltip": "you can toggle auto attack at anytime(in game).",
+  "message.toggle.enable": "auto-attack enabled",
+  "message.toggle.disabled": "auto-attack disabled",
+  "config.section.also.title": "Also ignore Belows.",
+  "message.target.missed": "skip attacking monster"
+}

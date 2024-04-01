@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} durante {{season}}",
 	"tapTree": "Usa {{tapper}} en {{tree}}",
 	"seedFromTree": "Sacude/tala {{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "Fabrica {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Recolecta de hierba o {{wheat}}",
 	"trash": "Recoge basura al pescar, de Trampas para Cangrejos o cubos de basura",
 	"trashCan": "Cubos de basura",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Habitación de Marnie (misión Los calzoncillos del alcalde el 3 de Verano)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Gánalo en la Máquina de gancho en el Cine",
 	"voidEggEvent": "Evento de bruja aleatorio",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Conejos",
 	"animalDuck": "Patos",
 	"animalPig": "Cerdos",
+	"animalOstrich": "Ostriches", // TODO
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "necesita Corral",

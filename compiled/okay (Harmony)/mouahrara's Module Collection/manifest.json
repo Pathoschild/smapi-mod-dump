@@ -1,0 +1,10 @@
+{
+	"Name": "mouahrara's Module Collection",
+	"Author": "mouahrara",
+	"Version": "2.0.1",
+	"Description": "A module collection by mouahrara.",
+	"UniqueID": "mouahrara.mouahrarasModuleCollection",
+	"EntryDll": "mouahrarasModuleCollection.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:18973" ]
+}

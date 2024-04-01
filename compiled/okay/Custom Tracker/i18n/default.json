@@ -1,0 +1,22 @@
+{
+  "EnableTrackersWithoutProfession.Name": "Enable trackers without profession",
+  "EnableTrackersWithoutProfession.Desc": "If enabled, tracking icons will be visible even if you don't have the \"Tracker\" profession.",
+  "ReplaceTrackersWithForageIcons.Name": "Replace trackers with forage icons",
+  "ReplaceTrackersWithForageIcons.Desc": "If enabled, tracking icons will be replaced with images of the items being tracked.",
+  "DrawBehindInterface.Name": "Draw trackers behind interface",
+  "DrawBehindInterface.Desc": "If enabled, tracking icons will be drawn behind the game's interface. Use this if they obstruct the UI too much.",
+  "TrackerPixelScale.Name": "Tracker pixel scale",
+  "TrackerPixelScale.Desc": "The size of each pixel in the tracking icon (default 4). Increase this to make trackers easier to see.",
+  "TrackDefaultForage.Name": "Track default forage",
+  "TrackDefaultForage.Desc": "If enabled, most kinds of forage items will be tracked.",
+  "TrackArtifactSpots.Name": "Track artifact spots",
+  "TrackArtifactSpots.Desc": "If enabled, buried artifact spots will be tracked.",
+  "TrackPanningSpots.Name": "Track panning spots",
+  "TrackPanningSpots.Desc": "If enabled, ore panning locations in the water will be tracked.",
+  "TrackSpringOnions.Name": "Track spring onions",
+  "TrackSpringOnions.Desc": "If enabled, harvestable spring onions will be tracked.",
+  "TrackBerryBushes.Name": "Track berry bushes",
+  "TrackBerryBushes.Desc": "If enabled, harvestable berry bushes will be tracked.",
+  "TrackWalnutBushes.Name": "Track walnut bushes",
+  "TrackWalnutBushes.Desc": "If enabled, harvestable walnut bushes on Ginger Island will be tracked."
+}

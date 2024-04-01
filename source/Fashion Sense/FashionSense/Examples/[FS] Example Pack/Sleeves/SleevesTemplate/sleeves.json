@@ -138,6 +138,10 @@
           {
             "Name": "IsWatering",
             "Value": false
+          },
+          {
+            "Name": "IsUsingScythe",
+            "Value": false
           }
         ]
       },

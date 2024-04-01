@@ -1,0 +1,31 @@
+{
+  "Enable": true,
+  "ToggleKey": "None",
+  "ShowInvisibleMonsters": false,
+  "ShowMaxHealth": false,
+  "FixMaxHealth": true,
+  "ShowPercentage": false,
+  "HideOnFullHealth": false,
+  "ShowAbove": false,
+  "NoJumping": false,
+  "OffsetX": 0,
+  "OffsetY": 0,
+  "TextConfig": {
+    "FontSize": 2,
+    "HealthDecay": false,
+    "HealthDecayColor": 0,
+    "TextColor": {
+      "R": 250,
+      "G": 235,
+      "B": 215,
+      "A": 255
+    },
+    "BackgroundEnable": true,
+    "BackgroundColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 150
+    }
+  }
+}

@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} en {{season}}",
 	"tapTree": "Uitliser {{tapper}} sur {{tree}}",
 	"seedFromTree": "Secouer/abattre un {{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "Fabriquer {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Récolté en fauchant du gazon ou du {{wheat}}",
 	"trash": "Déchet de pêche, casiers à crabes ou poubelles de la ville",
 	"trashCan": "Poubelles de la ville",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Chambre de Marnie (dans la quête du short du Maire, le 3 d'été)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Remporté dans le jeu de grue du cinéma",
 	"voidEggEvent": "Evénement aléatoire de la sorcière",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Lapins",
 	"animalDuck": "Canards",
 	"animalPig": "Cochons",
+	"animalOstrich": "Ostriches", // TODO
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "nécessite un poulailler",

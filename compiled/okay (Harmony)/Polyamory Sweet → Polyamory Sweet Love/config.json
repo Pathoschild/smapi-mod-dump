@@ -1,0 +1,18 @@
+{
+  "EnableMod": true,
+  "BuyPendantsAnytime": false,
+  "PendantPrice": 5000,
+  "MinPointsToMarry": 2500,
+  "MinPointsToDate": 2000,
+  "PreventHostileDivorces": true,
+  "ComplexDivorce": true,
+  "RoommateRomance": false,
+  "RomanceAllVillagers": false,
+  "GayPregnancies": false,
+  "MaxChildren": 2,
+  "ShowParentNames": false,
+  "SpouseSleepOrder": "",
+  "PercentChanceForSpouseInBed": 25,
+  "PercentChanceForSpouseInKitchen": 25,
+  "PercentChanceForSpouseAtPatio": 25
+}

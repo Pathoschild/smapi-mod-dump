@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Mon": "Hello",
+  "Tue": "Hello",
+  "Wed": "Hello",
+  "Thu": "Hello",
+  "Fri": "Hello",
+  "Sat": "Hello",
+  "Sun": "Hello",
+  "Mon8": "Oh! Hey, @. Workng hard?#$b#Me? I've been polishing my gun shooting and boxing.$h#$b#I believe it's always good to be in tip-top shape as often as possible.$h",
+  "Tue8": "I've been visting a lot more often, haven't I?#$b#Ah, well. What can I say? I've been enjoying my stay at this valley and the hospitality the locals bring.$h#$b#I also appreciate your company, @. You're fun to be around.$h",
+  "Wed8": "I've been considering staying at the Log Cabin Hotel in my next visit. Maybe if I want a little vacation?#$b#Hmm...$6#$b#Nah, I don't want to spoil myself too much!$h#$b#I might enjoy my stay here too much that I'll forget I have to guard the Governor!$h",
+  "Thu8": "The menu at Pika's is like its own game, huh? Like how they randomize it every day.#$b#It's fun though! It makes dining a little exciting.$h#$e#It's also nice to see familiar faces there.#$b#Sometimes I even get to listen to some of the stories from the locals I meet there!$h",
+  "Fri8": "Sometimes, I feel like I've involved myself with too much stuff and I'm in too deep with most of them that it feels bad to back out now.$u#$b#Like being an affiliate with the police force, having a bunch of politicians as clients for my security business, participating in MMA matches...$s#$b#*Sigh* What have I gotten myself into?$u",
+  "Resort_Entering": "Not too shabby.#$b#Let me do a perimeter check around the area to make sure we're safe.",
+  "Resort_Leaving": "Oh man, we gotta go home already?$s#$e#*Sigh*Just as I was starting to relax.$s",
+  "Resort_Shore": "You know, I really like the waves.#$b#It's very calming and nice...$h",
+  "Resort_Bar": "Non-alcoholic drink for me, I've got to stay alert in case something happens.",
+  "Resort": "It's nice to get away from the town to relax at the beach every once in a while.#$b#The stress from work really gets to me at times and ugh. Getting to spend some time with you is just a big blessing.$h",
+  "breakUp": "Psh, I felt that this wasn't working for a while now.$7#$b#Boy am I glad to be rid of the bad luck in my life.$6",
+  "danceRejection": "Sorry, I have to be on guard for this festival today.",
+  "divorced": "Hah! Good riddance to you!$a",
+  "MovieInvitation": "Nice, alright!$h#$b#I'll meet you in front of the cinema. I just have to check on some things.",
+}

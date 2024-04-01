@@ -6,9 +6,9 @@ mods:
    Goodbye American English
 
 latest commit:
-   commit c65efd037f1c42f5f2df5a439d11254e33debe78
+   commit 182156b217de2026a5c86ffd96826c32fe5d33d8
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Mon Sep 26 08:11:42 2022 +1000
+   Date:   Wed Mar 20 07:48:08 2024 +1100
    
-       fixed null checker
+       update manifest.json
    

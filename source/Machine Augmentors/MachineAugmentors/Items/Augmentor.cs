@@ -70,7 +70,7 @@ namespace MachineAugmentors.Items
         }
 
         protected Augmentor(AugmentorType Type)
-            : base(22763 + (int)Type, 1, false, -1, 0)
+            : base($"{MachineAugmentorsMod.ModUniqueId}_{Type}Augmentor", 1, false, -1, 0)
         {
             this.AugmentorType = Type;
         }
@@ -381,12 +381,9 @@ namespace MachineAugmentors.Items
             DrawIcon(spriteBatch, AugmentorType, BottomLeftPosition, scaleSize, transparency, 1f);
         }
 
-        public override string DisplayName {
-            get { return GetDisplayName(); }
-            set { /*base.DisplayName = value;*/ }
-        }
+        public override string DisplayName => GetDisplayName();
 
-        public override bool canBePlacedHere(GameLocation location, Vector2 tile)
+        public override bool canBePlacedHere(GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false)
         {
             if (Context.IsMultiplayer && !Context.IsMainPlayer)
             {
@@ -394,7 +391,7 @@ namespace MachineAugmentors.Items
             }
             else
             {
-                Object Item = location.getObjectAtTile((int)tile.X, (int)tile.Y);
+                Object Item = l.getObjectAtTile((int)tile.X, (int)tile.Y);
                 if (Item != null && BaseIsAugmentable(Item))
                 {
                     return true;
@@ -423,23 +420,30 @@ namespace MachineAugmentors.Items
         public override Color getCategoryColor() { return CategoryColor; }
         public override string getHoverBoxText(Item hoveredItem) { return base.getHoverBoxText(hoveredItem); }
         public override void hoverAction() { base.hoverAction(); }
-        public override bool performToolAction(Tool t, GameLocation location) { return base.performToolAction(t, location); }
+        public override bool performToolAction(Tool t) => base.performToolAction(t);
         protected override string loadDisplayName() { return GetDisplayName(); }
         public override bool canBeDropped() { return true; }
         public override bool canBeGivenAsGift() { return false; }
         public override int attachmentSlots() { return 0; }
-        public override bool canBePlacedInWater() { return false; }
         public override bool canBeShipped() { return false; }
         public override bool canBeTrashed() { return true; }
         public override bool canStackWith(ISalable other) { return CanStackWith(other); }
         public override string getCategoryName() { return MachineAugmentorsMod.Translate("AugmentorCategoryName"); }
         public override string getDescription() { return GetDescription(); }
-        public override Item getOne() { return CreateSingle(); }
         public override bool isPlaceable() { return true; }
         public override int maximumStackSize() { return 999; }
         public override bool isPassable() { return true; }
         public override bool ShouldSerializeparentSheetIndex() { return false; }
-        public override int salePrice() { return GetPurchasePrice(); }
+        public override int salePrice(bool ignoreProfitMargins = false) => GetPurchasePrice();
         public override int sellToStorePrice(long specificPlayerID = -1) { return GetSellPrice(); }
+
+        protected override Item GetOneNew() => CreateSingle();
+        protected override void GetOneCopyFrom(Item source)
+        {
+            if (source is Augmentor Augmentor && Augmentor.AugmentorType == AugmentorType)
+            {
+
+            }
+        }
     }
 }

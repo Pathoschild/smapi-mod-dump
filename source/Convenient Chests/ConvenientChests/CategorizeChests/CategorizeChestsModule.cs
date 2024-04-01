@@ -22,35 +22,39 @@ using StardewValley.Objects;
 
 namespace ConvenientChests.CategorizeChests {
     public class CategorizeChestsModule : Module {
-        internal IItemDataManager  ItemDataManager  { get; } = new ItemDataManager();
+        internal IItemDataManager ItemDataManager { get; } = new ItemDataManager();
         internal IChestDataManager ChestDataManager { get; } = new ChestDataManager();
-        internal ChestFinder       ChestFinder      { get; } = new ChestFinder();
+        internal ChestFinder ChestFinder { get; } = new ChestFinder();
 
-        protected string      SavePath      => Path.Combine("savedata", $"{Constants.SaveFolderName}.json");
-        protected string      AbsoluteSavePath => Path.Combine(ModEntry.Helper.DirectoryPath, SavePath);
-        private   SaveManager SaveManager   { get; set; }
+        protected string SavePath => Path.Combine("savedata", $"{Constants.SaveFolderName}.json");
+        protected string AbsoluteSavePath => Path.Combine(ModEntry.Helper.DirectoryPath, SavePath);
+        private SaveManager SaveManager { get; set; }
 
 
         private WidgetHost WidgetHost { get; set; }
 
-        internal bool ChestAcceptsItem(Chest chest, Item    item)    => item != null && ChestAcceptsItem(chest, ItemDataManager.GetItemKey(item));
-        internal bool ChestAcceptsItem(Chest chest, ItemKey itemKey) => ChestDataManager.GetChestData(chest).Accepts(itemKey);
+        internal bool ChestAcceptsItem(Chest chest, Item item) => ChestAcceptsItem(chest, item.ToBase().ToItemKey());
+        private bool ChestAcceptsItem(Chest chest, ItemKey itemKey) 
+            => !ItemBlacklist.Includes(itemKey) && ChestDataManager.GetChestData(chest).Accepts(itemKey);
 
-        public CategorizeChestsModule(ModEntry modEntry) : base(modEntry) { }
+        public CategorizeChestsModule(ModEntry modEntry) : base(modEntry) {
+        }
 
         public override void Activate() {
             IsActive = true;
 
             // Menu Events
-            this.Events.Display.MenuChanged += OnMenuChanged;
+            Events.Display.MenuChanged += OnMenuChanged;
 
             if (Context.IsMultiplayer && !Context.IsMainPlayer) {
-                ModEntry.Log("Due to limitations in the network code, CHEST CATEGORIES CAN NOT BE SAVED as farmhand, sorry :(", LogLevel.Warn);
+                ModEntry.Log(
+                             "Due to limitations in the network code, CHEST CATEGORIES CAN NOT BE SAVED as farmhand, sorry :(",
+                             LogLevel.Warn);
                 return;
             }
 
             // Save Events
-            SaveManager                 =  new SaveManager(ModEntry.ModManifest.Version, this);
+            SaveManager = new SaveManager(ModEntry.ModManifest.Version, this);
             this.Events.GameLoop.Saving += OnSaving;
             OnGameLoaded();
         }
@@ -104,11 +108,11 @@ namespace ConvenientChests.CategorizeChests {
         }
 
         private void CreateMenu(ItemGrabMenu itemGrabMenu) {
-            if (!(itemGrabMenu.context is Chest chest))
+            if (itemGrabMenu.context is not Chest chest)
                 return;
- 
-            WidgetHost = new WidgetHost(this.Events, this.ModEntry.Helper.Input);
-            var overlay = new ChestOverlay(this, chest, itemGrabMenu, WidgetHost.TooltipManager);
+
+            WidgetHost = new WidgetHost(this.Events, this.ModEntry.Helper.Input, this.ModEntry.Helper.Reflection);
+            var overlay = new ChestOverlay(this, chest, itemGrabMenu);
             WidgetHost.RootWidget.AddChild(overlay);
         }
 

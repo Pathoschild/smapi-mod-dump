@@ -77,6 +77,7 @@ namespace CustomCompanions
             helper.ConsoleCommands.Add("cc_spawn", "Spawns in a specific companion.\n\nUsage: cc_spawn [QUANTITY] UNIQUE_ID.COMPANION_NAME [X] [Y]", this.DebugSpawnCompanion);
             helper.ConsoleCommands.Add("cc_clear", "Removes all map-based custom companions at the current location.\n\nUsage: cc_clear", this.DebugClear);
             helper.ConsoleCommands.Add("cc_reload", "Reloads all custom companion content packs. Note: This will remove all spawned companions.\n\nUsage: cc_reload", this.DebugReload);
+            helper.ConsoleCommands.Add("cc_list", "Lists all custom companion keys in the log.\n\nUsage: cc_list", this.DebugList);
 
             // Hook into GameLoop events
             helper.Events.GameLoop.Saving += this.OnSaving;
@@ -143,17 +144,9 @@ namespace CustomCompanions
                 _saveAnywhereApi.AfterLoad += this.OnCustomLoad;
             }
 
-            if (Helper.ModRegistry.IsLoaded("bcmpinc.WearMoreRings") && ApiManager.HookIntoIWMR(Helper))
-            {
-                RingManager.wearMoreRingsApi = ApiManager.GetIWMRApi();
-            }
-
             if (Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets") && ApiManager.HookIntoJsonAssets(Helper))
             {
                 _jsonAssetsApi = ApiManager.GetJsonAssetsApi();
-
-                // Hook into IdsAssigned
-                _jsonAssetsApi.IdsAssigned += this.IdsAssigned;
             }
 
             if (Helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher") && ApiManager.HookIntoContentPatcher(Helper))
@@ -164,21 +157,6 @@ namespace CustomCompanions
 
             // Load any owned content packs
             this.LoadContentPacks();
-        }
-
-        private void IdsAssigned(object sender, EventArgs e)
-        {
-            // Get the ring IDs loaded in by JA from our owned content packs
-            foreach (var ring in RingManager.rings)
-            {
-                int objectID = _jsonAssetsApi.GetObjectId(ring.Name);
-                if (objectID == -1)
-                {
-                    continue;
-                }
-
-                ring.ObjectID = objectID;
-            }
         }
 
         private void OnSaving(object sender, EventArgs e)
@@ -234,9 +212,9 @@ namespace CustomCompanions
                 }
             }
 
-            if (location is BuildableGameLocation)
+            if (location.buildings is not null)
             {
-                foreach (Building building in (location as BuildableGameLocation).buildings)
+                foreach (Building building in location.buildings)
                 {
                     GameLocation indoorLocation = building.indoors.Value;
                     if (indoorLocation is null)
@@ -460,7 +438,7 @@ namespace CustomCompanions
                             }
 
                             // Check if it is already spawned
-                            if (location.characters.Any(c => CompanionManager.IsSceneryCompanion(c) && (c as MapCompanion).targetTile == new Vector2(x, y) * 64f && (c as MapCompanion).companionKey == companion.GetId()))
+                            if (location.characters.Any(c => CompanionManager.IsSceneryCompanion(c) && c is MapCompanion mapCompanion && mapCompanion.targetTile.Value == new Vector2(x, y) * 64f && mapCompanion.companionKey == companion.GetId()))
                             {
                                 continue;
                             }
@@ -499,9 +477,9 @@ namespace CustomCompanions
                 }
 
 
-                if (location is BuildableGameLocation)
+                if (location.buildings is not null)
                 {
-                    foreach (Building building in (location as BuildableGameLocation).buildings)
+                    foreach (Building building in location.buildings)
                     {
                         GameLocation indoorLocation = building.indoors.Value;
                         if (indoorLocation is null)
@@ -533,7 +511,7 @@ namespace CustomCompanions
 
             int amountToSummon = 1;
             string companionKey = args[0];
-            var targetTile = Game1.player.getTileLocation();
+            var targetTile = Game1.player.Tile;
             if (args.Length > 1 && Int32.TryParse(args[0], out int parsedAmountToSummon))
             {
                 amountToSummon = parsedAmountToSummon;
@@ -560,20 +538,30 @@ namespace CustomCompanions
                 return;
             }
 
-            var companion = CompanionManager.companionModels.Where(c => String.Concat(c.Name) == companionKey).Count() > 1 ? CompanionManager.companionModels.FirstOrDefault(c => String.Concat(c.Owner, ".", c.Name) == companionKey) : CompanionManager.companionModels.FirstOrDefault(c => String.Concat(c.Name) == companionKey);
+            var companion = CompanionManager.companionModels.Where(c => String.Concat(c.Owner, ".", c.Name) == companionKey).Count() > 1 ? CompanionManager.companionModels.FirstOrDefault(c => String.Concat(c.Owner, ".", c.Name) == companionKey) : CompanionManager.companionModels.FirstOrDefault(c => String.Concat(c.Owner, ".", c.Name) == companionKey);
             if (companion is null)
             {
                 Monitor.Log($"An error has occured trying to spawn {companionKey}: Command failed!", LogLevel.Warn);
                 return;
             }
 
-            Monitor.Log($"Spawning {companionKey} x{amountToSummon} at {Game1.currentLocation.NameOrUniqueName} on tile {Game1.player.getTileLocation()}!", LogLevel.Debug);
+            Monitor.Log($"Spawning {companionKey} x{amountToSummon} at {Game1.currentLocation.NameOrUniqueName} on tile {Game1.player.Tile}!", LogLevel.Debug);
             CompanionManager.SummonCompanions(companion, amountToSummon, targetTile, Game1.currentLocation);
         }
 
         private void DebugClear(string command, string[] args)
         {
             this.RemoveAllCompanions(targetLocation: Game1.player.currentLocation);
+        }
+
+
+        private void DebugList(string command, string[] args)
+        {
+            Monitor.Log($"Listed all companion keys in the log!", LogLevel.Debug);
+            foreach (var companionModel in CompanionManager.companionModels)
+            {
+                Monitor.Log(String.Concat(companionModel.Owner, ".", companionModel.Name), LogLevel.Trace);
+            }
         }
 
         private void DebugReload(string command, string[] args)

@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // fr (french)
+  // custom tree translation
+  "custom-tree.oak": "Chêne",
+  "custom-tree.maple": "Érable",
+  "custom-tree.pine": "Pin",
+  "custom-tree.coconut": "Cocotier",
+  "custom-tree.mushroom": "Champignon arbre",
+  "custom-tree.mahogany": "Acajou",
+  "custom-tree.palm": "Palmier",
+
+  // growth info translation
+  "growth-info.fully-grown": "complètement mature",
+  "growth-info.stage": "phase",
+  "growth-info.of": "de",
+  "growth-info.days-left": "jours restants",
+  "growth-info.day-left": "jour restant",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Survol de la souris",
+  "config.mouse-hover.desc": "Déplacez la souris sur le recadrage pour afficher l'étiquette lorsqu'elle est activée.",
+  "config.growth-info.name": "Informations sur la Croissance",
+  "config.growth-info.desc": "Affiche la croissance des cultures ou le stade de récolte lorsqu'il est activé.",
+  "config.custom-keybinds.name": "Reliure au clavier",
+  "config.custom-keybinds.desc": "Remplace la valeur par défaut. L'activation du survol de la souris remplace cela."
+}

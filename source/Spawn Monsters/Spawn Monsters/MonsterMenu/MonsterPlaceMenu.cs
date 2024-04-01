@@ -51,7 +51,7 @@ namespace Spawn_Monsters
             }
 
             Game1.playSound("bigSelect");
-            Game1.addHUDMessage(new HUDMessage($"Click anywhere to spawn a {monsterData.Displayname}", null));
+            Game1.addHUDMessage(new HUDMessage($"Click anywhere to spawn a {monsterData.Displayname}"));
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true) {

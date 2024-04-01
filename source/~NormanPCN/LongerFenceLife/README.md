@@ -98,3 +98,6 @@ v1.0.0:
 
  1.3.1
  Added vanilla life to GMCM interface as a reference.
+
+ 1.4.0
+ Updates for Stardew Valley 1.6 and SMAPI 4.

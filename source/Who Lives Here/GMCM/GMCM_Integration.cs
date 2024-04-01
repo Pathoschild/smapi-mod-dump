@@ -32,6 +32,8 @@ namespace WhoLivesHere.GMCM
             config.AutoOffTime = 0;
             config.AutoOnTime = 0;
             config.PageDelay = 250;
+            config.ShowMissingHay = true;
+            config.HideEmptyTabs = false;
         }
         public static void Initialize(IModHelper ohelper, IManifest omanifest, WhoLivesHereConfig oconfig)
         {
@@ -57,11 +59,11 @@ namespace WhoLivesHere.GMCM
             //
             //  create config GUI
             //
-             configMenu.AddSectionTitle(
-                mod: manifest,
-                text: () => "Who Lives Here",
-                tooltip: () => ""
-            );
+            configMenu.AddSectionTitle(
+               mod: manifest,
+               text: () => "Who Lives Here",
+               tooltip: () => ""
+           );
             configMenu.AddKeybindList(
               mod: manifest,
               name: () => I18n.ToggleKey(),
@@ -83,6 +85,13 @@ namespace WhoLivesHere.GMCM
              getValue: () => config.HideEmptyTabs,
              setValue: value => config.HideEmptyTabs = value
          );
+           configMenu.AddBoolOption(
+               mod: manifest,
+               name: () => I18n.ShowMissing(),
+               tooltip: () => I18n.ShowMissing_TT(),
+               getValue: () => config.ShowMissingHay,
+               setValue: value => config.ShowMissingHay = value
+       );
             configMenu.AddNumberOption(
              mod: manifest,
              name: () => I18n.AutoOn(),

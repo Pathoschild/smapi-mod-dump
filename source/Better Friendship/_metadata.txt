@@ -6,11 +6,9 @@ mods:
    Better Friendship
 
 latest commit:
-   commit 373506b42b3169d2d4f89c070549d2e0375af31e
+   commit f9674df8ad01098bce94392dda9c571f2df0a090
    Author: Urbanyeti <urbanski@gmail.com>
-   Date:   Wed Feb 1 22:44:16 2023 -0800
+   Date:   Tue Mar 26 21:41:37 2024 -0700
    
-       Merge pull request #21 from profitrollgame/main
-       
-       i18n support + uk translation
+       Remove hardcoded path
    

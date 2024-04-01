@@ -35,9 +35,9 @@ namespace MailServicesMod
                         if (quest is ItemDeliveryQuest itemDeliveryQuest && !itemDeliveryQuest.completed.Value)
                         {
                             var item = Game1.player.ActiveObject;
-                            if ((item.ParentSheetIndex == itemDeliveryQuest.item.Value || item.Category == itemDeliveryQuest.item.Value))
+                            if (item.QualifiedItemId == itemDeliveryQuest.ItemId.Value)
                             {
-                                NPC npc = NpcUtility.getCharacterFromName(itemDeliveryQuest.target.Value);
+                                NPC npc = NpcUtility.GetCharacterFromName(itemDeliveryQuest.target.Value);
                                 if (item.Stack >= itemDeliveryQuest.number.Value)
                                 {
                                     if (Game1.player.Money >= DataLoader.ModConfig.QuestServiceFee)
@@ -47,18 +47,13 @@ namespace MailServicesMod
                                         if (DataLoader.ModConfig.ShowDialogOnItemDelivery)
                                         {
                                             itemDeliveryQuest.reloadDescription();
-                                            npc.CurrentDialogue.Push(new Dialogue(itemDeliveryQuest.targetMessage, npc));
+                                            npc.CurrentDialogue.Push(new Dialogue(npc, null, itemDeliveryQuest.targetMessage));
                                             Game1.drawDialogue(npc);
                                         }
                                         Game1.player.reduceActiveItemByOne();
                                         if ((bool)itemDeliveryQuest.dailyQuest.Value)
                                         {
                                             Game1.player.changeFriendship(150, npc);
-                                            if (itemDeliveryQuest.deliveryItem.Value == null)
-                                            {
-                                                itemDeliveryQuest.deliveryItem.Value = new SObject(Vector2.Zero, itemDeliveryQuest.item.Value, 1);
-                                            }
-                                            itemDeliveryQuest.moneyReward.Value = itemDeliveryQuest.deliveryItem.Value.Price * 3;
                                         }
                                         else
                                         {
@@ -75,7 +70,7 @@ namespace MailServicesMod
                                 {
                                     if (DataLoader.ModConfig.ShowDialogOnItemDelivery)
                                     {
-                                        npc.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:ItemDeliveryQuest.cs.13615", itemDeliveryQuest.number.Value), npc));
+                                        npc.CurrentDialogue.Push(Dialogue.FromTranslation(npc, "Strings\\StringsFromCSFiles:ItemDeliveryQuest.cs.13615", itemDeliveryQuest.number.Value));
                                         Game1.drawDialogue(npc);
                                     }
                                     else
@@ -88,20 +83,20 @@ namespace MailServicesMod
                         }
                         else if (quest is LostItemQuest lostItemQuest && !lostItemQuest.completed.Value)
                         {
-                            if (lostItemQuest.itemFound.Value && Game1.player.hasItemInInventory(lostItemQuest.itemIndex.Value, 1))
+                            if (lostItemQuest.itemFound.Value && Game1.player.Items.ContainsId(lostItemQuest.ItemId.Value, 1))
                             {
                                 lostItemQuest.questComplete();
-                                NPC npc = NpcUtility.getCharacterFromName(lostItemQuest.npcName.Value);
+                                NPC npc = NpcUtility.GetCharacterFromName(lostItemQuest.npcName.Value);
 
                                 if (DataLoader.ModConfig.ShowDialogOnItemDelivery)
                                 {
-                                    Dictionary<int, string> questData = Game1.temporaryContent.Load<Dictionary<int, string>>("Data\\Quests");
-                                    string thankYou = (questData[lostItemQuest.id.Value].Length > 9) ? questData[lostItemQuest.id.Value].Split('/')[9] : Game1.content.LoadString("Data\\ExtraDialogue:LostItemQuest_DefaultThankYou");
+                                    string[] fields = Quest.GetRawQuestFields(lostItemQuest.id.Value);
+                                    Dialogue thankYou = new(npc, null, ArgUtility.Get(fields, 9, "Data\\ExtraDialogue:LostItemQuest_DefaultThankYou", allowBlank: false));
                                     npc.setNewDialogue(thankYou);
                                     Game1.drawDialogue(npc);
                                 }
                                 Game1.player.changeFriendship(250, npc);
-                                Game1.player.removeFirstOfThisItemFromInventory(lostItemQuest.itemIndex.Value);
+                                Game1.player.removeFirstOfThisItemFromInventory(lostItemQuest.ItemId.Value);
                                 return false;
                             }
                         }

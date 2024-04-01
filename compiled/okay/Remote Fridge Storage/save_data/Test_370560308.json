@@ -1,0 +1,12 @@
+{
+  "Chests": [
+    {
+      "ChestTileLocation": "5, 10",
+      "LocationName": "FarmHouse"
+    },
+    {
+      "ChestTileLocation": "4, 10",
+      "LocationName": "FarmHouse"
+    }
+  ]
+}

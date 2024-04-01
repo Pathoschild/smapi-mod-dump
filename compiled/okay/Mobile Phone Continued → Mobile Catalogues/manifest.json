@@ -1,0 +1,19 @@
+﻿{
+  "Name": "Mobile Catalogues",
+  "Author": "JoXW, aedenthorn",
+  "Version": "1.0.0",
+  "Description": "Online shopping for your mobile phone.",
+  "UniqueID": "JoXW.MobileCatalogues",
+  "EntryDll": "MobileCatalogues.dll",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "JoXW.MobilePhone",
+      "IsRequired": true
+    }
+  ]
+}

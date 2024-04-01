@@ -1,10 +1,17 @@
 ﻿{
 	"Name": "Project Fluent",
 	"Author": "Shockah",
-	"Version": "1.1.0",
+	"Version": "2.0.0",
 	"Description": "A modern localization/translation framework.",
 	"UniqueID": "Shockah.ProjectFluent",
 	"EntryDll": "ProjectFluent.dll",
-	"MinimumApiVersion": "3.14.0",
-	"UpdateKeys": [ "Nexus:12638" ]
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:12638" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "3.0.0"
+		}
+	]
 }

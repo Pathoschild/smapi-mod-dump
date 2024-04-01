@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Version>1.0.0</Version>
+		<TargetFramework>net6.0</TargetFramework>
+		<EnableHarmony>true</EnableHarmony>
+		<Platforms>AnyCPU;x64</Platforms>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="FrameWorkNPC\**" />
+		<Compile Remove="pictures\**" />
+		<EmbeddedResource Remove="FrameWorkNPC\**" />
+		<EmbeddedResource Remove="pictures\**" />
+		<None Remove="FrameWorkNPC\**" />
+		<None Remove="pictures\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove=".gitattributes" />
+	  <None Remove=".gitignore" />
+	  <None Remove="LICENSE" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="FrameworkClothes\assets\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] Market License\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] CloneNPC_Vanilla\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] CloneNPC_SVE\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] CloneNPC_RSV\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="[MFM] MarketTown\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="[] MarketTown\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="MailFrameworkMod">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>$(GamePath)\Mods\MailFrameworkMod\MailFrameworkMod.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+		<Reference Include="SpaceCore">
+			<HintPath>D:\SteamLibrary\steamapps\common\Stardew Valley\Mods\SpaceCore\SpaceCore.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

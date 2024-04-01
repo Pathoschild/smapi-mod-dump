@@ -19,5 +19,13 @@
   "config.fish-easy-caught.name": "魚を簡単に釣り上げる",
   "config.fish-easy-caught.description": "ミニゲームで、魚のアイコンがバーを追いかけるようになります。",
   "config.treasure-easy-caught.name": "宝箱を簡単に釣り上げる",
-  "config.treasure-easy-caught.description": "ミニゲームで、宝箱のアイコンがバーを追いかけるようになります。"
+  "config.treasure-easy-caught.description": "ミニゲームで、宝箱のアイコンがバーを追いかけるようになります。",
+  "config.fish-movement-speed-multiplier.name": "魚の移動速度倍率",
+  "config.fish-movement-speed-multiplier.description": "ミニゲームでの魚の移動速度にかかる倍率です。",
+  "config.progress-bar-decrease-multiplier.name": "進捗ゲージの減少速度倍率",
+  "config.progress-bar-decrease-multiplier.description": "ミニゲームでの捕獲進捗ゲージの減少速度にかかる倍率です。",
+  "config.progress-bar-increase-multiplier.name": "進捗ゲージの増加速度倍率",
+  "config.progress-bar-increase-multiplier.description": "ミニゲームでの捕獲進捗ゲージの増加速度にかかる倍率です。",
+  "config.treasure-catch-speed-multiplier.name": "宝箱の釣り上げ速度倍率",
+  "config.treasure-catch-speed-multiplier.description": "ミニゲームでの宝箱を釣り上げる速さにかかる倍率です。"
 }

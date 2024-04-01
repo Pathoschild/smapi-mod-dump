@@ -26,7 +26,7 @@ namespace SpaceShared.UI
 {
     internal
 #endif
-        class Dropdown : Element
+        class Dropdown : Element, ISingleTexture
     {
         /*********
         ** Accessors

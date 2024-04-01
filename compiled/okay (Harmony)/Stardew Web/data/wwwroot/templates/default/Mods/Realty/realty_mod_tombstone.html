@@ -1,0 +1,133 @@
+﻿<div class="message_board_title_flex">Expansion Details</div>
+<div class="message_paper_board_flex base_font_flex">
+    <table>
+        <tr>
+            <td>
+                <table class="stardew_table">
+                    <tr>
+                        <td class="stardew_label">Name</td>
+                        <td class="stardew_data"><div id="expname"><a href="/Utils/map?id=#ID#">#ID#</a></div></td>
+                        <td class="stardew_label">Display Name</td>
+                        <td class="stardew_data">#NAME#</td>
+                    </tr>
+                    <tr>
+                        <td class="stardew_label">Description</td>
+                        <td colspan="3" class="stardew_data">#DESC#</td>
+                    </tr>
+                    <tr>
+                        <td class="stardew_label">Active</td>
+                        <td class="stardew_data">#ACTIVE#</td>
+                        <td class="stardew_label">For Sale</td>
+                        <td class="stardew_data">#FORSALE#</td>
+                    </tr>
+                    <tr>
+                        <td class="stardew_label">Cost</td>
+                        <td class="stardew_data">#COST#</td>
+                        <td class="stardew_label">Requirements</td>
+                        <td class="stardew_data">#REQS#</td>
+                    </tr>
+                    <tr>
+                        <td class="stardew_label">Seasonal Override</td>
+                        <td class="stardew_data"><select id="seasonlist">#SEASONS#</select></td>
+                        <td class="stardew_label">Allow Giant Crops</td>
+                        <td class="stardew_data"><input type="checkbox" id="allowgiant" #AGCHECK# /></td>
+                    </tr>
+                    <tr>
+                        <td class="stardew_label">Allow Crows</td>
+                        <td class="stardew_data"><input type="checkbox" id="allowcrows" #ACCHECK# /></td>
+                        <td></td>
+                        <td class="stardew_data"></td>
+                    </tr>
+                </table>
+            </td>
+            <td style="padding-left: 10px; vertical-align:top;">
+                <div class="rouded_div">
+                    #DWEATHER#
+                </div>
+            </td>
+        </tr>
+        <tr><td><button style="padding-top:5px;" onclick="SaveCustomLocParameters();">Save</button></td></tr>
+    </table>
+
+</div>
+<div class="message_board_title_flex">Expansion Parameters</div>
+<div class="message_paper_board_flex">
+    <div style="max-height:700px;overflow:auto;">
+        <div class="container">
+            <div class="row">
+                <div class="col stardew_label">
+                    Fishing Area <select id="fisharea" onchange="fa_area_sel('#ID#');">#FISHAREADROP#</select>
+                </div>
+            </div>
+            
+           <div id="fishAreaDetails" class="container">
+           </div>
+        </div>
+   
+        
+        <table class="stardew_table">
+            <tr><td colspan="2" style="min-width:900px;" class="stardew_header">Foraging</td></tr>
+            <tr><td style="width: 100px;" class="stardew_label">Spring<br /><button onclick="SetForage(0);">Add</button></td><td class="stardew_data"><div id="foragesplist">#SPFORAGE#</div></td></tr>
+            <tr><td class="stardew_label">Summer<br /><button onclick="SetForage(1);">Add</button></td><td class="stardew_data"><div id="foragesulist">#SUFORAGE#</div></td></tr>
+            <tr><td class="stardew_label">Fall<br /><button onclick="SetForage(2);">Add</button></td><td class="stardew_data"><div id="foragefalist">#FAFORAGE#</div></td></tr>
+            <tr><td class="stardew_label">Winter<br /><button onclick="SetForage(3);">Add</button></td><td class="stardew_data"><div id="foragewilist">#WIFORAGE#</div></td></tr>
+            <tr><td colspan="2" class="stardew_header">Artifacts</td></tr>
+            <tr><td class="stardew_label"><button onclick="SetArtifactAdd(false);">Add</button></td><td class="stardew_data"><div id="artilist">#ARTIFACT#</div></td></tr>
+        </table>
+    </div>
+</div>
+
+<div id="addArtifact" style="visibility:hidden; width:400px; height:200px; position:fixed; top: 200px; left:250px;" class="rouded_div">
+    <table>
+        <tr><td colspan="2">Enter the details of the potential Artifact</td></tr>
+        <tr><td>Aritifact Id</td><td class="left"><select id="artId">#ARTIIDS#</select></td></tr>
+        <tr><td>Chance (%)</td><td class="left"><input type="text" width="2" id="artChance" /></td></tr>
+        <tr><td></td><td class="left">Enter a number between 1 and 100.</td></tr>
+        <tr>
+            <td>Season</td>
+            <td class="left">
+                <select name="artSeason" id="artSeason">
+                    <option value="any">Any</option>
+                    <option value="spring">Spring</option>
+                    <option value="summer">Summer</option>
+                    <option value="fall">Fall</option>
+                    <option value="winter">Winter</option>
+                </select>
+            </td>
+        </tr>
+        <tr><td style="padding-top:10px;"><button onclick="LocalAddArt();">Save</button> <button onclick="SetForageAdd(true);">Cancel</button></td></tr>
+    </table>
+</div>
+
+<div id="addForage" style="visibility:hidden; width:400px; height:200px; position:fixed; top: 200px; left:250px;" class="rouded_div">
+    <table>
+        <tr><td colspan="2">Enter the details of the potential Forage</td></tr>
+        <tr><td>Forage Id</td><td class="left"><select id="forageId">#FORAGEIDS#</select></td></tr>
+        <tr><td>Chance (%)</td><td class="left"><input type="text" width="2" id="forChance" /></td></tr>
+        <tr><td></td><td class="left">Enter a number between 1 and 100.</td></tr>
+
+        <tr><td style="padding-top:10px;"><button onclick="LocalAddForage();">Save</button> <button onclick="SetForageAdd(true);">Cancel</button></td></tr>
+    </table>
+</div>
+
+<div id="addFish" style="visibility:hidden; width:400px; height:200px; position:fixed; top: 200px; left:250px;" class="rouded_div">
+    <table>
+        <tr><td colspan="2">Enter the details of the potential catch</td></tr>
+        <tr><td>Forage Id</td><td class="left"><select id="fishId">#FISHIDS#</select></td></tr>
+        <tr><td>Chance (%)</td><td class="left"><input type="text" width="2" id="fishChance" /></td></tr>
+        <tr><td></td><td class="left">Enter a number between 1 and 100.</td></tr>
+
+        <tr><td style="padding-top:10px;"><button onclick="LocalAddFish();">Save</button> <button onclick="SetFishAdd(true);">Cancel</button></td></tr>
+    </table>
+</div>
+
+<div id="addFishToArea" style="visibility:hidden; width:400px; height:200px; position:fixed; top: 200px; left:250px;" class="rouded_div">
+    <table>
+        <tr><td colspan="2">Enter the details of the potential catch</td></tr>
+        <tr><td>Forage Id</td><td class="left"><select id="areaFishId">#FISHIDS#</select></td></tr>
+        <tr><td>Chance (%)</td><td class="left"><input type="text" width="2" id="areaFishChance" /></td></tr>
+        <tr><td></td><td class="left">Enter a number between 1 and 100.</td></tr>
+
+        <tr><td style="padding-top:10px;"><button onclick="LocalAddFishToArea();">Save</button> <button onclick="SetFishAreaAdd(true);">Cancel</button></td></tr>
+    </table>
+</div>

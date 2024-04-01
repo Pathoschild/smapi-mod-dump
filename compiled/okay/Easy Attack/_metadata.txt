@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20832
+IDs: season.EasyAttack
+update keys: Nexus:20832

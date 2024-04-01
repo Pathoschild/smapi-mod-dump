@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Migrate DGA Items",
+  "Author": "violetlizabet",
+  "Version": "1.0.0-alpha",
+  "Description": "Migrates DGA items if corresponding CP items exist.",
+  "UniqueID": "violetlizabet.MigrateDGAItems",
+  "EntryDll": "MigrateDGAItems.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.18.0-sdvalpha"
+    }
+  ],
+  "UpdateKeys": ["Nexus:20612"]
+}

@@ -21,6 +21,9 @@ public static class WorldDateExt
 	private static readonly Regex SeasonYearRegex = new($"({AllSeasonsRegexPattern})\\s*y(?:ear)?\\s(\\d+)", RegexOptions.IgnoreCase);
 	private static readonly Regex YearRegex = new($"y(?:ear)?\\s(\\d+)", RegexOptions.IgnoreCase);
 
+	public static int GetDays(this Season season, int year)
+		=> GetDaysInSeason((int)season, year);
+
 	public static int GetDaysInSeason(int season, int year)
 	{
 		string seasonName = Utility.getSeasonNameFromNumber(season);
@@ -88,9 +91,6 @@ public static class WorldDateExt
 	public static WorldDate New(int year, int seasonIndex, int dayOfMonth)
 		=> New(year, (Season)seasonIndex, dayOfMonth);
 
-	public static Season GetSeason(this WorldDate self)
-		=> (Season)self.SeasonIndex;
-
 	public static WorldDate? ParseDate(string text)
 	{
 		text = text.Trim();
@@ -123,5 +123,5 @@ public static class WorldDateExt
 	}
 
 	public static string ToParsable(this WorldDate self)
-		=> $"{Enum.GetName(self.GetSeason())!} {self.DayOfMonth} Year {self.Year}";
+		=> $"{Enum.GetName(self.Season)!} {self.DayOfMonth} Year {self.Year}";
 }

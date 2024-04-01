@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/Tbonetomtom/StardewMods
+   Git: https://github.com/Tbonetomtom/StardewMods.git
+
+mods:
+   Money Management Mod
+
+latest commit:
+   commit 62c07bf27b112848ec6b83e7f53773c5cc996256
+   Author: DESKTOP-J14LSRD\tbone <Tbonetomtom@ymail.com>
+   Date:   Tue Mar 19 13:51:28 2024 -0600
+   
+       Revert "Updated Project to NET 6"
+       
+       This reverts commit 30b25b220b0d25915cf29493ba4740c8f9ab7e48.
+   

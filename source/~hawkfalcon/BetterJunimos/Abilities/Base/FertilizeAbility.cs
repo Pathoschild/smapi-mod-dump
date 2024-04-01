@@ -22,7 +22,7 @@ using SObject = StardewValley.Object;
 namespace BetterJunimos.Abilities {
     public class FertilizeAbility : IJunimoAbility {
         private const int ItemCategory = SObject.fertilizerCategory;
-        private List<int> _RequiredItems;
+        private List<string> _RequiredItems;
         
         public string AbilityName() {
             return "Fertilize";
@@ -31,7 +31,7 @@ namespace BetterJunimos.Abilities {
         public bool IsActionAvailable(GameLocation location, Vector2 pos, Guid guid) {
             if (!location.terrainFeatures.ContainsKey(pos)) return false;
             if (location.terrainFeatures[pos] is not HoeDirt hd) return false;
-            if (hd.fertilizer.Value > 0) return false;
+            if (hd.fertilizer.Value != null) return false;
             if (hd.crop is null) return true;
 
             // now we allow fertilizing just-planted crops
@@ -40,8 +40,8 @@ namespace BetterJunimos.Abilities {
         }
 
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid guid) {
-            var chest = Util.GetHutFromId(guid).output.Value;
-            var foundItem = chest.items.FirstOrDefault(item => item is {Category: ItemCategory});
+            var chest = Util.GetHutFromId(guid).GetOutputChest();
+            var foundItem = chest.Items.FirstOrDefault(item => item is {Category: ItemCategory});
             if (foundItem == null) return false;
 
             Fertilize(location, pos, foundItem.ParentSheetIndex);
@@ -49,14 +49,11 @@ namespace BetterJunimos.Abilities {
             return true;
         }
 
-        public List<int> RequiredItems() {
+        public List<string> RequiredItems() {
             // this is heavy, cache it
             if (_RequiredItems is not null) return _RequiredItems;
-            var fertilizers = Game1.objectInformation
-                    .Where(pair => pair.Value.Split('/')[3].EndsWith(StardewValley.Object.fertilizerCategory.ToString()))
-                    .Where(pair => int.Parse(pair.Value.Split('/')[3].Split(' ').Last()) == StardewValley.Object.fertilizerCategory)
-                    .Where(pair => pair.Value.Split('/')[0] != "Tree Fertilizer")
-                ;
+            var fertilizers = Game1.objectData
+                    .Where(pair => pair.Value.Category == StardewValley.Object.fertilizerCategory);
             // BetterJunimos.SMonitor.Log("RequiredItems called for Fertilize", LogLevel.Debug);
             _RequiredItems = (from kvp in fertilizers select kvp.Key).ToList();
 
@@ -65,7 +62,7 @@ namespace BetterJunimos.Abilities {
 
         private static void Fertilize(GameLocation location, Vector2 pos, int index) {
             if (location.terrainFeatures[pos] is not HoeDirt hd) return;
-            hd.fertilizer.Value = index;
+            hd.fertilizer.Value = index.ToString();
             CheckSpeedGro(hd, hd.crop);
             if (Utility.isOnScreen(Utility.Vector2ToPoint(pos), 64, location)) {
                 location.playSound("dirtyHit");
@@ -81,7 +78,7 @@ namespace BetterJunimos.Abilities {
                 return;
             }
 
-            if (!(fertilizer is 465 or 466 or 918 || who.professions.Contains(5))) {
+            if (!(fertilizer is "465" or "466" or "918" || who.professions.Contains(5))) {
                 return;
             }
 
@@ -93,13 +90,13 @@ namespace BetterJunimos.Abilities {
 
             var speedIncrease = 0f;
             switch (fertilizer) {
-                case 465:
+                case "465":
                     speedIncrease += 0.1f;
                     break;
-                case 466:
+                case "466":
                     speedIncrease += 0.25f;
                     break;
-                case 918:
+                case "918":
                     speedIncrease += 0.33f;
                     break;
             }

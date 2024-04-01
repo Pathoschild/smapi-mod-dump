@@ -138,7 +138,7 @@ internal static class Maps
         {
             result = place.getRandomTile();
 
-            if (!place.IsTileOccupiedBy(result))
+            if (place.IsTileOccupiedBy(result) == false)
                 break;
         }
 

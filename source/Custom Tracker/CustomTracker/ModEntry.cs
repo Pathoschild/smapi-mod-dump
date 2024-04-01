@@ -8,21 +8,22 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
+using System.Collections.Generic;
 
 namespace CustomTracker
 {
     /// <summary>The mod's main class.</summary>
     public partial class ModEntry : Mod
     {
+        /// <summary>This mod instance.</summary>
+        internal static ModEntry Instance;
+
+        /// <summary>The mod's config.json settings.</summary>
+        internal static ModConfig Config;
+
         /// <summary>The "address" of the custom tracker's texture in Stardew's content manager.</summary>
         string TrackerLoadString { get; } = "LooseSprites\\CustomTracker";
         /// <summary>The "address" of the "forage mode" tracker's background texture in Stardew's content manager.</summary>
@@ -40,9 +41,6 @@ namespace CustomTracker
         /// <summary>True if forage icons are being displayed instead of the custom tracker. If the tracker texture cannot be loaded, this mode may activate as a fallback.</summary>
         bool ForageIconMode { get; set; } = false;
 
-        /// <summary>The mod's config.json settings.</summary>
-        ModConfig MConfig { get; set; } = null;
-
         /// <summary>A set of object IDs that should be tracked. Should be populated from the mod's config.json settings.</summary>
         HashSet<int> TrackedObjectIDs { get; set; } = new HashSet<int>();
         /// <summary>A set of object names that should be tracked. Should be populated from the mod's config.json settings.</summary>
@@ -52,16 +50,16 @@ namespace CustomTracker
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            /*** load config settings ***/
+            Instance = this; //provide a global reference to this mod's utilities
 
-            MConfig = helper.ReadConfig<ModConfig>(); //load the mod's config.json file
-            if (MConfig == null) //if loading failed
+            Config = helper.ReadConfig<ModConfig>(); //load the mod's config.json file
+            if (Config == null) //if loading failed
                 return;
 
             //populate object sets from config settings, if applicable
-            if (MConfig.OtherTrackedObjects != null)
+            if (Config.OtherTrackedObjects != null)
             {
-                foreach (object entry in MConfig.OtherTrackedObjects) //for each entry in the list of extra objects to track
+                foreach (object entry in Config.OtherTrackedObjects) //for each entry in the list of extra objects to track
                 {
                     if (int.TryParse(entry.ToString(), out int objectID)) //if this entry can be converted into an integer, treat it as an object ID
                     {
@@ -82,7 +80,8 @@ namespace CustomTracker
             helper.Events.Display.RenderedHud += Display_RenderedHud;
             helper.Events.Display.RenderingHud += Display_RenderingHud;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-            helper.Events.GameLoop.GameLaunched += EnableGMCM;
+
+            helper.Events.Display.RenderedActiveMenu += GMCM.Enable;
         }
     }
 }

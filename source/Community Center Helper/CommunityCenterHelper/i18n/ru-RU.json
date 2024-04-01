@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}}, {{season}}",
 	"tapTree": "Используйте {{tapper}} на {{tree}}",
 	"seedFromTree": "Стряхните или срубите {{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "Изготовьте из {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Срежьте травы или {{wheat}}",
 	"trash": "Мусор от рыбалки, крабовых ловушек, или в мусорных корзинах",
 	"trashCan": "Мусор из мусорных корзин",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Комната Марни (из задания -«Шорты» мэра- Летом 3)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Выиграйте из Игрового автомата Кинотеатра",
 	"voidEggEvent": "Случайное событие с ведьмой",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "от Кроликов",
 	"animalDuck": "от Утков",
 	"animalPig": "от Свиней",
+	"animalOstrich": "Ostriches", // TODO
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "необходимо Птичник",

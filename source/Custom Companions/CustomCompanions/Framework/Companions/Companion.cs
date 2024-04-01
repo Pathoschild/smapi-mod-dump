@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using CustomCompanions.Framework.Extensions;
 using CustomCompanions.Framework.Managers;
 using CustomCompanions.Framework.Models.Companion;
 using Microsoft.Xna.Framework;
@@ -75,7 +76,19 @@ namespace CustomCompanions.Framework.Companions
         protected override void initNetFields()
         {
             base.initNetFields();
-            base.NetFields.AddFields(this.companionKey, this.ownerId, this.targetTile, this.hasShadow, this.hasReachedPlayer, this.specialNumber, this.isPrismatic, this.previousDirection, this.isIdle, this.color, this.motion, this.nextPosition);
+            base.NetFields
+                .AddField(this.companionKey)
+                .AddField(this.ownerId)
+                .AddField(this.targetTile)
+                .AddField(this.hasShadow)
+                .AddField(this.hasReachedPlayer)
+                .AddField(this.specialNumber)
+                .AddField(this.isPrismatic)
+                .AddField(this.previousDirection)
+                .AddField(this.isIdle)
+                .AddField(this.color)
+                .AddField(this.motion)
+                .AddField(this.nextPosition);
 
             if (this.model != null)
             {
@@ -83,7 +96,7 @@ namespace CustomCompanions.Framework.Companions
             }
         }
 
-        public Companion(CompanionModel model, Farmer owner, Vector2? targetTile = null) : base(new AnimatedSprite(model.TileSheetPath, 0, model.FrameSizeWidth, model.FrameSizeHeight), (owner is null ? (Vector2)targetTile : owner.getTileLocation()) * 64f + new Vector2(model.SpawnOffsetX, model.SpawnOffsetY), model.SpawnDirection == -1 ? Game1.random.Next(4) : model.SpawnDirection, model.Name)
+        public Companion(CompanionModel model, Farmer owner, Vector2? targetTile = null) : base(new AnimatedSprite(model.TileSheetPath, 0, model.FrameSizeWidth, model.FrameSizeHeight), (owner is null ? (Vector2)targetTile : owner.Tile) * 64f + new Vector2(model.SpawnOffsetX, model.SpawnOffsetY), model.SpawnDirection == -1 ? Game1.random.Next(4) : model.SpawnDirection, model.Name)
         {
             base.HideShadow = true; // Always hiding the default shadow, as we are allowing user to config beyond normal settings
             base.Sprite.loop = false;
@@ -167,7 +180,7 @@ namespace CustomCompanions.Framework.Companions
                 this.UpdateLight(time);
 
                 // Play any sound(s) that are required
-                if (Utility.isThereAFarmerWithinDistance(base.getTileLocation(), 10, base.currentLocation) != null)
+                if (Utility.isThereAFarmerWithinDistance(base.Tile, 10, base.currentLocation) != null)
                 {
                     this.PlayRequiredSounds(time, this.isMoving());
                 }
@@ -220,7 +233,8 @@ namespace CustomCompanions.Framework.Companions
                         currentEmotion = $"${dialogueModel.PortraitIndex}";
                     }
 
-                    this.CurrentDialogue.Push(new Dialogue(dialogueModel.Text, this) { CurrentEmotion = currentEmotion });
+                    // TODO: Test the change to Dialogue class
+                    this.CurrentDialogue.Push(new Dialogue(this, String.Empty, dialogueModel.Text) { CurrentEmotion = currentEmotion });
                     Game1.drawDialogue(this);
                 }
                 else
@@ -300,12 +314,17 @@ namespace CustomCompanions.Framework.Companions
             this.DoDraw(b, alpha);
         }
 
+        public override void ChooseAppearance(LocalizedContentManager content = null)
+        {
+            return;
+        }
+
         internal void DoDraw(SpriteBatch b, float alpha = 1f)
         {
-            var spriteLayerDepth = this.IsFlying() ? 0.991f : Math.Max(0f, base.drawOnTop ? 0.991f : ((float)base.getStandingY() / 10000f));
+            var spriteLayerDepth = this.IsFlying() ? 0.991f : Math.Max(0f, base.drawOnTop ? 0.991f : ((float)base.StandingPixel.Y / 10000f));
             float layer_depth = ((float)(this.GetBoundingBox().Center.Y + 4) + base.Position.X / 20000f) / 10000f;
 
-            b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2(this.GetSpriteWidthForPositioning() * 4 / 2, this.Sprite.getHeight() / 2) + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), this.Sprite.SourceRect, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber, 5f) : color, this.rotation, new Vector2(this.Sprite.SpriteWidth / 2, (float)this.Sprite.SpriteHeight * 3f / 4f), Math.Max(0.2f, base.scale) * 4f, (base.flip || (this.Sprite.CurrentAnimation != null && this.Sprite.CurrentAnimation[this.Sprite.currentAnimationIndex].flip)) ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layer_depth);
+            b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2(this.GetSpriteWidthForPositioning() * 4 / 2, this.Sprite.getHeight() / 2) + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), this.Sprite.SourceRect, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber.Value, 5f) : color.Value, this.rotation, new Vector2(this.Sprite.SpriteWidth / 2, (float)this.Sprite.SpriteHeight * 3f / 4f), Math.Max(0.2f, base.Scale) * 4f, (base.flip || (this.Sprite.CurrentAnimation != null && this.Sprite.CurrentAnimation[this.Sprite.currentAnimationIndex].flip)) ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layer_depth);
             if (this.Breather && this.shakeTimer <= 0 && !this.isMoving())
             {
                 Rectangle chestBox = this.Sprite.SourceRect;
@@ -315,7 +334,7 @@ namespace CustomCompanions.Framework.Companions
                 chestBox.Width = this.Sprite.SpriteWidth / 2;
                 Vector2 chestPosition = new Vector2(this.Sprite.SpriteWidth * 4 / 2, 8f);
                 float breathScale = Math.Max(0f, (float)Math.Ceiling(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 600.0 + (double)(base.DefaultPosition.X * 20f))) / 4f);
-                b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + chestPosition + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), chestBox, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber, 5f) : color.Value * alpha, this.rotation, new Vector2(chestBox.Width / 2, chestBox.Height / 2 + 1), Math.Max(0.2f, base.scale) * 4f + breathScale, base.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, spriteLayerDepth + 0.001f);
+                b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + chestPosition + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), chestBox, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber.Value, 5f) : color.Value * alpha, this.rotation, new Vector2(chestBox.Width / 2, chestBox.Height / 2 + 1), Math.Max(0.2f, base.Scale) * 4f + breathScale, base.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, spriteLayerDepth + 0.001f);
             }
 
             var shadowLayerDepth = spriteLayerDepth - 0.001f;
@@ -328,7 +347,7 @@ namespace CustomCompanions.Framework.Companions
                 else
                 {
                     // Default game shadow
-                    Game1.spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, this.GetShadowOffset() + this.Position + new Vector2((float)(this.GetSpriteWidthForPositioning() * 4) / 2f, this.Sprite.getHeight())), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), Math.Max(0f, (4f + (float)this.yJumpOffset / 40f) * (float)this.scale), SpriteEffects.None, shadowLayerDepth);
+                    Game1.spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, this.GetShadowOffset() + this.Position + new Vector2((float)(this.GetSpriteWidthForPositioning() * 4) / 2f, this.Sprite.getHeight())), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), Math.Max(0f, (4f + (float)this.yJumpOffset / 40f) * (float)this.Scale), SpriteEffects.None, shadowLayerDepth);
                 }
             }
         }
@@ -485,7 +504,7 @@ namespace CustomCompanions.Framework.Companions
             // Heed thy warnin', there be spaghetti code ahead
             if (owner != null || targetTile != null)
             {
-                this.lastPosition = this.position;
+                this.lastPosition = this.Position;
 
                 var targetDistance = Vector2.Distance(base.Position, this.GetTargetPosition());
                 if (targetDistance > this.model.MaxDistanceBeforeTeleport && this.model.MaxDistanceBeforeTeleport != -1)
@@ -551,13 +570,13 @@ namespace CustomCompanions.Framework.Companions
             {
                 this.nextPosition.Value = this.GetBoundingBox();
                 this.nextPosition.X += (int)this.motion.X;
-                if (!location.isCollidingPosition(this.nextPosition, Game1.viewport, this) || IsFlying())
+                if (!location.isCollidingPosition(this.nextPosition.Value, Game1.viewport, this) || IsFlying())
                 {
                     base.position.X += (int)this.motion.X;
                 }
                 this.nextPosition.X -= (int)this.motion.X;
                 this.nextPosition.Y += (int)this.motion.Y;
-                if (!location.isCollidingPosition(this.nextPosition, Game1.viewport, this) || IsFlying())
+                if (!location.isCollidingPosition(this.nextPosition.Value, Game1.viewport, this) || IsFlying())
                 {
                     base.position.Y += (int)this.motion.Y;
                 }
@@ -732,7 +751,7 @@ namespace CustomCompanions.Framework.Companions
                 {
                     if (Game1.random.NextDouble() <= alwaysSound.ChanceOfPlaying)
                     {
-                        this.currentLocation.netAudio.PlayLocal(alwaysSound.SoundName, alwaysSound.Pitch + this.GetPitchRandomness(alwaysSound));
+                        this.currentLocation.playSound(alwaysSound.SoundName, pitch: alwaysSound.Pitch + this.GetPitchRandomness(alwaysSound));
                     }
                     soundAlwaysTimer = alwaysSound.TimeBetweenSound;
                 }
@@ -745,7 +764,7 @@ namespace CustomCompanions.Framework.Companions
                 {
                     if (Game1.random.NextDouble() <= movingSound.ChanceOfPlaying)
                     {
-                        this.currentLocation.netAudio.PlayLocal(movingSound.SoundName, movingSound.Pitch + this.GetPitchRandomness(movingSound));
+                        this.currentLocation.playSound(movingSound.SoundName, pitch: movingSound.Pitch + this.GetPitchRandomness(movingSound));
                     }
                     soundMovingTimer = movingSound.TimeBetweenSound;
                 }
@@ -758,7 +777,7 @@ namespace CustomCompanions.Framework.Companions
                 {
                     if (Game1.random.NextDouble() <= idleSound.ChanceOfPlaying)
                     {
-                        this.currentLocation.netAudio.PlayLocal(idleSound.SoundName, idleSound.Pitch + this.GetPitchRandomness(idleSound));
+                        this.currentLocation.playSound(idleSound.SoundName, pitch: idleSound.Pitch + this.GetPitchRandomness(idleSound));
                     }
                     soundIdleTimer = idleSound.TimeBetweenSound;
                 }
@@ -797,7 +816,7 @@ namespace CustomCompanions.Framework.Companions
 
         internal void PlaceInEmptyTile(int attempts = 5)
         {
-            var currentTile = this.getTileLocation();
+            var currentTile = this.Tile;
             for (int iteration = 0; iteration < attempts; iteration++)
             {
                 if (!String.IsNullOrEmpty(this.currentLocation.doesTileHaveProperty((int)currentTile.X, (int)currentTile.Y, "NPCBarrier", "Back")))
@@ -945,10 +964,10 @@ namespace CustomCompanions.Framework.Companions
         {
             if (owner != null && owner.currentLocation == this.currentLocation)
             {
-                return owner.position + new Vector2(this.model.SpawnOffsetX, this.model.SpawnOffsetY);
+                return owner.Position + new Vector2(this.model.SpawnOffsetX, this.model.SpawnOffsetY);
             }
 
-            return targetTile;
+            return targetTile.Value;
         }
 
         internal Vector2 GetPositionDirectlyBehind(Vector2 position, int facingDirection)

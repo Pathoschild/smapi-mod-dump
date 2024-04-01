@@ -11,8 +11,8 @@
 {
   "Name": "Max Cast Stamina",
   "Author": "StultusV",
-  "Version": "1.0.0",
-  "Description": "Doesn't use stamina if you get a max cast in fishing",
+  "Version": "1.0.1",
+  "Description": "Getting a Max Cast while fishing makes it so you don't lose stamina",
   "UniqueID": "StultusV.MaxCastStamina",
   "EntryDll": "MaxCastStamina.dll",
   "UpdateKeys": [ "Nexus:10794" ]

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/mpomirski/StardewMods
+   Git: https://github.com/mpomirski/StardewMods.git
+
+mods:
+   Indoor Sprinklers
+
+latest commit:
+   commit 3006d521d03ba3df444d25dd22dfcf0e51bd929c
+   Author: MichaÅ‚ Pomirski <43695467+mpomirski@users.noreply.github.com>
+   Date:   Wed Mar 27 01:22:15 2024 +0100
+   
+       Update README.md
+   

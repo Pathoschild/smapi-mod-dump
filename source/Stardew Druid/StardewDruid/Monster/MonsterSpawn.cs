@@ -36,20 +36,12 @@ namespace StardewDruid.Monster
 
             spawnDamage = targetMonster.DamageToFarmer;
 
-            //targetMonster.MaxHealth = 9999;
-
-           // targetMonster.Health = 9999;
-
-            //targetMonster.DamageToFarmer = 1;
-
         }
 
         public void InitiateMonster(int delayTimer)
         {
 
             DelayedAction.functionAfterDelay(ManifestMonster, delayTimer);
-
-            //DelayedAction.functionAfterDelay(ActivateMonster, delayTimer + 1000);
 
         }
 

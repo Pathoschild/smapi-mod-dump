@@ -8,20 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using DecidedlyShared.Constants;
-using DecidedlyShared.Input;
-using DecidedlyShared.Logging;
-using DecidedlyShared.Ui;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Menus;
-using TeleportAnywhere.Utilities;
-
 namespace TeleportAnywhere.UI
 {
     // public class TeleportUi : IClickableMenu

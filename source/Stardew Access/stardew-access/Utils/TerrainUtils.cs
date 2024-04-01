@@ -9,7 +9,6 @@
 *************************************************/
 
 using stardew_access.Translation;
-using static stardew_access.Utils.ObjectUtils;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Text;
@@ -96,24 +95,24 @@ public static class TerrainUtils
         return GetFruitTreeInfoString(fruitTreeDetails);
     }
 
-    public static (string TreeType, int GrowthStage, string SeedName, bool IsFertilized) GetTreeInfo(Tree tree)
+    public static (string TreeType, int GrowthStage, string SeedName, bool IsFertilized, bool isStump, bool isMossy) GetTreeInfo(Tree tree)
     {
         var treeStage = tree.growthStage.Value;
         var treeType = tree.treeType.Value;
         string seedName = ItemRegistry.GetDataOrErrorItem(tree.GetData().SeedItemId).DisplayName;
-        return (treeType, treeStage, seedName, tree.fertilized.Value);
+        return (treeType, treeStage, seedName, tree.fertilized.Value, tree.stump.Value, tree.hasMoss.Value);
     }
 
-    public static string GetTreeInfoString((string TreeType, int GrowthStage, string SeedName, bool IsFertilized) treeDetails)
+    public static string GetTreeInfoString((string TreeType, int GrowthStage, string SeedName, bool IsFertilized, bool isStump, bool isMossy) treeDetails)
     {
         string treeType = "";
         if (int.TryParse(treeDetails.TreeType, out int treeTypeInt))
         {
-            treeType = Translator.Instance.Translate("terrain_util-tree_type",
-                new { type = treeTypeInt });
-        } else {
-            treeType = Translator.Instance.Translate("terrain_util-tree_type",
-                new { type = treeDetails.TreeType });
+            treeType = Translator.Instance.Translate("terrain_util-tree_type", new { type = treeTypeInt });
+        }
+        else
+        {
+            treeType = Translator.Instance.Translate("terrain_util-tree_type", new { type = treeDetails.TreeType });
         }
         if (treeDetails.GrowthStage == 0)
         {
@@ -131,10 +130,13 @@ public static class TerrainUtils
             }
         }
 
-        string growthStage = Translator.Instance.Translate("terrain_util-tree_growth_stage",
-            new { stage = treeDetails.GrowthStage });
+        string growthStage = treeDetails.isStump
+            ? Translator.Instance.Translate("terrain_util-tree-stump")
+            : Translator.Instance.Translate("terrain_util-tree_growth_stage", new { stage = treeDetails.GrowthStage });
+        string fertilizedStatus = treeDetails.IsFertilized ? Translator.Instance.Translate("terrain_util-fertilized") + " " : "";
+        string mossyStatus = treeDetails.isMossy ? Translator.Instance.Translate("terrain_util-tree-mossy") + " " : "";
 
-        return (treeDetails.IsFertilized ? $"{Translator.Instance.Translate("terrain_util-fertilized")} ":"") + $"{treeType} {growthStage}";
+        return $"{fertilizedStatus}{mossyStatus}{treeType} {growthStage}";
     }
 
     public static string GetTreeInfoString(Tree tree)
@@ -161,9 +163,13 @@ public static class TerrainUtils
 
     public static string GetGrassInfoString(Grass grass)
     {
-        // in case we ever need to do more logic with grass; i.E. updates or grass mods
-        // for now just return translation key, as there seems to be no way to get "grass" in translated form from the game.
-        return "tile-grass-name";
+        // Must convert to int for fluent to recognize
+        var grass_type = (int)grass.grassType.Value;
+        object tokens = new
+        {
+            grass_type
+        };
+        return Translator.Instance.Translate("tile-grass-name", tokens);
     }
 
     public static (bool IsTownBush, bool IsHarvestable, int BushType, int Age, string ShakeOff) GetBushInfo(Bush bush)
@@ -249,8 +255,9 @@ public static class TerrainUtils
             case Tree tree:
                 return (GetTreeInfoString(tree), CATEGORY.Trees);
             default:
-                Log.Warn($"Unknown terrain feature type: {terrainFeature.GetType().Name}", true);
-                return (null, null);
+                string name = terrainFeature.GetType().Name;
+                Log.Warn($"Unknown terrain feature type: {name}", true);
+                return (name, CATEGORY.Unknown);
         }
     }
 
@@ -261,11 +268,14 @@ public static class TerrainUtils
         switch (largeTerrainFeature)
         {
             case Bush bush:
-                return (GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bush);
+                return (GetBushInfoString(bush), (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom()) ? CATEGORY.Ready : CATEGORY.Bushes);
+            case Tent tent:
+                return (Translator.Instance.Translate("terrain_util-tent"), CATEGORY.Buildings);
             // Add more cases for other types of LargeTerrainFeature here
             default:
-                Log.Warn($"Unknown LargeTerrainFeature type: {largeTerrainFeature.GetType().Name}", true);
-                return (null, null);
+                string name = largeTerrainFeature.GetType().Name;
+                Log.Warn($"Unknown LargeTerrainFeature type: {name}", true);
+                return (name, CATEGORY.Unknown);
         }
     }
 }

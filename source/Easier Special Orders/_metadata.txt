@@ -6,9 +6,9 @@ mods:
    Easier Special Orders
 
 latest commit:
-   commit 6120d61cc1f3aff216997c4439f2cfcb5cea264e
+   commit 12ea31f2e40a866bffcf25e9422f12788d2d4684
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Tue Jul 5 10:03:49 2022 +1000
+   Date:   Wed Mar 20 07:44:35 2024 +1100
    
-       update manifest
+       update manifest.json
    

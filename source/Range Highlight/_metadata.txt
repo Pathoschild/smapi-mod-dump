@@ -6,19 +6,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 54879bf214286a7fda83c69e2e1edde4447b2239
+   commit e7b3b71db64795a6ef21c2e1a972a46165daab23
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Fri Mar 8 22:04:25 2024 -0500
+   Date:   Thu Mar 28 23:01:10 2024 -0400
    
-       fix bug in Better Junimos integration; version 3.6.1
-       
-       Previously, the junimo hut range was fixed when the integration was
-       installed, which is annoying when it means that in-game changes to the
-       configuration are not reflected until returning to the title screen, but a
-       serious problem when using the "Junimos work for wages" option in Better
-       Junimos.  When using that option, the range is initially a reduced range
-       until the junimos have been paid.
-       
-       The range is now re-fetched before returning the highlight tiles for
-       junimo huts.
+       Release 4.1.1
    

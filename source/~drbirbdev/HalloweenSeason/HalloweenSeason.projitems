@@ -9,6 +9,7 @@
     <Import_RootNamespace>HalloweenSeason</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\candy.png" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\halloweenOre.png" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\halloweenSlime.png" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\halloweenTitle.png" />
@@ -28,6 +29,7 @@
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\tv\overlay8.png" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\tv\overlay9.png" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\content.json" />
+    <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\data\candy.json" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\data\events.json" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\data\event\friends.json" />
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\data\event\hedge.json" />
@@ -38,10 +40,6 @@
     <Content Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\manifest.json" />
     <Content Include="$(MSBuildThisFileDirectory)[FTM] HalloweenSeason\content.json" />
     <Content Include="$(MSBuildThisFileDirectory)[FTM] HalloweenSeason\manifest.json" />
-    <Content Include="$(MSBuildThisFileDirectory)[JA] HalloweenSeason\i18n\default.json" />
-    <Content Include="$(MSBuildThisFileDirectory)[JA] HalloweenSeason\manifest.json" />
-    <Content Include="$(MSBuildThisFileDirectory)[JA] HalloweenSeason\Objects\HalloweenCandy\object.json" />
-    <Content Include="$(MSBuildThisFileDirectory)[JA] HalloweenSeason\Objects\HalloweenCandy\object.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)[CP] HalloweenSeason\assets\Backwoods_Hedge.tmx" />

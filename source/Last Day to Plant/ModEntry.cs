@@ -28,12 +28,13 @@ namespace LastDayToPlant
         private const int DaysInAMonth = 28;
         private IModHelper MyHelper;
         private ModConfig MyConfig;
-        private readonly List<Crop> AllCrops = new List<Crop>();
+        private readonly List<Crop> AllCrops = new();
         internal static IMonitor InternalMonitor;
 
         public override void Entry(IModHelper helper)
         {
             MyHelper = helper;
+            I18n.Init(helper.Translation);
             MyConfig = MyHelper.ReadConfig<ModConfig>();
             InternalMonitor = this.Monitor;
 
@@ -44,11 +45,7 @@ namespace LastDayToPlant
             foreach(var crop in AllCrops)
             {
                 var baseName = crop.Name;
-                crop.Name = helper.Translation.Get($"crop.{baseName}");
-                crop.Message = helper.Translation.Get("notification.crop.no-fertilizer", new { cropName = crop.Name });
-                crop.MessageSpeedGro = helper.Translation.Get("notification.crop.speed-gro", new { cropName = crop.Name });
-                crop.MessageDelxueSpeedGro = helper.Translation.Get("notification.crop.deluxe-speed-gro", new { cropName = crop.Name });
-                crop.MessageHyperSpeedGro = helper.Translation.Get("notification.crop.hyper-speed-gro", new { cropName = crop.Name });
+                crop.Localize(MyHelper, baseName);
             }
 
             MyHelper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
@@ -74,16 +71,16 @@ namespace LastDayToPlant
             var currentSeason = SDate.From(Game1.Date).Season;
             switch (currentSeason)
             {
-                case "spring":
+                case StardewValley.Season.Spring:
                     ShowCrops(Season.spring, currentDay, currentYear);
                     break;
-                case "summer":
+                case StardewValley.Season.Summer:
                     ShowCrops(Season.summer, currentDay, currentYear);
                     break;
-                case "fall":
+                case StardewValley.Season.Fall:
                     ShowCrops(Season.fall, currentDay, currentYear);
                     break;
-                case "winter":
+                case StardewValley.Season.Winter:
                     ShowCrops(Season.winter, currentDay, currentYear);
                     break;
                 default:
@@ -104,7 +101,7 @@ namespace LastDayToPlant
 
         private void LoadModCrops()
         {
-            var modsPath = Path.Combine(Constants.ExecutionPath, "Mods");
+            var modsPath = Path.Combine(Constants.GamePath, "Mods");
             var modsPathExists = Directory.Exists(modsPath);
 
             if (modsPathExists)
@@ -178,12 +175,13 @@ namespace LastDayToPlant
 
         private int CalculateActualGrowRate(Crop crop, double factor)
         {
+            int daysToGrow = crop.DaysToGrowIrrigated > 0 ? crop.DaysToGrowIrrigated : crop.DaysToGrow;
             if (FarmingSkills.IsAgriculturist)
             {
-                return (int)(crop.DaysToMature - (crop.DaysToMature * (factor + FarmingSkills.AgriculturistGrowthRate)));
+                return (int)(daysToGrow - (daysToGrow * (factor + FarmingSkills.AgriculturistGrowthRate)));
             }
 
-            return (int)(crop.DaysToMature - (crop.DaysToMature * factor));
+            return (int)(daysToGrow - (daysToGrow * factor));
         }
     }
 

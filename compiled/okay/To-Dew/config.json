@@ -3,6 +3,13 @@
   "hotkeyList": "None",
   "secondaryCloseButton": "ControllerBack",
   "debug": false,
+  "enableMobilePhoneApp": true,
+  "mobilePhoneModIds": [
+    "aedenthorn.MobilePhone",
+    "JoXW.MobilePhone",
+    "datamancer.MobilePhone"
+  ],
+  "addLocation": "Bottom",
   "overlay": {
     "enabled": true,
     "clickToMarkDone": true,

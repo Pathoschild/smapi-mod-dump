@@ -23,6 +23,6 @@
 	],
 	"ContentPackFor": {
 		"UniqueID": "DIGUS.MailFrameworkMod",
-        "MinimumVersion": "1.10.1"
+        "MinimumVersion": "1.16.0-alpha"
 	}
 }

@@ -10,6 +10,8 @@ mods:
    Fishing Nets
    Fishing Nets → Automate
    Fishing Nets → Better Crafting
+   Geode Preview
+   Hay Collection
    Joja's Hauntings
    Locked Chests
    Multi-User Chests
@@ -23,9 +25,9 @@ mods:
    Winter Pigs
 
 latest commit:
-   commit cffc8d3443f77c5d9d4e892e64c3b9ff9ce1642a
-   Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Fri Oct 20 17:27:36 2023 +0200
+   commit 1e93aa2b4ec8c07253a09b39ed6c747b21358bc7
+   Author: MindMeltMax <49438916+MindMeltMax@users.noreply.github.com>
+   Date:   Mon Mar 25 15:34:19 2024 +0100
    
-       Update Fish Nets to 1.1.2, Add Fish Nets - Better Crafting
+       Add Hay Collection and GeodePreview
    

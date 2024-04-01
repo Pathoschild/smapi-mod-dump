@@ -19,8 +19,8 @@ namespace StardewDruid.Cast.Weald
 
         NPC riteWitness;
 
-        public Villager(Vector2 target, Rite rite, NPC witness)
-            : base(target, rite)
+        public Villager(Vector2 target,  NPC witness)
+            : base(target)
         {
 
             riteWitness = witness;
@@ -32,16 +32,16 @@ namespace StardewDruid.Cast.Weald
 
             int friendship = 0;
 
-            if (riteData.castTask.ContainsKey("masterVillager"))
+            if (Mod.instance.rite.castTask.ContainsKey("masterVillager"))
             {
 
                 friendship = 25;
 
             }
 
-            bool greetVillager = ModUtility.GreetVillager(riteData.caster, riteWitness, friendship);
+            bool greetVillager = ModUtility.GreetVillager(Mod.instance.rite.caster, riteWitness, friendship);
 
-            if (!riteData.castTask.ContainsKey("masterVillager") && greetVillager)
+            if (!Mod.instance.rite.castTask.ContainsKey("masterVillager") && greetVillager)
             {
 
                 Mod.instance.UpdateTask("lessonVillager", 1);

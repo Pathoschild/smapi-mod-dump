@@ -1,0 +1,8 @@
+{
+  "Enabled": true,
+  "ToggleKey": "NumPad2",
+  "Pickaxe_greater_wcan": false,
+  "Pickaxe_over_melee": false,
+  "LastToolButton": "MouseMiddle",
+  "Hoe_in_empty_soil": true
+}

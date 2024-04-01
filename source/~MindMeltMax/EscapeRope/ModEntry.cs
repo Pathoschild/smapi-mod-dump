@@ -20,7 +20,7 @@ namespace EscapeRope
     {
         public IJsonAssetsApi JA;
         public Warp warp;
-        public int RopeID;
+        public string RopeID;
         
         public override void Entry(IModHelper helper) //Load helpers 
         {
@@ -32,7 +32,7 @@ namespace EscapeRope
         private void GameLaunched(object sender, GameLaunchedEventArgs e) //Get JsonAssets Api and directory on Game launch
         {
             JA = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-            JA.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
+            JA?.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
         }
 
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -41,35 +41,29 @@ namespace EscapeRope
             {
                 RopeID = JA.GetObjectId("Escape Rope"); //Get the id for the Escape Rope 
 
-                if (RopeID == -1) //If the Escape Rope doesn't have an id the console alerts the player
-                {
+                if (string.IsNullOrWhiteSpace(RopeID)) //If the Escape Rope doesn't have an id the console alerts the player
                     Monitor.Log($"Failed loading Object JA.Escape_Rope", LogLevel.Warn);
-                }
             }
             else //Alert the player if JsonAssets Api isn't present
-            {
                 Monitor.Log($"Failed Loading Json Assets API", LogLevel.Warn);
-            }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            warp = new Warp(Game1.player.getTileX(), Game1.player.getTileY(), "Mine", 18, 5, false); //Create a warp to the mine entrance
+            warp = new Warp((int)Game1.player.Tile.X, (int)Game1.player.Tile.Y, "Mine", 18, 5, false); //Create a warp to the mine entrance
             if (!Context.IsWorldReady) //if the world isn't loaded, do nothing
                 return;
 
-
-
-            if (Game1.player.currentLocation is MineShaft && Game1.player.CurrentItem.Name is "Escape Rope" && e.Button.IsUseToolButton()) // if the player is in the mine below level 0 and clicks with the escape rope it removes the item once and teleports the player
+            if (Game1.player.currentLocation is MineShaft && Game1.player.CurrentItem.Name == "Escape Rope" && e.Button.IsUseToolButton()) // if the player is in the mine below level 0 and clicks with the escape rope it removes the item once and teleports the player
             {
-                Game1.player.removeItemsFromInventory(RopeID, 1);
+                Game1.player.removeFirstOfThisItemFromInventory(RopeID, 1);
                 Game1.player.warpFarmer(warp);
             }
         }
     }
     public interface IJsonAssetsApi //Get The JsonAssets Api functions
     {
-        int GetObjectId(string name);
+        string GetObjectId(string name);
         void LoadAssets(string path);
     }
 }

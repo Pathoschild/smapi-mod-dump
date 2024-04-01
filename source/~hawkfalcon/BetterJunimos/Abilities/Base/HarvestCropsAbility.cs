@@ -47,12 +47,12 @@ namespace BetterJunimos.Abilities {
             return true;
         }
 
-        public List<int> RequiredItems() {
+        public List<string> RequiredItems() {
             return new();
         }
 
         private bool ShouldAvoidHarvesting(Vector2 pos, HoeDirt hd) {
-            var item = new StardewValley.Object(pos, hd.crop.indexOfHarvest.Value, 0);
+            var item = new StardewValley.Object(pos, hd.crop.indexOfHarvest.Value);
 
             // TODO: check properly if the crop will die tomorrow instead of special-casing 
             if (item.ParentSheetIndex == 421) {

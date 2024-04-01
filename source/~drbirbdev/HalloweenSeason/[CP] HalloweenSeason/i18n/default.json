@@ -9,20 +9,23 @@
 *************************************************/
 
 {
+    "item.halloween_candy.name": "Halloween Candy",
+    "item.halloween_candy.description": "Candy that is loved by all for Halloween.",
+
     "tv.name": "Spooky News",
-    "tv.intro": "Breaking Spooky News Announcment!",
+    "tv.intro": "Breaking Spooky News Announcement!",
     "tv.text0": "Actually, nevermind. There is no breaking news today... (Do you have dependency mods installed?)",
     "tv.text1": "An outbreak of strange monsters is terrorizing Stardew Valley! Reports say that these monsters sometimes drop a sugary treat. More on this story as it develops...",
     "tv.text2": "Local trees seem to be forming sugar crystals in their branches. This mysterious phenomenon has biologists baffled. What could be causing this?",
     "tv.text3": "A littering epidemic has struck local towns! Officials say that someone has been leaving uneaten candy around pristine forests. Who could be behind such a crime?",
     "tv.text4": "A shipment of sugar candy from the Gotoro Empire has capsized last night. Oceanographers say currents could carry these candies to beaches around the world.",
-    "tv.text5": "Mountainous regions have seen an influx of sweet foragables pop up over-night. Squirrelologists believe the bushy-tailed rodents may be behind this occurance.",
+    "tv.text5": "Mountainous regions have seen an influx of sweet foragables pop up over-night. Squirrelologists believe the bushy-tailed rodents may be behind this occurrence.",
     "tv.text6": "Forested regions have seen an infestation of a new slime variety. Witnesses say the slime can be mistaken for a pumpkin, and has a sweet taste. Why were witnesses tasting this slime? More on that tonight...",
     "tv.text7": "Local mines have seen a rise in sweet crystal formations. Geologists are researching what could be causing organic compounds to develop inside of minerals. Stay tuned to learn more...",
     "tv.text8": "kzzzt---Hello, farmer. If you are looking for a challenge today, find the hedge maze I've placed somewhere in the valley.",
     "tv.text9": "Environmentalist are alerting that waste is at an all time high. For some reason, people are throwing out perfectly good candy. What can be done to curb this imminent environmental disaster?",
     "tv.text10": "A wave of generosity is spreading trough Stardew Valley. Random gift-giving is at an all-time high today. Perhaps you'll be gifted something in the not-so-distant future...",
-    "tv.text11": "Sugur stocks are plummeting! This has caused the wholesale value of candy to hit record lows. Discount candy may be coming to a store near you.",
+    "tv.text11": "Sugar stocks are plummeting! This has caused the wholesale value of candy to hit record lows. Discount candy may be coming to a store near you.",
 
     "buff.display": "Halloween Candy",
     "buff.description": "Luck +{{amount}}",

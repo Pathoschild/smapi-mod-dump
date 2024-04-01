@@ -1,0 +1,8 @@
+{
+  "InstantKill": "LeftShift + K",
+  "GrowCrops": "LeftShift + G",
+  "LuckyDay": "LeftShift + L",
+  "SkipFishing": true,
+  "RecatchLegendaryFish": true,
+  "AlwaysTreasure": true
+}

@@ -1,0 +1,12 @@
+{
+  "Name": "Spawn Supply Crates On Beach",
+  "Author": "onlythechosen",
+  "Version": "1.0.2",
+  "Description": "Spawns supply crates normally found on the beach farm on the beach!",
+  "UniqueID": "otc.supplycratesonbeach",
+  "EntryDll": "SupplyCratesOnBeach.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20828" ],
+  "Dependencies": [
+  ]
+}

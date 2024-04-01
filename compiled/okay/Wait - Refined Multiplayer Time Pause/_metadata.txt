@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20661
+IDs: aurpine.WAIT
+update keys: Nexus:20661

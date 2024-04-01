@@ -8,16 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System;
+using System.Collections.Generic;
 
 namespace CustomTracker
 {
@@ -31,7 +28,7 @@ namespace CustomTracker
             if (!Context.IsPlayerFree) //if the world isn't ready or the player isn't free
                 return;
 
-            if (!MConfig.EnableTrackersWithoutProfession && !Game1.player.professions.Contains(17)) //if the player needs to unlock the Tracker profession
+            if (!Config.EnableTrackersWithoutProfession && !Game1.player.professions.Contains(17)) //if the player needs to unlock the Tracker profession
                 return;
 
             if (!Game1.currentLocation.IsOutdoors || Game1.eventUp || Game1.farmEvent != null) //if the player is indoors or an event is happening
@@ -42,9 +39,9 @@ namespace CustomTracker
             {
                 if
                 (
-                    (MConfig.TrackDefaultForage && pair.Value.isSpawnedObject.Value) //if this is a spawned object to track
-                    || (MConfig.TrackArtifactSpots && pair.Value.ParentSheetIndex == 590) //or if this an artifact spot to track
-                    || TrackedObjectIDs.Contains(pair.Value.parentSheetIndex) //or if this object's ID is being tracked
+                    (Config.TrackDefaultForage && pair.Value.IsSpawnedObject) //if this is a spawned object to track
+                    || (Config.TrackArtifactSpots && pair.Value.ParentSheetIndex == 590) //or if this an artifact spot to track
+                    || TrackedObjectIDs.Contains(pair.Value.ParentSheetIndex) //or if this object's ID is being tracked
                     || TrackedObjectNames.Contains(pair.Value.Name.ToLower()) //or if this object's name is being tracked
                     || TrackedObjectNames.Contains(pair.Value.DisplayName.ToLower()) //or if this object's display name is being tracked
                 )
@@ -68,7 +65,7 @@ namespace CustomTracker
             }
 
             //track the location's panning spot, if applicable
-            if (MConfig.TrackPanningSpots && Game1.currentLocation.orePanPoint.Value != Point.Zero) //if an ore panning location should be tracked
+            if (Config.TrackPanningSpots && Game1.currentLocation.orePanPoint.Value != Point.Zero) //if an ore panning location should be tracked
             {
                 Texture2D objectSheet = Spritesheet; //store the spritesheet, in case it needs to be changed during this process
 
@@ -94,11 +91,11 @@ namespace CustomTracker
             }
 
             //track spring onions, if applicable
-            if (MConfig.TrackSpringOnions) //if spring onions should be tracked
+            if (Config.TrackSpringOnions) //if spring onions should be tracked
             {
                 foreach (var feature in Game1.currentLocation.terrainFeatures.Values) //for each of this location's terrain features
                 {
-                    if (feature is HoeDirt dirt && dirt.crop?.whichForageCrop.Value == Crop.forageCrop_springOnion) //if this terrain feature has a spring onion
+                    if (feature is HoeDirt dirt && dirt.crop?.whichForageCrop.Value == Crop.forageCrop_springOnionID) //if this terrain feature has a spring onion
                     {
                         if (ForageIconMode) //if this is rendering forage icons
                         {
@@ -114,29 +111,29 @@ namespace CustomTracker
                             SpriteSource = new Rectangle(0, 0, Spritesheet.Width, Spritesheet.Height); //create a source rectangle covering the entire tracker spritesheet
                         }
 
-                        DrawTracker(feature.currentTileLocation); //draw a tracker for this spring onion
+                        DrawTracker(feature.Tile); //draw a tracker for this spring onion
                     }
                 }
             }
 
             //track harvestable berry bushes, if applicable
-            if (MConfig.TrackBerryBushes) //if harvestable berry bushes should be tracked
+            if (Config.TrackBerryBushes) //if harvestable berry bushes should be tracked
             {
                 foreach (var feature in Game1.currentLocation.largeTerrainFeatures) //for each of this location's large terrain features
                 {
                     if (feature is Bush bush) //if this feature is a bush
                     {
-                        if (bush.size != 3 //if this is NOT a tea bush
-                            && (MConfig.TrackWalnutBushes || bush.size != 4) //AND this bush is NOT excluded by the walnut setting
+                        if (bush.size.Value != Bush.greenTeaBush //if this is NOT a tea bush
+                            && (Config.TrackWalnutBushes || bush.size.Value != Bush.walnutBush) //AND this bush is NOT excluded by the walnut setting
                             && bush.townBush.Value == false //AND this is NOT flagged as a town bush
                             && bush.tileSheetOffset.Value == 1 //AND this bush is currently displaying berries/walnuts
-                            && bush.inBloom(Game1.currentSeason, Game1.dayOfMonth)) //AND this bush is currently blooming
+                            && bush.inBloom()) //AND this bush is currently blooming
                         {
                             if (ForageIconMode) //if this is rendering forage icons
                             {
                                 int index; //the object ID to display
 
-                                if (bush.size == 4) //if this is a walnut bush
+                                if (bush.size.Value == Bush.walnutBush) //if this is a walnut bush
                                     index = 73; //use the walnut ID
                                 else if (Game1.currentSeason.Equals("fall", StringComparison.OrdinalIgnoreCase)) //else if the current season is fall
                                     index = 410; //use the blackberry ID
@@ -155,7 +152,7 @@ namespace CustomTracker
                                 SpriteSource = new Rectangle(0, 0, Spritesheet.Width, Spritesheet.Height); //create a source rectangle covering the entire tracker spritesheet
                             }
 
-                            DrawTracker(bush.tilePosition.Value); //draw a tracker for this berry bush
+                            DrawTracker(bush.Tile); //draw a tracker for this berry bush
                         }
                     }
                 }

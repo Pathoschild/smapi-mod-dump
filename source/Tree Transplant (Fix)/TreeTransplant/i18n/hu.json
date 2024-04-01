@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/siweipancc/TreeTransplant
+**
+*************************************************/
+
+{
+  "Menu_DefaultText": "válaszd ki az átültetni kívánt fát.",
+  "Menu_PlacementText": "Válassz egy új helyet a fának.",
+  "Menu_InvalidPlace": "Ide nem tudod tenni!",
+  "Menu_InvalidCap": "Nem tudsz mozgatni egy fát facsappal!",
+  "Carpenter_Option": "Fa átültetés"
+}

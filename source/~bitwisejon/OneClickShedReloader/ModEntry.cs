@@ -17,7 +17,6 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 
@@ -95,10 +94,10 @@ namespace BitwiseJonMods.OneClickShedReloader
                 }
 
                 //See if we have a building under the cursor
-                if (Game1.currentLocation is BuildableGameLocation buildableLocation)
+                if (Game1.currentLocation == null) return;
+                Building building = Game1.currentLocation.getBuildingAt(Game1.currentCursorTile);
+                if (building != null)
                 {
-                    var building = buildableLocation.getBuildingAt(Game1.currentCursorTile);
-
                     if (building != null && _logNamesOnHover && !_lastHoveredItem.Equals(building.buildingType.ToString()))
                     {
                         _lastHoveredItem = building.buildingType.ToString();
@@ -109,15 +108,42 @@ namespace BitwiseJonMods.OneClickShedReloader
                     {
                         //jon, 12/22/20: Greenhouse is now a building and can be moved. But the building is just a shell with no indoors so we must get
                         //  the actual Greenhouse game location here to use for finding objects inside.
+                        //jon, 3/21/24: You can now build an extra greenhouse that acts like a normal building, but old greenhouse still needs special handling.
                         if (building.buildingType?.Value == "Greenhouse")
                         {
                             if (Game1.MasterPlayer.hasOrWillReceiveMail("jojaPantry") || Game1.MasterPlayer.hasOrWillReceiveMail("ccPantry"))
                             {
-                                _currentTileLocation = Game1.getLocationFromName("GreenHouse");
+                                //Check if this greenhouse is a normal building by checking if indoors value is null
+
+                                if (building.indoors.Value == null)
+                                {
+                                    //Greenhouse is original one so treat it special
+                                    _currentTileLocation = Game1.getLocationFromName("GreenHouse");
+
+                                    //See if we are in the greenhouse under and hovering near the door
+                                    var greenhouse = GetGreenHouseUnderCursor(Game1.currentCursorTile);
+                                    if (greenhouse != null)
+                                    {
+                                        if (_logNamesOnHover && !_lastHoveredItem.Equals("Greenhouse"))
+                                        {
+                                            _lastHoveredItem = "Greenhouse";
+                                            Common.Utility.LogImportant($"Building under cursor: Greenhouse");
+                                        }
+
+                                        _currentTileLocation = greenhouse;
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    //Treat greenhouse as a normal building
+                                    _currentTileLocation = building.indoors.Value;
+                                }
                             }
                         }
                         else
                         {
+                            //Building is not a greenhouse
                             _currentTileLocation = building.indoors.Value;
                         }
                         return;
@@ -136,20 +162,6 @@ namespace BitwiseJonMods.OneClickShedReloader
                     }
 
                     _currentTileLocation = cellar;
-                    return;
-                }
-
-                //See if we are in the greenhouse under and hovering near the door
-                var greenhouse = GetGreenHouseUnderCursor(Game1.currentCursorTile);
-                if (greenhouse != null)
-                {
-                    if (_logNamesOnHover && !_lastHoveredItem.Equals("Greenhouse"))
-                    {
-                        _lastHoveredItem = "Greenhouse";
-                        Common.Utility.LogImportant($"Building under cursor: Greenhouse");
-                    }
-
-                    _currentTileLocation = greenhouse;
                     return;
                 }
 

@@ -9,19 +9,17 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using SolidFoundations.Framework.Extensions;
 using SolidFoundations.Framework.Interfaces.Internal;
 using SolidFoundations.Framework.UI;
 using SolidFoundations.Framework.Utilities;
-using SolidFoundations.Framework.Utilities.Backport;
 using StardewValley;
-using StardewValley.Locations;
+using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Util;
+using StardewValley.TokenizableStrings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SolidFoundations.Framework.Models.ContentPack.Actions
 {
@@ -91,8 +89,14 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
         public FadeAction Fade { get; set; }
         public ModifyBuffAction ModifyBuff { get; set; }
 
-        public void Trigger(Farmer who, GenericBuilding building, Point tile)
+        public void Trigger(Farmer who, Building building, Point tile)
         {
+            if (SolidFoundations.buildingManager.DoesBuildingModelExist(building.buildingType.Value) is false)
+            {
+                return;
+            }
+            var extendedModel = SolidFoundations.buildingManager.GetSpecificBuildingModel(building.buildingType.Value);
+
             if (ModifyFlags is not null)
             {
                 SpecialAction.HandleModifyingBuildingFlags(building, ModifyFlags);
@@ -121,7 +125,7 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
                 var dialogues = new List<string>();
                 foreach (string line in Dialogue.Text)
                 {
-                    dialogues.Add(HandleSpecialTextTokens(building.Model.GetTranslation(line)));
+                    dialogues.Add(HandleSpecialTextTokens(extendedModel.GetTranslation(line)));
                 }
 
                 if (Dialogue.ActionAfterDialogue is not null)
@@ -140,13 +144,13 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
                 List<Response> responses = new List<Response>();
                 foreach (var response in DialogueWithChoices.Responses.Where(r => String.IsNullOrEmpty(r.Text) is false).OrderBy(r => DialogueWithChoices.ShuffleResponseOrder ? Game1.random.Next() : DialogueWithChoices.Responses.IndexOf(r)))
                 {
-                    responses.Add(new Response(DialogueWithChoices.Responses.IndexOf(response).ToString(), HandleSpecialTextTokens(building.Model.GetTranslation(response.Text))));
+                    responses.Add(new Response(DialogueWithChoices.Responses.IndexOf(response).ToString(), HandleSpecialTextTokens(extendedModel.GetTranslation(response.Text))));
                 }
 
                 // Unable to use the vanilla method, as the afterQuestion gets cleared before the second instance of DialogueBox can call it (due to first instance closing)
                 //who.currentLocation.createQuestionDialogue(HandleSpecialTextTokens(DialogueWithChoices.Question), responses.ToArray(), new GameLocation.afterQuestionBehavior((who, whichAnswer) => DialogueResponsePicked(who, building, tile, whichAnswer)));
 
-                var dialogue = new SpecialActionDialogueBox(HandleSpecialTextTokens(building.Model.GetTranslation(DialogueWithChoices.Question)), responses, (who, whichAnswer) => DialogueResponsePicked(who, building, tile, whichAnswer));
+                var dialogue = new SpecialActionDialogueBox(HandleSpecialTextTokens(extendedModel.GetTranslation(DialogueWithChoices.Question)), responses, (who, whichAnswer) => DialogueResponsePicked(who, building, tile, whichAnswer));
                 Game1.activeClickableMenu = dialogue;
                 dialogue.SetUp();
             }
@@ -156,7 +160,7 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
             }
             if (Message is not null)
             {
-                Game1.addHUDMessage(new HUDMessage(building.Model.GetTranslation(Message.Text), (int)Message.Icon + 1));
+                Game1.addHUDMessage(new HUDMessage(extendedModel.GetTranslation(Message.Text), (int)Message.Icon + 1));
             }
             if (ModifyInventory is not null)
             {
@@ -171,7 +175,7 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
                     quantity = new Random((int)((long)Game1.uniqueIDForThisGame + who.DailyLuck + Game1.stats.DaysPlayed * 500)).Next(ModifyInventory.MinCount, ModifyInventory.MaxCount + 1);
                 }
 
-                if (quantity > 0 && Toolkit.CreateItemByID(ModifyInventory.ItemId, quantity, ModifyInventory.Quality) is Item item && item is not null)
+                if (quantity > 0 && ItemRegistry.Create(ModifyInventory.ItemId, quantity, ModifyInventory.Quality) is Item item && item is not null)
                 {
                     if (ModifyInventory.Operation == OperationName.Add && item is not null)
                     {
@@ -189,31 +193,19 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
             if (ModifyBuff is not null && ModifyBuff.GetBuffType() is not BuffType.Unknown)
             {
                 int buffType = (int)ModifyBuff.GetBuffType();
-                var source = $"{building.Model.ID}_{ModifyBuff.Buff}_{ModifyBuff.Level}";
+                var source = $"{extendedModel.ID}_{ModifyBuff.Buff}_{ModifyBuff.Level}";
 
-                var buff = new Buff(null, ModifyBuff.DurationInMilliseconds, source, buffType) { which = buffType, displaySource = building.Model.Name };
-                if (buffType < buff.buffAttributes.Length)
-                {
-                    buff.buffAttributes[buffType] = ModifyBuff.Level;
-                }
+                var buff = new Buff(buffType.ToString(), source, extendedModel.Name, duration: ModifyBuff.DurationInMilliseconds, description: ModifyBuff.Description);
                 buff.glow = ModifyBuff.Glow;
 
-                // Setting source to null while using getDescription
-                buff.source = null;
-                var description = buff.getDescription(buffType);
-                foreach (var subBuff in ModifyBuff.SubBuffs)
-                {
-                    int subBuffType = (int)subBuff.GetBuffType();
-                    if (subBuffType < buff.buffAttributes.Length)
-                    {
-                        buff.buffAttributes[subBuffType] = subBuff.Level;
-                        description += buff.getDescription(subBuffType);
-                    }
-                }
-                buff.description = description + ModifyBuff.Description;
-                buff.source = source;
+                Game1.player.buffs.Apply(buff);
 
-                Game1.buffsDisplay.addOtherBuff(buff);
+                foreach (var subModifyBuff in ModifyBuff.SubBuffs)
+                {
+                    int subBuffType = (int)subModifyBuff.GetBuffType();
+                    var subBuff = new Buff(subModifyBuff.ToString(), source, extendedModel.Name, duration: subModifyBuff.DurationInMilliseconds, description: subModifyBuff.Description);
+                    Game1.player.buffs.Apply(subBuff);
+                }
             }
             if (OpenShop is not null)
             {
@@ -254,9 +246,9 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
                     }, 1000);
                     new Rectangle(who.GetBoundingBox().X, who.GetBoundingBox().Y, 64, 64).Inflate(192, 192);
                     int j = 0;
-                    for (int x = who.getTileX() + 8; x >= who.getTileX() - 8; x--)
+                    for (int x = (int)who.Tile.X + 8; x >= (int)who.Tile.X - 8; x--)
                     {
-                        who.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(6, new Vector2(x, who.getTileY()) * 64f, Color.White, 8, flipped: false, 50f)
+                        who.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(6, new Vector2(x, who.Tile.Y) * 64f, Color.White, 8, flipped: false, 50f)
                         {
                             layerDepth = 1f,
                             delayBeforeAnimationStart = j * 25,
@@ -274,7 +266,7 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
             {
                 var triggeredArgs = new IApi.BroadcastEventArgs()
                 {
-                    BuildingId = building.Id,
+                    BuildingId = building.buildingType.Value,
                     Building = building,
                     Farmer = who,
                     TriggerTile = tile,
@@ -284,7 +276,7 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
             }
         }
 
-        private void DialogueResponsePicked(Farmer who, GenericBuilding building, Point tile, string answerTextIndex)
+        private void DialogueResponsePicked(Farmer who, Building building, Point tile, string answerTextIndex)
         {
             int answerIndex = -1;
 
@@ -304,87 +296,76 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
 
         private string HandleSpecialTextTokens(string text)
         {
-            var dialogueText = TextParser.ParseText(text);
-            dialogueText = SolidFoundations.modHelper.Reflection.GetMethod(new Dialogue(dialogueText, null), "checkForSpecialCharacters").Invoke<string>(dialogueText);
+            var dialogueText = TokenParser.ParseText(text);
+            dialogueText = SolidFoundations.modHelper.Reflection.GetMethod(new Dialogue(null, string.Empty, dialogueText), "checkForSpecialCharacters").Invoke<string>(dialogueText);
 
             return dialogueText;
         }
 
         // Vanilla shop related
-        private void HandleVanillaShopMenu(string shopName, Farmer who)
+        private void HandleVanillaShopMenu(string shopName, Farmer who, string shopOwner = null)
         {
             switch (shopName.ToLower())
             {
                 case "clintshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getBlacksmithStock(), 0, "Clint");
+                    Utility.TryOpenShopMenu(Game1.shop_blacksmith, shopOwner);
                     return;
                 case "deserttrader":
-                    Game1.activeClickableMenu = new ShopMenu(Desert.getDesertMerchantTradeStock(who), 0, "DesertTrade", onDesertTraderPurchase);
+                    Utility.TryOpenShopMenu(Game1.shop_desertTrader, shopOwner);
                     return;
                 case "dwarfshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getDwarfShopStock(), 0, "Dwarf");
+                    Utility.TryOpenShopMenu(Game1.shop_dwarf, shopOwner);
                     return;
                 case "geodes":
                     Game1.activeClickableMenu = new GeodeMenu();
                     return;
                 case "gusshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getSaloonStock(), 0, "Gus", (item, farmer, amount) => onGenericPurchase(SynchronizedShopStock.SynchedShop.Saloon, item, farmer, amount));
+                    Utility.TryOpenShopMenu(Game1.shop_saloon, shopOwner);
                     return;
                 case "harveyshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getHospitalStock());
+                    Utility.TryOpenShopMenu(Game1.shop_hospital, shopOwner);
                     return;
                 case "itemrecovery":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getAdventureRecoveryStock(), 0, "Marlon_Recovery");
+                    Utility.TryOpenShopMenu(Game1.shop_adventurersGuildItemRecovery, shopOwner);
                     return;
                 case "krobusshop":
-                    Game1.activeClickableMenu = new ShopMenu((Game1.getLocationFromName("Sewer") as Sewer).getShadowShopStock(), 0, "KrobusGone", null);
+                    Utility.TryOpenShopMenu(Game1.shop_krobus, shopOwner);
                     return;
                 case "marlonshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getAdventureShopStock(), 0, "Marlon");
+                    Utility.TryOpenShopMenu(Game1.shop_adventurersGuild, shopOwner);
                     return;
                 case "marnieshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getAnimalShopStock(), 0, "Marnie");
+                    Utility.TryOpenShopMenu(Game1.shop_animalSupplies, shopOwner);
                     return;
                 case "pierreshop":
-                    Game1.activeClickableMenu = new ShopMenu(new SeedShop().shopStock(), 0, "Pierre");
+                    Utility.TryOpenShopMenu(Game1.shop_generalStore, shopOwner);
                     return;
                 case "qishop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getQiShopStock(), 2);
+                    Utility.TryOpenShopMenu(Game1.shop_qiGemShop, shopOwner);
                     return;
                 case "sandyshop":
-                    Game1.activeClickableMenu = new ShopMenu(SolidFoundations.modHelper.Reflection.GetMethod(Game1.currentLocation, "sandyShopStock").Invoke<Dictionary<ISalable, int[]>>(), 0, "Sandy", (item, farmer, amount) => onGenericPurchase(SynchronizedShopStock.SynchedShop.Sandy, item, farmer, amount));
+                    Utility.TryOpenShopMenu(Game1.shop_sandy, shopOwner);
                     return;
                 case "robinshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock(), 0, "Robin");
+                    Utility.TryOpenShopMenu(Game1.shop_carpenter, shopOwner);
                     return;
                 case "travelingmerchant":
                 case "travellingmerchant":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getTravelingMerchantStock((int)((long)Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed)), 0, "Traveler", Utility.onTravelingMerchantShopPurchase);
+                    Utility.TryOpenShopMenu(Game1.shop_travelingCart, shopOwner);
                     return;
                 case "toolupgrades":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getBlacksmithUpgradeStock(who), 0, "ClintUpgrade");
+                    Utility.TryOpenShopMenu(Game1.shop_blacksmithUpgrades, shopOwner);
                     return;
                 case "willyshop":
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getFishShopStock(who), 0, "Willy");
+                    Utility.TryOpenShopMenu(Game1.shop_fish, shopOwner);
+                    return;
+                default:
+                    Utility.TryOpenShopMenu(shopName, shopOwner);
                     return;
             }
         }
-        private bool onDesertTraderPurchase(ISalable item, Farmer who, int amount)
-        {
-            if (item.Name == "Magic Rock Candy")
-            {
-                Desert.boughtMagicRockCandy = true;
-            }
-            return false;
-        }
 
-        private bool onGenericPurchase(SynchronizedShopStock.SynchedShop synchedShop, ISalable item, Farmer who, int amount)
-        {
-            who.team.synchronizedShopStock.OnItemPurchased(synchedShop, item, amount);
-            return false;
-        }
-
-        internal static void HandleModifyingBuildingFlags(GenericBuilding building, List<ModifyModDataAction> modifyFlags)
+        internal static void HandleModifyingBuildingFlags(Building building, List<ModifyModDataAction> modifyFlags)
         {
             foreach (var modifyFlag in modifyFlags)
             {
@@ -416,7 +397,7 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
             }
         }
 
-        internal static void HandlePlayingSound(GenericBuilding building, PlaySoundAction playSound)
+        internal static void HandlePlayingSound(Building building, PlaySoundAction playSound)
         {
             if (playSound.IsValid())
             {
@@ -454,17 +435,17 @@ namespace SolidFoundations.Framework.Models.ContentPack.Actions
                     }
                     catch (Exception ex)
                     {
-                        SolidFoundations.monitor.LogOnce($"Failed to play ({playSound.Sound}) given for {building.Id}: {ex}", StardewModdingAPI.LogLevel.Warn);
+                        SolidFoundations.monitor.LogOnce($"Failed to play ({playSound.Sound}) given for {building.buildingType.Value}: {ex}", StardewModdingAPI.LogLevel.Warn);
                     }
                 }
                 catch (Exception ex2)
                 {
-                    SolidFoundations.monitor.LogOnce($"Failed to play ({playSound.Sound}) given for {building.Id}: {ex2}", StardewModdingAPI.LogLevel.Warn);
+                    SolidFoundations.monitor.LogOnce($"Failed to play ({playSound.Sound}) given for {building.buildingType.Value}: {ex2}", StardewModdingAPI.LogLevel.Warn);
                 }
             }
             else
             {
-                SolidFoundations.monitor.LogOnce($"Invalid sound ({playSound.Sound}) given for {building.Id}", StardewModdingAPI.LogLevel.Warn);
+                SolidFoundations.monitor.LogOnce($"Invalid sound ({playSound.Sound}) given for {building.buildingType.Value}", StardewModdingAPI.LogLevel.Warn);
             }
         }
     }

@@ -1,0 +1,11 @@
+{
+  "maxCastPower.name": "Максимальная сила заброса",
+  "autoHit.name": "Автоматическое попадание",
+  "fastBite.name": "Быстрый клев",
+  "catchTreasure.name": "Ловить сокровища (Отключите эту опцию при поимке легендарной рыбы)",
+  "fasterSpeed.name": "Увеличенная скорость",
+  "triggerKeepAutoFish.name": "Автоматически поддерживать авто-рыбалку",
+  "keepAutoFishKey.name": "Клавиша для поддержания авто-рыбалки",
+  "autoLootTreasure.name": "Автоматический сбор сокровищ",
+  "autoLootFishAndTrash.name": "Автоматический сбор рыбы и мусора"
+}

@@ -169,7 +169,7 @@ public static class Debugging
     public static void IsMoving(string arg1, string[] arg2)
     {
         var sb = new StringBuilder("All warps:\n");
-        var subSeparator = "\n                   - ";
+        const string subSeparator = "\n                   - ";
         foreach (var spouse in ModEntry.ValidSpouses)
         {
             var npc = Game1.getCharacterFromName(spouse);
@@ -181,8 +181,35 @@ public static class Debugging
             sb.Append("isMovingOnPathFindPath: ");
             sb.Append(npc.isMovingOnPathFindPath.Value);
             sb.Append(subSeparator);
+            sb.Append("controller: ");
+            sb.Append(npc.controller);
+            sb.Append(subSeparator);
+            sb.Append("temporaryController: ");
+            sb.Append(npc.temporaryController);
+            sb.Append(subSeparator);
             sb.Append("isMoving: ");
             sb.Append(npc.isMoving());
+        }
+        Log(sb.ToString(), LogLevel.Info);
+    }
+
+    public static void Speed(string arg1, string[] arg2)
+    {
+        var sb = new StringBuilder("Companion speed:\n");
+        const string subSeparator = "\n                   - ";
+        foreach (var spouse in ModEntry.ValidSpouses)
+        {
+            var npc = Game1.getCharacterFromName(spouse);
+            
+            sb.Append("                  - ");
+            sb.Append(npc.displayName);
+            sb.Append(":  ");
+            sb.Append(subSeparator);
+            sb.Append("Speed: ");
+            sb.Append(npc.Speed);
+            sb.Append(subSeparator);
+            sb.Append("addedSpeed: ");
+            sb.Append(npc.addedSpeed);
         }
         Log(sb.ToString(), LogLevel.Info);
     }

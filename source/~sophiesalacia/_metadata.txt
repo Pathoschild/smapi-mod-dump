@@ -3,11 +3,16 @@ urls:
    Git: https://github.com/sophiesalacia/StardewMods.git
 
 mods:
+   Calcifer
    Car Warp
    Colored Crystalariums
+   Configurable Bundle Costs
    Configurable Luck
+   Configurable Special Orders Unlock
    Joja's Dark Secret
+   Lasting Conversation Topics
    Mines Tokens
+   New Years Eve → Fireworks
    Splash Text
    Sturdy Saplings
 

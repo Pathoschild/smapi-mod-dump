@@ -32,12 +32,7 @@ namespace CJBCheatsMenu.Framework.Cheats.Skills
                 this.GetSkillButton(context, "mining", Farmer.miningSkill, Game1.player.MiningLevel),
                 this.GetSkillButton(context, "foraging", Farmer.foragingSkill, Game1.player.ForagingLevel),
                 this.GetSkillButton(context, "fishing", Farmer.fishingSkill, Game1.player.FishingLevel),
-                this.GetSkillButton(context, "combat", Farmer.combatSkill, Game1.player.CombatLevel),
-                new CheatsOptionsButton(
-                    label: I18n.Skills_Reset(),
-                    slotWidth: context.SlotWidth,
-                    toggle: this.ResetAllSkills
-                )
+                this.GetSkillButton(context, "combat", Farmer.combatSkill, Game1.player.CombatLevel)
             };
         }
 
@@ -86,30 +81,6 @@ namespace CJBCheatsMenu.Framework.Cheats.Skills
 
             Game1.exitActiveMenu();
             Game1.activeClickableMenu = new LevelUpMenu(skillId, Game1.player.GetSkillLevel(skillId));
-        }
-
-        /// <summary>Reset all skill levels and associated bonuses.</summary>
-        private void ResetAllSkills()
-        {
-            Farmer player = Game1.player;
-
-            player.maxHealth -= 5 * player.CombatLevel;
-            player.experiencePoints[0] = 0;
-            player.experiencePoints[1] = 0;
-            player.experiencePoints[2] = 0;
-            player.experiencePoints[3] = 0;
-            player.experiencePoints[4] = 0;
-            player.FarmingLevel = 0;
-            player.MiningLevel = 0;
-            player.ForagingLevel = 0;
-            player.FishingLevel = 0;
-            player.CombatLevel = 0;
-            if (player.professions.Contains(24))
-                player.maxHealth -= 15;
-            if (player.professions.Contains(27))
-                player.maxHealth -= 25;
-            player.health = player.maxHealth;
-            player.professions.Clear();
         }
     }
 }

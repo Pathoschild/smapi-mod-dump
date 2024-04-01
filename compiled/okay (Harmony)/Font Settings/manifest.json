@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Font Settings",
+  "Author": "Becks723",
+  "Version": "0.12.5-alpha3",
+  "Description": "Customize in-game fonts.",
+  "UniqueID": "Becks723.FontSettings",
+  "MinimumApiVersion": "3.14.0",
+  "EntryDll": "FontSettings.dll",
+  "UpdateKeys": [ "Nexus:12467" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "jltaylor-us.GMCMOptions",
+      "IsRequired": false
+    }
+  ]
+}

@@ -286,7 +286,7 @@ namespace FarmTypeManager
                     case "spirit":
                     case "dustspirit":
                     case "dust spirit":
-                        monster = new DustSpiritFTM(tile);
+                        monster = new DustSpirit(tile);
                         break;
                     case "dwarvishsentry":
                     case "dwarvish sentry":
@@ -420,7 +420,7 @@ namespace FarmTypeManager
                         break;
                     case "lavacrab":
                     case "lava crab":
-                        monster = new LavaCrab(tile);
+                        monster = new RockCrab(tile, "Lava Crab");
                         break;
                     case "iridiumcrab":
                     case "iridium crab":

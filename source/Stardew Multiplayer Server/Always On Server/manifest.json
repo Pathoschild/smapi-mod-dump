@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AguirreMoy/Stardew-Multiplayer-Server-Mod
+**
+*************************************************/
+
+{
+  "Name": "Stardew Multiplayer Server",
+  "Author": "funny-snek & Zuberii & moy",
+  "Version": "1.6.0",
+  "Description": "A Headless server mod.",
+  "UniqueID": "moy.Always_On_Server",
+  "EntryDll": "Stardew-Multiplayer-Server.dll",
+  "MinimumApiVersion": "4.0",
+  "UpdateKeys": [ "Nexus:20659" ]
+}

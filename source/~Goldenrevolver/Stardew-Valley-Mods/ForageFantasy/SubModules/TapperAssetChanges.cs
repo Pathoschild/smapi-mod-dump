@@ -12,6 +12,9 @@ namespace ForageFantasy
 {
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
+    using StardewValley;
+    using StardewValley.GameData.BigCraftables;
+    using StardewValley.GameData.Machines;
     using StardewValley.GameData.Objects;
     using StardewValley.GameData.WildTrees;
     using StardewValley.TerrainFeatures;
@@ -19,8 +22,20 @@ namespace ForageFantasy
 
     internal class TapperAssetChanges
     {
-        internal static void Apply(AssetRequestedEventArgs e, ForageFantasyConfig config, ITranslationHelper translation)
+        private static readonly HashSet<string> tappers = new();
+
+        internal static void Apply(AssetRequestedEventArgs e, ForageFantasyConfig config)
         {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables"))
+            {
+                e.Edit((asset) => CheckForTappers(asset), AssetEditPriority.Late + 1);
+            }
+
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Machines"))
+            {
+                e.Edit((asset) => ApplyTapperMachineEdits(asset, config), AssetEditPriority.Late);
+            }
+
             if (!config.TapperDaysNeededChangesEnabled)
             {
                 return;
@@ -34,6 +49,45 @@ namespace ForageFantasy
             if (e.NameWithoutLocale.IsEquivalentTo("Data/WildTrees"))
             {
                 e.Edit((asset) => ApplyTapperDurationEdits(asset, config), AssetEditPriority.Late);
+            }
+        }
+
+        private static void CheckForTappers(IAssetData asset)
+        {
+            IDictionary<string, BigCraftableData> data = asset.AsDictionary<string, BigCraftableData>().Data;
+
+            tappers.Clear();
+
+            foreach (KeyValuePair<string, BigCraftableData> item in data)
+            {
+                if (item.Value.ContextTags == null)
+                {
+                    continue;
+                }
+
+                foreach (var tag in item.Value.ContextTags)
+                {
+                    if (ItemContextTagManager.SanitizeContextTag(tag) == "tapper_item")
+                    {
+                        tappers.Add(item.Key);
+                    }
+                }
+            }
+        }
+
+        private static void ApplyTapperMachineEdits(IAssetData asset, ForageFantasyConfig config)
+        {
+            IDictionary<string, MachineData> data = asset.AsDictionary<string, MachineData>().Data;
+
+            foreach (KeyValuePair<string, MachineData> item in data)
+            {
+                // remove "(BC)" prefix
+                if (item.Key.StartsWith("(BC)") && tappers.Contains(item.Key.Remove(0, 4)))
+                {
+                    int exp = config.TapperXPAmount < 0 ? 0 : config.TapperXPAmount;
+
+                    item.Value.ExperienceGainOnHarvest = $"Foraging {exp}";
+                }
             }
         }
 

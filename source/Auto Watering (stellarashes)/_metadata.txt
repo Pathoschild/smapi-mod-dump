@@ -6,11 +6,9 @@ mods:
    Auto Watering (stellarashes)
 
 latest commit:
-   commit 5f5ce727e5ed6b6e844f010387e8ba3df7a9b6e9
-   Author: stellarashes <stellarashes@users.noreply.github.com>
-   Date:   Tue Mar 17 22:55:33 2020 -0400
+   commit d3bbce1c558502cc43bafae680203ea0ef2a957c
+   Author: Stellar Ashes <stellarashes@gmail.com>
+   Date:   Thu Mar 28 20:33:12 2024 -0400
    
-       Merge pull request #2 from jamespfluger/feature/choose-days-config
-       
-       added config to choose which days to water
+       Update autowatering
    

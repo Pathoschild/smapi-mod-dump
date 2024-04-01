@@ -26,7 +26,6 @@ namespace FarmTypeManager
             helper.Events.GameLoop.TimeChanged += TimeChanged;
 
             //custom object/monster handler events
-            helper.Events.GameLoop.UpdateTicked += PlayerUsedTool;
             helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived;
             helper.Events.World.NpcListChanged += NpcListChanged;
 
@@ -37,6 +36,7 @@ namespace FarmTypeManager
             helper.Events.GameLoop.GameLaunched += EnableDGA;
             helper.Events.GameLoop.GameLaunched += EnableContentPatcher;
             helper.Events.GameLoop.GameLaunched += EnableMTF;
+            helper.Events.GameLoop.GameLaunched += EnableItemExtensions;
         }
     }
 }

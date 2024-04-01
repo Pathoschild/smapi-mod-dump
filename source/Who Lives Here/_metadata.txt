@@ -6,11 +6,11 @@ mods:
    Who Lives Here
 
 latest commit:
-   commit 8e4f072dff04aa2f4a9c145250ea75820f6c6245
+   commit c2ca064def6b1ecbfdaeb0bea688729d3725bcdf
    Author: Prism-99 <86083756+Prism-99@users.noreply.github.com>
-   Date:   Fri Jan 19 11:28:28 2024 -0500
+   Date:   Wed Mar 20 10:54:09 2024 -0400
    
-       Release 1.1.0
+       Version 1.2.0 release
        
-       Added auto-toggling and large capacity support.
+       Stardew 1.6 release.
    

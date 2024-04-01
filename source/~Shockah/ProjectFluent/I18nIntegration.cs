@@ -40,31 +40,31 @@ namespace Shockah.ProjectFluent
 			{
 				Type translationHelperType = AccessTools.TypeByName("StardewModdingAPI.Framework.ModHelpers.TranslationHelper, StardewModdingAPI");
 
-				MethodInfo getWithKeyMethod = AccessTools.Method(translationHelperType, "Get", new Type[] { typeof(string) });
-				MethodInfo getWithKeyAndTokensMethod = AccessTools.Method(translationHelperType, "Get", new Type[] { typeof(string), typeof(object) });
-				MethodInfo getInAllLocalesMethod = AccessTools.Method(translationHelperType, "GetInAllLocales");
-				MethodInfo getTranslationsMethod = AccessTools.Method(translationHelperType, "GetTranslations");
+				MethodInfo getWithKeyMethod = AccessTools.DeclaredMethod(translationHelperType, "Get", [typeof(string)]);
+				MethodInfo getWithKeyAndTokensMethod = AccessTools.DeclaredMethod(translationHelperType, "Get", [typeof(string), typeof(object)]);
+				MethodInfo getInAllLocalesMethod = AccessTools.DeclaredMethod(translationHelperType, "GetInAllLocales");
+				MethodInfo getTranslationsMethod = AccessTools.DeclaredMethod(translationHelperType, "GetTranslations");
 
 				harmony.Patch(
 					original: getWithKeyMethod,
-					postfix: new HarmonyMethod(AccessTools.Method(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithKey_Postfix)))
+					postfix: new HarmonyMethod(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithKey_Postfix))
 				);
 				harmony.Patch(
 					original: getWithKeyAndTokensMethod,
-					postfix: new HarmonyMethod(AccessTools.Method(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithKey_Postfix)))
+					postfix: new HarmonyMethod(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithKey_Postfix))
 				);
 				harmony.Patch(
 					original: getInAllLocalesMethod,
-					postfix: new HarmonyMethod(AccessTools.Method(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithKey_Postfix)))
+					postfix: new HarmonyMethod(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithKey_Postfix))
 				);
 				harmony.Patch(
 					original: getTranslationsMethod,
-					postfix: new HarmonyMethod(AccessTools.Method(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithoutKey_Postfix)))
+					postfix: new HarmonyMethod(typeof(I18nIntegration), nameof(TranslationHelper_MethodWithoutKey_Postfix))
 				);
 			}
 			catch (Exception ex)
 			{
-				if (ProjectFluent.Instance.Config.DeveloperMode)
+				if (ModEntry.Instance.Config.DeveloperMode)
 					Monitor.Log($"Could not hook into SMAPI - untranslatable mod detection won't work.\nReason: {ex}", LogLevel.Warn);
 				return;
 			}
@@ -82,8 +82,8 @@ namespace Shockah.ProjectFluent
 				Type modMetadataEnumerableType = rawEnumerableType.MakeGenericType(modMetadataType);
 
 				MethodInfo scoreInstanceGetter = AccessTools.PropertyGetter(scoreType, "Instance");
-				MethodInfo reloadTranslationsMethod = AccessTools.Method(scoreType, "ReloadTranslations", Array.Empty<Type>());
-				MethodInfo reloadTranslationsEnumerableMethod = AccessTools.Method(scoreType, "ReloadTranslations", new Type[] { modMetadataEnumerableType });
+				MethodInfo reloadTranslationsMethod = AccessTools.Method(scoreType, "ReloadTranslations", []);
+				MethodInfo reloadTranslationsEnumerableMethod = AccessTools.Method(scoreType, "ReloadTranslations", [modMetadataEnumerableType]);
 				MethodInfo readTranslationFilesMethod = AccessTools.Method(scoreType, "ReadTranslationFiles");
 
 				SCoreInstance = scoreInstanceGetter.Invoke(null, null)!;
@@ -115,7 +115,7 @@ namespace Shockah.ProjectFluent
 
 		private static void WarnAboutAccessedTranslations()
 		{
-			if (!ProjectFluent.Instance.Config.DeveloperMode)
+			if (!ModEntry.Instance.Config.DeveloperMode)
 			{
 				AccessedTranslationKeys.Clear();
 				IsTrackingAccessedTranslationKeys = false;
@@ -173,44 +173,30 @@ namespace Shockah.ProjectFluent
 			try
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsGuidAnchorable()
 					.Find(
 						ILMatches.Call("get_Current"),
-						ILMatches.AnyStloc.WithAutoAnchor(out Guid modInfoLocalInstruction),
+						ILMatches.AnyStloc.CreateLdlocInstruction(out var ldlocModInfo),
 						ILMatches.AnyLdarg,
 						ILMatches.AnyLdloc,
 						ILMatches.Call("get_DirectoryPath"),
 						ILMatches.Ldstr("i18n"),
 						ILMatches.Call("Combine"),
-						ILMatches.AnyLdloca.WithAutoAnchor(out Guid errorsLocalInstruction),
+						ILMatches.AnyLdloca.CreateLdlocaInstruction(out var ldlocaErrors),
 						ILMatches.Call("ReadTranslationFiles"),
-						ILMatches.AnyStloc.WithAutoAnchor(out Guid translationsLocalInstruction)
+						ILMatches.AnyStloc.CreateLdlocInstruction(out var ldlocTranslations)
 					)
-					.AnchorBlock(out Guid findBlock)
-
-					.PointerMatcher(modInfoLocalInstruction)
-					.CreateLdlocInstruction(out var modInfoLoadInstruction)
-
-					.PointerMatcher(errorsLocalInstruction)
-					.CreateLdlocaInstruction(out var errorsLoadAddressInstruction)
-
-					.PointerMatcher(translationsLocalInstruction)
-					.CreateLdlocInstruction(out var translationsLoadInstruction)
-
-					.BlockMatcher(findBlock)
 					.Insert(
 						SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.JustInsertion,
-
-						modInfoLoadInstruction,
-						translationsLoadInstruction,
-						errorsLoadAddressInstruction,
+						ldlocModInfo,
+						ldlocTranslations,
+						ldlocaErrors,
 						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(I18nIntegration), nameof(SCore_ReloadTranslations_Transpiler_ModifyList)))
 					)
 					.AllElements();
 			}
 			catch (Exception ex)
 			{
-				Monitor.Log($"Could not patch methods - {ProjectFluent.Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
+				Monitor.Log($"Could not patch methods - {ModEntry.Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
 			}
 		}

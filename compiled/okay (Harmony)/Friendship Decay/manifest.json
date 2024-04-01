@@ -1,0 +1,10 @@
+{
+	"Name": "Friendship decay",
+	"Author": "stardemod",
+	"Version": "1.1.0",
+	"Description": "Neverending rapid friendship decay. Pets included.",
+	"UniqueID": "stardemod.FriendshipDecay",
+	"EntryDll": "FriendshipDecay.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:21323" ]
+}

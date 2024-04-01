@@ -12,11 +12,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using StardewDruid.Cast;
 using StardewDruid.Character;
+using StardewDruid.Dialogue;
 using StardewDruid.Map;
 using StardewDruid.Monster;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.GameData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +36,6 @@ namespace StardewDruid.Event
         public bool eventLock;
 
         public int activeCounter;
-
-        public readonly Rite riteData;
 
         public GameLocation targetLocation;
 
@@ -55,13 +55,11 @@ namespace StardewDruid.Event
 
         public MonsterHandle monsterHandle;
 
-        public List<StardewDruid.Event.Brazier> braziers;
+        public List<StardewDruid.Event.LightHandle> braziers;
 
         public List<StardewDruid.Character.Actor> actors;
 
         public List<TemporaryAnimatedSprite> animations;
-
-        public Vector2 voicePosition;
 
         public bool soundTrack;
 
@@ -69,28 +67,30 @@ namespace StardewDruid.Event
 
         public Dictionary<int, Dictionary<int, string>> cues;
 
-        public EventHandle(Vector2 target, Rite rite)
-        {
+        public Dictionary<int, Narrator> narrators;
 
-            eventId = rite.castType;
+        public Dictionary<int, StardewValley.NPC> voices;
+
+        public Quest questData;
+
+        public int sceneCounter;
+
+        public EventHandle(Vector2 target)
+        {
 
             eventTime = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
 
-            riteData = rite;
-
             targetVector = target;
 
-            targetPlayer = rite.caster;
+            targetPlayer = Game1.player;
 
-            targetLocation = rite.castLocation;
+            targetLocation = Game1.player.currentLocation;
 
-            randomIndex = rite.randomIndex;
+            randomIndex = Mod.instance.rite.randomIndex;
 
             eventLinger = -1;
 
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 60;
-
-            voicePosition = target * 64;
 
             braziers = new();
 
@@ -114,8 +114,7 @@ namespace StardewDruid.Event
         public virtual void MinutesLeft(int minutes)
         {
 
-            Game1.addHUDMessage(new HUDMessage($"{minutes} more minutes left!", "2"));
-
+            Mod.instance.CastMessage($"{minutes} more minutes left!",2);
         }
 
         public virtual bool EventActive()
@@ -172,16 +171,19 @@ namespace StardewDruid.Event
 
         }
 
-        public virtual void EventExtend()
+        public virtual bool EventExtend()
         {
 
             expireTime++;
 
+            return true;
+
         }
 
-        public virtual void AttemptAbort()
+        public virtual bool AttemptAbort()
         {
 
+            return true;
 
         }
 
@@ -226,7 +228,7 @@ namespace StardewDruid.Event
             if (braziers.Count > 0)
             {
 
-                foreach (Brazier brazier in braziers)
+                foreach (LightHandle brazier in braziers)
                 {
 
                     brazier.shutdown();
@@ -245,7 +247,7 @@ namespace StardewDruid.Event
             for (int i = braziers.Count - 1; i >= 0; i--)
             {
 
-                Brazier brazier = braziers.ElementAt(i);
+                LightHandle brazier = braziers.ElementAt(i);
 
                 if (!brazier.reset())
                 {
@@ -273,9 +275,7 @@ namespace StardewDruid.Event
 
                 actors.Clear();
 
-
             }
-
 
         }
 
@@ -312,7 +312,7 @@ namespace StardewDruid.Event
             if (soundTrack)
             {
 
-                Game1.stopMusicTrack(Game1.MusicContext.Default);
+                Game1.stopMusicTrack(MusicContext.Default);
 
             }
 
@@ -325,7 +325,23 @@ namespace StardewDruid.Event
 
         }
 
-        public void DialogueCue(Dictionary<int, Dialogue.Narrator> narrators,Dictionary<int,StardewValley.NPC> overheads, int cueIndex = -1)
+        public virtual void DialogueCue(int cueIndex = -1)
+        {
+
+            DialogueCue(narrators, voices, cueIndex);
+
+        }
+
+        public virtual void DialogueCue(int voice,string text)
+        {
+
+            cues = new() { [0] = new() { [voice] = text, }, };
+
+            DialogueCue(narrators, voices, 0);
+
+        }
+
+        public virtual void DialogueCue(Dictionary<int, Dialogue.Narrator> narrators, Dictionary<int,StardewValley.NPC> voices, int cueIndex = -1)
         {
 
             if (cues.ContainsKey(cueIndex))
@@ -334,19 +350,61 @@ namespace StardewDruid.Event
                 foreach(KeyValuePair<int,string> cue in cues[cueIndex])
                 {
 
+                    if (voices.ContainsKey(cue.Key))
+                    {
+
+                        if(cue.Value == "...")
+                        {
+                            voices[cue.Key].doEmote(40);
+
+                            continue;
+                        }
+                        else if(cue.Value == "!")
+                        {
+
+                            voices[cue.Key].doEmote(16);
+
+                            continue;
+                        }
+                        else if (cue.Value == "?")
+                        {
+
+                            voices[cue.Key].doEmote(8);
+
+                            continue;
+                        }
+                        else if (cue.Value == "x")
+                        {
+
+                            voices[cue.Key].doEmote(36);
+
+                            continue;
+                        }
+                        voices[cue.Key].showTextAboveHead(cue.Value);
+
+                    }
+
                     if (narrators.ContainsKey(cue.Key))
                     {
 
                         narrators[cue.Key].DisplayHUD(cue.Value);
 
+                        if (Context.IsMultiplayer)
+                        {
+                            QueryData queryData = new()
+                            {
+                                name = questData.name,
+                                value = cueIndex.ToString(),
+                            
+                            };
+
+                            Mod.instance.EventQuery(queryData, "DialogueDisplay");
+
+                        }
+
                     }
 
-                    if (overheads.ContainsKey(cue.Key))
-                    {
 
-                        overheads[cue.Key].showTextAboveHead(cue.Value);
-
-                    }
 
                 }
 
@@ -360,18 +418,18 @@ namespace StardewDruid.Event
             if (actors.Count <= 0)
             {
 
-                this.AddActor(this.voicePosition);
-
+                this.AddActor(targetVector * 64);
             }
 
-            actors[0].showTextAboveHead(message, duration: duration);
+            actors.First().showTextAboveHead(message, duration: duration);
+
 
         }
 
         public void SetTrack(string track)
         {
 
-            Game1.changeMusicTrack(track, false, Game1.MusicContext.Default);
+            Game1.changeMusicTrack(track, false, MusicContext.Default);
 
             soundTrack = true;
 
@@ -418,6 +476,31 @@ namespace StardewDruid.Event
             
             }
         
+        }
+
+        public virtual void EventScene(int index)
+        {
+            activeCounter = index;
+        }
+
+        public virtual void EventQuery(string eventQuery = "EventComplete")
+        {
+
+            if (Context.IsMultiplayer)
+            {
+                QueryData queryData = new()
+                {
+                    name = questData.name,
+                    value = questData.name,
+                    description = questData.questTitle,
+                    time = Game1.currentGameTime.TotalGameTime.TotalMilliseconds,
+                    location = Mod.instance.rite.castLocation.Name,
+                };
+
+                Mod.instance.EventQuery(queryData, eventQuery);
+
+            }
+
         }
 
     }

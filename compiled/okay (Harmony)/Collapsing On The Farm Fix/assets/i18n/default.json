@@ -1,0 +1,11 @@
+{
+	// These are for development. To be expanded soon. If you want to contribute or translate, let me know! I'm not good at writing.
+	"PostPassoutDialogues.neutral.sunny.1": "Hey, you okay? You were out like a light out there.$s#$b#You need to take better care of yourself.$k",
+	"PostPassoutDialogues.rude.sunny.1": "You're awake! You just passed out in the farm.#$b#I had to carry you all the way here.",
+	"PostPassoutDialogues.shy.sunny.1": "You uh... You alright? You were out like a light out there. I had to carry you here...",  
+	"PostPassoutDialogues.rude.rain.1": "...#$b#You can't just stay out like that in the rain. What if you got a cold?",
+	"PostPassoutDialogues.Abigail.rain.1": "Hey! You're awake!$h#$b#I couldn't sleep last night so I came out to check on you and you were on the ground.",
+
+	"HospitalKilledEvent.generic": "none/-100 -100/farmer 20 12 2 {0} 21 12 3 Harvey 22 11 3/pause 1500/showFrame 5/message \" ...{{name}}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/speak {0} \"You're okay! I was so worried!!#$b#I found you unconscious on the farm...#$b#Dr. Harvey had to perform an emergency surgery on you!#$b#Be a little more careful next time, okay?$s\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end",
+	"HospitalKilledEvent.Emily": "none/-100 -100/farmer 20 12 2 Emily 21 12 3 Harvey 22 11 3/pause 1500/showFrame 5/message \" {{name}}?\"/pause 1000/message \"Easy there, sweetie.\"/viewport 20 12 true/pause 1000/emote Emily 20/speak Emily \"You were injured badly. Really had me worried there!$s#$b#You really need to take better care of yourself, {{name}}.\"/showFrame 0/pause 300/faceDirection Emily 0 continue/move Harvey -1 0 2 continue/speak Emily \"Thank you for coming in so late, Harvey.$k\"/pause 200/emote farmer 28/hospitaldeath/end"
+}

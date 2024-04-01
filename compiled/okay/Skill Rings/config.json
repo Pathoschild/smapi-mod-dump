@@ -1,0 +1,11 @@
+{
+  "tier1SkillRingPrice": 1000,
+  "tier2SkillRingPrice": 5000,
+  "tier3SkillRingPrice": 10000,
+  "tier1SkillRingBoost": 1,
+  "tier2SkillRingBoost": 2,
+  "tier3SkillRingBoost": 5,
+  "tier1ExperienceRingBoost": 0.1,
+  "tier2ExperienceRingBoost": 0.2,
+  "tier3ExperienceRingBoost": 0.5
+}

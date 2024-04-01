@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20871
+IDs: Prism99.DailyTasksReportPlus
+update keys: Nexus:20871, GitHub:Prism-99/DailyTaskReportPlus

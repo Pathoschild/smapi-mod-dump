@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Calcifer",
+    "Author": "sophie",
+    "Version": "0.1.0",
+    "Description": "Core mod and various utilities.",
+    "UniqueID": "sophie.Calcifer",
+    "EntryDll": "Calcifer.dll",
+    "MinimumApiVersion": "4.0.0-alpha",
+    "UpdateKeys": []
+}

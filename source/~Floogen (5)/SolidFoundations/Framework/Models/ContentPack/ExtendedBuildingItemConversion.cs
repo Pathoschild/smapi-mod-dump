@@ -8,30 +8,38 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using SolidFoundations.Framework.Models.Backport;
-using SolidFoundations.Framework.Models.ContentPack.Actions;
+using StardewValley.GameData;
+using StardewValley.GameData.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SolidFoundations.Framework.Models.ContentPack
 {
     public class ExtendedBuildingItemConversion : BuildingItemConversion
     {
-        [ContentSerializer(Optional = true)]
         public int MinutesPerConversion = -1;
         internal int? MinutesRemaining;
 
-        public bool ShouldTrackTime;
+        internal bool ShouldTrackTime { get { return MinutesPerConversion >= 0; } }
 
-        [ContentSerializer(Optional = true)]
+        [Obsolete("No longer used. Use MinutesPerConversion instead.")]
         public bool RefreshMaxDailyConversions;
-        internal int? CachedMaxDailyConversions;
 
-        public new List<ExtendedAdditionalChopDrops> ProducedItems;
+        public bool TakeOnlyRequiredFromStack { get; set; }
+
+        public new List<ExtendedGenericSpawnItemDataWithCondition> ProducedItems
+        {
+            set
+            {
+                _producedItems = value;
+                base.ProducedItems = _producedItems.ToList<GenericSpawnItemDataWithCondition>();
+            }
+            get
+            {
+                return _producedItems;
+            }
+        }
+        private List<ExtendedGenericSpawnItemDataWithCondition> _producedItems = new List<ExtendedGenericSpawnItemDataWithCondition>();
     }
 }

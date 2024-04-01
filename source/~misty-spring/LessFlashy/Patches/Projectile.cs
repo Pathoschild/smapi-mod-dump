@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley.Projectiles;
@@ -38,6 +39,9 @@ public static class ProjectilePatches
     {
         try
         {
+            if (ModEntry.Config.Projectiles == false)
+                return;
+            
             __instance.rotationVelocity.Set(0f);
             __instance.startingRotation.Set(0f);
             var rotation = Helper.Reflection.GetField<float>(__instance, "rotation");

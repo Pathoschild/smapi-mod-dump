@@ -19,24 +19,22 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using Unlockable_Bundles.Lib.AdvancedPricing;
+using StardewValley.Triggers;
+using StardewValley.Delegates;
 
 namespace Unlockable_Bundles.Lib
 {
     public class UB_SharedDigSpot
     {
-        public static Mod Mod;
-        public static IMonitor Monitor;
-        public static IModHelper Helper;
+        public static Mod Mod { get => ModEntry.Mod; }
+        public static IMonitor Monitor { get => ModEntry._Monitor; }
+        public static IModHelper Helper { get => ModEntry._Helper; }
 
         public const string SHAREDIGGSPOT = "UB_SharedDigSpot";
         public const string INDIVIDUALDIGGSPOT = "UB_IndividualDigSpot";
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = ModEntry._Monitor;
-            Helper = ModEntry._Helper;
-
             var harmony = new Harmony(Mod.ModManifest.UniqueID);
 
             harmony.Patch(
@@ -45,6 +43,85 @@ namespace Unlockable_Bundles.Lib
             );
 
             Helper.Events.Multiplayer.ModMessageReceived += modMessageReceived;
+
+            TriggerActionManager.RegisterAction("UB_ResetDigSpot", ResetAction);
+        }
+
+        private static bool ResetAction(string[] args, TriggerActionContext context, out string error)
+        {
+            if (!ArgUtility.TryGet(args, 1, out string who, out error, allowBlank: false))
+                return false;
+
+            if (!new string[] { "all", "current", "host" }.Contains(who.ToLower())) {
+                error = $"Invalid Target Player {who}. Must be one of 'All', 'Current', 'Host'";
+                return false;
+
+            }
+            who = who.ToLower();
+
+            if (!ArgUtility.TryGet(args, 2, out string where, out error, allowBlank: false))
+                return false;
+
+            var location = Game1.getLocationFromName(where);
+            if (location is null) {
+                error = $"Unknown gamelocation {where}";
+                return false;
+
+            }
+
+            if (!ArgUtility.TryGet(args, 3, out string xString, out error, allowBlank: false))
+                return false;
+
+            if (!int.TryParse(xString, out int x)) {
+                error = $"X coordinates do not parse to number: {xString}";
+                return false;
+
+            }
+
+            if (!ArgUtility.TryGet(args, 4, out string yString, out error, allowBlank: false))
+                return false;
+
+            if (!int.TryParse(yString, out int y)) {
+                error = $"Y coordinates do not parse to number: {yString}";
+                return false;
+
+            }
+
+            if (!ArgUtility.TryGet(args, 5, out string resetMailflagString, out _, allowBlank: true))
+                resetMailflagString = "false";
+
+            var resetMailFlag = resetMailflagString.ToLower() == "true" ? true : false;
+
+            if (who == "current")
+                resetDigspot(Game1.player, location, x, y, resetMailFlag);
+            else if (who == "host")
+                resetDigspot(Game1.MasterPlayer, location, x, y, resetMailFlag);
+            else
+                foreach (var farmer in Game1.getAllFarmers())
+                    resetDigspot(farmer, location, x, y, resetMailFlag);
+
+            return true;
+        }
+
+        private static void resetDigspot(Farmer who, GameLocation location, int x, int y, bool resetMailFlag)
+        {
+            if (resetMailFlag) {
+                var property = location.doesTileHavePropertyNoNull(x, y, SHAREDIGGSPOT, "Back").Trim();
+                if (property == "")
+                    property = location.doesTileHavePropertyNoNull(x, y, INDIVIDUALDIGGSPOT, "Back").Trim();
+
+                var splitProperty = property.Split(" ");
+                if (splitProperty.Length >= 2)
+                    who.mailReceived.Remove(splitProperty[1]);
+                else
+                    Monitor.LogOnce($"TriggerAction requested resetting MailFlag of DropSpot in {location.Name}: X {x} Y {y}, but the DigSpot contains no MailKey");
+            }
+
+            var spot = location.NameOrUniqueName + ":" + x + "," + y;
+            if (!ModData.Instance.FoundUniqueDigSpots.ContainsKey(spot))
+                return;
+
+            ModData.Instance.FoundUniqueDigSpots[spot].Remove(who.UniqueMultiplayerID);
         }
 
         public static bool checkForBuriedItem_Prefix(GameLocation __instance, ref string __result, int xLocation, int yLocation, bool explosion, bool detectOnly, Farmer who)

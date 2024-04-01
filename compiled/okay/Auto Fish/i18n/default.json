@@ -1,0 +1,11 @@
+{
+  "maxCastPower.name": "maxCastPower",
+  "autoHit.name": "autoHit",
+  "fastBite.name": "fastBite",
+  "catchTreasure.name": "catchTreasure(Ignore this option when encountering legendary fish)",
+  "fasterSpeed.name": "fasterSpeed",
+  "triggerKeepAutoFish.name": "keep auto fishing automatically",
+  "keepAutoFishKey.name": "keep auto fishing key map",
+  "autoLootTreasure.name": "Auto loot treasure",
+  "autoLootFishAndTrash.name": "Auto loot fish and trash"
+}

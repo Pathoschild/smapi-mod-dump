@@ -1,0 +1,30 @@
+﻿{
+    // Tab
+    "Tab.Farm": "农场",
+    "Tab.Town1": "鹈鹕镇1",
+    "Tab.Town2": "鹈鹕镇2",
+    "Tab.Mountain": "深山",
+    "Tab.Forest": "煤炭森林",
+    "Tab.Beach": "沙滩",
+    "Tab.Desert": "沙漠",
+    "Tab.GingerIsland": "姜岛",
+    "Tab.SVE": "SVE",
+    "Tab.RSV": "RSV",
+    // Tip
+    "Tip.Unfinished": "功能还未完成，请等待模组更新",
+    "Tip.Unavailable": "目前还不能访问",
+    /*
+    "Tip.FishShop": "Unlocked",
+    "Tip.ClubCard":"Unlocked",
+    "Tip.BusStop":"Unlocked",
+    */
+    // BillboardMenu
+    "BillboardMenu.Calendar": "日历",
+    "BillboardMenu.DailyQuest": "每日任务",
+    // ClintMenu
+    "ClintMenu.Receive": "取回工具",
+    "ClintMenu.Unfinished": "工具还未升级完成",
+    // Config
+    "Config.MenuKey_Name": "菜单快捷键",
+    "Config.DefaultMenuTabID": "默认菜单标签"
+}

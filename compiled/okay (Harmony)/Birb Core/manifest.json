@@ -1,0 +1,23 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "drbirbdev.BirbCore",
+  "Name": "BirbCore",
+  "Author": "drbirbdev",
+  "Version": "1.0.2",
+  "Description": "Core Functionality for drbirbdev mods",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "BirbCore.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:19140"
+  ]
+}

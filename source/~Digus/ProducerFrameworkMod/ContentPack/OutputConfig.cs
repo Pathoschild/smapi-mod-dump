@@ -37,24 +37,24 @@ namespace ProducerFrameworkMod.ContentPack
         public int OutputQuality = 0;
         public int OutputStack = 1;
         public int OutputMaxStack = 1;
-        public StackConfig SilverQualityInput = new StackConfig();
-        public StackConfig GoldQualityInput = new StackConfig();
-        public StackConfig IridiumQualityInput = new StackConfig();
+        public StackConfig SilverQualityInput = new();
+        public StackConfig GoldQualityInput = new();
+        public StackConfig IridiumQualityInput = new();
         public ColoredObjectConfig OutputColorConfig;
-        public Dictionary<string, int> RequiredFuel = new Dictionary<string, int>();
+        public Dictionary<string, int> RequiredFuel = new();
         public int? RequiredInputStack;
-        public List<int> RequiredInputQuality = new List<int>();
-        public List<string> RequiredSeason = new List<string>();
-        public List<Weather> RequiredWeather = new List<Weather>();
-        public List<string> RequiredLocation = new List<string>();
-        public List<string> RequiredMail = new List<string>();
-        public List<int> RequiredEvent = new List<int>();
+        public List<int> RequiredInputQuality = new();
+        public List<string> RequiredSeason = new();
+        public List<Weather> RequiredWeather = new();
+        public List<string> RequiredLocation = new();
+        public List<string> RequiredMail = new();
+        public List<string> RequiredEvent = new();
         public bool? RequiredOutdoors = null;
-        public List<string> RequiredInputParentIdentifier = new List<string>();
+        public List<string> RequiredInputParentIdentifier = new();
 
         //Generated Properties
-        public int OutputIndex = -1;
-        public List<Tuple<int, int>> FuelList = new List<Tuple<int, int>>();
+        public string OutputItemId;
+        public List<Tuple<string, int>> FuelList = new();
 
         public OutputConfig Clone()
         {

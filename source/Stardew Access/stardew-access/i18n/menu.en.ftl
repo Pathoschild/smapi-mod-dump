@@ -17,6 +17,7 @@ common-ui-next_page_button = Next page button
 common-ui-previous_page_button = Previous page button
 common-ui-close_menu_button = Close menu button
 common-ui-back_button = Back button
+common-ui-forward_button = Forward button
 common-ui-equipment_slots = {$slot_name ->
     [hat] Hat
     [left_ring] Left ring
@@ -182,6 +183,17 @@ menu-social_page-player_info = {$name}{$relationship_status ->
     *[other] , {$relationship_status}
   }
 
+### Collections Page
+menu-collections_page-tabs = {$tab_name} tab {$is_selected ->
+    [0] {EMPTYSTRING()}
+    *[1] selected
+  }
+menu-collections_page-unachieved = Unachieved
+menu-collections_page-uncaught = Uncaught
+menu-collections_page-uncooked = Uncooked
+menu-collections_page-unfound = Unfound
+menu-collections_page-unshipped = Unshipped
+
 ### Crafting Page
 
 menu-crafting_page-recipe_info = {$produce_count} {$name}, {$is_craftable ->
@@ -210,6 +222,20 @@ menu-skills_page-player_info = {$name}, {$title}{$golden_walnut_count ->
   }
 menu-skills_page-skill_info = {$name} at level {$level},
   {$buffs}
+
+### Animal Page
+
+menu-animal_page-animal_info = {$name}, {$type}{$heart_count ->
+    [-1] {EMPTYSTRING()}
+    [1] , 1 heart
+    *[other] , {$heart_count} hearts
+  }{$has_been_pet ->
+    [0] , not pet yet
+    *[other] {EMPTYSTRING()}
+  }{$has_received_animal_cracker ->
+    [0] {EMPTYSTRING()}
+    *[other], eaten animal cracker
+  }
 
 ## Menus With Inventory
 
@@ -273,6 +299,7 @@ menu-item_grab-chest_colors =
 
 menu-shop-buy_price_info = Buy price: {$price}g
 menu-shop-recipe_ingredients_info = Ingredients: {$ingredients_list}
+menu-shop-pet_license-suffix = {$content} license
 
 ### Tailoring Menu
 
@@ -309,10 +336,13 @@ menu-animal_query-animal_info =
   }, {$age ->
     [1] 1 month
     *[other] {$age} months
-  } old, {$parent_name ->
+  } old{$parent_name ->
     [null] {EMPTYSTRING()}
-    *[other] Parent: {$parent_name}.
-  }, {$mood}
+    *[other] , Parent: {$parent_name}.
+  }, {$mood}{$has_received_animal_cracker ->
+    [0] {EMPTYSTRING()}
+    *[other], eaten animal cracker
+  }
 menu-animal_query-confirm_selling_button = Confirm selling animal button
 menu-animal_query-cancel_selling_button = Cancel selling animal button
 menu-animal_query-selling_button = Sell for {$price}g button
@@ -324,13 +354,45 @@ menu-animal_query-allow_reproduction_button =
     *[1] Enabled
   } allow pregnancy button
 
+### Building Skin Menu
+
+# Cabin skins: [0 = default] [1 = plank] [2 = log] [3 = neighbour] [4 = rustic] [5 = beach] [6 = trailer]
+# Pet bowl skins: [0 = default] [1 = stone] [2 = hay]
+
+menu-building_skin-skin_info = {$type ->
+    [cabin] {$index ->
+        [0] Default Cabin
+        [1] {$id}
+        [2] {$id}
+        [3] {$id}
+        [4] {$id}
+        [5] {$id}
+        [6] {$id}
+        *[other] Uknown Cabin Skin, id:{$id}, index:{$index}
+      }
+    [pet_bowl] {$index ->
+        [0] Default Pet Bowl
+        [1] {$id}
+        [2] {$id}
+        *[other] Uknown Pet Bowl Skin, id:{$id}, index:{$index}
+      }
+    *[other] {$index}: {$id}
+  }
+menu-building_skin-next_skin_button = Next Skin
+menu-building_skin-previous_skin_button = Previous Skin
+
 ### Carpenter Menu
 
-menu-carpenter-blueprint_info = {$name}, Price: {$price}g, Ingredients: {$ingredients_list}, Dimensions: {$width} width and {$height} height, Description: {$description}
+menu-carpenter-blueprint_info = {$name}, Price: {$price}g, Ingredients: {$ingredients_list}, {$days ->
+    [0] builds instantly
+    [1] 1 day to build
+    *[other] {$days} days to build
+  }, Dimensions: {$width} width and {$height} height, Description: {$description}
 menu-carpenter-previous_blueprint_button = Previous blueprint
 menu-carpenter-next_blueprint_button = Next blueprint
 menu-carpenter-move_building_button = Move building
 menu-carpenter-paint_building_button = Paint building
+menu-carpenter-appearance_button = Change Appearance
 menu-carpenter-demolish_building_button = Demolish building{$can_demolish ->
     [0] , cannot demolish building
     *[1] {EMPTYSTRING()}
@@ -383,6 +445,16 @@ menu-letter_viewer-letter_message = {$message_content}{$is_money_included ->
 menu-letter_viewer-pagination_text-prefix = Page {$current_page} of {$total_pages}
   {$content}
 menu-letter_viewer-grabbable_item_text = Left click to collect {$name}
+menu-letter_viewer-image_note = {$note_id ->
+    [11] Image of a young Marnie holding hands with toddler Jas. They are surrounded by farm animals on the ranch.
+    [16] A treasure map depicting a large boulder NorthWest of the railroad tracks. A red X is placed to the right of the boulder.
+    [17] A treasure map depicting the river north of Joja Mart with a Red X featured in the North Easternmost Corner
+    [18] A treasure map depicting a bench in the Southeast corner of the Calico desert, featuring a red X to the southwest.
+    [19] A depiction of 1 Willow Lane with a series of arrows. A square marks the space in front of the front door. The sequence reads as left, up, right, up, right, down, left, down, left, down, check mark.
+    [20] a depiction of town square with a series of arrows. The depiction notes an area in the very center of the square. The sequence is as follows, right, down, right, up, right, up, right, down, left, up, left, up, right, up, left, up, left, check mark.
+    [21] A depiction of the large bush to the northwest of the bridge to the beach, at night. A clock displays the time 12:40.
+    *[other] Undescribed image {$note_id}
+  }
 
 ### Level Up Menu
 
@@ -390,6 +462,17 @@ menu-level_up-profession_chooser_heading = {$title}. Select a new profession.
 menu-level_up-profession_chooser_button = Selected: {$profession_description_list}
   Left click to choose.
 menu-level_up-ok_button = {$title}, {$extra_info}, Learned recipes: {$learned_recipes}, Left click to close.
+
+### Mastery Menus
+
+menu-mastery-pedestial_info = {$final_path_text} {$current_points} out of {$required_points},
+  {$stars ->
+    [1] 1 star
+    *[other] {$stars} stars
+  }
+menu-mastery-walls-claim_button = {$name},
+  {$rewards},
+  Claim button
 
 ### Naming Menu
 
@@ -411,6 +494,14 @@ menu-number_selection-value_and_price_info = {$value} {$price ->
 menu-pond_query-change_netting_button = Change netting button
 menu-pond_query-empty_pond_button = Empty pond button
 menu-pond_query-pond_info = {$pond_name}, {$population_info}, {$required_item_info}, Status: {$status}
+
+### Prize Ticket Menu
+
+menu-prize_ticket-collect_prize_button = Current prizes: {$prize_items}
+  You have {$prize_ticket_count ->
+    [1] 1 prize ticket
+    *[other] {$prize_ticket_count} prize tickets
+  }, collect prize button
 
 ### Purchase Animal Menu
 

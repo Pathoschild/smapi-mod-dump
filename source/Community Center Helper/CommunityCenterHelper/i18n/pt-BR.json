@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} durante {{season}}",
 	"tapTree": "Use {{tapper}} na {{tree}}",
 	"seedFromTree": "Remexa/Corte {{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "Craft {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Colete de grama ou {{wheat}}",
 	"trash": "Lixo vindo da pesca, Covos, ou latas de lixo",
 	"trashCan": "Latas de lixo",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Quarto da Marnie (na missão do Prefeito dos shorts perdidos no Verão 3)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Ganhe no jogo no Cinema",
 	"voidEggEvent": "Evento da bruxa aleatório",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Coelhos",
 	"animalDuck": "Patos",
 	"animalPig": "Porcos",
+	"animalOstrich": "Ostriches", // TODO
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "precisa de Galinheiro",

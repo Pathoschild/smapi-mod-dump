@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "game-folder": "Open Game Folder",
+  "mods-folder": "Open Mods Folder",
+  "mod-folder": "Open Folder",
+  "ModEnabled_GMCM": "Mod Enabled",
+  "AddGameFolderButton_GMCM": "Game Folder",
+  "AddModsFolderButton_GMCM": "Mods Folder",
+  "AddGMCMModsFolderButton_GMCM": "GMCM Folders"
+}

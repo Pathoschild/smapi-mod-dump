@@ -10,9 +10,9 @@
 
 using Microsoft.VisualBasic;
 using Netcode;
-using StardewDruid.Event.World;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Network;
 using StardewValley.Tools;
@@ -69,7 +69,7 @@ namespace StardewDruid.Dialogue
 
                     string str = stringList[index];
 
-                    NPC.CurrentDialogue.Push(new StardewValley.Dialogue(str, NPC));
+                    NPC.CurrentDialogue.Push(new StardewValley.Dialogue(NPC,"0",str));
 
                 }
 
@@ -506,7 +506,18 @@ namespace StardewDruid.Dialogue
 
                             NPC.doEmote(28, true);
 
-                            stringList.Add("Ughh. I think I'll be happy if random " + context.First() + " never happen to me again.$a");
+                            if (NPC is Child)
+                            {
+
+                                stringList.Add("I don't think I like that trick. $s");
+
+                            }
+                            else
+                            {
+
+                                stringList.Add("Ughh. I think I'll be happy if random " + context.First() + " never happen to me again.$a");
+
+                            }
 
                             break;
 
@@ -631,7 +642,19 @@ namespace StardewDruid.Dialogue
 
                         case 1:
 
-                            stringList.Add("Rain and thunder every day! $a");
+                            if (NPC is Child)
+                            {
+
+                                stringList.Add("I always hear a scary thunder sound whenever you're around $s");
+                            
+                            }
+                            else
+                            {
+
+                                stringList.Add("Rain and thunder every day! $a");
+
+                            }
+
                             break;
 
                         case 2:
@@ -830,7 +853,7 @@ namespace StardewDruid.Dialogue
 
                                 stringList.Add("I thought I just saw you dance in the style of the Old Kings.");
 
-                                stringList.Add("They've gone to sleep now, at rest after a terrible war, never to frolic again. /s");
+                                stringList.Add("They've gone to sleep now, at rest after a terrible war, never to frolic again. $s");
 
                                 break;
 
@@ -841,15 +864,22 @@ namespace StardewDruid.Dialogue
 
                     break;
 
+                case "Jester":
+
+                    NPC.doEmote(20, true);
+
+                    stringList.Add("I feel like I just brushed up against a massive cat.");
+
+                    break;
+
             }
             
             for (int index = stringList.Count - 1; index >= 0; --index)
             {
                
                 string str = stringList[index];
-                
-                NPC.CurrentDialogue.Push(new StardewValley.Dialogue(str, NPC));
-            
+
+                NPC.CurrentDialogue.Push(new StardewValley.Dialogue(NPC, "0", str));
             }
         
         }

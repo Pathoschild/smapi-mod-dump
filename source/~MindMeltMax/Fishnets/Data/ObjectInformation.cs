@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using StardewValley.GameData.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace Fishnets.Data
 {
     internal class ObjectInformation
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public string Object { get; set; }
+        public ObjectData Object { get; set; }
 
         public string Recipe { get; set; }
     }

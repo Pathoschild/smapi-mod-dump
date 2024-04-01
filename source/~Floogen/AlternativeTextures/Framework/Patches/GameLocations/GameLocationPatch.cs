@@ -34,7 +34,7 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.checkAction), new[] { typeof(xTile.Dimensions.Location), typeof(xTile.Dimensions.Rectangle), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(CheckActionPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.LowPriorityLeftClick), new[] { typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(LowPriorityLeftClickPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.leftClick), new[] { typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(LowPriorityLeftClickPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.seasonUpdate), new[] { typeof(string), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
         }
 
         private static bool CheckActionPrefix(GameLocation __instance, ref bool __result, xTile.Dimensions.Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
@@ -66,13 +66,14 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
             return true;
         }
 
-        internal static void SeasonUpdatePostfix(GameLocation __instance, string season, bool onLoad = false)
+        internal static void SeasonUpdatePostfix(GameLocation __instance, bool onLoad = false)
         {
             if (__instance is null)
             {
                 return;
             }
 
+            Season season = __instance.GetSeason();
             if (__instance.objects != null)
             {
                 for (int k = __instance.objects.Count() - 1; k >= 0; k--)
@@ -83,13 +84,13 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
                         var instanceName = GetObjectName(obj);
                         if (obj is Fence fence && fence.isGate.Value)
                         {
-                            instanceName = Game1.objectInformation[325].Split('/')[0];
+                            instanceName = Game1.objectData["325"].Name;
                         }
 
                         var seasonalName = String.Concat(obj.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Craftable}_{instanceName}_{season}");
                         if ((obj.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(obj.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]) && !String.Equals(obj.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON], Game1.currentSeason, StringComparison.OrdinalIgnoreCase)) || AlternativeTextures.textureManager.DoesObjectHaveAlternativeTextureById(seasonalName))
                         {
-                            obj.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season;
+                            obj.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season.ToString();
                             obj.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = seasonalName;
                         }
                     }
@@ -108,7 +109,7 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
                         var seasonalName = String.Concat(character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Character}_{instanceName}_{season}");
                         if ((character.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]) && !String.Equals(character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON], Game1.currentSeason, StringComparison.OrdinalIgnoreCase)) || AlternativeTextures.textureManager.DoesObjectHaveAlternativeTextureById(seasonalName))
                         {
-                            character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season;
+                            character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season.ToString();
                             character.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = seasonalName;
                         }
                     }
@@ -116,9 +117,9 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
             }
 
             // Check for animals, if __instance is an applicable location
-            if ((__instance is Farm farm && farm.animals != null) || (__instance is AnimalHouse animalHouse && animalHouse.animals != null))
+            if (__instance.animals != null)
             {
-                var animals = __instance is Farm ? (__instance as Farm).animals.Values : (__instance as AnimalHouse).animals.Values;
+                var animals = __instance.animals.Values;
                 for (int k = animals.Count() - 1; k >= 0; k--)
                 {
                     var farmAnimal = animals.ElementAt(k);
@@ -129,7 +130,7 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
                         var seasonalName = String.Concat(farmAnimal.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Character}_{instanceName}_{season}");
                         if ((farmAnimal.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(farmAnimal.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]) && !String.Equals(farmAnimal.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON], Game1.currentSeason, StringComparison.OrdinalIgnoreCase)) || AlternativeTextures.textureManager.DoesObjectHaveAlternativeTextureById(seasonalName))
                         {
-                            farmAnimal.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season;
+                            farmAnimal.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season.ToString();
                             farmAnimal.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = seasonalName;
                         }
                     }
@@ -154,9 +155,6 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
                     {
                         __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.currentSeason;
                         __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME], "_", __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]);
-
-                        houseFarm.houseSource.Value = new Rectangle(0, 144 * (((int)Game1.MasterPlayer.houseUpgradeLevel == 3) ? 2 : ((int)Game1.MasterPlayer.houseUpgradeLevel)), 160, 144);
-                        houseFarm.ApplyHousePaint();
                     }
                 }
             }

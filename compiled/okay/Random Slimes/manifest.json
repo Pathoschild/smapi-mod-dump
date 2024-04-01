@@ -1,0 +1,10 @@
+{
+  "Name": "RandomSlimes",
+  "Author": "ChrisMzz",
+  "Version": "1.0.0",
+  "Description": "Randomizes Slime colours",
+  "UniqueID": "ChrisMzz.randomslimes",
+  "EntryDll": "randomslimes.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21320" ]
+}

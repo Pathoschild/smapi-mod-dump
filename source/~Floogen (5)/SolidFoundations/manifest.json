@@ -15,7 +15,7 @@
   "Description": "Custom buildings framework for Stardew Valley.",
   "UniqueID": "PeacefulEnd.SolidFoundations",
   "EntryDll": "SolidFoundations.dll",
-  "MinimumApiVersion": "3.14.4",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:12311" ],
   "Dependencies": [
     {

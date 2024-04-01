@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Linq;
 using StardewModdingAPI;
 
 namespace ConvenientChests.CategorizeChests.Framework.Persistence {
@@ -46,8 +45,6 @@ namespace ConvenientChests.CategorizeChests.Framework.Persistence {
                     var chestData = Module.ChestDataManager.GetChestData(chest);
 
                     chestData.AcceptedItemKinds = entry.GetItemSet();
-                    foreach (var key in chestData.AcceptedItemKinds.Where(k => !Module.ItemDataManager.Prototypes.ContainsKey(k)))
-                        Module.ItemDataManager.Prototypes.Add(key, key.GetOne());
                 }
                 catch (InvalidSaveDataException e) {
                     Module.Monitor.Log(e.Message, LogLevel.Warn);

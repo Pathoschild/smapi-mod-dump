@@ -13,25 +13,26 @@ using StardewDruid.Cast;
 using StardewDruid.Map;
 using StardewDruid.Monster.Boss;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
+using StardewValley.Minigames;
 using System.Collections.Generic;
 using static StardewValley.IslandGemBird;
+using static StardewValley.Objects.BedFurniture;
 
 namespace StardewDruid.Event.Boss
 {
     public class GemShrine : BossHandle
     {
 
-        public List<Firebird> fireBirds;
+        public List<StardewDruid.Monster.Boss.Boss> bossMonsters;
 
-        public GemShrine(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite, quest)
+        public GemShrine(Vector2 target,  Quest quest)
+            : base(target, quest)
         {
 
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 90;
 
-            fireBirds = new List<Firebird>();
-
-            voicePosition = new Vector2(24, 22) * 64;
+            bossMonsters = new();
 
         }
 
@@ -40,13 +41,17 @@ namespace StardewDruid.Event.Boss
             
             cues = DialogueData.DialogueScene(questData.name);
 
-            ModUtility.AnimateRadiusDecoration(targetLocation, targetVector, "Stars", 1f, 1f);
+            AddActor(new Vector2(24, 22) * 64);
 
-            ModUtility.AnimateMeteor(targetLocation, targetVector, true);
+            Cast.Stars.Meteor meteorCast = new(targetVector, Mod.instance.DamageLevel());
+
+            meteorCast.targetLocation = targetLocation;
+
+            meteorCast.CastEffect();
 
             Mod.instance.RegisterEvent(this, "active");
 
-            Game1.addHUDMessage(new HUDMessage($"Gem Shrine challenge initiated", ""));
+            Mod.instance.CastMessage("Gem Shrine challenge initiated");
 
         }
 
@@ -54,17 +59,17 @@ namespace StardewDruid.Event.Boss
         public override void RemoveMonsters()
         {
 
-            if (fireBirds.Count > 0)
+            if (bossMonsters.Count > 0)
             {
 
-                foreach (Firebird fireBird in fireBirds)
+                foreach (StardewDruid.Monster.Boss.Boss boss in bossMonsters)
                 {
 
-                    riteData.castLocation.characters.Remove(fireBird);
+                    Mod.instance.rite.castLocation.characters.Remove(boss);
 
                 }
 
-                fireBirds.Clear();
+                bossMonsters.Clear();
 
             }
 
@@ -77,19 +82,19 @@ namespace StardewDruid.Event.Boss
             {
                 if (expireEarly)
                 {
-
+                    
                     DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 991);
 
                     if (!questData.name.Contains("Two"))
                     {
 
-                        Game1.createObjectDebris(74, 24, 21);
+                        Game1.createObjectDebris("74", 24, 21);
 
                     }
 
-                    Game1.createObjectDebris(69, 24, 21);
+                    Game1.createObjectDebris("69", 24, 21);
 
-                    Game1.createObjectDebris(835, 24, 21);
+                    Game1.createObjectDebris("835", 24, 21);
 
                     EventComplete();
 
@@ -131,116 +136,50 @@ namespace StardewDruid.Event.Boss
             {
 
                 Game1.playSound("batFlap");
-
                 return;
-
             }
 
             if (activeCounter == 7)
             {
 
-
-                Dictionary<string, int> birdTypes = new()
+                Dictionary<string, Vector2> gemVectors = new()
                 {
-                    ["Emerald"] = 41,
-                    ["Aquamarine"] = 42,
-                    ["Ruby"] = 43,
-                    ["Amethyst"] = 44,
-                    ["Topaz"] = 45,
+                    ["IslandWest"] = new Vector2(21 - 2, 27 + 1),
+                    ["IslandEast"] = new Vector2(27 + 2, 27 - 1),
+                    ["IslandSouth"] = new Vector2(24 + 1, 28 + 2),
+                    ["IslandNorth"] = new Vector2(24 - 1, 25 - 2),
+
                 };
 
-                // ---------------- West Bird
-
-                Vector2 westVector = new Vector2(21 - 2, 27 + 1);
-
-                TemporaryAnimatedSprite smallAnimation = new(5, westVector * 64, Color.Purple * 0.75f, 8, flipped: false, 75f)
+                foreach(KeyValuePair<string, Vector2> gemPair in gemVectors)
                 {
-                    scale = 1.25f,
-                };
+                    
+                    ModUtility.AnimateQuickWarp(targetLocation, gemPair.Value);
 
-                riteData.castLocation.temporarySprites.Add(smallAnimation);
+                    GemBirdType gemBirdType = GetBirdTypeForLocation(gemPair.Key);
 
-                GemBirdType gemBirdType = GetBirdTypeForLocation("IslandWest");
+                    StardewDruid.Monster.Boss.Demonki boss = new(gemPair.Value, Mod.instance.CombatModifier());
 
-                Firebird westBird = MonsterData.CreateMonster(birdTypes[gemBirdType.ToString()], westVector) as Firebird;
+                    targetLocation.characters.Add(boss);
 
-                riteData.castLocation.characters.Add(westBird);
+                    boss.update(Game1.currentGameTime, Mod.instance.rite.castLocation);
 
-                westBird.update(Game1.currentGameTime, riteData.castLocation);
+                    boss.ChampionMode();
 
-                if (!questData.name.Contains("Two"))
-                {
+                    boss.netScheme.Set(gemBirdType.ToString());
 
-                    westBird.HardMode();
+                    boss.SchemeLoad();
+
+                    if (!questData.name.Contains("Two"))
+                    {
+
+                        boss.HardMode();
+
+                    }
+
+                    bossMonsters.Add(boss);
 
                 }
-
-                fireBirds.Add(westBird);
-
-                // ---------------- East Bird
-
-                Vector2 eastVector = new Vector2(27 + 2, 27 - 1);
-
-                smallAnimation = new(5, eastVector * 64, Color.Purple * 0.75f, 8, flipped: false, 75f)
-                {
-                    scale = 1.25f,
-                };
-
-                riteData.castLocation.temporarySprites.Add(smallAnimation);
-
-                gemBirdType = GetBirdTypeForLocation("IslandEast");
-
-                Firebird eastBird = MonsterData.CreateMonster(birdTypes[gemBirdType.ToString()], eastVector) as Firebird; ;
-
-                riteData.castLocation.characters.Add(eastBird);
-
-                eastBird.update(Game1.currentGameTime, riteData.castLocation);
-
-                fireBirds.Add(eastBird);
-
-
-                // ---------------- South Bird
-
-                Vector2 southVector = new Vector2(24 + 1, 28 + 2);
-
-                smallAnimation = new(5, southVector * 64, Color.Purple * 0.75f, 8, flipped: false, 75f)
-                {
-                    scale = 1.25f,
-                };
-
-                riteData.castLocation.temporarySprites.Add(smallAnimation);
-
-                gemBirdType = GetBirdTypeForLocation("IslandSouth");
-
-                Firebird southBird = MonsterData.CreateMonster(birdTypes[gemBirdType.ToString()], southVector) as Firebird;
-
-                riteData.castLocation.characters.Add(southBird);
-
-                southBird.update(Game1.currentGameTime, riteData.castLocation);
-
-                fireBirds.Add(southBird);
-
-
-                // ---------------- North Bird
-
-                Vector2 northVector = new Vector2(24 - 1, 25 - 2);
-
-                smallAnimation = new(5, northVector * 64, Color.Purple * 0.75f, 8, flipped: false, 75f)
-                {
-                    scale = 1.25f,
-                };
-
-                riteData.castLocation.temporarySprites.Add(smallAnimation);
-
-                gemBirdType = GetBirdTypeForLocation("IslandNorth");
-
-                Firebird northBird = MonsterData.CreateMonster(birdTypes[gemBirdType.ToString()], northVector) as Firebird;
-
-                riteData.castLocation.characters.Add(northBird);
-
-                northBird.update(Game1.currentGameTime, riteData.castLocation);
-
-                fireBirds.Add(northBird);
 
                 SetTrack("cowboy_boss");
 
@@ -248,30 +187,23 @@ namespace StardewDruid.Event.Boss
 
             }
 
-            if (activeCounter == 10)
+            for(int i = bossMonsters.Count-1;i >= 0; i--)
             {
 
-                Game1.addHUDMessage(new HUDMessage($"Hit the birds to stop their fire attacks", ""));
+                StardewDruid.Monster.Boss.Boss bossMonster = bossMonsters[i];
 
-            }
-
-            int defeated = 0;
-
-            foreach (Firebird bird in fireBirds)
-            {
-
-                if (!ModUtility.MonsterVitals(bird,targetLocation))
+                if (!ModUtility.MonsterVitals(bossMonster, targetLocation))
                 {
 
-                    riteData.castLocation.characters.Remove(bird);
+                    Mod.instance.rite.castLocation.characters.Remove(bossMonster);
 
-                    defeated++;
+                    bossMonsters.RemoveAt(i);
 
                 }
 
             }
 
-            if (defeated == fireBirds.Count)
+            if (bossMonsters.Count == 0)
             {
 
                 expireEarly = true;

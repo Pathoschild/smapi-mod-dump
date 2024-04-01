@@ -26,10 +26,26 @@ namespace DefaultFarmer
 
         public Color TextColor = Game1.textColor;
 
-        public PresetButton(Rectangle bounds, string name, string label) : base(bounds, name, label) { }
+        public bool IsSelected;
+
+        public PresetButton(Rectangle bounds, string name, string label, bool isSelected) : base(bounds, name, label)
+        {
+            IsSelected = isSelected;
+        }
 
         public void Draw(SpriteBatch b)
         {
+            if (IsSelected)
+            {
+                Scale = Math.Min(Scale + 0.04f, BaseScale + 0.25f);
+                TextColor = Game1.unselectedOptionColor;
+            }
+            else
+            {
+                Scale = Math.Max(Scale - 0.04f, BaseScale);
+                TextColor = Game1.textColor;
+            }
+
             IClickableMenu.drawTextureBox(
                 b,
                 Game1.menuTexture,
@@ -62,7 +78,7 @@ namespace DefaultFarmer
 
         private readonly List<PresetButton> presetButtons = new();
 
-        private int selectedPreset;
+        private int selectedPreset = 0;
 
         private float saveScale = 1f;
         private readonly float saveBaseScale = 1f;
@@ -75,11 +91,13 @@ namespace DefaultFarmer
         public CharacterCustomizationDefaults(Clothing item) : base(item)
         {
             setUpPositions();
+            LoadDefaults(selectedPreset);
         }
 
         public CharacterCustomizationDefaults(Source source) : base(source)
         {
             setUpPositions();
+            LoadDefaults(selectedPreset);
         }
 
         public void SaveDefaults(int which)
@@ -102,8 +120,13 @@ namespace DefaultFarmer
         {
             base.performHoverAction(x, y);
 
-            foreach (PresetButton button in presetButtons)
+            for (int i = 0; i < presetButtons.Count; i++)
             {
+                if (i == selectedPreset)
+                    continue;
+
+                PresetButton button = presetButtons[i];
+
                 if (button.containsPoint(x, y))
                 {
                     button.Scale = Math.Min(button.Scale + 0.04f, button.BaseScale + 0.25f);
@@ -151,7 +174,8 @@ namespace DefaultFarmer
                         (int)presetTextSize.Y
                     ),
                     $"presetButton{i}",
-                    presetText
+                    presetText,
+                    selectedPreset == i
                 ));
 
                 if ((int)presetTextSize.X > buttonBiggestWidth)
@@ -176,6 +200,16 @@ namespace DefaultFarmer
                         Game1.playSound("bigSelect");
                     LoadDefaults(i);
                     selectedPreset = i;
+                    presetButtons[i].IsSelected = true;
+
+                    for (int j = 0; j < presetButtons.Count; j++)
+                    {
+                        if (i == j)
+                            continue;
+
+                        presetButtons[j].IsSelected = false;
+                    }
+
                     break;
                 }
             }

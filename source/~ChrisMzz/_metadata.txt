@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/ChrisMzz/StardewValleyMods
+   Git: https://github.com/ChrisMzz/StardewValleyMods.git
+
+mods:
+   Random Slimes
+   Slime Minerals
+
+latest commit:
+   commit a4d5efa87549c68b0a899ae8552a3dd8a768f16a
+   Author: Christopher MAZZERBO <christopher.mazzerbo@gmail.com>
+   Date:   Fri Mar 29 15:56:15 2024 +0100
+   
+       Added RandomSlimes mod
+   

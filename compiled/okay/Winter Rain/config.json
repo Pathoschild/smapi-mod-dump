@@ -1,0 +1,11 @@
+{
+  "UseSnowDuration": false,
+  "SnowDuration": [
+    8,
+    21
+  ],
+  "ChanceToRain_duration": 0.183,
+  "ChanceToSnow_duration": 0.63,
+  "ChanceToRain_notDuration": 0.183,
+  "ChanceToSnow_notDuration": 0.447
+}

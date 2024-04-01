@@ -17,8 +17,8 @@ namespace HappyHomeDesigner.Menus
 {
     public partial class UndoRedoButton : ClickableComponent
     {
-        private Stack<WallFloorState> backwards = new();
-        private Stack<WallFloorState> forwards = new();
+        private readonly Stack<WallFloorState> backwards = new();
+        private readonly Stack<WallFloorState> forwards = new();
 
         public void Push(WallFloorState state)
         {

@@ -11,7 +11,7 @@
 {
   "Name": "I don't use that water",
   "Author": "idermailer",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Prevents to refill watering can from sea water, sewer, so on",
   "UniqueID": "idermailer.iDontUseThatWater",
   "EntryDll": "iDontUseThatWater.dll",

@@ -1,0 +1,14 @@
+﻿{
+   "Name": "Flexible Arms",
+   "Author": "bcmpinc",
+   "Version": "7.2",
+   "Description": "More freedom when aiming your tools with a mouse.",
+   "UniqueID": "bcmpinc.FlexibleArms",
+   "EntryDll": "FlexibleArms.dll",
+   "MinimumApiVersion": "4.0.0",
+   "UpdateKeys": ["Nexus:20902"],
+   "Dependencies": [{
+      "UniqueID": "bcmpinc.StardewHack",
+      "MinimumVersion": "7.2"
+   }]
+}

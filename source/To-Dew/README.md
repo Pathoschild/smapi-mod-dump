@@ -103,6 +103,7 @@ external file via SMAPI console commands.  Type `help todo-export` or
 
 ## Compatibility
 
+Requires Stardew Valley 1.6 / SMAPI 4.0 beginning with version 2.0.
 Requires Stardew Valley 1.5.5 / SMAPI 3.17 beginning with version 1.13.
 Requires Stardew Valley 1.5.5 / SMAPI 3.13 beginning with version 1.10.
 Older versions work with Stardew Valley 1.5 / SMAPI 3.9.

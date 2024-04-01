@@ -18,8 +18,8 @@ namespace StardewDruid.Cast.Weald
 
         FarmAnimal riteWitness;
 
-        public Animal(Vector2 target, Rite rite, FarmAnimal animal)
-            : base(target, rite)
+        public Animal(Vector2 target,  FarmAnimal animal)
+            : base(target)
         {
 
             riteWitness = animal;
@@ -28,7 +28,7 @@ namespace StardewDruid.Cast.Weald
         public override void CastEffect()
         {
 
-            ModUtility.PetAnimal(riteData.caster, riteWitness);
+            ModUtility.PetAnimal(Mod.instance.rite.caster, riteWitness);
 
         }
     }

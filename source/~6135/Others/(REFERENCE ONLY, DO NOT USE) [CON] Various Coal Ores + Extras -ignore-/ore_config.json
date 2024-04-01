@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/6135/StardewValley.ProfitCalculator
+**
+*************************************************/
+
+{
+  "parentSheetIndexes": {
+    "0": 42424000,
+    "1": 42424001,
+    "2": 42424002,
+    "3": 42424003,
+    "4": 42424004,
+    "5": 42424005,
+    "6": 42424006,
+    "7": 42424007,
+    "8": 42424008,
+    "9": 42424009,
+    "10": 42424010,
+    "11": 42424011,
+    "12": 42424012,
+    "13": 42424013,
+    "14": 42424014,
+    "15": 42424015
+  }
+}

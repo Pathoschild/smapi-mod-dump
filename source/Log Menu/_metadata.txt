@@ -6,9 +6,9 @@ mods:
    Log Menu
 
 latest commit:
-   commit 916f2a8bbdac3de1a76bb0f1f71ff8e4f61a5c60
+   commit 774f0c75c83a13b47efaf93172a56975575eaec5
    Author: Jared Tjahjadi <jaredtjahjadi@gmail.com>
-   Date:   Sat Mar 16 01:40:05 2024 -0400
+   Date:   Tue Mar 19 15:47:31 2024 -0400
    
-       Nexus header
+       Fixed release note header and moved license
    

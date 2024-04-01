@@ -45,7 +45,7 @@ setting | effect
 `ToggleKey` | A [keybind](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings) that toggles whether you can recatch legendary fish in-game. There's no keybind by default.
 
 ## Compatibility
-* Works with Stardew Valley 1.5.5+ on Linux/Mac/Windows.
+* Works with Stardew Valley 1.6+ on Linux/macOS/Windows.
 * Works in single-player, multiplayer, and split-screen mode.
 * No known mod conflicts.
 

@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using Chest_Displays.Utility;
+using ChestDisplays.Patches;
+using ChestDisplays.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,10 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SObject = StardewValley.Object;
-using SUtils = StardewValley.Utility;
-
-namespace Chest_Displays
+namespace ChestDisplays
 {
     public class ChangeDisplayMenu : MenuWithInventory
     {
@@ -44,7 +42,7 @@ namespace Chest_Displays
         private IModHelper _helper => ModEntry.IHelper;
         private IMonitor _monitor => ModEntry.IMonitor;
 
-        public ChangeDisplayMenu(Chest c) : base(new InventoryMenu.highlightThisItem(i => i is not null), true, menuOffsetHack: 64)
+        public ChangeDisplayMenu(Chest c) : base(i => i is not null, true, menuOffsetHack: 64)
         {
             editingChest = c;
             data = c.modData.ContainsKey(_helper.ModRegistry.ModID) ? JsonConvert.DeserializeObject<ModData>(c.modData[_helper.ModRegistry.ModID]) : null;
@@ -113,7 +111,8 @@ namespace Chest_Displays
             if (inventory.isWithinBounds(x, y))
             {
                 Item? item = inventory.getItemAt(x, y);
-                if (item is null) return;
+                if (item is null) 
+                    return;
                 displaySlot.item = item.getOne();
                 updateModData(item);
             }
@@ -122,6 +121,7 @@ namespace Chest_Displays
                 editingChest.modData.Remove(_helper.ModRegistry.ModID);
                 data = null;
                 displaySlot.item = null;
+                Utils.updateCache(editingChest);
             }
             else if (okButton.bounds.Contains(x, y)) exitThisMenu();
         }
@@ -152,6 +152,7 @@ namespace Chest_Displays
             b.Draw(Game1.mouseCursors, new Vector2((xPositionOnScreen - 40), (yPositionOnScreen + height / 2 + 64 - 44)), new Rectangle?(new Rectangle(4, 372, 8, 11)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
 
             Game1.drawDialogueBox(entryBackgroundBounds.X, entryBackgroundBounds.Y, entryBackgroundBounds.Width, entryBackgroundBounds.Height, false, true);
+            b.Draw(Game1.menuTexture, new Vector2(entryBackgroundBounds.X + 12, entryBackgroundBounds.Y + entryBackgroundBounds.Height - 32), new(128, 16, 16, 16), Color.White, 0f, Vector2.Zero, new Vector2(20f, 1f), SpriteEffects.None, 1f);
 
             displaySlot.draw(b);
             if (displaySlot.item is not null)
@@ -174,12 +175,12 @@ namespace Chest_Displays
             inventory.showGrayedOutSlots = true;
 
             entryBackgroundBounds = new Rectangle(inventory.xPositionOnScreen + (inventory.width / 2 - 142), inventory.yPositionOnScreen - 344, 344, 344);
-            displaySlot = new ClickableTextureComponent(new Rectangle(entryBackgroundBounds.Center.X - 60, entryBackgroundBounds.Center.Y - 24, 120, 120), Game1.menuTexture, new Rectangle(0, 256, 60, 60), 2f);
+            displaySlot = new(new Rectangle(entryBackgroundBounds.Center.X - 60, entryBackgroundBounds.Center.Y - 24, 120, 120), Game1.menuTexture, new Rectangle(0, 256, 60, 60), 2f)
+            {
+                item = Utils.BuildItemFromData(data),
+                myID = DisplaySlotId
+            };
 
-            if (data != null)
-                displaySlot.item = Utils.getItemFromName(data.Item, data.ItemType, data.ItemQuality, data.UpgradeLevel);
-
-            displaySlot.myID = DisplaySlotId;
             okButton.myID = OkButtonId;
 
             const int rowLength = 12;
@@ -220,16 +221,15 @@ namespace Chest_Displays
 
         private void updateModData(Item item)
         {
-            int itemType = Utils.getItemType(item);
             data = new()
             {
-                Item = item is Tool t ? t.BaseName : Utils.GetItemNameFromIndex(Utils.GetItemIndexInParentSheet(item, itemType), itemType),
+                ItemId = item.QualifiedItemId,
                 Color = item is ColoredObject co ? co.color.Value : null,
-                ItemQuality = item is SObject o ? o.Quality : -1,
-                ItemType = itemType,
+                ItemQuality = item.Quality,
                 UpgradeLevel = item is Tool tu ? tu.UpgradeLevel : -1
             };
             editingChest.modData[_helper.ModRegistry.ModID] = JsonConvert.SerializeObject(data);
+            Utils.updateCache(editingChest);
         }
     }
 }

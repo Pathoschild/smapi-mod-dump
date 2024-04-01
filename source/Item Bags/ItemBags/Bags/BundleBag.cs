@@ -24,20 +24,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Object = StardewValley.Object;
-#if !ANDROID
-//using PyTK.CustomElementHandler;
-#endif
 
 namespace ItemBags.Bags
 {
     /// <summary>A bag used for storing items required by incomplete Community Center Bundles</summary>
     [XmlType("Mods_BundleBag")]
     [XmlRoot(ElementName = "BundleBag", Namespace = "")]
-#if ANDROID
     public class BundleBag : BoundedBag
-#else
-    public class BundleBag : BoundedBag//, ISaveElement
-#endif
     {
         public const string BundleBagTypeId = "c3f69b2c-6b21-477c-ad43-ee3b996a96bd";
 
@@ -93,12 +86,6 @@ namespace ItemBags.Bags
             }
         }
 
-#region PyTK CustomElementHandler
-        public override object getReplacement()
-        {
-            return new Object(172, 1);
-        }
-
         protected override void LoadSettings(BagInstance Data)
         {
             if (Data != null)
@@ -126,7 +113,6 @@ namespace ItemBags.Bags
                 }
             }
         }
-#endregion PyTK CustomElementHandler
 
         internal override bool OnJsonAssetsItemIdsFixed(IJsonAssetsAPI API, bool AllowResyncing)
         {
@@ -172,7 +158,7 @@ namespace ItemBags.Bags
             else
             {
                 if (CommunityCenterBundles.Instance.IsJojaMember ||
-                    !CommunityCenterBundles.Instance.IncompleteBundleItemIds[this.Size].TryGetValue(item.ParentSheetIndex, out HashSet<ObjectQuality> AcceptedQualities))
+                    !CommunityCenterBundles.Instance.IncompleteBundleItemIds[this.Size].TryGetValue(item.ItemId, out HashSet<ObjectQuality> AcceptedQualities))
                 {
                     return false;
                 }
@@ -202,7 +188,7 @@ namespace ItemBags.Bags
             {
                 string RoomName = x.Task.Room.Name;
                 bool IsValidRoomForCurrentSize = !InvalidRooms[this.Size].Contains(RoomName);
-                if (IsValidRoomForCurrentSize && !x.IsCompleted && x.Id == Item.ParentSheetIndex)
+                if (IsValidRoomForCurrentSize && !x.IsCompleted && (x.Id == Item.ItemId || x.Id == Item.QualifiedItemId))
                 {
                     if (!RequiredAmounts.ContainsKey(x.MinQuality))
                     {
@@ -308,6 +294,17 @@ namespace ItemBags.Bags
         public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
         {
             BaseDrawToolTip(spriteBatch, ref x, ref y, font, alpha, overrideText);
+        }
+
+        protected override Item GetOneNew() => new BundleBag(Size, Autofill);
+        protected override void GetOneCopyFrom(Item source)
+        {
+            base.GetOneCopyFrom(source);
+            if (source is BundleBag bag)
+            {
+                Size = bag.Size;
+                Autofill = bag.Autofill;
+            }
         }
     }
 }

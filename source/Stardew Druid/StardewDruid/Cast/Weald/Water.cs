@@ -9,22 +9,24 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Event.World;
 using StardewDruid.Map;
 using StardewValley;
+using StardewValley.Minigames;
+using StardewValley.Tools;
+using System;
 
 namespace StardewDruid.Cast.Weald
 {
     internal class Water : CastHandle
     {
 
-        public Water(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Water(Vector2 target)
+            : base(target)
         {
 
             castCost = 8;
 
-            if (rite.caster.FishingLevel >= 6)
+            if (Game1.player.FishingLevel >= 6)
             {
 
                 castCost = 4;
@@ -63,7 +65,9 @@ namespace StardewDruid.Cast.Weald
 
             StardewDruid.Cast.Throw throwObject = new(targetPlayer, targetVector * 64, randomFish, objectQuality);
 
-            Game1.player.checkForQuestComplete(null, randomFish, 1, throwObject.objectInstance, "fish", 7);
+            //Game1.player.checkForQuestComplete(null, randomFish, 1, throwObject.objectInstance, "fish", 7);
+
+            Game1.player.checkForQuestComplete(null, randomFish, 1, null, null, 7);
 
             throwObject.ThrowObject();
 
@@ -73,10 +77,11 @@ namespace StardewDruid.Cast.Weald
 
             castFire = true;
 
-            bool targetDirection = (targetPlayer.getTileLocation().X > targetVector.X); // false animation goes left to right, true animation right to left, check if target is right of left
+            bool targetDirection = (targetPlayer.Tile.X > targetVector.X);
 
             ModUtility.AnimateSplash(targetLocation, targetVector, targetDirection);
-
+            Vector2 cursorVector = targetVector * 64;
+            ModUtility.AnimateCursor(targetLocation, cursorVector);
         }
 
 

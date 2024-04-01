@@ -1,12 +1,20 @@
 {
-	"Name": "Into the Game (Save Loaded Notifier)",
-	"Author": "DecidedlyHuman",
-	"Version": "1.0.2",
-	"Description": "Ever missed that Stardew Valley has finished loading into your world because it takes too long? Well, this mod will whistle at you when it's done loading!",
-	"UniqueID": "DecidedlyHuman.SaveLoadedNotifier",
-	"EntryDll": "SaveLoadedNotifier.dll",
-	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [
-		"Nexus:12826"
-	]
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "DecidedlyHuman.SaveLoadedNotifier",
+  "Name": "Into the Game (Save Loaded Notifier)",
+  "Author": "DecidedlyHuman",
+  "Version": "1.2.0",
+  "Description": "Lets you know with an audible notification when the game has loaded.",
+  "MinimumApiVersion": "3.15.0",
+  "EntryDll": "SaveLoadedNotifier.dll",
+  "UpdateKeys": [
+    "Nexus:12826"
+  ]
 }

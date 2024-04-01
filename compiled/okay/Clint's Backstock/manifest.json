@@ -1,0 +1,10 @@
+{
+  "name": "Clint's Backstock",
+  "author": "Rokugin",
+  "version": "1.0.1",
+  "description": "Makes Clint prepare your upgraded tools immediately.",
+  "uniqueID": "Rokugin.ClintsBackstock",
+  "entryDLL": "ClintsBackstock.dll",
+  "minimumapiversion": "4.0.0",
+  "updatekeys": [ "Nexus:20886" ]
+}

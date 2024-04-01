@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "GMCM_Option_ModEnabled_Name": "모드 활성화",
+  "GMCM_Option_OpacityPercent_Name": "투명도 설정",
+  "GMCM_Option_SizePercent_Name": "크기 설정",
+  "GMCM_Option_PressKeys_Name": "단축키 설정",
+  "GMCM_Option_RepeatInterval_Name": "표시 시간 간격",
+  "GMCM_Option_RequireKeyPress_Name": "단축키 사용할 때만 표시",
+  "GMCM_Option_OnlyWhenWatering_Name": "물뿌리개 들고 있을 때만 표시"
+}

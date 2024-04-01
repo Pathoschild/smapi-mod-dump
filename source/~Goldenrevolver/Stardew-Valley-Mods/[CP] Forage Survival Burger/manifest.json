@@ -11,7 +11,7 @@
 {
   "Name": "Forage Survival Burger",
   "Author": "Goldenrevolver",
-  "Version": "1.2",
+  "Version": "1.3",
   "Description": "Replaces the survival burger cooking recipe with new foraging based crafting and cooking recipes",
   "UniqueID": "Goldenrevolver.ForageSurvivalBurger",
   "MinimumApiVersion": "3.8.2",

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21320
+IDs: ChrisMzz.randomslimes
+update keys: Nexus:21320, GitHub:ChrisMzz/StardewValleyMods

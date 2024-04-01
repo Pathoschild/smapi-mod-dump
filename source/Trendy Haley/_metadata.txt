@@ -6,9 +6,9 @@ mods:
    Trendy Haley
 
 latest commit:
-   commit 76d67fc578ffcf4a7f58ccbeb2101d44d4055a00
+   commit 9ce79d24f6e045b10a5ad1d06f21c58953c4291a
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Sep 15 19:37:49 2022 +0200
+   Date:   Sat Mar 23 17:06:47 2024 +0100
    
-       Fix SMAPI deprecation warnings, minimum SMAPI version is 3.14 (net5.0).
+       Support for SDV 1.6 vanilla winter outfit.
    

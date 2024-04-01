@@ -17,6 +17,7 @@ using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.TractorMod.Framework.Attachments;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
@@ -120,6 +121,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         {
             // use tool on center of tile
             player.lastClick = this.GetToolPixelPosition(tile);
+            tool.swingTicker++;
             tool.DoFunction(location, (int)player.lastClick.X, (int)player.lastClick.Y, 0, player);
             return true;
         }
@@ -186,12 +188,14 @@ namespace Pathoschild.Stardew.TractorMod.Framework
 
             if (item.Stack <= 0)
             {
-                for (int i = 0; i < chest.Items.Count; i++)
+                IInventory inventory = chest.GetItemsForPlayer();
+
+                for (int i = 0; i < inventory.Count; i++)
                 {
-                    Item slot = chest.Items[i];
+                    Item slot = inventory[i];
                     if (slot != null && object.ReferenceEquals(item, slot))
                     {
-                        chest.Items[i] = null;
+                        inventory[i] = null;
                         break;
                     }
                 }
@@ -357,10 +361,12 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         /// <remarks>Derived from <see cref="Grass.performToolAction"/>.</remarks>
         protected bool TryHarvestGrass(Grass? grass, GameLocation location, Vector2 tile, Farmer player, Tool tool)
         {
-            if (grass == null || !location.terrainFeatures.Remove(tile))
+            if (grass == null || !location.terrainFeatures.ContainsKey(tile))
                 return false;
 
-            grass.TryDropItemsOnCut(tool);
+            grass.numberOfWeeds.Value = 0; // grass won't drop anything if it thinks it's non-cut
+            grass.TryDropItemsOnCut(tool); // need to call this before we remove the grass, since it'll check its location
+            location.terrainFeatures.Remove(tile);
             return true;
         }
 

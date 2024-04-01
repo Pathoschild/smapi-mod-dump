@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Mods;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Mobile Phone Themes",
+    "Author": "JoXW, Trapezohedron",
+    "Version": "0.3.1",
+    "Description": "Adds skins and backgrounds to the mobile phone.",
+    "UniqueID": "JoXW.MobilePhoneThemes",
+    "MinimumApiVersion": "4.0.0",
+    "ContentPackFor": {
+        "UniqueID": "JoXW.MobilePhone",
+        "MinimumVersion": "1.0.0"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "JoXW.MobilePhone",
+            "IsRequired": true
+        }
+    ]
+}

@@ -12,9 +12,8 @@ using cantorsdust.Common;
 using RecatchLegendaryFish.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Tools;
+using StardewValley.GameData.Locations;
 
 namespace RecatchLegendaryFish
 {
@@ -30,9 +29,6 @@ namespace RecatchLegendaryFish
         /// <summary>Whether the mod is currently enabled.</summary>
         private bool IsEnabled = true;
 
-        /// <summary>Temporarily hides caught legendary fish from the game.</summary>
-        private readonly PerScreen<FishStash> Stash = new(() => new());
-
 
         /*********
         ** Public methods
@@ -45,10 +41,8 @@ namespace RecatchLegendaryFish
 
             this.Config = helper.ReadConfig<ModConfig>();
 
+            helper.Events.Content.AssetRequested += this.OnAssetRequested;
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-            helper.Events.GameLoop.Saving += this.OnSaving;
-            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
         }
 
@@ -59,6 +53,38 @@ namespace RecatchLegendaryFish
         /****
         ** Event handlers
         ****/
+        /// <inheritdoc cref="IContentEvents.AssetRequested"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (this.IsEnabled && e.Name.IsEquivalentTo("Data/Locations"))
+            {
+                e.Edit(
+                    asset =>
+                    {
+                        foreach (LocationData location in asset.AsDictionary<string, LocationData>().Data.Values)
+                        {
+                            if (location.Fish is null)
+                                continue;
+
+                            foreach (SpawnFishData fish in location.Fish)
+                            {
+                                // Known limitation: there's no good way to handle ItemId being an item query instead
+                                // of an item ID, but all vanilla legendary fish (and likely most modded ones) use an
+                                // item ID.
+                                if (fish.CatchLimit == 1 && ItemContextTagManager.HasBaseTag(fish.ItemId, "fish_legendary"))
+                                {
+                                    fish.CatchLimit = -1;
+                                }
+                            }
+                        }
+                    },
+                    AssetEditPriority.Late // handle new legendary fish added by mods
+                );
+            }
+        }
+
         /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -69,42 +95,6 @@ namespace RecatchLegendaryFish
                 reset: () => this.Config = new(),
                 save: () => this.Helper.WriteConfig(this.Config)
             );
-        }
-
-        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-        {
-            this.Stash.Value.Clear();
-        }
-
-        /// <inheritdoc cref="IGameLoopEvents.Saving"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnSaving(object sender, SavingEventArgs e)
-        {
-            this.Stash.Value.Restore(); // just in case something weird happens
-        }
-
-        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            if (!Context.IsWorldReady)
-                return;
-
-            // stash legendaries while fishing
-            var stash = this.Stash.Value;
-            bool isFishing = Game1.player.UsingTool && Game1.player.CurrentTool is FishingRod;
-            if (isFishing)
-            {
-                if (this.IsEnabled && !stash.IsStashed)
-                    stash.Start();
-            }
-            else if (stash.IsStashed)
-                stash.Restore();
         }
 
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
@@ -120,8 +110,9 @@ namespace RecatchLegendaryFish
         private void OnToggle()
         {
             this.IsEnabled = !this.IsEnabled;
+            this.Helper.GameContent.InvalidateCache("Data/Locations");
 
-            string key = this.Config.ToggleKey.GetKeybindCurrentlyDown().ToString();
+            string key = this.Config.ToggleKey.GetKeybindCurrentlyDown()?.ToString();
             string message = this.IsEnabled
                 ? I18n.Message_Enabled(key: key)
                 : I18n.Message_Disabled(key: key);

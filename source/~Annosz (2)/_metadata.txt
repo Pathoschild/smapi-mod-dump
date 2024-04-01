@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/Annosz/UIInfoSuite2
+   Git: https://github.com/Annosz/UIInfoSuite2.git
+
+mods:
+   Ferngill Simple Economy
+   Ui Info Suite 2
+
+latest commit:
+   commit 997ad0218b0e5cae3c911f0f36ae43316b9396fb
+   Author: Drew Hoener <drewhoener@gmail.com>
+   Date:   Mon Mar 25 16:51:05 2024 -0400
+   
+       Merge pull request #443 from mc-kaishixiaxue/master
+       
+       update zh.json
+   

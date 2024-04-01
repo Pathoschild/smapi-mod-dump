@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20625
+IDs: spacechase0.Satchels
+update keys: Nexus:20625, GitHub:spacechase0/StardewValleyMods

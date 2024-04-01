@@ -16,22 +16,21 @@ using AnimalHusbandryMod.common;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.tools
 {
     public class MeatCleaverOverrides : ToolOverridesBase
     {
-        internal static string MeatCleaverKey = "DIGUS.ANIMALHUSBANDRYMOD/MeatCleaver";
+        public const string MeatCleaverItemId = "DIGUS.ANIMALHUSBANDRYMOD.MeatCleaver";
+        internal const string MeatCleaverKey = "DIGUS.ANIMALHUSBANDRYMOD/MeatCleaver";
 
         private static readonly Dictionary<string, FarmAnimal> Animals = new Dictionary<string, FarmAnimal>();
         private static readonly Dictionary<string, FarmAnimal> TempAnimals = new Dictionary<string, FarmAnimal>();
 
-        public static int InitialParentTileIndex = 504;
-        public static int IndexOfMenuItemView = 530;
-
         internal static string Suffix = "";
 
-        public static bool getOne(Axe __instance, ref Item __result)
+        public static bool GetOneNew(GenericTool __instance, ref Item __result)
         {
             if (!IsMeatCleaver(__instance)) return true;
 
@@ -39,14 +38,14 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static void loadDisplayName(Axe __instance, ref string __result)
+        public static void loadDisplayName(GenericTool __instance, ref string __result)
         {
             if (!IsMeatCleaver(__instance)) return;
 
             __result = DataLoader.i18n.Get("Tool.MeatCleaver.Name" + Suffix);
         }
 
-        public static void loadDescription(Axe __instance, ref string __result)
+        public static void loadDescription(GenericTool __instance, ref string __result)
         {
             if (!IsMeatCleaver(__instance)) return;
 
@@ -67,7 +66,7 @@ namespace AnimalHusbandryMod.tools
             __result = false;
         }
 
-        public static bool beginUsing(Axe __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
+        public static bool beginUsing(GenericTool __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
         {
             if (!IsMeatCleaver(__instance)) return true;
 
@@ -97,9 +96,9 @@ namespace AnimalHusbandryMod.tools
                                     ICue hurtSound;
                                     if (!DataLoader.ModConfig.Softmode)
                                     {
-                                        if (farmAnimal.sound.Value != null)
+                                        if (farmAnimal.GetSoundId() is { } soundId)
                                         {
-                                            hurtSound = Game1.soundBank.GetCue(farmAnimal.sound.Value);
+                                            hurtSound = Game1.soundBank.GetCue(soundId);
                                             hurtSound.SetVariable("Pitch", 1800);
                                             hurtSound.Play();
                                         }
@@ -134,9 +133,9 @@ namespace AnimalHusbandryMod.tools
                                     ICue hurtSound;
                                     if (!DataLoader.ModConfig.Softmode)
                                     {
-                                        if (farmAnimal.sound.Value != null)
+                                        if (farmAnimal.GetSoundId() is { } soundId)
                                         {
-                                            hurtSound = Game1.soundBank.GetCue(farmAnimal.sound.Value);
+                                            hurtSound = Game1.soundBank.GetCue(soundId);
                                             hurtSound.SetVariable("Pitch", 1800);
                                             hurtSound.Play();
                                         }
@@ -155,8 +154,8 @@ namespace AnimalHusbandryMod.tools
                 }
             }
 
-            __instance.Update(who.facingDirection, 0, who);
-            if (TempAnimals.TryGetValue(meatCleaverId, out FarmAnimal tempAnimal) && tempAnimal != null && tempAnimal.age.Value < (int)tempAnimal.ageWhenMature.Value)
+            __instance.Update(who.FacingDirection, 0, who);
+            if (TempAnimals.TryGetValue(meatCleaverId, out FarmAnimal tempAnimal) && tempAnimal != null && tempAnimal.isBaby())
             {
                 if (who != null && Game1.player.Equals(who))
                 {
@@ -170,13 +169,11 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static bool DoFunction(Axe __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
+        public static void DoFunction(GenericTool __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
         {
-            if (!IsMeatCleaver(__instance)) return true;
+            if (!IsMeatCleaver(__instance)) return;
 
             string meatCleaverId = __instance.modData[MeatCleaverKey];
-
-            BaseToolDoFunction(__instance,location, x, y, power, who);
 
             if (!__instance.IsEfficient)
             {
@@ -184,19 +181,19 @@ namespace AnimalHusbandryMod.tools
             }
             if (!Animals.ContainsKey(meatCleaverId))
             {
-                return false;
+                return;
             }
             FarmAnimal farmAnimal = Animals[meatCleaverId];
             if (farmAnimal == null
                 || !MeatController.CanGetMeatFrom(Animals[meatCleaverId])
-                || farmAnimal.age.Value < (int) farmAnimal.ageWhenMature.Value)
+                || farmAnimal.isBaby())
             {
-                return false;
+                return;
             }
 
             (farmAnimal.home.indoors.Value as AnimalHouse)?.animalsThatLiveHere.Remove(farmAnimal.myID.Value);
             farmAnimal.health.Value = -1;
-            int numClouds = farmAnimal.frontBackSourceRect.Width / 2;
+            int numClouds = farmAnimal.Sprite.SourceRect.Width / 2;
             int cloudSprite = !DataLoader.ModConfig.Softmode ? 5 : 10;
             for (int i = 0; i < numClouds; i++)
             {
@@ -207,7 +204,7 @@ namespace AnimalHusbandryMod.tools
                     new TemporaryAnimatedSprite
                     (
                         cloudSprite
-                        , farmAnimal.position + new Vector2(Game1.random.Next(-Game1.tileSize / 2, farmAnimal.frontBackSourceRect.Width * 3), Game1.random.Next(-Game1.tileSize / 2, farmAnimal.frontBackSourceRect.Height * 3))
+                        , farmAnimal.Position + new Vector2(Game1.random.Next(-Game1.tileSize / 2, farmAnimal.Sprite.SourceRect.Width * 3), Game1.random.Next(-Game1.tileSize / 2, farmAnimal.Sprite.SourceRect.Height * 3))
                         , cloudColor
                         , 8
                         , false,
@@ -241,7 +238,7 @@ namespace AnimalHusbandryMod.tools
                 (
                     farmAnimal.Sprite.textureName.Value
                     , farmAnimal.Sprite.SourceRect
-                    , farmAnimal.position
+                    , farmAnimal.Position
                     , farmAnimal.FacingDirection == Game1.left
                     , alfaFade
                     , animalColor
@@ -265,12 +262,12 @@ namespace AnimalHusbandryMod.tools
             who.gainExperience(0, 5);
             Animals[meatCleaverId] = (FarmAnimal) null;
             TempAnimals[meatCleaverId] = (FarmAnimal) null;
-            return false;
+            return;
         }
 
         private static bool IsMeatCleaver(Item tool)
         {
-            return tool.modData.ContainsKey(MeatCleaverKey);
+            return tool?.modData?.ContainsKey(MeatCleaverKey) ?? false;
         }
     }
 }

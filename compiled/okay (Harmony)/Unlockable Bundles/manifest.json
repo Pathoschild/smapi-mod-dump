@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Unlockable Bundles",
+  "Author": "DeLiXx",
+  "Version": "3.0.4",
+  "Description": "Framework for custom bundles",
+  "UniqueID": "DLX.Bundles",
+  "EntryDll": "Unlockable Bundles.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:17265@MAIN" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.28.0",
+      "IsRequired": false
+    }
+  ]
+}

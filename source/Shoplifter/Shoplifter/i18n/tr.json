@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Beni soyuyorsun @! Daha iyi bir insan olduğunu düşünmüştüm.$3#$b#Ödeyemeyeceğin için bu seferlik sana ceza kesmiyorum.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Dükkanımın diğerlerinden uzak olması hırsızlık yapmanın daha kolay olduğu anlamına gelmiyor, @.$2#$b#Bu seferlik cezayı boşver @, sadece dükkandan çık.$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Dondurma için bu kadar çaresiz misin, @?$7#$b#Bu seferlik sadece uyarıyorum.$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "Cidden hırsızlık mı yapıyorsun @?$3#$b#*iç çeker* Eğer {{fineamount}}g ceza ödersen bu işe kalkıştığını unutucam, tamam mı?$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "Cidden hırsızlık mı yapıyorsun @?$3#$b#*iç çeker* Bu seferlik sana ceza kesmiyorum.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "Gerçekten mi @? Ücretsiz televizyon alabileceğini mi düşündün?$3#$b#Sana {{fineamount}}g ceza kesiyorum... Belki seni caydırır.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "Gerçekten mi @? Ücretsiz televizyon alabileceğini mi düşündün?$3#$b#Ödeyemeyeceğin için bu seferlik ceza kesmiyorum.$2",
 
     // TODO Improve translations
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Ne sıklıkla hırsızlık yapabilirsink?",  
@@ -57,6 +62,8 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Yasaklandığınız gün sayısı",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Kaç gün boyunca yasaklanacaksınız",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Yakalanma Yarıçapı",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Bir köylünün oyuncuyu yakalamak için olması gereken maksimum mesafe."
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Bir köylünün oyuncuyu yakalamak için olması gereken maksimum mesafe.",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"nadir hisse senedi şansı",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"Nadir stok öğelerinin ortaya çıkma şansı."
     //
   }

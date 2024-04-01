@@ -34,7 +34,7 @@ namespace AnimalHusbandryMod.animals
             {
                 __instance.playContentSound();
                 __instance.Halt();
-                __instance.CurrentBehavior = 0;
+                __instance.CurrentBehavior = Pet.behavior_SitDown;
                 __instance.OnNewBehavior();
                 __instance.Halt();
                 __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>() { new FarmerSprite.AnimationFrame(18, 200) });

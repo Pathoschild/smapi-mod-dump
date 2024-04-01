@@ -22,7 +22,7 @@ namespace Shockah.ProjectFluent
 		public FileResolvingFluent(IEnumerable<(string name, ContextfulFluentFunction function)> functions, IMonitor monitor, IGameLocale locale, IEnumerable<string> filePathCandidates, IFluent<string> fallback)
 		{
 			Wrapped = filePathCandidates
-				.Where(path => File.Exists(path))
+				.Where(File.Exists)
 				.Select(path => new FileFluent(functions, monitor, locale, path, fallback))
 				.DefaultIfEmpty(fallback)
 				.ToList();

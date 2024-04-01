@@ -35,14 +35,8 @@ public sealed class ModEntry : Mod
         Mon = Monitor;
 
         var harmony = new Harmony(ModManifest.UniqueID);
-        if (Config.Projectiles)
-        {
-            ProjectilePatches.Apply(harmony);
-        }
-        if (Config.SoftLight)
-        {
-            GameLocationPatches.Apply(harmony);
-        }
+        ProjectilePatches.Apply(harmony);
+        GameLocationPatches.Apply(harmony);
     }
 
     private void OnGameLaunch(object sender, GameLaunchedEventArgs e)

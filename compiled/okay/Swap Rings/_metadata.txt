@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21205
+IDs: Zamiel.SwapRings
+update keys: GitHub:Zamiell/SwapRings, Nexus:21205

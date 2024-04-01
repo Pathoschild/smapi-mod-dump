@@ -1,0 +1,4 @@
+{
+	DryingRateMultiplierName: "Drying Rate Multiplier", DryingRateMultiplierTooltip: "Increase the chance that tilled soil will disappear by this factor (after the delay is met).",
+	DelayName: "Delay", DelayTooltip: "Number of consecutive days that the patch must have been without water, before it can disappear during the night.",
+}

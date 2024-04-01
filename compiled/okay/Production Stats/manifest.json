@@ -1,0 +1,9 @@
+{
+  "Name": "Production Stats",
+  "Author": "FlameHorizon",
+  "Version": "0.0.1",
+  "MinimumApiVersion": "4.0.0",
+  "Description": "View information about your production",
+  "UniqueID": "FlameHorizon.ProductionStats",
+  "EntryDll": "ProductionStats.dll"
+}

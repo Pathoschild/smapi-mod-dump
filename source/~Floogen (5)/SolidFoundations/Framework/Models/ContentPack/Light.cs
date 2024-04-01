@@ -9,15 +9,11 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SolidFoundations.Framework.Models.Data;
 using StardewValley;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SolidFoundations.Framework.Models.ContentPack
 {

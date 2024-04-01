@@ -20,9 +20,9 @@ namespace LastDayToPlant
     public class Crop
     {
         public string Name { get; set; }
-        public int DaysToMature { get; set; }
+        public int DaysToGrow { get; set; }
         public List<Season> Seasons { get; set; }
-        public int DaysToMatureIrrigated { get; set; } = 0;
+        public int DaysToGrowIrrigated { get; set; } = 0;
         public int AvailableYear { get; set; } = 1;
         public bool GingerIsland { get; set; } = false;
 
@@ -32,10 +32,10 @@ namespace LastDayToPlant
         public string MessageHyperSpeedGro { get; set; }
 
 
-        public Crop(string name, int daysToMature)
+        public Crop(string name, int daysToGrow)
         {
             Name = name;
-            DaysToMature = daysToMature;
+            DaysToGrow = daysToGrow;
         }
 
         public Crop() { }
@@ -46,9 +46,15 @@ namespace LastDayToPlant
             return seasons.First() == season;
         }
 
-        public void LocalizeMessages(IModHelper helper)
+        public void Localize(IModHelper helper, string baseName)
         {
-            // TODO: Implement this
+            // This one can't be handled by I18n because it's dynamic
+            Name = helper.Translation.Get($"crop.{baseName.Replace(" ", "")}");
+            // The rest of the messages can though
+            Message = I18n.Notification_Crop_NoFertilizer(Name);
+            MessageSpeedGro = I18n.Notification_Crop_SpeedGro(Name);
+            MessageDelxueSpeedGro = I18n.Notification_Crop_DeluxeSpeedGro(Name);
+            MessageHyperSpeedGro = I18n.Notification_Crop_HyperSpeedGro(Name);
         }
 
         public static Crop FromModFile(string cropFilePath)
@@ -80,9 +86,7 @@ namespace LastDayToPlant
             var end = desc.IndexOf(endWord);
             if(start == -1 || end == -1)
             {
-                // TODO: Update this chunk for conflicting mod.
-                // See Issue #20 on GitHub
-                crop.DaysToMature = 0;
+                crop.DaysToGrow = 0;
                 return crop;
             }
             var splits = desc.Substring(start, end - start).Split(' ');
@@ -91,7 +95,7 @@ namespace LastDayToPlant
                 var isNumber = int.TryParse(split, out int days);
                 if (isNumber)
                 {
-                    crop.DaysToMature = days;
+                    crop.DaysToGrow = days;
                 }
             }
 

@@ -9,8 +9,6 @@
 *************************************************/
 
 using ItemBags.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using StardewModdingAPI;
 using StardewValley;
 using System;

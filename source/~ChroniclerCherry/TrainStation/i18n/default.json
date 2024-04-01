@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods
+**
+*************************************************/
+
+{
+    "NotEnoughMoney": "You don't have enough money to buy the ticket to {{DestinationName}}",
+    "MenuCancelOption": "Cancel",
+    "NoDestinations": "There are no available destinations",
+    "ChooseDestination": "Choose your destination",
+    "TrainStationDisplayName": "Stardew Valley Station",
+    "BoatStationDisplayName": "Willy's shop",
+    "ArrivalMessage": "You have arrived at {{DestinationName}}",
+    "GingerIsland": "Ginger Island"
+}

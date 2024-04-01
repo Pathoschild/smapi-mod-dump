@@ -1,0 +1,10 @@
+{
+  "AutoCast": false,
+  "AutoHit": true,
+  "AutoFish": true,
+  "ActiveAutoFishButton": "X",
+  "ActiveAutoCastButton": "V",
+  "IncreasePowerButton": "Add",
+  "DecreasePowerButton": "Subtract",
+  "CaughtDoubleFish": false
+}

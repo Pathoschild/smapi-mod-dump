@@ -46,15 +46,15 @@ namespace BiggerBackpack
             
             Patch((SeedShop s)=>s.draw(null), SeedShop_draw);
             Patch((SpecialItem si)=>si.getTemporarySpriteForHoldingUp(new Vector2()), SpecialItem_getTemporarySpriteForHoldingUp);
-            Patch((GameLocation gl)=>gl.performAction("", null, new xTile.Dimensions.Location()), GameLocation_performAction);
+            Patch((GameLocation gl)=>gl.performAction(new string[0], null, new xTile.Dimensions.Location()), GameLocation_performAction);
             Patch((GameLocation gl)=>gl.answerDialogueAction("", null), GameLocation_answerDialogueAction);
             Patch(()=>new InventoryPage(0,0,0,0), InventoryPage_ctor);
             Patch((InventoryPage ip)=>ip.draw(null), InventoryPage_draw);
             Patch(()=>new CraftingPage(0,0,0,0,false,false,null), CraftingPage_ctor);
-            Patch(()=>new ShopMenu(new List<ISalable>(),0,"",null,null,""), ShopMenu_ctor);
+            Patch(typeof(ShopMenu), "Initialize", ShopMenu_Initialize);
             Patch((ShopMenu m)=>m.draw(null), ShopMenu_draw);
             Patch((ShopMenu m)=>m.drawCurrency(null), ShopMenu_drawCurrency);
-            Patch(()=>new MenuWithInventory(null,false,false,0,0,0), ShippingMenu_ctor);
+            Patch(()=>new MenuWithInventory(null,false,false,0,0,0,ItemExitBehavior.Drop,false), ShippingMenu_ctor);
             Patch((JunimoNoteMenu m)=>m.setUpMenu(0,null), JunimoNoteMenu_setUpMenu);
         }
 
@@ -186,7 +186,7 @@ namespace BiggerBackpack
             Game1.currentLocation.createQuestionDialogue(I18n.BackpackUpgrade(), resps, "Backpack");
         }
         
-        // Inject code to show the buying dialogue when the premium backpack  is clicked.
+        // Inject code to show the buying dialogue when the premium backpack is clicked.
         void GameLocation_performAction() {
             var code = FindCode(
                 Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
@@ -207,7 +207,7 @@ namespace BiggerBackpack
                 code[2],
                 Instructions.Ldc_I4_S(48),
                 code[4],
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.clickBackpack)),
+                Instructions.Call(typeof(ModEntry), nameof(clickBackpack)),
                 Instructions.Br((Label)code[len-1].operand)
             );
             code[4] = Instructions.Bge(AttachLabel(code[len]));
@@ -215,10 +215,13 @@ namespace BiggerBackpack
 
         static void buyBackpack() {
             Game1.player.Money -= getBackpackCost();
-            Game1.player.holdUpItemThenMessage((Item)new SpecialItem(99, "Premium Pack") { DisplayName = I18n.PremiumPack() }, true);
+            Game1.player.holdUpItemThenMessage((Item)new SpecialItem(99, "Premium Pack"), true);
             Game1.player.increaseBackpackSize(12);
             // Game1.multiplayer.globalChatInfoMessage ("BackpackDeluxe", Game1.player.Name);
         }
+
+        // TODO: Fix name
+        // displayName = I18n.PremiumPack()
 
         public static int getBackpackCost() => getInstance().config.BackpackCost;
         
@@ -298,27 +301,22 @@ namespace BiggerBackpack
             );
             EndCode().ReplaceJump(-1, EndCode()[-4]);
             
-            try {
-                // Move portrait `Game1.tileSize` pixels down.
-                // This only affects where the tooltip shows up.
-                FindCode(
-                    OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
-                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
-                    OpCodes.Add,
-                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
-                    OpCodes.Add,
-                    Instructions.Ldc_I4(256),
-                    OpCodes.Add,
-                    Instructions.Ldc_I4_8(),
-                    OpCodes.Sub,
-                    Instructions.Ldc_I4_S(64),
-                    OpCodes.Add
-                )[6].operand = 256 + Game1.tileSize;
-            } catch (System.Exception err) {
-                Monitor.Log("Failed to fix portrait tooltip position.", LogLevel.Warn);
-                LogException(err, LogLevel.Warn);
-            }
+            // Move portrait `Game1.tileSize` pixels down.
+            // This only affects where the tooltip shows up.
+            FindCode(
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
+                Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
+                OpCodes.Add,
+                Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
+                OpCodes.Add,
+                Instructions.Ldc_I4(256),
+                OpCodes.Add,
+                Instructions.Ldc_I4_8(),
+                OpCodes.Sub,
+                Instructions.Ldc_I4_S(64),
+                OpCodes.Add
+            )[6].operand = 256 + Game1.tileSize;
         }
 
         void InventoryPage_draw() {
@@ -338,19 +336,29 @@ namespace BiggerBackpack
                 Instructions.Stloc_S(yoffset)
             );
             
-            // Replace all remaining `yPositionOnScreen + borderWidth + spaceToClearTopBorder` by `yoffset`.
-            for (var i=0; i<12; i++) {
-                code = code.FindNext(
-                    OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
-                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
-                    OpCodes.Add,
-                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
-                    OpCodes.Add
-                );
-                code.Replace(
-                    Instructions.Ldloc_S(yoffset)
-                );
+            // Replace all other `yPositionOnScreen + borderWidth + spaceToClearTopBorder` by `yoffset`.
+            // Should be 9.
+            int yoffset_counter = 0;
+            try {
+                while (true) {
+                    code = code.FindNext(
+                        OpCodes.Ldarg_0,
+                        Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
+                        Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
+                        OpCodes.Add,
+                        Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
+                        OpCodes.Add
+                    );
+                    code.Replace(
+                        Instructions.Ldloc_S(yoffset)
+                    );
+                    yoffset_counter++;
+                }
+            } catch (InstructionNotFoundException) {
+                if (yoffset_counter == 0) throw;
+                if (yoffset_counter != 9) {
+                    Monitor.Log($"Replaced yoffset {yoffset_counter} times instead of expected 9 times.", LogLevel.Warn);
+                }
             }
         }
 
@@ -367,21 +375,10 @@ namespace BiggerBackpack
             resize_inventory();
         }
         
-        void ShopMenu_ctor() {
+        void ShopMenu_Initialize() {
             resize_inventory();
             
             var code = BeginCode();
-            for (int i=0; i<2; i++) {
-                code = code.FindNext(
-                    Instructions.Ldc_I4(600),
-                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
-                    Instructions.Ldc_I4_2(),
-                    OpCodes.Mul,
-                    OpCodes.Add
-                );
-                code[0].operand = 600 + Game1.tileSize;
-            }
-            
             // Fix the size of the shop buttons.
             // Replace `((height - 256) / 4)` with 106
             for (int i=0; i<2; i++) {
@@ -525,7 +522,7 @@ namespace BiggerBackpack
 #region Assets
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.Name.IsEquivalentTo("LooseSprites/JunimoNote"))
+            if (e.NameWithoutLocale.IsEquivalentTo("LooseSprites/JunimoNote"))
             {
                 e.Edit(asset => {
                     var editor = asset.AsImage();

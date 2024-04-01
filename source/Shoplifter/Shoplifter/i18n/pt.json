@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Você está me roubando, @! Pensei que você fosse melhor que isso.$3#$b#Não posso te cobrar por isso desta vez, @. Já que você não tem como me pagar de qualquer forma.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Estar mais longe da cidade não significa que minha loja é mais fácil de roubar, @.$2#$b#Não se preocupe com a multa desta vez, @. Apenas vá embora.$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Você está tão desesperado assim por um doce, @?$7#$b#Vou te deixar avisado desta vez.$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "É sério que você está roubando, @?$3#$b#*suspiro* Se pagar {{fineamount}} ouros, esquecerei o que aconteceu, certo?$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "É sério que você está roubando, @?$3#$b#*suspiro* Vou te dar uma mãozinha e não te cobrarei nada desta vez.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "Sério, @? Você acha mesmo que pode pegar uma TV de plasma assim de graça...$3#$b#Cobrarei {{fineamount}} ouros por isso... Talvez assim você aprenda a lição.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "Sério, @? Você acha mesmo que pode pegar uma TV de plasma assim de graça...$3#$b#Já que você não tem dinheiro, vou fingir que nada aconteceu desta vez.$2",
 
     // TODO Improve translations
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Com que frequência se pode roubar?",  
@@ -57,6 +62,8 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Dias banidos por",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Por quantos dias está banido",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Raio de captura",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"A distância máxima que um aldeão deve estar para apanhar o jogador"
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"A distância máxima que um aldeão deve estar para apanhar o jogador",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"Chance de ações raras",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"A chance de aparecerem itens raros da loja."
     //
   }

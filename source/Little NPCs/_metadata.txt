@@ -6,9 +6,9 @@ mods:
    Little NPCs
 
 latest commit:
-   commit d9b92db86bd625c83a980dc43178a3fd134f01e7
+   commit 74edb4dd1b771f77cb231b9c4eda8e76d95787fb
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Dec 4 20:42:23 2023 +0100
+   Date:   Mon Mar 25 20:22:03 2024 +0100
    
-       Fix issues with spaces in NPC names.
+       Fix return coordinates to make CurfewTime work again.
    

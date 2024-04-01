@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "PlaceKey": "MouseLeft",
+  "TakeKey": "MouseRight",
+  "PlaceModKey": "LeftShift",
+  "TakeModKey": "LeftShift",
+  "PlaceAllOneModKey": "LeftAlt",
+  "PlaceAllByDefault": false
+}

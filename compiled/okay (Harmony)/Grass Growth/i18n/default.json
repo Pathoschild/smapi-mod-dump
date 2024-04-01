@@ -1,0 +1,8 @@
+{
+    DisableGrowthName:  "Disable Growth",  DisableGrowthTooltip:  "Whether grass growth & spreading should be suppressed entirely.",
+    GrowEverywhereName: "Grow Everywhere", GrowEverywhereTooltip: "Whether grass spreads almost everywhere. If false, grass spreading is limited to tillable tiles.",
+    GrowthChanceName:   "Growth Chance",   GrowthChanceTooltip:   "The chance that grass grows or spreads.",
+    SpreadChanceName:   "Spread Chance",   SpreadChanceTooltip:   "The chance for each neighbouring tile that the grass will spread there.",
+    DailyGrowthName:    "Daily Growth",    DailyGrowthTooltip:    "The number of iterations that grass growth is applied per day",
+    MonthlyGrowthName:  "Monthly Growth",  MonthlyGrowthTooltip:  "Additional iterations that grass growth is applied at the start of each month.",
+}

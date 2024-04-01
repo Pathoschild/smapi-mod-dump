@@ -14,5 +14,6 @@
   "CanGrassGrowInSpring": true,
   "CanGrassGrowInSummer": true,
   "CanGrassGrowInFall": true,
-  "CanGrassGrowInWinter": false
+  "CanGrassGrowInWinter": false,
+  "IncludeMeadowlandsGrassInAllFarms": false
 }

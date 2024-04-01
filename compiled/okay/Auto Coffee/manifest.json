@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoCoffee",
+  "Author": "BenDover",
+  "Version": "3.0.1",
+  "Description": "Quicker coffee",
+  "UniqueID": "BenjaminWilcox.AutoCoffee",
+  "EntryDll": "AutoCoffee.dll",
+  "MinimumApiVersion": "4.0",
+  "UpdateKeys": [ "Nexus:2387" ]
+}

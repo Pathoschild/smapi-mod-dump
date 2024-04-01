@@ -6,5 +6,6 @@
   "restMessageB": "kicks their feet up!",
   "restMessageC": "yawns and closes their eyes!",
   "restMessageD": "sighs and groans, feeling the weight off their feet!",
-  "extendedRestTime": 21
+  "extendedRestTime": 21,
+  "refreshedBuffRegen": 3
 }

@@ -123,7 +123,9 @@ namespace DialogueTester
                 }
             }
 
-            Game1.drawDialogue(speakingNpc, finalDialogue);
+            // TODO: Consider abandoning this mod for 1.6.
+            // Game1.drawDialogue(speakingNpc, finalDialogue);
+            Game1.drawDialogue(speakingNpc);
         }
     }
 }

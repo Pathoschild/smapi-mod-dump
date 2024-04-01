@@ -23,18 +23,6 @@ namespace FarmTypeManager
         /// <summary>A Harmony patch that conditionally disables <see cref="Monster.getExtraDropItems"/> based on a monster spawn setting.</summary>
         public class HarmonyPatch_ToggleExtraLoot
         {
-            private static string modDataKey = null;
-            /// <summary>The key to use for mod data entries related to this patch.</summary>
-            public static string ModDataKey
-            {
-                get
-                {
-                    if (modDataKey == null)
-                        modDataKey = Utility.Helper.ModRegistry.ModID + "/ExtraLoot";
-                    return modDataKey;
-                }
-            }
-
             /// <summary>Applies this Harmony patch to the game through the provided instance.</summary>
             /// <param name="harmony">This mod's Harmony instance.</param>
             public static void ApplyPatch(Harmony harmony)
@@ -79,7 +67,7 @@ namespace FarmTypeManager
             {
                 try
                 {
-                    if (__instance.modData.TryGetValue(ModDataKey, out string data) && data.StartsWith("f", StringComparison.OrdinalIgnoreCase)) //if this monster's "extra loot" setting is false
+                    if (__instance.modData.TryGetValue(Utility.ModDataKeys.ExtraLoot, out string data) && data.StartsWith("f", StringComparison.OrdinalIgnoreCase)) //if this monster's "extra loot" setting is false
                     {
                         __result.Clear(); //remove all extra items from the result
                     }

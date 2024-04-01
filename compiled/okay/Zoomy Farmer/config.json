@@ -1,4 +1,5 @@
 {
+  "enableStaminaDrain": true,
   "sprintSpeed": 7,
   "staminaDrainPerSecond": 1.0,
   "sprintKey": "LeftControl",

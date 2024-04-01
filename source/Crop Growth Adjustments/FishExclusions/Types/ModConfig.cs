@@ -16,17 +16,10 @@ namespace FishExclusions.Types
 {
     public interface IGenericModConfigMenuApi
     {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
-
-        void SetDefaultIngameOptinValue( IManifest mod, bool optedIn );
-        
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
-        void RegisterParagraph(IManifest mod, string paragraph);
-        
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+        void AddParagraph(IManifest mod, Func<string> text);
     }
 
     /// <summary> The mod config class. More info here: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Config </summary>
@@ -58,20 +51,18 @@ namespace FishExclusions.Types
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(manifest, () =>
+            api.Register(manifest, () =>
             {
                 config = new ModConfig();
                 mod.SaveConfig(config);
             }, () => mod.SaveConfig(config));
             
-            api.SetDefaultIngameOptinValue(manifest, true);
+            api.AddSectionTitle(manifest, () => "General");
 
-            api.RegisterLabel(manifest, "General", null);
+            api.AddNumberOption(manifest, () => config.ItemToCatchIfAllFishIsExcluded, val => config.ItemToCatchIfAllFishIsExcluded = val, () => "Item To Catch If All Fish Is Excluded", () => "The ID of the item to catch if all possible fish for this water body / season / weather is excluded.");
+            api.AddNumberOption(manifest, () => config.TimesToRetry, val => config.TimesToRetry = val, () => "Times To Retry", () => "The number of times to retry the 'fish choosing' algorithm before giving up and catching the item specified above.", 5, 50);
 
-            api.RegisterSimpleOption(manifest, "Item To Catch If All Fish Is Excluded", "The ID of the item to catch if all possible fish for this water body / season / weather is excluded.", () => config.ItemToCatchIfAllFishIsExcluded, (int val) => config.ItemToCatchIfAllFishIsExcluded = val);
-            api.RegisterClampedOption(manifest, "Times To Retry", "The number of times to retry the 'fish choosing' algorithm before giving up and catching the item specified above.", () => config.TimesToRetry, (int val) => config.TimesToRetry = val, 5, 50);
-
-            api.RegisterParagraph(manifest, "To edit the actual excluded fish, please use the config file. For instructions on how to add the exclusions, refer to the mod description on Nexus. Thanks!");
+            api.AddParagraph(manifest, () => "To edit the actual excluded fish, please use the config file. For instructions on how to add the exclusions, refer to the mod description on Nexus.");
         }
     }
 

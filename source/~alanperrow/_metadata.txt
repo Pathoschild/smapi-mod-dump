@@ -7,23 +7,15 @@ mods:
    Faster Path Speed
 
 latest commit:
-   commit ae6d6c485a3f3bc3ec40754e1c5d467329f802f5
+   commit e099792cc8e7df76fb705f47019b54aeaff6f998
    Author: Alan Perrow <65362286+alanperrow@users.noreply.github.com>
-   Date:   Mon Mar 18 19:19:58 2024 -0400
+   Date:   Thu Mar 21 18:47:56 2024 -0400
    
-       Convenient inventory 1.4.0 (#13)
+       Convenient inventory 1.4.1 (#15)
        
-       * Fixed tool/attachment logic when the attachment is favorited and the tool is not. Right-clicking a favorited attachment into an unfavorited tool no longer causes the mod to think you are still holding the favorited attachment.
+       * Always ignore the click action if FavoriteItemsHotkey is down. In this case we should only be allowing favorite item slot toggling. This prevents strange favorite item slot tracking behavior.
        
-       * Updated content loading to use GameContent
+       * Updated req SMAPI to 4.0.0.
        
-       * Initial changes required for SDV 1.6.
-       
-       * First pass at transpiler updates.
-       
-       * First pass at fixing compiler errors.
-       
-       * Removed references to deprecated Mill type. Updated manifest's minimum SMAPI version to 4.0.0-alpha.
-       
-       * Fixed Toolbar.Draw Transpiler failing due to some fields being changed in 1.6 from private => public.
+       * Removed GamePath csproj property.
    

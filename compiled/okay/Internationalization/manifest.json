@@ -1,0 +1,11 @@
+﻿{
+   "Name": "Internationalization",
+   "Author": "bcmpinc",
+   "Version": "0.2",
+   "Description": "Mod translation tool",
+   "UniqueID": "bcmpinc.Internationalization",
+   "EntryDll": "Internationalization.dll",
+   "MinimumApiVersion": "4.0.0",
+   "UpdateKeys": ["Nexus:0"],
+   "Dependencies": []
+}

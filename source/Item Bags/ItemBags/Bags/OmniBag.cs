@@ -23,20 +23,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Object = StardewValley.Object;
-#if !ANDROID
-//using PyTK.CustomElementHandler;
-#endif
 
 namespace ItemBags.Bags
 {
     /// <summary>A bag that can store other bags inside of it.</summary>
     [XmlType("Mods_OmniBag")]
     [XmlRoot(ElementName = "OmniBag", Namespace = "")]
-#if ANDROID
     public class OmniBag : ItemBag
-#else
-    public class OmniBag : ItemBag//, ISaveElement
-#endif
     {
         public const string OmniBagTypeId = "6eb4c15d-3ad3-4b47-aab5-eb2f5daa8b3f";
 
@@ -51,7 +44,7 @@ namespace ItemBags.Bags
         /// <para/>If you intend to modify the contents of the chest, use <see cref="MoveToBag(Object, int, out int, bool, IList{Item}, bool, bool)"/> or <see cref="MoveFromBag(Object, int, out int, bool, IList{Item}, int, bool, bool)"/>
         /// </summary>
         [XmlIgnore]
-        public override Chest heldObject { get { return new Chest(0, NestedBags.SelectMany(x => x.Contents).Where(x => x != null).Cast<Item>().ToList(), Vector2.Zero); } }
+        public override Chest heldObject { get { return new Chest(NestedBags.SelectMany(x => x.Contents).Where(x => x != null).Cast<Item>().ToList(), Vector2.Zero); } }
 #endregion Lookup Anything Compatibility
 
         /// <summary>Default parameterless constructor intended for use by XML Serialization. Do not use this constructor to instantiate a bag.</summary>
@@ -103,23 +96,6 @@ namespace ItemBags.Bags
             }
         }
 
-#region PyTK CustomElementHandler
-        public object getReplacement()
-        {
-            return new Object(171, 1);
-        }
-
-        public Dictionary<string, string> getAdditionalSaveData()
-        {
-            return new BagInstance(-1, this).ToPyTKAdditionalSaveData();
-        }
-
-        public void rebuild(Dictionary<string, string> additionalSaveData, object replacement)
-        {
-            BagInstance Data = BagInstance.FromPyTKAdditionalSaveData(additionalSaveData);
-            LoadSettings(Data);
-        }
-
         protected override void LoadSettings(BagInstance Data)
         {
             if (Data != null)
@@ -159,7 +135,6 @@ namespace ItemBags.Bags
                 }
             }
         }
-#endregion PyTK CustomElementHandler
 
         internal override bool OnJsonAssetsItemIdsFixed(IJsonAssetsAPI API, bool AllowResyncing)
         {
@@ -342,6 +317,17 @@ namespace ItemBags.Bags
             }
 
             return ChangesMade;
+        }
+
+        protected override Item GetOneNew() => new OmniBag(Size);
+        protected override void GetOneCopyFrom(Item source)
+        {
+            base.GetOneCopyFrom(source);
+            if (source is OmniBag bag)
+            {
+                Size = bag.Size;
+                NestedBags = bag.NestedBags;
+            }
         }
 
         //Possible TODO: Override this and draw all of the bag types if in a shopmenu

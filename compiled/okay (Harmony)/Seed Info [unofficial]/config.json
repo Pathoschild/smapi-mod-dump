@@ -1,0 +1,11 @@
+{
+  "ModEnabled": true,
+  "DaysPerMonth": 28,
+  "PriceColor": {
+    "B": 25,
+    "G": 25,
+    "R": 100,
+    "A": 255
+  },
+  "DisplayMead": true
+}

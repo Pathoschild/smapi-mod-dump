@@ -1,0 +1,17 @@
+{
+  "Name": "Platonic Partners and Friendships (SMAPI)",
+  "Author": "ch20youk",
+//Updated for 1.6 by Kedi!
+  "Version": "2.3.0",
+  "Description": "Implements SMAPI patches for PPAF",
+  "UniqueID": "PPAF.Core",
+  "EntryDll": "PlatonicPartnersAndFriendships.dll",
+  "MinimumApiVersion": "3.99.99",
+  "UpdateKeys": [],
+  "Dependencies": [
+		{
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+		}
+	]
+}

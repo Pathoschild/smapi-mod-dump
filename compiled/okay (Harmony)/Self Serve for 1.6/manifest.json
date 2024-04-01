@@ -1,0 +1,19 @@
+{
+  "Name": "Self Serve",
+  "Author": "NeverToxic",
+  "Version": "1.0.1",
+  "Description": "Shops don't close.",
+  "UniqueID": "NeverToxic.SelfServe",
+  "EntryDll": "SelfServe.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:20985"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.12.0",
+      "IsRequired": false
+    }
+  ]
+}

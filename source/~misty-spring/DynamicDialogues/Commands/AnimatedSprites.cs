@@ -247,7 +247,7 @@ internal static class AnimatedSprites
     {
         try
         {
-            ArgUtility.TryGetOptionalFloat(args, 1, out var tempId, out _, 69420f);
+            ArgUtility.TryGetOptionalInt(args, 1, out var tempId, out _, 69420);
 
             //foreach (var TAS in @event.aboveMapSprites)
 			//{

@@ -8,10 +8,11 @@ for queries and analysis.**
 
 # Release Notes
 
-## Upcoming release for Stardew Valley 1.6
+## 1.2.0
+*Released on March 19, 2024. Compatible with Stardew Valley 1.6 or later, and SMAPI 4.0.0 or later.*
 
 - Updated for Stardew Valley 1.6.
-- Added toggle for HUD messages in Log Menu.
+- Added toggle for HUD messages in the Log Menu.
 - Added support for changing portrait backgrounds.
 - Changed default maximum dialogue lines from 30 to 50.
 - Made Log Menu slightly larger and fixed portrait scaling accordingly.

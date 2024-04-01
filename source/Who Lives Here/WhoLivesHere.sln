@@ -13,6 +13,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GMCM", "GMCM\GMCM.shproj", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WhoLivesHereCore", "WhoLivesHereCore\WhoLivesHereCore.shproj", "{40203B1C-01B7-4881-BAC2-1E43E9C7C13C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhoLivesHere-v1.6_alpha", "WhoLivesHere-v1.6 (alpha)\WhoLivesHere-v1.6_alpha.csproj", "{F0B8E8CC-8FA8-4944-965E-18D9DA44F6AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0B8E8CC-8FA8-4944-965E-18D9DA44F6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0B8E8CC-8FA8-4944-965E-18D9DA44F6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0B8E8CC-8FA8-4944-965E-18D9DA44F6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0B8E8CC-8FA8-4944-965E-18D9DA44F6AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +50,8 @@ Global
 		Prism99_Core\Prism99_Core.projitems*{9e6f343b-32b5-4950-83ed-0e6815f0225a}*SharedItemsImports = 5
 		WhoLivesHereCore\WhoLivesHereCore.projitems*{9e6f343b-32b5-4950-83ed-0e6815f0225a}*SharedItemsImports = 5
 		GMCM\GMCM.projitems*{c68f05dd-b978-4f76-94c2-714b74741115}*SharedItemsImports = 13
+		GMCM\GMCM.projitems*{f0b8e8cc-8fa8-4944-965e-18d9da44f6ad}*SharedItemsImports = 5
+		Prism99_Core\Prism99_Core.projitems*{f0b8e8cc-8fa8-4944-965e-18d9da44f6ad}*SharedItemsImports = 5
+		WhoLivesHereCore\WhoLivesHereCore.projitems*{f0b8e8cc-8fa8-4944-965e-18d9da44f6ad}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

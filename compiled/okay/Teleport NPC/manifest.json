@@ -1,16 +1,26 @@
 ﻿{
   "Name": "TeleportNpc",
   "Author": "Enaium",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Teleport to Npc",
   "UniqueID": "Enaium.TeleportNpc",
   "EntryDll": "TeleportNpc.dll",
-  "MinimumApiVersion": "3.7.0",
-  "UpdateKeys": ["GitHub:Enaium-StardewValleyMods/TeleportNpc"],
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "CurseForge:436803"
+  ],
   "Dependencies": [
     {
       "UniqueID": "Enaium.EnaiumToolKit",
-      "MinimumVersion": "1.3.5"
+      "MinimumVersion": "1.5.0"
     }
-  ]
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Contact": {
+        "HomePage": "https://github.com/Enaium-StardewValleyMods/TeleportNpc",
+        "Issues": "https://github.com/Enaium-StardewValleyMods/TeleportNpc/issues"
+      }
+    }
+  }
 }

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Caua-Oliveira/StardewValley-AutomateToolSwap
+   Git: https://github.com/Caua-Oliveira/StardewValley-AutomateToolSwap.git
+
+mods:
+   Automate Tool Swap
+
+latest commit:
+   commit 80827620fd8bb8529ffd372d06e3e9507b23fe04
+   Author: CauÃ£ Oliveira <101019088+Caua-Oliveira@users.noreply.github.com>
+   Date:   Sun Mar 31 21:44:56 2024 -0300
+   
+       Merge branch 'main' of https://github.com/Caua-Oliveira/StardewValley-AutomateToolSwap
+   

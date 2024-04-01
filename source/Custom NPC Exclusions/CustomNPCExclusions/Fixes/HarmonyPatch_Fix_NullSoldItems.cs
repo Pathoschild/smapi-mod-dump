@@ -15,7 +15,7 @@ using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 
-namespace CustomNPCExclusions.Fixes
+namespace CustomNPCExclusions
 {
     /// <summary>A Harmony patch that attempts to fix possible null errors caused by certain bugs and/or mods.</summary>
     /// <remarks>

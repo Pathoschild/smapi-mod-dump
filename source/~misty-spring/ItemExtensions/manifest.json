@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/misty-spring/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Item extensions",
+  "Author": "mistyspring",
+  "Version": "1.2.5",
+  "Description": "Framework which allows for more item capability.",
+  "UniqueID": "mistyspring.ItemExtensions",
+  "EntryDll": "ItemExtensions.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": ["nexus:20357"],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

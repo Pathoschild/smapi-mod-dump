@@ -8,16 +8,12 @@
 **
 *************************************************/
 
-using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SolidFoundations.Framework.External.ContentPatcher
 {
@@ -81,18 +77,9 @@ namespace SolidFoundations.Framework.External.ContentPatcher
 
             string buildingName = splitToken[0];
             string locationName = splitToken[1];
-            if (Game1.getLocationFromName(locationName) is BuildableGameLocation location && location is not null && location.buildings is not null)
+            if (Game1.getLocationFromName(locationName) is GameLocation location && location is not null && location.buildings is not null)
             {
-                foreach (GenericBuilding building in location.buildings.Where(b => b is GenericBuilding))
-                {
-                    if (building.Id.Equals(buildingName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        yield return true.ToString();
-                        yield break;
-                    }
-                }
-
-                foreach (Building building in location.buildings.Where(b => b is not GenericBuilding))
+                foreach (Building building in location.buildings.Where(b => SolidFoundations.buildingManager.DoesBuildingModelExist(b.buildingType.Value)))
                 {
                     if (building.buildingType.Value.Equals(buildingName, StringComparison.OrdinalIgnoreCase))
                     {

@@ -11,8 +11,9 @@
 using StardewModdingAPI;
 using StardewValley;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Timers;
 
 namespace ichortower_HatMouseLacey
 {
@@ -21,15 +22,17 @@ namespace ichortower_HatMouseLacey
      *   - How mean you have been to Lacey in her heart events
      *   - Which hats you have shown her and received comments on
      *
-     * Data is stored in Farmer.modData, but also kept in memory to avoid
-     * thrashing too hard, since storing and retrieving data means serializing
-     * to and from a string.
+     * Data is stored in Farmer.modData, but also kept in memory. When the
+     * list of shown hats changes, a short timer delays the write to modData;
+     * this is intended to reduce how many times the set gets serialized to
+     * string, which should only matter during save data migration.
      */
     internal class LCModData
     {
         private static HashSet<string> _hatsShown = null!;
         private static int _crueltyScore = -1;
-        private static string lc = ModEntry.LCInternalName;
+        private static string lc = HML.CPId;
+        private static Timer _hatTimer = null;
 
         public static void ClearCache()
         {
@@ -37,21 +40,52 @@ namespace ichortower_HatMouseLacey
             _crueltyScore = -1;
         }
 
-        public static void AddShownHat(string name)
+        public static bool AddShownHat(string name)
         {
-            if (HasShownHat(name)) {
-                return;
+            Load();
+            var ret = _hatsShown.Add(name);
+            if (ret) {
+                WriteHatData();
             }
-            _hatsShown.Add(name);
-            string serial = "[" + String.Join(",", _hatsShown.ToArray()
-                    .Select(s => $"\"{s}\"")) + "]";
-            Game1.player.modData[$"{lc}/HatsShown"] = serial;
+            return ret;
+        }
+
+        public static bool RemoveShownHat(string name)
+        {
+            Load();
+            var ret = _hatsShown.Remove(name);
+            if (ret) {
+                WriteHatData();
+            }
+            return ret;
         }
 
         public static bool HasShownHat(string name)
         {
             Load();
             return _hatsShown.Contains(name);
+        }
+
+        private static void WriteHatData()
+        {
+            if (_hatTimer != null) {
+                _hatTimer.Stop();
+                _hatTimer.Dispose();
+                _hatTimer = null;
+            }
+            // 100 ms is still very generous. i expect any batching from the
+            // save conversion to be well within this limit
+            _hatTimer = new Timer(100);
+            _hatTimer.Elapsed += delegate(object sender, ElapsedEventArgs e) {
+                string serial = "[" + String.Join(",", _hatsShown.ToArray()
+                        .Select(s => $"\"{s}\"")) + "]";
+                Game1.player.modData[$"{lc}/HatsShown"] = serial;
+                _hatTimer.Stop();
+                _hatTimer.Dispose();
+                _hatTimer = null;
+            };
+            _hatTimer.AutoReset = false;
+            _hatTimer.Enabled = true;
         }
 
         private static void Load()

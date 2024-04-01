@@ -11,13 +11,13 @@
 {
     "Name": "Garden Pot - Automate",
     "Author": "NCarigon",
-    "Version": "1.0.4",
-    "MinimumApiVersion": "3.14.0",
+    "Version": "1.1.0",
+    "MinimumApiVersion": "4.0.0",
     "Description": "Adds additional support for garden pots within Automate.",
     "UniqueID": "NCarigon.GardenPotAutomate",
     "EntryDll": "GardenPotAutomate.dll",
     "UpdateKeys": [ "nexus:15212" ],
     "Dependencies": [
-        { "UniqueID": "Pathoschild.Automate", "MinimumVersion": "1.19.0" }
+        { "UniqueID": "Pathoschild.Automate", "MinimumVersion": "2.0.3" }
     ]
 }

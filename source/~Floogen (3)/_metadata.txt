@@ -7,9 +7,9 @@ mods:
    Mystical Buildings
 
 latest commit:
-   commit 9e9c25c1e17cdade80c525c5d4bf3e83adf72de9
+   commit e0cc281dcbc728c75aafa8c9dd79edba6b98a619
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Sun Nov 19 11:59:57 2023 -0600
+   Date:   Tue Mar 19 15:37:44 2024 -0500
    
-       Merge branch 'standalone/cave-of-memories' into development
+       v2.0.0 released
    

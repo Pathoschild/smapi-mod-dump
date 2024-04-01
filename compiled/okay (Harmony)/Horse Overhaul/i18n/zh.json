@@ -1,0 +1,33 @@
+{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "是",
+  "No": "否",
+  "GotPetted": "得到爱抚：{{value}}",
+  "GotWater": "得到饮水：{{value}}",
+  "GotFood": "得到喂食：{{value}}",
+  "Friendship": "友好值：{{value}}",
+  "HorseWarning": "你不能在骑马时这样做！",
+  "AteEnough": "{{name}}今天吃得够多了。",
+  "AteFood": "{{name}}吃了你喂的{{foodName}}.",
+  "AteFoodLove": "它们最爱吃这个。", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "它们喜欢吃这个。", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "这对它们来说是一种太普通的零食，它们并不喜欢。", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "拥有加热器：{{value}}",
+  "DontFeedChocolate": "巧克力？你不会是认真的吧！",
+  "LactoseIntolerantPets": "大多数猫和狗对乳糖不耐受。",
+  "LactoseIntolerantHorses": "大多数成年马对乳糖不耐受。",
+  "HorseHerbivore": "马是真正的食草动物，它们不能吃肉。",
+  "HorseNoBread": "马不应该吃面包等加工食品。",
+  "HorseEatShouldnt": "你的马不应该吃这个。",
+  "HorseEatHay": "你的马在马厩里有足够的干草。",
+  "HorseEatFiber": "你的马有足够的草，可以到处吃。",
+  "HorseEatCoffee": "马不应该饮用咖啡或任何种类的咖啡因饮料。",
+  "HorseEatCabbage": "马不应该吃卷心菜或卷心菜科植物。",
+  "HorseEatOnion": "马不应该吃洋葱或洋葱科植物。",
+  "HorseEatNightshade": "马不应该吃茄属的成员，包括土豆、西红柿、辣椒或茄子。",
+  "HorseEatHorseRadish": "尽管野山葵和萝卜长得很像，但前者对马来说是有毒的，后者倒是可以放心喂给马吃。",
+  "HorseEatDislike": "你的马不想吃这个。"
+}

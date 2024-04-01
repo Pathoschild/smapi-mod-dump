@@ -28,7 +28,7 @@ namespace ColdPets
             if (pet is null || Game1.currentSeason != "winter" || !Context.IsMainPlayer)
                 return;
 
-            pet.CurrentBehavior = Pet.behavior_SitDown;
+            pet!.CurrentBehavior = Pet.behavior_SitDown;
             pet.warpToFarmHouse(Game1.player);
         }
     }

@@ -40,7 +40,7 @@
         "Y": 32
       },
       "DrawInBackground": false,
-      "SortTileOffset": 10,
+      "SortTileOffset": 8,
       "FrameCount": 4,
       "FramesPerRow": 1,
       "FrameDuration": 100
@@ -52,7 +52,7 @@
         "Y": 48
       },
       "DrawInBackground": false,
-      "SortTileOffset": 10,
+      "SortTileOffset": 8,
       "FramesPerRow": 1,
       "Sequences": [
         {
@@ -75,7 +75,7 @@
       "OnlyDrawIfChestHasContents": "Input"
     }
   ],
-  "SortTileOffset": 10,
+  "SortTileOffset": 9,
 
   "LoadChestTiles": [
     {
@@ -140,6 +140,7 @@
       "MaxDailyConversions": 10,
       "MinutesPerConversion": 20,
       "RefreshMaxDailyConversions": true,
+      "TakeOnlyRequiredFromStack": true,
       "SourceChest": "Input",
       "DestinationChest": "Output",
       "ProducedItems": [

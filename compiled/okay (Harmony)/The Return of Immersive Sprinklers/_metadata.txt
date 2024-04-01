@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20796
+IDs: lucaskfreitas.ImmersiveSprinklers
+update keys: Nexus:20796, GitHub:lucaskfreitas/ImmersiveSprinklers

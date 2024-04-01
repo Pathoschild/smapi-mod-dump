@@ -1,0 +1,10 @@
+{
+  "Name": "Add Money",
+  "Author": "Steph Hoel",
+  "Version": "1.1.0",
+  "Description": "A mod for add money",
+  "UniqueID": "StephHoel.AddMoney",
+  "EntryDll": "AddMoney.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:21016" ]
+}

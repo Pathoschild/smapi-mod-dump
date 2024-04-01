@@ -26,7 +26,7 @@ namespace ItemBags.Persistence
     public class BagItem
     {
         [XmlElement("Id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [XmlElement("Quality")]
         public int Quality { get; set; }
         [XmlElement("Quantity")]
@@ -43,7 +43,7 @@ namespace ItemBags.Persistence
         [XmlElement("PreserveType")]
         public int? PreserveType { get; set; }
         [XmlElement("PreservedId")]
-        public int PreservedId { get; set; }
+        public string PreservedId { get; set; }
 
         public BagItem()
         {
@@ -53,14 +53,14 @@ namespace ItemBags.Persistence
         public BagItem(Object Item)
         {
             InitializeDefaults();
-            this.Id = Item.ParentSheetIndex;
+            this.Id = Item.ItemId;
             this.Quality = Item.Quality;
             this.Quantity = Item.Stack;
             this.Price = Item.Price;
             this.IsBigCraftable = Item.bigCraftable.Value;
             this.Name = Item.Name;
-            this.HoneyType = Item.honeyType.Value.HasValue ? (int)Item.honeyType.Value.Value : null as int?;
-            this.PreserveType = Item.preserve.Value.HasValue ? (int)Item.preserve.Value.Value : null as int?;
+            //this.HoneyType = Item.honeyType.Value.HasValue ? (int)Item.honeyType.Value.Value : null as int?;
+            this.PreserveType = Item.preserve.Value.HasValue ? (int)Item.preserve.Value.Value : null;
             this.PreservedId = Item.preservedParentSheetIndex.Value;
         }
 
@@ -78,11 +78,11 @@ namespace ItemBags.Persistence
                 if (!string.IsNullOrEmpty(Name))
                     Item.Name = Name;
 
-                if (this.HoneyType != null)
-                    Item.honeyType.Value = (Object.HoneyType)this.HoneyType.Value;
+                //if (this.HoneyType != null)
+                //    Item.honeyType.Value = (Object.HoneyType)this.HoneyType.Value;
                 if (this.PreserveType != null)
                     Item.preserve.Value = (Object.PreserveType)this.PreserveType.Value;
-                if (this.PreservedId != int.MinValue)
+                if (this.PreservedId != int.MinValue.ToString() && !string.IsNullOrEmpty(PreservedId))
                     Item.preservedParentSheetIndex.Value = this.PreservedId;
 
 #if DEBUG
@@ -105,7 +105,7 @@ namespace ItemBags.Persistence
 
         private void InitializeDefaults()
         {
-            this.Id = -1;
+            this.Id = null;
             this.Quality = (int)ObjectQuality.Regular;
             this.Quantity = 0;
             this.IsBigCraftable = false;
@@ -113,7 +113,7 @@ namespace ItemBags.Persistence
             this.Name = "";
             this.HoneyType = null;
             this.PreserveType = null;
-            this.PreservedId = int.MinValue;
+            this.PreservedId = "";
         }
 
         [OnSerializing]

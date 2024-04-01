@@ -8,11 +8,9 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
-using BitwiseJonMods.Common;
-using StardewValley.Objects;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Objects;
 using System.Linq;
 
 namespace BitwiseJonMods.OneClickShedReloader
@@ -48,7 +46,7 @@ namespace BitwiseJonMods.OneClickShedReloader
                         //Netcode.NetObjectList<Item> chestItems = new Netcode.NetObjectList<Item>();
                         //chestItems.AddRange(chest.items.ToList());
 
-                        foreach (var chestItem in chest.items.ToList())
+                        foreach (var chestItem in chest.Items.ToList())
                         {
                             if (chestItem != null)
                             {
@@ -94,7 +92,7 @@ namespace BitwiseJonMods.OneClickShedReloader
                 else if (container.name.Equals("Auto-Grabber"))
                 {
                     var chest = container.heldObject.Value as Chest;
-                    chest.items.Remove(item);
+                    chest.Items.Remove(item);
                     chest.clearNulls();
                 }
                 else

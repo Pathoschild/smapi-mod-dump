@@ -11,10 +11,10 @@
 {
     "Name": "FishReminder",
     "Author": "Mizzion",
-    "Version": "1.0.6",
+    "Version": "1.1.0",
     "Description": "Tells the players which fish they still need to catch based on season.",
     "UniqueID": "mizzion.fishreminder",
     "EntryDll": "FishReminder.dll",
-    "MinimumApiVersion": "2.11",
+    "MinimumApiVersion": "3.99",
   "UpdateKeys": [ "Nexus:3615", "ModDrop:661375" ]
 }

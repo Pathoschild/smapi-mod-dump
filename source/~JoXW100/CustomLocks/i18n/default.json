@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  // GMCM
+  "GMCM_Option_ModEnabled_Name": "Mod Enabled?",
+  "GMCM_Option_AllowSeedShopWed_Name": "Allow Seed Shop on Wed?",
+  "GMCM_Option_AllowOutsideTime_Name": "Allow Outside Hours?",
+  "GMCM_Option_AllowStrangerHomeEntry_Name": "Allow Stranger Home Entry?",
+  "GMCM_Option_AllowStrangerRoomEntry_Name": "Allow Stranger Room Entry?",
+  "GMCM_Option_AllowAdventureGuildEntry_Name": "Allow Adventure Guild Entry?",
+  "GMCM_Option_IgnoreEvents_Name": "Ignore Events?"
+}

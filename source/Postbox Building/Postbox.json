@@ -1,0 +1,85 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/i-saac-b/PostBoxMod
+**
+*************************************************/
+
+{
+    "Name": "Postbox",
+    "Description": "For shipping gifts from the comfort of your farm! Almost as effective as gifting in person.",
+    "Texture": "PostBoxMod\\Assets\\Postbox",
+    "Skins": [],
+    "DrawShadow": true,
+    "UpgradeSignTile": "1, 1",
+    "UpgradeSignHeight": 24.0,
+    "Size": {
+      "X": 3,
+      "Y": 2
+    },
+    "FadeWhenBehind": true,
+    "SourceRect": {
+      "X": 0,
+      "Y": 0,
+      "Width": 96,
+      "Height": 96
+    },
+    "SeasonOffset": {
+      "X": 0,
+      "Y": 0
+    },
+    "DrawOffset": "0, 0",
+    "SortTileOffset": 0.0,
+    "CollisionMap": null,
+    "AdditionalPlacementTiles": null,
+    "BuildingType": null,
+    "Builder": "Robin",
+    "BuildCondition": null,
+    "BuildDays": 1,
+    "BuildCost": 2500,
+    "BuildMaterials": [],
+    "BuildingToUpgrade": null,
+    "MagicalConstruction": false,
+    "BuildMenuDrawOffset": {
+      "X": 0,
+      "Y": 0
+    },
+    "HumanDoor": {
+      "X": -1,
+      "Y": -1
+    },
+    "AnimalDoor": {
+      "X": -1,
+      "Y": -1,
+      "Width": 0,
+      "Height": 0
+    },
+    "AnimalDoorOpenDuration": 0.0,
+    "AnimalDoorOpenSound": null,
+    "AnimalDoorCloseDuration": 0.0,
+    "AnimalDoorCloseSound": null,
+    "NonInstancedIndoorLocation": null,
+    "IndoorMap": null,
+    "IndoorMapType": null,
+    "MaxOccupants": 20,
+    "ValidOccupantTypes": [],
+    "AllowAnimalPregnancy": false,
+    "IndoorItemMoves": null,
+    "IndoorItems": null,
+    "AddMailOnBuild": null,
+    "Metadata": {},
+    "ModData": {},
+    "HayCapacity": 0,
+    "Chests": [],
+    "DefaultAction": null,
+    "AdditionalTilePropertyRadius": 0,
+    "AllowsFlooringUnderneath": true,
+    "ActionTiles": [],
+    "TileProperties": [],
+    "ItemConversions": [],
+    "DrawLayers": [],
+    "CustomFields": null
+}

@@ -11,7 +11,7 @@
 {
 	"Name": "ShipAnything",
 	"Author": "berkayylmao",
-	"Version": "1.2.0",
+	"Version": "1.3.0",
 	"Description": "Allows you to put anything into the shipping bin.",
 	"UniqueID": "berkayylmao.ShipAnything",
 	"EntryDll": "ShipAnything.dll",

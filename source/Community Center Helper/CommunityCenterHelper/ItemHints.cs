@@ -11,6 +11,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.TokenizableStrings;
 using System;
 
 namespace CommunityCenterHelper
@@ -29,7 +30,8 @@ namespace CommunityCenterHelper
         /// <summary>Returns hint text for an item, given an item ID and quality.</summary>
         /// <param name="id">The item ID.</param>
         /// <param name="quality">Minimum required quality of item.</param>
-        public static string getHintText(int id, int quality)
+        /// <param name="category">The item category, for items that accept anything in the category.</param>
+        public static string getHintText(string id, int quality, int? category = 0)
         {
             try
             {
@@ -241,7 +243,7 @@ namespace CommunityCenterHelper
                              + strBuyFromOasisWeekday("friday");
                     
                     case ItemID.IT_Jelly:
-                        return strPutItemInMachine(StardewValley.Object.FruitsCategory, ItemID.BC_PreservesJar);
+                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), ItemID.BC_PreservesJar);
                     
                     case ItemID.IT_Apple:
                         return strFruitTreeDuringSeason("treeApple", "fall")
@@ -378,7 +380,7 @@ namespace CommunityCenterHelper
                     // Specialty Fish Bundle
                     
                     case ItemID.IT_Pufferfish:
-                        return strFishBase("waterOcean", "12pm", "4pm", seasonKey: "summer", weatherKey: "weatherSun")
+                        return strFishBase("waterOcean", "12pm", "4pm", "summer", "weatherSun")
                              + (isIslandKnown()? "\n" + strFishBase(waterList: new string[] { "waterIslandOcean", "waterIslandCove" },
                                                                    start: "12pm", end: "4pm", weatherKey: "weatherSun") : "");
                     
@@ -523,7 +525,7 @@ namespace CommunityCenterHelper
                     // Enchanter's Bundle
                     
                     case ItemID.IT_Wine: // Also in Missing Bundle at silver quality
-                        return strMachineOrCaskForQuality(StardewValley.Object.FruitsCategory, ItemID.BC_Keg, ItemID.IT_Wine, quality);
+                        return strMachineOrCaskForQuality(StardewValley.Object.FruitsCategory.ToString(), ItemID.BC_Keg, ItemID.IT_Wine, quality);
                     
                     case ItemID.IT_RabbitsFoot:
                         return strAnimalProduct("animalRabbit", true) + "\n"
@@ -551,7 +553,25 @@ namespace CommunityCenterHelper
                         return strPutItemInMachine(ItemID.IT_Roe, itemLiteral: getFishRoeName(ItemID.IT_Sturgeon),
                                                    machineID: ItemID.BC_PreservesJar);
                     
+                    /********** Crafts Room (Remix) **********/
+                    
+                    // Forest Bundle
+                    case ItemID.IT_Moss:
+                        return str.Get("treeMoss");
+                    
                     /********** Pantry (Remix) **********/
+                    
+                    // Spring Crops Bundle
+                    case ItemID.IT_Carrot:
+                        return strGrowSeeds(ItemID.IT_CarrotSeeds, parenthesize(strSeasonalForage("spring")), quality);
+                    
+                    // Summer Crops Bundle
+                    case ItemID.IT_SummerSquash:
+                        return strGrowSeeds(ItemID.IT_SummerSquashSeeds, parenthesize(strSeasonalForage("summer")), quality);
+                    
+                    // Fall Crops Bundle
+                    case ItemID.IT_Broccoli:
+                        return strGrowSeeds(ItemID.IT_BroccoliSeeds, parenthesize(strSeasonalForage("fall")), quality);
                     
                     // Fish Farmer's Bundle
                     
@@ -581,6 +601,27 @@ namespace CommunityCenterHelper
                     case ItemID.IT_WheatFlour:
                         return strBuyFrom(shopLiteral: getSeedShopsString());
                     
+                    // Helper's Bundle
+                    case ItemID.IT_PrizeTicket:
+                        return str.Get("prizeTicket");
+                    
+                    case ItemID.IT_MysteryBox:
+                        if (areMysteryBoxesUnlocked())
+                            return str.Get("artifactDigging") + "\n"
+                                 + str.Get("fishingChest") + "\n"
+                                 + str.Get("hitRocks");
+                        else
+                        {
+                            if (Config.ShowSpoilers)
+                                return str.Get("mysteryBoxesLocked");
+                            else
+                                return str.Get("unknownSource");
+                        }
+                    
+                    // Winter Star Bundle
+                    case ItemID.IT_Powdermelon:
+                        return strGrowSeeds(ItemID.IT_PowdermelonSeeds, parenthesize(strSeasonalForage("winter")), quality);
+                    
                     /********** [EasierBundles] Crafts Room **********/
                     
                     // [EasierBundles] Construction Bundle
@@ -608,7 +649,7 @@ namespace CommunityCenterHelper
                     // [EasierBundles] Artisan Bundle
                     
                     case ItemID.IT_Pickles:
-                        return strPutItemInMachine(StardewValley.Object.VegetableCategory, ItemID.BC_PreservesJar);
+                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), ItemID.BC_PreservesJar);
                     
                     /********** [EasierBundles] Fish Tank **********/
                     
@@ -705,7 +746,7 @@ namespace CommunityCenterHelper
                              + strMachineOrCaskForQuality(ItemID.IT_Wheat, ItemID.BC_Keg, ItemID.IT_Beer, quality);
                     
                     case ItemID.IT_Juice:
-                        return strPutItemInMachine(StardewValley.Object.VegetableCategory, ItemID.BC_Keg);
+                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), ItemID.BC_Keg);
                     
                     // [EasierBundles] Field Research Bundle
                     
@@ -1993,7 +2034,25 @@ namespace CommunityCenterHelper
                              + strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
                 }
                 
-                // If ID was not covered in the above switch statement (usually because it's a mod-added item), search by name.
+                // If item ID was not matched and category is specified, look for category match.
+                
+                switch (category)
+                {
+                    /********** Bulletin Board (Remix) **********/
+                    
+                    // Home Cook's Bundle
+                    
+                    case StardewValley.Object.EggCategory:
+                        return strAnimalProduct("animalChicken") + "\n"
+                             + strAnimalProduct("animalDuck") + "\n"
+                             + strAnimalProduct("animalOstrich");
+                    
+                    case StardewValley.Object.MilkCategory:
+                        return strAnimalProduct("animalCow") + "\n"
+                             + strAnimalProduct("animalGoat");
+                }
+                
+                // If neither the item ID nor category was covered above (usually because it's a mod-added item), search by name.
                 
                 switch (getItemName(id, true))
                 {
@@ -2176,7 +2235,7 @@ namespace CommunityCenterHelper
                     // [Challenging PPJA] Artisan Products Bundle
                     
                     case "Fruit Juice":
-                        return strPutItemInMachine(StardewValley.Object.FruitsCategory, machineName: "Juicer");
+                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), machineName: "Juicer");
                     
                     case "Apple Cider":
                         return strPutItemInMachine(itemName: "Wine Yeast", machineID: ItemID.BC_Keg);
@@ -2239,7 +2298,7 @@ namespace CommunityCenterHelper
                         return strPutItemInMachine(itemName: "Berry Fusion Tea", machineName: "Glass Jar");
                     
                     case "Dried Flower":
-                        return strPutItemInMachine(StardewValley.Object.flowersCategory, machineName: "Drying Rack");
+                        return strPutItemInMachine(StardewValley.Object.flowersCategory.ToString(), machineName: "Drying Rack");
                     
                     case "Herbal Lavender":
                         return strSeasonalCrop("summer", quality);
@@ -2247,20 +2306,20 @@ namespace CommunityCenterHelper
                     // [Challenging PPJA] Field Research Bundle
                     
                     case "Handmade Soap":
-                        return strPutItemInMachine(StardewValley.Object.flowersCategory, machineName: "Soap Press") + "\n"
+                        return strPutItemInMachine(StardewValley.Object.flowersCategory.ToString(), machineName: "Soap Press") + "\n"
                              + strPutItemInMachine(itemLiteral: str.Get("itemCategoryNut"), machineName: "Soap Press");
                     
                     case "Aloe":
                         return strSeasonalCrop("summer", quality, "shopClinic", startingYear: 2);
                     
                     case "Ground Vegetable":
-                        return strPutItemInMachine(StardewValley.Object.VegetableCategory, machineName: "Grinder");
+                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), machineName: "Grinder");
                     
                     case "Breakfast Tea":
                         return strCookRecipe("Breakfast Tea");
                     
                     case "Dried Fruit":
-                        return strPutItemInMachine(StardewValley.Object.FruitsCategory, machineName: "Dehydrator");
+                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), machineName: "Dehydrator");
                     
                     // [Challenging PPJA] Fodder Bundle
                     
@@ -2285,7 +2344,7 @@ namespace CommunityCenterHelper
                     // [Challenging PPJA] Enchanter's Bundle
                     
                     case "Candle":
-                        return strPutItemInMachine(StardewValley.Object.flowersCategory, machineName: "Wax Barrel");
+                        return strPutItemInMachine(StardewValley.Object.flowersCategory.ToString(), machineName: "Wax Barrel");
                     
                     case "Sun Tea":
                         return strCookRecipe("Sun Tea");
@@ -2406,7 +2465,7 @@ namespace CommunityCenterHelper
         
         /// <summary>Returns short hint text for some items, for use in another item's suggestion.</summary>
         /// <param name="id">The item ID.</param>
-        public static string getShortHint(int id)
+        public static string getShortHint(string id)
         {
             try
             {
@@ -2438,7 +2497,7 @@ namespace CommunityCenterHelper
                         return str.Get("shortHintHay", new { wheat = getItemName(ItemID.IT_Wheat) });
                     
                     case ItemID.IT_Wine:
-                        return str.Get("shortHintMachine", new { item = getItemName(StardewValley.Object.FruitsCategory),
+                        return str.Get("shortHintMachine", new { item = getItemName(StardewValley.Object.FruitsCategory.ToString()),
                                                                  machine = getBigCraftableName(ItemID.BC_Keg) });
                     
                     case ItemID.IT_Egg:
@@ -2482,8 +2541,8 @@ namespace CommunityCenterHelper
                 
                 // If ID was not covered in the above switch statement (usually because it's a mod-added item), search by name.
                 
-                int itemByName = -1;
-                int machineByName = -1;
+                string itemByName = "";
+                string machineByName = "";
                 
                 switch (getItemName(id, true))
                 {
@@ -2561,7 +2620,7 @@ namespace CommunityCenterHelper
         /// <param name="itemID">Item ID of the seeds.</param>
         /// <param name="seedTip">Tip for how to get seeds.</param>
         /// <param name="quality">The quality required.</param>
-        private static string strGrowSeeds(int itemID, string seedTip, int quality)
+        private static string strGrowSeeds(string itemID, string seedTip, int quality)
         {
             string qualityCrop = quality > 0? str.Get("qualityCrop") : "";
             
@@ -2627,7 +2686,7 @@ namespace CommunityCenterHelper
             if (locationKey != "")
                 return str.Get("hitRocksInLocation", new { location = str.Get(locationKey) });
             else // Load "Pickaxe" tool name from strings
-                return str.Get("hitRocks", new { pickaxe = Game1.content.LoadString("Strings\\StringsFromCSFiles:Pickaxe.cs.14184") });
+                return str.Get("hitRocks", new { pickaxe = TokenParser.ParseText(DataLoader.Tools(Game1.content)["Pickaxe"].DisplayName) });
         }
         
         /// <summary>Suggestion for where and when to catch fish.</summary>
@@ -2701,6 +2760,7 @@ namespace CommunityCenterHelper
                 case "animalDuck": coopReq = 1; break;
                 case "animalRabbit": coopReq = 2; break;
                 case "animalCow": barnReq = 0; break;
+                case "animalOstrich": barnReq = 0; break;
                 case "animalGoat": barnReq = 1; break;
                 case "animalSheep": barnReq = 2; break;
                 case "animalPig": barnReq = 2; break;
@@ -2730,7 +2790,7 @@ namespace CommunityCenterHelper
         /// <param name="itemQuantity">Required quantity of input item.</param>
         /// <param name="itemName">String referencr for mod-added items.</param>
         /// <param name="machineName">String reference for mod-added machines.</param>
-        private static string strPutItemInMachine(int itemID = -1, int machineID = -1,
+        private static string strPutItemInMachine(string itemID = "", string machineID = "",
                                                   string itemLiteral = "", int itemQuantity = 1,
                                                   string itemName = "", string machineName = "")
         {
@@ -2776,7 +2836,7 @@ namespace CommunityCenterHelper
         /// <param name="machineID">Big Craftable ID of the base machine.</param>
         /// <param name="resultItemID">Item ID of the result you get from the base machine.</param>
         /// <param name="quality">The quality required for the bundle.</param>
-        private static string strMachineOrCaskForQuality(int rawItemID, int machineID, int resultItemID, int quality)
+        private static string strMachineOrCaskForQuality(string rawItemID, string machineID, string resultItemID, int quality)
         {
             if (quality == 0) // Base quality, so put raw item in "base" machine
                 return strPutItemInMachine(rawItemID, machineID);
@@ -2814,13 +2874,13 @@ namespace CommunityCenterHelper
         /// <summary>Suggestion for an item produced by a machine on its own.
         /// Includes requirement for said machine's recipe.</summary>
         /// <param name="machineID">Big Craftable ID of the machine.</param>
-        private static string strNoItemMachine(int machineID)
+        private static string strNoItemMachine(string machineID)
         {
             string machineUnlockTip = "";
             
             // Statue of Perfection isn't crafted, only obtained, so it's a special case.
             if (machineID == ItemID.BC_StatueOfPerfection
-             && !Utility.doesItemWithThisIndexExistAnywhere(ItemID.BC_StatueOfPerfection, true))
+             && !Utility.doesItemExistAnywhere("(BC)" + ItemID.BC_StatueOfPerfection))
             {
                 if (Game1.getFarm().grandpaScore.Value < 4) // Haven't had evaluation, or didn't get four candles
                     machineUnlockTip = parenthesize(str.Get("statueOfPerfectionTip"));
@@ -2847,7 +2907,7 @@ namespace CommunityCenterHelper
         /// <param name="fishItemID">Item ID of the fish.</param>
         /// <param name="numRequired">Minimum number of fish required in the pond for item to spawn.</param>
         /// <param name="fishItemName">String reference for mod-added fish.</param>
-        private static string strFishPond(int fishItemID = -1, int numRequired = 1, string fishItemName = "")
+        private static string strFishPond(string fishItemID = "", int numRequired = 1, string fishItemName = "")
         {
             if (fishItemName != "")
             {
@@ -3057,7 +3117,7 @@ namespace CommunityCenterHelper
         /// <param name="recipeName">Internal string name of the recipe.</param>
         private static string strCraftRecipe(string recipeName)
         {
-            string[] recipeData = Game1.content.LoadString("Data\\CraftingRecipes:" + recipeName).Split('/');
+            string[] recipeData = DataLoader.CraftingRecipes(Game1.content)[recipeName].Split('/');
             string ingredientDefinition = recipeData[0];
             
             string recipeDesc = "";
@@ -3090,7 +3150,7 @@ namespace CommunityCenterHelper
         /// <param name="recipeName">Internal string name of the recipe.</param>
         private static string strCookRecipe(string recipeName)
         {
-            string[] recipeData = Game1.content.LoadString("Data\\CookingRecipes:" + recipeName).Split('/');
+            string[] recipeData = DataLoader.CookingRecipes(Game1.content)[recipeName].Split('/');
             string ingredientDefinition = recipeData[0];
             
             string recipeDesc = "";
@@ -3114,7 +3174,7 @@ namespace CommunityCenterHelper
         
         /// <summary>Suggestion for items randomly obtainable from geodes.</summary>
         /// <param name="geodeIDs">List of item IDs for geode types.</param>
-        private static string strOpenGeode(params int[] geodeIDs)
+        private static string strOpenGeode(params string[] geodeIDs)
         {
             return str.Get("openGeode", new { geode = multiItem(geodeIDs) });
         }
@@ -3167,13 +3227,13 @@ namespace CommunityCenterHelper
         private static string strChopWood()
         {
             // Loads "Axe" tool name from strings
-            return str.Get("chopWood", new { axe = Game1.content.LoadString("Strings\\StringsFromCSFiles:Axe.cs.1") });
+            return str.Get("chopWood", new { axe = TokenParser.ParseText(DataLoader.Tools(Game1.content)["Axe"].DisplayName) });
         }
         
         /// <summary>Suggestion to chop stumps and logs with upgraded axe for hardwood.</summary>
         private static string strChopHardwood()
         {
-            string axe = Game1.content.LoadString("Strings\\StringsFromCSFiles:Axe.cs.1"); // "Axe" tool name
+            string axe = TokenParser.ParseText(DataLoader.Tools(Game1.content)["Axe"].DisplayName); // Axe tool name
             string copperTool = Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14299"); // "Copper {0}" string
             string steelTool = Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14300"); // "Steel {0}" string
             return str.Get("chopHardwood", new { copperAxe = string.Format(copperTool, axe),
@@ -3184,14 +3244,14 @@ namespace CommunityCenterHelper
         private static string strChopTrees()
         {
             // Loads "Axe" tool name from strings
-            return str.Get("chopTrees", new { axe = Game1.content.LoadString("Strings\\StringsFromCSFiles:Axe.cs.1") });
+            return str.Get("chopTrees", new { axe = TokenParser.ParseText(DataLoader.Tools(Game1.content)["Axe"].DisplayName) });
         }
         
         /// <summary>Suggestion of fruit bat cave depending on progress, choice, and spoiler policy.
         /// Returns blank string if not applicable, so non-blank results are prefixed with a newline.</summary>
         private static string possibleSourceFruitBatCave()
         {
-            switch (Game1.MasterPlayer.caveChoice)
+            switch (Game1.MasterPlayer.caveChoice.Value)
             {
                 case 0: // Not yet chosen, so don't spoil, or specify which type if spoilers are okay
                     if (Config.ShowSpoilers)
@@ -3210,7 +3270,7 @@ namespace CommunityCenterHelper
         /// Returns blank string if not applicable, so non-blank results are prefixed with a newline.</summary>
         private static string possibleSourceMushroomCave()
         {
-            switch (Game1.MasterPlayer.caveChoice)
+            switch (Game1.MasterPlayer.caveChoice.Value)
             {
                 case 0: // Not yet chosen, so don't spoil, or specify which type if spoilers are okay
                     if (Config.ShowSpoilers)
@@ -3244,32 +3304,38 @@ namespace CommunityCenterHelper
         /// <summary>Returns item name for the current language (or internal name), or category for negative category IDs.</summary>
         /// <param name="id">The item ID or negative category ID.</param>
         /// <param name="internalName">Whether to return the internal name instead of the display name.</param>
-        private static string getItemName(int id, bool internalName = false)
+        private static string getItemName(string id, bool internalName = false)
         {
-            if (id < 0) // Category
+            int intID;
+            if (int.TryParse(id, out intID))
             {
-                switch (id)
+                if (intID < 0) // Category
                 {
-                    case StardewValley.Object.GemCategory: return str.Get("itemCategoryGem");
-                    case StardewValley.Object.FishCategory: return str.Get("itemCategoryFish");
-                    case StardewValley.Object.EggCategory: return str.Get("itemCategoryEgg");
-                    case StardewValley.Object.MilkCategory: return str.Get("itemCategoryMilk");
-                    case StardewValley.Object.mineralsCategory: return str.Get("itemCategoryMineral");
-                    case StardewValley.Object.junkCategory: return str.Get("itemCategoryJunk");
-                    case StardewValley.Object.SeedsCategory: return str.Get("itemCategorySeed");
-                    case StardewValley.Object.VegetableCategory: return str.Get("itemCategoryVegetable");
-                    case StardewValley.Object.FruitsCategory: return str.Get("itemCategoryFruit");
-                    case StardewValley.Object.flowersCategory: return str.Get("itemCategoryFlower");
-                    case -777: return str.Get("itemCategoryWildSeed"); // Used in Tea Sapling crafting recipe
+                    switch (intID)
+                    {
+                        case StardewValley.Object.GemCategory: return str.Get("itemCategoryGem");
+                        case StardewValley.Object.FishCategory: return str.Get("itemCategoryFish");
+                        case StardewValley.Object.EggCategory: return str.Get("itemCategoryEgg");
+                        case StardewValley.Object.MilkCategory: return str.Get("itemCategoryMilk");
+                        case StardewValley.Object.mineralsCategory: return str.Get("itemCategoryMineral");
+                        case StardewValley.Object.junkCategory: return str.Get("itemCategoryJunk");
+                        case StardewValley.Object.SeedsCategory: return str.Get("itemCategorySeed");
+                        case StardewValley.Object.VegetableCategory: return str.Get("itemCategoryVegetable");
+                        case StardewValley.Object.FruitsCategory: return str.Get("itemCategoryFruit");
+                        case StardewValley.Object.flowersCategory: return str.Get("itemCategoryFlower");
+                        case -777: return str.Get("itemCategoryWildSeed"); // Used in Tea Sapling crafting recipe
+                    }
+                    return "[Category " + id + "]";
                 }
-                return "[Category " + id + "]";
             }
             
-            // Index 0 is base name, index 4 is display name (but only in non-English string files)
-            int nameIndex = isCurrentLanguageEnglish() || internalName? 0 : 4;
-            
-            if (Game1.objectInformation.ContainsKey(id) && Game1.objectInformation[id] != null)
-                return Game1.objectInformation[id].Split('/')[nameIndex];
+            if (Game1.objectData.ContainsKey(id) && Game1.objectData[id] != null)
+            {
+                if (internalName)
+                    return Game1.objectData[id].Name;
+                else
+                    return TokenParser.ParseText(Game1.objectData[id].DisplayName);
+            }
             
             return internalName? "" : "[Item " + id + "]";
         }
@@ -3277,50 +3343,54 @@ namespace CommunityCenterHelper
         /// <summary>Returns "big craftable" item name for the current language (or internal name).</summary>
         /// <param name="id">The item's Big Craftable ID.</param>
         /// <param name="internalName">Whether to return the internal name instead of the display name.</param>
-        private static string getBigCraftableName(int id, bool internalName = false)
+        private static string getBigCraftableName(string id, bool internalName = false)
         {
-            // Index 0 is base name, index 8 is display name (but only in non-English string files)
-            int nameIndex = isCurrentLanguageEnglish() || internalName? 0 : 8;
-            
-            if (Game1.bigCraftablesInformation.ContainsKey(id) && Game1.bigCraftablesInformation[id] != null)
-                return Game1.bigCraftablesInformation[id].Split('/')[nameIndex];
+            if (Game1.bigCraftableData.ContainsKey(id) && Game1.bigCraftableData[id] != null)
+            {
+                if (internalName)
+                    return Game1.bigCraftableData[id].Name;
+                else
+                    return TokenParser.ParseText(Game1.bigCraftableData[id].DisplayName);
+            }
             
             return internalName? "" : "[BigCraftable " + id + "]";
         }
         
-        /// <summary>Returns name of person for the current language (identical to internal name in English).</summary>
+        /// <summary>Returns name of person for the current language.</summary>
         /// <param name="name">The internal name of the person.</param>
         public static string getPersonName(string name)
         {
-            if (isCurrentLanguageEnglish())
-                return name;
-            else
-                return Game1.content.LoadString("Data\\NPCDispositions:" + name).Split('/')[11];
+            return TokenParser.ParseText(DataLoader.Characters(Game1.content)[name].DisplayName);
         }
         
-        /// <summary>Returns name of monster for the current language (identical to internal name in English).</summary>
+        /// <summary>Returns name of monster for the current language.</summary>
         /// <param name="name">The internal name of the monster.</param>
         private static string getMonsterName(string name)
         {
-            if (isCurrentLanguageEnglish())
-                return name;
-            else
-                return Game1.content.LoadString("Data\\Monsters:" + name).Split('/')[14];
+            return DataLoader.Monsters(Game1.content)[name].Split('/')[14];
         }
         
-        /// <summary>Returns name of crafting recipe for the current language (identical to internal name in English).</summary>
+        /// <summary>Returns name of crafting recipe for the current language.</summary>
         /// <param name="name">The internal name of the recipe.</param>
         private static string getCraftingRecipeName(string name)
         {
-            if (isCurrentLanguageEnglish())
-                return name;
+            string[] recipeData = DataLoader.CraftingRecipes(Game1.content)[name].Split('/');
+            if (recipeData.Length < 3) // Not long enough to contain item ID
+                return "";
+            
+            bool bigCraftable = false;
+            if (recipeData.Length > 3) // Long enough to contain "is big craftable" bool
+                bool.TryParse(recipeData[3], out bigCraftable);
+            
+            if (!bigCraftable)
+                return TokenParser.ParseText(Game1.objectData[recipeData[2]].DisplayName);
             else
-                return Game1.content.LoadString("Data\\CraftingRecipes:" + name).Split('/')[5];
+                return TokenParser.ParseText(Game1.bigCraftableData[recipeData[2]].DisplayName);
         }
         
         /// <summary>Returns display name of roe for a specific fish.</summary>
         /// <param name="id">The fish's item ID.</param>
-        private static string getFishRoeName(int id)
+        private static string getFishRoeName(string id)
         {
             string fish = getItemName(id); // Fish name
             string fishRoe = Game1.content.LoadString("Strings\\StringsFromCSFiles:Roe_DisplayName"); // "{0} Roe" string
@@ -3330,13 +3400,13 @@ namespace CommunityCenterHelper
         /// <summary>Looks for item by name and returns success.</summary>
         /// <param name="name">The internal name of the item.</param>
         /// <param name="itemID">Result item ID. -1 if not found.</param>
-        private static bool findItemIDByName(string name, out int itemID)
+        private static bool findItemIDByName(string name, out string itemID)
         {
-            foreach (int id in Game1.objectInformation.Keys)
+            foreach (string id in Game1.objectData.Keys)
             {
-                if (Game1.objectInformation[id] != null)
+                if (Game1.objectData[id] != null)
                 {
-                    if (Game1.objectInformation[id].Split('/')[0].Equals(name))
+                    if (Game1.objectData[id].Name.Equals(name))
                     {
                         itemID = id;
                         return true;
@@ -3344,20 +3414,20 @@ namespace CommunityCenterHelper
                 }
             }
             
-            itemID = -1;
+            itemID = "";
             return false;
         }
         
         /// <summary>Looks for item by name and returns success.</summary>
         /// <param name="name">The internal name of the item.</param>
         /// <param name="bigCraftableID">Result Big Craftable ID. -1 if not found.</param>
-        private static bool findBigCraftableIDByName(string name, out int bigCraftableID)
+        private static bool findBigCraftableIDByName(string name, out string bigCraftableID)
         {
-            foreach (int id in Game1.bigCraftablesInformation.Keys)
+            foreach (string id in Game1.bigCraftableData.Keys)
             {
-                if (Game1.bigCraftablesInformation[id] != null)
+                if (Game1.bigCraftableData[id] != null)
                 {
-                    if (Game1.bigCraftablesInformation[id].Split('/')[0].Equals(name))
+                    if (Game1.bigCraftableData[id].Name.Equals(name))
                     {
                         bigCraftableID = id;
                         return true;
@@ -3365,7 +3435,7 @@ namespace CommunityCenterHelper
                 }
             }
             
-            bigCraftableID = -1;
+            bigCraftableID = "";
             return false;
         }
         
@@ -3382,7 +3452,7 @@ namespace CommunityCenterHelper
             
             for (int i = 0; i < data.Length; i += 2)
             {
-                string itemName = getItemName(int.Parse(data[i]));
+                string itemName = getItemName(data[i]);
                 int quantity = int.Parse(data[i + 1]);
                 if (list != "")
                     list += str.Get("recipeIngredientSeparator");
@@ -3420,13 +3490,13 @@ namespace CommunityCenterHelper
             
             if (!isCooking)
             {
-                recipeData = Game1.content.LoadString("Data\\CraftingRecipes:" + recipeName).Split('/');
+                recipeData = DataLoader.CraftingRecipes(Game1.content)[recipeName].Split('/');
                 if (recipeData.Length > 4)
                     requirementDefinition = recipeData[4];
             }
             else
             {
-                recipeData = Game1.content.LoadString("Data\\CookingRecipes:" + recipeName).Split('/');
+                recipeData = DataLoader.CookingRecipes(Game1.content)[recipeName].Split('/');
                 if (recipeData.Length > 3)
                     requirementDefinition = recipeData[3];
             }
@@ -3499,7 +3569,7 @@ namespace CommunityCenterHelper
             {
                 for (int i = 1; i <= 32; i++)
                 {
-                    if (Game1.content.LoadString("Data\\TV\\CookingChannel:" + i).Split('/')[0].Equals(recipeName))
+                    if (DataLoader.Tv_CookingChannel(Game1.content)[i.ToString()].Split('/')[0].Equals(recipeName))
                     {
                         string seasonKey = new string[] { "spring", "summer", "fall", "winter" }[((i - 1) / 4) % 4];
                         int day = (((i - 1) % 4) + 1) * 7;
@@ -3513,11 +3583,11 @@ namespace CommunityCenterHelper
                             {
                                 airDate += 224;
                                 year += 2;
-                            } while (Game1.stats.daysPlayed > airDate);
+                            } while (Game1.stats.DaysPlayed > airDate);
                         }
                         
                         string date;
-                        if (Game1.stats.daysPlayed == airDate) // Scheduled airing today
+                        if (Game1.stats.DaysPlayed == airDate) // Scheduled airing today
                             date = str.Get("today");
                         else // Scheduled airing at a future date
                         {
@@ -3897,7 +3967,7 @@ namespace CommunityCenterHelper
         
         /// <summary>Returns combined string for multiple item names.</summary>
         /// <param name="items">List of item IDs.</param>
-        private static string multiItem(params int[] items)
+        private static string multiItem(params string[] items)
         {
             string[] strings = new string[items.Length];
             for (int i = 0; i < items.Length; i++)
@@ -3969,7 +4039,7 @@ namespace CommunityCenterHelper
         {
             Beach beach = Game1.getLocationFromName("Beach") as Beach;
             if (beach != null)
-                return beach.bridgeFixed;
+                return beach.bridgeFixed.Value;
             return false;
         }
         
@@ -4028,10 +4098,10 @@ namespace CommunityCenterHelper
                                        || Game1.MasterPlayer.mailReceived.Contains("ccMovieTheaterJoja");
         }
         
-        /// <summary>Returns whether current language setting is English.</summary>
-        private static bool isCurrentLanguageEnglish()
+        /// <summary>Returns whether the Mystery Boxes have been dropped.</summary>
+        private static bool areMysteryBoxesUnlocked()
         {
-            return Game1.content.GetCurrentLanguage() == LocalizedContentManager.LanguageCode.en;
+            return Game1.MasterPlayer.mailReceived.Contains("sawQiPlane");
         }
         
         /// <summary>Returns whether current language should use 24-hour time.</summary>

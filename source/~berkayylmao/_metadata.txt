@@ -8,9 +8,9 @@ mods:
    Ship Anything
 
 latest commit:
-   commit a0fc2aeb85f1b7e993d07a47d97a97642795c4f8
+   commit 81f5209b16a9d504f158bbe58741ef75e81236fb
    Author: Berkay <mail@berkay.link>
-   Date:   Thu Apr 13 19:11:34 2023 +0300
+   Date:   Thu Mar 21 15:32:15 2024 +0300
    
-       Remove `FUNDING.yml`
+       Update `InfiniteZoom` to SDV 1.6 and SMAPI 4.0
    

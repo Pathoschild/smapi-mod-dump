@@ -38,7 +38,7 @@ namespace Shockah.FlexibleSprinklers
 				{
 					if (@object.IsSprinkler())
 						return SoilType.Sprinkler;
-					if (FlexibleSprinklers.Instance.Config.WaterGardenPots && @object is IndoorPot)
+					if (ModEntry.Instance.Config.WaterGardenPots && @object is IndoorPot)
 						return SoilType.Waterable;
 				}
 

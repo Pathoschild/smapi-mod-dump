@@ -8,12 +8,14 @@
 **
 *************************************************/
 
+global using Object = StardewValley.Object;
+
 using StardewModdingAPI;
+using StardewModdingAPI.Enums;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using SObject = StardewValley.Object;
 
 namespace QualityBait
 {
@@ -26,7 +28,7 @@ namespace QualityBait
         internal static IApi IApi;
 
         internal static Dictionary<string, string> Recipes; 
-        private static readonly List<int> Qualities = new() { SObject.lowQuality, SObject.medQuality, SObject.highQuality, SObject.bestQuality };
+        private static readonly List<int> Qualities = new() { Object.lowQuality, Object.medQuality, Object.highQuality, Object.bestQuality };
 
         public override void Entry(IModHelper helper)
         {
@@ -37,10 +39,27 @@ namespace QualityBait
             validateConfig();
 
             Helper.Events.Content.AssetRequested += onAssetRequested;
+            Helper.Events.Content.LocaleChanged += onLocaleChanged;
 
             Helper.Events.GameLoop.DayStarted += onDayStarted;
             Helper.Events.GameLoop.GameLaunched += onGameLaunched;
 
+            Recipes = new()
+            {
+                { "Bait (Silver)", $"685 5 380 1/Home/685 5/false/Fishing 4/{ITranslations.Get("Bait.1")}" },
+                { "Bait (Gold)", $"685 5 384 1/Home/685 5/false/Fishing 7/{ITranslations.Get("Bait.2")}" },
+                { "Bait (Iridium)", $"685 5 386 1/Home/685 5/false/Fishing 9/{ITranslations.Get("Bait.3")}" },
+                { "Wild Bait (Silver)", $"774 5 380 1/Home/774 5/false/null/{ITranslations.Get("Wild.1")}" },
+                { "Wild Bait (Gold)", $"774 5 384 1/Home/774 5/false/null/{ITranslations.Get("Wild.2")}" },
+                { "Wild Bait (Iridium)", $"774 5 386 1/Home/774 5/false/null/{ITranslations.Get("Wild.3")}" },
+                { "Magic Bait (Silver)", $"908 5 380 1/Home/908 5/false/null/{ITranslations.Get("Magic.1")}" },
+                { "Magic Bait (Gold)", $"908 5 384 1/Home/908 5/false/null/{ITranslations.Get("Magic.2")}" },
+                { "Magic Bait (Iridium)", $"908 5 386 1/Home/908 5/false/null/{ITranslations.Get("Magic.3")}" },
+            };
+        }
+
+        private void onLocaleChanged(object sender, LocaleChangedEventArgs e)
+        {
             Recipes = new()
             {
                 { "Bait (Silver)", $"685 5 380 1/Home/685 5/false/Fishing 4/{ITranslations.Get("Bait.1")}" },
@@ -62,6 +81,8 @@ namespace QualityBait
             Patches.Patch(Monitor, Helper);
             Helper.GameContent.InvalidateCache("Data/CraftingRecipes");
             CraftingRecipe.InitShared();
+
+            registerForGMCM();
         }
 
         private void onDayStarted(object sender, DayStartedEventArgs e)
@@ -118,11 +139,37 @@ namespace QualityBait
             Helper.WriteConfig(IConfig);
         }
 
-        internal static int GetQualityForCatch(int originalQuality, int baitQuality)
+        private void registerForGMCM()
         {
-            if (originalQuality == SObject.bestQuality || baitQuality == SObject.lowQuality || originalQuality >= baitQuality)
+            var gmcm = Helper.ModRegistry.GetApi<IGMCMApi>("spacechase0.GenericModConfigMenu");
+            if (gmcm is null)
+                return;
+
+            gmcm.Register(ModManifest, () => IConfig = new(), () => IHelper.WriteConfig(IConfig));
+
+            gmcm.AddNumberOption(ModManifest, () => IConfig.ChancePercentage, (x) => IConfig.ChancePercentage = x, () => "Chance Percentage", () => "Determines the rate a which the caught fish will match the quality of the bait (0: never, 100: always)", 0, 100);
+        }
+
+        internal static int GetQualityForCatch(string itemId, int originalQuality, int baitQuality)
+        {
+            if (ItemRegistry.IsQualifiedItemId(itemId))
+            {
+                itemId = itemId.Split(')')[1];
+                IMonitor.Log($"Received QualifiedItemId {itemId} for {nameof(GetQualityForCatch)}, converting to non-qualified variant");
+            }
+            if (originalQuality == Object.bestQuality || baitQuality == Object.lowQuality || originalQuality >= baitQuality || IsTrashObject(new Object(itemId, 1)))
                 return originalQuality;
             return Game1.random.NextDouble() <= IConfig.Chance ? baitQuality : Qualities[Qualities.IndexOf(baitQuality) - 1];
         }
+
+        internal static bool IsTrashObject(Object obj) => obj.Category == Object.junkCategory || obj.Category != Object.FishCategory;
     }
+
+    public interface IGMCMApi
+    {
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+    }
+
 }

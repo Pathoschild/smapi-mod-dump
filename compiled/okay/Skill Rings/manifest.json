@@ -1,0 +1,18 @@
+﻿{
+	"Name": "Skill Rings",
+	"Author": "AlphaMeece",
+	"Version": "2.0.4",
+	"Description": "Adds rings that boost a skill or experience gain",
+	"UniqueID": "AlphaMeece.SkillRings",
+	"EntryDll": "SkillRings.dll",
+	"MinimumApiVersion": "4.0.0",
+	"Dependencies": [
+		{ "UniqueID": "spacechase0.SpaceCore" },
+		{ "UniqueID": "Pathoschild.ContentPatcher" },
+		{
+			"UniqueID": "jahangmar.LevelingAdjustment2",
+			"IsRequired": false
+		}
+	],
+	"UpdateKeys": [ "Nexus:7515" ]
+}

@@ -30,7 +30,7 @@ namespace BetterJunimos.Abilities {
 
             Vector2[] positions = { up, right, down, left };
             foreach (Vector2 nextPos in positions) {
-                if (location.objects.ContainsKey(nextPos) && location.objects[nextPos].isForage(location)) {
+                if (location.objects.ContainsKey(nextPos) && location.objects[nextPos].isForage()) {
                     return true;
                 }
             }
@@ -38,7 +38,7 @@ namespace BetterJunimos.Abilities {
         }
 
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid guid) {
-            Chest chest = Util.GetHutFromId(guid).output.Value;
+            Chest chest = Util.GetHutFromId(guid).GetOutputChest();
 
             Vector2 up = new Vector2(pos.X, pos.Y + 1);
             Vector2 right = new Vector2(pos.X + 1, pos.Y);
@@ -48,7 +48,7 @@ namespace BetterJunimos.Abilities {
             int direction = 0;
             Vector2[] positions = { up, right, down, left };
             foreach (Vector2 nextPos in positions) {
-                if (location.objects.ContainsKey(nextPos) && location.objects[nextPos].isForage(location)) {
+                if (location.objects.ContainsKey(nextPos) && location.objects[nextPos].isForage()) {
                     junimo.faceDirection(direction);
                     SetForageQuality(location, nextPos);
 
@@ -70,7 +70,7 @@ namespace BetterJunimos.Abilities {
             return false;
         }
 
-        public List<int> RequiredItems() {
+        public List<string> RequiredItems() {
             return new();
         }
 

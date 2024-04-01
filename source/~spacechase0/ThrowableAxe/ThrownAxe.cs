@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -19,6 +20,7 @@ using StardewValley.TerrainFeatures;
 
 namespace ThrowableAxe
 {
+    [XmlType("Mods_spacechase0_ThrowableAxe_ThrownAxe")]
     public class ThrownAxe : Projectile
     {
         private readonly NetInt Tier = new(0);

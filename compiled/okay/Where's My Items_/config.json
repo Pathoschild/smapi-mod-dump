@@ -1,0 +1,8 @@
+{
+  "KeyboardToggleButton": "F5",
+  "GamepadToggleButton": "None",
+  "ChestHighlightMethod": "TypingRipple",
+  "ItemDisplayStyle": "Vertical",
+  "MaxItemsDrawnOverChests": 3,
+  "GuideArrowOption": "WhileMenuOpen"
+}

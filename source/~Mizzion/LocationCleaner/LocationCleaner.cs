@@ -90,7 +90,7 @@ namespace LocationCleaner
 
         private int BreakStone(int x, int y)
         {
-            Random random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + x * 2000 + y);
+            var random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + x * 2000 + y);
             if (random.NextDouble() < 0.035 && Game1.stats.DaysPlayed > 1U)
                 return 535 + (Game1.stats.DaysPlayed <= 60U || random.NextDouble() >= 0.2 ? (Game1.stats.DaysPlayed <= 120U || random.NextDouble() >= 0.2 ? 0 : 2) : 1);
             if (random.NextDouble() < 0.035 * (Game1.player.professions.Contains(21) ? 2.0 : 1.0) &&
@@ -104,7 +104,7 @@ namespace LocationCleaner
 
         private int GetSeed(Tree tree)
         {
-            int seedId = 0;
+            var seedId = 0;
             switch (tree.treeType.Value)
             {
                 case 1://Oak

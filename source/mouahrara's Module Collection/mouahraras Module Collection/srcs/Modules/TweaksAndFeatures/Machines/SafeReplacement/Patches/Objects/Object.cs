@@ -35,18 +35,20 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Machines.SafeReplacement.
 			if (!__instance.name.Equals("Crystalarium"))
 				return true;
 
-			if ((dropInItem.Category == -2 || dropInItem.Category == -12) && dropInItem.ParentSheetIndex != 74 && (__instance.heldObject.Value == null || __instance.heldObject.Value.ParentSheetIndex != dropInItem.ParentSheetIndex) && (__instance.heldObject.Value == null || __instance.MinutesUntilReady > 0))
+			if ((dropInItem.HasContextTag("category_gem") || dropInItem.HasContextTag("category_minerals")) && !dropInItem.HasContextTag("crystalarium_banned") && (__instance.heldObject.Value == null || __instance.heldObject.Value.QualifiedItemId != dropInItem.QualifiedItemId) && (__instance.heldObject.Value == null || __instance.MinutesUntilReady > 0))
 			{
 				if (!probe)
 				{
 					if (who.freeSpotsInInventory() > 0 || (who.freeSpotsInInventory() == 0 && dropInItem.Stack == 1))
 					{
 						SafeReplacementUtility.ObjectToRecover = __instance.heldObject.Value;
+						__instance.heldObject.Value = null;
 						return true;
 					}
 					if (who.couldInventoryAcceptThisItem(__instance.heldObject.Value))
 					{
 						SafeReplacementUtility.ObjectToRecover = __instance.heldObject.Value;
+						__instance.heldObject.Value = null;
 						return true;
 					}
 					__result = false;

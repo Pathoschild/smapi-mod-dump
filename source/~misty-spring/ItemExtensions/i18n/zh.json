@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/misty-spring/StardewMods
+**
+*************************************************/
+
+{
+  "ItemHover_Requirements_Extra": "{0}个{1}",
+  "CantBreak": "你的{0}不够强大，无法敲碎这个。"
+}

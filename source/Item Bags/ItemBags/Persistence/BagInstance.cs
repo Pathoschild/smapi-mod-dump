@@ -188,62 +188,6 @@ namespace ItemBags.Persistence
             this.ExcludedAutofillItems = new List<KeyValuePair<string, HashSet<ObjectQuality>>>();
         }
 
-        #region PyTK CustomElementHandler
-        private const string PyTKSaveDataKey = "BagInstanceXmlString";
-        private const string PyTKEqualsSignEncoding = "~~~";
-
-        public Dictionary<string, string> ToPyTKAdditionalSaveData()
-        {
-            Dictionary<string, string> SaveData = new Dictionary<string, string>();
-
-            if (XMLSerializer.TrySerializeToString(this, out string DataString, out Exception Error))
-            {
-                string CompatibleDataString = DataString.Replace("=", PyTKEqualsSignEncoding); // PyTK Mod doesn't like it when the Value contains '=' characters (the string will be truncated in ISaveElement.rebuild), so replace = with something else
-                SaveData.Add(PyTKSaveDataKey, CompatibleDataString);
-            }
-
-            return SaveData;
-        }
-
-        public static BagInstance FromPyTKAdditionalSaveData(Dictionary<string, string> PyTKData)
-        {
-            if (PyTKData != null && PyTKData.TryGetValue(PyTKSaveDataKey, out string DataString))
-            {
-                if (XMLSerializer.TryDeserializeFromString(DataString.Replace(PyTKEqualsSignEncoding, "="), out BagInstance Data, out Exception Error))
-                {
-                    return Data;
-                }
-            }
-
-            return null;
-        }
-
-        public static bool TryDeserializePyTKData(Item item, out BagInstance result)
-        {
-            string name = item.Name;
-
-            //  Create a regex that will look for strings that start with PyTK serialization prefixes such as "PyTK|Item|ItemBags.Bags.BoundedBag,  ItemBags|BagInstanceXmlString="
-            string namespacePrefix = @$"{nameof(ItemBags)}\.{nameof(Bags)}\."; // "ItemBags.Bags."
-            List<string> classNames = new List<string>() { nameof(BoundedBag), nameof(BundleBag), nameof(Rucksack), nameof(OmniBag) };
-            string classNamesPattern = $"({string.Join(@"|", classNames)})"; // "(BoundedBag|BundleBag|Rucksack|OmniBag)"
-            string pattern = @$"^PyTK\|Item\|{namespacePrefix}{classNamesPattern},  ItemBags\|BagInstanceXmlString=";
-            Regex prefix = new Regex(pattern);
-
-            if (prefix.IsMatch(name))
-            {
-                string escapedXMLString = name.Replace(prefix.Match(name).Value, "");
-                if (XMLSerializer.TryDeserializeFromString(escapedXMLString.Replace(PyTKEqualsSignEncoding, "="), out BagInstance Data, out Exception Error))
-                {
-                    result = Data;
-                    return true;
-                }
-            }
-
-            result = null;
-            return false;
-        }
-        #endregion PyTK CustomElementHandler
-
         [OnSerializing]
         private void OnSerializing(StreamingContext sc) { }
         [OnSerialized]

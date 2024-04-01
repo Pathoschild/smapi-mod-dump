@@ -16,6 +16,7 @@ using StardewValley.Menus;
 using StardewValley;
 using Microsoft.Xna.Framework;
 using xTile.Dimensions;
+using xTile.Tiles;
 
 namespace Shoplifter
 {
@@ -59,7 +60,7 @@ namespace Shoplifter
             foreach (var npc in location.characters)
             {
                 // Is NPC in range?
-                if (npc.currentLocation == who.currentLocation && Utility.tileWithinRadiusOfPlayer(npc.getTileX(), npc.getTileY(), (int)config.CaughtRadius, who))
+                if (npc.currentLocation == who.currentLocation && Utility.tileWithinRadiusOfPlayer((int)npc.Tile.X, (int)npc.Tile.Y, (int)config.CaughtRadius, who))
                 {
                     // Emote NPC
                     npc.doEmote(12, false, false);
@@ -88,14 +89,14 @@ namespace Shoplifter
         /// <param name="who">The player to catch</param>
         /// <param name="location">The current location instance</param>
         /// <returns>Whether the player was caught</returns>      
-        public static bool ShouldBeCaught(string[] which, Farmer who, GameLocation location)
+        public static bool ShouldBeCaught(string[] which, Farmer who, GameLocation location, bool bannable)
         {
             foreach(string character in which)
             {
                 foreach (var npc in location.characters)
                 {
                     // Is NPC in range?
-                    if (npc.Name == character && npc.currentLocation == who.currentLocation && Utility.tileWithinRadiusOfPlayer(npc.getTileX(), npc.getTileY(), (int)config.CaughtRadius, who))
+                    if (npc.Name == character && npc.currentLocation == who.currentLocation && Utility.tileWithinRadiusOfPlayer((int)npc.Tile.X, (int)npc.Tile.Y, (int)config.CaughtRadius, who))
                     {
                         string dialogue;
                         string banneddialogue = (config.DaysBannedFor == 1)
@@ -104,14 +105,28 @@ namespace Shoplifter
 
                         fineamount = Math.Min(Game1.player.Money, (int)config.MaxFine);
 
+                        // A few special dialogue cases
+                        if(config.RareStockChance > 0 && character == "Robin")
+                        {
+                            dialogue = (fineamount > 0)
+                               ? i18n.string_Caught("Robin_RareItemsEnabled")
+                               : i18n.string_Caught_NoMoney("Robin_RareItemsEnabled");
+                        }
+
+                        else if (location.Name == "IslandSouth" && character == "Gus")
+                        {
+                            dialogue = (fineamount > 0)
+                               ? i18n.string_Caught("GusResort")
+                               : i18n.string_Caught_NoMoney("GusResort");
+                        }
+
                         // Is NPC primary shopowner
-                        if (character == "Pierre" || character == "Willy" || character == "Robin" || character == "Marnie" || character == "Gus" || character == "Harvey" || character == "Clint" || character == "Sandy" || character == "Alex")
+                        else if (character == "Pierre" || character == "Willy" || character == "Robin" || character == "Marnie" || character == "Gus" || character == "Harvey" || character == "Clint" || character == "Sandy" || character == "Alex")
                         {
                             // Yes, they have special dialogue
                             dialogue = (fineamount > 0)
                                 ? i18n.string_Caught(character)
                                 : i18n.string_Caught_NoMoney(character);
-
 
                         }
 
@@ -124,11 +139,11 @@ namespace Shoplifter
                         }
 
                         // Is the player now banned? (uses catch before as dialogue is loaded before count is adjusted) Append additional dialogue
-                        dialogue = (Game1.player.modData.ContainsKey($"{manifest.UniqueID}_{location.NameOrUniqueName}") == true && Game1.player.modData[$"{manifest.UniqueID}_{location.NameOrUniqueName}"].StartsWith($"{config.CatchesBeforeBan - 1}") == true)
+                        dialogue = (Game1.player.modData.ContainsKey($"{manifest.UniqueID}_{location.NameOrUniqueName}") == true && Game1.player.modData[$"{manifest.UniqueID}_{location.NameOrUniqueName}"].StartsWith($"{config.CatchesBeforeBan - 1}") == true && bannable == true)
                             ? dialogue + banneddialogue
                             : dialogue;
 
-                        npc.setNewDialogue(dialogue, add: true);
+                        npc.CurrentDialogue.Push(new Dialogue(npc,"",dialogue));
 
                         // Draw dialogue for NPC, dialogue box opens
                         Game1.drawDialogue(npc);
@@ -146,7 +161,7 @@ namespace Shoplifter
         /// </summary>
         /// <param name="location">The current location instance</param>
         /// <param name="bannable">Whether the player can be banned from the shop</param>
-        public static void ShopliftingPenalties(GameLocation location, bool bannable = true)
+        public static void ShopliftingPenalties(GameLocation location, bool bannable)
         {
             // Subtract monetary penalty if it applies
             if (fineamount > 0)
@@ -230,7 +245,7 @@ namespace Shoplifter
                     SeenShoplifting(location, Game1.player);
 
                     // Player is caught
-                    if (ShouldBeCaught(shopkeepers, Game1.player, location) == true)
+                    if (ShouldBeCaught(shopkeepers, Game1.player, location, bannable) == true)
                     {
                         // After dialogue, apply penalties
                         Game1.afterDialogues = delegate
@@ -245,7 +260,7 @@ namespace Shoplifter
                     ModEntry.PerScreenStolen.Value = false;
 
                     // Not caught, generate stock for shoplifting, on purchase adjust counters
-                    Game1.activeClickableMenu = new ShopMenu(ShopStock.generateRandomStock(maxstock, maxquantity, shop), 0, null, delegate
+                    Game1.activeClickableMenu = new ShopMenu("ShopliftMenu", ShopStock.generateRandomStock(maxstock, maxquantity, shop, config.RareStockChance), 0, null, delegate
                     {
                         if (ModEntry.PerScreenStolen.Value == false)
                         {
@@ -269,7 +284,7 @@ namespace Shoplifter
                         ModEntry.PerScreenStolen.Value = true;
 
                         return false;
-                    }, null, "");
+                    }, null, true);
                 }
 
                 else if (answer != "Yes" && islandvisit == true)
@@ -277,20 +292,16 @@ namespace Shoplifter
                     switch (shop)
                     {
                         case "SeedShop":
-                            Game1.activeClickableMenu = new ShopMenu((location as SeedShop).shopStock());
+                            Utility.TryOpenShopMenu("SeedShop", null, playOpenSound: true);
                             break;
                         case "Carpenters":
-                            Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock());
+                            Utility.TryOpenShopMenu("Carpenter", null, playOpenSound: true);
                             break;
                         case "AnimalShop":
-                            Game1.activeClickableMenu = new ShopMenu(Utility.getAnimalShopStock());
+                            Utility.TryOpenShopMenu("AnimalShop", null, playOpenSound: true);
                             break;
                         case "Saloon":
-                            Game1.activeClickableMenu = new ShopMenu(Utility.getSaloonStock(), 0, null, delegate (ISalable item, Farmer farmer, int amount)
-                            {
-                                Game1.player.team.synchronizedShopStock.OnItemPurchased(SynchronizedShopStock.SynchedShop.Saloon, item, amount);
-                                return false;
-                            });
+                            Utility.TryOpenShopMenu("Saloon", null, playOpenSound: true);
                             break;
                         default:
                             break;
@@ -306,7 +317,7 @@ namespace Shoplifter
         public static void FishShopShopliftingMenu(GameLocation location)
         {
             // Willy can sell, don't do anything
-            if (location.getCharacterFromName("Willy") != null && location.getCharacterFromName("Willy").getTileLocation().Y < (float)Game1.player.getTileY())
+            if (location.getCharacterFromName("Willy") != null && location.getCharacterFromName("Willy").Tile.Y < Game1.player.Tile.Y)
             {
                 return;
             }
@@ -328,7 +339,7 @@ namespace Shoplifter
             NPC sandy = location.getCharacterFromName("Sandy");
             if (sandy == null || sandy.currentLocation != location)
             {
-                ShopliftingMenu(location, new string[1] { "Sandy" }, "SandyShop", 3, 3);
+                ShopliftingMenu(location, new string[1] { "Sandy" }, "Sandy", 3, 3);
             }
         }
 
@@ -339,7 +350,7 @@ namespace Shoplifter
         public static void SeedShopShopliftingMenu(GameLocation location)
         {
             // Pierre can sell
-            if (location.getCharacterFromName("Pierre") != null && location.getCharacterFromName("Pierre").getTileLocation().Equals(new Vector2(4f, 17f)) && Game1.player.getTileY() > location.getCharacterFromName("Pierre").getTileY())
+            if (location.getCharacterFromName("Pierre") != null && location.getCharacterFromName("Pierre").Tile.Equals(new Vector2(4f, 17f)) && Game1.player.Tile.Y > location.getCharacterFromName("Pierre").Tile.Y)
             {
                 return;
             }
@@ -357,7 +368,7 @@ namespace Shoplifter
                     }
                     else
                     {
-                        Game1.activeClickableMenu = new ShopMenu((location as SeedShop).shopStock());
+                        Utility.TryOpenShopMenu("SeedShop","Pierre");
                     }
 
                 };
@@ -380,7 +391,7 @@ namespace Shoplifter
         public static void CarpenterShopliftingMenu(GameLocation location, Farmer who, Location tileLocation)
         {
             // Player is in correct position for buying
-            if (who.getTileY() > tileLocation.Y)
+            if (who.Tile.Y > tileLocation.Y)
             {
                 // Robin is on island and not at sciencehouse, she can't sell but player can purchase properly if they want
                 if (location.getCharacterFromName("Robin") == null && Game1.IsVisitingIslandToday("Robin") == true)
@@ -392,13 +403,13 @@ namespace Shoplifter
                     // Create question to shoplift after dialogue box is exited
                     Game1.afterDialogues = delegate
                     {
-                        if (CanShoplift("Carpenters") == true)
+                        if (CanShoplift("Carpenter") == true)
                         {
-                            ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenters", 2, 20, true);
+                            ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenter", 2, 20, true);
                         }
                         else
                         {
-                            Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock());
+                            Utility.TryOpenShopMenu("Carpenter", "Robin");
                         }
                         
                     };                   
@@ -411,7 +422,7 @@ namespace Shoplifter
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:ScienceHouse_RobinAbsent").Replace('\n', '^'));
                     Game1.afterDialogues = delegate
                     {
-                        ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenters", 2, 20);
+                        ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenter", 2, 20);
                     };
 
                 }
@@ -419,7 +430,7 @@ namespace Shoplifter
                 // Robin can't sell. Period
                 else if (location.carpenters(tileLocation) == false)
                 {
-                    ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenters", 2, 20);
+                    ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenter", 2, 20);
                 }
 
                 // Robin can sell and player can't steal
@@ -439,7 +450,7 @@ namespace Shoplifter
         public static void AnimalShopShopliftingMenu(GameLocation location, Farmer who, Location tileLocation)
         {
             // Player is in correct position for buying
-            if (who.getTileY() > tileLocation.Y)
+            if (who.Tile.Y > tileLocation.Y)
             {
                 // Marnie is not in the location, she is on the island, ignore if can't shoplift
                 if (location.getCharacterFromName("Marnie") == null && Game1.IsVisitingIslandToday("Marnie") == true)
@@ -454,7 +465,7 @@ namespace Shoplifter
                         }
                         else
                         {
-                            Game1.activeClickableMenu = new ShopMenu(Utility.getAnimalShopStock());
+                            Utility.TryOpenShopMenu("AnimalShop", "Marnie");
                         }
 
                     };                                       
@@ -493,9 +504,9 @@ namespace Shoplifter
         public static void HospitalShopliftingMenu(GameLocation location, Farmer who)
         {
             // Character is not at the required tile, noone can sell
-            if (location.isCharacterAtTile(who.getTileLocation() + new Vector2(0f, -2f)) == null && location.isCharacterAtTile(who.getTileLocation() + new Vector2(-1f, -2f)) == null)
+            if (location.isCharacterAtTile(new Vector2(who.Tile.X, who.Tile.Y) + new Vector2(0f, -2f)) == null && location.isCharacterAtTile(new Vector2(who.Tile.X, who.Tile.Y) + new Vector2(-1f, -2f)) == null)
             {
-                ShopliftingMenu(location, new string[2] { "Harvey", "Maru" }, "HospitalShop", 1, 3);
+                ShopliftingMenu(location, new string[2] { "Harvey", "Maru" }, "Hospital", 1, 3);
             }
         }
 
@@ -532,11 +543,7 @@ namespace Shoplifter
                     }
                     else
                     {
-                        Game1.activeClickableMenu = new ShopMenu(Utility.getSaloonStock(), 0, null, delegate (ISalable item, Farmer farmer, int amount)
-                        {
-                            Game1.player.team.synchronizedShopStock.OnItemPurchased(SynchronizedShopStock.SynchedShop.Saloon, item, amount);
-                            return false;
-                        });
+                        Utility.TryOpenShopMenu("Saloon", "Gus");
                     }
                 };                                                      
             }
@@ -558,7 +565,15 @@ namespace Shoplifter
         {
             if (location.isCharacterAtTile(new Vector2(tilelocation.X, tilelocation.Y - 2)) == null && location.isCharacterAtTile(new Vector2(tilelocation.X, tilelocation.Y - 1)) == null)
             {
-                ShopliftingMenu(location, new string[1] { "Alex" }, "IceCreamStand", 1, 5, false, false);               
+                ShopliftingMenu(location, new string[1] { "Alex" }, "IceCreamStand", 1, 5, bannable: false);               
+            }
+        }
+
+        public static void ResortBarShopliftingMenu(GameLocation location)
+        {
+            if (location.getCharacterFromName("Gus") == null || (location.getCharacterFromName("Gus") != null && location.getCharacterFromName("Gus").Tile.Equals(new Vector2(14f, 21f)) == false))
+            {
+                ShopliftingMenu(location, new string[1] { "Gus" }, "ResortBar", 2, 1, bannable: false);
             }
         }
     }

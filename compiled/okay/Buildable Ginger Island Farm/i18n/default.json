@@ -1,0 +1,5 @@
+﻿{
+	// GMCM
+	"GMCM.AllowBuildingInSlimeArea.Title": "Allow building in the slime area",
+	"GMCM.AllowBuildingInSlimeArea.Tooltip": "Defines whether or not to allow building in the slime area."
+}

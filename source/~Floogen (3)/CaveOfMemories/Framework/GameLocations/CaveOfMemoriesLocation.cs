@@ -76,7 +76,13 @@ namespace CaveOfMemories.Framework.GameLocations
             {
                 try
                 {
-                    var events = location.GetLocationEvents();
+                    Dictionary<string, string> events;
+                    if (location.TryGetLocationEvents(out string assetName, out events) is false)
+                    {
+                        CaveOfMemories.monitor.Log($"Failed to get location events for location {location.Name}", StardewModdingAPI.LogLevel.Trace);
+                        continue;
+                    }
+
                     foreach (var eventKey in events.Keys)
                     {
                         string id = null;
@@ -169,7 +175,7 @@ namespace CaveOfMemories.Framework.GameLocations
             var characterEvents = new List<EventFragment>();
             foreach (var fragment in _eventFragments.Where(e => e.AssociatedCharacter == npc.Name))
             {
-                if (int.TryParse(fragment.Id, out int actualId) && Game1.player.eventsSeen.Contains(actualId) is false)
+                if (Game1.player.eventsSeen.Contains(fragment.Id) is false)
                 {
                     continue;
                 }
@@ -195,7 +201,7 @@ namespace CaveOfMemories.Framework.GameLocations
 
                 var oldTime = Game1.timeOfDay;
                 var oldOutdoorLight = Game1.outdoorLight;
-                var oldWeather = Game1.netWorldState.Value.GetWeatherForLocation(LocationContext.Default);
+                var oldWeather = Game1.netWorldState.Value.GetWeatherForLocation(LocationContexts.DefaultId);
 
                 // Preserve the friendship data
                 Dictionary<string, int> nameToFriendshipPoints = new Dictionary<string, int>();
@@ -213,7 +219,7 @@ namespace CaveOfMemories.Framework.GameLocations
                         Game1.player.friendshipData[friend].Points = nameToFriendshipPoints[friend];
                     }
 
-                    var locationWeather = Game1.netWorldState.Value.GetWeatherForLocation(LocationContext.Default);
+                    var locationWeather = Game1.netWorldState.Value.GetWeatherForLocation(LocationContexts.DefaultId);
                     locationWeather.isRaining.Value = oldWeather.isRaining.Value;
                     locationWeather.isSnowing.Value = oldWeather.isSnowing.Value;
                     locationWeather.isLightning.Value = oldWeather.isLightning.Value;
@@ -230,7 +236,7 @@ namespace CaveOfMemories.Framework.GameLocations
                 // Set the weather, if given
                 if (String.IsNullOrEmpty(eventFragment.Weather) is false)
                 {
-                    var locationWeather = Game1.netWorldState.Value.GetWeatherForLocation(LocationContext.Default);
+                    var locationWeather = Game1.netWorldState.Value.GetWeatherForLocation(LocationContexts.DefaultId);
                     locationWeather.isRaining.Value = false;
                     locationWeather.isSnowing.Value = false;
                     locationWeather.isLightning.Value = false;
@@ -271,15 +277,16 @@ namespace CaveOfMemories.Framework.GameLocations
             _fakeFarmer = null;
             base.cleanupBeforePlayerExit();
         }
-        public override bool isTileOccupiedForPlacement(Vector2 tileLocation, StardewValley.Object toPlace = null)
+
+        public override bool CanItemBePlacedHere(Vector2 tile, bool itemIsPassable = false, CollisionMask collisionMask = CollisionMask.All, CollisionMask ignorePassables = CollisionMask.Buildings | CollisionMask.Characters | CollisionMask.Farmers | CollisionMask.Flooring | CollisionMask.Furniture | CollisionMask.TerrainFeatures | CollisionMask.LocationSpecific, bool useFarmerTile = false, bool ignorePassablesExactly = false)
         {
             // Preventing player from placing items here
-            return true;
+            return false;
         }
 
         public override void UpdateWhenCurrentLocation(GameTime time)
         {
-            if (Game1.player.getTileX() == MirrorTileBase.X && Game1.player.getTileY() == MirrorTileBase.Y)
+            if (Game1.player.Tile.X == MirrorTileBase.X && Game1.player.Tile.Y == MirrorTileBase.Y)
             {
                 if (_mirrorAlpha > 125)
                 {
@@ -320,7 +327,7 @@ namespace CaveOfMemories.Framework.GameLocations
 
         public override bool performAction(string action, Farmer who, xTile.Dimensions.Location tileLocation)
         {
-            if (action.Equals("mirror", StringComparison.OrdinalIgnoreCase) && who.getTileX() == MirrorTileBase.X && who.getTileY() == MirrorTileBase.Y)
+            if (action.Equals("mirror", StringComparison.OrdinalIgnoreCase) && who.Tile.X == MirrorTileBase.X && who.Tile.Y == MirrorTileBase.Y)
             {
                 Game1.activeClickableMenu = new DialogueBox(CaveOfMemories.i18n.Get("Dialogue.Memory.Stare"));
                 Game1.afterDialogues = delegate
@@ -338,7 +345,7 @@ namespace CaveOfMemories.Framework.GameLocations
         {
             var isActionable = base.isActionableTile(xTile, yTile, who);
 
-            if (who.getTileX() == MirrorTileBase.X && who.getTileY() == MirrorTileBase.Y)
+            if (who.Tile.X == MirrorTileBase.X && who.Tile.Y == MirrorTileBase.Y)
             {
                 Game1.mouseCursorTransparency = 1f;
             }

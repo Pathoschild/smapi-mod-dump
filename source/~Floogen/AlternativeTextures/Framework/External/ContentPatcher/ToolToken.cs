@@ -54,7 +54,7 @@ namespace AlternativeTextures.Framework.External.ContentPatcher
         {
             error = String.Empty;
 
-            if (!_assetManager.toolNames.ContainsKey(input))
+            if (!_assetManager.toolKeyToData.ContainsKey($"{AlternativeTextures.TOOL_TOKEN_HEADER}{input}"))
             {
                 error = $"No matching AT tool found for the given input: {input}";
                 return false;
@@ -80,7 +80,7 @@ namespace AlternativeTextures.Framework.External.ContentPatcher
         /// <param name="input">The input arguments, if any.</param>
         public IEnumerable<string> GetValues(string input)
         {
-            if (!IsReady() || !_assetManager.toolNames.ContainsKey(input))
+            if (!IsReady() || !_assetManager.toolKeyToData.ContainsKey($"{AlternativeTextures.TOOL_TOKEN_HEADER}{input}"))
                 yield break;
 
             yield return $"{AlternativeTextures.TOOL_TOKEN_HEADER}{input}";

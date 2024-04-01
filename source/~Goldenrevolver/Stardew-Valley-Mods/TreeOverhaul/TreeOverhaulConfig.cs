@@ -48,12 +48,19 @@ namespace TreeOverhaul
 
         public bool BuffMahoganyTreeGrowthChance { get; set; } = false;
 
+        public bool BuffMysticTreeGrowthChance { get; set; } = false;
+
         public bool CustomChancesAlsoAffectCustomTrees { get; set; } = false;
 
         public int CustomSeedOnShakeChance { get; set; } = -1;
         public int CustomSeedOnChopChance { get; set; } = -1;
         public int CustomSpawnSeedNearbyChance { get; set; } = -1;
         public int CustomTreeGrowthChance { get; set; } = -1;
+
+        public int CustomPalmTreeSeedOnShakeChance { get; set; } = -1;
+        public int CustomPalmTreeSeedOnChopChance { get; set; } = -1;
+        public int CustomPalmTreeSpawnSeedNearbyChance { get; set; } = -1;
+        public int CustomPalmTreeGrowthChance { get; set; } = -1;
 
         public int CustomMushroomTreeSeedOnShakeChance { get; set; } = -1;
         public int CustomMushroomTreeSeedOnChopChance { get; set; } = -1;
@@ -98,6 +105,30 @@ namespace TreeOverhaul
             {
                 invalidConfig = true;
                 config.CustomTreeGrowthChance = updatedValue;
+            }
+
+            if (VerifyPercentageRange(config.CustomPalmTreeSeedOnShakeChance, ref updatedValue))
+            {
+                invalidConfig = true;
+                config.CustomPalmTreeSeedOnShakeChance = updatedValue;
+            }
+
+            if (VerifyPercentageRange(config.CustomPalmTreeSeedOnChopChance, ref updatedValue))
+            {
+                invalidConfig = true;
+                config.CustomPalmTreeSeedOnChopChance = updatedValue;
+            }
+
+            if (VerifyPercentageRange(config.CustomPalmTreeSpawnSeedNearbyChance, ref updatedValue))
+            {
+                invalidConfig = true;
+                config.CustomPalmTreeSpawnSeedNearbyChance = updatedValue;
+            }
+
+            if (VerifyPercentageRange(config.CustomPalmTreeGrowthChance, ref updatedValue))
+            {
+                invalidConfig = true;
+                config.CustomPalmTreeGrowthChance = updatedValue;
             }
 
             if (VerifyPercentageRange(config.CustomMushroomTreeSeedOnShakeChance, ref updatedValue))
@@ -181,6 +212,8 @@ namespace TreeOverhaul
 
             api.AddBoolOption(manifest, () => config.BuffMahoganyTreeGrowthChance, (bool val) => config.BuffMahoganyTreeGrowthChance = val,
                 () => "Buff Mahogany Tree Growth", () => "Changes the growth chance of mahogany trees to be the same as the other base game tree, 20% unfertilized and 100% fertilized (from 15% and 60%). If 'CustomTreeGrowthChance' is used, it properly takes priority for the unfertilized growth chance.");
+            api.AddBoolOption(manifest, () => config.BuffMysticTreeGrowthChance, (bool val) => config.BuffMysticTreeGrowthChance = val,
+                () => "Buff Mystic Tree Growth", () => "Changes the growth chance of mystic trees to be the same as the other base game tree, 20% unfertilized and 100% fertilized (from 15% and 30%). If 'CustomTreeGrowthChance' is used, it properly takes priority for the unfertilized growth chance.");
 
             api.AddTextOption(manifest, () => GetElementFromConfig(SSChoices, config.SaveSprouts), (string val) => config.SaveSprouts = GetIndexFromArrayElement(SSChoices, val), () => "Save Sprouts From Tools", () => "Normal and fruit trees can't be killed by the selected tools", SSChoices);
 
@@ -199,22 +232,33 @@ namespace TreeOverhaul
                 () => "Also Affect Custom Trees", () => "Whether, in addition to base game trees, mod added trees should also be affected");
 
             api.AddNumberOption(manifest, () => config.CustomSeedOnShakeChance, (int val) => config.CustomSeedOnShakeChance = val,
-                () => "'Seed On Shake' Chance", () => "Chance that a seed drops when shaking a tree (base game: 5-15%, -1 to use base game value)", -1, 100);
+                () => "'Seed On Shake' Chance", () => "Chance that a seed drops when shaking a tree (base game: 5-15%, -1 to use base game value). Does not apply to mystic trees.", -1, 100);
             api.AddNumberOption(manifest, () => config.CustomSeedOnChopChance, (int val) => config.CustomSeedOnChopChance = val,
-                () => "'Seed On Chop' Chance", () => "Chance that a seed drops when chopping down a tree (base game: 56-75%, -1 to use base game value)", -1, 100);
+                () => "'Seed On Chop' Chance", () => "Chance that a seed drops when chopping down a tree (base game: 56-75%, -1 to use base game value). Does not apply to mystic trees.", -1, 100);
             api.AddNumberOption(manifest, () => config.CustomSpawnSeedNearbyChance, (int val) => config.CustomSpawnSeedNearbyChance = val,
-                () => "'Spawn Seed Nearby' Chance", () => "Chance to attempt to spawn a seed near a tree overnight (base game: 15%, -1 to use base game value)", -1, 100);
+                () => "'Spawn Seed Nearby' Chance", () => "Chance to attempt to spawn a seed near a tree (on the farm) overnight (base game: 15%, -1 to use base game value). Does not apply to mystic trees.", -1, 100);
             api.AddNumberOption(manifest, () => config.CustomTreeGrowthChance, (int val) => config.CustomTreeGrowthChance = val,
                 () => "Tree Growth Chance", () => "Chance for a tree to grow overnight (including mahogany trees) (base game: 20%, -1 to use base game value)", -1, 100);
+
+            api.AddSectionTitle(manifest, () => "Custom Chances (Palm Trees)", null);
+
+            api.AddNumberOption(manifest, () => config.CustomPalmTreeSeedOnShakeChance, (int val) => config.CustomPalmTreeSeedOnShakeChance = val,
+                () => "'Seed On Shake' Chance", () => "Chance that a seed drops when shaking a palm tree (base game: 5-15%, -1 to use base game value).", -1, 100);
+            api.AddNumberOption(manifest, () => config.CustomPalmTreeSeedOnChopChance, (int val) => config.CustomPalmTreeSeedOnChopChance = val,
+                () => "'Seed On Chop' Chance", () => "Chance that a seed drops when chopping down a palm tree (base game: 75%, -1 to use base game value).", -1, 100);
+            api.AddNumberOption(manifest, () => config.CustomPalmTreeSpawnSeedNearbyChance, (int val) => config.CustomPalmTreeSpawnSeedNearbyChance = val,
+                () => "'Spawn Seed Nearby' Chance", () => "Chance to attempt to spawn a seed near a palm tree (on the farm) overnight (base game: 15%, -1 to use base game value).", -1, 100);
+            api.AddNumberOption(manifest, () => config.CustomPalmTreeGrowthChance, (int val) => config.CustomPalmTreeGrowthChance = val,
+                () => "Tree Growth Chance", () => "Chance for a palm tree to grow overnight (base game: 20%, -1 to use base game value)", -1, 100);
 
             api.AddSectionTitle(manifest, () => "Custom Chances (Mushroom Trees)", null);
 
             api.AddNumberOption(manifest, () => config.CustomMushroomTreeSeedOnShakeChance, (int val) => config.CustomMushroomTreeSeedOnShakeChance = val,
                 () => "'Seed On Shake' Chance", () => "Chance that a seed drops when shaking a mushroom tree (base game: 0%, -1 to use base game value)", -1, 100);
-            api.AddNumberOption(manifest, () => config.CustomSeedOnChopChance, (int val) => config.CustomSeedOnChopChance = val,
+            api.AddNumberOption(manifest, () => config.CustomMushroomTreeSeedOnChopChance, (int val) => config.CustomMushroomTreeSeedOnChopChance = val,
                 () => "'Seed On Chop' Chance", () => "Chance that a seed drops when chopping down a mushroom tree (base game: 0%, -1 to use base game value)", -1, 100);
             api.AddNumberOption(manifest, () => config.CustomMushroomTreeSpawnSeedNearbyChance, (int val) => config.CustomMushroomTreeSpawnSeedNearbyChance = val,
-                () => "'Spawn Seed Nearby' Chance", () => "Chance to attempt to spawn a seed near a mushroom tree overnight (base game: 15%, -1 to use base game value)", -1, 100);
+                () => "'Spawn Seed Nearby' Chance", () => "Chance to attempt to spawn a seed near a mushroom tree (on the farm) overnight (base game: 15%, -1 to use base game value)", -1, 100);
             api.AddNumberOption(manifest, () => config.CustomMushroomTreeGrowthChance, (int val) => config.CustomMushroomTreeGrowthChance = val,
                 () => "Tree Growth Chance", () => "Chance for a mushroom tree to grow overnight (base game: 20%, -1 to use base game value)", -1, 100);
         }

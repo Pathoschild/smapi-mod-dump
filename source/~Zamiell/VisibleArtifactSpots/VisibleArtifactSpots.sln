@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisibleArtifactSpots", "VisibleArtifactSpots\VisibleArtifactSpots.csproj", "{E4FF6DD0-22F7-42DE-9DC2-E1F27157D966}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4FF6DD0-22F7-42DE-9DC2-E1F27157D966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4FF6DD0-22F7-42DE-9DC2-E1F27157D966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4FF6DD0-22F7-42DE-9DC2-E1F27157D966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4FF6DD0-22F7-42DE-9DC2-E1F27157D966}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85B07781-31D8-4434-ADE8-0C2BB67A5BE9}
+	EndGlobalSection
+EndGlobal

@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Event.World;
 using StardewValley;
 using System.Collections.Generic;
 using xTile.Dimensions;
@@ -19,13 +18,13 @@ namespace StardewDruid.Cast.Weald
     internal class Pool : CastHandle
     {
 
-        public Pool(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Pool(Vector2 target)
+            : base(target)
         {
 
             castCost = 8;
 
-            if (rite.caster.FishingLevel >= 6)
+            if (Game1.player.FishingLevel >= 6)
             {
 
                 castCost = 4;
@@ -36,29 +35,6 @@ namespace StardewDruid.Cast.Weald
 
         public override void CastEffect()
         {
-
-            /*if (randomIndex.Next(5) == 0 && riteData.spawnIndex["wildspawn"] && !Mod.instance.EffectDisabled("Wildspawn"))
-            {
-                
-                if (!Mod.instance.eventRegister.ContainsKey("wildspawn"))
-                {
-
-                    new Event.World.Wildspawn(targetVector, riteData).EventTrigger();
-
-                }
-                
-                (Mod.instance.eventRegister["wildspawn"] as Wildspawn).SpawnMonster(targetLocation, targetVector, new() { 0, }, "water", true);
-               
-                //StardewValley.Monsters.Monster spawnMonster = Mod.instance.SpawnMonster(targetLocation, targetVector, new() { 0, }, "water");
-
-                //if (!riteData.castTask.ContainsKey("masterCreature")) //&& spawnMonster != null)
-                //{
-
-                //    Mod.instance.UpdateTask("lessonCreature", 1);
-
-                //}
-
-            }*/
 
             int objectIndex = Map.SpawnData.RandomPoolFish(targetLocation);
 
@@ -76,10 +52,11 @@ namespace StardewDruid.Cast.Weald
 
             castFire = true;
 
-            bool targetDirection = targetPlayer.getTileLocation().X <= targetVector.X;
+            bool targetDirection = targetPlayer.Tile.X <= targetVector.X;
 
             ModUtility.AnimateSplash(targetLocation, targetVector, targetDirection);
-
+            Vector2 cursorVector = targetVector * 64;
+            ModUtility.AnimateCursor(targetLocation, cursorVector);
         }
 
     }

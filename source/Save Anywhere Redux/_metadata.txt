@@ -6,9 +6,15 @@ mods:
    Save Anywhere Redux
 
 latest commit:
-   commit 0a175166547104bc7ccf9cfaf63f5dfb06f6c10c
-   Author: yuval <yuvalb588@gmail.com>
-   Date:   Sat Aug 26 19:03:22 2023 +0300
+   commit 4ac54154d2287c6ff46bb4fd660d00f053fc97c6
+   Author: panda <yuvalb588@gmail.com>
+   Date:   Sun Mar 24 19:31:05 2024 +0200
    
-       Merge remote-tracking branch 'origin/main'
+       Changes from 3.2.8-3.3.0
+       - Ported to SDV 1.6
+       - Fixed NPC Schedules again
+       - Removed now unnecessary FTM Compatibility Menu
+       - Removed now unnecessary Custom Shipping Menu (replacing the 3.2.8 fix of the rendering)
+       - fixed running After midday save actions after normal save
+       - Fixed horse returning to stable on load
    

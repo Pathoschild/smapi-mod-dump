@@ -24,7 +24,7 @@ namespace AnimalHusbandryMod.animals.events
     public class AlexAct: AbstractAct
     {
         public override string NpcName => "Alex";
-        public override int? RequiredEvent => 2481135;
+        public override string RequiredEvent => "2481135";
 
         public override string GetAct(AnimalContestItem animalContestInfo, List<AnimalContestItem> history)
         {

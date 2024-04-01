@@ -53,7 +53,7 @@ PerfectFriend | OtherEvent | Excludes the NPC from Stardew's "perfection score" 
 ## Mod Examples
 This mod loads a new data asset into Stardew: `Data/CustomNPCExclusions`.
 
-The asset is similar to other "Data" types and is a `Dictionary<string, string>` internally. Each entry should have a NPC's name as the *key*, and a set of exclusion rules for that NPC as the *value*. Exclusion rules can be separated by spaces, commas, or forward slashes.
+The asset is similar to other "Data" types and is a `Dictionary<string, string>` internally. Each entry should have an NPC's name as the *key*, and a set of exclusion rules for that NPC as the *value*. Exclusion rules can be separated by spaces, commas, or forward slashes.
 
 The asset can be edited in multiple ways; see the sections below for example of specific methods.
 

@@ -20,6 +20,7 @@ This mod adds highlighting for the range of the following items and buildings:
 * Sprinklers (including the Prismatic Sprinkler from the Prismatic Tools mod)
 * Scarecrows (including the Deluxe Scarecrow)
 * Bee Houses
+* Mushroom Logs
 * Junimo Huts
 * Bombs (see note below)
 
@@ -54,7 +55,7 @@ and not yet exploded shows its ranges (unless disabled in configuration).
 
 ### Compatibility
 
-* Works with Stardew Valley 1.5 on Linux/Mac/Windows.  Works on Android in the release corresponding to the Stardew Valley version on Android.
+* Works with Stardew Valley 1.6 on Linux/Mac/Windows.  _Might_ work on Android in the release corresponding to the Stardew Valley version on Android.
 * Works in single player and multiplayer.
 * No known incompatibilities, but if you have another mod that also shows ranges (such as UI Info Suite) then each mod will apply its own highlighting. The result is not horrible, but you probably want to disable the range highlighting in the other mod if possible.  (You can do this from the in-game menu in UI Info Suite.)
 * If Prismatic Tools is installed then the range of the prismatic sprinkler will be the value read from its config.
@@ -89,6 +90,7 @@ highlight colors.  The default configuration is summarized in the table below.
 | Sp**r**inklers | `R` | blue
 | Scarecr**o**ws | `O` | green
 | Bee **H**ouses | `H` | yellow
+| Mushroom Logs | (none) | brown
 | **J**unimo Huts | `J` | white
 | Bombs | (none) | red/orange
 
@@ -99,9 +101,9 @@ You can also configure whether to show the inner and outer ranges of bombs,
 and whether to show the ranges of "ticking" bombs placed on the ground.
 
 There are also settings that control whether other (already placed) sprinklers,
-scarecrows, and beehouses have their ranges highlighted if the currently held
-item is a sprinkler, scarecrow, or beehouse.  By default, this is on for
-sprinklers and scarecrows, and off for beehouses.
+scarecrows, beehouses, and mushroom logs have their ranges highlighted if the currently held
+item is a sprinkler, scarecrow, beehouse, or mushroom log.  By default, this is on for
+sprinklers and scarecrows, and off for beehouses and mushroom logs.
 
 Finally, the Show*THING*Range options allow you to turn off highlighting of *thing*
 completely.  (Maybe you don't want to see it.  Maybe some other mod is already

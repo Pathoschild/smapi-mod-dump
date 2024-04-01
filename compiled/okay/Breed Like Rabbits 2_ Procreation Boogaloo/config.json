@@ -1,0 +1,10 @@
+{
+  "NameNewRabbits": true,
+  "IgnoreGender": false,
+  "AccountForHappiness": true,
+  "AccountForFriendship": true,
+  "AccountForSeason": true,
+  "AccountForAge": true,
+  "AllowMultiples": true,
+  "BaseRate": 42.0
+}

@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/JoXW100/StardewValleyMods
+   Git: https://github.com/JoXW100/StardewValleyMods.git
+
+mods:
+   Mobile Phone Continued
+   Mobile Phone Continued → Arcade Mobile Apps
+   Mobile Phone Continued → Calendar Mobile App
+   Mobile Phone Continued → Mobile Catalogues
+   Mobile Phone Continued → Television Mobile App
+
+latest commit:
+   commit 568ff849868341478643ddff1e6638d0c47e25b7
+   Author: JoXW100 <joxw100@gmail.com>
+   Date:   Thu Mar 28 22:30:13 2024 +0100
+   
+       Updated MobilePhone manifest version
+   

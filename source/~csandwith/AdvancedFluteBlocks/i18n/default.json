@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  // GMCM
+  "GMCM_Option_ModEnabled_Name": "Mod Enabled",
+  "GMCM_SectionTitle_KeyBinds_Text": "Key Binds",
+  "GMCM_Option_PitchModKey_Name": "Pitch Mod Key",
+  "GMCM_Option_ToneModKey_Name": "Tone Mod Key",
+  "GMCM_Option_PitchStep_Name": "Pitch Step"
+}

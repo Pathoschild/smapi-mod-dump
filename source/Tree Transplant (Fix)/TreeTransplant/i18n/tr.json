@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/siweipancc/TreeTransplant
+**
+*************************************************/
+
+{
+  "Menu_DefaultText": "Nakletmek i�in bir a�a� se�in.",
+  "Menu_PlacementText": "A�a� i�in yeni bir yer se�in.",
+  "Menu_InvalidPlace": "Buraya koyulamaz!",
+  "Menu_InvalidCap": "Ak�ta�l� a�a�lar ta��namaz!",
+  "Carpenter_Option": "A�a� Nakli"
+}

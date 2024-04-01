@@ -17,8 +17,8 @@ namespace StardewDruid.Cast.Mists
     internal class Artifact : CastHandle
     {
 
-        public Artifact(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Artifact(Vector2 target)
+            : base(target)
         {
 
         }
@@ -47,7 +47,7 @@ namespace StardewDruid.Cast.Mists
 
             castCost = 8;
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector * 64 + new Vector2(32));
 
             return;
 

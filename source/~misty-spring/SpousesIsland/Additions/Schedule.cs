@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -45,12 +44,12 @@ internal static class Schedule
             var cribPoint = new Point(crib.X + crib.Width - 1, crib.Y + crib.Height + 1);
 
             scheduleData =
-                $"620 FarmHouse {entry.X} {entry.Y - 2}/630 FarmHouse {cribPoint.X} {cribPoint.Y} 0/730 FarmHouse {kitchen.X + 2} {kitchen.Y} 0/800 FarmHouse {kitchen.X - 2} {kitchen.Y} 0 devan_spoon/830 FarmHouse {kitchen.X - 2} {kitchen.Y} 2 devan_bottle/900 FarmHouse {kitchen.X + 1} {kitchen.Y} 0 devan_washing/1150 FarmHouse {kitchen.X} {kitchen.Y} 0 devan_cook/1230 FarmHouse {kitchen.X} {kitchen.Y} 2 devan_plate/1420 FarmHouse 8 14 0 devan_washing/1510 FarmHouse {broom.X} {broom.Y} 2 devan_broom/1600 FarmHouse {broom.X} {broom.Y + 1} 2/2130 FarmHouse {cribPoint.X} {cribPoint.Y} 0";
+                $"610 FarmHouse {entry.X} {entry.Y - 2}/630 FarmHouse {cribPoint.X} {cribPoint.Y} 0/730 FarmHouse {kitchen.X + 2} {kitchen.Y} 0/800 FarmHouse {kitchen.X - 2} {kitchen.Y} 0 devan_spoon/830 FarmHouse {kitchen.X - 2} {kitchen.Y} 2 devan_bottle/900 FarmHouse {kitchen.X + 1} {kitchen.Y} 0 devan_washing/1150 FarmHouse {kitchen.X} {kitchen.Y} 0 devan_cook/1230 FarmHouse {kitchen.X} {kitchen.Y} 2 devan_plate/1420 FarmHouse 8 14 0 devan_washing/1510 FarmHouse {broom.X} {broom.Y} 2 devan_broom/1600 FarmHouse {broom.X} {broom.Y + 1} 2/2130 FarmHouse {cribPoint.X} {cribPoint.Y} 0";
         }
         else
         {
             scheduleData =
-                $"620 FarmHouse {entry.X} {entry.Y - 2}/630 FarmHouse {kitchen.X} {kitchen.Y} 2/730 FarmHouse {kitchen.X + 2} {kitchen.Y} 0/800 FarmHouse {kitchen.X - 2} {kitchen.Y} 0 devan_spoon/830 FarmHouse {kitchen.X - 2} {kitchen.Y} 2 devan_bottle/900 FarmHouse {kitchen.X + 1} {kitchen.Y} 0 devan_washing/1150 FarmHouse {kitchen.X} {kitchen.Y} 0 devan_cook/1230 FarmHouse {kitchen.X} {kitchen.Y} 2 devan_plate/1420 FarmHouse 8 14 0 devan_washing/1510 FarmHouse {broom.X} {broom.Y} 0 devan_broom/1600 FarmHouse {broom.X} {broom.Y + 1} 2";
+                $"610 FarmHouse {entry.X} {entry.Y - 2}/630 FarmHouse {kitchen.X} {kitchen.Y} 2/730 FarmHouse {kitchen.X + 2} {kitchen.Y} 0/800 FarmHouse {kitchen.X - 2} {kitchen.Y} 0 devan_spoon/830 FarmHouse {kitchen.X - 2} {kitchen.Y} 2 devan_bottle/900 FarmHouse {kitchen.X + 1} {kitchen.Y} 0 devan_washing/1150 FarmHouse {kitchen.X} {kitchen.Y} 0 devan_cook/1230 FarmHouse {kitchen.X} {kitchen.Y} 2 devan_plate/1420 FarmHouse 8 14 0 devan_washing/1510 FarmHouse {broom.X} {broom.Y} 0 devan_broom/1600 FarmHouse {broom.X} {broom.Y + 1} 2";
         }
 
         if (Game1.player.friendshipData.TryGetValue("DevanSpring", out var friendship) == false || friendship is null)
@@ -85,7 +84,8 @@ internal static class Schedule
         //Dictionary<int, SchedulePathDescription> schedule;
         string raw;
 
-        if (npc.hasMasterScheduleEntry("IslandVisit"))
+        //if has schedule AND (no randomized OR nextbool)
+        if (npc.hasMasterScheduleEntry("IslandVisit") && (ModEntry.Config.ScheduleRandom == false || Game1.random.NextBool()))
         {
             var rawUnparsed = npc.getMasterScheduleEntry("IslandVisit");
             raw = rawUnparsed.Replace("$random_island", Maps.RandomOrDefault(npc.Name));
@@ -190,9 +190,6 @@ internal static class Schedule
                 }
 
                 break;
-            default:
-                //idk. log error
-                throw new ArgumentException();
         }
     }
 

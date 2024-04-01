@@ -1,6 +1,6 @@
 urls:
-   web: https://gitlab.com/delixx/stardew-valley-lenient-window-resize
-   Git: https://gitlab.com/delixx/stardew-valley-lenient-window-resize.git
+   web: https://gitlab.com/delixx/stardew-valley/lenient-window-resize
+   Git: https://gitlab.com/delixx/stardew-valley/lenient-window-resize.git
 
 mods:
    Lenient Window Resize

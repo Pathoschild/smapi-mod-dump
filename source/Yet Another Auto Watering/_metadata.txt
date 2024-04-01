@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ZhuoYun233/YetAnotherAutoWatering-StardrewValleyMod
+   Git: https://github.com/ZhuoYun233/YetAnotherAutoWatering-StardrewValleyMod.git
+
+mods:
+   Yet Another Auto Watering
+
+latest commit:
+   commit 21b7119c571e1cb7b19257340af779059202a980
+   Author: zhuoyun233 <zhuoyun233@gmail.com>
+   Date:   Mon Apr 1 13:40:22 2024 +0800
+   
+       modified i18n files
+   

@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -54,7 +53,6 @@ namespace ScheduleViewer
             helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
             helper.Events.World.NpcListChanged += OnNpcListChanged;
         }
-
 
         /*********
         ** Private methods
@@ -179,7 +177,7 @@ namespace ScheduleViewer
                     // open if no conflict
                     if (Game1.activeClickableMenu == null)
                     {
-                        if (Context.IsPlayerFree && !Game1.player.UsingTool && !Game1.player.isEating)
+                        if (Context.IsPlayerFree && !Game1.player.UsingTool && !Game1.player.isEating && Game1.currentMinigame == null)
                         {
                             OpenMenu();
                         }
@@ -204,8 +202,8 @@ namespace ScheduleViewer
             }
             catch (Exception ex)
             {
+                Console.Log("Error opening the Schedule Viewer. See details below:", LogLevel.Error);
                 Console.Log(ex.ToString(), LogLevel.Error);
-                Console.Log("Error opening the Schedule Viewer.", LogLevel.Error);
             }
         }
 

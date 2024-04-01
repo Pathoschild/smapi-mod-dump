@@ -16,6 +16,7 @@ namespace SpousesIsland
         public int CustomChance { get; set; } = 10;
         public bool ScheduleRandom { get; set; }
         public bool IslandClothes { get; set; }
+        public bool AvoidRain { get; set; } = true;
 
         public bool Devan { get; set; }
 
@@ -26,5 +27,6 @@ namespace SpousesIsland
         public bool AllowChildren { get; set; }
         public bool UseFurnitureBed { get; set; }
         public string Childbedcolor { get; set; } = "1"; //if not using furniture bed
+        public bool ChildRoom { get; set; }
     }
 }

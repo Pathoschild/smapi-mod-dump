@@ -75,7 +75,7 @@ namespace FishingTrawler.Framework.Patches.Objects
                 var sourceRectangle = new Rectangle(32 * (int)flagType % flagTexture.Width, 32 * (int)flagType / flagTexture.Width * 32, 32, 32); ;
                 if (Furniture.isDrawingLocationFurniture)
                 {
-                    spriteBatch.Draw(flagTexture, Game1.GlobalToLocal(Game1.viewport, ___drawPosition + ((__instance.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero)), sourceRectangle, Color.White * alpha, 0f, Vector2.Zero, 4f, __instance.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((int)__instance.furniture_type.Value == 12) ? (2E-09f + __instance.tileLocation.Y / 100000f) : ((float)(__instance.boundingBox.Value.Bottom - (((int)__instance.furniture_type.Value == 6 || (int)__instance.furniture_type.Value == 17 || (int)__instance.furniture_type.Value == 13) ? 48 : 8)) / 10000f));
+                    spriteBatch.Draw(flagTexture, Game1.GlobalToLocal(Game1.viewport, ___drawPosition.Value + ((__instance.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero)), sourceRectangle, Color.White * alpha, 0f, Vector2.Zero, 4f, __instance.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((int)__instance.furniture_type.Value == 12) ? (2E-09f + __instance.tileLocation.Y / 100000f) : ((float)(__instance.boundingBox.Value.Bottom - (((int)__instance.furniture_type.Value == 6 || (int)__instance.furniture_type.Value == 17 || (int)__instance.furniture_type.Value == 13) ? 48 : 8)) / 10000f));
                 }
                 else
                 {

@@ -23,7 +23,7 @@ namespace PortableBridges.TerrainFeatures
 
         public BridgeObject()
         {
-            this.whichType.Value = 2;
+            this.Type = "TODO: REPLACE ME";
         }
 
         public override void actionOnPlayerEntry()

@@ -23,6 +23,13 @@ namespace HorseOverhaul
         Horsemanship_Beige = 4
     }
 
+    public enum WaterOption
+    {
+        Trough = 0,
+        Bucket = 1,
+        All = 2
+    }
+
     /// <summary>
     /// Config file for the mod
     /// </summary>
@@ -38,15 +45,19 @@ namespace HorseOverhaul
 
         public bool MovementSpeed { get; set; } = true;
 
-        public float MaxMovementSpeedBonus { get; set; } = 3f;
+        public float MaxMovementSpeedBonus { get; set; } = 2.5f;
 
         public bool SaddleBag { get; set; } = true;
 
         public string VisibleSaddleBags { get; set; } = SaddleBagOption.Green.ToString();
 
+        public bool FixHorseEmotePosition { get; set; } = true;
+
         public bool Petting { get; set; } = true;
 
         public bool Water { get; set; } = true;
+
+        public string PreferredWaterContainer { get; set; } = WaterOption.Trough.ToString();
 
         public bool HorseHeater { get; set; } = true;
 
@@ -57,6 +68,8 @@ namespace HorseOverhaul
         public bool InteractWithBushesWhileRiding { get; set; } = true;
 
         public bool InteractWithTappersWhileRiding { get; set; } = true;
+
+        public bool InteractWithMushroomLogsAndBoxesWhileRiding { get; set; } = true;
 
         public bool InteractWithTreesWhileRiding { get; set; } = true;
 
@@ -94,14 +107,25 @@ namespace HorseOverhaul
                 invalidConfig = true;
             }
 
-            if (Enum.TryParse(config.VisibleSaddleBags, true, out SaddleBagOption res))
+            if (Enum.TryParse(config.VisibleSaddleBags, true, out SaddleBagOption saddleBag))
             {
                 // reassign to ensure casing is correct
-                config.VisibleSaddleBags = res.ToString();
+                config.VisibleSaddleBags = saddleBag.ToString();
             }
             else
             {
                 config.VisibleSaddleBags = SaddleBagOption.Disabled.ToString();
+                invalidConfig = true;
+            }
+
+            if (Enum.TryParse(config.PreferredWaterContainer, true, out WaterOption waterContainer))
+            {
+                // reassign to ensure casing is correct
+                config.PreferredWaterContainer = waterContainer.ToString();
+            }
+            else
+            {
+                config.PreferredWaterContainer = WaterOption.Trough.ToString();
                 invalidConfig = true;
             }
 
@@ -153,16 +177,22 @@ namespace HorseOverhaul
 
             api.AddBoolOption(manifest, () => config.ThinHorse, (bool val) => config.ThinHorse = val, () => "Thin Horse", null);
             api.AddBoolOption(manifest, () => config.SaddleBag, (bool val) => config.SaddleBag = val, () => "Saddle Bags", null);
-            api.AddTextOption(manifest, () => config.VisibleSaddleBags.ToString(), (string val) => config.VisibleSaddleBags = val, () => "Visible Saddle Bags", null, Enum.GetNames(typeof(SaddleBagOption)), (s) => s.Replace('_', ' '));
+            api.AddTextOption(manifest, () => config.VisibleSaddleBags, (string val) => config.VisibleSaddleBags = val, () => "Visible Saddle Bags", null, Enum.GetNames(typeof(SaddleBagOption)), (s) => s.Replace('_', ' '));
 
             api.AddSectionTitle(manifest, () => "Friendship", null);
 
             api.AddBoolOption(manifest, () => config.MovementSpeed, (bool val) => config.MovementSpeed = val, () => "Movement Speed (MS)", null);
             api.AddNumberOption(manifest, () => config.MaxMovementSpeedBonus, (float val) => config.MaxMovementSpeedBonus = val, () => "Maximum MS Bonus", null, 0);
             api.AddBoolOption(manifest, () => config.Petting, (bool val) => config.Petting = val, () => "Petting", null);
-            api.AddBoolOption(manifest, () => config.Water, (bool val) => config.Water = val, () => "Water", null);
             api.AddBoolOption(manifest, () => config.Feeding, (bool val) => config.Feeding = val, () => "Feeding", null);
             api.AddBoolOption(manifest, () => config.HorseHeater, (bool val) => config.HorseHeater = val, () => "Heater", null);
+
+            api.AddBoolOption(manifest, () => config.Water, (bool val) => config.Water = val,
+                () => "Water", null);
+            api.AddTextOption(manifest, () => config.PreferredWaterContainer, (string val) => config.PreferredWaterContainer = val,
+                () => "Preferred Water Container", () => "If the current stable sprite has both a trough and a bucket, which container to fill. If it has only one, this option is ignored", Enum.GetNames(typeof(WaterOption)), (s) => s.Replace('_', ' '));
+            api.AddBoolOption(manifest, () => config.DisableStableSpriteChanges, (bool val) => config.DisableStableSpriteChanges = val,
+                () => "Disable Stable Sprite Changes", null);
 
             api.AddSectionTitle(manifest, () => "Interact While Riding", null);
 
@@ -174,6 +204,8 @@ namespace HorseOverhaul
                 () => "Interact With Bushes", null);
             api.AddBoolOption(manifest, () => config.InteractWithTappersWhileRiding, (bool val) => config.InteractWithTappersWhileRiding = val,
                 () => "Interact With Tappers", null);
+            api.AddBoolOption(manifest, () => config.InteractWithMushroomLogsAndBoxesWhileRiding, (bool val) => config.InteractWithMushroomLogsAndBoxesWhileRiding = val,
+                () => "Interact With Mushroom Log/Box", null);
             api.AddBoolOption(manifest, () => config.InteractWithTreesWhileRiding, (bool val) => config.InteractWithTreesWhileRiding = val,
                 () => "Interact With Trees", null);
             api.AddBoolOption(manifest, () => config.InteractWithFruitTreesWhileRiding, (bool val) => config.InteractWithFruitTreesWhileRiding = val,
@@ -186,7 +218,7 @@ namespace HorseOverhaul
             api.AddBoolOption(manifest, () => config.NewFoodSystem, (bool val) => config.NewFoodSystem = val, () => "New Food System", null);
             api.AddBoolOption(manifest, () => config.PetFeeding, (bool val) => config.PetFeeding = val, () => "Pet Feeding", null);
             api.AddBoolOption(manifest, () => config.AllowMultipleFeedingsADay, (bool val) => config.AllowMultipleFeedingsADay = val, () => "Allow Multiple Feedings A Day", null);
-            api.AddBoolOption(manifest, () => config.DisableStableSpriteChanges, (bool val) => config.DisableStableSpriteChanges = val, () => "Disable Stable Sprite Changes", null);
+            api.AddBoolOption(manifest, () => config.FixHorseEmotePosition, (bool val) => config.FixHorseEmotePosition = val, () => "Fix Horse Emote Position", null);
 
             api.SetTitleScreenOnlyForNextOptions(manifest, false);
 
@@ -196,6 +228,9 @@ namespace HorseOverhaul
             api.AddKeybindList(manifest, () => config.PetMenuKey, (KeybindList keybindList) => config.PetMenuKey = keybindList, () => "Pet Menu Key");
             api.AddKeybindList(manifest, () => config.AlternateSaddleBagAndFeedKey, (KeybindList keybindList) => config.AlternateSaddleBagAndFeedKey = keybindList, () => "Alternate Saddle Bag\nAnd Feed Key");
             api.AddBoolOption(manifest, () => config.DisableMainSaddleBagAndFeedKey, (bool val) => config.DisableMainSaddleBagAndFeedKey = val, () => "Disable Main Saddle Bag\nAnd Feed Key", null);
+
+            // if the world is ready, then we are not in the main menu
+            api.AddParagraph(manifest, () => Context.IsWorldReady ? "(All other settings are available in the main menu GMCM)" : string.Empty);
         }
     }
 }

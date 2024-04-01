@@ -26,6 +26,9 @@ public class SpritePool
 
     /// <summary>The default grass sprites in the sprite pool.</summary>
     private readonly List<Texture2D> DefaultGrassSprites = [];
+    
+    /// <summary>The meadowlands grass sprites in the sprite pool.</summary>
+    private readonly List<Texture2D> MeadowlandsGrassSprites = [];
 
     /// <summary>The custom grass sprites in the sprite pool.</summary>
     private readonly List<GrassSprite> CustomGrassSprites = [];
@@ -35,17 +38,20 @@ public class SpritePool
     ** Properties
     *********/
     /// <summary>Gets the number of sprites in the sprite pool.</summary>
-    public int Count => IncludeDefaultGrass ? DefaultGrassSprites.Count + CustomGrassSprites.Count : CustomGrassSprites.Count;
+    public int Count => IncludeDefaultGrass ? DefaultGrassSprites.Count + MeadowlandsGrassSprites.Count + CustomGrassSprites.Count : MeadowlandsGrassSprites.Count + CustomGrassSprites.Count;
 
     /// <summary>The sprite atlas of the sprite pool.</summary>
     public Texture2D Atlas { get; private set; }
 
-    /// <summary>Whether the default sprites should be including in the resulting sprite collection.</summary>
+    /// <summary>Whether the default sprites should be included in the resulting sprite collection.</summary>
     public bool IncludeDefaultGrass
     {
         get => _IncludeDefaultGrass || CustomGrassSprites.Count == 0;
         set => _IncludeDefaultGrass = value;
     }
+
+    /// <summary>Whether the meadowlands sprites should be included in the resulting sprite collection.</summary>
+    public bool IncludeMeadowlandsGrass => Game1.whichModFarm?.Id == "MeadowlandsFarm" || ModEntry.Instance.Config.IncludeMeadowlandsGrassInAllFarms;
 
 
     /*********
@@ -62,6 +68,14 @@ public class SpritePool
             DefaultGrassSprites.Add(sprite);
     }
 
+    /// <summary>Adds grass to the meadowlands part of the sprite pool.</summary>
+    /// <param name="sprite">The sprite to add to the sprite pool.</param>
+    public void AddMeadowlandsGrass(Texture2D sprite)
+    {
+        if (sprite != null)
+            MeadowlandsGrassSprites.Add(sprite);
+    }
+
     /// <summary>Adds grass to the custom part of the sprite pool.</summary>
     /// <param name="sprite">The sprite to add to the sprite pool.</param>
     public void AddCustomGrass(Texture2D sprite, List<string> whiteListedLocations, List<string> blackListedLocations)
@@ -73,7 +87,20 @@ public class SpritePool
     /// <summary>Retrieves a random sprite id.</summary>
     /// <param name="defaultOnly">Whether only default sprites should be picked.</param>
     /// <returns>A random sprite id.</returns>
-    public int GetRandomSpriteId(bool defaultOnly) => Game1.random.Next(defaultOnly ? DefaultGrassSprites.Count : Count);
+    public int GetRandomSpriteId(bool defaultOnly)
+    {
+        if (defaultOnly)
+            return Game1.random.Next(DefaultGrassSprites.Count);
+
+        if (IncludeMeadowlandsGrass)
+            return Game1.random.Next(Count);
+
+        // grass ids are ordered as default > meadow grass > custom, so we need to make sure to offset for the gap of unused meadow grass ids
+        var id = Game1.random.Next(DefaultGrassSprites.Count + Count);
+        if (id >= DefaultGrassSprites.Count)
+            id += MeadowlandsGrassSprites.Count;
+        return id;
+    }
 
     /// <summary>Retrieves the offset into the atlas for a sprite id.</summary>
     /// <param name="spriteId">The sprite id to get the offset into the atlas of.</param>
@@ -116,5 +143,16 @@ public class SpritePool
     /// <summary>Retrieves the sprite from an id.</summary>
     /// <param name="id">The id of the sprite.</param>
     /// <returns>The sprite with an id of <paramref name="id"/>.</returns>
-    private Texture2D GetSpriteById(int id) => id < DefaultGrassSprites.Count ? DefaultGrassSprites[id] : CustomGrassSprites[id - DefaultGrassSprites.Count].Sprite;
+    private Texture2D GetSpriteById(int id)
+    {
+        if (id < DefaultGrassSprites.Count)
+            return DefaultGrassSprites[id];
+
+        id -= DefaultGrassSprites.Count;
+        if (id < MeadowlandsGrassSprites.Count)
+            return MeadowlandsGrassSprites[id];
+
+        id -= MeadowlandsGrassSprites.Count;
+        return CustomGrassSprites[id].Sprite;
+    }
 }

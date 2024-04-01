@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/NTaylor1993/FarmerHelper
+   Git: https://github.com/NTaylor1993/FarmerHelper.git
+
+mods:
+   Farmer Helper (Updated)
+
+latest commit:
+   commit 94551e9c3fe29bc1a8e3f2b72d9025de716cd5f5
+   Author: Nic Taylor <ntaylor1993@live.co.uk>
+   Date:   Mon Mar 25 16:56:13 2024 +0000
+   
+       Add support for ginger island crops
+   

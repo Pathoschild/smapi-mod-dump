@@ -95,8 +95,8 @@ namespace WallPaperRecycler
         {
             FarmHouse farm = null;
             Cabin cabin = null;
-            bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
-            bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
+            var isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
+            var isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
             
             if (isFarmHouse)
                 farm = Game1.player.currentLocation as FarmHouse;
@@ -106,7 +106,7 @@ namespace WallPaperRecycler
             if (farm == null && cabin == null)
                 return;
 
-            Wallpaper removed = RemovePaper(e.Removed);
+            var removed = RemovePaper(e.Removed);
 
 
             if (removed == null)
@@ -142,8 +142,8 @@ namespace WallPaperRecycler
         /// </summary>
         private void GetCurrentWalls()
         {
-            bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
-            bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
+            var isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
+            var isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
             _curWallPaper.Clear();
 
             if (isFarmHouse)
@@ -179,8 +179,8 @@ namespace WallPaperRecycler
         /// </summary>
         private void GetCurrentFloors()
         {
-            bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
-            bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
+            var isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
+            var isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
             _currentFloor.Clear();
 
             if (isFarmHouse)
@@ -224,12 +224,12 @@ namespace WallPaperRecycler
                         {
                             if (curWalls.Value != walls.Value)
                             {
-                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curWalls.Value));
+                                var paper = new Wallpaper(Convert.ToInt32(curWalls.Value));
                                 Game1.player.addItemToInventory(paper);
                                 _curWallPaper[curWalls.Key] = walls.Value;
                                 if (_config.ShowMessages)
                                 {
-                                    HUDMessage hmsg = new HUDMessage($"Added: Wallpaper from: {curWalls.Key}.");
+                                    var hmsg = new HUDMessage($"Added: Wallpaper from: {curWalls.Key}.");
                                     Game1.addHUDMessage(hmsg);
                                 }
                             }
@@ -248,12 +248,12 @@ namespace WallPaperRecycler
                         {
                             if (curWalls.Value != walls.Value)
                             {
-                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curWalls.Value));
+                                var paper = new Wallpaper(Convert.ToInt32(curWalls.Value));
                                 Game1.player.addItemToInventory(paper);
                                 _curWallPaper[curWalls.Key] = walls.Value;
                                 if (_config.ShowMessages)
                                 {
-                                    HUDMessage hmsg = new HUDMessage($"Added: Wallpaper from: {curWalls.Key}.");
+                                    var hmsg = new HUDMessage($"Added: Wallpaper from: {curWalls.Key}.");
                                     Game1.addHUDMessage(hmsg);
                                 }
                             }
@@ -277,12 +277,12 @@ namespace WallPaperRecycler
                         {
                             if (curFloor.Value != floor.Value)
                             {
-                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curFloor.Value), true);
+                                var paper = new Wallpaper(Convert.ToInt32(curFloor.Value), true);
                                 Game1.player.addItemToInventory(paper);
                                 _currentFloor[curFloor.Key] = floor.Value;
                                 if (_config.ShowMessages)
                                 {
-                                    HUDMessage hmsg = new HUDMessage($"Added: Floor from: {curFloor.Key}.");
+                                    var hmsg = new HUDMessage($"Added: Floor from: {curFloor.Key}.");
                                     Game1.addHUDMessage(hmsg);
                                 }
                             }
@@ -301,12 +301,12 @@ namespace WallPaperRecycler
                         {
                             if (curFloor.Value != floor.Value)
                             {
-                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curFloor.Value));
+                                var paper = new Wallpaper(Convert.ToInt32(curFloor.Value));
                                 Game1.player.addItemToInventory(paper);
                                 _currentFloor[curFloor.Key] = floor.Value;
                                 if (_config.ShowMessages)
                                 {
-                                    HUDMessage hmsg = new HUDMessage($"Added: Floor from: {curFloor.Key}.");
+                                    var hmsg = new HUDMessage($"Added: Floor from: {curFloor.Key}.");
                                     Game1.addHUDMessage(hmsg);
                                 }
                             }
@@ -319,7 +319,7 @@ namespace WallPaperRecycler
 
         private Wallpaper RemovePaper(IEnumerable<Item> changedWalls)
         {
-            foreach (Item curr in changedWalls)
+            foreach (var curr in changedWalls)
             {
                 if (curr.GetType() == typeof(Wallpaper))
                     return (Wallpaper)curr;

@@ -25,7 +25,7 @@ namespace Fishnets.Automate
 
     public interface IFishnetApi
     {
-        int GetId();
+        string GetId();
     }
 
     public class FishNetMachine : IMachine
@@ -63,7 +63,7 @@ namespace Fishnets.Automate
         {
             Farmer owner = Game1.getFarmer(fishNet.owner.Value);
             owner.gainExperience(1, 5);
-            owner.caughtFish(i.ParentSheetIndex, -1);
+            owner.caughtFish(i.ItemId, -1);
             fishNet.heldObject.Value = null;
             fishNet.readyForHarvest.Value = false;
             fishNet.bait.Value = null;
@@ -71,7 +71,7 @@ namespace Fishnets.Automate
 
         public bool SetInput(IStorage input)
         {
-            if (input.TryGetIngredient(Object.baitCategory, 1, out IConsumable? bait))
+            if (input.TryGetIngredient(x => x.Sample.Category == Object.baitCategory, 1, out IConsumable? bait))
             {
                 fishNet.bait.Value = (Object)bait.Take();
                 return true;
@@ -84,14 +84,14 @@ namespace Fishnets.Automate
     {
         public IAutomatable GetFor(Object obj, GameLocation location, in Vector2 tile)
         {
-            if (obj.ParentSheetIndex == ModEntry.FishnetId)
+            if (obj.ItemId == ModEntry.FishnetId)
                 return new FishNetMachine((Fishnet)obj, location, tile);
             return null;
         }
 
         public IAutomatable GetFor(TerrainFeature feature, GameLocation location, in Vector2 tile) => null;
 
-        public IAutomatable GetFor(Building building, BuildableGameLocation location, in Vector2 tile) => null;
+        public IAutomatable GetFor(Building building, GameLocation location, in Vector2 tile) => null;
 
         public IAutomatable GetForTile(GameLocation location, in Vector2 tile) => null;
     }

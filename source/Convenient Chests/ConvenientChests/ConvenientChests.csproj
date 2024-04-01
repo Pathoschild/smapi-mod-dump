@@ -1,136 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
     <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90B4585F-8CF4-4758-9A22-874471C88051}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConvenientChests</RootNamespace>
-    <AssemblyName>ConvenientChests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <AssemblyTitle>ConvenientChests</AssemblyTitle>
+    <Product>ConvenientChests</Product>
+    <Copyright>Copyright © aEnigmatic 2018</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CategorizeChests\CategorizeChestsModule.cs" />
-    <Compile Include="CategorizeChests\Framework\ChestData.cs" />
-    <Compile Include="CategorizeChests\Framework\ChestDataManager.cs" />
-    <Compile Include="CategorizeChests\Framework\ChestExtension.cs" />
-    <Compile Include="CategorizeChests\Framework\ChestFinder.cs" />
-    <Compile Include="CategorizeChests\Framework\DiscoveredItem.cs" />
-    <Compile Include="CategorizeChests\Framework\IChestDataManager.cs" />
-    <Compile Include="CategorizeChests\Framework\IChestFiller.cs" />
-    <Compile Include="CategorizeChests\Framework\IChestFinder.cs" />
-    <Compile Include="CategorizeChests\Framework\IItemDataManager.cs" />
-    <Compile Include="CategorizeChests\Framework\ItemBlacklist.cs" />
-    <Compile Include="CategorizeChests\Framework\ItemDataManager.cs" />
-    <Compile Include="CategorizeChests\Framework\ItemKey.cs" />
-    <Compile Include="CategorizeChests\Framework\ItemNotImplementedException.cs" />
-    <Compile Include="CategorizeChests\Framework\ItemType.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\ChestAddress.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\ChestEntry.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\ChestLocationType.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\InvalidSaveDataException.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\ISaveManager.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\SaveData.cs" />
-    <Compile Include="CategorizeChests\Framework\Persistence\SaveManager.cs" />
-    <Compile Include="CategorizeChests\Framework\Saver.cs" />
-    <Compile Include="CategorizeChests\Interface\InterfaceHost.cs" />
-    <Compile Include="CategorizeChests\Interface\ITooltipManager.cs" />
-    <Compile Include="CategorizeChests\Interface\NineSlice.cs" />
-    <Compile Include="CategorizeChests\Interface\Sprites.cs" />
-    <Compile Include="CategorizeChests\Interface\TextureRegion.cs" />
-    <Compile Include="CategorizeChests\Interface\TooltipManager.cs" />
-    <Compile Include="CategorizeChests\Interface\WidgetHost.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\Background.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\Button.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\CategoryMenu.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\ChestOverlay.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\ItemToggle.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\ItemTooltip.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\Label.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\LabeledCheckbox.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\ScrollBar.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\SpriteButton.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\Stamp.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\TextButton.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\Widget.cs" />
-    <Compile Include="CategorizeChests\Interface\Widgets\WrapBag.cs" />
-    <Compile Include="CategorizeChests\ItemHelper.cs" />
-    <Compile Include="CategorizeChests\Utility.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="CraftFromChests\CraftFromChestsModule.cs" />
-    <Compile Include="CraftFromChests\CraftingRecipeExtension.cs" />
-    <Compile Include="CraftFromChests\MenuListener.cs" />
-    <Compile Include="ModEntry.cs" />
-    <Compile Include="Module.cs" />
-    <Compile Include="StashToChests\StackLogic.cs" />
-    <Compile Include="StashToChests\StashFromAnywhereModule.cs" />
-    <Compile Include="StashToChests\StashToNearbyChestsModule.cs" />
-    <Compile Include="ModAPI.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="manifest.json">
+    <None Update="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CategorizeChests\LICENSE" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.0.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.0.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <ItemGroup>
+    <Compile Remove="CraftFromChests\InventoryHelper.cs" />
+  </ItemGroup>
 </Project>

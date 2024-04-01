@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Netcode;
 using StardewDruid.Cast;
 using StardewDruid.Dialogue;
@@ -28,6 +29,34 @@ namespace StardewDruid.Map
 
         public static Random random = new();
 
+        public static void QueryDisplay(QueryData queryData)
+        {
+
+            Dictionary<int, Dialogue.Narrator> narrators = DialogueNarrator(queryData.name);
+
+            Dictionary<int, Dictionary<int, string>> cues = DialogueScene(queryData.name);
+
+            int cueIndex = Convert.ToInt32(queryData.value);
+
+            if (cues.ContainsKey(cueIndex))
+            {
+
+                foreach (KeyValuePair<int, string> cue in cues[cueIndex])
+                {
+
+                    if (narrators.ContainsKey(cue.Key))
+                    {
+
+                        narrators[cue.Key].DisplayHUD(cue.Value);
+
+                    }
+
+                }
+
+            }
+
+        }
+
         public static Dictionary<int,Dialogue.Narrator> DialogueNarrator(string scene)
         {
             Dictionary<int, Dialogue.Narrator> sceneNarrators = new();
@@ -38,14 +67,14 @@ namespace StardewDruid.Map
                 case "challengeEarth":
                 case "challengeEarthTwo":
 
-                    sceneNarrators = new() { [0] = new("Maskbat", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Maskbat", Color.White), };
 
                     break;
 
                 case "challengeWater":
                 case "challengeWaterTwo":
 
-                    sceneNarrators = new() { [0] = new("Shadow Sergeant", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Shadow Sergeant", Color.White), };
 
                     break;
 
@@ -59,40 +88,41 @@ namespace StardewDruid.Map
                 case "challengeMariner":
                 case "challengeMarinerTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Mariner", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Phantom Mariner", Color.White), };
 
                     break;
 
                 case "challengeCanoli":
                 case "challengeCanoliTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Gardener", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Phantom Gardener", Color.White), };
 
                     break;
 
                 case "challengeMuseum":
                 case "challengeMueumTwo":
 
-                    sceneNarrators = new() { [0] = new("Gunther", Color.White), [1] = new("Phantom Dinosaur", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Gunther", Color.White), [1] = new("Phantom Dinosaur", Color.White), };
 
                     break;
 
                 case "challengeGemShrine":
                 case "challengeGemShrineTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Voice", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Phantom Voice", Color.White), };
 
                     break;
 
                 case "challengeSandDragon":
                 case "challengeSandDragonTwo":
 
-                    sceneNarrators = new() { [0] = new("Phantom Tyrant", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("Phantom Tyrant", Color.White), };
 
                     break;
 
                 case "challengeFates":
                 case "challengeFatesTwo":
+                case "swordFates":
 
                     sceneNarrators = new() { [0] = new("The Jester of Fate", new Color(1f, 0.8f, 0.4f, 1f)), };
 
@@ -101,7 +131,7 @@ namespace StardewDruid.Map
                 case "swordEther":
                 case "swordEtherTwo":
 
-                    sceneNarrators = new() { [0] = new("The Jester of Fate", new Color(1f, 0.8f, 0.4f, 1f)), [1] = new("Tyrannus Prime", Color.Gray), };
+                    sceneNarrators = new() { [0] = new("The Jester of Fate", new Color(1f, 0.8f, 0.4f, 1f)), [1] = new("Tyrannus Prime", Color.White), };
 
                     break;
 
@@ -111,12 +141,17 @@ namespace StardewDruid.Map
 
                     break;
 
+                case "heartEffigy":
+
+                    sceneNarrators = Event.Scene.Beach.DialogueNarrator();
+
+                    break;
+
             };
 
             return sceneNarrators;
 
         }
-
 
         public static Dictionary<int,Dictionary<int,string>> DialogueScene(string scene)
         {
@@ -238,7 +273,7 @@ namespace StardewDruid.Map
                         [29] = new() { [0] = "and now I am dust", },
 
                         [35] = new() { [0] = "ha ha ha", },
-                        [38] = new() { [0] = "deploy the bombs", },
+                        [38] = new() { [0] = "use these", },
                         [41] = new() { [0] = "blow the coal and chaff away", },
                         [47] = new() { [0] = "the monarchs sleep", },
                         [50] = new() { [0] = "and meeps creep into the world", },
@@ -420,6 +455,22 @@ namespace StardewDruid.Map
 
                     break;
 
+                case "swordFates":
+
+                    sceneDialogue = new()
+                    {
+
+                        [1] = new() { [0] = "so Thanatoshi was here.", },
+
+                    };
+
+                    break;
+
+                case "heartEffigy":
+
+                    sceneDialogue = Event.Scene.Beach.DialogueScene();
+
+                    break;
             };
 
             return sceneDialogue;
@@ -682,6 +733,16 @@ namespace StardewDruid.Map
                     };
 
                     break;
+
+                case "Shadowfox":
+
+                    hurtDialogue = new(){
+                    "rawfff",
+                    "*whines*",
+                    };
+
+                    break;
+
                 case "Rogue":
 
                     hurtDialogue = new(){
@@ -754,7 +815,19 @@ namespace StardewDruid.Map
                     };
 
                     break;
+
+                case "ShadowFox":
+                    panicDialogue = new(){
+
+                        "rawff",
+                        "no touchy!",
+                        "rwwwwrr",
+                        "what does the fox say"
+                    };
+
+                    break;
                 case "Rogue":
+                case "Ranger":
 
                     panicDialogue = new(){
                         "go away!",

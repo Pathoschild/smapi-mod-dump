@@ -1,0 +1,28 @@
+﻿{
+  "Name": "Market Town",
+  "Author": "d5a1lamdtd",
+  "Version": "5.3.3",
+  "Description": "MarketTown",
+  "UniqueID": "d5a1lamdtd.MarketTown",
+  "EntryDll": "MarketTown.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:19309" ],
+  "Dependencies":[
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    },
+    {  
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    },
+    { 
+      "UniqueID": "DIGUS.MailFrameworkMod", 
+      "IsRequired": true
+    },
+    { 
+      "UniqueID": "MadaraUchiha.NonDestructiveNPCs", 
+      "IsRequired": true 
+    }
+  ]
+}

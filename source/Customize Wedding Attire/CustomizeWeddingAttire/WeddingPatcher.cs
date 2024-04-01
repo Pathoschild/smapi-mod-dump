@@ -101,6 +101,15 @@ namespace CustomizeWeddingAttire
                         color = dressColor;
                         __result = true;
                     }
+                    else if (preference == "custom")
+                    {
+                        if (isValidPants(Config.CustomPants) && isValidColor(Config.PantsR, Config.PantsG, Config.PantsB))
+                        {
+                            id = Config.CustomPants;
+                            color = new Color(Config.PantsR, Config.PantsG, Config.PantsB);
+                            __result = true;
+                        }
+                    }
                 }
                 // Fake event farmers can just directly get changed
                 else
@@ -113,6 +122,14 @@ namespace CustomizeWeddingAttire
                     else if (preference == "dress")
                     {
                         putInDress(__instance);
+                    }
+                    else if (preference == "custom")
+                    {
+                        string[] outfit = getCustomOutfitOtherFarmers(unqID);
+                        if (outfit != null && Int32.TryParse(outfit[2], out int pantsR) && Int32.TryParse(outfit[3], out int pantsG) && Int32.TryParse(outfit[4], out int pantsB))
+                        {
+                            putInCustom(__instance, outfit[0], outfit[1], pantsR, pantsG, pantsB);
+                        }
                     }
                 }
             }
@@ -150,6 +167,14 @@ namespace CustomizeWeddingAttire
                         id = dressShirt;
                         __result = true;
                     }
+                    else if (preference == "custom")
+                    {
+                        if (isValidShirt(Config.CustomShirt))
+                        {
+                            id = Config.CustomShirt;
+                            __result = true;
+                        }
+                    }
                 }
                 // Fake event farmers can just directly get changed
                 else
@@ -162,6 +187,14 @@ namespace CustomizeWeddingAttire
                     else if (preference == "dress")
                     {
                         putInDress(__instance);
+                    }
+                    else if (preference == "custom")
+                    {
+                        string[] outfit = getCustomOutfitOtherFarmers(unqID);
+                        if (outfit != null && Int32.TryParse(outfit[2], out int pantsR) && Int32.TryParse(outfit[3], out int pantsG) && Int32.TryParse(outfit[4], out int pantsB))
+                        {
+                            putInCustom(__instance, outfit[0], outfit[1], pantsR, pantsG, pantsB);
+                        }
                     }
                 }
             }
@@ -183,6 +216,11 @@ namespace CustomizeWeddingAttire
             if (Config.WeddingAttire == ModEntry.dressOption)
             {
                 return "dress";
+            }
+
+            if (Config.WeddingAttire == ModEntry.customOption)
+            {
+                return "custom";
             }
             return "none";
         }
@@ -208,8 +246,36 @@ namespace CustomizeWeddingAttire
             {
                 return "dress";
             }
+            else if (farmerPreference == ModEntry.customOption)
+            {
+                return "custom";
+            }
             
             return "none";
+        }
+
+        private static string[] getCustomOutfitOtherFarmers(long unqID)
+        {
+            // Get the copy of the other farmer in the event
+            Farmer realFarmerActor = Game1.getFarmerMaybeOffline(unqID);
+
+            // Check for the preference of the farmer in modData and do nothing if no preference found
+            if (!realFarmerActor.modData.TryGetValue($"{Manifest.UniqueID}/customAttirePref", out string customOutfit))
+            {
+                return null;
+            }
+            else
+            {
+                string[] outfit = customOutfit.Split("|");
+                if (outfit.Length != 5)
+                {
+                    return null;
+                }
+                else
+                {
+                    return outfit;
+                }
+            }
         }
 
         public static void putInTux(Farmer farmer)
@@ -226,6 +292,55 @@ namespace CustomizeWeddingAttire
             farmer.changeShirt(dressShirt);
             farmer.changePantStyle(dressPants);
             farmer.changePantsColor(dressColor);
+        }
+
+        public static void putInCustom(Farmer farmer, string customShirt, string customPants, int pantsR, int pantsG, int pantsB)
+        {
+            // Bridal top and long skirt, both in white
+            if (isValidShirt(customShirt))
+            {
+                farmer.changeShirt(customShirt);
+            }
+            if (isValidPants(customPants))
+            {
+                farmer.changePantStyle(customPants);
+            }
+            if (isValidColor(pantsR, pantsG, pantsB))
+            {
+                Color pantsColor = new Color(pantsR, pantsG, pantsB);
+                farmer.changePantsColor(pantsColor);
+            }
+        }
+
+        private static bool isValidPants(string pantsId)
+        {
+            if (ItemRegistry.GetDataOrErrorItem("(P)" + pantsId).IsErrorItem)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static bool isValidShirt(string shirtId)
+        {
+            if (ItemRegistry.GetDataOrErrorItem("(S)" + shirtId).IsErrorItem)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static bool isValidColor(int R, int G, int B)
+        {
+            if (R < 0 || G < 0 || B < 0)
+            {
+                return false;
+            }
+            if (R > 255 || G > 255 || B > 255)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

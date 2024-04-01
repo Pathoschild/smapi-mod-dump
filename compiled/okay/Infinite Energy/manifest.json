@@ -1,7 +1,7 @@
 {
   "Name": "Infinite Energy",
   "Author": "Error27",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Everlasting energy package.",
   "UniqueID": "error27.infinite_energy",
   "EntryDll": "InfiniteEnergy.dll",

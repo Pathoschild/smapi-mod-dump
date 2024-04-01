@@ -8,6 +8,8 @@ for queries and analysis.**
 
 # Aggressive Acorns - *Yet Another Tree Configurator*
 
+_1.6 update in progress - check branch [`dev/sdv1.6_from_scratch`](https://github.com/phrasefable/StardewMods/tree/dev/sdv1.6_from_scratch/AggressiveAcorns)_
+
 __Aggressive Acorns__ is a highly configurable overhaul for Stardew Valley's tree growth.
 It adds new mechanics and fixes bugs, in addition to allowing thorough customisation of the vanilla mechanics.
 

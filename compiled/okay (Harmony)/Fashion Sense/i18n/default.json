@@ -1,0 +1,77 @@
+{
+  // Tools
+  "tools.name.hand_mirror": "Hand Mirror",
+  "tools.description.hand_mirror": "Allows you to change your appearance into a more lively one.",
+
+  // Messages
+  "messages.warning.no_content_packs": "You don't have any Fashion Sense content packs installed!",
+
+  // Letters
+  "letters.hand_mirror": "I heard someone new was moving into the valley and thought to offer a housewarming gift.^ ^I've included my old Hand Mirror with this letter, which should help with your fashion sense.^ ^If you ever lose it, you can buy another from Pierre's shop.  ^   -Haley %item tool HandMirror %%",
+
+  // UI - Titles
+  "ui.fashion_sense.title.search": "Select a Fashion Sense Pack",
+  "ui.fashion_sense.title.hair": "Hairstyles",
+  "ui.fashion_sense.title.accessory": "Accessories",
+  "ui.fashion_sense.title.hat": "Hats",
+  "ui.fashion_sense.title.shirt": "Shirts",
+  "ui.fashion_sense.title.pants": "Pants",
+  "ui.fashion_sense.title.sleeves": "Sleeves",
+  "ui.fashion_sense.title.sleevesAndShoes": "Sleeves & Shoes",
+  "ui.fashion_sense.title.shoes": "Shoes",
+  "ui.fashion_sense.title.mask_layer": "Layer",
+
+  // UI - Search
+  "ui.fashion_sense.search.filter.none": "None",
+  "ui.fashion_sense.search.filter.author": "Author",
+  "ui.fashion_sense.search.filter.pack_name": "Pack Name",
+  "ui.fashion_sense.search.filter.tags": "Tags",
+  "ui.fashion_sense.search.about": "{0}\n\nAuthor: {1}\nPack: {2}\nTags: {3}",
+
+  // UI - Outfits
+  "ui.fashion_sense.title.outfits": "Outfits",
+  "ui.fashion_sense.title.outfit_naming": "Outfit Name",
+  "ui.fashion_sense.create_outfit_button": "Create Outfit",
+  "ui.fashion_sense.create_outfit_hover": "Create a new outfit based on your current apparel.",
+  "ui.fashion_sense.outfit_info.save": "Saves your current apparel to this outfit.",
+  "ui.fashion_sense.outfit_info.rename": "Rename this outfit.",
+  "ui.fashion_sense.outfit_info.delete": "Delete this outfit.",
+  "ui.fashion_sense.outfit_info.share.active": "Currently sharing this outfit with other save files.",
+  "ui.fashion_sense.outfit_info.share.inactive": "Not sharing this outfit with other save files.",
+  "ui.fashion_sense.outfit_info.shared": "Shared",
+  "ui.fashion_sense.outfit_info.preset": "Preset",
+  "ui.fashion_sense.outfit_info.export": "Exports the outfit's JSON to your clipboard.",
+  "ui.fashion_sense.warning.name": "The outfit name is blank or already exists.",
+  "ui.fashion_sense.mask_layer.base": "Base",
+  "ui.fashion_sense.outfit_info.missing_appearances": "The following appearances are missing:\n{0}",
+  "ui.fashion_sense.buttons.import": "Import",
+  "ui.fashion_sense.buttons.import.description": "Imports an external Fashion Sense outfit from your clipboard.",
+  "ui.fashion_sense.buttons.presets": "Presets",
+  "ui.fashion_sense.buttons.presets.description": "View presets provided by Fashion Sense content packs.",
+  "ui.fashion_sense.exported_outfit": "Copied outfit to clipboard.",
+  "ui.fashion_sense.preset_info": "{0}\n\nAuthor: {1}\nPack: {2}",
+
+  // UI - Etc
+  "ui.fashion_sense.start_with_hand_mirror": "Start with Mirror",
+  "ui.fashion_sense.start_with_hand_mirror.description": "You will start your new game with the Hand Mirror in your inventory.",
+  "ui.fashion_sense.color_override.shoes": "Override Shoe Color",
+  "ui.fashion_sense.search_button": "Search for a specific Fashion Sense pack.",
+  "ui.fashion_sense.outfit_button": "Access your Fashion Sense outfits.",
+  "ui.fashion_sense.color_copy_button": "Copy the current color.",
+  "ui.fashion_sense.color_paste_button": "Paste the saved color.",
+  "ui.fashion_sense.color_paste_button_empty": "Paste the saved color (empty).",
+  "ui.fashion_sense.clear_button": "Clears the currently selected Fashion Sense item.\nHold shift when clicking to clear all appearances.",
+  "ui.fashion_sense.random_button": "Randomly selects a Fashion Sense item.",
+  "ui.fashion_sense.exit_button": "Exits the menu.",
+  "ui.fashion_sense.color_active.shoes": "Shoe Color",
+  "ui.fashion_sense.color_active.generic": "Color",
+  "ui.fashion_sense.color_disabled.generic": "(Ignored)",
+  "ui.fashion_sense.color_info.hair": "Color overlays will not affect this hairstyle.",
+  "ui.fashion_sense.color_info.hat": "Color overlays will not affect this hat.",
+  "ui.fashion_sense.color_info.shirt": "Color overlays will not affect this shirt.",
+  "ui.fashion_sense.color_info.pants": "Color overlays will not affect these pants.",
+  "ui.fashion_sense.color_info.accessory": "Color overlays will not affect this accessory.",
+  "ui.fashion_sense.color_info.sleeves": "Color overlays will not affect these sleeves.",
+  "ui.fashion_sense.color_info.shoes": "Color overlays will not affect these shoes.",
+  "ui.fashion_sense.warning.hiding_player_sprite": "This appearance is hiding the player's base sprite"
+}

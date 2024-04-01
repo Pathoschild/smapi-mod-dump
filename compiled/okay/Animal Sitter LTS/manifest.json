@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Animal Sitter LTS",
+  "Author": "oliver",
+  "Version": "2.0.3",
+  "Description": "Long Term Support Mod Version for Animal Sitter Mod. Let someone else pet all those pesky animals!",
+  "UniqueID": "oliver.AnimalSitterLTS",
+  "EntryDll": "AnimalSitter.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20831" ]
+}

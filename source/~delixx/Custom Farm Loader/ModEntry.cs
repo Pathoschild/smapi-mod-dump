@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -73,6 +73,11 @@ namespace Custom_Farm_Loader
                 case "type" or "farmtype":
                     Monitor.Log(Game1.GetFarmTypeID(), LogLevel.Info); break;
 
+                case "fixstarterquest":
+                    Game1.player.addQuest((Game1.whichModFarm?.Id == "MeadowlandsFarm") ? "132" : "6");
+                    Game1.dayTimeMoneyBox.PingQuestLog();
+                    break;
+
                 default:
                     Monitor.Log("Unknown Command: " + args[0], LogLevel.Error); break;
             }
@@ -93,11 +98,7 @@ namespace Custom_Farm_Loader
 
         private void reloadCFL()
         {
-            CustomFarm.CachedCustomFarms.Clear();
-            Helper.Reflection.GetField<string>(typeof(CustomFarm), "CurrentCustomFarmId").SetValue(null);
-            CustomFarm.getAll();
-            Helper.GameContent.InvalidateCache("Data/AdditionalFarms");
-            CustomFarm.getCurrentCustomFarm();
+            CustomFarm.clearCache();
             Monitor.Log("Done!", LogLevel.Info);
         }
 

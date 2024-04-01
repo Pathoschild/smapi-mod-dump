@@ -1,0 +1,132 @@
+{
+    "Sewer": {
+        "SpawnTrash" : "Always",
+        "Spawns": {
+            "MutantCarp": {
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 682",
+                "X": 22,
+                "Y": 30,
+                "QualifiedItemId": "(O)682"
+            }
+        }
+    },
+    "Forest": {
+        "Spawns": {
+            "Glacierfish": {
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 775, SEASON winter, !PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 58,
+                "Y": 92,
+                "QualifiedItemId": "(O)775"
+            },
+            "Glacierfish_Jr": {
+                "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 58,
+                "Y": 92,
+                "QualifiedItemId": "(O)902"
+            },
+            "Iridium_Krobus": {
+                "Condition": "!PLAYER_HAS_MAIL Current caughtIridiumKrobus Received",
+                "X": 94,
+                "Y": 110,
+                "QualifiedItemId": "(F)2396"
+            }
+        }
+    },
+    "Town": {
+        "Spawns": {
+            "Angler": {
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 160, SEASON fall, !PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 10,
+                "Y": 100,
+                "QualifiedItemId": "(O)160"
+            },
+            "Ms_Angler": {
+                "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 10,
+                "Y": 100,
+                "QualifiedItemId": "(O)899"
+            },
+        }
+    },
+    "Mountain": {
+        "Spawns": {
+            "Legend": {
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 163, SEASON spring, !PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 68,
+                "Y": 32,
+                "QualifiedItemId": "(O)163"
+            },
+            "Legend_II": {
+                "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 68,
+                "Y": 32,
+                "QualifiedItemId": "(O)900"
+            },
+
+        }
+    },
+    "Beach": {
+        "Spawns": {
+            "Crimsonfish": {
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 159, SEASON summer, !PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 93,
+                "Y": 43,
+                "QualifiedItemId": "(O)159"
+            },
+            "Son_of_Crimsonfish": {
+                "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "X": 93,
+                "Y": 43,
+                "QualifiedItemId": "(O)898"
+            },
+        }
+    },
+    "Woods": {
+        "Spawns": {
+            "Wall_Basket": {
+                "X": 11,
+                "Y": 24,
+                "QualifiedItemId": "(F)2425"
+            }
+        }
+    },
+    "IslandNorth": {
+        "Spawns": {
+            "Fossilized_Spine": {
+                "X": 13,
+                "Y": 59,
+                "QualifiedItemId": "(O)821"
+            },
+            "Foliage_Print": {
+                "Condition": "!PLAYER_HAS_MAIL Current gotSecretIslandNPainting Received",
+                "X": 1,
+                "Y": 84,
+                "QualifiedItemId": "(F)2419"
+            },
+            "Squirrel_Figurine": {
+                "Condition": "!PLAYER_HAS_MAIL Current gotSecretIslandNSquirrel Received",
+                "X": 3,
+                "Y": 32,
+                "QualifiedItemId": "(F)2814"
+            }
+        }
+    },
+    "IslandSouthEastCave": {
+        "Spawns": {
+            "Gourmand_Statue": {
+                "X": 31,
+                "Y": 30,
+                "QualifiedItemId": "(F)2332"
+            }
+        }
+    },
+    "IslandWest": {
+        "Spawns": {
+            "Snake_Skull": {
+                "X": 8,
+                "Y": 30,
+                "QualifiedItemId": "(O)825"
+            }
+        }
+    }
+}

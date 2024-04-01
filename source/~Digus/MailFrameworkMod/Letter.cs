@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
@@ -80,9 +81,14 @@ namespace MailFrameworkMod
         /// </summary>
         public Texture2D LetterTexture;
         /// <summary>
+        /// DEPRECATED - use CustomTextColor instead.
         /// number of the text color. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
         /// </summary>
         public int? TextColor;
+        /// <summary>
+        /// custom text color.
+        /// </summary>
+        public Color? CustomTextColor;
         /// <summary>
         /// custom texture to replace the game default close button. must follow the same proportions
         /// </summary>

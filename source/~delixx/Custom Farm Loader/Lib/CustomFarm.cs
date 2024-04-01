@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -33,7 +33,7 @@ namespace Custom_Farm_Loader.Lib
         private static IModHelper Helper;
         private static Texture2D MissingMapIcon;
 
-        private static readonly List<string> VanillaTypes = new List<string> { "standard", "riverland", "forest", "hills", "wilderness", "four corners", "beach" };
+        private static readonly List<string> VanillaTypes = new List<string> { "standard", "riverland", "forest", "hills", "wilderness", "four corners", "beach", "meadowlands" };
         private static CustomFarm CurrentCustomFarm = null;
         private static string CurrentCustomFarmId = "";
 
@@ -94,6 +94,16 @@ namespace Custom_Farm_Loader.Lib
             MissingMapIcon = ModEntry._Helper.ModContent.Load<Texture2D>("assets/MissingMapIcon.png");
 
             Helper.Events.GameLoop.GameLaunched += GameLaunched;
+            Helper.Events.Content.LocaleChanged += (s, e) => clearCache();
+        }
+
+        public static void clearCache() {
+            CachedCustomFarms.Clear();
+            CachedModFarmTypes.Clear();
+            CurrentCustomFarmId = null;
+            getAll();
+            Helper.GameContent.InvalidateCache("Data/AdditionalFarms");
+            getCurrentCustomFarm();
         }
 
         private static void GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
@@ -329,6 +339,8 @@ namespace Custom_Farm_Loader.Lib
                     return UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(2, 345, 18, 20));
                 case "beach":
                     return UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(24, 345, 18, 20));
+                case "meadowlands":
+                    return UtilityMisc.createSubTexture(Helper.GameContent.Load<Texture2D>("LooseSprites\\farm_ranching_icon"), new Rectangle(2, 0, 18, 20));
             }
 
             try {
@@ -349,8 +361,15 @@ namespace Custom_Farm_Loader.Lib
             if (worldMapFile == "") return null;
 
             if (VanillaTypes.Contains(worldMapFile.ToLower())) {
-                Helper.GameContent.InvalidateCache("LooseSprites\\map");
-                Texture2D map = Helper.GameContent.Load<Texture2D>("LooseSprites\\map");
+                var seasonSuffix = Game1.season switch {
+                    Season.Summer => "_summer",
+                    Season.Fall => "_fall",
+                    Season.Winter => "_winter",
+                    _ => ""
+                };
+
+                Helper.GameContent.InvalidateCache($"LooseSprites\\map{seasonSuffix}");
+                Texture2D map = Helper.GameContent.Load<Texture2D>($"LooseSprites\\map{seasonSuffix}");
                 switch (worldMapFile.ToLower()) {
                     case "standard":
                         return UtilityMisc.createSubTexture(map, new Rectangle(0, 43, 131, 61));
@@ -366,8 +385,14 @@ namespace Custom_Farm_Loader.Lib
                         return UtilityMisc.createSubTexture(map, new Rectangle(0, 302, 131, 61));
                     case "beach":
                         return UtilityMisc.createSubTexture(map, new Rectangle(131, 302, 131, 61));
+                    case "meadowlands":
+                        return Helper.GameContent.Load<Texture2D>($"LooseSprites\\Farm_ranching_map{seasonSuffix}");
                 }
             }
+
+            try {
+                return Helper.ModContent.Load<Texture2D>($"{path}\\{getSeasunSuffixedFile(worldMapFile)}");
+            } catch (Exception ex) { }
 
             try {
                 return Helper.ModContent.Load<Texture2D>($"{path}\\{worldMapFile}");
@@ -379,6 +404,21 @@ namespace Custom_Farm_Loader.Lib
             WorldMapOverlayValue = "";
             return null;
         }
+
+        public static string getSeasunSuffixedFile(string file)
+        {
+            var seasonSuffix = Game1.season switch {
+                Season.Summer => "_summer",
+                Season.Fall => "_fall",
+                Season.Winter => "_winter",
+                _ => "_spring"
+            };
+
+            string fName = Path.GetFileNameWithoutExtension(file);
+            string fExt = Path.GetExtension(file);
+            return Path.Combine(fName + seasonSuffix + fExt);
+        }
+
 
         public static CustomFarm getCurrentCustomFarm()
         {

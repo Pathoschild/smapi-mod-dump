@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Custom Fixed Dialogue",
+  "Author": "datamancer",
+  "Version": "2.4.3",
+  "Description": "Custom fixed dialogue.",
+  "UniqueID": "datamancer.CustomFixedDialogue",
+  "EntryDll": "CustomFixedDialogue.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20938", "ModDrop:1533308" ],
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "datamancer",
+    "Directory": "_releases",
+    "ModFolder": "CustomFixedDialogue"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

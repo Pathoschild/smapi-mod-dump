@@ -21,11 +21,11 @@ namespace AnimalsNeedWater.Patching
     {
         /// <summary> Patch for the FarmAnimal.dayUpdate method. </summary>
         [HarmonyPriority(500)]
-        public static void AnimalDayUpdate(ref FarmAnimal __instance, ref GameLocation environtment)
+        public static void AnimalDayUpdate(ref FarmAnimal __instance, ref GameLocation environment)
         {
             try
             {
-                HarmonyPatchExecutors.AnimalDayUpdateExecutor(ref __instance, ref environtment);
+                HarmonyPatchExecutors.AnimalDayUpdateExecutor(ref __instance, ref environment);
             }
             catch (Exception e)
             {
@@ -49,34 +49,33 @@ namespace AnimalsNeedWater.Patching
             }
         }
 
-        /// <summary> Patch for the AnimalHouse.performToolAction method. </summary>
+        /// <summary> Patch for the GameLocation.performToolAction method. </summary>
         [HarmonyPriority(500)]
-        public static bool AnimalHouseToolAction(ref AnimalHouse __instance, ref Tool t, ref int tileX, ref int tileY)
+        public static bool GameLocationToolAction(ref GameLocation __instance, ref Tool t, ref int tileX, ref int tileY)
         { 
             try
             {
-                return HarmonyPatchExecutors.AnimalHouseToolActionExecutor(ref __instance, ref t, ref tileX, ref tileY);
+                return HarmonyPatchExecutors.GameLocationToolActionExecutor(ref __instance, ref t, ref tileX, ref tileY);
             }
             catch (Exception e)
             {
-                ModEntry.ModMonitor.Log($"Failed in { nameof(AnimalHouseToolAction) }:\n{ e }", LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Failed in { nameof(GameLocationToolAction) }:\n{ e }", LogLevel.Error);
                 
                 return true;
             }
         }
 
-        /// <summary> Patch for the warpFarmer method. </summary>
+        /// <summary> Patch for the OnLocationChanged method. </summary>
         [HarmonyPriority(500)]
-        public static void WarpFarmer(ref string locationName, ref int tileX, ref int tileY, ref int facingDirectionAfterWarp, ref bool isStructure)
+        public static void OnLocationChanged(GameLocation oldLocation, GameLocation newLocation)
         {
             try
             {
-                HarmonyPatchExecutors.WarpFarmerExecutor(ref locationName, ref tileX, ref tileY,
-                    ref facingDirectionAfterWarp, ref isStructure);
+                HarmonyPatchExecutors.OnLocationChangedExecutor(oldLocation, newLocation);
             }
             catch (Exception e)
             {
-                ModEntry.ModMonitor.Log($"Failed in { nameof(WarpFarmer) }:\n{ e }", LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Failed in { nameof(OnLocationChanged) }:\n{ e }", LogLevel.Error);
             }
         }
     }

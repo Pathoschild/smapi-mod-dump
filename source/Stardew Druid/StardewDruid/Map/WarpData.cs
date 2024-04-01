@@ -12,7 +12,11 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using static StardewValley.Minigames.TargetGame;
 
 namespace StardewDruid.Map
 {
@@ -52,7 +56,10 @@ namespace StardewDruid.Map
                     default_y = 29;
                 }
 
-                Point farmWarp = Game1.getFarm().GetMapPropertyPosition("WarpTotemEntry", default_x, default_y);
+                if (!Game1.getFarm().TryGetMapPropertyAs("WarpTotemEntry", out Point farmWarp, required: false))
+                {
+                    farmWarp = new Point(default_x, default_y);
+                }
 
                 return new Vector2(farmWarp.X, farmWarp.Y);
 
@@ -82,7 +89,7 @@ namespace StardewDruid.Map
 
             }
 
-            return Vector2.Zero;
+            return new Vector2(-1);
 
         }
 
@@ -127,6 +134,13 @@ namespace StardewDruid.Map
 
             GameLocation target = Game1.getLocationFromName(warp.TargetName);
 
+            if(target == null)
+            {
+
+                return Vector2.Zero;
+
+            }
+
             foreach (Warp reverse in target.warps)
             {
                 
@@ -139,7 +153,7 @@ namespace StardewDruid.Map
                 
             }
 
-            return new Vector2(0);
+            return Vector2.Zero;
 
         }
 
@@ -186,5 +200,200 @@ namespace StardewDruid.Map
 
         }
 
+        public static Vector2 WarpStart(string defaultMap = "FarmCave")
+        {
+
+            if (defaultMap == "Follow")
+            {
+
+                defaultMap = "Farm";
+
+            }
+
+            switch (defaultMap)
+            {
+
+                case "Mountain":
+
+                    return new Vector2(6176, 1728);
+
+                case "18465_Crypt":
+
+                    return new Vector2(1280, 448);
+
+                case "Farm":
+                case "FarmCave":
+
+
+                    Dictionary<string, Vector2> farmPositions = new() { ["FarmCave"] = new Vector2(6, 6) * 64, ["Farm"] = Vector2.One * 64 };
+
+                    foreach (Warp warp in Game1.getFarm().warps)
+                    {
+
+                        if (warp.TargetName == "FarmCave")
+                        {
+
+                            Vector2 cavePosition = new Vector2(warp.TargetX, warp.TargetY - 2) * 64;
+
+                            Vector2 farmPosition = new Vector2(warp.X, warp.Y + 5) * 64;
+
+                            farmPositions = new() { ["FarmCave"] = cavePosition, ["Farm"] = farmPosition, };
+
+                        }
+
+                    }
+
+                    return farmPositions[defaultMap];
+
+            }
+
+            return new Vector2(-1);
+
+        }
+
+        public static Vector2 WarpEntrance(GameLocation targetLocation, Vector2 targetVector)
+        {
+
+            if (targetLocation == null)
+            {
+
+                return new Vector2(-1);
+
+            }
+
+            List<Vector2> destinations = new();
+
+            float newDistance;
+
+            float furthestDistance = 0f;
+
+            List<string> surveyed = new();
+
+            foreach (Warp warp in targetLocation.warps)
+            {
+
+                if (surveyed.Contains(warp.TargetName))
+                {
+
+                    continue;
+
+                }
+
+                surveyed.Add(warp.TargetName);
+
+                Vector2 destination;
+
+                if (WarpExclusions(targetLocation, warp))
+                {
+
+                    destination = WarpVectors(targetLocation);
+
+                    if (destination == Vector2.Zero)
+                    {
+
+                        continue;
+
+                    }
+
+                }
+                else
+                {
+
+                    destination = WarpReverse(targetLocation, warp);
+
+                    if (destination == Vector2.Zero)
+                    {
+
+                        continue;
+
+                    }
+
+                }
+
+                Vector2 possibility = destination * 64;
+
+                if (destinations.Count == 0)
+                {
+
+                    destinations.Add(possibility);
+
+                    furthestDistance = Vector2.Distance(targetVector, possibility);
+
+                }
+                else
+                {
+
+                    newDistance = Vector2.Distance(targetVector, possibility);
+
+                    if (Mod.instance.rite.caster.getGeneralDirectionTowards(possibility, 0, false, false) == Mod.instance.rite.caster.facingDirection.Value && newDistance > furthestDistance)
+                    {
+
+                        destinations.Clear();
+
+                        destinations.Add(possibility);
+
+                    }
+
+                }
+
+            }
+
+            if (destinations.Count > 0)
+            {
+
+                return destinations[0];
+
+            }
+
+            return new Vector2(-1);
+
+        }
+
+        public static Vector2 WarpXZone(GameLocation targetLocation, Vector2 targetVector)
+        {
+
+            if (targetLocation == null)
+            {
+
+                return new Vector2(-1);
+
+            }
+
+            Type reflectType = typeof(MineShaft);
+
+            FieldInfo reflectField = reflectType.GetField("netTileBeneathLadder", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            var tile = reflectField.GetValue(targetLocation as MineShaft);
+
+            if (tile == null)
+            {
+
+                return new Vector2(-1);
+            }
+
+            string tileString = tile.ToString();
+
+            Match m = Regex.Match(tileString, @"\{*X\:(\d+)\sY\:(\d+)\}", RegexOptions.IgnoreCase);
+
+            if (!m.Success)
+            {
+
+                return new Vector2(-1);
+
+            }
+
+            int tileX = Convert.ToInt32(m.Groups[1].Value);
+
+            int tileY = Convert.ToInt32(m.Groups[2].Value);
+
+            Vector2 destination = new Vector2(tileX, tileY) * 64;
+
+            //ModUtility.AnimateQuickWarp(targetLocation, destination);
+
+            return destination;
+
+        }
+
     }
+
 }

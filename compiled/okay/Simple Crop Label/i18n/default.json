@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // en (english)
+  // custom tree translation
+  "custom-tree.oak": "Oak Tree",
+  "custom-tree.maple": "Maple Tree",
+  "custom-tree.pine": "Pine Tree",
+  "custom-tree.coconut": "Coconut Tree",
+  "custom-tree.mushroom": "Mushroom Tree",
+  "custom-tree.mahogany": "Mahogany Tree",
+  "custom-tree.palm": "Palm Tree",
+
+  // growth info translation
+  "growth-info.fully-grown": "fully grown",
+  "growth-info.stage": "stage",
+  "growth-info.of": "of",
+  "growth-info.days-left": "days left",
+  "growth-info.day-left": "day left",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Mouse Hover",
+  "config.mouse-hover.desc": "Move mouse over crop tile to display label when enabled.",
+  "config.growth-info.name": "Growth Information",
+  "config.growth-info.desc": "Displays crop growth or harvest stage when enabled.",
+  "config.custom-keybinds.name": "Custom Keybind",
+  "config.custom-keybinds.desc": "Replaces default. Enabling Mouse Hover overrides this."
+}

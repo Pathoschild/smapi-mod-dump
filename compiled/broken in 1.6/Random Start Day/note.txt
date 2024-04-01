@@ -1,6 +1,0 @@
-If "isRandomSeedUsed" is true, OTHER RANDOM OPTIONS ARE DISABLED.
-If "alwaysStartAt1st" is true, "avoidFestivalDay" will be IGNORED.
-Seasonal seeds are given for earliest harvest.
-And please do not set "useWinter28toYear1" to false, unless error you cannot continue the game is caused.
-
-Thank you to use my mod!

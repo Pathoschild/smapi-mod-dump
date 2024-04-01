@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EasyHarvest",
+  "Author": "season",
+  "Version": "0.0.4",
+  "Description": "Easy Harvest. wield scythe or weapon.",
+  "UniqueID": "season.EasyHarvest",
+  "EntryDll": "EasyHarvest.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:20924" ]
+}

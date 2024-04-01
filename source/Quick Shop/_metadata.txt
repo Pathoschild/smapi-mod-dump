@@ -6,11 +6,9 @@ mods:
    Quick Shop
 
 latest commit:
-   commit 175b521d9fc21e3fb114817f147df70d3ed305d8
+   commit 87b0c7df720d1ff9b6ff8ee564094a7d11f46246
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Fri Feb 5 20:42:20 2021 -0600
+   Date:   Wed Mar 27 15:43:30 2024 +0800
    
-       Merge pull request #10 from Enaium-StardewValleyMods/develop
-       
-       Develop
+       Update README.md
    

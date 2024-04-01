@@ -1,6 +1,6 @@
 urls:
-   web: https://gitlab.com/delixx/stardew-valley-coop-cursor
-   Git: https://gitlab.com/delixx/stardew-valley-coop-cursor.git
+   web: https://gitlab.com/delixx/stardew-valley/coop-cursor
+   Git: https://gitlab.com/delixx/stardew-valley/coop-cursor.git
 
 mods:
    Coop Cursor

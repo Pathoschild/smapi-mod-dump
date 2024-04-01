@@ -10,10 +10,12 @@
 
 namespace PermanentCookoutKit
 {
+    using Microsoft.Xna.Framework;
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
     using StardewValley;
     using StardewValley.GameData.Machines;
+    using StardewValley.Locations;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -33,9 +35,57 @@ namespace PermanentCookoutKit
 
             Helper.Events.GameLoop.DayEnding += delegate { SaveCookingKits(); };
 
+            Helper.Events.GameLoop.DayStarted += delegate { ManageLinusFire(); };
+
             Helper.Events.Content.AssetRequested += OnAssetRequested;
 
             Patcher.PatchAll(this);
+        }
+
+        private static readonly Vector2 linusCampfireLocation = new(29f, 9f);
+
+        private void ManageLinusFire()
+        {
+            if (!Config.LinusTakesCareOfHisFire)
+            {
+                return;
+            }
+
+            Utility.ForEachLocation(delegate (GameLocation location)
+            {
+                if (location is not Mountain)
+                {
+                    return true;
+                }
+
+                if (location.Objects.TryGetValue(linusCampfireLocation, out var campfire))
+                {
+                    TurnOffSingleCookingKitInTheRain(campfire, location.IsRainingHere());
+                }
+
+                return true;
+            });
+        }
+
+        private void TurnOffSingleCookingKitInTheRain(StardewObject item, bool isRaining)
+        {
+            if (item is Torch torch && torch.bigCraftable.Value && torch.QualifiedItemId == "(BC)146" && torch.Fragility == 2)
+            {
+                if (!Config.OutdoorRainPreventsIgniting)
+                {
+                    if (!torch.IsOn)
+                    {
+                        torch.checkForAction(null);
+                    }
+                }
+                else
+                {
+                    if ((torch.IsOn && isRaining) || (!torch.IsOn && !isRaining))
+                    {
+                        torch.checkForAction(null);
+                    }
+                }
+            }
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -52,7 +102,7 @@ namespace PermanentCookoutKit
                     {
                         var index = val.IndexOf('/');
 
-                        // "388 15 771 10 382 3/Field/926/false/Foraging 9/"
+                        // "388 15 771 10 382 3/Field/926/false/Foraging 3/"
 
                         if (index > 0)
                         {
@@ -113,7 +163,7 @@ namespace PermanentCookoutKit
             }
         }
 
-        private MachineOutputRule CreateOutputRuleFromDefault(MachineOutputRule sourceRule, string ruleID)
+        private static MachineOutputRule CreateOutputRuleFromDefault(MachineOutputRule sourceRule, string ruleID)
         {
             var newRule = new MachineOutputRule
             {
@@ -160,14 +210,14 @@ namespace PermanentCookoutKit
             {
                 foreach (var item in location.Objects.Values)
                 {
-                    SaveSingleKit(item, location);
+                    SaveSingleKit(item);
                 }
 
                 return true;
             });
         }
 
-        private static void SaveSingleKit(StardewObject item, GameLocation location)
+        private static void SaveSingleKit(StardewObject item)
         {
             if (item.IsCookoutKit())
             {
@@ -184,6 +234,11 @@ namespace PermanentCookoutKit
         public static bool IsCookoutKit(this StardewObject o)
         {
             return o != null && o.QualifiedItemId == "(BC)278";
+        }
+
+        public static bool IsCookoutKitSpawnItem(this StardewObject o)
+        {
+            return o != null && o.QualifiedItemId == "(O)926";
         }
     }
 

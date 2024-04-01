@@ -6,15 +6,25 @@ mods:
    The Best of "The Queen of Sauce"
 
 latest commit:
-   commit 7a7aedd36d335145163b8dda83a2b163d03c0f4e
+   commit b085dfa1be2470f071c8c6ca5ed7f2a4b69cdc38
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Mon Jan 30 12:56:29 2023 -0800
+   Date:   Tue Mar 19 20:38:34 2024 -0700
    
-       Bpen/updatei18n and assets loading (#1)
+       1.6alpha (#2)
        
        * Use upgrade-assistant to port from .net framework
        
        * Convert Asset Editing to new style
        
        * Update Changelog
+       
+       * Updates for 1.6 first pass
+       
+       * Use Game State Query
+       
+       * minor change
+       
+       * Updated Game State Delegate to use GameStateQueryContext
+       
+       * Release for SDV 1.6
    

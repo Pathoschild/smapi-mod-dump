@@ -24,11 +24,11 @@ namespace IncubatePufferfishEggs
                 return true;
             if (!__instance.name.Equals("Incubator")) return true;
             if ((__instance.heldObject.Value != null || object1.Category != -5 &&
-                    !Utility.IsNormalObjectAtParentSheetIndex(object1, 107)
+                    !Utility.IsNormalObjectAtParentSheetIndex(object1, "107")
                 ) && (__instance.heldObject.Value != null || object1.ParentSheetIndex != ModEntry.Instance.EggId &&
                     object1.ParentSheetIndex != ModEntry.Instance.LEggId))
                 return true;
-            __instance.heldObject.Value = new Object(object1.ParentSheetIndex, 1);
+            __instance.heldObject.Value = new Object(object1.ItemId, 1);
             if (probe) return true;
             
             who.currentLocation.playSound("coin");

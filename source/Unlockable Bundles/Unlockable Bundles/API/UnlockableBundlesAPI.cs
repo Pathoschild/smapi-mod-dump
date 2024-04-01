@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+** Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
 **
 *************************************************/
 
@@ -32,10 +32,13 @@ namespace Unlockable_Bundles.API
         private static IDictionary<string, IList<IBundle>> CachedBundles = null;
 
         private static bool _isReady = false;
-        public static bool IsReady { get => _isReady; set {
+        public static bool IsReady
+        {
+            get => _isReady; set {
                 _isReady = value;
                 ContentPatcherHandling.DaysSincePurchaseToken.Ready = value;
-            } }
+            }
+        }
         public IList<string> PurchasedBundles => getPurchasedUnlockables();
 
         public IDictionary<string, IList<string>> PurchaseBundlesByLocation => getPurchasedUnlockablesByLocation();
@@ -59,8 +62,10 @@ namespace Unlockable_Bundles.API
                 return CachedPurchasedBundles;
 
             //We are not currently loading a savegame and are not between daystart and dayending
-            //SaveGame.loaded is null && !Context.IsWorldReady && 
-            if (!IsReady)
+            if (Context.IsMainPlayer && SaveGame.loaded is null && !Context.IsWorldReady)
+                return null;
+
+            if (!IsReady && !Context.IsMainPlayer)
                 return null;
 
             if (ModData.Instance is null)
@@ -87,7 +92,11 @@ namespace Unlockable_Bundles.API
             if (Context.ScreenId > 0 && CachedPurchasedBundlesByLocation is not null)
                 return CachedPurchasedBundlesByLocation;
 
-            if (!IsReady)
+            //We are not currently loading a savegame and are not between daystart and dayending
+            if (Context.IsMainPlayer && SaveGame.loaded is null && !Context.IsWorldReady)
+                return null;
+
+            if (!IsReady && !Context.IsMainPlayer)
                 return null;
 
             if (ModData.Instance is null)
@@ -120,7 +129,11 @@ namespace Unlockable_Bundles.API
             if (Context.ScreenId > 0 && CachedDiscoveredBundles is not null)
                 return CachedDiscoveredBundles;
 
-            if (!IsReady)
+            //We are not currently loading a savegame and are not between daystart and dayending
+            if (Context.IsMainPlayer && SaveGame.loaded is null && !Context.IsWorldReady)
+                return null;
+
+            if (!IsReady && !Context.IsMainPlayer)
                 return null;
 
             if (ModData.Instance is null)
@@ -142,6 +155,7 @@ namespace Unlockable_Bundles.API
             return CachedDiscoveredBundles;
         }
 
+        //I think I should solve this differently
         public static IDictionary<string, IList<IBundle>> getAllBundleStates()
         {
             if (ModData.Instance is null)

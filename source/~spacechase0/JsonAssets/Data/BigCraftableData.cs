@@ -10,14 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using System.Text;
-
 using JsonAssets.Framework;
-using JsonAssets.Framework.Internal;
-
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using SpaceShared;
@@ -26,12 +21,8 @@ namespace JsonAssets.Data
 {
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = DiagnosticMessages.IsPublicApi)]
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = DiagnosticMessages.IsPublicApi)]
-    [DebuggerDisplay("name = {Name}, id = {Id}")]
     public class BigCraftableData : DataNeedsIdWithTexture, ITranslatableItem
     {
-        [JsonIgnore]
-        internal static HashSet<int> HasHoneyInName { get; } = new();
-
         /*********
         ** Accessors
         *********/
@@ -69,24 +60,21 @@ namespace JsonAssets.Data
         /*********
         ** Public methods
         *********/
-        public int GetCraftableId()
+        internal StardewValley.GameData.BigCraftables.BigCraftableData GetCraftableInformation()
         {
-            return this.Id;
+            return new StardewValley.GameData.BigCraftables.BigCraftableData()
+            {
+                Name = this.Name,
+                DisplayName = this.LocalizedName(),
+                Description = this.LocalizedDescription(),
+                Price = this.Price,
+                Fragility = 0,
+                IsLamp = ProvidesLight,
+                Texture = $"JA\\BigCraftable0\\{Name.FixIdJA()}",
+                SpriteIndex = 0,
+            };
         }
 
-        internal string GetCraftableInformation()
-        {
-            StringBuilder str = StringBuilderCache.Acquire();
-
-            str.Append(this.Name).Append('/')
-                .Append(this.Price).Append("/-300/Crafting -9/")
-                .Append(this.LocalizedDescription())
-                .Append("/true/true/0");
-            if (this.ProvidesLight)
-                str.Append("/true");
-            str.Append($"/{this.LocalizedName()}");
-            return StringBuilderCache.GetStringAndRelease(str);
-        }
 
         /*********
         ** Private methods

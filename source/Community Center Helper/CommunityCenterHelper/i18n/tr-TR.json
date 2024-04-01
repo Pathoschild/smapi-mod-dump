@@ -66,6 +66,7 @@
     "treeDuringSeason": "{{tree}} ağacından {{season}} mevsiminde",
     "tapTree": "{{tree}} ağacının üzerinde {{tapper}} kullan.",
     "seedFromTree": "{{tree}} ağacını salla veya kes.",
+	"treeMoss": "Find on random mossy trees", // TODO
 
     // Crafting/Cooking
     "craftRecipeByName": "{{recipe}} tarifini yap.",
@@ -112,6 +113,7 @@
     "harvestHay": "Çimen veya {{wheat}} hasat et.",
     "trash": "Balık tutarken, yengeç çömleğinden veya çöp kutularından ",
     "trashCan": "Çöp kutularından çöp bul",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 
     // Miscellaneous Sources
     "luckyShorts": "Marnie'nin odası (Başkan'ın şortu görevi yazın 3. günü)",
@@ -120,6 +122,7 @@
     "mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
     "winCraneGame": "Sinemadaki oyundan kazan",
     "voidEggEvent": "Rastgele cadı olayından",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 
     // Concealed Source (for when entire suggestion is a spoiler)
     "unknownSource": "???",
@@ -293,6 +296,7 @@
     "animalRabbit": "Tavşan",
     "animalDuck": "Ördek",
     "animalPig": "Domuz",
+	"animalOstrich": "Ostriches", // TODO
 
     // Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
     "animalReqCoopLv1": "Kümes gerekiyor",

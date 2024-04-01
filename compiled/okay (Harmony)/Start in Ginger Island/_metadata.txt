@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20401
+IDs: mistyspring.GingerIslandStart
+update keys: Nexus:20401

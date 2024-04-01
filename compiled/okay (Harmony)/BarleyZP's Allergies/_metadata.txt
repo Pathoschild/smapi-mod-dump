@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21238
+IDs: BarleyZP.BzpAllergies
+update keys: Nexus:21238, GitHub:lisyce/SDV_Allergies_Mod

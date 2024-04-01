@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CropGrowthAdjustments.Patching;
 using CropGrowthAdjustments.Types;
 using HarmonyLib;
@@ -18,6 +19,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.Crops;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
@@ -30,8 +32,6 @@ namespace CropGrowthAdjustments
         public static IMonitor ModMonitor;
         public static IModHelper ModHelper;
         
-        #region Public methods
-
         /// <summary> The mod entry point, called after the mod is first loaded. </summary>
         /// <param name="helper"> Provides simplified APIs for writing mods. </param>
         public override void Entry(IModHelper helper)
@@ -53,13 +53,10 @@ namespace CropGrowthAdjustments
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/Crops"))
             {
-                e.Edit(EditCropData);
+                e.Edit(EditCropData, AssetEditPriority.Late);
             }
         }
         
-        #endregion
-        #region Private methods
-
         private void EditCropTilesheet(IAssetData asset)
         {
             var editor = asset.AsImage();
@@ -79,7 +76,7 @@ namespace CropGrowthAdjustments
                     foreach (var specialSprite in cropAdjustment.SpecialSpritesForSeasons)
                     {
                         if (Utility.IsInAnyOfSpecifiedLocations(specialSprite.GetLocationsToIgnore(), Game1.currentLocation)) continue;
-                        if (!Utility.CompareTwoStringsCaseAndSpaceIndependently(specialSprite.Season, Game1.currentSeason)) continue;
+                        if (specialSprite.GetSeason() != Game1.season) continue;
                         
                         Texture2D sourceImage = specialSprite.SpritesTexture;
                         // load the image if it hasn't been loaded yet
@@ -106,25 +103,20 @@ namespace CropGrowthAdjustments
         
         private void EditCropData(IAssetData asset)
         {
-            IDictionary<int, string> cropData = asset.AsDictionary<int, string>().Data;
+            var cropData = asset.AsDictionary<string, CropData>();
             
             foreach (var adjustments in ContentPackManager.ContentPacks)
             {
                 foreach (var cropAdjustment in adjustments.CropAdjustments)
                 {
                     var cropProduceItemId = cropAdjustment.CropProduceItemId;
-                    if (cropProduceItemId == -1) continue;
-                    
-                    foreach (var itemId in cropData.Keys)
+                            
+                    foreach (var itemId in cropData.Data.Keys)
                     {
-                        var itemData = cropData[itemId];
-                        var fields = itemData.Split('/');
-                        
-                        if(int.Parse(fields[3]) != cropProduceItemId) continue;
-                        
-                        fields[1] = cropAdjustment.GetSeasonsToGrowIn().Join(delimiter: " ");
-                        cropData[itemId] = string.Join("/", fields);
-                        
+                        if(cropData.Data[itemId].HarvestItemId != cropProduceItemId.ToString()) continue;
+                                
+                        cropData.Data[itemId].Seasons = cropAdjustment.GetSeasonsToGrowIn();
+                                
                         break;
                     }
                 }
@@ -172,6 +164,7 @@ namespace CropGrowthAdjustments
             {
                 ContentPackManager.AssignCropProduceItemIds(Helper, null);
                 ContentPackManager.AssignCropRowsInSpritesheet(Helper);
+                Helper.GameContent.InvalidateCache("Data/Crops");
             }
         }
 
@@ -182,7 +175,5 @@ namespace CropGrowthAdjustments
             
             ContentPackManager.AssignCropRowsInSpritesheet(Helper);
         }
-
-        #endregion
     }
 }

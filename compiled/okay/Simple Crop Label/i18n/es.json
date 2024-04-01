@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // es (spanish)
+  // custom tree translation
+  "custom-tree.oak": "Roble",
+  "custom-tree.maple": "Arce Árbol",
+  "custom-tree.pine": "Pino",
+  "custom-tree.coconut": "Cocotero",
+  "custom-tree.mushroom": "Árbol de Setas",
+  "custom-tree.mahogany": "Árbol de Caoba",
+  "custom-tree.palm": "Palmera",
+
+  // growth info translation
+  "growth-info.fully-grown": "completamente crecido",
+  "growth-info.stage": "fase",
+  "growth-info.of": "de",
+  "growth-info.days-left": "días restantes",
+  "growth-info.day-left": "queda día",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Mouse Hover",
+  "config.mouse-hover.desc": "Mueva el mouse sobre el mosaico de recorte para mostrar la etiqueta cuando esté habilitado.",
+  "config.growth-info.name": "Información de Crecimiento",
+  "config.growth-info.desc": "Muestra el crecimiento del cultivo o la etapa de cosecha cuando está habilitado.",
+  "config.custom-keybinds.name": "Combinación de Teclas",
+  "config.custom-keybinds.desc": "Reemplaza por defecto. Habilitar Mouse Hover anula esto."
+}

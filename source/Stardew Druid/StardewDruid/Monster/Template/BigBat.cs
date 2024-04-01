@@ -58,10 +58,7 @@ namespace StardewDruid.Monster.Template
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(new INetSerializable[1]
-            {
-                 posturing,
-            });
+            NetFields.AddField(posturing, "posturing");
         }
 
         public void LoadOut()
@@ -119,7 +116,7 @@ namespace StardewDruid.Monster.Template
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
 
-            if (posturing) { return 0; }
+            if (posturing.Value) { return 0; }
 
             DialogueData.DisplayText(this, 3);
 
@@ -141,9 +138,9 @@ namespace StardewDruid.Monster.Template
                 shakeTimer > 0 ? Color.Red : Color.White,
                 0f,
                 new Vector2(8f, 16f),
-                Math.Max(0.2f, scale) * 6f,
+                Math.Max(0.2f, scale.Value) * 6f,
                 flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                Math.Max(0f, drawOnTop ? 0.991f : getStandingY() / 10000f)
+                Math.Max(0f, drawOnTop ? 0.991f : Tile.Y / 10000f)
             );
 
             b.Draw(
@@ -155,7 +152,7 @@ namespace StardewDruid.Monster.Template
                 new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y),
                 6f,
                 SpriteEffects.None,
-                wildernessFarmMonster ? 0.0001f : (getStandingY() - 1) / 10000f
+                wildernessFarmMonster ? 0.0001f : (Tile.Y - 1) / 10000f
              );
 
             int frameOffset = Sprite.currentFrame % 4;
@@ -171,7 +168,7 @@ namespace StardewDruid.Monster.Template
                 new Vector2(8f, 16f),
                 4f,
                 SpriteEffects.None,
-                Math.Max(0f, drawOnTop ? 0.992f : getStandingY() / 10000f + 0.00005f)
+                Math.Max(0f, drawOnTop ? 0.992f : Tile.Y / 10000f + 0.00005f)
              );
 
         }
@@ -180,6 +177,20 @@ namespace StardewDruid.Monster.Template
         {
             if (!loadedout) { LoadOut(); }
             base.update(time, location);
+        }
+
+        public override void onDealContactDamage(Farmer who)
+        {
+
+            if ((who.health + who.buffs.Defense) - DamageToFarmer < 10)
+            {
+
+                who.health = (DamageToFarmer - who.buffs.Defense) + 10;
+
+                Mod.instance.CriticalCondition();
+
+            }
+
         }
 
     }

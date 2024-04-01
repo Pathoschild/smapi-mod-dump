@@ -109,3 +109,6 @@ v1.0.1:
 
  v.1.3.4
  Added a night butterflies option. Let indoor butterflies have the evenings off, just like outdoor butterflies.
+
+ v1.4.0
+ Updates for Stardew Valley 1.6 and SMAPI 4.

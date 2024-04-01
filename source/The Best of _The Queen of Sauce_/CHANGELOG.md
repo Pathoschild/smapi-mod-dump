@@ -10,6 +10,7 @@ for queries and analysis.**
 ## Table of Contents
 <!-- TOC -->
 
+- [V2.0.0](#v200)
 - [V1.2.0](#v120)
 - [V1.0.3](#v103)
     - [Experimental](#experimental)
@@ -18,6 +19,9 @@ for queries and analysis.**
 - [V1.0.0](#v100)
 
 <!-- /TOC -->
+
+# V2.0.0
+* Full update and release for SDV 1.6/SMAPI 4.0
 
 # V1.2.0
 * Updated for SDV1.6/SMAPI4.0

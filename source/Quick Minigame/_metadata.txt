@@ -6,11 +6,11 @@ mods:
    Quick Minigame
 
 latest commit:
-   commit 2ebd168fee953895eaa1b9e4aa0265e86676392a
+   commit e9ffce91053e8b98db4a8f3bd0a8e3ec51110dab
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Wed Jan 20 22:02:31 2021 -0600
+   Date:   Wed Mar 27 18:32:43 2024 +0800
    
-       Merge pull request #3 from Enaium-StardewValleyMods/develop
+       Merge pull request #4 from Enaium-StardewValleyMods/develop
        
        Develop
    

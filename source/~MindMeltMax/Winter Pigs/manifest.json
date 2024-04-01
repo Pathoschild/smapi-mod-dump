@@ -11,10 +11,10 @@
 {
   "Name": "Winter Pigs",
   "Author": "MindMeltMax",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Pigs will (begrudgingly) go outisde during winter and rain",
   "UniqueID": "MindMeltMax.WinterPigs",
   "EntryDll": "Winter Pigs.dll",
-  "MinimumApiVersion": "3.15.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "nexus:16879" ]
 }

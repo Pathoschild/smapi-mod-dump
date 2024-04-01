@@ -15,6 +15,6 @@
   "Description": "Allows raising living mushrooms in the slime hutch.",
   "UniqueID": "Goldenrevolver.MushroomRancher",
   "EntryDll": "MushroomRancher.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:10978" ]
 }

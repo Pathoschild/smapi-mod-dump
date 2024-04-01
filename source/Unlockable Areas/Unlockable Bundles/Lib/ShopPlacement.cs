@@ -38,6 +38,9 @@ namespace Unlockable_Bundles.Lib
 
         //This flag is supposed to prevent locationListChanged from possibly running before dayStarted
         public static bool HasDayStarted = false;
+
+        public static List<Unlockable> UnappliedMapPatches = new();
+
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -101,8 +104,16 @@ namespace Unlockable_Bundles.Lib
         [EventPriority(EventPriority.Low)] //EventPriority needs to be low, or CP will be very inconsistent with token evaluations before UB dayStarted
         public static void dayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!Context.IsMainPlayer)
+            if (Context.ScreenId > 0)
                 return;
+
+            if (!Context.IsMainPlayer) {
+                foreach (var unlockable in UnappliedMapPatches)
+                    UpdateHandler.applyUnlockable(unlockable);
+
+                UnappliedMapPatches.Clear();
+                return;
+            }
 
             resetDay();
             SaveDataEvents.LoadModData();
@@ -123,7 +134,7 @@ namespace Unlockable_Bundles.Lib
                     var unlockable = new Unlockable(entry.Value);
                     var loc = unlockable.getGameLocation();
 
-                    if(loc is null) {
+                    if (loc is null) {
                         Monitor.Log($"skipped applying bundle logic to location {location.NameOrUniqueName} as it does not exist");
                         continue;
                     }

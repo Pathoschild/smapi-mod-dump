@@ -9,78 +9,31 @@
 *************************************************/
 
 using HappyHomeDesigner.Integration;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using StardewValley.Objects;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HappyHomeDesigner.Menus
 {
-	internal class FurnitureEntry : IGridItem
+	internal class FurnitureEntry : VariantEntry<Furniture>
 	{
-		internal const int CELL_SIZE = 80;
-
-		public Furniture Item;
-		public bool HasVariants;
-		public bool Favorited;
-		private readonly Season season = default;
-
-		// 384 396 15 15 cursors
-		// 256 256 10 10 cursors
-		// 128 128 64 64 menus
-
-		private static readonly Rectangle background = new(128, 128, 64, 64);
-		private static readonly Rectangle star = new(6, 38, 7, 7);
-		private static readonly Rectangle favRibbon = new(0, 38, 6, 6);
-
-		/// <summary>Standard constructor. Used for main catalog page.</summary>
-		/// <param name="Item">The contained furniture item.</param>
-		/// <param name="season">The local season. Required to accurately check for AT variants.</param>
-		public FurnitureEntry(Furniture Item, Season season, string seasonName, IList<string> favorites)
+		/// <inheritdoc/>
+		public FurnitureEntry(Furniture Item, Season season, string seasonName, ICollection<string> favorites)
+			: base(Item, season, seasonName, favorites, "Furniture_")
 		{
-			this.Item = Item;
-			this.season = season;
-			HasVariants = AlternativeTextures.Installed && AlternativeTextures.HasVariant( "Furniture_" + Item.ItemId, "Furniture_" + Item.Name, seasonName);
-			Favorited = favorites.Contains(Item.ItemId);
 		}
 
-		/// <summary>Used for AT variant entries.</summary>
-		/// <param name="Item">The contained furniture item, with AT tags applied.</param>
+		/// <inheritdoc/>
 		public FurnitureEntry(Furniture Item)
+			: base(Item)
 		{
-			this.Item = Item;
 			Item.currentRotation.Value = 0;
 			Item.updateRotation();
-			HasVariants = false;
 		}
 
-		public IList<Furniture> GetVariants()
-		{
-			if (!HasVariants)
-				return new[] {Item};
-
-			List<Furniture> skins = new() { Item };
-			AlternativeTextures.VariantsOf(Item, season, skins);
-			return skins;
-		}
-
-		public void Draw(SpriteBatch b, int x, int y)
-		{
-			IClickableMenu.drawTextureBox(b, Game1.menuTexture, background, x, y, CELL_SIZE, CELL_SIZE, Color.White, 1f, false);
-			Item?.drawInMenu(b, new(x + 8, y + 8), 1f);
-
-			if (HasVariants)
-				b.Draw(Catalog.MenuTexture, new Rectangle(x + CELL_SIZE - 22, y + 1, 21, 21), star, Color.White);
-
-			if (Favorited)
-				b.Draw(Catalog.MenuTexture, new Rectangle(x + 5, y + 5, 18, 18), favRibbon, Color.White);
-		}
-
-		public Furniture GetOne()
+		public override Furniture GetOne()
 		{
 			var item = Item.getOne() as Furniture;
 			item.Price = 0;
@@ -89,7 +42,18 @@ namespace HappyHomeDesigner.Menus
 			return item;
 		}
 
-		public bool CanPlaceHere()
+		public override IList<VariantEntry<Furniture>> GetVariants()
+		{
+			if (!HasVariants)
+				return new[] { new FurnitureEntry(Item) };
+
+			List<Furniture> skins = new() { Item };
+			AlternativeTextures.VariantsOfFurniture(Item, season, skins);
+
+			return skins.Select(f => new FurnitureEntry(f) as VariantEntry<Furniture>).ToList();
+		}
+
+		public override bool CanPlace()
 		{
 			if (Item is BedFurniture bed)
 			{
@@ -112,26 +76,6 @@ namespace HappyHomeDesigner.Menus
 			}
 
 			return true;
-		}
-
-		public bool ToggleFavorite(bool playSound)
-		{
-			Favorited = !Favorited;
-
-			if (playSound)
-				Game1.playSound(Favorited ? "jingle1" : "cancel");
-
-			return Favorited;
-		}
-
-		public override string ToString()
-		{
-			return Item?.ItemId ?? string.Empty;
-		}
-
-		public string GetName()
-		{
-			return Item?.DisplayName;
 		}
 	}
 }

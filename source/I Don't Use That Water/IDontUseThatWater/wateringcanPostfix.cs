@@ -20,15 +20,15 @@ using System.Threading.Tasks;
 
 namespace SeawaterIsUnusable
 {
-    internal class wateringcanPostfix
+    internal class WateringcanPostfix
     {
-        private static IMonitor monitor;
+        private static readonly IMonitor monitor;
 
-        public static void isProperForWaterSource(int tileX, int tileY, ref bool __result)
+        public static void IsProperForWaterSource(int tileX, int tileY, ref bool __result)
         {
             try
             {
-                if (Game1.currentLocation.doesTileHavePropertyNoNull(tileX, tileY, "WaterSource", "Back") == "F")
+                if (Game1.currentLocation.doesTileHavePropertyNoNull(tileX, tileY, "WaterSource", "Back").ToUpper() == "F")
                 {
                     __result = false;
                 }
@@ -36,7 +36,7 @@ namespace SeawaterIsUnusable
             }
             catch (Exception ex)
             {
-                monitor.Log($"Failed in {nameof(isProperForWaterSource)}:\n{ex}", LogLevel.Error);
+                monitor.Log($"Failed in {nameof(IsProperForWaterSource)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }

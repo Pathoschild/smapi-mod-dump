@@ -22,7 +22,6 @@ namespace StardewAquarium.Menus
         public static bool Donated;
         public static bool PufferchickDonated;
 
-
         private Dictionary<ISalable, int[]> donations = new Dictionary<ISalable, int[]>();
 
         public DonateFishMenuAndroid(IModHelper helper, IMonitor monitor) : base(new Dictionary<ISalable, int[]>())
@@ -44,15 +43,15 @@ namespace StardewAquarium.Menus
             {
                 Object display = new Object(fish, 1);
                 display.DisplayName = "Donate " + display.DisplayName;
-                donations.Add(display,new int[] {0,1,fish,1});
+                this.donations.Add(display, new int[] { 0, 1, fish, 1 });
             }
 
-            setItemPriceAndStock(donations);
+            setItemPriceAndStock(this.donations);
         }
 
         public void OnExit()
         {
-            Utils.DonationMenuExit(Donated,PufferchickDonated);
+            Utils.DonationMenuExit(Donated, PufferchickDonated);
         }
     }
 }

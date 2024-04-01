@@ -1,0 +1,10 @@
+{
+  "Name": "Static toolpower",
+  "Author": "Omek97",
+  "Version": "1.0.1",
+  "Description": "switch to your tool power manually",
+  "UniqueID": "omek97.static_toolpower",
+  "EntryDll": "StaticToolPower.dll",
+  "MinimumApiVersion": "2.9.0",
+  "UpdateKeys": [ "Nexus:21281" ]
+}

@@ -4,6 +4,7 @@ urls:
 
 mods:
    Animal Sitter
+   Animal Sitter LTS
    Crab Net
    Mail Order Pigs
    Pelican Fiber

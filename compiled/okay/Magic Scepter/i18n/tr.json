@@ -1,0 +1,12 @@
+{
+  "dialog.title": "Konumu Seç:",
+  "dialog.location.farm": "Çiftlik",
+  "dialog.location.beach": "Kumsal",
+  "dialog.location.mountain": "Dağ",
+  "dialog.location.desert": "Çöl",
+  "dialog.location.island": "Zencefil Adası",
+  "dialog.location.islandFarm": "Ada Çiftliği",
+  "dialog.location.miniObelisk": "Küçük Dikilitaş",
+  "dialog.location.miniObeliskNumber": "Küçük Dikilitaş #{{number}}",
+  "dialog.cancel": "Vazgeç"
+}

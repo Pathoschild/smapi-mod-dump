@@ -8,8 +8,11 @@ for queries and analysis.**
 
 # Version history for DialogueBoxRedesign
 
-## Upcoming
-- Updated to latest SMAPI version.
+## 1.2.0
+Released March 23, 2024.
+- Updated for SMAPI 4.0 and Stardew Valley 1.6
+- Migrated to .NET 6
+- Added config option to adjust the dialogue box opacity level (BoxBackgroundOpacity).
 
 ## 1.1.1
 Released February 8, 2022.

@@ -1,0 +1,22 @@
+﻿{
+  "Name": "Farmer Helper",
+  "Author": "Fiorbeth",
+  "Version": "1.0.1",
+  "Description": "Farmer Helper.",
+  "UniqueID": "Fiorbeth.FarmerHelper",
+  "EntryDll": "FarmerHelper.dll",
+  "MinimumApiVersion": "4.0.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "Fiorbeth",
+    "Directory": "_releases",
+    "ModFolder": "FarmerHelper"
+  },
+  "UpdateKeys": [ "Nexus:10179" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

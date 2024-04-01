@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Lake1059/StardewFPS
+   Git: https://github.com/Lake1059/StardewFPS.git
+
+mods:
+   Stardew FPS (Animation Frame Speed)
+
+latest commit:
+   commit a3bf5bdd1f45fadcec0e7d0fa5b84b8b4b0ade12
+   Author: Lake1059 <vb1059@outlook.com>
+   Date:   Fri Mar 22 22:55:29 2024 +0800
+   
+       æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€‚
+   

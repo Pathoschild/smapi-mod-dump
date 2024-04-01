@@ -32,12 +32,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Grass.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Grass.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Grass.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
             harmony.Patch(AccessTools.Constructor(typeof(Grass)), postfix: new HarmonyMethod(GetType(), nameof(GrassPostfix)));
         }
 
-        private static bool DrawPrefix(Grass __instance, int[] ___offset1, int[] ___offset2, int[] ___offset3, int[] ___offset4, int[] ___whichWeed, float ___shakeRotation, double[] ___shakeRandom, bool[] ___flip, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(Grass __instance, int[] ___offset1, int[] ___offset2, int[] ___offset3, int[] ___offset4, int[] ___whichWeed, float ___shakeRotation, double[] ___shakeRandom, bool[] ___flip, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -53,6 +53,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     return true;
                 }
 
+                Vector2 tileLocation = __instance.Tile;
                 var textureOffset = textureModel.GetTextureOffset(textureVariation);
                 for (int i = 0; i < (int)__instance.numberOfWeeds; i++)
                 {
@@ -68,7 +69,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
             {
-                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.currentLocation);
+                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.Location).ToString();
                 __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Grass}_{NAME_PREFIX}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}");
             }
         }
@@ -76,7 +77,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         private static void GrassPostfix(Grass __instance)
         {
             var instanceName = $"{AlternativeTextureModel.TextureType.Grass}_{NAME_PREFIX}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

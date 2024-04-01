@@ -11,8 +11,8 @@
 {
 	"Name": "Mail Framework Mod",
 	"Author": "Digus",
-	"Version": "1.15.0",
-	"MinimumApiVersion": "3.17.0",
+	"Version": "1.16.0",
+	"MinimumApiVersion": "4.0.0",
 	"Description": "Utility classes to send mail in the game.",
 	"UniqueID": "DIGUS.MailFrameworkMod",
 	"EntryDll": "MailFrameworkMod.dll",
@@ -23,5 +23,5 @@
 			"IsRequired": false
 		}
 	],
-    "UpdateKeys": [ "Nexus:1536" ]
+	"UpdateKeys": [ "Nexus:1536" ]
 }

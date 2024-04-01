@@ -1,0 +1,22 @@
+{
+  "ArcadeGamesPayToPlay": true,
+  "ArcadeGamesPayToPlayCoinPerJotPKGame": 1,
+  "ArcadeGamesPayToPlayCoinPerJKGame": 1,
+  "ArcadeGamesPayToPlayKonamiCode": true,
+  "ArcadeGamesPayToPlayNonRealisticLeaderboard": true,
+  "ShopsBetterAnimalPurchase": true,
+  "ShopsBetterAnimalPurchasePreviousKey": "LeftShoulder",
+  "ShopsBetterAnimalPurchaseNextKey": "RightShoulder",
+  "ShopsSimultaneousServices": true,
+  "ShopsGeodesAutoProcess": true,
+  "ShopsGeodesAutoProcessSpeedMultiplier": 2,
+  "MachinesSafeReplacement": true,
+  "OtherFestivalEndTime": true,
+  "OtherFestivalEndTimeAdditionalTime": 200,
+  "UserInterfaceZoom": true,
+  "UserInterfaceZoomInKey": "RightTrigger",
+  "UserInterfaceZoomOutKey": "LeftTrigger",
+  "UserInterfaceZoomMultiplier": 1.0,
+  "UserInterfaceFastScrolling": true,
+  "UserInterfaceFastScrollingMultiplier": 3.0
+}

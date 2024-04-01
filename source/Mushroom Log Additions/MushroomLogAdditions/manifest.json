@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/justastranger/MushroomLogAdditions
+**
+*************************************************/
+
+{
+    "Name": "Mushroom Log Additions",
+    "Author": "justastranger",
+    "Version": "1.1.1",
+    "Description": "Allows more trees to affect the output of Mushroom Stumps.",
+    "UniqueID": "JAS.MushroomLogAdditions",
+    "EntryDll": "MushroomLogAdditions.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "GitHub:justastranger/MushroomLogAdditions",
+        "ModDrop:1539617"
+    ]
+}

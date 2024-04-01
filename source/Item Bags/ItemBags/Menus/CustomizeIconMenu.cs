@@ -113,7 +113,7 @@ namespace ItemBags.Menus
             }
         }
 
-        public Object HoveredObject { get { return HoveredSpriteIndex.HasValue ? new Object(HoveredSpriteIndex.Value, 1) : null; } }
+        public Object HoveredObject { get { return HoveredSpriteIndex.HasValue ? new Object(HoveredSpriteIndex.Value.ToString(), 1) : null; } }
 
         private Rectangle? HoveredButton { get; set; }
 

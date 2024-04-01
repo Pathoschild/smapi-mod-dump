@@ -21,7 +21,7 @@ namespace ProducerFrameworkMod.ContentPack
     {
         public int FrameInterval = 60;
         public List<int> RelativeFrameIndex = new List<int>();
-        public Dictionary<string, List<int>> AdditionalAnimations = new Dictionary<string, List<int>>();
-        public Dictionary<int, List<int>> AdditionalAnimationsId = new Dictionary<int, List<int>>();
+        public Dictionary<string, List<int>> AdditionalAnimations = new();
+        public Dictionary<string, List<int>> AdditionalAnimationsId = new();
     }
 }

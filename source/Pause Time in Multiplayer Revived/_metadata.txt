@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/mishagp/PauseInMultiplayer
+   Git: https://github.com/mishagp/PauseInMultiplayer.git
+
+mods:
+   Pause Time in Multiplayer Revived
+
+latest commit:
+   commit aad86a6888f962856f6dc3a39bdbbaf0178774ae
+   Author: Misha Hawthorn <misha@mishaprasolov.com>
+   Date:   Fri Mar 29 13:38:21 2024 -0500
+   
+       Adjustments for re-release on NexusMods
+   

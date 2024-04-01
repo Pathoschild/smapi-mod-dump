@@ -66,7 +66,7 @@ namespace BetterJunimos.Utils {
                 return;
             Vector2 pos = chest.TileLocation;
             for (int index = 0; index < obj.Stack; ++index)
-                Game1.createObjectDebris(item.ParentSheetIndex, (int) pos.X + 1, (int) pos.Y + 1, -1, item.Quality, 1f,
+                Game1.createObjectDebris(item.ItemId, (int) pos.X + 1, (int) pos.Y + 1, -1, item.Quality, 1f,
                     farm);
         }
 
@@ -77,7 +77,7 @@ namespace BetterJunimos.Utils {
 
             item.Stack -= count;
             if (item.Stack <= 0) {
-                chest.items.Remove(item);
+                chest.Items.Remove(item);
             }
         }
 
@@ -104,7 +104,7 @@ namespace BetterJunimos.Utils {
 
             // BetterJunimos.SMonitor.Log($"SpawnJunimoAtPosition: spawning #{junimoNumber} in {location.Name} at [{pos.X} {pos.Y}]", LogLevel.Debug);
 
-            var junimoHarvester = new JunimoHarvester(pos, hut, junimoNumber, gemColor);
+            var junimoHarvester = new JunimoHarvester(location, pos, hut, junimoNumber, gemColor);
 
             // the JunimoHarvester constructor sets the location to Farm and calls pathfindToRandomSpotAroundHut immediately
             // so we have to set the location explicitly then re-do pathfinding
@@ -153,8 +153,8 @@ namespace BetterJunimos.Utils {
 */
         private static Color? GetGemColor(ref bool isPrismatic, JunimoHut hut) {
             var colorList = new List<Color>();
-            var chest = hut.output.Value;
-            foreach (Item dyeObject in chest.items) {
+            var chest = hut.GetOutputChest();
+            foreach (Item dyeObject in chest.Items) {
                 if (dyeObject != null &&
                     (dyeObject.Category == MineralCategory || dyeObject.Category == GemCategory)) {
                     Color? dyeColor = TailoringMenu.GetDyeColor(dyeObject);
@@ -205,12 +205,11 @@ namespace BetterJunimos.Utils {
             }
 
             var ioh = crop.indexOfHarvest.Value;
-            var oi = Game1.objectInformation[ioh];
-            var num = oi.Split("/")[1];
+            var oi = Game1.objectData[ioh];
+            var num = Math.Round((float)(16.0 * Math.Log(0.018 * (double) oi.Price + 1.0, Math.E)));
             var int32 = Convert.ToInt32(num);
 
-            var num56 = (float) (16.0 * Math.Log(0.018 * int32 + 1.0, Math.E));
-            return (int) Math.Round(num56);
+            return int32;
         }
     }
 }

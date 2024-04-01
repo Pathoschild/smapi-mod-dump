@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Display Monster Health",
+    "Author": "Atesba",
+    "Version": "1.3.0",
+    "Description": "Displays monster health.",
+    "UniqueID": "Atesba.DisplayMonsterHealth",
+    "EntryDll": "DisplayMonsterHealth.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:20984" ]
+}

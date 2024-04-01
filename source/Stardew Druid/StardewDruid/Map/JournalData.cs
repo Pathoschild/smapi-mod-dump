@@ -36,6 +36,8 @@ namespace StardewDruid.Map
 
             List<Page> pageList = new();
 
+            Dictionary<string, int> taskList = Mod.instance.TaskList();
+
             foreach (KeyValuePair<int, List<List<string>>> keyValuePair in dictionary1)
             {
                 if (keyValuePair.Key <= num)
@@ -65,38 +67,32 @@ namespace StardewDruid.Map
                                         {
                                             
                                             page.objectives.Add(stringList[4]);
-                                        
-                                        }
-                                        else
-                                        {
-                                            
-                                            page.active = true;
-                                        
-                                        }
 
-                                        Dictionary<int, Dictionary<int, string>> dialogueScene = DialogueData.DialogueScene(stringList[5]);
+                                            Dictionary<int, Dictionary<int, string>> dialogueScene = DialogueData.DialogueScene(stringList[5]);
 
-                                        if(dialogueScene.Count > 0)
-                                        {
-
-                                            Dictionary<int, Dialogue.Narrator> narrator = DialogueData.DialogueNarrator(stringList[5]);
-
-                                            foreach(KeyValuePair<int, Dialogue.Narrator> sceneNarrator in narrator)
+                                            if (dialogueScene.Count > 0)
                                             {
-                                                page.transcript.Add("(transcript) " + sceneNarrator.Value.name);
 
-                                                foreach (KeyValuePair<int, Dictionary<int, string>> sceneEntry in dialogueScene)
+                                                Dictionary<int, Dialogue.Narrator> narrator = DialogueData.DialogueNarrator(stringList[5]);
+
+                                                foreach (KeyValuePair<int, Dialogue.Narrator> sceneNarrator in narrator)
                                                 {
+                                                    page.transcript.Add("(transcript) " + sceneNarrator.Value.name);
 
-                                                    if(sceneEntry.Key > 900)
-                                                    {
-                                                        continue;
-                                                    }
-
-                                                    if (sceneEntry.Value.ContainsKey(sceneNarrator.Key))
+                                                    foreach (KeyValuePair<int, Dictionary<int, string>> sceneEntry in dialogueScene)
                                                     {
 
-                                                        page.transcript.Add(sceneEntry.Value[sceneNarrator.Key]);
+                                                        if (sceneEntry.Key > 900)
+                                                        {
+                                                            continue;
+                                                        }
+
+                                                        if (sceneEntry.Value.ContainsKey(sceneNarrator.Key))
+                                                        {
+
+                                                            page.transcript.Add(sceneEntry.Value[sceneNarrator.Key]);
+
+                                                        }
 
                                                     }
 
@@ -104,6 +100,12 @@ namespace StardewDruid.Map
 
                                             }
 
+                                        }
+                                        else
+                                        {
+                                            
+                                            page.active = true;
+                                        
                                         }
 
                                         pageList.Add(page);
@@ -150,10 +152,33 @@ namespace StardewDruid.Map
                                 pageList.Add(page2);
                                 break;
 
+                            case "mastery":
+
+                                if (!taskList.ContainsKey(stringList[5]))
+                                {
+                                    break;
+
+                                }
+
+                                pageList.Add(new Page()
+                                {
+
+                                    title = stringList[0],
+
+                                    icon = stringList[2],
+
+                                    description = stringList[3],
+
+                                    objectives = new() { "Effect: "+stringList[4], },
+
+                                });
+
+                                break;
+
                             case "effect":
                             case "journal":
 
-                                string effectLead = stringList[1] == "effect" ? "Effect: " : "";
+                                string effectLead = stringList[1] == "effect"|| stringList[1] == "mastery" ? "Effect: " : "";
 
                                 List<string> effectObjectives = new() { effectLead + stringList[4], };
 
@@ -189,8 +214,6 @@ namespace StardewDruid.Map
                                 List<string> etherPages = new() {};
 
                                 int specialNotes = 0;
-
-                                Dictionary<string, int> taskList = Mod.instance.TaskList();
 
                                 if (taskList.ContainsKey("masterTreasure"))
                                 {
@@ -332,7 +355,8 @@ namespace StardewDruid.Map
                     "Weald",
                     "When I inherited the farm from my Grandfather, it had become almost completely overrun with thicket. The Effigy has shown me how to make way for new growth.",
                     "Explode nearby weeds and twigs."
-                    }
+                    },
+
                 },
                 [3] = new()
                 {
@@ -372,7 +396,7 @@ namespace StardewDruid.Map
                     "lesson",
                     "Weald",
                     "I have learned that the Farmer and the Druid share the same vision for a prosperous and well fed community, and so the wild seed is domesticated.",
-                    "Cast over seasonal wild seeds sewn into tilled dirt to convert them into domestic crops. Will also fertilise and update the growth cycle of all crop seeds, and progress the growth rate of maturing fruit trees by one day (once per day).",
+                    "Cast over seasonal wild seeds sewn into tilled dirt to convert them into domestic crops. Will also fertilise and update the growth cycle of all crop seeds, tree seeds, and progress the growth rate of maturing fruit trees by one day (once per day).",
                     "lessonCrop",
                     "of 20 seeds converted",
                     "masterCrop",
@@ -392,6 +416,14 @@ namespace StardewDruid.Map
                     "of 100 Stone Collected",
                     "masterRockfall",
                     "Falling rocks damage monsters."
+                    },
+                    new()
+                    {
+                    "Charge: Drain",
+                    "effect",
+                    "Weald",
+                    "I am energised with every blow I inflict on the monsters of the valley.",
+                    "Press the special button while the rite button is also pressed to charge attacks with the power of the Weald. While charged, melee attacks against monsters will deal minor damage and replenish as much stamina. Damage scales with progression. Has a slight cooldown."
                     }
                 },
                 [7] = new()
@@ -420,6 +452,14 @@ namespace StardewDruid.Map
                 },
                 [9] = new()
                 {
+                    new()
+                    {
+                    "Effect: Weapon Attunement",
+                    "effect",
+                    "Effigy",
+                    "I pledge blade and haft to the service of my benevolent patrons.",
+                    "Melee weapons (that are not reserved for a specific rite) and most tools (Axe, Pickaxe, Hoe, Can) can now be attuned to a rite of your choosing. Speak to the Effigy for rite and attunement options. Un-attuned weapons and tools will produce the rite currently chosen as the default."
+                    },
                     new()
                     {
                     "Effect: Cursor Targetting",
@@ -511,11 +551,11 @@ namespace StardewDruid.Map
                     },
                     new()
                     {
-                    "Effect: Veil of Mist",
+                    "Charge: Veil of Mist",
                     "effect",
                     "Mists",
                     "The discharge of lightning has the strange effect of drawing in mist that's imbued with the Lady's benevolence, and I feel myself invigorated when immersed in it.",
-                    "A successful smite will spawn a misty zone at the player's position that provides regeneration every second."
+                    "Press the special button while the rite button is pressed to charge attacks with Mists. While charged, melee attacks against monsters will create a veil of mist with healing properties. Heal scales with progression. Has a slight cooldown."
                     }
                 },
                 [13] = new()
@@ -526,7 +566,7 @@ namespace StardewDruid.Map
                     "lesson",
                     "Mists",
                     "The druids would attempt to commune with spirits at times when the barrier between the material and ethereal world had waned. The Lady's power can punch right through the veil.",
-                    "Strike candle torches that have been laid on the ground to produce a ritual of summoning, then fight off the monsters that step through the veil. The more candles included in the Rite (up to seven) the stronger the summoning, and the greater the rewards.",
+                    "Strike candle torches that have been laid on the ground to produce a ritual of summoning, then fight off the monsters that step through the veil. The more candles included in the Rite (up to nine) the stronger the summoning, and the greater the reward.",
                     "lessonPortal",
                     "ritual attempted",
                     "masterPortal",
@@ -565,11 +605,19 @@ namespace StardewDruid.Map
                     "lesson",
                     "Stars",
                     "If nature extends to the celestial realm, then the stars themselves are it's greatest force, a force now granted to me in order to burn away the taint and decay of a stagnated world.",
-                    "Produce a meteor shower that strikes objects and monsters within the impact radii of random points around the Farmer. Will dislodge most set down objects.",
+                    "Produce a meteor shower that strikes objects and monsters within the impact radius of random points around the Farmer. Will dislodge most set down objects.",
                     "lessonMeteor",
-                    "of 50 meteors summoned",
+                    "of 10 times monsters hit",
                     "masterMeteor",
                     "Unlocks priority targetting of stone nodes and monsters"
+                    },
+                    new()
+                    {
+                    "Charge: Starburst",
+                    "effect",
+                    "Stars",
+                    "My weapon is drenched in starlight.",
+                    "Press the special button while the rite button is pressed to charge attacks with the power of the stars. While charged, melee attacks against monsters will cause a starburst that deals damage, stuns and may knock the monster down. Damage scales with progression. Has a slight cooldown."
                     }
                 },
                 [17] = new()
@@ -580,7 +628,7 @@ namespace StardewDruid.Map
                     "quest",
                     "Stars",
                     "Throughout my adventures I've engaged many a slime in combat. Unlike the bats and shadowfolk, I am uncertain of their origin or master, but while I spent time deep in the mountains looking for the lake of fire, a grand splattering of slime infested the forest. With the blessing of the Stars, I can confront even an army of jellies.",
-                    "The pumpkin visaged king of the slimes mocked my lieges for leaving the valley wasted and unguarded. I am no longer a greenhorned Druid, but a fully fledged master of the Druidic tradition. The circle of Druids is reborn in the valley, but what role will it play in today's modernised society, I do not know. My victory in the forest has helped some of the villagers return to it's glens; Shane, Leah, Haley, Marnie, Jas, The Wizard, Willy, ????",
+                    "The pumpkin visaged king of the slimes mocked my lieges for leaving the valley wasted and unguarded. I am no longer a greenhorn Druid, but a fully fledged master of the Druidic tradition. The circle of Druids is reborn in the valley, but what role will it play in today's modernised society, I do not know. My victory in the forest has helped some of the villagers return to it's glens; Shane, Leah, Haley, Marnie, Jas, The Wizard, Willy, ????",
                     "challengeStars"
                     }
                 },
@@ -588,11 +636,19 @@ namespace StardewDruid.Map
                 {
                     new()
                     {
+                    "Hidden Threats",
+                    "effect",
+                    "Effigy",
+                    "The valley is haunted by the twisted spectres of long forgotten wars and civilisations. It is my duty to confront these hidden threats for the sanctity of the sacred spaces.",
+                    "Difficult combat challenges are littered throughout the valley. Complete at least one of these challenges to progress the Druid storyline."
+                    },
+                    new()
+                    {
                     "The Dusting",
                     "quest",
                     "Effigy",
-                    "The Canoli was a gardener of the sacred groves who fell victim to his own avarice. His vines of sacred fruit have long since shrivelled and turned to dust, and the dust is everywhere.",
-                    "I found a statue crafted in reverence of the Canoli, and when I attempted to destroy it with the Lady's power, I was immediately swamped by a horde of dust spirits. The woods breath easier without them, for now.",
+                    "The Cannoli was a gardener of the sacred groves who fell victim to his own avarice. His vines of sacred fruit have long since shrivelled and turned to dust, and the dust is everywhere.",
+                    "I found a statue crafted in reverence of the Cannoli, and when I attempted to destroy it with the Lady's power, I was immediately swamped by a horde of dust spirits. The woods breath easier without them, for now.",
                     "challengeCanoli"
                     },
                     new()
@@ -619,7 +675,7 @@ namespace StardewDruid.Map
                     "quest",
                     "Effigy",
                     "The Effigy tells me of a large volcanic island far out on the sea, where the central mountain hosted a fanatic cult of dwarven miners. They toiled without thought or care for the domain of the monarchs.",
-                    "I found a shrine deep in the jungle, dwarven built, with pedestals for gems of brilliant lustre. I touched the site with the power of the Star Sisters, and something ominous chided me for it. Then fire breathing birds appeared. I had savoured some of the local mushrooms, so there's a possibility I hallucinated the whole thing.",
+                    "I found a shrine deep in the jungle, dwarven built, with pedestals for gems of brilliant lustre. I touched the site with the power of the Star Sisters, and something ominous chided me for it. Then evil demon monkeys appeared. I had savoured some of the local magma mushrooms, so there's a possibility I hallucinated the whole thing.",
                     "challengeGemShrine"
                     },
                     new()
@@ -639,8 +695,8 @@ namespace StardewDruid.Map
                     "Fate Jests",
                     "quest",
                     "Jester",
-                    "The apple bodied spirits of the forest accepted my offering of fruits and forageables. They have repaired the bridge to the western face of the mountain, and fate bids me to cross the ravine.",
-                    "I met a strange cat-like being on the bridge, and a deal was struck to share the secrets of the Fates in exchange for my services in the cat's quest.",
+                    "My conversations with the Effigy have begun to dwell more and more on the secrets of the past. The Fates beckon me across the mountain ravine to the east face of the mountain, to reclaim the knowledge that the Effigy has forgotten after many years of inactivity.",
+                    "The apple bodied spirits of the forest accepted my offering of fruits and forageables. They have repaired the bridge to the eastern face of the mountain, and fate bids me to cross the ravine. I met a strange cat-like being on the bridge, and a deal was struck to share the secrets of the Fates in exchange for my services in the cat's quest.",
                     "approachJester"
                     },
                     new()
@@ -648,8 +704,11 @@ namespace StardewDruid.Map
                     "Gardener for the First Farmer",
                     "effect",
                     "Effigy",
-                    "After my efforts to settle the ghosts of the past, the valley enjoys a respite from evil. It is time for the Effigy to walk amongst the furrows and fields of it's former master's home.",
-                    "The Effigy can be invited to roam the farm, and will perform it's own version of Rite of the Weald where scarecrows have been placed. This version will plant new seed into empty tilled dirt, and water and fertilise existing crops in a radius around the scarecrow. The Effigy will use the first chest placed in the farmcave as an inventory."
+                    "After my efforts to settle the ghosts of the past, the valley enjoys a respite from evil. It is time for the Effigy to walk amongst the furrows and fields of its former master's home.",
+                    "The Effigy can be invited to roam the farm, and will perform its own version of Rite of the Weald where scarecrows have been placed. " +
+                    "This version of the rite will not only plant new seeds into empty tilled dirt, but also water and fertilise existing crops in a certain radius around the scarecrow. " +
+                    "Fruit trees within an eight tile radial proximity of the scarecrow will have their growth advanced forward by one day. " +
+                    "Mature trees blessed by the Effigy will spawn and drop extra fruits, even out of season."
                     }
                 },
                 [20] = new()
@@ -659,7 +718,7 @@ namespace StardewDruid.Map
                     "The Shrine of the Reaper",
                     "quest",
                     "Fates",
-                    "The Jester of Fate seems unsure of how to begin my tutelage. For now, he has requested that I retrieve an instrument of fate from one it's kin, who is rumoured to have taken residence at a shrine within the western face of the mountain.",
+                    "The Jester of Fate seems unsure of how to begin my tutelage. For now, he has requested that I retrieve an instrument of fate from one it's kin, who is rumoured to have taken residence at a shrine within the eastern face of the mountain.",
                     "Another shrine in a forgotten alcove, unattended by the world, but seeped in the essence of the otherworld. I found a reaping scythe of unfathomable make, and learned that it belonged to Thanatoshi, a relative of Jester's who had long since vanished from the sight of the Fates.",
                     "swordFates"
                     }
@@ -693,7 +752,8 @@ namespace StardewDruid.Map
                     "of 10 times whisked away",
                     "masterWhisk",
                     "Extra range unlocked."
-                    }
+                    },
+
                 },
                 [22] = new()
                 {
@@ -745,7 +805,7 @@ namespace StardewDruid.Map
                     "effect",
                     "Stars",
                     "The appearance of comets in the night sky would inpire the divinations of druid astronomers. Jester's teachings have bolstered my authority within the celestial realm.",
-                    "Casting Rite of the Stars with Gravity Well active will attract a large comet to impact the immediate area with an extensive damage radius."
+                    "Casting Rite of the Stars with Gravity Well active will attract a large comet to impact the immediate area with an extensive damage radius. This can also be triggered automatically when Gravity Well is cast if pre-charged with Stars."
                     },
                 },
                 [25] = new()
@@ -762,6 +822,14 @@ namespace StardewDruid.Map
                     "masterDaze",
                     "Strike range and damage increased"
                     },
+                    new()
+                    {
+                    "Charge: Shield",
+                    "effect",
+                    "Fates",
+                    "The blessings of the Fates preserves me for a higher purpose.",
+                    "Press the special button while the rite button is pressed to charge attacks with the power of the fates. While charged, melee attacks against monsters will generate an invulnerability shield. Has a cooldown."
+                    }
                 },
                 [26] = new()
                 {
@@ -785,7 +853,7 @@ namespace StardewDruid.Map
                     "The Effigy has remembered that the undervalley was once the ether-drenched domain of Tyrannus Prime, the ancient Lord attended to by the cult of Calico. The cultist shamans gathered unto themselves a wealth of knowledge about otherworldly things, and now I go with Jester to the Skull Caverns to search for clues as to their fate.",
                     "The Rite of the Weald unveiled the entrance to the desecrated throne room of Tyrannus Prime. Once inside, I was set upon by the wraith of Thanatoshi, who's mind had deteriorated with the burden of unfulfilled purpose. It seems the wraith was tethered to this world by the power of Prime's dragon tooth, which has been fashioned into a weapon of ethereal might.",
                     "swordEther",
-                    },
+                    },                    
                     new()
                     {
                     "Adventures with Jester",
@@ -793,6 +861,14 @@ namespace StardewDruid.Map
                     "Jester",
                     "Jester believes that his great purpose is intertwined with my own story. Despite the resoluton of our bargain, he will remain close by while he searches for a way to access the Undervalley.",
                     "Jester can be invited to roam the farm, or accompany you on journeys through the valley. He will automatically target nearby enemies, and his leaping melee attack applies the Daze effect. If positioned at right angles to a foe he can perform a powerful energy beam attack. Jester will use the second chest placed in the farmcave as an inventory if available."
+                    },
+                    new()
+                    {
+                    "Adventures with Effigy",
+                    "effect",
+                    "Effigy",
+                    "The Effigy has learned to utilise the strange warp power of our cosmic cat friend.",
+                    "The Effigy can be invited to accompany you on journeys through the valley. The Effigy prefers to use the power of the Lady to smite foes. If positioned at right angles to a foe he can launch a powerful fireball, or a perform leaping axe attack. The Effigy will use the first chest placed in the farmcave as an inventory."
                     }
                 },
                 [28] = new()
@@ -903,6 +979,51 @@ namespace StardewDruid.Map
                 },
                 [35] = new()
                 {
+                    new()
+                    {
+                    "At the Beach",
+                    "quest",
+                    "Effigy",
+                    "The Effigy feels a strange yearning for the shoreline. Whether for nostalgia, or for simple leisure, he is determined to visit the local beach, and I have agreed to accompany him.",
+                        "I watched the Effigy undertake many of the recreational activities once enjoyed by the first farmer. " +
+                        "After several instances involving fish, slime and displays of raw, unbridled power, the Effigy used a veil of mists to conjure a vision of the past. " +
+                        "The construct itself is a testament to the ingenuity of the Lady Beyond the Shore and her human acolyte, the first farmer. " +
+                        "After they had completed their project, and taught the Effigy many things, the Lady deemed it an appropriate time to depart the valley.",
+                    },
+
+                },
+                [36] = new()
+                {
+                    new()
+                    {
+                    "Effect: Wisps",
+                    "effect",
+                    "Weald",
+                    "The Effigy continued to practice and modify the techniques taught to him by his creators. One technique that developed from his independent scholarship of the otherworld is the summoning of the valley wisps into a temporary material form.",
+                    "Casts of Rite of the Weald will summon nearby wisps. The primary state of the wisp provides light and periodically stuns nearby enemies. Rite of the Mists and Rite of the Stars changes this behaviour to trigger passive casts of smite and comet respectively.",
+                    },
+                    new()
+                    {
+                    "Jesters in the night",
+                    "quest",
+                    "Jester",
+                    "Jester thinks a distraction from our regular routine will be good for morale, and has invited me to spend the evening in the bustling Pelican Town.",
+                        "Jester joined me in the town square and immediately took to sniffery and contemplation. Marlon showed up at one point and reminded Jester of the tough days out on the mountain, looking for the fallen one's crash site. " +
+                        "Then Jester recognised a familiar scent, and followed it to find one of his old associates, the Buffoonette of Chaos. Buffin engaged Jester in a series of fun but escalating challenges. They stopped once the old Joja mart set on fire. " +
+                        "Buffin thinks Jester should return to his prior position in the court of fates, but Jester has a conviction she did not expect. He finds strength in the bonds formed between us members of the circle of druids, and that's enough for him to continue.",
+                    },
+
+                },
+                [37] = new()
+                {
+                    new()
+                    {
+                    "Charge: Chaos",
+                    "effect",
+                    "Chaos",
+                    "Jester explained to me the nature of chaos, and proposed I attempt to subvert the dichotomic nature of Mists and Stars to obtain the power of the great Stream.",
+                    "Press the special button while the rite button is pressed to charge with Mists, then again with Stars, or vice versa. While charged, melee attacks in the direction of nearby monsters will generate a chaos bolt. Has a cooldown."
+                    },
                     new()
                     {
                     "Thank you!",

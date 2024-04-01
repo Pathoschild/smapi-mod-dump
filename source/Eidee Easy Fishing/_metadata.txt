@@ -6,9 +6,9 @@ mods:
    Eidee Easy Fishing
 
 latest commit:
-   commit d80a61be641cebbe0f3cb0309192e9ce7edf324f
-   Author: eideehi <account@eidee.net>
-   Date:   Sat Nov 12 23:03:07 2022 +0900
+   commit 8335139df4c9ff783d64234ec73789d14cf63915
+   Author: eideehi <41231321+eideehi@users.noreply.github.com>
+   Date:   Sat Mar 23 02:20:18 2024 +0900
    
-       Update README
+       v1.2.1
    

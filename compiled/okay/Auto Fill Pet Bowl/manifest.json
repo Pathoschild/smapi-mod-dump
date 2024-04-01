@@ -1,0 +1,10 @@
+{
+  "Name": "AutoFillPetBowl",
+  "Author": "Siweipancc",
+  "Version": "0.0.3",
+  "Description": "Auto fill pet's bowl.",
+  "UniqueID": "Siweipancc.AutoFillPetBowl",
+  "EntryDll": "AutoFillPetBowl.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:20667"]
+}

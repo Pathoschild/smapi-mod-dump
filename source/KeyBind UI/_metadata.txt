@@ -6,9 +6,11 @@ mods:
    KeyBind UI
 
 latest commit:
-   commit 0a6cfb73a6234738f1a3efe66066446a2cba46ce
-   Author: Enaium <wyy-666@hotmail.com>
-   Date:   Mon Oct 18 11:38:21 2021 +0800
+   commit 142882a05f25f8f9f9ddd22e5ccda5ba16719ae2
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Wed Mar 27 21:58:06 2024 +0800
    
-       first commit
+       Merge pull request #1 from Enaium-StardewValleyMods/develop
+       
+       update to 1.6
    

@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using StardewValley.GameData;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.SpecialOrders;
 using StardewModdingAPI.Events;
 using System.Linq;
 using StardewValley.Objects;
@@ -40,7 +41,7 @@ namespace EasierSpecialOrders
             {
                 e.Edit(asset =>
                 {
-                    var specialorder = asset.Data as Dictionary<string, SpecialOrderData>;
+                    var specialorder = asset.Data as Dictionary<string, StardewValley.GameData.SpecialOrders.SpecialOrderData>;
 
                     /* Remove collection count from special order, not removed from Robin2 
                      * as this would cause the order to be completed immediately with no reward */
@@ -97,7 +98,7 @@ namespace EasierSpecialOrders
 
                     if (this.config.EasierQiChallenges.MoreTimeForExtendedFamily == true)
                     {
-                        specialorder["QiChallenge8"].Duration = "Week";
+                        specialorder["QiChallenge8"].Duration = 0;
                         this.Monitor.Log("Time limit for Extended Family set to one week");
                     }
 

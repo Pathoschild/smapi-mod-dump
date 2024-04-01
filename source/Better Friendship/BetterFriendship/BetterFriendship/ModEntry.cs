@@ -18,7 +18,7 @@ using StardewValley.Characters;
 using Object = StardewValley.Object;
 using System.Runtime.Caching;
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
+using BetterFriendship;
 
 namespace BetterFriendship
 {
@@ -84,6 +84,16 @@ namespace BetterFriendship
             foreach (var npc in currentLocation.characters.Where(npc =>
                          npc.IsTownsfolk() || (npc is Child child && child.daysOld.Value > 14)))
             {
+                // credit goes to Ophaneom and Mini-Bars for this method of range detection
+                var npcX = npc.Position.X;
+                var npcY = npc.Position.Y;
+                var playerX = Game1.player.Position.X;
+                var playerY = Game1.player.Position.Y;
+                var range = (Config.BubbleDisplayRange * 20) * Game1.pixelZoom; // gotta love weird math...
+                
+                if (npcX >= playerX + range || npcX <= playerX - range ||
+                    npcY >= playerY + range || npcY <= playerY - range) continue;
+                
                 if (!Game1.player.friendshipData.TryGetValue(npc.Name, out var friendship)) continue;
 
                 if (Config.IgnoreMaxedFriendships && !FriendshipCanDecay(npc, friendship)) continue;
@@ -92,7 +102,7 @@ namespace BetterFriendship
                     npc is Child ||
                     friendship.GiftsToday != 0 ||
                     (friendship.GiftsThisWeek >= 2 && Game1.player.spouse != npc.Name &&
-                     !npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth))
+                     !npc.isBirthday())
                    )
                 {
                     if ((!Config.DisplayTalkPrompts && !npc.ShouldOverrideForSpouse(Config)) ||
@@ -211,6 +221,7 @@ namespace BetterFriendship
                 }
             );
 
+
             configMenu.AddNumberOption(
                 ModManifest,
                 name: () => this.Helper.Translation.Get("config.option.gift_max_count.name"),
@@ -271,6 +282,17 @@ namespace BetterFriendship
                 tooltip: () => this.Helper.Translation.Get("config.option.enable_bubbles.description"),
                 getValue: () => Config.DisplayBubbles,
                 setValue: value => Config.DisplayBubbles = value
+            );
+            
+            configMenu.AddNumberOption(
+                ModManifest,
+                name: () => this.Helper.Translation.Get("config.option.bubble_display_range.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.bubble_display_range.description"),
+                interval: 1,
+                min: 1,
+                max: 50, // should be enough to cover entire visible area on normal zoom
+                getValue: () => Config.BubbleDisplayRange,
+                setValue: value => Config.BubbleDisplayRange = value
             );
         }
     }

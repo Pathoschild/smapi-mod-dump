@@ -525,7 +525,7 @@ namespace ContentPatcher.Framework
                     }
                     else
                     {
-                        NPC? spouse = this.GetAllCharacters().FirstOrDefault(p => p.Name == player.spouse && p.isVillager());
+                        NPC? spouse = this.GetAllCharacters().FirstOrDefault(p => p.Name == player.spouse && p.IsVillager);
                         if (spouse != null)
                         {
                             name = spouse.Name;

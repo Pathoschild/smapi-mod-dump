@@ -9,12 +9,11 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Linq;
 using CJBCheatsMenu.Framework.Components;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
@@ -56,7 +55,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
             if (!e.IsOneSecond || !Context.IsWorldReady)
                 return;
 
-            foreach (BuildableGameLocation location in context.GetAllLocations().OfType<BuildableGameLocation>())
+            foreach (GameLocation location in context.GetAllLocations())
             {
                 foreach (Building building in location.buildings)
                 {

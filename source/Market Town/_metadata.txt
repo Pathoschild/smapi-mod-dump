@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/congha22/foodstore
+   Git: https://github.com/congha22/foodstore.git
+
+mods:
+   Market Town
+
+latest commit:
+   commit 3fefbaef032163a6e2de33a842dafa64c8817072
+   Author: Ha <thongha2208@gmail.com>
+   Date:   Sat Mar 30 03:34:27 2024 -0400
+   
+       release v5.3.3
+   

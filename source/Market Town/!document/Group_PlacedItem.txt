@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+-102:Book
+-81: Forage
+-80: Flower
+-79: Fruit
+-75: Vegetable
+-74: Seed
+-28: Monster loot
+-27: Syrup
+-26: Artisan good
+-23: Sell at fish shop (beach spawn, roe)
+-22: Tackle
+-21: Fish bait
+-20: Junk
+-19: Fertilizer
+-18: Animal product
+-17: Sell at Pierre (Sweet gem berry, truffle)
+-16: Resouce building ( battery, grass)
+-15: Resource metal
+-12: Mineral
+-8:	 Crating
+-7:	 Cooking
+-6:	 Milk
+-5:	 Egg
+-4:	 Fish
+-2:	 Gem (Aquamine, Earth cyrstal)
+ 0:  Artifacts

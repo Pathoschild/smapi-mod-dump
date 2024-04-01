@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapTeleport", "MapTeleport.csproj", "{658E0435-6F41-4E83-90F0-7E717C5A4EFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{658E0435-6F41-4E83-90F0-7E717C5A4EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658E0435-6F41-4E83-90F0-7E717C5A4EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658E0435-6F41-4E83-90F0-7E717C5A4EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658E0435-6F41-4E83-90F0-7E717C5A4EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

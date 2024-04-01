@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/AguirreMoy/Stardew-Multiplayer-Server-Mod
+   Git: https://github.com/AguirreMoy/Stardew-Multiplayer-Server-Mod.git
+
+mods:
+   Stardew Multiplayer Server
+
+latest commit:
+   commit 6836328d3a88ccc9504265d6f427c4da9aaba44f
+   Author: Moises Aguirre <93941588+AguirreMoy@users.noreply.github.com>
+   Date:   Wed Mar 20 21:40:22 2024 -0700
+   
+       Update issue templates
+   

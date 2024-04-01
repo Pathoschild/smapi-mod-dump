@@ -95,7 +95,7 @@ namespace Shockah.ProjectFluent.ContentPatcher
 		{
 			if (TryGetFluent(file, out IFluent<string>? fluent))
 				return fluent;
-			fluent = ProjectFluent.Instance.Api.GetLocalizationsForCurrentLocale(Mod, file);
+			fluent = ModEntry.Instance.Api.GetLocalizationsForCurrentLocale(Mod, file);
 
 			if (file is null)
 				DefaultFluent = fluent;
@@ -109,7 +109,7 @@ namespace Shockah.ProjectFluent.ContentPatcher
 			internal string Key;
 			internal Dictionary<string, string> Named;
 
-			public Args(string key) : this(key, new Dictionary<string, string>()) { }
+			public Args(string key) : this(key, []) { }
 
 			public Args(string key, Dictionary<string, string> named)
 			{

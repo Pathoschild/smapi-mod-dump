@@ -15,7 +15,7 @@ namespace Shockah.Kokoro.Map;
 public sealed class CachingMap<TTile> : IMap<TTile>
 {
 	private IMap<TTile> Wrapped { get; init; }
-	private readonly Dictionary<IntPoint, TTile> Cache = new();
+	private readonly Dictionary<IntPoint, TTile> Cache = [];
 
 	public TTile this[IntPoint point]
 	{

@@ -1,0 +1,10 @@
+﻿{
+    HarvestModeSection: "收获模式",
+    HM_Hand: "只能拔毛",
+    HM_Irid: "普通行为",
+    HM_Gold: "也可以用金色镰刀收获",
+    HM_Both: "既可拔除又可镰刀",
+    PluckableCropsName:   "手工收割庄稼",  PluckableCropsTooltip:   "如何收割通常只能手工收割的农作物。", 
+    FlowersName:          "花朵",         FlowersTooltip:          "如何采收鲜花。",
+    HarvestWithSwordName: "用剑收获",     HarvestWithSwordTooltip: "剑是否可以当镰刀使用。",
+}

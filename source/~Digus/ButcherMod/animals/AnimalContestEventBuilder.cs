@@ -22,6 +22,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Characters;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.animals
 {
@@ -53,7 +54,7 @@ namespace AnimalHusbandryMod.animals
             int eventId = GetEventId(contestDate);
             string key = GenerateKey(eventId, contestDate);
 
-            Random random = new Random((int)((long)Game1.uniqueIDForThisGame * 100000 + contestDate.Year* 1000 + Utility.getSeasonNumber(contestDate.Season) *100 + contestDate.Day));
+            Random random = new Random((int)((long)Game1.uniqueIDForThisGame * 100000 + contestDate.Year* 1000 + contestDate.SeasonIndex * 100 + contestDate.Day));
 
             //Player and Participant init
             Character contestParticipant = AnimalContestController.ContestParticipant(contestDate);
@@ -86,7 +87,7 @@ namespace AnimalHusbandryMod.animals
             string marnieAnimal = MarnieAct.ChooseMarnieAnimal(random, history);
             VincentAnimal vincentAnimal = VincentAct.ChooseVincentAnimal(random, history);
 
-            AnimalContestItem animalContestInfo = new AnimalContestItem(eventId, contestDate, contenders.ToList(), vincentAnimal.ToString(), marnieAnimal)
+            AnimalContestItem animalContestInfo = new AnimalContestItem(eventId.ToString(), contestDate, contenders.ToList(), vincentAnimal.ToString(), marnieAnimal)
             {
                 ParticipantId = isParticipantPet ? AnimalData.PetId : farmAnimal?.myID.Value,
                 PlayerAnimal = isParticipantPet ? Game1.player.catPerson ? "Cat" : "Dog" : farmAnimal?.type.Value
@@ -94,15 +95,15 @@ namespace AnimalHusbandryMod.animals
             animalContestInfo = PickTheWinner(animalContestInfo, history, farmAnimal, contenders[2]);
 
             // Deciding who will be present
-            bool isHaleyWatching = Game1.player.eventsSeen.Contains(14) || Game1.player.spouse == "Haley";
+            bool isHaleyWatching = Game1.player.eventsSeen.Contains("14") || Game1.player.spouse == "Haley";
             bool isKentWatching = Game1.year > 1 && contenders.Contains("Jodi");
             bool isSebastianWatching = Game1.player.spouse != "Sebastian" && (vincentAnimal == VincentAnimal.Frog || contenders.Contains("Abigail"));
             bool isPennyWatching = Game1.player.spouse != "Penny" && !isSebastianWatching && (contenders.Contains("Maru") || contenders.Contains("Jas") || isPlayerJustWatching || Game1.player.getFriendshipHeartLevelForNPC("Penny") >= 4);
             bool isDemetriusWatching = contenders.Contains("Maru");
             bool isClintWatching = contenders.Contains("Emily");
-            bool isLeahWatching = Game1.player.spouse != "Leah" && Game1.player.eventsSeen.Contains(53);
-            bool isLinusWatching = !contenders.Contains("Linus") && (Game1.player.eventsSeen.Contains(26) || vincentAnimal == VincentAnimal.Rabbit);
-            bool isShaneWatching = !contenders.Contains("Shane") && (contenders.Contains("Jas") || isPlayerJustWatching || Game1.player.eventsSeen.Contains(3900074) || Game1.player.spouse == "Shane");
+            bool isLeahWatching = Game1.player.spouse != "Leah" && Game1.player.eventsSeen.Contains("53");
+            bool isLinusWatching = !contenders.Contains("Linus") && (Game1.player.eventsSeen.Contains("26") || vincentAnimal == VincentAnimal.Rabbit);
+            bool isShaneWatching = !contenders.Contains("Shane") && (contenders.Contains("Jas") || isPlayerJustWatching || Game1.player.eventsSeen.Contains("3900074") || Game1.player.spouse == "Shane");
 
             StringBuilder initialPosition = new StringBuilder();
             initialPosition.Append("none/-100 -100");
@@ -234,7 +235,6 @@ namespace AnimalHusbandryMod.animals
                     }
                     else
                     {
-                        DataLoader.AssetsToLoad[Path.Join(spriteTextureNameSegments.Prepend("Animals").ToArray()).ToString().Replace('_', ' ')] = farmAnimal.Sprite.Texture;
                         playerAnimalTextureName = spriteTextureName;
                     }
                     playerAnimalTextureName = playerAnimalTextureName.Replace(' ', '_');
@@ -454,7 +454,7 @@ namespace AnimalHusbandryMod.animals
             eventAction.Append($"/pause 1500/showFrame Lewis 16/globalFade/viewport -1000 -1000");
             if (animalContestInfo.Winner == "Farmer" && !DataLoader.ModConfig.DisableContestBonus)
             {
-                string bonusType = contestDate.Season == "spring" || contestDate.Season == "summer" ? i18n.Get("AnimalContest.Message.Reward.Fertility") : i18n.Get("AnimalContest.Message.Reward.Production");
+                string bonusType = contestDate.SeasonKey == "spring" || contestDate.SeasonKey == "summer" ? i18n.Get("AnimalContest.Message.Reward.Fertility") : i18n.Get("AnimalContest.Message.Reward.Production");
                 eventAction.Append($"/playSound reward/message \"{i18n.Get("AnimalContest.Message.Reward", new { animalName = farmAnimal.displayName, bonusType })}\"");
             }
             eventAction.Append("/specificTemporarySprite animalContestEnding/waitForOtherPlayers animalContestEnd/end");
@@ -771,7 +771,7 @@ namespace AnimalHusbandryMod.animals
         {
             string key = "{0}/z {1}/u {2}/t {3}";
 
-            string seasons = String.Join(" ",Seasons.Where(s => s != date.Season).ToArray());
+            string seasons = String.Join(" ",Seasons.Where(s => s != date.SeasonKey).ToArray());
             string day = date.Day.ToString();
             string time = "600 1000";
             return String.Format(key, id, seasons, day, time);
@@ -779,7 +779,7 @@ namespace AnimalHusbandryMod.animals
 
         public static int GetEventId(SDate date)
         {
-            return Convert.ToInt32($"{6572+date.Year/100}{date.Year%100:00}{Utility.getSeasonNumber(date.Season)}{date.Day:00}");
+            return Convert.ToInt32($"{6572+date.Year/100}{date.Year%100:00}{date.SeasonIndex}{date.Day:00}");
         }
     }
 }

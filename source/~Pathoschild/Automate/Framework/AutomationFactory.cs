@@ -72,6 +72,7 @@ namespace Pathoschild.Stardew.Automate.Framework
                     case Chest.SpecialChestTypes.None:
                     case Chest.SpecialChestTypes.AutoLoader when !chest.modData.ContainsKey("spacechase0.SuperHopper"): // super hopper is used to transfer items between two chests without connecting them to the same group
                     case Chest.SpecialChestTypes.JunimoChest:
+                    case Chest.SpecialChestTypes.BigChest:
                         return new ChestContainer(chest, location, tile);
 
                     case Chest.SpecialChestTypes.MiniShippingBin:
@@ -208,7 +209,7 @@ namespace Pathoschild.Stardew.Automate.Framework
             if (location is Town town)
             {
                 string action = town.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Action", "Buildings");
-                if (action != null)
+                if (!string.IsNullOrWhiteSpace(action))
                 {
                     string[] fields = ArgUtility.SplitBySpace(action);
                     if (string.Equals(fields[0], "Garbage", StringComparison.OrdinalIgnoreCase) && ArgUtility.HasIndex(fields, 1))

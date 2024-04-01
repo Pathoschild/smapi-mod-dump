@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21233
+IDs: Espy.AnythingAnywhere
+update keys: GitHub:Smoked-Fish/AnythingAnywhere, Nexus:21233

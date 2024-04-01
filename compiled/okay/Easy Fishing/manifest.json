@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EasyFishing",
+  "Author": "season",
+  "Version": "0.0.3",
+  "Description": "Easy Fishing. Fish don't run away.",
+  "UniqueID": "season.EasyFishing",
+  "EntryDll": "EasyFishing.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:20830" ]
+}

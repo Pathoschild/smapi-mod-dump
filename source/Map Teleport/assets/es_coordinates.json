@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Richard2091/MapTeleport
+**
+*************************************************/
+
+{
+    "coordinates": [
+        {
+            "name": "East Scarp",
+            "altId": "945.285",
+            "teleportName": "Custom_EastScarpe",
+            "x": 26,
+            "y": 57
+        },
+        {
+            "name": "Meadow Farm",
+            "altId": "1005.260",
+            "teleportName": "Custom_ESMeadowFarm",
+            "x": 32,
+            "y": 35
+        },
+        {
+            "name": "The Orchard",
+            "altId": "1030.310",
+            "teleportName": "Custom_ESOrchard",
+            "x": 5,
+            "y": 18
+        },
+        {
+            "name": "Deep Mountains",
+            "altId": "920.110",
+            "teleportName": "Custom_ESDeepMountains",
+            "x": 54,
+            "y": 43
+        }
+    ]
+}

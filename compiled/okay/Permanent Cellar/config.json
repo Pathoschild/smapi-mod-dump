@@ -1,9 +1,11 @@
 {
   "SaveGame": {
-    "AusAnarchy_362827183": {
+    "WTDR131A_371442546": {
       "ShowCommunityUpgrade": false,
       "RemoveFarmHouseCasks": false,
-      "RemoveCabinCasks": false
+      "RemoveCabinCasks": false,
+      "AddFarmHouseCasks": false,
+      "AddCabinCasks": false
     }
   }
 }

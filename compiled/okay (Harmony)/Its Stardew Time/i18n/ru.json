@@ -1,0 +1,193 @@
+{
+    /*********
+    ** In-game messages
+    *********/
+    // changed manually
+    "message.config-reloaded": "Теперь время идёт по другому...",
+    "message.speed-changed": "10 минут ощущаються как {{seconds}} сек.",
+    "message.time-stopped": "Ты остановил время!",
+    "message.time-resumed": "Теперь время ощущается нормально...",
+
+    // changed based on time
+    "message.on-time-change.time-stopped": "Внезапно, время остановилось...",
+
+    // changed based on location
+    "message.on-location-change.time-stopped-globally": "Время остановилось везде...",
+    "message.on-location-change.time-stopped-here": "Время здесь застыло...",
+    "message.on-location-change.time-speed-here": "Здесь 10 минут ощущаются как {{seconds}} сек...",
+
+    // player related
+//    "message.player-joined-a-paused-game": "{{playername}} joined a paused game.",
+//    "message.player-voted-to-pause": "{{playername}} voted to pause the game. ({{yesVotes}}/{{totalVotes}})",
+//    "message.player-voted-to-unpause": "{{playername}} voted to unpause the game. ({{yesVotes}}/{{totalVotes}})",
+//    "message.player-does-not-have-mod": "Farmhand {{playername}} does not have {{modname}} mod.",
+//    "message.player-does-not-have-correct-version": "Farmhand {{playername}} has mismatched {{modname}} mod version.",
+//    "message.player-version-comparison": "Host Version: {{hostVersion}} | Farmhand {{playername}} Version: {{playerversion}}",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // speed of time
+    "config.general-options": "Основные опции",
+//    "config.option-disabled": "Disabled",
+//    "config.speed-of-time": "Modify Speed of Time Based on Location",
+//    "config.speed-of-time.paragraph": "The settings below will adjust the speed of the clock based on the location. A setting of 100% means that time will be unmodified. A setting of 50% means time will run at half normal speed. If a setting is disabled, a more general setting (e.g. Indoors/Outdoors) may still affect the locations.",
+    "config.enable-on-festival-days.name": "Вкл. во время праздников",
+//    "config.enable-on-festival-days.desc": "When enabled, speed of time will also be adjusted during festival days.",
+//    "config.time-flow-change-notifications.name": "Time Flow Change Notifications",
+//    "config.time-flow-change-notifications.desc": "When enabled, notifications will be displayed about changes to the time speed when you enter a new location or manually change time speed via hotkeys (e.g. pause, slow/speed up time).",
+    "config.indoors-speed.name": "В помещениях",
+//    "config.indoors-speed.desc": "This value is the speed of time while indoors. The value is a percentage of the unmodified speed of time.",
+//    "config.farm-house-speed.name": "Farm House",
+//    "config.farm-house-speed.desc": "This value is the speed of time while in a Farm House or Cabin. The value is a percentage of the unmodified speed of time.",
+//    "config.bath-house-speed.name": "Bath House",
+//    "config.bath-house-speed.desc": "This value is the speed of time while in the Bath House. The value is a percentage of the unmodified speed of time.",
+    "config.outdoors-speed.name": "На улице",
+//    "config.outdoors-speed.desc": "This value is the speed of time while outdoors. The value is a percentage of the unmodified speed of time.",
+//    "config.farm-speed.name": "Farm",
+//    "config.farm-speed.desc": "This value is the speed of time while on the farm. The value is a percentage of the unmodified speed of time.",
+//    "config.town-exteriors-speed.name": "Town Exteriors",
+//    "config.town-exteriors-speed.desc": "This value is the speed of time while outdoors in any town. The value is a percentage of the unmodified speed of time.",
+    "config.mine-speed.name": "В шахте",
+//    "config.mine-speed.desc": "This value is the speed of time while in the mines. The value is a percentage of the unmodified speed of time.",
+    "config.skull-cavern-speed.name": "Пещера Черепа",
+//    "config.skull-cavern-speed.desc": "This value is the speed of time while in the Skull Cavern. The value is a percentage of the unmodified speed of time in the Skull Cavern.",
+    "config.volcano-dungeon-speed.name": "Вулканическое подземелье",
+//    "config.volcano-dungeon-speed.desc": "This value is the speed of time while in the Volcano Dungeon. The value is a percentage of the unmodified speed of time.",
+//    "config.deep-woods-speed.name": "Deep Woods",
+//    "config.deep-woods-speed.desc": "This value is the speed of time while in the Deep Woods mod. The value is a percentage of the unmodified speed of time.",
+//    "config.night-market-speed.name": "Night Market",
+//    "config.night-market-speed.desc": "This value is the speed of time while at the Night Market festival. The value is a percentage of the unmodified speed of time.",
+//    "config.additional-location-speed.name": "{{locationName}}",
+//    "config.additional-location-speed.desc": "This value is the speed of time while in the '{{locationName}}' location. The value is a percentage of the unmodified speed of time.",
+//    "config.additional-location-speed-delete.name": "Remove {{locationName}}",
+//    "config.additional-location-speed-delete.desc": "Remove this entry from Additional Locations.",
+    
+//    "config.additional-locations-speed.names.Name": "Additional Locations",
+//    "config.additional-locations-speed.names.desc": "Here you can specify names of specific locations in which to adjust the speed of time. Location names can be seen in the SMAPI console output when 'Time Flow Change Notifications' is enabled. You can list multiple with commas.",
+//    "config.additional-locations-speed.page.title": "Configure Additional Locations",
+//    "config.additional-locations-speed.link.Name": "Click to Configure Additional Locations",
+//    "config.additional-locations-speed.link.desc": "If you added Additional Locations above, click 'Save' before configuring!",
+
+    // freeze time
+    "config.freeze-time": "Остановка времени",
+//    "config.freeze-time.paragraph": "The settings below will cause time to automatically stop based on certain conditions.",
+//    "config.anywhere-at-time.name": "Automatically Freeze Time at",
+//    "config.anywhere-at-time.desc": "If enabled, time will automatically stop when it reaches the specified time. To disable, set to the maximum value.",
+    "config.freeze-time-indoors.name": "В помещениях",
+    "config.freeze-time-indoors.desc": "Эта опция полностью остановит время внитри помещений.",
+//    "config.freeze-time-farm-house.name": "Farm House",
+//    "config.freeze-time-farm-house.desc": "Whether to freeze time while in a Farm House or Cabin.",
+//    "config.freeze-time-bath-house.name": "Bath House",
+//    "config.freeze-time-bath-house.desc": "Whether to freeze time while in the Bath House.",
+    "config.freeze-time-outdoors.name": "На улице",
+    "config.freeze-time-outdoors.desc": "Эта опция полностью остановит время на улице.",
+//    "config.freeze-time-farm.name": "Farm",
+//    "config.freeze-time-farm.desc": "Whether to freeze time while on the farm.",
+//    "config.freeze-time-town-exteriors.name": "Town Exteriors",
+//    "config.freeze-time-town-exteriors.desc": "Whether to freeze time while outside in any town.",
+    "config.freeze-time-mine.name": "В шахте",
+    "config.freeze-time-mine.desc": "Эта опция полностью остановит время в шахте.",
+    "config.freeze-time-skull-cavern.name": "Пещера Черепа",
+    "config.freeze-time-skull-cavern.desc": "Эта опция полностью остановит время в Пещере Черепа.",
+    "config.freeze-time-volcano-dungeon.name": "Вулканическое подземелье",
+    "config.freeze-time-volcano-dungeon.desc": "Эта опция полностью остановит время в Вулканическом подземелье.",
+//    "config.freeze-time-deep-woods.name": "Deep Woods",
+//    "config.freeze-time-deep-woods.desc": "Whether to freeze time while in the Deep Woods mod.",
+//    "config.freeze-time-night-market.name": "Night Market",
+//    "config.freeze-time-night-market.desc": "Whether to freeze time while at the Night Market festival.",
+    "config.freeze-time-freeze-names.name": "Заморозить время в",
+//    "config.freeze-time-freeze-names.desc": "Here you can specify names of specific locations in which to freeze time. Location names can be seen in the SMAPI console output when 'Time Flow Change Notifications' is enabled. You can list multiple with commas.",
+    "config.freeze-time-dont-freeze-names.name": "Не замораживать время в",
+//    "config.freeze-time-dont-freeze-names.desc": "Here you can specify the names of specific locations in which time shouldn't be frozen, regardless of the previous settings. Location names can be seen in the SMAPI console output when 'Time Flow Change Notifications' is enabled. You can list multiple with commas.",
+//    "config.freeze-time-objects-pass-time.name": "Objects Always Pass Time",
+//    "config.freeze-time-objects-pass-time.desc": "When enabled, objects such as furnaces will still pass time when the game time is frozen. This allows machines to continue running while time is paused.",
+
+    // clock display
+//    "config.clock-display": "Clock Display",
+//    "config.clock-display.paragraph": "The following settings adjust how the clock is drawn and how it displays time.",
+//    "config.clock-display-display-minutes.name": "Update Clock Display Every Minute",
+//    "config.clock-display-display-minutes.desc": "When enabled, the clock display will be updated every minute, instead of updating once every 10 minutes.",
+//    "config.clock-display-show-pause-x.name": "Draw X Over Clock when Paused",
+//    "config.clock-display-show-pause-x.desc": "When enabled, a large X will be drawn over the clock while time is paused (in addition to the usual blinking gray clock text).",
+//    "config.clock-display-use-24-hour-format.name": "Use 24 Hour Format",
+//    "config.clock-display-use-24-hour-format.desc": "When enabled, time will be displayed in 24 hour format e.g. 15:30.",
+
+    // multiplayer options
+//    "config.multiplayer": "Multiplayer Options",
+//    "config.multiplayer-display-vote-pause-messages.name": "Show Vote Notifications",
+//    "config.multiplayer-display-vote-pause-messages.desc": "When enabled, whenever a player casts a vote to pause the game, a notification will be displayed.",
+//    "config.time-flow-change-notifications-multiplayer.name": "Time Flow Change Notifications",
+//    "config.time-flow-change-notifications-multiplayer.desc": "When enabled, notifications will be displayed about changes to the time speed during multiplayer. This is very noisy since it can be triggered by any player.",
+
+    // multiplayer host-only options
+//    "config.multiplayer-host": "Multiplayer Host-only Options",
+//    "config.multiplayer-host.paragraph": "In a multiplayer game, only these settings from the host player will have effect. Guest players cannot influence these settings.",
+//    "config.multiplayer-host-pause-mode.name": "Pause Mode",
+/*    "config.multiplayer-host-pause-mode.desc": "(host player only)
+If set to 'Any' mode by the multiplayer host, time will pause for all players
+when time should pause for any one player e.g. in a menu, talking to NPCs, or
+in an event.
+
+If set to 'All' mode by the multiplayer host, time will pause for all players
+when time should pause for all players.
+
+If set to 'Host' mode by the multiplayer host, time will pause for all players
+when time should pause for the host player.
+
+If set to 'Half' mode by the multiplayer host, time will pause for all players
+when time should pause for at least half of all players.
+
+If set to 'Majority' mode by the multiplayer host, time will pause for all players
+when time should pause for more than half of all players.
+
+If set to 'Fair' mode by the multiplayer host, time will pause for all players
+when the time should pause for the player who has requested the least
+amount of pause time during the current day.",
+*/
+//    "config.multiplayer-host-pause-mode.Any": "Any",
+//    "config.multiplayer-host-pause-mode.All": "All",
+//    "config.multiplayer-host-pause-mode.Host": "Host",
+//    "config.multiplayer-host-pause-mode.Half": "Half",
+//    "config.multiplayer-host-pause-mode.Majority": "Majority",
+//    "config.multiplayer-host-pause-mode.Fair": "Fair",
+//    "config.multiplayer-host-any-cutscene-pauses.name": "Any Cutscene Pauses",
+//    "config.multiplayer-host-any-cutscene-pauses.desc": "(host player only) When enabled, time will pause for all players if any player is in a cutscene.",
+//    "config.multiplayer-host-lock-monsters.name": "Lock Monsters/HP when Paused",
+//    "config.multiplayer-host-lock-monsters.desc": "(host player only) When enabled, whenever time is paused, monsters will stop moving and health for monsters and players will lock.",
+//    "config.multiplayer-host-enable-vote-pause.name": "Enable Voting to Pause",
+//    "config.multiplayer-host-enable-vote-pause.desc": "(host player only) When enabled, players can vote to pause time. This is in addition to normal pause functionality.",
+    
+//    "config.multiplayer-host-time-speed-mode.name": "Time Speed Mode",
+/*    "config.multiplayer-host-time-speed-mode.desc": "(host player only)
+If set to 'Average' mode by the multiplayer host, time will flow at a speed
+that is the average of the time speeds of the locations that each player is in.
+
+If set to 'Host' mode by the multiplayer host, time will flow at a speed
+that is the time speed of the location that the host is in.
+
+If set to 'Min' mode by the multiplayer host, time will flow at a speed
+that is the minimum time speed of all locations that each player is in.
+
+If set to 'Max' mode by the multiplayer host, time will flow at a speed
+that is the maximum time speed of all locations that each player is in.",
+*/
+//    "config.multiplayer-host-time-speed-mode.Average": "Average",
+//    "config.multiplayer-host-time-speed-mode.Host": "Host",
+//    "config.multiplayer-host-time-speed-mode.Min": "Min",
+//    "config.multiplayer-host-time-speed-mode.Max": "Max",
+//    "config.multiplayer-host-relative-time-speed.name": "Relative Speed of Time",
+//    "config.multiplayer-host-relative-time-speed.desc": "(host player only) When enabled, the speed of time will be adjusted to be proportional to the number of unpaused players in the game. For example, if half of the players are paused, the speed of time will be half the expected speed.",
+
+    // controls
+    "config.controls": "Управление",
+//    "config.vote-for-pause-key.name": "Vote to Pause",
+//    "config.vote-for-pause-key.desc": "When this key is pressed, the player will vote to pause the game. When all players vote, the game will pause for everyone.",
+    "config.freeze-time-key.name": "Остановить время",
+//    "config.freeze-time-key.desc": "This key will start or stop the flow of time. Freezing time will stay in effect until you unfreeze it. Unfreezing time will stay in effect until you enter a new location with different time settings. In a multiplayer game, only the host can manually freeze time with this key.",
+    "config.slow-time-key.name": "Замедлить время",
+    "config.slow-time-key.desc": "Клавиша(по умолчанию - . ), которая будет замедлять время, на 1 секунду за 10 игровых минут. Комбинируя с клавишей Ctrl - 100 секунд, Shift - 10 секунд или Alt - 0.1 секунд (100 миллисекунд).",
+    "config.speed-up-time-key.name": "Ускорить время",
+    "config.speed-up-time-key.desc": "Клавиша(по умолчанию - , ), которая будет ускорять время, на 1 секунду за 10 игровых минут. Комбинируя с клавишей Ctrl - 100 секунд, Shift - 10 секунд или Alt - 0.1 секунд (100 миллисекунд)."
+}

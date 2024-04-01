@@ -15,7 +15,6 @@ using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using Object = StardewValley.Object;
 
 namespace BetterCrystalariums
 {
@@ -38,9 +37,9 @@ namespace BetterCrystalariums
             Harmony harmony = new(this.ModManifest.UniqueID);
 
             harmony.Patch(
-                AccessTools.Method(typeof(Object),
-                    nameof(Object.performObjectDropInAction),
-                    new[] { typeof(Item), typeof(bool), typeof(Farmer) }),
+                AccessTools.Method(typeof(SObject),
+                    nameof(SObject.performObjectDropInAction),
+                    new[] { typeof(Item), typeof(bool), typeof(Farmer), typeof(bool) }),
                 new HarmonyMethod(typeof(Patches),
                     nameof(Patches.ObjectDropIn_Prefix))
             );

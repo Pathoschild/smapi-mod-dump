@@ -6,9 +6,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit e6e02f5c1802baee376dfbdeb4657300a5ae8302
+   commit dc453219089aa8c6d29ab78852aff3e3204284ee
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Sep 15 20:28:45 2022 +0200
+   Date:   Wed Mar 20 21:48:52 2024 +0100
    
-       Updated for Harmony 2.0, minimum SMAPI version is 3.14 (net5.0).
+       Update version number for SDV 1.6 release.
    

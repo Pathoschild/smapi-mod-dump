@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Hay Collection",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Allows you to collect hay, regardless of whether you have silos or not",
+  "UniqueID": "MindMeltMax.HayCollection",
+  "EntryDll": "Hay Collection.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "nexus:21008" ]
+}

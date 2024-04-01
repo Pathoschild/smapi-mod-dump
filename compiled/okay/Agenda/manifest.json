@@ -1,0 +1,10 @@
+{
+  "Name": "Agenda",
+  "Author": "OFTS_CQM",
+  "Version": "1.2.0-alpha.1",
+  "Description": "An Agenda allowed you to record your schedule",
+  "UniqueID": "ofts.agenda",
+  "EntryDll": "agenda.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20432", "GitHub:ofts-cqm/StardewValley-Agenda" ]
+}

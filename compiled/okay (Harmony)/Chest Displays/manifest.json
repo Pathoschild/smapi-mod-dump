@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Chest Displays",
+  "Author": "MindMeltMax",
+  "Version": "1.2.2",
+  "Description": "Allows you to show an item from your chest",
+  "UniqueID": "MindMeltMax.ChestDisplays",
+  "EntryDll": "Chest Displays.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["nexus:7644"]
+}

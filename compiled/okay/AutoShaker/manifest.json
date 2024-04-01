@@ -7,11 +7,11 @@
    */
   "$schema": "https://smapi.io/schemas/manifest.json",
   "UniqueID": "HedgehogTechnologies.AutoForager",
-  "Name": "AutoForager",
+  "Name": "Auto Forager",
   "Author": "Jag3Dagster",
-  "Version": "2.0.0-alpha",
-  "Description": "Automatically shake bushes and trees as you walk by.",
-  "MinimumApiVersion": "4.0.0-alpha.20240226+9d28f15f7eb5de257e5b95078efe814cbf5b3741",
+  "Version": "2.2.3",
+  "Description": "Automatically forage items simply by moving near them.",
+  "MinimumApiVersion": "4.0",
   "EntryDll": "AutoForager.dll",
   "Dependencies": [
     {

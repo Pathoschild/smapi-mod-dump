@@ -1,0 +1,11 @@
+﻿{
+    "Name": "Active Menu Anywhere",
+    "Author": "weizinai",
+    "Version": "1.1.2",
+    "Description": "Active menu anywhere.",
+    "UniqueID": "weizinai.ActiveMenuAnywhere",
+    "EntryDll": "ActiveMenuAnywhere.dll",
+    "UpdateKeys": [
+        "Nexus:21093"
+    ]
+}

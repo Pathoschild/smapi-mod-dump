@@ -31,8 +31,8 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(GiantCrop.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
-            harmony.Patch(AccessTools.Constructor(typeof(GiantCrop), new[] { typeof(int), typeof(Vector2) }), postfix: new HarmonyMethod(GetType(), nameof(GiantCropPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(GiantCrop.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Constructor(typeof(GiantCrop), new[] { typeof(string), typeof(Vector2) }), postfix: new HarmonyMethod(GetType(), nameof(GiantCropPostfix)));
 
             if (PatchTemplate.IsDGAUsed())
             {
@@ -52,10 +52,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         }
 
         [HarmonyBefore(new string[] { "spacechase0.JsonAssets", "spacechase0.MoreGiantCrops" })]
-        private static bool DrawPrefix(GiantCrop __instance, float ___shakeTimer, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(GiantCrop __instance, float ___shakeTimer, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
+                Vector2 tileLocation = __instance.Tile;
+
                 var textureModel = AlternativeTextures.textureManager.GetSpecificTextureModel(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME]);
                 if (textureModel is null)
                 {
@@ -79,9 +81,9 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         private static void GiantCropPostfix(GiantCrop __instance)
         {
-            var instanceName = Game1.objectInformation.ContainsKey(__instance.parentSheetIndex) ? Game1.objectInformation[__instance.parentSheetIndex].Split('/')[0] : String.Empty;
+            var instanceName = Game1.objectData.ContainsKey(__instance.Id) ? Game1.objectData[__instance.Id].Name : String.Empty;
             instanceName = $"{AlternativeTextureModel.TextureType.GiantCrop}_{instanceName}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

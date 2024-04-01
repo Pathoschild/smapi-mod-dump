@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{season}}に{{tree}}",
 	"tapTree": "{{tree}}に{{tapper}}を使う",
 	"seedFromTree": "{{tree}}を揺る、切る",
+	"treeMoss": "苔生す木から取る",
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "「{{recipe}}」のクラフト",
@@ -112,6 +113,7 @@
 	"harvestHay": "草や{{wheat}}から収穫",
 	"trash": "釣りのゴミ、カニかご、ゴミ箱",
 	"trashCan": "ゴミ箱",
+	"prizeTicket": "クエストや特別注文の報酬",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "マーニーの部屋（「町長のパンツ」クエセト、夏の3日）",
@@ -120,6 +122,7 @@
 	"mermaidHint": "（1-5-4-2-3）", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "映画館のクレーンゲーム",
 	"voidEggEvent": "ランダムな魔女イベント",
+	"mysteryBoxesLocked": "まだ入手不可能（ボックスが落ちてくるイベント起こるまで）",
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "ウサギ",
 	"animalDuck": "アヒル",
 	"animalPig": "ブタ",
+	"animalOstrich": "ダチョウ",
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "小屋所要",

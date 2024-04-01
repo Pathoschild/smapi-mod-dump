@@ -17,18 +17,15 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace ConvenientChests.CategorizeChests.Framework
-{
+namespace ConvenientChests.CategorizeChests.Framework {
     /// <summary>
     /// The class responsible for producing data to be saved.
     /// </summary>
-    class Saver
-    {
+    class Saver {
         private readonly ISemanticVersion Version;
         private readonly IChestDataManager ChestDataManager;
 
-        public Saver(ISemanticVersion version, IChestDataManager chestDataManager)
-        {
+        public Saver(ISemanticVersion version, IChestDataManager chestDataManager) {
             Version = version;
             ChestDataManager = chestDataManager;
         }
@@ -36,44 +33,38 @@ namespace ConvenientChests.CategorizeChests.Framework
         /// <summary>
         /// Build save data for the current game state.
         /// </summary>
-        public SaveData GetSerializableData()
-        {
-            return new SaveData
-            {
+        public SaveData GetSerializableData() {
+            return new SaveData {
                 Version = Version.ToString(),
-                ChestEntries = BuildChestEntries()
+                ChestEntries = BuildChestEntries().Where(e => e.AcceptedItems.Any()).ToList(),
             };
         }
 
-        private IEnumerable<ChestEntry> BuildChestEntries()
-        {
-            foreach (var location in Game1.locations)
-            {
+        private IEnumerable<ChestEntry> BuildChestEntries() {
+            foreach (var location in Game1.locations) {
                 // chests
-                foreach (var pair in GetLocationChests(location))
-                    yield return new ChestEntry(
-                        ChestDataManager.GetChestData(pair.Value),
-                        new ChestAddress(location.Name, pair.Key)
-                    );
+                foreach (var pair in GetLocationChests(location)) {
+                    yield return new ChestEntry(ChestDataManager.GetChestData(pair.Value), new ChestAddress(location.Name, pair.Key));
+                }
 
-                switch (location)
-                {
-                    // buildings
-                    case BuildableGameLocation buildableLocation:
-                        foreach (var building in buildableLocation.buildings.Where(b => b.indoors.Value != null))
-                        foreach (var pair in GetLocationChests(building.indoors.Value))
-                            yield return new ChestEntry(
-                                ChestDataManager.GetChestData(pair.Value),
-                                new ChestAddress(location.Name, pair.Key, ChestLocationType.Building, building.nameOfIndoors)
-                            );
-                        break;
+                switch (location) {
 
                     // fridges
                     case FarmHouse farmHouse when farmHouse.upgradeLevel >= 1:
                         yield return new ChestEntry(
-                            ChestDataManager.GetChestData(farmHouse.fridge.Value),
-                            new ChestAddress {LocationName = farmHouse.uniqueName?.Value ?? farmHouse.Name, LocationType = ChestLocationType.Refrigerator}
-                           );
+                                                    ChestDataManager.GetChestData(farmHouse.fridge.Value),
+                                                    new ChestAddress { LocationName = farmHouse.uniqueName?.Value ?? farmHouse.Name, LocationType = ChestLocationType.Refrigerator }
+                                                   );
+                        break;
+
+                    // buildings
+                    case GameLocation buildableLocation:
+                        foreach (var building in buildableLocation.buildings.Where(b => b.indoors.Value != null))
+                        foreach (var pair in GetLocationChests(building.indoors.Value))
+                            yield return new ChestEntry(
+                                                        ChestDataManager.GetChestData(pair.Value),
+                                                        new ChestAddress(location.Name, pair.Key, ChestLocationType.Building, building.GetIndoorsName())
+                                                       );
                         break;
                 }
             }
@@ -85,10 +76,10 @@ namespace ConvenientChests.CategorizeChests.Framework
         /// </summary>
         private static IDictionary<Vector2, Chest> GetLocationChests(GameLocation location) =>
             location.Objects.Pairs
-                .Where(pair => pair.Value is Chest c && c.playerChest.Value)
-                .ToDictionary(
-                    pair => pair.Key,
-                    pair => (Chest) pair.Value
-                );
+                    .Where(pair => pair.Value is Chest c && c.playerChest.Value)
+                    .ToDictionary(
+                                  pair => pair.Key,
+                                  pair => (Chest) pair.Value
+                                 );
     }
 }

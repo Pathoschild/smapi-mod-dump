@@ -52,7 +52,7 @@ namespace EscasModdingPlugins
             HarmonyPatch_PassOutSafely.ApplyPatch(harmony, Monitor);
 
             //kitchen features
-            HarmonyPatch_ActionKitchen.ApplyPatch(harmony, Monitor);
+            ActionKitchen.Enable(Monitor);
             HarmonyPatch_AllowMiniFridges.ApplyPatch(harmony, Monitor);
 
             //water color

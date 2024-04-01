@@ -6,9 +6,9 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit 04ae0ce8a3345badf25550f5e5d2b0f297006f77
+   commit b513aaa1fd1320c4c77f2a545d4f7829fbb95f90
    Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Mon Feb 26 14:31:29 2024 -0500
+   Date:   Tue Mar 19 18:12:47 2024 -0400
    
-       Cleaned up remaining Nullability warnings
+       Removed 'alpha' tags now that SDV 1.6.0 was released fully
    

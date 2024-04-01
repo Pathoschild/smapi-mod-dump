@@ -61,7 +61,6 @@ namespace AlternativeTextures.Framework.Interfaces.API
             }
 
             model.Owner = owner;
-            model.Type = model.GetTextureType();
 
             var seasons = model.Seasons;
             for (int s = 0; s < 4; s++)

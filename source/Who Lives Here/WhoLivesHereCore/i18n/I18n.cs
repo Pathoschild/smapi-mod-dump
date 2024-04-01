@@ -28,6 +28,15 @@ namespace WhoLivesHereCore.i18n
                 throw new InvalidOperationException($"You must call {nameof(I18n)}.{nameof(Init)} from the mod's entry method before reading translations.");
             return Translations.Get(key, tokens);
         }
+        public static string ShowMissing()
+        {
+            return GetByKey("showmissinghay");
+        }
+        public static string ShowMissing_TT()
+        {
+            return GetByKey("showmissinghay.tt");
+        }
+
         public static string HideEmpty()
         {
             return GetByKey("hideempty");

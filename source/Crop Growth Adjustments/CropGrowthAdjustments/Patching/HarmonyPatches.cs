@@ -22,11 +22,11 @@ namespace CropGrowthAdjustments.Patching
     internal static class HarmonyPatches
     {
         /// <summary> Patch for the HoeDirt.dayUpdate method </summary>
-        public static bool HoeDirtDayUpdate(HoeDirt __instance, GameLocation environment, Vector2 tileLocation)
+        public static bool HoeDirtDayUpdate(HoeDirt __instance)
         {
             try
             {
-                return HarmonyPatchExecutors.HoeDirtDayUpdate(__instance, environment, tileLocation);
+                return HarmonyPatchExecutors.HoeDirtDayUpdate(__instance);
             }
             catch (Exception e)
             {
@@ -38,11 +38,11 @@ namespace CropGrowthAdjustments.Patching
         }
 
         /// <summary> Patch for the IndoorPot.DayUpdate method </summary>
-        public static bool IndoorPotDayUpdate(IndoorPot __instance, GameLocation location)
+        public static bool IndoorPotDayUpdate(IndoorPot __instance)
         {
             try
             {
-                return HarmonyPatchExecutors.IndoorPotDayUpdate(__instance, location);
+                return HarmonyPatchExecutors.IndoorPotDayUpdate(__instance);
             }
             catch (Exception e)
             {
@@ -54,12 +54,11 @@ namespace CropGrowthAdjustments.Patching
         }
 
         /// <summary> Patch for the Crop.newDay method. </summary>
-        public static void CropNewDay(Crop __instance, int state, int fertilizer, int xTile, int yTile,
-            GameLocation environment)
+        public static void CropNewDay(Crop __instance, int state)
         {
             try
             {
-                HarmonyPatchExecutors.CropNewDay(__instance, state, fertilizer, xTile, yTile, environment);
+                HarmonyPatchExecutors.CropNewDay(__instance, state);
             }
             catch (Exception e)
             {

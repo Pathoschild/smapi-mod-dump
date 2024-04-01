@@ -11,6 +11,7 @@
 using FashionSense.Framework.External.ContentPatcher;
 using FashionSense.Framework.Interfaces.API;
 using FashionSense.Framework.Managers;
+using FashionSense.Framework.Models;
 using FashionSense.Framework.Models.Appearances;
 using FashionSense.Framework.Models.Appearances.Accessory;
 using FashionSense.Framework.Models.Appearances.Generic;
@@ -21,7 +22,6 @@ using FashionSense.Framework.Models.Appearances.Shirt;
 using FashionSense.Framework.Models.Appearances.Shoes;
 using FashionSense.Framework.Models.Appearances.Sleeves;
 using FashionSense.Framework.Models.General;
-using FashionSense.Framework.Models.Messages;
 using FashionSense.Framework.Patches.Core;
 using FashionSense.Framework.Patches.Entities;
 using FashionSense.Framework.Patches.GameLocations;
@@ -61,6 +61,7 @@ namespace FashionSense
         internal static AssetManager assetManager;
         internal static ColorManager colorManager;
         internal static LayerManager layerManager;
+        internal static MessageManager messageManager;
         internal static OutfitManager outfitManager;
         internal static TextureManager textureManager;
 
@@ -73,9 +74,11 @@ namespace FashionSense
         internal const int MAX_TRACKED_MILLISECONDS = 3600000;
 
         // Debugging flags
+        private bool _displayFarmerFrames = false;
         private bool _displayMovementData = false;
         private bool _continuousReloading = false;
         private Vector2? _cachedPlayerPosition;
+        private int _lastPlayerFrame = 0;
 
         public override void Entry(IModHelper helper)
         {
@@ -91,6 +94,7 @@ namespace FashionSense
             assetManager = new AssetManager(modHelper);
             colorManager = new ColorManager(monitor);
             layerManager = new LayerManager(monitor);
+            messageManager = new MessageManager(monitor, helper, ModManifest.UniqueID);
             outfitManager = new OutfitManager(monitor);
             textureManager = new TextureManager(monitor);
 
@@ -111,7 +115,7 @@ namespace FashionSense
 
                 // Apply tool related patches
                 new ToolPatch(monitor, modHelper).Apply(harmony);
-                new SeedShopPatch(monitor, modHelper).Apply(harmony);
+                new ShopBuilderPatch(monitor, modHelper).Apply(harmony);
                 new GameLocationPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply UI related patches
@@ -136,9 +140,10 @@ namespace FashionSense
 
             // Add in our debug commands
             helper.ConsoleCommands.Add("fs_display_movement", "Displays debug info related to player movement. Use again to disable. \n\nUsage: fs_display_movement", delegate { _displayMovementData = !_displayMovementData; });
+            helper.ConsoleCommands.Add("fs_display_player_frames", "Displays debug info related to player's frames (FarmerSprite.CurrentFrame). Use again to disable. \n\nUsage: fs_display_player_frames", delegate { _displayFarmerFrames = !_displayFarmerFrames; });
             helper.ConsoleCommands.Add("fs_reload", "Reloads all Fashion Sense content packs. Can specify a manifest unique ID to only reload that pack.\n\nUsage: fs_reload [manifest_unique_id]", ReloadFashionSense);
             helper.ConsoleCommands.Add("fs_reload_continuous", "Debug usage only: reloads all Fashion Sense content packs every 2 seconds. Use the command again to stop the continuous reloading.\n\nUsage: fs_reload_continuous", delegate { _continuousReloading = !_continuousReloading; });
-            helper.ConsoleCommands.Add("fs_add_mirror", "Gives you a Hand Mirror tool.\n\nUsage: fs_add_mirror", delegate { Game1.player.addItemToInventory(SeedShopPatch.GetHandMirrorTool()); });
+            helper.ConsoleCommands.Add("fs_add_mirror", "Gives you a Hand Mirror tool.\n\nUsage: fs_add_mirror", delegate { Game1.player.addItemToInventory(ShopBuilderPatch.GetHandMirrorTool()); });
             helper.ConsoleCommands.Add("fs_freeze_self", "Locks yourself in place, which is useful for showcasing custom appearances. Use the command again to unfreeze yourself.\n\nUsage: fs_freeze_self", delegate { _ = _cachedPlayerPosition is null ? _cachedPlayerPosition = Game1.player.Position : _cachedPlayerPosition = null; });
 
             helper.Events.Content.AssetRequested += OnAssetRequested;
@@ -154,16 +159,9 @@ namespace FashionSense
 
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            if (e.FromModID == this.ModManifest.UniqueID && e.Type == "ColorChangeMessage")
+            if (e.FromModID == ModManifest.UniqueID)
             {
-                ColorChangeMessage message = e.ReadAs<ColorChangeMessage>();
-
-                var farmer = Game1.getFarmer(message.FarmerID);
-                if (farmer is null)
-                {
-                    return;
-                }
-                colorManager.SetColor(farmer, message.ColorKey, message.ColorValue);
+                messageManager.HandleIncomingMessage(e);
             }
         }
 
@@ -172,6 +170,12 @@ namespace FashionSense
             if (_displayMovementData)
             {
                 conditionData.OnRendered(sender, e);
+            }
+
+            if (_displayFarmerFrames && Game1.player is not null && Game1.player.FarmerSprite.CurrentFrame != _lastPlayerFrame)
+            {
+                _lastPlayerFrame = Game1.player.FarmerSprite.CurrentFrame;
+                Monitor.Log($"Farmer Frame: {_lastPlayerFrame}", LogLevel.Debug);
             }
         }
 
@@ -353,6 +357,9 @@ namespace FashionSense
             textureManager.Reset(packId);
             conditionGroups = new Dictionary<string, ConditionGroup>();
 
+            // Clear the preset outfits
+            outfitManager.ClearPresetOutfits();
+
             // Load owned content packs
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned().Where(c => String.IsNullOrEmpty(packId) is true || c.Manifest.UniqueID.Equals(packId, StringComparison.OrdinalIgnoreCase)))
             {
@@ -400,6 +407,24 @@ namespace FashionSense
                 // Load Shoes
                 Monitor.Log($"Loading shoes from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
                 AddShoesContentPacks(contentPack);
+
+                // Load Outfit Presets
+                Monitor.Log($"Loading outfit presets from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, "preset_outfits.json")))
+                {
+                    var outfits = contentPack.ReadJsonFile<List<Outfit>>("preset_outfits.json");
+                    foreach (var outfit in outfits)
+                    {
+                        if (string.IsNullOrEmpty(outfit.Author))
+                        {
+                            outfit.Author = contentPack.Manifest.Author;
+                        }
+                        outfit.Source = contentPack.Manifest.Name;
+                        outfit.IsPreset = true;
+
+                        outfitManager.AddPresetOutfit(outfit);
+                    }
+                }
 
                 // Load in Condition Groups
                 if (File.Exists(Path.Combine(contentPack.DirectoryPath, "conditions.json")))

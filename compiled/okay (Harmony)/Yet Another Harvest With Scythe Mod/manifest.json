@@ -1,0 +1,14 @@
+﻿{
+   "Name": "Harvest With Scythe",
+   "Author": "bcmpinc",
+   "Version": "7.3",
+   "Description": "Allows you to harvest all crops and forage using the scythe. They can also still be plucked.",
+   "UniqueID": "bcmpinc.HarvestWithScythe",
+   "EntryDll": "HarvestWithScythe.dll",
+   "MinimumApiVersion": "4.0.0",
+   "UpdateKeys": ["Nexus:2731"],
+   "Dependencies": [{
+      "UniqueID": "bcmpinc.StardewHack",
+      "MinimumVersion": "7.1"
+   }]
+}

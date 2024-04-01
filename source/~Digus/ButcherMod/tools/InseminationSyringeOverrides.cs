@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AnimalHusbandryMod.animals;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
@@ -17,22 +18,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.FarmAnimals;
 using StardewValley.Tools;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 using SObject = StardewValley.Object;
 
 namespace AnimalHusbandryMod.tools
 {
     public class InseminationSyringeOverrides : ToolOverridesBase
     {
-        internal static string InseminationSyringeKey = "DIGUS.ANIMALHUSBANDRYMOD/InseminationSyringe";
+        public const string InseminationSyringeItemId = "DIGUS.ANIMALHUSBANDRYMOD.InseminationSyringe";
+        internal const string InseminationSyringeKey = "DIGUS.ANIMALHUSBANDRYMOD/InseminationSyringe";
 
         internal static readonly Dictionary<string, FarmAnimal> Animals = new Dictionary<string, FarmAnimal>();
 
-        public static int InitialParentTileIndex = 518;
-        public static int IndexOfMenuItemView = 518;
-        public static int AttachmentMenuTile = 72;
-
-        public static bool getOne(MilkPail __instance, ref Item __result)
+        public static bool GetOneNew(GenericTool __instance, ref Item __result)
         {
             if (!IsInseminationSyringe(__instance)) return true;
 
@@ -40,14 +40,14 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static void loadDisplayName(MilkPail __instance, ref string __result)
+        public static void loadDisplayName(GenericTool __instance, ref string __result)
         {
             if (!IsInseminationSyringe(__instance)) return;
 
             __result = DataLoader.i18n.Get("Tool.InseminationSyringe.Name");
         }
 
-        public static void loadDescription(MilkPail __instance, ref string __result)
+        public static void loadDescription(GenericTool __instance, ref string __result)
         {
             if (!IsInseminationSyringe(__instance)) return;
 
@@ -68,7 +68,7 @@ namespace AnimalHusbandryMod.tools
             __result = false;
         }
 
-        public static bool beginUsing(MilkPail __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
+        public static bool beginUsing(GenericTool __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
         {
             if (!IsInseminationSyringe(__instance)) return true;
 
@@ -125,6 +125,10 @@ namespace AnimalHusbandryMod.tools
                 {
                     dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.CantBeInseminated", new { animalName = animal.displayName });
                 }
+                else if (animal.Name.Contains("Male") || animal.Name.Contains("Male"))
+                {
+                    dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.CantBeInseminated", new { animalName = animal.displayName });
+                }
                 else if (animal.isBaby())
                 {
                     dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.TooYoung", new { animalName = animal.displayName });
@@ -143,8 +147,15 @@ namespace AnimalHusbandryMod.tools
                 }
                 else if (!CheckCorrectProduct(animal, __instance.attachments[0]))
                 {
-                    var data = DataLoader.Helper.Content.Load<Dictionary<int, string>>(@"Data\ObjectInformation.xnb", ContentSource.GameContent);
-                    string produceName = data[animal.defaultProduceIndex.Value].Split('/')[4];
+                    var data = Game1.objectData;
+                    string produceName = ItemRegistry.GetData(
+                        animal.GetAnimalData()
+                        .ProduceItemIds
+                        .FirstOrDefault(
+                            p => p.Id == "default",
+                            new FarmAnimalProduce() { ItemId = animal.GetProduceID(Utility.CreateRandom((double)animal.myID.Value / 2.0, Game1.stats.DaysPlayed)) }
+                        ).ItemId
+                    ).DisplayName;
                     dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.CorrectItem", new { itemName = produceName });
                 }
                 else if (PregnancyController.CheckBuildingLimit(animal))
@@ -156,11 +167,7 @@ namespace AnimalHusbandryMod.tools
                     animal.doEmote(16, true);
                     if (who != null && Game1.player.Equals(who))
                     {
-                        if (animal.sound.Value != null)
-                        {
-                            ICue animalSound = Game1.soundBank.GetCue(animal.sound.Value);
-                            animalSound.Play();
-                        }
+                        animal.makeSound();
 
                         DelayedAction.playSoundAfterDelay("fishingRodBend", 300, location);
                         DelayedAction.playSoundAfterDelay("fishingRodBend", 1200, location);
@@ -195,15 +202,11 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static bool DoFunction(MilkPail __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
+        public static void DoFunction(GenericTool __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
         {
-            if (!IsInseminationSyringe(__instance)) return true;
+            if (!IsInseminationSyringe(__instance)) return;
 
             string inseminationSyringeId = __instance.modData[InseminationSyringeKey];
-
-            BaseToolDoFunction(__instance ,location, x, y, power, who);
-            __instance.CurrentParentTileIndex = InitialParentTileIndex;
-            __instance.indexOfMenuItemView.Value = IndexOfMenuItemView;
 
             Animals.TryGetValue(inseminationSyringeId, out FarmAnimal animal);
             if (animal != null)
@@ -237,15 +240,14 @@ namespace AnimalHusbandryMod.tools
             who.UsingTool = false;
             who.canReleaseTool = true;
 
-            DataLoader.Helper.Reflection.GetMethod(__instance, "finish").Invoke();
-            return false;
+            return;
         }
 
         public static bool canThisBeAttached(Tool __instance, SObject o, ref bool __result)
         {
             if (!IsInseminationSyringe(__instance)) return true;
 
-            __result = o == null || DataLoader.AnimalData.SyringeItemsIds.Contains(o.ParentSheetIndex);
+            __result = o == null || DataLoader.AnimalData.SyringeItemsIds.Contains(o.ItemId);
             return false;
         }
 
@@ -297,35 +299,49 @@ namespace AnimalHusbandryMod.tools
             }
             else
             {
-                b.Draw(Game1.menuTexture, new Vector2(x, y), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.menuTexture, AttachmentMenuTile)), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.86f);
+                b.Draw(DataLoader.ToolsLoader.MenuTilesSprites, new Vector2(x, y), new Rectangle?(Game1.getSourceRectForStandardTileSheet(DataLoader.ToolsLoader.MenuTilesSprites, 0)), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.86f);
+            }
+            return false;
+        }
+
+        public static bool drawTool(Farmer f, int currentToolIndex)
+        {
+            Tool correntTool = f.CurrentTool;
+            if (!IsInseminationSyringe(correntTool)) return true;
+            correntTool.draw(Game1.spriteBatch);
+            return false;
+        }
+
+        public static bool endUsing(GameLocation location, Farmer who)
+        {
+            Tool correntTool = who.CurrentTool;
+            if (!IsInseminationSyringe(correntTool)) return true;
+
+            who.stopJittering();
+            who.canReleaseTool = false;
+            int addedAnimationMultiplayer = ((!(who.Stamina <= 0f)) ? 1 : 2);
+            if (Game1.isAnyGamePadButtonBeingPressed() || !who.IsLocalPlayer)
+            {
+                who.lastClick = who.GetToolLocation();
             }
             return false;
         }
 
         private static bool IsInseminationSyringe(Item tool)
         {
-            return tool.modData.ContainsKey(InseminationSyringeKey);
+            return tool?.modData?.ContainsKey(InseminationSyringeKey) ?? false;
         }
 
         private static bool CheckCorrectProduct(FarmAnimal animal, SObject o)
         {
-            return animal.defaultProduceIndex.Value == o.ParentSheetIndex
+            return animal.GetAnimalData().ProduceItemIds.Select(p=>p.ItemId).Contains(o.ItemId)
                    || (((ImpregnatableAnimalItem)DataLoader.AnimalData.GetAnimalItem(animal)).CanUseDeluxeItemForPregnancy
-                       && animal.deluxeProduceIndex.Value == o.ParentSheetIndex);
+                       && animal.GetAnimalData().DeluxeProduceItemIds.Select(p => p.ItemId).Contains(o.ItemId));
         }
 
         public static bool IsEggAnimal(FarmAnimal animal)
         {
-            switch (AnimalExtension.GetAnimalFromType(animal.type.Value))
-            {
-                case Animal.Duck:
-                case Animal.Chicken:
-                case Animal.Dinosaur:
-                case Animal.Ostrich:
-                    return true;
-                default:
-                    return false;
-            }
+            return animal.GetAnimalData().EggItemIds?.Count > 0;
         }
     }
 }

@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Unique Children Talk",
+    "Author": "Shaklin",
+    "Version": "2.5",
+    "Description": "Talk to your Children",
+    "UniqueID": "shaklin.uniquechildrentalk",
+    "EntryDll": "UniqueChildren Talk.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus: 9540" ]
+}

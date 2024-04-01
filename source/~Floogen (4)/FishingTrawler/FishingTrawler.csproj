@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>1.2.3</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<Version>2.0.0</Version>
+		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip>false</EnableModZip>
@@ -19,8 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -127,7 +127,7 @@
 			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
 			powershell Remove-Item -Path '$(SolutionDir)releases\latest\*' -Recurse -Force
-			xcopy /s /y /i "$(SolutionDir)bin\Debug\net5.0" "$(SolutionDir)releases\latest\$(SolutionName)"
+			xcopy /s /y /i "$(SolutionDir)bin\Debug\$(TargetFramework)" "$(SolutionDir)releases\latest\$(SolutionName)"
 
 			:: Start of Fishing Trawler specific copy logic block
 			mkdir "$(SolutionDir)releases\latest\temp"

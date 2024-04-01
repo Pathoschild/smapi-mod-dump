@@ -35,14 +35,15 @@ namespace MailServicesMod
                 if (Game1.player.tryGetFriendshipLevelForNPC(npc.Name) != null
                     && npc.CanSocialize
                     && Game1.player.friendshipData[npc.Name].GiftsToday < 1
-                    && (Game1.player.friendshipData[npc.Name].GiftsThisWeek < 2 || npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+                    && (Game1.player.friendshipData[npc.Name].GiftsThisWeek < 2 || npc.isBirthday())
                     && !Game1.player.friendshipData[npc.Name].IsDivorced()
                     && (Game1.player.friendshipData[npc.Name].Points < 2500 || DataLoader.ModConfig.EnableGiftToNpcWithMaxFriendship)
+                    && (!npc.datable.Value || (npc.datable.Value && Game1.player.friendshipData[npc.Name].Points < 2000) || Game1.player.friendshipData[npc.Name].IsDating() || DataLoader.ModConfig.EnableGiftToNpcWithMaxFriendship)
                     && (Game1.player.friendshipData[npc.Name].Points >= DataLoader.ModConfig.MinimumFriendshipPointsToSendGift)
                     && !(Game1.player.spouse != null && Game1.player.spouse.Equals(Game1.player.Name))
-                    && !(npc is Child))
+                    && (npc is not Child))
                 {
-                    options.Add(new Response(npc.Name, npc.displayName + (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth) ? " (" + Game1.content.LoadString("Strings\\UI:Profile_Birthday") +  ")" : "")));
+                    options.Add(new Response(npc.Name, (npc.isBirthday() ? "(" + Game1.content.LoadString("Strings\\UI:Profile_Birthday") +  ") " : "") + npc.displayName));
                 }
             }
             if (options.Count > 0)
@@ -66,13 +67,13 @@ namespace MailServicesMod
 
         internal static void GiftToNpc(string npcName)
         {
-            NPC npc = NpcUtility.getCharacterFromName(npcName);
+            NPC npc = NpcUtility.GetCharacterFromName(npcName);
             Farmer who = Game1.player;
             string giftName = who.ActiveObject.DisplayName;
             npc.receiveGift(who.ActiveObject, who, true, 1, DataLoader.ModConfig.ShowDialogOnItemDelivery);
             ShopMenu.chargePlayer(who, 0, (int)Math.Round(who.ActiveObject.Price * (DataLoader.ModConfig.GiftServicePercentFee / 100d), MidpointRounding.AwayFromZero) + DataLoader.ModConfig.GiftServiceFee);
             who.reduceActiveItemByOne();
-            who.completeQuest(25);
+            who.completeQuest("25");
             if (!DataLoader.ModConfig.ShowDialogOnItemDelivery)
             {
                 Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Gift.GiftSent", new { Gift = giftName, Npc = npc.displayName }));
@@ -85,13 +86,13 @@ namespace MailServicesMod
                     && !who.spouse.Contains("Krobus") 
                     && Utility.isMale(who.spouse) == Utility.isMale(npc.Name) 
                     && Game1.random.NextDouble() < 0.3 - (double)((float)who.LuckLevel / 100f) - who.DailyLuck 
-                    && !npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth) 
+                    && !npc.isBirthday() 
                     && who.friendshipData[npc.Name].IsDating())
                 {
-                    NPC spouse = NpcUtility.getCharacterFromName(who.spouse);
+                    NPC spouse = NpcUtility.GetCharacterFromName(who.spouse);
                     who.changeFriendship(-30, spouse);
                     spouse.CurrentDialogue.Clear();
-                    spouse.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3985", npc.displayName), spouse));
+                    spouse.CurrentDialogue.Push(StardewValley.Dialogue.FromTranslation(spouse, "Strings\\StringsFromCSFiles:NPC.cs.3985", npc.displayName));
                 }
             }
         }

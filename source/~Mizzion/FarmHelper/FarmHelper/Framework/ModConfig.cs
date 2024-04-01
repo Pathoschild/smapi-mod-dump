@@ -9,18 +9,17 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 
 namespace FarmHelper.Framework
 {
     internal class ModConfig
     {
         public bool ModEnabled { get; set; } = true;
-        public SButton ActivationKey { get; set; } = SButton.Q;
-        public SButton UseToolKey { get; set; } = SButton.Z;
-        public SButton ClearLocationKey { get; set; } = SButton.R;
-        public SButton GatherForageKey { get; set; } = SButton.X;
-        public SButton SingleUseKey { get; set; } = SButton.V;
+        public string ActivationKey { get; set; } = "Q";
+        public string UseToolKey { get; set; } = "Z";
+        public string ClearLocationKey { get; set; } = "R";
+        public string GatherForageKey { get; set; } = "X";
+        public string SingleUseKey { get; set; } = "V";
         public bool AutomaticMode { get; set; } = true;
         public bool EnablePetting { get; set; } = true;
         public bool EnableNotification { get; set; } = true;

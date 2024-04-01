@@ -30,75 +30,77 @@ namespace FarmTypeManager
                 switch (oreName.ToLower()) //avoid any casing issues in method calls by making this lower-case
                 {
                     case "stone":
-                        ore = new StardewValley.Object(tile, 668 + (RNG.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
+                        ore = new Object((668 + RNG.Next(2) * 2).ToString(), 1); //either of the two random stones spawned in the vanilla hilltop quarry
                         break;
                     case "geode":
-                        ore = new StardewValley.Object(tile, 75, 1);
+                        ore = new Object("75", 1);
                         break;
                     case "frozengeode":
-                        ore = new StardewValley.Object(tile, 76, 1);
+                        ore = new Object("76", 1);
                         break;
                     case "magmageode":
-                        ore = new StardewValley.Object(tile, 77, 1);
+                        ore = new Object("77", 1);
                         break;
                     case "omnigeode":
-                        ore = new StardewValley.Object(tile, 819, "Stone", true, false, false, false);
+                        ore = new Object("819", 1);
                         break;
                     case "gem":
-                        ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the specific gem nodes (NOT the gem node with ID 44, which was considered excessively high-reward)
+                        ore = new Object(((RNG.Next(7) + 1) * 2).ToString(), 1); //any of the specific gem nodes (NOT the gem node with ID 44, which was considered excessively high-reward)
                         break;
                     case "copper":
-                        ore = new StardewValley.Object(tile, 751, 1);
+                        ore = new Object("751", 1);
                         break;
                     case "iron":
-                        ore = new StardewValley.Object(tile, 290, 1);
+                        ore = new Object("290", 1);
                         break;
                     case "gold":
-                        ore = new StardewValley.Object(tile, 764, 1);
+                        ore = new Object("764", 1);
                         break;
                     case "iridium":
-                        ore = new StardewValley.Object(tile, 765, 1);
+                        ore = new Object("765", 1);
                         break;
                     case "mystic":
-                        ore = new StardewValley.Object(tile, 46, "Stone", true, false, false, false);
+                        ore = new Object("46", 1);
                         break;
                     case "radioactive":
-                        ore = new StardewValley.Object(tile, 95, "Stone", true, false, false, false);
+                        ore = new Object("95", 1);
                         break;
                     case "diamond":
-                        ore = new StardewValley.Object(tile, 2, "Stone", true, false, false, false);
+                        ore = new Object("2", 1);
                         break;
                     case "ruby":
-                        ore = new StardewValley.Object(tile, 4, "Stone", true, false, false, false);
+                        ore = new Object("4", 1);
                         break;
                     case "jade":
-                        ore = new StardewValley.Object(tile, 6, "Stone", true, false, false, false);
+                        ore = new Object("6", 1);
                         break;
                     case "amethyst":
-                        ore = new StardewValley.Object(tile, 8, "Stone", true, false, false, false);
+                        ore = new Object("8", 1);
                         break;
                     case "topaz":
-                        ore = new StardewValley.Object(tile, 10, "Stone", true, false, false, false);
+                        ore = new Object("10", 1);
                         break;
                     case "emerald":
-                        ore = new StardewValley.Object(tile, 12, "Stone", true, false, false, false);
+                        ore = new Object("12", 1);
                         break;
                     case "aquamarine":
-                        ore = new StardewValley.Object(tile, 14, "Stone", true, false, false, false);
+                        ore = new Object("14", 1);
                         break;
                     case "mussel":
-                        ore = new StardewValley.Object(tile, 25, "Stone", true, false, false, false);
+                        ore = new Object("25", 1);
                         break;
                     case "fossil":
-                        ore = new StardewValley.Object(tile, 816 + RNG.Next(2), 1); //either of the two random fossil nodes
+                        ore = new Object((816 + RNG.Next(2)).ToString(), 1); //either of the two random fossil nodes
                         break;
                     case "clay":
-                        ore = new StardewValley.Object(tile, 818, 1);
+                        ore = new Object("818", 1);
                         break;
                     case "cindershard":
-                        ore = new StardewValley.Object(tile, 843 + RNG.Next(2), "Stone", true, false, false, false);
+                        ore = new Object((843 + RNG.Next(2)).ToString(), 1);
                         break;
-
+                    case "coal":
+                        ore = new Object("BasicCoalNode" + RNG.Next(2).ToString(), 1);
+                        break;
                     default: break;
                 }
 
@@ -108,12 +110,12 @@ namespace FarmTypeManager
                     return null;
                 }
 
-                int? durability = Utility.GetDefaultDurability(ore.ParentSheetIndex); //try to get this ore type's default durability
+                int? durability = GetDefaultDurability(ore.ItemId); //try to get this ore type's default durability
                 if (durability.HasValue) //if a default exists
                     ore.MinutesUntilReady = durability.Value; //use it
 
                 Utility.Monitor.VerboseLog($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                location.setObject(tile, ore); //actually spawn the ore object into the world
+                location.objects.TryAdd(tile, ore); //actually spawn the ore object into the world
                 return ore.ParentSheetIndex;
             }
         }

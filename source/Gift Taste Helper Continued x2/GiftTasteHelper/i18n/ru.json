@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/GiftTasteHelper
+**
+*************************************************/
+
+{
+  "tooltip.title.favorite": "Любимые подарки",
+  "tooltip.title.none": "Нет известных подарков",
+
+  "options.display": "Показать",
+  "options.showOnCalendar": "Показывать в календаре",
+  "options.showOnCalendar.desc": "Показать подсказку в календаре при наведении мыши на день рождения",
+  "options.showOnSocialPage": "Показывать на странице социальной сети",
+  "options.showOnSocialPage.desc": "Показать подсказку на странице социальной сети при наведении мыши на НПС",
+  "options.showOnlyKnownGifts": "Показать только известные подарки",
+  "options.showOnlyKnownGifts.desc": "Показать только те подарки, которые вы уже дали этим НПС",
+  "options.showUniversalGifts": "Показать универсальные подарки",
+  "options.showUniversalGifts.desc": "Показать универсальные подарки в подсказке",
+  "options.showGiftsForUnmetNPCs": "Показать подарки для неизвестных НПС",
+  "options.showGiftsForUnmetNPCs.desc": "Показать подарки для НПС, которых вы еще не встречали",
+  "options.hideTooltipWhenNoGiftsKnown": "Скрыть, когда нет известных подарков",
+  "options.hideTooltipWhenNoGiftsKnown.desc": "Скрыть подсказку, когда известных подарков нет",
+  "options.colorizeUniversalGiftNames": "Окрашивать названия универсальных подарков",
+  "options.colorizeUniversalGiftNames.desc": "Окрашивать названия универсальных подарков",
+  "options.other": "Другие",
+  "options.maxGiftsToDisplay": "Максимальное количество подарков для отображения",
+  "options.maxGiftsToDisplay.desc": "Максимальное количество подарков для отображения в подсказке. (0 - без ограничений)",
+  "options.shareKnownGiftsWithAllSaves": "Поделиться известными подарками со всеми сохранениями",
+  "options.shareKnownGiftsWithAllSaves.desc": "Поделиться известными подарками со всеми сохранениями"
+}

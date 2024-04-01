@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/NermNermNerm/StardewMods
+   Git: https://github.com/NermNermNerm/StardewMods.git
+
+mods:
+   Questable Tractor
+
+latest commit:
+   commit cae182f9aa53c0d53b736d16fec455e409183693
+   Author: SteveBenz <s8878992@hotmail.com>
+   Date:   Wed Mar 20 20:39:52 2024 -0700
+   
+       Increase the odds of catching the waterer the more your fish and update the manifest to point to the release location
+   

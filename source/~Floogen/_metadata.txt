@@ -7,9 +7,9 @@ mods:
    Farm Tablet
 
 latest commit:
-   commit f4ca262d5800fb05e5ef3f7e3a803919f13015a4
+   commit 627f970f454a628b8c195967defe8813b070b44d
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Sat Oct 28 23:58:37 2023 -0500
+   Date:   Tue Mar 26 15:56:44 2024 -0500
    
-       v6.10.4 released
+       Added ashajin to Korean translation credits
    

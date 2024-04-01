@@ -1,0 +1,5 @@
+{
+  "ProjectileSound": "All",
+  "ProjectileIsSecondaryAttack": true,
+  "BuffAttack": false
+}

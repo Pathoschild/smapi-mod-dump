@@ -1,0 +1,26 @@
+﻿{
+  "Name": "Activate Sprinklers",
+  "Author": "f4iTh",
+  "Version": "1.3.2",
+  "UniqueID": "f4iTh.ActivateSprinklers",
+  "Description": "Activate sprinklers by right clicking them.",
+  "EntryDll": "ActivateSprinklers.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:2088"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Speeder.BetterSprinklers",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "tZed.SimpleSprinkler",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

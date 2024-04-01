@@ -11,10 +11,10 @@
 {
   "Name": "Crop Walker",
   "Author": "MindMeltMax",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Allows players to walk through crops without slowing down",
   "UniqueID": "MindMeltMax.CropWalker",
   "EntryDll": "CropWalker.dll",
-  "MinimumApiVersion": "3.17.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "nexus:16632" ]
 }

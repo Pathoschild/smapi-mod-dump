@@ -1,7 +1,7 @@
 ﻿================================================================================
 Time Freezes at Midnight
 By JBtheShadow
-Version 1.2.0
+Version 1.3.0
 ================================================================================
 To alter the moment when the game stops advancing the time just change the value of the "TimeFreezesAt" field.
 It should be a number representing military time between 600 (6AM) and 2600 (2:00AM), inclusive, in increments of 10.
@@ -37,3 +37,5 @@ Is only then when you head to bed, or your character collapses, that time is res
 
 I also learned how to actually freeze the time instead of merely making the clock revert back to the previous 10 minutes each time it advances.
 This mod by default will continue to use the proper method, but if for some reason you prefer the old way of things, set the value of UseOldMethod to true.
+
+If I have the time I might refactor this mod's code cuz is kinda bad but eh. We'll see. Now upgraded to .NET 6!

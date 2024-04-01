@@ -20,7 +20,7 @@
   "UniqueID": "SinZ.SceneSetup",
   "Name": "SinZational Scene Setup",
   "Author": "SinZ",
-  "Version": "0.0.1",
+  "Version": "0.0.1-Debug",
   "Description": "A mod that exposes commands to autoplay events for a given or all locations",
   "MinimumApiVersion": "3.18",
   "EntryDll": "SinZational Scene Setup.dll"

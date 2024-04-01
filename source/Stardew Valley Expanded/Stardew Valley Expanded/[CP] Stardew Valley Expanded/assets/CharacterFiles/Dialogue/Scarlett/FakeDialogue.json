@@ -17,6 +17,8 @@
             "Entries": 
             {
 
+              
+
 "Mon": "{{i18n:FakeScarlett.CharacterDialogue.001}}",
 "Tue": "{{i18n:FakeScarlett.CharacterDialogue.002}}",
 "Wed": "{{i18n:FakeScarlett.CharacterDialogue.001}}",
@@ -24,6 +26,8 @@
 "Fri": "{{i18n:FakeScarlett.CharacterDialogue.001}}",
 "Sat": "{{i18n:FakeScarlett.CharacterDialogue.002}}",
 "Sun": "{{i18n:FakeScarlett.CharacterDialogue.001}}",
+
+
 
 },
           },

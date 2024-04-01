@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20892
+IDs: TheFluffyRobot.AutoCropWatering
+update keys: Nexus:20892, GitHub:jamespfluger/Stardew-EqualMoneySplit

@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI.Utilities;
+using StardewValley.Characters;
 
 namespace StardewDruid
 {
@@ -23,13 +24,27 @@ namespace StardewDruid
 
         public KeybindList journalButtons { get; set; }
 
+        public bool disableHands { get; set; }
+
         public bool slotAttune { get; set; }
+
+        public bool slotFreedom { get; set; }
 
         public bool autoProgress { get; set; }
 
+        public int newProgress { get; set; }
+
+        public bool maxDamage { get; set; }
+
+        public string combatDifficulty { get; set; }
+
+        public int adjustRewards { get; set; }
+
         public string colourPreference { get; set; }
 
-        public bool castBuffs { get; set; }
+        public bool cardinalMovement { get; set; }
+
+        public bool slotConsume { get; set; }
 
         public bool consumeRoughage { get; set; }
 
@@ -37,13 +52,7 @@ namespace StardewDruid
 
         public bool consumeCaffeine { get; set; }
 
-        public int newProgress { get; set; }
-
         public bool castAnywhere { get; set; }
-
-        public bool maxDamage { get; set; }
-
-        public string combatDifficulty { get; set; }
 
         public bool reverseJournal { get; set; }
 
@@ -53,9 +62,9 @@ namespace StardewDruid
 
         public bool disableFish { get; set; }
 
-        //public bool disableWildspawn { get; set; }
-
         public bool disableTrees { get; set; }
+
+        public bool disableGrass { get; set; }
 
         public ModData()
         {
@@ -63,23 +72,27 @@ namespace StardewDruid
             actionButtons = KeybindList.Parse("MouseLeft,C,ControllerX");
             specialButtons = KeybindList.Parse("MouseRight,X,ControllerY");
             journalButtons = KeybindList.Parse("K");
+            disableHands = false;
             slotAttune = false;
+            slotFreedom = false;
             autoProgress = false;
+            maxDamage = false;
+            combatDifficulty = "medium";
+            adjustRewards = 100;
             colourPreference = "Red";
+            cardinalMovement = false;
             newProgress = -1;
-            castBuffs = true;
+            slotConsume = false;
             consumeRoughage = true;
             consumeQuicksnack = true;
             consumeCaffeine = true;
-            maxDamage = false;
-            combatDifficulty = "medium";
             castAnywhere = false;
             reverseJournal = false;
             partyHats = false;
             disableSeeds = false;
             disableFish = false;
-            //disableWildspawn = false;
             disableTrees = false;
+            disableGrass = false;
         }
 
     }

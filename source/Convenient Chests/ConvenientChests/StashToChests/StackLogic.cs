@@ -22,17 +22,18 @@ using Object = StardewValley.Object;
 namespace ConvenientChests.StashToChests {
     public static class StackLogic {
         public delegate bool AcceptingFunction(Chest c, Item i);
-        
+
         public static IEnumerable<Chest> GetNearbyChests(this Farmer farmer, int radius)
-            => GetNearbyChests(farmer.currentLocation, farmer.getTileLocation(), radius);
+            => GetNearbyChests(farmer.currentLocation, farmer.Tile, radius);
 
         public static void StashToChest(Chest chest, AcceptingFunction f) {
             ModEntry.Log("Stash to current chest");
 
-            var inventory = Game1.player.Items.Where(i => i != null).ToList();
-            var toBeMoved = inventory.Where(i => f(chest, i)).ToList();
+            var toBeMoved = Game1.player.Items
+                                 .Where(i => i != null && f(chest, i))
+                                 .ToList();
 
-            if (toBeMoved.Any() && chest.DumpItemsToChest(Game1.player.Items, toBeMoved).Any())
+            if (toBeMoved.Any() && Game1.player.Items.DumpItemsToChest(chest, toBeMoved).Any())
                 Game1.playSound(Game1.soundBank.GetCue("pickUpItem").Name);
         }
 
@@ -50,7 +51,7 @@ namespace ConvenientChests.StashToChests {
                 if (!moveItems.Any())
                     continue;
 
-                var movedItems = chest.DumpItemsToChest(Game1.player.Items, moveItems);
+                var movedItems = Game1.player.Items.DumpItemsToChest(chest, moveItems);
                 if (movedItems.Any())
                     movedAtLeastOne = true;
             }
@@ -64,26 +65,25 @@ namespace ConvenientChests.StashToChests {
 
         private static IEnumerable<Chest> GetNearbyChests(GameLocation location, Vector2 point, int radius) {
             // chests
-            foreach (Chest c in GetNearbyObjects<Chest>(location, point, radius))
+            foreach (var c in GetNearbyObjects<Chest>(location, point, radius))
                 yield return c;
 
-            switch (location) {
-                // fridge
-                case FarmHouse farmHouse when farmHouse.upgradeLevel > 0:
-                    if (InRadius(radius, point, farmHouse.getKitchenStandingSpot().X + 1, farmHouse.getKitchenStandingSpot().Y - 2))
-                        yield return farmHouse.fridge.Value;
-                    break;
+            // fridge
+            if (location is FarmHouse { upgradeLevel: > 0 } farmHouse) {
+                if (InRadius(radius, point,
+                             farmHouse.getKitchenStandingSpot().X + 1,
+                             farmHouse.getKitchenStandingSpot().Y - 2))
+                    yield return farmHouse.fridge.Value;
 
-                // buildings
-                case BuildableGameLocation l:
-                    foreach (var building in l.buildings.Where(b => InRadius(radius, point, b.tileX.Value, b.tileY.Value)))
-                        if (building is JunimoHut junimoHut)
-                            yield return junimoHut.output.Value;
-
-                        else if (building is Mill mill)
-                            yield return mill.output.Value;
-                    break;
+                yield break;
             }
+
+            // buildings
+            var buildings = location.buildings
+                                    .Where(building => InRadius(radius, point, building.tileX.Value, building.tileY.Value));
+
+            foreach (var chest in buildings.SelectMany(building => building.buildingChests))
+                yield return chest;
         }
 
         private static IEnumerable<T> GetNearbyObjects<T>(GameLocation location, Vector2 point, int radius) where T : Object =>
@@ -91,7 +91,7 @@ namespace ConvenientChests.StashToChests {
                     .Where(p => p.Value is T && InRadius(radius, point, p.Key))
                     .Select(p => (T) p.Value);
 
-        private static bool InRadius(int radius, Vector2 a, Vector2 b)        => Math.Abs(a.X - b.X) < radius && Math.Abs(a.Y - b.Y) < radius;
-        private static bool InRadius(int radius, Vector2 a, int     x, int y) => Math.Abs(a.X - x)   < radius && Math.Abs(a.Y - y)   < radius;
+        private static bool InRadius(int radius, Vector2 a, Vector2 b) => Math.Abs(a.X - b.X) < radius && Math.Abs(a.Y - b.Y) < radius;
+        private static bool InRadius(int radius, Vector2 a, int x, int y) => Math.Abs(a.X - x) < radius && Math.Abs(a.Y - y) < radius;
     }
 }

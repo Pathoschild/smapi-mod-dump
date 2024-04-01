@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,31 +23,31 @@ namespace CustomCaskMod
     {
         private static readonly Dictionary<string, CustomAger> AgerData = new Dictionary<string, CustomAger>();
 
-        public static CustomAger GetAger(string name)
+        public static CustomAger GetAger(string qualifiedItemId)
         {
-            AgerData.TryGetValue(name, out CustomAger result);
+            AgerData.TryGetValue(qualifiedItemId, out CustomAger result);
             return result;
         }
 
-        public static bool HasAger(string name)
+        public static bool HasAger(string qualifiedItemIdName)
         {
-            return AgerData.ContainsKey(name);
+            return AgerData.ContainsKey(qualifiedItemIdName);
         }
 
         public static void SetAger(CustomAger ager)
         {
-            AgerData[ager.Name] = ager;
+            AgerData[ager.QualifiedItemId] = ager;
         }
 
         public static float? GetAgingMultiplierForItem(CustomAger customAger, Item ageable)
         {
-            if (customAger.AgingDataId.ContainsKey(ageable.ParentSheetIndex))
+            if (customAger.AgingDataId.ContainsKey(ageable.QualifiedItemId))
             {
-                return customAger.AgingDataId[ageable.ParentSheetIndex];
+                return customAger.AgingDataId[ageable.QualifiedItemId];
             }
-            else if (customAger.AgingDataId.ContainsKey(ageable.Category))
+            else if (customAger.AgingDataId.ContainsKey(ageable.Category.ToString()))
             {
-                return customAger.AgingDataId[ageable.Category];
+                return customAger.AgingDataId[ageable.Category.ToString()];
             }
             else if (customAger.EnableAgeEveryObject)
             {
@@ -58,6 +59,11 @@ namespace CustomCaskMod
         public static void ClearAgers()
         {
             AgerData.Clear();
+        }
+
+        public static ImmutableDictionary<string, CustomAger> GetAgers()
+        {
+            return AgerData.ToImmutableDictionary();
         }
     }
 }

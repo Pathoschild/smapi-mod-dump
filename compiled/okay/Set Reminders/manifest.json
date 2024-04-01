@@ -1,7 +1,7 @@
 {
   "Name": "Set Reminders",
   "Author": "Aelaan Bluewood",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "A mod to set ingame reminders.",
   "UniqueID": "AelaanBluewood.SetReminders",
   "EntryDll": "AelaanBluewood_SetRemindersMod.dll",

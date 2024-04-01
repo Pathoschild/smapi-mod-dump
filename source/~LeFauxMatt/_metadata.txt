@@ -4,9 +4,11 @@ urls:
 
 mods:
    Better Chests
+   Custom Bush
    Cycle Tools
    Easy Access
    Expanded Storage
+   FauxCore
    Garbage Day
    Is It Cake
    Ordinary Capsule
@@ -18,12 +20,11 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit d615aab8e691efc70bd9a75c1dd2fa92ec6b6d03
+   commit 71a43eae2aa3c87c0886b373762450773c261ae6
    Author: FauxMatt <github@fauxmail.net>
-   Date:   Thu Nov 23 21:08:19 2023 -0800
+   Date:   Mon Mar 25 18:49:06 2024 -0700
    
-       Merge remote-tracking branch 'origin/develop' into develop
+       Fix errors when custom maps are installed
        
-       # Conflicts:
-       #       BetterChests/Framework/Features/OrganizeChest.cs
+       This commit fixes a bug that occurred when custom maps were installed. Updates have been made in the AssetHandler.cs, adding checks for empty properties and improving string comparison during garbage can scanning, ensuring a smoother software operation with custom maps.
    

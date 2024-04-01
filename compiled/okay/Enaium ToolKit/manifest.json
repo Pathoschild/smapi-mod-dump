@@ -1,15 +1,20 @@
 ﻿{
   "Name": "EnaiumToolKit",
   "Author": "Enaium",
-  "Version": "1.4.3",
+  "Version": "1.5.0",
   "Description": "Enaium's Toolkit",
   "UniqueID": "Enaium.EnaiumToolKit",
   "EntryDll": "EnaiumToolKit.dll",
-  "MinimumApiVersion": "3.13.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [
-    "GitHub:Enaium-StardewValleyMods/EnaiumToolKit",
-    "Chucklefish:6080",
-    "CurseForge:436787",
-    "ModDrop:863959"
-  ]
+    "CurseForge:436787"
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Contact": {
+        "HomePage": "https://github.com/Enaium-StardewValleyMods/EnaiumToolKit",
+        "Issues": "https://github.com/Enaium-StardewValleyMods/EnaiumToolKit/issues"
+      }
+    }
+  }
 }

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 
-namespace Chest_Displays.Utility
+namespace ChestDisplays.Utility
 {
     public class Config
     {

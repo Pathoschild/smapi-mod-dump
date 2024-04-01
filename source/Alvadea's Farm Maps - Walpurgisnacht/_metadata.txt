@@ -6,9 +6,11 @@ mods:
    Alvadea's Farm Maps - Walpurgisnacht
 
 latest commit:
-   commit c8e1b4076e0587a9ceccaff03d55ef033be656e9
-   Author: Jaksha6472 <freaky_chick@gmx.de>
-   Date:   Wed Jun 7 20:03:39 2023 +0200
+   commit d8d8a86e9ce3dbeee4430c636af59fa2e18ad4f0
+   Author: Jaksha6472 <76745670+Jaksha6472@users.noreply.github.com>
+   Date:   Thu Mar 28 21:12:36 2024 +0100
    
-       first release
+       Merge pull request #1 from Jaksha6472/update_1.6
+       
+       Update 1.6
    

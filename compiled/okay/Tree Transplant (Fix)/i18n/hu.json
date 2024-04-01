@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "válaszd ki az átültetni kívánt fát.",
+  "Menu_PlacementText": "Válassz egy új helyet a fának.",
+  "Menu_InvalidPlace": "Ide nem tudod tenni!",
+  "Menu_InvalidCap": "Nem tudsz mozgatni egy fát facsappal!",
+  "Carpenter_Option": "Fa átültetés"
+}

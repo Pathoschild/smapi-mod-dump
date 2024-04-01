@@ -1,0 +1,10 @@
+{
+  "Name": "Maritime Secrets",
+  "Author": "Goldenrevolver",
+  "Version": "1.2.1",
+  "Description": "The ocean talks, you just have to listen.",
+  "UniqueID": "Goldenrevolver.MaritimeSecrets",
+  "EntryDll": "MaritimeSecrets.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:10758" ]
+}

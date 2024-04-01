@@ -15,6 +15,6 @@
 	"Description": "Allows buildings to be flipped.",
 	"UniqueID": "mouahrara.FlipBuildings",
 	"EntryDll": "FlipBuildings.dll",
-	"MinimumApiVersion": "3.14.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "Nexus:18444" ]
 }

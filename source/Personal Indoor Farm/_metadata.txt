@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley/personal-indoor-farm
+   Git: https://gitlab.com/delixx/stardew-valley/personal-indoor-farm.git
+
+mods:
+   Personal Indoor Farm
+
+latest commit:
+   commit c4a87f84f8fe5500d2b84657570cd8cfe6480748
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Sun Mar 31 19:44:43 2024 +0200
+   
+       updated to 1.0.1
+   

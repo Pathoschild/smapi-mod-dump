@@ -6,11 +6,9 @@ mods:
    Hat Shop Restoration
 
 latest commit:
-   commit ce27c31472e4e8ca2c2d2264399e24b0e3eb8641
+   commit 152f31d034664daba827ad01a9c767ee824dec22
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Mon Nov 20 17:19:54 2023 -0600
+   Date:   Tue Mar 19 15:44:21 2024 -0500
    
-       v2.0.0-alpha.1 released
-       
-       #1
+       v2.0.0 released
    

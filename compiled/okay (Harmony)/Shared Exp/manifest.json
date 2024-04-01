@@ -1,10 +1,10 @@
 ﻿{
   "Name": "SharedXp",
   "Author": "Batzpup",
-  "Version": "1.0.6",
+  "Version": "1.0.7",
   "Description": "Shares skill xp among all players in multiplayer",
   "UniqueID": "SharedExp.Batzpup",
   "EntryDll": "SharedExp.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "4.0.1",
   "UpdateKeys": ["Nexus:14607"]
 }

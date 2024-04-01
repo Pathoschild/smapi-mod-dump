@@ -1,0 +1,19 @@
+﻿{
+  "Name": "Mobile Arcade Continued",
+  "Author": "JoXW, aedenthorn",
+  "Version": "1.0.2",
+  "Description": "Links to arcade games for your mobile phone.",
+  "UniqueID": "JoXW.MobileArcade",
+  "EntryDll": "MobileArcade.dll",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "JoXW.MobilePhone",
+      "IsRequired": true
+    }
+  ]
+}

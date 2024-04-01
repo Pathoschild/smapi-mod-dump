@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/csandwith/StardewValleyMods
+   Git: https://github.com/csandwith/StardewValleyMods.git
+
+mods:
+   Custom Fixed Dialogue - Continued
+   Custom Spouse Rooms - Continued
+
+latest commit:
+   commit 394367f3730bdeea8202ac37df6e265581f2a817
+   Author: csandwith <codysandwith@gmail.com>
+   Date:   Wed Mar 27 11:39:37 2024 -0700
+   
+       Removed superflous comment and updated ImportMap to work...I think...with 1.6
+   

@@ -23,17 +23,11 @@ namespace StardewDruid.Event.Challenge
     {
         public List<Vector2> cannons;
 
-        public List<BarrageHandle> barrages;
-
-        public Mariner(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite, quest)
+        public Mariner(Vector2 target,  Quest quest)
+            : base(target, quest)
         {
 
-            voicePosition = targetVector * 64 + new Vector2(-10, -56);
-
             cannons = new();
-
-            barrages = new();
 
         }
 
@@ -42,7 +36,9 @@ namespace StardewDruid.Event.Challenge
 
             cues = DialogueData.DialogueScene(questData.name);
 
-            monsterHandle = new(targetVector, riteData.castLocation);
+            AddActor(targetVector * 64 + new Vector2(-10, -56));
+
+            monsterHandle = new(targetVector, Mod.instance.rite.castLocation);
 
             monsterHandle.spawnIndex = new() { 2, 3 };
 
@@ -59,7 +55,7 @@ namespace StardewDruid.Event.Challenge
 
             monsterHandle.spawnRange = new Vector2(11, 11);
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector*64 + new Vector2(32));
 
             Mod.instance.RegisterEvent(this, "active");
 
@@ -162,8 +158,6 @@ namespace StardewDruid.Event.Challenge
 
                         Mod.instance.CastMessage("Defeat more foes for better rewards", -1);
 
-                        CannonsToTheFore();
-
                         break;
 
                 }
@@ -176,16 +170,16 @@ namespace StardewDruid.Event.Challenge
             switch (activeCounter)
             {
 
-                case 18: CannonsAtTheReady(); break;
-                case 20: CannonsToFire(); break;
+                case 17: CannonsAtTheReady(); break;
+                case 19: CannonsToFire(); break;
                 case 21: CannonsToImpact(); break;
 
-                case 42: CannonsAtTheReady(); break;
-                case 44: CannonsToFire(); break;
+                case 41: CannonsAtTheReady(); break;
+                case 43: CannonsToFire(); break;
                 case 45: CannonsToImpact(); break;
 
-                case 52: CannonsAtTheReady(); break;
-                case 54: CannonsToFire(); break;
+                case 51: CannonsAtTheReady(); break;
+                case 53: CannonsToFire(); break;
                 case 55: CannonsToImpact(); break;
 
                 default: break;
@@ -220,9 +214,17 @@ namespace StardewDruid.Event.Challenge
             for (int k = 0; k < cannons.Count; k++)
             {
 
-                BarrageHandle missile = new(targetLocation, cannons[k], monsterHandle.spawnWithin, 2, 1, "Black", Mod.instance.CombatModifier() * 2, Mod.instance.DamageLevel());
+                Vector2 impact = cannons[k] * 64;
 
-                barrages.Add(missile);
+                SpellHandle missile = new(targetLocation, impact, impact - new Vector2(0, 640), 2, 1, Mod.instance.CombatModifier() * 2, Mod.instance.DamageLevel());
+
+                missile.type = SpellHandle.barrages.ballistic;
+
+                missile.scheme = SpellHandle.schemes.death;
+
+                missile.indicator = SpellHandle.indicators.death;
+
+                Mod.instance.spellRegister.Add(missile);
 
             }
 
@@ -230,6 +232,7 @@ namespace StardewDruid.Event.Challenge
 
         public void CannonsAtTheReady()
         {
+            
             DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 994);
 
             foreach (StardewValley.Monsters.Monster monsterSpawn in monsterHandle.monsterSpawns)
@@ -248,30 +251,15 @@ namespace StardewDruid.Event.Challenge
                 }
 
             }
-            
-            foreach(BarrageHandle barrage in barrages)
-            {
-
-                barrage.TargetCircle(3);
-
-                barrage.OuterCircle(3);
-
-            }
-
 
         }
 
         public void CannonsToFire()
         {
 
+            CannonsToTheFore();
+
             DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 995);
-
-            foreach (BarrageHandle barrage in barrages)
-            {
-
-                barrage.MissileBarrage();
-
-            }
 
         }
 
@@ -279,13 +267,6 @@ namespace StardewDruid.Event.Challenge
         {
 
             targetLocation.localSound("explosion");
-
-            foreach (BarrageHandle barrage in barrages)
-            {
-
-                barrage.RadialDamage();
-
-            }
 
         }
 

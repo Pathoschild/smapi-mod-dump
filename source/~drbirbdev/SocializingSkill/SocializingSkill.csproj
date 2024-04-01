@@ -5,7 +5,7 @@
 
     <PropertyGroup>
         <Description>Adds a skill related to befriending villagers.</Description>
-        <Version>2.0.0</Version>
+        <Version>2.0.5</Version>
         <UpdateKeys>Nexus:14142</UpdateKeys>
     </PropertyGroup>
 
@@ -14,10 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ContentPatcher\i18n\" />
       <Folder Include="ContentPatcher\assets\" />
-      <Folder Include="ContentPatcher\data\" />
+      <Folder Include="ContentPatcher\i18n\" />
     </ItemGroup>
-
-
 </Project>

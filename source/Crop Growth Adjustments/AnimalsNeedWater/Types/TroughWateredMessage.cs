@@ -14,10 +14,10 @@ namespace AnimalsNeedWater.Types
 {
     public class TroughWateredMessage
     {
-        public readonly Type BuildingType;
+        public readonly string BuildingType;
         public readonly string BuildingUniqueName;
 
-        public TroughWateredMessage(Type buildingType, string buildingUniqueName)
+        public TroughWateredMessage(string buildingType, string buildingUniqueName)
         {
             BuildingType = buildingType;
             BuildingUniqueName = buildingUniqueName;

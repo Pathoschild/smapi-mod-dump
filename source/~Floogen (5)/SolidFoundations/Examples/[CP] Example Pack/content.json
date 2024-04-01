@@ -51,7 +51,7 @@
   "Changes": [
     {
       "Action": "EditData",
-      "Target": "Data/BuildingsData",
+      "Target": "Data/Buildings",
       "Fields": {
         "PeacefulEnd.SolidFoundations.ExamplePack_QuizzicalShrine": {
           "DefaultSpecialAction": {
@@ -136,7 +136,7 @@
     },
     {
       "Action": "EditData",
-      "Target": "Data/BuildingsData",
+      "Target": "Data/Buildings",
       "Fields": {
         "PeacefulEnd.SolidFoundations.ExamplePack_Balloon": {
           "Description": "Modified by Content Patcher.",
@@ -146,7 +146,7 @@
     },
     {
       "Action": "EditData",
-      "Target": "Data/BuildingsData",
+      "Target": "Data/Buildings",
       "Fields": {
         "PeacefulEnd.SolidFoundations.ExamplePack_WornDownBuilding": {
           "DefaultAction": "Dialogue Does Balloon building exist on the farm: {{PeacefulEnd.SolidFoundations/IsBuildingHere:PeacefulEnd.SolidFoundations.ExamplePack_Balloon@Farm}}"
@@ -155,7 +155,7 @@
     },
     {
       "Action": "EditData",
-      "Target": "Data/BuildingsData",
+      "Target": "Data/Buildings",
       "Fields": {
         "PeacefulEnd.SolidFoundations.ExamplePack_ForgottenShrine": {
           "DrawLayers": [
@@ -193,7 +193,7 @@
     },
     {
       "Action": "EditData",
-      "Target": "Data/BuildingsData",
+      "Target": "Data/Buildings",
       "Fields": {
         "PeacefulEnd.SolidFoundations.ExamplePack_CampingTent": {
           "Skins": [
@@ -240,7 +240,7 @@
     },
     {
       "Action": "EditData",
-      "Target": "Data/BuildingsData",
+      "Target": "Data/Buildings",
       "Fields": {
         "PeacefulEnd.SolidFoundations.ExamplePack_StreetLamp": {
           "DrawLayers": [

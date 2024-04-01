@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "drbirbdev.WinterStarSpouse",
+  "Name": "WinterStarSpouse",
+  "Author": "drbirbdev",
+  "Version": "1.1.1",
+  "Description": "Customize how often you spouse is your winter star secret santa.",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "WinterStarSpouse.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "drbirbdev.BirbCore",
+      "MinimumVersion": "1.0.3"
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:14164"
+  ]
+}

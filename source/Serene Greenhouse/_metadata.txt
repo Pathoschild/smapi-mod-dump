@@ -6,9 +6,9 @@ mods:
    Serene Greenhouse
 
 latest commit:
-   commit be7616ecffb81a035d115608de2864ea71f4b593
+   commit aa1488e1c49a8c3eba4d006344e0d8eff9d04fef
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Sun Nov 19 19:07:32 2023 -0600
+   Date:   Tue Mar 19 15:40:59 2024 -0500
    
-       v2.0.0-alpha.1 released
+       v2.0.0 released
    

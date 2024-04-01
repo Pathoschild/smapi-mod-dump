@@ -13,32 +13,27 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Interface
-{
-    class TooltipManager : ITooltipManager
-    {
+namespace ConvenientChests.CategorizeChests.Interface {
+    class TooltipManager : ITooltipManager {
         private Widget Tooltip;
 
-        public void ShowTooltipThisFrame(Widget tooltip)
-        {
+        public void ShowTooltipThisFrame(Widget tooltip) {
             Tooltip = tooltip;
         }
 
-        public void Draw(SpriteBatch batch)
-        {
-            if (Tooltip != null)
-            {
-                var mousePosition = Game1.getMousePosition();
+        public void Draw(SpriteBatch batch) {
+            if (Tooltip == null)
+                return;
 
-                Tooltip.Position = new Point(
-                    mousePosition.X + 8 * Game1.pixelZoom,
-                    mousePosition.Y + 8 * Game1.pixelZoom
-                );
+            var mousePosition = Game1.getMousePosition(true);
 
-                Tooltip.Draw(batch);
+            Tooltip.Position = new Point(
+                mousePosition.X + 8 * Game1.pixelZoom,
+                mousePosition.Y + 8 * Game1.pixelZoom
+            );
 
-                Tooltip = null;
-            }
+            Tooltip.Draw(batch);
+            Tooltip = null;
         }
     }
 }

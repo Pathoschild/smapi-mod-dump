@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SinZ163/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "SinZational Science Showcase",
+  "Author": "SinZ",
+  "Version": "0.1.0-alpha",
+  "Description": "Visualizes Schedule information on the map to assist NPC creators",
+  "UniqueID": "SinZ.Science",
+  "EntryDll": "SinZational Science Showcase.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:-1" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

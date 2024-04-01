@@ -9,8 +9,11 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Event;
+using StardewValley;
 using System;
 using System.Collections.Generic;
+using static StardewValley.Minigames.TargetGame;
 
 namespace StardewDruid.Cast.Mists
 {
@@ -19,21 +22,17 @@ namespace StardewDruid.Cast.Mists
 
         private StardewValley.Monsters.Monster targetMonster;
 
-        public int colour;
-
         public float damage;
 
-        public Smite(Vector2 target, Rite rite, StardewValley.Monsters.Monster TargetMonster, float Damage, int Colour = -1)
-            : base(target, rite)
+        public Smite(Vector2 target,  StardewValley.Monsters.Monster TargetMonster, float Damage)
+            : base(target)
         {
 
-            int castCombat = rite.caster.CombatLevel / 2;
+            int castCombat = Game1.player.CombatLevel / 2;
 
             castCost = Math.Max(6, 12 - castCombat);
 
             targetMonster = TargetMonster;
-
-            colour = Colour;
 
             damage = Damage;
 
@@ -51,7 +50,7 @@ namespace StardewDruid.Cast.Mists
 
             float critChance = 0.1f;
 
-            if (!riteData.castTask.ContainsKey("masterSmite"))
+            if (!Mod.instance.rite.castTask.ContainsKey("masterSmite"))
             {
 
                 Mod.instance.UpdateTask("lessonSmite", 1);
@@ -64,37 +63,15 @@ namespace StardewDruid.Cast.Mists
 
             }
 
-            int damageApplied = (int)(damage * 0.7);
+            SpellHandle bolt = new(targetLocation, targetVector * 64, Game1.player.Position, 1, 1, -1, damage);
 
-            bool critApplied = false;
+            bolt.type = SpellHandle.barrages.bolt;
 
-            float critDamage = ModUtility.CalculateCritical(damageApplied, critChance);
+            bolt.critical = critChance;
 
-            if (critDamage > 0)
-            {
+            bolt.monster = targetMonster;
 
-                damageApplied = (int)critDamage;
-
-                critApplied = true;
-
-            }
-
-            List<int> diff = ModUtility.CalculatePush(targetLocation, targetMonster, targetPlayer.Position, 64);
-
-            ModUtility.HitMonster(targetLocation, targetPlayer, targetMonster, damageApplied, critApplied, diffX: diff[0], diffY: diff[1]);
-
-            if (targetMonster.Health <= 0)
-            {
-
-                ModUtility.AnimateBolt(targetLocation, new Vector2(targetVector.X, targetVector.Y - 1), 1200, colour);
-
-            }
-            else
-            {
-
-                ModUtility.AnimateBolt(targetLocation, new Vector2(targetVector.X, targetVector.Y - 1), 600 + randomIndex.Next(1, 8) * 100, colour);
-
-            }
+            Mod.instance.spellRegister.Add(bolt);
 
             castFire = true;
 

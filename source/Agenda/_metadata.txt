@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ofts-cqm/StardewValley-Agenda
+   Git: https://github.com/ofts-cqm/StardewValley-Agenda.git
+
+mods:
+   Agenda
+
+latest commit:
+   commit 999ccc3998a30ed6c1d2555e638167c32438e86c
+   Author: OFTS_CQM <qianmuchen.sam@gmail.com>
+   Date:   Thu Mar 21 11:59:14 2024 -0700
+   
+       update 1.0.0 released version
+   

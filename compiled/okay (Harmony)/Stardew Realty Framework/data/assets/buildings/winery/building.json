@@ -1,0 +1,310 @@
+﻿{
+  "ID": "prism99.advize.stardewrealty.winery",
+  "Name": "prism99.advize.stardewrealty.winery",
+  "DisplayName": "[LocalizedText SDR\\Strings\\Objects:sdr.winery.displayname]",
+  "Description": "[LocalizedText SDR\\Strings\\Objects:sdr.winery.description]",
+  "InteriorMapName": "winery.tmx",
+  "Conditions": "PLAYER_FARMING_LEVEL Current 7",
+  "BuildingTextureName": "winery.png",
+  "CanCaskHere": true,
+  "SourceRectangle": {
+    "X": 0,
+    "Y": 0,
+    "Width": 112,
+    "Height": 92
+  },
+  "HumanDoor": {
+    "X": 1,
+    "Y": 2
+  },
+  "AnimalDoor": {
+    "X": -1,
+    "Y": -1
+  },
+  "BuildingItems": [
+    {
+      "Id": "Cask1",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 5,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask2",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 6,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask3",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 7,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask4",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 8,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask5",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 9,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask6",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 10,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask7",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 11,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Cask11",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 5,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Cask12",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 6,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Cask13",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 7,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Cask14",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 8,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Cask15",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 9,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Cask16",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 10,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Cask17",
+      "ItemId": "(BC)163",
+      "Indestructible": false,
+      "Position": {
+        "X": 11,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg1",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 13,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg2",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 14,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg3",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 15,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg4",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 16,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg5",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 17,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg6",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 18,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg7",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 19,
+        "Y": 6
+      }
+    },
+    {
+      "Id": "Keg11",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 13,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg12",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 14,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg13",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 15,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg14",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 16,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg15",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 17,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg16",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 18,
+        "Y": 8
+      }
+    },
+    {
+      "Id": "Keg17",
+      "ItemId": "(BC)12",
+      "Indestructible": false,
+      "Position": {
+        "X": 19,
+        "Y": 8
+      }
+    }
+  ],
+  "MaxOccupancy": 0,
+  "Size": {
+    "X": 7,
+    "Y": 3
+  },
+  "DrawShadow": true,
+  "BuildDays": 3,
+  "Material": {
+    "(O)709": 75,
+    "(O)388": 200,
+    "(O)334": 14
+  },
+  "Cost": 50000,
+  "Builder": "Robin",
+  "CollisionMap": "XXXXXXX\nXXXXXXX\nXXXXXXX\nXXXXXXX",
+  "Upgrades": null,
+  "MachineName": "",
+  "ProductionModifiers": {
+    "163": [
+      {
+        "ModificationType": 0,
+        "ModificationQuantity": 1.3
+      }
+    ],
+    "12": [
+      {
+        "ModificationType": 0,
+        "ModificationQuantity": 1.3
+      }
+    ]
+  }
+
+}

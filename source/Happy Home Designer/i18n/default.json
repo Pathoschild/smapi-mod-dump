@@ -9,8 +9,8 @@
 *************************************************/
 
 {
-	"furniture.Catalog.name": "Happy Home Catalogue",
-	"furniture.Catalog.description": "Provides unlimited access to\nall wallpapers & floors, and\nalmost every furniture item...\nfrom the convenience of your\nhome!",
+	"furniture.Catalogue.name": "Happy Home Catalogue",
+	"furniture.Catalogue.desc": "Provides unlimited access to\nmany wallpapers & floors, and\nalmost every furniture item...\nfrom the convenience of your\nhome!",
 	"config.CloseWithKey.name": "Close With Key",
 	"config.CloseWithKey.desc": "Allow the menu to be closed with the menu close keys.",
 	"config.GiveModifier.name": "Give Modifier",
@@ -31,5 +31,16 @@
 	"logging.removedWallsAndFloors": "Found and removed {{walls}} duplicate wallpapers and {{floors}} duplicate floors.",
 	"config.ToggleShortcut.name": "Catalog toggle shortcut",
 	"config.ToggleShortcut.desc": "Keyboard shortcut to show/hide the catalog while it is open.",
-	"ui.search.name": "Search"
+	"ui.search.name": "Search",
+	"item.card.receive": "You are now a member of the Rare Curio Collector's Society! A new catalogue is available from Robin.",
+	"item.card.name": "Collector's Card",
+	"item.card.desc": "A membership card for the RCCS. Grants access to the collector's catalogue.",
+	"furniture.CollectorsCatalogue.name": "Collector's Catalogue",
+	"furniture.CollectorsCatalogue.desc": "A collector's catalog for rare and exotic curios.",
+	"furniture.DeluxeCatalogue.name": "Designer's Dream Catalogue",
+	"furniture.DeluxeCatalogue.desc": "A catalogue truly worthy of the finest home.",
+	"mail.collectorAcceptance.text": "The Rare Curio Collector's Society of Ferngill wishes to formally recognize @ for their outstanding collection of rare and unique home decor. As an award for this collection, and an unwavering dedication to the preservation of history, the Society hereby extends an official offer of membership to @.",
+	"mail.collectorAcceptance.name": "RCCS membership mail",
+	"config.ReplaceRareCatalogs.name": "Replace Rare Catalogues",
+	"config.ReplaceRareCatalogs.desc": "While anabled, replaces the default rare catalog UIs with the new one."
 }

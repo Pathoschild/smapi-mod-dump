@@ -1,0 +1,22 @@
+{
+  "location.prefix": "Preso in",
+  "location.none": "Sconosciuto - Miniera/Evento?",
+  "location.crabpot": "Nassa per granchi in: {{location}}",
+  "location.ocean": "Oceano",
+  "location.freshwater": "Acqua Dolce",
+  "location.forestriver": "Fiume della Foresta",
+  "location.forestpond": "Laghetto della Foresta",
+  "location.bugland": "Covo di Insetti Mutanti",
+  "location.witchswamp": "Palude della Strega",
+  "season.prefix": "Stagione",
+  "season.all": "Tutte le Stagioni",
+  "season.none": "Nessuna Voce Trovata",
+  "time.prefix": "Tempo",
+  "time.allday": "Tutto il Giorno",
+  "time.midday": "Mezzogiorno",
+  "time.midnight": "Mezzanotte",
+  "weather.prefix": "Meteo",
+  "weather.sun": "Sole",
+  "weather.rain": "Pioggia",
+  "weather.none": "Nessuna Voce Trovata"
+}

@@ -1,0 +1,12 @@
+﻿{
+  "Name": "Custom Farm Loader",
+  "Author": "DeLiXx",
+  "Version": "2.0.7",
+  "Description": "Improves farm related UI, loads custom farms, manages farm specific features and fixes vanilla bugs.",
+  "UniqueID": "DeLiXx.Custom_Farm_Loader",
+  "EntryDll": "Custom Farm Loader.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:13804@Main" ],
+  "Dependencies": [
+  ]
+}

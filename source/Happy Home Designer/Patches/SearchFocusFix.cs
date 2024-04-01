@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HappyHomeDesigner.Framework;
 using HappyHomeDesigner.Menus;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Input;
@@ -20,12 +21,12 @@ namespace HappyHomeDesigner.Patches
 	{
 		public static void Apply(Harmony harmony)
 		{
-			harmony.Patch(
+			harmony.TryPatch(
 				typeof(Game1).GetProperty(nameof(Game1.IsChatting)).GetMethod,
 				postfix: new(typeof(SearchFocusFix), nameof(IsActive))
 			);
 
-			harmony.Patch(
+			harmony.TryPatch(
 				typeof(Game1).GetMethod("UpdateChatBox", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic),
 				prefix: new(typeof(SearchFocusFix), nameof(SkipChat))
 			);

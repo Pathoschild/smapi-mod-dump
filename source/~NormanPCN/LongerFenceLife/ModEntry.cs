@@ -13,14 +13,15 @@ using System.Linq;
 //using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-//using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.GameData.Fences;
 using GenericModConfigMenu;
-using HarmonyLib;
+//using HarmonyLib;
 using Helpers;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace LongerFenceLife
@@ -34,11 +35,17 @@ namespace LongerFenceLife
         const float MinLife = 0.5f;
         const float MaxLife = 10.0f;
 
-        const int WoodFence = 322;//-5 placed
-        const int StoneFence = 323;//-6 placed
-        const int IronFence = 324;//-7 placed
-        const int HwFence = 298;//-8 placed
-        const int Gate = 325;//-9 placed
+        public const int WoodFenceId = 322;//-5 placed
+        public const int StoneFenceId = 323;//-6 placed
+        public const int IronFenceId = 324;//-7 placed
+        public const int HwFenceId = 298;//-8 placed
+        public const int GateId = 325;//-9 placed
+
+        public const string WoodFenceQId = "(O)322";
+        public const string StoneFenceQId = "(O)323";
+        public const string IronFenceQId = "(O)324";
+        public const string HwFenceQId = "(O)298";
+        public const string GateQId = "(O)325";
 
         Texture2D Texture;
 
@@ -80,11 +87,7 @@ namespace LongerFenceLife
         {
             MyHelper.Events.Input.ButtonPressed += Input_ButtonPressed;
             MyHelper.Events.Input.ButtonReleased += Input_ButtonReleased;
-            if (!Config.UseHarmony)
-            {
-                MyHelper.Events.Player.InventoryChanged += Player_InventoryChanged;
-                MyHelper.Events.World.ObjectListChanged += World_ObjectListChanged;
-            }
+            MyHelper.Events.Content.AssetRequested += OnAssetRequested;
         }
 
         /// <summary>Raised after a game has exited a game/save to the title screen.  Here we unhook our gameplay events.</summary>
@@ -95,11 +98,7 @@ namespace LongerFenceLife
             MyHelper.Events.Input.ButtonPressed -= Input_ButtonPressed;
             MyHelper.Events.Input.ButtonReleased -= Input_ButtonReleased;
             MyHelper.Events.Display.RenderedWorld -= Display_OnRenderedWorld;
-            if (!Config.UseHarmony)
-            {
-                MyHelper.Events.Player.InventoryChanged -= Player_InventoryChanged;
-                MyHelper.Events.World.ObjectListChanged -= World_ObjectListChanged;
-            }
+            MyHelper.Events.Content.AssetRequested -= OnAssetRequested;
         }
 
         private static float ClampRange(float life)
@@ -115,14 +114,28 @@ namespace LongerFenceLife
         {
             int baseLife = fenceType switch
             {
-                WoodFence => 28 * 2,
-                StoneFence => 60 * 2,
-                IronFence => 125 * 2,
-                Gate => 100 * 2 * 2,
-                HwFence => 280 * 2,
+                WoodFenceId => 28 * 2,
+                StoneFenceId => 60 * 2,
+                IronFenceId => 125 * 2,
+                GateId => 100 * 2 * 2,
+                HwFenceId => 280 * 2,
                 _ => 100 * 2
             };
             return baseLife;
+        }
+
+        internal static int GetFenceIdx(StardewValley.Fence fence)
+        {
+            int idx = fence.QualifiedItemId switch
+            {
+                WoodFenceQId => WoodFenceId,
+                StoneFenceQId => StoneFenceId,
+                IronFenceQId => IronFenceId,
+                GateQId => GateId,
+                HwFenceQId => HwFenceId,
+                _ => WoodFenceId
+            };
+            return idx;
         }
 
         private static string FenceYears(int fenceType, float value)
@@ -134,27 +147,27 @@ namespace LongerFenceLife
 
         private static string WoodFenceYears(float value)
         {
-            return FenceYears(WoodFence, value);
+            return FenceYears(WoodFenceId, value);
         }
 
         private static string StoneFenceYears(float value)
         {
-            return FenceYears(StoneFence, value);
+            return FenceYears(StoneFenceId, value);
         }
 
         private static string IronFenceYears(float value)
         {
-            return FenceYears(IronFence, value);
+            return FenceYears(IronFenceId, value);
         }
 
         private static string GateYears(float value)
         {
-            return FenceYears(Gate, value);
+            return FenceYears(GateId, value);
         }
 
         private static string HwFenceYears(float value)
         {
-            return FenceYears(HwFence, value);
+            return FenceYears(HwFenceId, value);
         }
 
         private string VanillaLifeText(int FenceType)
@@ -181,24 +194,20 @@ namespace LongerFenceLife
             Debug = true;
 #endif
 
-            if (Config.UseHarmony)
-            {
-                var harmony = new Harmony(this.ModManifest.UniqueID);
-                //harmony.PatchAll();
-                System.Reflection.MethodInfo mInfo;
+            //var harmony = new Harmony(this.ModManifest.UniqueID);
+            //harmony.PatchAll();
+            //System.Reflection.MethodInfo mInfo;
 
-                try
-                {
-                    mInfo = harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Fence), nameof(StardewValley.Fence.ResetHealth)),
-                                          postfix: new HarmonyMethod(typeof(FencePatches), nameof(FencePatches.ResetHealth_Postfix))
-                                         );
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Failed Harmony Fence Patches:\n{ex}");
-                    Config.UseHarmony = false;
-                }
-            }
+            //try
+            //{
+            //    mInfo = harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Fence), nameof(StardewValley.Fence.ResetHealth)),
+            //                            postfix: new HarmonyMethod(typeof(FencePatches), nameof(FencePatches.ResetHealth_Postfix))
+            //                            );
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Error($"Failed Harmony Fence Patches:\n{ex}");
+            //}
 
             // use GMCM in an optional manner.
 
@@ -221,7 +230,7 @@ namespace LongerFenceLife
                                      max: MaxLife,
                                      interval: 0.1f,
                                      formatValue: WoodFenceYears);
-                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(WoodFence));
+                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(WoodFenceId));
 
                 gmcm.AddNumberOption(ModManifest,
                                      () => Config.StoneFenceLife,
@@ -232,7 +241,7 @@ namespace LongerFenceLife
                                      max: MaxLife,
                                      interval: 0.1f,
                                      formatValue: StoneFenceYears);
-                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(StoneFence));
+                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(StoneFenceId));
 
                 gmcm.AddNumberOption(ModManifest,
                                      () => Config.IronFenceLife,
@@ -243,7 +252,7 @@ namespace LongerFenceLife
                                      max: MaxLife,
                                      interval: 0.1f,
                                      formatValue: IronFenceYears);
-                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(IronFence));
+                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(IronFenceId));
 
                 gmcm.AddNumberOption(ModManifest,
                                      () => Config.HardwoodFenceLife,
@@ -254,7 +263,7 @@ namespace LongerFenceLife
                                      max: MaxLife,
                                      interval: 0.1f,
                                      formatValue: HwFenceYears);
-                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(HwFence));
+                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(HwFenceId));
 
                 gmcm.AddNumberOption(ModManifest,
                                      () => Config.GateLife,
@@ -265,7 +274,7 @@ namespace LongerFenceLife
                                      max: MaxLife,
                                      interval: 0.1f,
                                      formatValue: GateYears);
-                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(Gate));
+                gmcm.AddParagraph(ModManifest, () => VanillaLifeText(GateId));
 
                 gmcm.AddKeybind(ModManifest,
                                 () => Config.FenceLifeKeybind,
@@ -279,132 +288,37 @@ namespace LongerFenceLife
             };
         }
 
-        /// <summary>Called when objects are added/removed from a/the map.
-        /// Fence repair does not trigger this event.
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void World_ObjectListChanged(object sender, ObjectListChangedEventArgs e)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (
-                //Context.IsPlayerFree &&
-                e.IsCurrentLocation &&
-                (e.Added != null)
-               )
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Fences"))
             {
-                FencesAdded = false;
-
-                foreach (var item in e.Added)
+                e.Edit(asset =>
                 {
-                    if (item.Value is StardewValley.Fence fence)
-                    {
-                        FencesAdded = true;
+                    var fences = asset.AsDictionary<string, FenceData>();
+                    int health;
 
-                        float before = fence.health.Value;
-                        float beforeMax = fence.maxHealth.Value;
-                        int idx = fence.GetItemParentSheetIndex();
-                        float mult = idx switch
-                        {
-                            WoodFence => Config.WoodFenceLife,
-                            StoneFence => Config.StoneFenceLife,
-                            IronFence => Config.IronFenceLife,
-                            Gate => Config.GateLife,
-                            HwFence => Config.HardwoodFenceLife,
-                            _ => 1.0f,
-                        };
+                    health = fences.Data[StardewValley.Fence.woodFenceId].Health;
+                    health = (int)((float)health * Config.WoodFenceLife);
+                    fences.Data[StardewValley.Fence.woodFenceId].Health = health;
 
-                        fence.health.Value = before * mult;
-                        fence.maxHealth.Value = beforeMax * mult;
+                    health = fences.Data[StardewValley.Fence.stoneFenceId].Health;
+                    health = (int)((float)health * Config.StoneFenceLife);
+                    fences.Data[StardewValley.Fence.stoneFenceId].Health = health;
 
-                        if (Debug)
-                            Log.Debug($"ObjectListChanged: health after={fence.health.Value}, health before={before}, idx={idx},{fence.ParentSheetIndex}");
-                    }
+                    health = fences.Data[StardewValley.Fence.ironFenceId].Health;
+                    health = (int)((float)health * Config.IronFenceLife);
+                    fences.Data[StardewValley.Fence.ironFenceId].Health = health;
+
+                    health = fences.Data[StardewValley.Fence.gateId].Health;
+                    health = (int)((float)health * Config.GateLife);
+                    fences.Data[StardewValley.Fence.gateId].Health = health;
+
+                    health = fences.Data[StardewValley.Fence.hardwoodFenceId].Health;
+                    health = (int)((float)health * Config.HardwoodFenceLife);
+                    fences.Data[StardewValley.Fence.hardwoodFenceId].Health = health;
                 }
-            }
-        }
-
-        /// <summary>Called when the player inventory has changed.
-        /// This method implements our detection of when a fence has been placed, and our resulting actions.
-        /// We use this for fence repair situations. We get this event after ObjectListChanged.
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void Player_InventoryChanged(object sender, InventoryChangedEventArgs e)
-        {
-            Item grabbed = e.Player.mostRecentlyGrabbedItem;
-            if (grabbed == null)
-                return;
-
-            int idx = grabbed.ParentSheetIndex;
-            if (
-                (((idx >= WoodFence) && (idx <= Gate)) || (idx == HwFence)) &&
-                //Context.IsPlayerFree &&
-                e.IsLocalPlayer
-               )
-            {
-                Vector2 tilePosition = Game1.currentCursorTile;
-                StardewValley.Object obj;
-                if (
-                    (!FencesAdded) &&
-                    (e.QuantityChanged.FirstOrDefault(x => x.Item == grabbed) is ItemStackSizeChange item) &&
-                    (item.NewSize+1 == item.OldSize) &&
-                    Game1.currentLocation.Objects.TryGetValue(tilePosition, out obj) &&
-                    (obj is StardewValley.Fence fence) &&
-                    //Game1.currentLocation.Objects.ContainsKey(tilePosition) &&
-                    //(Game1.currentLocation.Objects[tilePosition] is StardewValley.Fence fence) &&
-                    (fence.GetItemParentSheetIndex() == idx)
-                   )
-                {
-                    // game has a bug where if a gate replaces an existing fence post the item id stays with the fence id
-                    // and the gate keeps the fence life. it does not get the gate life.
-                    // by fence id I mean the converted negative values of placed fence items.
-                    // we could detect and correct this, but the game is the game.
-                    // this mod just alters the life the game literally gives.
-                    // fence.performObjectDropInAction()
-
-                    // for some reason the game does not adjust the maxHealth of gates. so health is normally above maxHealth. probably a bug.
-
-                    // fence repair: the repaired post with updated health is what we see at this event.
-
-                    float before = fence.health.Value;
-                    float beforeMax = fence.maxHealth.Value;
-                    float mult = idx switch
-                    {
-                        WoodFence => Config.WoodFenceLife,
-                        StoneFence => Config.StoneFenceLife,
-                        IronFence => Config.IronFenceLife,
-                        Gate => Config.GateLife,
-                        HwFence => Config.HardwoodFenceLife,
-                        _ => 1.0f,
-                    };
-
-                    fence.health.Value = before * mult;
-                    fence.maxHealth.Value = beforeMax * mult;
-
-                    if (Debug)
-                        Log.Debug($"InventoryChanged: health after={fence.health.Value}, health before={before}, idx={idx},{fence.ParentSheetIndex}, repair={fence.repairQueued.Value}");
-                }
-                else if (Debug)
-                {
-                    Log.Debug($"InventoryChanged: FencesAdded={FencesAdded}");
-
-                    if (e.QuantityChanged.FirstOrDefault(x => x.Item == grabbed) is ItemStackSizeChange itemD)
-                    {
-                        Log.Debug($"item newSize={itemD.NewSize}, oldSize={itemD.OldSize}");
-                        if (Game1.currentLocation.Objects.ContainsKey(tilePosition))
-                        {
-                            if (Game1.currentLocation.Objects[tilePosition] is not StardewValley.Fence)
-                                Log.Debug("Failing is Fence");
-                        }
-                        else
-                            Log.Debug("Failing ContainsKey");
-                    }
-                    else
-                        Log.Debug("Failing FirstOrDefault");
-                }
-            }
-
-            FencesAdded = false;
+                );
+            };
         }
 
         public static Rectangle GetVisibleAreaInTiles(int expand = 0)
@@ -511,7 +425,7 @@ namespace LongerFenceLife
                             if (obj1 is Fence f)
                             {
                                 if (e.Button == SButton.F5)
-                                    f.minutesElapsed(1440, farm);//one day by fence.minutesElaspsed logic.
+                                    f.minutesElapsed(1440);//one day by fence.minutesElaspsed logic.
                                 else if (e.Button == SButton.F6)
                                     f.health.Value = Game1.random.Next(2, 10);
                                 else if (e.Button == SButton.F7)
@@ -532,39 +446,40 @@ namespace LongerFenceLife
         }
     }
 
-    [HarmonyPatch(typeof(StardewValley.Fence))]
-    public class FencePatches
-    {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(StardewValley.Fence.ResetHealth))]
-        [HarmonyPatch(new Type[] { typeof(float) })]
-        public static void ResetHealth_Postfix(StardewValley.Fence __instance, float amount_adjustment)
-        {
-            try
-            {
-                float mult = __instance.whichType.Value switch
-                {
-                    1 => ModEntry.Config.WoodFenceLife,
-                    2 => ModEntry.Config.StoneFenceLife,
-                    3 => ModEntry.Config.IronFenceLife,
-                    4 => ModEntry.Config.GateLife,
-                    5 => ModEntry.Config.HardwoodFenceLife,
-                    _ => 1.0f,
-                };
-                float before = __instance.health.Value;
-                float beforeMax = __instance.maxHealth.Value;
+    //[HarmonyPatch(typeof(StardewValley.Fence))]
+    //public class FencePatches
+    //{
+    //    [HarmonyPostfix]
+    //    [HarmonyPatch(nameof(StardewValley.Fence.ResetHealth))]
+    //    [HarmonyPatch(new Type[] { typeof(float) })]
+    //    public static void ResetHealth_Postfix(StardewValley.Fence __instance, float amount_adjustment)
+    //    {
+    //        try
+    //        {
+    //            int idx = ModEntry.GetFenceIdx(__instance);
+    //            float mult = idx switch
+    //            {
+    //                ModEntry.WoodFenceId => ModEntry.Config.WoodFenceLife,
+    //                ModEntry.StoneFenceId => ModEntry.Config.StoneFenceLife,
+    //                ModEntry.IronFenceId => ModEntry.Config.IronFenceLife,
+    //                ModEntry.GateId => ModEntry.Config.GateLife,
+    //                ModEntry.HwFenceId => ModEntry.Config.HardwoodFenceLife,
+    //                _ => 1.0f,
+    //            };
+    //            float before = __instance.health.Value;
+    //            float beforeMax = __instance.maxHealth.Value;
 
-                __instance.health.Value = before * mult;
-                __instance.maxHealth.Value = beforeMax * mult;
+    //            __instance.health.Value = before * mult;
+    //            __instance.maxHealth.Value = beforeMax * mult;
 
-                if (ModEntry.Debug)
-                    ModEntry.Log.Debug($"ResetHealth_PostFix: health after={__instance.health.Value}, health before={before}, fence_type={__instance.whichType}");
-            }
-            catch (Exception ex)
-            {
-                ModEntry.Log.Error($"Failed in {nameof(ResetHealth_Postfix)}:\n{ex}");
-            }
-        }
-    }
+    //            if (ModEntry.Debug)
+    //                ModEntry.Log.Debug($"ResetHealth_PostFix: health after={__instance.health.Value}, health before={before}, fence_type={idx}");
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            ModEntry.Log.Error($"Failed in {nameof(ResetHealth_Postfix)}:\n{ex}");
+    //        }
+    //    }
+    //}
 }
 

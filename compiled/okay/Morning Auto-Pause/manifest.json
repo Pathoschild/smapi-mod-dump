@@ -1,0 +1,10 @@
+{
+  "Name": "Morning Auto-Pause",
+  "Author": "Zamiel",
+  "Version": "1.0.0",
+  "Description": "Automatically pauses the game at the beginning of the day",
+  "UniqueID": "Zamiel.MorningAutoPause",
+  "EntryDll": "MorningAutoPause.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "GitHub:Zamiell/stardew-valley-mods" ]
+}

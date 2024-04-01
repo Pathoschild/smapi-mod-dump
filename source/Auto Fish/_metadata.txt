@@ -6,15 +6,11 @@ mods:
    Auto Fish
 
 latest commit:
-   commit 322a8df94072f6b0f5f433971819b8007d1de110
-   Author: WhiteMind <WhiteMind@qq.com>
-   Date:   Mon Feb 6 09:18:16 2023 +0800
+   commit 50a84394896bca7d91742b1b52708d2420460789
+   Author: AlerHugu3s <55569332+AlerHugu3s@users.noreply.github.com>
+   Date:   Thu Mar 28 11:34:37 2024 +0800
    
-       Merge pull request #6 from SeWZC/master
+       Merge pull request #13 from egor-muindor/master
        
-       æ›´æ–°åˆ°.net5ï¼›ä¿®å¤é”™è¯¯ï¼›æ·»åŠ GMCMæ”¯æŒ
-       ä¿®å¤è‡ªåŠ¨ä¸Šé’©åŠŸèƒ½ï¼Œé¿å…å£°éŸ³å¾ªçŽ¯
-       ä¿®æ”¹è‡ªåŠ¨å°æ¸¸æˆé€»è¾‘æé«˜æ•èŽ·çŽ‡ï¼Œä¿®å¤æ•æ‰å®ç®±æ—¶çš„é”™è¯¯
-       æ·»åŠ æ¨¡ç»„é…ç½®ç•Œé¢æŽ¥å£
-       æ•æ‰ä¼ è¯´é±¼æ—¶å¿½ç•¥å®ç®±
+       Add Russian localization
    

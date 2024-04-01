@@ -1,0 +1,21 @@
+{
+  "ExperienceFromCheckingTrash": 5,
+  "ExperienceFromCheckingRecycling": 2,
+  "ExperienceFromComposting": 2,
+  "ExperienceFromRecycling": 2,
+  "PerLevelBaseDropChanceBonus": 0.03,
+  "PerLevelRareDropChanceBonus": 0.001,
+  "MegaMinLevel": 4,
+  "DoubleMegaMinLevel": 7,
+  "EnvironmentalistRecyclingCountToGainFriendship": 1000,
+  "EnvironmentalistRecyclingFriendshipGain": 10,
+  "EnvironmentalistPrestigeRecyclingFriendshipGain": 10,
+  "SalvagerCommonDropMin": 3,
+  "SalvagerCommonDropMax": 5,
+  "SalvagerRareDropMin": 1,
+  "SalvagerRareDropMax": 3,
+  "SneakNoiseReduction": 5,
+  "SneakPrestigeNoiseIncrease": 0,
+  "ReclaimerExtraValuePercent": 0.2,
+  "ReclaimerPrestigeExtraValuePercent": 0.2
+}

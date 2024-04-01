@@ -6,9 +6,9 @@ mods:
    Fashion Sense
 
 latest commit:
-   commit 18f0a8b29dfdd1aeb8780440b7f3226275e0dcbb
+   commit d2d5bef7b62090f47d01f90a28afdcfec91a0266
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Fri Sep 8 14:07:33 2023 -0500
+   Date:   Fri Mar 22 15:24:51 2024 -0500
    
-       v5.8.1 released
+       v6.0.2 released
    

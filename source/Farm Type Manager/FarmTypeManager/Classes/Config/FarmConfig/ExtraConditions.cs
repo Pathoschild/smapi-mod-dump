@@ -24,6 +24,7 @@ namespace FarmTypeManager
             public string[] WeatherYesterday { get; set; } = new string[0];
             public string[] WeatherToday { get; set; } = new string[0];
             public string[] WeatherTomorrow { get; set; } = new string[0];
+            public string[] GameStateQueries { get; set; } = new string[0];
             public Dictionary<string, string> CPConditions { get; set; } = new();
             public string[] EPUPreconditions { get; set; } = new string[0];
             public int? LimitedNumberOfSpawns { get; set; } = null;

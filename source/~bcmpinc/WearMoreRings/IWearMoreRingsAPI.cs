@@ -12,26 +12,45 @@ using System;
 
 namespace StardewHack.WearMoreRings
 {
-    
-    [Obsolete("Wear More Rings now stores rings in a combined ring in the player's left ring slot. Using this API should therefore no longer be necessary for interoperability between mods that do stuff with rings and the Wear More Rings mod.")]
-    public interface IWearMoreRingsAPI {
-        /// <summary>
-        /// Count how many of the specified ring type the given player has equipped. This includes the vanilla left & right rings.
-        /// Furthermore, it includes the rings contained in combined rings, but excludes the combined rings itself.
-        /// </summary>
-        /// <returns>How many of the specified ring the given player has equipped.</returns>
-        /// <param name="f">The farmer/farmhand whose inventory is being checked. For the local player, use Game1.player.</param>
-        /// <param name="which">The parentSheetIndex of the ring.</param>
-        int CountEquippedRings(StardewValley.Farmer f, int which);
-        
-        /// <summary>
-        /// Returns a list of all rings the player has equipped. This includes the vanilla left & right rings.
-        /// Furthermore, it includes the rings contained in combined rings, but excludes the combined rings itself.
-        /// </summary>
-        /// <returns>A list of all equiped rings.</returns>
-        /// <param name="f">The farmer/farmhand whose inventory is being checked. For the local player, use Game1.player.</param>
-        System.Collections.Generic.IEnumerable<StardewValley.Objects.Ring> GetAllRings(StardewValley.Farmer f);
+    /*
+     * If you're looking for the old API methods, those were implemented as follows.
+     * You can copy the code and use that instead of the old API.
+     * These work regardless of whether Wear More Rings is installed. 
+     * If Wear More rings is installed, GetAllRings will include the ring slots that are added by that mod.
+     * For combined rings, GetAllRings will return the rings used to create that combined ring, rather than the combined ring itself.
+     * If you need access to the combined rings, or want to manipulate the modded ring slots directly, that's only possible with the new API.
+     * 
+     * CountEquippedRings's which argument probably needs to be changed into a string for SDV 1.6.
+     */
+#if false
+    public int CountEquippedRings(Farmer f, int which) {
+        int res = 0;
+        foreach (var r in GetAllRings(f)) {
+            if (r.GetsEffectOfRing(which)) {
+                res++;
+            }
+        }
+        return res;
     }
+
+    public IEnumerable<Ring> GetAllRings(Farmer f) {
+        if (f == null) throw new ArgumentNullException(nameof(f));
+        var stack = new Stack<Ring>();
+        stack.Push(f.leftRing.Value);
+        stack.Push(f.rightRing.Value);
+        while (stack.Count > 0) {
+            var ring = stack.Pop();
+            if (ring is CombinedRing) {
+                foreach (var cr in ((CombinedRing)ring).combinedRings) {
+                    stack.Push(cr);
+                }
+            } else if (ring != null) {
+                yield return ring;
+            }
+        }
+    }
+#endif
+
 
     public interface IWearMoreRingsAPI_2 {
         /// <summary>
@@ -41,7 +60,6 @@ namespace StardewHack.WearMoreRings
         /// </summary>
         /// <returns>Config setting for how many rings the local player can wear.</returns>
         int RingSlotCount();
-
 
         /// <summary>
         /// Get the ring that the local player has equipped in the given slot. 

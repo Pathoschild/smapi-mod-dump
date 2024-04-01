@@ -8,21 +8,23 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
-using HarmonyLib;
-using StardewModdingAPI.Events;
+using FasterPathSpeed.Patches;
 using GenericModConfigMenu;
+using HarmonyLib;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace FasterPathSpeed
 {
     public class ModEntry : Mod
     {
-        public static ModEntry Context;
-        public ModConfig Config;
+        public static ModEntry Instance { get; private set; }
+
+        public static ModConfig Config { get; private set; }
 
         public override void Entry(IModHelper helper)
         {
-            Context = this;
+            Instance = this;
             Config = helper.ReadConfig<ModConfig>();
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -112,7 +114,7 @@ namespace FasterPathSpeed
                         getValue: () => (float)prop.GetValue(Config.CustomPathSpeedBuffValues),
                         setValue: value => prop.SetValue(Config.CustomPathSpeedBuffValues, value),
                         name: () => $" - {prop.Name}",
-                        tooltip: () => $"Extra movement speed obtained from walking on a {prop.Name} path",
+                        tooltip: () => $"Extra movement speed obtained from walking on {prop.Name}",
                         min: 0,
                         max: 5,
                         interval: 0.1f

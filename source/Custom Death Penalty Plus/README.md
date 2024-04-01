@@ -80,4 +80,6 @@ Available in:
 
 1.5.1 - Added GMCM support thanks to ayalfishey!
 
+1.6.0 - Updated for Stardew Valley 1.6.0
+
 

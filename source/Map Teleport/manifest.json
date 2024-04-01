@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Richard2091/MapTeleport
+**
+*************************************************/
+
+{
+  "Name": "MapTeleport",
+  "Author": "Richard2091",
+  "Version": "1.0.2",
+  "Description": "Teleport on the map with one click.",
+  "UniqueID": "Richard2091.MapTeleport",
+  "EntryDll": "MapTeleport.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "GitHub:Richard2091/MapTeleport"
+  ]
+}

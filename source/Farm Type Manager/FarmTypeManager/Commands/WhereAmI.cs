@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -23,11 +24,10 @@ namespace FarmTypeManager
 
             GameLocation loc = Game1.currentLocation;
             string tmxName = Utility.GetTMXBuildableName(loc.Name);
-            int x = Game1.player.getTileX();
-            int y = Game1.player.getTileY();
-            int index = loc.getTileIndexAt(x, y, "Back");
-            string type = loc.doesTileHaveProperty(x, y, "Type", "Back") ?? "[none]";
-            string diggable = loc.doesTileHaveProperty(x, y, "Diggable", "Back");
+            Point tile = Game1.player.TilePoint;
+            int index = loc.getTileIndexAt(tile.X, tile.Y, "Back");
+            string type = loc.doesTileHaveProperty(tile.X, tile.Y, "Type", "Back") ?? "[none]";
+            string diggable = loc.doesTileHaveProperty(tile.X, tile.Y, "Diggable", "Back");
             if (diggable != null) { diggable = "Yes"; } else { diggable = "No"; };
 
             if (tmxName == null) //if this is a typical map
@@ -38,7 +38,7 @@ namespace FarmTypeManager
             {
                 Utility.Monitor.Log($"Map name: {tmxName}", LogLevel.Info);
             }
-            Utility.Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
+            Utility.Monitor.Log($"Your location (x,y): {tile.X},{tile.Y}", LogLevel.Info);
             Utility.Monitor.Log($"Terrain type: {type}", LogLevel.Info);
             Utility.Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
             Utility.Monitor.Log($"Tile image index: {index}", LogLevel.Info);

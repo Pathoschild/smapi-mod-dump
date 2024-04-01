@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/2Retr0/PlacementPlus
+   Git: https://github.com/2Retr0/PlacementPlus.git
+
+mods:
+   Placement Plus
+
+latest commit:
+   commit d2b3c9d76b264e9a0451a0b0da5cf6dd0d604265
+   Author: Ethan Truong <18603664+2Retr0@users.noreply.github.com>
+   Date:   Thu Mar 28 18:32:18 2024 -0700
+   
+       Bump version to 2.1.0
+   

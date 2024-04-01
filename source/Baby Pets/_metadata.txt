@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DelphinWave/BabyPets
+   Git: https://github.com/DelphinWave/BabyPets.git
+
+mods:
+   Baby Pets
+
+latest commit:
+   commit b3e7ea77908b134575df60c4df2e9b7dd43eefbc
+   Author: FESH-pl <35628495+DelphinWave@users.noreply.github.com>
+   Date:   Sun Mar 24 21:02:38 2024 +0100
+   
+       comments
+   

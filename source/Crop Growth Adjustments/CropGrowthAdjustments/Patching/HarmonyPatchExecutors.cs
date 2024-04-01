@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
@@ -22,31 +23,30 @@ namespace CropGrowthAdjustments.Patching
     internal static class HarmonyPatchExecutors
     {
         /// <summary> Patch for the HoeDirt.dayUpdate method </summary>
-        public static bool HoeDirtDayUpdate(HoeDirt __instance, GameLocation environment, Vector2 tileLocation)
+        public static bool HoeDirtDayUpdate(HoeDirt __instance)
         {
             if (__instance.crop == null) return true;
             
             // change sprites to special if needed
             ModEntry.ModHelper.GameContent.InvalidateCache("TileSheets/Crops");
-            //Utility.ChangeSpritesToSpecial(__instance, environment, tileLocation);
 
             foreach (var contentPack in ModEntry.ContentPackManager.ContentPacks)
             {
                 foreach (var adjustment in contentPack.CropAdjustments)
                 {
                     // skip if this crop is not the desired one.
-                    if (__instance.crop.indexOfHarvest.Value != adjustment.CropProduceItemId) continue;
+                    if (__instance.crop.indexOfHarvest.Value != adjustment.CropProduceItemId.ToString()) continue;
 
                     // run the original method if this crop is supposed to die in winter.
-                    if (adjustment.GetSeasonsToGrowIn().All(season => season != "winter")) return true;
+                    if (adjustment.GetSeasonsToGrowIn().All(season => season != Season.Winter)) return true;
                     
                     // do not run the original method if the current season is winter and the crop is not supposed to die.
-                    if (Game1.GetSeasonForLocation(environment) == "winter")
+                    if (Game1.GetSeasonForLocation(__instance.Location) == Season.Winter)
                     {
                         // run newDay on the planted crop
-                        __instance.crop.newDay(__instance.state.Value, __instance.fertilizer.Value, (int) tileLocation.X, (int) tileLocation.Y, environment);
+                        __instance.crop.newDay(__instance.state.Value);
                         // remove water if needed
-                        if ((!__instance.hasPaddyCrop() || !__instance.paddyWaterCheck(environment, tileLocation)) && ( __instance.fertilizer.Value != 370 || Game1.random.NextDouble() >= 0.33) && (__instance.fertilizer.Value != 371 || Game1.random.NextDouble() >= 0.66) && __instance.fertilizer.Value != 920)
+                        if (!__instance.paddyWaterCheck() || !Game1.random.NextBool(__instance.GetFertilizerWaterRetentionChance()))
                             __instance.state.Value = 0;
                         
                         // skip the original method
@@ -59,18 +59,17 @@ namespace CropGrowthAdjustments.Patching
         }
         
         /// <summary> Patch for the IndoorPot.DayUpdate method </summary>
-        public static bool IndoorPotDayUpdate(IndoorPot __instance, GameLocation location)
+        public static bool IndoorPotDayUpdate(IndoorPot __instance)
         {
             var hoeDirt = __instance.hoeDirt?.Value;
             if (hoeDirt?.crop == null) return true;
 
             // if this indoor pot does indeed have a crop planted, treat it as a regular HoeDirt
-            return HoeDirtDayUpdate(hoeDirt, location, __instance.TileLocation);
+            return HoeDirtDayUpdate(hoeDirt);
         }
         
         /// <summary> Patch for the Crop.newDay method. </summary>
-        public static void CropNewDay(Crop __instance, int state, int fertilizer, int xTile, int yTile,
-            GameLocation environment)
+        public static void CropNewDay(Crop __instance, int state)
         {
             // do not run any additional logic if this crop is not watered.
             // this will just run the Crop.newDay method without any modifications
@@ -89,7 +88,7 @@ namespace CropGrowthAdjustments.Patching
                 foreach (var adjustment in contentPack.CropAdjustments)
                 {
                     // skip if this crop is not the desired one.
-                    if (__instance.indexOfHarvest.Value != adjustment.CropProduceItemId) continue;
+                    if (__instance.indexOfHarvest.Value != adjustment.CropProduceItemId.ToString()) continue;
 
                     // (debug info, uncomment to show)
                     /*
@@ -101,15 +100,15 @@ namespace CropGrowthAdjustments.Patching
 
                     // return if the crop is planted in any of the locations where it should maintain default behavior
                     if (Utility.IsInAnyOfSpecifiedLocations(adjustment.GetLocationsWithDefaultSeasonBehavior(), 
-                            environment)) return;
+                            __instance.currentLocation)) return;
                     
                     // return if the crop is already in its produce season.
                     if (adjustment.GetSeasonsToProduceIn().Any(
-                            season => Utility.CompareTwoStringsCaseAndSpaceIndependently(Game1.currentSeason, season))) return;
+                            season => Game1.season == season)) return;
 
                     // kill the crop if it's out of its growth seasons.
                     if (adjustment.GetSeasonsToGrowIn().All(
-                            season => !Utility.CompareTwoStringsCaseAndSpaceIndependently(Game1.currentSeason, season)))
+                            season => Game1.season != season))
                     {
                         __instance.Kill();
                         return;
@@ -118,7 +117,7 @@ namespace CropGrowthAdjustments.Patching
                     // at this point, we are only dealing with crops that are NOT in their produce season
                     
                     // handle regrowing crops
-                    if (__instance.regrowAfterHarvest.Value != -1)
+                    if (__instance.RegrowsAfterHarvest())
                     {
                         // if the regrowing crop is about to reach its final (grown) phase, go back to the first day in its pre-final phase
                         if (__instance.currentPhase.Value == cropPhasesCount - 1)

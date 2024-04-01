@@ -6,9 +6,11 @@ mods:
    Alvadea's Farm Maps - Goldrush
 
 latest commit:
-   commit a7ea4749c794427f8cf763869541f13971ad21d1
-   Author: Jaksha6472 <freaky_chick@gmx.de>
-   Date:   Mon Oct 3 00:39:03 2022 +0200
+   commit 1143689cb7e535c8d16b48ecc0e3dceed8a5104b
+   Author: Jaksha6472 <76745670+Jaksha6472@users.noreply.github.com>
+   Date:   Thu Mar 28 21:14:15 2024 +0100
    
-       Release Version 1.1.0
+       Merge pull request #1 from Jaksha6472/update-1.6
+       
+       Update 1.6
    

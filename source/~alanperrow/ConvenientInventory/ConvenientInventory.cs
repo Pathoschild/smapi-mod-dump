@@ -202,7 +202,10 @@ namespace ConvenientInventory
 
                 if (IsFavoriteItemsHotkeyDown)
                 {
-                    return !ToggleFavoriteItemSlotAtClickPosition(inventory, x, y);
+                    ToggleFavoriteItemSlotAtClickPosition(inventory, x, y);
+
+                    // Always ignore the click action in this case; should only allow favorite item slot toggling.
+                    return false;
                 }
                 else
                 {

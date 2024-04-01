@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>SinZ.SpendingServices</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableHarmony>true</EnableHarmony>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Name>SinZational Spending Services</Name>
+    <Version>1.0.0</Version>
+    <Authors>SinZ</Authors>
+    <Description>A mod to expose the Multiplayer Money transfer functionality anywhere</Description>
+    <UniqueId>SinZ.SinZationalSpendingServices</UniqueId>
+    <MinimumApiVersion>4.0.0</MinimumApiVersion>
+    <UpdateKeys>Nexus:20656</UpdateKeys>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+
+</Project>

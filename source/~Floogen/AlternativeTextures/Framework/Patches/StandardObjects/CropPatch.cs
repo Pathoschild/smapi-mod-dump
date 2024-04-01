@@ -77,7 +77,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 // Handle drawing forages
                 if ((bool)__instance.forageCrop)
                 {
-                    if ((int)__instance.whichForageCrop == 2)
+                    if (__instance.whichForageCrop.Value == "2")
                     {
                         b.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + ((tileLocation.X * 11f + tileLocation.Y * 7f) % 10f - 5f) + 32f, tileLocation.Y * 64f + ((tileLocation.Y * 11f + tileLocation.X * 7f) % 10f - 5f) + 64f)), new Rectangle(0, textureOffset, 16, 16), Color.White, rotation, new Vector2(8f, 16f), 4f, SpriteEffects.None, (tileLocation.Y * 64f + 32f + ((tileLocation.Y * 11f + tileLocation.X * 7f) % 10f - 5f)) / 10000f);
                     }

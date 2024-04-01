@@ -13,7 +13,7 @@
 // clang-format off
 // 
 //    InfiniteZoom (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2024 Berkay Yigit <mail@berkay.link>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -39,7 +39,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -53,8 +53,8 @@ using StardewValley.Menus;
 namespace InfiniteZoom {
   [UsedImplicitly]
   public class Main : Mod {
-    private const Int32  CONST_MIN_VALUE     = 25;
-    private const Int32  CONST_MAX_VALUE     = 250;
+    private const Int32 CONST_MIN_VALUE = 25;
+    private const Int32 CONST_MAX_VALUE = 250;
     private const Single CONST_MIN_VALUE_FLT = 0.25f;
     private const Single CONST_MAX_VALUE_FLT = 2.5f;
 
@@ -65,7 +65,7 @@ namespace InfiniteZoom {
       [HarmonyTranspiler]
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
-      private static IEnumerable<CodeInstruction> transpilerDraw(IEnumerable<CodeInstruction> instructions) {
+      public static IEnumerable<CodeInstruction> transpiler_Draw(IEnumerable<CodeInstruction> instructions) {
         Boolean editNext = false;
 
         foreach (CodeInstruction instruction in instructions) {
@@ -86,21 +86,21 @@ namespace InfiniteZoom {
       [HarmonyPostfix]
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
-      private static void postfixReceiveLeftClick(DayTimeMoneyBox __instance, Int32 x, Int32 y) {
+      public static void postfix_ReceiveLeftClick(DayTimeMoneyBox __instance, Int32 x, Int32 y) {
         if (!Game1.options.zoomButtons) return;
 
         if (__instance.zoomInButton.containsPoint(x, y) && Game1.options.desiredBaseZoomLevel < CONST_MAX_VALUE_FLT) {
-          Int32 zoom = (Int32)Math.Round(Game1.options.desiredBaseZoomLevel * 100f);
-          zoom                                -= zoom % 5;
-          Game1.options.desiredBaseZoomLevel  =  Math.Min(CONST_MAX_VALUE, zoom + 5) / 100f;
-          Game1.forceSnapOnNextViewportUpdate =  true;
+          Int32 zoom = (Int32)Math.Round(Game1.options.desiredBaseZoomLevel * 100.0f);
+          zoom -= zoom % 5;
+          Game1.options.desiredBaseZoomLevel = Math.Min(CONST_MAX_VALUE, zoom + 5) / 100.0f;
+          Game1.forceSnapOnNextViewportUpdate = true;
           Game1.playSound("drumkit6");
         }
         else if (__instance.zoomOutButton.containsPoint(x, y) && Game1.options.desiredBaseZoomLevel > CONST_MIN_VALUE_FLT) {
-          Int32 zoom = (Int32)Math.Round(Game1.options.desiredBaseZoomLevel * 100f);
-          zoom                                -= zoom % 5;
-          Game1.options.desiredBaseZoomLevel  =  Math.Max(CONST_MIN_VALUE, zoom - 5) / 100f;
-          Game1.forceSnapOnNextViewportUpdate =  true;
+          Int32 zoom = (Int32)Math.Round(Game1.options.desiredBaseZoomLevel * 100.0f);
+          zoom -= zoom % 5;
+          Game1.options.desiredBaseZoomLevel = Math.Max(CONST_MIN_VALUE, zoom - 5) / 100.0f;
+          Game1.forceSnapOnNextViewportUpdate = true;
           Program.gamePtr.refreshWindowSettings();
           Game1.playSound("drumkit6");
         }
@@ -112,11 +112,11 @@ namespace InfiniteZoom {
       [HarmonyPostfix]
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
-      private static void postfixCtor(OptionsPage __instance) {
-        var zoom     = (OptionsPlusMinus)__instance.options.First(o => o.whichOption == Options.zoom);
+      public static void postfix_Ctor(OptionsPage __instance) {
+        var zoom = (OptionsPlusMinus)__instance.options.First(o => o.whichOption == Options.zoom);
         var ui_scale = (OptionsPlusMinus)__instance.options.First(o => o.whichOption == Options.uiScaleSlider);
 
-        zoom.options     = zoom.displayOptions     = sZoomLevels;
+        zoom.options = zoom.displayOptions = sZoomLevels;
         ui_scale.options = ui_scale.displayOptions = sZoomLevels;
         Game1.options.setPlusMinusToProperValue(zoom);
         Game1.options.setPlusMinusToProperValue(ui_scale);
@@ -124,15 +124,15 @@ namespace InfiniteZoom {
     }
 
     public override void Entry(IModHelper helper) {
-      var harmony = HarmonyInstance.Create("mod.berkayylmao.InfiniteZoom");
+      var harmony = new Harmony("mod.berkayylmao.InfiniteZoom");
       for (Int32 i = CONST_MIN_VALUE; i <= CONST_MAX_VALUE; i += 5) sZoomLevels.Add($"{i}%");
 
       harmony.Patch(AccessTools.Method(typeof(DayTimeMoneyBox), "draw", new[] { typeof(SpriteBatch) }),
-                    transpiler: new HarmonyMethod(AccessTools.Method(typeof(DayTimeMoneyBoxPatches), "transpilerDraw")));
+                    transpiler: new HarmonyMethod(AccessTools.Method(typeof(DayTimeMoneyBoxPatches), "transpiler_Draw")));
       harmony.Patch(AccessTools.Method(typeof(DayTimeMoneyBox), "receiveLeftClick"),
-                    postfix: new HarmonyMethod(AccessTools.Method(typeof(DayTimeMoneyBoxPatches), "postfixReceiveLeftClick")));
+                    postfix: new HarmonyMethod(AccessTools.Method(typeof(DayTimeMoneyBoxPatches), "postfix_ReceiveLeftClick")));
       harmony.Patch(AccessTools.Constructor(typeof(OptionsPage), new[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Int32) }),
-                    postfix: new HarmonyMethod(AccessTools.Method(typeof(OptionsPagePatches), "postfixCtor")));
+                    postfix: new HarmonyMethod(AccessTools.Method(typeof(OptionsPagePatches), "postfix_Ctor")));
     }
   }
 }

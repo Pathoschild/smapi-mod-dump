@@ -1,0 +1,19 @@
+{
+  "BerryBushQuality": true,
+  "MushroomBoxQuality": true,
+  "TapperQualityOptions": 1,
+  "TapperQualityRequiresTapperPerk": false,
+  "TapperXPAmount": 3,
+  "SmallStumpBonusXPAmount": 1,
+  "TwigDebrisXPAmount": 1,
+  "TapperDaysNeededChangesEnabled": true,
+  "MapleTapperDaysNeeded": 9,
+  "OakTapperDaysNeeded": 7,
+  "PineTapperDaysNeeded": 5,
+  "MushroomTreeTappersConsistentDaysNeeded": true,
+  "CommonFiddleheadFern": true,
+  "WildAndFineGrapes": true,
+  "ForageSurvivalBurger": true,
+  "TreeMenuKey": "None",
+  "MushroomTapperCalendar": false
+}

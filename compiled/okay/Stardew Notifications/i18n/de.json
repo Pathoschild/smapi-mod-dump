@@ -1,0 +1,51 @@
+﻿{
+  // Notification messages
+  "travelingMerchant": "Der reisende Händler ist heute da ",
+  "queenSauce": "Heute kommt 'Die Königin der Soßen'",
+  "checkLiving": "Heute kommt 'Leben vom Land'!",
+  "luckyDay": "Glückstag!",
+  "unluckyDay": "Unglückstag!",
+
+  // Festivals
+  "fMsg": "Heute: {{fest}}!",
+  "festival": "Fest",
+  "EggFestival": "Eierfest",
+  "FlowerDance": "Blumentanz",
+  "Luau": "Luau",
+  "MoonlightJellies": "Tanz der Mondlichtquallen",
+  "ValleyFair": "Sternentautaler Volksfest",
+  "SpiritsEve": "Geisternacht",
+  "IceFestival": "Fest des Eises",
+  "WinterStar": "Fest des Wintersterns",
+  "NightMarket": "Nachtmarkt",
+  "SecretSantaReminder": "{{charName}} ist dein geheimer Freund",
+
+  "Salmonberry": "Lachsbeeren-Saison",
+  "Seashells": "Muscheln am Strand",
+  "Blackberry": "Brombeer-Saison",
+
+  // Weathers
+  "weather-rain": "Regen",
+  "weather-sunny": "Sonne",
+  "weather-tstorm": "Gewitter",
+  "weather-snow": "Schnee",
+  "weather-wind": "Wind",
+  "weather-festival": "ein Fest",
+  "weather-wedding": "eine Hochzeit",
+
+  // Locations
+  "CaveMushroom": "Höhlenpilze zur Erne bereit",
+  "CaveFruit": "Höhlenfrüchte zur Erne bereit",
+
+  "birthday": "{{charName}}s Geburtstag!",
+  "weather": "Morgen gibt es {{weather}}.",
+  "birthdayReminder": "Vergiss nicht {{charName}} ein Geburtstagsgeschenk zu geben!",
+  "toolPickup": "{{toolName}} zur Abholung bereit",
+  "springOnion": "{{count}} Frühlingszwiebeln wachsen im Wald",
+  "readyHarvest": "{{cropName}} zur Ernte bereit",
+  "greenhouse_crops": "Ernte im Gewächshaus bereit",
+  "autoGrabber": "Automatischer Greifer bereit zur Abholung",
+  "hayMessage": "Die Silos melden {{hayAmt}} Heu",
+  "noHayMessage": "Kein Heu in den Silos!",
+  "FishPond": "Fischteiche zur Ernte bereit"
+}

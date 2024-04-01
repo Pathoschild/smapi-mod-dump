@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Ты воруешь, @! Ты хуже, чем я думал.$3#$b#Я не оштрафую тебя на этот раз, @, так как ты все равно не сможешь заплатить.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "То, что я живу одна, не значит, что ты можешь у меня воровать, @.$2#$b#На этот раз обойдемся без штрафа, @, просто уйди.$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Тебе настолько нужно мороженое, @?$7#$b#Ладно, в этот раз отделаешься предупреждением.$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "Ты серьёзно воруешь, @?$3#$b#*вздох* Если заплатишь штраф в {{fineamount}}з, я забуду о твоём проступке, хорошо?$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "Ты серьёзно воруешь, @?$3#$b#*вздох* Я сделаю тебе поблажку и не буду штрафовать тебя в этот раз.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "Серьёзно, @? Думаешь, просто так возьмёшь телевизор?$3#$b#Я оштрафую тебя на {{fineamount}}з... Может, это тебя проучит.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "Серьёзно, @? Думаешь, вот так просто возьмёшь телевизор?$3#$b#На этот раз без штрафа, раз у тебя нет денег.$2",
 
     // Translations thanks to theRealDuda!
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Как часто вы можете воровать?",  
@@ -57,7 +62,11 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Количество дней, которое вы не сможете заходить в магазин",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"На сколько дней вам нельзя заходить в магазин",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Радиус поимки",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Максимальное расстояние, на котором житель деревни может поймать игрока."
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Максимальное расстояние, на котором житель деревни может поймать игрока.",
+    //
+    //TODO Improve 1.6 translations
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"Шанс на редкий экземпляр",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"Шанс появления редких предметов."
     //
   }
 

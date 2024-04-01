@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace StardewDruid.Character
             
             if(follow == null)
             {
+                
                 followPlayer = Game1.player;
 
             }
@@ -55,7 +57,7 @@ namespace StardewDruid.Character
 
             trackVectors = new List<Vector2>();
             
-            trackPlayer = new Vector2(-99f);
+            trackPlayer = new Vector2(-1);
             
             trackLimit = 24;
            
@@ -68,23 +70,30 @@ namespace StardewDruid.Character
 
             if (trackLocation != followPlayer.currentLocation.Name)
             {
+
                 trackLocation = followPlayer.currentLocation.Name;
                 
-                trackPlayer = new Vector2(-99f);
+                trackPlayer = new Vector2(-1);
                 
                 trackVectors.Clear();
             
             }
-            
+
+            if (followPlayer.currentLocation is FarmHouse || followPlayer.currentLocation is IslandFarmHouse)
+            {
+
+                return;
+
+            }
+
             Vector2 position = followPlayer.Position;
 
-            if(ModUtility.GroundCheck(followPlayer.currentLocation, followPlayer.getTileLocation()) == "water")
+            if(ModUtility.GroundCheck(followPlayer.currentLocation, followPlayer.Tile) == "water")
             {
                 
                 return;
             
             }
-
 
             int offset = 0;
 
@@ -105,20 +114,51 @@ namespace StardewDruid.Character
             if ((double)Vector2.Distance(position, trackPlayer) >= 64.0)
             {
 
-                trackPlayer = position - (new Vector2(32,32) * offset);
-                
-                trackVectors.Add(position);
-                
-                if (trackVectors.Count >= trackLimit)
+                if(trackPlayer != new Vector2(-1))
                 {
-                    
-                    trackVectors.RemoveAt(0);
-                
+
+                    trackVectors.Add(trackPlayer);
+
+                    if (trackVectors.Count >= trackLimit)
+                    {
+
+                        trackVectors.RemoveAt(0);
+
+                    }
+
                 }
-            
+
+                trackPlayer = position - (new Vector2(32,32) * offset);
+
             }
 
-            if (trackVectors.Count < (3 + offset))
+            if (trackVectors.Count < (1 + offset))
+            {
+
+                return;
+
+            }
+
+            if(trackVectors.Count > 6)
+            {
+
+                if(Vector2.Distance(trackVectors.First(),trackVectors.Last()) < 192)
+                {
+
+                    TruncateTo(3);
+
+                }
+
+            }
+
+            if (Mod.instance.characters[trackFor].netSceneActive.Value)
+            {
+
+                return;
+
+            }
+
+            if(trackVectors.Count == 0)
             {
 
                 return;
@@ -139,7 +179,7 @@ namespace StardewDruid.Character
 
             }
 
-            if(Vector2.Distance(Mod.instance.characters[trackFor].Position, followPlayer.Position) > 768f)
+            if(Vector2.Distance(Mod.instance.characters[trackFor].Position, followPlayer.Position) > 800f)
             {
 
                 WarpToTarget();
@@ -150,6 +190,11 @@ namespace StardewDruid.Character
 
         public void WarpToTarget()
         {
+
+            if(trackVectors.Count == 0)
+            {
+                return;
+            }
 
             if (Mod.instance.characters[trackFor].currentLocation.Name != followPlayer.currentLocation.Name)
             {
@@ -162,24 +207,9 @@ namespace StardewDruid.Character
 
             }
 
-            if (trackVectors.Count > 0)
-            {
+            Mod.instance.characters[trackFor].Position = NextVector();
 
-                TruncateTo(3);
-
-                Mod.instance.characters[trackFor].Position = NextVector();
-
-            }
-            else
-            {
-
-                Mod.instance.characters[trackFor].Position = new Vector2(followPlayer.Position.X, followPlayer.Position.Y + 64f);
-
-            }
-
-            Vector2 warpPosition = new(Mod.instance.characters[trackFor].Position.X, Mod.instance.characters[trackFor].Position.Y + 32f);
-
-            ModUtility.AnimateQuickWarp(Mod.instance.characters[trackFor].currentLocation, warpPosition, "Solar");
+            ModUtility.AnimateQuickWarp(Mod.instance.characters[trackFor].currentLocation, Mod.instance.characters[trackFor].Position - new Vector2(0, 32));
 
             Mod.instance.characters[trackFor].DeactivateStandby();
 
@@ -203,17 +233,34 @@ namespace StardewDruid.Character
             }
             
             trackVectors = vector2List;
+
         }
 
         public Vector2 NextVector()
         {
             
+            if (trackVectors.Count == 0)
+            {
+                return Vector2.Zero;
+            }
+
             Vector2 trackVector = trackVectors[0];
             
             trackVectors.RemoveAt(0);
 
             return trackVector;
         
+        }
+
+        public Vector2 LastVector()
+        {
+
+            Vector2 trackVector = trackVectors.Last();
+
+            trackVectors.Clear();
+
+            return trackVector;
+
         }
     
     }

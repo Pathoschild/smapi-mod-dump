@@ -331,7 +331,12 @@ namespace StardewSurvivalProject
             //drink on watering can, make sense right?
             if (Game1.player.CurrentTool is StardewValley.Tools.WateringCan)
             {
-                this.Monitor.Log("will drink from watering can");
+                //this.Monitor.Log("will drink from watering can");
+
+                if (ModConfig.GetInstance().EnvironmentHydrationMode == "disable") return;
+
+                if (ModConfig.GetInstance().EnvironmentHydrationMode == "strict" && !Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SecondaryLayerButton)) return;
+
                 //TODO: subtract amount move to config
                 if (Game1.player.CurrentTool is StardewValley.Tools.WateringCan && ((StardewValley.Tools.WateringCan)Game1.player.CurrentTool).WaterLeft >= ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking)
                 {
@@ -358,6 +363,10 @@ namespace StardewSurvivalProject
             }
             else if (isWater)
             {
+                if (ModConfig.GetInstance().EnvironmentHydrationMode == "disable") return;
+
+                if (ModConfig.GetInstance().EnvironmentHydrationMode == "strict" && !Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SecondaryLayerButton)) return;
+
                 instance.onEnvDrinkingUpdate(isOcean, isWater);
             }
         }

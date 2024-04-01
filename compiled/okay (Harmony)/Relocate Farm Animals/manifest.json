@@ -1,0 +1,10 @@
+{
+	"Name": "Relocate Farm Animals",
+	"Author": "mouahrara",
+	"Version": "1.0.0",
+	"Description": "Allows farm animals to be moved to new locations.",
+	"UniqueID": "mouahrara.RelocateFarmAnimals",
+	"EntryDll": "RelocateFarmAnimals.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:20606" ]
+}

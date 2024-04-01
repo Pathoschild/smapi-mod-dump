@@ -6,9 +6,9 @@ mods:
    Custom Death Penalty Plus
 
 latest commit:
-   commit db58e2164844bc96bd2aaab381ee8ecbade5b72c
+   commit 3e4357aa2960151963ed4ab03feaa2918065ecf0
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Thu Jan 4 09:27:56 2024 +1100
+   Date:   Wed Mar 20 07:38:41 2024 +1100
    
-       Merge branch 'master' of https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus
+       update manifest
    

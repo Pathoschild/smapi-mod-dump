@@ -26,19 +26,19 @@ namespace BetterJunimos.Abilities {
         int ItemCategory = SObject.SeedsCategory;
         private readonly IMonitor Monitor;
 
-        private const int SunflowerSeeds = 431;
-        private const int SpeedGro = 465;
-        private const int DeluxeSpeedGro = 466;
-        private const int HyperSpeedGro = 918;
+        private const string SunflowerSeeds = "431";
+        private const string SpeedGro = "465";
+        private const string DeluxeSpeedGro = "466";
+        private const string HyperSpeedGro = "918";
         
-        static Dictionary<int, int> WildTreeSeeds = new() {{292, 8}, {309, 1}, {310, 2}, {311, 3}, {891, 7}};
-        static Dictionary<string, Dictionary<int, bool>> cropSeasons = new();
+        static Dictionary<string, int> WildTreeSeeds = new() {{"292", 8}, {"309", 1}, {"310", 2}, {"311", 3}, {"891", 7}};
+        static Dictionary<string, Dictionary<string, bool>> cropSeasons = new();
         
         internal PlantCropsAbility(IMonitor Monitor) {
             this.Monitor = Monitor;
             var seasons = new List<string>{"spring", "summer", "fall", "winter"};
             foreach (string season in seasons) {
-                cropSeasons[season] = new Dictionary<int, bool>();
+                cropSeasons[season] = new Dictionary<string, bool>();
             }
         }
 
@@ -59,7 +59,7 @@ namespace BetterJunimos.Abilities {
             
             // todo: this section is potentially slow and might be refined
             JunimoHut hut = Util.GetHutFromId(guid);
-            Chest chest = hut.output.Value;
+            Chest chest = hut.GetOutputChest();
             string cropType = BetterJunimos.CropMaps.GetCropForPos(hut, pos);
             Item foundItem = PlantableSeed(location, chest, cropType);
 
@@ -69,7 +69,7 @@ namespace BetterJunimos.Abilities {
         
         public bool PerformAction(GameLocation location, Vector2 pos, JunimoHarvester junimo, Guid guid) {
             JunimoHut hut = Util.GetHutFromId(guid);
-            Chest chest = hut.output.Value;
+            Chest chest = hut.GetOutputChest();
             string cropType = BetterJunimos.CropMaps.GetCropForPos(hut, pos);
             Item foundItem = PlantableSeed(location, chest, cropType);
             if (foundItem is null) {
@@ -79,7 +79,7 @@ namespace BetterJunimos.Abilities {
 
             // BetterJunimos.SMonitor.Log(
             //     $"PerformAction planting {foundItem.Name} in {location.Name} at at [{pos.X} {pos.Y}]", LogLevel.Debug);
-            if (Plant(location, pos, foundItem.ParentSheetIndex)) {
+            if (Plant(location, pos, foundItem.itemId.ToString())) {
                 Util.RemoveItemFromChest(chest, foundItem);
                 // BetterJunimos.SMonitor.Log(
                     // $"PerformAction planted {foundItem.Name} in {location.Name} at at [{pos.X} {pos.Y}]", LogLevel.Debug);
@@ -94,7 +94,7 @@ namespace BetterJunimos.Abilities {
 
         /// <summary>Get an item from the chest that is a crop seed, plantable in this season</summary>
         private Item PlantableSeed(GameLocation location, Chest chest, string cropType=null) {
-            var foundItems = chest.items.ToList().FindAll(item =>
+            var foundItems = chest.Items.ToList().FindAll(item =>
                 item != null 
                 && item.Category == ItemCategory
                 && !IsTreeSeed(item)
@@ -104,10 +104,10 @@ namespace BetterJunimos.Abilities {
             switch (cropType)
             {
                 case CropTypes.Trellis:
-                    foundItems = foundItems.FindAll(item => IsTrellisCrop(item));
+                    foundItems = foundItems.FindAll(item => IsTrellisCrop(item, location));
                     break;
                 case CropTypes.Ground:
-                    foundItems = foundItems.FindAll(item => !IsTrellisCrop(item));
+                    foundItems = foundItems.FindAll(item => !IsTrellisCrop(item, location));
                     break;
             }
             
@@ -117,22 +117,22 @@ namespace BetterJunimos.Abilities {
             
             foreach (var foundItem in foundItems) {
                 // TODO: check if item can grow to harvest before end of season
-                if (foundItem.ParentSheetIndex == SunflowerSeeds && Game1.IsFall && Game1.dayOfMonth >= 25) {
+                if (foundItem.ItemId == SunflowerSeeds && Game1.IsFall && Game1.dayOfMonth >= 25) {
                     // there is no way that a sunflower planted on Fall 25 will grow to harvest
                     continue;
                 }
                 
-                var key = foundItem.ParentSheetIndex;
+                var key = foundItem.itemId;
                 try {
-                    if (cropSeasons[Game1.currentSeason][key]) {
+                    if (cropSeasons[Game1.currentSeason][key.ToString()]) {
                         return foundItem;
                     }
                 } catch (KeyNotFoundException)
                 {
                     // Monitor.Log($"Cache miss: {key} {Game1.currentSeason}", LogLevel.Debug);
-                    var crop = new Crop(foundItem.ParentSheetIndex, 0, 0);
-                    cropSeasons[Game1.currentSeason][key] = crop.seasonsToGrowIn.Contains(Game1.currentSeason);
-                    if (cropSeasons[Game1.currentSeason][key]) {
+                    var crop = new Crop(foundItem.itemId.ToString(), 0, 0, location);
+                    cropSeasons[Game1.currentSeason][key.ToString()] = crop.IsInSeason(location);
+                    if (cropSeasons[Game1.currentSeason][key.ToString()]) {
                         return foundItem;
                     }
                 }
@@ -144,22 +144,22 @@ namespace BetterJunimos.Abilities {
         
         // TODO: look this up properly instead of keeping a list of base-game tree seed item IDs
         protected bool IsTreeSeed(Item item) {
-            return WildTreeSeeds.ContainsKey(item.ParentSheetIndex);
+            return WildTreeSeeds.ContainsKey(item.itemId.ToString());
         }
 
-        private bool IsTrellisCrop(Item item) {
-            Crop crop = new Crop(item.ParentSheetIndex, 0, 0);
+        private bool IsTrellisCrop(Item item, GameLocation location) {
+            Crop crop = new Crop(item.itemId.ToString(), 0, 0, location);
             return crop.raisedSeeds.Value;
         }
 
-        public List<int> RequiredItems() {
-            return new List<int> { ItemCategory };
+        public List<string> RequiredItems() {
+            return new List<string> { ItemCategory.ToString()  };
         }
 
-        private bool Plant(GameLocation location, Vector2 pos, int index) {
-            Crop crop = new Crop(index, (int)pos.X, (int)pos.Y);
+        private bool Plant(GameLocation location, Vector2 pos, string index) {
+            Crop crop = new Crop(index, (int)pos.X, (int)pos.Y, location);
 
-            if (!location.IsGreenhouse && !crop.seasonsToGrowIn.Contains(Game1.currentSeason) && BetterJunimos.Config.JunimoImprovements.AvoidPlantingOutOfSeason) {
+            if (!location.IsGreenhouse && !crop.IsInSeason(location) && BetterJunimos.Config.JunimoImprovements.AvoidPlantingOutOfSeason) {
                 Monitor.Log($"Crop {crop} ({index}) cannot be planted in {Game1.currentSeason}", LogLevel.Warn);
                 return false;
             }
@@ -181,9 +181,9 @@ namespace BetterJunimos.Abilities {
         private void ApplyPaddy(HoeDirt hd, GameLocation location) {
             hd.nearWaterForPaddy.Value = -1;
             if (!hd.hasPaddyCrop()) return;
-            if (!hd.paddyWaterCheck(location, new Vector2(hd.currentTileLocation.X, hd.currentTileLocation.Y))) return;
+            if (!hd.paddyWaterCheck()) return;
             hd.state.Value = 1;
-            hd.updateNeighbors(location, new Vector2(hd.currentTileLocation.X, hd.currentTileLocation.Y));
+            hd.updateNeighbors();
         }
 
         private void applySpeedIncreases(HoeDirt hd)
@@ -193,7 +193,7 @@ namespace BetterJunimos.Abilities {
             if (hd.crop == null)
                 return;
             
-            var paddyWaterCheck = hd.currentLocation != null && hd.paddyWaterCheck(hd.currentLocation, hd.currentTileLocation);
+            var paddyWaterCheck = hd.paddyWaterCheck();
             var fertilizer = hd.fertilizer.Value is SpeedGro or DeluxeSpeedGro or HyperSpeedGro;
             var agriculturalist = who.professions.Contains(5);
             
@@ -206,13 +206,13 @@ namespace BetterJunimos.Abilities {
             var num2 = 0.0f;
             switch (hd.fertilizer.Value)
             {
-                case 465:
+                case "465":
                     num2 += 0.1f;
                     break;
-                case 466:
+                case "466":
                     num2 += 0.25f;
                     break;
-                case 918:
+                case "918":
                     num2 += 0.33f;
                     break;
             }
@@ -238,13 +238,13 @@ namespace BetterJunimos.Abilities {
 
         // taken from SDV planting code [applySpeedIncreases()], updated for 1.5
         private void OldApplyFertilizer(HoeDirt hd, Crop crop) {
-            int fertilizer = hd.fertilizer.Value;
+            string fertilizer = hd.fertilizer.Value;
             Farmer who = Game1.player;
 
             if (crop == null) {
                 return;
             }
-            if (!(((int)fertilizer == 465 || (int)fertilizer == 466 || (int)fertilizer == 918 || who.professions.Contains(5)))) {
+            if (!((fertilizer == "465" || fertilizer == "466" || fertilizer == "918" || who.professions.Contains(5)))) {
                 return;
             }
             crop.ResetPhaseDays();
@@ -253,13 +253,13 @@ namespace BetterJunimos.Abilities {
                 totalDaysOfCropGrowth += crop.phaseDays[j];
             }
             float speedIncrease = 0f;
-            if ((int)fertilizer == 465) {
+            if (fertilizer == "465") {
                 speedIncrease += 0.1f;
             }
-            else if ((int)fertilizer == 466) {
+            else if (fertilizer == "466") {
                 speedIncrease += 0.25f;
             }
-            else if ((int)fertilizer == 918) {
+            else if (fertilizer == "918") {
                 speedIncrease += 0.33f;
             }
             if (who.professions.Contains(5)) {

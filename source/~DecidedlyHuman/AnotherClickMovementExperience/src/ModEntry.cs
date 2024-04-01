@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Pathfinding;
 
 namespace AnotherClickMovementExperience;
 
@@ -122,7 +123,7 @@ public class ModEntry : Mod
         if (Game1.currentLocation.temporarySprites.Contains(this.sprite))
             Game1.currentLocation.temporarySprites.Remove(this.sprite);
 
-        Point playerPosition = Game1.player.getTileLocationPoint();
+        Point playerPosition = Game1.player.TilePoint;
         Point targetPosition = Game1.currentCursorTile.ToPoint();
 
         // This doesdn't seem to work quite right. It seems to work differently going to the left or right.

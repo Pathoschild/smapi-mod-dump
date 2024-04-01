@@ -15,6 +15,7 @@ using AnimalHusbandryMod.common;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Objects;
 
 namespace AnimalHusbandryMod.animals.data
 {
@@ -36,7 +37,7 @@ namespace AnimalHusbandryMod.animals.data
         public OstrichItem Ostrich;
         public List<CustomAnimalItem> CustomAnimals;
         [JsonIgnore]
-        public ISet<int> SyringeItemsIds;
+        public ISet<string> SyringeItemsIds;
 
         public AnimalData()
         {
@@ -51,7 +52,7 @@ namespace AnimalHusbandryMod.animals.data
             Dinosaur = new DinosaurItem();
             Ostrich = new OstrichItem();
             CustomAnimals = new List<CustomAnimalItem>();
-            SyringeItemsIds = new HashSet<int>();
+            SyringeItemsIds = new HashSet<string>();
         }
 
         public AnimalItem GetAnimalItem(FarmAnimal farmAnimal)
@@ -91,27 +92,26 @@ namespace AnimalHusbandryMod.animals.data
 
         public void FillLikedTreatsIds()
         {
-            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
-            AddTreatIdsFromTreatItems(objects, Cow);
-            AddTreatIdsFromTreatItems(objects, Pig);
-            AddTreatIdsFromTreatItems(objects, Chicken);
-            AddTreatIdsFromTreatItems(objects, Duck);
-            AddTreatIdsFromTreatItems(objects, Rabbit);
-            AddTreatIdsFromTreatItems(objects, Sheep);
-            AddTreatIdsFromTreatItems(objects, Goat);
-            AddTreatIdsFromTreatItems(objects, Ostrich);
-            AddTreatIdsFromTreatItems(objects, Dinosaur);
-            AddTreatIdsFromTreatItems(objects, Pet);
-            CustomAnimals.ForEach(customAnimal => AddTreatIdsFromTreatItems(objects, customAnimal));
+            AddTreatIdsFromTreatItems(Cow);
+            AddTreatIdsFromTreatItems(Pig);
+            AddTreatIdsFromTreatItems(Chicken);
+            AddTreatIdsFromTreatItems(Duck);
+            AddTreatIdsFromTreatItems(Rabbit);
+            AddTreatIdsFromTreatItems(Sheep);
+            AddTreatIdsFromTreatItems(Goat);
+            AddTreatIdsFromTreatItems(Ostrich);
+            AddTreatIdsFromTreatItems(Dinosaur);
+            AddTreatIdsFromTreatItems(Pet);
+            CustomAnimals.ForEach(customAnimal => AddTreatIdsFromTreatItems(customAnimal));
         }
 
-        private static void AddTreatIdsFromTreatItems(Dictionary<int, string> objects, TreatItem treatItem)
+        private static void AddTreatIdsFromTreatItems(TreatItem treatItem)
         {
             foreach (object likedTreat in treatItem.LikedTreats)
             {
                 if (likedTreat is string s)
                 {
-                    KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(s + "/"));
+                    KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(s));
                     if (pair.Value != null)
                     {
                         treatItem.LikedTreatsId.Add(pair.Key);
@@ -119,11 +119,11 @@ namespace AnimalHusbandryMod.animals.data
                 }
                 else if (likedTreat is long l)
                 {
-                    treatItem.LikedTreatsId.Add((int)l);
+                    treatItem.LikedTreatsId.Add(l.ToString());
                 }
                 else if (likedTreat is int i)
                 {
-                    treatItem.LikedTreatsId.Add(i);
+                    treatItem.LikedTreatsId.Add(i.ToString());
                 }
             }
         }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EasyAttack",
+  "Author": "season",
+  "Version": "0.0.3",
+  "Description": "Easy Attack. wield weapon.",
+  "UniqueID": "season.EasyAttack",
+  "EntryDll": "EasyAttack.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:20832" ]
+}

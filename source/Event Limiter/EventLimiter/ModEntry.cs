@@ -36,14 +36,17 @@ namespace EventLimiter
     // Data model for CP integration
     class InternalExceptionModel
     {
-        public List<int> EventLimiterExceptions;
+        public List<object> EventLimiterExceptions;
     }
 
     public class ModEntry
         : Mod
     {
         private ModConfig config;
-        public List<int> InternalExceptions = new List<int>();
+        public List<string> InternalExceptions = new List<string>(); 
+        public List<string> NormalisedEventids = new List<string>();
+        // Important story events: intro, introduce special orders board, complete cc, complete joja, complete missing bundle, playerkilled, wedding
+        public static readonly string[] StoryProgressionEvents = new string[9] { "60367", "15389722", "191393", "502261", "missingBundleComplete", "PlayerKilled", "-2", "-1", "MovieTheaterScreening" };
 
         // Counters for event tracking
         public static readonly PerScreen<int> EventCounterDay = new PerScreen<int>();
@@ -57,6 +60,14 @@ namespace EventLimiter
             try
             {
                 this.config = helper.ReadConfig<ModConfig>();
+                foreach(var exception in this.config.Exceptions)
+                {
+                    if (exception is long)
+                    {
+                        this.Monitor.Log("Looks like exceptions exist in the config using an old data type. This will break in a future version of Event Limiter.\nPlease ensure all exception entries are enclosed in double quotation marks for future compatibility", LogLevel.Warn);
+                        break;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -65,11 +76,14 @@ namespace EventLimiter
                 this.Monitor.Log($"An error occured reading the config. Details:\n{ex}");
             }
 
-            // Add harmony patches
-            Patches.Hook(harmony, this.Monitor, this.config, this.InternalExceptions);
 
-            // Allow EventLimiterapi access to needed values
-            EventLimiterApi.Hook(this.config, this.InternalExceptions);           
+            foreach(var eventid in config.Exceptions)
+            {
+                NormalisedEventids.Add(eventid.ToString());
+            }
+
+            // Add harmony patches
+            Patches.Hook(harmony, this.Monitor, this.config, this.InternalExceptions, this.NormalisedEventids);     
 
             foreach (IModInfo mod in this.Helper.ModRegistry.GetAll())
             {
@@ -95,13 +109,20 @@ namespace EventLimiter
                 // Get event IDs from model and add to internal exceptions
                 if (model?.EventLimiterExceptions != null)
                 {
-                    foreach (int eventid in model.EventLimiterExceptions)
+                    foreach (object eventid in model.EventLimiterExceptions)
                     {
-                        this.InternalExceptions.Add(eventid);
+                        if (eventid is long)
+                        {
+                            this.Monitor.LogOnce($"{mod.Manifest.Name} added an event exception using the old data format. This will break in a future version of Event Limiter.\nPlease inform the author of this issue.", LogLevel.Warn);
+                        }
+                        this.InternalExceptions.Add(eventid.ToString());
                         this.Monitor.Log($"Content pack {mod.Manifest.Name} added event {eventid} as event limit exception");
                     }
                 }               
             }
+
+            // Allow EventLimiterapi access to needed values
+            EventLimiterApi.Hook(this.config, this.InternalExceptions);
 
             // Add event handlers
             helper.Events.GameLoop.GameLaunched += this.GameLaunched;
@@ -179,20 +200,11 @@ namespace EventLimiter
             configMenu.AddTextOption(
                 mod: this.ModManifest,
                 name: () => "Exceptions",
-                tooltip: () => "Event ids which will never be skipped. Enter only numbers separated by commas",
-                getValue: () => string.Join(", ", this.config.Exceptions), 
-                setValue: value => this.config.Exceptions = GetExceptionsFromString(value));
+                tooltip: () => "Event ids which will never be skipped. Ensure entries are separated by commas",
+                getValue: () => string.Join(", ", this.config.Exceptions),
+                setValue: value => this.config.Exceptions = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray()
+                );
 
-        }
-
-        private int[] GetExceptionsFromString(string value)
-        {
-            var formattedstring = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
-
-            var ints = from field in formattedstring.Where((x) => { int y; return Int32.TryParse(x, out y); })
-                       select Int32.Parse(field);
-
-            return ints.ToArray();
         }
     }
 }

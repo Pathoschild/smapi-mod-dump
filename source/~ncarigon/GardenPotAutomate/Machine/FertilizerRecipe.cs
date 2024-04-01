@@ -15,9 +15,6 @@ using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
 namespace GardenPotAutomate {
-    /// <summary>
-    /// A general recipe for applying ferilizer
-    /// </summary>
     internal class FertilizerRecipe : IRecipe {
         public Func<Item, bool> Input { get; }
         public int InputCount { get; } = 1;
@@ -25,32 +22,30 @@ namespace GardenPotAutomate {
         public Func<Item, int> Minutes { get; } = _ => 0;
 
         private readonly IndoorPot IndoorPot;
-        private readonly GameLocation Location;
-        private readonly ModConfig Config;
+        private readonly Config Config;
+        private readonly Farmer TempFarmer;
 
-        public FertilizerRecipe(IndoorPot indoorPot, GameLocation location, ModConfig config) {
+        public FertilizerRecipe(IndoorPot indoorPot, Farmer tempFarmer, Config config) {
             this.IndoorPot = indoorPot;
             this.Config = config;
-            this.Location = location;
             this.Input = this.TryApply;
+            this.TempFarmer = tempFarmer;
         }
 
         public bool AcceptsInput(ITrackedStack stack) {
-            return stack.Type == ItemType.Object && Input(stack.Sample);
+            return stack.Type == ItemRegistry.type_object && Input(stack.Sample);
         }
 
-        public bool TryApply(Item item) => TryApply(this.IndoorPot, item, this.Location, this.Config);
-
-        public static bool TryApply(IndoorPot indoorPot, Item item, GameLocation location, ModConfig config) {
+        public bool TryApply(Item item) {
             return
                 // are we enabled?
-                config.Enabled
+                this.Config.Enabled
                 // can we apply fertilizer?
-                && config.ApplyFertilizers
+                && this.Config.ApplyFertilizers
                 // is it a fertilizer?
                 && (item?.Category.Equals(SObject.fertilizerCategory) ?? false)
                 // actually try to place the item
-                && (indoorPot?.performObjectDropInAction(item, false, new Farmer() { currentLocation = location }) ?? false);
+                && (this.IndoorPot?.performObjectDropInAction(item, false, this.TempFarmer) ?? false);
         }
     }
 }

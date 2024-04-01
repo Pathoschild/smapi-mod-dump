@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-    "Format": "1.30.0",
+	"Format": "2.0.0",
 	"ConfigSchema": {
       "Spriteset": {
          "AllowValues": "Default, Legacy",

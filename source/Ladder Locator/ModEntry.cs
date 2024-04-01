@@ -98,8 +98,7 @@ namespace LadderLocator
             foreach (var pair in mine.Objects.Pairs.Where(pair => pair.Value.Name.Equals("Stone")))
             {
                 var obj = pair.Value;
-                // ladder chance calculation taken from checkStoneForItems function in MineShaft class
-                var r = new Random((int)pair.Key.X * 1000 + (int)pair.Key.Y + mine.mineLevel + (int)Game1.uniqueIDForThisGame / 2);
+                var r = Utility.CreateDaySaveRandom(pair.Key.X * 1000, pair.Key.Y, mine.mineLevel);
                 r.NextDouble();
                 var next = r.NextDouble();
                 if ((netStonesLeftOnThisLevel == 0 || next < chance) && obj.ParentSheetIndex / 24 < Game1.objectSpriteSheet.Height) _ladderStones.Add(new LadderStone(obj));
@@ -265,7 +264,7 @@ namespace LadderLocator
         {
             public LadderStone(Object obj) : base(obj)
             {
-                BoundingBox = obj.getBoundingBox(obj.TileLocation);
+                BoundingBox = obj.GetBoundingBox();
                 Flipped = obj.Flipped;
                 Tint = GetObjectSpriteAverageColor(SpriteIndex);
             }

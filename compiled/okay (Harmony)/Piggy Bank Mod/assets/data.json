@@ -1,0 +1,20 @@
+﻿{
+  "Id": "MindMeltMax.PiggyBank",
+  "Object": 
+  {
+    "Name": "Piggy Bank",
+    "Type": "Crafting",
+    "Price": -1,
+    "Fragility": 1,
+    "Texture": "PiggyBank/PiggyBank",
+    "SpriteIndex": 0
+  },
+  "Recipe": "330 10/Field/{0}/true/none/{1}",
+  "ShopItem": 
+  {
+    "Price": 500,
+    "Condition": "!PLAYER_HAS_CRAFTING_RECIPE Current Piggy Bank, PLAYER_STAT Current individualMoneyEarned 15000",
+    "Id": "(BC){0} (Recipe)",
+    "IsRecipe": true
+  }
+}

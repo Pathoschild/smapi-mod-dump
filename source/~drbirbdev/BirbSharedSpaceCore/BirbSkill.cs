@@ -108,6 +108,7 @@ public class BirbSkill : Skills.Skill
             this.Professions[1]));
 
         modHelper.Events.Display.MenuChanged += this.DisplayEvents_MenuChanged;
+        modHelper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
     }
 
     public override string GetName()
@@ -186,5 +187,81 @@ public class BirbSkill : Skills.Skill
             .SetValue(newRecipes);
 
         levelUpMenu.height = menuHeight + 256 + (levelUpMenu.getExtraInfoForLevel(skill, level).Count * 64 * 3 / 4);
+    }
+
+    /// <summary>
+    /// Tries to recover skills from invalid states, such as not having professions or recipes.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
+    {
+        int skillLevel = Game1.player.GetCustomSkillLevel(this.Id);
+        if (skillLevel == 0)
+        {
+            return;
+        }
+
+        if (skillLevel >= 5 && !(Game1.player.HasCustomProfession(this.Professions[0]) ||
+                                 Game1.player.HasCustomProfession(this.Professions[1])))
+        {
+            Game1.endOfNightMenus.Push(new SkillLevelUpMenu(this.Id, 5));
+        }
+
+        if (skillLevel >= 10 && !(Game1.player.HasCustomProfession(this.Professions[2]) ||
+                                  Game1.player.HasCustomProfession(this.Professions[3]) ||
+                                  Game1.player.HasCustomProfession(this.Professions[4]) ||
+                                  Game1.player.HasCustomProfession(this.Professions[5])))
+        {
+            Game1.endOfNightMenus.Push(new SkillLevelUpMenu(this.Id, 10));
+        }
+
+        foreach (KeyValuePair<string, string> recipePair in DataLoader.CraftingRecipes(Game1.content))
+        {
+            string conditions = ArgUtility.Get(recipePair.Value.Split('/'), 4, "");
+            if (!conditions.Contains(this.Id))
+            {
+                continue;
+            }
+            if (conditions.Split(" ").Length < 2)
+            {
+                continue;
+            }
+
+            int level = int.Parse(conditions.Split(" ")[1]);
+
+            if (skillLevel < level)
+            {
+                continue;
+            }
+
+            Game1.player.craftingRecipes.TryAdd(recipePair.Key, 0);
+        }
+
+        foreach (KeyValuePair<string, string> recipePair in DataLoader.CookingRecipes(Game1.content))
+        {
+            string conditions = ArgUtility.Get(recipePair.Value.Split('/'), 3, "");
+            if (!conditions.Contains(this.Id))
+            {
+                continue;
+            }
+            if (conditions.Split(" ").Length < 2)
+            {
+                continue;
+            }
+
+            int level = int.Parse(conditions.Split(" ")[1]);
+
+            if (skillLevel < level)
+            {
+                continue;
+            }
+
+            if (Game1.player.cookingRecipes.TryAdd(recipePair.Key, 0) &&
+                !Game1.player.hasOrWillReceiveMail("robinKitchenLetter"))
+            {
+                Game1.mailbox.Add("robinKitchenLetter");
+            }
+        }
     }
 }

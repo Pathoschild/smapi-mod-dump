@@ -11,10 +11,10 @@
 {
   "Name": "MultiPlayer Info",
   "Author": "MindMeltMax",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Display some info about your farmer friends",
   "UniqueID": "MindMeltMax.MPInfo",
   "EntryDll": "MPInfo.dll",
-  "MinimumApiVersion": "3.15.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "nexus:15155" ]
 }

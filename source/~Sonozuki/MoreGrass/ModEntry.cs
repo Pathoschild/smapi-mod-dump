@@ -273,42 +273,34 @@ public class ModEntry : Mod
         foreach (var season in Enum.GetValues<Season>())
         {
             // clear any existing default grass sprites in the sprite pool
-            switch (season)
-            {
-                case Season.Spring: SpringSpritePool.ClearDefaultGrass(); break;
-                case Season.Summer: SummerSpritePool.ClearDefaultGrass(); break;
-                case Season.Fall: FallSpritePool.ClearDefaultGrass(); break;
-                case Season.Winter: WinterSpritePool.ClearDefaultGrass(); break;
-            }
+            GetSpritePoolBySeason(season).ClearDefaultGrass();
 
             // calculate the default grass bounds
-            var yOffset = 0;
-            switch (season)
+            var (defaultYOffset, meadowLandsYOffset) = season switch
             {
-                case Season.Summer: yOffset = 21; break;
-                case Season.Fall: yOffset = 41; break;
-                case Season.Winter: yOffset = 81; break;
-            }
-            var grassBounds = new[] { new Rectangle(0, yOffset, 15, 20), new Rectangle(16, yOffset, 15, 20), new Rectangle(30, yOffset, 15, 20) };
+                Season.Spring => (0, 160),
+                Season.Summer => (20, 180),
+                Season.Fall => (40, 200),
+                Season.Winter => (80, 220)
+            };
+
+            var defaultGrassBounds = new[] { new Rectangle(0, defaultYOffset, 15, 20), new Rectangle(15, defaultYOffset, 15, 20), new Rectangle(30, defaultYOffset, 15, 20) };
+            var meadowlandsGrassBounds = new[] { new Rectangle(0, meadowLandsYOffset, 15, 20), new Rectangle(15, meadowLandsYOffset, 15, 20), new Rectangle(30, meadowLandsYOffset, 15, 20) };
 
             // load the individual grass sprites in the correct sprite pool using the above calculated bounds
-            foreach (var grassBound in grassBounds)
-            {
-                // create a new texture using the grassBound
-                var grassSprite = new Texture2D(Game1.graphics.GraphicsDevice, grassBound.Width, grassBound.Height);
-                var grassData = new Color[grassBound.Width * grassBound.Height];
-                grassTexture.GetData(0, grassBound, grassData, 0, grassData.Length);
-                grassSprite.SetData(grassData);
+            foreach (var defaultGrassBound in defaultGrassBounds)
+                GetSpritePoolBySeason(season).AddDefaultGrass(CreateGrassSprite(defaultGrassBound));
+            foreach (var meadowlandsGrassBound in meadowlandsGrassBounds)
+                GetSpritePoolBySeason(season).AddMeadowlandsGrass(CreateGrassSprite(meadowlandsGrassBound));
+        }
 
-                // add sprite to correct sprite pool
-                switch (season)
-                {
-                    case Season.Spring: SpringSpritePool.AddDefaultGrass(grassSprite); break;
-                    case Season.Summer: SummerSpritePool.AddDefaultGrass(grassSprite); break;
-                    case Season.Fall: FallSpritePool.AddDefaultGrass(grassSprite); break;
-                    case Season.Winter: WinterSpritePool.AddDefaultGrass(grassSprite); break;
-                }
-            }
+        Texture2D CreateGrassSprite(Rectangle grassBound)
+        {
+            var grassSprite = new Texture2D(Game1.graphics.GraphicsDevice, grassBound.Width, grassBound.Height);
+            var grassData = new Color[grassBound.Width * grassBound.Height];
+            grassTexture.GetData(0, grassBound, grassData, 0, grassData.Length);
+            grassSprite.SetData(grassData);
+            return grassSprite;
         }
     }
 

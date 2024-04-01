@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -42,6 +42,9 @@ namespace Custom_Farm_Loader.Lib
 
         private static void Saved(object sender, StardewModdingAPI.Events.SavedEventArgs e)
         {
+            if (!Context.IsMainPlayer)
+                return;
+
             string friendlyName = SaveGame.FilterFileName(Game1.GetSaveGameName(false));
             string savefile = friendlyName + "_" + Game1.uniqueIDForThisGame;
 

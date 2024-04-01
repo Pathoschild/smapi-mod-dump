@@ -35,7 +35,7 @@ namespace BetterJunimos.Utils {
     }
 
     public class UnlockCost {
-        public int Item { get; set; }
+        public string Item { get; set; }
         public int Stack { get; set; }
 
         public string Remarks { get; set; }
@@ -245,7 +245,7 @@ namespace BetterJunimos.Utils {
             return GetPromptText(ability, ItemForAbility(ability), StackForAbility(ability));
         }
 
-        private string GetPromptText(string ability, int item, int stack) {
+        private string GetPromptText(string ability, string item, int stack) {
             var textKey = $"prompt.{ability}";
             var displayName = new SObject(item, stack).DisplayName;
             var prompt = Get(textKey);
@@ -267,7 +267,7 @@ namespace BetterJunimos.Utils {
         }
 
         public void ReceiveProgressionItems(JunimoHut hut) {
-            var chest = hut.output.Value;
+            var chest = hut.GetOutputChest();
 
             foreach (var ability in Progressions().Where(LockedAndPrompted)) {
                 if (!ReceiveItems(chest, ability)) continue;
@@ -276,17 +276,17 @@ namespace BetterJunimos.Utils {
             }
         }
 
-        private int ItemForAbility(string ability) {
+        private string ItemForAbility(string ability) {
             if (UnlockCosts.ContainsKey(ability)) return UnlockCosts[ability].Item;
             _monitor.Log($"ItemForAbility got a request for unknown {ability}", LogLevel.Warn);
-            UnlockCosts[ability] = new UnlockCost {Item = 268, Stack = 1, Remarks = "Starfruit"};
+            UnlockCosts[ability] = new UnlockCost {Item = "268", Stack = 1, Remarks = "Starfruit"};
             return UnlockCosts[ability].Item;
         }
 
         private int StackForAbility(string ability) {
             if (UnlockCosts.ContainsKey(ability)) return UnlockCosts[ability].Stack;
             _monitor.Log($"StackForAbility got a request for unknown {ability}", LogLevel.Warn);
-            UnlockCosts[ability] = new UnlockCost {Item = 268, Stack = 1, Remarks = "Starfruit"};
+            UnlockCosts[ability] = new UnlockCost {Item = "268", Stack = 1, Remarks = "Starfruit"};
             return UnlockCosts[ability].Stack;
         }
 
@@ -294,11 +294,11 @@ namespace BetterJunimos.Utils {
             return ReceiveItems(chest, StackForAbility(ability), ItemForAbility(ability));
         }
 
-        private bool ReceiveItems(Chest chest, int needed, int index) {
+        private bool ReceiveItems(Chest chest, int needed, string itemID) {
             // BetterJunimos.SMonitor.Log($"ReceiveItems wants {needed} of [{index}]", LogLevel.Debug);
             if (needed <= 0) return true;
 
-            var inChest = chest.items.Where(item => item != null && item.ParentSheetIndex == index).ToList();
+            var inChest = chest.Items.Where(item => item != null && item.itemId.ToString() == itemID).ToList();
 
             foreach (var itemStack in inChest) {
                 if (itemStack.Stack >= needed) {
@@ -526,7 +526,7 @@ namespace BetterJunimos.Utils {
             if (!Context.IsMainPlayer) return;
 
             // see if event has run
-            if (! Game1.player.eventsSeen.Contains(22210001))
+            if (! Game1.player.eventsSeen.Contains("22210001"))
             {
                 Game1.getFarm().modData.Remove($"{_manifest.UniqueID}/ConfigurationWizardDone");
                 return;
@@ -542,24 +542,24 @@ namespace BetterJunimos.Utils {
             
             // collect answers from event
             Configure c = Configure.NotAnswered;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219010)) c = Configure.Yes;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219011)) c = Configure.No;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219012)) c = Configure.Rude;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219010")) c = Configure.Yes;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219011")) c = Configure.No;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219012")) c = Configure.Rude;
             
             Progression p = Progression.NotAnswered;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219020)) p = Progression.Yes;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219021)) p = Progression.No;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219020")) p = Progression.Yes;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219021")) p = Progression.No;
 
             Wages w = Wages.NotAnswered;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219030)) w = Wages.Fruit;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219031)) w = Wages.Flowers;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219032)) w = Wages.Forage;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219033)) w = Wages.All;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219034)) w = Wages.None;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219030")) w = Wages.Fruit;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219031")) w = Wages.Flowers;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219032")) w = Wages.Forage;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219033")) w = Wages.All;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219034")) w = Wages.None;
             
             ShowGMCM s = ShowGMCM.NotAnswered;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219040)) s = ShowGMCM.Yes;
-            if (Game1.player.dialogueQuestionsAnswered.Contains(22219041)) s = ShowGMCM.No;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219040")) s = ShowGMCM.Yes;
+            if (Game1.player.dialogueQuestionsAnswered.Contains("22219041")) s = ShowGMCM.No;
 
             // set config accordingly
             if (c is Configure.No or Configure.Rude or Configure.NotAnswered) {

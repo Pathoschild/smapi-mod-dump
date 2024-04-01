@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/GiftTasteHelper
+**
+*************************************************/
+
+{
+  "tooltip.title.favorite": "제일 좋아하는 선물",
+  "tooltip.title.none": "알려진 선호하는 선물이 존재하지 않음",
+
+  "options.display": "표시",
+  "options.showOnCalendar": "달력에 표시",
+  "options.showOnCalendar.desc": "생일에 마우스를 올리면 달력에 툴팁을 표시합니다",
+  "options.showOnSocialPage": "소셜 페이지에 표시",
+  "options.showOnSocialPage.desc": "NPC 위에 마우스를 올리면 소셜 페이지에 툴팁을 표시합니다",
+  "options.showOnlyKnownGifts": "알려진 선물만 표시",
+  "options.showOnlyKnownGifts.desc": "이 NPC에게 이미 준 선물만 표시합니다",
+  "options.showUniversalGifts": "일반 선물 표시",
+  "options.showUniversalGifts.desc": "툴팁에 일반 선물을 표시합니다",
+  "options.showGiftsForUnmetNPCs": "만난 적 없는 NPC 선물 표시",
+  "options.showGiftsForUnmetNPCs.desc": "아직 만나지 않은 NPC에 대한 선물을 표시합니다",
+  "options.hideTooltipWhenNoGiftsKnown": "알려진 선물이 없을 때 숨기기",
+  "options.hideTooltipWhenNoGiftsKnown.desc": "알려진 선물이 없을 때 툴팁을 숨깁니다",
+  "options.colorizeUniversalGiftNames": "일반 선물 이름 색칠",
+  "options.colorizeUniversalGiftNames.desc": "일반 선물 이름 색칠",
+  "options.other": "기타",
+  "options.maxGiftsToDisplay": "표시할 최대 선물 수",
+  "options.maxGiftsToDisplay.desc": "툴팁에 표시할 최대 선물 수입니다. (0은 제한 없음)",
+  "options.shareKnownGiftsWithAllSaves": "모든 세이브 파일과 알려진 선물 공유",
+  "options.shareKnownGiftsWithAllSaves.desc": "모든 세이브 파일과 알려진 선물을 공유합니다"
+}

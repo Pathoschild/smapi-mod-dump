@@ -14,4 +14,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <Import Project="..\..\Common\Common\Common.projitems" Label="Shared" />
+
 </Project>

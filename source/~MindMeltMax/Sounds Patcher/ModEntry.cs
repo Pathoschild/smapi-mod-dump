@@ -8,54 +8,44 @@
 **
 *************************************************/
 
-using Sounds_Patcher.Patches;
-using Sounds_Patcher.Utility;
+using SoundsPatcher.Utility;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Sounds_Patcher
+namespace SoundsPatcher
 {
     public class ModEntry : Mod
     {
-        public static IModHelper StaticHelper;
-        public static IMonitor StaticMonitor;
-        public static Config StaticConfig;
+        public static IModHelper IHelper;
+        public static IMonitor IMonitor;
+        public static Config IConfig;
 
         public override void Entry(IModHelper helper)
         {
-            StaticHelper = Helper;
-            StaticMonitor = Monitor;
-            StaticConfig = Helper.ReadConfig<Config>();
+            IHelper = Helper;
+            IMonitor = Monitor;
+            IConfig = Helper.ReadConfig<Config>();
 
-            if (StaticConfig.Sounds == null || StaticConfig.Sounds.Count <= 0)
-                StaticConfig.Sounds = Utilities.GetSoundsDict();
-            if (StaticConfig.Songs == null || StaticConfig.Songs.Count <= 0)
-                StaticConfig.Songs = Utilities.GetSongsDict();
-            if (string.IsNullOrWhiteSpace(StaticConfig.MenuKey))
-                StaticConfig.MenuKey = "O";
+            if (IConfig.Sounds is null || IConfig.Sounds.Count <= 0)
+                IConfig.Sounds = Utilities.GetSoundsDict();
+            if (IConfig.Songs is null || IConfig.Songs.Count <= 0)
+                IConfig.Songs = Utilities.GetSongsDict();
+            IConfig.UnknownSounds ??= new();
+            IConfig.MenuKeys ??= KeybindList.Parse("O, RightStick");
 
-            Helper.WriteConfig(StaticConfig);
-
-            Patcher.Init(helper);
-
+            helper.Events.GameLoop.GameLaunched += (_, _) => Patches.Patch(helper.ModRegistry.ModID);
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            Helper.Events.GameLoop.Saving += (_, _) => Helper.WriteConfig(IConfig);
         }
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsPlayerFree) return;
-            if (IsButtonValid(e.Button))
-                Game1.activeClickableMenu = new SoundsMenu(StaticHelper, StaticMonitor, StaticConfig);
-        }
-
-        private bool IsButtonValid(SButton button)
-        {
-            string buttonAsString = button.ToString().ToLower();
-            return ((IEnumerable<string>)StaticConfig.MenuKey.ToLower().Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Any(Item => buttonAsString.Equals(Item.Trim()));
+            if (!Context.IsPlayerFree) 
+                return;
+            if (IConfig.MenuKeys.JustPressed())
+                Game1.activeClickableMenu = new SoundsMenu(IHelper, IMonitor, IConfig);
         }
     }
 }

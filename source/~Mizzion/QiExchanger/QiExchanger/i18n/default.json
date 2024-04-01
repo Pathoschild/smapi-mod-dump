@@ -9,13 +9,21 @@
 *************************************************/
 
 {
-  "main.text": "Hello {{player_name}}, you currently have {{qi_amount}} Qi Coins. Please choose how many you want to exchange. The exchange rate is 1 QiCoin = {{exchange_rate}}G",
+  "original.text": "Buy 100 Qi Coins for 1,000g?",
+  "main.text": "Hello {{player_name}}, please choose an option from below.",
+  "main.text.option.one": "Buy QiCoins",
+  "main.text.option.two": "Sell QiCoins",
+  "main.exchange.text": "Hello {{player_name}}, you currently have {{qi_amount}} Qi Coins. Please choose how many you want to exchange. The exchange rate is 1 QiCoin = {{exchange_rate}}G",
   "option.one": "100 QiCoins ",
   "option.two": "1,000 QiCoins",
   "option.three": "10,000 QiCoins",
   "option.four": "100,000 QiCoins",
   "option.five": "1,000,000 QiCoins",
+  "main.money.exchange.text": "Hello {{player_name}}, you have {{amt_money}}. Please choose how many QiCoins you would like to buy. The exchange rate is 1 QiCoin per 10g",
   "do.exchange": "You exchanged {{qi_coins}} QiCoins for {{g_coins}}G.",
+  "do.buy.exchange": "You have bought {{amount}} of QiCoins for {{g_coins}}g",
+  "no.money": "You don't have any money",
+  "not.enough.money": "You don't have enough money",
   "no.qi.coins": "You don't have any QiCoins.",
   "not.enough.qicoins": "You don't have enough QiCoins."
 }

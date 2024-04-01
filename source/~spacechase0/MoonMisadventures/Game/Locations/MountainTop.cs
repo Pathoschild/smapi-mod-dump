@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 
 namespace MoonMisadventures.Game.Locations
 {
@@ -33,7 +34,7 @@ namespace MoonMisadventures.Game.Locations
         protected override void initNetFields()
         {
             base.initNetFields();
-            base.NetFields.AddFields( ufoRepaired );
+            base.NetFields.AddField( ufoRepaired, "ufoRepaired" );
         }
 
         public override void TransferDataFromSavedLocation( GameLocation l )
@@ -46,7 +47,7 @@ namespace MoonMisadventures.Game.Locations
         {
             base.resetLocalState();
 
-            Game1.background = new Background();
+            Game1.background = new Background(Game1.getLocationFromName("Summit") as Summit);
 
             TemporarySprites.Clear();
 
@@ -111,13 +112,13 @@ namespace MoonMisadventures.Game.Locations
                 switch ( qa )
                 {
                     case "RepairUfo_Yes":
-                        if ( Game1.player.hasItemInInventory( 910 /* radioactive bar */, 10 ) &&
-                             Game1.player.hasItemInInventory( 896 /* galaxy soul */, 1 ) )
+                        if ( Game1.player.Items.CountId( "(O)910" /* radioactive bar */) >= 10 &&
+                             Game1.player.Items.CountId( "(O)896" /* galaxy soul */ ) >= 1 )
                         {
                             var mp = Mod.instance.Helper.Reflection.GetField< Multiplayer >( typeof( Game1 ), "multiplayer" ).GetValue();
                             mp.globalChatInfoMessage( "RepairedUfo", Game1.player.Name );
-                            Game1.player.removeItemsFromInventory( 910, 10 );
-                            Game1.player.removeItemsFromInventory( 896, 1 );
+                            Game1.player.Items.ReduceId( "(O)910", 10 );
+                            Game1.player.Items.ReduceId( "(O)896", 1 );
                             Game1.playSound( "questcomplete" );
                             ufoRepaired.Value = true;
                             TemporarySprites.Clear();
@@ -140,7 +141,7 @@ namespace MoonMisadventures.Game.Locations
                         // TODO: Show the dwarf and you getting on the UFO, like the vanilla boat
                         if ( !Game1.player.hasOrWillReceiveMail( "firstUfoTravel" ) )
                         {
-                            Game1.addMailForTomorrow( "firstUfoTravel" );
+                            Game1.addMailForTomorrow( "firstUfoTravel", noLetter: true );
                             Game1.currentMinigame = new LaunchJourney();
                         }
                         else

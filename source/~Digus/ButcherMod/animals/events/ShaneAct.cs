@@ -20,7 +20,7 @@ namespace AnimalHusbandryMod.animals.events
     public class ShaneAct : AbstractAct
     {
         public override string NpcName => "Shane";
-        public override int? RequiredEvent => 3900074;
+        public override string RequiredEvent => "3900074";
 
         public override string GetAct(AnimalContestItem animalContestInfo, List<AnimalContestItem> history)
         {

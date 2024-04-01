@@ -12,7 +12,6 @@ using ItemBags.Bags;
 using ItemBags.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -72,6 +71,9 @@ namespace ItemBags.Persistence
 
         public static string GetTranslatedName(BagType Type)
         {
+            if (Type == null)
+                return "";
+
             string TranslationKey = string.Format("{0}Name", Type.Name.Replace(" ", ""));
             try
             {
@@ -95,7 +97,7 @@ namespace ItemBags.Persistence
                 else
                     return Type.Description;
             }
-            catch (Exception) { return Type.Description; }
+            catch (Exception) { return Type?.Description ?? ""; }
         }
 
         public void SerializeToXML(string FilePath, out bool Successful, out Exception SerializationError)

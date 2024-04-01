@@ -45,6 +45,11 @@ public class SConfig(bool titleScreenOnly = false) : ClassHandler(1)
 
         var getter = configField.GetGetter();
         var setter = configField.GetSetter();
+
+        instance = mod.Helper.GetType().GetMethod("ReadConfig")
+            ?.MakeGenericMethod(type)
+            .Invoke(mod.Helper, []) ?? instance;
+
         setter(mod, instance);
 
         _api = mod.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");

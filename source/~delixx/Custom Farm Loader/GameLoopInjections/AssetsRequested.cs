@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -86,6 +86,15 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             if (e.NameWithoutLocale.BaseName.Contains("CFL_WorldMap/")) {
                 string id = e.NameWithoutLocale.BaseName.Split("CFL_WorldMap/")[1];
+
+                //Hotfix for base game bug
+                var suffix = "_" + Game1.CurrentSeasonDisplayName.ToLower();
+                if (id.EndsWith(suffix))
+                    id = id = id.Substring(0, id.Length - suffix.Length);
+
+                var season = "_" + Game1.currentSeason;
+                if (id.EndsWith(season))
+                    id = id.Substring(0, id.Length - season.Length);
                 CustomFarm customFarm = CustomFarm.get(id);
 
                 e.LoadFrom(delegate () {

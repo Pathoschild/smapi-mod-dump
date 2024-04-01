@@ -74,8 +74,9 @@ namespace Spawn_Monsters.MonsterSpawning
                 if (monster == MonsterData.Monster.GraySlime) {
                     int num = Game1.random.Next(120, 200);
                     (m as GreenSlime).color.Value = new Color(num, num, num);
-                    while (Game1.random.NextDouble() < 0.33)
-                        m.objectsToDrop.Add(380);
+                    while (Game1.random.NextDouble() < 0.33) {
+                        m.objectsToDrop.Add("(O)380");
+                    }
                     m.Speed = 1;
                 } else if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem) {
                     m.setTileLocation(location); //For Tile-Locked Monsters like Duggy
@@ -121,7 +122,8 @@ namespace Spawn_Monsters.MonsterSpawning
             Monitor.Log("Removing " + toKill.Count + " Monsters", LogLevel.Trace);
             foreach (Monster m in toKill) {
                 Monitor.Log("Removed " + m.getTextureName(), LogLevel.Trace);
-                Game1.removeThisCharacterFromAllLocations(m);
+                m.currentLocation.characters.Remove(m);
+                m.Removed();
                 spawnedMonsters.Remove(m);
             }
             if (toKill.Count > 0) {

@@ -1,0 +1,10 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/delixx/stardew-valley/personal-indoor-farm**
+
+----
+
+[Nexus Page](https://www.nexusmods.com/stardewvalley/mods/20537)<br>
+[Documentation](https://gitlab.com/delixx/stardew-valley/personal-indoor-farm/-/wikis/Documentation)

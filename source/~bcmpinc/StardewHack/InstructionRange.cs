@@ -81,9 +81,9 @@ namespace StardewHack
         }
 
         /// <summary>
-        /// An empty InstructionRange pointing to the start of this range.
+        /// An empty InstructionRange pointing to the beginning of this range.
         /// </summary>
-        public InstructionRange Start { get { return new InstructionRange(insts, start, 0); } }
+        public InstructionRange Begin { get { return new InstructionRange(insts, start, 0); } }
 
         /// <summary>
         /// An empty InstructionRange pointing to the end of this range.
@@ -108,6 +108,7 @@ namespace StardewHack
 
         /// <summary>
         /// Inserts the specified list of instructions before this range.
+        /// Does not redirect any jumps that go to the first instruction.
         /// </summary>
         public void Prepend(params CodeInstruction[] new_insts) {
             insts.InsertRange(start, new_insts);
@@ -142,7 +143,7 @@ namespace StardewHack
 
         /// <summary>
         /// Access elements relative to the start of this range.
-        /// When setting an instruction, jumps to the old isntruction will be moved to the new instruction.
+        /// When setting an instruction, jumps to the old instruction will be moved to the new instruction.
         /// </summary>
         public CodeInstruction this[int index] {
             get { 

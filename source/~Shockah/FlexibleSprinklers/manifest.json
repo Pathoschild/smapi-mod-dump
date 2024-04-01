@@ -11,17 +11,17 @@
 {
 	"Name": "Flexible Sprinklers",
 	"Author": "Shockah",
-	"Version": "2.1.1",
+	"Version": "3.0.0",
 	"Description": "Makes the sprinklers more flexible, while keeping their behavior the same under perfect conditions.",
 	"UniqueID": "Shockah.FlexibleSprinklers",
 	"EntryDll": "FlexibleSprinklers.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "Nexus:10931" ],
 	"Dependencies": [
 		{
 			"UniqueID": "Shockah.Kokoro",
 			"IsRequired": true,
-			"MinimumVersion": "2.0.1"
+			"MinimumVersion": "3.0.0"
 		}
 	]
 }

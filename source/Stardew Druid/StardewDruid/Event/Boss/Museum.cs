@@ -30,17 +30,15 @@ namespace StardewDruid.Event.Boss
         public Vector2 returnPosition;
         public NPC Gunther;
 
-        public Museum(Vector2 target, Rite rite, Quest quest)
-          : base(target, rite, quest)
+        public Museum(Vector2 target,  Quest quest)
+          : base(target, quest)
         {
 
             targetVector = target;
 
-            voicePosition = targetVector * 64f - new Vector2(0.0f, 32f);
-
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 60.0;
 
-            returnPosition = rite.caster.Position;
+            returnPosition = Game1.player.Position;
 
         }
 
@@ -48,13 +46,13 @@ namespace StardewDruid.Event.Boss
         {
             cues = DialogueData.DialogueScene(questData.name);
 
-            ModUtility.AnimateRadiusDecoration(targetLocation, targetVector, "Mists", 1f, 1f);
+            ModUtility.AnimateCursor(targetLocation, targetVector*64, "mists");
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector * 64 + new Vector2(32));
 
             Mod.instance.RegisterEvent(this, "active");
 
-            AddActor(voicePosition, true);
+            AddActor(targetVector * 64f - new Vector2(0.0f, 32f), true);
 
             Gunther = targetLocation.getCharacterFromName(nameof(Gunther));
 
@@ -68,7 +66,7 @@ namespace StardewDruid.Event.Boss
             if (bossMonster != null)
             {
 
-                riteData.castLocation.characters.Remove(bossMonster);
+                Mod.instance.rite.castLocation.characters.Remove(bossMonster);
 
                 bossMonster = null;
 
@@ -110,12 +108,12 @@ namespace StardewDruid.Event.Boss
 
                     DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[1], }, 991);
 
-                    Vector2 vector2 = Gunther.getTileLocation() + new Vector2(0.0f, 1f);
+                    Vector2 vector2 = Gunther.Tile + new Vector2(0.0f, 1f);
 
                     if (!questData.name.Contains("Two"))
                     {
                         
-                        Game1.createObjectDebris(74, (int)vector2.X, (int)vector2.Y, -1, 0, 1f, null);
+                        Game1.createObjectDebris("74", (int)vector2.X, (int)vector2.Y, -1, 0, 1f, null);
                     
                     }
 
@@ -158,7 +156,7 @@ namespace StardewDruid.Event.Boss
                         while (enumerator.MoveNext())
                         {
                             NPC current = enumerator.Current;
-                            if (current.isVillager() && current.Name != "Gunther")
+                            if (current.IsVillager && current.Name != "Gunther")
                                 current.doEmote(8, true);
                         }
                     }
@@ -166,10 +164,10 @@ namespace StardewDruid.Event.Boss
                 }
                 
                 Vector2 vector2 = targetVector + new Vector2(0.0f, 1f) - new Vector2(randomIndex.Next(7), randomIndex.Next(3));
-                
-                ModUtility.AnimateRadiusDecoration(targetLocation, vector2, "Mists", 1f, 1f);
-                
-                ModUtility.AnimateBolt(targetLocation, vector2);
+
+                ModUtility.AnimateCursor(targetLocation, vector2 * 64, "mists");
+
+                ModUtility.AnimateBolt(targetLocation, vector2 * 64 + new Vector2(32));
 
                 return;
 
@@ -199,7 +197,7 @@ namespace StardewDruid.Event.Boss
 
                 EventQuery("LocationEdit");
                 
-                bossMonster = MonsterData.CreateMonster(14, targetVector + new Vector2(2f, 0.0f)) as Monster.Boss.Dino;
+                bossMonster = new((targetVector + new Vector2(2f, 0.0f)),Mod.instance.CombatModifier());
                 
                 if (questData.name.Contains("Two"))
                 {
@@ -208,9 +206,9 @@ namespace StardewDruid.Event.Boss
 
                 bossMonster.currentLocation = targetLocation;
 
-                riteData.castLocation.characters.Add(bossMonster);
+                Mod.instance.rite.castLocation.characters.Add(bossMonster);
 
-                bossMonster.update(Game1.currentGameTime, riteData.castLocation);
+                bossMonster.update(Game1.currentGameTime, Mod.instance.rite.castLocation);
 
                 SetTrack("heavy");
 
@@ -317,7 +315,7 @@ namespace StardewDruid.Event.Boss
                 588,
                 589
             };
-            new Throw(targetPlayer, bossMonster.Position, new StardewValley.Object(intList[riteData.randomIndex.Next(intList.Count)], 1, false, -1, 0), Gunther.Position).AnimateObject();
+            new Throw(targetPlayer, bossMonster.Position, new StardewValley.Object( intList[Mod.instance.rite.randomIndex.Next(intList.Count)].ToString(), 1, false, -1, 0), Gunther.Position).AnimateObject();
         }
 
         public void GuntherApplyDamage()

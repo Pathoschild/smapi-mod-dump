@@ -146,7 +146,7 @@ namespace ItemBags.Menus
                     {
                         Placeholder.Price = BagItem.Price;
                         Placeholder.Name = BagItem.Name;
-                        Placeholder.DisplayName = BagItem.DisplayName;
+                        //Placeholder.DisplayName = BagItem.DisplayName;
                     }
 
                     CurrentIndex++;

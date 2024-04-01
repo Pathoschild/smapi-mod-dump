@@ -25,7 +25,6 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using IGenericModConfigMenuApi = DecidedlyShared.APIs.IGenericModConfigMenuApi;
 using Patches = SmartBuilding.HarmonyPatches.Patches;
 
 namespace SmartBuilding

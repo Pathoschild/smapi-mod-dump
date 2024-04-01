@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/philosquare/SDVSkipFishingMinigame2
+**
+*************************************************/
+
+{
+  "Name": "SkipFishingMinigame2",
+  "Author": "philosquare",
+  "Version": "1.2.0",
+  "Description": "Fishing skip minigame, auto hook, pause time",
+  "UniqueID": "philosquare.SkipFishingMinigame2",
+  "EntryDll": "SkipFishingMinigame2.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "ModDrop:1530481" ]
+}

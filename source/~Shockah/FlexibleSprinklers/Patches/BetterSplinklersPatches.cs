@@ -23,13 +23,13 @@ namespace Shockah.FlexibleSprinklers
 			try
 			{
 				harmony.Patch(
-					original: AccessTools.Method(Type.GetType(BetterSprinklersSprinklerModQualifiedName), "RunSprinklers"),
+					original: AccessTools.DeclaredMethod(Type.GetType(BetterSprinklersSprinklerModQualifiedName), "RunSprinklers"),
 					prefix: new HarmonyMethod(typeof(BetterSplinklersPatches), nameof(RunSprinklers_Prefix))
 				);
 			}
 			catch (Exception e)
 			{
-				FlexibleSprinklers.Instance.Monitor.Log($"Could not patch BetterSprinklers - they probably won't work.\nReason: {e}", LogLevel.Warn);
+				ModEntry.Instance.Monitor.Log($"Could not patch BetterSprinklers - they probably won't work.\nReason: {e}", LogLevel.Warn);
 			}
 		}
 

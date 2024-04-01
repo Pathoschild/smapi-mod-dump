@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "events": [
+    {
+      "name": "Olivia-event-0",
+      "location": "Custom_JenkinsHouse",
+      "eventId": "4000001",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Olivia-event-1",
+      "location": "Town",
+      "eventId": "4000002",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Olivia-event-2",
+      "location": "Saloon",
+      "eventId": "4000003",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Olivia-event-3",
+      "location": "Custom_OliviaCellar",
+      "eventId": "4000004",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Olivia-event-4",
+      "location": "Custom_JenkinsHouse",
+      "eventId": "8982805",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Olivia-event-5",
+      "location": "Custom_JenkinsHouse",
+      "eventId": "8982806",
+      "night": false,
+      "mail": null
+    }
+  ]
+}

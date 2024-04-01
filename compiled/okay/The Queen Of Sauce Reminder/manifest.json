@@ -1,10 +1,10 @@
 {
   "Name": "TheQueenOfSauceReminder",
   "Author": "TheShwamp",
-  "Version": "1.1.1",
+  "Version": "1.2.0",
   "Description": "This mod will remind you to watch TV to learn a new cooking recipe.",
   "UniqueID": "TheShwamp.TheQueenOfSauceReminder",
   "EntryDll": "TheQueenOfSauceReminder.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:5172" ]
 }

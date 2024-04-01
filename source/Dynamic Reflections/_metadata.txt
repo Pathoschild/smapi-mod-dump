@@ -6,9 +6,9 @@ mods:
    Dynamic Reflections
 
 latest commit:
-   commit 374ec8617901c5e4e43b55f394290d0fa8145543
+   commit af957f53f5e3a348e114a47eeb6deb2e605ae575
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Mon Mar 20 12:20:22 2023 -0500
+   Date:   Fri Mar 22 09:54:24 2024 -0500
    
-       v1.4.0 released
+       v2.0.1 released
    

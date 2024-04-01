@@ -5,6 +5,7 @@ urls:
 mods:
    Better Festival Notifications
    Binning Skill
+   Birb Core
    Gameboy Arcade
    Junimo Kart Global Rankings
    Leaderboard Library
@@ -16,9 +17,9 @@ mods:
    Winter Star Spouse
 
 latest commit:
-   commit 0bff6ac6cfd58b11bdc7759c6a477074ca433570
+   commit eaacc4f4737fa1643081849c5313718726143d71
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Mon Mar 18 16:14:18 2024 -0700
+   Date:   Sun Mar 31 14:56:36 2024 -0700
    
-       WSS typo fix and i18n
+       Release patches for skills
    

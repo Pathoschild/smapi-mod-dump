@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chest Displays", "Chest Displays.csproj", "{93D8776E-3EFC-4434-86BB-1C325E57D512}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chest Displays", "Chest Displays.csproj", "{1DBB5A17-4F14-4B73-8688-516D5AEBED33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{93D8776E-3EFC-4434-86BB-1C325E57D512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93D8776E-3EFC-4434-86BB-1C325E57D512}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93D8776E-3EFC-4434-86BB-1C325E57D512}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93D8776E-3EFC-4434-86BB-1C325E57D512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DBB5A17-4F14-4B73-8688-516D5AEBED33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DBB5A17-4F14-4B73-8688-516D5AEBED33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DBB5A17-4F14-4B73-8688-516D5AEBED33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DBB5A17-4F14-4B73-8688-516D5AEBED33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {27443C4B-76F4-4C4E-A7E0-7E12205A9FEE}
+		SolutionGuid = {7F4A47D4-3857-4792-9E35-1D6E0DAB6C6E}
 	EndGlobalSection
 EndGlobal

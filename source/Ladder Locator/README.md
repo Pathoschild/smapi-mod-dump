@@ -14,7 +14,7 @@ This mod for Stardew Valley will mark the stones which will spawn a ladder or sh
 3. Run the game using SMAPI.
 
 ## Compatibility
-* Works with Stardew Valley 1.5 on Linux/Mac/Windows.
+* Works with Stardew Valley 1.6 on Linux/Mac/Windows.
 * Works in single player and multiplayer.
 
 ## Settings

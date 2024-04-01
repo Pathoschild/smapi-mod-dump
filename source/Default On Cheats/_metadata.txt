@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/EnderTedi/DefaultOnCheats
+   Git: https://github.com/EnderTedi/DefaultOnCheats.git
+
+mods:
+   Default On Cheats
+
+latest commit:
+   commit d3e5b778fd13b580c709800b3a5ecedc87f17923
+   Author: EnderTedi <endertedi2@gmail.com>
+   Date:   Mon Mar 25 19:09:37 2024 +0100
+   
+       DefaultOnCheats
+   

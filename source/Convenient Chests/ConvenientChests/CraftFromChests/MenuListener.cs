@@ -15,28 +15,34 @@ using StardewValley;
 using StardewValley.Menus;
 
 namespace ConvenientChests.CraftFromChests {
-    public class MenuListener {
-        public static readonly int CraftingMenuTab = Constants.TargetPlatform == GamePlatform.Android ? 3 : GameMenu.craftingTab;
-        
-        private readonly IModEvents Events;
+    public class CraftingMenuArgs : EventArgs {
+        public CraftingPage Page { get; private set; }
+        public bool IsCookingPage { get; private set; }
 
-        public event EventHandler GameMenuShown;
-        public event EventHandler GameMenuClosed;
-        public event EventHandler CraftingMenuShown;
-        public event EventHandler CraftingMenuClosed;
+        public CraftingMenuArgs(CraftingPage craftingPage, bool isCookingPage) {
+            Page = craftingPage;
+            IsCookingPage = isCookingPage;
+        }
+    }
+
+    public class MenuListener {
+        private readonly IModEvents Events;
+        public event EventHandler<CraftingMenuArgs> CraftingMenuShown;
+
+        private int PreviousTab = -1;
 
         public MenuListener(IModEvents events) {
-            this.Events = events;
+            Events = events;
         }
 
         public void RegisterEvents() {
             ModEntry.Log("Register");
-            this.Events.Display.MenuChanged += OnMenuChanged;
+            Events.Display.MenuChanged += OnMenuChanged;
         }
 
         public void UnregisterEvents() {
             ModEntry.Log("UnRegister");
-            this.Events.Display.MenuChanged -= OnMenuChanged;
+            Events.Display.MenuChanged -= OnMenuChanged;
         }
 
         /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
@@ -48,32 +54,25 @@ namespace ConvenientChests.CraftFromChests {
 
             switch (e.OldMenu) {
                 case GameMenu _:
-                    GameMenuClosed?.Invoke(sender, e);
                     UnregisterTabEvent();
-                    break;
-
-                case CraftingPage _:
-                    if (e.NewMenu is CraftingPage)
-                        break;
-
-                    CraftingMenuClosed?.Invoke(sender, e);
                     break;
             }
 
             switch (e.NewMenu) {
                 case GameMenu _:
-                    GameMenuShown?.Invoke(sender, e);
-                    this.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+                    Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
                     break;
 
-                case CraftingPage _:
                 case object m when m.GetType().ToString() == "CookingSkill.NewCraftingPage":
-                    CraftingMenuShown?.Invoke(sender, e);
+                    CraftingMenuShown?.Invoke(sender, new CraftingMenuArgs(m as CraftingPage, true));
+                    break;
+
+                case CraftingPage p:
+                    CraftingMenuShown?.Invoke(sender, new CraftingMenuArgs(p, p.cooking));
                     break;
             }
         }
 
-        private int _previousTab = -1;
 
         public event EventHandler GameMenuTabChanged;
 
@@ -88,34 +87,34 @@ namespace ConvenientChests.CraftFromChests {
                     UnregisterTabEvent();
                     return;
 
-                case GameMenu gameMenu when gameMenu.currentTab == _previousTab:
-                    // Nothing changed
-                    return;
-
                 case GameMenu gameMenu:
+                    if (gameMenu.currentTab == PreviousTab)
+                        // Nothing changed
+                        return;
+
                     // Tab changed!
                     GameMenuTabChanged?.Invoke(null, EventArgs.Empty);
 
-                    if (_previousTab == CraftingMenuTab)
-                        CraftingMenuClosed?.Invoke(sender, EventArgs.Empty);
+                    // check current page
+                    var currentPage = gameMenu.GetCurrentPage();
+                    if (currentPage is CraftingPage p)
+                        CraftingMenuShown?.Invoke(sender, new CraftingMenuArgs(p, false));
 
-                    else if (gameMenu.currentTab == CraftingMenuTab)
-                        CraftingMenuShown?.Invoke(sender, EventArgs.Empty);
-
-                    _previousTab = gameMenu.currentTab;
+                    PreviousTab = gameMenu.currentTab;
                     break;
 
                 default:
                     // How did we get here?
-                    ModEntry.StaticMonitor.Log($"Unexpected menu: {Game1.activeClickableMenu?.GetType().ToString() ?? "null"}");
+                    ModEntry.StaticMonitor.Log(
+                        $"Unexpected menu: {Game1.activeClickableMenu?.GetType().ToString() ?? "null"}");
                     UnregisterTabEvent();
                     return;
             }
         }
 
         private void UnregisterTabEvent() {
-            this.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
-            _previousTab                           =  -1;
+            Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
+            PreviousTab = -1;
         }
     }
 }

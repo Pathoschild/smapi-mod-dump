@@ -9,94 +9,146 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using SolidFoundations.Framework.Models.Backport;
 using SolidFoundations.Framework.Models.ContentPack.Actions;
 using StardewModdingAPI;
-using System;
+using StardewValley.GameData.Buildings;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SolidFoundations.Framework.Models.ContentPack
 {
-    // TODO: When using SDV v1.6, this class should inherit StardewValley.GameData.BuildingData
     public class ExtendedBuildingModel : BuildingData
     {
+        public string ID;
+        internal string NameTranslationKey { get; set; }
+        internal string DescriptionTranslationKey { get; set; }
         internal string Owner { get; set; }
         internal string PackName { get; set; }
         internal string PaintMaskTexture { get; set; }
         internal ITranslationHelper Translations { get; set; }
 
-        // Override the name and description so we can easily pass over translation
-        public new string Name { get { return GetTranslation(_name); } set { _name = value; } }
-        protected string _name;
-
-        public new string Description { get { return GetTranslation(_description); } set { _description = value; } }
-        protected string _description;
-
-        [ContentSerializer(Optional = true)]
         public List<Light> Lights;
 
-        [ContentSerializer(Optional = true)]
         public List<PaintMaskData> PaintMasks;
 
-        [ContentSerializer(Optional = true)]
-        public new List<ExtendedBuildingChest> Chests;
+        public new List<ExtendedBuildingChest> Chests
+        {
+            set
+            {
+                _chests = value;
+                base.Chests = _chests.ToList<BuildingChest>();
+            }
+            get
+            {
+                return _chests;
+            }
+        }
+        private List<ExtendedBuildingChest> _chests = new List<ExtendedBuildingChest>();
 
-        [ContentSerializer(Optional = true)]
-        public new List<ExtendedBuildingSkin> Skins = new List<ExtendedBuildingSkin>();
+        public new List<ExtendedBuildingSkin> Skins
+        {
+            set
+            {
+                _skins = value;
+                base.Skins = _skins.ToList<BuildingSkin>();
+            }
+            get
+            {
+                return _skins;
+            }
+        }
+        private List<ExtendedBuildingSkin> _skins;
 
-        [ContentSerializer(Optional = true)]
-        public new List<ExtendedBuildingDrawLayer> DrawLayers;
+        public new List<ExtendedBuildingDrawLayer> DrawLayers
+        {
+            set
+            {
+                _drawLayers = value;
+                base.DrawLayers = _drawLayers.ToList<BuildingDrawLayer>();
+            }
+            get
+            {
+                return _drawLayers;
+            }
+        }
+        private List<ExtendedBuildingDrawLayer> _drawLayers;
 
-        [ContentSerializer(Optional = true)]
-        public new List<ExtendedBuildingItemConversion> ItemConversions;
+        public new List<ExtendedBuildingItemConversion> ItemConversions
+        {
+            set
+            {
+                _itemConversions = value;
+                base.ItemConversions = _itemConversions.ToList<BuildingItemConversion>();
+            }
+            get
+            {
+                return _itemConversions;
+            }
+        }
+        private List<ExtendedBuildingItemConversion> _itemConversions;
 
-        [ContentSerializer(Optional = true)]
         public int MaxConcurrentConversions { get; set; } = -1;
 
-        [ContentSerializer(Optional = true)]
         public bool DisableAutomate { get; set; }
 
-        [ContentSerializer(Optional = true)]
-        public new List<ExtendedBuildingActionTiles> ActionTiles = new List<ExtendedBuildingActionTiles>();
+        public new List<ExtendedBuildingActionTiles> ActionTiles
+        {
+            set
+            {
+                _extendedActionTiles = value;
+                base.ActionTiles = _extendedActionTiles.ToList<BuildingActionTile>();
+            }
+            get
+            {
+                return _extendedActionTiles;
+            }
+        }
+        private List<ExtendedBuildingActionTiles> _extendedActionTiles = new List<ExtendedBuildingActionTiles>();
+
         protected Dictionary<Point, SpecialAction> _specialActionTiles;
 
-        [ContentSerializer(Optional = true)]
-        public List<ChestActionTile> LoadChestTiles;
+        public List<ChestActionTile> LoadChestTiles = new List<ChestActionTile>();
         protected Dictionary<Point, string> _loadChestTiles;
 
-        [ContentSerializer(Optional = true)]
-        public List<ChestActionTile> CollectChestTiles;
+        public List<ChestActionTile> CollectChestTiles = new List<ChestActionTile>();
         protected Dictionary<Point, string> _collectChestTiles;
 
-        [ContentSerializer(Optional = true)]
         public List<ExtendedBuildingActionTiles> EventTiles = new List<ExtendedBuildingActionTiles>();
         protected Dictionary<Point, string> _eventTiles;
         protected Dictionary<Point, SpecialAction> _specialEventTiles;
 
-        [ContentSerializer(Optional = true)]
         public List<Point> TunnelDoors = new List<Point>();
 
-        [ContentSerializer(Optional = true)]
         public List<Point> AuxiliaryHumanDoors = new List<Point>();
 
-        [ContentSerializer(Optional = true)]
         public SpecialAction DefaultSpecialAction { get; set; }
 
-        [ContentSerializer(Optional = true)]
         public SpecialAction DefaultSpecialEventAction { get; set; }
 
-        [ContentSerializer(Optional = true)]
-        public List<InputFilter> InputFilters;
+        public List<InputFilter> InputFilters = new List<InputFilter>();
 
-        [ContentSerializer(Optional = true)]
-        public string IndoorMapTypeAssembly { get; set; } = "Stardew Valley";
+        public new string IndoorMapType { get { return _indoorMapType; } set { _indoorMapType = value; base.IndoorMapType = _indoorMapType; } }
+        private string _indoorMapType;
+        public string IndoorMapTypeAssembly { get { return _indoorMapTypeAssembly; } set { _indoorMapTypeAssembly = value; base.IndoorMapType = $"{this.IndoorMapType},{this.IndoorMapTypeAssembly}"; } }
+        private string _indoorMapTypeAssembly = "Stardew Valley";
 
-        [ContentSerializer(Optional = true)]
-        public new bool? MagicalConstruction;
+        // Required for alert to check for missing MagicalConstruction value 
+        public new bool? MagicalConstruction
+        {
+            set
+            {
+                _magicalConstruction = value.Value;
+                base.MagicalConstruction = value.Value;
+            }
+            get
+            {
+                return _magicalConstruction;
+            }
+        }
+        private bool _magicalConstruction;
+
+        // Used for backwards compatibility for packs that used StardewValley.Locations.BuildableGameLocation
+        internal bool ForceLocationToBeBuildable { get; set; }
 
         public new string GetActionAtTile(int relative_x, int relative_y)
         {

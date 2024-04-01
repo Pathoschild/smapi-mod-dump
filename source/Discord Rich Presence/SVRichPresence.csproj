@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>2.4.1</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-    <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
+	<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	<PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
+	<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
   </ItemGroup>
 </Project>

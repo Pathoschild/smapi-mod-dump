@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/lucaskfreitas/ImmersiveSprinklers
+   Git: https://github.com/lucaskfreitas/ImmersiveSprinklers.git
+
+mods:
+   The Return of Immersive Sprinklers
+
+latest commit:
+   commit 2c78f619e3ce90694f0900de0123dd1832371bf3
+   Author: Lucas Kaminski <lucaskaminski@protonmail.com>
+   Date:   Wed Mar 27 12:54:16 2024 -0300
+   
+       Updating manifest version
+   

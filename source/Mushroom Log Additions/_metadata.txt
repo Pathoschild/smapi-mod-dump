@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/justastranger/MushroomLogAdditions
+   Git: https://github.com/justastranger/MushroomLogAdditions.git
+
+mods:
+   Mushroom Log Additions
+
+latest commit:
+   commit 87b1b88ef0a53d29906a147f427c1ffff6e86be0
+   Author: justastranger <justastrangerlica@gmail.com>
+   Date:   Sat Mar 30 21:50:14 2024 -0500
+   
+       Forgot to copy vanilla mushroom log data
+   

@@ -16,11 +16,11 @@ namespace StardewDruid.Cast.Weald
     internal class Sapling : CastHandle
     {
 
-        public Sapling(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Sapling(Vector2 target)
+            : base(target)
         {
 
-            if (rite.caster.ForagingLevel >= 8)
+            if (Game1.player.ForagingLevel >= 8)
             {
 
                 castCost = 1;
@@ -46,9 +46,21 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            treeFeature.dayUpdate(targetLocation, targetVector);
+            if (treeFeature.growthStage.Value < 3)
+            {
 
-            Utility.addSprinklesToLocation(targetLocation, (int)targetVector.X, (int)targetVector.Y, 1, 1, 1000, 500, new Color(0.8f, 1, 0.8f, 1));
+                treeFeature.growthStage.Value++;
+
+            }
+            else
+            {
+
+                treeFeature.dayUpdate();
+
+            }
+
+            //Utility.addSprinklesToLocation(targetLocation, (int)targetVector.X, (int)targetVector.Y, 1, 1, 1000, 500, new Color(0.8f, 1, 0.8f, 1));
+            ModUtility.AnimateSparkles(targetLocation, targetVector, Color.White);
 
             castFire = true;
 

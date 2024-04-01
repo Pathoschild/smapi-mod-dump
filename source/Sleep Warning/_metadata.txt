@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/GlimmerDev/StardewValleyMod_SleepWarning
+   Git: https://github.com/GlimmerDev/StardewValleyMod_SleepWarning.git
+
+mods:
+   Sleep Warning
+
+latest commit:
+   commit 17b495095367a05a8cfb008e0f0b11b156e1fe52
+   Author: GlimmerDev <leifericson96@gmail.com>
+   Date:   Thu Mar 28 10:24:34 2024 -0400
+   
+       Merge pull request #1 from GlimmerDev/1.0.1
+       
+       1.0.1 update
+   

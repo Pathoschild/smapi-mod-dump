@@ -8,8 +8,10 @@ for queries and analysis.**
 
 # Version history for FishExclusions
 
-## Upcoming
-- Migrated to net5.0 and updated to latest SMAPI version. SMAPI 3.13 or newer is now required.
+## 1.2.0
+Released March 23, 2024.
+- Updated for SMAPI 4.0 and Stardew Valley 1.6
+- Migrated to .NET 6
 
 ## 1.1.5
 Released August 13, 2021.

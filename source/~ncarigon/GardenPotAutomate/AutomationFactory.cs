@@ -23,7 +23,7 @@ namespace GardenPotAutomate {
         private delegate IAutomatable? MakeMachineDelegate(IndoorPot obj, GameLocation location, Vector2 tile);
         private MakeMachineDelegate OnMakeMachine = null!;
 
-        internal static void Register(IModHelper helper, ModConfig config) {
+        internal static void Register(IModHelper helper, Config config) {
             var machine = new AutomationFactory();
             machine.OnMakeMachine += (obj, location, tile) => new GardenPotMachine(config, obj, location, tile);
 
@@ -40,7 +40,7 @@ namespace GardenPotAutomate {
 
         public IAutomatable? GetFor(TerrainFeature feature, GameLocation location, in Vector2 tile) => null;
 
-        public IAutomatable? GetFor(Building building, BuildableGameLocation location, in Vector2 tile) => null;
+        public IAutomatable? GetFor(Building building, GameLocation location, in Vector2 tile) => null;
 
         public IAutomatable? GetForTile(GameLocation location, in Vector2 tile) => null;
     }

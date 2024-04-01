@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/siweipancc/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "[CP]OnlyChildMakeChoices",
+  "Author": "Siweipancc",
+  "Version": "0.0.2",
+  "Description": "Upgrade you FarmCave.",
+  "UniqueID": "Siweipancc.OnlyChildMakeChoices",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:20947"],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Siweipancc.MoreEvents"
+    }
+  ]
+}

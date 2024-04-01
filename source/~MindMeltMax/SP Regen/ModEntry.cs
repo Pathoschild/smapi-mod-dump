@@ -12,56 +12,34 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
 
 namespace SP_Regen
 {
     class ModEntry : Mod
     {
         public GameTime time;
-        public static SPConfig Config;
+        public SPConfig Config;
 
         public override void Entry(IModHelper helper)//Load helpers and read config
         {
+            helper.Events.GameLoop.GameLaunched += GameLaunched;
             helper.Events.GameLoop.UpdateTicked += UpdateTicked;
-            helper.Events.GameLoop.SaveLoaded += SaveLoaded;
-            this.ReadConfig();
+            ReadConfig();
         }
 
-        private void SaveLoaded(object sender, SaveLoadedEventArgs e)
-        {
-            /*if(Config.RegenTime < 300)
-            {
-                this.Monitor.Log("Regen Timer can't be less than 300, Disabling mod", LogLevel.Warn);
-                Helper.Events.GameLoop.UpdateTicked -= UpdateTicked;
-            }
-            else if (Config.RegenTime > 2000)
-            {
-                this.Monitor.Log("Regen Timer can't be more than 2000, Disabling mod", LogLevel.Warn);
-                Helper.Events.GameLoop.UpdateTicked -= UpdateTicked;
-            }
-            else
-            {
-                return;
-            }*/
-            if (Config.RegenTime <= 0)
-            {
-                this.Monitor.Log("Have to have some limits, time can't be less than or equal to 0", LogLevel.Warn);
-                Helper.Events.GameLoop.UpdateTicked -= UpdateTicked;
-            }
-            else
-                return;
-        }
+        private void GameLaunched(object sender, GameLaunchedEventArgs e) => registerForGMCM();
 
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady)//if world isn't loaded, do nothing
+            if (!Context.IsWorldReady || (!Config.TimeFrozenRegen && !Game1.shouldTimePass()))//if world isn't loaded, do nothing
                 return;
 
             time = Game1.currentGameTime; //assigns time variable to currentGameTime
-            if(Game1.player.isInBed)//Check if the player is in bed
+            if (Game1.player.isInBed.Value || (Config.Sitting && Game1.player.isSitting.Value))//Check if the player is in bed
             {
                 Game1.player.regenTimer -= time.ElapsedGameTime.Milliseconds;//Set the regenTimer
-                if(Game1.player.regenTimer < 0)//if the regenTimer is below 0 Milliseconds, add stamina and health
+                if (Game1.player.regenTimer < 0)//if the regenTimer is below 0 Milliseconds, add stamina and health
                 {
                     Game1.player.regenTimer = Config.RegenTime;
                     if (Game1.player.stamina < Game1.player.MaxStamina)
@@ -74,8 +52,33 @@ namespace SP_Regen
 
         private void ReadConfig()
         {
-            Config = (SPConfig)Helper.ReadConfig<SPConfig>();
-            Helper.WriteConfig<SPConfig>(Config);
+            Config = Helper.ReadConfig<SPConfig>();
+            if (Config.RegenTime <= 0)
+                Config.RegenTime = 1;
+            Helper.WriteConfig(Config);
         }
+
+        private void registerForGMCM()
+        {
+            var gmcm = Helper.ModRegistry.GetApi<IGMCMApi>("spacechase0.GenericModConfigMenu");
+            if (gmcm is null)
+                return;
+
+            gmcm.Register(ModManifest, () => Config = new(), () => Helper.WriteConfig(Config));
+
+            gmcm.AddNumberOption(ModManifest, () => Config.RegenTime, (x) => Config.RegenTime = x <= 0 ? 1 : x, () => "Interval", () => "The interval at which health and stamina regen (Lower value = faster)");
+
+            gmcm.AddBoolOption(ModManifest, () => Config.Sitting, (x) => Config.Sitting = x, () => "Regen while sitting", () => "Whether or not health and stamina should regen while sitting");
+            gmcm.AddBoolOption(ModManifest, () => Config.TimeFrozenRegen, (x) => Config.TimeFrozenRegen = x, () => "Regen while time is frozen", () => "Whether or not health and stamina should regen while time is frozen");
+        }
+    }
+
+    public interface IGMCMApi
+    {
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
     }
 }

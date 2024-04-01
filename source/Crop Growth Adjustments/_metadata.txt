@@ -6,9 +6,9 @@ mods:
    Crop Growth Adjustments
 
 latest commit:
-   commit c9ac2c96dec92da7c98b7ea37324cfcb8231f8fc
+   commit e3d15112a2f186529474d85d839dcac2d4b9d051
    Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
-   Date:   Sat Dec 30 01:31:02 2023 +0100
+   Date:   Mon Mar 25 18:49:58 2024 -0500
    
-       fix error in CropNewDay when a crop has no phases
+       add drinking animation when an animal drinks outside
    

@@ -1,0 +1,10 @@
+{
+  "Name": "MoreEvents",
+  "Author": "Siweipancc",
+  "Version": "0.0.1",
+  "Description": "MoreEvents",
+  "UniqueID": "Siweipancc.MoreEvents",
+  "EntryDll": "MoreEvents.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:20945"]
+}

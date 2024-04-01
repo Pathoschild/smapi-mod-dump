@@ -1,0 +1,22 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "spacechase0.Satchels",
+  "Name": "Satchels",
+  "Author": "spacechase0",
+  "Version": "1.0.1",
+  "Description": "An item that lets you hold more items.",
+  "EntryDll": "Satchels.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.20.2"
+    }
+  ]
+}

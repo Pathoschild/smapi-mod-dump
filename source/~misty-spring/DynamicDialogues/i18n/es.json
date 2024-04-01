@@ -14,5 +14,7 @@
 	"config.Debug.name": "Depuración",
 	"config.Debug.description":"Opciones de desarrollador.",
 	"config.Verbose.name": "Información",
-	"config.Verbose.description": "Se mandará más información a la consola."
+	"config.Verbose.description": "Se mandará más información a la consola.",
+	"config.QuestChance.name": "Probabilidad de misión PNJ",
+	"config.QuestChance.description": "La probabilidad de que un PNJ te pida algo (cada 20 minutos). Misiones PNJ son agregadas por mods."
 }

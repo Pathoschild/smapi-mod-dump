@@ -15,7 +15,7 @@ namespace FishingTrawler.Framework.Objects.Items.Rewards
 {
     public class AnglerRing
     {
-        private const int JUKEBOX_RING_BASE_ID = 528;
+        private const string JUKEBOX_RING_BASE_ID = "528";
 
         public static Ring CreateInstance()
         {

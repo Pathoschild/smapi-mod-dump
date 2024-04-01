@@ -1,0 +1,8 @@
+{
+  "silverStarShipments": 25,
+  "goldStarShipments": 50,
+  "iridiumStarShipments": 100,
+  "shouldApplyPriceIncreases": true,
+  "priceIncreaseShipments": 200,
+  "priceIncreasePerLog": 0.25
+}

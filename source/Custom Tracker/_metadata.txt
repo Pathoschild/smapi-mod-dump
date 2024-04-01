@@ -6,9 +6,9 @@ mods:
    Custom Tracker
 
 latest commit:
-   commit f0c727667cf3ebfc746dc5bcbed0cca352acb824
+   commit 659cbb672bfde3c192a6a0ccc3a93514799d53cc
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Dec 21 13:21:07 2020 -0600
+   Date:   Sun Mar 24 13:41:27 2024 -0500
    
-       Update for SDV v1.5.0, increment manifest to v1.4.0
+       Add i18n info to readme
    

@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+    "Changes": [
+      {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Jolyne",
+        "Entries": 
+        {
+
+"Mon": "{{i18n:Jolyne.CharacterDialogue.001}}",
+"Tue": "{{i18n:Jolyne.CharacterDialogue.002}}",
+"Wed": "{{i18n:Jolyne.CharacterDialogue.003}}",
+"Thu": "{{i18n:Jolyne.CharacterDialogue.004}}",
+"Fri": "{{i18n:Jolyne.CharacterDialogue.005}}",
+"Sat": "{{i18n:Jolyne.CharacterDialogue.006}}",
+"Sun": "{{i18n:Jolyne.CharacterDialogue.007}}",
+
+},
+      },
+    ]
+}

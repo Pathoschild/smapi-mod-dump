@@ -11,7 +11,7 @@
 {
   "Name": "Waterproof Items",
   "Author": "Esca",
-  "Version": "1.0.2",
+  "Version": "1.0.1",
   "Description": "Items float when they fall into water, and optionally teleport to the nearest player.",
   "UniqueID": "Esca.WaterproofItems",
   "EntryDll": "WaterproofItems.dll",

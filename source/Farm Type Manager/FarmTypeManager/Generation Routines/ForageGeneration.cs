@@ -192,12 +192,13 @@ namespace FarmTypeManager
                                     Name = randomForage.Name,
                                     ID = randomForage.ID,
                                     DaysUntilExpire = area.DaysUntilSpawnsExpire,
-                                    ConfigItem = Utility.Clone(randomForage.ConfigItem) //use a separate copy of this (TODO: make a more efficient clone method for this class)
+                                    ConfigItem = Utility.Clone(randomForage.ConfigItem) //use a separate copy of this
                                 };
 
-                                if (forage.DaysUntilExpire == null && forage.Type != SavedObject.ObjectType.Object) //if this is an item or container without an expiration setting
+                                if (forage.DaysUntilExpire == null) //if this has no expiration setting
                                 {
-                                    forage.DaysUntilExpire = 1; //default to overnight expiration
+                                    if (forage.Type != SavedObject.ObjectType.Object || forage.ConfigItem?.CanBePickedUp == false) //if this is a non-basic object OR it cannot be removed by players
+                                        forage.DaysUntilExpire = 1; //default to overnight expiration
                                 }
 
                                 //if this object has contents with spawn chances, process them

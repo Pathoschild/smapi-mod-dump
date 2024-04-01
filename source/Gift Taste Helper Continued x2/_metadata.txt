@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JoXW100/GiftTasteHelper
+   Git: https://github.com/JoXW100/GiftTasteHelper.git
+
+mods:
+   Gift Taste Helper Continued x2
+
+latest commit:
+   commit b9826ed32c356a026ebecb9829131a8bceb52bab
+   Author: JoXW100 <joxw100@gmail.com>
+   Date:   Sat Mar 30 17:51:34 2024 +0100
+   
+       NPC specifict tastes can now override universal tastes
+   

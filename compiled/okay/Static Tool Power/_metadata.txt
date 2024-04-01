@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21281
+IDs: omek97.static_toolpower
+update keys: Nexus:21281

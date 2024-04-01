@@ -11,7 +11,7 @@
 {
 	"Name": "Piggy Bank",
 	"IngredientsIdAndCount": "330 10",
-    "ResultYield": 1,
-    "IsBigCraftable": true,
-    "UnlockConditions": "null",
+  "ResultYield": 1,
+  "IsBigCraftable": true,
+  "UnlockConditions": "null",
 }

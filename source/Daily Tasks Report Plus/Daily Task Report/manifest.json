@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Prism-99/DailyTaskReportPlus
+**
+*************************************************/
+
+{
+	"Name": "Daily Tasks Report Plus",
+	"Author": "Prism 99",
+	"Version": " 1.5.1",
+	"Description": "Shows information about some daily tasks in your farm.",
+	"UniqueID": "Prism99.DailyTasksReportPlus",
+	"EntryDll": "DailyTasksReportPlus.dll",
+	"MinimumApiLevel": "4.0.0",
+	"UpdateKeys": [ "Nexus:20871" ]
+}

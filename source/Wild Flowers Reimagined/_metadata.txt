@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/jpparajeles/StardewValleyMods
+   Git: https://github.com/jpparajeles/StardewValleyMods.git
+
+mods:
+   Wild Flowers Reimagined
+
+latest commit:
+   commit d234a564cb0ee5db52f78b82eb41c9eb5092dcfc
+   Author: JosÃ© Pablo Parajeles <josepabloparaj@gmail.com>
+   Date:   Sun Mar 31 22:08:44 2024 -0600
+   
+       Add a new way to get the seed ids
+       
+       Fixes a bug where the some seeds on mods can generate the same object id. This fixes it by allowing the logic to support this behavior
+   

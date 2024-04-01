@@ -50,7 +50,7 @@ In addition to the bundles (both normal and remixed) in the base game, the follo
 - Minerva's Harder Community Center Bundles
 - Challenging Community Center Bundles (by Alja)
 
-Note that even unsupported bundle mods should have at least partial support. Any items not covered will just not show any suggestions.
+Note that even if a bundle mod is not listed here, it's still likely to have partial, or possibly even full support - suggestions are defined on a per-item basis, and many base-game items are covered. Any items not covered will just not show any suggestions.
 
 ## Possible Mod Conflicts
 I tried to have this mod directly reference the data when possible, so some things changed by mods (like recipe unlock requirements that aren't mail-based) may be automatically supported. But for the most part, suggestions are hardcoded according to the base game, and could be inaccurate or incomplete when using mods that make major changes. (In just a few cases, there are suggestions that are only listed when specific mods are installed, but I'm absolutely not committing to covering everything like that.)

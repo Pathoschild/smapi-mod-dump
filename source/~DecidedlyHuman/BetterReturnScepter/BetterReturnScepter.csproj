@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Latest.targets"/>
     <Import Project="..\Build\Common.csproj"/>
     <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
@@ -8,11 +8,16 @@
         <Description>Improves the return scepter, allowing you to warp back to where you came from.</Description>
         <MinimumApiVersion>3.15.0</MinimumApiVersion>
         <UpdateKeys>Nexus:11610</UpdateKeys>
-        <Version>1.1.1-dev</Version>
+        <Version>1.2.0</Version>
     </PropertyGroup>
 
     <PropertyGroup>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Update="release-notes.md">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

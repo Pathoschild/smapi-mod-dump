@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20967
+IDs: DellyBelly.BabyPets
+update keys: Nexus:20967, GitHub:DelphinWave/BabyPets

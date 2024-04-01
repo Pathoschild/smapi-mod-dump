@@ -15,7 +15,6 @@
     "tool.noEffect.1": "He doesn't seem to notice.",
     "tool.noEffect.2": "It's not very effective...",
     "tool.noEffect.3": "Maybe some other item would work?",
-    "flute.dontPlayHere": "OAK: {{p}}! This isn't the time to use that!",
     "hint.1.Shane": "You want to move the big sleeping thing in the forest? How should I know?$s#$b#Try bribing it, maybe. Everyone has a price.",
     "hint.1.Abigail": "Oh, the big oaf out in the woods! He's cute, isn't he?$h#$b#... I guess you'd need to wake him up if you want him to move. But how...?$9",
     "hint.1.Linus": "If you want to move the sleeping animal, you'll have to find someone very knowledgeable.#$b#A friend of mine lives in the tower over that way. Maybe he can help.",
@@ -25,7 +24,7 @@
     "hint.3.Demetrius": "Do I know how to wake the creature in the forest? No, but I have observed it a bit.#$b#It spends most of its time sleeping, and is very difficult to rouse as a result.#$b#You'll probably need a purpose-built tool to do the job.",
     "hint.3.Penny": "A sleeping giant that can't be awakened... it sounds like a fairy tale.$h#$b#Usually in those stories, you need a pure heart or something to break the spell.#$b#... But sometimes gold works!$h",
     "hint.3.Lewis": "Well, I don't think I can help with your sleeping creature trouble.#$b#But try asking the man in the tower. He's odd, but I bet he knows something.#$b#Maybe he'll tell you, if he trusts you.$s",
-    "hint.1.HatMouseLacey": "Oh, the big sleeping thing? He's huge!$u#$b#He doesn't seem to notice anything around him. Good luck getting him to move!",
+    "hint.1.ichortower.HatMouseLacey_Lacey": "Oh, the big sleeping thing? He's huge!$u#$b#He doesn't seem to notice anything around him. Good luck getting him to move!",
 
     "wizard.0001.0": "Ah, @. What brings you here?",
     "wizard.0001.1": "Wait. Don't tell me: I can sense it.#$b#You wish to know about the creature sleeping behind my tower, do you not?",
@@ -41,6 +40,10 @@
     "wizard.0001.10": "Samuel, you old coot. Looks like you were right.",
     "wizard.0001.11": "I found a use for it after all.",
     "wizard.0001.12": "Back again, eh? Any luck with our slumbering friend?",
+
+    "flute.dontPlayHere": "OAK: {{p}}! This isn't the time to use that!",
+    "object.strangeflute.name": "Strange Flute",
+    "object.strangeflute.description": "An antique flute from a distant land. It makes a beautiful sound.",
 
     "EOF": ""
 }

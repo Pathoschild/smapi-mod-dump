@@ -18,9 +18,8 @@ namespace mouahrarasModuleCollection.SubSections
 		internal static void Apply(Harmony harmony)
 		{
 			// Apply modules
-			AnimalPurchaseModule.Apply(harmony);
+			BetterAnimalPurchaseModule.Apply(harmony);
 			GeodesAutoProcessModule.Apply(harmony);
-			SimultaneousServicesModule.Apply(harmony);
 		}
 	}
 }

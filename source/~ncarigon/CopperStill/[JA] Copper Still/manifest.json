@@ -11,12 +11,12 @@
 {
 	"Name": "[JA] Copper Still",
 	"Author": "NCarigon",
-    "Version": "1.0.5",
+	"Version": "1.1.1",
 	"Description": "Item content for Copper Still",
 	"UniqueID": "NCarigon.CopperStillJA",
 	"UpdateKeys": [ "nexus:15333" ],
-	"MinimumApiVersion": "3.13.0",
+	"MinimumApiVersion": "4.0.0",
 	"ContentPackFor": {
 		"UniqueID": "spacechase0.JsonAssets"
-    }
+	}
 }

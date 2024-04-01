@@ -4,13 +4,15 @@ urls:
 
 mods:
    Cold Pets
+   Default Farmer
    Junimo Boy
    Seasonal Save Slots
+   Stardew Valley - Roguelike
 
 latest commit:
-   commit 6aa7002a286f1eeeb1af5fd07a9c3384ba89ab44
+   commit 20687998f29becd5fb4111b06082f9be7327df40
    Author: Tyler <gibbstyler7@gmail.com>
-   Date:   Sun Oct 8 20:02:27 2023 -0500
+   Date:   Sat Mar 23 13:39:27 2024 -0500
    
-       bump version
+       update seasonal save slots for 1.6
    

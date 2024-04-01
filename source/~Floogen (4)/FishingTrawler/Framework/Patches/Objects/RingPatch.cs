@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buffs;
 using StardewValley.Objects;
 using System;
 using System.Text;
@@ -39,9 +40,7 @@ namespace FishingTrawler.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, nameof(Ring.drawTooltip)), prefix: new HarmonyMethod(GetType(), nameof(DrawTooltipPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Ring.getExtraSpaceNeededForTooltipSpecialIcons), new[] { typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(StringBuilder), typeof(string), typeof(int) }), prefix: new HarmonyMethod(GetType(), nameof(GetExtraSpaceNeededForTooltipSpecialIconsPrefix)));
 
-            harmony.Patch(AccessTools.Method(_object, nameof(Ring.onEquip), new[] { typeof(Farmer), typeof(GameLocation) }), prefix: new HarmonyMethod(GetType(), nameof(OnEquipPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Ring.onUnequip), new[] { typeof(Farmer), typeof(GameLocation) }), prefix: new HarmonyMethod(GetType(), nameof(OnUnequipPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Ring.onDayUpdate), new[] { typeof(Farmer), typeof(GameLocation) }), prefix: new HarmonyMethod(GetType(), nameof(OnDayUpdatePrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Ring.AddEquipmentEffects), new[] { typeof(BuffEffects) }), prefix: new HarmonyMethod(GetType(), nameof(AddEquipmentEffectsPrefix)));
         }
 
         private static void GetNamePostfix(Ring __instance, ref string __result)
@@ -117,35 +116,11 @@ namespace FishingTrawler.Framework.Patches.Objects
             return Math.Max(minimum_size, (int)Game1.dialogueFont.MeasureString((__instance.DisplayName == null) ? "" : __instance.DisplayName).X);
         }
 
-        private static bool OnEquipPrefix(Ring __instance, Farmer who, GameLocation location)
+        private static bool AddEquipmentEffectsPrefix(Ring __instance, BuffEffects effects)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ANGLER_RING_KEY))
             {
-                who.addedFishingLevel.Value += 2;
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool OnUnequipPrefix(Ring __instance, Farmer who, GameLocation location)
-        {
-            if (__instance.modData.ContainsKey(ModDataKeys.ANGLER_RING_KEY))
-            {
-                who.addedFishingLevel.Value = Math.Max(0, who.addedFishingLevel.Value - 2);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool OnDayUpdatePrefix(Ring __instance, Farmer who, GameLocation location)
-        {
-            if (__instance.modData.ContainsKey(ModDataKeys.ANGLER_RING_KEY))
-            {
-                OnEquipPrefix(__instance, who, location);
+                effects.FishingLevel.Value += 2;
 
                 return false;
             }

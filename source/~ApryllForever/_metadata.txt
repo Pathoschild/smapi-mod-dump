@@ -1,0 +1,19 @@
+urls:
+   web: https://github.com/ApryllForever/PolyamorySweetLove
+   Git: https://github.com/ApryllForever/PolyamorySweetLove.git
+
+mods:
+   Polyamory Sweet → Polyamory Kiss
+   Polyamory Sweet → Polyamory Sweet Bed
+   Polyamory Sweet → Polyamory Sweet Love
+   Polyamory Sweet → Polyamory Sweet Wedding
+
+latest commit:
+   commit 5cf3242c926c8b5cf42d753f7591b2e0e33ffc3b
+   Author: Queen April the Infinite and Undying <101156981+ApryllForever@users.noreply.github.com>
+   Date:   Mon Mar 25 17:47:08 2024 -0700
+   
+       Merge pull request #1 from BernieAteUsername/patch-1
+       
+       Update zh.json
+   

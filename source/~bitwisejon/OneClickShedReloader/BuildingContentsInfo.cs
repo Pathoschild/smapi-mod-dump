@@ -9,10 +9,8 @@
 *************************************************/
 
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -46,10 +44,10 @@ namespace BitwiseJonMods.OneClickShedReloader
             {
                 var objects = location.objects.Values;
                 Containers = objects.Where(o => supportedContainerTypes.Any(c => o.Name == c)).Select(o => o);
-                ReadyToHarvestContainers = Containers.Where(c => c.heldObject.Value != null && (c.readyForHarvest.Value == true || (c.heldObject.Value is Chest && (c.heldObject.Value as Chest).items.Count() > 0)));
+                ReadyToHarvestContainers = Containers.Where(c => c.heldObject.Value != null && (c.readyForHarvest.Value == true || (c.heldObject.Value is Chest && (c.heldObject.Value as Chest).Items.Count() > 0)));
                 ReadyToLoadContainers = Containers.Where(c => c.heldObject.Value == null && c.readyForHarvest.Value == false && !nonReloadableContainerTypes.Any(r => c.name == r));
 
-                NumberOfItems = Containers.Count(c => c.heldObject.Value != null && c.readyForHarvest.Value == true) + Containers.Where(c => c.heldObject.Value is Chest).Sum(c => (c.heldObject.Value as Chest).items.Sum(i => i.Stack));
+                NumberOfItems = Containers.Count(c => c.heldObject.Value != null && c.readyForHarvest.Value == true) + Containers.Where(c => c.heldObject.Value is Chest).Sum(c => (c.heldObject.Value as Chest).Items.Sum(i => i.Stack));
                 NumberOfContainers = Containers.Count();
                 NumberReadyToHarvest = ReadyToHarvestContainers.Count();
                 NumberReadyToLoad = ReadyToHarvestContainers.Where(c => !nonReloadableContainerTypes.Any(r => c.name == r)).Count() + ReadyToLoadContainers.Count();

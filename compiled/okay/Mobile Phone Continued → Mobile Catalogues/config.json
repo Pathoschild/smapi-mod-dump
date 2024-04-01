@@ -1,0 +1,77 @@
+{
+  "EnableMod": true,
+  "EnableCatalogue": true,
+  "EnableFurnitureCatalogue": true,
+  "EnableSeedCatalogue": true,
+  "EnableTravelingCatalogue": true,
+  "LimitTravelingCatalogToInTown": true,
+  "EnableDesertCatalogue": true,
+  "LimitDesertCatalogToBusFixed": true,
+  "EnableHatCatalogue": true,
+  "EnableClothingCatalogue": true,
+  "EnableDwarfCatalogue": true,
+  "EnableKrobusCatalogue": true,
+  "EnableGuildCatalogue": true,
+  "RequireCataloguePurchase": true,
+  "PriceCatalogue": 30000,
+  "PriceFurnitureCatalogue": 100000,
+  "PriceSeedCatalogue": 300000,
+  "PriceTravelingCatalogue": 500000,
+  "PriceDesertCatalogue": 500000,
+  "PriceHatCatalogue": 10000,
+  "PriceClothingCatalogue": 200000,
+  "PriceDwarfCatalogue": 200000,
+  "PriceKrobusCatalogue": 200000,
+  "PriceGuildCatalogue": 100000,
+  "FreeCatalogue": false,
+  "FreeFurnitureCatalogue": false,
+  "FreeSeedCatalogue": false,
+  "FreeDesertCatalogue": false,
+  "FreeTravelingCatalogue": false,
+  "FreeHatCatalogue": false,
+  "FreeClothingCatalogue": false,
+  "SeedsToInclude": "season",
+  "PriceMult": 1.0,
+  "AppHeaderHeight": 32,
+  "AppRowHeight": 32,
+  "BackgroundColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "HighlightColor": {
+    "B": 255,
+    "G": 230,
+    "R": 230,
+    "A": 255
+  },
+  "GreyedColor": {
+    "B": 230,
+    "G": 230,
+    "R": 230,
+    "A": 255
+  },
+  "HeaderColor": {
+    "B": 200,
+    "G": 100,
+    "R": 100,
+    "A": 255
+  },
+  "TextColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  },
+  "HeaderTextColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "MarginX": 4,
+  "MarginY": 4,
+  "HeaderTextScale": 0.5,
+  "TextScale": 0.5
+}

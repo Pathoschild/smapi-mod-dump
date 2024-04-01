@@ -15,13 +15,14 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Internal;
 using StardewValley.Menus;
 
 namespace MailServicesMod
 {
     internal class GuildRecoveryController
     {
-        private static readonly PerScreen<List<Item>> _itemsToRecover = new PerScreen<List<Item>>();
+        private static readonly PerScreen<List<Item>> _itemsToRecover = new();
 
         internal const string RecoveryResponseKeyOne = "One";
         internal const string RecoveryResponseKeyAll = "All";
@@ -32,20 +33,20 @@ namespace MailServicesMod
         {
             if (_itemsToRecover.Value == null)
             {
-                Dictionary<ISalable, int[]> adventureRecoveryStock = Utility.getAdventureRecoveryStock();
+                Dictionary<ISalable, ItemStockInformation> adventureRecoveryStock = ShopBuilder.GetShopStock("AdventureGuildRecovery");
 
                 int money = Game1.player.Money;
-                Random random = new Random((int)((long)Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed * Game1.stats.DaysPlayed));
+                Random random = new((int)((long)Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed * Game1.stats.DaysPlayed));
 
-                List<Item> itemsToRecover = new List<Item>();
+                List<Item> itemsToRecover = new();
                 while (adventureRecoveryStock.Count > 0)
                 {
-                    KeyValuePair<ISalable, int[]> itemAndValue = adventureRecoveryStock.ToList()[Game1.random.Next(0, adventureRecoveryStock.Count)];
+                    KeyValuePair<ISalable, ItemStockInformation> itemAndValue = adventureRecoveryStock.ToList()[random.Next(0, adventureRecoveryStock.Count)];
                     adventureRecoveryStock.Remove(itemAndValue.Key);
                     RecoveryConfig recoveryConfig = DataLoader.GetRecoveryConfig(Game1.player);
-                    if (itemAndValue.Value[0] <= money || recoveryConfig.RecoverForFree)
+                    if (itemAndValue.Value.Price <= money || recoveryConfig.RecoverForFree)
                     {
-                        money -= itemAndValue.Value[0];
+                        money -= itemAndValue.Value.Price;
                         itemsToRecover.Add((Item)itemAndValue.Key);
                         if (!recoveryConfig.RecoverAllItems) break;
                     }
@@ -64,13 +65,13 @@ namespace MailServicesMod
         /// </summary>
         public static void ItemsRecovered()
         {
-            Dictionary<ISalable, int[]> adventureRecoveryStock = Utility.getAdventureRecoveryStock();
+            Dictionary<ISalable, ItemStockInformation> adventureRecoveryStock = ShopBuilder.GetShopStock("AdventureGuildRecovery");
             RecoveryConfig recoveryConfig = DataLoader.GetRecoveryConfig(Game1.player);
             _itemsToRecover.Value.ForEach(item =>
             {
                 if (!recoveryConfig.RecoverForFree)
                 {
-                    ShopMenu.chargePlayer(Game1.player, 0, adventureRecoveryStock[item][0]);
+                    ShopMenu.chargePlayer(Game1.player, 0, adventureRecoveryStock[item].Price);
                 }
                 Game1.player.itemsLostLastDeath.Remove(item);
             });
@@ -85,7 +86,7 @@ namespace MailServicesMod
 
         internal static void OpenOfferDialog()
         {
-            List<Response> options = new List<Response>
+            List<Response> options = new()
                         {
                             new Response(RecoveryResponseKeyOne, DataLoader.I18N.Get("Delivery.Marlon.RecoveryOffer.One")),
                             new Response(RecoveryResponseKeyAll, DataLoader.I18N.Get("Delivery.Marlon.RecoveryOffer.All")),

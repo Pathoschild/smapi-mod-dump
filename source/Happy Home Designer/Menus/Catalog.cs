@@ -16,7 +16,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using System;
 using System.Collections.Generic;
 
 namespace HappyHomeDesigner.Menus
@@ -26,54 +25,72 @@ namespace HappyHomeDesigner.Menus
 		public static readonly PerScreen<Catalog> ActiveMenu = new();
 		internal static Texture2D MenuTexture;
 
-		public enum AvailableCatalogs
+		/// <summary>Attempts to open the menu from an existing shop</summary>
+		/// <param name="existing">The shop to try and replace</param>
+		/// <returns>whether or not the shop is replaced</returns>
+		public static bool TryShowCatalog(ShopMenu existing)
 		{
-			Furniture = 1,
-			Wallpaper = 2,
-			All = 3,
-		}
+			if (existing is null)
+				return false;
 
-		public static bool TryShowCatalog(AvailableCatalogs catalogs, ShopMenu existing = null)
-		{
-			MenuTexture = ModEntry.helper.GameContent.Load<Texture2D>(ModEntry.uiPath);
+			if (!existing.CountsAsCatalog())
+				return false;
 
-			// catalog is open
-			if (ActiveMenu.Value is Catalog catalog)
-				// the same or more permissive
-				if ((catalog.Catalogs | catalogs) == catalog.Catalogs)
-					return false;
-				else
-					catalog.exitThisMenuNoSound();
+			ShowCatalog(
+				existing.itemPriceAndStock.Keys.GetAdditionalCatalogItems(existing.ShopId),
+				existing.ShopId
+			);
 
-			var menu = new Catalog(catalogs);
-			Game1.onScreenMenus.Insert(0, menu);
-			ActiveMenu.Value = menu;
-			Game1.isTimePaused = ModEntry.config.PauseTime;
 			return true;
 		}
 
-		public readonly AvailableCatalogs Catalogs;
+		public static void ShowCatalog(IEnumerable<ISalable> items, string ID)
+		{
+			MenuTexture = ModEntry.helper.GameContent.Load<Texture2D>(AssetManager.UI_PATH);
 
-		private List<ScreenPage> Pages = new();
-		private int tab = 0;
-		private List<ClickableTextureComponent> Tabs = new();
-		private ClickableTextureComponent CloseButton;
+			if (ActiveMenu.Value is Catalog catalog)
+				if (catalog.Type == ID)
+					return;
+				else
+					catalog.exitThisMenuNoSound();
+
+			var menu = new Catalog(items, ID);
+			Game1.onScreenMenus.Insert(0, menu);
+			ActiveMenu.Value = menu;
+			Game1.isTimePaused = ModEntry.config.PauseTime;
+		}
+
+		public readonly string Type;
+
+		private readonly List<ScreenPage> Pages = new();
+		private readonly List<ClickableTextureComponent> Tabs = new();
+		private readonly ClickableTextureComponent CloseButton;
 		private readonly ClickableTextureComponent SettingsButton;
 		private readonly ClickableTextureComponent ToggleButton;
+		private int tab = 0;
 		private bool Toggled = true;
 		private Point screenSize;
 
-		public Catalog(AvailableCatalogs catalogs, ShopMenu existing = null)
+		public Catalog(IEnumerable<ISalable> items, string id, bool playSound = true)
 		{
-			Catalogs = catalogs;
-			if ((catalogs & AvailableCatalogs.Furniture) is not 0)
-				Pages.Add(new FurniturePage(existing));
-			if ((catalogs & AvailableCatalogs.Wallpaper) is not 0)
-				Pages.Add(new WallFloorPage(existing));
+			Type = id;
+
+			Pages.Add(new FurniturePage(items));
+			Pages.Add(new WallFloorPage(items));
+			Pages.Add(new BigObjectPage(items));
+			Pages.Add(new ItemPage(items));
 
 			if (Pages.Count is not 1)
-				for (int i = 0; i < Pages.Count; i++)
-					Tabs.Add(Pages[i].GetTab());
+				for (int i = Pages.Count - 1; i >= 0; i--)
+					if (Pages[i].Count() is 0)
+						Pages.RemoveAt(i);
+					else
+						Tabs.Add(Pages[i].GetTab());
+
+			if (Tabs.Count is 1)
+				Tabs.Clear();
+			else
+				Tabs.Reverse();
 
 			CloseButton = new(new(0, 0, 48, 48), Game1.mouseCursors, new(337, 494, 12, 12), 3f, false);
 			ToggleButton = new(new(0, 0, 48, 48), Game1.mouseCursors, new(352, 494, 12, 12), 3f, false);
@@ -85,7 +102,7 @@ namespace HappyHomeDesigner.Menus
 			AltTex.forcePreviewDraw = true;
 			AltTex.forceMenuDraw = true;
 
-			if (existing is null)
+			if (playSound)
 				Game1.playSound("bigSelect");
 		}
 

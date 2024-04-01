@@ -1,0 +1,9 @@
+{
+  "HarvestWithSword": false,
+  "HarvestAllForage": true,
+  "PluckingScythe": "INVALID",
+  "Flowers": "BOTH",
+  "Forage": "BOTH",
+  "PluckableCrops": "BOTH",
+  "ScythableCrops": "SCYTHE"
+}

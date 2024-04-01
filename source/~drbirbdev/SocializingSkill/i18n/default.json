@@ -31,13 +31,6 @@
     "profession.Beloved.desc": "Sometimes get gifts from your friends",
     "profession.Beloved.pdesc": "Often get gifts from your friends",
 
-    "friendly.prestige.desc": "Gain even more additional friendship from talking to villagers",
-    "smoothtalker.prestige.desc": "Gain even more friendship (and lose none) during heart events",
-    "gifter.prestige.desc": "Gain even more friendship from giving gifts",
-    "helpful.prestige.desc": "Gain even more quest rewards",
-    "haggler.prestige.desc": "Get a discount at shops when you are friends with the owner",
-    "beloved.prestige.desc": "Often get gifts from your friends",
-
     "dialogue.beloved": "Take this.  I found it lying around the house.",
     "dialogue.beloved.rare": "Hey {{name}}, I think you might like this.",
     "dialogue.beloved.superrare": "I saw this, and I knew you'd love it.",
@@ -68,7 +61,7 @@
 
     "config.SmoothTalkerProfessionModifiers": "Smooth Talker Profession Modifiers",
     "config.SmoothTalkerPositiveMultiplier": "Positive Multiplier",
-    "config.SmoothTalkerPositiveMultiplier.tooltip": "Multiplies positive event responses by this amount when you have the Smooth Talker profession (keey > 1 to make responses better)",
+    "config.SmoothTalkerPositiveMultiplier.tooltip": "Multiplies positive event responses by this amount when you have the Smooth Talker profession (keep > 1 to make responses better)",
     "config.SmoothTalkerNegativeMultiplier": "Negative Multiplier",
     "config.SmoothTalkerNegativeMultiplier.tooltip": "Multiplies negative event responses by this amount when you have the Smooth Talker profession (keep > 0 and < 1 to make responses better, but not positive)",
 

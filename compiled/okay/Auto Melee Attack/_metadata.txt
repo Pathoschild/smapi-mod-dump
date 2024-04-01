@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20704
+IDs: Siweipancc.AutoMeleeAttack
+update keys: Nexus:20704

@@ -1,0 +1,10 @@
+{
+  "Name": "Always Hay",
+  "Author": "Omek97",
+  "Version": "1.0.1",
+  "Description": "Get hay from scything without having silos",
+  "UniqueID": "omek97.always_hay",
+  "EntryDll": "AlwaysHay.dll",
+  "MinimumApiVersion": "2.9.0",
+  "UpdateKeys": [ "Nexus:20808" ]
+}

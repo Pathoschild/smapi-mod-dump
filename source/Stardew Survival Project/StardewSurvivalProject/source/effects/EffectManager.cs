@@ -89,18 +89,17 @@ namespace StardewSurvivalProject.source.effects
             ));
 
             // frostbite effect, desc: Your mind is getting numb. I hope your shelter is nearby...
-            var test = new CustomEffect(
+            effectDictionary.Add(frostbiteEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/frostbite",
                 displayName: "Frostbite",
                 description: "Your mind is getting numb. I hope your shelter is nearby...",
                 iconTexture: effectIcons.GetValueSafe("Frostbite"),
                 duration: 1_000,
-                isDebuff: true,
                 effects: new BuffEffects
                 {
                     Speed = { -2 }
                 }
-            );
+            ));
             
             // heatstroke effect, desc: The heat is so bad, you begin to sweat non-stop
             effectDictionary.Add(heatstrokeEffectIndex, new CustomEffect(

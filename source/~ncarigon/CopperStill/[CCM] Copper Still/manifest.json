@@ -9,13 +9,13 @@
 *************************************************/
 
 {
-	"Name": "[CCM ]Copper Still",
+	"Name": "[CCM] Copper Still",
 	"Author": "NCarigon",
-    "Version": "1.0.5",
+	"Version": "1.1.1",
 	"Description": "Cask content for Copper Still.",
 	"UniqueID": "NCarigon.CopperStillCCM",
 	"UpdateKeys": [ "nexus:15333" ],
-	"MinimumApiVersion": "2.11.2",
+	"MinimumApiVersion": "4.0.0",
 	"ContentPackFor": {
 		"UniqueID": "DIGUS.CustomCaskMod"
 	}

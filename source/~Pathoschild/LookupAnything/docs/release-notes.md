@@ -9,13 +9,42 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release for Stardew Valley 1.6
+## Upcoming release
+* Fixed upgrade level check for barns and coops.
+
+## 1.41.3
+Released 28 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed machine output recipes no longer shown.
+* Fixed cooking recipes always shown as never cooked.
+* Improved translations. Thanks to MakinDay (updated Italian), mc-kaishixiaxue (updated Chinese), and Shi974 (updated French)!
+
+## 1.41.2
+Released 26 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed chest lookups counting fridges as owned chests.
+* Fixed crop lookups no longer showing growth info when full-grown.
+* Fixed recipe data no longer shown in some cases.
+* Fixed support for recipes with randomized output items.
+* Fixed error using search menu if other mods added items with no names.
+* Fixed lookups for upgraded barns/coops not showing correct upgrade summary.
+
+## 1.41.1
+Released 21 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed error looking up wild forage.
+* Fixed error looking up players on the Meadowlands farm or a custom `Data/AdditionalFarms` farm type.
+
+## 1.41.0
+Released 19 March 2024 for SMAPI 4.0.0 or later.
+
 * Updated for Stardew Valley 1.6.  
   _Thanks to SinZ163 for contributing some of the fixes!_
-* Added more seed info for tree lookups.
+* Item lookups now show which mod added the item, if the mod follows the [unique string ID](https://stardewvalleywiki.com/Modding:Modder_Guide/Game_Fundamentals#Unique_string_IDs) format.
+* Added more seed info in tree lookups.
 * Added support for looking up NPCs in some custom mod menus (thanks to BinaryLip!).
 * Improved debug field format for player stats and schedules.
-* Improved translations. Thanks to EmWhyKay (updated Turkish)!
+* Improved translations. Thanks to EmWhyKay (updated Turkish) and MakinDay (updated Italian)!
 * Fixed errors if some config fields are set to null.
 
 ## 1.40.4

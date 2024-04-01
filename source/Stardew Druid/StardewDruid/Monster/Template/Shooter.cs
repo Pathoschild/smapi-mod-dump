@@ -86,10 +86,7 @@ namespace StardewDruid.Monster.Template
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(new INetSerializable[1]
-            {
-                 posturing,
-            });
+            NetFields.AddField(posturing, "posturing");
         }
 
         public override void behaviorAtGameTick(GameTime time)
@@ -104,27 +101,30 @@ namespace StardewDruid.Monster.Template
             }
             else if (shootPlayer)
             {
+                
                 Vector2 vector = Vector2.Zero;
+
                 float value = 0f;
-                if ((int)facingDirection == 0)
+
+                if (FacingDirection == 0)
                 {
                     vector = new Vector2(0f, -1f);
                     value = 0f;
                 }
 
-                if ((int)facingDirection == 3)
+                if (FacingDirection == 3)
                 {
                     vector = new Vector2(-1f, 0f);
                     value = -MathF.PI / 2f;
                 }
 
-                if ((int)facingDirection == 1)
+                if (FacingDirection == 1)
                 {
                     vector = new Vector2(1f, 0f);
                     value = MathF.PI / 2f;
                 }
 
-                if ((int)facingDirection == 2)
+                if (FacingDirection == 2)
                 {
                     vector = new Vector2(0f, 1f);
                     value = MathF.PI;
@@ -141,13 +141,14 @@ namespace StardewDruid.Monster.Template
 
                     fireEvent.Fire();
                     currentLocation.playSound(fireSound);
-                    BasicProjectile basicProjectile = new BasicProjectile(DamageToFarmer, firedProjectile, 0, 0, 0f, vector.X, vector.Y, projectilePosition, "", "", explode: false, damagesMonsters: false, currentLocation, this);
+                    BasicProjectile basicProjectile = new BasicProjectile(DamageToFarmer, firedProjectile, 0, 0, 0f, vector.X, vector.Y, projectilePosition, null, null, null, explode: false, damagesMonsters: false, currentLocation, this);
                     basicProjectile.startingRotation.Value = value;
                     basicProjectile.height.Value = 24f;
                     basicProjectile.debuff.Value = projectileDebuff;
                     basicProjectile.ignoreTravelGracePeriod.Value = true;
                     basicProjectile.IgnoreLocationCollision = true;
                     basicProjectile.maxTravelDistance.Value = 128 * projectileRange;
+
                     currentLocation.projectiles.Add(basicProjectile);
 
                 }
@@ -295,6 +296,20 @@ namespace StardewDruid.Monster.Template
         {
             if (!loadedout) { LoadOut(); }
             base.update(time, location);
+        }
+
+        public override void onDealContactDamage(Farmer who)
+        {
+
+            if ((who.health + who.buffs.Defense) - DamageToFarmer < 10)
+            {
+
+                who.health = (DamageToFarmer - who.buffs.Defense) + 10;
+
+                Mod.instance.CriticalCondition();
+
+            }
+
         }
 
     }

@@ -6,9 +6,9 @@ mods:
    Aggressive Acorns
 
 latest commit:
-   commit f75b886ff2b1884110ab301d129ef4a7268f36ac
-   Author: Phrasefable <12666934+phrasefable@users.noreply.github.com>
-   Date:   Fri Jul 3 23:33:50 2020 +1200
+   commit fdd7632a223c35866d17ebc72a50b412d8b389a6
+   Author: phrasefable <12666934+phrasefable@users.noreply.github.com>
+   Date:   Mon Apr 1 18:25:40 2024 +1300
    
-       PMT: Format command description.
+       Update README.md
    

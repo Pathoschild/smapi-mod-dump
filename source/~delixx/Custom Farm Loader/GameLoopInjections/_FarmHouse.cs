@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -22,6 +22,7 @@ using System.Reflection;
 using Custom_Farm_Loader.Lib;
 using Custom_Farm_Loader.Lib.Enums;
 using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace Custom_Farm_Loader.GameLoopInjections
 {
@@ -91,9 +92,15 @@ namespace Custom_Farm_Loader.GameLoopInjections
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
             var starterFurniture = customFarm.StartFurniture.Where(el => el.LocationName == "FarmHouse");
 
-            foreach (Furniture furniture in starterFurniture)
+            foreach (Lib.Furniture furniture in starterFurniture)
                 furniture.tryPlacingFurniture(__instance);
 
+            if(!__instance.Objects.Pairs.Any(e => e.Value is Chest chest && chest.giftbox.Value && chest.giftboxIsStarterGift.Value)) {
+                var first = __instance.Objects.Pairs.FirstOrDefault(e => e.Value is Chest chest && chest.giftbox.Value);
+
+                if (first.Value is Chest box)
+                    box.giftboxIsStarterGift.Value = true;
+            }
         }
 
     }

@@ -227,7 +227,7 @@ namespace MachineAugmentors
             TodaysStock = null;
         }
 
-        private static Dictionary<ISalable, int[]> TodaysStock = null;
+        private static Dictionary<ISalable, ItemStockInformation> TodaysStock = null;
 
         private void Display_MenuChanged(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
         {
@@ -236,7 +236,7 @@ namespace MachineAugmentors
             {
                 if (TodaysStock == null)
                 {
-                    TodaysStock = new Dictionary<ISalable, int[]>();
+                    TodaysStock = new Dictionary<ISalable, ItemStockInformation>();
 
                     //  Pick the Augmentor types that will be sold today
                     int NumTypes = Augmentor.WeightedRound(UserConfig.ShopSettings.NumAugmentorTypesInShop);
@@ -284,17 +284,17 @@ namespace MachineAugmentors
                         int QuantityInStock = Math.Max(1, Augmentor.WeightedRound(DesiredValue));
 
                         Augmentor SellableInstance = Augmentor.CreateInstance(Config.AugmentorType, 1);
-                        TodaysStock.Add(SellableInstance, new int[] { (int)Price, QuantityInStock });
+                        TodaysStock.Add(SellableInstance, new ItemStockInformation((int)Price, QuantityInStock));
                     }
                 }
 
                 //  Add today's stock to the shop
                 if (TodaysStock.Any())
                 {
-                    Dictionary<ISalable, int[]> Stock = NewShop.itemPriceAndStock;
-                    foreach (KeyValuePair<ISalable, int[]> Item in TodaysStock)
+                    Dictionary<ISalable, ItemStockInformation> Stock = NewShop.itemPriceAndStock;
+                    foreach (KeyValuePair<ISalable, ItemStockInformation> Item in TodaysStock)
                     {
-                        if (Item.Value[1] > 0 && !Stock.ContainsKey(Item.Key))
+                        if (Item.Value.Stock > 0 && !Stock.ContainsKey(Item.Key))
                             Stock.Add(Item.Key, Item.Value);
                     }
 
@@ -303,12 +303,7 @@ namespace MachineAugmentors
             }
         }
 
-        private static bool IsTravellingMerchantShop(ShopMenu Menu)
-        {
-            //  Note: In Stardew Valley Expanded v1.11, ShopMenu.portraitPerson is no longer null for the Travelling Merchant
-            return Menu != null /*&& Menu.portraitPerson == null*/ && Menu.storeContext != null && Menu.storeContext.Equals("Forest", StringComparison.CurrentCultureIgnoreCase)
-                    && Menu.onPurchase?.GetMethodInfo().Name == "onTravelingMerchantShopPurchase";
-        }
+        private static bool IsTravellingMerchantShop(ShopMenu Menu) => Menu.ShopId == "Traveler";
 
         private void RegisterConsoleCommands()
         {

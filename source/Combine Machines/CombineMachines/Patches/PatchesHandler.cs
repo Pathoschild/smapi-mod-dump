@@ -118,21 +118,12 @@ namespace CombineMachines.Patches
 
             if (ModEntry.UserConfig.AllowCombiningScarecrows)
             {
-#if NEVER // Legacy Code
-                //  Patch StardewValley.Farm.addCrows to replace the hardcoded scarecrow radius of 9 (or 17 for deluxe scarecrows) with a value computed by our custom function
-                //  See also: ScarecrowPatches.GetScarecrowRadius
-                Harmony.Patch(
-                    original: AccessTools.Method(typeof(Farm), nameof(Farm.addCrows)),
-                    transpiler: new HarmonyMethod(typeof(ScarecrowPatches), nameof(ScarecrowPatches.Transpiler))
-                );
-#else
                 //  Patch StardewValley.Object.GetRadiusForScareCrow to account for the added multiplier given by combined scarecrows
                 //  See also: ScarecrowPatchesV2.Postfix
                 Harmony.Patch(
                     original: AccessTools.Method(typeof(SObject), nameof(SObject.GetRadiusForScarecrow)),
                     postfix: new HarmonyMethod(typeof(ScarecrowPatchesV2), nameof(ScarecrowPatchesV2.Postfix))
                 );
-#endif
             }
         }
     }

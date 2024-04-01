@@ -16,8 +16,8 @@ namespace StardewDruid.Cast.Mists
     internal class Campfire : CastHandle
     {
 
-        public Campfire(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Campfire(Vector2 target)
+            : base(target)
         {
 
             castCost = 0;
@@ -29,13 +29,13 @@ namespace StardewDruid.Cast.Mists
 
             int currentStack = 0;
 
-            if (!riteData.castTask.ContainsKey("masterCookout"))
+            if (!Mod.instance.rite.castTask.ContainsKey("masterCookout"))
             {
 
                 currentStack = Mod.instance.UpdateTask("lessonCookout", 1);
 
             }
-            else if (!riteData.castTask.ContainsKey("masterRecipe"))
+            else if (!Mod.instance.rite.castTask.ContainsKey("masterRecipe"))
             {
 
                 currentStack = 2;
@@ -59,7 +59,7 @@ namespace StardewDruid.Cast.Mists
 
             }
 
-            Torch campFire = new(newVector, 278, bigCraftable: true)
+            Torch campFire = new("278",true)
             {
                 Fragility = 1,
                 destroyOvernight = true
@@ -67,9 +67,11 @@ namespace StardewDruid.Cast.Mists
 
             targetLocation.objects.Add(newVector, campFire);
 
+            //campFire.placementAction(targetLocation, (int)newVector.X*64, (int)newVector.Y*64, targetPlayer);
+
             Game1.playSound("fireball");
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector * 64 + new Vector2(32));
 
             castFire = true;
 

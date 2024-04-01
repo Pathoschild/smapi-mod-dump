@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "spring_12": "Don't go collecting eggs without checking them tomorrow.#$b#You might hand me over to the townsfolk by accident!$u",
+  "spring_23": "Yo! You're gonna dance tomorrow?#$b# Good luck! I'll be watching on the sidelines somewhere!$h",
+  "summer_10": "I always attend the Luau. I love the soup!$h#$b#I also like the spare change that purple balloon has.#$b#He should visit more often.$h",
+  "summer_27": "I wanna see the jellies, too!$h#$b#Of course, I'll be there tomorrow! You'll just have a hard time finding me!$h",
+  "fall_15": "So many tourists coming tomorrow!$h#$b#So many pockets, too!$h#$b#This is going to be fun!$h",
+  "fall_26": "Ummm... I don't like what's coming tomorrow...$s",
+  "winter_7": "I hate fish. Yuck!$a#$b#I'm not interested in the festival tomorrow.",
+  "winter_24": "I should learn to be a good elf from time to time.#$b#My friend wouldn't like it if I over stole...$s#$e#Yeah... I should learn to be good once in a while...$s",
+  "Mon": "Oh! You found me! As promised. Here's a prize! [60 72 167 206 336] $h#$e#I like to hide everywhere!$h#$b#You get to hear some interesting stories!$h",
+  "Tue": "Oh! You found me! As promised. Here's a prize! [60 72 167 206 336] $h#$e#Once I transformed into a rock and a passing kid almost threw me to the bottom of the lake!$a#$b#I'll never forget that red shirt shortie!$a",
+  "Wed": "Oh! You found me! As promised. Here's a prize! [60 72 167 206 336] $h#$e#I love to transform into a teddy bear. It feels so good to be hugged!$h#$b#Hey! No! I don't like being hugged when I'm in my elf form!$a#$e#Well... Unless if it was him...$s",
+  "Thu": "Hey. Thanks for the ice cream the other day!$h#$e#Huh? What ice cream?#$b#Oh yeah! I forgot - I stole some change from you the other day. Teehee < $h#$b#I hope you don't mind! It's for charity!$h#$e#Thursdays are rest days!$h#$b#No stealing for today!$h",
+  "Fri": "Oh! You found me! As promised. Here's a prize! [60 72 167 206 336] $h#$e#Shoo. You're blowing my cover.$a#$e#I'm busy waiting for the next pocket!$a",
+  "Sat": "Oh! You found me! As promised. Here's a prize! [60 72 167 206 336] $h#$e#I should stay away from that wizard at the forest and that man who wears a red scarf...$s#$b#He told me about them before too...$s",
+  "Sun": "Oh! You found me! As promised. Here's a prize! [60 72 167 206 336] $h#$e#I love hiding around that farm in the south of the mountain village.#$b#The lady there sings so beautifully.$h",
+  "spring_1": "The snow's all gone!$h#$b#It's a lot easier hiding among the flowers than it is the snow.",
+  "summer_1": "Summer's nice and all, but... The one problem I have is that some stuff I pickpocket gets all sticky from sweat!$u#$b#*shudder*$u",
+  "fall_1": "It's fun hiding in the leaves, ya know?$h",
+  "winter_1": "It's hard hiding under the snow!$a#$b#I mean, it's hard to find me and all.#$b#But it's so cold that I can't stay put!$a",
+}

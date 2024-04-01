@@ -6,9 +6,9 @@ mods:
    Zoom Level
 
 latest commit:
-   commit 62ba4f375811cd014a0ef6c4c0a47d5d99fff5b9
+   commit ba014617e39c24227c8c11d1b04c9b4a0dfb0b28
    Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Sun Nov 12 14:33:19 2023 +0000
+   Date:   Mon Mar 25 20:19:54 2024 +0000
    
-       Update CHANGELOG.md
+       Added Portuguese translations
    

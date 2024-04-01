@@ -1,0 +1,10 @@
+{
+  "Name": "Enchanted Cowboy Boots",
+  "Author": "Goldenrevolver",
+  "Version": "1.0",
+  "Description": "Adds multiple ways to obtain the cowboy boots, and gives them a unique enchantment",
+  "UniqueID": "Goldenrevolver.ObtainableCowboyBoots",
+  "EntryDll": "ObtainableCowboyBoots.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20941" ]
+}

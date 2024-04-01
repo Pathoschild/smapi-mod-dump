@@ -33,13 +33,13 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Tree.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Tree.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tree.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
-            harmony.Patch(AccessTools.Constructor(typeof(Tree), new[] { typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(TreePostfix)));
-            harmony.Patch(AccessTools.Constructor(typeof(Tree), new[] { typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(TreePostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(Tree), new[] { typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(TreePostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(Tree), new[] { typeof(string), typeof(int), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(TreePostfix)));
         }
 
-        private static bool DrawPrefix(Tree __instance, float ___shakeRotation, float ___shakeTimer, float ___alpha, List<Leaf> ___leaves, NetBool ___falling, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(Tree __instance, float ___shakeRotation, float ___shakeTimer, float ___alpha, List<Leaf> ___leaves, NetBool ___falling, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -59,6 +59,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     return true;
                 }
+                Vector2 tileLocation = __instance.Tile;
 
                 var textureOffset = textureModel.GetTextureOffset(textureVariation);
                 if ((int)__instance.growthStage < 5)
@@ -81,14 +82,17 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     }
                     sourceRect.Y += textureOffset;
 
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f - (float)(sourceRect.Height * 4 - 64) + (float)(((int)__instance.growthStage >= 3) ? 128 : 64))), sourceRect, __instance.fertilized ? Color.HotPink : Color.White, ___shakeRotation, new Vector2(8f, ((int)__instance.growthStage >= 3) ? 32 : 16), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((int)__instance.growthStage == 0) ? 0.0001f : ((float)__instance.getBoundingBox(tileLocation).Bottom / 10000f));
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f - (float)(sourceRect.Height * 4 - 64) + (float)(((int)__instance.growthStage >= 3) ? 128 : 64))), sourceRect, __instance.fertilized ? Color.HotPink : Color.White, ___shakeRotation, new Vector2(8f, ((int)__instance.growthStage >= 3) ? 32 : 16), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((int)__instance.growthStage == 0) ? 0.0001f : (__instance.getBoundingBox().Bottom / 10000f));
                 }
                 else
                 {
                     if (!__instance.stump || (bool)___falling)
                     {
                         spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f - 51f, tileLocation.Y * 64f - 16f)), Tree.shadowSourceRect, Color.White * ((float)Math.PI / 2f - Math.Abs(___shakeRotation)), 0f, Vector2.Zero, 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1E-06f);
-                        Rectangle source_rect = __instance.treeTopSourceRect;
+                        Rectangle source_rect = Tree.treeTopSourceRect;
+
+                        // TODO: Review if this code block is actually used
+                        /*
                         if (__instance.treeType.Value == 9)
                         {
                             if (__instance.hasSeed.Value)
@@ -100,21 +104,22 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                                 source_rect.X = 0;
                             }
                         }
+                        */
                         source_rect.Y += textureOffset;
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f)), source_rect, Color.White * ___alpha, ___shakeRotation, new Vector2(24f, 96f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox(tileLocation).Bottom + 2) / 10000f - tileLocation.X / 1000000f);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f)), source_rect, Color.White * ___alpha, ___shakeRotation, new Vector2(24f, 96f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox().Bottom + 2) / 10000f - tileLocation.X / 1000000f);
                     }
-                    if ((float)__instance.health >= 1f || (!___falling && (float)__instance.health > -99f))
+                    if (__instance.health.Value >= 1f || (!___falling && __instance.health.Value > -99f))
                     {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + ((___shakeTimer > 0f) ? ((float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 3f) : 0f), tileLocation.Y * 64f - 64f)), new Rectangle(Tree.stumpSourceRect.X, Tree.stumpSourceRect.Y + textureOffset, Tree.stumpSourceRect.Width, Tree.stumpSourceRect.Height), Color.White * ___alpha, 0f, Vector2.Zero, 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + ((___shakeTimer > 0f) ? ((float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 3f) : 0f), tileLocation.Y * 64f - 64f)), new Rectangle(Tree.stumpSourceRect.X, Tree.stumpSourceRect.Y + textureOffset, Tree.stumpSourceRect.Width, Tree.stumpSourceRect.Height), Color.White * ___alpha, 0f, Vector2.Zero, 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)__instance.getBoundingBox().Bottom / 10000f);
                     }
-                    if ((bool)__instance.stump && (float)__instance.health < 4f && (float)__instance.health > -99f)
+                    if ((bool)__instance.stump && __instance.health.Value < 4f && __instance.health.Value > -99f)
                     {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + ((___shakeTimer > 0f) ? ((float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 3f) : 0f), tileLocation.Y * 64f)), new Rectangle(Math.Min(2, (int)(3f - (float)__instance.health)) * 16, 144 + textureOffset, 16, 16), Color.White * ___alpha, 0f, Vector2.Zero, 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox(tileLocation).Bottom + 1) / 10000f);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + ((___shakeTimer > 0f) ? ((float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 3f) : 0f), tileLocation.Y * 64f)), new Rectangle(Math.Min(2, (int)(3f - __instance.health.Value)) * 16, 144 + textureOffset, 16, 16), Color.White * ___alpha, 0f, Vector2.Zero, 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox().Bottom + 1) / 10000f);
                     }
                 }
                 foreach (Leaf i in ___leaves)
                 {
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, i.position), new Rectangle(16 + i.type % 2 * 8, textureOffset + (112 + i.type / 2 * 8), 8, 8), Color.White, i.rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.01f);
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, i.position), new Rectangle(16 + i.type % 2 * 8, textureOffset + (112 + i.type / 2 * 8), 8, 8), Color.White, i.rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)__instance.getBoundingBox().Bottom / 10000f + 0.01f);
                 }
                 return false;
             }
@@ -125,7 +130,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
             {
-                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.currentLocation);
+                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.Location).ToString();
                 __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Tree}_{GetTreeTypeString(__instance)}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}");
             }
         }
@@ -133,7 +138,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         private static void TreePostfix(Tree __instance)
         {
             var instanceName = $"{AlternativeTextureModel.TextureType.Tree}_{GetTreeTypeString(__instance)}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

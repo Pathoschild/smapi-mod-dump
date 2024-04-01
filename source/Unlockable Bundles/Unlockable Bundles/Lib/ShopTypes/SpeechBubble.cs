@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+** Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
 **
 *************************************************/
 
@@ -305,7 +305,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     });
                 }
             }
-            Game1.currentLocation.removeTemporarySpritesWithID(98765f);
+            Game1.currentLocation.removeTemporarySpritesWithID(98765);
             TimeUntilSqwawk = 1f;
         }
 

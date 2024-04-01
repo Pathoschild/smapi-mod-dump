@@ -338,8 +338,8 @@ namespace NewGamePlus
                         Apply = () =>
                         {
                             Game1.player.mailReceived.Add("gotGoldenScythe");
-                            Game1.player.Items[ Game1.player.Items.IndexOf( Game1.player.Items.First( i => i is MeleeWeapon mw && mw.IndexOfMenuItemView == MeleeWeapon.scythe ) ) ]
-                                = new MeleeWeapon( MeleeWeapon.goldenScythe );
+                            Game1.player.Items[ Game1.player.Items.IndexOf( Game1.player.Items.First( i => i is MeleeWeapon mw && mw.ItemId == MeleeWeapon.scytheId ) ) ]
+                                = new MeleeWeapon( MeleeWeapon.goldenScytheId );
                         }
                     },
                 }));
@@ -395,14 +395,14 @@ namespace NewGamePlus
                         Texture = Tool.weaponsTexture,
                         TexRect = new Rectangle( 16, 0, 16, 16 ),
                         PointCost = 1,
-                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( 1 ) ),
+                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( "1" ) ),
                     },
                     new LegacySlot.SlotEntry()
                     {
                         Texture = Tool.weaponsTexture,
                         TexRect = new Rectangle( 112, 0, 16, 16 ),
                         PointCost = 2,
-                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( 7 ) ),
+                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( "7" ) ),
                     },
                     new LegacySlot.SlotEntry()
                     {
@@ -412,7 +412,7 @@ namespace NewGamePlus
                         Apply = () =>
                         {
                             Game1.addMail( "galaxySword", true );
-                            Utility.CollectOrDrop( new MeleeWeapon( 4 ) );
+                            Utility.CollectOrDrop( new MeleeWeapon( "4" ) );
                         }
                     },
                 }));
@@ -428,14 +428,14 @@ namespace NewGamePlus
                         Texture = Tool.weaponsTexture,
                         TexRect = new Rectangle( 64, 32, 16, 16 ),
                         PointCost = 1,
-                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( 20 ) ),
+                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( "20" ) ),
                     },
                     new LegacySlot.SlotEntry()
                     {
                         Texture = Tool.weaponsTexture,
                         TexRect = new Rectangle( 48, 96, 16, 16 ),
                         PointCost = 2,
-                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( 51 ) ),
+                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( "51" ) ),
                     },
                     new LegacySlot.SlotEntry()
                     {
@@ -445,7 +445,7 @@ namespace NewGamePlus
                         Apply = () =>
                         {
                             Game1.addMail( "galaxySword", true );
-                            Utility.CollectOrDrop( new MeleeWeapon( 23 ) );
+                            Utility.CollectOrDrop( new MeleeWeapon( "23" ) );
                         }
                     },
                 }));
@@ -461,14 +461,14 @@ namespace NewGamePlus
                         Texture = Tool.weaponsTexture,
                         TexRect = Game1.getSourceRectForStandardTileSheet( Tool.weaponsTexture, 24, 16, 16 ),
                         PointCost = 1,
-                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( 24 ) ),
+                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( "24" ) ),
                     },
                     new LegacySlot.SlotEntry()
                     {
                         Texture = Tool.weaponsTexture,
                         TexRect = Game1.getSourceRectForStandardTileSheet( Tool.weaponsTexture, 46, 16, 16 ),
                         PointCost = 2,
-                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( 46 ) ),
+                        Apply = () => Utility.CollectOrDrop( new MeleeWeapon( "46" ) ),
                     },
                     new LegacySlot.SlotEntry()
                     {
@@ -478,7 +478,7 @@ namespace NewGamePlus
                         Apply = () =>
                         {
                             Game1.addMail( "galaxySword", true );
-                            Utility.CollectOrDrop( new MeleeWeapon( 29 ) );
+                            Utility.CollectOrDrop( new MeleeWeapon( "29" ) );
                         }
                     },
                 }));
@@ -527,8 +527,8 @@ namespace NewGamePlus
                         PointCost = 5,
                         Apply = () =>
                         {
-                            Utility.CollectOrDrop( new StableToken() );
-                            Utility.CollectOrDrop( new StardewValley.Object( 911, 1 ) );
+                            Utility.CollectOrDrop( new StardewValley.Object( $"{Mod.instance.ModManifest.UniqueID}_StableToken", 1 ) );
+                            Utility.CollectOrDrop( new StardewValley.Object( "911", 1 ) );
                         }
                     },
                 }));
@@ -601,7 +601,7 @@ namespace NewGamePlus
                         Texture = Game1.objectSpriteSheet,
                         TexRect = Game1.getSourceRectForStandardTileSheet( Game1.objectSpriteSheet, 527, 16, 16 ),
                         PointCost = 2,
-                        Apply = () => Utility.CollectOrDrop( new Ring( 527 ) )
+                        Apply = () => Utility.CollectOrDrop( new Ring( "527" ) )
                     },
                 }));
         }

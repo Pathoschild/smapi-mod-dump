@@ -35,7 +35,7 @@ namespace HappyHomeDesigner.Menus
 		private static readonly Rectangle background = new(128, 128, 64, 64);
 		private static readonly Rectangle favRibbon = new(0, 38, 6, 6);
 
-		public WallEntry(Wallpaper wallPaper, IList<string> favorites)
+		public WallEntry(Wallpaper wallPaper, ICollection<string> favorites)
 		{
 			item = wallPaper;
 
@@ -45,7 +45,7 @@ namespace HappyHomeDesigner.Menus
 				modData.Id + ':' + item.ParentSheetIndex.ToString() :
 				item.ParentSheetIndex.ToString();
 
-			Favorited = favorites.Contains(id);
+			Favorited = favorites.Remove(id);
 
 			if (item.isFloor.Value)
 			{

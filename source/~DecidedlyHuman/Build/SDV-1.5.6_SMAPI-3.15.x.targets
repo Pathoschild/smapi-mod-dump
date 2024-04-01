@@ -1,7 +1,0 @@
-<Project>
-    <PropertyGroup>
-        <!-- Note for people forking this repo: you will need to put your own paths here. -->
-        <GamePath>C:\Dev\Stardew Valley\Versions\1.5.6</GamePath>
-        <ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
-    </PropertyGroup>
-</Project>

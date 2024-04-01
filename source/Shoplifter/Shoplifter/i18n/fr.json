@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Tu me voles @! Je pensais que tu étais une meilleure personne que ça.$3#$b#Je vais rien te prendre @, vu que tu n'as pas de quoi payer.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Être loin des autres ne rend pas mon magasin plus facile à voler, @.$2#$b#T'inquiète pas à propos de cette amende @, juste pars.$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Tu est à ce point désésperer pour voler de la glace, @?$7#$b#Je vais juste te laisser partir avec un avertissment cette fois ci.$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "T'est vraiment en train de voler là @?$3#$b#*soupir* Si tu peut payer {{fineamount}}po d'amende .Je vais oublier que ta voler aujourd’hui. Ok ??$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "T'est vraiment en train de voler là @?$3#$b#*soupir* Je vais te donner un avertissment vu que tu n'as pas assez d'argent.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "Vraiment @? Tu pensais que tu pourrais avoir une télé gratuite?$3#$b#Je te retire {{fineamount}}po pour ça... Peut être que ça vas te dissuader.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "Vraiment @? Tu pensais que tu pourrais avoir une télé gratuite?$3#$b#Puisque tu ne peux pas te le permettre, je vais laisser passer cette fois ci.$2",
 
     // TODO Improve translations
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Combien de fois pouvez-vous voler à l'étalage ?",  
@@ -57,6 +62,8 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Nombre de jours de bannissement",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Nombre de jours de bannissement",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Rayon de capture",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Distance maximale à laquelle un villageois doit se trouver pour attraper le joueur"
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Distance maximale à laquelle un villageois doit se trouver pour attraper le joueur",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"Chance de stock rare",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"La chance que des objets rares de la boutique apparaissent."
     //
   }

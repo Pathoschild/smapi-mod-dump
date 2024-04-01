@@ -1,0 +1,10 @@
+﻿{
+  "Name": "The Return of Immersive Sprinklers",
+  "Author": "lucaskfreitas",
+  "Version": "1.0.3",
+  "Description": "Immersive Sprinklers (originally by aedenthorn) made compatible with Stardew Valley 1.6",
+  "UniqueID": "lucaskfreitas.ImmersiveSprinklers",
+  "EntryDll": "ImmersiveSprinklers.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20796" ]
+}

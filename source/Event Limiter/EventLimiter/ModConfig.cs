@@ -21,6 +21,6 @@ namespace EventLimiter
         public int EventsPerDay { get; set; } = 4;
         public int EventsInARow { get; set; } = 2;
         public bool ExemptEventsCountTowardsLimit { get; set; } = true;
-        public int[] Exceptions { get; set; } = { };
+        public object[] Exceptions { get; set; } = { };
     }
 }

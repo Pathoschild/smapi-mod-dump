@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EasyFairy",
+  "Author": "season",
+  "Version": "0.0.3",
+  "Description": "More Fairy and Witch, No Crows, Useful MixSeed.",
+  "UniqueID": "season.EasyFairy",
+  "EntryDll": "EasyFairy.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:20931" ]
+}

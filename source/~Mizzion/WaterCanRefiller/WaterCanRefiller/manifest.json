@@ -11,10 +11,10 @@
 {
     "Name": "WaterCanRefiller",
     "Author": "Mizzion",
-    "Version": "1.0.4",
+    "Version": "1.1.0",
     "Description": "Slowly fills your watering can during wet weather.",
     "UniqueID": "mizzion.watercanrefiller",
     "EntryDll": "WaterCanRefiller.dll",
-    "MinimumApiVersion": "2.11.1",
+    "MinimumApiVersion": "3.99.0",
     "UpdateKeys": [ "Nexus:3539", "ModDrop:661368"]
 }

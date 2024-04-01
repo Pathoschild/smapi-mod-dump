@@ -28,8 +28,8 @@ namespace iDontUseThatWater
             var harmony = new Harmony(this.ModManifest.UniqueID);
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.GameLocation), nameof(StardewValley.GameLocation.CanRefillWateringCanOnTile)),
-                postfix: new HarmonyMethod(typeof(wateringcanPostfix), nameof(wateringcanPostfix.isProperForWaterSource))
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.CanRefillWateringCanOnTile)),
+                postfix: new HarmonyMethod(typeof(WateringcanPostfix), nameof(WateringcanPostfix.IsProperForWaterSource))
             );
         }
     

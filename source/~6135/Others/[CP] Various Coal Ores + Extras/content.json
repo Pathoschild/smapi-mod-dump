@@ -1,0 +1,498 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/6135/StardewValley.ProfitCalculator
+**
+*************************************************/
+
+{
+    "Format": "2.0",
+    "Changes": [
+        {
+            "LogName": "Add resource",
+            "Action": "EditData",
+            "Target": "Mods/mistyspring.ItemExtensions/Resources",
+            "Entries": {
+                //normal coal
+                "6135.VariousCoalOresExtras_0": {
+                    "Name": "6135.VariousCoalOresExtras_0",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This stone is rich in coal.",
+                    "Texture": "Mods/{{ModId}}/CoalStone",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 4,
+                    "ItemDropped": "(O)382",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)382",
+                            "Chance": 1,
+                            "MinStack": 1,
+                            "MaxStack": 2,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 8,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "1/20",
+                            "SpawnFrequency": 0.07,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "21/39",
+                            "SpawnFrequency": 0.08,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "121/-999",
+                            "SpawnFrequency": 0.1,
+                            "Type": "All"
+                        }
+                    ]
+                },
+                //ice coal
+                "6135.VariousCoalOresExtras_1": {
+                    "Name": "6135.VariousCoalOresExtras_1",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This frozen stone is rich in coal.",
+                    "Texture": "Mods/{{ModId}}/CoalStoneIce",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 6,
+                    "ItemDropped": "(O)382",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)382",
+                            "Chance": 1,
+                            "MinStack": 1,
+                            "MaxStack": 2,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 8,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "40/59",
+                            "SpawnFrequency": 0.08,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "60/69",
+                            "SpawnFrequency": 0.1,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "70/79",
+                            "SpawnFrequency": 0.12,
+                            "Type": "All"
+                        }
+                    ]
+                },
+                //lava coal
+                "6135.VariousCoalOresExtras_2": {
+                    "Name": "6135.VariousCoalOresExtras_2",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This red hot stone is rich in coal.",
+                    "Texture": "Mods/{{ModId}}/CoalStoneLava",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 8,
+                    "ItemDropped": "(O)382",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)382",
+                            "Chance": 1,
+                            "MinStack": 1,
+                            "MaxStack": 2,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 8,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "80/100",
+                            "SpawnFrequency": 0.15,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "100/120",
+                            "SpawnFrequency": 0.2,
+                            "Type": "All"
+                        }
+                    ]
+                },
+                //pure coal
+                "6135.VariousCoalOresExtras_3": {
+                    "Name": "6135.VariousCoalOresExtras_3",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This looks like pure Coal.",
+                    "Texture": "Mods/{{ModId}}/CoalPure",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 8,
+                    "ItemDropped": "(O)382",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)382",
+                            "Chance": 1,
+                            "MinStack": 2,
+                            "MaxStack": 6,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 12,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "1/39",
+                            "SpawnFrequency": 0.025,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "40/80",
+                            "SpawnFrequency": 0.05,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "81/119",
+                            "SpawnFrequency": 0.1,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "121/-999",
+                            "SpawnFrequency": 0.15,
+                            "Type": "All"
+                        }
+                    ]
+                },
+                //Extras
+                "6135.VariousCoalOresExtras_4": {
+                    "Name": "6135.VariousCoalOresExtras_4",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This stone shines like stardust.",
+                    "Texture": "Mods/{{ModId}}/PrismaticStone",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 14,
+                    "ItemDropped": "(O)74",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)74",
+                            "Chance": 0.5,
+                            "MinStack": 1,
+                            "MaxStack": 1,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 48,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "100/110",
+                            "SpawnFrequency": 0.01,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "111/120",
+                            "SpawnFrequency": 0.03,
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "121/-999",
+                            "SpawnFrequency": 0.1,
+                            "Type": "All"
+                        }
+                    ]
+                },
+                "6135.VariousCoalOresExtras_5": {
+                    "Name": "6135.VariousCoalOresExtras_5",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "A glassy volcanic rock. It may hold a shiny Surprise inside.",
+                    "Texture": "Mods/{{ModId}}/Obsidian",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 8,
+                    "ItemDropped": "(O)575",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)575",
+                            "Chance": 1,
+                            "MinStack": 1,
+                            "MaxStack": 1,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        },
+                        {
+                            "ItemId": "(O)72",
+                            "Chance": 0.1,
+                            "MinStack": 1,
+                            "MaxStack": 1,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 22,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "81/119",
+                            "Type": "All",
+                            "SpawnFrequency": 0.025
+                        },
+                        {
+                            "Floors": "120/-999",
+                            "Type": "All",
+                            "SpawnFrequency": 0.05
+                        }
+                    ]
+                },
+                "6135.VariousCoalOresExtras_6": {
+                    "Name": "6135.VariousCoalOresExtras_6",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "Sedimentary rock with a muddy matrix.",
+                    "Texture": "Mods/{{ModId}}/Mudstone",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 2,
+                    "ItemDropped": "(O)574",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)574",
+                            "Chance": 0.3,
+                            "MinStack": 1,
+                            "MaxStack": 1,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        },
+                        {
+                            "ItemId": "(O)330",
+                            "Chance": 1,
+                            "MinStack": 1,
+                            "MaxStack": 2,
+                            "Condition": null,
+                            "Quality": 0,
+                            "IsRecipe": false
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 8,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "1/39", // from 1 to last mine level
+                            "SpawnFrequency": 0.15, //10% to spawn
+                            "Type": "All" //on any difficulty
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/CoalStone",
+            "FromFile": "assets/CoalStone.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/CoalStoneIce",
+            "FromFile": "assets/CoalStoneIce.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/CoalStoneLava",
+            "FromFile": "assets/CoalStoneLava.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/CoalPure",
+            "FromFile": "assets/CoalPure.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/PrismaticStone",
+            "FromFile": "assets/PrismaticStone.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/Obsidian",
+            "FromFile": "assets/Obsidian.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/Mudstone",
+            "FromFile": "assets/Mudstone.png"
+        }
+    ]
+}

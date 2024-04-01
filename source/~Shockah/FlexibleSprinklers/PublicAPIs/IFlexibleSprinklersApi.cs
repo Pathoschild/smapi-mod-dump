@@ -52,7 +52,7 @@ namespace Shockah.FlexibleSprinklers
 
 		/// <summary>Activates a sprinkler, taking into account the Flexible Sprinklers mod behavior.</summary>
 		/// <exception cref="InvalidOperationException">Thrown when the current sprinkler behavior does not allow independent sprinkler activation.</exception>
-		void ActivateSprinkler(SObject sprinkler, GameLocation location);
+		void ActivateSprinkler(SObject sprinkler);
 
 		/// <summary>Returns the sprinkler's power after config modifications (that is, the number of tiles it will water).</summary>
 		int GetSprinklerPower(SObject sprinkler);
@@ -74,18 +74,18 @@ namespace Shockah.FlexibleSprinklers
 
 		/// <summary>Get the relative tile coverage by supported sprinkler ID, modified by the Flexible Sprinklers mod. This API takes into consideration the location and position. Note that sprinkler IDs may change after a save is loaded due to Json Assets reallocating IDs.</summary>
 		/// <exception cref="InvalidOperationException">Thrown when the current sprinkler behavior does not allow independent sprinkler activation.</exception>
-		IReadOnlySet<IntPoint> GetModifiedSprinklerCoverage(SObject sprinkler, GameLocation location);
+		IReadOnlySet<IntPoint> GetModifiedSprinklerCoverage(SObject sprinkler);
 
 		/// <summary>Returns whether a given tile is in range of any sprinkler in the location.</summary>
 		bool IsTileInRangeOfAnySprinkler(GameLocation location, IntPoint tileLocation);
 
 		/// <summary>Returns whether a given tile is in range of the specified sprinkler.</summary>
 		/// <exception cref="InvalidOperationException">Thrown when the current sprinkler behavior does not allow independent sprinkler activation.</exception>
-		bool IsTileInRangeOfSprinkler(SObject sprinkler, GameLocation location, IntPoint tileLocation);
+		bool IsTileInRangeOfSprinkler(SObject sprinkler, IntPoint tileLocation);
 
 		/// <summary>Returns whether a given tile is in range of specified sprinklers.</summary>
 		/// <exception cref="InvalidOperationException">Thrown when the current sprinkler behavior does not allow independent sprinkler activation.</exception>
-		bool IsTileInRangeOfSprinklers(IEnumerable<SObject> sprinklers, GameLocation location, IntPoint tileLocation);
+		bool IsTileInRangeOfSprinklers(IEnumerable<SObject> sprinklers, IntPoint tileLocation);
 
 		/// <summary>Returns whether a given tile is in range of specified sprinklers.</summary>
 		/// <exception cref="InvalidOperationException">Thrown when the current sprinkler behavior does not allow independent sprinkler activation.</exception>

@@ -7,9 +7,12 @@ mods:
    AutoShaker
 
 latest commit:
-   commit ded88b347404f085023ad3b3cc40a94d877a36e3
+   commit 2de2dcf13dab457306c53ed2e85e16a83860dadb
    Author: Jag <jag3dagster@gmail.com>
-   Date:   Thu Feb 22 22:46:28 2024 -0800
+   Date:   Thu Mar 28 18:04:37 2024 -0700
    
-       chore: Update AllowBeachSprinklers version
+       chore: Update reference libraries
+       
+       Stardew Valley: 1.6.3
+       SMAPI: 4.0.3
    

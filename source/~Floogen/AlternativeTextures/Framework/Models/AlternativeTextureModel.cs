@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AlternativeTextures.Framework.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -22,12 +23,15 @@ namespace AlternativeTextures.Framework.Models
         public string Owner { get; set; }
         public string PackName { get; set; }
         public string Author { get; set; }
-        public string ItemName { get; set; }
+        public string ItemName { get { return string.IsNullOrEmpty(_itemName) ? ItemId : _itemName; } set { _itemName = value; } }
+        private string _itemName;
+        public string ItemId { get; set; }
         public List<string> CollectiveNames { get; set; } = new List<string>();
-        internal int ItemId { get; set; } = -1;
-        public string Type { get; set; }
+        public List<string> CollectiveIds { get; set; } = new List<string>();
+        public TextureType Type { get; set; }
         [Obsolete("No longer used due SMAPI 3.14.0 allowing for passive invalidation checks.")]
         public bool EnableContentPatcherCheck { get; set; }
+        public bool IgnoreBuildingColorMask { get; set; } // Only usable by Type == "Building"
         public List<string> Keywords { get; set; } = new List<string>();
         public List<string> Seasons { get; set; } = new List<string>(); // For use by mod user to determine which seasons the texture is valid for
         internal string Season { get; set; } // Used by framework to split the Seasons property into individual AlternativeTextureModel models
@@ -43,7 +47,7 @@ namespace AlternativeTextures.Framework.Models
         public List<AnimationModel> Animation { get; set; } = new List<AnimationModel>();
 
         public static int MAX_TEXTURE_HEIGHT { get { return 16384; } }
-        internal enum TextureType
+        public enum TextureType
         {
             Unknown,
             Craftable,
@@ -58,7 +62,8 @@ namespace AlternativeTextures.Framework.Models
             Furniture,
             Character,
             Building,
-            Decoration
+            Decoration,
+            ArtifactSpot
         }
 
         public AlternativeTextureModel ShallowCopy()
@@ -68,17 +73,17 @@ namespace AlternativeTextures.Framework.Models
 
         public string GetTextureType()
         {
-            if (!Enum.TryParse<TextureType>(Type.Trim(), true, out var textureType))
-            {
-                return TextureType.Unknown.ToString();
-            }
-
-            return textureType.ToString();
+            return Type.ToString();
         }
 
         public string GetId()
         {
             return TextureId;
+        }
+
+        public bool IsUsingItemId()
+        {
+            return string.IsNullOrEmpty(ItemId) is false;
         }
 
         public string GetTokenId(int? variation = null)
@@ -98,6 +103,16 @@ namespace AlternativeTextures.Framework.Models
             return ManualVariations.Where(v => v.Id >= 0).Count() > 0 ? ManualVariations.Where(v => v.Id >= 0).Count() : Variations;
         }
 
+        public bool IsManualVariationsValid()
+        {
+            if (ManualVariations.Any(v => v.Id == 1) is true && ManualVariations.Any(v => v.Id == 0) is false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public List<AnimationModel> GetAnimationData(int variation)
         {
             var manualVariation = ManualVariations.FirstOrDefault(v => v.Id == variation && v.HasAnimation());
@@ -114,14 +129,31 @@ namespace AlternativeTextures.Framework.Models
             return GetAnimationData(variation).ElementAt(index);
         }
 
-        public Texture2D GetTexture(int variation)
+        public int GetNextValidFrameFromIndex(int variation, int index, bool isMachineActive)
         {
-            if (Textures.ContainsKey(variation))
+            var animationData = GetAnimationData(variation);
+
+            index += 1;
+            if (index >= GetAnimationData(variation).Count())
             {
-                return Textures[variation];
+                index = 0;
+                return index;
             }
 
-            return Textures[0];
+            return IsFrameValid(variation, index, isMachineActive) ? index : GetNextValidFrameFromIndex(variation, index, isMachineActive);
+        }
+
+        public Texture2D GetTexture(int variation)
+        {
+            var texture = Textures.ContainsKey(variation) ? Textures[variation] : Textures[0];
+            if (texture.IsDisposed)
+            {
+                AlternativeTextures.monitor.LogOnce($"Error drawing the texture {TextureId}: It was incorrectly disposed!", StardewModdingAPI.LogLevel.Warn);
+                AlternativeTextures.monitor.LogOnce(this.ToString(), StardewModdingAPI.LogLevel.Trace);
+                return AlternativeTextures.textureManager.ErrorTexture;
+            }
+
+            return texture;
         }
 
         public int GetTextureOffset(int variation)
@@ -174,6 +206,66 @@ namespace AlternativeTextures.Framework.Models
         public bool HasTint(int variation)
         {
             return ManualVariations.Any(v => v.Id == variation && v.HasTint());
+        }
+
+        internal bool IsFrameValid(int variation, int currentFrame, bool isMachineActive)
+        {
+            var animationData = GetAnimationDataAtIndex(variation, currentFrame);
+            if (animationData is null || (animationData.Type is FrameType.MachineActive && isMachineActive is false) || (animationData.Type is FrameType.MachineIdle && isMachineActive is true))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        internal List<string> HandleNameChanges()
+        {
+            List<string> changedNames = new List<string>();
+            if (CollectiveNames is not null)
+            {
+                for (int x = 0; x < CollectiveNames.Count; x++)
+                {
+                    var changedName = AlternativeTextureModel.GetNameChange(Type, CollectiveNames[x]);
+
+                    if (CollectiveNames[x] != changedName)
+                    {
+                        changedNames.Add(changedName);
+                        CollectiveNames[x] = changedName;
+                    }
+                }
+            }
+
+            return changedNames;
+        }
+
+        private static string GetNameChange(TextureType type, string name)
+        {
+            if (type is TextureType.Building)
+            {
+                if (name.Equals("Log Cabin", StringComparison.OrdinalIgnoreCase) || name.Equals("Plank Cabin", StringComparison.OrdinalIgnoreCase) || name.Equals("Stone Cabin", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Cabin";
+                }
+            }
+
+            return name;
+        }        
+
+        internal bool HandleTypeChanges()
+        {
+            if (CollectiveNames is null)
+            {
+                return false;
+            }
+
+            if (Type is TextureType.Craftable && CollectiveNames.Any(n => n.Equals("Artifact Spot", StringComparison.OrdinalIgnoreCase)))
+            {
+                Type = TextureType.ArtifactSpot;
+                return true;
+            }
+
+            return false;
         }
 
         public override string ToString()

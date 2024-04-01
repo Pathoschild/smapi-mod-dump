@@ -15,10 +15,12 @@
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] Total Forages",
   "Log.FruitNotReady": "Fruit trees will not be shaken until they have {{amount}} fruits available. This can be set with the {{configName}} config setting.",
-  "Log.MissingHoe": "{{subject}} will not be foraged because no Hoe was found in the player's inventory. This settings can be turned off by disabling {{configName}}",
+  "Log.MissingHoe": "{{subject}} will not be foraged because no Hoe was found in the player's inventory. This setting can be turned off by disabling {{configName}}",
+  "Log.MissingToolMoss": "Moss will not be foraged because no Tool was found in the player's inventory. This setting can be turned off by disabling {{configName}}",
 
   "Message.AutoForagerToggled": "AutoForager has been {{state}}",
   "Message.MissingHoe": "Missing a Hoe. You can't forage {{subject}} without one.",
+  "Message.MissingToolMoss": "Missing a tool. You can't forage Moss without a tool.",
 
   "Note.ShakeWalnutBushes": "These walnuts are meant to be end game content and difficult to find. Enabling this option does trivialize this content to some degree.",
 
@@ -28,6 +30,8 @@
   "Option.IsForagerActive.Tooltip": "Whether or not the AutoForager will shake trees and bushes and forage for objects.",
   "Option.RequireHoe.Name": "Require Hoe for Ginger roots,{{whitespace}}Snow Yams, and Winter Roots?",
   "Option.RequireHoe.Tooltip": "Whether or not a player is required to have a hoe in their inventory to forage for some items, such as Ginger and Snow Yams.",
+  "Option.RequireToolMoss.Name": "Require any tool for foraging{{whitespace}}Moss from trees?",
+  "Option.RequireToolMoss.Tooltip": "Whether or not a player is required to have any tool in their inventory to forage for Moss from trees.",
   "Option.ShakeDistance.Name": "Shake Distance",
   "Option.ShakeDistance.Tooltip": "Distance to shake bushes when '{{playerMagnetismName}}' is disabled.",
   "Option.ToggleAction.Name": "Forage any {{subject}}?",
@@ -45,7 +49,7 @@
   "Page.FruitTrees.Title": "Fruit Trees",
   "Page.FruitTrees.Description": "Whether or not the following items should be shaken from Fruit Trees:",
   "Page.WildTrees.Title": "Wild Trees",
-  "Page.WildTrees.Description": "Whether or not the following items should be shaken from Wild Trees or foraged from :",
+  "Page.WildTrees.Description": "Whether or not the following items should be shaken from Wild Trees:",
 
   "Reward.Blackberries": "Blackberries",
   "Reward.GoldenWalnuts": "Golden Walnuts",

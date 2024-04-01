@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "data": [
+    // "age/gender/manner/traits/hair_prefix",
+    "any/female/any/any/female_hair_bun",
+    "any/female/any/any/female_hair_waivy",
+    "any/female/any/any/female_hair_pigtail",
+    "any/female/any/any/female_hair_long",
+    "any/male/any/any/short_hair_male",
+    "any/male/any/any/beard",
+    "any/male/any/any/goatee",
+  ]
+}

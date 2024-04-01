@@ -93,44 +93,41 @@ namespace StardewHack.GrassGrowth
             );
             
             // Change grass growth to spread mostly everywhere.
-            var growWeedGrass = BeginCode();
-            // For each of the 4 directions
-            for (int i=0; i<4; i++) {
-                growWeedGrass = growWeedGrass.FindNext(
-                    OpCodes.Ldarg_0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    Instructions.Ldstr("Diggable"),
-                    Instructions.Ldstr("Back"),
-                    Instructions.Call(typeof(GameLocation), nameof(GameLocation.doesTileHaveProperty), typeof(int), typeof(int), typeof(string), typeof(string)),
-                    OpCodes.Brfalse
-                );
-                growWeedGrass.Prepend(
-                    Instructions.Call(GetType(), nameof(getGrowEverywhere)),
-                    Instructions.Brtrue(AttachLabel(growWeedGrass.End[0]))
-                );
-            }
+            var growWeedGrass = FindCode(
+                OpCodes.Ldarg_0,
+                OpCodes.Ldloc_S,
+                OpCodes.Ldfld,
+                OpCodes.Conv_I4,
+                OpCodes.Ldloc_S,
+                OpCodes.Ldfld,
+                OpCodes.Conv_I4,
+                Instructions.Ldstr("Diggable"),
+                Instructions.Ldstr("Back"),
+                OpCodes.Ldc_I4_0,
+                Instructions.Call(typeof(GameLocation), nameof(GameLocation.doesTileHaveProperty), typeof(int), typeof(int), typeof(string), typeof(string), typeof(bool)),
+                OpCodes.Brfalse
+            );
+            growWeedGrass.Prepend(
+                Instructions.Call(GetType(), nameof(getGrowEverywhere)),
+                Instructions.Brtrue(AttachLabel(growWeedGrass.End[0]))
+            );
             
             // Growth chance
             FindCode(
+                OpCodes.Ldsfld,
+                OpCodes.Callvirt,
                 Instructions.Ldc_R8(0.65),
-                OpCodes.Bge_Un,
-                OpCodes.Ldloca_S
-            )[0] = Instructions.Call(GetType(), nameof(getGrowthChance));
+                OpCodes.Bge_Un
+            )[2] = Instructions.Call(GetType(), nameof(getGrowthChance));
             
             // Spread
-            var spreadGrass = BeginCode();
-            // For each of the 4 directions
-            for (int i=0; i<4; i++) {
-                spreadGrass = spreadGrass.FindNext(
-                    Instructions.Ldc_R8(0.25),
-                    OpCodes.Bge_Un,
-                    OpCodes.Ldarg_0
-                );
-                spreadGrass[0] = Instructions.Call(GetType(), nameof(getSpreadChance));
-            }
+            var spreadGrass = FindCode(
+                OpCodes.Ldsfld,
+                OpCodes.Callvirt,
+                Instructions.Ldc_R8(0.25),
+                OpCodes.Bge_Un
+            );
+            spreadGrass[2] = Instructions.Call(GetType(), nameof(getSpreadChance));
         }
     }
 }

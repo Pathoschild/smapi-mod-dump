@@ -56,16 +56,16 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 Rectangle destination = new Rectangle((int)(position.X - scaleFactor.X / 2f) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(position.Y - scaleFactor.Y / 2f) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + scaleFactor.X), (int)(128f + scaleFactor.Y / 2f));
                 spriteBatch.Draw(textureModel.GetTexture(textureVariation), destination, new Rectangle((__instance.showNextIndex ? 1 : 0) * textureModel.TextureWidth, textureOffset, 16, 32), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (((int)__instance.parentSheetIndex == 105) ? 0.0035f : 0f) + (float)x * 1E-05f);
 
-                if ((int)__instance.hoeDirt.Value.fertilizer != 0)
+                if (__instance.hoeDirt.Value.fertilizer.Value != "0")
                 {
-                    Rectangle fertilizer_rect = __instance.hoeDirt.Value.GetFertilizerSourceRect(__instance.hoeDirt.Value.fertilizer);
+                    Rectangle fertilizer_rect = __instance.hoeDirt.Value.GetFertilizerSourceRect();
                     fertilizer_rect.Width = 13;
                     fertilizer_rect.Height = 13;
                     spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.tileLocation.X * 64f + 4f, __instance.tileLocation.Y * 64f - 12f)), fertilizer_rect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (__instance.tileLocation.Y + 0.65f) * 64f / 10000f + (float)x * 1E-05f);
                 }
                 if (__instance.hoeDirt.Value.crop != null)
                 {
-                    __instance.hoeDirt.Value.crop.drawWithOffset(spriteBatch, __instance.tileLocation, ((int)__instance.hoeDirt.Value.state == 1 && (int)__instance.hoeDirt.Value.crop.currentPhase == 0 && !__instance.hoeDirt.Value.crop.raisedSeeds) ? (new Color(180, 100, 200) * 1f) : Color.White, __instance.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f));
+                    __instance.hoeDirt.Value.crop.drawWithOffset(spriteBatch, __instance.TileLocation, ((int)__instance.hoeDirt.Value.state == 1 && (int)__instance.hoeDirt.Value.crop.currentPhase == 0 && !__instance.hoeDirt.Value.crop.raisedSeeds) ? (new Color(180, 100, 200) * 1f) : Color.White, __instance.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f));
                 }
                 if (__instance.heldObject.Value != null)
                 {
@@ -73,7 +73,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 }
                 if (__instance.bush.Value != null)
                 {
-                    __instance.bush.Value.draw(spriteBatch, new Vector2(x, y), -24f);
+                    __instance.bush.Value.draw(spriteBatch, -24f);
                 }
 
                 return false;

@@ -3,6 +3,7 @@ urls:
    Git: https://github.com/zeldela/sdv-mods.git
 
 mods:
+   Daily Luck on HUD
    Fast Fish Ponds (and Rebalancing)
    Remember Birthday Gifts
 

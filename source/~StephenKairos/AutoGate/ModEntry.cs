@@ -33,7 +33,7 @@ namespace AutoGate
         private readonly PerScreen<Dictionary<Vector2, Fence>> Gates = new(() => new());
 
         /// <summary>The last player tile position for which we checked for gates that need to be opened or closed.</summary>
-        private readonly PerScreen<Vector2> LastPlayerTile = new(() => new Vector2(-1));
+        private readonly PerScreen<Point> LastPlayerTile = new(() => new Point(-1));
 
 
         /*********
@@ -106,7 +106,7 @@ namespace AutoGate
                 return;
 
             // skip if we already handled gates from this tile
-            Vector2 playerTile = Game1.player.getTileLocation();
+            Point playerTile = Game1.player.TilePoint;
             if (playerTile == this.LastPlayerTile.Value)
                 return;
             this.LastPlayerTile.Value = playerTile;
@@ -148,7 +148,7 @@ namespace AutoGate
 
             fences.Clear();
             gates.Clear();
-            this.LastPlayerTile.Value = new Vector2(-1);
+            this.LastPlayerTile.Value = new Point(-1);
 
             if (Game1.currentLocation?.objects != null)
             {
@@ -167,11 +167,13 @@ namespace AutoGate
 
         /// <summary>Get all tiles to search for a gate.</summary>
         /// <param name="tile">The tile from which to search for gates.</param>
-        private IEnumerable<Vector2> GetSearchTiles(Vector2 tile)
+        private IEnumerable<Vector2> GetSearchTiles(Point tile)
         {
+            Vector2 vector = new(tile.X, tile.Y);
+
             return Utility
-                .getAdjacentTileLocationsArray(tile)
-                .Concat(new[] { tile });
+                .getAdjacentTileLocationsArray(vector)
+                .Concat(new[] { vector });
         }
     }
 }

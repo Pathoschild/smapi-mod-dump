@@ -1,0 +1,79 @@
+﻿{
+  "BundleTooltipDecorator": "社区包",
+  "BundleTooltipDecorator.Description": "标记还未献祭的物品",
+
+  "FieldOfficeDecorator": "岛屿办事处",
+  "FieldOfficeDecorator.Description": "标记还未捐献至岛屿办事处的物品",
+
+  "RarecrowDecorator": "稀有稻草人/珍奇乌鸦",
+  "RarecrowDecorator.Description": "标记还未收集的稀有稻草人/珍奇乌鸦",
+
+  "SellPriceDisplayable": "售价",
+  "SellPriceDisplayable.Description": "显示物品售价信息",
+
+  "MuseumDecorator": "博物馆",
+  "MuseumDecorator.Description": "标记还未捐赠至博物馆的物品",
+
+  "NewRecipeDisplayable": "新配方",
+  "NewRecipeDisplayable.Description": "标记还未使用过的新配方",
+
+  "ShippingBinDecorator": "售卖箱",
+  "ShippingBinDecorator.Description": "标记还未放入过售卖箱的物品",
+
+  "AnimalTooltipGenerator": "动物",
+  "AnimalTooltipGenerator.Description": "显示农场动物的额外信息",
+
+  "CropTooltipGenerator": "作物",
+  "CropTooltipGenerator.Description": "作物相关的信息, 如种类, 收获日",
+  "CropTooltipGenerator.0DaysLeft": "成熟",
+  "CropTooltipGenerator.1DayLeft": "明天成熟",
+  "CropTooltipGenerator.XDaysLeft": "{{X}}天后成熟",
+  "CropTooltipGenerator.Dead": "枯萎",
+
+  "FruitTreeTooltipGenerator": "果树",
+  "FruitTreeTooltipGenerator.Description": "果树相关的信息, 如种类, 结果日",
+
+  "TeaBushTooltipGenerator": "茶树",
+  "TeaBushTooltipGenerator.Description": "茶树相关的信息, 如下次收获日",
+
+  "MachineTooltipGenerator": "机器",
+  "MachineTooltipGenerator.Description": "机器相关的信息, 如产物, 剩余时间",
+  "MachineTooltipGenerator.Finished": "已完成",
+  "MachineTooltipGenerator.CannotBeUnloaded": "无法卸货",
+  "MachineTooltipGenerator.ForNextQuality": "至下一品质: {{X}}",
+  "MachineTooltipGenerator.ForTotal": "总计: {{X}}",
+
+  "TreeTooltipGenerator": "树木",
+  "TreeTooltipGenerator.Description": "普通树木的种类信息",
+  "TreeTooltipGenerator.Type1": "橡树",
+  "TreeTooltipGenerator.Type2": "枫树",
+  "TreeTooltipGenerator.Type3": "松树",
+  "TreeTooltipGenerator.Type6": "棕榈树",
+  "TreeTooltipGenerator.Type7": "大蘑菇",
+  "TreeTooltipGenerator.Type8": "桃花心木",
+  "TreeTooltipGenerator.Type9": "棕榈树",
+  "TreeTooltipGenerator.Type10": "蕨菜树",
+  "TreeTooltipGenerator.Type13": "神秘树",
+  "TreeTooltipGenerator.MossCovered": "长满苔藓的{{X}}",
+
+  "Config.Decorators.GeneralSection": "通用标记",
+  "Config.Decorators.Visibility": "标记开关",
+  "Config.TooltipGenerators.GeneralSection": "通用信息",
+  "Config.TooltipGenerators.Visibility": "信息开关",
+
+  "Config.DecorateLockedBundles": "锁定的社区包",
+  "Config.DecorateLockedBundles.Description": "标记还未献祭的物品, 即使社区包还未解锁",
+
+  "Config.ShowCropFertilizer": "显示肥料",
+  "Config.ShowCropFertilizer.Description": "显示作物信息时同时显示土地肥料",
+
+  "Config.TooltipTrigger": "信息显示模式",
+  "Config.TooltipTrigger.Hover": "鼠标悬停",
+  "Config.TooltipTrigger.ButtonHeld": "按键按下",
+  "Config.TooltipTriggerButton": "信息显示按键",
+
+  "Config.HideMachineTooltips": "隐藏机器信息",
+  "Config.HideMachineTooltips.ForNonMachines": "隐藏非机器",
+  "Config.HideMachineTooltips.ForChests": "隐藏箱子",
+  "Config.HideMachineTooltips.Never": "永不"
+}

@@ -9,24 +9,24 @@
 *************************************************/
 
 {
-   "Format": "1.10",
-   "Changes": [
-	{
-          "Action": "Load",
-          "Target": "LooseSprites/CustomTracker",
-          "FromFile": "assets/tracker.png"
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "Action": "Load",
+      "Target": "LooseSprites/CustomTracker",
+      "FromFile": "assets/tracker.png"
     },
-	{
-          "Action": "Load",
-          "Target": "LooseSprites/CustomTrackerForageBG",
-          "FromFile": "assets/forage_background.png"
+    {
+      "Action": "Load",
+      "Target": "LooseSprites/CustomTrackerForageBG",
+      "FromFile": "assets/forage_background.png"
     },
-	{
-		"Action": "EditImage",
-		"Target": "LooseSprites/Cursors",
-        "FromFile": "assets/blank_cursor.png",
-		"ToArea": { "X": 412, "Y": 495, "Width": 5, "Height": 4 },
-		"PatchMode": "Replace"
-	}
-    ]
+    {
+      "Action": "EditImage",
+      "Target": "LooseSprites/Cursors",
+      "FromFile": "assets/blank_cursor.png",
+      "ToArea": { "X": 412, "Y": 495, "Width": 5, "Height": 4 },
+      "PatchMode": "Replace"
+    }
+  ]
 }

@@ -32,13 +32,13 @@ namespace AlvadeasWitchTower
             {
                 if (fly == null)
                 {
-                    fly = Game1.soundBank.GetCue("SwampDay");
+                    fly = Game1.soundBank.GetCue("Alvadea.Walpurgisnacht_SwampDay");
                     fly.Play();
                     fly.Pause();
                 }
                 if (frog == null)
                 {
-                    frog = Game1.soundBank.GetCue("SwampNight");
+                    frog = Game1.soundBank.GetCue("Alvadea.Walpurgisnacht_SwampNight");
                     frog.Play();
                     frog.Pause();
                 }

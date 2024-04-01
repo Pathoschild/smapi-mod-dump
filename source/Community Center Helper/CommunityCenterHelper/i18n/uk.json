@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} {{season}}",
 	"tapTree": "Прикріпіть соківницю на {{tree}}",
 	"seedFromTree": "Потрусіть або зрубайте {{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 
 	// Crafting/Cooking
 	"craftRecipeByName": "Створіть з {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Зберіть, скошуючи траву або пшеницю",
 	"trash": "Сміття від риболовлі, в крабових пастках або в сміттєвих баках",
 	"trashCan": "Попорпатейтесь в сміттєвих баках",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 
 	// Miscellaneous Sources
 	"luckyShorts": "Кімната Марні (Для завдання \"Шорти мера\" влітку 3 числа)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Виграйте в гральному автоматі в кінотеатрі",
 	"voidEggEvent": "Випадкова подія з відьмою",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Кролики",
 	"animalDuck": "Качки",
 	"animalPig": "Свині",
+	"animalOstrich": "Ostriches", // TODO
 
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "потрібен пташник",

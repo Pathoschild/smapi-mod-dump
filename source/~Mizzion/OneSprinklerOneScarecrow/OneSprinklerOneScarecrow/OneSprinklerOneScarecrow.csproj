@@ -4,7 +4,7 @@
     <AssemblyName>OneSprinklerOneScarecrow</AssemblyName>
     <RootNamespace>OneSprinklerOneScarecrow</RootNamespace>
     <Version>1.0.7</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
 
     <EnableHarmony>true</EnableHarmony>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,10 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\HaxorScareCrow.png">
+    <None Update="assets\HaxorScarecrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\HaxorSprinkler.png">
+    <None Update="assets\HaxorSprinkler.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="i18n\default.json">

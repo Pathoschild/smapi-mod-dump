@@ -19,7 +19,7 @@ namespace HorseOverhaul
         private readonly HorseOverhaul mod;
 
         public HorseMenu(HorseOverhaul mod, HorseWrapper horse)
-          : base(Game1.player.horseName.Value)
+          : base(horse.Horse.GetNPCNameForDisplay(mod))
         {
             this.mod = mod;
             this.horse = horse;
@@ -41,7 +41,15 @@ namespace HorseOverhaul
             string food = mod.Config.Feeding ? mod.Helper.Translation.Get("GotFood", new { value = foodAnswer }) + "\n" : string.Empty;
             string heater = mod.Config.HorseHeater && Game1.IsWinter ? mod.Helper.Translation.Get("HasHeater", new { value = heaterAnswer }) + "\n" : string.Empty;
 
-            string res = $"{friendship}{petted}{water}{food}{heater}";
+            string owner = string.Empty;
+
+            if (horse.Horse.getOwner() != Game1.player)
+            {
+                string horseOwnerName = horse.Horse.getOwner()?.displayName ?? mod.Helper.Translation.Get("UnknownName");
+                owner = mod.Helper.Translation.Get("Owner", new { ownerName = horseOwnerName }) + "\n";
+            }
+
+            string res = $"{friendship}{petted}{water}{food}{heater}{owner}";
             // remove last newline character
             return res[0..^1];
         }

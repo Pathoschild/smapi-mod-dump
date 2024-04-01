@@ -41,7 +41,7 @@ public class EventPatches
 
         string type;
         var individual = Config.Randomize ? Game1.random.Next(Config.MinValue, Config.MaxValue) : Config.MaxValue;
-        var total = individual * Game1.player.festivalScore;
+        var total = Config.UseYearInstead ? individual * Game1.year : individual * Game1.player.festivalScore;
         
         switch (__instance.id)
         {
@@ -57,6 +57,9 @@ public class EventPatches
             default:
                 return;
         }
+
+        if (Config.UseYearInstead)
+            type = "year";
         
         //either random value btwn custom-1k OR custom
         Log($"Adding {total} to player money...({individual} per {type}. {Game1.player.festivalScore} found)");

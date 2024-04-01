@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // zh (simplified chinese)
+  // custom tree translation
+  "custom-tree.oak": "橡树",
+  "custom-tree.maple": "枫树",
+  "custom-tree.pine": "松树",
+  "custom-tree.coconut": "椰子树",
+  "custom-tree.mushroom": "蘑菇树",
+  "custom-tree.mahogany": "桃花心木树",
+  "custom-tree.palm": "棕榈树",
+
+  // growth info translation
+  "growth-info.fully-grown": "完全长大",
+  "growth-info.stage": "阶段",
+  "growth-info.of": "的",
+  "growth-info.days-left": "天左边",
+  "growth-info.day-left": "日左边",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "鼠标悬停",
+  "config.mouse-hover.desc": "将鼠标移到裁剪图块上以在启用时显示标签。",
+  "config.growth-info.name": "成长资讯",
+  "config.growth-info.desc": "启用时显示作物生长或收获阶段。",
+  "config.custom-keybinds.name": "按键绑定",
+  "config.custom-keybinds.desc": "替换默认值。启用鼠标悬停会覆盖它。"
+}

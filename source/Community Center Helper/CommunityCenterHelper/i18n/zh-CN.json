@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}}于{{season}}结果",
 	"tapTree": "在{{tree}}上用{{tapper}}",
 	"seedFromTree": "摇/砍倒{{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "制作{{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "收割草或{{wheat}}获得",
 	"trash": "钓鱼钓上的垃圾、蟹笼、垃圾桶",
 	"trashCan": "垃圾桶",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 	
 	// Miscellaneous Sources
 	"luckyShorts": "玛妮的房间(任务“镇长的短裤”，首年夏季第3日)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "电影院的抓娃娃机",
 	"voidEggEvent": "随机的女巫事件",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "兔子",
 	"animalDuck": "鸭",
 	"animalPig": "猪",
+	"animalOstrich": "鸵鸟",
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "需要鸡舍",

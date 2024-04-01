@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PetWaterBowl",
+  "Author": "Mizzion",
+  "Version": "1.4.0",
+  "Description": "Waters your pets water bowl on rainy, lightning and snowing days.",
+  "UniqueID": "mizzion.petwaterbowl",
+  "EntryDll": "PetWaterBowl.dll",
+  "MinimumApiVersion": "4.0",
+  "UpdateKeys": [ "Nexus:2009", "ModDrop:661365" ]
+}

@@ -1258,13 +1258,13 @@ For example, you can use this to provide the textures for a custom farm type:
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "EditData",
             "Target": "Data/AdditionalFarms",
             "Entries": {
-                "Example.ModId/FarmId": {
+                "{{ModId}}_FarmId": {
                     "IconTexture": "{{InternalAssetKey: assets/icon.png}}",
                     …
                 }
@@ -1276,25 +1276,26 @@ For example, you can use this to provide the textures for a custom farm type:
 
 Note that other content packs can't target an internal asset key (which is why it's internal). If
 you need to let other content packs edit it, you can use [`Action: Load`](action-load.md) to create
-a new asset for it, then use that asset name instead. When doing this, prefixing `Mods/` and your
-mod ID to the asset name is highly recommended to avoid conflicts. For example:
+a new asset for it, then use that asset name instead. When doing this, using the [unique string
+ID](https://stardewvalleywiki.com/Modding:Modder_Guide/Game_Fundamentals#Unique_string_IDs)
+convention is strongly recommended to avoid conflicts. For example:
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "EditData",
             "Target": "Data/AdditionalFarms",
             "Entries": {
-                "Example.ModId/FarmId": {
-                    "IconTexture": "Mods/Your.ModId/FarmIcon",
+                "{{ModId}}_FarmId": {
+                    "IconTexture": "Mods/{{ModId}}/FarmIcon",
                     …
                 }
             }
         },
         {
             "Action": "Load",
-            "Target": "Mods/Your.ModId/FarmIcon",
+            "Target": "Mods/{{ModId}}/FarmIcon",
             "FromFile": "assets/icon.png"
         }
     ]
@@ -1446,7 +1447,7 @@ For example, you can use config values as tokens and conditions:
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "ConfigSchema": {
         "EnableJohn": {
             "AllowValues": "true, false",
@@ -1664,7 +1665,7 @@ crop sprites depending on the weather:
 
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
    "DynamicTokens": [
       {
          "Name": "Style",
@@ -1697,7 +1698,7 @@ Query expressions are evaluated using the `Query` token. It can be used as a pla
 and can include nested tokens. Here's an example which includes all of those:
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1822,7 +1823,7 @@ which work just like normal Content Patcher tokens. For example, this patch uses
 Assets:
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1842,7 +1843,7 @@ To use a mod-provided token, at least one of these must be true:
   which lists the mod:
   ```js
   {
-     "Format": "1.29.0",
+     "Format": "2.0.0",
      "Changes": [
         {
            "Action": "EditData",
@@ -1868,7 +1869,7 @@ alternate name and the value is the original token name. For example:
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "AliasTokenNames": {
         "ItemID": "spacechase0.jsonAssets/ObjectId",
         "ItemSprite": "spacechase0.jsonAssets/ObjectSpriteSheetIndex"
@@ -1894,7 +1895,7 @@ token](#dynamic-tokens):
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "DynamicTokens": [
         {
             "Name": "PufferchickId",

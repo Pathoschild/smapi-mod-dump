@@ -9,11 +9,7 @@
 *************************************************/
 
 {
-	EachNightName:  "Each night",  EachNightTooltip:  "How soil decays every night",
-	EachSeasonName: "Each Season", EachSeasonTooltip: "How soil decays on the farm (and maps that have the `ClearEmptyDirtOnNewMonth` property) during nights between seasons",
-	GreenhouseName: "Greenhouse",  GreenhouseTooltip: "How soil decays inside the greenhouse",
-	IslandName:     "Island",      IslandTooltip:     "How soil decays on Ginger Island",
-	NonFarmName:    "Non-farm",    NonFarmTooltip:    "How soil decays outside the farm",
-	DryingRateName: "Drying Rate", DryingRateTooltip: "Chance that tilled soil will disappear. Normally this is {{rate}} (={{percentage}}%).",
-	DelayName:      "Delay",       DelayTooltip:      "Number of consecutive days that the patch must have been without water, before it can disappear during the night.",
+    // Translation provided by: <leave your name or nexus/discord username here>
+	DryingRateMultiplierName: "Drying Rate Multiplier", DryingRateMultiplierTooltip: "Increase the chance that tilled soil will disappear by this factor (after the delay is met).",
+	DelayName: "Delay", DelayTooltip: "Number of consecutive days that the patch must have been without water, before it can disappear during the night.",
 }

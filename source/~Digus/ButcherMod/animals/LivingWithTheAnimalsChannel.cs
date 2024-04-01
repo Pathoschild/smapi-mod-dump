@@ -18,12 +18,13 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.animals
 {
     public class LivingWithTheAnimalsChannel : Channel
     {
-        private readonly Dictionary<int, Episode> _episodes;
+        private Dictionary<int, Episode> _episodes;
 
         public string GetName => "LivingWithTheAnimals";
         public string GetScreenTextureName => DataLoader.LooseSpritesName;
@@ -46,6 +47,11 @@ namespace AnimalHusbandryMod.animals
         }
 
         public LivingWithTheAnimalsChannel()
+        {
+            ReloadEpisodes();
+        }
+
+        public void ReloadEpisodes()
         {
             this._episodes = new Dictionary<int, Episode>();
 

@@ -1,41 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.902
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTracker", "CustomTracker\CustomTracker.csproj", "{E00579D7-21A9-408B-A278-3E13B0890D89}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "[CP] CustomTracker", "[CP] CustomTracker\[CP] CustomTracker.csproj", "{1C5DA547-ADE6-4478-8B02-E9C5917649B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomTracker", "CustomTracker\CustomTracker.csproj", "{E00579D7-21A9-408B-A278-3E13B0890D89}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA14E1BD-1835-4200-8791-DD35902F35FB}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "[CP] CustomTracker", "[CP] CustomTracker\[CP] CustomTracker.csproj", "{1C5DA547-ADE6-4478-8B02-E9C5917649B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E00579D7-21A9-408B-A278-3E13B0890D89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E00579D7-21A9-408B-A278-3E13B0890D89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E00579D7-21A9-408B-A278-3E13B0890D89}.Debug|x86.ActiveCfg = Debug|x86
-		{E00579D7-21A9-408B-A278-3E13B0890D89}.Debug|x86.Build.0 = Debug|x86
 		{E00579D7-21A9-408B-A278-3E13B0890D89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E00579D7-21A9-408B-A278-3E13B0890D89}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E00579D7-21A9-408B-A278-3E13B0890D89}.Release|x86.ActiveCfg = Release|x86
-		{E00579D7-21A9-408B-A278-3E13B0890D89}.Release|x86.Build.0 = Release|x86
 		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Debug|x86.ActiveCfg = Debug|x86
-		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Debug|x86.Build.0 = Debug|x86
 		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Release|x86.ActiveCfg = Release|Any CPU
-		{1C5DA547-ADE6-4478-8B02-E9C5917649B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

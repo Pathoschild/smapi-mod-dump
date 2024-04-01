@@ -1,0 +1,50 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Introduction": "A stranger?... Hello.#$e#Don't mind me. I just live out here alone.",
+  "reject_869": "What do you have there? Looks like it would make good bait.$h",
+  "cc_Boulder": "My old friend, the glimmering boulder, has moved on. It may not seem like an important event, but to me it's a big change.#$b#I'm happy for the old rock to see more of the world, though.$h",
+  "MovieInvitation": "Oh... me? I usually wouldn't, but... okay. It's nice of you to think about me.#$b#I'll head over there in a little while.",
+  "Mon": "The crisp air of the wilderness is all I care to know.#$e#I live out here by choice.",
+  "Tue": "...Have you come to ridicule me?#$e#I'm just minding my own business.",
+  "Wed": "I don't know you well enough to trust you. Sorry.",
+  "Thu": "...Hmm? Do you want something from me?",
+  "Fri": "Please don't destroy my tent.#$e#It's happened before.$s",
+  "Sat": "I'm happy by myself, you know.#$e#I don't need new friends.",
+  "Sun4": "It would be nice if the townspeople could accept me for who I am.$s#$b#I like living out here in the open air. That's what they don't understand.",
+  "Tue4": "You can learn to survive in the wild. I have.#$e#I think we all have a hidden urge to return to nature. It's just a little scary to make the leap.",
+  "Wed6": "I spend a lot of time thinking.#$e#If you can fully understand the reasons behind your thoughts, you'll have reached a new level of being.",
+  "Wed2": "I have to be wary of strangers. Most people don't like a 'wild man'.",
+  "Thu4": "The people here seem nice, but they avoid me.#$e#People are afraid of the unknown.$u",
+  "Fri4": "You can learn a lot from trees.#$b#Spend time with them and they might tell you their secrets.#$e#Go in peace, young one.",
+  "Sat4": "I have everything I need to survive, and more. Nature plays a wonderful tune if you can only learn to listen.#$e#I also spend a lot of time reading. One of the reasons I stopped in the valley was for the great library.",
+  "Sun": "#$1 linusVandal#Someone was throwing rocks at my tent last night... I just had to wait it out.$s$k#$e#I don't like to stay in one place for too long. There's just too much to experience in the world.",
+  "summer_Mon4": "During all these years I've discovered a few secrets about life.#$e#You'll have to find out for yourself.",
+  "summer_Mon": "#$1 LinusHeron#I saw a heron wading gracefully through the morning mist. Such are the treasures of a quiet life.$k#$e#It's so easy to get caught up in the noise of modern life. Your best years will pass you by in a formless blur. That's why you'v got to learn to slow down. ",
+  "summer_Tue4": "How have you been, my young friend?",
+  "summer_Wed6": "Ah... summer. The warm sun heats up the cans for me.#$b#Then at night I've got a warm meal to look forward to.",
+  "summer_Thu4": "I have my own reasons for living alone like this.#$e#Some things are best left unsaid...#$e#I should do some foraging.",
+  "summer_Fri4": "Whenever you catch a fish, take a moment to thank it for its sacrifice.#$b#Even if you don't believe in the spirit of the fish, it's a good mental exercise. We need to be aware of our effect on the environment.",
+  "summer_Sat4": "You can find rainbow trout in streams right now.",
+  "summer_Sun": "This is an easier time of year for me. I don't have to worry about staying warm.#$e#Plus, the fruits of the wild are growing everywhere.",
+  "fall_Mon": "I've explored deep into the caves.#$e#They hold some hidden secrets.#$e#Just be cautious if you go in there.",
+  "fall_Tue4": "#$1 LinusFall1#Some joker sprayed paint all over my home during the night... It took hours to scrub it off this morning.$k#$e#I need to start gathering lumber for the winter.#$e#Do you have enough lumber to keep your house warm?",
+  "fall_Wed4": "I don't have many responsibilities, so I spend my time thinking.#$e#You have to understand your thoughts before you can control them.",
+  "fall_Sun": "I don't like to stay in one place for too long.",
+  "fall_Sun6": "There's nothing quite like a feast of wild mushrooms in the fall.$h",
+  "winter_Mon": "It can get really cold if you live in a tent.$s",
+  "winter_Tue4": "Thanks for not shunning me, @. It takes a lot of wisdom to override your base instincts.#$e#I'm a human like everyone else. I just have a different lifestyle.",
+  "winter_Wed4": "I'm sure you understand why I'm cautious of strangers.#$e#But let's put that in the past, okay? You and I are friends now, I think.",
+  "winter_Thu4": "Winter is tough, but you can still fish and forage to get by.#$e#If you have any animals you should keep them inside.",
+  "winter_Fri4": "The trees go to sleep during the winter. It makes it a bit lonely out here.#$e#But I wouldn't deny them their beauty sleep.$h",
+  "winter_Sat4": "Thanks for stopping by. I was actually feeling a little lonely this morning.#$e#So, have you discovered anything interesting in the mines?",
+  "winter_Sun": "Sleeping on the ground is good for my back.#$e#It's best to look at the positive side of things.$h"
+}

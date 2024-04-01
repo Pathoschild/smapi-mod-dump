@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using System;
+using System.Threading;
 
 namespace StardewDruid.Character
 {
@@ -30,30 +32,101 @@ namespace StardewDruid.Character
         {
         }
 
+        public override void LoadOut()
+        {
+            loadedOut = true;
+        }
+
         public override void draw(SpriteBatch b, float alpha = 1f)
         {
+            
             if (Context.IsMainPlayer && drawSlave)
             {
+                
                 foreach (NPC character in currentLocation.characters)
                 {
-                    //f (!(character is StardewDruid.Character.Actor))
-                        character.drawAboveAlwaysFrontLayer(b);
+                    
+                    character.drawAboveAlwaysFrontLayer(b);
+                
                 }
-                //this.drawAboveAlwaysFrontLayer(b);
+
             }
-            //base.draw(b, alpha);
+
         }
 
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
         {
+            
             if (textAboveHeadTimer > 0 && textAboveHead != null)
             {
                 
-                Vector2 vector = Game1.GlobalToLocal(new Vector2(getStandingX(), getStandingY() -128f));
+                Point standingPixel = base.StandingPixel;
+                
+                Vector2 vector = Game1.GlobalToLocal(new Vector2(standingPixel.X, standingPixel.Y - 128f));
+                
+                if (textAboveHeadStyle == 0)
+                {
+                    vector += new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2));
+                }
+                
+                Point tilePoint = base.TilePoint;
 
-                SpriteText.drawStringWithScrollCenteredAt(b, textAboveHead, (int)vector.X, (int)vector.Y, "", textAboveHeadAlpha, textAboveHeadColor, 1, 999f);
-            
+                SpriteText.drawStringWithScrollCenteredAt(b, textAboveHead, (int)vector.X, (int)vector.Y, "", textAboveHeadAlpha, textAboveHeadColor, 1, (float)(tilePoint.Y * 64) / 10000f + 0.001f + (float)tilePoint.X / 10000f);
+
             }
+
+        }
+
+        public override void behaviorOnFarmerPushing()
+        {
+
+            return;
+
+        }
+
+        public override bool checkAction(Farmer who, GameLocation l)
+        {
+
+            return false;
+
+        }
+
+        public override void update(GameTime time, GameLocation location)
+        {
+            
+            if (Context.IsMainPlayer)
+            {
+
+                if (shakeTimer > 0)
+                {
+                    shakeTimer = 0;
+                }
+
+                if (textAboveHeadTimer > 0)
+                {
+                    if (textAboveHeadPreTimer > 0)
+                    {
+                        textAboveHeadPreTimer -= time.ElapsedGameTime.Milliseconds;
+                    }
+                    else
+                    {
+                        textAboveHeadTimer -= time.ElapsedGameTime.Milliseconds;
+                        if (textAboveHeadTimer > 500)
+                        {
+                            textAboveHeadAlpha = Math.Min(1f, textAboveHeadAlpha + 0.1f);
+                        }
+                        else
+                        {
+                            textAboveHeadAlpha = Math.Max(0f, textAboveHeadAlpha - 0.04f);
+                        }
+                    }
+                }
+
+                updateEmote(time);
+
+            }
+
+            return;
 
         }
 

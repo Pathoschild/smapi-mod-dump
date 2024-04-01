@@ -22,6 +22,6 @@ namespace AnimalHusbandryMod.animals.data
         int MinimumDaysBetweenTreats { get; set; }
         object[] LikedTreats { get; set; }
         [JsonIgnore]
-        ISet<int> LikedTreatsId { get; set; }
+        ISet<string> LikedTreatsId { get; set; }
     }
 }

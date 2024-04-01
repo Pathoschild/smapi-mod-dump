@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+    "familiar-hatched": "A {0} has hatched!",
+    "DinoFamiliar": "Dino Familiar",
+    "BatFamiliar": "Bat Familiar",
+    "DustSpriteFamiliar": "Dust Sprite Familiar",
+    "Junimo": "Junimo Familiar",
+    "ButterflyFamiliar": "Butterfly Familiar",
+    "chat-dino-familiar-egg": "{0} found a Dino Familiar Egg.",
+}

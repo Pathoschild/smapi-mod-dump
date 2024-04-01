@@ -16,13 +16,13 @@ using StardewValley.Buildings;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
 using WhoLivesHereCore;
 using WhoLivesHereCore.i18n;
 #if !v16
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewValley;
 #endif
 
 
@@ -68,6 +68,7 @@ namespace WhoLivesHere
             //
             //
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+            helper.Events.Display.RenderedHud += Display_RenderedHud;
             //
             //  apply required harmony patches
             //
@@ -104,6 +105,8 @@ namespace WhoLivesHere
             animalCountBackground = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
             animalCountBackground.SetData<Color>(colors);
         }
+
+
         /// <summary>
         /// Clear auto toggle flags at the start of the day
         /// </summary>
@@ -451,7 +454,7 @@ namespace WhoLivesHere
             //
             //  add status boxes for empty house slots
             //
-            if (animalCount < pageSize && pageNumber * pageSize + animalCount < VersionLevel.MaxCapacity(__instance))
+            if (!config.HideEmptyTabs && animalCount < pageSize && pageNumber * pageSize + animalCount < VersionLevel.MaxCapacity(__instance))
             {
                 int placeHolderSize = 32;
                 Vector2 rotationOrigin = new Vector2(placeHolderSize / 2, placeHolderSize / 2);
@@ -472,10 +475,26 @@ namespace WhoLivesHere
             {
                 int bgWidth = 60;
                 int bgHeight = 40;
-                Vector2 rotationOrg=new Vector2(bgWidth/2, bgHeight/2);
+                Vector2 rotationOrg = new Vector2(bgWidth / 2, bgHeight / 2);
                 b.Draw(animalCountBackground, Game1.GlobalToLocal(Game1.viewport, new Vector2((int)__instance.tileX.Value * 64 + topX, (int)__instance.tileY.Value * 64 + topY + 200)), new Rectangle(0, 0, bgWidth, bgHeight), Color.White, 0, rotationOrg, 1, SpriteEffects.None, 0.99f);
                 b.DrawString(Game1.smallFont, house.animalsThatLiveHere.Count.ToString(), new Vector2((int)__instance.tileX.Value * 64 + topX + 5, (int)__instance.tileY.Value * 64 + topY + 200 + 5), Color.White, 0f, rotationOrg, 1f, SpriteEffects.None, 1);
             }
+        }
+        private static void Display_RenderedHud(object? sender, RenderedHudEventArgs e)
+        {
+            if (config.ShowMissingHay)
+                VersionLevel.HudRendered(e.SpriteBatch);
+        }
+
+        public static void DrawBubble(SpriteBatch b, Texture2D texture, Rectangle sourceRectangle, Vector2 destinationPosition)
+        {
+            Rectangle r = new Rectangle((int)(destinationPosition.X * Game1.options.zoomLevel), (int)(destinationPosition.Y * Game1.options.zoomLevel), Game1.tileSize * 3 / 4,
+                Game1.tileSize * 3 / 4);
+            b.Draw(Game1.mouseCursors, r, new Rectangle(141, 465, 20, 24), Color.White * 0.75f);
+            r.Offset(r.Width / 4, r.Height / 6);
+            r.Height /= 2;
+            r.Width /= 2;
+            b.Draw(texture, r, sourceRectangle, Color.White);
         }
         /// <summary>
         /// Get the animal spritesheet

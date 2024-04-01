@@ -8,13 +8,18 @@
 **
 *************************************************/
 
+using Force.DeepCloner;
+using StardewDruid.Character;
 using StardewDruid.Map;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using xTile;
 
 namespace StardewDruid.Dialogue
 {
@@ -25,19 +30,27 @@ namespace StardewDruid.Dialogue
 
         public override void DialogueApproach()
         {
-            
+
             if (specialDialogue.Count > 0)
             {
 
-                DialogueSpecial();
+                if (DialogueSpecial())
+                {
+
+                    return;
+
+                }
 
             }
-            else if (Mod.instance.QuestOpen("approachEffigy"))
+            
+            if (Mod.instance.QuestOpen("approachEffigy"))
             {
                 
                 Mod.instance.CompleteQuest("approachEffigy");
 
                 Mod.instance.CharacterRegister(nameof(Effigy), "FarmCave");
+
+                CharacterData.CharacterDefault(nameof(Effigy), "FarmCave");
 
                 DialogueIntro();
 
@@ -59,7 +72,13 @@ namespace StardewDruid.Dialogue
  
                 }
                 else if (stringList.Contains("Jester"))
-                    responseList.Add(new Response("quests", "(fate) I feel a strange presence"));
+                {
+
+                    responseList.Add(new Response("quests", "(fate) Do you feel a strange presence?"));
+
+                    responseList.Add(new Response("relocate", "(relocate) It's time for a change of scene"));
+
+                }
                 else if (stringList.Contains("hidden"))
                     responseList.Add(new Response("quests", "(quests) Is the valley safe?"));
                 else if (stringList.Contains("stars"))
@@ -79,9 +98,9 @@ namespace StardewDruid.Dialogue
             }
         }
 
-        public override void AnswerApproach(Farmer effigyVisitor, string effigyAnswer)
+        public override void AnswerApproach(Farmer visitor, string answer)
         {
-            switch (effigyAnswer)
+            switch (answer)
             {
                 case "intro":
                     DelayedAction.functionAfterDelay(DialogueQuery, 100);
@@ -93,14 +112,145 @@ namespace StardewDruid.Dialogue
                 case "adventure":
                     new Adventure(npc).Approach();
                     break;
-                case "Demetrius":
-                    DelayedAction.functionAfterDelay(DialogueDemetrius, 100);
-                    break;
                 case "rites":
                     new Rites(npc).Approach();
                     break;
+                case "relocate":
+                    DelayedAction.functionAfterDelay(DialogueRelocate, 100);
+                    break;
 
             }
+        }
+
+        public override bool DialogueSpecial()
+        {
+
+            string str = "I sense a change";
+
+            List<Response> responseList = new List<Response>();
+
+            KeyValuePair<string, string> dialogue = specialDialogue.First().ShallowClone();
+
+            if (dialogue.Value != npc.currentLocation.Name)
+            {
+
+                return false;
+
+            }
+
+            switch (dialogue.Key)
+            {
+
+                case "Aquifer":
+
+                    responseList.Add(new Response("journey", "The rite disturbed the bats. ALL the bats."));
+
+                    break;
+
+                case "Graveyard":
+
+                    responseList.Add(new Response("journey", "The graveyard has a few less shadows."));
+
+                    break;
+
+                case "Infestation":
+
+                    responseList.Add(new Response("journey", "I defeated the Pumpkin Slime. Now I'm covered in his gunk."));
+
+                    break;
+
+                case "Demetrius":
+
+                    str = "I had a peculiar visitor";
+
+                    responseList.Add(new Response("Demetrius", "Did you meet Demetrius?"));
+
+                    specialDialogue.Clear();
+
+                    break;
+
+                case "swordEarth":
+
+                    responseList.Add(new Response("journey", "The tree gave me a branch shaped like a sword."));
+
+                    break;
+
+                case "swordWater":
+
+                    responseList.Add(new Response("journey", "I went to the pier and... was that a bolt of lightning?"));
+
+                    break;
+
+                case "swordStars":
+
+                    responseList.Add(new Response("journey", "I found the lake of flames."));
+
+                    break;
+
+                case "beachOne":
+                case "beachTwo":
+                case "beachThree":
+                case "beachFour":
+                case "beachFive":
+                case "beachSix":
+
+                    str = Event.Scene.Beach.DialogueIntros(dialogue.Key);
+
+                    responseList = Event.Scene.Beach.DialogueSetups(dialogue.Key);
+
+                    break;
+
+                default:
+
+                    return false;
+
+            }
+
+            responseList.Add(new Response("none", "(say nothing)"));
+
+            GameLocation.afterQuestionBehavior questionBehavior = new(AnswerSpecial);
+
+            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
+
+            return true;
+
+        }
+
+        public override void AnswerSpecial(Farmer visitor, string answer)
+        {
+
+            switch (answer)
+            {
+                case "journey":
+
+                    specialDialogue.Clear();
+
+                    new Quests(npc).Approach();
+
+                    break;
+
+                case "Demetrius":
+
+                    DelayedAction.functionAfterDelay(DialogueDemetrius, 100);
+                    
+                    break;
+
+                case "beachOne":
+                case "beachTwo":
+                case "beachThree":
+                case "beachFour":
+                case "beachFive":
+                case "beachSix":
+
+                    specialDialogue.Clear();
+
+                    Event.Scene.Beach.DialogueResponses(npc,answer);
+
+                    break;
+
+            }
+
+
         }
 
         public void DialogueIntro()
@@ -135,22 +285,97 @@ namespace StardewDruid.Dialogue
               {
                 new Response("descended", "Do you think Demetrius is descended from the shaman tradition?!"),
                 new Response("offended", "Wow, he must have been offended. Demetrius is a man of modern science and sensibilities."),
-                new Response("return", "Nope, not going to engage with ")
+                new Response("return", "Nope, not going to engage with this.")
               };
             GameLocation.afterQuestionBehavior questionBehavior = new(AnswerDemetrius);
             Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
         }
 
-        public void AnswerDemetrius(Farmer effigyVisitor, string effigyAnswer)
+        public void AnswerDemetrius(Farmer visitor, string answer)
         {
-            if (effigyAnswer == "return")
+            if (answer == "return")
             {
                 returnFrom = "demetrius";
                 Effigy effigy = this;
                 DelayedAction.functionAfterDelay(DialogueApproach, 100);
             }
             else
-                Game1.drawDialogue(npc, Game1.player.caveChoice.Value != 1 ? "I can smell the crisp, sandy scent of the Calico variety of mushroom. The shamans would eat them to... enter a trance-like state." : "... ... He came in with a feathered mask on, invoked a rite of summoning, threw Bat feed everywhere, and then left just as quickly as he entered. His shamanic heritage is very... particular.");
+            {
+                string str = Game1.player.caveChoice.Value != 1 ? "I can smell the crisp, sandy scent of the Calico variety of mushroom. The shamans would eat them to... enter a trance-like state." : "... ... He came in with a feathered mask on, invoked a rite of summoning, threw Bat feed everywhere, and then left just as quickly as he entered. His shamanic heritage is very... particular.";
+ 
+                npc.CurrentDialogue.Push(new(npc, "0", str));
+
+                Game1.drawDialogue(npc);
+
+            }
+       }
+
+        public void DialogueRelocate()
+        {
+            List<Response> responseList = new List<Response>();
+
+            string str = "Forgotten Effigy: Where shall I await your command?";
+
+            if (npc.DefaultMap == "FarmCave")
+            {
+
+                string farm = "My farm would benefit from your gentle stewardship. (The Effigy will garden around scarecrows on the farm)";
+
+                responseList.Add(new Response("Farm", farm));
+            }
+
+            if (npc.DefaultMap == "Farm" || npc.netFollowActive.Value)
+            {
+
+                string shelter = "Shelter within the farm cave for the while.";
+
+                responseList.Add(new Response("FarmCave", shelter));
+
+            }
+
+            responseList.Add(new Response("return", "(nevermind)"));
+
+            GameLocation.afterQuestionBehavior questionBehavior = new(AnswerRelocate);
+
+            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
+        
+        }
+
+
+        public void AnswerRelocate(Farmer visitor, string answer)
+        {
+
+            string str = "(nevermind isn't a place, successor)";
+            string title = "The Effigy";
+
+            switch (answer)
+            {
+                case "FarmCave":
+
+                    str = "I will return to where I may feel the rumbling energies of the Valley's leylines.";
+
+                    CharacterData.RelocateTo(npc.Name, "FarmCave");
+
+                    Mod.instance.CastMessage(title + " has moved to the farm cave", -1);
+                    break;
+
+                case "Farm":
+
+                    str = "I will take my place amongst the posts and furrows of my old master's home.";
+
+                    CharacterData.RelocateTo(npc.Name, "Farm");
+
+                    Mod.instance.CastMessage(title + " now roams the farm", -1);
+
+                    break;
+
+
+            }
+
+            npc.CurrentDialogue.Push(new(npc, "0", str));
+
+            Game1.drawDialogue(npc);
+
         }
 
     }

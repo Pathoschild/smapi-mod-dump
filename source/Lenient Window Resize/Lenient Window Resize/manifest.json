@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-lenient-window-resize
+** Source repository: https://gitlab.com/delixx/stardew-valley/lenient-window-resize
 **
 *************************************************/
 

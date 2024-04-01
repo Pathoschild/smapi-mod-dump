@@ -14,14 +14,7 @@ Prevents watered tilled soil from disappearing during the night. If you only wan
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `EachNight`: How soil decays on the farm every night.
-* `EachSeason`: How soil decays on the farm (and maps that have the `ClearEmptyDirtOnNewMonth` property) during nights between seasons. This is in addition to the normal decay.
-* `Greenhouse`: How soil decays inside the greenhouse.
-* `Island`: How soil decays on Ginger Island.
-* `NonFarm`: How soil decays outside the farm.
-
-Each of the previous 5 settings consists of two options.
-* `DryingRate`: Chance that tilled soil will disappear. On the farm this is normally 0.1 (=10%), but this mod increases it to 0.5 (=50%).
+* `DryingRateMultiplier`: Chance multiplier that tilled soil will disappear. On the farm this chance is normally 10%, but this mod increases that to 50%.
 * `Delay`: Number of consecutive days that the patch must have been without water, before it can disappear during the night. Normally this is 0, but for the farm this mod sets it to 2. Note that rain waters the patch and thus resets the days without water counter to 0.
 
 ## Dependencies
@@ -34,9 +27,16 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
+#### 7.3:
+* Fix soil outside of farm areas not decaying.
+
+#### 7.2:
+* Don't apply soil decay delay outside of farm areas.
+
 #### 7.0:
+* Updated for Stardew Valley 1.6
 * Localization support.
-* Russian & Ukrainian translation
+* Removed most settings in favor of a single `DryingRateMultiplier`.
 
 #### 6.0:
 * Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.

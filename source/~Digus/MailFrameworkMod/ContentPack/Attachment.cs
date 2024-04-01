@@ -13,9 +13,9 @@ namespace MailFrameworkMod.ContentPack
     public class Attachment
     {
         public ItemType Type;
-        public int? Index;
+        public string Index;
         public int? Stack;
         public string Name;
-        public int UpgradeLevel;
+        public int? UpgradeLevel;
     }
 }

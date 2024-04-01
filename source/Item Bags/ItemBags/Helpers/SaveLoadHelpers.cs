@@ -96,8 +96,8 @@ namespace ItemBags.Helpers
                             BagInstance Instance = new BagInstance(CurrentBagId, IB);
                             BagInstances.Add(Instance);
 
-                        //  Replace the Bag with an arbitrary low-value/non-stackable item (in this case, a Rusty Sword) and store the bag instance's Id in the replacement item's ParentSheetIndex
-                        MeleeWeapon Replacement = new MeleeWeapon(0);
+                            //  Replace the Bag with an arbitrary low-value/non-stackable item (in this case, a Rusty Sword) and store the bag instance's Id in the replacement item's ParentSheetIndex
+                            MeleeWeapon Replacement = new MeleeWeapon("0");
                             Replacement.ParentSheetIndex = EncodedItemStartIndex + CurrentBagId;
                             return Replacement;
                         }
@@ -120,22 +120,26 @@ namespace ItemBags.Helpers
         internal static void OnSaved() { LoadCustomItems(); }
         internal static void OnLoaded()
         {
-            //ItemBagsMod.ModInstance.Monitor.Log("ItemBags OnLoaded started.", LogLevel.Info);
+            void DoWork()
+            {
+                //ItemBagsMod.ModInstance.Monitor.Log("ItemBags OnLoaded started.", LogLevel.Info);
 
-            //if (Context.IsMultiplayer && !Context.IsMainPlayer)
-            //    ItemBagsMod.ModInstance.Helper.Multiplayer.SendMessage("RequestBagResync", "RequestBagResync", new string[] { ItemBagsMod.ModUniqueId });
+                //if (Context.IsMultiplayer && !Context.IsMainPlayer)
+                //    ItemBagsMod.ModInstance.Helper.Multiplayer.SendMessage("RequestBagResync", "RequestBagResync", new string[] { ItemBagsMod.ModUniqueId });
 
-            try { LoadCustomItems(); }
-            catch (Exception ex) { ItemBagsMod.ModInstance.Monitor.Log("ItemBags error during LoadCustomItems: " + ex.Message, LogLevel.Error); }
+                try { LoadCustomItems(); }
+                catch (Exception ex) { ItemBagsMod.ModInstance.Monitor.Log("ItemBags error during LoadCustomItems: " + ex.Message, LogLevel.Error); }
 
-            CommunityCenterBundles.Instance = null;
-            CommunityCenterBundles.Instance = new CommunityCenterBundles();
+                CommunityCenterBundles.Instance = null;
+                CommunityCenterBundles.Instance = new CommunityCenterBundles();
 
-            //ItemBagsMod.ModInstance.Monitor.Log("ItemBags OnLoaded finished.", LogLevel.Info);
+                //ItemBagsMod.ModInstance.Monitor.Log("ItemBags OnLoaded finished.", LogLevel.Info);
+            }
+
+            DelayHelpers.InvokeLater(1, DoWork);
         }
 
-        /// <summary>Restores custom items used by this mod that were modified by <see cref="OnSaving"/>. Intended to be used after the game is saved or a save file is loaded.<para/>
-        /// (On PC versions of this mod, the bags are saved using PyTK, but PyTK doesn't work with Android)</summary>
+        /// <summary>Restores custom items used by this mod that were modified by <see cref="OnSaving"/>. Intended to be used after the game is saved or a save file is loaded.</summary>
         private static void LoadCustomItems()
         {
             PlayerBags OwnedBags = PlayerBags.DeserializeFromCurrentSaveFile();
@@ -230,7 +234,7 @@ namespace ItemBags.Helpers
                     Item Replacement = Replacer(ToRemove);
                     if (ToRemove != Replacement)
                     {
-                        Item Removed = Farmer.removeItemFromInventory(Index);
+                        Item Removed = Utility.removeItemFromInventory(Index, Farmer.Items);
                         Farmer.addItemToInventory(Replacement, Index);
                     }
                 }
@@ -243,15 +247,15 @@ namespace ItemBags.Helpers
                 {
                     if (o is Chest oChest)
                     {
-                        for (int i = 0; i < oChest.items.Count; i++)
+                        for (int i = 0; i < oChest.Items.Count; i++)
                         {
-                            Item item = oChest.items[i];
+                            Item item = oChest.Items[i];
                             if (item != null && Predicate(item))
                             {
                                 Item Replacement = Replacer(item);
                                 if (item != Replacement)
                                 {
-                                    oChest.items[i] = Replacement;
+                                    oChest.Items[i] = Replacement;
                                 }
                             }
                         }
@@ -262,30 +266,30 @@ namespace ItemBags.Helpers
                     }
 
                     Chest heldChest = o.heldObject.Value as Chest;
-                    for (int i = 0; i < heldChest.items.Count; i++)
+                    for (int i = 0; i < heldChest.Items.Count; i++)
                     {
-                        Item item = heldChest.items[i];
+                        Item item = heldChest.Items[i];
                         if (item != null && Predicate(item))
                         {
                             Item Replacement = Replacer(item);
                             if (item != Replacement)
                             {
-                                heldChest.items[i] = Replacement;
+                                heldChest.Items[i] = Replacement;
                             }
                         }
                     }
                 }
                 if (l is FarmHouse lFarmHouse)
                 {
-                    for (int i = 0; i < lFarmHouse.fridge.Value.items.Count; i++)
+                    for (int i = 0; i < lFarmHouse.fridge.Value.Items.Count; i++)
                     {
-                        Item item = lFarmHouse.fridge.Value.items[i];
+                        Item item = lFarmHouse.fridge.Value.Items[i];
                         if (item != null && Predicate(item))
                         {
                             Item Replacement = Replacer(item);
                             if (item != Replacement)
                             {
-                                lFarmHouse.fridge.Value.items[i] = Replacement;
+                                lFarmHouse.fridge.Value.Items[i] = Replacement;
                             }
                         }
                     }
@@ -313,27 +317,40 @@ namespace ItemBags.Helpers
                         }
                     }
                 }
-                if (!(l is BuildableGameLocation))
+
+                foreach (Building b in l.buildings)
                 {
-                    continue;
-                }
-                foreach (Building b in (l as BuildableGameLocation).buildings)
-                {
+                    foreach (Chest chest in b.buildingChests)
+                    {
+                        for (int i = 0; i < chest.Items.Count; i++)
+                        {
+                            Item item = chest.Items[i];
+                            if (item != null && Predicate(item))
+                            {
+                                Item Replacement = Replacer(item);
+                                if (item != Replacement)
+                                {
+                                    chest.Items[i] = Replacement;
+                                }
+                            }
+                        }
+                    }
+
                     if (b.indoors.Value != null)
                     {
                         foreach (Object o in b.indoors.Value.objects.Values)
                         {
                             if (o is Chest oChest)
                             {
-                                for (int i = 0; i < oChest.items.Count; i++)
+                                for (int i = 0; i < oChest.Items.Count; i++)
                                 {
-                                    Item item = oChest.items[i];
+                                    Item item = oChest.Items[i];
                                     if (item != null && Predicate(item))
                                     {
                                         Item Replacement = Replacer(item);
                                         if (item != Replacement)
                                         {
-                                            oChest.items[i] = Replacement;
+                                            oChest.Items[i] = Replacement;
                                         }
                                     }
                                 }
@@ -344,15 +361,15 @@ namespace ItemBags.Helpers
                             }
 
                             Chest heldChest = o.heldObject.Value as Chest;
-                            for (int i = 0; i < heldChest.items.Count; i++)
+                            for (int i = 0; i < heldChest.Items.Count; i++)
                             {
-                                Item item = heldChest.items[i];
+                                Item item = heldChest.Items[i];
                                 if (item != null && Predicate(item))
                                 {
                                     Item Replacement = Replacer(item);
                                     if (item != Replacement)
                                     {
-                                        heldChest.items[i] = Replacement;
+                                        heldChest.Items[i] = Replacement;
                                     }
                                 }
                             }
@@ -385,41 +402,17 @@ namespace ItemBags.Helpers
                             }
                         }
                     }
-                    else if (!(b is Mill))
+                    else if (b is JunimoHut junimoHut)
                     {
-                        if (!(b is JunimoHut))
+                        for (int i = 0; i < junimoHut.GetOutputChest().Items.Count; i++)
                         {
-                            continue;
-                        }
-
-                        if (b is JunimoHut junimoHut)
-                        {
-                            for (int i = 0; i < junimoHut.output.Value.items.Count; i++)
-                            {
-                                Item item = junimoHut.output.Value.items[i];
-                                if (item != null && Predicate(item))
-                                {
-                                    Item Replacement = Replacer(item);
-                                    if (item != Replacement)
-                                    {
-                                        junimoHut.output.Value.items[i] = Replacement;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Mill mill = b as Mill;
-                        for (int i = 0; i < mill.output.Value.items.Count; i++)
-                        {
-                            Item item = mill.output.Value.items[i];
+                            Item item = junimoHut.GetOutputChest().Items[i];
                             if (item != null && Predicate(item))
                             {
                                 Item Replacement = Replacer(item);
                                 if (item != Replacement)
                                 {
-                                    mill.output.Value.items[i] = Replacement;
+                                    junimoHut.GetOutputChest().Items[i] = Replacement;
                                 }
                             }
                         }

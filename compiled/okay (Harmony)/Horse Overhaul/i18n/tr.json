@@ -1,0 +1,33 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "Evet",
+  "No": "Hayır",
+  "GotPetted": "Sevilme Sayısı: {{value}}",
+  "GotWater": "Su Verilme Sayısı: {{value}}",
+  "GotFood": "Beslenme Sayısı: {{value}}",
+  "Friendship": "Arkadaşlık: {{value}}",
+  "HorseWarning": "Ata binerken bunu yapamazsın!",
+  "AteEnough": "{{name}} bugünlük yeterince yedi.",
+  "AteFood": "{{name}} senin {{foodName}} yiyeceğini yedi.",
+  "AteFoodLove": "Bunu yemeyi sevdi.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "Bunu yemek hoşuna gitti.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "Bu gerçekten çok sıradan bir atıştırmalıktı.", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "Isıtıcı: {{value}}",
+  "DontFeedChocolate": "Çikolata mı? Ciddi olamazsın!",
+  "LactoseIntolerantPets": "Çoğu kedi ve köpeğin laktoz intoleransı vardır.",
+  "LactoseIntolerantHorses": "Çoğu yetişkin atın laktoz intoleransı vardır.",
+  "HorseHerbivore": "Atlar gerçek otçullardır, et yiyemezler.",
+  "HorseNoBread": "Atların ekmek gibi işlenmiş gıdalar yememeleri gerekir.",
+  "HorseEatShouldnt": "Atının bunu yememesi gerekiyor.",
+  "HorseEatHay": "Atının ahırda yeterince samanı var.",
+  "HorseEatFiber": "Atının her yerde yiyebileceği yeterince otu var.",
+  "HorseEatCoffee": "Atların hiçbir kahve ya da kafein tüketmemeleri gerekir.",
+  "HorseEatCabbage": "Atlar lahana veya lahana ailesinin akrabalarını yememelidir.",
+  "HorseEatOnion": "Atlar soğan veya soğan ailesinin akrabalarını yememelidir.",
+  "HorseEatNightshade": "Atlar patates, domates, biber veya patlıcan gibi patlıcangiller familyasından olanları yememelidir.",
+  "HorseEatHorseRadish": "Yabani bayır turpu atlar için tehlikelidir, normal turp ise tehlikeli değildir.",
+  "HorseEatDislike": "Atın bunu yemek istemiyor."
+}

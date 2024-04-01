@@ -26,7 +26,7 @@ Run the game using SMAPI.
 | `OnlyShowSocializableNPCs`        | `true`                 | hides NPCs you can't socialize with i.e. Gunther or Sandy before the bus is repaired                   |
 
 ## Compatibility
-Works with Stardew Valley 1.5.6 on Windows/Linux/Mac
+Works with Stardew Valley 1.6 on Windows/Linux/Mac
 
 Works in single-player and multiplayer (mods need to match for it to be accurate).
 
@@ -65,3 +65,6 @@ Portuguese | [❑](ScheduleViewer/i18n) | &nbsp;
 Russian    | [❑](ScheduleViewer/i18n) | &nbsp;
 Spanish    | [❑](ScheduleViewer/i18n) | &nbsp;
 Turkish    | [❑](ScheduleViewer/i18n) | &nbsp;
+
+## See also
+ * [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/19305)

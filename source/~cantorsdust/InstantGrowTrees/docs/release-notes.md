@@ -9,6 +9,12 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.6.5
+Released 19 March 2024 for SMAPI 4.0.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.6.
+* Fruit trees now instantly grow in winter too (which matches the game logic).
+
 ## 1.6.4
 Released 25 June 2023 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

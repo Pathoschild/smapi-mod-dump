@@ -1,7 +1,7 @@
 {
   "Name": "SitAndRest",
   "Author": "Krutonium",
-  "Version": "1.0.2",
+  "Version": "1.1.1",
   "Description": "Sit when you're weary",
   "UniqueID": "krutonium.sitandrest",
   "EntryDll": "SitAndRest.dll",

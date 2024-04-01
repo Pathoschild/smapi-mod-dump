@@ -15,6 +15,6 @@
   "Description": "Watering crops with the watering can grants experience, also crops may die if they are not watered",
   "UniqueID": "Goldenrevolver.WateringGrantsXP",
   "EntryDll": "WateringGrantsXP.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:7768" ]
 }

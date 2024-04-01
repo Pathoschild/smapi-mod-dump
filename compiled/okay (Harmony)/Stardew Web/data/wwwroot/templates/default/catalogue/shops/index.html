@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    #HEAD#
+
+    <script>
+        function getshop() {
+            var shopId = document.getElementById("shop").value;
+
+            var sUrl = "/Catalogue/shopdetails?id=" + shopId;
+  
+            fetch(sUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("shopdetails").innerHTML = data.Details;
+                }).catch(function (err) {
+                    document.getElementById("shopdetails").innerHTML = 'Error: ' + err;
+                });
+
+
+        }
+    </script>
+</head>
+<body onload="SubPageLoaded('Catalogue','shopcat');">
+    #MENUBAR#
+
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+        <div class="container">
+            #CONTENT#
+        </div>
+    </div>
+
+</body>
+</html>

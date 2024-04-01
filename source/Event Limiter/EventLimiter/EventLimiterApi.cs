@@ -21,8 +21,8 @@ namespace EventLimiter
     {
         // Fields and properties to allow api to work, these can't be implemented by mods
         private static ModConfig config;
-        private static List<int> internalexceptions;
-        internal static void Hook(ModConfig config, List<int> internalexceptions)
+        private static List<string> internalexceptions;
+        internal static void Hook(ModConfig config, List<string> internalexceptions)
         {
             EventLimiterApi.config = config;
             EventLimiterApi.internalexceptions = internalexceptions;
@@ -53,21 +53,21 @@ namespace EventLimiter
         /// </summary>
         /// <param name="includeinternal">Whether internally added events (events not shown in config) are returned</param>
         /// <returns>A list of events that are exempt from normal event limits</returns>
-        public List<int> GetExceptions(bool includeinternal = true)
+        public List<string> GetExceptions(bool includeinternal = true)
         {
-            List<int> exceptions = new List<int>();
+            List<string> exceptions = new List<string>();
 
             if (includeinternal == true)
             {
-                foreach(int modexception in internalexceptions)
+                foreach(string modexception in internalexceptions)
                 {
                     exceptions.Add(modexception);
                 }
             }
 
-            foreach (int exception in config.Exceptions)
+            foreach (var exception in config.Exceptions)
             {
-                exceptions.Add(exception);
+                exceptions.Add(exception.ToString());
             }
 
             return exceptions;
@@ -78,7 +78,7 @@ namespace EventLimiter
         /// </summary>
         /// <param name="eventid">The id of the event to make an exception</param>
         /// <returns>Whether the exception was successfully added</returns>
-        public bool AddInternalException(int eventid)
+        public bool AddInternalException(string eventid)
         {
             try
             {

@@ -55,37 +55,6 @@ namespace CarryYourPet.Patches
             }
         }
 
-        public static bool HorseCheckAction_Prefix(Horse __instance, Farmer who, GameLocation l, bool __result)
-        {
-            try
-            {
-                // if carriedCharacter.Npc is null, that means we're not currently carrying an NPC...
-                if (carriedCharacter.Npc == null)
-                {
-                    // ...so we check to see if the appropriate hotkey is held down...
-                    if (config.HoldToCarryNpc.IsDown())
-                    {
-                        // ...and set this instance as the carried NPC.
-                        carriedCharacter.Npc = __instance;
-                        return false;
-                    }
-                }
-                else
-                {
-                    // Otherwise, since we are carrying an NPC, we set the carried value to null if the hotkey is held down.
-                    if (config.HoldToCarryNpc.IsDown()) carriedCharacter.Npc = null;
-                }
-            }
-            catch (Exception e)
-            {
-                logger.Exception(e);
-
-                return true;
-            }
-
-            return true;
-        }
-
         public static bool FarmerIsCarrying_Postfix(bool __result)
         {
             if (carriedCharacter.Npc != null)
@@ -95,36 +64,6 @@ namespace CarryYourPet.Patches
         }
 
         public static bool PetDraw_Prefix(Pet __instance, SpriteBatch b)
-        {
-            try
-            {
-                // If the carried NPC is not null, we need to control the drawing.
-                if (carriedCharacter?.Npc != null)
-                {
-                    // If this is the Pet instance we're carrying, we need to handle the drawing.
-                    if (__instance == carriedCharacter?.Npc)
-                    {
-                        // If ShouldDraw is true, it means we're manually drawing for this frame, so we should return true to allow the method to run.
-                        if (carriedCharacter.ShouldDraw)
-                            return true;
-                        return false;
-                    }
-                    else // If it isn't, we allow the game to draw as per usual.
-                        return true;
-                }
-            }
-            catch (Exception e)
-            {
-                logger.Exception(e);
-
-                // Return true after the exception is thrown so the original method runs.
-                return true;
-            }
-
-            return true;
-        }
-
-        public static bool HorseDraw_Prefix(Horse __instance, SpriteBatch b)
         {
             try
             {

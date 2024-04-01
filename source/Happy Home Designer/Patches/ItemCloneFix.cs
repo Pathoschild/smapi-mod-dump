@@ -8,10 +8,10 @@
 **
 *************************************************/
 
+using HappyHomeDesigner.Framework;
 using HarmonyLib;
 using StardewValley;
 using StardewValley.Objects;
-using System;
 
 namespace HappyHomeDesigner.Patches
 {
@@ -19,14 +19,16 @@ namespace HappyHomeDesigner.Patches
 	{
 		public static void Apply(Harmony harmony)
 		{
-			harmony.Patch(
+			harmony.TryPatch(
 				typeof(Farmer).GetMethod(nameof(Farmer.reduceActiveItemByOne)), 
-				prefix: new(typeof(ItemCloneFix), nameof(Prefix)));
+				prefix: new(typeof(ItemCloneFix), nameof(Prefix))
+			);
 
-			harmony.Patch(
+			harmony.TryPatch(
 				typeof(Furniture).GetMethod(nameof(Furniture.performObjectDropInAction)), 
 				prefix: new(typeof(ItemCloneFix), nameof(BeforeDropIn)), 
-				postfix: new(typeof(ItemCloneFix), nameof(AfterDropIn)));
+				postfix: new(typeof(ItemCloneFix), nameof(AfterDropIn))
+			);
 		}
 
 		private static bool Prefix(Farmer __instance)

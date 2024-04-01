@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,11 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Characters;
+using StardewValley.Extensions;
+using StardewValley.GameData.BigCraftables;
+using StardewValley.GameData.Objects;
+using StardewValley.GameData.Weapons;
 using StardewValley.Objects;
 using StardewValley.Tools;
 
@@ -34,7 +40,7 @@ namespace MailFrameworkMod
         private static readonly HashSet<IContentPack> RegisteredContentPacks = new HashSet<IContentPack>(new ContentPackComparer());
 
         private static readonly List<string> NoUpgradeLevelTools = new List<string>() {"Scythe", "Shears", "Milk Pail", "Fishing Rod", "Golden Scythe", "Pan", "Return Scepter" };
-        private static readonly List<int> SlingshotIndexes = new List<int>() {32, 33, 34};
+        private static readonly List<string> SlingshotIndexes = new List<string>() {"32", "33", "34", "(W)32", "(W)33", "(W)34" };
 
         public static IModHelper Helper;
         public static IDynamicGameAssetsApi DgaApi;
@@ -57,7 +63,7 @@ namespace MailFrameworkMod
                 e.Edit(asset =>
                 {
                     var data = asset.AsDictionary<string, string>().Data;
-                    foreach (Letter letter in MailDao.GetSavedLetters())
+                    foreach (Letter letter in MailRepository.GetSavedLetters())
                     {
                         if (letter.Title != null && !letter.AutoOpen)
                         {
@@ -65,7 +71,7 @@ namespace MailFrameworkMod
                         }
                     }
 
-                    foreach (string letterId in MailDao.GetRemovedLetterIds())
+                    foreach (string letterId in MailRepository.GetRemovedLetterIds())
                     {
                         if (data.ContainsKey(letterId))
                         {
@@ -73,7 +79,7 @@ namespace MailFrameworkMod
                         }
                     }
 
-                    MailDao.CleanDataToUpdate();
+                    MailRepository.CleanDataToUpdate();
                 });
             }
         }
@@ -101,20 +107,13 @@ namespace MailFrameworkMod
                 List<MailItem> mailItems = contentPack.ReadJsonFile<List<MailItem>>("mail.json");
                 foreach (MailItem mailItem in mailItems)
                 {
-                    Dictionary<int, string> objects = null;
-                    Dictionary<int, string> bigObjects = null;
-                    Dictionary<int, string> furnitures = null;
-                    Dictionary<int, string> weapons = null;
-                    Dictionary<int, string> boots = null;
 
                     //Populate all Indexes based on the given name. Ignore the letter otherwise.
                     if (mailItem.CollectionConditions != null && mailItem.CollectionConditions.Any(c =>
                     {
                         if (c.Name != null && c.Collection != Collection.Crafting)
                         {
-                            objects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
-                                PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
-                            KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(c.Name + "/"));
+                            KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(c.Name));
                             if (pair.Value != null)
                             {
                                 c.Index = pair.Key;
@@ -124,7 +123,7 @@ namespace MailFrameworkMod
                                 MailFrameworkModEntry.ModMonitor.Log(
                                     $"No object found with the name '{c.Name}' for a condition for letter '{mailItem.Id}'.\n This letter will be ignored.",
                                     LogLevel.Warn);
-                                MailDao.RemoveLetter(new Letter(mailItem.Id, null, null));
+                                MailRepository.RemoveLetter(new Letter(mailItem.Id, null, null));
                                 return true;
                             }
                         }
@@ -138,7 +137,7 @@ namespace MailFrameworkMod
                         && (mailItem.Date == null || SDate.Now() >= new SDate(Convert.ToInt32(mailItem.Date.Split(' ')[0]),
                                 mailItem.Date.Split(' ')[1], Convert.ToInt32(mailItem.Date.Split(' ')[2].Replace("Y", ""))))
                         && (mailItem.Days == null || mailItem.Days.Contains(SDate.Now().Day))
-                        && (mailItem.Seasons == null || mailItem.Seasons.Contains(SDate.Now().Season))
+                        && (mailItem.Seasons == null || mailItem.Seasons.Exists(s=> string.Equals(s,SDate.Now().Season.ToString(),StringComparison.OrdinalIgnoreCase)))
                         && (mailItem.Weather == null || (Game1.isRaining && "rainy".Equals(mailItem.Weather)) ||
                             (!Game1.isRaining && "sunny".Equals(mailItem.Weather)))
                         && (mailItem.FriendshipConditions == null || (mailItem.FriendshipConditions.TrueForAll(f =>
@@ -151,7 +150,7 @@ namespace MailFrameworkMod
                                 Game1.player.getEffectiveSkillLevel((int) s.SkillName) >= s.SkillLevel))
                         && (mailItem.StatsConditions == null ||
                             (mailItem.StatsConditions.TrueForAll(s =>
-                                 s.StatsLabel == null || Game1.player.stats.getStat(s.StatsLabel) >= s.Amount) &&
+                                 s.StatsLabel == null || Game1.player.stats.Get(s.StatsLabel) >= s.Amount) &&
                              mailItem.StatsConditions.TrueForAll(s =>
                                  s.StatsName == null ||
                                  MailFrameworkModEntry.ModHelper.Reflection
@@ -191,6 +190,9 @@ namespace MailFrameworkMod
                                 ? mailItem.RecipeKnown.All(r => Game1.player.knowsRecipe(r))
                                 : mailItem.RecipeKnown.Any(r => Game1.player.knowsRecipe(r))))
                         && (mailItem.RecipeNotKnown == null || mailItem.RecipeNotKnown.All(r => !Game1.player.knowsRecipe(r)))
+                        && (mailItem.HasMods == null || (mailItem.RequireAllMods
+                            ? mailItem.HasMods.All(r => Helper.ModRegistry.IsLoaded(r))
+                            : mailItem.HasMods.Any(r => Helper.ModRegistry.IsLoaded(r))))
                         && (mailItem.ExpandedPrecondition == null ||
                             (ConditionsCheckerApi != null &&
                              ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPrecondition)))
@@ -201,6 +203,14 @@ namespace MailFrameworkMod
                         && (mailItem.DeepestMineLevel == null || mailItem.DeepestMineLevel <= Game1.player.deepestMineLevel)
                         && (mailItem.CurrentMoney == null || mailItem.CurrentMoney <= Game1.player.Money)
                         && (mailItem.TotalMoneyEarned == null || mailItem.TotalMoneyEarned <= Game1.player.totalMoneyEarned)
+                        && (mailItem.SpecialDateCondition == null 
+                            || (mailItem.SpecialDateCondition.SpecialDate == SpecialDate.Wedding 
+                                && Game1.player.GetSpouseFriendship() != null 
+                                && SDate.Now() >= SDate.FromDaysSinceStart(1 + Game1.player.GetSpouseFriendship().WeddingDate.TotalDays + mailItem.SpecialDateCondition.YearsSince * WorldDate.MonthsPerYear * WorldDate.DaysPerMonth)) 
+                            || (mailItem.SpecialDateCondition.SpecialDate == SpecialDate.ChildBirth 
+                                && Game1.player.getChildrenCount() >= mailItem.SpecialDateCondition.WhichChild 
+                                && GetChild(mailItem.SpecialDateCondition.WhichChild).daysOld.Value >= mailItem.SpecialDateCondition.YearsSince * WorldDate.MonthsPerYear * WorldDate.DaysPerMonth))
+
                     ;
 
                     if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
@@ -214,10 +224,7 @@ namespace MailFrameworkMod
                                 case ItemType.Object:
                                     if (i.Name != null)
                                     {
-                                        objects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
-                                            PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
-                                        KeyValuePair<int, string> pair =
-                                            objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                        var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
                                         if (pair.Value != null)
                                         {
                                             i.Index = pair.Key;
@@ -230,9 +237,9 @@ namespace MailFrameworkMod
                                         }
                                     }
 
-                                    if (i.Index.HasValue)
+                                    if (i.Index != null)
                                     {
-                                        attachments.Add(new StardewValley.Object(Vector2.Zero, i.Index.Value, i.Stack ?? 1));
+                                        attachments.Add(new StardewValley.Object(i.Index, i.Stack ?? 1));
                                     }
                                     else
                                     {
@@ -246,11 +253,7 @@ namespace MailFrameworkMod
                                 case ItemType.BigCraftable:
                                     if (i.Name != null)
                                     {
-                                        bigObjects ??=
-                                            MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
-                                                PathUtilities.NormalizeAssetName("Data/BigCraftablesInformation"));
-                                        KeyValuePair<int, string> pair =
-                                            bigObjects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                        var pair = Game1.bigCraftableData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
                                         if (pair.Value != null)
                                         {
                                             i.Index = pair.Key;
@@ -263,9 +266,9 @@ namespace MailFrameworkMod
                                         }
                                     }
 
-                                    if (i.Index.HasValue)
+                                    if (i.Index != null)
                                     {
-                                        Item item = new StardewValley.Object(Vector2.Zero, i.Index.Value);
+                                        Item item = new StardewValley.Object(Vector2.Zero, i.Index);
                                         if (i.Stack.HasValue)
                                         {
                                             item.Stack = i.Stack.Value;
@@ -295,10 +298,10 @@ namespace MailFrameworkMod
                                             tool = new WateringCan();
                                             break;
                                         case "Scythe":
-                                            tool = new MeleeWeapon(47);
+                                            tool = new MeleeWeapon("47");
                                             break;
                                         case "Golden Scythe":
-                                            tool = new MeleeWeapon(53);
+                                            tool = new MeleeWeapon("53");
                                             break;
                                         case "Pickaxe":
                                             tool = new Pickaxe();
@@ -310,7 +313,7 @@ namespace MailFrameworkMod
                                             tool = new Shears();
                                             break;
                                         case "Fishing Rod":
-                                            tool = new FishingRod(i.UpgradeLevel);
+                                            tool = new FishingRod(i.UpgradeLevel ?? 0);
                                             break;
                                         case "Pan":
                                             tool = new Pan();
@@ -328,7 +331,7 @@ namespace MailFrameworkMod
                                     {
                                         if (!NoUpgradeLevelTools.Contains(i.Name))
                                         {
-                                            tool.UpgradeLevel = i.UpgradeLevel;
+                                            tool.UpgradeLevel = i.UpgradeLevel ?? 0;
                                         }
 
                                         attachments.Add(tool);
@@ -336,12 +339,9 @@ namespace MailFrameworkMod
 
                                     break;
                                 case ItemType.Ring:
-                                    objects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
-                                        PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
                                     if (i.Name != null)
                                     {
-                                        KeyValuePair<int, string> pair =
-                                            objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                        KeyValuePair<string, ObjectData> pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
                                         if (pair.Value != null)
                                         {
                                             i.Index = pair.Key;
@@ -354,11 +354,11 @@ namespace MailFrameworkMod
                                         }
                                     }
 
-                                    if (i.Index.HasValue)
+                                    if (i.Index != null)
                                     {
-                                        if (objects[i.Index.Value].Split('/')[3] == "Ring")
+                                        if (Game1.objectData[i.Index].Type.Equals("Ring"))
                                         {
-                                            attachments.Add(new Ring(i.Index.Value));
+                                            attachments.Add(new Ring(i.Index));
                                         }
                                         else
                                         {
@@ -378,10 +378,10 @@ namespace MailFrameworkMod
                                 case ItemType.Furniture:
                                     if (i.Name != null)
                                     {
-                                        furnitures ??=
-                                            MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
+                                        Dictionary<string, string> furnitures =
+                                            MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(
                                                 PathUtilities.NormalizeAssetName("Data/Furniture"));
-                                        KeyValuePair<int, string> pair =
+                                        KeyValuePair<string, string> pair =
                                             furnitures.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                         if (pair.Value != null)
                                         {
@@ -395,9 +395,9 @@ namespace MailFrameworkMod
                                         }
                                     }
 
-                                    if (i.Index.HasValue)
+                                    if (i.Index != null)
                                     {
-                                        attachments.Add(Furniture.GetFurnitureInstance(i.Index.Value));
+                                        attachments.Add(Furniture.GetFurnitureInstance(i.Index));
                                     }
                                     else
                                     {
@@ -410,10 +410,7 @@ namespace MailFrameworkMod
                                 case ItemType.Weapon:
                                     if (i.Name != null)
                                     {
-                                        weapons ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
-                                            PathUtilities.NormalizeAssetName("Data/Weapons"));
-                                        KeyValuePair<int, string> pair =
-                                            weapons.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                        var pair = Game1.weaponData.FirstOrDefault(o => o.Value.Name.Equals(i.Name));
                                         if (pair.Value != null)
                                         {
                                             i.Index = pair.Key;
@@ -426,9 +423,9 @@ namespace MailFrameworkMod
                                         }
                                     }
 
-                                    if (i.Index.HasValue)
+                                    if (i.Index != null)
                                     {
-                                        int index = i.Index.Value;
+                                        string index = i.Index;
                                         attachments.Add(SlingshotIndexes.Contains(index)
                                             ? (Item) new Slingshot(index)
                                             : (Item) new MeleeWeapon(index));
@@ -444,10 +441,8 @@ namespace MailFrameworkMod
                                 case ItemType.Boots:
                                     if (i.Name != null)
                                     {
-                                        boots ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(
-                                            PathUtilities.NormalizeAssetName("Data/Boots"));
-                                        KeyValuePair<int, string> pair =
-                                            boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                        var boots = MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/Boots"));
+                                        var pair = boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                         if (pair.Value != null)
                                         {
                                             i.Index = pair.Key;
@@ -460,9 +455,9 @@ namespace MailFrameworkMod
                                         }
                                     }
 
-                                    if (i.Index.HasValue)
+                                    if (i.Index != null)
                                     {
-                                        attachments.Add(new Boots(i.Index.Value));
+                                        attachments.Add(new Boots(i.Index));
                                     }
                                     else
                                     {
@@ -514,13 +509,38 @@ namespace MailFrameworkMod
                                     }
 
                                     break;
+                                case ItemType.QualifiedItemId:
+                                    if (i.Index != null)
+                                    {
+                                        Item item = ItemRegistry.Create(i.Index, i.Stack ?? 1);
+                                        attachments.Add(item);
+                                    }
+                                    else
+                                    {
+                                        MailFrameworkModEntry.ModMonitor.Log(
+                                            $"An index value is required to attach a FullId Item for letter {mailItem.Id}.",
+                                            LogLevel.Warn);
+                                    }
+
+                                    break;
                                 default:
                                     MailFrameworkModEntry.ModMonitor.Log(
                                         $"Invalid attachment type '{i.Type}' found in letter {mailItem.Id}.", LogLevel.Warn);
                                     break;
                             }
                         });
-                        MailDao.SaveLetter(
+                        if (mailItem.CustomTextColorName != null)
+                        {
+                            try
+                            {
+                                mailItem.CustomTextColor = DataLoader.Helper.Reflection.GetProperty<Color>(typeof(Color), mailItem.CustomTextColorName).GetValue();
+                            }
+                            catch (Exception)
+                            {
+                                MailFrameworkModEntry.ModMonitor.Log($"Color '{mailItem.CustomTextColorName}' isn't valid. Check XNA Color Chart for valid names. This color will be ignored.");
+                            }
+                        }
+                        MailRepository.SaveLetter(
                             new Letter(
                                 mailItem.Id
                                 , mailItem.Text
@@ -536,6 +556,7 @@ namespace MailFrameworkMod
                             )
                             {
                                 TextColor = mailItem.TextColor,
+                                CustomTextColor = mailItem.CustomTextColor,
                                 Title = mailItem.Title,
                                 GroupId = mailItem.GroupId,
                                 LetterTexture = mailItem.LetterBG != null
@@ -550,7 +571,7 @@ namespace MailFrameworkMod
                     }
                     else
                     {
-                        MailDao.SaveLetter(
+                        MailRepository.SaveLetter(
                             new Letter(
                                 mailItem.Id
                                 , mailItem.Text
@@ -566,6 +587,7 @@ namespace MailFrameworkMod
                             )
                             {
                                 TextColor = mailItem.TextColor,
+                                CustomTextColor = mailItem.CustomTextColor,
                                 Title = mailItem.Title,
                                 GroupId = mailItem.GroupId,
                                 LetterTexture = mailItem.LetterBG != null
@@ -586,6 +608,11 @@ namespace MailFrameworkMod
                     $"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an mail.json file.",
                     LogLevel.Warn);
             }
+        }
+
+        private static Child GetChild(int childNumber)
+        {
+            return Game1.player.getChildren().OrderByDescending(c=> c.daysOld.Value).ToImmutableList()[childNumber - 1];
         }
 
         public static Texture2D GetTextureAsset(IContentPack contentPack, string textureName)

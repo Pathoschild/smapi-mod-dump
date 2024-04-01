@@ -1,5 +1,0 @@
-{
-    "BuildBridge_Question": "나무 {{requireWoods}}조각으로 다리를 만들까요?",
-    "BuildBridge_hint": "흐음... 나무 {{requireWoods}}조각이면 다리를 놓을 수 있을 것 같다.",
-    "BridgeCollapsed": "농장의 다리가 무너졌습니다."
-}

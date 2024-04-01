@@ -84,9 +84,9 @@ internal class ModConfig
     public Boolean WateredToggle { get; set; } = true;
 
     /// <summary>
-    /// Toggle speaking tile indexes with other info.
+    /// Toggle speaking tile indexes and object ids with other info.
     /// </summary>
-    public Boolean ReadTileIndexes { get; set; } = false;
+    public Boolean ReadTileDebug { get; set; } = false;
 
     /// <summary>
     /// Toggle speaking hoed dirt (soil) in mine shafts.
@@ -464,6 +464,11 @@ internal class ModConfig
     /// If enabled, does not speak bush type or size; only harvestable.
     /// </summary>
     public Boolean DisableBushVerbosity { get; set; } = false;
+
+    /// <summary>
+    /// If enabled, does not pluralize inventory with fluent
+    /// </summary>
+    public Boolean DisableInventoryFluentPluralization { get; set; } = false;
 
     /// <summary>
     /// Sets speech rate for the Mac TTS.

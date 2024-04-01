@@ -1,0 +1,10 @@
+{
+	"Name": "Pet against crows",
+	"Author": "stardemod",
+	"Version": "1.0.0",
+	"Description": "Reduce the likelihood of crows appearing on your farm as your pet's friendship grows.",
+	"UniqueID": "stardemod.PetAgainstCrows",
+	"EntryDll": "PetAgainstCrows.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:21247" ]
+}

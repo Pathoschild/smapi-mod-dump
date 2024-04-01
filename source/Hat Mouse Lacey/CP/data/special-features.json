@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Hat Reactions - blank",
+      "Target": "Strings/{{ModId}}_HatReactions",
+      "Action": "Load",
+      "FromFile": "data/empty.json"
+    },
+    {
+      "LogName": "Hat Reactions",
+      "Action": "Include",
+      "FromFile": "data/hat-reactions.json"
+    },
+    {
+      "LogName": "Secret sprites",
+      "Target": "Characters/{{ModId}}/Baby_0, Characters/{{ModId}}/Baby_1, Characters/{{ModId}}/Toddler_boy_0, Characters/{{ModId}}/Toddler_boy_1, Characters/{{ModId}}/Toddler_girl_0, Characters/{{ModId}}/Toddler_girl_1",
+      "Action": "Load",
+      "FromFile": "assets/character/{{Lowercase:{{TargetWithoutPath}}}}.png"
+    },
+    {
+      "LogName": "Stardew Valley Fair Hat Stall",
+      "Target": "Data/Shops",
+      "Action": "EditData",
+      "TargetField": ["HatMouse", "Owners"],
+      "Entries": {
+        "{{Lacey}}": {
+          "Id": "{{Lacey}}",
+          "Condition": null,
+          "Portrait": "{{Lacey}}",
+          "Dialogues": [
+            {
+              "Id": "Default",
+              "Condition": null,
+              "Dialogue": "{{i18n:dialogue.fall_16.fair.shopdialogue}}",
+              "RandomDialogue": null
+            }
+          ],
+          "RandomizeDialogueOnOpen": true,
+          "ClosedMessage": null,
+          "Name": "{{Lacey}}"
+        }
+      },
+      "MoveEntries": [
+        {"Id": "{{Lacey}}", "ToPosition": "Top"}
+      ]
+    },
+    {
+      "LogName": "Fair Hat Stall Currency",
+      "Target": "Data/Shops",
+      "Action": "EditData",
+      "Fields": {
+        "HatMouse": {
+          "Currency": 1,
+          "PriceModifiers": [
+            {"Modification": "Multiply", "Amount": 0.5}
+          ]
+        }
+      },
+      "When": {
+        "DayEvent": "stardew valley fair",
+        "LocationName": "Temp"
+      },
+      "Update": "OnLocationChange"
+    }
+  ]
+}

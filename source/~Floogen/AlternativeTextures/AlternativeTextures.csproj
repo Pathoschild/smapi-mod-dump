@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>6.10.4</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<Version>7.2.5</Version>
+		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip>false</EnableModZip>
@@ -18,8 +18,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -50,6 +50,9 @@
 		<None Update="i18n\de.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="i18n\ko.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="i18n\default.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -79,7 +82,7 @@
 			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
 			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"' -Recurse -Force
-			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\bin\Debug\$(TargetFramework)" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
 			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\AlternativeTextures-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
 
 			powershell Remove-Item -Path '$(GameModsPath)\AlternativeTextures' -Recurse -Force

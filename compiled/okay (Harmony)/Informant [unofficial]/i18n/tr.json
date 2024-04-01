@@ -1,0 +1,79 @@
+{
+  "BundleTooltipDecorator": "Yığın Belirteci",
+  "BundleTooltipDecorator.Description": "Yığınlar için gerekli olan nesneleri belirtir.",
+
+  "FieldOfficeDecorator": "Field Office Decorator",
+  "FieldOfficeDecorator.Description": "Marks items that are needed for the island field office",
+
+  "RarecrowDecorator": "Rarecrow Decorator",
+  "RarecrowDecorator.Description": "Marks items that are needed for the rarecrow collection",
+
+  "SellPriceDisplayable": "Satış Fiyatı Belirteci",
+  "SellPriceDisplayable.Description": "Satış fiyatını ipucunun altına ekler.",
+
+  "MuseumDecorator": "Müze Belirteci",
+  "MuseumDecorator.Description": "Müze için gerekli olan nesneleri belirtir.",
+
+  "NewRecipeDisplayable": "New Recipe Decorator",
+  "NewRecipeDisplayable.Description": "Marks recipes that where not yet cooked / crafted",
+
+  "ShippingBinDecorator": "Shipping Decorator",
+  "ShippingBinDecorator.Description": "Marks items that were not shipped yet",
+
+  "AnimalTooltipGenerator": "Animals Tooltip",
+  "AnimalTooltipGenerator.Description": "Display additional information for farm animals",
+
+  "CropTooltipGenerator": "Ekin İpucu",
+  "CropTooltipGenerator.Description": "Mahsul türünü ve hasata kalan gün sayısını gösteren bir ipucu",
+  "CropTooltipGenerator.0DaysLeft": "Hasata Hazır.",
+  "CropTooltipGenerator.1DayLeft": "1 Gün Kaldı",
+  "CropTooltipGenerator.XDaysLeft": "{{X}} Gün Kaldı",
+  "CropTooltipGenerator.Dead": "Ölmüş",
+
+  "FruitTreeTooltipGenerator": "Meyve Ağacı İpucu",
+  "FruitTreeTooltipGenerator.Description": "Meyve ağacının türünü ve hasada kalan gün sayısını gösteren bir ipucu",
+
+  "TeaBushTooltipGenerator": "Tea Bush Tooltip",
+  "TeaBushTooltipGenerator.Description": "A tooltip that displays the remaining days of tea bush",
+
+  "MachineTooltipGenerator": "Makine İpucu",
+  "MachineTooltipGenerator.Description": "Üretilen nesnenin türünü ve kalan süreyi gösteren bir ipucu",
+  "MachineTooltipGenerator.Finished": "Tamamlandı",
+  "MachineTooltipGenerator.CannotBeUnloaded": "Boşaltılamaz",
+  "MachineTooltipGenerator.ForNextQuality": "{{X}} for next quality",
+  "MachineTooltipGenerator.ForTotal": "{{X}} in total",
+
+  "TreeTooltipGenerator": "Ağaç İpucu",
+  "TreeTooltipGenerator.Description": "Ağacın türünü gösteren bir ipucu",
+  "TreeTooltipGenerator.Type1": "Meşe Ağacı",
+  "TreeTooltipGenerator.Type2": "Akçaağaç",
+  "TreeTooltipGenerator.Type3": "Çam Ağacı",
+  "TreeTooltipGenerator.Type6": "Palmiye Ağacı",
+  "TreeTooltipGenerator.Type7": "Mantar Ağacı",
+  "TreeTooltipGenerator.Type8": "Maun Ağacı",
+  "TreeTooltipGenerator.Type9": "Palmiye Ağacı",
+  "TreeTooltipGenerator.Type10": "Mossy Wild Tree",
+  "TreeTooltipGenerator.Type13": "Mystic Tree",
+  "TreeTooltipGenerator.MossCovered": "Mossy {{X}}",
+
+  "Config.Decorators.GeneralSection": "Belirteçler - Genel",
+  "Config.Decorators.Visibility": "Belirteçler - Görünürlük",
+  "Config.TooltipGenerators.GeneralSection": "İpuçları - Genel",
+  "Config.TooltipGenerators.Visibility": "İpuçları - Görünürlük",
+
+  "Config.DecorateLockedBundles": "Decorate Locked Bundles",
+  "Config.DecorateLockedBundles.Description": "Displays Bundles Decorator for still locked bundles",
+
+  "Config.ShowCropFertilizer": "Display Fertilizer",
+  "Config.ShowCropFertilizer.Description": "Display soil fertilizer on crop tooltip",
+
+  "Config.TooltipTrigger": "İpucu aktifleşmesi",
+  "Config.TooltipTrigger.Hover": "Üzerinde imleç ile gezinildiğinde",
+  "Config.TooltipTrigger.ButtonHeld": "Düğme basılı tutulduğunda",
+  "Config.TooltipTriggerButton": "İpucu Butonu",
+
+  "Config.HideMachineTooltips": "Makine İpucunu Gizle",
+  "Config.HideMachineTooltips.ForNonMachines": "Makine olmayanlar için",
+  "Config.HideMachineTooltips.ForChests": "Sandıklar için",
+  "Config.HideMachineTooltips.Never": "Asla"
+}

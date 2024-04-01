@@ -30,10 +30,10 @@ namespace Shockah.ProjectFluent
 		{
 			get
 			{
-				if (Locale is null || Locale.LocaleCode != ProjectFluent.Instance.CurrentLocale.LocaleCode)
+				if (Locale is null || Locale.LocaleCode != ModEntry.Instance.CurrentLocale.LocaleCode)
 				{
-					Locale = ProjectFluent.Instance.CurrentLocale;
-					Wrapped = ProjectFluent.Instance.Api.GetLocalizations(Locale, Mod, File);
+					Locale = ModEntry.Instance.CurrentLocale;
+					Wrapped = ModEntry.Instance.Api.GetLocalizations(Locale, Mod, File);
 				}
 				return Wrapped;
 			}

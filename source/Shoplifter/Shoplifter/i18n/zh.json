@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "你在偷窃我 @！我以为你是一个很好的人。$3#$b#这次我不会罚你款了 @，反正你也买不起。$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "远离别人并不会让我的地方更容易被你偷走@，$2#$b#这次不要担心罚款 @，离开就好。$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "你真的那么想吃冰淇淋吗 @？$7#$b#这次我会给你一个警告。$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "你这是严重的入店行窃 @？$3#$b#*叹气* 如果你付了{{fineamount}}金的罚款，我就忘了你是在商店行窃，好吗？$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "你真的在商店行窃？$3#$b#*叹气* 我让你休息一下，这次不罚你款。$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "真的 @？你认为你可以得到一台免费的电视吗？$3#$b#我要为此罚款你{{fineamount}}金...也许这会让你停手。$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "真的 @？你认为你可以得到一台免费的电视吗？$3#$b#既然你买不起，这次罚款就算了。$2",
 
     // Translations thanks to XinJiDA!
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"玩家行窃设置",  
@@ -57,6 +62,10 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"禁入商店天数",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"不被允许进入商店的天数",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"最大抓捕距离",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"村民发现并抓捕玩家的最大距离"
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"村民发现并抓捕玩家的最大距离",
+    //
+    //TODO Improve 1.6 translations
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"难得的股票机会",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"稀有物品出现的概率。"
     //
   }

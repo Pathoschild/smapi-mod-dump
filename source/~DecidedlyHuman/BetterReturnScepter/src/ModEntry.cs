@@ -75,7 +75,7 @@ namespace BetterReturnScepter
         {
             // On the start of the day, we set our previous locations to the player's spawn point.
             this.previousPoint.Location = Game1.player.currentLocation;
-            this.previousPoint.Tile = Game1.player.getTileLocation();
+            this.previousPoint.Tile = Game1.player.Tile;
         }
 
         private void ButtonsChanged(object? sender, ButtonsChangedEventArgs e)
@@ -140,9 +140,9 @@ namespace BetterReturnScepter
 
                             int nextTileDelay = 0;
 
-                            for (int xTile = player.getTileX() + 8; xTile >= player.getTileX() - 8; xTile--)
+                            for (int xTile = (int)player.Tile.X + 8; xTile >= player.Tile.X - 8; xTile--)
                             {
-                                var flash = new TemporaryAnimatedSprite(6, new Vector2(xTile, player.getTileY()) * 64f,
+                                var flash = new TemporaryAnimatedSprite(6, new Vector2(xTile, player.Tile.Y) * 64f,
                                     Color.White, 8, false, 50f)
                                 {
                                     layerDepth = 1f,
@@ -170,7 +170,7 @@ namespace BetterReturnScepter
                                 {
                                     // The setting to count warp menu usage as scepter usage is enabled, so we set our previous point.
                                     this.previousPoint.Location = player.currentLocation;
-                                    this.previousPoint.Tile = player.getTileLocation();
+                                    this.previousPoint.Tile = player.Tile;
                                 }
 
                                 // Reset our cooldown.

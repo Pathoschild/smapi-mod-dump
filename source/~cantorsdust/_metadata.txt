@@ -11,9 +11,9 @@ mods:
    TimeSpeed
 
 latest commit:
-   commit a428d42f53001b1d4f757d032843ad93dfc4e589
+   commit e96f9c0d2b13c3d6d4f2622d6ba68ae4f0402c1b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jun 25 15:43:42 2023 -0400
+   Date:   Tue Mar 19 02:45:21 2024 -0400
    
        Merge branch 'develop'
    

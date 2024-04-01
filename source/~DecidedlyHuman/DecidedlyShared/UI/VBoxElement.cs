@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
 using DecidedlyShared.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -39,10 +39,6 @@ namespace Fishnets
                 prefix: new(typeof(Patches), nameof(placementActionPrefix))
             );
             harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.canBePlacedInWater)),
-                prefix: new(typeof(Patches), nameof(canBePlacedInWaterPrefix))
-            );
-            harmony.Patch(
                 original: AccessTools.Method(typeof(Object), nameof(Object.canBePlacedHere)),
                 prefix: new(typeof(Patches), nameof(canBePlacedHerePrefix))
             );
@@ -62,7 +58,7 @@ namespace Fishnets
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }),
+                original: AccessTools.Method(typeof(Object), nameof(Object.drawInMenu), [typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool)]),
                 prefix: new(typeof(Patches), nameof(drawInMenuPrefix))
             );
             harmony.Patch(
@@ -79,7 +75,7 @@ namespace Fishnets
         {
             try
             {
-                if (__instance.ParentSheetIndex == ModEntry.ObjectInfo.Id)
+                if (__instance.ItemId == ModEntry.ObjectInfo.Id)
                 {
                     Point tile = new((int)Math.Floor(x / 64f), (int)Math.Floor(y / 64f));
                     if (!Fishnet.IsValidPlacementLocation(location, tile.X, tile.Y))
@@ -91,30 +87,16 @@ namespace Fishnets
                 }
                 return true;
             }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.placementAction)}", ex, __instance is null || __instance.ParentSheetIndex != ModEntry.ObjectInfo.Id); }
-        }
-
-        internal static bool canBePlacedInWaterPrefix(Object __instance, ref bool __result)
-        {
-            try
-            {
-                if (__instance.ParentSheetIndex == ModEntry.ObjectInfo.Id)
-                {
-                    __result = _instance.canBePlacedInWater();
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.canBePlacedInWater)}", ex, true); }
+            catch (Exception ex) { return handleError($"Object.{nameof(Object.placementAction)}", ex, __instance?.ItemId != ModEntry.ObjectInfo.Id); }
         }
 
         internal static bool canBePlacedHerePrefix(Object __instance, ref bool __result, GameLocation l, Vector2 tile)
         {
             try
             {
-                if (__instance.ParentSheetIndex == ModEntry.ObjectInfo.Id)
+                if (__instance.ItemId == ModEntry.ObjectInfo.Id)
                 {
-                    __result = _instance.canBePlacedHere(l, tile);
+                    __result = Fishnet.IsValidPlacementLocation(l, (int)tile.X, (int)tile.Y);
                     return false;
                 }
                 return true;
@@ -126,7 +108,7 @@ namespace Fishnets
         {
             try
             {
-                if (__instance.ParentSheetIndex == ModEntry.ObjectInfo.Id)
+                if (__instance.ItemId == ModEntry.ObjectInfo.Id)
                 {
                     __result = _instance.isPlaceable();
                     return false;
@@ -162,6 +144,8 @@ namespace Fishnets
                 if (pageIndex != -1 && recipeIndex != -1)
                 {
                     var originalDict = recipeList[pageIndex].ToList();
+                    originalDict[recipeIndex].Value.DisplayName = ModEntry.I18n.Get("Name");
+                    originalDict[recipeIndex].Value.description = ModEntry.I18n.Get("Description");
                     originalDict[recipeIndex] = new(rewriteCraftingComponent(originalDict[recipeIndex].Key), originalDict[recipeIndex].Value);
                     __instance.pagesOfCraftingRecipes[pageIndex] = originalDict.ToDictionary(x => x.Key, x => x.Value);
                 }
@@ -185,33 +169,33 @@ namespace Fishnets
         {
             try
             {
-                if (__instance.ParentSheetIndex != ModEntry.ObjectInfo.Id)
+                if (__instance.ItemId != ModEntry.ObjectInfo.Id)
                     return true;
                 _instance.Stack = __instance.Stack;
                 _instance.Quality = __instance.Quality;
                 _instance.drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
                 return false;
             }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.drawInMenu)}", ex, __instance?.ParentSheetIndex != ModEntry.ObjectInfo.Id); }
+            catch (Exception ex) { return handleError($"Object.{nameof(Object.drawInMenu)}", ex, __instance?.ItemId != ModEntry.ObjectInfo.Id); }
         }
 
         internal static bool drawWhenHeldPrefix(Object __instance, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
         {
             try
             {
-                if (__instance.ParentSheetIndex != ModEntry.ObjectInfo.Id)
+                if (__instance.ItemId != ModEntry.ObjectInfo.Id)
                     return true;
                 _instance.drawWhenHeld(spriteBatch, objectPosition, f);
                 return false;
             }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.drawWhenHeld)}", ex, __instance?.ParentSheetIndex != ModEntry.ObjectInfo.Id); }
+            catch (Exception ex) { return handleError($"Object.{nameof(Object.drawWhenHeld)}", ex, __instance?.ItemId != ModEntry.ObjectInfo.Id); }
         }
 
         internal static void drawPlacementBoundsPostfix(Object __instance, SpriteBatch spriteBatch, GameLocation location)
         {
             try
             {
-                if (__instance.ParentSheetIndex != ModEntry.ObjectInfo.Id)
+                if (__instance.ItemId != ModEntry.ObjectInfo.Id)
                     return;
                 int X = (int)Game1.GetPlacementGrabTile().X * 64;
                 int Y = (int)Game1.GetPlacementGrabTile().Y * 64;

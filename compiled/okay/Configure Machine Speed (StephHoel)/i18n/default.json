@@ -1,0 +1,39 @@
+{
+  "message": "Machine Speed Configuration Reloaded",
+
+  "ConfigTitleGeneralOptions": "Config Machine Speed",
+  "ConfigUpdateIntervalName": "Update Interval",
+  "ConfigReloadConfigKeyName": "Reload Config (Key)",
+  "ConfigTimeName": "Time",
+  "ConfigPercentName": "Use Percent?",
+
+  "BeeHouse": "Bee House",
+  "Cask": "Cask",
+  "CharcoalKiln": "Charcoal Kiln",
+  "CheesePress": "Cheese Press",
+  "Crystalarium": "Crystalarium",
+  "Furnace": "Furnace",
+  "HeavyFurnace": "Heavy Furnace",
+  "Incubator": "Incubator",
+  "Keg": "Keg",
+  "LightningRod": "Lightning Rod",
+  "Loom": "Loom",
+  "MayonnaiseMachine": "Mayonnaise Machine",
+  "OilMaker": "Oil Maker",
+  "PreservesJar": "Preserves Jar",
+  "RecyclingMachine": "Recycling Machine",
+  "SeedMaker": "Seed Maker",
+  "SlimeEggPress": "Slime Egg-Press",
+  "SlimeIncubator": "Slime Incubator",
+  "Tapper": "Tapper",
+  "WormBin": "Worm Bin",
+  "FishSmoker": "Fish Smoker",
+  "Dehydrator": "Dehydrator",
+  "SolarPanel": "Solar Panel",
+  "OstrichIncubator": "Ostrich Incubator",
+  "HeavyTapper": "Heavy Tapper",
+  "BoneMill": "Bone Mill",
+  "GeodeCrusher": "Geode Crusher"
+
+
+}

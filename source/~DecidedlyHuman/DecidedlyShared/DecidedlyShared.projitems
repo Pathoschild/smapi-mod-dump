@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ISpaceCoreApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ITapGiantCropsApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IToolbarIconsApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\AffixType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\BreakableType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Corners.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Directions.cs" />
@@ -26,13 +27,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Translations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\GameLocationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonHelpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonWatch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\InputEvents.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\KeyWatch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\MouseWatch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\World.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\WorldTile.cs" />
@@ -50,10 +44,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ui\ImageElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ui\Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ui\VBoxElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Items.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Sound.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TilePropertyHandler.cs" />
-    <Folder Include="$(MSBuildThisFileDirectory)Types" />
     <Compile Include="$(MSBuildThisFileDirectory)UIOld\UiElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIOld\UiHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Drawing.cs" />

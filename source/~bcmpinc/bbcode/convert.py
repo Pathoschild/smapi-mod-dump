@@ -32,6 +32,7 @@ for f in files:
     # Remove extraneous line breaks
     text = re.sub("\n+\[list\]", "[list]", text)
     text = re.sub("\[/list\]\n+", "[/list]", text)
+    text = re.sub("([A-Za-z.,]) *\n([A-Za-z])", "\\1 \\2", text)
 
     # Merge whitespace
     text = re.sub("  +", " ", text)

@@ -1,14 +1,14 @@
 urls:
-   web: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
-   Git: https://gitlab.com/delixx/stardew-valley-unlockable-bundles.git
+   web: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
+   Git: https://gitlab.com/delixx/stardew-valley/unlockable-bundles.git
 
 mods:
    Unlockable Bundles
 
 latest commit:
-   commit 15f1d9a8c5c6e4b3d3a43420fd7fe312107a4b3a
+   commit 7962ae5ad04f947142fbee1021fcc2d3ba653285
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sat Mar 16 19:59:59 2024 +0100
+   Date:   Thu Mar 28 02:49:27 2024 +0100
    
-       fixed a bug in multiplayer
+       renamed DLX.Bundles_ResetDigSpot to UB_ResetDigSpot
    

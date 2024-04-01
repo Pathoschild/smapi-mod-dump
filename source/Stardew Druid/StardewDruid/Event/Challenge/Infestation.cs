@@ -14,6 +14,7 @@ using StardewDruid.Map;
 using StardewDruid.Monster.Template;
 using StardewValley;
 using StardewValley.Objects;
+using System;
 using System.Collections.Generic;
 
 namespace StardewDruid.Event.Challenge
@@ -23,8 +24,8 @@ namespace StardewDruid.Event.Challenge
 
         public BigSlime bossMonster;
 
-        public Infestation(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite, quest)
+        public Infestation(Vector2 target,  Quest quest)
+            : base(target, quest)
         {
 
         }
@@ -59,7 +60,7 @@ namespace StardewDruid.Event.Challenge
 
             }
 
-            Game1.addHUDMessage(new HUDMessage($"Defeat the slimes!", "2"));
+            Mod.instance.CastMessage("Defeat the slimes!", 2);
 
             SetTrack("tribal");
 
@@ -73,7 +74,7 @@ namespace StardewDruid.Event.Challenge
             if (bossMonster != null)
             {
 
-                riteData.castLocation.characters.Remove(bossMonster);
+                Mod.instance.rite.castLocation.characters.Remove(bossMonster);
 
                 bossMonster = null;
 
@@ -93,15 +94,15 @@ namespace StardewDruid.Event.Challenge
 
                 List<string> NPCIndex = VillagerData.VillagerIndex("forest");
 
-                Game1.addHUDMessage(new HUDMessage($"You have gained favour with those who love the forest", ""));
+                Mod.instance.CastMessage("You have gained favour with those who love the forest", 1, true);
 
                 ModUtility.UpdateFriendship(Game1.player,NPCIndex);
 
-                Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "I defeated the Pumpkin Slime. Now I'm covered in his gunk." };
+                Mod.instance.dialogue["Effigy"].AddSpecial("Effigy", "Infestation");
 
                 Throw throwHat = new(Game1.player,targetVector*64,99);
 
-                throwHat.objectInstance = new Hat(48);
+                throwHat.objectInstance = new Hat("(H)48");
 
                 throwHat.ThrowObject();
 
@@ -155,15 +156,13 @@ namespace StardewDruid.Event.Challenge
 
                 }
 
-                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(13, bossVector);
-
-                bossMonster = theMonster as BigSlime;
+                bossMonster = new(bossVector, Mod.instance.CombatModifier());
 
                 bossMonster.posturing.Set(true);
 
-                riteData.castLocation.characters.Add(bossMonster);
+                Mod.instance.rite.castLocation.characters.Add(bossMonster);
 
-                bossMonster.update(Game1.currentGameTime, riteData.castLocation);
+                bossMonster.update(Game1.currentGameTime, Mod.instance.rite.castLocation);
 
             }
 
@@ -192,7 +191,7 @@ namespace StardewDruid.Event.Challenge
 
                         bossMonster.Halt();
 
-                        bossMonster.stunTime = 5000;
+                        bossMonster.stunTime.Set(Math.Max(bossMonster.stunTime.Value, 5000));
 
                         break;
 
@@ -204,25 +203,28 @@ namespace StardewDruid.Event.Challenge
 
                     case 58:
 
-                        Vector2 meteorVector = bossMonster.getTileLocation();
+                        Vector2 meteorVector = bossMonster.Tile;
 
-                        ModUtility.AnimateRadiusDecoration(targetLocation, meteorVector + new Vector2(-2, 1), "Stars", 1f, 1f);
+                        List<Vector2> meteors = new()
+                        {
 
-                        ModUtility.AnimateMeteor(riteData.castLocation, meteorVector + new Vector2(-2, 1), true);
+                            (meteorVector + new Vector2(-2, 1)),
+                            (meteorVector + new Vector2(1, -2)),
+                            (meteorVector + new Vector2(2, 1)),
+                            (meteorVector + new Vector2(1, 2)),
 
-                        ModUtility.AnimateRadiusDecoration(targetLocation, meteorVector + new Vector2(1, -2), "Stars", 1f, 1f);
+                        };
+                        
+                        foreach (Vector2 meteor in meteors)
+                        {
 
-                        ModUtility.AnimateMeteor(riteData.castLocation, meteorVector + new Vector2(1, -2), true);
+                            Cast.Stars.Meteor meteorCast = new(meteor, Mod.instance.DamageLevel());
 
-                        ModUtility.AnimateRadiusDecoration(targetLocation, meteorVector + new Vector2(2, 1), "Stars", 1f, 1f);
+                            meteorCast.targetLocation = targetLocation;
 
-                        ModUtility.AnimateMeteor(riteData.castLocation, meteorVector + new Vector2(2, 1), false);
+                            meteorCast.CastEffect();
 
-                        ModUtility.AnimateRadiusDecoration(targetLocation, meteorVector + new Vector2(1, 2), "Stars", 1f, 1f);
-
-                        ModUtility.AnimateMeteor(riteData.castLocation, meteorVector + new Vector2(1, 2), false);
-
-                        DelayedAction.functionAfterDelay(MeteorImpact, 600);
+                        }
 
                         break;
 
@@ -236,24 +238,6 @@ namespace StardewDruid.Event.Challenge
 
         public void MeteorImpact()
         {
-
-            List<Vector2> impactVectors;
-
-            Vector2 impactCenter = bossMonster.getTileLocation();
-
-            for (int i = 0; i < 5; i++)
-            {
-
-                impactVectors = ModUtility.GetTilesWithinRadius(riteData.castLocation, impactCenter, i);
-
-                foreach (Vector2 impactVector in impactVectors)
-                {
-
-                    ModUtility.AnimateDestruction(targetLocation, impactVector);
-
-                }
-
-            }
 
             bossMonster.takeDamage(bossMonster.MaxHealth + 5, 0, 0, false, 999, targetPlayer);
 

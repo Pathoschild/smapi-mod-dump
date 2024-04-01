@@ -1,0 +1,4 @@
+{
+    MovementSpeedMultiplierName: "Movement Speed Multiplier", MovementSpeedMultiplierTooltip: "The movement speed is multiplied by this amount. The mod's default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed.", 
+    ToolChargeDelayName:         "Tool Charge Delay",         ToolChargeDelayTooltip:         "Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging.", 
+}

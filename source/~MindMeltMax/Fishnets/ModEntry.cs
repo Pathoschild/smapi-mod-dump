@@ -15,13 +15,14 @@ using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.Objects;
 using System.Collections.Generic;
 using System.Linq;
 
 
 namespace Fishnets
 {
-    internal class ModEntry : Mod
+    internal class ModEntry : Mod //Will soon revisit to do away with the Fishnet.cs object patch and just patch the functions I need in
     {
         public static string ModDataKey => $"{IHelper.ModRegistry.ModID}.FishNets";
 
@@ -44,6 +45,7 @@ namespace Fishnets
 
         internal static ObjectInformation ObjectInfo;
         private bool fromMidDay = false;
+        private bool validateInventory = true;
 
         public override void Entry(IModHelper helper)
         {
@@ -52,16 +54,13 @@ namespace Fishnets
             I18n = Helper.Translation;
 
             ObjectInfo = Helper.Data.ReadJsonFile<ObjectInformation>($"assets/data.json");
-            if (ObjectInfo.Id < 931)
-            {
-                Monitor.Log($"Tried to load fishnets with id {ObjectInfo.Id}, this could override a game object, the id has been set to 931 to avoid this");
-                ObjectInfo.Id = 931;
-            }
+            Statics.ExcludedFish = Helper.Data.ReadJsonFile<List<string>>($"assets/excludedfish.json");
 
             Helper.Events.GameLoop.GameLaunched += onGameLaunched;
             Helper.Events.GameLoop.DayStarted += onDayStarted;
             Helper.Events.GameLoop.DayEnding += onDayEnding;
             Helper.Events.Content.AssetRequested += onAssetRequested;
+            Helper.Events.GameLoop.ReturnedToTitle += (_, _) => validateInventory = true;
         }
 
         public override object GetApi() => IApi ??= new Api();
@@ -107,6 +106,15 @@ namespace Fishnets
             if (Game1.player.FishingLevel >= 6 && !Game1.player.knowsRecipe("Fish Net"))
                 Game1.player.craftingRecipes.Add("Fish Net", 0);
 
+            if (validateInventory) //Check if the item's id has changed, so the player doesn't end up with bugged objects
+            {
+                var items = new List<Item>(Game1.player.Items.Where(x => x is not null));
+                foreach (var item in items)
+                    if (item.Name == "Fish Net")
+                        Game1.player.Items[Game1.player.Items.IndexOf(item)] = new Object(ObjectInfo.Id, item.Stack, quality: item.Quality);
+                validateInventory = false;
+            }
+
             if (!Context.IsMainPlayer)
                 return;
 
@@ -122,15 +130,15 @@ namespace Fishnets
                 {
                     var fishNet = new Fishnet(f.Tile);
                     fishNet.owner.Value = f.Owner;
-                    if (f.Bait >= 0)
-                        fishNet.bait.Value = new(f.Bait, 1) { Quality = f.BaitQuality };
+                    if (!string.IsNullOrWhiteSpace(f.Bait))
+                        fishNet.bait.Value = (Object?)ItemRegistry.Create(f.Bait, 1, f.BaitQuality, true);//new(f.Bait, 1) { Quality = f.BaitQuality };
                     fishNet.heldObject.Value = Statics.GetObjectFromSerializable(f);
                     if (!l.Objects.ContainsKey(f.Tile))
                         l.Objects.Add(f.Tile, fishNet);
 
                     //If fishnet failed to update previously, try again
                     if (!fromMidDay)
-                        fishNet.DayUpdate(l);
+                        fishNet.DayUpdate();
                 }
 
                 l.modData.Remove(ModDataKey);
@@ -157,7 +165,7 @@ namespace Fishnets
                 foreach (var f in fishNets)
                 {
                     if (!fromMidDay)
-                        f.DayUpdate(l);
+                        f.DayUpdate();
                     serializable.Add(new(f));
                 }
 
@@ -176,13 +184,15 @@ namespace Fishnets
 
         private void onAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
             {
                 e.Edit(asset =>
                 {
-                    var data = asset.AsDictionary<int, string>().Data;
+                    var data = asset.AsDictionary<string, ObjectData>().Data;
                     Monitor.LogOnce($"Loaded Fish Nets with id : {ObjectInfo.Id}");
-                    data[ObjectInfo.Id] = string.Format(ObjectInfo.Object, I18n.Get("Name"), I18n.Get("Description"));
+                    ObjectInfo.Object.DisplayName = I18n.Get("Name");
+                    ObjectInfo.Object.Description = I18n.Get("Description");
+                    data[ObjectInfo.Id] = ObjectInfo.Object;
                 });
             }
 
@@ -191,7 +201,7 @@ namespace Fishnets
                 e.Edit(asset =>
                 {
                     var data = asset.AsDictionary<string, string>().Data;
-                    data["Fish Net"] = string.Format(ObjectInfo.Recipe, ObjectInfo.Id);
+                    data["Fish Net"] = string.Format(ObjectInfo.Recipe, ObjectInfo.Id, I18n.Get("Name"));
                 });
             }
 

@@ -1,8 +1,0 @@
-{
-  "EnableDefaultSchedules": true,
-  "UseSpringBushForSummer": true,
-  "UseCustomWinterBerrySprite": true,
-  "EnableDGRIntegration": true,
-  "EnableALMIntegration": true,
-  "EnableAutomateIntegration": true
-}

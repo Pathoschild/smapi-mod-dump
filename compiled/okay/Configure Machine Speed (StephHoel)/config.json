@@ -1,0 +1,141 @@
+{
+  "UpdateInterval": 10,
+  "ReloadConfigKey": "L",
+  "Machines": [
+    {
+      "Name": "Bee House",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Cask",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Charcoal Kiln",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Cheese Press",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Crystalarium",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Furnace",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Heavy Furnace",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Incubator",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Keg",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Lightning Rod",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Loom",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Mayonnaise Machine",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Oil Maker",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Preserves Jar",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Recycling Machine",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Seed Maker",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Slime Egg-Press",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Slime Incubator",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Tapper",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Worm Bin",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Fish Smoker",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Dehydrator",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Solar Panel",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Ostrich Incubator",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Heavy Tapper",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Bone Mill",
+      "Time": 100,
+      "UsePercent": true
+    },
+    {
+      "Name": "Geode Crusher",
+      "Time": 100,
+      "UsePercent": true
+    }
+  ]
+}

@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
 namespace AnimalHusbandryMod.integrations

@@ -16,5 +16,6 @@
     "UniqueID": "tlitookilakin.HappyHomeDesigner",
     "EntryDll": "HappyHomeDesigner.dll",
     "UpdateKeys": ["Nexus:19675", "GitHub:tlitookilakin/HappyHomeDesigner"],
-    "AlternativeTexturesVersion": "6.10.4"
+    "AlternativeTexturesVersion": "6.10.4",
+    "MinimumApiVersion": "4.0.0-alpha"
 }

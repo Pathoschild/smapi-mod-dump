@@ -1,0 +1,6 @@
+{
+  "Enabled": true,
+  "MaxSpawnTries": 10,
+  "SpawnPercentageChance": 20,
+  "NumberOfDays": 2
+}

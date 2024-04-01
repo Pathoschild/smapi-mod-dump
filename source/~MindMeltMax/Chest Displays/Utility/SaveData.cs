@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
 
-namespace Chest_Displays.Utility
+namespace ChestDisplays.Utility
 {
     [Obsolete("Replacing with ModData")]
     public class SaveData
@@ -41,10 +41,14 @@ namespace Chest_Displays.Utility
 
     public class ModData
     {
+        public string ItemId { get; set; }
+
+        [Obsolete("Convert to using QualifiedId's for items")]
         public string Item { get; set; }
 
         public int ItemQuality { get; set; }
 
+        [Obsolete("Convert to using QualifiedId's for items")]
         public int ItemType { get; set; }
 
         public int UpgradeLevel { get; set; }

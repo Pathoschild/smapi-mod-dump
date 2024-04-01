@@ -1,0 +1,38 @@
+﻿{
+    "default": [
+        {
+            "Id": "rare_10",
+            "RandomItemId": [
+                "(O)74",
+                "(O)341",
+            ],
+            "Condition": "RANDOM 0.01 @addDailyLuck, drbirbdev.SocializingSkill_HEART_LEVEL 10",
+        },
+        {
+            "Id": "uncommon_10",
+            "RandomItemId": [
+                "(O)386"
+            ],
+            "MinStackSize": 5,
+            "Condition": "RANDOM 0.05 @addDailyLuck, drbirbdev.SocializingSkill_HEART_LEVEL 10",
+        },
+        {
+            "Id": "default_10",
+            "RandomItemId": [
+                "(O)72"
+            ],
+            "Condition": "RANDOM 0.2, drbirbdev.SocializingSkill_HEART_LEVEL 10",
+        },
+        {
+            "Id": "default",
+            "RandomItemId": [
+                "(O)330",
+                "(O)388",
+                "(O)390",
+                "(O)378"
+            ],
+            "MinStack": 5,
+            "MaxStack": 10,
+        }
+    ]
+}

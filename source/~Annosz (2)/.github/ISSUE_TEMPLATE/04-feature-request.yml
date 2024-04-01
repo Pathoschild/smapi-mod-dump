@@ -1,0 +1,35 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/Annosz/UIInfoSuite2
+##
+##################################################
+
+name: Feature Request
+description: A request to add something to the mod, or change existing behavior.
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees:
+  - drewhoener
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+        Does something not work the way you think it should? Do you have an idea to add that will improve the mod?
+        Fill out the request below and tell us what you think should be added / changed!
+
+        Thanks for taking the time to report an issue!
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Describe what you would like added.
+        If this is a change to an existing feature, please explain why the current implementation is not sufficient.
+        If this is a change to something visual (on screen), try and provide a screenshot of the current functionality to illustrate why it should be changed.
+    validations:
+      required: true

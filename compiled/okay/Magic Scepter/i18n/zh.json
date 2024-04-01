@@ -1,0 +1,12 @@
+{
+  "dialog.title": "选择位置:",
+  "dialog.location.farm": "农场",
+  "dialog.location.beach": "沙滩",
+  "dialog.location.mountain": "深山",
+  "dialog.location.desert": "沙漠",
+  "dialog.location.island": "姜岛",
+  "dialog.location.islandFarm": "姜岛农舍",
+  "dialog.location.miniObelisk": "迷你图腾尖塔",
+  "dialog.location.miniObeliskNumber": "迷你图腾尖塔 #{{number}}",
+  "dialog.cancel": "取消"
+}

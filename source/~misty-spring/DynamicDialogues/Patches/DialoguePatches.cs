@@ -50,15 +50,15 @@ public static class DialoguePatches
   internal static void parseDialogueString_postfix(ref Dialogue __instance, string masterString)
   {
     //make a list with fixed values
-    var fixeds = new List<string>();
+    var fixeds = new List<DialogueLine>();
     foreach (var dialogue in __instance.dialogues)
     {
       var replace = dialogue;
-      if (dialogue.Contains(NpcSwap))
+      if (dialogue.Text.Contains(NpcSwap))
       {
         //add 'next dialogue' to previous one
-        fixeds[^1] += "{";
-        replace = dialogue + "{";
+        fixeds[^1].Text += "{";
+        replace.Text = dialogue.Text + "{";
       }
 
       fixeds.Add(replace);
@@ -83,7 +83,7 @@ public static class DialoguePatches
       if (__instance.dialogues.Count == 0)
         return;
 
-      var str1 = Utility.ParseGiftReveals(__instance.dialogues[__instance.currentDialogueIndex]);
+      var str1 = Utility.ParseGiftReveals(__instance.dialogues[__instance.currentDialogueIndex].Text);
 
       if (!str1.StartsWith(NpcSwap)) 
         return;
@@ -112,10 +112,10 @@ public static class DialoguePatches
   
   internal static void PrefixDialogueAttributes(ref Dialogue __instance)
   {
-    if (__instance.dialogues.Count <= 0 || !__instance.dialogues[__instance.currentDialogueIndex].Contains(NpcSwap)) return;
+    if (__instance.dialogues.Count <= 0 || !__instance.dialogues[__instance.currentDialogueIndex].Text.Contains(NpcSwap)) return;
 
-    var text = __instance.dialogues[__instance.currentDialogueIndex];
-    var split = text.Split(' ');
+    var line = __instance.dialogues[__instance.currentDialogueIndex];
+    var split = line.Text.Split(' ');
 
     if (split.Length != 2)
     {
@@ -131,7 +131,7 @@ public static class DialoguePatches
     __instance.speaker = who;
 
     //__instance.currentDialogueIndex++;
-    __instance.dialogues.Remove(text);
+    __instance.dialogues.Remove(line);
     __instance.isCurrentStringContinuedOnNextScreen = true;
 
     //var checkAttr = ModEntry.Help.Reflection.GetMethod(__instance, "checkForSpecialDialogueAttributes");

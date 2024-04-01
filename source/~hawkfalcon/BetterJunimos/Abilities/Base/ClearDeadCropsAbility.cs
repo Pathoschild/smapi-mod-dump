@@ -32,12 +32,12 @@ namespace BetterJunimos.Abilities {
             if (!location.terrainFeatures.ContainsKey(pos) || location.terrainFeatures[pos] is not HoeDirt hd)
                 return false;
             var animate = Utility.isOnScreen(Utility.Vector2ToPoint(pos), 64, location);
-            hd.destroyCrop(pos, animate, location);
+            hd.destroyCrop(animate);
             return true;
         }
 
-        public List<int> RequiredItems() {
-            return new List<int>();
+        public List<string> RequiredItems() {
+            return new List<string>();
         }
 
         /* older API compat */

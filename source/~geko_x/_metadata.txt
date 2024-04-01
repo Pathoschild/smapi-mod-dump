@@ -7,9 +7,9 @@ mods:
    Zoomy Farmer
 
 latest commit:
-   commit f324b0f95b52f92ef4e25f36417db572e37338aa
+   commit 7ce2c4b77e2f2f7b8457b2984dc0138745e71dd2
    Author: Geko_X <xavhunt@gmail.com>
-   Date:   Tue Dec 7 21:14:40 2021 +1000
+   Date:   Mon Mar 25 10:57:45 2024 +1000
    
-       + Bump version for ZoomyFarmer
+       enableStaminaDrain actually used
    

@@ -1,0 +1,554 @@
+[
+  {
+    "type": 0,
+    "tag": "BananaShrine",
+    "count": 3,
+    "map": "IslandEast",
+    "x": 16,
+    "y": 27
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_19_13",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 19,
+    "y": 13
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_19_39",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 19,
+    "y": 39
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_26_81",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 26,
+    "y": 81
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_42_77",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 42,
+    "y": 77
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_54_21",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 54,
+    "y": 21
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_57_79",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 57,
+    "y": 79
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandNorth_62_54",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 62,
+    "y": 54
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandSouthEast_25_17",
+    "count": 1,
+    "map": "IslandSouthEast",
+    "x": 25,
+    "y": 17
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandSouthEastCave_36_26",
+    "count": 1,
+    "map": "IslandSouthEastCave",
+    "x": 36,
+    "y": 26
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandWest_21_81",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 21,
+    "y": 81
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandWest_30_75",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 30,
+    "y": 75
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandWest_39_24",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 39,
+    "y": 24
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandWest_43_74",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 42,
+    "y": 76
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandWest_62_76",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 62,
+    "y": 76
+  },
+  {
+    "type": 0,
+    "tag": "Buried_IslandWest_88_14",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "type": 0,
+    "tag": "Bush_Caldera_28_36",
+    "count": 1,
+    "map": "Caldera",
+    "x": 28,
+    "y": 36
+  },
+  {
+    "type": 0,
+    "tag": "Bush_Caldera_9_34",
+    "count": 1,
+    "map": "Caldera",
+    "x": 9,
+    "y": 34
+  },
+  {
+    "type": 0,
+    "tag": "Bush_CaptainRoom_2_4",
+    "count": 1,
+    "map": "CaptainRoom",
+    "x": 2,
+    "y": 4
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandEast_17_37",
+    "count": 1,
+    "map": "IslandEast",
+    "x": 17,
+    "y": 37
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_13_33",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 13,
+    "y": 33
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_20_26",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 20,
+    "y": 26
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_4_42",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 4,
+    "y": 42
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_45_38",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 45,
+    "y": 38
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_47_40",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 47,
+    "y": 40
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_5_30",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 5,
+    "y": 30
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_56_27",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 56,
+    "y": 27
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandNorth_9_84",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 9,
+    "y": 84
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandShrine_23_34",
+    "count": 1,
+    "map": "IslandShrine",
+    "x": 23,
+    "y": 34
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandSouth_31_5",
+    "count": 1,
+    "map": "IslandSouth",
+    "x": 31,
+    "y": 5
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_104_3",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 104,
+    "y": 3
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_15_3",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 15,
+    "y": 3
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_25_30",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 25,
+    "y": 30
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_31_24",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 31,
+    "y": 24
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_38_56",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 38,
+    "y": 56
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_54_18",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 54,
+    "y": 18
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_64_30",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 64,
+    "y": 30
+  },
+  {
+    "type": 0,
+    "tag": "Bush_IslandWest_75_29",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 75,
+    "y": 29
+  },
+  {
+    "type": 0,
+    "tag": "IslandBatRestored",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 46,
+    "y": 47
+  },
+  {
+    "type": 0,
+    "tag": "IslandCenterSkeletonRestored",
+    "count": 6,
+    "map": "IslandFieldOffice",
+    "x": 8,
+    "y": 8
+  },
+  {
+    "type": 0,
+    "tag": "IslandFrogRestored",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 46,
+    "y": 47
+  },
+  {
+    "type": 0,
+    "tag": "IslandGourmand1",
+    "count": 5,
+    "map": "IslandWest",
+    "x": 96,
+    "y": 35
+  },
+  {
+    "type": 0,
+    "tag": "IslandGourmand2",
+    "count": 5,
+    "map": "IslandFarmCave",
+    "x": 4,
+    "y": 10
+  },
+  {
+    "type": 0,
+    "tag": "IslandGourmand3",
+    "count": 5,
+    "map": "IslandFarmCave",
+    "x": 5,
+    "y": 5
+  },
+  {
+    "type": 0,
+    "tag": "IslandLeftPlantRestored",
+    "count": 1,
+    "map": "IslandFieldOffice",
+    "x": 4,
+    "y": 4
+  },
+  {
+    "type": 0,
+    "tag": "IslandRightPlantRestored",
+    "count": 1,
+    "map": "IslandFieldOffice",
+    "x": 5,
+    "y": 4
+  },
+  {
+    "type": 0,
+    "tag": "IslandShrinePuzzle",
+    "count": 5,
+    "map": "IslandShrine",
+    "x": 24,
+    "y": 23
+  },
+  {
+    "type": 0,
+    "tag": "IslandSnakeRestored",
+    "count": 3,
+    "map": "IslandNorth",
+    "x": 46,
+    "y": 47
+  },
+  {
+    "type": 0,
+    "tag": "IslandWestCavePuzzle",
+    "count": 3,
+    "map": "IslandWestCave1",
+    "x": 6,
+    "y": 3
+  },
+  {
+    "type": 0,
+    "tag": "Mermaid",
+    "count": 5,
+    "map": "IslandSouthEast",
+    "x": 27,
+    "y": 29
+  },
+  {
+    "type": 0,
+    "tag": "SandDuggy",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 43,
+    "y": 87
+  },
+  {
+    "type": 0,
+    "tag": "StardropPool",
+    "count": 1,
+    "map": "IslandSouthEast",
+    "x": 21,
+    "y": 20
+  },
+  {
+    "type": 0,
+    "tag": "TreeNut",
+    "count": 1,
+    "map": "IslandHut",
+    "x": 10,
+    "y": 9
+  },
+  {
+    "type": 0,
+    "tag": "TreeNutShot",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 58,
+    "y": 16
+  },
+  {
+    "type": 1,
+    "tag": "Birdie",
+    "count": 5,
+    "map": "IslandWest",
+    "x": 19,
+    "y": 58
+  },
+  {
+    "type": 1,
+    "tag": "Darts",
+    "count": 3,
+    "map": "IslandSouthEastCave",
+    "x": 25,
+    "y": 8
+  },
+  {
+    "type": 1,
+    "tag": "Island_N_BuriedTreasureNut",
+    "count": 1,
+    "map": "IslandNorth",
+    "x": 27,
+    "y": 28
+  },
+  {
+    "type": 1,
+    "tag": "Island_W_BuriedTreasureNut",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 18,
+    "y": 42
+  },
+  {
+    "type": 1,
+    "tag": "Island_W_BuriedTreasureNut2",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 103,
+    "y": 74
+  },
+  {
+    "type": 1,
+    "tag": "IslandFarming",
+    "count": 5,
+    "map": "IslandWest",
+    "x": 77,
+    "y": 42
+  },
+  {
+    "type": 1,
+    "tag": "IslandFishing",
+    "count": 5,
+    "map": "IslandSouth",
+    "x": 9,
+    "y": 34
+  },
+  {
+    "type": 1,
+    "tag": "MusselStone",
+    "count": 5,
+    "map": "IslandWest",
+    "x": 55,
+    "y": 80
+  },
+  {
+    "type": 1,
+    "tag": "TigerSlimeNut",
+    "count": 1,
+    "map": "IslandWest",
+    "x": 38,
+    "y": 36
+  },
+  {
+    "type": 1,
+    "tag": "VolcanoBarrel",
+    "count": 5,
+    "map": "VolcanoDungeon0",
+    "x": 37,
+    "y": 5
+  },
+  {
+    "type": 1,
+    "tag": "VolcanoMining",
+    "count": 5,
+    "map": "VolcanoDungeon0",
+    "x": 37,
+    "y": 5
+  },
+  {
+    "type": 1,
+    "tag": "VolcanoMonsterDrop",
+    "count": 5,
+    "map": "VolcanoDungeon0",
+    "x": 37,
+    "y": 5
+  },
+  {
+    "type": 1,
+    "tag": "VolcanoNormalChest",
+    "count": 1,
+    "map": "VolcanoDungeon0",
+    "x": 37,
+    "y": 5
+  },
+  {
+    "type": 1,
+    "tag": "VolcanoRareChest",
+    "count": 1,
+    "map": "VolcanoDungeon0",
+    "x": 37,
+    "y": 5
+  },
+  {
+    "type": 2,
+    "tag": "GoldenCoconutCracked",
+    "count": 1,
+    "map": "Blacksmith",
+    "x": 3,
+    "y": 15
+  }
+]

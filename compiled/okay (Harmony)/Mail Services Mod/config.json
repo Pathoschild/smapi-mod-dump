@@ -1,0 +1,41 @@
+{
+  "DisableToolDeliveryService": false,
+  "DisableToolShipmentService": false,
+  "ToolShipmentServiceFee": 0,
+  "ToolShipmentServicePercentFee": 0,
+  "DisableQuestService": false,
+  "QuestServiceFee": 0,
+  "DisableGiftService": false,
+  "MinimumFriendshipPointsToSendGift": 0,
+  "GiftServiceFee": 0,
+  "GiftServicePercentFee": 0,
+  "GiftChoicePageSize": 5,
+  "EnableJealousyFromMailedGifts": false,
+  "EnableGiftToNpcWithMaxFriendship": false,
+  "ShowDialogOnItemDelivery": false,
+  "DisablePerPlayerConfig": false,
+  "EnableAskToUpgradeTool": false,
+  "PlayerRecoveryConfig": {
+    "-3640699164202973852": {
+      "PlayerName": "x",
+      "DisableRecoveryConfigInGameChanges": false,
+      "EnableRecoveryService": false,
+      "RecoverAllItems": false,
+      "RecoverForFree": false,
+      "DisableClearLostItemsOnRandomRecovery": false
+    },
+    "-1664222855205924372": {
+      "PlayerName": "WTDR131A",
+      "DisableRecoveryConfigInGameChanges": false,
+      "EnableRecoveryService": false,
+      "RecoverAllItems": false,
+      "RecoverForFree": false,
+      "DisableClearLostItemsOnRandomRecovery": false
+    }
+  },
+  "DisableRecoveryConfigInGameChanges": false,
+  "EnableRecoveryService": false,
+  "RecoverAllItems": false,
+  "RecoverForFree": false,
+  "DisableClearLostItemsOnRandomRecovery": false
+}

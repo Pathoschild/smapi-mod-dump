@@ -9,6 +9,10 @@
 *************************************************/
 
 {
+    "config.AvoidRain.name": "Avoid rain",
+    "config.AvoidRain.description": "Random visits won't happen in rainy days.",
+    "config.Blacklist.name": "Blacklist",
+    "config.Blacklist.description": "Characters you don't want to visit you. \nSeparated by spaces (' '). E.g: \"Pierre Lewis\"",
     "config.advancedConfig.name":"Advanced",
     "config.advancedConfig.description": "Allow or prohibit certain spouses from going to the island. (By default, all can go).",
     "config.ScheduleRandom.name":"Random schedule",
@@ -22,20 +26,15 @@
     "AlreadyScheduled.Week":"You arranged a visit for the week. This can't be used.",
     "AlreadyOngoing.Visit": "There's a visit currently active. You can't use this.",
 
-    "config.DebugComm.name":"Debug commands",
-    "config.DebugComm.description":"(Advanced) Allows you to use mod-related commands that check internal info.",
-    "config.Verbose.name":"Verbose logging",
-    "config.Verbose.description":"The mod will log way more info.",
-
-    "config.Vanillas.name":"NPCs",
-    "config.Vanillas.description":"NPCs for which the base mod adds schedules. If you want to use a custom schedule (or don't want them to visit), untick their respective box.",
-    "config.RequiresSVE": "Requires SVE installed.",
+    "config.ChildRoom.name": "Child room",
+    "config.ChildRoom.description": "Adds a room for children.",
+    
     "config.CustomChance.name": "Chance of event",
     "config.CustomChance.description": "How likely your spouse is to go to the beach. ONLY numbers! (e.g 15 for 15% of chance). Doesn't accept letters.",
     "config.CustomRoom.name": "Custom spouse room?",
     "config.CustomRoom.description": "Adds a customizable spouse room to the island farmhouse.",
 
-    "config.Child2NPC.description": "Configuration related to Child NPC mods (like Child2NPC or LittleNPCs).",
+    "config.Child2NPC.description": "Configuration related to Child NPC mods (like LittleNPCs).",
     
     "config.ChildVisitIsland.name":"Allow visit?",
     "config.ChildVisitIsland.description":"Allows children to visit the island. (Requires LittleNPCs/Child2NPC)",

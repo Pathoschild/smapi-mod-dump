@@ -6,9 +6,9 @@ mods:
    Event Limiter
 
 latest commit:
-   commit a92d7313f78fd68bc75f427369fd89b42777f606
+   commit af09218884617cc5cfefb2378d917444cd837104
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Mon Feb 13 10:38:15 2023 +1100
+   Date:   Wed Mar 20 07:46:27 2024 +1100
    
-       Merge branch 'develop' into master
+       update manifest.json
    

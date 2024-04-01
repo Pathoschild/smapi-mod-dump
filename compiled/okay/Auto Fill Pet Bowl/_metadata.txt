@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20667
+IDs: Siweipancc.AutoFillPetBowl
+update keys: Nexus:20667

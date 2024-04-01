@@ -1,0 +1,21 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/Annosz/UIInfoSuite2
+##
+##################################################
+
+blank_issues_enabled: false
+contact_links:
+  - name: SMAPI Version
+    url: https://smapi.io
+    about: Do you have the latest version of SMAPI? Make sure you do before submitting an issue.
+  - name: UIInfoSuite2 Releases
+    url: https://github.com/Annosz/UIInfoSuite2/releases
+    about: Make sure you have the latest release of the mod!
+  - name: Log Report
+    url: https://smapi.io/log
+    about: Make sure to upload your logs before making an issue about a game-breaking bug.

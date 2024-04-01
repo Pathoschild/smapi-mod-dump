@@ -1,0 +1,10 @@
+﻿{
+   "Name": "AutoAnimalDoors",
+   "Author": "ToxcsmWolf, original Aaron Taggart",
+   "Version": "3.4.1-unofficial.1-ToxcsmWolf",
+   "Description": "Open and close the doors automatically for your animals.",
+   "UniqueID": "AaronTaggart.AutoAnimalDoors",
+   "EntryDll": "AutoAnimalDoors.dll",
+   "MinimumApiVersion": "4.0.1",
+   "UpdateKeys": ["Nexus:1019"]
+}

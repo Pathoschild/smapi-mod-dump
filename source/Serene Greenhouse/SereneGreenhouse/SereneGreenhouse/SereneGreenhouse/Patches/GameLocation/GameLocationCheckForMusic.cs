@@ -44,7 +44,7 @@ namespace SereneGreenhouse.Patches.GameLocation
                 {
                     Game1.changeMusicTrack("rain");
                 }
-                else if (!Game1.isDarkOut())
+                else if (!Game1.isDarkOut(__instance))
                 {
                     Game1.changeMusicTrack("woodsTheme");
                 }

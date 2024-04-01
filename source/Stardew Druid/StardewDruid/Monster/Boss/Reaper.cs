@@ -20,10 +20,11 @@ using StardewValley.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace StardewDruid.Monster.Boss
 {
-    public class Reaper : Dragon
+    public class Reaper : Boss
     {
         public int bobHeight;
         public int ruffleTimer;
@@ -36,6 +37,17 @@ namespace StardewDruid.Monster.Boss
         public Reaper(Vector2 vector, int CombatModifier)
           : base(vector, CombatModifier, "Reaper")
         {
+
+        }
+
+        public override void BaseMode()
+        {
+
+            MaxHealth = Math.Max(5000, combatModifier * 400);
+
+            Health = MaxHealth;
+
+            DamageToFarmer = Math.Max(20, Math.Min(60, combatModifier * 3));
 
         }
 
@@ -80,27 +92,16 @@ namespace StardewDruid.Monster.Boss
 
             flightLast = 3;
 
-            flightIncrement = 9;
+            flightInterval= 9;
 
             flightSpeed = 12;
 
         }
 
-        public override void HardMode()
-        {
-            Health *= 3;
-            Health /= 2;
-            MaxHealth = Health;
-
-            cooldownInterval = 40;
-
-            tempermentActive = temperment.aggressive;
-        }
-
         public override Rectangle GetBoundingBox()
         {
             Vector2 position = Position;
-            return new Rectangle((int)position.X - 32, (int)position.Y - netFlightHeight.Value - 32, 128, 128);
+            return new Rectangle((int)position.X - 32, (int)position.Y - flightHeight - 32, 128, 128);
         }
 
         public override void draw(SpriteBatch b, float alpha = 1f)
@@ -112,7 +113,7 @@ namespace StardewDruid.Monster.Boss
 
             Vector2 localPosition = getLocalPosition(Game1.viewport);
 
-            float drawLayer = Game1.player.getDrawLayer();
+            float drawLayer = (float)StandingPixel.Y / 10000f;
 
             if (IsEmoting && !Game1.eventUp)
             {
@@ -120,12 +121,12 @@ namespace StardewDruid.Monster.Boss
                 b.Draw(Game1.emoteSpriteSheet, localPosition, new Rectangle?(new Rectangle(CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, 0, drawLayer);
             }
 
-            b.Draw(Game1.shadowTexture, new(localPosition.X, localPosition.Y + 96f), new Rectangle?(Game1.shadowTexture.Bounds), Color.White, 0.0f, Vector2.Zero, 4f, 0, Math.Max(0.0f, getStandingY() / 10000f) - 1E-06f);
+            b.Draw(Game1.shadowTexture, new(localPosition.X, localPosition.Y + 96f), new Rectangle?(Game1.shadowTexture.Bounds), Color.White, 0.0f, Vector2.Zero, 4f, 0, Math.Max(0.0f, Tile.Y / 10000f) - 1E-06f);
 
             if (netFlightActive.Value)
             {
 
-                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 160f - netFlightHeight.Value - bobHeight), flightFrames[netFlightFrame.Value][0], Color.White * 0.65f, 0.0f, new Vector2(0.0f, 0.0f), 4f, netAlternative.Value == 3 || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 160f - flightHeight - bobHeight), flightFrames[flightFrame][0], Color.White * 0.65f, 0.0f, new Vector2(0.0f, 0.0f), 4f, netAlternative.Value == 3 || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
 
             }
             else if (netSpecialActive.Value)
@@ -176,28 +177,29 @@ namespace StardewDruid.Monster.Boss
 
         }
 
-        public override void PerformSpecial()
+        public override void PerformSpecial(Vector2 farmerPosition)
         {
-            behaviourActive = behaviour.special;
 
-            behaviourTimer = 72;
+            specialTimer = (specialCeiling + 1) * specialInterval;
 
             netSpecialActive.Set(true);
-
-            Vector2 omega = getTileLocation();
 
             for (int i = 0; i < 3; i++)
             {
 
-                Vector2 zero = BlastTarget(2)[0];
+                Vector2 zero = BlastZero(2)[0];
 
-                BarrageHandle fireball = new(currentLocation, zero, omega, 2, 1, "Purple", DamageToFarmer);
+                SpellHandle fireball = new(currentLocation, zero * 64, GetBoundingBox().Center.ToVector2(), 2, 1, DamageToFarmer);
 
-                fireball.type = BarrageHandle.barrageType.fireball;
+                fireball.type = SpellHandle.barrages.fireball;
+
+                fireball.scheme = SpellHandle.schemes.death;
+
+                fireball.indicator = SpellHandle.indicators.death;
 
                 fireball.monster = this;
 
-                barrages.Add(fireball);
+                Mod.instance.spellRegister.Add(fireball);
 
             }
 

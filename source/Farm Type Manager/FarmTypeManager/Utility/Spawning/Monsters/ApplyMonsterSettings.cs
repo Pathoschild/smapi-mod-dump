@@ -255,7 +255,22 @@ namespace FarmTypeManager
                 if (settings.ContainsKey("ExtraLoot"))
                 {
                     if (settings["ExtraLoot"] is bool extraLoot && extraLoot == false) //if this setting is false
-                        monster.modData[HarmonyPatch_ToggleExtraLoot.ModDataKey] = "false"; //flag this in the monster's mod data
+                        monster.modData[Utility.ModDataKeys.ExtraLoot] = "false"; //flag this in the monster's mod data
+                }
+
+                //validate gender
+                if (settings.ContainsKey("Gender"))
+                {
+                    if (monster is GreenSlime slime)
+                    {
+                        if (settings["Gender"] is string gender) //if this is a string
+                        {
+                            if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
+                                slime.cute.Value = true;
+                            else if (gender.StartsWith("F", StringComparison.OrdinalIgnoreCase))
+                                slime.cute.Value = false;
+                        }
+                    }
                 }
             }
         }

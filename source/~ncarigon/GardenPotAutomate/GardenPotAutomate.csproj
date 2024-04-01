@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>GardenPotAutomate</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -17,12 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Automate">
-      <HintPath>D:\games\Stardew Valley\Instances\Expanded\Automate\Automate.dll</HintPath>
+      <HintPath>E:\GOG Games\Stardew Valley\MO2\mods\Automate 2.0.3\Automate\Automate.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

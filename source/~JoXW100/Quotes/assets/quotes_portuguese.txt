@@ -1,0 +1,123 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+A primavera � a maneira da natureza de dizer: 'Vamos festejar!'^Robin Williams
+Embora eu n�o acredite que uma planta brotar� onde n�o houve semente, tenho grande f� na semente... Conven�a-me de que voc� tem uma semente a�, e estou preparado para esperar maravilhas.^Henry David Thoreau
+Para encontrar os elementos universais o suficiente; achar o ar e a �gua estimulantes; ser revigorado por uma caminhada matinal ou um passeio noturno ... ser emocionado pelas estrelas � noite; estar exultante com um ninho de p�ssaro ou uma flor silvestre na primavera - estas s�o algumas das recompensas da vida simples.^John Burroughs
+Natureza n�o se apressa, contudo tudo � realizada.^Lao Tzu
+La vida n�o � um problema a ser resolvido, mas uma realidade a ser vivida.^Soren Kierkegaard
+H� momentos em que toda ansiedade e fadiga declarada s�o acalmadas no infinito lazer e repouso da natureza.^Henry David Thoreau
+O fato de eu poder plantar uma semente e ela se tornar uma flor, compartilhar um pouco de conhecimento e ele se tornar de outro, sorrir para algu�m e receber um sorriso em troca, s�o para mim exerc�cios espirituais cont�nuos.^Leo Buscaglia
+Quando eu tinha 5 anos, minha m�e sempre me disse que a felicidade era a chave da vida. Quando fui para a escola, eles me perguntaram o que eu queria ser quando crescesse. Eu escrevi 'feliz'. Eles me disseram que eu n�o entendia a tarefa, e eu disse que eles n�o entendiam a vida.^John Lennon
+Eu acredito em rosa. Eu acredito que rir � o melhor queimador de calorias. Eu acredito em beijar, beijar muito. Acredito em ser forte quando tudo parece dar errado. Eu acredito que garotas felizes s�o as garotas mais bonitas. Acredito que amanh� � outro dia e acredito em milagres.^Audrey Hepburn
+Em minha pr�pria vida, quanto mais perto eu chego do fim da vida nesta terra, mais simples eu quero me tornar.^Fred Rogers
+Somos ta�as sendo enchidas constante e silenciosamente. O truque � saber como nos virar e deixar as coisas bonitas sa�rem.^Ray Bradbury
+O amor � uma fruta da esta��o em todos os momentos e ao alcance de qualquer m�o.^Mother Teresa
+Esfor�emo-nos por viver de modo que, quando morrermos, at� o agente funer�rio sinta pena.^Mark Twain
+Nunca tenha pressa; fa�a tudo em sil�ncio e com um esp�rito calmo. N�o perca sua paz interior por nada, mesmo que todo o seu mundo pare�a perturbado.^Saint Francis de Sales
+Eu sou aquele que tem que morrer quando chegar a hora de morrer, ent�o deixe-me viver minha vida do jeito que eu quiser.^Jimi Hendrix
+A vida � muito simples, mas insistimos em complicar.^Confucius
+Que cada amanhecer seja para voc� como o in�cio da vida, e cada sol poente seja para voc� como seu fim.^John Ruskin
+Abra seus olhos, olhe para dentro. Voc� est� satisfeito com a vida que est� vivendo?^Bob Marley
+N�o v� aonde o caminho pode levar, v� em vez disso onde n�o h� caminho e deixe uma trilha.^Ralph Waldo Emerson
+Todo trabalho que eleva a humanidade tem dignidade e import�ncia e deve ser realizado com esmerada excel�ncia.^Martin Luther King, Jr.
+Fa�a o seu bem onde voc� est�; s�o esses pequenos peda�os de bom juntos que oprimem o mundo.^Desmond Tutu
+Cuidado um com o outro. Ame a todos e perdoe a todos, incluindo voc� mesmo. Perdoe sua raiva. Perdoe sua culpa. Sua vergonha. Sua tristeza. Abrace e abra o seu amor, sua alegria, sua verdade e, mais especialmente, seu cora��o.^Jim Henson
+N�o acredito que as pessoas estejam procurando o sentido da vida tanto quanto procuram a experi�ncia de estarem vivas.^Joseph Campbell
+Algumas pessoas procuram um lugar bonito. Outros tornam um lugar bonito.^Hazrat Inayat Khan
+Para olhos bonitos, procure o que h� de bom nos outros; para l�bios bonitos, fale apenas palavras de bondade; e para ter equil�brio, ande com o conhecimento de que voc� nunca est� sozinho.^Audrey Hepburn
+A bondade nas palavras cria confian�a. A bondade em pensamento cria profundidade. Bondade em doar cria amor.^Lao Tzu
+Se voc� n�o sabe para onde est� indo, qualquer estrada o levar� l�.^Lewis Carroll
+Estar interessado na mudan�a das esta��es � um estado de esp�rito mais feliz do que estar perdidamente apaixonado pela primavera.^George Santayana
+O que � importante na vida � a vida, e n�o o resultado da vida.^Johann Wolfgang von Goethe
+Quando acordo, espero que as coisas estejam bem. Se n�o forem, tento tentar torn�-los o melhor que puder, porque sei que vou ter que viver esse dia de qualquer maneira. Ent�o, por que n�o tentar aproveit�-lo ao m�ximo, se puder? Alguns dias, eles funcionam um pouco melhor do que outros, mas voc� ainda tem que sempre tentar.^Dolly Parton
+Seja quem voc� � e diga o que voc� sente porque aqueles que importam n�o importam e aqueles que importam n�o importam.^Dr. Seuss
+� um �timo come�o, ser capaz de reconhecer o que te faz feliz.^Lucille Ball
+A escurid�o n�o pode expulsar a escurid�o; s� a luz pode fazer isso. O �dio n�o pode expulsar o �dio; s� o amor pode fazer isso.^Martin Luther King, Jr.
+Nada grande � criado de repente, mais do que um cacho de uvas ou um figo. Se voc� me disser que deseja um figo. Eu respondo que deve haver tempo. Deixe-o primeiro florescer, depois frutificar e depois amadurecer.^Epictetus
+Qualidade n�o � um ato, � um h�bito.^Aristotle
+Nossa identidade inclui nosso mundo natural, como nos movemos atrav�s dele, como interagimos com ele e como ele nos sustenta.^David Suzuki
+Devemos abrir m�o da vida que planejamos, para aceitar aquela que nos espera.^Joseph Campbell
+N�o s�o necess�rias muitas palavras para falar a verdade.^Chief Joseph, Nez Perce
+Muito pouco � necess�rio para ter uma vida feliz; est� tudo dentro de voc�, na sua maneira de pensar.^Marcus Aurelius
+Somente quando realmente soubermos e compreendermos que temos um tempo limitado na terra - e que n�o temos como saber quando nosso tempo acabou, come�aremos a viver cada dia ao m�ximo, como se fosse o �nico n�s t�nhamos.^Elisabeth Kubler-Ross
+Fa�a as coisas dif�ceis enquanto s�o f�ceis e as grandes enquanto s�o pequenas. Uma jornada de mil milhas deve come�ar com uma �nica etapa.^Lao Tzu
+Algu�m est� sentado na sombra hoje porque algu�m plantou uma �rvore h� muito tempo.^Warren Buffett
+Um hoje vale dois amanh�s.^Benjamin Franklin
+N�s sabemos o que somos, mas n�o sabemos o que podemos ser.^William Shakespeare
+Sempre acreditei, e ainda acredito, que qualquer boa ou m� sorte que possa surgir em nosso caminho, podemos sempre dar um significado e transform�-la em algo de valor.^Hermann Hesse
+Descansar n�o � ociosidade, e deitar �s vezes na grama sob as �rvores em um dia de ver�o, ouvindo o murm�rio da �gua ou observando as nuvens flutuando no c�u, n�o � uma perda de tempo.^John Lubbock
+H� algo infinitamente curativo nos repetidos refr�es da natureza - a certeza de que o amanhecer vem ap�s a noite, e a primavera ap�s o inverno.^Rachel Carson
+Vamos fazer nosso futuro agora, e vamos tornar nossos sonhos realidade de amanh�.^Malala Yousafzai
+Tenha um cora��o que nunca endurece e um temperamento que nunca se cansa e um toque que nunca machuca.^Charles Dickens
+Aprender a ficar quieto, realmente ficar quieto e deixar a vida acontecer - essa quietude se torna um brilho.^Morgan Freeman
+O que � a vida? � o clar�o de um vaga-lume � noite. � a respira��o de um b�falo no inverno. � a pequena sombra que corre pela grama e se perde no p�r do sol.^Blackfoot
+E esta, nossa vida, isenta de assombra��o p�blica, encontra l�nguas nas �rvores, livros nos riachos, serm�es nas pedras e o bem em tudo.^William Shakespeare
+A vida � mais do que aumentar sua velocidade.^Mahatma Gandhi
+O que voc� obt�m ao atingir seus objetivos n�o � t�o importante quanto o que voc� se torna ao atingir seus objetivos.^Zig Ziglar
+A sa�de � o maior ganho, o contentamento a maior riqueza, a fidelidade o melhor relacionamento, a liberdade a maior felicidade.^Buddha
+O ver�o indiano da vida deve ser um pouco ensolarado e um pouco triste, como a esta��o, e infinito em riqueza e profundidade de tom, mas nunca apressado.^Henry Adams
+H� uma harmonia no outono e um brilho em seu c�u, que durante o ver�o n�o � ouvido ou visto, como se n�o pudesse ser, como se n�o tivesse sido!^Percy Bysshe Shelley
+Nunca pule em uma pilha de folhas com uma ventosa molhada.^Linus Van Pelt
+Se voc� deseja fazer uma torta de ma�� do zero, voc� deve primeiro inventar o universo.^Carl Sagan
+Voc� tem c�rebro em sua cabe�a. Voc� tem p�s em seus sapatos. Voc� pode se orientar em qualquer dire��o que escolher. Voc� esta por sua conta. E voc� sabe o que sabe. E VOC� � quem vai decidir para onde ir...^Dr. Seuss
+Em cada promont�rio, em cada praia sinuosa, em cada gr�o de areia est� a hist�ria da terra.^Rachel Carson
+I learned this, at least, by my experiment: that if one advances confidently in the direction of his dreams, and endeavors to live the life which he has imagined, he will meet with a success unexpected in common hours.^Henry David Thoreau
+A vida n�o � encontrar a si mesmo. A vida � sobre como criar a si mesmo.^George Bernard Shaw
+Se voc� construiu castelos no ar, seu trabalho n�o precisa ser perdido; � onde eles deveriam estar. Agora coloque as funda��es sob eles.^Henry David Thoreau
+Saber que podemos ser amados exatamente como somos nos d� a melhor oportunidade de nos tornarmos as pessoas mais saud�veis.^Fred Rogers
+Freq�entemente, fala-se de brincar como se fosse um al�vio para um aprendizado s�rio. Mas para as crian�as, brincar � um aprendizado s�rio. Brincar � realmente o trabalho da inf�ncia.^Fred Rogers
+Quanto mais algu�m faz, v� e sente, mais � capaz de fazer e mais genu�na pode ser a aprecia��o de coisas fundamentais como o lar, o amor e a compreens�o do companheirismo.^Amelia Earhart
+Eu ofereci paz hoje? Eu trouxe um sorriso ao rosto de algu�m? Eu disse palavras de cura? Eu deixei de lado minha raiva e ressentimento? Eu perdoei? Eu amei? Estas s�o as verdadeiras quest�es. Devo confiar que o pouco de amor que semeio agora dar� muitos frutos, aqui neste mundo e na vida por vir.^Henri Nouwen
+Com o que obtemos, podemos ganhar a vida; o que damos, no entanto, torna uma vida.^Arthur Ashe
+Bondade � a linguagem que os surdos podem ouvir e os cegos podem ver.^Mark Twain
+Somos o que fingimos ser, por isso devemos ter cuidado com o que fingimos ser.^Kurt Vonnegut
+Hoje voc� � voc�! Isso � mais verdadeiro do que verdade! N�o h� ningu�m vivo que seja voc�, mais do que voc�!^Dr. Seuss
+Assim como um dia bem passado traz um sono feliz, uma vida bem passada traz uma morte feliz.^Leonardo da Vinci
+Se voc� est� atravessando o inferno, continue.^Winston Churchill
+Minha miss�o na vida n�o � apenas sobreviver, mas prosperar; e fazer isso com alguma paix�o, alguma compaix�o, algum humor e algum estilo.^Maya Angelou
+Voc� nunca ser� feliz se continuar a buscar em que consiste a felicidade. Voc� nunca viver� se estiver procurando pelo sentido da vida.^Albert Camus
+Em habita��o, more perto do solo. Ao pensar, mantenha-se ao simples. Em conflito, seja justo e generoso. Ao governar, n�o tente controlar. No trabalho, fa�a o que voc� gosta. Na vida familiar, esteja completamente presente.^Lao Tzu
+O car�ter � como uma �rvore e a reputa��o como uma sombra. A sombra � o que pensamos dela; a �rvore � a coisa real.^Abraham Lincoln
+A sabedoria n�o � um produto da escolaridade, mas da tentativa ao longo da vida de adquiri-la.^Albert Einstein
+A vida n�o � uma quest�o de marcos, mas de momentos.^Rose Kennedy
+A natureza est� se esfor�ando muito para que tenhamos sucesso, mas ela n�o depende de n�s. N�o somos o �nico experimento.^R. Buckminster Fuller
+� o mais rico quem se contenta com o m�nimo, pois o conte�do � a riqueza da natureza.^Socrates
+Nunca � tarde demais para ser o que voc� poderia ter sido.^George Eliot
+N�o podemos impedir que o inverno ou o ver�o cheguem. N�o podemos parar a primavera ou o outono, ou torn�-los diferentes do que s�o. Eles s�o presentes do universo que n�o podemos recusar. Mas podemos escolher com que contribuiremos para a vida quando cada um chegar.^Gary Zukav
+No auge do inverno, finalmente aprendi que havia em mim um ver�o invenc�vel.^Albert Camus
+O que se chama de g�nio � a abund�ncia de vida e sa�de.^Henry David Thoreau
+N�o h� erro mais fatal do que aquele que consome a maior parte de sua vida ganhando a vida.^Henry David Thoreau
+Todos t�m dentro de si uma boa not�cia. A boa not�cia � que voc� n�o sabe o qu�o bom pode ser! Quanto voc� pode amar! O que voc� pode realizar! E qual � o seu potencial!^Anne Frank
+Portanto, certifique-se de que, ao pisar, pise com cuidado e muito tato. E lembre-se de que a vida � um grande ato de equil�brio. E voc� ter� sucesso? Sim! Voc� vai, de fato! (98 e � porcento garantido)^Dr. Seuss
+N�o julgue cada dia pela colheita que voc� colhe, mas pelas sementes que voc� planta.^Robert Louis Stevenson
+Todo trabalho que eleva a humanidade tem dignidade e import�ncia e deve ser realizado com esmerada excel�ncia.^Martin Luther King, Jr.
+Nada faz a terra parecer t�o espa�osa a ponto de ter amigos � dist�ncia; eles fazem as latitudes e longitudes.^Henry David Thoreau
+Quanto mais claramente pudermos focalizar nossa aten��o nas maravilhas e realidades do universo ao nosso redor, menos teremos o gosto pela destrui��o.^Rachel Carson
+A felicidade � uma borboleta que, quando perseguida, est� sempre al�m do seu alcance, mas que, se voc� se sentar calmamente, pode pousar sobre voc�.^Nathaniel Hawthorne
+Fui para o bosque porque queria viver deliberadamente, para enfrentar apenas os fatos essenciais da vida, e ver se n�o conseguia aprender o que ela tinha a ensinar, e n�o, quando viesse a morrer, descobrir que n�o tinha vivido.^Henry David Thoreau
+Nada � imposs�vel, a pr�pria palavra diz 'eu sou poss�vel'!^Audrey Hepburn
+Vamos pensar o impens�vel, vamos fazer o que pode ser desfeito. Vamos nos preparar para lutar com o pr�prio inef�vel, e ver se n�o podemos elimin�-lo, afinal.^Douglas Adams
+N�o h� valor na vida, exceto o que voc� escolhe dar a ela e nenhuma felicidade em qualquer lugar, exceto o que voc� mesmo traz para ela.^Henry David Thoreau
+N�o h� erros, apenas acidentes felizes.^Bob Ross
+Por que dever�amos estar com tanta pressa de ter sucesso, e em empreendimentos t�o desesperados? Se um homem n�o acompanha o ritmo de seus companheiros, talvez seja porque ouve um baterista diferente.^Henry David Thoreau
+Quando voc� nasceu, voc� chorou e o mundo se alegrou. Viva sua vida para que quando voc� morrer, o mundo chore e voc� se alegre.^Cherokee
+As pessoas sacrificam o presente pelo futuro. Mas a vida est� dispon�vel apenas no presente. � por isso que devemos caminhar de tal forma que cada passo nos leve ao aqui e agora.^Thich Nhat Hanh
+As pessoas geralmente s�o t�o felizes quanto decidem ser.^Abraham Lincoln
+Freq�entemente, � preciso alguma calamidade para nos fazer viver no presente. Ent�o, de repente, acordamos e vemos todos os erros que cometemos.^Bill Watterson
+O sol, com todos aqueles planetas girando em torno dele e dependentes dele, ainda pode amadurecer um cacho de uvas como se n�o tivesse mais nada no universo para fazer.^Galileo Galilei
+Eu aceito o caos, n�o tenho certeza se ele me aceita.^Bob Dylan
+Que estranho que a natureza n�o bate, e ainda n�o se intromete!^Emily Dickinson
+A filosofia de uma pessoa n�o � melhor expressa em palavras; � expresso nas escolhas que fazemos ... e as escolhas que fazemos s�o, em �ltima an�lise, nossa responsabilidade.^Eleanor Roosevelt
+Mesmo as esta��es formam um grande c�rculo em suas mudan�as, e sempre voltam para onde estavam. A vida de um homem � um c�rculo da inf�ncia � inf�ncia, e assim � em tudo onde o poder se move.^Black Elk
+Acho que o mais importante � se manter ativo e esperar que sua mente continue ativa.^Jane Goodall
+N�o importa o qu�o devagar voc� v�, contanto que voc� n�o pare.^Confucius
+Fui educado nos ritmos da montanha, ritmos nos quais a mudan�a nunca foi fundamental, apenas c�clica. O mesmo sol aparecia todas as manh�s, varria o vale e se punha atr�s do pico. As neves que ca�am no inverno sempre derretiam na primavera.^Tara Westover
+A meu ver, toda vida � um monte de coisas boas e coisas ruins. As coisas boas nem sempre suavizam as coisas ruins, mas vice-versa, as coisas ruins nem sempre estragam as coisas boas ou as tornam sem import�ncia.^11� Doutor-Doctor WHo

@@ -16,7 +16,7 @@ using static SpousesIsland.Additions.Dialogues;
 
 namespace SpousesIsland.Patches;
 
-internal class NPCPatches
+internal static class NpcPatches
 {
     private static string Translate(string msg) => ModEntry.Translate(msg);
     private static void Log(string msg, LogLevel lv = LogLevel.Trace) => ModEntry.Mon.Log(msg, lv);
@@ -26,8 +26,39 @@ internal class NPCPatches
         Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.tryToReceiveActiveObject(Farmer who)\".");
         harmony.Patch(
             original: AccessTools.Method(typeof(NPC), nameof(NPC.tryToReceiveActiveObject)),
-            prefix: new HarmonyMethod(typeof(NPCPatches), nameof(Pre_tryToReceiveActiveObject))
+            prefix: new HarmonyMethod(typeof(NpcPatches), nameof(Pre_tryToReceiveActiveObject))
             );
+        /*
+        Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.warpToPathControllerDestination()\".");
+        harmony.Patch(
+            original: AccessTools.Method(typeof(NPC), nameof(NPC.warpToPathControllerDestination)),
+            prefix: new HarmonyMethod(typeof(NpcPatches), nameof(Post_warpToPathControllerDestination))
+        );*/
+    }
+
+    private static void Post_warpToPathControllerDestination(NPC __instance)
+    {
+        if(!ModEntry.IslandToday)
+            return;
+        
+        //if not in invited list
+        if(ModEntry.ValidSpouses.Contains(__instance.Name) == false)
+            return;
+        
+        if (__instance.currentLocation.Name.Equals(__instance.queuedSchedulePaths[^1].targetLocationName))
+        {
+            return;
+        }
+#if DEBUG
+        ModEntry.Mon.Log($"NPC current location is {__instance.currentLocation.Name}, but the end destination is {__instance.queuedSchedulePaths[^1].targetLocationName}. Skipping", LogLevel.Debug);
+#endif
+        Game1.delayedActions.Add(new DelayedAction(500, IncludeSpeed));
+        return;
+
+        void IncludeSpeed()
+        {
+            __instance.addedSpeed += 0.3f;
+        }
     }
 
     /// <summary>

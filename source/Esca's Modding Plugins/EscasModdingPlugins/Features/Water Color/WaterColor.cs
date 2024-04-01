@@ -25,6 +25,10 @@ namespace EscasModdingPlugins
 
         /// <summary>True if this class's behavior is currently enabled.</summary>
         public static bool Enabled { get; private set; } = false;
+
+        /// <summary>The helper instance to use for API access.</summary>
+        private static IModHelper Helper { get; set; } = null;
+
         /// <summary>The monitor instance to use for console/log messages.</summary>
         private static IMonitor Monitor { get; set; } = null;
 
@@ -37,6 +41,7 @@ namespace EscasModdingPlugins
                 return; //do nothing
 
             //store args
+            Helper = helper;
             Monitor = monitor;
 
             //initialize assets/properties
@@ -46,6 +51,8 @@ namespace EscasModdingPlugins
             helper.Events.GameLoop.DayStarted += DayStarted_UpdateWaterColor;
             helper.Events.GameLoop.TimeChanged += TimeChanged_UpdateWaterColor;
             helper.Events.Player.Warped += Warped_UpdateWaterColor;
+
+            Enabled = true;
         }
 
         private static void DayStarted_UpdateWaterColor(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
@@ -121,7 +128,7 @@ namespace EscasModdingPlugins
             if (location.Map.Properties.TryGetValue(MapPropertyName, out var mapPropertyObject)) //if the location has a non-null map property
             {
                 string mapProperty = mapPropertyObject.ToString() ?? ""; //get the map property as a string
-                string[] args = mapProperty.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); //split the property value along spaces and remove any blank args
+                string[] args = mapProperty.Trim().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries); //split the property value along spaces and remove any blank args
 
                 Color? colorToUse = null;
 
@@ -168,7 +175,7 @@ namespace EscasModdingPlugins
                 if (colorToUse != null) //if map property exists and was parsed successfully
                 {
                     if (Monitor.IsVerbose)
-                        Monitor.Log($"Overriding water color based on map property {MapPropertyName}. Location: {location.Name}. Property value: {mapProperty}.", LogLevel.Alert);
+                        Monitor.Log($"Overriding water color based on map property {MapPropertyName}. Location: {location.Name}. Property value: {mapProperty}.", LogLevel.Trace);
                     return colorToUse.Value;
                 }
             }

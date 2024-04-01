@@ -13,11 +13,10 @@ namespace ForageFantasy
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
     using StardewValley;
-    using StardewValley.GameData.WildTrees;
     using StardewValley.TerrainFeatures;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using StardewObject = StardewValley.Object;
 
     public class ForageFantasy : Mod
     {
@@ -29,7 +28,7 @@ namespace ForageFantasy
 
         internal static bool MushroomTreeTapperWorksInWinter { get; set; }
 
-        // maybe TODO seasonal mushroom tappers, magma cap on ginger island for mushroom tree and box
+        // maybe TODO seasonal mushroom tappers, magma cap on ginger island for mushroom tree, log or box
 
         public override void Entry(IModHelper helper)
         {
@@ -60,6 +59,8 @@ namespace ForageFantasy
 
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
+            helper.Events.Content.AssetReady += OnAssetReady;
+
             Patcher.PatchAll(this);
         }
 
@@ -67,58 +68,50 @@ namespace ForageFantasy
         {
             FernAndBurgerLogic.Apply(e, this.Config, this.Helper.Translation);
 
-            TapperAssetChanges.Apply(e, this.Config, this.Helper.Translation);
-
             GrapeLogic.Apply(e, this.Config, this.Helper.Translation);
 
+            TapperAssetChanges.Apply(e, this.Config);
+        }
+
+        private void OnAssetReady(object sender, AssetReadyEventArgs e)
+        {
             if (e.NameWithoutLocale.IsEquivalentTo("Data/WildTrees"))
             {
-                e.Edit((asset) =>
+                if (Tree.TryGetData(Tree.mushroomTree, out var mushroomTreeData))
                 {
-                    IDictionary<string, WildTreeData> data = asset.AsDictionary<string, WildTreeData>().Data;
+                    var defaultTap = mushroomTreeData.TapItems.Where((s) => s.Id == "Default").FirstOrDefault();
 
-                    if (data.TryGetValue(Tree.mushroomTree, out var mushroomTreeData))
+                    if (defaultTap?.Condition != null && defaultTap.Condition.Contains("!LOCATION_SEASON Target Winter"))
                     {
-                        var defaultTap = mushroomTreeData.TapItems.Where((s) => s.Id == "Default").FirstOrDefault();
-
-                        if (defaultTap?.Condition != null && defaultTap.Condition.Contains("!LOCATION_SEASON Target Winter"))
-                        {
-                            MushroomTreeTapperWorksInWinter = false;
-                        }
-                        else
-                        {
-                            MushroomTreeTapperWorksInWinter = !mushroomTreeData.IsStumpDuringWinter;
-                        }
+                        MushroomTreeTapperWorksInWinter = false;
                     }
-                }, AssetEditPriority.Late + (int)AssetEditPriority.Late);
+                    else
+                    {
+                        MushroomTreeTapperWorksInWinter = !mushroomTreeData.IsStumpDuringWinter;
+                    }
+                }
             }
         }
 
-        // do not combine these overloads with a default parameter. this one is used in a transpiler patch
-        public static int DetermineForageQuality(Farmer farmer)
-        {
-            return DetermineForageQuality(farmer, true);
-        }
-
-        public static int DetermineForageQuality(Farmer farmer, bool allowBotanist)
+        public static int DetermineForageQuality(Farmer farmer, Random r, bool allowBotanist = true)
         {
             if (allowBotanist && farmer.professions.Contains(Farmer.botanist))
             {
-                return 4;
+                return StardewObject.bestQuality;
             }
             else
             {
-                if (Game1.random.NextDouble() < farmer.ForagingLevel / 30f)
+                if (r.NextDouble() < farmer.ForagingLevel / 30f)
                 {
-                    return 2;
+                    return StardewObject.highQuality;
                 }
-                else if (Game1.random.NextDouble() < farmer.ForagingLevel / 15f)
+                else if (r.NextDouble() < farmer.ForagingLevel / 15f)
                 {
-                    return 1;
+                    return StardewObject.medQuality;
                 }
                 else
                 {
-                    return 0;
+                    return StardewObject.lowQuality;
                 }
             }
         }
@@ -165,26 +158,22 @@ namespace ForageFantasy
         {
             foreach (var terrainfeature in currentLocation.terrainFeatures.Pairs)
             {
-                if (Game1.currentCursorTile == terrainfeature.Value.Tile)
+                if (Game1.currentCursorTile != terrainfeature.Value.Tile)
                 {
-                    if (terrainfeature.Value is Tree tree)
-                    {
-                        if (tree.growthStage.Value >= 5)
-                        {
-                            Game1.activeClickableMenu = new TreeMenu(this, tree);
-                            return;
-                        }
-                    }
+                    continue;
+                }
 
-                    if (terrainfeature.Value is FruitTree fruittree)
-                    {
-                        // fruit tree ages are negative
-                        if (fruittree.daysUntilMature.Value <= 0)
-                        {
-                            Game1.activeClickableMenu = new TreeMenu(this, fruittree);
-                            return;
-                        }
-                    }
+                if (terrainfeature.Value is Tree tree)
+                {
+                    Game1.activeClickableMenu = new TreeMenu(this, tree);
+                    return;
+                }
+
+                // fruit tree ages are negative
+                if (terrainfeature.Value is FruitTree fruittree)
+                {
+                    Game1.activeClickableMenu = new TreeMenu(this, fruittree);
+                    return;
                 }
             }
         }

@@ -23,9 +23,9 @@ namespace DestroyableBushes
         /// <param name="harmony">This mod's Harmony instance.</param>
         public static void ApplyPatch(Harmony harmony)
         {
-            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_DestroyedBushBehavior)}\": postfixing SDV method \"Bush.performToolAction(Tool, int, Vector2, GameLocation)\".", LogLevel.Trace);
+            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_DestroyedBushBehavior)}\": postfixing SDV method \"Bush.performToolAction(Tool, int, Vector2)\".", LogLevel.Trace);
             harmony.Patch(
-                original: AccessTools.Method(typeof(Bush), nameof(Bush.performToolAction), new[] { typeof(Tool), typeof(int), typeof(Vector2), typeof(GameLocation) }),
+                original: AccessTools.Method(typeof(Bush), nameof(Bush.performToolAction), new[] { typeof(Tool), typeof(int), typeof(Vector2) }),
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_DestroyedBushBehavior), nameof(performToolAction_Postfix))
             );
         }
@@ -33,10 +33,9 @@ namespace DestroyableBushes
         /// <summary>If this bush was destroyed, this adds it to this mod's "destroyed bushes" list. It also drops an amount of wood designated by this mod's config.json file settings.</summary>
         /// <param name="t">The <see cref="Tool"/> used on this bush.</param>
         /// <param name="tileLocation">The tile on which the tool is being used.</param>
-        /// <param name="location">The location of the bush and tool.</param>
         /// <param name="__instance">The <see cref="Bush"/> on which a tool is being used.</param>
         /// <param name="__result">True if this bush was destroyed."/></param>
-        public static void performToolAction_Postfix(Tool t, Vector2 tileLocation, GameLocation location, Bush __instance, bool __result)
+        public static void performToolAction_Postfix(Tool t, Vector2 tileLocation, Bush __instance, bool __result)
         {
             try
             {
@@ -78,7 +77,7 @@ namespace DestroyableBushes
                             }
                         }
 
-                        ModData.DestroyedBush destroyed = new ModData.DestroyedBush(location?.Name, __instance.tilePosition.Value, __instance.size.Value, __instance.townBush.Value, safeOffset); //create a record of this bush
+                        ModData.DestroyedBush destroyed = new ModData.DestroyedBush(__instance.Location?.Name, __instance.Tile, __instance.size.Value, __instance.townBush.Value, safeOffset); //create a record of this bush
 
                         if (Context.IsMainPlayer) //if this code is run by the main player
                             ModEntry.Data.DestroyedBushes.Add(destroyed); //add the record to the list of destroyed bushes
@@ -109,7 +108,7 @@ namespace DestroyableBushes
                         }
 
                         //drop the amount of wood at this bush's location
-                        Game1.createRadialDebris(location, 12, (int)tileLocation.X, (int)tileLocation.Y, amountOfWood, true, -1, false, -1);
+                        Game1.createRadialDebris(__instance.Location, 12, (int)tileLocation.X, (int)tileLocation.Y, amountOfWood, true, -1, false, null);
                     }
                 }
             }

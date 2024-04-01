@@ -5,16 +5,14 @@ urls:
 mods:
    Bush Bloom Mod
    Copper Still
+   Garden Pot - Automate
+   Passable Crops
    Tree Shake Mod
 
 latest commit:
-   commit 6cdae20f86513eeecac488c7c504daa44de3e7cb
-   Author: ncarigon <ncarigon@liquidweb.com>
-   Date:   Tue Feb 21 15:02:41 2023 -0500
+   commit d188c03d26c4039c744ceb05adaaa551595a7137
+   Author: ncarigon <ncarigon@outlook.com>
+   Date:   Wed Mar 27 15:52:00 2024 -0400
    
-       1) Added CopperStill compatibility with Deluxe Grabber Redux to harvest Juniper Berry bushes.
-       
-       2) Added separate config option to toggle harvesting flowers from garden pots.
-       
-       3) Bugfix for error when applying fertilizers to garden pots.
+       Reworked custom drawing logic for better mod compatibility.
    

@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // it (italian)
+  // custom tree translation
+  "custom-tree.oak": "Quercia",
+  "custom-tree.maple": "Acero",
+  "custom-tree.pine": "Pino",
+  "custom-tree.coconut": "Palma da Cocco",
+  "custom-tree.mushroom": "Fungo Albero",
+  "custom-tree.mahogany": "Albero di mogano",
+  "custom-tree.palm": "Palma da Cocco",
+
+  // growth info translation
+  "growth-info.fully-grown": "completamente cresciuto",
+  "growth-info.stage": "fase",
+  "growth-info.of": "di",
+  "growth-info.days-left": "giorni rimasti",
+  "growth-info.day-left": "giorno passato",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Passaggio del Mouse",
+  "config.mouse-hover.desc": "Sposta il mouse sul riquadro di ritaglio per visualizzare l'etichetta quando abilitata.",
+  "config.growth-info.name": "Informazioni Sulla Crescita",
+  "config.growth-info.desc": "Visualizza la crescita del raccolto o la fase di raccolta quando abilitata.",
+  "config.custom-keybinds.name": "Combinazione di tasti",
+  "config.custom-keybinds.desc": "Sostituisce l'impostazione predefinita. L'abilitazione del passaggio del mouse sovrascrive questo."
+}

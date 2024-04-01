@@ -22,7 +22,7 @@ namespace FishingTrawler.Framework.Objects.Items.Resources
 
         public static Object CreateInstance(int size = 1)
         {
-            var coal = new Object(JUNK_OBJECT_BASE_ID, 1);
+            var coal = new Object($"{JUNK_OBJECT_BASE_ID}", 1);
             coal.modData[ModDataKeys.COAL_CLUMP_KEY] = size.ToString();
 
             return coal;

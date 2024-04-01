@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+** Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
 **
 *************************************************/
 
@@ -61,6 +61,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         public bool CanClick = true;
         public bool Complete = false;
         public int CompletionTimer;
+
+        private Item HoverItem;
+        private string HoverText;
 
         public DialogueShopMenu(Farmer who, Unlockable unlockable)
         {
@@ -298,12 +301,22 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 CostDownArrow.draw(b);
 
             base.draw(b);
+            drawToolTip(b);
 
             if (CanClick)
                 drawMouse(b, true);
 
             updateScreenWipe(b);
         }
+
+        private void drawToolTip(SpriteBatch b)
+        {
+            if (HoverItem is not null)
+                drawToolTip(b, HoverItem.getDescription(), HoverItem.DisplayName, HoverItem);
+            else if (HoverText is not null)
+                drawHoverText(b, HoverText, Game1.dialogueFont);
+        }
+
 
         public void updateScreenWipe(SpriteBatch b)
         {
@@ -348,6 +361,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             b.Draw(Game1.mouseCursors, new Vector2(xPositionOfCostArea - 40, yPositionOfCostArea - 20), new Rectangle(278, 313, 10, 7), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
             b.Draw(Game1.mouseCursors, new Vector2(xPositionOfCostArea - 40, y + base.height), new Rectangle(278, 328, 10, 8), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
 
+            HoverItem = null;
+            HoverText = null;
             //Required items of the current cost page index
             for (int i = costPageIndex * 4; i < Unlockable._price.Count() && i != (costPageIndex + 1) * 4; i++) {
                 int xPos = i % 2 == 0 ? xPositionOfCostArea : xPositionOfCostArea + (int)(widthOfCostArea / 2);
@@ -356,17 +371,23 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 var requirement = Unlockable._price.Pairs.ElementAt(i);
 
                 if (requirement.Key.ToLower() == "money") {
-                    b.Draw(Game1.mouseCursors, new Rectangle(xPos, yPos +8, 54, 54), new Rectangle(280, 412, 15, 14), Color.White);
-                    Utility.drawTextWithShadow(b, "x " + requirement.Value.ToString("# ### ##0") + "g", Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), who.Money >= requirement.Value ? Game1.textColor : Color.Red);
+                    b.Draw(Game1.mouseCursors, new Rectangle(xPos, yPos + 8, 54, 54), new Rectangle(280, 412, 15, 14), Color.White);
+                    var gold = requirement.Value.ToString("# ### ##0") + "g  ";
+                    Utility.drawTextWithShadow(b, "x " + gold, Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), who.Money >= requirement.Value ? Game1.textColor : Color.Red);
+                    if (new Rectangle(xPos, yPos, 54, 54).Contains(Game1.getMousePosition()))
+                        HoverText = gold;
                     continue;
                 }
 
                 var hasItems = Inventory.hasEnoughItems(who, requirement);
-                var items = Unlockable.getRequiredItems(requirement.Key);
+                var items = Unlockable.getRequiredItemsAllowExceptions(requirement.Key);
                 items.First()?.drawInMenu(b, new Vector2(xPos, yPos), 0.9f, 1f, 1f, StackDrawType.HideButShowQuality, color: Color.White, false);
                 if (requirement.Value > 1)
                     Utility.drawTinyDigits(requirement.Value, b, new Vector2(xPos, yPos) + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(requirement.Value, 3f)) + 3f, 64f - 18f + 1f), 3f, 1f, hasItems ? Color.White : Color.Red);
                 Utility.drawTextWithShadow(b, shortenCostName(items.First()?.DisplayName), Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), hasItems ? Game1.textColor : Color.Red);
+
+                if (items.Any() && new Rectangle(xPos, yPos, 58, 58).Contains(Game1.getMousePosition()))
+                    HoverItem = items.First();
             }
         }
 

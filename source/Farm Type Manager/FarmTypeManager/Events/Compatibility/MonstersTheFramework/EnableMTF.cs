@@ -25,16 +25,13 @@ namespace FarmTypeManager
         {
             try
             {
-                if (Helper.ModRegistry.IsLoaded("spacechase0.MonstersTheFramework"))
-                {
-                    Monitor.Log($"Mod found: Monsters The Framework (MTF).", LogLevel.Trace);
-                }
-                else
+                if (!Helper.ModRegistry.IsLoaded("spacechase0.MonstersTheFramework"))
                 {
                     Monitor.Log($"Mod not found: Monsters The Framework (MTF).", LogLevel.Trace);
                     return;
                 }
 
+                Monitor.Log($"Mod found: Monsters The Framework (MTF).", LogLevel.Trace);
                 Utility.MonstersTheFrameworkAPI = new MTFPseudoAPI(); //add a pseudo-API to this mod's static utility property
             }
             catch (Exception ex)

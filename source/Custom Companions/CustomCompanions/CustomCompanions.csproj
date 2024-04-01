@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>3.0.0</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<Version>4.0.1</Version>
+		<TargetFramework>net6.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip>false</EnableModZip>
 		<EnableModDeploy>false</EnableModDeploy>
@@ -17,8 +17,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,7 +36,7 @@
 			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
 			powershell Remove-Item -Path '$(SolutionDir)releases\latest\$(SolutionName)"' -Recurse -Force
-			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\CustomCompanions\CustomCompanions\bin\Debug\net5.0" "$(SolutionDir)releases\latest\$(SolutionName)"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\CustomCompanions\CustomCompanions\bin\Debug\$(TargetFramework)" "$(SolutionDir)releases\latest\$(SolutionName)"
 			7z a -tzip "$(SolutionDir)releases\$(SolutionName)-$(Version).zip" "$(SolutionDir)releases\latest\$(SolutionName)"
 
 			powershell Remove-Item -Path '$(GameModsPath)\$(SolutionName)' -Recurse -Force

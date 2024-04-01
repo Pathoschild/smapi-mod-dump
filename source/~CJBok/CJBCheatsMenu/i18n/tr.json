@@ -93,7 +93,6 @@
     "skills.increase-foraging": "Toplayıcılık Seviyesini Yükselt: {{currentLevel}}",
     "skills.increase-fishing": "Balıkçılık Seviyesini Yükselt: {{currentLevel}}",
     "skills.increase-combat": "Savaşma Seviyesini Yükselt: {{currentLevel}}",
-    "skills.reset": "BECERİLERİ SIFIRLA!",
 
     // professions
     "professions.title": "Uzmanlık Alanları",
@@ -134,6 +133,7 @@
     *********/
     "weather.title": "Yarının Hava Durumu",
     "weather.current": "Mevcut",
+    "weather.explanation": "Click a button below to set the weather for tomorrow (and only tomorrow). This tab has zero effect on weather otherwise.", // TODO
     "weather.sunny": "Güneşli",
     "weather.raining": "Yağmurlu",
     "weather.lightning": "Fırtınalı",
@@ -173,6 +173,7 @@
     // forest
     "warp-section.forest": "Orman",
     "warp.hats": "Şapka",
+    "warp.mastery-cave": "Mastery Cave", // TODO
     "warp.ranch": "Marnie'nin Çiftliği",
     "warp.secret-woods": "Gizli Koru",
     "warp.wizard-tower": "Büyücü'nün Kulesi",

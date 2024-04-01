@@ -1,0 +1,8 @@
+{
+  "OpenMenuKey": "J",
+  "CanConsoleWarp": true,
+  "KeyBinding": {
+    "J": 0,
+    "RightStick": 1
+  }
+}

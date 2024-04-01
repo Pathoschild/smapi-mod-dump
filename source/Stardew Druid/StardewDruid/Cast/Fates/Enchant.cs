@@ -24,8 +24,8 @@ namespace StardewDruid.Cast.Fates
 
         public int source;
 
-        public Enchant(Vector2 target, Rite rite, StardewValley.Object machine, int Source = 768)
-            : base(target, rite)
+        public Enchant(Vector2 target,  StardewValley.Object machine, int Source = 768)
+            : base(target)
         {
             castCost = 24;
 
@@ -40,7 +40,7 @@ namespace StardewDruid.Cast.Fates
 
             DelayedAction.functionAfterDelay(CastAfterDelay, 1000);
 
-            ModUtility.AnimateFate(targetLocation, targetPlayer.getTileLocation(), targetVector, source);
+            ModUtility.AnimateFate(targetLocation, targetPlayer.Tile, targetVector, source);
 
             castFire = true;
 
@@ -49,21 +49,21 @@ namespace StardewDruid.Cast.Fates
         public void CastAfterDelay()
         {
 
-            if (!riteData.castTask.ContainsKey("masterEnchant"))
+            if (!Mod.instance.rite.castTask.ContainsKey("masterEnchant"))
             {
 
                 Mod.instance.UpdateTask("lessonEnchant", 1);
 
             }
 
-            if (targetObject.MinutesUntilReady > 0 && riteData.castTask.ContainsKey("masterEnchant"))
+            if (targetObject.MinutesUntilReady > 0 && Mod.instance.rite.castTask.ContainsKey("masterEnchant"))
             {
 
                 Utility.addSprinklesToLocation(targetLocation, (int)targetVector.X, (int)targetVector.Y, 1, 2, 400, 40, Color.White);
 
                 targetObject.MinutesUntilReady = 10;
 
-                DelayedAction.functionAfterDelay(delegate { targetObject.minutesElapsed(10, targetLocation); }, 50);
+                DelayedAction.functionAfterDelay(delegate { targetObject.minutesElapsed(10); }, 50);
 
             }
             else if (targetObject.heldObject.Value == null)
@@ -108,7 +108,7 @@ namespace StardewDruid.Cast.Fates
 
             for (int i = 0; i < array.Count(); i += 2)
             {
-                list.Add(new StardewValley.Object(Convert.ToInt32(array[i]), Convert.ToInt32(array[i + 1])));
+                list.Add(new StardewValley.Object(array[i], Convert.ToInt32(array[i + 1])));
             }
 
             if (list.Count == 0)
@@ -156,7 +156,7 @@ namespace StardewDruid.Cast.Fates
                 num3 *= 2;
             }
 
-            targetObject.heldObject.Value = new StardewValley.Object(num2, num3);
+            targetObject.heldObject.Value = new StardewValley.Object(num2.ToString(), num3);
 
             targetObject.MinutesUntilReady = 240;
 
@@ -219,30 +219,30 @@ namespace StardewDruid.Cast.Fates
 
             int cropIndex = cropList[randomIndex.Next(cropList.Count)];
 
-            StardewValley.Object input = new(cropIndex, 0);
+            StardewValley.Object input = new(cropIndex.ToString(), 0);
 
             if (input == null) { targetLocation.playSound("ghost"); return; }
 
             switch (@input.ParentSheetIndex)
             {
                 case 262:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("346",1);
                     targetObject.heldObject.Value.name = "Beer";
                     break;
                 case 304:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 303, "Pale Ale", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("303", 1);
                     targetObject.heldObject.Value.name = "Pale Ale";
                     break;
                 case 815:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 614, "Green Tea", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("614", 1);
                     targetObject.heldObject.Value.name = "Green Tea";
                     break;
                 case 433:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 395, "Coffee", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("395", 1);
                     targetObject.heldObject.Value.name = "Coffee";
                     break;
                 case 340:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 459, "Mead", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("459", 1);
                     targetObject.heldObject.Value.name = "Mead";
                     break;
 
@@ -254,23 +254,23 @@ namespace StardewDruid.Cast.Fates
                 switch (@input.Category)
                 {
                     case -75:
-                        targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 350, @input.Name + " Juice", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        targetObject.heldObject.Value = new StardewValley.Object("350", 1);
                         targetObject.heldObject.Value.Price = (int)(@input.Price * 2.25);
                         targetObject.heldObject.Value.name = @input.Name + " Juice";
                         targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Juice;
-                        targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                        targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex.ToString();
                         targetObject.MinutesUntilReady = 6000;
                         break;
                     case -79:
-                        targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 348, @input.Name + " Wine", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        targetObject.heldObject.Value = new StardewValley.Object("348", 1);
                         targetObject.heldObject.Value.Price = @input.Price * 3;
                         targetObject.heldObject.Value.name = @input.Name + " Wine";
                         targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Wine;
-                        targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                        targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex.ToString();
                         targetObject.MinutesUntilReady = 10000;
                         break;
                     default:
-                        targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        targetObject.heldObject.Value = new StardewValley.Object("346", 1);
                         targetObject.heldObject.Value.name = "Beer";
                         break;
 
@@ -351,25 +351,25 @@ namespace StardewDruid.Cast.Fates
 
             int cropIndex = cropList[randomIndex.Next(cropList.Count)];
 
-            StardewValley.Object input = new(cropIndex, 0);
+            StardewValley.Object input = new(cropIndex.ToString(), 0);
 
             if (input == null) { targetLocation.playSound("ghost"); return; }
 
             switch (@input.Category)
             {
                 case -75:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 342, "Pickled " + @input.Name, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("342", 1);
                     targetObject.heldObject.Value.Price = 50 + @input.Price * 2;
                     targetObject.heldObject.Value.name = "Pickled " + @input.Name;
                     targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Pickle;
-                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex.ToString();
                     break;
                 case -79:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 344, @input.Name + " Jelly", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("344", 1);
                     targetObject.heldObject.Value.Price = 50 + @input.Price * 2;
                     targetObject.heldObject.Value.name = @input.Name + " Jelly";
                     targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Jelly;
-                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex.ToString();
                     break;
             }
 
@@ -405,10 +405,10 @@ namespace StardewDruid.Cast.Fates
             switch (randomIndex.Next(2))
             {
                 case 0:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 426, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("426", 1);
                     break;
                 default:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 424, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("424", 1);
                     break;
             }
 
@@ -441,7 +441,7 @@ namespace StardewDruid.Cast.Fates
             switch (eggIndex)
             {
                 case 289:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 306, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("306", 1);
                     targetObject.heldObject.Value.Stack = 10;
                     targetObject.heldObject.Value.Quality = 2;
 
@@ -449,7 +449,7 @@ namespace StardewDruid.Cast.Fates
 
                 case 174:
                 case 182:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 306, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false)
+                    targetObject.heldObject.Value = new StardewValley.Object("306", 1)
                     {
                         Quality = 2
                     };
@@ -458,27 +458,27 @@ namespace StardewDruid.Cast.Fates
 
                 case 176:
                 case 180:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 306, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("306", 1);
 
                     break;
 
                 case 442:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 307, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("307", 1);
 
                     break;
 
                 case 305:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 308, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("308", 1);
 
                     break;
 
                 case 107:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 807, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("807", 1);
 
                     break;
 
                 case 928:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 306, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false)
+                    targetObject.heldObject.Value = new StardewValley.Object("306", 1)
                     {
                         Quality = 2
                     };
@@ -495,7 +495,7 @@ namespace StardewDruid.Cast.Fates
 
             targetLocation.playSound("Ship");
 
-            targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 428, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false)
+            targetObject.heldObject.Value = new StardewValley.Object("428", 1)
             {
                 Stack = 2
             };
@@ -534,19 +534,19 @@ namespace StardewDruid.Cast.Fates
             switch (oilIndex)
             {
                 case 270:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 247, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("247", 1);
                     break;
 
                 case 421:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 247, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("247", 1);
                     break;
 
                 case 430:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 432, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("432", 1);
                     break;
 
                 case 431:
-                    targetObject.heldObject.Value = new StardewValley.Object(247, 1);
+                    targetObject.heldObject.Value = new StardewValley.Object("247", 1);
                     break;
 
             }
@@ -574,31 +574,31 @@ namespace StardewDruid.Cast.Fates
             switch (furnaceIndex)
             {
                 case 378:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 334, 1);
+                    targetObject.heldObject.Value = new StardewValley.Object("334", 1);
 
                     break;
                 case 380:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 335, 1);
+                    targetObject.heldObject.Value = new StardewValley.Object("335", 1);
 
                     break;
                 case 384:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 336, 1);
+                    targetObject.heldObject.Value = new StardewValley.Object("336", 1);
 
                     break;
                 case 386:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 337, 1);
+                    targetObject.heldObject.Value = new StardewValley.Object("337", 1);
 
                     break;
                 case 80:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 338, "Refined Quartz", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value = new StardewValley.Object("338", 1);
 
                     break;
                 case 82:
-                    targetObject.heldObject.Value = new StardewValley.Object(338, 3);
+                    targetObject.heldObject.Value = new StardewValley.Object("338", 3);
 
                     break;
                 case 909:
-                    targetObject.heldObject.Value = new StardewValley.Object(910, 1);
+                    targetObject.heldObject.Value = new StardewValley.Object("910", 1);
 
                     break;
             }
@@ -616,7 +616,7 @@ namespace StardewDruid.Cast.Fates
         public void FillGeodeCrusher()
         {
 
-            targetObject.heldObject.Value = (StardewValley.Object)Utility.getTreasureFromGeode(new StardewValley.Object(749, 1));
+            targetObject.heldObject.Value = (StardewValley.Object)Utility.getTreasureFromGeode(new StardewValley.Object("749", 1));
 
             Game1.stats.GeodesCracked++;
 

@@ -3,18 +3,18 @@ urls:
    Git: https://github.com/misty-spring/StardewMods.git
 
 mods:
+   Audio Descriptions
    Dynamic Dialogues Framework
    Farmhouse Visits
    Ginger Island Extra Locations
    Immersive Grandpa
+   Item Extensions
    Spouses in Ginger Island
 
 latest commit:
-   commit 858712d436a3875fbc8b41f1a62dc82f9e3cdac7
+   commit e63bc950d4c6ef02d817176f3e81727e39b4d2e4
    Author: Mistyspring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Sun Mar 17 00:48:38 2024 -0300
+   Date:   Fri Mar 29 13:51:53 2024 -0300
    
-       Prepare for 1.6
-       
-       Update some of the 1.6 changes to the mod
+       Update CustomResource.md
    

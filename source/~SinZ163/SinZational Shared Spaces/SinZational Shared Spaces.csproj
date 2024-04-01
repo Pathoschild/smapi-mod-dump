@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>SinZ.SharedSpaces</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Name>SinZational Shared Spaces</Name>
+    <Authors>SinZ</Authors>
+    <Version>1.0.2</Version>
+    <Description>A mod that implements multiplayer stacked cabins</Description>
+    <UniqueId>SinZ.SharedSpaces</UniqueId>
+    <MinimumApiVersion>4.0</MinimumApiVersion>
+    <UpdateKeys>Nexus:20654</UpdateKeys>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+  </ItemGroup>
+</Project>

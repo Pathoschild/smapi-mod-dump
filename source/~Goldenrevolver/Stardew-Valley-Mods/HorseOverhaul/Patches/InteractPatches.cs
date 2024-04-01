@@ -29,8 +29,8 @@ namespace HorseOverhaul
             mod = horseOverhaul;
 
             harmony.Patch(
-                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.checkAction)),
-                    transpiler: new HarmonyMethod(typeof(InteractPatches), nameof(AllowInteractWhileRiding)));
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.checkAction)),
+               transpiler: new HarmonyMethod(typeof(InteractPatches), nameof(AllowInteractWhileRiding)));
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.animateOnce)),
@@ -63,11 +63,6 @@ namespace HorseOverhaul
         {
             try
             {
-                if (!mod.Config.EnableLimitedInteractionWhileRiding)
-                {
-                    return instructions;
-                }
-
                 var instructionsList = instructions.ToList();
 
                 int foundSpawnedObject = -1;
@@ -115,7 +110,7 @@ namespace HorseOverhaul
                     }
                 }
 
-                // checking foundTerrainFeature before foundSpawnedObject is import, because we insert into the list
+                // checking foundTerrainFeature before foundSpawnedObject is important, because we insert into the list
 
                 if (foundTerrainFeature > 0)
                 {
@@ -182,12 +177,18 @@ namespace HorseOverhaul
 
             bool yes = mod.Config.InteractWithForageWhileRiding && obj.IsSpawnedObject && obj.isForage();
             bool yes2 = mod.Config.InteractWithTappersWhileRiding && obj.IsTapper();
-            // || obj is CrabPot || obj.QualifiedItemId == "(BC)128";
+            // '|=' is 'x = x | y', so if yes2 is true it still calculates y
+            yes2 = yes2 || (mod.Config.InteractWithMushroomLogsAndBoxesWhileRiding && IsMushroomLogOrBox(obj));
 
             bool allowForage = !no && !no2 && yes;
             bool allowMachine = !no && no2 && yes2;
 
             return allowForage || allowMachine;
+        }
+
+        private static bool IsMushroomLogOrBox(StardewValley.Object obj)
+        {
+            return obj.QualifiedItemId is "(BC)128" or "(BC)MushroomLog";
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidImplicitNetFieldCast:Netcode types shouldn't be implicitly converted", Justification = "No other choice")]

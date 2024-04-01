@@ -16,8 +16,8 @@ This mod programmatically removes the restriction of not being able to place / u
 
 ### Compatibility
 #### Requirements
-- Stardew Valley 1.5 or later
-- SMAPI 3.18 or later
+- Stardew Valley 1.6 or later
+- SMAPI 4.0.0 or later
 
 #### Conflicts
 - No known mod conflicts
@@ -43,6 +43,12 @@ This mod programmatically removes the restriction of not being able to place / u
 
 ## Releases
 Releases can be found [here on GitHub](https://github.com/hedgehog-technologies/StardewMods/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7629) site.
+### 1.2.0
+- Update to SDV 1.6 compatibility
+- Update to SMAPI 4.0.0 compatibility
+### 1.1.1
+- Removed Github update channel from manifest
+   - This is to prevent false update available notifications from SMAPI since the mods are under a unified repository now
 ### 1.1.0
 - Moved to new repository
 - Updated to use Khloe Leclair's [Mod Manifest Builder](https://github.com/KhloeLeclair/Stardew-ModManifestBuilder)

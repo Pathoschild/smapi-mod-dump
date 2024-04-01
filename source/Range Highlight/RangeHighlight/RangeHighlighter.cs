@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-// Copyright 2020-2022 Jamie Taylor
+// Copyright 2020-2023 Jamie Taylor
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -23,9 +23,9 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace RangeHighlight {
-    using BlueprintHighlightFunction = Func<BluePrint, List<Tuple<Color, bool[,], int, int>>?>;
+    using BlueprintHighlightFunction = Func<CarpenterMenu.BlueprintEntry, List<Tuple<Color, bool[,], int, int>>?>;
     using BuildingHighlightFunction = Func<Building, List<Tuple<Color, bool[,], int, int>>?>;
-    using ItemHighlightFunction = Func<Item, int, string, List<Tuple<Color, bool[,]>>?>;
+    using ItemHighlightFunction = Func<Item, List<Tuple<Color, bool[,]>>?>;
     using TASHighlightFunction = Func<TemporaryAnimatedSprite, List<Tuple<Color, bool[,]>>?>;
 
     internal class RangeHighlighter {
@@ -202,16 +202,16 @@ namespace RangeHighlight {
             bool iterateItems = false;
 
             if (Game1.activeClickableMenu != null) {
-                if (Game1.activeClickableMenu is CarpenterMenu carpenterMenu && Game1.currentLocation is BuildableGameLocation) {
+                if (Game1.activeClickableMenu is CarpenterMenu carpenterMenu && Game1.currentLocation.IsBuildableLocation()) {
                     for (int i = 0; i < buildingHighlighters.Count; ++i) {
                         if (buildingHighlighters[i].Item2 is var highlighter && highlighter is not null) {
-                            var rets = highlighter(carpenterMenu.CurrentBlueprint);
+                            var rets = highlighter(carpenterMenu.Blueprint);
                             if (rets is not null) foreach(var ret in rets){
                                 var cursorTile = GetCursorTile();
                                 AddHighlightTiles(ret.Item1, ret.Item2, (int)cursorTile.X + ret.Item3, (int)cursorTile.Y + ret.Item4);
                                 runBuildingHighlighter[i] = true;
                                 iterateBuildings = true;
-                                break;
+                                //break;
                             }
                         }
                     }
@@ -220,9 +220,9 @@ namespace RangeHighlight {
                 }
             }
 
-            if (Game1.currentLocation is BuildableGameLocation buildableLocation && config.HighlightBuildingsOnMouseover) {
+            if (Game1.currentLocation.IsBuildableLocation() && config.HighlightBuildingsOnMouseover) {
                 // check to see if the cursor is over a building
-                Building building = buildableLocation.getBuildingAt(Game1.currentCursorTile);
+                Building building = Game1.currentLocation.getBuildingAt(Game1.currentCursorTile);
                 if (building != null) {
                     for (int i = 0; i < buildingHighlighters.Count; ++i) {
                         var ret = buildingHighlighters[i].Item1.highlighter(building);
@@ -232,43 +232,6 @@ namespace RangeHighlight {
                             iterateBuildings = true;
                             break;
                         }
-                    }
-                }
-            }
-
-            if (Game1.player.CurrentItem != null) {
-                Item item = Game1.player.CurrentItem;
-                string itemName = item.Name.ToLower();
-                int itemID = item.ParentSheetIndex;
-                for (int i = 0; i < itemHighlighters.Count; ++i) {
-                    if (!itemHighlighterStartCalled[i]) {
-                        itemHighlighters[i].onStart?.Invoke();
-                        itemHighlighterStartCalled[i] = true;
-                    }
-                    var ret = itemHighlighters[i].highlighter(item, itemID, itemName);
-                    if (ret != null) {
-                        if (itemHighlighters[i].HighlightOthersWhenHeld) {
-                            runItemHighlighter[i] = true;
-                        }
-                        iterateItems = true;
-                        var cursorTile = GetCursorTile();
-                        var actionTile = cursorTile;
-                        bool mouseHidden = !Game1.wasMouseVisibleThisFrame || Game1.mouseCursorTransparency == 0f;
-                        bool showAtActionTile = config.HighlightActionLocation == HighlightActionLocationStyle.Always
-                            || config.HighlightActionLocation == HighlightActionLocationStyle.WhenMouseHidden && mouseHidden;
-                        if (mouseHidden || !Utility.tileWithinRadiusOfPlayer((int)cursorTile.X, (int)cursorTile.Y, 1, Game1.player)) {
-                            var grabTile = Game1.player.GetGrabTile();
-                            var oldVal = Game1.isCheckingNonMousePlacement;
-                            Game1.isCheckingNonMousePlacement = true;
-                            actionTile = Utility.GetNearbyValidPlacementPosition(Game1.player, Game1.currentLocation, item, (int)grabTile.X * 64 + 32, (int)grabTile.Y * 64 + 32) / 64;
-                            Game1.isCheckingNonMousePlacement = oldVal;
-                        }
-                        if (showAtActionTile) AddHighlightTiles(ret, (int)actionTile.X, (int)actionTile.Y);
-                        if ((!showAtActionTile || cursorTile != actionTile)
-                            && !mouseHidden) {
-                            AddHighlightTiles(ret, (int)cursorTile.X, (int)cursorTile.Y);
-                        }
-                        break;
                     }
                 }
             }
@@ -308,36 +271,16 @@ namespace RangeHighlight {
                 }
             }
 
-            if (iterateBuildings) {
-                if (Game1.currentLocation is BuildableGameLocation bl) {
-                    foreach (Building building in bl.buildings) {
-                        for (int i = 0; i < buildingHighlighters.Count; ++i) {
-                            var rets = buildingHighlighters[i].Item1.highlighter(building);
-                            if (rets != null) foreach(var ret in rets) {
-                                AddHighlightTiles(ret.Item1, ret.Item2, building.tileX.Value + ret.Item3, building.tileY.Value + ret.Item4);
-                                break;
-                            }
-                        }
-                    }
+            if (Game1.player.CurrentItem != null) {
+                for (int i = 0; i < itemHighlighters.Count; ++i) {
+                    itemHighlighters[i].onStart?.Invoke();
+                    itemHighlighterStartCalled[i] = true;
                 }
-            }
-
-            if (iterateItems) {
-                foreach (var item in Game1.currentLocation.Objects.Values) {
-                    string itemName = item.Name.ToLower();
-                    int itemID = item.ParentSheetIndex;
-                    for (int i = 0; i < itemHighlighters.Count; ++i) {
-                        if (runItemHighlighter[i]) {
-                            if (!itemHighlighterStartCalled[i]) {
-                                itemHighlighters[i].onStart?.Invoke();
-                                itemHighlighterStartCalled[i] = true;
-                            }
-                            var ret = itemHighlighters[i].highlighter(item, itemID, itemName);
-                            if (ret != null) {
-                                AddHighlightTiles(ret, (int)item.TileLocation.X, (int)item.TileLocation.Y);
-                                break;
-                            }
-                        }
+            } else if (iterateItems) {
+                for (int i = 0; i < itemHighlighters.Count; ++i) {
+                    if (runItemHighlighter[i]) {
+                        itemHighlighters[i].onStart?.Invoke();
+                        itemHighlighterStartCalled[i] = true;
                     }
                 }
             }
@@ -349,11 +292,70 @@ namespace RangeHighlight {
                         if (ret != null) {
                             AddHighlightTiles(ret,
                                 (int)(sprite.position.X / Game1.tileSize), (int)(sprite.position.Y / Game1.tileSize));
-                            break;
+                            //break;
                         }
                     }
                 }
 
+            }
+
+            if (Game1.player.CurrentItem != null) {
+                Item item = Game1.player.CurrentItem;
+                for (int i = 0; i < itemHighlighters.Count; ++i) {
+                    var ret = itemHighlighters[i].highlighter(item);
+                    if (ret != null) {
+                        if (itemHighlighters[i].HighlightOthersWhenHeld) {
+                            runItemHighlighter[i] = true;
+                        }
+                        iterateItems = true;
+                        var cursorTile = GetCursorTile();
+                        var actionTile = cursorTile;
+                        bool mouseHidden = !Game1.wasMouseVisibleThisFrame || Game1.mouseCursorTransparency == 0f;
+                        bool showAtActionTile = config.HighlightActionLocation == HighlightActionLocationStyle.Always
+                            || config.HighlightActionLocation == HighlightActionLocationStyle.WhenMouseHidden && mouseHidden;
+                        if (mouseHidden || !Utility.tileWithinRadiusOfPlayer((int)cursorTile.X, (int)cursorTile.Y, 1, Game1.player)) {
+                            var grabTile = Game1.player.GetGrabTile();
+                            var oldVal = Game1.isCheckingNonMousePlacement;
+                            Game1.isCheckingNonMousePlacement = true;
+                            actionTile = Utility.GetNearbyValidPlacementPosition(Game1.player, Game1.currentLocation, item, (int)grabTile.X * 64 + 32, (int)grabTile.Y * 64 + 32) / 64;
+                            Game1.isCheckingNonMousePlacement = oldVal;
+                        }
+                        if (showAtActionTile) AddHighlightTiles(ret, (int)actionTile.X, (int)actionTile.Y);
+                        if ((!showAtActionTile || cursorTile != actionTile)
+                            && !mouseHidden) {
+                            AddHighlightTiles(ret, (int)cursorTile.X, (int)cursorTile.Y);
+                        }
+                        //break;
+                    }
+                }
+            }
+
+            if (iterateBuildings) {
+                if (Game1.currentLocation.IsBuildableLocation()) {
+                    foreach (Building building in Game1.currentLocation.buildings) {
+                        for (int i = 0; i < buildingHighlighters.Count; ++i) {
+                            var rets = buildingHighlighters[i].Item1.highlighter(building);
+                            if (rets != null) foreach(var ret in rets) {
+                                AddHighlightTiles(ret.Item1, ret.Item2, building.tileX.Value + ret.Item3, building.tileY.Value + ret.Item4);
+                                //break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (iterateItems) {
+                foreach (var item in Game1.currentLocation.Objects.Values) {
+                    for (int i = 0; i < itemHighlighters.Count; ++i) {
+                        if (runItemHighlighter[i]) {
+                            var ret = itemHighlighters[i].highlighter(item);
+                            if (ret != null) {
+                                AddHighlightTiles(ret, (int)item.TileLocation.X, (int)item.TileLocation.Y);
+                                //break;
+                            }
+                        }
+                    }
+                }
             }
 
             for (int i = 0; i < itemHighlighters.Count; ++i) {

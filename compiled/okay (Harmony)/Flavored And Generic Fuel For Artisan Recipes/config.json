@@ -1,0 +1,42 @@
+{
+  "flavoredItems": {
+    "(O)812": {
+      "extraFuel": []
+    },
+    "(O)447": {
+      "extraFuel": []
+    },
+    "(O)340": {
+      "extraFuel": []
+    },
+    "(O)344": {
+      "extraFuel": []
+    },
+    "(O)350": {
+      "extraFuel": []
+    },
+    "(O)342": {
+      "extraFuel": []
+    },
+    "(O)348": {
+      "extraFuel": []
+    },
+    "(O)SpecificBait": {
+      "extraFuel": []
+    },
+    "(O)DriedFruit": {
+      "extraFuel": []
+    },
+    "(O)DriedMushrooms": {
+      "extraFuel": []
+    },
+    "(O)SmokedFish": {
+      "extraFuel": []
+    },
+    "(O)wildflour.ateliercrops_milkshroom": {
+      "extraFuel": [
+        "-6"
+      ]
+    }
+  }
+}

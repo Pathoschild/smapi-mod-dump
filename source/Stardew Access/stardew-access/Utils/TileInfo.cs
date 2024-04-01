@@ -17,6 +17,7 @@ using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Utils;
 
@@ -198,7 +199,7 @@ public class TileInfo
             {
                 npcName = npc.displayName;
             }
-            
+
             return (npcName, category);
         }
 
@@ -247,25 +248,31 @@ public class TileInfo
             return (resourceClump, CATEGORY.ResourceClumps);
         }
 
-        if (terrainFeature.TryGetValue(tile, out var tf))
+        LargeTerrainFeature? ltf = currentLocation.getLargeTerrainFeatureAt(x, y);
+        (string? name, CATEGORY? category) ltfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(ltf, lessInfo));
+        if (ltfInfo.name != null)
         {
-            (string? name, CATEGORY? category) = GetTerrainFeatureAtTile(tf);
-            if (name != null)
+            if (ltf is Tent tent && (int)tent.Tile.X == x && (int)tent.Tile.Y == y)
             {
-                return (name, category);
+                ltfInfo.name = Translator.Instance.Translate("terrain_util-tent_entrance");
+                ltfInfo.category = CATEGORY.Interactables;
             }
+            return ltfInfo;
         }
 
-        string? bush = GetBushAtTile(currentLocation, x, y, lessInfo);
-        if (bush != null)
+        if (terrainFeature.TryGetValue(tile, out var tf))
         {
-            return (bush, CATEGORY.Bush);
+            (string? name, CATEGORY? category) tfInfo = (TerrainUtils.GetTerrainFeatureInfoAndCategory(tf.Value, lessInfo));
+            if (tfInfo.name != null)
+            {
+                return tfInfo;
+            }
         }
 
         string? junimoBundle = GetJunimoBundleAt(currentLocation, x, y);
         if (junimoBundle != null)
         {
-            return (junimoBundle, CATEGORY.Bundle);
+            return (junimoBundle, CATEGORY.Bundles);
         }
 
         // Track dropped items
@@ -275,40 +282,29 @@ public class TileInfo
             {
                 foreach (var item in currentLocation.debris)
                 {
+                    if (item.Chunks.Count <= 0) continue;
+
                     int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
                     int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
-                    if (xPos != x || yPos != y || item.item == null) continue;
+                    if (xPos != x || yPos != y) continue;
 
-                    string name = item.item.DisplayName;
-                    int count = item.item.Stack;
-                    return (Translator.Instance.Translate("item-dropped_item-info", new { item_count = count, item_name = name}), CATEGORY.DroppedItems);
+                    string name = item.item is null || string.IsNullOrWhiteSpace(item.item.DisplayName)
+                        ? TokenParser.ParseText(ObjectUtils.GetObjectById(item.itemId.Value)?.DisplayName) ?? ""
+                        : item.item.DisplayName;
+                    int count = item.item is null ? item.Chunks.Count : item.item.Stack;
+
+                    if (string.IsNullOrWhiteSpace(name)) continue;
+
+                    return (Translator.Instance.Translate("item-dropped_item-info", new { item_count = count, item_name = name }), CATEGORY.DroppedItems);
                 }
             }
             catch (Exception e)
             {
-                Log.Error($"An error occurred while detecting dropped items:\n{e.Message}");
+                Log.Error($"An error occurred while detecting dropped items:\n{e.StackTrace}");
             }
         }
 
         return (null, CATEGORY.Other);
-    }
-
-    /// <summary>
-    /// Gets the bush at the specified tile coordinates in the provided GameLocation.
-    /// </summary>
-    /// <param name="currentLocation">The GameLocation instance to search for bushes.</param>
-    /// <param name="x">The x-coordinate of the tile to check.</param>
-    /// <param name="y">The y-coordinate of the tile to check.</param>
-    /// <param name="lessInfo">Whether to return less information about the bush.</param>
-    /// <returns>A string describing the bush if one is found at the specified coordinates, otherwise null.</returns>
-    public static string? GetBushAtTile(GameLocation currentLocation, int x, int y, bool lessInfo = false)
-    {
-        Bush? bush = (Bush)currentLocation.getLargeTerrainFeatureAt(x, y);
-
-        if (bush is null || (lessInfo && ((int)bush.Tile.X != x || (int)bush.Tile.Y != y)))
-            return null;
-
-        return TerrainUtils.GetBushInfoString(bush);
     }
 
     /// <summary>
@@ -462,6 +458,26 @@ public class TileInfo
             string displayColorAndName = GetChestColorAndName(chest);
             toReturn = (displayColorAndName, CATEGORY.Containers);
         }
+        else if (obj.ItemId == "TextSign")
+        {
+            if (!string.IsNullOrWhiteSpace(obj.signText.Value))
+            {
+                toReturn.name = $"{toReturn.name}: {obj.signText.Value}";
+            }
+            toReturn.category = CATEGORY.Interactables;
+        }
+        else if (obj is Mannequin mannequin)
+        {
+            string itemsOnDisplay = string.Join(", ", new List<string>()
+            {
+                mannequin.hat.Value?.DisplayName ?? "",
+                mannequin.shirt.Value?.DisplayName ?? "",
+                mannequin.pants.Value?.DisplayName ?? "",
+                mannequin.boots.Value?.DisplayName ?? ""
+            }.Where(i => !string.IsNullOrWhiteSpace(i)));
+
+            toReturn.name = $"{obj.DisplayName}" + (string.IsNullOrWhiteSpace(itemsOnDisplay) ? "" : $", {itemsOnDisplay}");
+        }
         else if (obj is IndoorPot indoorPot)
         {
             string potContent = indoorPot.bush.Value != null
@@ -483,6 +499,18 @@ public class TileInfo
             else
             {
                 toReturn.category = CATEGORY.Furniture;
+            }
+        }
+        else if (obj is Torch torch)
+        {
+            if (obj.QualifiedItemId == "(BC)146")
+            {
+                toReturn.name = Translator.Instance.Translate("static_tile-mountain-linus_campfire", TranslationCategory.StaticTiles);
+                toReturn.category = CATEGORY.Decor;
+            }
+            else if (obj.QualifiedItemId == "(BC)278")
+            {
+                toReturn.category = CATEGORY.Interactables;
             }
         }
         else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
@@ -516,7 +544,9 @@ public class TileInfo
                     {
                         toReturn.name = $"{obj.DisplayName}, {InventoryUtils.GetItemDetails(obj.heldObject.Value)}";
                         toReturn.category = (machineState == MachineState.Busy) ? CATEGORY.Machines : CATEGORY.Ready;
-                    } else {
+                    }
+                    else
+                    {
                         toReturn.name = obj.DisplayName;
                         toReturn.category = CATEGORY.Machines;
                     }
@@ -534,7 +564,7 @@ public class TileInfo
             });
             toReturn.category = CATEGORY.Doors;
         }
-        else if (correctNameAndCategory.name != null)
+        else if (correctNameAndCategory.name != null && !obj.ItemId.Contains("GreenRainWeeds"))
         {
             toReturn = correctNameAndCategory;
         }
@@ -558,6 +588,22 @@ public class TileInfo
                 toReturn.name = Translator.Instance.Translate("tile-busy-prefix", new { content = toReturn.name });
         }
 
+        if (MainClass.Config.ReadTileDebug)
+        {
+            if (!string.IsNullOrEmpty(obj.QualifiedItemId))
+                toReturn.name = $"{toReturn.name} ({obj.QualifiedItemId})";
+            Log.Trace($"Owner is {obj.owner}", true);
+            Farmer farmerOwner = Game1.getFarmerMaybeOffline(obj.owner.Value);
+            string ownerName;
+            if (farmerOwner == null)
+                ownerName = "";
+            else if (farmerOwner.UniqueMultiplayerID == Game1.player.UniqueMultiplayerID)
+                ownerName = "you";
+            else
+                ownerName = farmerOwner.Name;
+            if (!string.IsNullOrEmpty(ownerName))
+                toReturn.name = $"{toReturn.name} owned by {ownerName}";
+        }
         return toReturn;
     }
 
@@ -625,7 +671,7 @@ public class TileInfo
                 {
                     // Log the missing translation key and some info about the clump
                     Log.Warn($"Missing translation key for resource clump with parentSheetIndex {resourceClump.parentSheetIndex.Value}.", true);
-                    return "common-unknown";
+                    return Translator.Instance.Translate("tile-resource_clump-unknown", new { id = resourceClump.parentSheetIndex.Value });
                 }
             }
         }

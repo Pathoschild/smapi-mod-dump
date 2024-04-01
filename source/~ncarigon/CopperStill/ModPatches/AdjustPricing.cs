@@ -13,158 +13,101 @@ using ProducerFrameworkMod.Controllers;
 using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using ProducerFrameworkMod.ContentPack;
 
 namespace CopperStill.ModPatches {
     internal static class AdjustPricing {
-        public static void Register(IModHelper helper) {
+        public static void Register(IModHelper helper, IMonitor monitor) {
             helper.Events.GameLoop.SaveLoaded += (s, e) => {
+                var defaultPrices = new Dictionary<string, int>() {
+                    // these are crops we need to reference later for direct price changes
+                    { "Cactus Fruit", 75 },
+                    { "Corn", 50 },
+                    { "Beet", 100 },
+                    { "Unmilled Rice", 30 },
+                    { "Wheat", 25 },
+                    { "Blackberry", -1 },
+                    { "Wine", -1 },
+                    { "Juice", -1 },
+                    // the rest are crops with unbalanced prices we can assume would be modified
+                    { "Starfruit", 750 },
+                    { "Ancient Fruit", 550 },
+                    { "Pineapple", 300 },
+                    { "Pumpkin", 320 },
+                    { "Coffee Bean", 15 }
+                };
                 var prices = new Dictionary<string, int>();
                 var numDefault = 0;
-                foreach (var item in Game1.objectInformation) {
-                    var parts = item.Value.Split('/');
-                    switch (parts[0]) {
-                        // these are crops we need to reference later for direct price changes
-                        case "Cactus Fruit":
-                            if (parts[1] == "75")
-                                numDefault++;
-                            if (int.TryParse(parts[1], out var price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Corn":
-                            if (parts[1] == "50")
-                                numDefault++;
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Beet":
-                            if (parts[1] == "100")
-                                numDefault++;
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Unmilled Rice":
-                            if (parts[1] == "30")
-                                numDefault++;
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Wheat":
-                            if (parts[1] == "25")
-                                numDefault++;
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Blackberry":
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Wine":
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        case "Juice":
-                            if (int.TryParse(parts[1], out price))
-                                prices[parts[0]] = price;
-                            break;
-                        // the rest are crops with unbalanced prices we can assume would be modified
-                        case "Starfruit":
-                            if (parts[1] == "750")
-                                numDefault++;
-                            break;
-                        case "Ancient Fruit":
-                            if (parts[1] == "550")
-                                numDefault++;
-                            break;
-                        case "Pineapple":
-                            if (parts[1] == "300")
-                                numDefault++;
-                            break;
-                        case "Pumpkin":
-                            if (parts[1] == "320")
-                                numDefault++;
-                            break;
-                        case "Coffee Bean":
-                            if (parts[1] == "15")
-                                numDefault++;
-                            break;
+                foreach (var item in Game1.objectData) {
+                    if (defaultPrices.TryGetValue(item.Value.Name, out var price)) {
+                        if (price == item.Value.Price) {
+                            numDefault++;
+                        }
+                        prices[item.Value.Name] = item.Value.Price;
                     }
                 }
                 // only detect "balanced" prices if the majority of unbalanced crops are no longer default values.
                 var isBalanced = numDefault < 5;
+                monitor.Log($"Detected {(isBalanced ? "balanced" : "default")} prices, adjusting accordingly.", LogLevel.Debug);
                 // adjust some internal item spawn prices, just to keep things consistent
-                foreach (var key in Game1.objectInformation.Keys.ToArray()) {
-                    var parts = Game1.objectInformation[key].Split('/');
-                    switch (parts[0]) {
+                foreach (var key in Game1.objectData.Keys.ToArray()) {
+                    switch (key) {
                         case "Juniper Berry":
-                            parts[1] = (prices["Blackberry"] + 10).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Blackberry"] + 10;
                             break;
                         case "Tequila Blanco":
-                            parts[1] = prices["Cactus Fruit"].Multi(3).Multi(4.5).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Cactus Fruit"].Multi(3).Multi(4.5);
                             break;
                         case "Tequila Anejo":
-                            parts[1] = prices["Cactus Fruit"].Multi(3).Multi(4.5).Multi(3).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Cactus Fruit"].Multi(3).Multi(4.5).Multi(3);
                             break;
                         case "Moonshine":
-                            parts[1] = prices["Corn"].Multi(2.25).Multi(isBalanced ? 4.5 : 15).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Corn"].Multi(2.25).Multi(isBalanced ? 4.5 : 15);
                             break;
                         case "Whiskey":
-                            parts[1] = prices["Corn"].Multi(2.25).Multi(isBalanced ? 4.5 : 15).Multi(3).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Corn"].Multi(2.25).Multi(isBalanced ? 4.5 : 15).Multi(3);
                             break;
                         case "Vodka":
-                            parts[1] = prices["Juice"].Multi(isBalanced ? 4.5 : 12).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Juice"].Multi(isBalanced ? 4.5 : 12);
                             break;
                         case "Gin":
-                            parts[1] = prices["Juice"].Multi(isBalanced ? 4.5 : 12).Multi(2).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Juice"].Multi(isBalanced ? 4.5 : 12).Multi(1.5);
                             break;
                         case "Brandy":
-                            parts[1] = prices["Wine"].Multi(4.5).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Wine"].Multi(4.5);
                             break;
                         case "White Rum":
-                            parts[1] = prices["Beet"].Multi(2.25).Multi(isBalanced ? 4.5 : 12).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Beet"].Multi(2.25).Multi(isBalanced ? 4.5 : 12);
                             break;
                         case "Dark Rum":
-                            parts[1] = prices["Beet"].Multi(2.25).Multi(isBalanced ? 4.5 : 12).Multi(3).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Beet"].Multi(2.25).Multi(isBalanced ? 4.5 : 12).Multi(3);
                             break;
                         case "Sake":
-                            parts[1] = prices["Unmilled Rice"].Multi(isBalanced ? 2.25 : 12).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Unmilled Rice"].Multi(isBalanced ? 2.25 : 12);
                             break;
                         case "Soju":
-                            parts[1] = prices["Unmilled Rice"].Multi(isBalanced ? 2.25 : 12).Multi(4.5).ToString();
-                            Game1.objectInformation[key] = string.Join('/', parts);
+                            Game1.objectData[key].Price = prices["Unmilled Rice"].Multi(isBalanced ? 2.25 : 12).Multi(4.5);
                             break;
                     }
                 }
 
-                var rules = helper.Data.ReadJsonFile<ProducerRule[]>("DynamicProducerRules.json") ?? Array.Empty<ProducerRule>();
-                foreach (var rule in rules) {
-                    if (rule.ProducerName == "Still") {
-                        if (rule.OutputIdentifier == "Vodka") {
-                            // 12 seems to be a reasonable multiplier for unspecified juice >> vodka
-                            rule.OutputPriceMultiplier = isBalanced ? 4.5 : 12;
-                            foreach (var add in rule.AdditionalOutputs) {
-                                if (add.OutputIdentifier == "Moonshine") {
-                                    // moonshine and whiskey need a little more bump, so 15 works better
+                // adjust dynamic recipes
+                foreach (var rule in ProducerController.GetProducerRules().ToArray()) {
+                    if (string.Compare(rule?.ProducerName, "Still") == 0
+                        && string.Compare(rule!.OutputIdentifier, "Vodka") == 0
+                    ) {
+                        rule.OutputPriceMultiplier = isBalanced ? 4.5 : 12;
+                        foreach (var add in rule.AdditionalOutputs) {
+                            switch (add.OutputIdentifier) {
+                                case "Moonshine":
                                     add.OutputPriceMultiplier = isBalanced ? 4.5 : 15;
-                                } else if (add.OutputIdentifier == "White Rum") {
-                                    // rum gets a bit too pricey, so 8 is better
+                                    break;
+                                case "White Rum":
                                     add.OutputPriceMultiplier = isBalanced ? 4.5 : 8;
-                                }
+                                    break;
                             }
-                            ProducerController.AddProducerItems(rule, null, "NCarigon.CopperStillPFM");
                         }
+                        ProducerController.AddProducerItems(rule, null, "NCarigon.CopperStillPFM");
+                        break;
                     }
                 }
             };

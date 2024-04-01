@@ -1,0 +1,23 @@
+﻿{
+  "fising.ChancesHeader": "Available:",
+  "fising.MinigameLabel": "Catching:",
+
+  "options.ShowObjectOutlines": "Show object outlines",
+  "options.ShowObjectOutlines.desc": "Shows red outlines around objects (stones, forage, etc)",
+  "options.ShowMineableItems": "Show mineable items",
+  "options.ShowMineableItems.desc": "Shows item drops for mineable (stones etc) objects.",
+  "options.ShowArtifactSpotItems": "Show artifact spot items",
+  "options.ShowArtifactSpotItems.desc": "Shows item drops for artifact spots.",
+  "options.ShowLadderOutline": "Show ladder outline.",
+  "options.ShowLadderOutline.desc": "Shows green outlines around ladders.",
+  "options.ShowFishInMinigame": "Show caught fish.",
+  "options.ShowFishInMinigame.desc": "Shows what fish is being caught in the fising minigame.",
+  "options.ShowFishChances": "Show fish chances.",
+  "options.ShowFishChances.desc": "Shows fish chances when fishing rod is equiped.",
+  "options.ShowTrashChances": "Show trash chances.",
+  "options.ShowTrashChances.desc": "Shows trash chances when fishing rod is equiped.",
+  "options.ShowSecretNoteChances": "Show secret note chances.",
+  "options.ShowSecretNoteChances.desc": "Shows secret note chances when fishing rod is equiped.",
+  "options.ShowLessFishInfo": "Show less fish info.",
+  "options.ShowLessFishInfo.desc": "Only shows icons and percentages."
+}

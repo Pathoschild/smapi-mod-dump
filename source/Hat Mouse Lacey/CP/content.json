@@ -9,231 +9,175 @@
 *************************************************/
 
 {
-	"Format": "1.29.0",
-	"AliasTokenNames": {
-		"AlwaysAdopt": "ichortower.HatMouseLacey.Core/AlwaysAdopt",
-		"DTF": "ichortower.HatMouseLacey.Core/DTF",
-		"SVR3Forest": "ichortower.HatMouseLacey.Core/SVRThreeForest"
-	},
-	"DynamicTokens": [
-		{
-			"Name": "RecolorPalette",
-			"Value": "{{ichortower.HatMouseLacey.Core/RecolorConfig}}"
-		},
-		{
-			"Name": "RecolorPalette",
-			"Value": "{{ichortower.HatMouseLacey.Core/RecolorDetected}}",
-			"When": {
-				"ichortower.HatMouseLacey.Core/RecolorConfig": "Auto"
-			}
-		},
-		{
-			"Name": "InteriorPalette",
-			"Value": "{{ichortower.HatMouseLacey.Core/InteriorConfig}}"
-		},
-		{
-			"Name": "InteriorPalette",
-			"Value": "{{ichortower.HatMouseLacey.Core/InteriorDetected}}",
-			"When": {
-				"ichortower.HatMouseLacey.Core/InteriorConfig": "Auto"
-			}
-		},
-		{
-			"Name": "MatchRetexture",
-			"Value": "{{ichortower.HatMouseLacey.Core/RetextureConfig}}"
-		},
-		{
-			"Name": "MatchRetexture",
-			"Value": "{{ichortower.HatMouseLacey.Core/RetextureDetected}}",
-			"When": {
-				"ichortower.HatMouseLacey.Core/RetextureConfig": "Auto"
-			}
-		},
-		// default festival positions
-		{ "Name": "festival_spring13_setUp",     "Value": "24 64 down" },
-		{ "Name": "festival_spring13_mainEvent", "Value": "32 74 up" },
-		{ "Name": "festival_spring24_setUp",     "Value": "5 31 left" },
-		{ "Name": "festival_spring24_mainEvent", "Value": "5 30 right" },
-		{ "Name": "festival_summer11_setUp",     "Value": "22 4 down" },
-		{ "Name": "festival_summer11_mainEvent", "Value": "39 6 down" },
-		{ "Name": "festival_summer28_setUp",     "Value": "48 24 down" },
-		{ "Name": "festival_fall16_stallX",      "Value": "26" },
-		{ "Name": "festival_fall16_stallY",      "Value": "48" },
-		{ "Name": "festival_fall16_setUp",       "Value": "27 50 down" },
-		{ "Name": "festival_fall27_setUp",       "Value": "32 73 up" },
-		{ "Name": "festival_winter8_setUp",      "Value": "65 46 up" },
-		{ "Name": "festival_winter8_mainEvent",  "Value": "65 39 right" },
-		{ "Name": "festival_winter25_setUp",     "Value": "37 60 left" },
-		// egg festival: move when Theo is around (Stray Catfe)
-		{ "Name": "festival_spring13_setUp",     "Value": "36 68 left",
-			"When": {"HasMod|contains=ch20youk.TSCCP": true}},
-		// flower dance: make way for aideen (ES)
-		{ "Name": "festival_spring24_setUp",     "Value": "5 24 left",
-			"When": {"HasMod|contains=Lemurkat.JacobEloise.CP": true}},
-		// flower dance: backup is also bad if SVE is here
-		{ "Name": "festival_spring24_setUp",     "Value": "25 24 left",
-			"When": {"HasMod|contains=Lemurkat.JacobEloise.CP": true,
-				"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-		// luau: avoid andy/susan (SVE) and aspen (Aspen) at soup time
-		{ "Name": "festival_summer11_mainEvent", "Value": "26 8 right",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP, invatorzen.AspenCP": true}},
-		// moonlight jellies: make room for ARV trio
-		{ "Name": "festival_summer28_setUp",     "Value": "70 24 down",
-			"When": {"HasMod|contains=Himetarts.ARV.CP": true}},
-		// fair: move out of caroline's garden (SVE)
-		{ "Name": "festival_fall16_setUp",       "Value": "17 64 down",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-		{ "Name": "festival_fall16_stallX",      "Value": "16",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-		{ "Name": "festival_fall16_stallY",      "Value": "62",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-		// spirit's eve: SVE year 2 is totally different
-		{ "Name": "festival_fall27_setUp",       "Value": "26 64 right",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true,
-				"Query: {{Year}} % 2 = 1": false}},
-		// ice fest: campfire is relocated (SVE)
-		{ "Name": "festival_winter8_setUp",      "Value": "63 53 up",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-		// ice fest: different lake setup (SVE)
-		{ "Name": "festival_winter8_mainEvent",  "Value": "79 36 left",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
-		// winter star: move to a big table (SVE)
-		{ "Name": "festival_winter25_setUp",  "Value": "23 67 down",
-			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+  "Format": "2.0.0",
+  "AliasTokenNames": {
+    "AlwaysAdopt": "ichortower.HatMouseLacey.Core/AlwaysAdopt",
+    "DTF": "ichortower.HatMouseLacey.Core/DTF",
+    "SeasonalOutfits": "ichortower.HatMouseLacey.Core/SeasonalOutfits",
+    "SVR3Forest": "ichortower.HatMouseLacey.Core/SVRThreeForest",
+    "WeddingAttire": "ichortower.HatMouseLacey.Core/WeddingAttire"
+  },
+  "DynamicTokens": [
+    {
+      "Name": "Lacey",
+      "Value": "{{ModId}}_Lacey"
+    },
+    {
+      "Name": "anim",
+      "Value": "{{Lowercase:{{Lacey}}}}"
+    },
+    {
+      "Name": "RecolorPalette",
+      "Value": "{{ichortower.HatMouseLacey.Core/RecolorConfig}}"
+    },
+    {
+      "Name": "RecolorPalette",
+      "Value": "{{ichortower.HatMouseLacey.Core/RecolorDetected}}",
+      "When": {
+        "ichortower.HatMouseLacey.Core/RecolorConfig": "Auto"
+      }
+    },
+    {
+      "Name": "InteriorPalette",
+      "Value": "{{ichortower.HatMouseLacey.Core/InteriorConfig}}"
+    },
+    {
+      "Name": "InteriorPalette",
+      "Value": "{{ichortower.HatMouseLacey.Core/InteriorDetected}}",
+      "When": {
+        "ichortower.HatMouseLacey.Core/InteriorConfig": "Auto"
+      }
+    },
+    {
+      "Name": "MatchRetexture",
+      "Value": "{{ichortower.HatMouseLacey.Core/RetextureConfig}}"
+    },
+    {
+      "Name": "MatchRetexture",
+      "Value": "{{ichortower.HatMouseLacey.Core/RetextureDetected}}",
+      "When": {
+        "ichortower.HatMouseLacey.Core/RetextureConfig": "Auto"
+      }
+    },
+    // default festival positions
+    { "Name": "festival_spring13_setUp",     "Value": "24 64 down" },
+    { "Name": "festival_spring13_mainEvent", "Value": "32 74 up" },
+    { "Name": "festival_spring24_setUp",     "Value": "5 31 left" },
+    { "Name": "festival_spring24_mainEvent", "Value": "5 30 right" },
+    { "Name": "festival_summer11_setUp",     "Value": "22 4 down" },
+    { "Name": "festival_summer11_mainEvent", "Value": "39 6 down" },
+    { "Name": "festival_summer28_setUp",     "Value": "48 24 down" },
+    { "Name": "festival_fall16_stallX",      "Value": "26" },
+    { "Name": "festival_fall16_stallY",      "Value": "48" },
+    { "Name": "festival_fall16_setUp",       "Value": "27 50 down" },
+    { "Name": "festival_fall27_setUp",       "Value": "32 73 up" },
+    { "Name": "festival_winter8_setUp",      "Value": "65 46 up" },
+    { "Name": "festival_winter8_mainEvent",  "Value": "65 39 right" },
+    { "Name": "festival_winter25_setUp",     "Value": "37 60 left" },
+    // egg festival: move when Theo is around (Stray Catfe)
+    { "Name": "festival_spring13_setUp",     "Value": "36 68 left",
+      "When": {"HasMod|contains=ch20youk.TSCCP": true}},
+    // flower dance: make way for aideen (ES)
+    { "Name": "festival_spring24_setUp",     "Value": "5 24 left",
+      "When": {"HasMod|contains=Lemurkat.JacobEloise.CP": true}},
+    // flower dance: backup is also bad if SVE is here
+    { "Name": "festival_spring24_setUp",     "Value": "25 24 left",
+      "When": {"HasMod|contains=Lemurkat.JacobEloise.CP": true,
+               "HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    // luau: be nice and yield my spot for The Northern Gulf's Lovena
+    //    (19 4 is taken by Yri so just take 16 4 instead)
+    { "Name": "festival_summer11_setUp", "Value": "16 4 down",
+      "When": {"HasMod|contains=TcTHG.Custom_The_Northern_GulfCP": true}},
+    // luau: avoid andy/susan (SVE) and aspen (Aspen) at soup time
+    { "Name": "festival_summer11_mainEvent", "Value": "26 8 right",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP, invatorzen.AspenCP": true}},
+    // moonlight jellies: make room for ARV trio
+    { "Name": "festival_summer28_setUp",     "Value": "70 24 down",
+      "When": {"HasMod|contains=Himetarts.ARV.CP": true}},
+    // fair: move out of caroline's garden (SVE)
+    { "Name": "festival_fall16_setUp",       "Value": "17 64 down",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    { "Name": "festival_fall16_stallX",      "Value": "16",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    { "Name": "festival_fall16_stallY",      "Value": "62",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    // spirit's eve: SVE year 2 is totally different
+    { "Name": "festival_fall27_setUp",       "Value": "26 64 right",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true,
+               "Query: {{Year}} % 2 = 1": false}},
+    // ice fest: campfire is relocated (SVE)
+    { "Name": "festival_winter8_setUp",      "Value": "63 53 up",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    // and if RSV is also installed, yield to Pika
+    { "Name": "festival_winter8_setUp",      "Value": "62 52 right",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true,
+               "HasMod|contains=Rafseazz.RSVCP": true}},
+    // ice fest: different lake setup (SVE)
+    { "Name": "festival_winter8_mainEvent",  "Value": "79 36 left",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
+    // winter star: move to a big table (SVE)
+    { "Name": "festival_winter25_setUp",  "Value": "23 67 down",
+      "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
 
-		// RSV festival locations (unused without RSV)
-		{ "Name": "festival_fall20_setUp",       "Value": "64 45 left" },
-		{ "Name": "festival_fall20_mainEvent",   "Value": "63 46 up" },
-		{ "Name": "festival_winter28_setUp",     "Value": "28 52 right" },
-		{ "Name": "festival_winter28_mainEvent", "Value": "34 39 right" }
-	],
-	"CustomLocations": [
-		{
-			"Name": "Custom_HatMouseLacey_MouseHouse",
-			"FromMapFile": "assets/MouseHouse.tmx"
-		}
-	],
-	"Changes": [
-		{
-			"Target": "Characters/Dialogue/HatMouseLacey",
-			"Action": "Load",
-			"FromFile": "data/empty.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/dialogue.json"
-		},
-		{
-			"Target": "Characters/Dialogue/MarriageDialogueHatMouseLacey",
-			"Action": "Load",
-			"FromFile": "data/empty.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/marriage-dialogue.json"
-		},
-		{
-			"Target": "Characters/HatMouseLacey",
-			"Action": "Load",
-			"FromFile": "assets/sprites.png"
-		},
-		{
-			"Target": "Characters/HatMouseLacey/Toddler_boy_0, Characters/HatMouseLacey/Toddler_boy_1, Characters/HatMouseLacey/Toddler_girl_0, Characters/HatMouseLacey/Toddler_girl_1",
-			"Action": "Load",
-			"FromFile": "assets/{{Lowercase:{{TargetWithoutPath}}}}.png"
-		},
-		{
-			"Target": "Characters/HatMouseLacey/Baby_0, Characters/HatMouseLacey/Baby_1",
-			"Action": "Load",
-			"FromFile": "assets/{{Lowercase:{{TargetWithoutPath}}}}.png"
-		},
-		{
-			"Target": "Characters/Schedules/HatMouseLacey",
-			"Action": "Load",
-			"FromFile": "data/schedule.json"
-		},
-		{
-			"Target": "Data/NPCDispositions",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey": "adult/neutral/outgoing/positive/female/datable/null/Town/spring 22//Custom_HatMouseLacey_MouseHouse 7 5/{{i18n:displayName}}"
-			}
-		},
-		{
-			"Target": "Data/NPCGiftTastes",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey": "{{i18n:gifttastes.Love}}/257 259 264 274 395 424/{{i18n:gifttastes.Like}}/-75 -79 262 270 271 423 709/{{i18n:gifttastes.Dislike}}/-6 -14 303 346 348 350 446 459/{{i18n:gifttastes.Hate}}//{{i18n:gifttastes.Neutral}}/-2 -74/"
-			}
-		},
-		{
-			"Target": "Data/SpousePatios",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey": "HatMouseLacey_SpousePatio/0/24 24 24 25 25 26 26 26 26 26 27 27/0 0"
-			}
-		},
-		{
-			"Target": "Data/SpouseRooms",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey": "HatMouseLacey_SpouseRoom/0"
-			}
-		},
-		{
-			"Target": "Maps/HatMouseLacey_SpousePatio",
-			"Action": "Load",
-			"FromFile": "assets/spouse-patio.tmx"
-		},
-		{
-			"Target": "Maps/HatMouseLacey_SpouseRoom",
-			"Action": "Load",
-			"FromFile": "assets/spouse-room.tmx"
-		},
-		{
-			"Target": "Portraits/HatMouseLacey",
-			"Action": "Load",
-			"FromFile": "assets/portraits.png"
-		},
-		{
-			"Target": "Strings/HatMouseLaceyHatReactions",
-			"Action": "Load",
-			"FromFile": "data/empty.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/hat-reactions.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/maps.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/festivals.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/heart-events.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/hodgepodge.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/movie-tastes.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/dtf.json",
-			"When": {
-				"DTF": "true"
-			}
-		},
-		{
-			"Action": "Include",
-			"FromFile": "compat/main.json"
-		}
-	]
+    // RSV festival locations (unused without RSV)
+    { "Name": "festival_fall20_setUp",       "Value": "64 45 left" },
+    { "Name": "festival_fall20_mainEvent",   "Value": "63 46 up" },
+    { "Name": "festival_winter28_setUp",     "Value": "28 52 right" },
+    { "Name": "festival_winter28_mainEvent", "Value": "34 39 right" }
+  ],
+  "Changes": [
+    {
+      "LogName": "Character basics",
+      "Action": "Include",
+      "FromFile": "data/character-basics.json"
+    },
+    {
+      "LogName": "Maps and locations",
+      "Action": "Include",
+      "FromFile": "data/maps.json"
+    },
+    {
+      "LogName": "Music",
+      "Action": "Include",
+      "FromFile": "data/music.json"
+    },
+    {
+      "LogName": "Festivals",
+      "Action": "Include",
+      "FromFile": "data/festivals.json"
+    },
+    {
+      "LogName": "Heart Events",
+      "Action": "Include",
+      "FromFile": "data/heart-events.json"
+    },
+    {
+      "LogName": "Movie Theater",
+      "Action": "Include",
+      "FromFile": "data/movie-tastes.json"
+    },
+    {
+      "LogName": "Special Features",
+      "Action": "Include",
+      "FromFile": "data/special-features.json"
+    },
+    {
+      "LogName": "Miscellaneous",
+      "Action": "Include",
+      "FromFile": "data/hodgepodge.json"
+    },
+    {
+      "LogName": "DTF overrides",
+      "Action": "Include",
+      "FromFile": "data/dtf.json",
+      "When": {
+        "DTF": "true"
+      }
+    },
+    {
+      "LogName": "Compatibility Fixes",
+      "Action": "Include",
+      "FromFile": "compat/main.json"
+    }
+  ]
 }

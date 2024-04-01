@@ -1,0 +1,12 @@
+{
+  "Config.EnableConsoleCommands.Name": "Zet console commands aan",
+  "Config.EnableConsoleCommands.Desc": "Schakelt FTM's console-opdrachten in.\nDit wordt pas van kracht als Stardew Valley opnieuw wordt opgestart.",
+  "Config.EnableContentPacks.Name": "Inhoudspakketten (content packs) inschakelen",
+  "Config.EnableContentPacks.Desc": "Schakelt alle FTM-inhoudspakketten in.\nAls dit is uitgeschakeld, worden alleen de bestanden in FarmTypeManager/data gebruikt.",
+  "Config.EnableTraceLogMessages.Name": "Trace-logberichten inschakelen",
+  "Config.EnableTraceLogMessages.Desc": "Schakelt FTM's [TRACE] berichten in SMAPI's logbestanden in.\nAls dit is uitgeschakeld, zullen logbestanden kleiner zijn, maar ze zullen minder informatie over FTM bevatten.",
+  "Config.EnableEPUDebugMessages.Name": "EPU-foutopsporingsberichten inschakelen",
+  "Config.EnableEPUDebugMessages.Desc": "Schakelt Expanded Preconditions Utility (EPU) debug-berichten in.\nDit kan nuttig zijn bij het maken van mods met precondities.",
+  "Config.MonsterLimitPerLocation.Name": "Monsterlimiet per locatie",
+  "Config.MonsterLimitPerLocation.Desc": "Het maximale aantal monsters dat FTM tegelijkertijd op een enkele kaart zal toestaan.\nHet gebruik van een lager getal kan de framerate van het spel verbeteren. 50 is een veelvoorkomende suggestie.\nTyp NULL om onbeperkte monsters toe te staan."
+}

@@ -2,12 +2,15 @@
   <PropertyGroup>
     <AssemblyName>IncreaseAnimalHouseMaxPopulation</AssemblyName>
     <RootNamespace>IncreaseAnimalHouseMaxPopulation</RootNamespace>
-    <Version>1.0.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
-    <EnableHarmony>true</EnableHarmony>
+    <Version>1.1.2</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <EnableHarmony>false</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
   </ItemGroup>
+
+  <Import Project="..\Common\Common\Common.projitems" Label="Shared" />
+  
 </Project>

@@ -49,9 +49,10 @@ namespace CombineMachines.Helpers
             //  EDIT: These patches probably aren't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2
             //  Patch Item.getOne to copy the modData to the return value
             Harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.getOne)),
+                original: AccessTools.Method(typeof(Item), nameof(Item.getOne)),
                 postfix: new HarmonyMethod(typeof(GetOnePatch), nameof(GetOnePatch.Postfix))
             );
+
             //Harmony.Patch(
             //    original: AccessTools.Method(typeof(WoodChipper), nameof(WoodChipper.getOne)),
             //    postfix: new HarmonyMethod(typeof(GetOnePatch), nameof(GetOnePatch.WoodChipper_Postfix))
@@ -66,10 +67,10 @@ namespace CombineMachines.Helpers
             //);
         }
 
-        [HarmonyPatch(typeof(SObject), nameof(SObject.getOne))]
+        [HarmonyPatch(typeof(Item), nameof(Item.getOne))]
         public static class GetOnePatch
         {
-            public static void Postfix(SObject __instance, Item __result)
+            public static void Postfix(Item __instance, Item __result)
             {
                 try
                 {
@@ -81,9 +82,9 @@ namespace CombineMachines.Helpers
                 }
             }
 
-            public static void WoodChipper_Postfix(WoodChipper __instance, Item __result) { Postfix(__instance as SObject, __result); }
-            public static void Cask_Postfix(Cask __instance, Item __result) { Postfix(__instance as SObject, __result); }
-            public static void CrabPot_Postfix(CrabPot __instance, Item __result) { Postfix(__instance as SObject, __result); }
+            public static void WoodChipper_Postfix(WoodChipper __instance, Item __result) { Postfix(__instance, __result); }
+            public static void Cask_Postfix(Cask __instance, Item __result) { Postfix(__instance, __result); }
+            public static void CrabPot_Postfix(CrabPot __instance, Item __result) { Postfix(__instance, __result); }
         }
 
         private static Item PreviousHeldItem = null;

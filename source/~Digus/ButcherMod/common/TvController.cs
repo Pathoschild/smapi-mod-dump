@@ -35,5 +35,13 @@ namespace AnimalHusbandryMod.common
         {
             return channels.Select(p => p.Value).Where(c => c.CheckChannelDay()).ToList();
         }
+
+        internal static void ReloadEpisodes()
+        {
+            foreach (var channel in channels)
+            {
+                channel.Value.ReloadEpisodes();
+            }
+        }
     }
 }

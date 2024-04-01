@@ -1,0 +1,20 @@
+﻿1.5.2
+-fixed issue with report not opening due to Truffles
+-fixed issue with crab pots not reporting correctly
+-fixed zoom and uiscale issues with bubbles
+-fixed config menu blowing up
+
+1.5.1
+-fixed wrong directory name for i18n messing up translation on Linux
+-fixed issue with null animal products causing the report not to pop
+-added nexus mod key to manifest file so update checks are correct
+-fixed wrong field used for Animal house name
+-added German translation (Thanks Nexus - Th3Tob1)
+-updated Barn and Coop checks
+-updated fence checking to all locations
+-added new machine(s) to default machine list (not listing them, no spoilers)
+-fixed bug that double reported machines
+-updated pet logic (Thanks Github - Kvan)
+
+1.5.0
+-Initial release

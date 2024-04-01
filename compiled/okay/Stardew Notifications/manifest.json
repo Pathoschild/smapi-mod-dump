@@ -1,0 +1,32 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "mondopandora.stardewnotification",
+  "Name": "StardewNotification",
+  "Author": "monopandora, maintained by Sakorona",
+  "Version": "1.8.19",
+  "Description": "Daily Notification mod for Stardew Valley",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "StardewNotification.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "mistyspring.GingerIslandStart",
+      "MinimumVersion": "1.1.0",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Omegasis.Fall28SnowDay",
+      "MinimumVersion": "1.9.0",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:4713"
+  ]
+}

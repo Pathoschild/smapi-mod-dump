@@ -1,0 +1,16 @@
+{
+  "MainSettings": {
+    "EnableDebugMode": false,
+    "EnableHoverTip": false,
+    "RefreshConfigButton": "F5"
+  },
+  "BuildingSettings": {
+    "MaxBarnPopulation": 20,
+    "MaxCoopPopulation": 20,
+    "CostPerPopulationIncrease": 10000,
+    "AutoFeedExtraAnimals": false
+  },
+  "Cheats": {
+    "EnableFree": false
+  }
+}

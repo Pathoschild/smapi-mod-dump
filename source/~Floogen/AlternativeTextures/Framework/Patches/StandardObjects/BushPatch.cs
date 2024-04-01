@@ -32,12 +32,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Bush.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Bush.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Bush.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
             harmony.Patch(AccessTools.Constructor(typeof(Bush), new[] { typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(BushPostfix)));
         }
 
-        private static bool DrawPrefix(Bush __instance, float ___yDrawOffset, float ___alpha, float ___shakeRotation, NetRectangle ___sourceRect, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(Bush __instance, float ___yDrawOffset, float ___shakeRotation, NetRectangle ___sourceRect, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -52,6 +52,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     return true;
                 }
+                Vector2 tileLocation = __instance.Tile;
 
                 var effectiveSize = getEffectiveSize(__instance.size.Value);
                 if (__instance.drawShadow.Value)
@@ -62,17 +63,17 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     }
                     else
                     {
-                        spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f - 4f + ___yDrawOffset)), Game1.shadowTexture.Bounds, Color.White * ___alpha, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, 1E-06f);
+                        spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f - 4f + ___yDrawOffset)), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, 1E-06f);
                     }
                 }
 
                 var textureOffset = textureModel.GetTextureOffset(textureVariation);
-                var sourceRect = new Rectangle(__instance.tileSheetOffset.Value == 1 && __instance.inBloom(Game1.GetSeasonForLocation(__instance.currentLocation), Game1.dayOfMonth) ? 32 : 0, textureOffset, ___sourceRect.Value.Width, ___sourceRect.Value.Height);
+                var sourceRect = new Rectangle(__instance.tileSheetOffset.Value == 1 && __instance.inBloom() ? 32 : 0, textureOffset, ___sourceRect.Value.Width, ___sourceRect.Value.Height);
                 if (__instance.size.Value == Bush.greenTeaBush)
                 {
                     sourceRect = new Rectangle(Math.Min(2, __instance.getAge() / 10) * 16 + __instance.tileSheetOffset.Value * 16, textureOffset, 16, 32);
                 }
-                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + (float)((effectiveSize + 1) * 64 / 2), (tileLocation.Y + 1f) * 64f - (float)((effectiveSize > 0 && (!__instance.townBush || effectiveSize != 1) && (int)__instance.size != 4) ? 64 : 0) + ___yDrawOffset)), sourceRect, Color.White * ___alpha, ___shakeRotation, new Vector2((effectiveSize + 1) * 16 / 2, 32f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox(tileLocation).Center.Y + 48) / 10000f - tileLocation.X / 1000000f);
+                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + (float)((effectiveSize + 1) * 64 / 2), (tileLocation.Y + 1f) * 64f - (float)((effectiveSize > 0 && (!__instance.townBush || effectiveSize != 1) && (int)__instance.size != 4) ? 64 : 0) + ___yDrawOffset)), sourceRect, Color.White, ___shakeRotation, new Vector2((effectiveSize + 1) * 16 / 2, 32f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox().Center.Y + 48) / 10000f - tileLocation.X / 1000000f);
 
                 return false;
             }
@@ -98,7 +99,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
             {
-                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.currentLocation);
+                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.Location).ToString();
                 __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Bush}_{GetBushTypeString(__instance)}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}");
             }
         }
@@ -106,7 +107,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         private static void BushPostfix(Bush __instance)
         {
             var instanceName = $"{AlternativeTextureModel.TextureType.Bush}_{GetBushTypeString(__instance)}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

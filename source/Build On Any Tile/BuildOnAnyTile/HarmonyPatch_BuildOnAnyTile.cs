@@ -21,14 +21,14 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace BuildOnAnyTile
 {
-    /// <summary>A Harmony patch that makes <see cref="BuildableGameLocation"/> allow buildings to be placed on any tile (depending on <see cref="ModConfig"/> settings).</summary>
+    /// <summary>A Harmony patch that makes <see cref="GameLocation"/> allow buildings to be placed on any tile (depending on <see cref="ModConfig"/> settings).</summary>
     public static class HarmonyPatch_BuildOnAnyTile
     {
         public static void ApplyPatch(Harmony harmony)
         {
-            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BuildOnAnyTile)}\": postfixing SDV method \"BuildableGameLocation.isBuildable(Vector2)\".", LogLevel.Trace);
+            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BuildOnAnyTile)}\": postfixing SDV method \"GameLocation.isBuildable(Vector2, bool)\".", LogLevel.Trace);
             harmony.Patch(
-                original: AccessTools.Method(typeof(BuildableGameLocation), nameof(BuildableGameLocation.isBuildable), new[] { typeof(Vector2) }),
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.isBuildable), new[] { typeof(Vector2), typeof(bool) }),
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_BuildOnAnyTile), nameof(IsBuildable))
             );
         }
@@ -38,7 +38,7 @@ namespace BuildOnAnyTile
         /// <param name="tileLocation">The tile being checked.</param>
         /// <param name="__result">True if this tile should allow <see cref="Building"/> placement.</param>
         [HarmonyPriority(Priority.Low)] //run after other patches on this method by default (avoids conflict with similar features in PlacementPlus, etc)
-        public static void IsBuildable(BuildableGameLocation __instance, Vector2 tileLocation, ref bool __result)
+        public static void IsBuildable(GameLocation __instance, Vector2 tileLocation, ref bool __result)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace BuildOnAnyTile
                     Rectangle tileLocationRect = new Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64); //get a rectangle representing this tile
 
                     if (__instance.terrainFeatures.TryGetValue(tileLocation, out TerrainFeature feature) //if this tile has a terrain feature
-                        && tileLocationRect.Intersects(feature.getBoundingBox(tileLocation))) //AND the feature's box overlaps with the tile (note: copied from GameLocation.isOccupiedForPlacement)
+                        && tileLocationRect.Intersects(feature.getBoundingBox())) //AND the feature's box overlaps with the tile
                     {
                         if (!__instance.terrainFeatures[tileLocation].isPassable() //if the feature is impassable
                             || (feature is HoeDirt dirt && dirt.crop != null)) //OR the feature is a crop
@@ -88,7 +88,7 @@ namespace BuildOnAnyTile
                 {
                     if (ModEntry.Config.BuildOnWater == false || __instance.isOpenWater((int)tileLocation.X, (int)tileLocation.Y) == false) //if this tile is NOT specifically allowed by the water setting
                     {
-                        if (__instance.isTileOccupiedForPlacement(tileLocation) //if this tile is occupied
+                        if (__instance.CanItemBePlacedHere(tileLocation) == false //if this tile is occupied (by item placement standards)
                             || __instance.isTilePassable(new Location((int)tileLocation.X, (int)tileLocation.Y), Game1.viewport) == false) //OR if this tile is NOT passable
                         {
                             return; //this tile is NOT buildable

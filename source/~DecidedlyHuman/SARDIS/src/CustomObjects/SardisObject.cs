@@ -19,10 +19,14 @@ namespace SARDIS.CustomObjects
         public SardisObject()
         {
             this.Name = "The SARDIS";
-            this.DisplayName = "The SARDIS";
             this.boundingBox.Value = new Microsoft.Xna.Framework.Rectangle((int)this.tileLocation.X * 64,
                 (int)this.tileLocation.Y * 64, 64, 64);
             this.Fragility = 2;
+        }
+
+        protected override string loadDisplayName()
+        {
+            return "The SARDIS";
         }
 
         public override bool placementAction(GameLocation location, int x, int y, Farmer who = null)
@@ -52,9 +56,9 @@ namespace SARDIS.CustomObjects
             return false;
         }
 
-        public override bool canBePlacedHere(GameLocation l, Vector2 tile)
+        public override bool canBePlacedHere(GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false)
         {
-            return true;
+            return base.canBePlacedHere(l, tile, collisionMask, showError);
         }
 
         public override bool isPlaceable()
@@ -113,10 +117,6 @@ namespace SARDIS.CustomObjects
                 SpriteEffects.None,
                 1f
             );
-        }
-
-        public override void farmerAdjacentAction(GameLocation location)
-        {
         }
 
         public override bool clicked(Farmer who)

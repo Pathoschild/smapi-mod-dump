@@ -54,15 +54,15 @@ namespace LovedLabelsRedux
             {
                 genericModConfigMenuAPI.Register(ModManifest, () => configsForTheMod = new ModConfig(), () => Helper.WriteConfig(configsForTheMod));
 
-                genericModConfigMenuAPI.AddSectionTitle(ModManifest, Helper.Translation.Get("keybinds.title.name").ToString, Helper.Translation.Get("keybinds.title.description").ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleUIKey, (KeybindList val) => configsForTheMod.KeybindListToggleUIKey = val, Helper.Translation.Get("keybinds.ToggleUIKey.name").ToString, Helper.Translation.Get("keybinds.ToggleUIKey.description").ToString);
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("keybinds.title.name"), () => Helper.Translation.Get("keybinds.title.description"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleUIKey, (KeybindList val) => configsForTheMod.KeybindListToggleUIKey = val, () => Helper.Translation.Get("keybinds.ToggleUIKey.name"), () => Helper.Translation.Get("keybinds.ToggleUIKey.description"));
 
-                genericModConfigMenuAPI.AddSectionTitle(ModManifest, Helper.Translation.Get("others.title.name").ToString, Helper.Translation.Get("others.title.description").ToString);
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsUIEnabled, (bool val) => configsForTheMod.IsUIEnabled = val, Helper.Translation.Get("others.ToggleUICurrentState.name").ToString, Helper.Translation.Get("others.ToggleUICurrentState.description").ToString);
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsPettingEnabled, (bool val) => configsForTheMod.IsPettingEnabled = val, Helper.Translation.Get("others.ToggleIsPetting.name").ToString, Helper.Translation.Get("others.ToggleIsPetting.description").ToString);
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("others.title.name"), () => Helper.Translation.Get("others.title.description"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsUIEnabled, (bool val) => configsForTheMod.IsUIEnabled = val, () => Helper.Translation.Get("others.ToggleUICurrentState.name"), () => Helper.Translation.Get("others.ToggleUICurrentState.description"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsPettingEnabled, (bool val) => configsForTheMod.IsPettingEnabled = val, () => Helper.Translation.Get("others.ToggleIsPetting.name"), () => Helper.Translation.Get("others.ToggleIsPetting.description"));
 
-                genericModConfigMenuAPI.AddTextOption(ModManifest, () => configsForTheMod.AlreadyPettedMessage, (string val) => configsForTheMod.AlreadyPettedMessage = val, Helper.Translation.Get("others.AlreadyPettedMessage.name").ToString, Helper.Translation.Get("others.AlreadyPettedMessage.description").ToString);
-                genericModConfigMenuAPI.AddTextOption(ModManifest, () => configsForTheMod.NeedsPettingMessage, (string val) => configsForTheMod.NeedsPettingMessage = val, Helper.Translation.Get("others.NeedsPettingMessage.name").ToString, Helper.Translation.Get("others.NeedsPettingMessage.description").ToString);
+                genericModConfigMenuAPI.AddTextOption(ModManifest, () => configsForTheMod.AlreadyPettedMessage, (string val) => configsForTheMod.AlreadyPettedMessage = val, () => Helper.Translation.Get("others.AlreadyPettedMessage.name"), () => Helper.Translation.Get("others.AlreadyPettedMessage.description"));
+                genericModConfigMenuAPI.AddTextOption(ModManifest, () => configsForTheMod.NeedsPettingMessage, (string val) => configsForTheMod.NeedsPettingMessage = val, () => Helper.Translation.Get("others.NeedsPettingMessage.name"), () => Helper.Translation.Get("others.NeedsPettingMessage.description"));
             }
         }
 

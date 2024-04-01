@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "zombie-cure-letter": "@,^^Как виновный в распространении вируса, наравне с Деметриусом, я решил помочь Вам с этой проблемой.^^К сожалению, у меня нет всех нужных ингредиентов, но я прилагаю список того, что необходимо найти.^^-Др. Харви%item craftingRecipe Zombie_Cure %%[#]From The Office Of Dr. Harvey",
+  "cured": "Спасибо за излечение!",
+  "zombification": "Зомбификация",
+  "zombification-source": "укус зомби"
+}

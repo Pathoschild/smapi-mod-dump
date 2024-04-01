@@ -21,106 +21,128 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.GameData.Tools;
+using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using StardewValley.Tools;
 using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.tools
 {
-    public class ToolsLoader : IAssetEditor
+    public class ToolsLoader
     {
-        private readonly Texture2D _toolsSpriteSheet;
-        private readonly Texture2D _menuTilesSpriteSheet;
+        private readonly string _toolsSpriteName = "Mods/DIGUS.ANIMALHUSBANDRYMOD/Tools";
+        public readonly string MenuTilesSpriteName = "Mods/DIGUS.ANIMALHUSBANDRYMOD/MenuTiles";
+        private readonly string _customLetterBGName = "Mods/DIGUS.ANIMALHUSBANDRYMOD/customLetterBG";
         private readonly Texture2D _customLetterBG;
+        public readonly Texture2D MenuTilesSprites;
 
 
-        public ToolsLoader(Texture2D toolsSpriteSheet, Texture2D menuTilesSpriteSheet, Texture2D customLetterBG)
+        public ToolsLoader(IModHelper helper)
         {
-            _toolsSpriteSheet = toolsSpriteSheet;
-            _menuTilesSpriteSheet = menuTilesSpriteSheet;
-            _customLetterBG = customLetterBG;
 
             if (DataLoader.ModConfig.Softmode)
             {
                 MeatCleaverOverrides.Suffix = ".Soft";
             }
+
+            helper.Events.Content.AssetRequested += this.Edit;
+            helper.GameContent.Load<Texture2D>(_toolsSpriteName);
+            MenuTilesSprites = helper.GameContent.Load<Texture2D>(MenuTilesSpriteName);
+            _customLetterBG = helper.GameContent.Load<Texture2D>(_customLetterBGName);
+            DataLoader.ToolsSprites = DataLoader.Helper.GameContent.Load<Texture2D>(_toolsSpriteName);
+            DataLoader.Helper.GameContent.InvalidateCache("Data/Tools");
+            this.LoadMail();
         }
 
-        public bool CanEdit<T>(IAssetInfo asset)
+        public void Edit(object sender, AssetRequestedEventArgs args)
         {
-            return asset.AssetNameEquals("TileSheets\\tools") || asset.AssetNameEquals("Maps\\MenuTiles");
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("TileSheets\\tools"))
+            if (args.Name.IsEquivalentTo(_toolsSpriteName))
             {
-                Texture2D toolSpriteSheet = asset.AsImage().Data;
-                int originalWidth = toolSpriteSheet.Width;
-                int originalHeight = toolSpriteSheet.Height;
-                Color[] data1 = new Color[originalWidth * originalHeight];
-                toolSpriteSheet.GetData<Color>(data1);
-                Texture2D customToolsSpriteSheet = _toolsSpriteSheet;
-                int meatCleaverWidth = customToolsSpriteSheet.Width;
-                int meatCleaverlHeight = customToolsSpriteSheet.Height;
-                Color[] data2 = new Color[meatCleaverWidth * meatCleaverlHeight];
-                customToolsSpriteSheet.GetData<Color>(data2);
-                Texture2D newSpriteSheet = new Texture2D(Game1.game1.GraphicsDevice, originalWidth, originalHeight + meatCleaverlHeight, false, SurfaceFormat.Color);
+                args.LoadFromModFile<Texture2D>("tools/Tools.png",AssetLoadPriority.High);
+                    
+            }
+            else if (args.Name.IsEquivalentTo(MenuTilesSpriteName))
+            {
+                args.LoadFromModFile<Texture2D>("tools/MenuTiles.png", AssetLoadPriority.High);
 
-                var data3 = new Color[data1.Length + data2.Length];
-                data1.CopyTo(data3, 0);
-                data2.CopyTo(data3, data1.Length);
+            }
+            else if (args.Name.IsEquivalentTo(_customLetterBGName))
+            {
+                args.LoadFromModFile<Texture2D>("common/CustomLetterBG.png", AssetLoadPriority.High);
 
-                newSpriteSheet.SetData(0, new Rectangle(0, 0, originalWidth, originalHeight + meatCleaverlHeight), data3, 0, data3.Length);
+            }
+            else if (args.Name.IsEquivalentTo("Data/Tools"))
+            {
+                ToolData MeatCleaverData = new ToolData()
+                {
+                    ClassName = "GenericTool",
+                    Name = "MeatCleaver",
+                    DisplayName = DataLoader.i18n.Get("Tool.MeatCleaver.Name" + MeatCleaverOverrides.Suffix),
+                    Description = DataLoader.i18n.Get("Tool.MeatCleaver.Description" + MeatCleaverOverrides.Suffix),
+                    Texture = _toolsSpriteName,
+                    MenuSpriteIndex = 26,
+                    SpriteIndex = 0,
+                    ModData = new Dictionary<string, string> { { MeatCleaverOverrides.MeatCleaverKey, Game1.random.Next().ToString() } }
+                };
 
-                asset.ReplaceWith(newSpriteSheet);
+                ToolData InseminationSyringeData = new ToolData()
+                {
+                    ClassName = "GenericTool",
+                    Name = "InseminationSyringe",
+                    DisplayName = DataLoader.i18n.Get("Tool.InseminationSyringe.Name"),
+                    Description = DataLoader.i18n.Get("Tool.InseminationSyringe.Description"),
+                    Texture = _toolsSpriteName,
+                    MenuSpriteIndex = 14,
+                    SpriteIndex = 14,
+                    AttachmentSlots = 1,
+                    ModData = new Dictionary<string, string> { { InseminationSyringeOverrides.InseminationSyringeKey, Game1.random.Next().ToString() } }
+                };
 
-                var newToolInitialParentIndex = (originalWidth / 16) * (originalHeight / 16);
+                ToolData FeedingBasketData = new ToolData()
+                {
+                    ClassName = "GenericTool",
+                    Name = "FeedingBasket",
+                    DisplayName = DataLoader.i18n.Get("Tool.FeedingBasket.Name"),
+                    Description = DataLoader.i18n.Get("Tool.FeedingBasket.Description"),
+                    Texture = _toolsSpriteName,
+                    MenuSpriteIndex = 15,
+                    SpriteIndex = 15,
+                    AttachmentSlots = 1,
+                    ModData = new Dictionary<string, string> { { FeedingBasketOverrides.FeedingBasketKey, Game1.random.Next().ToString() } }
+                };
 
-                int offset = 0;
+                ToolData ParticipantRibbonData = new ToolData()
+                {
+                    ClassName = "GenericTool",
+                    Name = "ParticipantRibbon",
+                    DisplayName = DataLoader.i18n.Get("Tool.ParticipantRibbon.Name"),
+                    Description = DataLoader.i18n.Get("Tool.ParticipantRibbon.Description"),
+                    Texture = _toolsSpriteName,
+                    MenuSpriteIndex = 16,
+                    SpriteIndex = 16,
+                    ModData = new Dictionary<string, string> { { ParticipantRibbonOverrides.ParticipantRibbonKey, Game1.random.Next().ToString() } }
+                };
+
+                args.Edit(asset => {
+                    var toolDatas = asset.AsDictionary<string, ToolData>().Data;
+                    
+                    toolDatas[MeatCleaverOverrides.MeatCleaverItemId] = MeatCleaverData;
+                    toolDatas[InseminationSyringeOverrides.InseminationSyringeItemId] = InseminationSyringeData;
+                    toolDatas[FeedingBasketOverrides.FeedingBasketItemId] = FeedingBasketData;
+                    toolDatas[ParticipantRibbonOverrides.ParticipantRibbonItemId] = ParticipantRibbonData;
+                });
+
                 if (DataLoader.ModConfig.Softmode)
                 {
-                    offset = 7;
+                    MeatCleaverData.SpriteIndex += 7;
+                    MeatCleaverData.MenuSpriteIndex += 7;
                 }
-
-                MeatCleaverOverrides.InitialParentTileIndex = newToolInitialParentIndex + offset;
-                MeatCleaverOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 26 + offset;
-                InseminationSyringeOverrides.InitialParentTileIndex = newToolInitialParentIndex + 14;
-                InseminationSyringeOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 14;
-                FeedingBasketOverrides.InitialParentTileIndex = newToolInitialParentIndex + 15;
-                FeedingBasketOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 15;
-                ParticipantRibbonOverrides.InitialParentTileIndex = newToolInitialParentIndex + 16;
-                ParticipantRibbonOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 16;
-                LoadMail();
-            } else if (asset.AssetNameEquals("Maps\\MenuTiles"))
-            {
-                Texture2D menuTilesSpriteSheet = asset.AsImage().Data;
-                int originalWidth = menuTilesSpriteSheet.Width;
-                int originalHeight = menuTilesSpriteSheet.Height;
-                Color[] data1 = new Color[originalWidth * originalHeight];
-                menuTilesSpriteSheet.GetData<Color>(data1);
-                Texture2D customMenuTilesSpriteSheet = _menuTilesSpriteSheet;
-                int customMenuTilesWidth = customMenuTilesSpriteSheet.Width;
-                int customMenuTileslHeight = customMenuTilesSpriteSheet.Height;
-                Color[] data2 = new Color[customMenuTilesWidth * customMenuTileslHeight];
-                customMenuTilesSpriteSheet.GetData<Color>(data2);
-                Texture2D newSpriteSheet = new Texture2D(Game1.game1.GraphicsDevice, originalWidth, originalHeight + customMenuTileslHeight, false, SurfaceFormat.Color);
-
-                var data3 = new Color[data1.Length + data2.Length];
-                data1.CopyTo(data3, 0);
-                data2.CopyTo(data3, data1.Length);
-
-                newSpriteSheet.SetData(data3);
-
-                asset.ReplaceWith(newSpriteSheet);
-
-                var newMenuTitlesInitialParentIdex = (originalWidth / 64) * (originalHeight / 64);                
-
-                InseminationSyringeOverrides.AttachmentMenuTile = newMenuTitlesInitialParentIdex;
-                FeedingBasketOverrides.AttachmentMenuTile = newMenuTitlesInitialParentIdex + 1;
             }
         }
 
@@ -138,9 +160,9 @@ namespace AnimalHusbandryMod.tools
                 var location = locations[i];
                 ReplaceInLocationChests(location);
 
-                if (location is BuildableGameLocation bgl)
+                if (location.IsBuildableLocation())
                 {
-                    foreach(Building b in bgl.buildings)
+                    foreach(Building b in location.buildings)
                     {
                         if (b.indoors.Value is GameLocation gl)
                         {
@@ -159,7 +181,7 @@ namespace AnimalHusbandryMod.tools
                 var o = objects.ToList()[j];
                 if (o is Chest chest)
                 {
-                    NetObjectList<Item> items = chest.items;
+                    Inventory items = chest.Items;
                     for (int k = 0; k < items.Count; k++)
                     {
                         ReplaceIfOldItem(items, k);
@@ -167,7 +189,7 @@ namespace AnimalHusbandryMod.tools
                 }
                 if (o.heldObject.Value is Chest autoGrabber)
                 {
-                    NetObjectList<Item> items = autoGrabber.items;
+                    Inventory items = autoGrabber.Items;
                     for (int k = 0; k < items.Count; k++)
                     {
                         ReplaceIfOldItem(items, k);
@@ -181,22 +203,22 @@ namespace AnimalHusbandryMod.tools
             Item item = items[i];
             if (item?.Name != null)
             {
-                if (item.Name.Contains("ButcherMod.MeatCleaver") || item.Name.Contains("AnimalHusbandryMod.tools.MeatCleaver"))
+                if (item.Name.Contains("ButcherMod.MeatCleaver") || item.Name.Contains("AnimalHusbandryMod.tools.MeatCleaver") || (item is Axe && item.Name.Equals("Meat Cleaver")))
                 {
                     items[i] = ToolsFactory.GetMeatCleaver();
                     AnimalHusbandryModEntry.monitor.Log($"An older version of the MeatCleaver found. Replacing it with the new one.", LogLevel.Debug);
                 }
-                else if (item.Name.Contains("ButcherMod.tools.InseminationSyringe") || item.Name.Contains("AnimalHusbandryMod.tools.InseminationSyringe"))
+                else if (item.Name.Contains("ButcherMod.tools.InseminationSyringe") || item.Name.Contains("AnimalHusbandryMod.tools.InseminationSyringe") || (item is MilkPail && item.Name.Equals("Insemination Syringe")))
                 {
                     items[i] = ToolsFactory.GetInseminationSyringe();
                     AnimalHusbandryModEntry.monitor.Log($"An older version of the InseminationSyringe found. Replacing it with the new one.", LogLevel.Debug);
                 }
-                else if (item.Name.Contains("AnimalHusbandryMod.tools.FeedingBasket"))
+                else if (item.Name.Contains("AnimalHusbandryMod.tools.FeedingBasket") || (item is MilkPail && item.Name.Equals("Feeding Basket")))
                 {
                     items[i] = ToolsFactory.GetFeedingBasket();
                     AnimalHusbandryModEntry.monitor.Log($"An older version of the FeedingBasket found. Replacing it with the new one.", LogLevel.Debug);
                 }
-                else if (item.Name.Contains("AnimalHusbandryMod.tools.ParticipantRibbon"))
+                else if (item.Name.Contains("AnimalHusbandryMod.tools.ParticipantRibbon") || (item is MilkPail && item.Name.Equals("Participant Ribbon")))
                 {
                     items[i] = ToolsFactory.GetParticipantRibbon();
                     AnimalHusbandryModEntry.monitor.Log($"An older version of the ParticipantRibbon found. Replacing it with the new one.", LogLevel.Debug);
@@ -236,7 +258,9 @@ namespace AnimalHusbandryMod.tools
                     if (location is Farm farm)
                     {
                         return farm.buildings
-                        .Any((b) => (b.indoors.Value as AnimalHouse)?.animalsThatLiveHere.Count > 0 && validBuildingsForInsemination.Contains(((AnimalHouse) b.indoors.Value)?.Name));
+                        .Any((b) => {
+                            return (b.indoors.Value as AnimalHouse)?.animalsThatLiveHere.Count > 0 && validBuildingsForInsemination.Contains(((AnimalHouse)b.indoors.Value)?.Name);
+                            });
                     }
                     return false;
                 });
@@ -254,31 +278,32 @@ namespace AnimalHusbandryMod.tools
                 return !DataLoader.ModConfig.DisableTreats && Game1.player.mailReceived.Contains("feedingBasket") && !ItemUtility.HasModdedItem(FeedingBasketOverrides.FeedingBasketKey) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
             }
 
-            Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, new List<Item> { ToolsFactory.GetMeatCleaver() }, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+            Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
             {
                 GroupId = "AHM.InterdimentionalFriend",
-                Title = meatCleaverTitle
+                Title = meatCleaverTitle,
+                DynamicItems = (l) => new List<Item> { ToolsFactory.GetMeatCleaver() }
             };
             meatCleaverLetter.LetterTexture = _customLetterBG;
             meatCleaverLetter.TextColor = 4;
-            MailDao.SaveLetter(meatCleaverLetter);
+            MailRepository.SaveLetter(meatCleaverLetter);
 
-            Letter inseminationSyringeLetter = new Letter("inseminationSyringe", DataLoader.i18n.Get("Tool.InseminationSyringe.Letter"), new List<Item> { ToolsFactory.GetInseminationSyringe() }, InseminationSyringeCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+            Letter inseminationSyringeLetter = new Letter("inseminationSyringe", DataLoader.i18n.Get("Tool.InseminationSyringe.Letter"), InseminationSyringeCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
             {
                 GroupId = "AHM.InterdimentionalFriend",
-                Title = DataLoader.i18n.Get("Tool.InseminationSyringe.Letter.Title")
+                Title = DataLoader.i18n.Get("Tool.InseminationSyringe.Letter.Title"),
+                DynamicItems = (l) => new List<Item> { ToolsFactory.GetInseminationSyringe() }
             };
             inseminationSyringeLetter.LetterTexture = _customLetterBG;
             inseminationSyringeLetter.TextColor = 4;
-            MailDao.SaveLetter(inseminationSyringeLetter);
+            MailRepository.SaveLetter(inseminationSyringeLetter);
 
-            MailDao.SaveLetter
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
                     "participantRibbon"
                     , DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter")
-                    , new List<Item> { ToolsFactory.GetParticipantRibbon() }
                     , (l) => !DataLoader.ModConfig.DisableAnimalContest && SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() == 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
                     , (l) =>
                     {
@@ -286,16 +311,16 @@ namespace AnimalHusbandryMod.tools
                         if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id);
                     })
                 {
-                    Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter.Title")
+                    Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter.Title"),
+                    DynamicItems = (l) => new List<Item> { ToolsFactory.GetParticipantRibbon() }
                 }
             );
-            MailDao.SaveLetter
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
                     "participantRibbonRedelivery"
                     , DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery")
-                    , new List<Item> { ToolsFactory.GetParticipantRibbon() }
                     , (l) => !DataLoader.ModConfig.DisableAnimalContest && SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() > 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
                     , (l) =>
                     {
@@ -303,36 +328,37 @@ namespace AnimalHusbandryMod.tools
                         if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id);
                     })
                 {
-                    Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery.Title")
+                    Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery.Title"),
+                    DynamicItems = (l) => new List<Item> { ToolsFactory.GetParticipantRibbon() }
                 }
             );
 
-            MailDao.SaveLetter
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
                     "feedingBasket",
                     DataLoader.i18n.Get("Tool.FeedingBasket.Letter"),
-                    new List<Item> {ToolsFactory.GetFeedingBasket()},
                     FeedingBasketCondition,
                     (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
                 )
                 {
-                    Title = DataLoader.i18n.Get("Tool.FeedingBasket.Letter.Title")
+                    Title = DataLoader.i18n.Get("Tool.FeedingBasket.Letter.Title"),
+                    DynamicItems = (l) => new List<Item> { ToolsFactory.GetFeedingBasket() }
                 }
             );
-            MailDao.SaveLetter
+            MailRepository.SaveLetter
             (
                 new Letter
                 (
                     "feedingBasketRedelivery",
                     DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery"),
-                    new List<Item> { ToolsFactory.GetFeedingBasket() },
                     FeedingBasketRedeliveryCondition,
                     (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
                 )
                 {
-                    Title = DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery.Title")
+                    Title = DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery.Title"),
+                    DynamicItems = (l) => new List<Item> { ToolsFactory.GetFeedingBasket() }
                 }
             );
         }

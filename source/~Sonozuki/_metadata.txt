@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit d02171f0177f0750b87bc9f5b18eb3c626e56f56
+   commit 03cf9184229f2f8a33a0e15401f719b1b9138878
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Wed Mar 6 09:38:32 2024 +0000
+   Date:   Wed Mar 20 02:33:48 2024 +0000
    
-       [MoreGrass] Update manifest to specify alpha version
+       [More Grass] Add support for new meadow grass sprites
    

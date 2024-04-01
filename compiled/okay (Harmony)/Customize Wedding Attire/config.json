@@ -1,3 +1,8 @@
 {
-  "WeddingAttire": "weddingAttire.noneOption"
+  "WeddingAttire": "weddingAttire.noneOption",
+  "CustomShirt": "1087",
+  "CustomPants": "8",
+  "PantsR": 100,
+  "PantsG": 50,
+  "PantsB": 255
 }

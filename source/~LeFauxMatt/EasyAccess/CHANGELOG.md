@@ -8,11 +8,23 @@ for queries and analysis.**
 
 # Easy Access Change Log
 
-## 2.0.2 (Unreleased)
+### 2.1.2 (Unreleased)
+
+### Fixed
+
+* Fixed api integration with Toolbar Icons.
+
+## 2.1.1 (March 19, 2024)
 
 ### Changed
 
-* Removed FuryCore alert.
+* Rebuild against final SDV 1.6 and SMAPI 4.0.0.
+
+## 2.1.0 (March 19, 2024)
+
+### Changed
+
+* Updated for SDV 1.6 and .NET 6
 
 ## 2.0.1 (July 9, 2022)
 

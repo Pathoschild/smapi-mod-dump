@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -53,6 +53,11 @@ namespace Custom_Farm_Loader.GameLoopInjections
             harmony.Patch(
                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.getFish)),
                prefix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.getFish_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.DeclaredMethod(typeof(GameLocation), nameof(GameLocation.GetFishFromLocationData), new[] { typeof(string), typeof(Vector2), typeof(int), typeof(Farmer), typeof(bool), typeof(bool), typeof(GameLocation) }),
+               prefix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.GetFishFromLocationData_Prefix))
             );
 
             Helper.Events.GameLoop.SaveCreating += SaveCreating;
@@ -169,6 +174,22 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
                 __instance.map.Properties.Add(propertyName, coordinates);
             }
+        }
+
+        public static bool GetFishFromLocationData_Prefix(ref Item __result, string locationName, Vector2 bobberTile, int waterDepth, Farmer player, bool isTutorialCatch, bool isInherited, GameLocation location = null)
+        {
+            try {
+                var loc = location is null ? Game1.getLocationFromName(locationName) : location;
+                if (loc is null)
+                    return true;
+
+                return getFish_Prefix(loc, ref __result, 0f, "", waterDepth, player, 0f, bobberTile);
+            } catch (Exception err) {
+                Monitor.LogOnce("Ran into an error at GetFishFromLocationData_Prefix", LogLevel.Error);
+                Monitor.LogOnce(err.Message, LogLevel.Trace);
+
+            }
+            return true;
         }
 
         public static bool getFish_Prefix(GameLocation __instance, ref Item __result, float millisecondsAfterNibble, string bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)

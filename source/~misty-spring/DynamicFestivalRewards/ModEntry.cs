@@ -66,5 +66,13 @@ public sealed class ModEntry : Mod
             getValue: () => Config.Randomize,
             setValue: value => Config.Randomize = value
         );
+        
+        configMenu?.AddBoolOption(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.UseYear.name"),
+            tooltip: () => Helper.Translation.Get("config.UseYear.description"),
+            getValue: () => Config.UseYearInstead,
+            setValue: value => Config.UseYearInstead = value
+        );
     }
 }

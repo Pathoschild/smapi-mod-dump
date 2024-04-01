@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Context-Sensitive Gift Cursor for Stardew Valley",
+  "Author": "Vanguard3000",
+  "Version": "2.3.1",
+  "Description": "Changes the default gift cursor to reflect the target villager's known gift tastes.",
+  "UniqueID": "Vanguard3000.ContextSensitiveGiftCursor",
+  "EntryDll": "ContextSensitiveGiftCursor.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:6564" ]
+}

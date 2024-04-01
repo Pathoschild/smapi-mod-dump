@@ -32,7 +32,7 @@ namespace Shoplifter
 
         public static readonly PerScreen<ArrayList> PerScreenShopsBannedFrom = new PerScreen<ArrayList>(createNewState: () => new ArrayList());
 
-        public static readonly string[] shops = { "SeedShop", "FishShop", "AnimalShop", "ScienceHouse", "Hospital", "Blacksmith", "Saloon", "SandyHouse" };
+        public static readonly List<string> shops = new List<string>() { "SeedShop", "FishShop", "AnimalShop", "ScienceHouse", "Hospital", "Blacksmith", "Saloon", "SandyHouse" };
 
         public static IDynamicGameAssetsApi IDGAItem;
      
@@ -41,6 +41,7 @@ namespace Shoplifter
             helper.Events.GameLoop.DayStarted += this.DayStarted;
             helper.Events.GameLoop.GameLaunched += this.Launched;
             helper.Events.Input.ButtonPressed += this.Action;
+            helper.Events.Player.Warped += this.Warped;
             helper.ConsoleCommands.Add("shoplifter_resetsave", "Removes and readds save data added by the mod to fix broken save data, only use if you're getting errors", this.ResetSave);
             try
             {
@@ -49,10 +50,11 @@ namespace Shoplifter
             catch
             {
                 this.config = new ModConfig();
-                this.Monitor.Log("Failed to parse config file, default options will be used. Ensure only positive whole numbers are entered in config", LogLevel.Warn);
+                this.Monitor.Log("Failed to parse config file, default options will be used.", LogLevel.Warn);
             }
             
             ShopMenuUtilities.gethelpers(this.Monitor, this.ModManifest, this.config);
+            CustomShopUtilities.gethelpers(this.Monitor, this.ModManifest, this.config, this.Helper);
             i18n.gethelpers(this.Helper.Translation, this.config);
         }
         private void DayStarted(object sender, DayStartedEventArgs e)
@@ -141,6 +143,32 @@ namespace Shoplifter
                 this.config.CaughtRadius = 1;
             }
 
+            // Read owned content packs and register shops as shopliftable
+            foreach (IContentPack contentPack in this.Helper.ContentPacks.GetOwned())
+            {
+                if (contentPack.HasFile("shopliftables.json") == false)
+                {
+                    this.Monitor.Log($"Skipping content pack \"{contentPack.Manifest.Name}\", it does not have a shopliftables.json", LogLevel.Warn);
+                }
+                else
+                {
+                    this.Monitor.Log($"Loading content pack {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author} | {contentPack.Manifest.Description}", LogLevel.Info);
+                    ContentPack data;
+
+                    try
+                    {
+                        data = contentPack.ReadJsonFile<ContentPack>("shopliftables.json");
+                    }
+                    catch
+                    {
+                        this.Monitor.Log($"Error reading content pack {contentPack.Manifest.Name}", LogLevel.Error);
+                        continue;
+                    }
+
+                    CustomShopUtilities.RegisterShopliftableShop(data, contentPack);
+                }
+            }
+
             this.BuildConfigMenu();
             if (this.Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets") == true)
             {
@@ -177,6 +205,14 @@ namespace Shoplifter
                 getValue: () => (int)this.config.MaxShopliftsPerStore,
                 setValue: value => this.config.MaxShopliftsPerStore = (uint)value,
                 min: 1
+            );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_RareStockChance(),
+                tooltip: () => i18n.string_GMCM_RareStockChanceTooltip(),
+                getValue: () => this.config.RareStockChance,
+                setValue: value => this.config.RareStockChance = value,
+                min: 0f, max: 1.0f, interval: 0.05f
             );
             configMenu.AddSectionTitle(this.ModManifest, () => i18n.string_GMCM_PenaltySection());
             configMenu.AddNumberOption(
@@ -218,14 +254,19 @@ namespace Shoplifter
                 getValue: () => (int)this.config.CaughtRadius,
                 setValue: value => this.config.CaughtRadius = (uint)value,
                 min: 0, max: 20
-            );
+            );            
         }
 
         private void Action(object sender, ButtonPressedEventArgs e)
         {
             GameLocation location = Game1.player.currentLocation;
 
-            if ((e.Button.IsActionButton() == true || e.Button == SButton.ControllerA) && Game1.dialogueUp == false && Context.CanPlayerMove == true && Context.IsWorldReady == true)
+            if ((e.Button.IsActionButton() == true 
+                || 
+                e.Button == SButton.ControllerA) 
+                && Game1.dialogueUp == false 
+                && Context.CanPlayerMove == true 
+                && Context.IsWorldReady == true)
             {
                 var TileX = e.Cursor.GrabTile.X;
                 var TileY = e.Cursor.GrabTile.Y;
@@ -233,11 +274,29 @@ namespace Shoplifter
                 // If using a controller, don't use cursor position if not facing wrong direction, check player is one tile under (Y - 1) tile with property
                 if (e.Button == SButton.ControllerA && Game1.player.FacingDirection != 2)
                 { 
-                   TileX = Game1.player.getTileX();
-                   TileY = Game1.player.getTileY() - 1;
+                   TileX = Game1.player.Tile.X;
+                   TileY = Game1.player.Tile.Y - 1;
                 }
 
                 Location tilelocation = new Location((int)TileX, (int)TileY);
+
+                // Island resort checked a different way, check this as well
+                if (location.NameOrUniqueName == "IslandSouth" 
+                    && TileX == 14 
+                    && TileY == 22 
+                    && location as IslandSouth != null 
+                    && (location as IslandSouth).resortRestored.Value == true)
+                {
+                    ShopMenuUtilities.ResortBarShopliftingMenu(location);
+                }
+
+                foreach(var shopliftableshop in CustomShopUtilities.CustomShops.Values)
+                {
+                    if (shopliftableshop.CounterLocation.NeedsShopProperty == false && CustomShopUtilities.TryOpenCustomShopliftingMenu(shopliftableshop, location, TileX, TileY))
+                    {
+                        break;
+                    }
+                }
 
                 // Get whether tile has action property and its' parameters
                 string[] split = location.doesTileHavePropertyNoNull((int)TileX, (int)TileY, "Action", "Buildings").Split(' ');
@@ -249,6 +308,7 @@ namespace Shoplifter
                     {
                         // If the door is a locked warp, check player can enter
                         case "LockedDoorWarp":
+                        case "Warp":
                             // Player is banned from location they would warp to otherwise
                             if (PerScreenShopsBannedFrom.Value.Contains($"{split[3]}"))
                             {
@@ -291,13 +351,32 @@ namespace Shoplifter
                             {
                                 ShopMenuUtilities.SeedShopShopliftingMenu(location);
                             }
-                            else if (location.Name.Equals("SandyHouse"))
+                            else if (location.Name.Equals("SandyHouse") == true)
                             {
                                 ShopMenuUtilities.SandyShopShopliftingMenu(location);
                             }
                             break;
+                        case "OpenShop":
+                            foreach (var shopliftableshop in CustomShopUtilities.CustomShops.Values)
+                            {
+                                if (split[1] == shopliftableshop.ShopName && CustomShopUtilities.TryOpenCustomShopliftingMenu(shopliftableshop, location, TileX, TileY))
+                                {
+                                    break;
+                                }                                
+                            }
+                            break;
                     }
                 }               
+            }
+        }
+
+        private void Warped(object sender, WarpedEventArgs e)
+        {
+            if (PerScreenShopsBannedFrom.Value.Contains(e.NewLocation.NameOrUniqueName) == true)
+            {
+                Game1.warpFarmer(e.NewLocation.warps[0].TargetName, e.NewLocation.warps[0].TargetX, e.NewLocation.warps[0].TargetY, false);
+
+                Game1.drawObjectDialogue(i18n.string_Banned());
             }
         }
 
@@ -309,7 +388,7 @@ namespace Shoplifter
 
                 foreach (string moddata in new List<string>(data.Keys))
                 {
-                    if (moddata.StartsWith($"{this.ModManifest.UniqueID}"))
+                    if (moddata.StartsWith($"{this.ModManifest.UniqueID}") == true)
                     {
                         data.Remove(moddata);
                         data.Add(moddata,"0/0");

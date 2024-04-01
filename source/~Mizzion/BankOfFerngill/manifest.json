@@ -11,10 +11,10 @@
 {
   "Name": "Bank of Ferngill",
   "Author": "Mizzion",
-  "Version": "1.0.4",
+  "Version": "1.1.0",
   "Description": "Adds a bank functionality to Stardew Valley",
   "UniqueID": "mizzion.bankofferngill",
   "EntryDll": "BankOfFerngill.dll",
-  "MinimumApiVersion": "3.15.1",
+  "MinimumApiVersion": "3.99.0",
   "UpdateKeys": ["Nexus:13043"]
 }

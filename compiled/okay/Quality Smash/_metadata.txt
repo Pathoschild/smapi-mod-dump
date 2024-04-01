@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7907
+IDs: NormanPCN.QualitySmash, barfytheclown.QualitySmash
+update keys: Nexus:7907, GitHub:NormanPCN/QualitySmash, GitHub:jn84/QualitySmash

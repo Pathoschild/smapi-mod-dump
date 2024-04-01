@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "spring_1": "Acorn like spring!$h#$b#Acorn like trees!$h",
+  "spring_12": "Acorn like chickens!$h#$b#Acorn LOVE eggs!$h",
+  "spring_23": "Acorn not like flowers...$a",
+  "summer_1": "Acorn think it hot now!$s",
+  "summer_10": "Acorn want soup!$h#$b#Acorn LOVE soup!!$h",
+  "summer_27": "Acorn will see jellies!$h",
+  "fall_1": "*gasp* Pretty leaves!$h",
+  "fall_15": "Acorn want to play games!$h",
+  "fall_26": "Acorn gonna get spooked!$s",
+  "winter_1": "Brrrrr...$s",
+  "winter_7": "Acorn gonna go to cold festival!$s",
+  "winter_24": "PRESENTS!!!$h",
+  "Mon": "Hello",
+  "Tue": "Hello",
+  "Wed": "Hello",
+  "Thu": "Hello",
+  "Fri": "Hello",
+  "Sat": "Hello",
+  "Sun": "Hello",
+}

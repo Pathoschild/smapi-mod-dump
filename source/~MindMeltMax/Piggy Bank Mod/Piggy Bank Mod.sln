@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Piggy Bank Mod", "Piggy Bank Mod.csproj", "{C811CC12-28F7-493B-99AF-843AE2837C9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Piggy Bank Mod", "Piggy Bank Mod.csproj", "{EE1C3544-E335-41C9-A0F8-3AB9B6551E72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C811CC12-28F7-493B-99AF-843AE2837C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C811CC12-28F7-493B-99AF-843AE2837C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C811CC12-28F7-493B-99AF-843AE2837C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C811CC12-28F7-493B-99AF-843AE2837C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1C3544-E335-41C9-A0F8-3AB9B6551E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1C3544-E335-41C9-A0F8-3AB9B6551E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1C3544-E335-41C9-A0F8-3AB9B6551E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1C3544-E335-41C9-A0F8-3AB9B6551E72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EF067134-F40B-43BB-8AE7-941125F469DA}
+		SolutionGuid = {B97E9094-AAB4-4CB8-8A98-BAB1240C26F2}
 	EndGlobalSection
 EndGlobal

@@ -24,7 +24,7 @@ namespace MachineAugmentors.Helpers
             {
                 if (_EmojiSpritesheet == null || _EmojiSpritesheet.IsDisposed)
                 {
-                    _EmojiSpritesheet = MachineAugmentorsMod.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/emojis", ContentSource.GameContent);
+                    _EmojiSpritesheet = MachineAugmentorsMod.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/emojis");
                 }
                 return _EmojiSpritesheet;
             }
@@ -37,7 +37,7 @@ namespace MachineAugmentors.Helpers
             {
                 if (_PlayerStatusList == null || _PlayerStatusList.IsDisposed)
                 {
-                    _PlayerStatusList = MachineAugmentorsMod.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/PlayerStatusList", ContentSource.GameContent);
+                    _PlayerStatusList = MachineAugmentorsMod.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/PlayerStatusList");
                 }
                 return _PlayerStatusList;
             }

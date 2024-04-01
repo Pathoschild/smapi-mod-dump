@@ -88,6 +88,7 @@ mods:
    Farm Cave Framework
    Farmer Helper
    Farmer Portraits
+   Farmer Portraits for 1.6
    Field Harvest
    Fire Breath
    Fish Spot Bait
@@ -100,6 +101,7 @@ mods:
    Friendship Tweaks
    Fruit Tree Shaker
    Fruit Tree Tweaks
+   Fruit Tree Tweaks for 1.6
    Furniture Adjustment
    Furniture Display Framework
    Furniture Placement Tweaks
@@ -182,6 +184,7 @@ mods:
    Quest Time Limits
    Quick Load
    Quick Responses
+   Quick Responses (1.6 Updated)
    Quotes
    Rainbow Trail
    Random NPCs
@@ -222,6 +225,7 @@ mods:
    Trash Cans On Horse
    Treasure Chests Expanded
    Underground Secrets
+   Underground Secrets Redux
    Unique Valley
    Utility Grid
    Video Player

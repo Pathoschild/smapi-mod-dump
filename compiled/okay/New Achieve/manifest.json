@@ -1,0 +1,9 @@
+{
+  "Name": "NewAchieve",
+  "Author": "AbelSdf",
+  "Version": "1.0.0",
+  "Description": "Obtain 9 new achievements added in version 1.6.",
+  "UniqueID": "AbelSdf.NewAchieve",
+  "EntryDll": "NewAchieve.dll",
+  "UpdateKeys": []
+}

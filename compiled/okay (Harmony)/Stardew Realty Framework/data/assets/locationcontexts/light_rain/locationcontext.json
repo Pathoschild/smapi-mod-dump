@@ -1,0 +1,7 @@
+﻿{
+  "ContextName": "prism99.advize.stardewrealty.light_rain",
+  "CopyDefaultFields": true,
+  "LocationContextData": {
+    "WeatherConditions": [ { "Weather": "prism99.advize.stardewrealty.light_rain" } ]
+  }
+}

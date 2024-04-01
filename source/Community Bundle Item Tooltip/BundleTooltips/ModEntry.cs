@@ -39,8 +39,8 @@ namespace StardewValleyBundleTooltips
         private bool isUiInfoSuiteLoaded; //Check to see if UiInfoSuiteIsLoaded
 
         Item toolbarItem;
-        List<int> itemsInBundles;
-        Dictionary<int, int[][]> bundles;
+        List<string> itemsInBundles;
+        Dictionary<int, string[][]> bundles;
         Dictionary<int, string[]> bundleNamesAndSubNames;
 
 
@@ -72,11 +72,11 @@ namespace StardewValleyBundleTooltips
         private void SaveEvents_AfterLoad(object sender, SaveLoadedEventArgs e)
         {
             //This will be filled with the itemIDs of every item in every bundle (for a fast search without details)
-            itemsInBundles = new List<int>();
+            itemsInBundles = new List<string>();
             bundles = getBundles();
 
             //remove duplicates
-            itemsInBundles = new HashSet<int>(itemsInBundles).ToList();
+            itemsInBundles = new HashSet<string>(itemsInBundles).ToList();
 
             isLoaded = true;
         }
@@ -113,32 +113,25 @@ namespace StardewValleyBundleTooltips
             List<int[]> itemInfo = new List<int[]>();
             Dictionary<string, List<string>> descriptions = new Dictionary<string, List<string>>();
 
-            foreach (int itemInBundles in itemsInBundles)
+            foreach (string itemInBundles in itemsInBundles)
             {
-                if (item.ParentSheetIndex == itemInBundles)
+                if (item.QualifiedItemId == ItemRegistry.QualifyItemId(itemInBundles))
                 {
-                    foreach (KeyValuePair<int, int[][]> bundle in bundles)
+                    foreach (KeyValuePair<int, string[][]> bundle in bundles)
                     {
                         for (int i = 0; i < bundle.Value.Length; i++)
                         {
-                            //Getting the item name because the bundle itself doesn't actually make sure that the correct item is being placed
+                            //Getting the qualifyItemId because the bundle itself doesn't actually make sure that the correct item is being placed
                             //(parentSheetIndex of object can overlap with another item from another sheet)
-                            string itemName = "";
-                            if (Game1.objectInformation.ContainsKey(bundle.Value[i][0]))
-                            {
-                                if(LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en)
-                                    itemName = Game1.objectInformation[bundle.Value[i][0]].Split('/')[0];
-                                else
-                                    itemName = Game1.objectInformation[bundle.Value[i][0]].Split('/')[4];
-                            }
+                            string qualifyItemId = ItemRegistry.QualifyItemId(bundle.Value[i][0]);
 
-                            var isItemInBundleSlot = communityCenter.bundles[bundle.Key][bundle.Value[i][3]];
-                            if ((item is StardewValley.Object) && item.Stack != 0 && bundle.Value[i] != null && bundle.Value[i][0] == item.ParentSheetIndex && itemName == item.DisplayName && bundle.Value[i][2] <= ((StardewValley.Object)item).Quality)
+                            if ((item is StardewValley.Object) && item.Stack != 0 && bundle.Value[i] != null && qualifyItemId == item.QualifiedItemId && Convert.ToInt32(bundle.Value[i][2]) <= ((StardewValley.Object)item).Quality)
                             {
-                                if(!isItemInBundleSlot)
+                                var isItemInBundleSlot = communityCenter.bundles[bundle.Key][Convert.ToInt32(bundle.Value[i][3])];
+                                if (!isItemInBundleSlot)
                                 {
                                     //Saving i to check if the items are the same or not later on
-                                    itemInfo.Add(new int[] {bundle.Key,bundle.Value[i][1],i});
+                                    itemInfo.Add(new int[] {bundle.Key, Convert.ToInt32(bundle.Value[i][1]),i});
                                     descriptions[bundleNamesAndSubNames[bundle.Key][0]] = new List<string>();
                                 }
                             }
@@ -238,12 +231,12 @@ namespace StardewValleyBundleTooltips
             Utility.drawTextWithShadow(Game1.spriteBatch, description, font, new Vector2(x + Game1.tileSize / 4, y + Game1.tileSize / 4), Game1.textColor);
         }
 
-        private Dictionary<int, int[][]> getBundles()
+        private Dictionary<int, string[][]> getBundles()
         {
 
             Dictionary<string, string> dictionary = Game1.netWorldState.Value.BundleData;
 
-            Dictionary<int, int[][]> bundles = new Dictionary<int, int[][]>();
+            Dictionary<int, string[][]> bundles = new Dictionary<int, string[][]>();
             bundleNamesAndSubNames = new Dictionary<int, string[]>();
 
             foreach (KeyValuePair<string, string> keyValuePair in dictionary)
@@ -272,17 +265,17 @@ namespace StardewValleyBundleTooltips
                     string[] allItems = keyValuePair.Value.Split('/')[2].Split(' ');
                     int allItemsLength = allItems.Length / 3;
                     
-                    int[][] items = new int[allItemsLength][];
+                    string[][] items = new string[allItemsLength][];
 
                     int j = 0;
                     int i = 0;
                     while(j< allItemsLength)
                     {
-                        items[j] = new int[4];
-                        items[j][0] = Convert.ToInt32(allItems[0 + i]);
-                        items[j][1] = Convert.ToInt32(allItems[1 + i]);
-                        items[j][2] = Convert.ToInt32(allItems[2 + i]);
-                        items[j][3] = i/3;
+                        items[j] = new string[4];
+                        items[j][0] = allItems[0 + i];
+                        items[j][1] = allItems[1 + i];
+                        items[j][2] = allItems[2 + i];
+                        items[j][3] = Convert.ToString(i /3);
 
                         itemsInBundles.Add(items[j][0]);
                         i = i + 3;

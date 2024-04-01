@@ -6,6 +6,7 @@ __MACOSX
 *.zip
 
 # very large files
+*.wav
 compiled/**/Pussle/Content/Fonts/squarefont_0.xnb
 compiled/**/Pussle/Content/Fonts/squarefont_1.xnb
 compiled/**/Stardew and Chill/StardewAndChill.dll

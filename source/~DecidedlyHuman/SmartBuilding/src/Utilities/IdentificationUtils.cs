@@ -9,8 +9,8 @@
 *************************************************/
 
 using System.Diagnostics;
-using DecidedlyShared.Logging;
 using DecidedlyShared.APIs;
+using DecidedlyShared.Logging;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -273,36 +273,36 @@ namespace SmartBuilding.Utilities
         /// </summary>
         /// <param name="itemName"></param>
         /// <returns></returns>
-        public int? GetFlooringIdFromName(string itemName)
+        public string? GetFlooringIdFromName(string itemName)
         {
             switch (itemName)
             {
                 case "Wood Floor":
-                    return 0; // Correct.
+                    return "0"; // Correct.
                 case "Rustic Plank Floor":
-                    return 11; // Correct.
+                    return "11"; // Correct.
                 case "Straw Floor":
-                    return 4; // Correct
+                    return "4"; // Correct
                 case "Weathered Floor":
-                    return 2; // Correct.
+                    return "2"; // Correct.
                 case "Crystal Floor":
-                    return 3; // Correct.
+                    return "3"; // Correct.
                 case "Stone Floor":
-                    return 1; // Correct.
+                    return "1"; // Correct.
                 case "Stone Walkway Floor":
-                    return 12; // Correct.
+                    return "12"; // Correct.
                 case "Brick Floor":
-                    return 10; // Correct
+                    return "10"; // Correct
                 case "Wood Path":
-                    return 6; // Correct.
+                    return "6"; // Correct.
                 case "Gravel Path":
-                    return 5; // Correct.
+                    return "5"; // Correct.
                 case "Cobblestone Path":
-                    return 8; // Correct.
+                    return "8"; // Correct.
                 case "Stepping Stone Path":
-                    return 9; // Correct.
+                    return "9"; // Correct.
                 case "Crystal Path":
-                    return 7; // Correct.
+                    return "7"; // Correct.
                 default:
                     return null;
             }
@@ -313,35 +313,35 @@ namespace SmartBuilding.Utilities
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string? GetFlooringNameFromId(int id)
+        public string? GetFlooringNameFromId(string id)
         {
             switch (id)
             {
-                case 0:
+                case "0":
                     return "Wood Floor"; // Correct.
-                case 11:
+                case "11":
                     return "Rustic Plank Floor"; // Correct.
-                case 4:
+                case "4":
                     return "Straw Floor"; // Correct
-                case 2:
+                case "2":
                     return "Weathered Floor"; // Correct.
-                case 3:
+                case "3":
                     return "Crystal Floor"; // Correct.
-                case 1:
+                case "1":
                     return "Stone Floor"; // Correct.
-                case 12:
+                case "12":
                     return "Stone Walkway Floor"; // Correct.
-                case 10:
+                case "10":
                     return "Brick Floor"; // Correct
-                case 6:
+                case "6":
                     return "Wood Path"; // Correct.
-                case 5:
+                case "5":
                     return "Gravel Path"; // Correct.
-                case 8:
+                case "8":
                     return "Cobblestone Path"; // Correct.
-                case 9:
+                case "9":
                     return "Stepping Stone Path"; // Correct.
-                case 7:
+                case "7":
                     return "Crystal Path"; // Correct.
                 default:
                     return null;

@@ -1,0 +1,9 @@
+{
+  "Name": "WAIT",
+  "Author": "aurpine",
+  "Version": "0.1.3",
+  "Description": "Refined multiplayer time pause mod",
+  "UniqueID": "aurpine.WAIT",
+  "EntryDll": "WAIT.dll",
+  "UpdateKeys": [ "Nexus:20661" ]
+}

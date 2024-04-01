@@ -55,7 +55,7 @@ namespace TimeSpeed.Framework
         /// <summary>Get whether time settings should be applied on a given day.</summary>
         /// <param name="season">The season to check.</param>
         /// <param name="dayOfMonth">The day of month to check.</param>
-        public bool ShouldScale(string season, int dayOfMonth)
+        public bool ShouldScale(Season season, int dayOfMonth)
         {
             return this.EnableOnFestivalDays || !Utility.isFestivalDay(dayOfMonth, season);
         }

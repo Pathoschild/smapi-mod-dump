@@ -1,0 +1,10 @@
+{
+  "Name": "ItsStardewTime",
+  "Author": "Caboose Sage",
+  "Version": "1.0.0",
+  "Description": "Controls for passage of time in Stardew Valley!",
+  "UniqueID": "Cabbose.Sage.ItsStardewTime",
+  "EntryDll": "ItsStardewTime.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

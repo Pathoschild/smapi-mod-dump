@@ -6,9 +6,9 @@ mods:
    Special Orders Anywhere
 
 latest commit:
-   commit 3e0cb6b47c2ab032dbc2f1c434aa303c60de5a48
+   commit 9638498d7734c4f8f943365839abf78b8f60a0ff
    Author: AcidicNic <nicole.r.abadie@gmail.com>
-   Date:   Thu Sep 28 01:45:55 2023 -0700
+   Date:   Sat Mar 30 23:21:56 2024 -0700
    
-       quick bug fix: close menu when journal active
+       Created a root solution (AcidicNic.Stardew) and made each mod a project in the root sln
    

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Quick Responses",
+  "Author": "yummypecho - original by aedenthorn",
+  "Version": "0.3.1",
+  "Description": "Quick responses.",
+  "UniqueID": "yummypecho.QuickResponses",
+  "EntryDll": "QuickResponses.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21103" ]
+}

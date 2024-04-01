@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5815
-IDs: KilZenc.FishingAssistant
-update keys: Nexus:5815

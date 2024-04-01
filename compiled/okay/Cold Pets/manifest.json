@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Cold Pets",
+    "Author": "Tyler Gibbs",
+    "Version": "1.1.1",
+    "Description": "Pets will always stay inside during the winter.",
+    "UniqueID": "tylergibbs2.ColdPets",
+    "EntryDll": "ColdPets.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:14379" ]
+}

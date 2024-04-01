@@ -64,7 +64,8 @@ namespace StardewDruid.Journal
                 ["Jester"] = new Rectangle(0, 8, 8, 8),
                 ["Fates"] = new Rectangle(8, 8, 8, 8),
                 ["Ether"] = new Rectangle(16, 8, 8, 8),
-                ["Shadow"] = new Rectangle(24, 8, 8, 8)
+                ["Shadow"] = new Rectangle(24, 8, 8, 8),
+                ["Chaos"] = new Rectangle(0, 16, 8, 8)
             };
             Game1.playSound("bigSelect");
             setupPages();
@@ -457,7 +458,7 @@ namespace StardewDruid.Journal
             Rectangle bounds = viewport.Bounds;
             Color color = Color.Black * 0.75f;
             spriteBatch1.Draw(fadeToBlackRect, bounds, color);
-            SpriteText.drawStringWithScrollCenteredAt(b, "Stardew Druid", xPositionOnScreen + width / 2, yPositionOnScreen - 64, "", 1f, -1, 0, 0.88f, false);
+            SpriteText.drawStringWithScrollCenteredAt(b, "Stardew Druid", xPositionOnScreen + width / 2, yPositionOnScreen - 64, 16, 1f, null, 0, 0.88f, false);
             IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 373, 18, 18), xPositionOnScreen, yPositionOnScreen, width, height, Color.White, 4f, true, -1f);
             if (questPage == -1)
             {
@@ -467,15 +468,15 @@ namespace StardewDruid.Journal
                     {
                         IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), questLogButtons[index].bounds.X, questLogButtons[index].bounds.Y, questLogButtons[index].bounds.Width, questLogButtons[index].bounds.Height, questLogButtons[index].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()) ? Color.Wheat : Color.White, 4f, false, -1f);
                         if (pages[currentPage][index].active)
-                            SpriteText.drawString(b, "*", questLogButtons[index].bounds.Right - 40, questLogButtons[index].bounds.Y + 40, 999999, -1, 999999, 1f, 0.88f, false, -1, "", -1, 0);
-                        SpriteText.drawString(b, pages[currentPage][index].title, questLogButtons[index].bounds.X + 100, questLogButtons[index].bounds.Y + 24, 999999, -1, 999999, 1f, 0.88f, false, -1, "", -1, 0);
+                            SpriteText.drawString(b, "*", questLogButtons[index].bounds.Right - 40, questLogButtons[index].bounds.Y + 40, 999999, -1, 999999, 1f, 0.88f, false, -1, "", null, 0);
+                        SpriteText.drawString(b, pages[currentPage][index].title, questLogButtons[index].bounds.X + 100, questLogButtons[index].bounds.Y + 24, 999999, -1, 999999, 1f, 0.88f, false, -1, "", null, 0);
                         Utility.drawWithShadow(b, iconTexture, new Vector2(questLogButtons[index].bounds.X + 32, questLogButtons[index].bounds.Y + 28), iconFrames[pages[currentPage][index].icon], Color.White, 0.0f, Vector2.Zero, 5f, false, 0.99f, -1, -1, 0.35f);
                     }
                 }
             }
             else
             {
-                SpriteText.drawStringHorizontallyCenteredAt(b, _shownPage.title, xPositionOnScreen + width / 2, yPositionOnScreen + 32, 999999, -1, 999999, 1f, 0.88f, false, -1, 99999);
+                SpriteText.drawStringHorizontallyCenteredAt(b, _shownPage.title, xPositionOnScreen + width / 2, yPositionOnScreen + 32, 999999, -1, 999999, 1f, 0.88f, false, null, 99999);
                 string text1 = Game1.parseText(_shownPage.description, Game1.dialogueFont, width - 128);
                 Rectangle scissorRectangle = b.GraphicsDevice.ScissorRectangle;
                 Vector2 vector2 = Game1.dialogueFont.MeasureString(text1);
@@ -561,7 +562,7 @@ namespace StardewDruid.Journal
             drawMouse(b, false, -1);
             if (hoverText.Length <= 0)
                 return;
-            IClickableMenu.drawHoverText(b, hoverText, Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, -1, -1, -1, -1, 1f, null, null);
+            IClickableMenu.drawHoverText(b, hoverText, Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, null, -1, -1, -1, 1f, null, null);
         }
     }
 }

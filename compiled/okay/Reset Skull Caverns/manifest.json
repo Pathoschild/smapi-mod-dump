@@ -1,10 +1,20 @@
-﻿{
-  "Name": "Reset Skull Caverns",
-  "Author": "Sakorona",
-  "Version": "1.0.0",
-  "Description": "Resets the skull cavern stages to respawn coal and other things per day.",
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
   "UniqueID": "KoihimeNakamura.ResetCaverns",
+  "Name": "ResetSkullCaverns",
+  "Author": "Sakorona",
+  "Version": "1.0.3",
+  "Description": "Resets the skull cavern stages to respawn coal and other things per day.",
+  "MinimumApiVersion": "4.0.0",
   "EntryDll": "ResetSkullCaverns.dll",
-  "MinimumApiVersion": "3.4.0",
-  "UpdateKeys": [ "ModDrop: 1080116" ]
+  "UpdateKeys": [
+    "Nexus:20846"
+  ]
 }

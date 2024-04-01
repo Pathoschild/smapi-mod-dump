@@ -23,7 +23,7 @@ namespace StardewDruid.Monster.Template
 
         public Shadow() { }
 
-        public Shadow(Vector2 position, int combatModifier)
+        public Shadow(Vector2 position, int combatModifier, bool champion = false)
             : base(position * 64)
         {
 
@@ -37,17 +37,17 @@ namespace StardewDruid.Monster.Template
 
             objectsToDrop.Clear();
 
-            objectsToDrop.Add(769);
+            objectsToDrop.Add("769");
 
             if (Game1.random.Next(3) == 0)
             {
-                objectsToDrop.Add(768);
+                objectsToDrop.Add("768");
             }
             else if (Game1.random.Next(4) == 0 && combatModifier >= 120)
             {
-                List<int> shadowGems = new()
+                List<string> shadowGems = new()
                 {
-                    62,66,68,70,
+                    "62","66","68","70",
                 };
 
                 objectsToDrop.Add(shadowGems[Game1.random.Next(shadowGems.Count)]);
@@ -55,14 +55,19 @@ namespace StardewDruid.Monster.Template
             }
             else if (Game1.random.Next(5) == 0 && combatModifier >= 240)
             {
-                List<int> shadowGems = new()
+                List<string> shadowGems = new()
                 {
-                    60,64,72,
+                    "60","64","72",
                 };
 
                 objectsToDrop.Add(shadowGems[Game1.random.Next(shadowGems.Count)]);
             }
 
+            if (champion)
+            {
+                isHardModeMonster.Set(true);
+
+            }
         }
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
@@ -74,6 +79,20 @@ namespace StardewDruid.Monster.Template
 
         }
 
+        public override void onDealContactDamage(Farmer who)
+        {
+
+            if ((who.health + who.buffs.Defense) - DamageToFarmer < 10)
+            {
+
+                who.health = (DamageToFarmer - who.buffs.Defense) + 10;
+
+                Mod.instance.CriticalCondition();
+
+            }
+
+        }
 
     }
+
 }

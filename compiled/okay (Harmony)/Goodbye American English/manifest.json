@@ -1,10 +1,10 @@
 ﻿{
 	"Name": "Goodbye American English",
 	"Author": "TheMightyAmondee",
-	"Version": "1.6.0-alpha.2",
+	"Version": "1.6.0",
 	"Description": "Replaces american spelling with british spelling",
 	"UniqueID": "TheMightyAmondee.GoodbyeAmericanEnglish",
 	"EntryDll": "GoodbyeAmericanEnglish.dll",
-	"MinimumApiVersion": "4.0.0-alpha",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "Nexus:7183", "ModDrop:854437" ]
 }

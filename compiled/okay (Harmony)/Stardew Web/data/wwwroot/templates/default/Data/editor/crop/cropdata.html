@@ -1,0 +1,155 @@
+﻿<div class="message_paper_board_flex">
+    <div class="container">
+        <div class="row">
+            <div class="col form-label bold">
+                Details
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label for="PhaseDays" class="form-label">Days in Phase</label>
+                <input type="text" id="PhaseDays" class="form-control" aria-describedby="PhaseDaysHelpBlock" value="#PHASEDAYS#">
+                #BTN_PHASEDAYS#
+                <div id="PhaseDaysHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="RegrowthAfterHarvest" class="form-label">Regrows in Days</label>
+                <input type="text" id="RegrowthAfterHarvest" class="form-control" aria-describedby="RegrowDaysHelpBlock" value="#REGROWDAYS#">
+                #BTN_REGROWDAYS#
+                <div id="RegrowDaysHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="HarvestItemId" class="form-label">Harvest Item Id</label>
+                <input type="text" id="HarvestItemId" class="form-control" aria-describedby="HarvestItemIdHelpBlock" value="#HARVESTITEMID#">
+                <div id="HarvestItemIdHelpBlock" class="form-text">
+                    #HELPHARVESTITEMID#
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="HarvestMethod" class="form-label">Harvest Method</label>
+                #HARVESTMETHOD#
+                #BTN_HARVESTMETHOD#
+                <div id="HarvestMethodHelpBlock" class="form-text">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label for="ChanceForExtraHarvest" class="form-label"><br />Extra Harvest</label>
+                #CHANCEFOREXTRAHARVEST#
+                #BTN_CHANCEFOREXTRAHARVEST#
+                <div id="ChanceForExtraHarvestHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="ExtraHarvestChance" class="form-label">Extra Harvest Chance (%)(0-100)</label>
+                <input type="text" id="ExtraHarvestChance" class="form-control" aria-describedby="ExtraHarvestChanceHelpBlock" value="#EXTRAHARVESTCHANCE#">
+                #BTN_EXTRAHARVESTCHANCE#
+                <div id="ExtraHarvestChanceHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="HarvestMaxIncreasePerFarmingLevel" class="form-label">Harvest Max Increase Per Farming Level</label>
+                <input type="text" id="HarvestMaxIncreasePerFarmingLevel" class="form-control" aria-describedby="HarvestMaxIncreasePerFarmingLevelHelpBlock" value="#HARVESTMAXINCREASEPERFARMINGLEVEL#">
+                #BTN_HARVESTMAXINCREASEPERFARMINGLEVEL#
+                <div id="HarvestMaxIncreasePerFarmingLevelHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="HarvestMinStack" class="form-label"><br />Harvest Min Stack</label>
+                <input type="text" id="HarvestMinStack" class="form-control" aria-describedby="HarvestMinStackHelpBlock" value="#HARVESTMINSSTACK#">
+                #BTN_HARVESTMINSSTACK#
+                <div id="HarvestMinStackHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="HarvestMaxStack" class="form-label"><br />Harvest Max Stack</label>
+                <input type="text" id="HarvestMaxStack" class="form-control" aria-describedby="HarvestMaxStackHelpBlock" value="#HARVESTMAXSTACK#">
+                #BTN_HARVESTMAXSTACK#
+                <div id="HarvestMaxStackHelpBlock" class="form-text">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label for="HarvestMinQuality" class="form-label">Harvest Min Quality</label>
+                #HARVESTMINQUALITY#
+                <div id="HarvestMinQualityHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="HarvestMaxQuality" class="form-label">Harvest Max Quality</label>
+                #HARVESTMAXQUALITY#
+            </div>
+            <div class="col-2">
+                <label for="IsRaised" class="form-label">Is Raised</label>
+                #ISRAISED#
+                <div id="IsRaisedHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="IsPaddyCrop" class="form-label">Is Paddy Crop</label>
+                #ISPADDYCROP#
+                <div id="IsPaddyCropHelpBlock" class="form-text">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label for="SpriteIndex" class="form-label">Sprite Index</label>
+                <input type="text" readonly id="SpriteIndex" class="form-control" aria-describedby="SpriteIndexHelpBlock" value="#SPRITEINDEX#">
+                <div id="SpriteIndexHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-3">
+                <label for="Texture" class="form-label">Texture</label>
+                <input readonly type="text" id="Texture" class="form-control" aria-describedby="TextureHelpBlock" value="#TEXTURE#">
+                <div id="TextureHelpBlock" class="form-text">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1">
+                <label for="IsTinted" class="form-label">Is Tinted</label>
+                #ISTINTED#
+                #BTN_ISTINTED#
+                <div id="IsTintedHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="TintColors" class="form-label">Tint Colors</label>
+                <input type="text" id="TintColors" class="form-control" aria-describedby="TintColorsHelpBlock" value="#TINTCOLORS#">
+                #BTN_TINTCOLORS#
+                <div id="colorList" style="display: inline-flex; padding-top: 5px;">
+                    #COLORLIST#
+                </div>
+                <div id="TintColorsHelpBlock" class="form-text">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="newColor" class="form-label">New Tint Color</label>
+                <input type="color" id="newColor" class="form-control" aria-describedby="newColorHelpBlock" />
+                <div id="newColorHelpBlock" class="form-text">
+                    Click on colorbox to open.
+                </div>
+                <button onclick="addColor('newColor', 'TintColors');">Add</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                #SEASONS#
+                #BTN_SEASONS#
+            </div>
+        </div>
+        <div class="row form-label bold">
+            Planting Rules
+        </div>
+        <div class="row">
+            <div class="col">
+                #RULES#
+            </div>
+        </div>
+    </div>
+</div>

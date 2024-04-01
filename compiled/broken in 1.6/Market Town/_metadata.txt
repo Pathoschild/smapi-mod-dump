@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/19309
-IDs: d5a1lamdtd.MarketTown, d5a1lamdtd.FoodStore
-update keys: Nexus:19309

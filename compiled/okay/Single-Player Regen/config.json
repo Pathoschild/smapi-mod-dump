@@ -1,4 +1,5 @@
 {
   "RegenTime": 750,
-  "sitting": true
+  "Sitting": true,
+  "TimeFrozenRegen": true
 }

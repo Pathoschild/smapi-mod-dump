@@ -6,11 +6,11 @@ mods:
    Mod Menu
 
 latest commit:
-   commit feafdc9506b11c05cb15c419060485a84e068f51
+   commit 9c3739d8ee22b0fbc4264a9c14903517ec710861
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Tue May 4 15:08:41 2021 +0800
+   Date:   Sun Mar 31 00:20:54 2024 +0800
    
-       Merge pull request #3 from Enaium-StardewValleyMods/develop
+       Merge pull request #5 from Enaium-StardewValleyMods/develop
        
-       Fix
+       Fix unable to load one or more of the requested types.
    

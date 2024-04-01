@@ -10,8 +10,11 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Menus;
+using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,12 @@ namespace ScheduleViewer
         private string hoverText = "";
 
         /// <summary>Key in the format "{slot}-{line#}, Value is Rectangle containing the bounds of the hover text and the hover text string"</summary>
-        private readonly Dictionary<string, Tuple<Rectangle, string>> hoverTextOptions = new();
+        private readonly Dictionary<string, Tuple<Rectangle, string>> entryHoverText = new();
+
+        // TODO
+        //private readonly (Rectangle bounds, string text)[] scheduleHoverText = new (Rectangle bounds, string text)[slotsOnPage * 3];
+
+        private readonly (Rectangle bounds, string text)[] questHoverText = new (Rectangle bounds, string text)[slotsOnPage];
 
         private readonly ClickableTextureComponent upButton;
 
@@ -45,6 +53,8 @@ namespace ScheduleViewer
         private readonly List<Schedule.NPCSchedule> schedules = new();
 
         private readonly List<ClickableTextureComponent> sprites = new();
+
+        public readonly List<ClickableTextureComponent> questIcons = new();
 
         private readonly Texture2D emptySprite = ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/Unknown.png");
 
@@ -68,8 +78,13 @@ namespace ScheduleViewer
                 _ => filteredSchedules.OrderBy(x => x.Value.DisplayName),
             };
 
+            // get NPCs with quests
+            Dictionary<string, string> npcsWithQuests = GetNPCsWithQuests();
+
             // map schedules into slots
             int itemIndex = 0;
+            int lastQuestIndex = -1;
+            Rectangle spriteBounds = new(base.xPositionOnScreen + IClickableMenu.borderWidth + 4, base.yPositionOnScreen + IClickableMenu.borderWidth + spriteSize / 2, 260, spriteSize);
             foreach (var item in filteredSchedules)
             {
                 // if not host then need to get sprite info
@@ -80,14 +95,44 @@ namespace ScheduleViewer
                 }
 
                 this.schedules.Add(item.Value);
-                this.sprites.Add(new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth + 4, base.yPositionOnScreen + IClickableMenu.borderWidth + spriteSize / 2, 260, spriteSize), null, "", item.Value.NPC?.Sprite.Texture ?? emptySprite, item.Value.NPC?.getMugShotSourceRect() ?? new Rectangle(0, 0, 16, 24), 4f));
-                this.characterSlots.Add(new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth, 0, base.width - IClickableMenu.borderWidth * 2, rowHeight), null, new Rectangle(0, 0, 0, 0), 4f)
+                this.sprites.Add(new ClickableTextureComponent($"{item.Key}-sprite", spriteBounds.Clone(), null, "", item.Value.NPC?.Sprite.Texture ?? emptySprite, item.Value.NPC?.getMugShotSourceRect() ?? new Rectangle(0, 0, 16, 24), 4f));
+                ClickableTextureComponent characterSlot = new(new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth, 0, base.width - IClickableMenu.borderWidth * 2, rowHeight), null, new Rectangle(0, 0, 0, 0), 4f)
                 {
                     myID = itemIndex,
                     downNeighborID = itemIndex + 1,
                     upNeighborID = itemIndex - 1,
-                });
+                };
+
+                if (npcsWithQuests.TryGetValue(item.Key, out string questHoverText))
+                {
+                    int id = itemIndex + 999;
+                    characterSlot.rightNeighborID = id;
+                    ClickableTextureComponent questIcon = new($"{item.Key}-questIcon", new Rectangle(spriteBounds.Right - 30, spriteBounds.Y + 28, 20, 44), null, questHoverText, Game1.mouseCursors, new Rectangle(401, 492, 7, 18), 2f)
+                    {
+                        myID = id,
+                        leftNeighborID = itemIndex,
+                    };
+                    if (lastQuestIndex != -1)
+                    {
+                        questIcon.upNeighborID = lastQuestIndex;
+                        this.questIcons[lastQuestIndex].downNeighborID = id;
+                    }
+                    this.questIcons.Add(questIcon);
+                    lastQuestIndex = itemIndex;
+                }
+                else
+                {
+                    this.questIcons.Add(null);
+                }
+                characterSlots.Add(characterSlot);
+
                 itemIndex++;
+            }
+
+            // set up hover text
+            for (int i = 0; i < this.questHoverText.Length; i++)
+            {
+                this.questHoverText[i] = (new Rectangle(spriteBounds.Right - 38, this.RowPosition(i) + 56, 30, 42), string.Empty);
             }
 
             base.initializeUpperRightCloseButton();
@@ -107,23 +152,33 @@ namespace ScheduleViewer
         public override void applyMovementKey(int direction)
         {
             base.applyMovementKey(direction);
-            if (base.currentlySnappedComponent != null && this.characterSlots.Contains(base.currentlySnappedComponent))
+            if (base.currentlySnappedComponent != null)
             {
-                int index = this.characterSlots.IndexOf(base.currentlySnappedComponent as ClickableTextureComponent);
-                if (index < this.slotPosition)
+                int index = -1;
+                if (this.characterSlots.Contains(base.currentlySnappedComponent))
                 {
-                    this.slotPosition = index;
+                    index = this.characterSlots.IndexOf(base.currentlySnappedComponent as ClickableTextureComponent);
                 }
-                else if (index >= this.slotPosition + slotsOnPage)
+                else if (this.questIcons.Contains(base.currentlySnappedComponent))
                 {
-                    this.slotPosition = index - slotsOnPage + 1;
+                    index = this.questIcons.IndexOf(base.currentlySnappedComponent as ClickableTextureComponent);
                 }
-                this.SetScrollBarToCurrentIndex();
-                if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+                if (index != -1)
                 {
-                    this.snapCursorToCurrentSnappedComponent();
+                    if (index < this.slotPosition)
+                    {
+                        this.slotPosition = index;
+                    }
+                    else if (index >= this.slotPosition + slotsOnPage)
+                    {
+                        this.slotPosition = index - slotsOnPage + 1;
+                    }
+                    this.SetScrollBarToCurrentIndex();
+                    if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+                    {
+                        this.snapCursorToCurrentSnappedComponent();
+                    }
                 }
-
             }
         }
 
@@ -213,7 +268,7 @@ namespace ScheduleViewer
             if (!ModEntry.Config.DisableHover)
             {
                 string newHoverText = "";
-                foreach (var hoverTextOption in this.hoverTextOptions)
+                foreach (var hoverTextOption in this.entryHoverText)
                 {
                     if (hoverTextOption.Value != null && hoverTextOption.Value.Item1.Contains(x, y))
                     {
@@ -222,6 +277,14 @@ namespace ScheduleViewer
                     }
                 }
                 this.hoverText = newHoverText;
+            }
+            foreach (var (bounds, text) in this.questHoverText)
+            {
+                if (bounds.Contains(x, y))
+                {
+                    this.hoverText = text; 
+                    break;
+                }
             }
         }
 
@@ -329,6 +392,52 @@ namespace ScheduleViewer
         }
         #endregion
 
+        /// <returns>A dictionary of NPC names and their active quests.</returns>
+        public static Dictionary<string, string> GetNPCsWithQuests()
+        {
+            Dictionary<string, string> npcsWithQuests = new();
+            foreach (var quest in Game1.player.questLog)
+            {
+                List<string> names = new();
+                switch (quest)
+                {
+                    case FishingQuest q:
+                        names.Add(q.target.Value);
+                        break;
+                    case ItemDeliveryQuest q:
+                        names.Add(q.target.Value);
+                        break;
+                    case LostItemQuest q:
+                        names.Add(q.npcName.Value);
+                        break;
+                    case ResourceCollectionQuest q:
+                        names.Add(q.target.Value);
+                        break;
+                    //case SecretLostItemQuest q:
+                    //    names.Add(q.npcName.Value);
+                    //    break;
+                    case SlayMonsterQuest q:
+                        names.Add(q.target.Value);
+                        break;
+                    case SocializeQuest q:
+                        names.AddRange(q.whoToGreet);
+                        break;
+                }
+                foreach (var name in names)
+                {
+                    if (npcsWithQuests.ContainsKey(name))
+                    {
+                        npcsWithQuests[name] = npcsWithQuests[name] + Environment.NewLine + quest.questTitle;
+                    }
+                    else
+                    {
+                        npcsWithQuests.Add(name, quest.questTitle);
+                    }
+                }
+            }
+            return npcsWithQuests;
+        }
+
         #region private methods
         private void ConstrainSelectionToVisibleSlots()
         {
@@ -369,14 +478,19 @@ namespace ScheduleViewer
                 b.Draw(Game1.staminaRect, new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth - 4, sprite.bounds.Y - 4, characterSlotBounds.Width, characterSlotBounds.Height - 12), Color.White * 0.25f);
                 this.hoveredNpc = npc;
             }
+            // draw sprite
             sprite.draw(b);
 
+            // draw name
             float lineHeight = Game1.smallFont.MeasureString("W").Y;
             float russianOffsetY = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ru || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko) ? ((0f - lineHeight) / 2f) : 0f);
             b.DrawString(Game1.dialogueFont, displayName, new Vector2((float)(base.xPositionOnScreen + IClickableMenu.borderWidth * 3 / 2 + 64 - 20 + 96) - Game1.dialogueFont.MeasureString(displayName).X / 2f, (float)(sprite.bounds.Y + 48) + russianOffsetY - 20), Game1.textColor);
 
-            int x = this.sprites[i].bounds.Right + partitionSize;
-            int y = this.sprites[i].bounds.Y - 4;
+            // draw quest icon
+            this.questIcons[i]?.draw(b);
+
+            int x = sprite.bounds.Right + partitionSize;
+            int y = sprite.bounds.Y - 4;
             int slot = i - this.slotPosition;
 
             if (isOnSchedule)
@@ -400,7 +514,7 @@ namespace ScheduleViewer
                 {
                     string entryString = line.Value?.ToString();
                     string key = $"{slot}-{line.Key - line1Index}";
-                    this.hoverTextOptions[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.HoverText);
+                    this.entryHoverText[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.HoverText);
 
                     if (line.Value != null)
                     {
@@ -421,16 +535,16 @@ namespace ScheduleViewer
                 b.DrawString(Game1.smallFont, ModEntry.ModHelper.Translation.Get(entries == null ? "not_following_schedule_today" : "ignoring_schedule_today"), new Vector2(x, y), Game1.textColor);
                 Utility.drawBoldText(b, currentLocation, Game1.smallFont, new Vector2(x, y + lineHeight), Game1.textColor);
                 // clear hover text options
-                this.hoverTextOptions[$"{slot}-0"] = null;
-                this.hoverTextOptions[$"{slot}-1"] = null;
-                this.hoverTextOptions[$"{slot}-2"] = null;
+                this.entryHoverText[$"{slot}-0"] = null;
+                this.entryHoverText[$"{slot}-1"] = null;
+                this.entryHoverText[$"{slot}-2"] = null;
             }
         }
 
         private int RowPosition(int i)
         {
             int j = i - this.slotPosition;
-            return base.yPositionOnScreen + IClickableMenu.borderWidth + 160 + 4 + j * rowHeight;
+            return base.yPositionOnScreen + IClickableMenu.borderWidth + j * rowHeight;
         }
 
         private void SetScrollBarToCurrentIndex()
@@ -460,15 +574,31 @@ namespace ScheduleViewer
             int index = 0;
             foreach (var slot in characterSlots)
             {
-                slot.bounds.Y = this.RowPosition(index - 1);
+                slot.bounds.Y = this.RowPosition(index - 1) + 164;
                 index++;
             }
             // update y position for visible sprites
-            for (int i = this.slotPosition; i < this.slotPosition + 5; i++)
+            for (int i = this.slotPosition; i < this.slotPosition + slotsOnPage; i++)
             {
-                if (this.sprites.Count > i)
+                // adding additional logging
+                try
                 {
-                    this.sprites[i].bounds.Y = base.yPositionOnScreen + IClickableMenu.borderWidth + 32 + rowHeight * (i - this.slotPosition) + 32;
+                    int newSpriteY = this.RowPosition(i) + 64;
+                    ClickableTextureComponent sprite = this.sprites.ElementAtOrDefault(i);
+                    if (sprite != null)
+                    {
+                        sprite.bounds.Y = newSpriteY;
+                    }
+                    ClickableTextureComponent questIcon = this.questIcons.ElementAtOrDefault(i);
+                    if (questIcon != null)
+                    {
+                        questIcon.bounds.Y = newSpriteY - 8;
+                    }
+                    this.questHoverText[i - this.slotPosition].text = questIcon?.hoverText ?? string.Empty;
+                }
+                catch
+                {
+                    ModEntry.Console.Log($"Error in the UpdateSlots method. Couldn't update the position of the character sprite at {i} out of {this.sprites.Count} total sprites. Current slotPosition: {this.slotPosition}", LogLevel.Error);
                 }
             }
             base.populateClickableComponentList();

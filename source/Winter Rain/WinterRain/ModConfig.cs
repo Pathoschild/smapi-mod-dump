@@ -18,19 +18,23 @@ namespace WinterRain
 {
     class ModConfig
     {
-        public bool useSnowDuration { get; set; }
-        public int[] snowDuration { get; set; }
-        public double chanceToRain { get; set; }
-        public double chanceToSnow { get; set; }
+        public bool UseSnowDuration { get; set; }
+        public int[] SnowDuration { get; set; }
+        public double ChanceToRain_duration { get; set; }
+        public double ChanceToSnow_duration { get; set; }
+        public double ChanceToRain_notDuration {  get; set; }
+        public double ChanceToSnow_notDuration { get; set; }
 
 
 
         public ModConfig()
         {
-            this.useSnowDuration = true;
-            this.snowDuration = new int[2] {8, 21};
-            this.chanceToRain = 0.183;
-            this.chanceToSnow = 0.63;
+            UseSnowDuration = true;
+            SnowDuration = new int[2] {8, 21};
+            ChanceToRain_duration = 0.183;
+            ChanceToSnow_duration = 0.63;
+            ChanceToRain_notDuration = 0.183;
+            ChanceToSnow_notDuration = 0.447; // 0.63-0.183
         }
     }
 }

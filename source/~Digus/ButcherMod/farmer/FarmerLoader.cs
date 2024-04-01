@@ -18,6 +18,7 @@ using AnimalHusbandryMod.animals;
 using AnimalHusbandryMod.common;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.farmer
 {

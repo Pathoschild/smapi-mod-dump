@@ -16,7 +16,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using StardewModdingAPI.Events;
+using StardewValley;
 using Object = StardewValley.Object;
+using Microsoft.Xna.Framework.Input;
 
 namespace ProducerFrameworkMod.Api
 {
@@ -30,74 +32,54 @@ namespace ProducerFrameworkMod.Api
 
         public List<Dictionary<string, object>> GetRecipes(string producerName)
         {
-            List<ProducerRule> producerRules = ProducerController.GetProducerRules(producerName);
-            return GetRecipes(producerRules);
+            var key = Game1.bigCraftableData.FirstOrDefault(b => b.Value.Name.Equals(producerName)).Key;
+            var producerRules = key != null
+                ? ProducerController.GetProducerRules(ItemRegistry.type_bigCraftable + key)
+                : null;
+            return producerRules != null ? GetRecipes(producerRules) : null;
         }
 
         private static List<Dictionary<string, object>> GetRecipes(List<ProducerRule> producerRules)
         {
-            Dictionary<string, int> machineCache = new Dictionary<string, int>();
-            Dictionary<int, string> bigObjects = ProducerFrameworkModEntry.Helper.Content.Load<Dictionary<int, string>>("Data\\BigCraftablesInformation", ContentSource.GameContent);
-            List<Dictionary<string, object>> returnValue = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> returnValue = new();
             foreach (ProducerRule producerRule in producerRules)
             {
-                //TODO Handle context_tag
-                if (!(producerRule.InputKey is int))
-                    continue;
+                Dictionary<string, object> ruleMap = new();
 
-                Dictionary<string, object> ruleMap = new Dictionary<string, object>();
-                if (machineCache.ContainsKey(producerRule.ProducerName))
-                {
-                    ruleMap["MachineID"] = machineCache[producerRule.ProducerName];
-                }
-                else
-                {
-                    bigObjects.FirstOrDefault(o => o.Value.StartsWith(producerRule.ProducerName + "/"));
-                    KeyValuePair<int, string> pair = bigObjects.FirstOrDefault(o => o.Value.StartsWith(producerRule.ProducerName + "/"));
-                    if (pair.Value != null)
-                    {
-                        ruleMap["MachineID"] = pair.Key;
-                        machineCache[producerRule.ProducerName] = pair.Key;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
+                ruleMap["MachineID"] = producerRule.ProducerQualifiedItemId;
                 ruleMap["InputKey"] = producerRule.InputKey;
-                List<Dictionary<string, object>> ingredients = new List<Dictionary<string, object>>
+                List<Dictionary<string, object>> ingredients = new()
                 {
-                    new Dictionary<string, object>()
+                    new()
                     {
                         {"ID", producerRule.InputKey},
                         {"Count", producerRule.InputStack}
                     }
                 };
                 producerRule.FuelList.ForEach(f =>
-                    ingredients.Add(new Dictionary<string, object>() {{"ID", f.Item1}, {"Count", f.Item2}}));
+                    ingredients.Add(new() {{"ID", f.Item1}, {"Count", f.Item2}}));
                 ruleMap["Ingredients"] = ingredients;
 
-                List<Dictionary<string, object>> exceptIngredients = new List<Dictionary<string, object>>();
+                List<Dictionary<string, object>> exceptIngredients = new();
                 producerRule.ExcludeIdentifiers?.ForEach(
-                    i => exceptIngredients.Add(new Dictionary<string, object>() {{"ID", i}}));
+                    i => exceptIngredients.Add(new() {{"ID", i}}));
                 ruleMap["ExceptIngredients"] = exceptIngredients;
 
                 double probabilities = 0;
-                List<Dictionary<string, object>> ruleMapPerOutput = new List<Dictionary<string, object>>();
+                List<Dictionary<string, object>> ruleMapPerOutput = new();
                 foreach (OutputConfig outputConfig in producerRule.OutputConfigs)
                 {
-                    Dictionary<string, object> outputRuleMap = new Dictionary<string, object>(ruleMap);
-                    outputRuleMap["Output"] = outputConfig.OutputIndex;
+                    Dictionary<string, object> outputRuleMap = new(ruleMap);
+                    outputRuleMap["Output"] = outputConfig.OutputItemId;
 
-                    List<Dictionary<string, object>> fuel = new List<Dictionary<string, object>>();
+                    List<Dictionary<string, object>> fuel = new();
 
                     List<Dictionary<string, object>> ingredientInput = ingredients;
                     if (outputConfig.RequiredInputStack.HasValue)
                     {
-                        ingredientInput = new List<Dictionary<string, object>>
+                        ingredientInput = new()
                         {
-                            new Dictionary<string, object>()
+                            new()
                             {
                                 {"ID", producerRule.InputKey},
                                 {"Count", outputConfig.RequiredInputStack.Value}
@@ -110,7 +92,7 @@ namespace ProducerFrameworkMod.Api
                             .ToList()
                         ).ToList();
 
-                    List<int> minOutput = new List<int>
+                    List<int> minOutput = new()
                     {
                         outputConfig.OutputStack
                     };
@@ -118,7 +100,7 @@ namespace ProducerFrameworkMod.Api
                     if (outputConfig.GoldQualityInput.Probability > 0) minOutput.Add(outputConfig.GoldQualityInput.OutputStack);
                     if (outputConfig.IridiumQualityInput.Probability > 0) minOutput.Add(outputConfig.IridiumQualityInput.OutputStack);
                     outputRuleMap["MinOutput"] = minOutput.Min();
-                    List<int> maxOutput = new List<int>
+                    List<int> maxOutput = new()
                     {
                         outputConfig.OutputMaxStack
                     };
@@ -173,17 +155,18 @@ namespace ProducerFrameworkMod.Api
 
         public List<ProducerRule> GetProducerRules(string producerName)
         {
-            return ProducerController.GetProducerRules(producerName);
+            var key = Game1.bigCraftableData.FirstOrDefault(b => b.Value.Name.Equals(producerName)).Key;
+            return key != null ? ProducerController.GetProducerRules(ItemRegistry.type_bigCraftable + key) : null;
         }
 
         public List<ProducerRule> GetProducerRules(Object producerObject)
         {
-            return GetProducerRules(producerObject.Name);
+            return GetProducerRules(producerObject.QualifiedItemId);
         }
 
         public bool AddContentPack(string directory)
         {
-            Regex nameToId = new Regex("[^a-zA-Z0-9_.]");
+            Regex nameToId = new("[^a-zA-Z0-9_.]");
             ProducerFrameworkModEntry.ModMonitor.Log($"Reading content pack called through the API from {directory}");
             IContentPack temp = ProducerFrameworkModEntry.Helper.ContentPacks.CreateFake(directory);
             ManifestData info = temp.ReadJsonFile<ManifestData>("content-pack.json");

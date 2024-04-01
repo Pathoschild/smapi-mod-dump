@@ -12,19 +12,23 @@ using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Character;
 using StardewDruid.Map;
+using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace StardewDruid.Event.Scene
 {
     public class Scythe : EventHandle
     {
-        private Quest questData;
 
-        public Scythe(Vector2 target, Rite rite, Quest quest)
-          : base(target, rite)
+        public Scythe(Vector2 target,  Quest quest)
+          : base(target)
         {
-            
+
+            targetVector = Mod.instance.rite.castVector;
+
             questData = quest;
 
             eventId = quest.name;
@@ -33,8 +37,16 @@ namespace StardewDruid.Event.Scene
 
         public override void EventTrigger()
         {
+
             Mod.instance.CompleteQuest("swordFates");
-            
+
+            if (!Context.IsMainPlayer)
+            {
+
+                return;
+
+            }
+
             if (!Mod.instance.characters.ContainsKey("Jester"))
             {
 
@@ -42,73 +54,97 @@ namespace StardewDruid.Event.Scene
 
             }
 
-            //Jester character = Mod.instance.characters["Jester"] as Jester;
-            Mod.instance.RegisterEvent(this, "scene");
+            cues = DialogueData.DialogueScene("swordFates");
+
+            narrators = DialogueData.DialogueNarrator("swordFates");
+
+            voices = new() { [0] = Mod.instance.characters["Jester"], };
+
+            sceneCounter = 3;
+
+            Mod.instance.RegisterEvent(this, "swordFates");
+
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 20.0;
+
         }
 
         public override void EventRemove()
         {
-            Jester character = Mod.instance.characters["Jester"] as Jester;
-            ModUtility.AnimateQuickWarp(character.currentLocation, character.Position - new Vector2(0.0f, 32f), "Solar");
-            character.SwitchDefaultMode();
-            character.WarpToDefault();
-            base.EventRemove();
-            //Mod.instance.ReassignQuest(questData.name);
-        }
 
-        public override bool EventActive()
-        {
-            return targetPlayer.currentLocation == targetLocation && expireTime >= Game1.currentGameTime.TotalGameTime.TotalSeconds;
+            Jester character = Mod.instance.characters["Jester"] as Jester;
+
+            ModUtility.AnimateQuickWarp(character.currentLocation, character.Position - new Vector2(0.0f, 32f), true);
+
+            character.SwitchPreviousMode();
+
+            base.EventRemove();
+
         }
 
         public override void EventInterval()
         {
-            
+
             activeCounter++;
-            
-            Jester character = Mod.instance.characters["Jester"] as Jester;
 
             if (activeCounter == 1)
             {
-                
-                if (character.currentLocation.Name != riteData.castLocation.Name)
+
+                Jester character = Mod.instance.characters["Jester"] as Jester;
+
+                character.SwitchSceneMode();
+
+                if (character.currentLocation.Name != Mod.instance.rite.castLocation.Name)
                 {
-                    character.Halt();
                     character.currentLocation.characters.Remove(character);
-                    character.currentLocation = riteData.castLocation;
+                    character.currentLocation = Mod.instance.rite.castLocation;
                     character.currentLocation.characters.Add(character);
+                    character.Halt();
+                    character.TargetIdle(30);
                 }
 
                 character.Position = new((questData.triggerVector.X * 64f)- 128f, (questData.triggerVector.Y * 64f) + 128f);
 
-                ModUtility.AnimateQuickWarp(riteData.castLocation, character.Position - new Vector2(0.0f, 32f), "Solar");
-
-                character.SwitchSceneMode();
+                ModUtility.AnimateQuickWarp(Mod.instance.rite.castLocation, character.Position - new Vector2(0.0f, 32f));
 
                 character.eventVectors.Clear();
 
-                character.eventVectors.Add(character.Position + new Vector2(0.0f, -128f));
-
-                character.Halt();
-
-                Mod.instance.dialogue["Jester"].specialDialogue.Add("Thanatoshi", new List<string>()
+                character.eventVectors = new()
                 {
-                  "I hope he found peace...",
-                  "Grim. Dark. I Love this place.",
-                  "Do you know this figure?",
-                  "I have a strange foreboding about this."
-                });
+
+                    [3] = (character.Position + new Vector2(0.0f, -128f)),
+
+                };
+
+                character.eventIndex = 3;
+
+                character.eventName = "swordFates";
+
+                return;
 
             }
 
-            if (activeCounter == 2)
+            if(activeCounter == 2)
+            {
+
+                DialogueCue(1);
+
+                return;
+
+            }
+
+            if(activeCounter == 4)
             {
                 
-                character.showTextAboveHead("so Thanatoshi was here.", -1, 2, 3000, 0);
-            
+                sceneCounter = 5;
+
+                Mod.instance.dialogue["Jester"].AddSpecial("Jester", "Thanatoshi");
+
+                return;
+
             }
-            
+
         }
+
     }
+
 }

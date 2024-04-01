@@ -37,6 +37,8 @@ namespace StardewDruid.Monster.Template
 
         public Dictionary<int, Vector2> hatOffsets;
 
+        public Microsoft.Xna.Framework.Color slimeColor;
+
         public BigSlime()
         {
 
@@ -63,23 +65,22 @@ namespace StardewDruid.Monster.Template
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(new INetSerializable[1]
-            {
-                 posturing,
-            });
+
+            NetFields.AddField(posturing,"posturing");
         }
 
-        public void LoadOut()
+        public virtual void LoadOut()
         {
 
             hatsTexture = Game1.content.Load<Texture2D>("Characters\\Farmer\\hats");
 
-            //hatSourceRect = Game1.getSourceRectForStandardTileSheet(hatsTexture, 151, 20, 20);
             hatSourceRect = Game1.getSourceRectForStandardTileSheet(hatsTexture, 192, 20, 20);
 
             dropHat = true;
 
             loadedout = true;
+
+            slimeColor = Color.Orange * 0.7f;
 
         }
 
@@ -176,12 +177,12 @@ namespace StardewDruid.Monster.Template
                     Sprite.Texture,
                     getLocalPosition(Game1.viewport) + new Vector2(56f, 16 + yJumpOffset),
                     Sprite.SourceRect,
-                    Color.Orange * 0.7f,
+                    slimeColor,
                     rotation,
                     new Vector2(16f, 16f),
                     6f,
                     flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    Math.Max(0f, drawOnTop ? 0.991f : getStandingY() / 10000f)
+                    Math.Max(0f, drawOnTop ? 0.991f : Tile.Y / 10000f)
                 );
 
                 hatOffsets = new()
@@ -210,7 +211,7 @@ namespace StardewDruid.Monster.Template
                     new Vector2(10f, 9f),
                     6f,
                     flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    Math.Max(0f, drawOnTop ? 0.990f : getStandingY() / 10000f - 0.00005f)
+                    Math.Max(0f, drawOnTop ? 0.990f : Tile.Y / 10000f - 0.00005f)
                 );
 
             }
@@ -221,6 +222,20 @@ namespace StardewDruid.Monster.Template
         {
             if (!loadedout) { LoadOut(); }
             base.update(time, location);
+        }
+
+        public override void onDealContactDamage(Farmer who)
+        {
+
+            if ((who.health + who.buffs.Defense) - DamageToFarmer < 10)
+            {
+
+                who.health = (DamageToFarmer - who.buffs.Defense) + 10;
+
+                Mod.instance.CriticalCondition();
+
+            }
+
         }
 
     }

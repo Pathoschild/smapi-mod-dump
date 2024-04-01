@@ -6,11 +6,9 @@ mods:
    Stardew Survival Project
 
 latest commit:
-   commit bef4c3823082dff2e29cd81f79a7310aed65d861
-   Author: Nguyen Ngoc Dang <kingrfminecraft@gmail.com>
-   Date:   Sat Mar 16 17:01:25 2024 +0700
+   commit 187e64c49443778a40d2a2ac5c46c2386b1e3c8b
+   Author: NeroYuki <neroyuki241@gmail.com>
+   Date:   Wed Mar 20 22:51:44 2024 +0700
    
-       Merge pull request #3 from NeroYuki/0.4.0-alpha
-       
-       [WIP] Porting the mod to Stardew Valley 1.6 (v0.4.0-alpha)
+       remove build artifact accidentally included, oops
    

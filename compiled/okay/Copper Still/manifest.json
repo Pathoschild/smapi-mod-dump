@@ -1,0 +1,19 @@
+﻿{
+    "Name": "Copper Still",
+    "Author": "NCarigon",
+    "Version": "1.1.1",
+    "Description": "Adds more endgame variety to processing crops.",
+    "UniqueID": "NCarigon.CopperStill",
+    "UpdateKeys": [ "nexus:15333" ],
+    "EntryDll": "CopperStill.dll",
+    "MinimumApiVersion": "4.0.0",
+    "Dependencies": [
+        /* disabled locally
+        { "UniqueID": "NCarigon.CopperStillJA" },
+        { "UniqueID": "NCarigon.CopperStillCCM" },
+        { "UniqueID": "NCarigon.CopperStillPFM" },
+        { "UniqueID": "NCarigon.CopperStillMFM" },
+        { "UniqueID": "NCarigon.CopperStillBBM" }
+        */
+    ]
+}

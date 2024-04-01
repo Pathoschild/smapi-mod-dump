@@ -6,11 +6,11 @@ mods:
    Postbox Building
 
 latest commit:
-   commit e1161fc573aa391c893b7fcc153cc18fd2633042
+   commit 0482831f7d40e6a341c1f03732380228b2c9d910
    Author: i-saac-b <42577950+i-saac-b@users.noreply.github.com>
-   Date:   Fri Aug 11 11:33:08 2023 -0400
+   Date:   Wed Mar 20 16:16:35 2024 -0400
    
-       Merge pull request #4 from i-saac-b/dev
+       hotfix BuildingData guardrail (#7)
        
-       Dev
+       prevent a possible mod crash on launch
    

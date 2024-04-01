@@ -1,5 +1,6 @@
 {
   "ToggleKey": "F7",
+  "CloseMenuOnWarp": true,
   "MenuStyle": "VerticalList",
-  "MaxGridColumns": 3
+  "MaxGridRows": 3
 }

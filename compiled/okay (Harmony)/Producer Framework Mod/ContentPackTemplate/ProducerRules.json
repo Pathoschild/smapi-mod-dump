@@ -1,0 +1,98 @@
+﻿[
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "ProducerName", //Name of the producer to look for. It will match the first big craftable it finds. Will be ignored if ProducerQualifiedItemId is defined. It's a legacy property, you should use ProducerQualifiedItemId instead.
+		"ProducerQualifiedItemId": "(BC)12", //The QualifiedItemId of the producer. It's required if no ProducerName is defined.
+		"AdditionalProducerNames": [ "ProducerName2", "ProducerName3" ], //Additional names of the producer. The rule will be completely copied to the producer names in the list.
+		"AdditionalProducerQualifiedItemId": [ "(BC)15", "(BC)16" ], //Additional qualified item ids of the producer. The rule will be completely copied to the producer qualified item ids in the list.
+		"InputIdentifier": "fruit_tree_item", //The identifier of the input. Can be the Qualified Item Id, Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 2, //The required stack of the input. Default value is 1.
+		"ExcludeIdentifiers": [ "Peach" ], //List of identifiers to exclude from the rule. Follow the same rules for InputIdentifier. Default value is null.
+		"FuelIdentifier": "Coal", //The identifier of the Fuel. Fuel is the extra item used when producing. Can be the Qualified Item Id, Index, the Name or the category of the object. Default is null.
+		"FuelStack": 4, //The required stack of the Fuel. Only used if fuel is not null. Default is 1.
+		"AdditionalFuel": {
+			"-6": 2,
+			"Coal": 1,
+			"246": 5
+		}, //Additional fuel if needed. You don't need to set a Fuel to use AdditionalFuel. The format is a pair of identifier and stack amount, following the same rules of the other fuel property. Default is null.
+		"MinutesUntilReady": 120, //The amount of minutes it takes to produce. Stardew days have 1600 minutes. 1200 minutes from 6 am to 2am and 400 minutes from 2am to 6am. Should be divisible by 10. Required.
+		"SubtractTimeOfDay": true, //If MinutesUntilReady should be subtracted by the current time of day. It always add 360 to the formula, since the day start at 6 am. So if you set MinutesUntilReady to 1600, it will always produce at 6 am of the next day. Never set to true if MinutesUntilReady is smaller than 1600.
+		"OutputIdentifier": "Beer", //The identifier of the output. Can be the Qualified Item Id, Index or the Name of the object. Required.
+		"OutputName": "{farmerName}'s {inputName} {outputName} from {farmName}", //The Name of the object. This will replace the basic output name. It accepts 4 tags that are dynamically replaced. Default is null.
+		"OutputTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the format of the OutputName in other languages. The value of this key follows the same rules of the OutputName property above. Default is null.
+		"OutputGenericParentName": "Wild", //The generic parent name is for when there is no parent name for the object that needs a parent, like Wild for Honey. Default is blank.
+		"OutputGenericParentNameTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the OutputGenericParentName in other languages. Default is null.
+		"PreserveType": "Wine", //[Wine|Jelly|Pickle|Juice|Roe|AgedRoe|Honey|Bait|DriedFruit|DriedMushroom|SmokedFish] - If the output is one of the vanilla game Preserves Type. Default is null. Using this will override the OutputName property.
+		"KeepInputParentIndex": true, // When true the input of the preserved parent index will be used as the parent index of the output.
+		"ReplaceWithInputParentIndex": true, // When true the input of the preserved parent index will be used as the output index.
+		"InputPriceBased": true, //If the base price of the output should be replaced with the base price of the input. Default is false.
+		"OutputPriceIncrement": 200, //Increment the base price by this amount. Default is 0.
+		"OutputPriceMultiplier": 2.5, //Multiply the base price by this amount. Default is 1.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputQuality": 2, //Set the output quality. Default is 0.
+		"OutputStack": 2, //Set the output stack. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		"SilverQualityInput": { //Define an alternative stack if they input is silver quality. Removing will ignore this since probability will be 0.
+			"Probability": 0.2, //Probability to use the alternative stack. Default is 0.
+			"OutputStack": 2, //Same as others.
+			"OutputMaxStack": 4 //Same as others.
+		},
+		"GoldQualityInput": { //Define an alternative stack if they input is gold quality. Removing will ignore this since probability will be 0.
+			"Probability": 0.4, //Same as others.
+			"OutputStack": 3, //Same as others.
+			"OutputMaxStack": 4 //Same as others.
+		},
+		"IridiumQualityInput": { //Define an alternative stack if they input is iridium quality. Removing will ignore this since probability will be 0.
+			"Probability": 1, //Same as others.
+			"OutputStack": 4, //Same as others.
+			"OutputMaxStack": 4 //Same as others.
+		},
+		"OutputColorConfig": { // If set, the output will be a Colored Object. Remember that colored objects need the next sprite in the sheet to be a pallet for the color. Default is null.
+			"Type": "DefinedColor", // [ObjectColor|ObjectDyeColor|DefinedColor] If ObjectColor and the input is a colored object, it will use the color of the input. If ObjectDyeColor and the input has a dye color, it will use this color. If DefinedColor or it does find the color on the other options, it will create the color based on the Red, Green and Blue values. Default is DefinedColor.
+			"Red": 255, // The red value of the color. Default is 255.
+			"Green": 255, // The green value of the color. Default is 255.
+			"Blue": 255 // The blue value of the color. Default is 255.
+		},
+		"AdditionalOutputs": [ // Define a list of additional outputs. You don't need to set a default output to use the additional ones, the first additional output will be the default in that case. Only one output is given, randomly chosen between the options. Default is an empty list.
+			{
+				"OutputProbability": 0.2, //The absolute probability of getting that output, from 0 to 1. Default is 0. If 0 the remain percent not defined will be equally divided between all outputs with 0 probability. Probability are checked from the first to the last output, so with the total is bigger than 1, the remaining outputs will be ignored.
+				"OutputIdentifier": "Apple", //This is required. Works the same as the OutputIdentifier described in the rule.
+				"MinutesUntilReady": 100, //The amount of minutes it takes to produce this output. This will override the default MinutesUntilReady set in the rule. Should be divisible by 10.
+				"RequiredInputQuality": [ 0, 1 ], // Required input quality for the output to be possible. Default is no required quality.
+				"RequiredInputStack": 8, // Required input stack to be equal or greater to this value for the output to be possible. This amount will be consumed instead of InputStack value. It can be less than the InputStack value, but the player still need to have at least the value set on InputStack for the rule to be triggered. Default is no required stack.
+				"RequiredFuel": { "Coal": 1 }, //Required fuel for the output to be possible. These fuels will be consumed in additional to the rule defined fuels. The format is a pair of identifier and stack amount, following the same rules of the other fuel property. Default is no required fuel.
+				"RequiredSeason": [ "spring", "summer" ], // Required season for the output to be possible. Default is no required season.
+				"RequiredWeather": [ "Sunny", "Windy" ], // [Sunny|Rainy|Stormy|Snowy|Windy] Required weather for the output to be possible. Default is no required weather.
+				"RequiredLocation": [ "Cellar", "FarmCave" ], // Required location for the output to be possible. Default is no required location.
+				"RequiredMail": [ "BackpackTip" ], // Required one of the mails to have been received by the player for the output to be possible. Default is no required mail.
+				"RequiredEvent": [ 611439 ], // Required one of events to have been seen by the player for the output to be possible. Default is no required event.
+				"RequiredOutdoors": true, // [true|false|null] If true, the output can only be produced outdoors. If false, the output can only be produced indoors. If the line is removed or the value is null, it there is no restriction.
+				"RequiredInputParentIdentifier": [ "22", "-80" ] // Required input parent for the output to be possible. Parent is the item that originated the input.(ex. Salmon Roe has Salmon as parent) The identifier is compared with the input parent on this order: Index, Name, Category, Context_Tag.
+				// All other properties that refer to the output can be used in the AdditionalOutputs. Remember to use commas to separate properties.
+			}
+		],
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+		"PlacingAnimation": "Fire", //[Bubbles|Fire|CharcoalKilnSmoke] //Animation to make when placing the input. Default is null.
+		"PlacingAnimationColorName": "White", //The color of the animation.[http://www.foszor.com/blog/xna-color-chart/] Default White.
+		"PlacingAnimationOffsetX": 0, //The offset of the X axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
+		"PlacingAnimationOffsetY": -32, //The offset of the Y axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
+		"IncrementStatsOnInput": [ "PiecesOfTrashRecycled" ], // Game stats to increment when a input is placed. Will increment the stats by the amount of the stack. Vanilla machines already increment stats when an item is removed from the machine. Only the Recycle Machine increment the stats on input. Default is an empty list.
+		"IncrementStatsLabelOnInput": [ "ModId.MyCustomProduct" ], // Game stats label to increment when a input is placed. Will increment the stats by the amount of the stack. Can be any label text you want. MFM also support stats label for conditions. Check vanilla stats label at the end of the file. Default is an empty list.
+		"OverrideMod": [ "IdOfTheMod.ToOverride" ], //If defined, this rule can override rules with the same producer/input combination from the mods in the list. Otherwise the first one to be loaded will be used.
+		"LookForInputWhenReady": { // Set this config if you want to look for a specific object when ready. If the rule has an input, it will consume the input on placement, check restrictions to choose the output, but won't apply name, price, quality and similar modifications based on that input. The found object when ready will be used for these modifications instead.
+			"Range": 5, //Max range the input will be looked for. A negative number will be considered no limit (will stop at 150 to avoid crash). Default is -1.
+			"InputIdentifier": [ "Orange", "-80" ], //Identifier of the input. Can be the Qualified Item Id, index, name or category.
+			"Crop": true, //If should look up for crops. The identifier will be compared with the harvest object. Default is false.
+			"ExcludeForageCrops": true, //If it should ignore Forage crops. Default is false.
+			"GardenPot": true, //If it should look for crops inside garden pots. Default is false.
+			"FruitTree": true, //If it should look up for fruit trees. The identifier will be compared with the fruit. Default is false.
+			"BigCraftable": false //If it should look up for BigCraftables. The identifier will be compared with the held object. Default is false.
+		},
+		"WarningsLogLevel": "Warn" //[Warn|Info|Debug|Trace] Log level of messages warning the player that something was missing when loading the rule. Default is what is set on the content pack config.
+	}
+]
+/* Additional Notes
+ * Possible stats: [SeedsSown|ItemsShipped|ItemsCooked|ItemsCrafted|ChickenEggsLayed|DuckEggsLayed|CowMilkProduced|GoatMilkProduced|RabbitWoolProduced|SheepWoolProduced|CheeseMade|GoatCheeseMade|TrufflesFound|StoneGathered|RocksCrushed|DirtHoed|GiftsGiven|TimesUnconscious|AverageBedtime|TimesFished|FishCaught|BouldersCracked|StumpsChopped|StepsTaken|MonstersKilled|DiamondsFound|PrismaticShardsFound|OtherPreciousGemsFound|CaveCarrotsFound|CopperFound|IronFound|CoalFound|CoinsFound|GoldFound|IridiumFound|BarsSmelted|BeveragesMade|PreservesMade|PiecesOfTrashRecycled|MysticStonesCrushed|DaysPlayed|WeedsEliminated|SticksChopped|NotesFound|QuestsCompleted|StarLevelCropsShipped|CropsShipped|ItemsForaged|SlimesKilled|GeodesCracked|GoodFriends|IndividualMoneyEarned]
+ * Vanilla stats label: [exMemoriesWiped|childrenTurnedToDoves|trashCansChecked|boatRidesToIsland|beachFarmSpawns|hardModeMonstersKilled|timesEnchanted]
+ * Note that not all stats are correctly counted by the game.
+ */

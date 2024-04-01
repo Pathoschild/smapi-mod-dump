@@ -6,11 +6,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 6672b8c5070ab06374054f1ecae8059716eac854
-   Author: SlayerDharok <kevinaugustino@hotmail.com>
-   Date:   Tue Aug 22 12:30:08 2023 -0400
+   commit d6df6106bf408a41005d3cfc9ba8a47ce4db0e77
+   Author: Kevin Augustino <kevinaugustino@hotmail.com>
+   Date:   Mon Mar 25 15:19:16 2024 -0400
    
-       Merge pull request #2 from Annijang/patch-2
-       
-       Update zh i18n  description
+       Update german localization. (Credit: KiraNeko88)
    

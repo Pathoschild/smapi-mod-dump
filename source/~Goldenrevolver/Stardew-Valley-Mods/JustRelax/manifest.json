@@ -15,6 +15,6 @@
   "Description": "Regenerate health and stamina while in bed in singleplayer and always while sitting (with the speed of sleeping in multiplayer)",
   "UniqueID": "Goldenrevolver.JustRelax",
   "EntryDll": "JustRelax.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:7770" ]
 }

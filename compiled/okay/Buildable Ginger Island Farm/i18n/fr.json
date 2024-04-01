@@ -1,0 +1,5 @@
+﻿{
+	// GMCM
+	"GMCM.AllowBuildingInSlimeArea.Title": "Autoriser la construction dans la zone des slimes",
+	"GMCM.AllowBuildingInSlimeArea.Tooltip": "Définit s'il faut autoriser ou non la construction dans la zone des slimes."
+}

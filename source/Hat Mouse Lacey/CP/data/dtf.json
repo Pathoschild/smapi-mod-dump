@@ -9,78 +9,112 @@
 *************************************************/
 
 {
-	"Changes": [
-		{
-			"Target": "Characters/Dialogue/HatMouseLacey",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey_FirstOfMay": "{{i18n:dtf.firstOfMay.Lacey}}"
-			}
-		},
-		{
-			"Target": "Characters/Dialogue/Leah",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey_FirstOfMay": "{{i18n:dtf.firstOfMay.Leah}}"
-			}
-		},
-		{
-			"Target": "Characters/Dialogue/MarriageDialogueHatMouseLacey",
-			"Action": "EditData",
-			"Entries": {
-				"Indoor_Day_0": "{{i18n:dtf.marriage.Indoor_Day_0}}",
-				"Indoor_Night_HatMouseLacey": "{{i18n:dtf.marriage.Indoor_Night_HatMouseLacey}}",
-				"Rainy_Night_0": "{{i18n:dtf.marriage.Rainy_Night_0}}",
-				"winter_17.nightmarket1": "{{i18n:dtf.marriage.winter_17.nightmarket1}}"
-			}
-		},
-		{
-			"Target": "Data/Events/Custom_HatMouseLacey_MouseHouse",
-			"Action": "EditData",
-			"Entries": {
-				"hatmouselacey_10h_continued": "pause 50/message \"{{i18n:events.10h.13.m}}\"/message \"... until...\"/playMusic none/speak HatMouseLacey \"{{i18n:dtf.events.10h.15}}\"/quickQuestion #{{i18n:dtf.events.10h.q5}}#{{i18n:dtf.events.10h.q6}}(break)HML_timeAfterFade 2300\\speak HatMouseLacey \"{{i18n:dtf.events.10h.r5.0}}\"\\pause 2500\\message \"{{i18n:dtf.events.10h.r5.1.m}}\"(break)HML_timeAfterFade 2200\\speak HatMouseLacey \"{{i18n:dtf.events.10h.r6.0}}\"\\speak HatMouseLacey \"{{i18n:dtf.events.10h.r6.1}}\"/end warpOut"
-			}
-		},
-		{
-			"Target": "Data/Events/Forest",
-			"Action": "EditData",
-			"Entries": {
-				"hatmouselacey_14h_continued": "pause 150/speak HatMouseLacey \"{{i18n:dtf.events.14h.13}}\"/quickQuestion #{{i18n:dtf.events.14h.q6}}#{{i18n:dtf.events.14h.q7}}#{{i18n:dtf.events.14h.q8}}(break)emote HatMouseLacey 20\\speak HatMouseLacey \"{{i18n:dtf.events.14h.r6}}\"\\HML_timeAfterFade 2200(break)speak HatMouseLacey \"{{i18n:dtf.events.14h.r7.0}}\"\\faceDirection HatMouseLacey 3 continue\\emote HatMouseLacey 60\\pause 200\\faceDirection HatMouseLacey 1\\speak HatMouseLacey \"{{i18n:dtf.events.14h.r7.1}}\"\\addConversationTopic HatMouseLacey_FirstOfMay 1\\HML_timeAfterFade 2200(break)speak HatMouseLacey \"{{i18n:dtf.events.14h.r8.0}}\"\\emote HatMouseLacey 12\\speak HatMouseLacey \"{{i18n:dtf.events.14h.r8.1}}\"\\HML_timeAfterFade 2100/pause 250/animate HatMouseLacey false true 1000 28/animate farmer true true 1000 101/specificTemporarySprite heart 48 98/playSound dwop/pause 1000/unskippable/globalFade .0045/viewport -1000 -1000/changeLocation FarmHouse/end warpOut"
-			}
-		},
-		{
-			"Target": "Data/Festivals/summer28",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey_y3": "{{i18n:dtf.festival.summer28.married.3}}"
-			},
-			"When": {
-				"Relationship:HatMouseLacey": "Married"
-			}
-		},
-		{
-			"Target": "Data/Festivals/winter25",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey_y2": "{{i18n:dtf.festival.winter25.married.2}}"
-			},
-			"When": {
-				"Relationship:HatMouseLacey": "Married"
-			}
-		},
-		{
-			"Target": "Strings/StringsFromCSFiles",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey_AfterWedding": "{{i18n:csfiles.HatMouseLacey_AfterWedding.0}}{{i18n:dtf.csfiles.HatMouseLacey_AfterWedding.1}}"
-			}
-		},
-		{
-			"Target": "Strings/StringsFromMaps",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey.MouseSpouse.drawers": "{{i18n:dtf.mapstrings.MouseSpouse.drawers}}"
-			}
-		}
-	]
+  // this file gets included only if DTF is enabled, so none of the patches
+  // in here check that token.
+  "Changes": [
+    {
+      "Target": "Characters/Dialogue/{{Lacey}}",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_CT_FirstOfMay": "{{i18n:dtf.firstOfMay.Lacey}}"
+      }
+    },
+    {
+      "Target": "Characters/Dialogue/Leah",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_CT_FirstOfMay": "{{i18n:dtf.firstOfMay.Leah}}"
+      }
+    },
+    {
+      "Target": "Characters/Dialogue/Andy",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_CT_FirstOfMay": "{{i18n:dtf.firstOfMay.Andy}}"
+      },
+      "When": {
+        "HasMod|contains=FlashShifter.StardewValleyExpandedCP": true
+      }
+    },
+    {
+      "Target": "Characters/Dialogue/MarriageDialogue{{Lacey}}",
+      "Action": "EditData",
+      "Entries": {
+        "Indoor_Day_0": "{{i18n:dtf.marriage.Indoor_Day_0}}",
+        "Indoor_Night_{{Lacey}}": "{{i18n:dtf.marriage.Indoor_Night_HatMouseLacey}}",
+        "Rainy_Night_0": "{{i18n:dtf.marriage.Rainy_Night_0}}",
+        "winter_17.nightmarket1": "{{i18n:dtf.marriage.winter_17.nightmarket1}}"
+      }
+    },
+    {
+      "Target": "Data/Events/{{ModId}}_MouseHouse",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_10Hearts_Part2": "
+          pause 50/
+          message \"{{i18n:events.10h.13.m}}\"/
+          message \"{{i18n:dtf.events.10h.14.m}}\"/
+          playMusic none/
+          speak {{Lacey}} \"{{i18n:dtf.events.10h.15}}\"/
+          quickQuestion #{{i18n:dtf.events.10h.q5}}#{{i18n:dtf.events.10h.q6}}(break)action {{ModId}}_AdvanceTime 2300\\speak {{Lacey}} \"{{i18n:dtf.events.10h.r5.0}}\"\\pause 2500\\message \"{{i18n:dtf.events.10h.r5.1.m}}\"(break)action {{ModId}}_AdvanceTime 2200\\speak {{Lacey}} \"{{i18n:dtf.events.10h.r6.0}}\"\\speak {{Lacey}} \"{{i18n:dtf.events.10h.r6.1}}\"/
+          end warpOut"
+      }
+    },
+    {
+      "Target": "Data/Events/Forest",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_14Hearts_Picnic_Part2": "
+          pause 150/
+          speak {{Lacey}} \"{{i18n:dtf.events.14h.13}}\"/
+          quickQuestion #{{i18n:dtf.events.14h.q6}}#{{i18n:dtf.events.14h.q7}}#{{i18n:dtf.events.14h.q8}}(break)emote {{Lacey}} 20\\speak {{Lacey}} \"{{i18n:dtf.events.14h.r6}}\"(break)speak {{Lacey}} \"{{i18n:dtf.events.14h.r7.0}}\"\\faceDirection {{Lacey}} 3 true\\emote {{Lacey}} 60\\pause 200\\faceDirection {{Lacey}} 1\\speak {{Lacey}} \"{{i18n:dtf.events.14h.r7.1}}\"\\addConversationTopic {{ModId}}_CT_FirstOfMay 1(break)speak {{Lacey}} \"{{i18n:dtf.events.14h.r8.0}}\"\\emote {{Lacey}} 12\\speak {{Lacey}} \"{{i18n:dtf.events.14h.r8.1}}\"/
+          pause 250/
+          animate {{Lacey}} false true 1000 28/
+          animate farmer true true 1000 101/
+          specificTemporarySprite heart 48 98/
+          playSound dwop/
+          pause 1000/
+          unskippable/
+          action {{ModId}}_AdvanceTime 2200/
+          globalFade .0045/
+          viewport -1000 -1000/
+          changeLocation FarmHouse/
+          end warpOut"
+      }
+    },
+    {
+      "Target": "Data/Festivals/summer28",
+      "Action": "EditData",
+      "Entries": {
+        "{{Lacey}}_y3": "{{i18n:dtf.festival.summer28.married.3}}"
+      },
+      "When": {
+        "Relationship:{{Lacey}}": "Married"
+      }
+    },
+    {
+      "Target": "Data/Festivals/winter25",
+      "Action": "EditData",
+      "Entries": {
+        "{{Lacey}}_y2": "{{i18n:dtf.festival.winter25.married.2}}"
+      },
+      "When": {
+        "Relationship:{{Lacey}}": "Married"
+      }
+    },
+    {
+      "Target": "Strings/StringsFromCSFiles",
+      "Action": "EditData",
+      "Entries": {
+        "{{Lacey}}_AfterWedding": "{{i18n:csfiles.HatMouseLacey_AfterWedding.0}}{{i18n:dtf.csfiles.HatMouseLacey_AfterWedding.1}}"
+      }
+    },
+    {
+      "Target": "Strings/StringsFromMaps",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}.MouseSpouse.drawers": "{{i18n:dtf.mapstrings.MouseSpouse.drawers}}"
+      }
+    }
+  ]
 }

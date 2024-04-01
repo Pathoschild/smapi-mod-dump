@@ -7,9 +7,9 @@ mods:
    One Click Shed Reloader
 
 latest commit:
-   commit f5dcfccdf804ba6d97c48fa4bc0e32290081d1c2
+   commit d7ae8b094bd68d84e93c151b2b6c7cd4c133deed
    Author: Jon Hester <jhester@aclaimrx.com>
-   Date:   Thu Feb 29 10:54:59 2024 -0500
+   Date:   Thu Mar 21 10:48:17 2024 -0400
    
-       Comment changes
+       Updated manifests and readmes for 1.6.
    

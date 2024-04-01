@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20637
+IDs: BadNetCode.GetOutTheWay
+update keys: Nexus:20637

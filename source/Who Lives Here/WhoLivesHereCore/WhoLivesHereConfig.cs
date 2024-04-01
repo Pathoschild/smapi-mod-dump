@@ -21,5 +21,6 @@ namespace WhoLivesHereCore
         public int PageDelay { get; set; } = 250;
         public bool HideEmptyTabs { get; set; } = true;
         public bool ShowAnimalCount { get; set; } = false;
+        public bool ShowMissingHay { get; set; } = true;
     }
 }

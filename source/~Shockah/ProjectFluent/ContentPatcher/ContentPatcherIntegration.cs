@@ -27,13 +27,13 @@ namespace Shockah.ProjectFluent.ContentPatcher
 
 		internal static void Setup(Harmony harmony)
 		{
-			var api = ProjectFluent.Instance.Helper.ModRegistry.GetApi<IContentPatcherApi>(ContentPatcherModID);
+			var api = ModEntry.Instance.Helper.ModRegistry.GetApi<IContentPatcherApi>(ContentPatcherModID);
 			if (api is null)
 				return;
 
-			var version = ProjectFluent.Instance.Helper.ModRegistry.Get(ContentPatcherModID)!.Manifest.Version;
-			if (version.MajorVersion > 1)
-				ProjectFluent.Instance.Monitor.Log("Detected newer Content Patcher than 1.x, integration might not behave correctly.", LogLevel.Warn);
+			var version = ModEntry.Instance.Helper.ModRegistry.Get(ContentPatcherModID)!.Manifest.Version;
+			if (version.MajorVersion > 2)
+				ModEntry.Instance.Monitor.Log("Detected newer Content Patcher than 2.x, integration might not behave correctly.", LogLevel.Warn);
 
 			Patch(harmony);
 			RegisterTokenInContentPacks(api);
@@ -46,7 +46,7 @@ namespace Shockah.ProjectFluent.ContentPatcher
 				var modTokenContextType = Type.GetType(ContentPatcherModTokenContextQualifiedName);
 
 				var getTokenMethod = AccessTools.Method(modTokenContextType, "GetToken");
-				GetTokenDelegate = (context, name, enforceContext) => getTokenMethod.Invoke(context, new object[] { name, enforceContext });
+				GetTokenDelegate = (context, name, enforceContext) => getTokenMethod.Invoke(context, [name, enforceContext]);
 
 				var getScopeField = AccessTools.Field(modTokenContextType, "Scope");
 				GetScopeDelegate = (context) => (string)getScopeField.GetValue(context)!;
@@ -58,13 +58,13 @@ namespace Shockah.ProjectFluent.ContentPatcher
 			}
 			catch (Exception e)
 			{
-				ProjectFluent.Instance.Monitor.Log($"Could not patch Content Patcher methods - integration with it probably won't work.\nReason: {e}", LogLevel.Error);
+				ModEntry.Instance.Monitor.Log($"Could not patch Content Patcher methods - integration with it probably won't work.\nReason: {e}", LogLevel.Error);
 			}
 		}
 
 		private static void RegisterTokenInContentPacks(IContentPatcherApi api)
 		{
-			foreach (var modInfo in ProjectFluent.Instance.Helper.ModRegistry.GetAll())
+			foreach (var modInfo in ModEntry.Instance.Helper.ModRegistry.GetAll())
 			{
 				if (modInfo.Manifest.ContentPackFor?.UniqueID != ContentPatcherModID)
 					continue;
@@ -75,7 +75,7 @@ namespace Shockah.ProjectFluent.ContentPatcher
 
 		private static void ModTokenContext_GetToken_Postfix(ref object __instance, ref object? __result, string name, bool enforceContext)
 		{
-			switch (ProjectFluent.Instance.Config.ContentPatcherPatchingMode)
+			switch (ModEntry.Instance.Config.ContentPatcherPatchingMode)
 			{
 				case ContentPatcherPatchingMode.Disabled:
 					return;

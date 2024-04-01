@@ -15,7 +15,7 @@
 			"Target": "Mods/Bouhm.NPCMapLocations/NPCs",
 			"Action": "EditData",
 			"Entries": {
-				"HatMouseLacey": {
+				"{{Lacey}}": {
 					"MarkerCropOffset": 9
 				}
 			}

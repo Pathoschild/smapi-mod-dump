@@ -37,7 +37,7 @@ public interface ISkill : IEquatable<ISkill>
 
 public static class SkillExt
 {
-	private static readonly int[] OrderedSkillIndexes = new[] { 0, 3, 2, 1, 4, 5 };
+	private static readonly int[] OrderedSkillIndexes = [0, 3, 2, 1, 4, 5];
 
 	public static IEnumerable<ISkill> GetAllSkills()
 	{
@@ -99,7 +99,7 @@ public record VanillaSkill(
 		yield return Fishing;
 		yield return Combat;
 
-		if (Kokoro.Instance.Helper.ModRegistry.IsLoaded("spacechase0.LuckSkill"))
+		if (ModEntry.Instance.Helper.ModRegistry.IsLoaded("spacechase0.LuckSkill"))
 			yield return Luck;
 	}
 
@@ -184,7 +184,7 @@ public record VanillaSkill(
 			int maxLevel = Farmer.checkForLevelGain(0, int.MaxValue);
 			if (maxLevel <= 0)
 			{
-				XPValues = Array.Empty<int>();
+				XPValues = [];
 				return;
 			}
 
@@ -253,7 +253,7 @@ public record SpaceCoreSkill(
 
 	public static IEnumerable<ISkill> GetAllSkills()
 	{
-		if (!Kokoro.Instance.Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
+		if (!ModEntry.Instance.Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
 			yield break;
 		SetupReflectionIfNeeded();
 		foreach (var skillName in GetSkillListDelegate())
@@ -345,23 +345,23 @@ public record SpaceCoreSkill(
 		Type skillType = AccessTools.TypeByName(SpaceCoreSkillQualifiedName);
 		Type skillExtensionsType = AccessTools.TypeByName(SpaceCoreSkillExtensionsQualifiedName);
 
-		MethodInfo getSkillListMethod = AccessTools.Method(skillsType, "GetSkillList", Array.Empty<Type>());
+		MethodInfo getSkillListMethod = AccessTools.Method(skillsType, "GetSkillList", []);
 		GetSkillListDelegate = () => (string[])getSkillListMethod.Invoke(null, null)!;
 
-		MethodInfo getSkillMethod = AccessTools.Method(skillsType, "GetSkill", new Type[] { typeof(string) });
-		GetSkillDelegate = (skillName) => getSkillMethod.Invoke(null, new object[] { skillName });
+		MethodInfo getSkillMethod = AccessTools.Method(skillsType, "GetSkill", [typeof(string)]);
+		GetSkillDelegate = (skillName) => getSkillMethod.Invoke(null, [skillName]);
 
-		MethodInfo getCustomSkillLevelMethod = AccessTools.Method(skillExtensionsType, "GetCustomSkillLevel", new Type[] { typeof(Farmer), skillType });
-		GetCustomSkillLevelDelegate = (farmer, skill) => (int)getCustomSkillLevelMethod.Invoke(null, new object[] { farmer, skill })!;
+		MethodInfo getCustomSkillLevelMethod = AccessTools.Method(skillExtensionsType, "GetCustomSkillLevel", [typeof(Farmer), skillType]);
+		GetCustomSkillLevelDelegate = (farmer, skill) => (int)getCustomSkillLevelMethod.Invoke(null, [farmer, skill])!;
 
 		MethodInfo experienceCurveMethod = AccessTools.PropertyGetter(skillType, "ExperienceCurve");
 		ExperienceCurveDelegate = (skill) => (int[])experienceCurveMethod.Invoke(skill, null)!;
 
-		MethodInfo getCustomSkillExperienceMethod = AccessTools.Method(skillExtensionsType, "GetCustomSkillExperience", new Type[] { typeof(Farmer), skillType });
-		GetCustomSkillExperienceDelegate = (farmer, skill) => (int)getCustomSkillExperienceMethod.Invoke(null, new object[] { farmer, skill })!;
+		MethodInfo getCustomSkillExperienceMethod = AccessTools.Method(skillExtensionsType, "GetCustomSkillExperience", [typeof(Farmer), skillType]);
+		GetCustomSkillExperienceDelegate = (farmer, skill) => (int)getCustomSkillExperienceMethod.Invoke(null, [farmer, skill])!;
 
-		MethodInfo addExperienceMethod = AccessTools.Method(skillsType, "AddExperience", new Type[] { typeof(Farmer), typeof(string), typeof(int) });
-		AddExperienceDelegate = (farmer, skill, xp) => addExperienceMethod.Invoke(null, new object[] { farmer, skill, xp });
+		MethodInfo addExperienceMethod = AccessTools.Method(skillsType, "AddExperience", [typeof(Farmer), typeof(string), typeof(int)]);
+		AddExperienceDelegate = (farmer, skill, xp) => addExperienceMethod.Invoke(null, [farmer, skill, xp]);
 
 		MethodInfo getNameMethod = AccessTools.Method(skillType, "GetName");
 		GetNameDelegate = (skill) => (string)getNameMethod.Invoke(skill, null)!;

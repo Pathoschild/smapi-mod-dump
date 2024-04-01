@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/lisyce/SDV_Allergies_Mod
+   Git: https://github.com/lisyce/SDV_Allergies_Mod.git
+
+mods:
+   BarleyZP's Allergies
+
+latest commit:
+   commit 225a971965e91e68f3451d58b6e68c148263e7a9
+   Author: lisyce <lisyce@gmail.com>
+   Date:   Sun Mar 31 11:24:25 2024 -0700
+   
+       Merge branch 'main' of https://github.com/lisyce/SDV_Allergies_Mod
+   

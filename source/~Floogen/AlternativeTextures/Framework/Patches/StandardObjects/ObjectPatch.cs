@@ -18,7 +18,6 @@ using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
-using System.Linq;
 using Object = StardewValley.Object;
 
 namespace AlternativeTextures.Framework.Patches.StandardObjects
@@ -36,11 +35,11 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         {
             harmony.Patch(AccessTools.Method(_object, nameof(Object.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.drawPlacementBounds), new[] { typeof(SpriteBatch), typeof(GameLocation) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPlacementBoundsPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Object.DayUpdate), new[] { typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(DayUpdatePostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Object.DayUpdate), null), postfix: new HarmonyMethod(GetType(), nameof(DayUpdatePostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.rot), null), postfix: new HarmonyMethod(GetType(), nameof(RotPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.placementAction), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(PlacementActionPostfix)));
 
-            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(Vector2), typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(ObjectPostfix)));
+            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(string), typeof(int), typeof(bool), typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(ObjectPostfix)));
 
             if (PatchTemplate.IsDGAUsed())
             {
@@ -105,9 +104,10 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     var frameDuration = Int32.Parse(__instance.modData["AlternativeTextureFrameDuration"]);
                     var elapsedDuration = Int32.Parse(__instance.modData["AlternativeTextureElapsedDuration"]);
 
-                    if (elapsedDuration >= frameDuration)
+                    bool isMachineActive = __instance.MinutesUntilReady > 0;
+                    if (elapsedDuration >= frameDuration || textureModel.IsFrameValid(textureVariation, currentFrame, isMachineActive) is false)
                     {
-                        frameIndex = frameIndex + 1 >= textureModel.GetAnimationData(textureVariation).Count() ? 0 : frameIndex + 1;
+                        frameIndex = textureModel.GetNextValidFrameFromIndex(textureVariation, frameIndex, isMachineActive);
 
                         var animationData = textureModel.GetAnimationDataAtIndex(textureVariation, frameIndex);
                         currentFrame = animationData.Frame;
@@ -150,11 +150,11 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     spriteBatch.Draw(textureModel.GetTexture(textureVariation), destination, new Rectangle(xTileOffset, textureOffset, textureModel.TextureWidth, textureModel.TextureHeight), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, draw_layer);
 
                     // Replicate the extra draw logic from the base game
-                    if (__instance.Name.Equals("Loom") && (int)__instance.minutesUntilReady > 0)
+                    if (__instance.Name.Equals("Loom") && __instance.MinutesUntilReady > 0)
                     {
                         spriteBatch.Draw(textureModel.GetTexture(textureVariation), __instance.getLocalPosition(Game1.viewport) + new Vector2(32f, 0f), new Rectangle(32, textureOffset, 16, 16), Color.White * alpha, __instance.scale.X, new Vector2(8f, 8f), 4f, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64) / 10000f + 0.0001f + (float)x * 1E-05f));
                     }
-                    if ((bool)__instance.isLamp && Game1.isDarkOut())
+                    if ((bool)__instance.isLamp && Game1.isDarkOut(Game1.currentLocation))
                     {
                         spriteBatch.Draw(Game1.mouseCursors, position + new Vector2(-32f, -32f), new Rectangle(88, 1779, 32, 32), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 20) / 10000f) + (float)x / 1000000f);
                     }
@@ -172,12 +172,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                         Vector2 origin = new Vector2(8f, 8f);
 
                         int artifactOffset = ((Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 1200.0 <= 400.0) ? ((int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 400.0 / 100.0) * 16) : 0);
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), position2, new Rectangle(artifactOffset, textureOffset, 16, 16), color, 0f, origin, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.getBoundingBox(new Vector2(x, y)).Top : __instance.getBoundingBox(new Vector2(x, y)).Bottom) / 10000f);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), position2, new Rectangle(artifactOffset, textureOffset, 16, 16), color, 0f, origin, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.GetBoundingBoxAt(x, y).Top : __instance.GetBoundingBoxAt(x, y).Bottom) / 10000f);
                         return false;
                     }
                     if ((int)__instance.fragility != 2)
                     {
-                        spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + 32, y * 64 + 51 + 4)), Game1.shadowTexture.Bounds, Color.White * alpha, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, (float)__instance.getBoundingBox(new Vector2(x, y)).Bottom / 15000f);
+                        spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + 32, y * 64 + 51 + 4)), Game1.shadowTexture.Bounds, Color.White * alpha, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, (float)__instance.GetBoundingBoxAt(x, y).Bottom / 15000f);
                     }
 
                     Color color2 = Color.White * alpha;
@@ -189,7 +189,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                         position3 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
                     }
 
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), position3, new Rectangle(xTileOffset, textureOffset, textureModel.TextureWidth, textureModel.TextureHeight), color2, 0f, origin2, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.getBoundingBox(new Vector2(x, y)).Top : __instance.getBoundingBox(new Vector2(x, y)).Bottom) / 10000f);
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), position3, new Rectangle(xTileOffset, textureOffset, textureModel.TextureWidth, textureModel.TextureHeight), color2, 0f, origin2, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.GetBoundingBoxAt(x, y).Top : __instance.GetBoundingBoxAt(x, y).Bottom) / 10000f);
                     if (__instance.heldObject.Value != null && __instance.IsSprinkler())
                     {
                         // Unhandled sprinkler attachments
@@ -234,7 +234,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             return true;
         }
 
-        internal static void DayUpdatePostfix(Object __instance, GameLocation location)
+        internal static void DayUpdatePostfix(Object __instance)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -339,15 +339,15 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             AssignDefaultModData(placedObject, instanceSeasonName, true, placedObject.bigCraftable);
         }
 
-        private static void ObjectPostfix(Object __instance, Vector2 tileLocation, int parentSheetIndex, int initialStack)
+        private static void ObjectPostfix(Object __instance, string itemId, int initialStack, bool isRecipe = false, int price = -1, int quality = 0)
         {
             // Handle only artifact spots
-            if (__instance.parentSheetIndex != 590)
+            if (itemId.Equals("590") is false)
             {
                 return;
             }
 
-            var instanceName = $"{AlternativeTextureModel.TextureType.Craftable}_{GetObjectName(__instance)}";
+            var instanceName = $"{AlternativeTextureModel.TextureType.ArtifactSpot}_{GetObjectName(__instance)}";
             var instanceSeasonName = $"{instanceName}_{Game1.currentSeason}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))

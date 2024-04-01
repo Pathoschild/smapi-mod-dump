@@ -1,0 +1,11 @@
+{
+  "maxCastPower.name": "强制最大力度抛竿",
+  "autoHit.name": "上钩时自动点击",
+  "fastBite.name": "快速上钩",
+  "catchTreasure.name": "捕捉宝箱（当遇到传说鱼时忽略）",
+  "fasterSpeed.name": "浮漂会更快的移动以增加捕获率",
+  "triggerKeepAutoFish.name": "持续自动钓鱼",
+  "keepAutoFishKey.name": "持续自动钓鱼按键",
+  "autoLootTreasure.name": "自动收集宝箱",
+  "autoLootFishAndTrash.name": "自动收集鱼和垃圾"
+}

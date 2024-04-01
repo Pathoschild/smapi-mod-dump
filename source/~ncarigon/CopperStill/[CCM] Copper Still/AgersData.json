@@ -1,0 +1,52 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+[
+    {
+        "Name": "Hardwood Cask",
+        "EnableAgingAnywhere": false,
+        "EnableMoreThanOneQualityIncrementPerDay": false,
+        "AgingData": {
+            "Brandy": 2.0,
+            "Moonshine": 2.0,
+            "Whiskey": 2.0,
+            "Tequila Blanco": 2.0,
+            "Tequila Anejo": 2.0,
+            "Vodka": 2.0,
+            "Gin": 2.0,
+            "White Rum": 2.0,
+            "Dark Rum": 2.0,
+            "Soju": 2.0,
+            // Sake aging speed matches Pale Ale
+            "Sake": 3.33
+        },
+        "MergeIntoMod": [ "Digus.AdvancedCasksForCustomCaskMod" ]  
+    },
+    {
+        "Name": "Radioactive Cask",
+        "EnableAgingAnywhere": true,
+        "EnableMoreThanOneQualityIncrementPerDay": false,
+        "AgingData": {
+            "Brandy": 4.0,
+            "Moonshine": 4.0,
+            "Whiskey": 4.0,
+            "Tequila Blanco": 4.0,
+            "Tequila Anejo": 4.0,
+            "Vodka": 4.0,
+            "Gin": 4.0,
+            "White Rum": 4.0,
+            "Dark Rum": 4.0,
+            "Soju": 4.0,
+            // Sake aging speed matches Pale Ale
+            "Sake": 6.66
+        },
+        "MergeIntoMod": [ "Digus.AdvancedCasksForCustomCaskMod" ]
+    }
+]

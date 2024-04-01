@@ -8,17 +8,23 @@
 **
 *************************************************/
 
-// Copyright 2020-2022 Jamie Taylor
+// Copyright 2020-2023 Jamie Taylor
 //
 // To facilitate other mods which would like to use the RangeHighlight API,
 // the license for this file (and only this file) is modified by removing the
 // notice requirements for binary distribution.  The license (as amended)
 // is included below, making this file self-contained.
 //
-// In other words, anyone may copy this file into their own mod.
+// In other words, anyone may copy this file into their own mod (and edit
+// it if they want, e.g. to remove the methods they are not using, so long
+// as the license comment is retained).  (If all you want in your mod is
+// _just_ the function declarations and not any comments or other creative
+// expression that may be in the file, then that is permissible fair use
+// as a matter of law in the US according to Google v. Oracle, 593 U.S. ___ (2021),
+// and does not require any license.)
 //
 
-//  Copyright(c) 2020-2022, Jamie Taylor
+//  Copyright(c) 2020-2023, Jamie Taylor
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -51,8 +57,14 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Menus;
 
 namespace RangeHighlight {
+    // aliases for the highlighter return types
+    using BuildingHighlighterResult = Tuple<Color, bool[,], int, int>;
+    using ItemHighlighterResult = Tuple<Color, bool[,]>;
+    using TASHighlighterResult = Tuple<Color, bool[,]>;
+
     /// <summary>
     /// Interface to the Range Highlight mod functionality.  Add new highlighters with the Add*Highlighter methods.
     /// All highlighters are cleared when returning to the title screen, so the `SaveLoaded` game event is a
@@ -63,14 +75,6 @@ namespace RangeHighlight {
         // -----------------------------------------------
         // ----- Helpers for making highlight shapes -----
         // -----------------------------------------------
-
-        /// <summary>
-        ///   An deprecated alias for <c>GetCartesianCircleWithTruncate</c>.
-        /// </summary>
-        /// <param name="radius">The circle radius</param>
-        /// <param name="excludeCenter">whether the center tile should be excluded</param>
-        [Obsolete("GetCartesianCircle is deprecated.  Use GetCartesianCircleWithTruncate instead.")]
-        bool[,] GetCartesianCircle(uint radius, bool excludeCenter = true);
 
         /// <summary>
         ///   Return a circle shape (i.e., the shape of a scarecrow's range),
@@ -126,49 +130,13 @@ namespace RangeHighlight {
 
         // ----- Building Highlighters ----
 
-        /// <summary>Add a highlighter for buildings.</summary>
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddBuildingRangeHighlighter(string uniqueId, KeybindList hotkey, Func<Building, Tuple<Color, bool[,], int, int>?> highlighter);
-
-        /// <summary>Add a highlighter for buildings.</summary>
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey, Func<Building, Tuple<Color, bool[,], int, int>?> highlighter);
-
-        /// <summary>Add a highlighter for buildings that also allows for highlighting during placement.</summary>
-        /// <param name="uniqueId">
-        ///   An ID by which the highlighter can be removed later.
-        ///   Best practice is for it to contain your mod's unique ID.
-        /// </param>
-        /// <param name="isEnabled">
-        ///   A function that returns true if this highlighter is currently enabled (and false otherwise)
-        /// </param>
-        /// <param name="hotkey">
-        ///   A function that returns the current hotkey(s) for this highlighter.
-        ///   (A hotkey means to also apply the highlighter when that key is held.)
-        /// </param>
-        /// <param name="blueprintHighlighter">
-        ///   A function that evaluates whether the <c>BluePrint</c> (for a building
-        ///   currently being placed) matches
-        ///   this highlighter, and if so returns a <c>Tuple</c> containing the tint
-        ///   color, highlight shape, and x and y offset for the building "center".
-        ///   If the building does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>bool[,]</c> will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the blueprint.)
-        ///   Pass <c>null</c> here if there is no range to show while placing this building type.
-        /// </param>
-        /// <param name="buildingHighlighter">
-        ///   A function that evaluates whether the <c>Building</c> matches
-        ///   this highlighter, and if so returns a <c>Tuple</c> containing the tint
-        ///   color, highlight shape, and x and y offset for the building "center".
-        ///   If the building does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>bool[,]</c> will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the building.)
-        /// </param>
-        void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey,
-                Func<BluePrint, Tuple<Color, bool[,], int, int>?>? blueprintHighlighter,
-                Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter);
+        /// <summary>Construct the tuple that is the return type of the building highlighter.</summary>
+        /// <param name="tint">The color to use for this highlight</param>
+        /// <param name="shape">The shape of this highlight</param>
+        /// <param name="centerOffsetX">The X offset of this building's "center" in the shape</param>
+        /// <param name="centerOffsetY">The Y offset of this building's "center" in the shape</param>
+        /// <returns>A tuple of the arguments</returns>
+        BuildingHighlighterResult BuildingHighlighterResult(Color tint, bool[,] shape, int centerOffsetX, int centerOffsetY);
 
         /// <summary>Add a highlighter for buildings that also allows for highlighting during placement.</summary>
         /// <param name="uniqueId">
@@ -183,43 +151,66 @@ namespace RangeHighlight {
         ///   (A hotkey means to also apply the highlighter when that key is held.)
         /// </param>
         /// <param name="blueprintHighlighter">
-        ///   A function that evaluates whether the <c>BluePrint</c> (for a building
+        ///   A function that evaluates whether the <c>BlueprintEntry</c> (for a building
+        ///   currently being placed) matches
+        ///   this highlighter, and if so returns a <c>Tuple</c> containing the tint
+        ///   color, highlight shape, and x and y offset for the building "center"
+        ///   (e.g., as constructed by
+        ///   <c cref="BuildingHighlighterResult(Color, bool[,], int, int)">BuildingHighlighterResult</c>).
+        ///   If the building does not match then
+        ///   the function should return <c>null</c>.
+        ///   Pass <c>null</c> here if there is no range to show while placing this building type.
+        /// </param>
+        /// <param name="buildingHighlighter">
+        ///   A function that evaluates whether the <c>Building</c> matches
+        ///   this highlighter, and if so returns a <c>Tuple</c> containing the tint
+        ///   color, highlight shape, and x and y offset for the building "center"
+        ///   (e.g., as constructed by
+        ///   <c cref="BuildingHighlighterResult(Color, bool[,], int, int)">BuildingHighlighterResult</c>).
+        ///   If the building does not match then
+        ///   the function should return <c>null</c>.
+        /// </param>
+        void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey,
+                Func<CarpenterMenu.BlueprintEntry, BuildingHighlighterResult?>? blueprintHighlighter,
+                Func<Building, BuildingHighlighterResult?> buildingHighlighter);
+
+        /// <summary>Add a highlighter for buildings that also allows for highlighting during placement.</summary>
+        /// <param name="uniqueId">
+        ///   An ID by which the highlighter can be removed later.
+        ///   Best practice is for it to contain your mod's unique ID.
+        /// </param>
+        /// <param name="isEnabled">
+        ///   A function that returns true if this highlighter is currently enabled (and false otherwise)
+        /// </param>
+        /// <param name="hotkey">
+        ///   A function that returns the current hotkey(s) for this highlighter.
+        ///   (A hotkey means to also apply the highlighter when that key is held.)
+        /// </param>
+        /// <param name="blueprintHighlighter">
+        ///   A function that evaluates whether the <c>BlueprintEntry</c> (for a building
         ///   currently being placed) matches
         ///   this highlighter, and if so returns a <c>List</c> of <c>Tuple</c>s,
         ///   each containing the tint
-        ///   color, highlight shape, and x and y offset for the building "center".
+        ///   color, highlight shape, and x and y offset for the building "center"
+        ///   (e.g., as constructed by
+        ///   <c cref="BuildingHighlighterResult(Color, bool[,], int, int)">BuildingHighlighterResult</c>).
         ///   If the building does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>List</c> or a <c>List</c> containing only empty <c>bool[,]</c>s
-        ///   will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the blueprint.)
+        ///   the function should return <c>null</c>.
         ///   Pass <c>null</c> here if there is no range to show while placing this building type.
         /// </param>
         /// <param name="buildingHighlighter">
         ///   A function that evaluates whether the <c>Building</c> matches
         ///   this highlighter, and if so returns a <c>List</c> of <c>Tuple</c>s,
         ///   each containing the tint
-        ///   color, highlight shape, and x and y offset for the building "center".
+        ///   color, highlight shape, and x and y offset for the building "center"
+        ///   (e.g., as constructed by
+        ///   <c cref="BuildingHighlighterResult(Color, bool[,], int, int)">BuildingHighlighterResult</c>).
         ///   If the building does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>List</c> or a <c>List</c> containing only empty <c>bool[,]</c>s
-        ///   will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the building.)
+        ///   the function should return <c>null</c>.
         /// </param>
         void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey,
-                Func<BluePrint, List<Tuple<Color, bool[,], int, int>>?>? blueprintHighlighter,
-                Func<Building, List<Tuple<Color, bool[,], int, int>>?> buildingHighlighter);
-
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddBuildingRangeHighlighter(string uniqueId, KeybindList hotkey,
-                Func<BluePrint, Tuple<Color, bool[,], int, int>?> blueprintHighlighter,
-                Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter);
-
-        /// <summary>Add a highlighter for buildings that also allows for highlighting during placement.</summary>
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey,
-                Func<BluePrint, Tuple<Color, bool[,], int, int>?> blueprintHighlighter,
-                Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter);
+                Func<CarpenterMenu.BlueprintEntry, List<BuildingHighlighterResult>?>? blueprintHighlighter,
+                Func<Building, List<BuildingHighlighterResult>?> buildingHighlighter);
 
         /// <summary>
         ///   Remove any building range highlighters added with the given <c>uniqueId</c>
@@ -228,13 +219,11 @@ namespace RangeHighlight {
 
         // ----- Item Highlighters ----
 
-        /// <summary>Add a highlighter for items.</summary>
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddItemRangeHighlighter(string uniqueId, SButton? hotkey, Func<string, Tuple<Color, bool[,]>?> highlighter);
-
-        /// <summary>Add a highlighter for items.</summary>
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddItemRangeHighlighter(string uniqueId, SButton? hotkey, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter);
+        /// <summary>Construct the tuple that is the return type of the item highlighter.</summary>
+        /// <param name="tint">The color to use for this highlight</param>
+        /// <param name="shape">The shape of this highlight</param>
+        /// <returns>A tuple of the arguments</returns>
+        ItemHighlighterResult ItemHighlighterResult(Color tint, bool[,] shape);
 
         /// <summary>Add a highlighter for items.</summary>
         /// <param name="uniqueId">
@@ -256,22 +245,12 @@ namespace RangeHighlight {
         /// <param name="highlighter">
         ///   A function that evaluates whether the given item matches
         ///   this highlighter, and if so returns a <c>Tuple</c> containing the tint
-        ///   color and highlight shape.  The function parameters are the <c>Item</c>
-        ///   object, its item ID ("parent sheet index"), and the lower-cased item name.
-        ///   If the item does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>bool[,]</c> will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the item.)
+        ///   color and highlight shape (e.g., as constructed by
+        ///   <c cref="ItemHighlighterResult(Color, bool[,])">ItemHighlighterResult</c>).
+        ///   If the item does not match then the function should return <c>null</c>.
         /// </param>
-        void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter);
-
-        /// <summary>Add a highlighter for items.</summary>
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddItemRangeHighlighter(string uniqueId, KeybindList hotkey, bool highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter);
-
-        /// <summary>Add a highlighter for items.</summary>
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter);
+        void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld,
+                Func<Item, ItemHighlighterResult?> highlighter);
 
         /// <summary>
         ///   Add a highlighter for items, with callbacks to bracket the round of range highlight calculation.
@@ -304,28 +283,17 @@ namespace RangeHighlight {
         ///   A function that evaluates whether the given item matches
         ///   this highlighter, and if so returns a <c>List</c> of <c>Tuple</c>s,
         ///   each containing the tint
-        ///   color and highlight shape.  The function parameters are the <c>Item</c>
-        ///   object, its item ID ("parent sheet index"), and the lower-cased item name.
-        ///   If the item does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>List</c> or a <c>List</c> containing only empty <c>bool[,]</c>s
-        ///   will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the item.)
+        ///   color and highlight shape (e.g., as constructed by
+        ///   <c cref="ItemHighlighterResult(Color, bool[,])">ItemHighlighterResult</c>).
+        ///   If the item does not match then the function should return <c>null</c>.
         /// </param>
         /// <param name="onRangeCalculationFinish">
         ///   Called after the last time the highlighter function is called in a "batch" of highlight
         ///   range calculation.  Called if and only if the <paramref name="onRangeCalculationStart"/>
         ///   function was called.
         /// </param>
-        void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, int, string, List<Tuple<Color, bool[,]>>?> highlighter, Action? onRangeCalculationFinish);
-
-        /// <summary>Add a highlighter for items with bracketing callbacks.</summary>
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddItemRangeHighlighter(string uniqueId, KeybindList hotkey, bool highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter, Action? onRangeCalculationFinish);
-
-        /// <summary>Add a highlighter for items with bracketing callbacks.</summary>
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter, Action? onRangeCalculationFinish);
+        void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld,
+                Action? onRangeCalculationStart, Func<Item, List<ItemHighlighterResult>?> highlighter, Action? onRangeCalculationFinish);
 
         /// <summary>
         ///   Remove any item range highlighters added with the given <c>uniqueId</c>
@@ -333,6 +301,12 @@ namespace RangeHighlight {
         void RemoveItemRangeHighlighter(string uniqueId);
 
         // ----- Temporary Animated Sprite Highlighters ----
+
+        /// <summary>Construct the tuple that is the return type of the TemporaryAnimatedSprite highlighter.</summary>
+        /// <param name="tint">The color to use for this highlight</param>
+        /// <param name="shape">The shape of this highlight</param>
+        /// <returns>A tuple of the arguments</returns>
+        TASHighlighterResult TASHighlighterResult(Color tint, bool[,] shape);
 
         /// <summary>Add a highlighter for temporary animated sprite objects.</summary>
         /// <param name="uniqueId">
@@ -345,13 +319,13 @@ namespace RangeHighlight {
         /// <param name="highlighter">
         ///   A function that evaluates whether the given temporary animated sprite matches
         ///   this highlighter, and if so returns a <c>Tuple</c> containing the tint
-        ///   color and highlight shape.
+        ///   color and highlight shape (e.g., as constructed by
+        ///   <c cref="TASHighlighterResult(Color, bool[,])">TASHighlighterResult</c>).
         ///   If the temporary animated sprite does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>bool[,]</c> will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the temporary animated sprite.)
+        ///   the function should return <c>null</c>.
         /// </param>
-        void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled, Func<TemporaryAnimatedSprite, Tuple<Color, bool[,]>?> highlighter);
+        void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled,
+                Func<TemporaryAnimatedSprite, TASHighlighterResult?> highlighter);
 
         /// <summary>Add a highlighter for temporary animated sprite objects.</summary>
         /// <param name="uniqueId">
@@ -363,15 +337,14 @@ namespace RangeHighlight {
         /// </param>
         /// <param name="highlighter">
         ///   A function that evaluates whether the given temporary animated sprite matches
-        ///   this highlighter, and if so returns a <c>List</c> of </c><c>Tuple</c>s, each
-        ///   containing a tint color and highlight shape.
+        ///   this highlighter, and if so returns a <c>List</c> of <c>Tuple</c>s, each
+        ///   containing a tint color and highlight shape (e.g., as constructed by
+        ///   <c cref="TASHighlighterResult(Color, bool[,])">TASHighlighterResult</c>).
         ///   If the temporary animated sprite does not match then
-        ///   the function should return <c>null</c>.  (Note that returning an
-        ///   empty <c>List</c>, or a <c>List</c> containing only empty <c>bool[,]</c>s
-        ///   will result in no highlighting, but counts
-        ///   as a match so that no other highlighters will be processed for the temporary animated sprite.)
+        ///   the function should return <c>null</c>.
         /// </param>
-        void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled, Func<TemporaryAnimatedSprite, List<Tuple<Color, bool[,]>>?> highlighter);
+        void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled,
+                Func<TemporaryAnimatedSprite, List<TASHighlighterResult>?> highlighter);
 
         /// <summary>
         ///   Remove any temporary animated sprite range highlighters added with the given <c>uniqueId</c>

@@ -92,6 +92,7 @@ building_operations-building_failed = Building failed
 prefix-repair = Repair {$content}
 
 suffix-building_door = {$content} Door
+suffix-map_entrance = {$content} Entrance
 suffix-mill_input = {$content} Input
 suffix-mill_output = {$content} Output
 
@@ -110,10 +111,20 @@ tile-resource_clump-mine_rock-name = Mine Rock
 tile-resource_clump-giant_cauliflower-name = Giant Cauliflower
 tile-resource_clump-giant_melon-name = Giant Melon
 tile-resource_clump-giant_pumpkin-name = Giant Pumpkin
+tile-resource_clump-giant_green_rain_weed-name = Giant Green Rain Weeds
+tile-resource_clump-unknown = Unknown Resource Clump {$id}
 tile-water-name = Water
 tile-cooled_lava-name = Cooled Lava
 tile-lava-name = Lava
-tile-grass-name = Grass
+tile-grass-name = {$grass_type ->
+    *[1] Grass
+    [2] Cave Grass
+    [3] Frost Grass
+    [4] Lava Grass
+    [5] Cave Grass
+    [6] Cobweb
+    [7] Blue Grass
+  }
 tile-sprinkler-pressure_nozzle-prefix = Pressurized {$content}
 tile-sprinkler-enricher-prefix = Enriching {$content}
 tile-fence_gate-suffix = {$name} {$is_open ->
@@ -140,6 +151,10 @@ tile-pet_bowl-prefix = {$is_in_use ->
       *[1] Empty
     }
   } {$name}
+dynamic_tile-mastery_cave-pedestal = {$has_hat ->
+    [0] Empty Pedestal
+    *[1] Pedestal with a Hat
+  }
 
 ## Interactable Tiles
 
@@ -157,8 +172,8 @@ tile-museum_piece_showcase-suffix = {$content} Showcase
 tile_name-fridge = Fridge
 tile_name-mail_box = Mail Box
 tile-mail_box-unread_mail_count-prefix = {$mail_count} {$mail_count ->
-    [1] unread mail in
-    *[0] unread mails in
+    [1] unread letter in
+    *[0] unread letters in
   } {$content}
 tile_name-stove = Stove
 tile_name-sink = Sink
@@ -222,7 +237,9 @@ item-stamina_and_health_recovery_on_consumption = {SIGNOFNUMBER($stamina_amount)
   }
 item-required_item_info = Requires {$name}
 item-sell_price_info = Sell Price: {$price}g
+# In some cases we can't get the count of the dropped items and it is returned `0`
 item-dropped_item-info = Dropped Item: {$item_count ->
+    [0] {$item_name}
     [1] 1 {$item_name}
     *[other] {$item_count} {$item_name}s
   }
@@ -230,6 +247,7 @@ item-crafting_recipe_info = {$name} {$is_cooking_recipe ->
     [0] (crafting)
     *[1] (cooking)
   } {$description}
+item-mastery_cave-grandpa_letter = Grandpa's Letter
 
 building_name-shipping_bin = Shipping Bin
 building-parrot_perch-required_nuts = Parrots require {$item_count ->
@@ -300,9 +318,15 @@ terrain_util-tree_type = {$type ->
     [7] Mushroom
     [8] Mahogany
     [9] Palm
+    [10] Bushy Green
+    [11] Leafy Green
+    [12] Fern Green
+    [13] Mystic
     *[other] Unknown tree type number {$type}
   }
 terrain_util-tree-seedling = seedling
+terrain_util-tree-stump = Stump
+terrain_util-tree-mossy = Mossy
 terrain_util-tree_growth_stage = {$stage ->
     [1] sprout
     [2] sapling
@@ -324,6 +348,8 @@ terrain_util-bush_type = {$type ->
 terrain_util-bush = Bush
 terrain_util-bush-town = Town
 terrain_util-bush-greenhouse = Greenhouse
+terrain_util-tent = Tent
+terrain_util-tent_entrance = Tent Entrance
 terrain_util-crop-watered = Watered
 terrain_util-crop-unwatered = Unwatered
 terrain_util-crop-dead = Dead
@@ -334,31 +360,33 @@ terrain_util-fertilized = Fertilized
 
 # Object Categories
 
-object_category-animal = Animal
-object_category-bridge = Bridge
-object_category-building = Building
-object_category-bundle = Bundle
-object_category-bush = Bush
-object_category-container = Container
-object_category-crop = Crop
+object_category-animals = Animals
+object_category-bridges = Bridges
+object_category-buildings = Buildings
+object_category-bundles = Bundles
+object_category-bushes = Bushes
+object_category-containers = Containers
+object_category-crops = Crops
 object_category-debris = Debris
-object_category-decoration = Decoration
-object_category-door = Door
-object_category-dropped_item = Dropped item
-object_category-farmer = Farmer
+object_category-decor = Decor
+object_category-doors = Doors
+object_category-dropped_items = Dropped items
+object_category-farmers = Farmers
 object_category-fishing = Fishing
-object_category-fishpond = Fish Pond
+object_category-fishponds = Fish Ponds
 object_category-flooring = Flooring
 object_category-furniture = Furniture
-object_category-interactable = Interactable
-object_category-machine = Machine
-object_category-mine_item = Mine item
-object_category-npc = NPC
+object_category-interactables = Interactables
+object_category-machines = Machines
+object_category-mine_items = Mine items
+object_category-npcs = NPC's
 object_category-pending = Pending
+object_category-quest_items = Quest items
 object_category-ready = Ready
-object_category-resource_clump = Resource clump
-object_category-tree = Tree
+object_category-resource_clumps = Resource clumps
+object_category-trees = Trees
 object_category-water = Water
+object_category-unknown = Unknown
 object_category-other = Other
 
 direction-north = North

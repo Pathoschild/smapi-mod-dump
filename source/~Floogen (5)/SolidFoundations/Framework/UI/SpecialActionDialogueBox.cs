@@ -9,15 +9,11 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using SolidFoundations.Framework.Models.ContentPack;
 using SolidFoundations.Framework.Models.ContentPack.Actions;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Menus;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static StardewValley.GameLocation;
 
 namespace SolidFoundations.Framework.UI
@@ -25,18 +21,18 @@ namespace SolidFoundations.Framework.UI
     internal class SpecialActionDialogueBox : DialogueBox
     {
         private SpecialAction _actionToTrigger;
-        private GenericBuilding _genericBuilding;
+        private Building _genericBuilding;
         private Point _tile;
         private afterQuestionBehavior _afterDialogueBehavior;
 
-        public SpecialActionDialogueBox(List<string> dialogue, SpecialAction actionToTrigger, GenericBuilding building, Point tile) : base(dialogue)
+        public SpecialActionDialogueBox(List<string> dialogue, SpecialAction actionToTrigger, Building building, Point tile) : base(dialogue)
         {
             _actionToTrigger = actionToTrigger;
             _genericBuilding = building;
             _tile = tile;
         }
 
-        public SpecialActionDialogueBox(string dialogue, List<Response> responses, afterQuestionBehavior afterDialogueBehavior, int width = 1200) : base(dialogue, responses, width)
+        public SpecialActionDialogueBox(string dialogue, List<Response> responses, afterQuestionBehavior afterDialogueBehavior, int width = 1200) : base(dialogue, responses.ToArray(), width)
         {
             _afterDialogueBehavior = afterDialogueBehavior;
         }

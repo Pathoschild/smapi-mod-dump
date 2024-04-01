@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Advanced Loot Framework",
+  "Author": "aedenthorn",
+  "Version": "0.4.1",
+  "Description": "Advanced loot framework.",
+  "UniqueID": "aedenthorn.AdvancedLootFramework",
+  "EntryDll": "AdvancedLootFramework.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": ["Nexus:7739"],
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "AdvancedLootFramework"
+  },
+  "Dependencies": [
+      {
+        "UniqueID": "Platonymous.ModUpdater",
+        "IsRequired": false
+      }
+  ]
+}

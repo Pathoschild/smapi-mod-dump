@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20886
+IDs: Rokugin.ClintsBackstock
+update keys: Nexus:20886, GitHub:rokugin/StardewMods

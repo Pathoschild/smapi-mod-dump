@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Zamiell/stardew-valley-mods
+   Git: https://github.com/Zamiell/stardew-valley-mods.git
+
+mods:
+   Eat & Drink From Inventory
+   Morning Auto-Pause
+
+latest commit:
+   commit 33b0bf3d7b99bcb92f2953e1628a430f6a3a4281
+   Author: Zamiell <5511220+Zamiell@users.noreply.github.com>
+   Date:   Fri Mar 29 12:29:55 2024 -0400
+   
+       feat: visible artifact spots at 50% opacity
+   

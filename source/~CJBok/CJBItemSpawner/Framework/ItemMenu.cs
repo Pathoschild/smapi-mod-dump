@@ -840,7 +840,10 @@ namespace CJBItemSpawner.Framework
             {
                 ItemSort.Price => items.OrderByDescending(p => this.GetSellPrice(p.Item) ?? -1).ThenBy(p => p.Item.DisplayName),
                 ItemSort.Type => items.OrderBy(p => p.Item.Category),
-                ItemSort.ID => items.OrderBy(p => p.Item.ParentSheetIndex),
+                ItemSort.ID => items.OrderBy(
+                    p => int.TryParse(p.Item.ItemId, out int index) ? index.ToString().PadLeft(10, '0') : p.Item.ItemId,
+                    StringComparer.OrdinalIgnoreCase
+                ),
                 _ => items.OrderBy(p => p.Item.DisplayName)
             };
 
@@ -853,8 +856,8 @@ namespace CJBItemSpawner.Framework
             if (search != "")
             {
                 items = items.Where(item =>
-                    item.Name.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.DisplayName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    item.Name?.Contains(search, StringComparison.InvariantCultureIgnoreCase) is true
+                    || item.DisplayName?.Contains(search, StringComparison.InvariantCultureIgnoreCase) is true
                 );
             }
 
@@ -920,8 +923,8 @@ namespace CJBItemSpawner.Framework
             if (item is null)
                 return;
 
-            if (item is SObject obj && Game1.player.specialItems.Contains(obj.ParentSheetIndex))
-                Game1.player.specialItems.Remove(obj.ParentSheetIndex);
+            if (item is SObject obj && Game1.player.specialItems.Contains(obj.ItemId))
+                Game1.player.specialItems.Remove(obj.ItemId);
             if (this.ReclaimPriceInTrashCan)
             {
                 int price = Utility.getTrashReclamationPrice(item, Game1.player);

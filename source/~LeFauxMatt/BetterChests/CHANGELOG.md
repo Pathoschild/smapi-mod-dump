@@ -8,6 +8,40 @@ for queries and analysis.**
 
 # Better Chests Change Log
 
+## 2.9.2 (Unreleased)
+
+### Changed
+
+* Updated default stash distance to 10 tiles to prevent unintentional stashing.
+
+### Fixed
+
+* Crafting now works for chests outside of the current location.
+* Stashing is now able to find eligible chests.
+* Backpack items are no longer double counted towards crafting materials.
+* Prevent chest being lost when added to a carried chest. 
+* Chest menu background is no longer black.
+* Cursor should be drawn above the color picker.
+* Chest color is no longer lost when clicking in the chest menu.
+* Loading incompatible data will now generate new data (tabs and config).
+* Toolbar icons can now be used for stashing/crafting.
+
+## 2.9.1 (March 19, 2024)
+
+### Changed
+
+* Rebuild against final SDV 1.6 and SMAPI 4.0.0.
+
+### Fixed
+
+* Fixed items being stashed into a random chest and ignoring categorization.
+
+## 2.9.0 (March 19, 2024)
+
+### Changed
+
+* Updated for SDV 1.6 and .NET 6
+
 ## 2.8.0 (September 19, 2022)
 
 ### Added
@@ -138,7 +172,8 @@ for queries and analysis.**
 ### Added
 
 * Added multiple options for the Configure Menu.
-    * Simple (Default) only shows Chest Label, Categorize, and Stash to Chest Priority/Stacks.
+    * Simple (Default) only shows Chest Label, Categorize, and Stash to Chest
+      Priority/Stacks.
     * Categorize will load the Categorize Menu directly.
     * Full will show all the config options.
     * Advanced is full, and some options will be open text fields.
@@ -359,7 +394,8 @@ for queries and analysis.**
 
 ### Added
 
-* Added integration with [Better Crafting](https://www.nexusmods.com/stardewvalley/mods/11115).
+* Added integration
+  with [Better Crafting](https://www.nexusmods.com/stardewvalley/mods/11115).
 
 ### Fixed
 
@@ -382,7 +418,8 @@ for queries and analysis.**
 ### Added
 
 * Added AutoOrganize feature.
-* Shipping Bin on Island is now recognized by Better Chests and uses Shipping Bin as it's chest type.
+* Shipping Bin on Island is now recognized by Better Chests and uses Shipping
+  Bin as it's chest type.
 * Integrate Configurator using new FuryCore service.
 
 ### Changed
@@ -450,7 +487,8 @@ for queries and analysis.**
 
 ### Added
 
-* Added CarryChestLimit option to limit the number of chests that can be carried at once.
+* Added CarryChestLimit option to limit the number of chests that can be carried
+  at once.
 * Added red text alerts to certain features.
     * When CarryChestLimit is reached and attempting to carry another chest.
     * When attempting to Craft from Chests and no eligible chests were found.

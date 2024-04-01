@@ -53,4 +53,7 @@ public class ModConfig
 
     /// <summary>Whether grass can spread in winter.</summary>
     public bool CanGrassGrowInWinter { get; set; } = false;
+
+    /// <summary>Whether the meadowlands only grass should be included in all farm maps.</summary>
+    public bool IncludeMeadowlandsGrassInAllFarms { get; set; } = false;
 }

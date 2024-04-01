@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.FloorsAndPaths;
 using StardewValley.TerrainFeatures;
 using System;
 
@@ -31,12 +32,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Flooring.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Flooring.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Flooring.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(Vector2), typeof(float), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Flooring.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
+            harmony.Patch(AccessTools.Method(typeof(TerrainFeature), nameof(TerrainFeature.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
         }
 
-        private static bool DrawPrefix(Flooring __instance, byte ___neighborMask, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(Flooring __instance, byte ___neighborMask, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -53,62 +54,76 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 }
                 var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
-                if (__instance.cornerDecoratedBorders.Value)
+                Vector2 tileLocation = __instance.Tile;
+
+                FloorPathData data = __instance.GetData();
+                Texture2D texture = textureModel.GetTexture(textureVariation);
+                Point corner = __instance.GetTextureCorner();
+                float cornerSortOffset = 1f;
+                switch (data.ConnectType)
                 {
-                    int border_size = 6;
-                    if ((___neighborMask & 9) == 9 && (___neighborMask & 0x20) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), new Rectangle(64 - border_size, (48 - border_size) + textureOffset, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if ((___neighborMask & 3) == 3 && (___neighborMask & 0x10) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 64f - (float)(border_size * 4), tileLocation.Y * 64f)), new Rectangle(16, (48 - border_size) + textureOffset, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if ((___neighborMask & 6) == 6 && (___neighborMask & 0x40) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 64f - (float)(border_size * 4), tileLocation.Y * 64f + 64f - (float)(border_size * 4))), new Rectangle(16, textureOffset, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if ((___neighborMask & 0xC) == 12 && (___neighborMask & 0x80) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f + 64f - (float)(border_size * 4))), new Rectangle(64 - border_size, textureOffset, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                }
-                else if (!__instance.isPathway)
-                {
-                    if ((___neighborMask & 9) == 9 && (___neighborMask & 0x20) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), new Rectangle(60, 44 + textureOffset, 4, 4), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if ((___neighborMask & 3) == 3 && (___neighborMask & 0x10) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 48f, tileLocation.Y * 64f)), new Rectangle(16, 44 + textureOffset, 4, 4), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if ((___neighborMask & 6) == 6 && (___neighborMask & 0x40) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 48f, tileLocation.Y * 64f + 48f)), new Rectangle(16, textureOffset, 4, 4), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if ((___neighborMask & 0xC) == 12 && (___neighborMask & 0x80) == 0)
-                    {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f + 48f)), new Rectangle(60, textureOffset, 4, 4), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
-                    }
-                    if (!__instance.drawContouredShadow.Value)
-                    {
-                        spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)(tileLocation.X * 64f) - 4 - Game1.viewport.X, (int)(tileLocation.Y * 64f) + 4 - Game1.viewport.Y, 64, 64), Color.Black * 0.33f);
-                    }
+                    case FloorPathConnectType.CornerDecorated:
+                        {
+                            int border_size = data.CornerSize;
+                            if ((___neighborMask & 9) == 9 && (___neighborMask & 0x20) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), new Rectangle(64 - border_size + corner.X, 48 - border_size + corner.Y, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
+                            }
+                            if ((___neighborMask & 3) == 3 && (___neighborMask & 0x10) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 64f - (float)(border_size * 4), tileLocation.Y * 64f)), new Rectangle(16 + corner.X, 48 - border_size + corner.Y, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f + cornerSortOffset) / 20000f);
+                            }
+                            if ((___neighborMask & 6) == 6 && (___neighborMask & 0x40) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 64f - (float)(border_size * 4), tileLocation.Y * 64f + 64f - (float)(border_size * 4))), new Rectangle(16 + corner.X, corner.Y, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
+                            }
+                            if ((___neighborMask & 0xC) == 12 && (___neighborMask & 0x80) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f + 64f - (float)(border_size * 4))), new Rectangle(64 - border_size + corner.X, corner.Y, border_size, border_size), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
+                            }
+                            break;
+                        }
+                    case FloorPathConnectType.Default:
+                        {
+                            int borderSize = data.CornerSize;
+                            if ((___neighborMask & 9) == 9 && (___neighborMask & 0x20) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), new Rectangle(64 - borderSize + corner.X, 48 - borderSize + corner.Y, borderSize, borderSize), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
+                            }
+                            if ((___neighborMask & 3) == 3 && (___neighborMask & 0x10) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 64f - (float)(borderSize * 4), tileLocation.Y * 64f)), new Rectangle(16 + corner.X, 48 - borderSize + corner.Y, borderSize, borderSize), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f + cornerSortOffset) / 20000f);
+                            }
+                            if ((___neighborMask & 6) == 6 && (___neighborMask & 0x40) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 64f - (float)(borderSize * 4), tileLocation.Y * 64f + 48f)), new Rectangle(16 + corner.X, corner.Y, borderSize, borderSize), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
+                            }
+                            if ((___neighborMask & 0xC) == 12 && (___neighborMask & 0x80) == 0)
+                            {
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f + 64f - (float)(borderSize * 4))), new Rectangle(64 - borderSize + corner.X, corner.Y, borderSize, borderSize), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (tileLocation.Y * 64f + 2f + tileLocation.X / 10000f) / 20000f);
+                            }
+                            break;
+                        }
                 }
 
                 byte drawSum = (byte)(___neighborMask & 0xFu);
                 int sourceRectPosition = Flooring.drawGuide[drawSum];
-                if ((bool)__instance.isSteppingStone)
+                if (data.ConnectType == FloorPathConnectType.Random)
                 {
                     sourceRectPosition = Flooring.drawGuideList[__instance.whichView.Value];
                 }
-
-                if ((bool)__instance.drawContouredShadow)
+                switch (data.ShadowType)
                 {
-                    Color shadow_color = Color.Black;
-                    shadow_color.A = (byte)((float)(int)shadow_color.A * 0.33f);
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)) + new Vector2(-4f, 4f), new Rectangle(sourceRectPosition * 16 % 256, (sourceRectPosition / 16 * 16) + textureOffset, 16, 16), shadow_color, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1E-10f);
+                    case FloorPathShadowType.Square:
+                        spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)(tileLocation.X * 64f) - 4 - Game1.viewport.X, (int)(tileLocation.Y * 64f) + 4 - Game1.viewport.Y, 64, 64), Color.Black * 0.33f);
+                        break;
+                    case FloorPathShadowType.Contoured:
+                        {
+                            Color shadowColor = Color.Black;
+                            shadowColor.A = (byte)((float)(int)shadowColor.A * 0.33f);
+                            spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)) + new Vector2(-4f, 4f), new Rectangle(corner.X + sourceRectPosition * 16 % 256, sourceRectPosition / 16 * 16 + corner.Y, 16, 16), shadowColor, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1E-10f);
+                            break;
+                        }
                 }
 
                 spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), new Rectangle(sourceRectPosition * 16 % 256, (sourceRectPosition / 16 * 16) + textureOffset, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1E-09f);
@@ -168,15 +183,15 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             return true;
         }
 
-        private static void SeasonUpdatePostfix(Flooring __instance, bool onLoad)
+        private static void SeasonUpdatePostfix(TerrainFeature __instance, bool onLoad)
         {
-            if (__instance is null || __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_OWNER) is false || __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) is false)
+            if (__instance is not Flooring flooring || __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_OWNER) is false || __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) is false)
             {
                 return;
             }
 
-            var season = Game1.GetSeasonForLocation(__instance.currentLocation);
-            var seasonalName = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Flooring}_{GetFlooringName(__instance)}_{season}");
+            var season = Game1.GetSeasonForLocation(__instance.Location).ToString();
+            var seasonalName = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.Flooring}_{GetFlooringName(flooring)}_{season}");
             if ((__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]) && !String.Equals(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON], season, StringComparison.OrdinalIgnoreCase)) || AlternativeTextures.textureManager.DoesObjectHaveAlternativeTextureById(seasonalName))
             {
                 __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = season;

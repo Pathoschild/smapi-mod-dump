@@ -44,9 +44,8 @@ safely out of the way, so you can continue to hang out with him.
 
 You will need the following dependencies:
 
-* SMAPI
-* Json Assets
-* SpaceCore
+* Stardew Valley 1.6
+* SMAPI 4.0.0+
 
 ## Compatibility
 
@@ -71,5 +70,11 @@ position to start, ready to be your friend. No one will give you hints, since
 they aren't needed. You will still be able to trigger the event (the dialogue
 will change slightly).
 
-Similarly, it should be safe to delete this mod at any point, although there is
-a Json Assets item in it, so take your usual precautions to avoid a shuffle.
+If you load a 1.5.6 save in 1.6.0 or newer, and that save had the previous
+releases of this mod installed, your previous key item will become an error
+item. You should automatically receive a new one, after which it is safe to
+trash the error item.
+
+Similarly, it should be safe to delete this mod at any point. If you have the
+key item, it will become an error item, but there should be no other side
+effects.

@@ -11,7 +11,6 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
@@ -25,33 +24,50 @@ namespace FarmTypeManager
             /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
             /// <param name="location">The GameLocation where the large object should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
-            public static bool SpawnLargeObject(int index, GameLocation location, Vector2 tile)
+            public static bool SpawnLargeObject(string index, GameLocation location, Vector2 tile)
             {
                 Monitor.VerboseLog($"Spawning large object. ID: {index}. Location: {tile.X},{tile.Y} ({location.Name}).");
 
-                ResourceClump clump;
-                if (index == 190 || index == 254 || index == 276) //if this should be a GiantCrop
+                switch (index)
                 {
-                    clump = new GiantCrop(index, tile);
-                }
-                else //if this should be a ResourceClump
-                {
-                    clump = new ResourceClump(index, 2, 2, tile);
+                    //if this is a known, basic resource clump
+                    case "600":
+                    case "602":
+                    case "622":
+                    case "672":
+                    case "752":
+                    case "754":
+                    case "756":
+                    case "758":
+                        location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile));
+                        return true;
+                    //if this is one of the "green rain" clumps added in SDV 1.6
+                    case "44":
+                    case "46":
+                        location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile, 4, "TileSheets\\Objects_2")); //spawn with the correct health and spritesheet
+                        return true;
+                    //if this is any other known resource clump that uses "TileSheets/Objects_2"
+                    case "148":
+                        location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile, null, "TileSheets\\Objects_2")); //spawn with the correct spritesheet
+                        return true;
+
+                        //this is NOT a known basic clump
                 }
 
-                if (location is Farm farm)
+                if (Utility.ItemExtensionsAPI != null && Utility.ItemExtensionsAPI.IsClump(index)) //if this is an IE clump
                 {
-                    farm.resourceClumps.Add(clump); //spawn the specified resource clump
-                }
-                else if (location is MineShaft mine)
-                {
-                    mine.resourceClumps.Add(clump); //spawn the specified resource clump
-                }
-                else //if this is not a farm or mine, which generally means it lacks a "resourceClumps" list
-                {
-                    location.largeTerrainFeatures.Add(new LargeResourceClump(clump)); //spawn a wrapped version of the specified resource clump
+                    bool spawned = Utility.ItemExtensionsAPI.TrySpawnClump(index, tile, location, out string error);
+
+                    if (!spawned && error != null) //if an error caused spawning to fail
+                    {
+                        Utility.Monitor.LogOnce($"Item Extensions encounted an error while trying to spawn a clump (a.k.a. large object). Clump ID: \"{index}\". Error message: \"{error}\".", LogLevel.Info);
+                    }
+
+                    return spawned; //true if IE says the clump was spawned successfully
                 }
 
+                //assume this is a giant crop ID
+                location.resourceClumps.Add(new GiantCrop(index.ToString(), tile));
                 return true;
             }
         }

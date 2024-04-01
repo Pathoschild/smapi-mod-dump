@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AnimalHusbandryMod.common;
+using StardewValley.GameData.Objects;
 
 namespace AnimalHusbandryMod.meats
 {
@@ -30,11 +31,21 @@ namespace AnimalHusbandryMod.meats
             return attribute == null ? value.ToString() : attribute.Description;
         }
 
-        public static string GetObjectString(this Meat value)
+        public static ObjectData GetObjectData(this Meat value)
         {
             var meatItem = DataLoader.MeatData.getMeatItem(value);
             var i18n = DataLoader.i18n;
-            return String.Format("{0}/{1}/{2}/Basic -14/{3}/{4}", value.GetDescription(), meatItem.Price, meatItem.Edibility, i18n.Get($"Meat.{value}.Name"), i18n.Get($"Meat.{value}.Description"));
+            return new ObjectData()
+            {
+                SpriteIndex = (int) value,
+                Name = value.GetDescription(),
+                Price = meatItem.Price,
+                Edibility = meatItem.Edibility,
+                DisplayName = i18n.Get($"Meat.{value}.Name"),
+                Description = i18n.Get($"Meat.{value}.Description"),
+                Category = -14,
+                Type = "Basic"
+            };
         }        
     }
 }

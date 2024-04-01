@@ -8,7 +8,10 @@
 **
 *************************************************/
 
+using System;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
+using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod.Utils
 {
@@ -28,22 +31,21 @@ namespace ProducerFrameworkMod.Utils
 
         internal static string GetPreserveName(Object.PreserveType preserveType, string preserveParentName)
         {
-            switch (preserveType)
+            return preserveType switch
             {
-                case Object.PreserveType.Wine:
-                    return $"{preserveParentName} Wine";
-                case Object.PreserveType.Jelly:
-                    return $"{preserveParentName} Jelly";
-                case Object.PreserveType.Pickle:
-                    return $"Pickled {preserveParentName}";
-                case Object.PreserveType.Juice:
-                    return $"{preserveParentName} Juice";
-                case Object.PreserveType.Roe:
-                    return $"{preserveParentName} Roe";
-                case Object.PreserveType.AgedRoe:
-                    return $"Aged {preserveParentName}";
-            }
-            return null;
+                Object.PreserveType.Wine => $"{preserveParentName} Wine",
+                Object.PreserveType.Jelly => $"{preserveParentName} Jelly",
+                Object.PreserveType.Pickle => $"Pickled {preserveParentName}",
+                Object.PreserveType.Juice => $"{preserveParentName} Juice",
+                Object.PreserveType.Roe => $"{preserveParentName} Roe",
+                Object.PreserveType.AgedRoe => $"Aged {preserveParentName}",
+                Object.PreserveType.Honey => $"{preserveParentName ?? "Wild"} Honey",
+                Object.PreserveType.DriedFruit => Lexicon.makePlural($"Dried {preserveParentName}"),
+                Object.PreserveType.DriedMushroom => Lexicon.makePlural($"Dried {preserveParentName}"),
+                Object.PreserveType.SmokedFish => "Smoked {preserveParentName}",
+                Object.PreserveType.Bait => $"{preserveParentName}  Bait",
+                _ => null
+            };
         }
 
         internal static string GetCategoryName(int categoryIndex)
@@ -56,51 +58,25 @@ namespace ProducerFrameworkMod.Utils
                     return Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.572");
                 case -4:
                     return Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.571");
+                case -3:
+                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.570");
                 case -2:
                     return Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.569");
-                case -81:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12869");
-                case -80:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12866");
-                case -79:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12854");
-                case -75:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12851");
-                case -74:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12855");
-                case -28:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12867");
+                case -1:
+                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.568");
                 case -27:
                     return DataLoader.Helper.Translation.Get("Object.Category.TappedTreeProduct");
-                case -26:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12862");
-                case -25:
-                case -7:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12853");
-                case -24:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12859");
-                case -22:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12858");
-                case -21:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12857");
-                case -20:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12860");
-                case -19:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12856");
-                case -18:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12864");
                 case -14:
                     return DataLoader.Helper.Translation.Get("Object.Category.Meat");
                 case -16:
                     return DataLoader.Helper.Translation.Get("Object.Category.BuildingResources");
                 case -15:
                     return DataLoader.Helper.Translation.Get("Object.Category.MetalResources");
-                case -12:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12850");
-                case -8:
-                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12863");
+                case -777:
+                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:CraftingRecipe.cs.574");
                 default:
-                    return "???";
+                    var categoryDisplayName = Object.GetCategoryDisplayName(categoryIndex);
+                    return  !string.IsNullOrEmpty(categoryDisplayName) ? categoryDisplayName : "???" ;
             }
         }
     }

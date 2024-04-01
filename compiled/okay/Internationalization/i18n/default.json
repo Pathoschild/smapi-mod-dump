@@ -1,0 +1,16 @@
+{
+	// Interface texts
+	"title":"Internationalization: Stardew Valley Mod Translator",
+	"mod": "Mod",
+	"locale": "Locale",
+	"progress": "Progress",
+	"save": "Save",
+	"download": "Download",
+	"error": "Error",
+	"hide": "Hide",
+	"new_translation": "New translation",
+	"old_translation": "Old translation",
+	
+	// Messages
+	"error.total_lines": "Parser failed to recognize all {{count}} translation entries in default.json.",
+}

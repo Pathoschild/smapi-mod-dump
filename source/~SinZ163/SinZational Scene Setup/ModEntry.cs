@@ -15,6 +15,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using xTile.Dimensions;
 
 namespace SinZational_Scene_Setup
 {
@@ -25,6 +26,7 @@ namespace SinZational_Scene_Setup
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
 
             helper.ConsoleCommands.Add("sinz.playevents", "Auto plays events in the current location. If arguments are given is treated as a specific, or all if location is 'ALL'", (command, args) =>
             {
@@ -57,6 +59,36 @@ namespace SinZational_Scene_Setup
                     AddEvents(location);
                 }
             });
+        }
+
+        private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        {
+            foreach (var location in Game1.locations)
+            {
+                Dictionary<string, string> events;
+                try
+                {
+                    events = Helper.GameContent.Load<Dictionary<string, string>>($"Data/Events/{location.Name}");
+                }
+                catch (ContentLoadException)
+                {
+                    Monitor.Log($"Location {location.Name} does not have events?", LogLevel.Info);
+                    continue;
+                }
+                Monitor.Log($"Location {location.Name} has {events.Count} events", LogLevel.Info);
+                foreach (var key in events.Keys)
+                {
+                    var split = key.Split('/');
+                    if (split.Length < 2) continue;
+                    var eventId = split[0];
+                    var args = split[1..];
+                    Monitor.Log("Testing event " + key);
+                    foreach (var arg in args)
+                    {
+                        Event.CheckPrecondition(location, eventId, arg);
+                    }
+                }
+            }
         }
 
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)

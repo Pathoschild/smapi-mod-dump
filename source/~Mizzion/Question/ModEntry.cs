@@ -29,7 +29,7 @@ namespace Question
         {
             
            
-                IDictionary<string, string> npc = asset.AsDictionary<string, string>().Data;
+                var npc = asset.AsDictionary<string, string>().Data;
                 npc["birthDayMailWizard"] = "Lets Test out....";
                 /*
                 asset
@@ -51,7 +51,7 @@ namespace Question
                 return;
             if (e.IsDown(SButton.F4))
             {
-                GameLocation loc = Game1.currentLocation;
+                var loc = Game1.currentLocation;
                 loc.lastQuestionKey = "greenhouse_upgrade";
                 loc.createQuestionDialogue("Testing 1 2 3", loc.createYesNoResponses(), ConfirmUpgrade);
             }
@@ -158,7 +158,7 @@ namespace Question
         {
             Monitor.Log($"{whichAnswer} question 1");
             
-            GameLocation loc = Game1.currentLocation;
+            var loc = Game1.currentLocation;
             loc.afterQuestion = null;
             loc.lastQuestionKey = "greenhouse_upgrade";
             loc.createQuestionDialogue("TestingThis Again 1 2 3", loc.createYesNoResponses(), ConfirmUpgrade1);

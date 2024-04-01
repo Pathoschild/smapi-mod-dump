@@ -6,9 +6,9 @@ mods:
    Mice in the Valley
 
 latest commit:
-   commit 64b6c9fde6d251f04104342e9367426c76d9edc9
+   commit 1a26a581f31e73353198cba396c033e729cd2a7b
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Sep 15 19:28:21 2022 +0200
+   Date:   Wed Mar 20 21:34:29 2024 +0100
    
-       Fix SMAPI deprecation warnings, minimum SMAPI version is 3.14 (net5.0).
+       Change required SMAPI version to 4.0.0 for SDV 1.6 release.
    

@@ -8,6 +8,24 @@ for queries and analysis.**
 
 # Toolbar Icons Change Log
 
+## 2.6.2 (Unreleased)
+
+### Fixed
+
+* Fixed api integration with other mods.
+
+## 2.6.1 (March 19, 2024)
+
+### Changed
+
+* Rebuild against final SDV 1.6 and SMAPI 4.0.0.
+
+## 2.6.0 (March 19, 2024)
+
+### Changed
+
+* Updated for SDV 1.6 and .NET 6
+
 ## 2.5.0 (September 17, 2022)
 
 ### Added

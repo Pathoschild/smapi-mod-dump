@@ -1,0 +1,10 @@
+{
+  "Name": "GET OUT THE WAY",
+  "Author": "BadNetCode",
+  "Version": "1.0.1",
+  "Description": "Stop colliding with NPCs!",
+  "UniqueID": "BadNetCode.GetOutTheWay",
+  "EntryDll": "GetOutTheWay.dll",
+  "MinimumApiVersion": "4.0.4",
+  "UpdateKeys": [ "Nexus:20637" ]
+}

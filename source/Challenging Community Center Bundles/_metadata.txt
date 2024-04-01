@@ -6,9 +6,11 @@ mods:
    Challenging Community Center Bundles
 
 latest commit:
-   commit bca916f76f43e9ef68be5d1eb0de931c3baf946f
-   Author: Jaksha6472 <freaky_chick@gmx.de>
-   Date:   Thu Dec 30 09:34:59 2021 +0100
+   commit 7e92966380f978e3dc7167f7968d0cfb42451688
+   Author: Jaksha6472 <76745670+Jaksha6472@users.noreply.github.com>
+   Date:   Fri Mar 22 07:23:36 2024 +0100
    
-       CCCB version 2.3.0 release
+       Merge pull request #1 from Jaksha6472/update-1-6
+       
+       feat: Update for SV version 1.6
    

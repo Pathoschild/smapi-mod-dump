@@ -59,8 +59,11 @@ namespace HappyHomeDesigner.Menus
 		private int height = 1;
 		private Rectangle scroller;
 
-		private ClickableTextureComponent UpArrow = new(new(0, 0, 44, 48), Game1.mouseCursors, new(421, 459, 11, 12), 4f);
-		private ClickableTextureComponent DownArrow = new(new(0, 0, 44, 48), Game1.mouseCursors, new(421, 472, 11, 12), 4f);
+		private readonly ClickableTextureComponent UpArrow =
+			new(new(0, 0, 44, 48), Game1.mouseCursors, new(421, 459, 11, 12), 4f);
+
+		private readonly ClickableTextureComponent DownArrow =
+			new(new(0, 0, 44, 48), Game1.mouseCursors, new(421, 472, 11, 12), 4f);
 
 		private static readonly Rectangle BackgroundSource = new(403, 383, 6, 6);
 		private static readonly Rectangle ThumbSource = new(435, 463, 6, 10);

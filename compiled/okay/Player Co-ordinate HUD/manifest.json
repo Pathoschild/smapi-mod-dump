@@ -1,0 +1,20 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "DecidedlyHuman.PlayerCoordinates",
+  "Name": "Player Position HUD and Logger",
+  "Author": "DecidedlyHuman",
+  "Version": "1.0.1",
+  "Description": "Have you ever wanted a simple co-ordinate display on your HUD, and the ability to log player/cursor co-ordinates to a file for easier eventing? Well, fret no longer!.",
+  "MinimumApiVersion": "3.15.0",
+  "EntryDll": "PlayerCoordinates.dll",
+  "UpdateKeys": [
+    "Nexus:7969"
+  ]
+}

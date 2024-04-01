@@ -16,137 +16,29 @@ using Microsoft.Xna.Framework.Graphics;
 using MyStardewMods.Common.UI;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace MyStardewMods.Common
 {
     //I admit I got this from PathosChild, but who doesn't want to use his awesome codes.
-    
     /// <summary>Provides common utility methods for interacting with the game code shared by my various mods.</summary>
     internal static class CommonHelper
     {
-        
-        /// <summary>The width of the borders drawn by <c>DrawTab</c>.</summary>
-        public const int ButtonBorderWidth = 4 * Game1.pixelZoom;
-        
-        public static void DrawTab(int x, int y, SpriteFont font, string text, int align = 0, float alpha = 1, bool drawShadow = true)
-        {
-            SpriteBatch spriteBatch = Game1.spriteBatch;
-            Vector2 bounds = font.MeasureString(text);
-
-            CommonHelper.DrawTab(x, y, (int)bounds.X, (int)bounds.Y, out Vector2 drawPos, align, alpha, drawShadow: drawShadow);
-            Utility.drawTextWithShadow(spriteBatch, text, font, drawPos, Game1.textColor);
-        }
-
-        /// <summary>Draw a button texture to the screen.</summary>
-        /// <param name="x">The X position at which to draw.</param>
-        /// <param name="y">The Y position at which to draw.</param>
-        /// <param name="innerWidth">The width of the button's inner content.</param>
-        /// <param name="innerHeight">The height of the button's inner content.</param>
-        /// <param name="innerDrawPosition">The position at which the content should be drawn.</param>
-        /// <param name="align">The button's horizontal alignment relative to <paramref name="x"/>. The possible values are 0 (left), 1 (center), or 2 (right).</param>
-        /// <param name="alpha">The button opacity, as a value from 0 (transparent) to 1 (opaque).</param>
-        /// <param name="drawShadow">Whether to draw a shadow under the tab.</param>
-        public static void DrawTab(int x, int y, int innerWidth, int innerHeight, out Vector2 innerDrawPosition, int align = 0, float alpha = 1, bool drawShadow = true)
-        {
-            SpriteBatch spriteBatch = Game1.spriteBatch;
-
-            // calculate outer coordinates
-            int outerWidth = innerWidth + CommonHelper.ButtonBorderWidth * 2;
-            int outerHeight = innerHeight + Game1.tileSize / 3;
-            int offsetX = align switch
-            {
-                1 => -outerWidth / 2,
-                2 => -outerWidth,
-                _ => 0
-            };
-
-            // draw texture
-            IClickableMenu.drawTextureBox(spriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x + offsetX, y, outerWidth, outerHeight + Game1.tileSize / 16, Color.White * alpha, drawShadow: drawShadow);
-            innerDrawPosition = new Vector2(x + CommonHelper.ButtonBorderWidth + offsetX, y + CommonHelper.ButtonBorderWidth);
-        }
-        
-        /****
-        ** Game helpers
-        ****/
-        /// <summary>Get all game locations.</summary>
-        public static IEnumerable<GameLocation> GetAllLocations()
-        {
-            foreach (GameLocation location in Game1.locations)
-            {
-                // current location
-                yield return location;
-
-                // buildings
-                if (location is BuildableGameLocation buildableLocation)
-                {
-                    foreach (Building building in buildableLocation.buildings)
-                    {
-                        GameLocation indoors = building.indoors.Value;
-                        if (indoors != null)
-                            yield return indoors;
-                    }
-                }
-            }
-        }
-
-        /// <summary>Get the tile coordinates in a map area.</summary>
-        /// <param name="origin">The center tile coordinate.</param>
-        /// <param name="radius">The number of tiles in each direction to include, not counting the origin.</param>
-        public static IEnumerable<Vector2> GetTileArea(Vector2 origin, int radius)
-        {
-            for (int x = -radius; x <= radius; x++)
-            {
-                for (int y = -radius; y <= radius; y++)
-                    yield return new Vector2(origin.X + x, origin.Y + y);
-            }
-        }
-
-        /// <summary>Get whether the community center is complete.</summary>
-        /// <remarks>See game logic in <see cref="Town.resetLocalState"/>.</remarks>
-        public static bool GetIsCommunityCenterComplete()
-        {
-            return Game1.MasterPlayer.mailReceived.Contains("ccIsComplete") || Game1.MasterPlayer.hasCompletedCommunityCenter();
-        }
-
-
-        /****
-        ** Math helpers
-        ****/
-        /// <summary>Get a value's fractional position within a range, as a value between 0 (<paramref name="minValue"/>) and 1 (<paramref name="maxValue"/>).</summary>
-        /// <param name="value">The value within the range.</param>
-        /// <param name="minValue">The minimum value.</param>
-        /// <param name="maxValue">The maximum value.</param>
-        public static float GetRangePosition(int value, int minValue, int maxValue)
-        {
-            float position = (value - minValue) / (float)(maxValue - minValue);
-            return MathHelper.Clamp(position, 0, 1);
-        }
-
-        /// <summary>Get the value from a position within a range.</summary>
-        /// <param name="position">The position within the range, where 0 is the minimum value and 1 is the maximum value.</param>
-        /// <param name="minValue">The minimum value.</param>
-        /// <param name="maxValue">The maximum value.</param>
-        public static int GetValueAtPosition(float position, int minValue, int maxValue)
-        {
-            float value = position * (maxValue - minValue) + minValue;
-            return (int)MathHelper.Clamp(value, minValue, maxValue);
-        }
-        
-        
         /*********
         ** Fields
         *********/
         /// <summary>A blank pixel which can be colorised and stretched to draw geometric shapes.</summary>
         private static readonly Lazy<Texture2D> LazyPixel = new Lazy<Texture2D>(() =>
         {
-            Texture2D pixel = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
+            var pixel = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
             return pixel;
         });
 
+
+        /// <summary>The width of the borders drawn by <see cref="DrawTab"/>.</summary>
+        public const int ButtonBorderWidth = 4 * Game1.pixelZoom;
 
         /*********
         ** Accessors
@@ -165,15 +57,20 @@ namespace MyStardewMods.Common
         ** Game
         ****/
         /// <summary>Get all game locations.</summary>
-        public static IEnumerable<GameLocation> GetLocations()
+        /// <param name="includeTempLevels">Whether to include temporary mine/dungeon locations.</param>
+        public static IEnumerable<GameLocation> GetLocations(bool includeTempLevels = false)
         {
-            return Game1.locations
+            var locations = Game1.locations
                 .Concat(
-                    from location in Game1.locations.OfType<BuildableGameLocation>()
-                    from building in location.buildings
-                    where building.indoors.Value != null
-                    select building.indoors.Value
+                    from location in Game1.locations
+                    from indoors in location.GetInstancedBuildingInteriors()
+                    select indoors
                 );
+
+            if (includeTempLevels)
+                locations = locations.Concat(MineShaft.activeMines).Concat(VolcanoDungeon.activeLevels);
+
+            return locations;
         }
 
         /****
@@ -199,11 +96,45 @@ namespace MyStardewMods.Common
             const int paddingSize = 27;
             const int gutterSize = 20;
 
-            Vector2 labelSize = spriteBatch.DrawTextBlock(Game1.smallFont, label, position + new Vector2(gutterSize), wrapWidth); // draw text to get wrapped text dimensions
+            var labelSize = spriteBatch.DrawTextBlock(Game1.smallFont, label, position + new Vector2(gutterSize), wrapWidth); // draw text to get wrapped text dimensions
             IClickableMenu.drawTextureBox(spriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)position.X, (int)position.Y, (int)labelSize.X + paddingSize + gutterSize, (int)labelSize.Y + paddingSize, Color.White);
             spriteBatch.DrawTextBlock(Game1.smallFont, label, position + new Vector2(gutterSize), wrapWidth); // draw again over texture box
 
             return labelSize + new Vector2(paddingSize);
+        }
+
+        /// <summary>Draw a tab texture to the screen.</summary>
+        /// <param name="spriteBatch">The sprite batch to which to draw.</param>
+        /// <param name="x">The X position at which to draw.</param>
+        /// <param name="y">The Y position at which to draw.</param>
+        /// <param name="innerWidth">The width of the button's inner content.</param>
+        /// <param name="innerHeight">The height of the button's inner content.</param>
+        /// <param name="innerDrawPosition">The position at which the content should be drawn.</param>
+        /// <param name="align">The button's horizontal alignment relative to <paramref name="x"/>. The possible values are 0 (left), 1 (center), or 2 (right).</param>
+        /// <param name="alpha">The button opacity, as a value from 0 (transparent) to 1 (opaque).</param>
+        /// <param name="forIcon">Whether the button will contain an icon instead of text.</param>
+        /// <param name="drawShadow">Whether to draw a shadow under the tab.</param>
+        public static void DrawTab(SpriteBatch spriteBatch, int x, int y, int innerWidth, int innerHeight, out Vector2 innerDrawPosition, int align = 0, float alpha = 1, bool forIcon = false, bool drawShadow = true)
+        {
+            // calculate outer coordinates
+            var outerWidth = innerWidth + CommonHelper.ButtonBorderWidth * 2;
+            var outerHeight = innerHeight + Game1.tileSize / 3;
+            var offsetX = align switch
+            {
+                1 => -outerWidth / 2,
+                2 => -outerWidth,
+                _ => 0
+            };
+
+            // calculate inner coordinates
+            {
+                var iconOffsetX = forIcon ? -Game1.pixelZoom : 0;
+                var iconOffsetY = forIcon ? 2 * -Game1.pixelZoom : 0;
+                innerDrawPosition = new Vector2(x + CommonHelper.ButtonBorderWidth + offsetX + iconOffsetX, y + CommonHelper.ButtonBorderWidth + iconOffsetY);
+            }
+
+            // draw texture
+            IClickableMenu.drawTextureBox(spriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x + offsetX, y, outerWidth, outerHeight + Game1.tileSize / 16, Color.White * alpha, drawShadow: drawShadow);
         }
 
         /// <summary>Draw a button background.</summary>
@@ -283,14 +214,14 @@ namespace MyStardewMods.Common
         /// <param name="padding">The padding between the content and border.</param>
         public static void DrawContentBox(SpriteBatch spriteBatch, Texture2D texture, in Rectangle background, in Rectangle top, in Rectangle right, in Rectangle bottom, in Rectangle left, in Rectangle topLeft, in Rectangle topRight, in Rectangle bottomRight, in Rectangle bottomLeft, in Vector2 position, in Vector2 contentSize, out Vector2 contentPos, out Rectangle bounds, int padding)
         {
-            int cornerWidth = topLeft.Width * Game1.pixelZoom;
-            int cornerHeight = topLeft.Height * Game1.pixelZoom;
-            int innerWidth = (int)(contentSize.X + padding * 2);
-            int innerHeight = (int)(contentSize.Y + padding * 2);
-            int outerWidth = innerWidth + cornerWidth * 2;
-            int outerHeight = innerHeight + cornerHeight * 2;
-            int x = (int)position.X;
-            int y = (int)position.Y;
+            var cornerWidth = topLeft.Width * Game1.pixelZoom;
+            var cornerHeight = topLeft.Height * Game1.pixelZoom;
+            var innerWidth = (int)(contentSize.X + padding * 2);
+            var innerHeight = (int)(contentSize.Y + padding * 2);
+            var outerWidth = innerWidth + cornerWidth * 2;
+            var outerHeight = innerHeight + cornerHeight * 2;
+            var x = (int)position.X;
+            var y = (int)position.Y;
 
             // draw scroll background
             spriteBatch.Draw(texture, new Rectangle(x + cornerWidth, y + cornerHeight, innerWidth, innerHeight), background, Color.White);
@@ -357,11 +288,11 @@ namespace MyStardewMods.Common
                 return new Vector2(0, 0);
 
             // get word list
-            List<string> words = new List<string>();
-            foreach (string word in text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            var words = new List<string>();
+            foreach (var word in text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 // split on newlines
-                string wordPart = word;
+                var wordPart = word;
                 int newlineIndex;
                 while ((newlineIndex = wordPart.IndexOf(Environment.NewLine, StringComparison.InvariantCulture)) >= 0)
                 {
@@ -386,14 +317,14 @@ namespace MyStardewMods.Common
             // track draw values
             float xOffset = 0;
             float yOffset = 0;
-            float lineHeight = font.MeasureString("ABC").Y * scale;
-            float spaceWidth = GetSpaceWidth(font) * scale;
+            var lineHeight = font.MeasureString("ABC").Y * scale;
+            var spaceWidth = GetSpaceWidth(font) * scale;
             float blockWidth = 0;
-            float blockHeight = lineHeight;
-            foreach (string word in words)
+            var blockHeight = lineHeight;
+            foreach (var word in words)
             {
                 // check wrap width
-                float wordWidth = font.MeasureString(word).X * scale;
+                var wordWidth = font.MeasureString(word).X * scale;
                 if (word == Environment.NewLine || ((wordWidth + xOffset) > wrapWidth && (int)xOffset != 0))
                 {
                     xOffset = 0;
@@ -404,7 +335,7 @@ namespace MyStardewMods.Common
                     continue;
 
                 // draw text
-                Vector2 wordPosition = new Vector2(position.X + xOffset, position.Y + yOffset);
+                var wordPosition = new Vector2(position.X + xOffset, position.Y + yOffset);
                 if (bold)
                     Utility.drawBoldText(batch, word, font, wordPosition, color ?? Color.Black, scale);
                 else

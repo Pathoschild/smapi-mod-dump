@@ -85,16 +85,16 @@ public class MultiSelectTextOption<T>
 			mod: mod,
 			name: Name,
 			tooltip: Tooltip,
-			draw: (b, position) => Draw(b, position),
-			height: () => GetHeight(),
+			draw: Draw,
+			height: GetHeight,
 			beforeMenuOpened: () =>
 			{
 				LastMouseLeftPressed = null;
 				Initialize();
 			},
-			beforeMenuClosed: () => Initialize(),
-			afterReset: () => Initialize(),
-			beforeSave: () => BeforeSave()
+			beforeMenuClosed: Initialize,
+			afterReset: Initialize,
+			beforeSave: BeforeSave
 		);
 	}
 

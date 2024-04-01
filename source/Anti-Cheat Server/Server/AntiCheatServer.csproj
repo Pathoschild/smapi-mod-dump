@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>FunnySnek.AntiCheat.Server</RootNamespace>
-    <Version>9.1.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <Version>9.1.1</Version>
+    <TargetFramework>net6.0</TargetFramework>
 
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 </Project>

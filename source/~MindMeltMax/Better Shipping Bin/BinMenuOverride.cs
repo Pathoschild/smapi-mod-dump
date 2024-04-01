@@ -11,7 +11,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -22,61 +21,73 @@ using System.Linq;
 
 namespace BetterShipping
 {
+    internal enum Neighbor
+    {
+        None,
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
+    internal enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
     internal class BinMenuOverride : MenuWithInventory
     {
         private const int BaseIdPlayerInventory = 36000;
         private const int BaseIdBinInventory = 69500;
 
-        private Item _hoverItem;
-        private InventoryMenu _itemsMenu;
-        private ClickableTextureComponent _upArrow;
-        private ClickableTextureComponent _downArrow;
-        private Farm _farm;
-        private IList<Item> _itemsInView;
-        private bool _updatedBounds;
-        private bool _finishedInitializing = false;
-        public int Offset;
+        private const int NoId = -7777;
+        private const int ExitId = 0;
+        private const int ArrowUpId = 1;
+        private const int ArrowDownId = 2;
+        private const int TrashCanId = 3;
 
-        private int _maxOffset => (int)Math.Ceiling(((double)_actuallItems.Count - _maxItemsPerPage) / ((double)_maxItemsPerPage / 3));
-        private bool _canScroll => _canScrollUp || _canScrollDown;
-        private bool _canScrollUp => Offset > 0;
-        private bool _canScrollDown => Offset < _maxOffset;
-        private IList<Item> _actuallItems => _farm.getShippingBin(Game1.player);
+        private const int RowLength = 12;
 
-        private readonly IModHelper _helper;
-        private readonly IMonitor _monitor;
-        private readonly int _maxItemsPerPage = Chest.capacity;
+        private readonly int maxItemsPerPage = Chest.capacity;
+        private readonly Farm farm = Game1.RequireLocation<Farm>("Farm");
 
-        public BinMenuOverride(IModHelper helper, IMonitor monitor, int offset = 0) : base(new InventoryMenu.highlightThisItem(Utility.highlightShippableObjects), true, true, menuOffsetHack: 64)
+        private int offset;
+        private Item? hoverItem;
+        private InventoryMenu itemsMenu;
+        private ClickableTextureComponent upArrow;
+        private ClickableTextureComponent downArrow;
+        private bool updatedBounds;
+
+        private bool isShift => Game1.oldKBState.IsKeyDown(Keys.LeftShift) || Game1.oldKBState.IsKeyDown(Keys.RightShift);
+        private bool isCtrl => Game1.oldKBState.IsKeyDown(Keys.LeftControl) || Game1.oldKBState.IsKeyDown(Keys.RightControl);
+        private bool canScroll => canScrollUp || canScrollDown;
+        private bool canScrollUp => offset > 0;
+        private bool canScrollDown => offset < maxOffset;
+        public int Offset => offset;
+        private int maxOffset => (int)Math.Ceiling(((double)actuallItems.Count - maxItemsPerPage) / ((double)maxItemsPerPage / 3));
+        private IList<Item> actuallItems => farm.getShippingBin(Game1.player);
+        private List<Item> itemsInView => getItemsInView(offset);
+
+        public BinMenuOverride(int offset = 0) : base(Utility.highlightShippableObjects, false, true, menuOffsetHack: 64)
         {
-            Offset = offset < 0 ? 0 : offset;
-            _farm = Game1.getFarm();
-            _helper = helper;
-            _monitor = monitor;
-            _itemsInView = new List<Item>(_actuallItems.Take(_maxItemsPerPage));
-            if (Offset > 0) _itemsInView = getItemsFromOffset();
-
+            this.offset = offset;
             inventory.showGrayedOutSlots = true;
-            okButton = null;
-
+            HeldItemExitBehavior = ItemExitBehavior.Drop;
             loadViewComponents();
-            loadItemsInView();
+            RenderItems();
+            if (Game1.options.SnappyMenus)
+                setUpForGamePadMode();
         }
 
-
-        public override void snapToDefaultClickableComponent() => currentlySnappedComponent = getComponentWithId(_itemsMenu.actualInventory.Count > 0 ? 69500 : 36000); /* ?? (_itemsMenu.actualInventory.Count > 0 ? _itemsMenu.inventory.FirstOrDefault(x => x.myID == 69500) : inventory.inventory.FirstOrDefault(x => x.myID == 36000)) // I'm sure this made sense to someone someday, but it doesn't to me now*/
-
-        public override void setCurrentlySnappedComponentTo(int id)
-        {
-            currentlySnappedComponent = getComponentWithId(id);
-            if (currentlySnappedComponent == null)
-            {
-                snapToDefaultClickableComponent();
-                _monitor.Log($"Couldn't snap to component with id : {id}, Snapping to default", LogLevel.Warn);
-            }
-            Game1.playSound("smallSelect");
-        }
-
+        /// <summary>
+        /// Snap the cursor to the default component for GamePad mode
+        /// </summary>
+        /// <remarks>
+        /// This is broken and refuses to fire the first time
+        /// </remarks>
         public override void setUpForGamePadMode()
         {
             snapToDefaultClickableComponent();
@@ -85,22 +96,12 @@ namespace BetterShipping
 
         public override void receiveGamePadButton(Buttons b)
         {
-            if (!_finishedInitializing) return;
-
             switch (b)
             {
                 case Buttons.Back:
                 case Buttons.B:
                 case Buttons.Y:
-                    exitMenu();
-                    return;
-                case Buttons.A:
-                    if (currentlySnappedComponent != null)
-                    {
-                        if (currentlySnappedComponent.myID == 12977) receiveScrollWheelAction(-1);
-                        else if (currentlySnappedComponent.myID == 12976) receiveScrollWheelAction(1);
-                        else if (currentlySnappedComponent.myID == 12975) goto case Buttons.B;
-                    }
+                    exitThisMenu();
                     break;
                 case Buttons.LeftShoulder:
                     receiveScrollWheelAction(1);
@@ -109,297 +110,190 @@ namespace BetterShipping
                     receiveScrollWheelAction(-1);
                     break;
             }
-
-            base.receiveGamePadButton(b);
         }
 
         public override void applyMovementKey(int direction)
         {
-            if (currentlySnappedComponent == null) snapToDefaultClickableComponent();
-            switch (direction)
+            if (currentlySnappedComponent is null)
             {
-                case 0: //Up
-                    if (currentlySnappedComponent.upNeighborID < 0) goto case 2003;
-                    setCurrentlySnappedComponentTo(currentlySnappedComponent.upNeighborID);
-                    snapCursorToCurrentSnappedComponent();
-                    break;
-                case 1: //Right
-                    if (currentlySnappedComponent.rightNeighborID < 0) goto case 2003;
-                    setCurrentlySnappedComponentTo(currentlySnappedComponent.rightNeighborID);
-                    snapCursorToCurrentSnappedComponent();
-                    break;
-                case 2: //Down
-                    if (currentlySnappedComponent.downNeighborID < 0) goto case 2003;
-                    setCurrentlySnappedComponentTo(currentlySnappedComponent.downNeighborID);
-                    snapCursorToCurrentSnappedComponent();
-                    break;
-                case 3: //Left
-                    if (currentlySnappedComponent.leftNeighborID < 0) goto case 2003;
-                    setCurrentlySnappedComponentTo(currentlySnappedComponent.leftNeighborID);
-                    snapCursorToCurrentSnappedComponent();
-                    break;
-                case 2003:
-                    snapToNextClickableComponent(currentlySnappedComponent.myID, direction);
-                    snapCursorToCurrentSnappedComponent();
-                    break;
-                default:
-                    base.applyMovementKey(direction);
-                    break;
+                snapToDefaultClickableComponent();
+                return;
             }
+            Direction directionEnum = direction switch
+            {
+                0 => Direction.Up,
+                2 => Direction.Down,
+                1 => Direction.Right,
+                3 => Direction.Left
+            };
+            snapToNextClickableComponent(currentlySnappedComponent.myID, directionEnum);
         }
 
-        //TODO : Resolve stacking issue's when holding down shift / ctrl \\Fixed (I think (Hell if I now what do I look like? a programmer, nah, just... fixed... ok...))
         public override void receiveRightClick(int x, int y, bool playSound = true)
         {
-            if (!_finishedInitializing) return;
-
-            if (_itemsMenu.isWithinBounds(x, y))
+            Item? item;
+            int stack = getStack();
+            if (itemsMenu.isWithinBounds(x, y))
             {
-                var item = _itemsMenu.getItemAt(x, y);
-                if (item == null || !Utility.highlightShippableObjects(item)) return;
+                item = itemsMenu.getItemAt(x, y);
 
-                if (heldItem == null)
+                if (item == null || !Utility.highlightShippableObjects(item))
+                    return;
+
+                int slot = getSlotIndexAt(x, y, false);
+                if (slot == -1) 
+                    return;
+
+                if (heldItem is null)
                 {
-                    heldItem = item.getOne();
-                    if (heldItem != null)
-                        selectStackFromBin(heldItem, Game1.player, getStack());
-                    broadCastToMultiplayer();
-                    Game1.playSound("dwop");
+                    heldItem = TakeItemAt(slot, stack, false);
+                    if (playSound)
+                        Game1.playSound("dwop");
+                    if (isShift)
+                        heldItem = Game1.player.addItemToInventory(heldItem);
                     return;
                 }
-                else if (heldItem != null && heldItem.canStackWith(item))
+                else if (heldItem.canStackWith(item))
                 {
-                    selectStackFromBin(item, Game1.player, getStack());
-                    heldItem.Stack++;
-                    broadCastToMultiplayer();
-                    Game1.playSound("dwop");
+                    var taken = TakeItemAt(slot, stack, false);
+                    heldItem.Stack += taken!.Stack;
+                    if (playSound)
+                        Game1.playSound("dwop");
                     return;
                 }
-                return;
             }
             else if (inventory.isWithinBounds(x, y))
             {
-                var item = inventory.getItemAt(x, y);
-                if (item == null || !Utility.highlightShippableObjects(item)) return;
-                if (item != null && heldItem == null)
-                {
-                    selectSingleFromInventory(item, Game1.player);
-                    addItemToBin(item.getOne(), Game1.player);
-                    loadItemsInView();
-                    broadCastToMultiplayer();
-                    Game1.playSound("Ship");
+                item = inventory.getItemAt(x, y);
+
+                int slot = getSlotIndexAt(x, y, true);
+                if (slot == -1)
                     return;
-                }
-                else if (heldItem != null)
+
+                if (heldItem is null && item is not null && Utility.highlightShippableObjects(item))
                 {
-                    if (Game1.player.Items.Where(x => x != null).Count() >= Game1.player.maxItems.Value) return;
-                    if (Game1.player.getIndexOfInventoryItem(heldItem) >= 0)
-                        Game1.player.addItemToInventory(heldItem.getOne(), Game1.player.getIndexOfInventoryItem(heldItem));
-                    else
-                        Game1.player.addItemToInventory(heldItem.getOne());
-                    heldItem.Stack--;
-                    if (heldItem.Stack <= 0)
-                        heldItem = null;
-                    Game1.playSound("backpackIN");
-                    return;
-                }
-                return;
-            }
-        }
-
-        public override void receiveLeftClick(int x, int y, bool playSound = true)
-        {
-            if (!_finishedInitializing) return;
-
-            bool shiftKeyDown = Game1.oldKBState.IsKeyDown(Keys.LeftShift) || Game1.oldKBState.IsKeyDown(Keys.RightShift);
-
-            if (trashCan != null && trashCan.containsPoint(x, y) && heldItem != null && heldItem.canBeTrashed())
-            {
-                Utility.trashItem(heldItem);
-                heldItem = null;
-                Game1.playSound("trashcan");
-            }
-
-            if (_upArrow.containsPoint(x, y)) receiveScrollWheelAction(1);
-            if (_downArrow.containsPoint(x, y)) receiveScrollWheelAction(-1);
-            if (upperRightCloseButton.containsPoint(x, y)) exitMenu();
-
-            if (heldItem != null)
-            {
-                if (_itemsMenu.isWithinBounds(x, y) && Utility.highlightShippableObjects(heldItem))
-                {
-                    addItemToBin(heldItem, Game1.player);
-                    heldItem = null;
-                    loadItemsInView();
-                    broadCastToMultiplayer();
-                    Game1.playSound("Ship");
-                    return;
-                }
-                else if (inventory.isWithinBounds(x, y))
-                {
-                    if (Game1.player.Items.Where(x => x != null).Count() >= Game1.player.maxItems.Value) return;
-                    if (Game1.player.getIndexOfInventoryItem(heldItem) >= 0)
-                        Game1.player.addItemToInventory(heldItem, Game1.player.getIndexOfInventoryItem(heldItem));
-                    else
-                        Game1.player.addItemToInventory(heldItem);
-                    heldItem = null;
-                    Game1.playSound("backpackIN");
-                    return;
-                }
-            }
-
-            for (int i = 0; i < _itemsMenu.inventory.Count; i++)
-            {
-                if (_itemsMenu.inventory[i].containsPoint(x, y))
-                {
-                    Item? item = _itemsMenu.actualInventory.Count <= i ? null : _itemsMenu.actualInventory.ElementAt(i);
-
-                    if (!Utility.highlightShippableObjects(item)) return;
-
-                    if (heldItem == null && item != null)
-                    {
-                        heldItem = item;
-                        selectItemFromBin(heldItem, Game1.player);
-                        broadCastToMultiplayer();
-                        Game1.playSound("dwop");
-                        if (shiftKeyDown && Game1.player.Items.Where(x => x != null).Count() < Game1.player.maxItems.Value)
-                        {
-                            if (Game1.player.getIndexOfInventoryItem(heldItem) >= 0)
-                                Game1.player.addItemToInventory(heldItem, Game1.player.getIndexOfInventoryItem(heldItem));
-                            else
-                                Game1.player.addItemToInventory(heldItem);
-                            heldItem = null;
-                        }
-                        break;
-                    }
-                    else if (heldItem != null && item != null)
-                    {
-                        if (item.canStackWith(heldItem))
-                        {
-                            var id = _farm.getShippingBin(Game1.player).IndexOf(item);
-                            _farm.getShippingBin(Game1.player)[id].addToStack(heldItem);
-                            heldItem = null;
-                            broadCastToMultiplayer();
-                            Game1.playSound("Ship");
-                            break;
-                        }
-                        addItemToBin(heldItem, Game1.player);
-                        heldItem = item;
-                        selectItemFromBin(heldItem, Game1.player);
-                        broadCastToMultiplayer();
+                    var taken = TakeItemAt(slot, stack, true);
+                    PushItemToBin(taken!);
+                    if (playSound)
                         Game1.playSound("Ship");
-                        break;
-                    }
-                    else if (heldItem != null && item == null)
-                    {
-                        addItemToBin(heldItem, Game1.player);
-                        heldItem = null;
-                        loadItemsInView();
-                        broadCastToMultiplayer();
-                        Game1.playSound("Ship");
-                        break;
-                    }
-                    else break;
+                    return;
                 }
-            }
-
-            for (int i = 0; i < inventory.inventory.Count; i++)
-            {
-                if (inventory.inventory[i].containsPoint(x, y))
+                else if (heldItem is not null)
                 {
-                    if (i >= Game1.player.maxItems.Value) return;
-                    Item? item = inventory.actualInventory.Count <= i ? null : inventory.actualInventory.ElementAt(i);
-
-                    if (item != null && heldItem == null) goto Inventory1;
-                    else if (item == null && heldItem != null) goto Inventory2;
-                    else if (item != null && heldItem != null)
-                    {
-                        if (!item.canStackWith(heldItem)) goto Inventory1;
-                        else goto Inventory2;
-                    }
-                    else break;
-
-                    Inventory1:
-                    if (!Utility.highlightShippableObjects(item)) return;
-                    selectItemFromInventory(item, Game1.player);
-                    addItemToBin(item, Game1.player);
-                    loadItemsInView();
-                    broadCastToMultiplayer();
-                    Game1.playSound("Ship");
-                    break;
-
-                    Inventory2:
-                    if (Game1.player.getIndexOfInventoryItem(heldItem) >= 0)
-                        Game1.player.addItemToInventory(heldItem, Game1.player.getIndexOfInventoryItem(heldItem));
-                    else
-                        Game1.player.addItemToInventory(heldItem);
-                    heldItem = null;
-                    Game1.playSound("backpackIN");
-                    break;
+                    if (item is null || !Utility.highlightShippableObjects(item))
+                        return;
+                    heldItem = TryPlaceItemAt(heldItem, slot, true);
+                    if (playSound)
+                        Game1.playSound("backpackIN");    
+                    return;
                 }
             }
         }
 
         public override void receiveScrollWheelAction(int direction)
         {
-            if (!_finishedInitializing) return;
-            if (_canScroll) Game1.playSound("smallSelect");
-
             //Invert direction because scroll wheel is funny
-            if (direction > 0) direction = -Math.Abs(direction);
-            else direction = Math.Abs(direction);
+            direction = direction > 0 ? -Math.Abs(direction) : Math.Abs(direction);
 
             int _lastOffset = Offset;
-            if (direction > 0 && _canScrollDown)
-                Offset++;
-            else if (direction < 0 && _canScrollUp)
-                Offset--;
-            if (Offset != _lastOffset) loadItemsInView();
+            if (direction > 0 && canScrollDown)
+                offset++;
+            else if (direction < 0 && canScrollUp)
+                offset--;
+            if (Offset != _lastOffset) 
+                RenderItems();
+
+            if (canScroll)
+                Game1.playSound("smallSelect");
         }
 
-        public override void receiveKeyPress(Keys key)
+        public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
-            if (!_finishedInitializing) return;
-
-            bool isDownOrUp = key == Keys.Up || key == Keys.Down;
-            bool isDelete = key == Keys.Delete;
-            bool isEscape = key == Keys.Escape;
-            bool isExit = isEscape || Game1.options.doesInputListContain(Game1.options.menuButton, key);
-
-            if (isDelete && heldItem != null)
+            if (trashCan is not null && trashCan.containsPoint(x, y) && (heldItem?.canBeTrashed() ?? false))
             {
                 Utility.trashItem(heldItem);
                 heldItem = null;
-                Game1.playSound("trashcan");
+                if (playSound)
+                    Game1.playSound("trashcan");
+                return;
             }
-            else if (isExit)
-                exitMenu();
-            else if (isDownOrUp)
-                receiveScrollWheelAction(key == Keys.Up ? 1 : -1);
-            else if (Game1.options.gamepadControls)
-                applyMovementKeys(key);
 
+            if (upArrow.containsPoint(x, y))
+                receiveScrollWheelAction(1);
+            if (downArrow.containsPoint(x, y))
+                receiveScrollWheelAction(-1);
+            if (upperRightCloseButton.containsPoint(x, y))
+                exitThisMenu(playSound);
+
+            if (itemsMenu.isWithinBounds(x, y))
+            {
+                if (heldItem is not null)
+                {
+                    PushItemToBin(heldItem); //This should honestly never be reached
+                    if (playSound)
+                        Game1.playSound("Ship");
+                    heldItem = null;
+                    return;
+                }
+
+                int slot = getSlotIndexAt(x, y, false);
+                if (slot == -1)
+                    return;
+
+                heldItem = TakeItemAt(slot, -1, false);
+                if (playSound)
+                    Game1.playSound("dwoop");
+                if (isShift)
+                    heldItem = Game1.player.addItemToInventory(heldItem);
+                return;
+            }
+            if (inventory.isWithinBounds(x, y))
+            {
+                int slot = getSlotIndexAt(x, y, true);
+                if (slot == -1)
+                    return;
+
+                if (heldItem is not null)
+                {
+                    heldItem = TryPlaceItemAt(heldItem, slot, true);
+                    if (playSound)
+                        Game1.playSound("backpackIN");
+                    return;
+                }
+
+                Item item = TakeItemAt(slot, -1, true)!;
+                if (item is null)
+                    return;
+                if (!Utility.highlightShippableObjects(item))
+                {
+                    TryPlaceItemAt(item, slot, true);
+                    return;
+                }
+                PushItemToBin(item);
+                if (playSound)
+                    Game1.playSound("Ship");
+                return;
+            }
         }
 
         public override void performHoverAction(int x, int y)
         {
-            _hoverItem = null;
+            hoverItem = null;
             base.performHoverAction(x, y);
-            _upArrow.tryHover(x, y, 0.25f);
-            _downArrow.tryHover(x, y, 0.25f);
-            upperRightCloseButton.tryHover(x, y, 0.25f);
-
-            Item i = _itemsMenu.hover(x, y, heldItem);
-            if (i != null && i != _hoverItem && Utility.highlightShippableObjects(i))
+            upArrow.tryHover(x, y, .25f);
+            downArrow.tryHover(x, y, .25f);
+            upperRightCloseButton.tryHover(x, y, .25f);
+            Item i = itemsMenu.hover(x, y, heldItem);
+            if (i != null && i != hoverItem && Utility.highlightShippableObjects(i))
             {
-                _hoverItem = i;
+                hoverItem = i;
                 return;
             }
 
             i = inventory.hover(x, y, heldItem);
-            if (i != null && i != _hoverItem && Utility.highlightShippableObjects(i))
+            if (i != null && i != hoverItem && Utility.highlightShippableObjects(i))
             {
-                _hoverItem = i;
+                hoverItem = i;
                 return;
             }
         }
@@ -407,16 +301,16 @@ namespace BetterShipping
         public override void update(GameTime time)
         {
             base.update(time);
-            if (_canScroll && !_updatedBounds)
+            if (canScroll && !updatedBounds)
             {
-                upperRightCloseButton.bounds = new Rectangle(_upArrow.bounds.X + 48, _upArrow.bounds.Y - 68, upperRightCloseButton.bounds.Width, upperRightCloseButton.bounds.Height);
-                _updatedBounds = true;
+                upperRightCloseButton.bounds = new Rectangle(upArrow.bounds.X + 48, upArrow.bounds.Y - 68, upperRightCloseButton.bounds.Width, upperRightCloseButton.bounds.Height);
+                updatedBounds = true;
                 return;
             }
-            else if (!_canScroll && _updatedBounds)
+            else if (!canScroll && updatedBounds)
             {
-                upperRightCloseButton.bounds = new Rectangle(_upArrow.bounds.X + 4, _upArrow.bounds.Y - 68, upperRightCloseButton.bounds.Width, upperRightCloseButton.bounds.Height);
-                _updatedBounds = false;
+                upperRightCloseButton.bounds = new Rectangle(upArrow.bounds.X + 4, upArrow.bounds.Y - 68, upperRightCloseButton.bounds.Width, upperRightCloseButton.bounds.Height);
+                updatedBounds = false;
             }
         }
 
@@ -426,311 +320,515 @@ namespace BetterShipping
             draw(b, false, false);
 
             //These three things just to have the little backpack icon...
+            //I honestly don't know why I keep insisting on adding this back everytime, but here it is still
             b.Draw(Game1.mouseCursors, new Vector2((xPositionOnScreen - 64), (yPositionOnScreen + height / 2 + 64 + 16)), new Rectangle?(new Rectangle(16, 368, 12, 16)), Color.White, 4.712389f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             b.Draw(Game1.mouseCursors, new Vector2((xPositionOnScreen - 64), (yPositionOnScreen + height / 2 + 64 - 16)), new Rectangle?(new Rectangle(21, 368, 11, 16)), Color.White, 4.712389f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             b.Draw(Game1.mouseCursors, new Vector2((xPositionOnScreen - 40), (yPositionOnScreen + height / 2 + 64 - 44)), new Rectangle?(new Rectangle(4, 372, 8, 11)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
 
-            Game1.drawDialogueBox(_itemsMenu.xPositionOnScreen - borderWidth - spaceToClearSideBorder, _itemsMenu.yPositionOnScreen - borderWidth - spaceToClearTopBorder, _itemsMenu.width + (_canScrollUp || _canScrollDown ? 11 * Game1.pixelZoom : 0) + (borderWidth * 2) + (spaceToClearSideBorder * 2), _itemsMenu.height + spaceToClearTopBorder + (borderWidth * 2), false, true);
-            _itemsMenu.draw(b);
-            if (_canScrollUp) _upArrow.draw(b);
-            if (_canScrollDown) _downArrow.draw(b);
+            Game1.drawDialogueBox(itemsMenu.xPositionOnScreen - borderWidth - spaceToClearSideBorder, itemsMenu.yPositionOnScreen - borderWidth - spaceToClearTopBorder, itemsMenu.width + (canScrollUp || canScrollDown ? 11 * Game1.pixelZoom : 0) + (borderWidth * 2) + (spaceToClearSideBorder * 2), itemsMenu.height + spaceToClearTopBorder + (borderWidth * 2), false, true);
+            itemsMenu.draw(b);
+            if (canScrollUp) 
+                upArrow.draw(b);
+            if (canScrollDown) 
+                downArrow.draw(b);
             upperRightCloseButton.draw(b);
             drawTotalValue(b);
 
-            if (_hoverItem != null)
-                drawToolTip(b, _hoverItem.getDescription(), _hoverItem.DisplayName, _hoverItem, moneyAmountToShowAtBottom: getPriceOfItem(_hoverItem));
+            if (hoverItem != null)
+                drawToolTip(b, hoverItem.getDescription(), hoverItem.DisplayName, hoverItem, moneyAmountToShowAtBottom: getPriceOfItem(hoverItem));
 
-            if (heldItem != null)
-                heldItem.drawInMenu(b, new Vector2(Game1.getOldMouseX() + 8, Game1.getOldMouseY() + 8), 1f);
+            heldItem?.drawInMenu(b, new Vector2(Game1.getOldMouseX() + 8, Game1.getOldMouseY() + 8), 1f);
 
             Game1.mouseCursorTransparency = 1f;
             drawMouse(b);
-            if (!_finishedInitializing) _finishedInitializing = true;
         }
 
         private void drawTotalValue(SpriteBatch b)
         {
-            if (_farm.getShippingBin(Game1.player).Count <= 0) return;
+            if (farm.getShippingBin(Game1.player).Count <= 0) return;
 
             int value = 0;
             string text = "Total value : ";
 
-            for (int i = 0; i < _farm.getShippingBin(Game1.player).Count; i++)
-                value += getPriceOfItem(_farm.getShippingBin(Game1.player)[i]);
+            for (int i = 0; i < farm.getShippingBin(Game1.player).Count; i++)
+                value += getPriceOfItem(farm.getShippingBin(Game1.player)[i]);
 
             if (value <= 0) return;
 
             text += $"{value}";
 
-            SpriteText.drawStringWithScrollCenteredAt(b, text, upperRightCloseButton.bounds.X - (_itemsMenu.width / 2), upperRightCloseButton.bounds.Y - 10);
+            SpriteText.drawStringWithScrollCenteredAt(b, text, upperRightCloseButton.bounds.X - (itemsMenu.width / 2), upperRightCloseButton.bounds.Y - 10);
         }
 
+        private void broadCastToMultiplayer() => ModEntry.IHelper.Multiplayer.SendMessage("", "reloadItemsInBin", new[] { ModEntry.IHelper.ModRegistry.ModID });
+
+        #region Component Handling
+        /// <summary>
+        /// Set the currently snapped component to the default (First slot in the bin's inventory)
+        /// </summary>
+        public override void snapToDefaultClickableComponent() => setCurrentlySnappedComponentTo(BaseIdPlayerInventory);
+
+        /// <summary>
+        /// Set the currently snapped component to the component with a given id if possible
+        /// </summary>
+        /// <param name="id">The id of the component</param>
+        public override void setCurrentlySnappedComponentTo(int id)
+        {
+            if (getComponentWithId(id) is ClickableComponent c)
+            {
+                currentlySnappedComponent = c;
+                snapCursorToCurrentSnappedComponent();
+                Game1.playSound("smallSelect");
+            }
+        }
+
+        /// <summary>
+        /// Get the number of rows for an inventory
+        /// </summary>
+        /// <param name="player">Whether to get the number of rows for the player or the shipping bin</param>
+        /// <returns>The number of rows for the requested inventory</returns>
+        private int getRowCount(bool player) => (player ? inventory.inventory.Count : itemsMenu.inventory.Count) / RowLength;
+
+        #region Neighboring Ids
+        /// <summary>
+        /// Get the id for the element above the current element
+        /// </summary>
+        /// <param name="rowIndex">The row index of the current element</param>
+        /// <param name="columnIndex">The column index of the current element</param>
+        /// <param name="player">Whether the id is for the player inventory or the shipping bin's inventory</param>
+        /// <returns>An id for the neighbor above the current element</returns>
+        private int getUpNeighborId(int rowIndex, int columnIndex, bool player)
+        {
+            if (player)
+            {
+                if (rowIndex == 0)
+                    return BaseIdBinInventory + (RowLength * (getRowCount(false) - 1)) + columnIndex;
+                return BaseIdPlayerInventory + (RowLength * rowIndex) - RowLength + columnIndex;
+            }
+            if (rowIndex == 0)
+                return NoId;
+            return BaseIdBinInventory + (RowLength * rowIndex) - RowLength + columnIndex;
+        }
+
+        /// <summary>
+        /// Get the id for the element below the current element
+        /// </summary>
+        /// <param name="rowIndex">The row index of the current element</param>
+        /// <param name="columnIndex">The column index of the current element</param>
+        /// <param name="player">Whether the id is for the player inventory or the shipping bin's inventory</param>
+        /// <returns>An id for the neighbor below the current element</returns>
+        private int getDownNeighborId(int rowIndex, int columnIndex, bool player)
+        {
+            if (player)
+            {
+                if (rowIndex == getRowCount(true) - 1)
+                    return NoId;
+                return BaseIdPlayerInventory + (RowLength * rowIndex) + RowLength + columnIndex;
+            }
+            if (rowIndex == getRowCount(false) - 1)
+                return BaseIdPlayerInventory + columnIndex;
+            return BaseIdBinInventory + (RowLength * rowIndex) + RowLength + columnIndex;
+        }
+
+        /// <summary>
+        /// Get the id for the element to the right of the current element
+        /// </summary>
+        /// <param name="rowIndex">The row index of the current element</param>
+        /// <param name="columnIndex">The column index of the current element</param>
+        /// <param name="player">Whether the id is for the player inventory or the shipping bin's inventory</param>
+        /// <returns>An id for the neighbor to the right of the current element</returns>
+        private int getRightNeighborId(int rowIndex, int columnIndex, bool player)
+        {
+            if (player)
+            {
+                if (columnIndex == RowLength - 1)
+                {
+                    if (rowIndex == 0)
+                        return TrashCanId;
+                    if (rowIndex == getRowCount(player) - 1)
+                        return NoId;
+                }
+                return BaseIdPlayerInventory + (RowLength * rowIndex) + columnIndex + 1;
+            }
+            if (columnIndex == RowLength - 1)
+            {
+                if (rowIndex == 0)
+                    return ArrowUpId;
+                if (rowIndex == getRowCount(false) - 1)
+                    return ArrowDownId;
+            }
+            return BaseIdBinInventory + (RowLength * rowIndex) + columnIndex + 1;
+        }
+
+        /// <summary>
+        /// Get the id for the element to the left of the current element
+        /// </summary>
+        /// <param name="rowIndex">The row index of the current element</param>
+        /// <param name="columnIndex">The column index of the current element</param>
+        /// <param name="player">Whether the id is for the player inventory or the shipping bin's inventory</param>
+        /// <returns>An id for the neighbor to the left of the current element</returns>
+        private int getLeftNeighborId(int rowIndex, int columnIndex, bool player)
+        {
+            if (player)
+            {
+                if (columnIndex == 0)
+                {
+                    if (rowIndex == 0)
+                        return ArrowDownId;
+                    if (rowIndex == 1)
+                        return TrashCanId;
+                }
+                return BaseIdPlayerInventory + (RowLength * rowIndex) + columnIndex - 1;
+            }
+            if (columnIndex == 0)
+            {
+                if (rowIndex == 0)
+                    return NoId;
+                if (rowIndex == 1)
+                    return ArrowUpId;
+            }
+            return BaseIdBinInventory + (RowLength * rowIndex) + columnIndex - 1;
+        }
+        #endregion
+
+        /// <summary>
+        /// Assign the ids for all elements of a row;
+        /// </summary>
+        /// <param name="rowIndex">The row index of the current row</param>
+        /// <param name="player">Whether the ids are for the player inventory or the shipping bin's inventory</param>
+        private void assignRowIds(int rowIndex, bool player)
+        {
+            int baseId = player ? BaseIdPlayerInventory : BaseIdBinInventory;
+            for (int i = 0; i < RowLength; i++)
+            {
+                int index = i + (RowLength * rowIndex);
+
+                int upId = getUpNeighborId(rowIndex, i, player);
+                int downId = getDownNeighborId(rowIndex, i, player);
+                int rightId = getRightNeighborId(rowIndex, i, player);
+                int leftId = getLeftNeighborId(rowIndex, i, player);
+
+                assignId(index, baseId + index, player, Neighbor.None);
+                assignId(index, upId, player, Neighbor.Up);
+                assignId(index, downId, player, Neighbor.Down);
+                assignId(index, rightId, player, Neighbor.Right);
+                assignId(index, leftId, player, Neighbor.Left);
+            }
+        }
+
+        /// <summary>
+        /// Assign an id to a slot at a specified index or it's neighbor
+        /// </summary>
+        /// <param name="index">The index of the current slot</param>
+        /// <param name="id">The id to assign</param>
+        /// <param name="player">Whether the id is for the players inventory of the shipping bin's inventory</param>
+        /// <param name="neighbor">The neighbor side to which to assign the id or <see cref="Neighbor.None"/> for the current slot</param>
+        private void assignId(int index, int id, bool player, Neighbor neighbor)
+        {
+            _ = neighbor switch
+            {
+                Neighbor.None => player ? inventory.inventory[index].myID = id : itemsMenu.inventory[index].myID = id,
+                Neighbor.Left => player ? inventory.inventory[index].leftNeighborID = id : itemsMenu.inventory[index].leftNeighborID = id,
+                Neighbor.Right => player ? inventory.inventory[index].rightNeighborID = id : itemsMenu.inventory[index].rightNeighborID = id,
+                Neighbor.Up => player ? inventory.inventory[index].upNeighborID = id : itemsMenu.inventory[index].upNeighborID = id,
+                Neighbor.Down => player ? inventory.inventory[index].downNeighborID = id : itemsMenu.inventory[index].downNeighborID = id,
+                _ => -1
+            };
+        }
+
+        /// <summary>
+        /// Create all the clickable elements and assign the id's required for controller support
+        /// </summary>
         private void loadViewComponents()
         {
-            initializeUpperRightCloseButton();
-
-            _itemsMenu = new InventoryMenu(xPositionOnScreen + 32, yPositionOnScreen, false, _itemsInView);
-            _upArrow = new ClickableTextureComponent(new Rectangle(_itemsMenu.xPositionOnScreen + _itemsMenu.width + 12, _itemsMenu.yPositionOnScreen - 6, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), Game1.pixelZoom);
-            _upArrow.name = "previous";
-            _downArrow = new ClickableTextureComponent(new Rectangle(_upArrow.bounds.X, _upArrow.bounds.Y + _itemsMenu.height - _upArrow.bounds.Height, _upArrow.bounds.Width, _upArrow.bounds.Height), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), Game1.pixelZoom);
-            _downArrow.name = "next";
-
-            upperRightCloseButton.bounds = new Rectangle(_upArrow.bounds.X + 4, _upArrow.bounds.Y - 68, upperRightCloseButton.bounds.Width, upperRightCloseButton.bounds.Height);
-
-            const int rowLength = 12;
-            int colLength = inventory.inventory.Count / rowLength;
-
-            for (int i = 0; i < colLength; i++)
+            itemsMenu = new(xPositionOnScreen + 32, yPositionOnScreen, false, itemsInView);
+            upArrow = new(new(itemsMenu.xPositionOnScreen + itemsMenu.width + 12, itemsMenu.yPositionOnScreen - 6, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom), Game1.mouseCursors, new(421, 459, 11, 12), Game1.pixelZoom)
             {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    int index = j + (rowLength * i);
-                    inventory.inventory[index].myID = BaseIdPlayerInventory + index;
-
-                    if (i != 0) inventory.inventory[index].upNeighborID = BaseIdPlayerInventory + index - rowLength;
-                    else inventory.inventory[index].upNeighborID = -1;
-
-                    if (i != (colLength - 1)) inventory.inventory[index].downNeighborID = BaseIdPlayerInventory + index + rowLength;
-                    else inventory.inventory[index].downNeighborID = -1;
-
-                    if (j != 0) inventory.inventory[index].leftNeighborID = BaseIdPlayerInventory + index - 1;
-                    else inventory.inventory[index].leftNeighborID = -1;
-
-                    if (j != rowLength - 1) inventory.inventory[index].rightNeighborID = BaseIdPlayerInventory + index + 1;
-                    else inventory.inventory[index].rightNeighborID = -1;
-                }
-            }
-
-            colLength = _itemsMenu.inventory.Count / rowLength;
-
-            for (int i = 0; i < colLength; i++)
+                name = "previous",
+                myID = ArrowUpId,
+                upNeighborID = ExitId,
+                downNeighborID = ArrowDownId,
+                rightNeighborID = BaseIdBinInventory + RowLength,
+                leftNeighborID = BaseIdBinInventory + RowLength - 1
+            };
+            downArrow = new(new(upArrow.bounds.X, upArrow.bounds.Y + itemsMenu.height - upArrow.bounds.Height, upArrow.bounds.Width, upArrow.bounds.Height), Game1.mouseCursors, new(421, 472, 11, 12), Game1.pixelZoom)
             {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    int index = j + (rowLength * i);
-                    _itemsMenu.inventory[index].myID = BaseIdBinInventory + index;
-
-                    if (i != 0) _itemsMenu.inventory[index].upNeighborID = BaseIdBinInventory + index - rowLength;
-                    else _itemsMenu.inventory[index].upNeighborID = -1;
-
-                    if (i != (colLength - 1)) _itemsMenu.inventory[index].downNeighborID = BaseIdBinInventory + index + rowLength;
-                    else _itemsMenu.inventory[index].downNeighborID = -1;
-
-                    if (j != 0) _itemsMenu.inventory[index].leftNeighborID = BaseIdBinInventory + index - 1;
-                    else _itemsMenu.inventory[index].leftNeighborID = -1;
-
-                    if (j != rowLength - 1) _itemsMenu.inventory[index].rightNeighborID = BaseIdBinInventory + index + 1;
-                    else _itemsMenu.inventory[index].rightNeighborID = -1;
-
-                    if (j == rowLength - 1 && i == 0)
-                    {
-                        _upArrow.leftNeighborID = _itemsMenu.inventory[index].myID;
-                        _itemsMenu.inventory[index].rightNeighborID = 12976;
-                    }
-                    if (j == rowLength - 1 && i == (colLength - 1))
-                    {
-                        _downArrow.leftNeighborID = _itemsMenu.inventory[index].myID;
-                        _itemsMenu.inventory[index].rightNeighborID = 12977;
-                    }
-                }
-            }
-
-            upperRightCloseButton.myID = 12975;
-            upperRightCloseButton.downNeighborID = 12976;
-            upperRightCloseButton.upNeighborID = upperRightCloseButton.rightNeighborID = upperRightCloseButton.leftNeighborID = -1;
-
-            _upArrow.myID = 12976;
-            _upArrow.upNeighborID = 12975;
-            _upArrow.downNeighborID = 12977;
-            _upArrow.rightNeighborID = BaseIdBinInventory + rowLength;
-
-            _downArrow.myID = 12977;
-            _downArrow.upNeighborID = 12976;
-            _downArrow.rightNeighborID = BaseIdPlayerInventory;
-            _downArrow.downNeighborID = -1;
-        }
-
-        public void loadItemsInView()
-        {
-            _itemsInView = getItemsFromOffset();
-            _itemsMenu.actualInventory = _itemsInView;
-        }
-
-        private IList<Item> getItemsFromOffset() => new List<Item>(_actuallItems.Skip((_maxItemsPerPage / 3) * Offset).Take(_maxItemsPerPage));
-
-        private void selectItemFromInventory(Item i, Farmer who)
-        {
-            if (i == null || who == null) return;
-            who.removeItemFromInventory(i);
-        }
-
-        private void selectSingleFromInventory(Item i, Farmer who)
-        {
-            if (i == null || who == null) return;
-
-            var index = who.getIndexOfInventoryItem(i);
-            who.Items[index].Stack--;
-            if (who.Items[index].Stack <= 0)
-                who.removeItemFromInventory(i);
-        }
-
-        //I'm keeping this, if selectStackFromBin ever throws anything funny I don't want to understand it's getting yeeted and this gets re-implemented
-        /*private void selectSingleFromBin(Item i, Farmer who)
-        {
-            if (i == null || who == null) return;
-
-            var item = _farm.getShippingBin(who).FirstOrDefault(x => x.Stack != x.maximumStackSize() && x.canStackWith(i));
-            if (item != null)
+                name = "next",
+                myID = ArrowDownId,
+                upNeighborID = ArrowUpId,
+                downNeighborID = TrashCanId,
+                rightNeighborID = BaseIdPlayerInventory,
+                leftNeighborID = BaseIdBinInventory + (RowLength * getRowCount(false)) - 1
+            };
+            upperRightCloseButton = new(new(upArrow.bounds.X + 4, upArrow.bounds.Y - 68, 12 * Game1.pixelZoom, 12 * Game1.pixelZoom), Game1.mouseCursors, new(337, 494, 12, 12), Game1.pixelZoom)
             {
-                _farm.getShippingBin(who)[_farm.getShippingBin(who).IndexOf(item)].Stack--;
-                if (item.Stack <= 0)
-                    selectItemFromBin(item, who);
-            }
-        }*/
-
-        private void selectStackFromBin(Item i, Farmer who, int stackSize)
-        {
-            if (i == null || who == null) return;
-
-            var item = _farm.getShippingBin(who).FirstOrDefault(x => x.canStackWith(i) && (x as StardewValley.Object).Quality == (x as StardewValley.Object).Quality);
-            if (item != null)
+                name = "close",
+                myID = ExitId,
+                upNeighborID = NoId,
+                downNeighborID = ArrowUpId,
+                rightNeighborID = NoId,
+                leftNeighborID = ArrowUpId,
+            };
+            trashCan = new(new(xPositionOnScreen + width + 4, yPositionOnScreen + height - 192 - 32 - borderWidth - 104, 64, 104), Game1.mouseCursors, new(564 + Game1.player.trashCanLevel * 18, 102, 18, 26), 4f)
             {
-                int itemStack = _farm.getShippingBin(who)[_farm.getShippingBin(who).IndexOf(item)].Stack;
-                _farm.getShippingBin(who)[_farm.getShippingBin(who).IndexOf(item)].Stack -= stackSize < itemStack ? stackSize : itemStack;
-                if (stackSize > 1)
-                    heldItem.Stack += stackSize < itemStack ? stackSize - 1 : itemStack - 1;
-                if (item.Stack <= 0)
-                    selectItemFromBin(item, who);
-            }
+                name = "trash",
+                myID = TrashCanId,
+                upNeighborID = ArrowDownId,
+                downNeighborID = NoId,
+                rightNeighborID = BaseIdPlayerInventory + RowLength,
+                leftNeighborID = BaseIdPlayerInventory + RowLength - 1
+            };
+
+            for (int i = 0; i < getRowCount(true); i++)
+                assignRowIds(i, true);
+            for (int i = 0; i < getRowCount(false); i++)
+                assignRowIds(i, false);
         }
 
-        private void selectItemFromBin(Item i, Farmer who)
+        /// <summary>
+        /// Retrieve a component with a given id
+        /// </summary>
+        /// <param name="id">The id of the component to get</param>
+        /// <returns>The component with the specified id, or null if it could not be found</returns>
+        private ClickableComponent? getComponentWithId(int id)
         {
-            if (i == null || who == null) return;
+            if (id == NoId)
+                return null;
 
-            _farm.getShippingBin(who).Remove(i);
-            loadItemsInView();
-        }
-
-        private void addItemToBin(Item i, Farmer who)
-        {
-            if (i == null || who == null) return;
-
-            for (int id = 0; id < _farm.getShippingBin(who).Count; id++)
+            var component = id switch
             {
-                if (_farm.getShippingBin(who)[id].canStackWith(i) && _farm.getShippingBin(who)[id].Stack < _farm.getShippingBin(who)[id].maximumStackSize())
-                {
-                    var remaining = _farm.getShippingBin(who)[id].addToStack(i);
-                    if (remaining > 0)
-                    {
-                        i.Stack = remaining;
-                        _farm.getShippingBin(who).Add(i);
-                    }
-                    return;
-                }
-            }
+                ExitId => upperRightCloseButton,
+                ArrowUpId => upArrow,
+                ArrowDownId => downArrow,
+                TrashCanId => trashCan,
+                _ => null
+            };
 
-            _farm.getShippingBin(who).Add(i);
-        }
+            if (component is not null)
+                return component;
 
-        private void snapToNextClickableComponent(int id, int direction)
-        {
-            var component = getComponentWithId(id);
-            bool isPlayerInv = $"{id}".StartsWith("360");
-            bool isItemInv = $"{id}".StartsWith("695");
-            int currentRowIndex = (isPlayerInv ? (id - BaseIdPlayerInventory) : (id - BaseIdBinInventory)) % 12;
-
-            switch (direction)
-            {
-                case 0: //Up
-                    if (isPlayerInv)
-                        setCurrentlySnappedComponentTo(BaseIdBinInventory + currentRowIndex + 24);
-                    else if (isItemInv)
-                        setCurrentlySnappedComponentTo(upperRightCloseButton.myID);
-                    break;
-                case 1: //Right
-                    if (component.downNeighborID > 0)
-                        setCurrentlySnappedComponentTo(id + 1);
-                    else if (isItemInv)
-                        setCurrentlySnappedComponentTo(BaseIdPlayerInventory);
-                    break;
-                case 2: //Down
-                    if (isItemInv)
-                        setCurrentlySnappedComponentTo(BaseIdPlayerInventory + currentRowIndex);
-                    break;
-                case 3: //Left
-                    if (component.upNeighborID > 0)
-                        setCurrentlySnappedComponentTo(id - 1);
-                    else if (isPlayerInv)
-                        setCurrentlySnappedComponentTo(BaseIdBinInventory + 35);
-                    break;
-            }
-        }
-
-        private void applyMovementKeys(Keys key)
-        {
-            if (Game1.options.doesInputListContain(Game1.options.moveUpButton, key))
-                applyMovementKey(0);
-            else if (Game1.options.doesInputListContain(Game1.options.moveRightButton, key))
-                applyMovementKey(1);
-            else if (Game1.options.doesInputListContain(Game1.options.moveDownButton, key))
-                applyMovementKey(2);
-            else if (Game1.options.doesInputListContain(Game1.options.moveLeftButton, key))
-                applyMovementKey(3);
-        }
-
-        private void getClickableComponentList()
-        {
-            allClickableComponents = new List<ClickableComponent>();
             for (int i = 0; i < inventory.inventory.Count; i++)
-                allClickableComponents.Add(inventory.inventory[i]);
-            for (int i = 0; i < _itemsMenu.inventory.Count; i++)
-                allClickableComponents.Add(_itemsMenu.inventory[i]);
-            allClickableComponents.Add(_upArrow);
-            allClickableComponents.Add(_downArrow);
-            allClickableComponents.Add(upperRightCloseButton);
-        }
-
-        private ClickableComponent getComponentWithId(int id)
-        {
-            getClickableComponentList();
-            for (int i = 0; i < allClickableComponents.Count; i++)
-                if (allClickableComponents[i].myID == id || allClickableComponents[i].myAlternateID == id)
-                    return allClickableComponents[i];
+                if (inventory.inventory[i].myID == id)
+                    return inventory.inventory[i];
+            for (int i = 0; i < itemsMenu.inventory.Count; i++)
+                if (itemsMenu.inventory[i].myID == id)
+                    return itemsMenu.inventory[i];
             return null;
         }
 
-        private int getPriceOfItem(Item i)
+        /// <summary>
+        /// Snap the mouse to the next element in a given direction
+        /// </summary>
+        /// <param name="currentId">The id of the current component</param>
+        /// <param name="direction">The direction in which to snap the cursor if possible</param>
+        private void snapToNextClickableComponent(int currentId, Direction direction)
         {
-            if (i == null) return 0;
-
-            int val;
-
-            if (i is StardewValley.Object) val = (i as StardewValley.Object).sellToStorePrice();
-            else val = i.salePrice();
-
-            val *= i.Stack;
-            return val;
+            var component = getComponentWithId(currentId);
+            if (component is null)
+            {
+                snapToDefaultClickableComponent();
+                return;
+            }
+            int nextId = direction switch
+            {
+                Direction.Up => component.upNeighborID,
+                Direction.Down => component.downNeighborID,
+                Direction.Left => component.leftNeighborID,
+                Direction.Right => component.rightNeighborID,
+                _ => NoId
+            };
+            if (nextId == ArrowUpId && !canScrollUp || nextId == ArrowDownId && !canScrollDown)
+            {
+                snapToNextClickableComponent(nextId, direction);
+                return;
+            }
+            setCurrentlySnappedComponentTo(nextId);
         }
 
-        private int getStack()
+        private int getSlotIndexAt(int x, int y, bool player)
         {
-            bool shiftKeyDown = Game1.oldKBState.IsKeyDown(Keys.LeftShift) || Game1.oldKBState.IsKeyDown(Keys.RightShift);
-            bool ctrlKeyDown = Game1.oldKBState.IsKeyDown(Keys.LeftControl) || Game1.oldKBState.IsKeyDown(Keys.RightControl);
+            if (player)
+            {
+                for (int i = 0; i < inventory.inventory.Count; i++)
+                    if (inventory.inventory[i].bounds.Contains(x, y) && i < Game1.player.MaxItems)
+                        return i;
+                return -1;
+            }
+            for (int i = 0; i < itemsMenu.inventory.Count; i++)
+                if (itemsMenu.inventory[i].bounds.Contains(x, y))
+                    return i;
+            return -1;
+        }
+        #endregion
 
-            if (!shiftKeyDown && !ctrlKeyDown) return 1;
-            else if (shiftKeyDown && !ctrlKeyDown) return 5;
-            else return 25;
+        #region Item Handling
+        /// <summary>
+        /// (Re)load the items in view
+        /// </summary>
+        public void RenderItems() => itemsMenu.actualInventory = itemsInView;
+
+        /// <summary>
+        /// Get the shipping bin's items at an offset (if applicable) and return the items the maximum allowed items (see <see cref="maxItemsPerPage"/>)
+        /// </summary>
+        /// <param name="offset">The offset in rows</param>
+        /// <returns>The items past the current offset in the shipping bin's item list</returns>
+        private List<Item> getItemsInView(int offset)
+        {
+            farm.getShippingBin(Game1.player).RemoveEmptySlots();
+            return new(actuallItems.Skip(maxItemsPerPage / 3 * offset).Take(maxItemsPerPage));
         }
 
-        private void broadCastToMultiplayer() => _helper.Multiplayer.SendMessage("", "reloadItemsInBin", new[] { _helper.ModRegistry.ModID });
+        /// <summary>
+        /// Get the maximum available stack size of an item if it's less than the requested stack amount
+        /// </summary>
+        /// <param name="stack">The requested stack amount</param>
+        /// <param name="i">The item which holds the available stack</param>
+        /// <returns>The largest available stack</returns>
+        private int getMaxStack(int stack, Item i) => i.Stack < stack || stack == -1 ? i.Stack : stack;
 
-        private void exitMenu()
+        /// <summary>
+        /// Get a stack of items from a slot in either the shipping bin's inventory or the players
+        /// </summary>
+        /// <remarks>
+        /// This method will automatically remove the item stack from the inventory and even remove it from the inventory if it's entire stack is retrieved
+        /// </remarks>
+        /// <param name="index">The index of the item to obtain</param>
+        /// <param name="stack">The requested stack amount</param>
+        /// <param name="player">Whether to take from the players inventory or the shipping bin's</param>
+        /// <returns>The item from the slot or null if it could not be retrieved</returns>
+        private Item? TakeItemAt(int index, int stack, bool player)
         {
-            Game1.playSound("bigDeSelect");
-            if (heldItem != null)
-                Game1.createItemDebris(heldItem, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
-            exitThisMenu();
+            IList<Item> items = player ? inventory.actualInventory : actuallItems;
+
+            if (index > items.Count || index < 0)
+            {
+                RenderItems();
+                broadCastToMultiplayer();
+                return null;
+            }
+            Item? i = items[index];
+            if (i is null)
+            {
+                RenderItems();
+                broadCastToMultiplayer();
+                return null;
+            }
+            int takeStack = getMaxStack(stack, i);
+            Item copy = i.getOne();
+            copy.Stack = takeStack;
+            if ((items[index].Stack -= takeStack) <= 0)
+                items[index] = null;
+            RenderItems();
+            broadCastToMultiplayer();
+            return copy;
         }
+
+        /// <summary>
+        /// Try to place an item at a slot in either the shipping bin's inventory or the players
+        /// </summary>
+        /// <param name="i">The item to place</param>
+        /// <param name="index">The index where the item should be placed</param>
+        /// <param name="player">Whether to add to the players inventory or the shipping bin's</param>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><b>null</b>: The item to place was null, or the item was placed successfully</item>
+        /// <item><b><see cref="Item"/></b>: The placed item replaced an item or, the placed item still has remaining stack after placement</item>
+        /// </list> 
+        /// </returns>
+        private Item? TryPlaceItemAt(Item? i, int index, bool player)
+        {
+            if (i is null)
+            {
+                RenderItems();
+                broadCastToMultiplayer();
+                return null;
+            }
+            IList<Item> items = player ? inventory.actualInventory : actuallItems;
+
+            if (index > items.Count || index < 0)
+            {
+                RenderItems();
+                broadCastToMultiplayer();
+                return i;
+            }
+            Item? currentOccupant = items[index];
+            if (currentOccupant is null)
+            {
+                items[index] = i;
+                RenderItems();
+                broadCastToMultiplayer();
+                return null;
+            }
+            if (currentOccupant.QualifiedItemId != i.QualifiedItemId || currentOccupant.Quality != i.Quality)
+            {
+                var old = currentOccupant.getOne();
+                old.Stack = currentOccupant.Stack;
+                old.Quality = currentOccupant.Quality;
+                items[index] = i;
+                RenderItems();
+                broadCastToMultiplayer();
+                return old;
+            }
+            if (currentOccupant.Stack + i.Stack > currentOccupant.maximumStackSize())
+            {
+                int remainder = currentOccupant.Stack + i.Stack - currentOccupant.maximumStackSize();
+                items[index].Stack += i.Stack;
+                i.Stack = remainder;
+                RenderItems();
+                broadCastToMultiplayer();
+                return i;
+            }
+            items[index].Stack += i.Stack;
+            RenderItems();
+            broadCastToMultiplayer();
+            return null;
+        }
+
+        private void PushItemToBin(Item i)
+        {
+            if (i is null)
+            {
+                RenderItems();
+                broadCastToMultiplayer();
+                return;
+            }
+
+            foreach (var item in actuallItems)
+            {
+                if (item?.canStackWith(i) ?? false)
+                {
+                    int remainder = actuallItems[actuallItems.IndexOf(item)].addToStack(i);
+                    i.Stack = remainder;
+                    if (i.Stack <= 0)
+                    {
+                        RenderItems();
+                        broadCastToMultiplayer();
+                        return;
+                    }
+                }
+            }
+            actuallItems.Add(i);
+            RenderItems();
+            broadCastToMultiplayer();
+        }
+
+        /// <summary>
+        /// Get the sell price of an item for calculating shipping bin inventory value
+        /// </summary>
+        /// <param name="i">The item to check the sell price of</param>
+        /// <returns>The price of an item when sold, or 0 if the item is null</returns>
+        private int getPriceOfItem(Item? i)
+        {
+            if (i is null)
+                return 0;
+            return i.sellToStorePrice(Game1.player.UniqueMultiplayerID) * i.Stack;
+        }
+
+        /// <summary>
+        /// Get the stack to take based on user keyboard input
+        /// </summary>
+        /// <returns>The stack size to take</returns>
+        private int getStack() => isCtrl ? 25 : (isShift ? 5 : 1);
+        #endregion
     }
 }

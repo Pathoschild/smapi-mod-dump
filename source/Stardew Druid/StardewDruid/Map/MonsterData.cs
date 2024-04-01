@@ -22,7 +22,7 @@ namespace StardewDruid.Map
 {
     static class MonsterData
     {
-        public static StardewValley.Monsters.Monster CreateMonster(int spawnMob, Vector2 spawnVector, int combatModifier = -1)
+        public static StardewValley.Monsters.Monster CreateMonster(int spawnMob, Vector2 spawnVector, int combatModifier = -1, bool champion = false)
         {
 
             if(combatModifier == -1)
@@ -34,186 +34,57 @@ namespace StardewDruid.Map
 
             StardewValley.Monsters.Monster theMonster;
 
-            /*
-              
-             Medium
-                Start + combat 2
-                (2+1)^2 * 7 = 63
-                Water + combat 5
-                (2+2)^2 * 10 = 160
-                Stars + combat 8
-                (2+3)^2 * 13 = 325
-             
-             Hard
-                Start + combat 2
-                (3+1)^2 * 7 = 112
-                Water + combat 5
-                (3+2)^2 * 10 = 250
-                Stars + combat 8
-                (3+3)^2 * 13 = 468          
-
-             */
-
             switch (spawnMob)
             {
-
-                default: // Bat
-
-                    theMonster = new Monster.Template.Bat(spawnVector, combatModifier);
-
-                    break;
-
+                
+                default:
                 case 0: // Green Slime
 
-                    theMonster = new Slime(spawnVector, combatModifier);
+                    theMonster = new Slime(spawnVector, combatModifier, champion);
 
                     break;
 
                 case 1: // Shadow Brute
 
-                    theMonster = new Shadow(spawnVector, combatModifier);
+                    theMonster = new Shadow(spawnVector, combatModifier, champion);
+
 
                     break;
 
                 case 2: // Skeleton
 
-                    theMonster = new Monster.Template.Skeleton(spawnVector, combatModifier);
+                    theMonster = new Skeleton(spawnVector, combatModifier, champion);
 
                     break;
 
                 case 3: // Golem
 
-                    theMonster = new Golem(spawnVector, combatModifier);
+                    theMonster = new Golem(spawnVector, combatModifier, champion);
 
                     break;
 
                 case 4: // DustSpirit
 
-                    theMonster = new Spirit(spawnVector, combatModifier);
+                    theMonster = new Spirit(spawnVector, combatModifier, champion);
 
                     break;
 
+                case 5: // Bat
 
-
-                // ------------------ Bosses
-
-                case 11:
-
-                    theMonster = new BigBat(spawnVector, combatModifier);
+                    theMonster = new Bat(spawnVector, combatModifier, champion);
 
                     break;
 
-                case 12:
+                case 6:
 
-                    theMonster = new Shooter(spawnVector, combatModifier);
+                    theMonster = new Gargoyle(spawnVector, combatModifier);
 
-                    break;
+                    if (champion)
+                    {
 
-                case 13:
+                        (theMonster as Gargoyle).ChampionMode();
 
-                    theMonster = new BigSlime(spawnVector, combatModifier);
-
-                    break;
-
-                case 14:
-
-                    theMonster = new Dino(spawnVector, combatModifier);
-
-                    break;
-
-                case 16:
-
-                    theMonster = new Dragon(spawnVector, combatModifier);
-
-                    break;
-
-                case 17:
-
-                    theMonster = new Reaper(spawnVector, combatModifier);
-
-                    break;
-
-                case 18:
-
-                    theMonster = new Shadowtin(spawnVector, combatModifier);
-
-                    break;
-
-                case 19:
-
-                    theMonster = new Scavenger(spawnVector, combatModifier);
-
-                    break;
-
-                case 20:
-
-                    theMonster = new Rogue(spawnVector, combatModifier);
-
-                    break;
-
-                case 21:
-
-                    theMonster = new Prime(spawnVector, combatModifier);
-
-                    break;
-
-                // ------------------ Firebird
-
-                case 41:
-
-                    theMonster = new Firebird(spawnVector, combatModifier, "EmeraldFirebird");
-
-                    break;
-                case 42:
-
-                    theMonster = new Firebird(spawnVector, combatModifier, "AquamarineFirebird");
-
-                    break;
-                case 43:
-
-                    theMonster = new Firebird(spawnVector, combatModifier, "RubyFirebird");
-
-                    break;
-                case 44:
-
-                    theMonster = new Firebird(spawnVector, combatModifier, "AmethystFirebird");
-
-                    break;
-                case 45:
-
-                    theMonster = new Firebird(spawnVector, combatModifier, "TopazFirebird");
-
-                    break;
-                // ------------------ Solaris
-
-                case 51:
-
-                    theMonster = new Solaris(spawnVector, combatModifier, "SolarisZero");
-
-                    break;
-                case 52:
-
-                    theMonster = new Solaris(spawnVector, combatModifier, "VoidleZero");
-
-                    break;
-                case 53:
-
-                    theMonster = new Solaris(spawnVector, combatModifier, "Solaris");
-
-                    break;
-                case 54:
-
-                    theMonster = new Solaris(spawnVector, combatModifier, "Voidle");
-
-                    break;
-                case 55:
-
-                    theMonster = new Solaris(spawnVector, combatModifier, "SolarisPrime");
-
-                    break;
-                case 56:
-
-                    theMonster = new Solaris(spawnVector, combatModifier, "VoidlePrime");
+                    }
 
                     break;
 
@@ -223,24 +94,32 @@ namespace StardewDruid.Map
 
         }
 
-        public static List<System.Type> CustomMonsters()
+        public static bool BossMonster(StardewValley.Monsters.Monster monster)
         {
+
+            if(monster is StardewDruid.Monster.Boss.Boss)
+            {
+
+                return true;
+
+            }
+
             List<System.Type> customMonsters = new()
             {
                 typeof(BigBat),
-                typeof (Dino),
-                typeof (Dragon),
-                typeof (Reaper),
-                typeof (Scavenger),
-                typeof (Rogue),
-                typeof (Prime),
                 typeof(Shooter),
                 typeof(BigSlime),
-                typeof(Firebird),
-                typeof(Monster.Boss.Solaris),
+
             };
 
-            return customMonsters;
+            if (customMonsters.Contains(monster.GetType()))
+            {
+
+                return true;
+
+            }
+
+            return false;
 
         }
 
@@ -251,13 +130,6 @@ namespace StardewDruid.Map
             {
 
                 return Game1.content.Load<Texture2D>("Characters\\Monsters\\Pepper Rex");
-
-            }
-
-            if (characterName.Contains("Firebird"))
-            {
-
-                return Game1.content.Load<Texture2D>("LooseSprites\\GemBird");
 
             }
 
@@ -280,15 +152,7 @@ namespace StardewDruid.Map
 
             characterSprite.loadedTexture = "18465_" + characterName;
 
-            if (characterName.Contains("Zero"))
-            {
-
-                characterSprite.SpriteHeight = 16;
-
-                characterSprite.SpriteWidth = 16;
-
-            }
-            else if (characterName.Contains("Dragon"))
+            if (characterName.Contains("Dragon"))
             {
 
                 characterSprite.SpriteHeight = 64;

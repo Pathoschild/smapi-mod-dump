@@ -20,13 +20,13 @@ namespace Shockah.FlexibleSprinklers
 	{
 		private class Cluster
 		{
-			public readonly HashSet<IntPoint> Tiles = new();
+			public readonly HashSet<IntPoint> Tiles = [];
 
 			public IReadOnlySet<SprinklerInfo> Sprinklers
 				=> SprinklersStorage;
 
-			private readonly HashSet<SprinklerInfo> SprinklersStorage = new();
-			private readonly HashSet<SprinklerInfo> AllKnownSprinklers = new();
+			private readonly HashSet<SprinklerInfo> SprinklersStorage = [];
+			private readonly HashSet<SprinklerInfo> AllKnownSprinklers = [];
 
 			public Cluster()
 			{
@@ -68,7 +68,7 @@ namespace Shockah.FlexibleSprinklers
 		private readonly bool IgnoreRange;
 		private readonly ISprinklerBehavior.Independent? PriorityBehavior;
 
-		private readonly Dictionary<IMap<SoilType>.WithKnownSize, (IReadOnlySet<SprinklerInfo> sprinklers, IReadOnlyList<WateringStep> tilesToWater)> Cache = new();
+		private readonly Dictionary<IMap<SoilType>.WithKnownSize, (IReadOnlySet<SprinklerInfo> sprinklers, IReadOnlyList<WateringStep> tilesToWater)> Cache = [];
 
 		public ClusterSprinklerBehavior(
 			ClusterSprinklerBehaviorClusterOrdering clusterOrdering,
@@ -87,12 +87,12 @@ namespace Shockah.FlexibleSprinklers
 			this.PriorityBehavior = priorityBehavior;
 		}
 
-		void ISprinklerBehavior.ClearCache()
+		public void ClearCache()
 		{
 			Cache.Clear();
 		}
 
-		void ISprinklerBehavior.ClearCacheForMap(IMap<SoilType>.WithKnownSize map)
+		public void ClearCacheForMap(IMap<SoilType>.WithKnownSize map)
 		{
 			Cache.Remove(map);
 		}
@@ -109,7 +109,7 @@ namespace Shockah.FlexibleSprinklers
 		private IReadOnlyList<WateringStep> GetUncachedSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers)
 		{
 			OutOfBoundsValuesMap<SoilType> cachingMap = new(new CachingMap<SoilType>.WithKnownSize(map), SoilType.NonWaterable);
-			Dictionary<SprinklerInfo, IReadOnlyList<WateringStep>> priorityBehaviorSprinklerTilesWithSteps = new();
+			Dictionary<SprinklerInfo, IReadOnlyList<WateringStep>> priorityBehaviorSprinklerTilesWithSteps = [];
 			if (PriorityBehavior is not null)
 			{
 				foreach (var sprinkler in sprinklers)
@@ -148,12 +148,12 @@ namespace Shockah.FlexibleSprinklers
 					}
 					else
 					{
-						var sprinklerSpreadRange = FlexibleSprinklers.Instance.GetSprinklerSpreadRange((int)Math.Ceiling(1.0 * sprinkler.Power / sprinklerClusterCount));
-						var sprinklerFocusedRange = FlexibleSprinklers.Instance.GetSprinklerFocusedRange(sprinkler.OccupiedSpace, sprinkler.Coverage);
+						var sprinklerSpreadRange = ModEntry.Instance.GetSprinklerSpreadRange((int)Math.Ceiling(1.0 * sprinkler.Power / sprinklerClusterCount));
+						var sprinklerFocusedRange = ModEntry.Instance.GetSprinklerFocusedRange(sprinkler.OccupiedSpace, sprinkler.Coverage);
 						sprinklerRange = Math.Max(sprinklerSpreadRange, sprinklerFocusedRange);
 					}
 
-					HashSet<IntPoint> @checked = new();
+					HashSet<IntPoint> @checked = [];
 					LinkedList<(IntPoint point, int pathLength)> toCheck = new();
 
 					double? lastDistance = null;
@@ -178,7 +178,7 @@ namespace Shockah.FlexibleSprinklers
 							continue;
 						@checked.Add(point);
 
-						var tileSprinklers = grid[point.X - minX, point.Y - minY] ?? new List<SprinklerInfo>();
+						var tileSprinklers = grid[point.X - minX, point.Y - minY] ?? [];
 						tileSprinklers.Add(sprinkler);
 						grid[point.X - minX, point.Y - minY] = tileSprinklers;
 
@@ -198,8 +198,8 @@ namespace Shockah.FlexibleSprinklers
 
 			ICollection<Cluster> GetClusters()
 			{
-				List<Cluster> clusters = new();
-				HashSet<IntPoint> @checked = new();
+				List<Cluster> clusters = [];
+				HashSet<IntPoint> @checked = [];
 				LinkedList<(IntPoint point, Cluster cluster)> toCheck = new();
 
 				Cluster? GetClusterContainingTile(IntPoint point)
@@ -224,7 +224,7 @@ namespace Shockah.FlexibleSprinklers
 					}
 				}
 
-				Dictionary<SprinklerInfo, ISet<IntPoint>> sprinklerStartingPoints = new();
+				Dictionary<SprinklerInfo, ISet<IntPoint>> sprinklerStartingPoints = [];
 				foreach (var sprinkler in sprinklers)
 				{
 					var thisSprinklerStartingPoints = sprinkler.Coverage
@@ -296,7 +296,7 @@ namespace Shockah.FlexibleSprinklers
 				if (SplitDisconnectedClusters)
 				{
 					UpdateClusterSprinklers();
-					List<Cluster> clustersToAdd = new();
+					List<Cluster> clustersToAdd = [];
 					foreach (var cluster in clusters)
 					{
 						if (cluster.Tiles.Count == 0)
@@ -315,7 +315,7 @@ namespace Shockah.FlexibleSprinklers
 						{
 							LinkedList<IntPoint> splitToCheck = new();
 							splitToCheck.AddLast(reachableTiles.First());
-							HashSet<IntPoint> thisClusterReachableTiles = new();
+							HashSet<IntPoint> thisClusterReachableTiles = [];
 
 							while (splitToCheck.Count != 0)
 							{
@@ -356,10 +356,10 @@ namespace Shockah.FlexibleSprinklers
 				=> clusters.Where(c => c.Sprinklers.Contains(sprinkler));
 
 			var clusters = GetClusters();
-			List<WateringStep> priorityTilesToWaterSteps = new();
-			List<IReadOnlySet<IntPoint>> tilesToWaterSteps = new();
-			HashSet<IntPoint> currentTilesToWater = new();
-			HashSet<IntPoint> tilesToWater = new();
+			List<WateringStep> priorityTilesToWaterSteps = [];
+			List<IReadOnlySet<IntPoint>> tilesToWaterSteps = [];
+			HashSet<IntPoint> currentTilesToWater = [];
+			HashSet<IntPoint> tilesToWater = [];
 
 			void WaterTile(IntPoint tilePosition)
 			{
@@ -367,7 +367,7 @@ namespace Shockah.FlexibleSprinklers
 				currentTilesToWater.Add(tilePosition);
 			}
 
-			Dictionary<Cluster, Dictionary<SprinklerInfo, int>> sprinklerTileCountToWaterPerCluster = new();
+			Dictionary<Cluster, Dictionary<SprinklerInfo, int>> sprinklerTileCountToWaterPerCluster = [];
 			foreach (var sprinkler in sprinklers)
 			{
 				int tileCountToWaterLeft = sprinkler.Power;
@@ -389,7 +389,7 @@ namespace Shockah.FlexibleSprinklers
 				{
 					if (!sprinklerTileCountToWaterPerCluster.TryGetValue(cluster, out var sprinklerTileCountsToWater))
 					{
-						sprinklerTileCountsToWater = new();
+						sprinklerTileCountsToWater = [];
 						sprinklerTileCountToWaterPerCluster[cluster] = sprinklerTileCountsToWater;
 					}
 
@@ -435,7 +435,7 @@ namespace Shockah.FlexibleSprinklers
 			var results = priorityTilesToWaterSteps.ToList();
 			foreach (var cluster in clusters)
 			{
-				List<IReadOnlySet<IntPoint>> clusterSteps = new();
+				List<IReadOnlySet<IntPoint>> clusterSteps = [];
 
 				void FinishClusterWateringStep()
 				{

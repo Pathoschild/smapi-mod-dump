@@ -17,11 +17,11 @@ namespace StardewDruid.Cast.Weald
     internal class FruitSapling : CastHandle
     {
 
-        public FruitSapling(Vector2 target, Rite rite)
-            : base(target, rite)
+        public FruitSapling(Vector2 target)
+            : base(target)
         {
 
-            castCost = Math.Max(2, 16 - rite.caster.FarmingLevel);
+            castCost = Math.Max(2, 16 - Game1.player.FarmingLevel);
 
         }
 
@@ -44,9 +44,9 @@ namespace StardewDruid.Cast.Weald
 
             StardewValley.TerrainFeatures.FruitTree treeFeature = targetLocation.terrainFeatures[targetVector] as StardewValley.TerrainFeatures.FruitTree;
 
-            treeFeature.dayUpdate(targetLocation, targetVector);
+            treeFeature.dayUpdate();
 
-            Utility.addSprinklesToLocation(targetPlayer.currentLocation, (int)targetVector.X, (int)targetVector.Y, 1, 2, 400, 40, Color.White);
+            ModUtility.AnimateSparkles(targetLocation, targetVector, Color.White);
 
             Game1.playSound("yoba");
 

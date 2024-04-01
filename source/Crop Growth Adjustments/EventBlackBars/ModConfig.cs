@@ -15,17 +15,10 @@ namespace EventBlackBars
 {
     public interface IGenericModConfigMenuApi
     {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
-
-        void SetDefaultIngameOptinValue( IManifest mod, bool optedIn );
-        
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
-        void RegisterParagraph(IManifest mod, string paragraph);
-        
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max, float interval);
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+        void AddNumberOption(IManifest mod, Func<float> getValue, Action<float> setValue, Func<string> name, Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null, Func<float, string> formatValue = null, string fieldId = null);
     }
     
     /// <summary> The mod config class. More info here: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Config </summary>
@@ -51,18 +44,16 @@ namespace EventBlackBars
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(manifest, () =>
+            api.Register(manifest, () =>
             {
                 config = new ModConfig();
                 mod.SaveConfig(config);
             }, () => mod.SaveConfig(config));
             
-            api.SetDefaultIngameOptinValue(manifest, true);
+            api.AddSectionTitle(manifest, () => "Appearance");
 
-            api.RegisterLabel(manifest, "Appearance", null);
-
-            api.RegisterClampedOption(manifest, "Bar Height Percentage", "The percentage of the height of the screen for a bar to take up.", () => (float)config.BarHeightPercentage, val => config.BarHeightPercentage = val, 1f, 49f, 0.1f);
-            api.RegisterSimpleOption(manifest, "Move Bars In Smoothly", "Whether to gradually move the bars in when an event starts, or have them fully out right away.", () => config.MoveBarsInSmoothly, val => config.MoveBarsInSmoothly = val);
+            api.AddNumberOption(manifest, () => (float)config.BarHeightPercentage, val => config.BarHeightPercentage = val, () => "Bar Height Percentage", () => "The percentage of the height of the screen for a bar to take up.", 1f, 49f, 0.1f);
+            api.AddBoolOption(manifest, () => config.MoveBarsInSmoothly, val => config.MoveBarsInSmoothly = val, () => "Move Bars In Smoothly", () => "Whether to gradually move the bars in when an event starts, or have them fully out right away.");
         }
     }
 }

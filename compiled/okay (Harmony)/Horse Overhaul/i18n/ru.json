@@ -1,0 +1,33 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "Да",
+  "No": "Нет",
+  "GotPetted": "Поглажен(-а): {{value}}",
+  "GotWater": "Получил(-а) воду: {{value}}",
+  "GotFood": "Получил(-а) еду: {{value}}",
+  "Friendship": "Дружба: {{value}}",
+  "HorseWarning": "Вы не можете делать это верхом на лошади!",
+  "AteEnough": "{{name}} съел(-а) достаточно на сегодня.",
+  "AteFood": "{{name}} съел(-а) вашу {{foodName}}.",
+  "AteFoodLove": "Он(-а) любит это есть.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "Ему(ей) нравится это есть.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "Это была слишком обычная закуска, чтобы он(-она) мог(-ла) по-настоящему насладиться ею.", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "Имеет обогреватель: {{value}}",
+  "DontFeedChocolate": "Шоколад? Вы не серьезно!",
+  "LactoseIntolerantPets": "Большинство кошек и собак не переносят лактозу.",
+  "LactoseIntolerantHorses": "Большинство взрослых лошадей не переносят лактозу.",
+  "HorseHerbivore": "Лошади настоящие травоядные, они не могут есть мясо.",
+  "HorseNoBread": "Лошади не должны есть обработанную пищу, такую как хлеб.",
+  "HorseEatShouldnt": "Ваша лошадь не должна это есть.",
+  "HorseEatHay": "У вашей лошади достаточно сена в конюшне.",
+  "HorseEatFiber": "вашей лошади достаточно травы, чтобы есть везде.",
+  "HorseEatCoffee": "Лошади не должны употреблять кофе или кофеин любого вида.",
+  "HorseEatCabbage": "Лошади не должны есть капусту или родственников семейства капустных.",
+  "HorseEatOnion": "Лошади не должны есть лук или родственников семейства луковых.",
+  "HorseEatNightshade": "Лошади не должны есть представителей семейства пасленовых, включая картофель, помидоры, перец или баклажаны.",
+  "HorseEatHorseRadish": "Ваша лошадь не должна это есть.",
+  "HorseEatDislike": "Ваша лошадь не хочет это есть."
+}

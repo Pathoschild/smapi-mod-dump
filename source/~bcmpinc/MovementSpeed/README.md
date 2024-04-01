@@ -32,7 +32,8 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
 #### 7.0:
-* Localization support.
+* Update for Stardew Valley 1.6
+* Localization support
 * Russian & Ukrainian translation
 
 #### 6.0:

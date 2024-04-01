@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/hbc-mods/stardew-valley
+   Git: https://gitlab.com/hbc-mods/stardew-valley.git
+
+mods:
+   SV Notepad
+
+latest commit:
+   commit 9d6b5cdd07f2e8e83128f7d666c4ffb5673ff44e
+   Author: HereBeCush <herebecush@gmail.com>
+   Date:   Sun Mar 31 18:15:23 2024 +0100
+   
+       Added Nexus update key for next version
+   

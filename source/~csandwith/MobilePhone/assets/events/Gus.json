@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "events": [
+    {
+      "name": "Gus-event-0",
+      "location": "Town",
+      "eventId": "502969",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Gus-event-1",
+      "location": "Saloon",
+      "eventId": "96",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Gus-event-2",
+      "location": "Farm",
+      "eventId": "980558",
+      "night": false,
+      "mail": null
+    }
+  ]
+}

@@ -1,6 +1,10 @@
 {
   "NowPlayingFormat": "Now playing: {0}",
   "TracksToIgnore": "",
+  "TrackNamesToReplaceWithID": "Invalid",
   "IgnoreUnnamedTracks": false,
-  "TracksToRename": {}
+  "TracksToRename": {},
+  "RepeatDelay": 2,
+  "EnableAnnouncements": true,
+  "ToggleAnnouncementsKey": "N"
 }

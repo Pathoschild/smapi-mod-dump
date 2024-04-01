@@ -13,35 +13,35 @@
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
+			"FromFile": "assets/house/house_{{RecolorPalette}}_{{season}}.png",
 			"FromArea": {"X": 0, "Y": 64, "Width": 112, "Height": 64},
 			"ToArea": {"X": 288, "Y": 1200, "Width": 112, "Height": 64}
 		},
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
+			"FromFile": "assets/house/house_{{RecolorPalette}}_{{season}}.png",
 			"FromArea": {"X": 32, "Y": 32, "Width": 80, "Height": 32},
 			"ToArea": {"X": 320, "Y": 1168, "Width": 80, "Height": 32}
 		},
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
+			"FromFile": "assets/house/house_{{RecolorPalette}}_{{season}}.png",
 			"FromArea": {"X": 48, "Y": 0, "Width": 64, "Height": 32},
 			"ToArea": {"X": 336, "Y": 1136, "Width": 64, "Height": 32}
 		},
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
+			"FromFile": "assets/house/house_{{RecolorPalette}}_{{season}}.png",
 			"FromArea": {"X": 32, "Y": 16, "Width": 16, "Height": 16},
 			"ToArea": {"X": 336, "Y": 1120, "Width": 16, "Height": 16}
 		},
 		{
 			"Target": "LooseSprites/Cursors",
 			"Action": "EditImage",
-			"FromFile": "assets/storefront_{{RecolorPalette}}_{{season}}.png",
+			"FromFile": "assets/house/storefront_{{RecolorPalette}}_{{season}}.png",
 			"ToArea": {"X": 627, "Y": 1958, "Width": 23, "Height": 31}
 		}
 	]

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -134,6 +134,16 @@ namespace Custom_Farm_Loader.Lib
 
         public bool isValid(bool excludeSeason = false, bool excludeWeather = false, bool excludeTime = false, Farmer who = null)
         {
+            var debug = false;
+
+            if(debug) {
+                var validSeason = (isValidSeason() || excludeSeason);
+                var validWeather = (isValidWeather() || excludeWeather);
+                var validDay = isValidDay();
+                var validSkill = isValidSkill(who);
+                var validCPConditions = doCPConditionsMatch();
+            }
+
             return (isValidSeason() || excludeSeason)
                 && (isValidWeather() || excludeWeather)
                 && (isValidTime() || excludeTime)

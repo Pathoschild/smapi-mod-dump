@@ -40,7 +40,7 @@ namespace StardewDruid.Monster.Template
 
         public Slime() { }
 
-        public Slime(Vector2 position, int combatModifier)
+        public Slime(Vector2 position, int combatModifier,bool champion = false)
             : base(position * 64, combatModifier * 10)
         {
 
@@ -54,27 +54,32 @@ namespace StardewDruid.Monster.Template
 
             objectsToDrop.Clear();
 
-            objectsToDrop.Add(766);
+            objectsToDrop.Add("766");
 
             if (Game1.random.Next(3) == 0)
             {
-                objectsToDrop.Add(766);
+                objectsToDrop.Add("766");
             }
             else if (Game1.random.Next(4) == 0 && combatModifier >= 120)
             {
-                objectsToDrop.Add(766);
+                objectsToDrop.Add("766");
 
             }
             else if (Game1.random.Next(5) == 0 && combatModifier >= 240)
             {
-                List<int> slimeSyrups = new()
+                List<string> slimeSyrups = new()
                 {
-                    724,725,726,247,184,419,
+                    "724","725","726","247","184","419",
                 };
 
                 objectsToDrop.Add(slimeSyrups[Game1.random.Next(slimeSyrups.Count)]);
             }
 
+            if (champion)
+            {
+                isHardModeMonster.Set(true);
+
+            }
 
         }
 
@@ -179,7 +184,7 @@ namespace StardewDruid.Monster.Template
 
                 Vector2 localPosition = getLocalPosition(Game1.viewport) + new Vector2(32f, GetBoundingBox().Height / 2 + yOffset) + vector;
 
-                float depth = Math.Max(0f, drawOnTop ? 0.992f : getStandingY() * 2 / 10000f + 0.00005f);
+                float depth = Math.Max(0f, drawOnTop ? 0.992f : Tile.Y * 2 / 10000f + 0.00005f);
 
                 b.Draw(
                     hatsTexture,
@@ -203,6 +208,21 @@ namespace StardewDruid.Monster.Template
             if (!loadedout) { LoadOut(); }
             base.update(time, location);
         }
+
+        public override void onDealContactDamage(Farmer who)
+        {
+
+            if ((who.health + who.buffs.Defense) - DamageToFarmer < 10)
+            {
+
+                who.health = (DamageToFarmer - who.buffs.Defense) + 10;
+
+                Mod.instance.CriticalCondition();
+
+            }
+
+        }
+
     }
 
 }

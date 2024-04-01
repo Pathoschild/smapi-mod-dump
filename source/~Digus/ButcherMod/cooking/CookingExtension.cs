@@ -16,6 +16,10 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using AnimalHusbandryMod.common;
 using StardewValley;
+using AnimalHusbandryMod.meats;
+using StardewValley.GameData.Objects;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
+using StardewValley.GameData.Buffs;
 
 namespace AnimalHusbandryMod.cooking
 {
@@ -39,16 +43,41 @@ namespace AnimalHusbandryMod.cooking
             return attribute.Recipe;
         }
 
-        public static string GetObjectString(this Cooking value)
+        public static ObjectData GetObjectData(this Cooking value)
         {
             var cookingItem = DataLoader.CookingData.getCookingItem(value);
             var i18n = DataLoader.i18n;
-            return String.Format("{0}/{1}/{2}/Cooking -7/{3}/{4}/food/{5} {6} {7} 0 {8} {9} 0 {10} {11} {12} {13} {14}/{15}",
-                value.GetDescription(), cookingItem.Price, cookingItem.Edibility,
-                i18n.Get($"Cooking.{value}.Name"), i18n.Get($"Cooking.{value}.Description"),
-                cookingItem.Farming, cookingItem.Fishing, cookingItem.Mining, cookingItem.Luck,
-                cookingItem.Foraging, cookingItem.MaxEnergy, cookingItem.Magnetism, cookingItem.Speed,
-                cookingItem.Defense, cookingItem.Attack, cookingItem.Duration);
+            return new ObjectData()
+            {
+                SpriteIndex = (int)value,
+                Name = value.GetDescription(),
+                Price = cookingItem.Price,
+                Edibility = cookingItem.Edibility,
+                DisplayName = i18n.Get($"Cooking.{value}.Name"),
+                Description = i18n.Get($"Cooking.{value}.Description"),
+                Category = -7,
+                Type = "Cooking",
+                Buffs = new List<ObjectBuffData>
+                {
+                    new ObjectBuffData()
+                    {
+                        Duration = cookingItem.Duration,
+                        CustomAttributes =  new BuffAttributesData()
+                        {
+                            FarmingLevel = cookingItem.Farming,
+                            FishingLevel = cookingItem.Fishing,
+                            MiningLevel = cookingItem.Mining,
+                            LuckLevel = cookingItem.Luck,
+                            ForagingLevel = cookingItem.Foraging,
+                            MaxStamina = cookingItem.MaxEnergy,
+                            MagneticRadius = cookingItem.Magnetism,
+                            Speed = cookingItem.Speed,
+                            Defense = cookingItem.Defense,
+                            Attack = cookingItem.Attack
+                        }
+                    }
+                }
+            };
         }
 
         public static string GetRecipeChannelString(this Cooking value)
@@ -63,7 +92,7 @@ namespace AnimalHusbandryMod.cooking
         public static string GetRecipeString(this Cooking value)
         {
             var cookingItem = DataLoader.CookingData.getCookingItem(value);
-            var recipeString = $"{cookingItem.Recipe}/1 10/{(int) value} {cookingItem.Amount}/default";
+            var recipeString = $"{cookingItem.Recipe}/1 10/{(int) value} {cookingItem.Amount}/null";
             if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en){
                 recipeString += "/" + DataLoader.i18n.Get($"Cooking.{value}.Name");
             }

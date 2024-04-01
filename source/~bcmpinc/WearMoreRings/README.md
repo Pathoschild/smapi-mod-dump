@@ -15,11 +15,12 @@ Configure the amount of ring slots in your inventory. By default adds 6 addition
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
 * `Rings`: Number of ring slots available. Normally this is 2, this mod increases it to 8. Max = 20.
+* `BonusTrinket`: Whether you get two trinket slots for the price of one (untested).
 
 ## Console Commands
 * `player_openforge`:        Opens the forge menu.
-* `player_resetmodifiers`:   Clears buffs, then resets and reapplies the modifiers applied by boots & rings.
 * `world_destroyringchests`: Removes the chests used for storing player's rings. Any items contained therein will be dropped at your feet.
+
 ## Dependencies
 This mod requires the following mods to be installed:
 
@@ -39,7 +40,18 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 Mods adding additional rings most should work out of the box. For backwards compatibility this mod provides an API to access the equipped rings: [IWearMoreRingsAPI](https://github.com/bcmpinc/StardewHack/blob/master/WearMoreRings/IWearMoreRingsAPI.cs).
 
 ## Changes
-#### 7.0:
+#### 7.4:
+* Fix issue with equipping rings removing the effects and unequipping adding them.
+
+#### 7.3:
+* Fix issue with ring effects (e.g. magnetism) not being applied.
+
+#### 7.2:
+* Fixed compatibility issue with SpaceCore mod.
+
+#### 7.1:
+* Updated for Stardew Valley 1.6
+* Added config option for bonus trinket (untested).
 * Localization support.
 * Russian & Ukrainian translation
 

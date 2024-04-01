@@ -1,0 +1,10 @@
+{
+  "name": "Better Stardrops",
+  "author": "Rokugin",
+  "version": "1.1.0",
+  "description": "Adds additional benefits to eating Stardrops.",
+  "uniqueID": "Rokugin.BetterStardrops",
+  "entryDLL": "BetterStardrops.dll",
+  "minimumapiversion": "4.0.0",
+  "updatekeys": [ "Nexus:21360" ]
+}

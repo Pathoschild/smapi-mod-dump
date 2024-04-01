@@ -50,7 +50,7 @@ namespace DialogueBoxRedesign.Patching
 					dialogueBox.characterDialogue.speaker,
 					dialogueBox.characterDialogue.getPortraitIndex(),
 					Game1.currentGameTime.ElapsedGameTime.Milliseconds
-					); //no need to force reset, HD portraits auto-resets after dialogue box close
+				); //no need to force reset, HD portraits auto-resets after dialogue box close
 
 				if (dialogueBox.characterDialogue.overridePortrait == null)
                 {
@@ -78,11 +78,11 @@ namespace DialogueBoxRedesign.Patching
 			    // shadow
 			    SpriteText.drawStringHorizontallyCenteredAt(spriteBatch,
 				    dialogueBox.characterDialogue.speaker.getName(),
-				    speakerNameX - 4, speakerNameY + 4, color: 8);
+				    speakerNameX - 3, speakerNameY + 3, color: Color.Black * 0.8f);
 			    // actual text
 			    SpriteText.drawStringHorizontallyCenteredAt(spriteBatch,
 				    dialogueBox.characterDialogue.speaker.getName(),
-				    speakerNameX, speakerNameY, color: 4);
+				    speakerNameX, speakerNameY, color: Color.White);
 		    }
 
 		    /* Friendship jewel */
@@ -129,11 +129,9 @@ namespace DialogueBoxRedesign.Patching
 		    dialogueBox.height = 250;
 		    dialogueBox.y = viewportHeight - dialogueBox.height - 64;
 
-		    var gradientBackground = Game1.currentSeason == "winter" && ModEntry.Config.DarkerBackgroundInWinter
-			    ? ModEntry.DarkerGradientSample
-			    : ModEntry.GradientSample;
-		    
-		    spriteBatch.Draw(gradientBackground, new Rectangle(0, yPos, viewportWidth, viewportHeight - yPos), Color.White);
+		    var gradientBackground = ModEntry.GradientSample;
+		    var opacity = ModEntry.Config.BoxBackgroundOpacity;
+		    spriteBatch.Draw(gradientBackground, new Rectangle(0, yPos, viewportWidth, viewportHeight - yPos), Color.White * opacity);
 
 		    return false;
 	    }
@@ -167,16 +165,29 @@ namespace DialogueBoxRedesign.Patching
 			var textY = dialogueBox.y + 58;
 
 			var textWidth = dialogueBox.width - _widthOfPortraitArea;
-				
+		    
 			// shadow
-			SpriteText.drawString(spriteBatch, dialogueBox.getCurrentString(), textX - 4, textY + 4, dialogueBox.characterIndexInDialogue, textWidth, color: 8);
+			SpriteText.drawString(
+				spriteBatch, 
+				dialogueBox.getCurrentString(), 
+				textX - 3, 
+				textY + 3, 
+				dialogueBox.characterIndexInDialogue, 
+				textWidth,
+				color: Color.Black * 0.8f);
 			// actual text
-			SpriteText.drawString(spriteBatch, dialogueBox.getCurrentString(), textX, textY, dialogueBox.characterIndexInDialogue, textWidth, color: 4);
+			SpriteText.drawString(
+				spriteBatch,
+				dialogueBox.getCurrentString(),
+				textX,
+				textY,
+				dialogueBox.characterIndexInDialogue,
+				textWidth,
+				color: Color.White);
 
 			dialogueBox.drawMouse(spriteBatch);
 				
 			return false;
-
 	    }
     }
 }

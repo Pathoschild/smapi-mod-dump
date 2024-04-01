@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Reflection;
 using System.Reflection.Emit;
 using GenericModConfigMenu;
 using StardewModdingAPI;

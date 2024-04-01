@@ -1,0 +1,12 @@
+{
+  "config.SkipRockCrab.label": "Skip Rock Crab",
+  "config.SkipRockCrab.tooltip": "Skip attach Rock Crab, when disabled, will try best to avoid for-ever attach. default: false",
+  "config.DetectTiles.label": "Detect Tiles Range",
+  "config.DetectTiles.tooltip": "How far a monster is taken account.",
+  "config.Toggle.label": "Toggle",
+  "config.Toggle.tooltip": "you can toggle auto attack at anytime(in game).",
+  "message.toggle.enable": "auto-attack enabled",
+  "message.toggle.disabled": "auto-attack disabled",
+  "config.section.also.title": "Also ignore Belows.",
+  "message.target.missed": "skip attacking monster"
+}

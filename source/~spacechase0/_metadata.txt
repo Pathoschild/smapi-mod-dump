@@ -43,6 +43,7 @@ mods:
    Luck Skill
    Magic
    Mana Bar
+   Monster Slayer Anywhere
    Monsters - The Framework
    Moon Misadventures
    More Buildings
@@ -60,6 +61,7 @@ mods:
    Realtime Minimap
    Responsive Knockback
    Rush Orders
+   Satchels
    Sharing is Caring
    Sizable Fish
    Skill Training
@@ -76,11 +78,11 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 0ae0329a54bae63492c73c60a2023e70ce4ca78d
+   commit 1bdc009adaa21da62633806acdbfecb507f503ee
    Author: Casey W <spacechase0@users.noreply.github.com>
-   Date:   Fri Dec 8 14:26:38 2023 -0500
+   Date:   Sun Mar 31 21:59:38 2024 -0500
    
-       Merge pull request #380 from Rupurudu/turkish
+       Merge pull request #430 from elizabethcd/fixterrain
        
-       Add Turkish translation.
+       Fix crops, shipped items, recipes known
    

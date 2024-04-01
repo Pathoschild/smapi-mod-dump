@@ -10,8 +10,10 @@
 
 [
 	{
-		"ProducerName": "ProducerName", //Name of the producer
-        "AdditionalProducerNames": [ "ProducerName2", "ProducerName3" ], //Additional names of the producer. The config will be completely copied to the producer names in the list.
+		"ProducerName": "ProducerName", //Name of the producer to look for. It will match the first big craftable it finds. Will be ignored if ProducerQualifiedItemId is defined. It's a legacy property, you should use ProducerQualifiedItemId instead.
+		"ProducerQualifiedItemId": "(BC)12", //The QualifiedItemId of the producer. It's required if no ProducerName is defined.
+		"AdditionalProducerNames": [ "ProducerName2", "ProducerName3" ], //Additional names of the producer. The config will be completely copied to the producer names in the list.
+		"AdditionalProducerQualifiedItemId": [ "(BC)15", "(BC)16" ], //Additional qualified item ids of the producer. The config will be completely copied to the producer quilified item ids in the list.
 		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
 		"AlternateFrameWhenReady": true, //If the producer should use the alternate frame and ready for harvest.
 		"DisableBouncingAnimationWhileWorking": false, // If the producer bouncing animation while working should be disabled.

@@ -14,7 +14,7 @@
     "hint.3.Demetrius": "Do I know how to wake the creature in the forest? No, but I have observed it a bit.#$b#It spends most of its time sleeping, and is very difficult to rouse as a result.#$b#You'll probably need a purpose-built tool to do the job.",
     "hint.3.Penny": "A sleeping giant that can't be awakened... it sounds like a fairy tale.$h#$b#Usually in those stories, you need a pure heart or something to break the spell.#$b#... But sometimes gold works!$h",
     "hint.3.Lewis": "Well, I don't think I can help with your sleeping creature trouble.#$b#But try asking the man in the tower. He's odd, but I bet he knows something.#$b#Maybe he'll tell you, if he trusts you.$s",
-    "hint.1.HatMouseLacey": "Oh, the big sleeping thing? He's huge!$u#$b#He doesn't seem to notice anything around him. Good luck getting him to move!",
+    "hint.1.ichortower.HatMouseLacey_Lacey": "Oh, the big sleeping thing? He's huge!$u#$b#He doesn't seem to notice anything around him. Good luck getting him to move!",
 
     "wizard.0001.0": "Ah, @. What brings you here?",
     "wizard.0001.1": "Wait. Don't tell me: I can sense it.#$b#You wish to know about the creature sleeping behind my tower, do you not?",

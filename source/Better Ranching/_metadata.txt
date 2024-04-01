@@ -6,9 +6,9 @@ mods:
    Better Ranching
 
 latest commit:
-   commit 011da1c01fac1e8b21cdf5ba658cfc75505d9c58
+   commit 4ca426afa3218682ad8664194aa0cf67f4e36bd7
    Author: Urbanyeti <urbanski@gmail.com>
-   Date:   Wed Feb 1 22:37:31 2023 -0800
+   Date:   Tue Mar 26 13:15:50 2024 -0700
    
        Update README.md
    

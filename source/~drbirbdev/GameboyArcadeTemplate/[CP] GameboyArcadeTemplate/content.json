@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-    "Format": "1.28.0",
+    "Format": "2.0.0",
     "Changes": [
         // Events can use the custom event command to start a game during an event.
         // drbirbdev.GameboyArcade_StartGame <Game ID>

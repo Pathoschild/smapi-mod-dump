@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jpparajeles/StardewValleyMods
+**
+*************************************************/
+
+{
+  "config.mod-enable.key": "Mod enabled",
+  "config.mod-enable.tooltip": "Controls if the mod is enabled",
+  "config.grow-chance.key": "Wild flower grow chance",
+  "config.grow-chance.tooltip": "Chance to grow a flower in a patch of grass",
+  "config.HarvestByScythe.key": "Harvest by Scythe",
+  "config.HarvestByScythe.tooltip": "Enabled if you want the flowers to be harvested by scythe instead"
+}

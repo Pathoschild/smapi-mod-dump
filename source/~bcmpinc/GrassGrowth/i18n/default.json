@@ -9,6 +9,7 @@
 *************************************************/
 
 {
+    // Translation provided by: <leave your name or nexus/discord username here>
     DisableGrowthName:  "Disable Growth",  DisableGrowthTooltip:  "Whether grass growth & spreading should be suppressed entirely.",
     GrowEverywhereName: "Grow Everywhere", GrowEverywhereTooltip: "Whether grass spreads almost everywhere. If false, grass spreading is limited to tillable tiles.",
     GrowthChanceName:   "Growth Chance",   GrowthChanceTooltip:   "The chance that grass grows or spreads.",

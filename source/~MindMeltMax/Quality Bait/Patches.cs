@@ -13,13 +13,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 namespace QualityBait
 {
@@ -37,56 +37,35 @@ namespace QualityBait
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingPage), "clickCraftingRecipe", new[] { typeof(ClickableTextureComponent), typeof(bool) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ClickCraftingRecipePrefix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(ClickCraftingRecipePrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new[] { typeof(SpriteBatch) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.DrawPrefix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(DrawPrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CrabPot), nameof(CrabPot.DayUpdate)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.DayUpdatePrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.DayUpdatePostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(DayUpdatePrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(DayUpdatePostfix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(FishingRod), nameof(FishingRod.pullFishFromWater)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.PullFishFromWaterPrefix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(PullFishFromWaterPrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.consumeIngredients)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ConsumeIngredientsPrefix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(ConsumeIngredientsPrefix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.doesFarmerHaveIngredientsInInventory)),
+                prefix: new(typeof(Patches), nameof(DoesFarmerHaveIngredientsInInventoryPrefix))
             );
         }
-
-        private static int GetQualityForRecipe(CraftingRecipe recipe)
-        {
-            if (recipe.name.Contains("(Silver)"))
-                return SObject.medQuality;
-            if (recipe.name.Contains("(Gold)"))
-                return SObject.highQuality;
-            if (recipe.name.Contains("(Iridium)"))
-                return SObject.bestQuality;
-            return SObject.lowQuality;
-        }
-
-        private static Rectangle GetSourceRectForQuality(int quality)
-        {
-            return quality switch
-            {
-                SObject.medQuality => new(338, 400, 8, 8),
-                SObject.highQuality => new(346, 400, 8, 8),
-                SObject.bestQuality => new(346, 392, 8, 8),
-                _ => new(338, 392, 8, 8)
-            };
-        }
-
-        private static bool IsTrashObject(SObject obj) => obj.ParentSheetIndex >= 168 && obj.ParentSheetIndex < 173;
-
-        private static int GetQualityForCatch(int originalQuality, int baitQuality) => ModEntry.GetQualityForCatch(originalQuality, baitQuality);
 
         private static bool ClickCraftingRecipePrefix(CraftingPage __instance, ClickableTextureComponent c, bool playSound = true)
         {
@@ -97,7 +76,7 @@ namespace QualityBait
                 var recipe = __instance.pagesOfCraftingRecipes[page][c];
                 if (!ModEntry.Recipes.ContainsKey(recipe.name))
                     return true;
-                SObject bait = (SObject)recipe.createItem();
+                Object bait = (Object)recipe.createItem();
                 bait.Quality = GetQualityForRecipe(recipe);
                 if (heldItem.GetValue() is null)
                 {
@@ -116,7 +95,7 @@ namespace QualityBait
                     if (playSound)
                         Game1.playSound("coin");
                 }
-                Game1.player.checkForQuestComplete(null, -1, -1, bait, null, 2);//Don't think it's needed, but i'm not taking anymore chances
+                Game1.player.checkForQuestComplete(null, -1, -1, bait, null, 2);//Don't think it's needed, but i'm not taking anymore chances (I'm pushing my luck with these patches as is)
 
                 if (Game1.player.craftingRecipes.ContainsKey(__instance.pagesOfCraftingRecipes[page][c].name))
                     Game1.player.craftingRecipes[recipe.name] += recipe.numberProducedPerCraft;
@@ -129,8 +108,7 @@ namespace QualityBait
             }
             catch(Exception ex)
             {
-                IMonitor.Log($"Failed patching clickCraftingRecipe", LogLevel.Error);
-                IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                handleError("clickCraftingRecipe", ex);
                 return true;
             }
         }
@@ -230,13 +208,12 @@ namespace QualityBait
             }
             catch (Exception ex)
             {
-                IMonitor.Log($"Failed patching {nameof(CraftingPage.draw)}", LogLevel.Error);
-                IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                handleError(nameof(CraftingPage.draw), ex);
                 return true;
             }
         }
 
-        private static bool DayUpdatePrefix(CrabPot __instance, GameLocation location)
+        private static bool DayUpdatePrefix(CrabPot __instance)
         {
             try
             {
@@ -245,46 +222,43 @@ namespace QualityBait
             }
             catch (Exception ex)
             {
-                IMonitor.Log($"Failed patching {nameof(CrabPot.DayUpdate)}", LogLevel.Error);
-                IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                handleError(nameof(CrabPot.DayUpdate), ex);
             }
             return true;
         }
 
-        private static void DayUpdatePostfix(CrabPot __instance, GameLocation location)
+        private static void DayUpdatePostfix(CrabPot __instance)
         {
             try
             {
-                if (__instance.heldObject.Value is not null and SObject obj && !IsTrashObject(obj) && __instance.modData.ContainsKey(CrabPotKey))
+                if (__instance.heldObject.Value is Object obj && __instance.modData.ContainsKey(CrabPotKey))
                 {
-                    __instance.heldObject.Value.Quality = GetQualityForCatch(__instance.heldObject.Value.Quality, Convert.ToInt32(__instance.modData[CrabPotKey]));
+                    __instance.heldObject.Value.Quality = GetQualityForCatch(obj.ItemId, __instance.heldObject.Value.Quality, Convert.ToInt32(__instance.modData[CrabPotKey]));
                     __instance.modData.Remove(CrabPotKey);
                 }
             }
             catch (Exception ex)
             {
-                IMonitor.Log($"Failed patching {nameof(CrabPot.DayUpdate)}", LogLevel.Error);
-                IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                handleError(nameof(CrabPot.DayUpdate), ex);
             }
         }
 
-        private static bool PullFishFromWaterPrefix(FishingRod __instance, int whichFish, int fishSize, ref int fishQuality, int fishDifficulty, bool treasureCaught, bool wasPerfect, bool fromFishPond, bool caughtDouble = false, string itemCategory = "Object")
+        private static bool PullFishFromWaterPrefix(FishingRod __instance, string fishId, int fishSize, ref int fishQuality, int fishDifficulty, bool treasureCaught, bool wasPerfect, bool fromFishPond, string setFlagOnCatch, bool isBossFish, bool caughtDouble)
         {
             try
             {
-                if (__instance.attachments.Count > 0 && __instance.attachments[0] is not null and SObject obj && !IsTrashObject(new SObject(whichFish, 1)))
-                    fishQuality = GetQualityForCatch(fishQuality, obj.Quality);
+                if (__instance.attachments.Count > 0 && __instance.attachments[0] is not null and Object obj)
+                    fishQuality = GetQualityForCatch(fishId, fishQuality, obj.Quality);
             }
             catch (Exception ex)
             {
-                IMonitor.Log($"Failed patching {nameof(FishingRod.pullFishFromWater)}", LogLevel.Error);
-                IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                handleError(nameof(FishingRod.pullFishFromWater), ex);
             }
             return true;
         }
 
         // Re-wrote CraftingRecipe.consumeIngredients to sort by quality
-        private static bool ConsumeIngredientsPrefix(CraftingRecipe __instance, List<Chest> additional_materials)
+        private static bool ConsumeIngredientsPrefix(CraftingRecipe __instance, List<IInventory> additionalMaterials)
         {
             try
             {
@@ -295,7 +269,7 @@ namespace QualityBait
                     var ingredient = __instance.recipeList.ElementAt(i);
                     int ingredientCount = ingredient.Value;
                     bool foundAll = false;
-                    var items = GetAllItemsWithId(ingredient.Key, Game1.player.Items).OrderBy(x => x.Value.Quality);
+                    var items = GetAllItemsWithId(ingredient.Key, Game1.player.Items).Where(x => x.Value.Quality < GetQualityForRecipe(__instance)).OrderBy(x => x.Value.Quality);
 
                     for (int j = 0; j < items.Count(); j++) 
                     {
@@ -311,22 +285,22 @@ namespace QualityBait
                         }
                     }
 
-                    if (additional_materials is not null && !foundAll)
+                    if (additionalMaterials is not null && !foundAll)
                     {
-                        for (int k = 0; k < additional_materials.Count; ++k)
+                        for (int k = 0; k < additionalMaterials.Count; ++k)
                         {
-                            Chest chest = additional_materials[k];
+                            IInventory chest = additionalMaterials[k];
                             if (chest is null)
                                 continue;
-                            var chestItems = GetAllItemsWithId(ingredient.Key, chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID)).OrderBy(x => x.Value.Quality);
+                            var chestItems = GetAllItemsWithId(ingredient.Key, chest).Where(x => x.Value.Quality < GetQualityForRecipe(__instance)).OrderBy(x => x.Value.Quality);
                             
                             for (int l = 0; l < chestItems.Count(); l++)
                             {
                                 int num = ingredientCount;
                                 ingredientCount -= chestItems.ElementAt(l).Value.Stack;
-                                chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID)[chestItems.ElementAt(l).Key].Stack -= num;
-                                if (chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID)[chestItems.ElementAt(l).Key].Stack <= 0)
-                                    chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID)[chestItems.ElementAt(l).Key] = null;
+                                chest[chestItems.ElementAt(l).Key].Stack -= num;
+                                if (chest[chestItems.ElementAt(l).Key].Stack <= 0)
+                                    chest[chestItems.ElementAt(l).Key] = null;
                                 if (ingredientCount <= 0)
                                 {
                                     foundAll = true;
@@ -343,19 +317,92 @@ namespace QualityBait
             }
             catch (Exception ex)
             {
-                IMonitor.Log($"Failed patching {nameof(CraftingRecipe.consumeIngredients)}", LogLevel.Error);
-                IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                handleError(nameof(CraftingRecipe.consumeIngredients), ex);
                 return true;
             }
         }
 
-        private static Dictionary<int, SObject> GetAllItemsWithId(int id, IEnumerable<Item> inventory)
+        private static bool DoesFarmerHaveIngredientsInInventoryPrefix(CraftingRecipe __instance, IList<Item> extraToCheck, ref bool __result)
         {
-            Dictionary<int, SObject> items = new();
+            try
+            {
+
+                if (!ModEntry.Recipes.ContainsKey(__instance.name))
+                    return true;
+                int recipeQuality = GetQualityForRecipe(__instance);
+                foreach (var recipe in __instance.recipeList)
+                {
+                    int value = recipe.Value;
+                    value -= GetCountOfItemWithId(recipe.Key, recipeQuality, Game1.player.Items);
+
+                    if (value <= 0)
+                        continue;
+                    if (extraToCheck is not null)
+                        value -= GetCountOfItemWithId(recipe.Key, recipeQuality, extraToCheck);
+                    if (value <= 0)
+                        continue;
+                    __result = false;
+                    return false;
+                }
+                __result = true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                handleError(nameof(CraftingRecipe.doesFarmerHaveIngredientsInInventory), ex);
+                return true;
+            }
+        }
+
+        private static int GetQualityForRecipe(CraftingRecipe recipe)
+        {
+            if (recipe.name.Contains("(Silver)"))
+                return Object.medQuality;
+            if (recipe.name.Contains("(Gold)"))
+                return Object.highQuality;
+            if (recipe.name.Contains("(Iridium)"))
+                return Object.bestQuality;
+            return Object.lowQuality;
+        }
+
+        private static Rectangle GetSourceRectForQuality(int quality)
+        {
+            return quality switch
+            {
+                Object.medQuality => new(338, 400, 8, 8),
+                Object.highQuality => new(346, 400, 8, 8),
+                Object.bestQuality => new(346, 392, 8, 8),
+                _ => new(338, 392, 8, 8)
+            };
+        }
+
+        private static int GetQualityForCatch(string itemId, int originalQuality, int baitQuality) => ModEntry.GetQualityForCatch(itemId, originalQuality, baitQuality);
+
+        private static Dictionary<int, Object> GetAllItemsWithId(string id, IEnumerable<Item> inventory)
+        {
+            Dictionary<int, Object> items = new();
             for (int i = 0; i < inventory.Count(); i++)
-                if (inventory.ElementAt(i) is not null and SObject obj && !obj.bigCraftable.Value && obj.ParentSheetIndex == id)
+                if (inventory.ElementAt(i) is not null and Object obj && !obj.bigCraftable.Value && obj.ItemId == id)
                     items.Add(i, obj);
             return items;
+        }
+
+        private static int GetCountOfItemWithId(string id, int maxQuality, IEnumerable<Item> inventory)
+        {
+            int count = 0;
+            foreach (var item in inventory)
+            {
+                if (item is null || item.ItemId != id || item.Quality >= maxQuality)
+                    continue;
+                count += item.Stack;
+            }
+            return count;
+        }
+
+        private static void handleError(string source, Exception ex)
+        {
+            IMonitor.Log($"Failed patching {source}", LogLevel.Error);
+            IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
         }
     }
 }

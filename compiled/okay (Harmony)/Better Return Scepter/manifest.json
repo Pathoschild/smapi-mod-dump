@@ -1,0 +1,20 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "DecidedlyHuman.BetterReturnScepter",
+  "Name": "Better Return Scepter",
+  "Author": "DecidedlyHuman",
+  "Version": "1.2.0",
+  "Description": "Improves the return scepter, allowing you to warp back to where you came from.",
+  "MinimumApiVersion": "3.15.0",
+  "EntryDll": "BetterReturnScepter.dll",
+  "UpdateKeys": [
+    "Nexus:11610"
+  ]
+}

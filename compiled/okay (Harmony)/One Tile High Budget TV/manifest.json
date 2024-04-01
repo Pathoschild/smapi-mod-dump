@@ -1,0 +1,17 @@
+{
+  "Name": "One tile high Budget TV",
+  "Author": "Khitiara",
+  "Version": "1.0.0",
+  "Description": "Fix screen position for Aimon111's one tile budget tv content pack",
+  "UniqueID": "Khitiara.BudgetTVFix",
+  "EntryDll": "BudgetTVFix.dll",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Aimon111.OneTileHighBudgedTV",
+      "MinimumVersion": "2.0.0",
+      "IsRequired": false // added locally
+    }
+  ],
+  "UpdateKeys": [ "Nexus:20955" ]
+}

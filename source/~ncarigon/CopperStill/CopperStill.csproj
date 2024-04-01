@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<EnableHarmony>true</EnableHarmony>
@@ -16,16 +16,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+	  <Compile Remove="ModPatches\JuniperBerry.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="JsonAssets">
-	    <HintPath>D:\games\Stardew Valley\Mods\JsonAssets\JsonAssets.dll</HintPath>
-	    <Private>False</Private>
-	  </Reference>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Reference Include="ProducerFrameworkMod">
-	    <HintPath>D:\games\Stardew Valley\Mods\ProducerFrameworkMod\ProducerFrameworkMod.dll</HintPath>
+	    <HintPath>E:\GOG Games\Stardew Valley\MO2\mods\ProducerFrameworkMod\ProducerFrameworkMod\ProducerFrameworkMod.dll</HintPath>
 	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
@@ -37,7 +37,16 @@
 	  <None Update="manifest.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="DynamicProducerRules.json">
+	  <None Update="[BBM] Copper Still\assets\juniper.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[BBM] Copper Still\content.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[BBM] Copper Still\manifest.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[CCM] Copper Still\AgersData.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CCM] Copper Still\CaskData.json">

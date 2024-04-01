@@ -6,9 +6,9 @@ mods:
    Remote Fridge Storage
 
 latest commit:
-   commit ce4bea355afe35b342d891a4565e85f19031c055
-   Author: ArjanSeijs <arjan.seijs@gmail.com>
-   Date:   Sun Mar 26 15:22:34 2023 +0200
+   commit b85fccc87885b692da601e47f5a7117dd6a4cc20
+   Author: ArjanSeijs <A.M.Seijs@student.tudelft.nl>
+   Date:   Thu Mar 21 14:48:11 2024 +0100
    
-       Updated api version
+       Updated to 1.6
    

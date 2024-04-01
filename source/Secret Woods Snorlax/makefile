@@ -4,7 +4,7 @@ MOD_DIR=${GAME_DIR}/Mods/SecretWoodsSnorlax
 install: smapi
 
 smapi:
-	dotnet build
+	dotnet build /clp:NoSummary
 
 clean:
 	rm -rf bin obj

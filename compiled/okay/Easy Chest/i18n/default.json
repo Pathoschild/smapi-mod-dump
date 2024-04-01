@@ -1,0 +1,8 @@
+﻿{
+  "menutype.EasyChest": "Chests",
+  "menutype.EasyWorkbench": "Workbench",
+  "config.name.EasyChestKey": "EasyChestKey",
+  "config.tips.EasyChestKey": "Shortcut key to open chests",
+  "config.name.ChestSortBy": "ChestSortBy",
+  "config.tips.ChestSortBy": "Switch chest order when scroll mouseWheel"
+}

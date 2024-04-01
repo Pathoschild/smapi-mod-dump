@@ -3,7 +3,7 @@
 
     <PropertyGroup>
         <Description>Customize notifications when a festival starts and ends.</Description>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <UpdateKeys>Nexus:14170</UpdateKeys>
     </PropertyGroup>
 

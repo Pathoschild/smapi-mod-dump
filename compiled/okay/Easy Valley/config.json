@@ -1,0 +1,15 @@
+{
+  "FeatureListKey": "Q",
+  "ForceRefreshSpecialOrder": false,
+  "EnableGoldenWalnutGain": false,
+  "EnableNpcGiveGift": true,
+  "ShowLocationMap": true,
+  "LocationMapKey": "N",
+  "EnableLocationMapTeleport": false,
+  "EnableMoreOffice": true,
+  "EnableEnchantment": false,
+  "AllowMaxEnchantmentTimes": 1,
+  "EnchantmentToolPrice": 5000,
+  "EnableElevator": false,
+  "DesertElevatorMaxLevel": 100
+}

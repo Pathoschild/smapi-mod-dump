@@ -32,6 +32,7 @@ namespace StardewSurvivalProject
         public bool UseSanityModule { get; set; } = false;
         public bool UseStaminaRework { get; set; } = true;
         public SButton SprintButton { get; set; } = (SButton) Keys.LeftControl;
+        public SButton SecondaryLayerButton { get; set; } = (SButton) Keys.LeftShift;
         public bool ScaleHungerRestoredWithTimeFromLastMeal { get; set; } = false;
         public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
         public int HealthRestoreOnSleep { get; set; } = 20;
@@ -76,6 +77,7 @@ namespace StardewSurvivalProject
         public double ShearThirstDrain { get; set; } = 0.2;
 
         public double DefaultHydrationGainOnDrinkableItems { get; set; } = 10.0;
+        public string EnvironmentHydrationMode { get; set; } = "default";
         public double HydrationGainOnEnvironmentWaterDrinking { get; set; } = 5.0;
         public double HungerGainMultiplierFromItemEdibility { get; set; } = 1.0;
         public int HealthPenaltyOnDehydration { get; set; } = 10;
@@ -141,7 +143,7 @@ namespace StardewSurvivalProject
         //public float StaminaRegenOnNotRunningPerSecond { get; set; } = 1f;
         public double AdditionalDrainOnToolUse { get; set; } = 200;
         public float StaminaDrainOnRunningPerTick { get; set; } = 0.01f;
-        public float StaminaDrainOnSprintingPerTick { get; set; } = 0.03f;
+        public float StaminaDrainOnSprintingPerTick { get; set; } = 0.05f;
 
         //Mood mechanic
         public double MoodThresholdForBreakdown { get; set; } = 0;

@@ -14,39 +14,44 @@ using ProducerFrameworkMod.Utils;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Force.DeepCloner;
+using StardewValley;
+using StardewValley.GameData.Objects;
 using Object = StardewValley.Object;
+using System.Xml.Linq;
 
 namespace ProducerFrameworkMod.Controllers
 {
     public class ProducerController
     {
-        public static readonly List<string> UnsupportedMachines = new List<string>()
-            { "Crystalarium", "Cask", "Incubator", "Slime Incubator", "Hopper", "Chest", "Garden Pot", "Mini-Jukebox"
-                , "Workbench", "Tapper", "Singing Stone", "Drum Block", "Flute Block", "Statue Of Endless Fortune"
-                , "Slime Ball", "Staircase", "Junimo Kart Arcade System", "Prairie King Arcade System" };
+        public static readonly List<string> UnsupportedMachines = new()
+            { "(BC)21", "(BC)163", "(BC)101", "(BC)156", "(BC)275", "(BC)130", "(BC)62", "(BC)209"
+                , "(BC)208", "(BC)105", "(BC)264", "(BC)94", "(BC)127", "(BC)56", "(BC)71", "(BC)159", "(BC)141"
+                , "(BC)8", "(BC)167", "(BC)110", "(BC)113", "(BC)126", "(BC)136", "(BC)137", "(BC)138", "(BC)139", "(BC)140" //arecrow
+            };
 
-        private static readonly Dictionary<Tuple<string, object>, ProducerRule> RulesRepository = new Dictionary<Tuple<string, object>, ProducerRule>();
-        private static readonly Dictionary<string, ProducerConfig> ConfigRepository = new Dictionary<string, ProducerConfig>()
+        private static readonly Dictionary<Tuple<string, object>, ProducerRule> RulesRepository = new();
+        private static readonly Dictionary<string, ProducerConfig> ConfigRepository = new()
         {
             {
-                "Furnace", new ProducerConfig("Furnace",true)
+                "(BC)13", new ProducerConfig("Furnace",true){ProducerQualifiedItemId = "(BC)13"}
             },
             {
-                "Loom", new ProducerConfig("Loom",false,true)
+                "(BC)17", new ProducerConfig("Loom",false,true){ProducerQualifiedItemId = "(BC)17"}
             },
             {
-                "Charcoal Kiln", new ProducerConfig("Charcoal Kiln",true)
+                "(BC)114", new ProducerConfig("Charcoal Kiln",true){ProducerQualifiedItemId = "(BC)114"}
             },
             {
-                "Keg", new ProducerConfig("Keg", new Dictionary<StardewStats, string>(){{StardewStats.BeveragesMade,null}})
+                "(BC)12", new ProducerConfig("Keg", new Dictionary<StardewStats, string>(){{StardewStats.BeveragesMade,null}}){ProducerQualifiedItemId = "(BC)12"}
             },
             {
-                "Preserves Jar", new ProducerConfig("Preserves Jar", new Dictionary<StardewStats, string>(){{StardewStats.PreservesMade,null}})
+                "(BC)15", new ProducerConfig("Preserves Jar", new Dictionary<StardewStats, string>(){{StardewStats.PreservesMade,null}}){ProducerQualifiedItemId = "(BC)15"}
             },
             {
-                "Cheese Press", new ProducerConfig("Cheese Press", new Dictionary<StardewStats, string>(){{StardewStats.GoatCheeseMade, "426" },{StardewStats.CheeseMade, null } })
+                "(BC)16", new ProducerConfig("Cheese Press", new Dictionary<StardewStats, string>(){{StardewStats.GoatCheeseMade, "426" },{StardewStats.CheeseMade, null } }){ProducerQualifiedItemId = "(BC)16"}
             }
         };
 
@@ -77,47 +82,27 @@ namespace ProducerFrameworkMod.Controllers
             {
                 ObjectTranslationExtension.TranslationHelpers[modUniqueId] = i18n;
             }
-            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
             foreach (var producerRule in producerRules)
             {
                 try {
                     producerRule.ModUniqueID = modUniqueId;
-                    if (!ValidateRuleProducerName(producerRule.ProducerName))
+                    if (!FindAndValidateProducer(producerRule))
                     {
                         //Do nothing, already logged.
                     }
-                    else if (string.IsNullOrEmpty(producerRule.InputIdentifier) && (GetProducerConfig(producerRule.ProducerName)?.NoInputStartMode == null))
+                    else if (string.IsNullOrEmpty(producerRule.InputIdentifier) && (GetProducerConfig(producerRule.ProducerQualifiedItemId)?.NoInputStartMode == null))
                     {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't be null or empty if there is no config for 'NoInputStartMode' for producer '{producerRule.ProducerName}'. This rule will be ignored.", LogLevel.Warn);
+                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't be null or empty if there is no config for 'NoInputStartMode' for producer '{producerRule.ProducerIdentification}'. This rule will be ignored.", LogLevel.Warn);
                     }
-                    else if ((!string.IsNullOrEmpty(producerRule.InputIdentifier) && GetProducerConfig(producerRule.ProducerName)?.NoInputStartMode != null))
+                    else if ((!string.IsNullOrEmpty(producerRule.InputIdentifier) && GetProducerConfig(producerRule.ProducerQualifiedItemId)?.NoInputStartMode != null))
                     {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't have a value if there is a config for 'NoInputStartMode' for producer '{producerRule.ProducerName}'. This rule will be ignored.", LogLevel.Warn);
+                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't have a value if there is a config for 'NoInputStartMode' for producer '{producerRule.ProducerIdentification}'. This rule will be ignored.", LogLevel.Warn);
                     } 
                     else
                     {
                         if (!string.IsNullOrEmpty(producerRule.InputIdentifier))
                         {
-                            if (producerRule.InputIdentifier == "Stone")
-                            {
-                                producerRule.InputKey = 390;
-                            }
-                            else if (!Int32.TryParse(producerRule.InputIdentifier, out var intInputIdentifier))
-                            {
-                                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => ObjectUtils.IsObjectStringFromObjectName(o.Value, producerRule.InputIdentifier));
-                                if (pair.Value != null)
-                                {
-                                    producerRule.InputKey = pair.Key;
-                                }
-                                else
-                                {
-                                    producerRule.InputKey = producerRule.InputIdentifier;
-                                }
-                            }
-                            else
-                            {
-                                producerRule.InputKey = intInputIdentifier;
-                            }
+                            producerRule.InputKey = FindObjectKey(producerRule.InputIdentifier) ?? producerRule.InputIdentifier;
                         }
 
                         if (producerRule.OutputIdentifier != null)
@@ -151,46 +136,26 @@ namespace ProducerFrameworkMod.Controllers
                         foreach (OutputConfig outputConfig in producerRule.OutputConfigs)
                         {
                             outputConfig.ModUniqueID = producerRule.ModUniqueID;
-                            if (!Int32.TryParse(outputConfig.OutputIdentifier, out int outputIndex))
+                            outputConfig.OutputItemId = FindObjectKey(outputConfig.OutputIdentifier, true);
+                            if(outputConfig.OutputItemId == null)
                             {
-                                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => ObjectUtils.IsObjectStringFromObjectName(o.Value, outputConfig.OutputIdentifier));
-                                if (pair.Value != null)
-                                {
-                                    outputIndex = pair.Key;
-                                }
-                                else
-                                {
-                                    ProducerFrameworkModEntry.ModMonitor.Log($"No Output found for '{outputConfig.OutputIdentifier}', producer '{producerRule.ProducerName}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
-                                    break;
-                                }
+                                ProducerFrameworkModEntry.ModMonitor.Log($"No Output found for '{outputConfig.OutputIdentifier}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
+                                break;
                             }
-                            outputConfig.OutputIndex = outputIndex;
-
-
+                            
                             foreach (var fuel in outputConfig.RequiredFuel)
                             {
-                                if (!Int32.TryParse(fuel.Key, out int fuelIndex))
+                                var fuelItemId = FindObjectKey(fuel.Key);
+                                if (fuelItemId == null)
                                 {
-                                    KeyValuePair<int, string> pair = objects.FirstOrDefault(o =>
-                                        ObjectUtils.IsObjectStringFromObjectName(o.Value, fuel.Key));
-                                    if (pair.Value != null)
-                                    {
-                                        fuelIndex = pair.Key;
-                                    }
-                                    else
-                                    {
-                                        ProducerFrameworkModEntry.ModMonitor.Log(
-                                            $"No required fuel found for '{fuel.Key}', producer '{producerRule.ProducerName}' and input '{fuel.Key}'. This rule will be ignored.",
-                                            producerRule.WarningsLogLevel);
-                                        //This is done to abort the rule.
-                                        outputConfig.OutputIndex = -1;
-                                        break;
-                                    }
+                                    ProducerFrameworkModEntry.ModMonitor.Log($"No required fuel found for '{fuel.Key}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
+                                    outputConfig.OutputItemId = null;
+                                    break;
                                 }
-                                outputConfig.FuelList.Add(new Tuple<int, int>(fuelIndex, fuel.Value));
+                                outputConfig.FuelList.Add(new Tuple<string, int>(fuelItemId, fuel.Value));
                             }
                         }
-                        if (producerRule.OutputConfigs.Any(p => p.OutputIndex < 0))
+                        if (producerRule.OutputConfigs.Any(p => p.OutputItemId == null))
                         {
                             continue;
                         }
@@ -201,20 +166,13 @@ namespace ProducerFrameworkMod.Controllers
                         }
                         foreach (var fuel in producerRule.AdditionalFuel)
                         {
-                            if (!Int32.TryParse(fuel.Key, out int fuelIndex))
+                            string fuelItemId = FindObjectKey(fuel.Key);
+                            if (fuelItemId == null)
                             {
-                                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => ObjectUtils.IsObjectStringFromObjectName(o.Value, fuel.Key));
-                                if (pair.Value != null)
-                                {
-                                    fuelIndex = pair.Key;
-                                }
-                                else
-                                {
-                                    ProducerFrameworkModEntry.ModMonitor.Log($"No fuel found for '{fuel.Key}', producer '{producerRule.ProducerName}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
-                                    break;
-                                }
+                                ProducerFrameworkModEntry.ModMonitor.Log($"No fuel found for '{fuel.Key}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
+                                break;
                             }
-                            producerRule.FuelList.Add(new Tuple<int, int>(fuelIndex, fuel.Value));
+                            producerRule.FuelList.Add(new Tuple<string, int>(fuelItemId, fuel.Value));
                         }
                         if (producerRule.AdditionalFuel.Count != producerRule.FuelList.Count)
                         {
@@ -237,7 +195,7 @@ namespace ProducerFrameworkMod.Controllers
                 }
                 catch (Exception e)
                 {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for rule from '{producerRule?.ModUniqueID}', producer '{producerRule?.ProducerName}' and input '{producerRule?.InputIdentifier}'. This rule will be ignored.", LogLevel.Error);
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for rule from '{producerRule?.ModUniqueID}', producer '{producerRule?.ProducerIdentification}' and input '{producerRule?.InputIdentifier}'. This rule will be ignored.", LogLevel.Error);
                     ProducerFrameworkModEntry.ModMonitor.Log(e.Message + "\n" + e.StackTrace);
                 }
                 foreach (var n in producerRule.AdditionalProducerNames)
@@ -246,75 +204,71 @@ namespace ProducerFrameworkMod.Controllers
                     try {
                         newProducerRule = producerRule.DeepClone();
                         newProducerRule.ProducerName = n;
+                        newProducerRule.ProducerQualifiedItemId = null;
                         newProducerRule.AdditionalProducerNames.Clear();
-                        if (ValidateRuleProducerName(newProducerRule.ProducerName))
+                        newProducerRule.AdditionalProducerQualifiedItemId.Clear();
+                        if (FindAndValidateProducer(newProducerRule))
                         {
                             AddRuleToRepository(newProducerRule);
                         }
                     }
                     catch (Exception e)
                     {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for rule from '{newProducerRule?.ModUniqueID}', producer '{newProducerRule?.ProducerName}' and input '{newProducerRule?.InputIdentifier}'. This rule will be ignored.", LogLevel.Error);
+                        ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for rule from '{newProducerRule?.ModUniqueID}', producer '{newProducerRule?.ProducerIdentification}' and input '{newProducerRule?.InputIdentifier}'. This rule will be ignored.", LogLevel.Error);
                         ProducerFrameworkModEntry.ModMonitor.Log(e.Message + "\n" + e.StackTrace);
                     }
                 }   
                 producerRule.AdditionalProducerNames.Clear();
-            }
-        }
-
-        private static bool ValidateRuleProducerName(string producerName)
-        {
-            if (String.IsNullOrEmpty(producerName))
-            {
-                ProducerFrameworkModEntry.ModMonitor.Log($"The ProducerName property can't be null or empty. This rule will be ignored.", LogLevel.Warn);
-                return false;
-            }
-            else if (UnsupportedMachines.Contains(producerName) || producerName.Contains("arecrow"))
-            {
-                if (producerName == "Crystalarium")
+                foreach (var n in producerRule.AdditionalProducerQualifiedItemId)
                 {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support Crystalariums. Use Custom Cristalarium Mod instead.",
-                        LogLevel.Warn);
+                    ProducerRule newProducerRule = null;
+                    try
+                    {
+                        newProducerRule = producerRule.DeepClone();
+                        newProducerRule.ProducerQualifiedItemId = n;
+                        newProducerRule.ProducerName = null;
+                        newProducerRule.AdditionalProducerNames.Clear();
+                        newProducerRule.AdditionalProducerQualifiedItemId.Clear();
+                        if (FindAndValidateProducer(newProducerRule))
+                        {
+                            AddRuleToRepository(newProducerRule);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for rule from '{newProducerRule?.ModUniqueID}', producer '{newProducerRule.AdditionalProducerQualifiedItemId}' and input '{newProducerRule?.InputIdentifier}'. This rule will be ignored.", LogLevel.Error);
+                        ProducerFrameworkModEntry.ModMonitor.Log(e.Message + "\n" + e.StackTrace);
+                    }
                 }
-                else if (producerName == "Cask")
-                {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support Casks. Use Custom Cask Mod instead.", LogLevel.Warn);
-                }
-                else
-                {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support {producerName}. This rule will be ignored.", LogLevel.Warn);
-                }
-                return false;
+                producerRule.AdditionalProducerQualifiedItemId.Clear();
             }
-            return true;
         }
 
         private static void AddRuleToRepository(ProducerRule producerRule)
         {
-            Tuple<string, object> ruleKey = new Tuple<string, object>(producerRule.ProducerName, producerRule.InputKey);
-            if (RulesRepository.ContainsKey(ruleKey))
+            Tuple<string, object> ruleKey = new (producerRule.ProducerQualifiedItemId, producerRule.InputKey);
+            if (RulesRepository.TryGetValue(ruleKey, out var oldRule))
             {
-                ProducerRule oldRule = RulesRepository[ruleKey];
                 if (oldRule.ModUniqueID != producerRule.ModUniqueID)
                 {
                     if (oldRule.OverrideMod.Contains(producerRule.ModUniqueID) &&
                         producerRule.OverrideMod.Contains(oldRule.ModUniqueID))
                     {
                         ProducerFrameworkModEntry.ModMonitor.Log(
-                            $"Both mod '{oldRule.ModUniqueID}' and '{producerRule.ModUniqueID}' are saying they should override the rule for producer '{producerRule.ProducerName}' and input '{producerRule.InputIdentifier}'. You should report the problem to these mod's authors. Rule from mod '{oldRule.ModUniqueID}' will be used.",
+                            $"Both mod '{oldRule.ModUniqueID}' and '{producerRule.ModUniqueID}' are saying they should override the rule for producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. You should report the problem to these mod's authors. Rule from mod '{oldRule.ModUniqueID}' will be used.",
                             LogLevel.Warn);
                         return;
                     }
                     else if (producerRule.OverrideMod.Contains(oldRule.ModUniqueID))
                     {
                         ProducerFrameworkModEntry.ModMonitor.Log(
-                            $"Mod '{producerRule.ModUniqueID}' is overriding mod '{oldRule.ModUniqueID}' rule for producer '{producerRule.ProducerName}' and input '{producerRule.InputIdentifier}'.",
+                            $"Mod '{producerRule.ModUniqueID}' is overriding mod '{oldRule.ModUniqueID}' rule for producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'.",
                             LogLevel.Debug);
                     }
                     else
                     {
                         ProducerFrameworkModEntry.ModMonitor.Log(
-                            $"Mod '{producerRule.ModUniqueID}' can't override mod '{oldRule.ModUniqueID}' rule for producer '{producerRule.ProducerName}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.",
+                            $"Mod '{producerRule.ModUniqueID}' can't override mod '{oldRule.ModUniqueID}' rule for producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.",
                             LogLevel.Debug);
                         return;
                     }
@@ -341,11 +295,10 @@ namespace ProducerFrameworkMod.Controllers
         /// <param name="modUniqueId">The mod unique id.</param>
         public static void AddProducersConfig(List<ProducerConfig> producersConfig, string modUniqueId =  null)
         {
-            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
             producersConfig.ForEach(producerConfig =>
             {
                 producerConfig.ModUniqueID = modUniqueId;
-                if (!ValidateConfigProducerName(producerConfig.ProducerName))
+                if (!FindAndValidateProducer(producerConfig))
                 {
                     //Do nothing, already logged.
                 }
@@ -360,18 +313,11 @@ namespace ProducerFrameworkMod.Controllers
                     {
                         foreach (var animation in producerConfig.ProducingAnimation.AdditionalAnimations)
                         {
-                            if (!Int32.TryParse(animation.Key, out int outputIndex))
+                            var outputIndex = FindObjectKey(animation.Key);
+                            if (outputIndex == null)
                             {
-                                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => ObjectUtils.IsObjectStringFromObjectName(o.Value, animation.Key));
-                                if (pair.Value != null)
-                                {
-                                    outputIndex = pair.Key;
-                                }
-                                else
-                                {
-                                    ProducerFrameworkModEntry.ModMonitor.Log($"No object found for '{animation.Key}', producer '{producerConfig.ProducerName}'. This animation will be ignored.", LogLevel.Debug);
-                                    break;
-                                }
+                                ProducerFrameworkModEntry.ModMonitor.Log($"No object found for '{animation.Key}', producer '{producerConfig.ProducerIdentification}'. This animation will be ignored.", LogLevel.Debug);
+                                break;
                             }
                             producerConfig.ProducingAnimation.AdditionalAnimationsId[outputIndex] = animation.Value;
                         }
@@ -381,18 +327,11 @@ namespace ProducerFrameworkMod.Controllers
                     {
                         foreach (var animation in producerConfig.ReadyAnimation.AdditionalAnimations)
                         {
-                            if (!Int32.TryParse(animation.Key, out int outputIndex))
+                            var outputIndex = FindObjectKey(animation.Key);
+                            if (outputIndex == null)
                             {
-                                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => ObjectUtils.IsObjectStringFromObjectName(o.Value, animation.Key));
-                                if (pair.Value != null)
-                                {
-                                    outputIndex = pair.Key;
-                                }
-                                else
-                                {
-                                    ProducerFrameworkModEntry.ModMonitor.Log($"No object found for '{animation.Key}', producer '{producerConfig.ProducerName}'. This animation will be ignored.", LogLevel.Debug);
-                                    break;
-                                }
+                                ProducerFrameworkModEntry.ModMonitor.Log($"No object found for '{animation.Key}', producer '{producerConfig.ProducerIdentification}'. This animation will be ignored.", LogLevel.Debug);
+                                break;
                             }
                             producerConfig.ReadyAnimation.AdditionalAnimationsId[outputIndex] = animation.Value;
                         }
@@ -402,42 +341,87 @@ namespace ProducerFrameworkMod.Controllers
                     foreach (var n in producerConfig.AdditionalProducerNames)
                     {
                         ProducerConfig newProducerConfig = null;
-                        
-                        newProducerConfig = producerConfig.DeepClone();
-                        newProducerConfig.ProducerName = n;
-                        newProducerConfig.AdditionalProducerNames.Clear();
-                        if (ValidateConfigProducerName(newProducerConfig.ProducerName))
+                        try
                         {
-                            AddConfigToRepository(newProducerConfig);
+                            newProducerConfig = producerConfig.DeepClone();
+                            newProducerConfig.ProducerName = n;
+                            newProducerConfig.ProducerQualifiedItemId = null;
+                            newProducerConfig.AdditionalProducerNames.Clear();
+                            newProducerConfig.AdditionalProducerQualifiedItemId.Clear();
+                            if (FindAndValidateProducer(newProducerConfig))
+                            {
+                                AddConfigToRepository(newProducerConfig);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for config from '{newProducerConfig?.ModUniqueID}', producer '{newProducerConfig?.ProducerIdentification}'. This config will be ignored.", LogLevel.Error);
+                            ProducerFrameworkModEntry.ModMonitor.Log(e.Message + "\n" + e.StackTrace);
                         }
                     }
                     producerConfig.AdditionalProducerNames.Clear();
+                    foreach (var n in producerConfig.AdditionalProducerQualifiedItemId)
+                    {
+                        ProducerConfig newProducerConfig = null;
+
+                        try
+                        {
+                            newProducerConfig = producerConfig.DeepClone();
+                            newProducerConfig.ProducerQualifiedItemId = n;
+                            newProducerConfig.ProducerName = null;
+                            newProducerConfig.AdditionalProducerNames.Clear();
+                            newProducerConfig.AdditionalProducerQualifiedItemId.Clear();
+                            if (FindAndValidateProducer(newProducerConfig))
+                            {
+                                AddConfigToRepository(newProducerConfig);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            ProducerFrameworkModEntry.ModMonitor.Log($"Unexpected error for config from '{newProducerConfig?.ModUniqueID}', producer '{newProducerConfig?.ProducerIdentification}'. This config will be ignored.", LogLevel.Error);
+                            ProducerFrameworkModEntry.ModMonitor.Log(e.Message + "\n" + e.StackTrace);
+                        }
+                    }
+                    producerConfig.AdditionalProducerQualifiedItemId.Clear();
                 }
             });
         }
 
-        private static bool ValidateConfigProducerName(string producerName)
+        private static bool FindAndValidateProducer(ProducerData producer)
         {
-            if (String.IsNullOrEmpty(producerName))
+            if (producer.ProducerQualifiedItemId == null)
             {
-                ProducerFrameworkModEntry.ModMonitor.Log($"The ProducerName property can't be null or empty. This rule will be ignored.", LogLevel.Warn);
-                return false;
-            }
-            else if (UnsupportedMachines.Contains(producerName) || producerName.Contains("arecrow"))
-            {
-                if (producerName == "Crystalarium")
+                if (String.IsNullOrEmpty(producer.ProducerName))
                 {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support Crystalariums. Use Custom Cristalarium Mod instead.", LogLevel.Warn);
+                    ProducerFrameworkModEntry.ModMonitor.Log($"The ProducerQualifiedItemId and ProducerName property can't both be null or empty. This rule will be ignored.", LogLevel.Warn);
+                    return false;
                 }
-                else if (producerName == "Cask")
+                producer.ProducerQualifiedItemId = StardewValley.DataLoader.BigCraftables(Game1.content)
+                    .Where(bc => bc.Value.Name.Equals(producer.ProducerName))
+                    .Select(bc => ItemRegistry.type_bigCraftable + bc.Key)
+                    .FirstOrDefault();
+                if (producer.ProducerQualifiedItemId == null)
+                {
+                    ProducerFrameworkModEntry.ModMonitor.Log($"No producer found for ProducerName {producer.ProducerName}. This rule will be ignored.", LogLevel.Warn);
+                    return false;
+                }
+
+            }
+            if (UnsupportedMachines.Contains(producer.ProducerQualifiedItemId))
+            {
+                if (producer.ProducerQualifiedItemId == "(BC)21")
+                {
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support Crystalariums. Use Custom Cristalarium Mod instead.",
+                        LogLevel.Warn);
+                }
+                else if (producer.ProducerName == "(BC)163")
                 {
                     ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support Casks. Use Custom Cask Mod instead.", LogLevel.Warn);
                 }
                 else
                 {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support {producerName}. This config will be ignored.", LogLevel.Warn);
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Producer Framework Mod doesn't support {producer.ProducerName ?? producer.ProducerQualifiedItemId}. This rule will be ignored.", LogLevel.Warn);
                 }
-
                 return false;
             }
             return true;
@@ -445,58 +429,87 @@ namespace ProducerFrameworkMod.Controllers
 
         private static void AddConfigToRepository(ProducerConfig producerConfig)
         {
-            if (ConfigRepository.ContainsKey(producerConfig.ProducerName))
+            if (ConfigRepository.TryGetValue(producerConfig.ProducerQualifiedItemId, out var oldConfig))
             {
-                ProducerConfig oldConfig = ConfigRepository[producerConfig.ProducerName];
                 if (oldConfig.ModUniqueID != null && oldConfig.ModUniqueID != producerConfig.ModUniqueID)
                 {
                     if (oldConfig.OverrideMod.Contains(producerConfig.ModUniqueID) &&
                         producerConfig.OverrideMod.Contains(oldConfig.ModUniqueID))
                     {
                         ProducerFrameworkModEntry.ModMonitor.Log(
-                            $"Both mod '{oldConfig.ModUniqueID}' and '{producerConfig.ModUniqueID}' are saying they should override the config for producer '{producerConfig.ProducerName}'. You should report the problem to these mod's authors. Config from mod '{oldConfig.ModUniqueID}' will be used.",
+                            $"Both mod '{oldConfig.ModUniqueID}' and '{producerConfig.ModUniqueID}' are saying they should override the config for producer '{producerConfig.ProducerIdentification}'. You should report the problem to these mod's authors. Config from mod '{oldConfig.ModUniqueID}' will be used.",
                             LogLevel.Warn);
                         return;
                     }
                     else if (producerConfig.OverrideMod.Contains(oldConfig.ModUniqueID))
                     {
                         ProducerFrameworkModEntry.ModMonitor.Log(
-                            $"Mod '{producerConfig.ModUniqueID}' is overriding mod '{oldConfig.ModUniqueID}' config for producer '{producerConfig.ProducerName}'.",
+                            $"Mod '{producerConfig.ModUniqueID}' is overriding mod '{oldConfig.ModUniqueID}' config for producer '{producerConfig.ProducerIdentification}'.",
                             LogLevel.Debug);
                     }
                     else
                     {
                         ProducerFrameworkModEntry.ModMonitor.Log(
-                            $"Mod '{producerConfig.ModUniqueID}' can't override mod '{oldConfig.ModUniqueID}' config for producer '{producerConfig.ProducerName}'. This rule will be ignored.",
+                            $"Mod '{producerConfig.ModUniqueID}' can't override mod '{oldConfig.ModUniqueID}' config for producer '{producerConfig.ProducerIdentification}'. This rule will be ignored.",
                             LogLevel.Debug);
                         return;
                     }
                 }
             }
-            ConfigRepository[producerConfig.ProducerName] = producerConfig;
+            ConfigRepository[producerConfig.ProducerQualifiedItemId] = producerConfig;
+        }
+
+        public static string FindObjectKey(string identifier, bool nullOnNegative = false)
+        {
+            string itemId = null;
+            if (identifier == "Stone")
+            {
+                itemId = "(O)390";
+            }
+            else if (ItemRegistry.Exists(identifier))
+            {
+                itemId = ItemRegistry.QualifyItemId(identifier);
+            }
+            else if (!Int32.TryParse(identifier, out int fuelIndex))
+            {
+                var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
+                if (pair.Value != null)
+                {
+                    itemId = ItemRegistry.type_object + pair.Key;
+                }
+            }
+            else
+            {
+                if (fuelIndex < 0)
+                    itemId = nullOnNegative ? null : fuelIndex.ToString();
+                else
+                    itemId = ItemRegistry.type_object + fuelIndex;
+            }
+
+            return itemId;
         }
 
         /// <summary>
         /// Get a producer rule for a given producer name and input.
         /// </summary>
-        /// <param name="producerName">Name of the producer</param>
+        /// <param name="producerQualifiedItemId">Qualified Item Id of the producer</param>
         /// <param name="input">Input object of a rule</param>
         /// <returns>The producer config</returns>
-        public static ProducerRule GetProducerItem(string producerName, Object input)
+        public static ProducerRule GetProducerItem(string producerQualifiedItemId, Object input)
         {
             ProducerRule value;
             if (input == null)
             {
-                RulesRepository.TryGetValue(new Tuple<string, object>(producerName, null), out value);
+                RulesRepository.TryGetValue(new Tuple<string, object>(producerQualifiedItemId, null), out value);
             }
             else
             {
-                RulesRepository.TryGetValue(new Tuple<string, object>(producerName, input.ParentSheetIndex), out value);
+                RulesRepository.TryGetValue(new Tuple<string, object>(producerQualifiedItemId, input.QualifiedItemId), out value);
                 if (value == null)
                 {
-                    foreach (string tag in input.GetContextTagList())
+                    foreach (string tag in input.GetContextTags())
                     {
-                        if (RulesRepository.TryGetValue(new Tuple<string, object>(producerName, tag), out value))
+                        if (RulesRepository.TryGetValue(new Tuple<string, object>(producerQualifiedItemId, tag), out value))
                         {
                             break;
                         }
@@ -504,7 +517,7 @@ namespace ProducerFrameworkMod.Controllers
                 }
                 if (value == null)
                 {
-                    RulesRepository.TryGetValue(new Tuple<string, object>(producerName, input.Category), out value);
+                    RulesRepository.TryGetValue(new Tuple<string, object>(producerQualifiedItemId, input.Category.ToString()), out value);
                 }
             }
             return value;
@@ -513,38 +526,38 @@ namespace ProducerFrameworkMod.Controllers
         /// <summary>
         /// Check if a producer rule for a given producer exist.
         /// </summary>
-        /// <param name="producerName">The name of the producer</param>
+        /// <param name="producerQualifiedItemId">The Qualified Item Id of the producer</param>
         /// <returns>true if there is a rule for the producer</returns>
-        public static bool HasProducerRule(string producerName)
+        public static bool HasProducerRule(string producerQualifiedItemId)
         {
-            return RulesRepository.Keys.Any(k => k.Item1 == producerName);
+            return RulesRepository.Keys.Any(k => k.Item1 == producerQualifiedItemId);
         }
 
         /// <summary>
         /// Check if a producer rule with input for a given producer exist.
         /// </summary>
-        /// <param name="producerName">The name of the producer</param>
+        /// <param name="producerQualifiedItemId">The Qualified Item Id of the producer</param>
         /// <returns>true if there is a rule with input for the producer</returns>
-        public static bool HasProducerRuleWithInput(string producerName)
+        public static bool HasProducerRuleWithInput(string producerQualifiedItemId)
         {
-            return RulesRepository.Keys.Any(k => k.Item1 == producerName && k.Item2 != null);
+            return RulesRepository.Keys.Any(k => k.Item1 == producerQualifiedItemId && k.Item2 != null);
         }
 
         /// <summary>
         /// Get the producer config from the name of the producer.
         /// </summary>
-        /// <param name="producerName">The producer name</param>
+        /// <param name="producerQualifiedItemId">The producer Qualified Item Id</param>
         /// <returns>The producer config</returns>
-        public static ProducerConfig GetProducerConfig(string producerName)
+        public static ProducerConfig GetProducerConfig(string producerQualifiedItemId)
         {
-            ConfigRepository.TryGetValue(producerName, out ProducerConfig producerConfig);
+            ConfigRepository.TryGetValue(producerQualifiedItemId, out ProducerConfig producerConfig);
             return producerConfig;
         }
 
-        public static List<ProducerRule> GetProducerRules(string producerName)
+        public static List<ProducerRule> GetProducerRules(string producerQualifiedItemId)
         {
             return RulesRepository
-                .Where(e => e.Key.Item1 == producerName)
+                .Where(e => e.Key.Item1 == producerQualifiedItemId)
                 .Select(e=>e.Value)
                 .ToList();
         }

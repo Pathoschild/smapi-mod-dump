@@ -14,6 +14,7 @@ using System;
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewModdingAPI.Utilities;
+using StardewValley.Buffs;
 
 namespace CustomDeathPenaltyPlus
 {
@@ -41,7 +42,7 @@ namespace CustomDeathPenaltyPlus
 
         private static ModConfig config;
 
-        private static readonly int[] debuffs = { 12, 14, 17, 25, 26, 27 };
+        private static readonly string[] debuffs = { "12", "14", "17", "25", "26", "27" };
 
         // Change friendship of marriage candidate NPCs
         public static void ApplyFriendshipChange(string name)
@@ -113,35 +114,35 @@ namespace CustomDeathPenaltyPlus
             if (config.OtherPenalties.DebuffonDeath == true)
             {
                 // Remove negative debuffs
-                foreach(int debuff in debuffs)
+                foreach(string debuff in debuffs)
                 {
                     if (Game1.player.hasBuff(debuff))
                     {
-                        Game1.buffsDisplay.removeOtherBuff(debuff);
+                        Game1.player.buffs.Remove(debuff);
                     }
                 }
 
                 if (Game1.currentLocation as IslandLocation != null)
                 {
-                    var burntdebuff = new Buff(12)
+                    var burntdebuff = new Buff("12")
                     {
                         totalMillisecondsDuration = 60000,
                         millisecondsDuration = 60000,
                         glow = Color.White
                     };
-                    Game1.buffsDisplay.addOtherBuff(burntdebuff);
+                    Game1.player.buffs.Apply(burntdebuff);
                 }
                 else
                 {
-                    Random random = new Random((int)(Game1.uniqueIDForThisGame / Game1.player.stats.DaysPlayed + Game1.player.stats.timesUnconscious));
+                    Random random = new Random((int)(Game1.uniqueIDForThisGame / Game1.player.stats.DaysPlayed));
 
-                    var applieddebuff = new Buff((int)debuffs.GetValue(random.Next(1, debuffs.Length)))
+                    var applieddebuff = new Buff(debuffs.GetValue(random.Next(1, debuffs.Length)).ToString())
                     {
                         totalMillisecondsDuration = 60000,
                         millisecondsDuration = 60000,
                         glow = Color.White
                     };
-                    Game1.buffsDisplay.addOtherBuff(applieddebuff);
+                    Game1.player.buffs.Apply(applieddebuff);
                 }
             }
 

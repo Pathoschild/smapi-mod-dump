@@ -1,17 +1,10 @@
 {
    "Name": "AimonsMoreLivelySewerOverhaulPatches",
     "Author": "Aimon111",
-    "Version": "1.0.5",
+    "Version": "2.0.3",
     "Description": "Adds frogs into sewers and other small patches.",
     "UniqueID": "AimonsMoreLivelySewerOverhaulPatches",
   "EntryDll": "AimonsMoreLivelySewerOverhaulPatches.dll",
   "MinimumApiVersion": "3.0.0",
-
-  
-   "Dependencies": [
-	{
-	  "UniqueID": "Aimon111.MoreLivelySewerOverhaul",
-	  "IsRequired": false // disabled locally
-	},
-  ],
+  "UpdateKeys": []
 }

@@ -1,0 +1,17 @@
+{
+  "StashToChests": true,
+  "OnlyStashToExistingStacks": false,
+  "StashLocationSetting": "Default",
+  "StashRadius": 32,
+  "StashKey": "B",
+  "LockItems": true,
+  "LockItemKey": "LeftAlt",
+  "ResetLockItemKey": "RightAlt",
+  "CraftFromChests": true,
+  "CraftLocationSetting": "Default",
+  "CraftRadius": -1,
+  "OpenCraftingPageKey": "K",
+  "MoveChests": true,
+  "MoveChestsDebuff": true,
+  "MoveChestKey": "LeftShift"
+}

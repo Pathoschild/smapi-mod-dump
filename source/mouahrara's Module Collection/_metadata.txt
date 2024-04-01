@@ -6,9 +6,9 @@ mods:
    mouahrara's Module Collection
 
 latest commit:
-   commit f06bcb750b1f4555c6b97c2991eb9afd8e4744a3
+   commit 27a101c3df69ca6f49cd8b4721a6de7700bd5326
    Author: mouahrara <mouahrara.noreply@protonmail.com>
-   Date:   Thu Dec 14 04:30:02 2023 +0100
+   Date:   Wed Mar 27 23:11:31 2024 +0100
    
-       Migrate to 1.6, project reorganization, code maintenance and improve Better animal pruchase module
+       Removed the Simultaneous services module, as Stardew Valley 1.6.3 now includes this feature
    

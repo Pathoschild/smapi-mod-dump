@@ -28,14 +28,14 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(HoeDirt.plant), new[] { typeof(int), typeof(int), typeof(int), typeof(Farmer), typeof(bool), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(PlantPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(HoeDirt.plant), new[] { typeof(string), typeof(Farmer), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(PlantPostfix)));
         }
 
-        private static void PlantPostfix(HoeDirt __instance, int index, int tileX, int tileY, Farmer who, bool isFertilizer, GameLocation location)
+        private static void PlantPostfix(HoeDirt __instance, string itemId, Farmer who, bool isFertilizer)
         {
-            var instanceName = Game1.objectInformation.ContainsKey(index) ? Game1.objectInformation[index].Split('/')[0] : String.Empty;
+            var instanceName = Game1.objectData.ContainsKey(itemId) ? Game1.objectData[itemId].Name : String.Empty;
             instanceName = $"{AlternativeTextureModel.TextureType.Crop}_{instanceName}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

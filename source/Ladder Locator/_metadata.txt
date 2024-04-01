@@ -6,9 +6,9 @@ mods:
    Ladder Locator
 
 latest commit:
-   commit d82f79fb0d8f8f06fc5cd4751eadd35acdc2e452
+   commit 8490bcd0b977ceb6071bcc3a25aedc653b0e8e0e
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Fri Feb 10 17:12:08 2023 +0100
+   Date:   Tue Mar 19 23:35:42 2024 +0100
    
-       Bump version to 1.4.3
+       Update readme to show support for 1.6
    

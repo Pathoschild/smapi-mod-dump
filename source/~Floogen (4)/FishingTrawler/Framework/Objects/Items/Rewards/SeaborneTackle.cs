@@ -34,7 +34,7 @@ namespace FishingTrawler.Framework.Objects.Items.Rewards
 
         public static Item CreateInstance(TackleType tackleType = TackleType.Unknown)
         {
-            var tackle = new StardewValley.Object(GetBaseIdByType(tackleType), 1);
+            var tackle = new StardewValley.Object($"{GetBaseIdByType(tackleType)}", 1);
             tackle.modData[ModDataKeys.SEABORNE_TACKLE_KEY] = tackleType.ToString();
             tackle.uses.Value = int.MinValue;
 

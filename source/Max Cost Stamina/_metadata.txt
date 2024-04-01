@@ -6,9 +6,9 @@ mods:
    Max Cost Stamina
 
 latest commit:
-   commit 0b4c6c0fcdeb4aec730f0923786f1f735e8f05d6
-   Author: Jude Vargas <judevargas222@gmail.com>
-   Date:   Mon Jan 24 15:24:13 2022 -0500
+   commit 54afbda77eec34e6e11e0dc90ff8a04224f546c7
+   Author: judev <judev@JUDE-PC>
+   Date:   Wed Mar 27 00:34:18 2024 -0400
    
-       Merge branch 'master' of https://github.com/JudeRV/Stardew-MaxCastStamina
+       Add project files.
    

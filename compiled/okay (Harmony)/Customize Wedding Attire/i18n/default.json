@@ -8,5 +8,22 @@
   "weddingAttire.noneOption": "NoClothingChange",
   "weddingAttire.tuxOption": "Tuxedo",
   "weddingAttire.dressOption": "WeddingDress",
-  "weddingAttire.defaultOption": "GameDefault"
+  "weddingAttire.defaultOption": "GameDefault",
+  "weddingAttire.customOption": "CustomClothing",
+
+  // Add custom clothing options
+  "customSection.title": "Custom Outfit Settings",
+  "customSection.description": "Only applies when custom outfit is selected",
+  "customShirt.title": "Custom Shirt",
+  "customShirt.description": "String ID of the shirt to wear at wedddings; consult game files for IDs.",
+  "customPants.title": "Custom Pants",
+  "customPants.description": "String ID of the pants to wear at wedddings; consult game files for IDs.",
+  "pantsR.title": "Pants Red Value",
+  "pantsR.description": "The R value in the RGB pants color",
+  "pantsG.title": "Pants Green Value",
+  "pantsG.description": "The G value in the RGB pants color",
+  "pantsB.title": "Pants Blue Value",
+  "pantsB.description": "The B value in the RGB pants color",
+  "pantsColor.title": "Pants Color",
+  "pantsColor.description": "The color for the custom outfit's pants"
 }

@@ -4,6 +4,7 @@
   "UsePlayerMagnetism": false,
   "ShakeDistance": 2,
   "RequireHoe": true,
+  "RequireToolMoss": true,
   "FruitsReadyToShake": 1,
   "ForageToggles": {
     "BushToggles": {
@@ -33,6 +34,7 @@
       "Leek": false,
       "Magma Cap": false,
       "Morel": false,
+      "Moss": false,
       "Mussel": false,
       "Nautilus Shell": false,
       "Oyster": false,
@@ -45,6 +47,7 @@
       "Spice Berry": false,
       "Spring Onion": false,
       "Sweet Pea": false,
+      "Truffle": false,
       "Wild Horseradish": false,
       "Wild Plum": false,
       "Winter Root": false
@@ -66,6 +69,8 @@
       "Hazelnut": true,
       "Mahogany Seed": true,
       "Maple Seed": true,
+      "Mossy Seed": true,
+      "Mystic Tree Seed": true,
       "Pine Cone": true
     }
   }

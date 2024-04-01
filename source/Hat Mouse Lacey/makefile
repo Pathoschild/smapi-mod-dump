@@ -1,13 +1,8 @@
-GAME_DIR=${HOME}/GOG Games/Stardew Valley/game
+# FIXME revert to GOG location after 1.6 release
+#GAME_DIR=${HOME}/GOG Games/Stardew Valley/game
+GAME_DIR=${HOME}/.local/share/Steam/steamapps/common/Stardew Valley
 MOD_DIR_CP=${GAME_DIR}/Mods/HatMouseLacey
 MOD_DIR_SMAPI=${GAME_DIR}/Mods/HatMouseLacey_Core
-
-CONVERT_PNGS=source/house.png \
-	     source/storefront.png \
-	     source/hatmouselaceyStall.png \
-	     source/hatmouselaceyInterior.png \
-	     source/ellehouse.png \
-	     source/ellestorefront.png
 
 install: smapi cp
 
@@ -23,9 +18,12 @@ cp:
 	install -m 644 docs/nonlicensed.txt "${MOD_DIR_CP}/"
 
 palettes: source/tint
-	@for img in ${CONVERT_PNGS}; do \
-		./source/tint "$$img" CP/assets; \
-	done
+	$< "source/house.png" CP/assets/house
+	$< "source/storefront.png" CP/assets/house
+	$< "source/hatmouselaceyStall.png" CP/assets/maps
+	$< "source/hatmouselaceyInterior.png" CP/assets/maps
+	$< "source/ellehouse.png" CP/assets/textures
+	$< "source/ellestorefront.png" CP/assets/textures
 
 source/tint: source/tint.c
 	${CC} -o $@ $< -lpng

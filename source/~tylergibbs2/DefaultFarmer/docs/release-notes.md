@@ -10,6 +10,17 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.2.1
+Released on 21 March 2024 for SMAPI 4.0.0 or later.
+
+- Include update key in mod manifest
+
+## 1.2.0
+Released on 19 March 2024 for SMAPI 4.0.0 or later.
+
+- Update mod for compatibility with Stardew Valley 1.6
+- Increase readability in seeing actively selected preset
+
 ## 1.1.1
 Released on 18 June 2022 for SMAPI 3.13.0 or later.
 

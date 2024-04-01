@@ -30,7 +30,7 @@ public sealed class DictionaryMap<TTile> : IMap<TTile>.Writable
 		}
 	}
 
-	private readonly Dictionary<IntPoint, TTile> Dictionary = new();
+	private readonly Dictionary<IntPoint, TTile> Dictionary = [];
 	private readonly Func<IntPoint, TTile> DefaultTile;
 
 	public DictionaryMap(TTile defaultTile) : this(_ => defaultTile) { }

@@ -30,7 +30,7 @@ namespace LocationCleaner.Framework
             locObj = location.objects.Values.ToList();
             locTerrain = location.terrainFeatures.Values.ToList();
 
-            IList<ResourceClump> resourceClumps =
+            var resourceClumps =
                 (location as Farm)?.resourceClumps
                 ?? (IList<ResourceClump>)(location as Woods)?.stumps
                 ?? new List<ResourceClump>();

@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 
@@ -42,7 +41,7 @@ namespace FarmTypeManager
                         return null;
                 }
 
-                if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container && save.Type != SavedObject.ObjectType.DGA) //if this save doesn't have an ID (and isn't a container or a DGA item)
+                if (save.ID == null && save.Type != SavedObject.ObjectType.Container && save.Type != SavedObject.ObjectType.DGA) //if this save doesn't have an ID (and isn't a container or a DGA item)
                 {
                     Monitor.Log("Failed to create an item. Saved object contained no ID.", LogLevel.Debug);
                     Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
@@ -81,15 +80,19 @@ namespace FarmTypeManager
                     case "barrels":
                         item = new BreakableContainerFTM(tile, contents, true); //create a mineshaft-style breakable barrel with the given contents
                         break;
+                    case "(bc)":
+                    case "bc":
                     case "bigcraftable":
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
-                        item = new StardewValley.Object(tile, save.ID.Value, false); //create an object as a "big craftable" item
+                        item = ItemRegistry.Create("(BC)" + save.StringID);
                         break;
+                    case "(b)":
+                    case "b":
                     case "boot":
                     case "boots":
-                        item = new Boots(save.ID.Value);
+                        item = new Boots(save.StringID);
                         break;
                     case "breakable":
                     case "breakables":
@@ -113,17 +116,11 @@ namespace FarmTypeManager
                     case "burieditems":
                     case "buried item":
                     case "buried items":
-                        item = new BuriedItems(tile, contents); //create an item burial location with the given contents
+                        item = new BuriedItems(contents); //create an item burial location with the given contents
                         break;
                     case "chest":
                     case "chests":
-                        item = new Chest(0, contents, tile, false, 0); //create a mineshaft-style chest with the given contents
-                        break;
-                    case "cloth":
-                    case "clothes":
-                    case "clothing":
-                    case "clothings":
-                        item = new Clothing(save.ID.Value);
+                        item = new Chest(contents, tile); //create a mineshaft-style chest with the given contents
                         break;
                     case "crate":
                     case "crates":
@@ -140,55 +137,85 @@ namespace FarmTypeManager
                             {
                                 Monitor.Log("Failed to create an item. Dynamic Game Assets (DGA) item was null or an unrecognized type.", LogLevel.Debug);
                                 Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                                Monitor.Log($"Item type (C# code): {rawDGA?.GetType()?.Name ?? "null"}", LogLevel.Debug);
                                 return null;
                             }
                         }
                         catch (Exception ex)
                         {
-                            Monitor.LogOnce($"Error spawning a Dynamic Game Assets (DGA) item. The auto-generated error message has been added to the log.", LogLevel.Info);
+                            Monitor.Log($"Error spawning a Dynamic Game Assets (DGA) item. The auto-generated error message has been added to the log.", LogLevel.Info);
                             Monitor.Log($"----------", LogLevel.Trace);
                             Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
                             return null;
                         }
                         break;
+                    case "(f)":
+                    case "f":
                     case "furniture":
-                        item = new Furniture(save.ID.Value, tile);
+                        item = ItemRegistry.Create("(F)" + save.StringID);
                         break;
+                    case "(h)":
+                    case "h":
                     case "hat":
                     case "hats":
-                        item = new Hat(save.ID.Value);
+                        item = ItemRegistry.Create("(H)" + save.StringID);
                         break;
-                    case "object": //treat objects as items when creating them as Items
+                    case "(o)":
+                    case "o":
+                    case "object":
                     case "objects":
                     case "item":
                     case "items":
-                        item = new StardewValley.Object(tile, save.ID.Value, 1); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(save.StringID, 1); //create an "normal" object (in whatever way is preferable for a held/dropped item)
+                        break;
+                    case "(p)":
+                    case "p":
+                    case "pant":
+                    case "pants":
+                        item = ItemRegistry.Create("(P)" + save.StringID);
                         break;
                     case "ring":
                     case "rings":
-                        item = new Ring(save.ID.Value);
+                        item = new Ring(save.StringID);
                         break;
+                    case "(s)":
+                    case "s":
+                    case "shirt":
+                    case "shirts":
+                        item = ItemRegistry.Create("(S)" + save.StringID);
+                        break;
+                    case "(t)":
+                    case "t":
+                    case "tool":
+                    case "tools":
+                        item = ItemRegistry.Create("(T)" + save.StringID);
+                        break;
+                    case "(w)":
+                    case "w":
                     case "weapon":
                     case "weapons":
-                        item = new MeleeWeapon(save.ID.Value);
+                        item = ItemRegistry.Create("(W)" + save.StringID);
                         break;
                 }
 
                 if (item == null) //if no item could be generated
                 {
-                    Monitor.Log("Failed to create an item. Category setting was not recognized.", LogLevel.Debug);
-                    Monitor.Log($"Item Category: {category}", LogLevel.Debug);
+                    Monitor.Log("Failed to create an item. This may be caused by missing or uninstalled item mods.", LogLevel.Debug);
+                    Monitor.Log($"Item category: {category}", LogLevel.Debug);
+                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
                     return null;
                 }
 
                 if (configItem?.Stack > 1) //if this item has a custom stack setting
                 {
-                    item.Stack = configItem.Stack.Value; //apply it
+                    int clampedStackValue = Math.Min(configItem.Stack.Value, item.maximumStackSize()); //limit the custom stack value to the maximum allowed by this item
+                    item.Stack = clampedStackValue; //apply it
                 }
 
-                if (save.ID.HasValue) //if this object type uses an ID
+                if (item is Furniture furniture) //if the created item is furniture (including from DGA, etc)
                 {
-                    item.ParentSheetIndex = save.ID.Value; //manually set this index value, due to it being ignored by some item subclasses
+                    int rotations = configItem.Rotation ?? 0; //if this item has a custom rotation setting, use it
+                    furniture.SetPlacement(tile, rotations); //set the furniture's tile and rotation
                 }
 
                 return item;

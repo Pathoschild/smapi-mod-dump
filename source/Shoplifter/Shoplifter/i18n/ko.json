@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "당신이 내 가게를 털고 있어 @! 난 당신이 이것보다는 더 나은 사람이라고 생각했어.$3#$b#당신은 어차피 그걸 살 여유가 없으니 이번에는 벌금을 물지 않을게 @.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "@, 내 가게가 다른 사람들과 떨어져 있다고 해서 훔치기 쉬워지는 것은 아니야.$2#$b#벌금은 걱정하지 말고 나가 @.$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "아이스크림이 그렇게 먹고 싶었어 @?$7#$b#이번에는 경고만 하고 보내줄게.$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "지금 물건을 훔치는 거야 @?$3#$b#*한숨* 벌금 {{fineamount}}골드을 내면, 네가 도둑질 한 것을 잊어줄게.$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "지금 물건을 훔치는 거야 @?$3#$b#*한숨* 이번에는 넘어가 줄게.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "세상에 @? 공짜 TV라도 구할 수 있을 것 같았니?$3#$b#너에게 {{fineamount}}골드의 벌금을 물릴 거야... 아마도 그게 널 단념시킬 수 있겠지.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "세상에 @? 공짜 TV라도 구할 수 있을 것 같았니?$3#$b#네가 벌금을 낼 수 없으니, 이번에는 면제해줄게.$2",
 
     // TODO Improve translations
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"얼마나 자주 물건을 훔칠 수 있습니까?",  
@@ -57,6 +62,8 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"금지된 일수",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"금지된 일수입니다",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"적발 반경",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"플레이어를 잡기 위해 마을 주민이 플레이어로부터 최대 반경 내에 있어야 합니다."
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"플레이어를 잡기 위해 마을 주민이 플레이어로부터 최대 반경 내에 있어야 합니다.",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"희귀 재고 확률",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"희귀한 재고 아이템이 등장할 확률."
     //
   }

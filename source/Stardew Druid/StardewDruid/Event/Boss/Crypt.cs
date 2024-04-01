@@ -30,21 +30,21 @@ namespace StardewDruid.Event.Boss
     public class Crypt : BossHandle
     {
 
-        public List<StardewDruid.Monster.Boss.Dragon> bossMonsters;
+        public List<StardewDruid.Monster.Boss.Boss> bossMonsters;
 
-        public Crypt(Vector2 target, Rite rite, Quest quest)
-          : base(target, rite, quest)
+        public Crypt(Vector2 target,  Quest quest)
+          : base(target, quest)
         {
 
             targetVector = target;
-
-            voicePosition = new(targetVector.X * 64f, targetVector.Y * 64f - 32f);
 
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 90.0;
 
             bossMonsters = new();
 
             cues = DialogueData.DialogueScene(questData.name);
+
+            AddActor(new (target.X * 64f, target.Y * 64f - 32f));
 
         }
 
@@ -63,7 +63,7 @@ namespace StardewDruid.Event.Boss
                 for (int i = bossMonsters.Count - 1; i >= 0; i--)
                 {
 
-                    StardewDruid.Monster.Boss.Dragon boss = bossMonsters[i];
+                    StardewDruid.Monster.Boss.Boss boss = bossMonsters[i];
 
                     boss.currentLocation.characters.Remove(boss);
 
@@ -169,7 +169,11 @@ namespace StardewDruid.Event.Boss
 
                 Game1.yLocationAfterWarp = 10;
 
-                voicePosition = new(targetVector.X * 64, targetVector.Y * 64 - 32f);
+                RemoveActors();
+
+                actors.Clear();
+
+                AddActor(new(targetVector.X * 64, targetVector.Y * 64 - 32f));
 
                 SetTrack("tribal");
 
@@ -184,23 +188,23 @@ namespace StardewDruid.Event.Boss
 
                 EventQuery("LocationPortal");
 
-                int difficulty = 1;
+                int difficulty = 2;
 
                 if (questData.name.Contains("Two"))
                 {
 
-                    difficulty = 2;
+                    difficulty = 4;
                 
                 }
                 else
                 {
-                    Monster.Boss.Shadowtin bossShadowtin = MonsterData.CreateMonster(18, targetVector + new Vector2(0, 5f)) as Monster.Boss.Shadowtin;
+                    Monster.Boss.Shadowtin bossShadowtin = new(targetVector + new Vector2(0, 5f),Mod.instance.CombatModifier());
 
                     targetLocation.characters.Add(bossShadowtin);
 
-                    bossShadowtin.currentLocation = riteData.castLocation;
+                    bossShadowtin.currentLocation = Mod.instance.rite.castLocation;
 
-                    bossShadowtin.update(Game1.currentGameTime, riteData.castLocation);
+                    bossShadowtin.update(Game1.currentGameTime, Mod.instance.rite.castLocation);
 
                     bossMonsters.Add(bossShadowtin);
 
@@ -209,37 +213,44 @@ namespace StardewDruid.Event.Boss
                 for(int j = 0; j < difficulty; j++)
                 {
 
-                    Scavenger bossScavenger = MonsterData.CreateMonster(19, targetVector + new Vector2(4 - (2* difficulty), 6f - (3 * difficulty))) as Scavenger;
+                    StardewDruid.Monster.Boss.Boss thief;
+
+                    Vector2 startVector = targetVector + new Vector2(-4 + (3 * j), 3f);
+
+                    string smacktalk = "meow?";
+
+                    switch (randomIndex.Next(4))
+                    {
+                        case 1:
+                            thief = new Scavenger(startVector, Mod.instance.CombatModifier());
+                            break;
+                        case 2:
+                            thief = new Shadowfox(startVector, Mod.instance.CombatModifier());
+                            smacktalk = "arwooooo!";
+                            break;
+                        case 3:
+                            thief = new Goblin(startVector, Mod.instance.CombatModifier());
+                            smacktalk = "heh heh";
+                            break;
+                        default: //0
+                            thief = new Rogue(startVector, Mod.instance.CombatModifier());
+                            smacktalk = "heh heh";
+                            break;
+
+                    }
+
+                    targetLocation.characters.Add(thief);
+
+                    thief.update(Game1.currentGameTime, targetLocation);
 
                     if (questData.name.Contains("Two"))
                     {
-                        bossScavenger.HardMode();
+                        thief.HardMode();
                     }
 
-                    targetLocation.characters.Add(bossScavenger);
+                    thief.showTextAboveHead(smacktalk);
 
-                    bossScavenger.currentLocation = riteData.castLocation;
-
-                    bossScavenger.update(Game1.currentGameTime, riteData.castLocation);
-
-                    bossMonsters.Add(bossScavenger);
-
-
-                    Rogue bossRogue = MonsterData.CreateMonster(20, targetVector + new Vector2(-4 + (2 * difficulty), 6f - (3 * difficulty))) as Rogue;
-
-                    if (questData.name.Contains("Two"))
-                    {
-                        bossRogue.HardMode();
-                    }
-
-                    targetLocation.characters.Add(bossRogue);
-
-                    bossRogue.currentLocation = riteData.castLocation;
-
-                    bossRogue.update(Game1.currentGameTime, riteData.castLocation);
-
-                    bossMonsters.Add(bossRogue);
-
+                    bossMonsters.Add(thief);
                 }
 
                 braziers.Add(new(targetLocation, new(13, 13)));
@@ -263,7 +274,7 @@ namespace StardewDruid.Event.Boss
             for(int i = bossMonsters.Count - 1; i >= 0; i--)
             {
 
-                StardewDruid.Monster.Boss.Dragon boss = bossMonsters[i];
+                StardewDruid.Monster.Boss.Boss boss = bossMonsters[i];
 
                 if (!ModUtility.MonsterVitals(boss, targetLocation))
                 {

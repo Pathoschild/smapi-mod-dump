@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP Regen", "SP Regen.csproj", "{5C2286F8-1588-4987-B15F-2B348688DB13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP Regen", "SP Regen.csproj", "{C1DBD7FC-8AEB-4FF4-9775-04145F6BB800}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5C2286F8-1588-4987-B15F-2B348688DB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C2286F8-1588-4987-B15F-2B348688DB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C2286F8-1588-4987-B15F-2B348688DB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C2286F8-1588-4987-B15F-2B348688DB13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1DBD7FC-8AEB-4FF4-9775-04145F6BB800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1DBD7FC-8AEB-4FF4-9775-04145F6BB800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1DBD7FC-8AEB-4FF4-9775-04145F6BB800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1DBD7FC-8AEB-4FF4-9775-04145F6BB800}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2783D884-20A2-489B-B40B-3017BDACE7CF}
+		SolutionGuid = {C97F24E0-5CFF-4E09-B8D4-F96A62D5737A}
 	EndGlobalSection
 EndGlobal

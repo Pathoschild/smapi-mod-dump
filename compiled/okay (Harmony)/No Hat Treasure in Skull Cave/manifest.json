@@ -1,7 +1,7 @@
 {
     "Name": "No Hat Treasure in Skull Cave",
     "Author": "Kumagabear",
-    "Version": "1.0.1",
+    "Version": "1.0.3",
     "Description": "No Hat Treasure in Skull Cave",
     "UniqueID": "Kumagabear.NoHatTreasureSkull",
     "EntryDll": "NoHatTreasureSkull.dll",

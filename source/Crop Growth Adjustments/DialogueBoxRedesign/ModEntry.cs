@@ -28,7 +28,6 @@ namespace DialogueBoxRedesign
         public static ModConfig Config;
 
         public static Texture2D GradientSample;
-        public static Texture2D DarkerGradientSample;
 
         internal static IHDPortraitsAPI HdPortraitsApi;
 
@@ -87,7 +86,6 @@ namespace DialogueBoxRedesign
         private void PrepareAssets()
         {
             GradientSample = Helper.ModContent.Load<Texture2D>("assets/gradientSample.png");
-            DarkerGradientSample = Helper.ModContent.Load<Texture2D>("assets/darkerGradientSample.png");
         }
         
         private void ApplyHarmonyPatches()

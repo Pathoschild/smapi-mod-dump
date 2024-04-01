@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20619
+IDs: furyx639.CustomBush
+update keys: Nexus:20619, GitHub:LeFauxMatt/StardewMods

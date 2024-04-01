@@ -1,0 +1,21 @@
+{
+    "Name": "[CP] Better Junimos Config Wizard",
+    "Author": "ceruleandeep",
+    "Version": "1.0.0",
+    "Description": "One or two sentences about the mod.",
+    "UniqueID": "ceruleandeep.BetterJunimos.CP",
+    "UpdateKeys": [],
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "misscoriel.eventrepeater",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "hawkfalcon.BetterJunimos",
+            "IsRequired": true
+        }
+    ]
+}

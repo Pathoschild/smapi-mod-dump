@@ -8,19 +8,11 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using ConfigureMachineOutputs.Framework;
-using ConfigureMachineOutputs.Framework.Patches;
-using Harmony;
+using ConfigureMachineOutputs.Framework.Configs;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Locations;
-using SObject = StardewValley.Object;
 
 namespace ConfigureMachineOutputs
 {
@@ -30,84 +22,32 @@ namespace ConfigureMachineOutputs
         //public static readonly Type[] PatchedTypes = { typeof(Furniture), typeof(Wallpaper) };
         private bool _debugging = true;
 
-
-        private PerformObjectDropInActionPatch podia;
-        private CheckForActionPatch cfa;
         
         public override void Entry(IModHelper helper)
         {
-            _config = helper.ReadConfig<CmoConfig>();
+           //toDo _config = helper.ReadConfig<CmoConfig>();
 
             //Events
             helper.Events.Input.ButtonPressed += ButtonPressed;
+            helper.Events.GameLoop.DayStarted += DayStarted;
+            helper.Events.GameLoop.GameLaunched += GameLaunched;
 
             //Make sure Customized Crystalarium mod isn't installed.
             if (helper.ModRegistry.IsLoaded("DIGUS.CustomCrystalariumMod"))
             {
                 Monitor.Log("Due to incompatability issues with Customizable Crystalarium, the Crystalarium has been turned off for this mod. This way you can use both at the same time.", LogLevel.Info);
-                _config.Machines.Crystalarium.CustomCrystalariumEnabled = false;
+                //_config.Machines.Crystalarium.Enabled = false;
             }
-            //Harmony Original Code credit goes to Cat from the SDV Modding Discord, I modified his Harmony code.
-            try
-            {
-                HarmonyInstance Harmony = HarmonyInstance.Create("mizzion.configuremachineOutputs");
-
-                //Now we set up the patches, will use a dictionary, just in case I need to expand later. Idea of using Harmony this way came from Cat#2506's mod  from the SDV discord
-                IDictionary<string, Type> replacements = new Dictionary<string, Type>
-                {
-                    [nameof(SObject.performObjectDropInAction)] = typeof(PerformObjectDropInActionPatch),
-                    [nameof(SObject.checkForAction)] = typeof(CheckForActionPatch)
-                };
-
-                IList<Type> typesToPatch = new List<Type>();
-                typesToPatch.Add(typeof(SObject));
-                //Let's try to get CFR Machines working. 
-                //Still not sure how I want to do the input/Outputs......
-                
-                if (helper.ModRegistry.IsLoaded("Platonymous.CustomFarming"))
-                    {
-                        try
-                        {
-                            //typesToPatch.Add(Type.GetType("CustomFarmingRedux.CustomMachine, CustomFarmingRedux"));
-                            Monitor.Log("CFR Support should be active(Soon).", LogLevel.Trace);
-                        }
-                        catch (Exception e)
-                        {
-                            this.Monitor.Log("Failed to add support for CFR Machines.", LogLevel.Trace);
-                            this.Monitor.Log(e.ToString(), LogLevel.Debug);
-                        }
-                    }
-
-                //Go through and set up the patching
-                foreach (Type t in typesToPatch)
-                foreach (KeyValuePair<string, Type> replacement in replacements)
-                {
-                    MethodInfo original = t.GetMethods(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault(m => m.Name == replacement.Key);
-
-                    MethodInfo prefix = replacement.Value
-                        .GetMethods(BindingFlags.Static | BindingFlags.Public).FirstOrDefault(item => item.Name == "Prefix");
-                    MethodInfo postfix = replacement.Value
-                        .GetMethods(BindingFlags.Static | BindingFlags.Public).FirstOrDefault(item => item.Name == "Postfix");
-
-                    //this.Monitor.Log($"Patching {original} with {prefix} {postfix}", LogLevel.Trace);
-                    this.Monitor.Log($"Patching {original} with {prefix} {postfix}", LogLevel.Trace);
-
-                    Harmony.Patch(original, prefix == null ? null : new HarmonyMethod(prefix),
-                        postfix == null ? null : new HarmonyMethod(postfix));
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"There was an error setting up harmony.\n {ex}", LogLevel.Trace);
-            }
-
-            //Initialize so we can get the configs.
-            podia = new PerformObjectDropInActionPatch(Monitor, _config);
-            cfa = new CheckForActionPatch(Monitor, _config);
-            //pfp = new PerformLightningPatch(Monitor, _config);
         }
-        
+
+        private void GameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+
+        }
+        private void DayStarted(object sender, DayStartedEventArgs e)
+        {
+            
+        }
 
         private void ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
@@ -115,9 +55,9 @@ namespace ConfigureMachineOutputs
                 return;
             if (e.IsDown(SButton.NumPad8) && _debugging)
             {
-                List<GameLocation> locations = getLocations();
+                var locations = getLocations();
 
-                foreach (GameLocation loc in locations)
+                foreach (var loc in locations)
                 {
                     foreach (var obj in loc.objects.Values)
                     {
@@ -131,33 +71,184 @@ namespace ConfigureMachineOutputs
                 }
                 locations.Clear();
             }
+
+            if (e.IsDown(SButton.NumPad7) && _debugging)
+            {
+                var objs = DataLoader.Objects(Game1.content);
+                
+                
+
+                foreach(var o in objs)
+                {
+                    Monitor.Log($"(O){o.Key} {o.Value.Name}");
+                    
+                }
+            }
+
+            if (e.IsDown(SButton.NumPad9) && _debugging)
+            {
+                var machines = DataLoader.Machines(Game1.content);
+                var bigCraftables = Game1.bigCraftableData;
+
+                foreach (var machine in machines)
+                {
+                    var machineIdSplitter = machine.Key.Split(')');
+                    var machineId = bigCraftables[machineIdSplitter[1]];
+                    Monitor.Log($"Key: {machine.Key} Machine Name: {machineId.Name}");
+
+                    
+                    
+                    switch (machine.Key)
+                    {
+                        case "(BC)9":
+
+                            break;
+                        case "(BC)10":
+
+                            break;
+                        case "(BC)12":
+
+                            break;
+                        case "(BC)13":
+
+                            break;
+                        case "(BC)15":
+
+                            break;
+                        case "(BC)16":
+
+                            break;
+                        case "(BC)17":
+
+                            break;
+                        case "(BC)19":
+
+                            break;
+                        case "(BC)20":
+                            Monitor.Log("recycle edit should have happened. But its not coded lol");
+                            break;
+                        case "(BC)21":
+
+                            break;
+                        case "(BC)24":
+
+                            break;
+                        case "(BC)25":
+
+                            break;
+                        case "(BC)90":
+
+                            break;
+                        case "(BC)101":
+
+                            break;
+                        case "(BC)105":
+
+                            break;
+                        case "(BC)114":
+
+                            break;
+                        case "(BC)117":
+
+                            break;
+                        case "(BC)127":
+
+                            break;
+                        case "(BC)128":
+
+                            break;
+                        case "(BC)154":
+
+                            break;
+                        case "(BC)156":
+
+                            break;
+                        case "(BC)158":
+
+                            break;
+                        case "(BC)160":
+
+                            break;
+                        case "(BC)163":
+
+                            break;
+                        case "(BC)182":
+
+                            break;
+                        case "(BC)211":
+
+                            break;
+                        case "(BC)231":
+
+                            break;
+                        case "(BC)246":
+
+                            break;
+                        case "(BC)254":
+
+                            break;
+                        case "(BC)264":
+
+                            break;
+                        case "(BC)265":
+
+                            break;
+                        case "(BC)280":
+
+                            break;
+                        default:
+                            Monitor.Log("Machine edits failed");
+                            break;
+
+                    }
+
+                        
+                }
+
+                
+            }
+
             if (e.IsDown(SButton.F5))
             {
                 _config = Helper.ReadConfig<CmoConfig>();
-                podia = new PerformObjectDropInActionPatch(Monitor, _config);
-                cfa = new CheckForActionPatch(Monitor, _config);
                 Monitor.Log("The Config file was reloaded.", LogLevel.Info);
             }
         }
-        
+
+
+        private void EditMachine(string QualityId)
+        {
+            var machines = DataLoader.Machines(Game1.content);
+            
+            foreach (var machine in machines)
+            {
+                if (machine.Key != QualityId)
+                    continue;
+
+                foreach (var outPutRules in machine.Value.OutputRules)
+                {
+                    foreach (var triggers in outPutRules.Triggers)
+                    {
+                        //triggers.RequiredCount
+                    }
+                }
+            }
+        }
 
         private List<GameLocation> getLocations()
         {
-            List<GameLocation> location = new List<GameLocation>();
-            foreach (GameLocation loc in Game1.locations)
+            var location = new List<GameLocation>();
+            foreach (var loc in Game1.locations)
             {
-                if (loc.Name.Contains("Farm") || loc.Name.Contains("Green") || loc.Name.Contains("Coop") ||
-                    loc.Name.Contains("Barn") || loc.Name.Contains("Cellar") || loc.Name.Contains("Shed"))
-                {
+                if(!location.Contains(loc))
                     location.Add(loc);
-                    if (loc is BuildableGameLocation building)
-                    {
-                        foreach (Building build in building.buildings)
-                        {
-                            if(build.indoors.Value != null)
-                                location.Add(build.indoors.Value);
-                        }
-                    }
+
+                foreach (var building in loc.buildings)
+                {
+                    if (!loc.IsBuildableLocation() || building.indoors.Value != null)
+                        continue;
+
+                    location.Add(building.indoors.Value);
                 }
             }
             return location;

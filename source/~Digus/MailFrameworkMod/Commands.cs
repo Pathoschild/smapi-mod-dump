@@ -93,5 +93,10 @@ namespace MailFrameworkMod
                 ModMonitor.Log("No player to check mail.", LogLevel.Info);
             }
         }
+
+        internal static void ReloadContentPacks(string command, string[] args)
+        {
+            DataLoader.LoadContentPacks(null,null);
+        }
     }
 }

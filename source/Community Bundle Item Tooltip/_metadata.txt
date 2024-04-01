@@ -6,9 +6,10 @@ mods:
    Community Bundle Item Tooltip
 
 latest commit:
-   commit 91d0695a099798a120144949599751f80de9e5b1
+   commit f223599479b08fafecf992aa884d33ca62fa92e6
    Author: Musbah Sinno <musbahsinno@hotmail.com>
-   Date:   Sat Jan 2 00:16:50 2021 -0500
+   Date:   Tue Mar 26 20:49:52 2024 -0400
    
-       Added better language support + remix bundle fix
+       Now using qualifyItemId to compare items.
+       Changed itemID from int to string.
    

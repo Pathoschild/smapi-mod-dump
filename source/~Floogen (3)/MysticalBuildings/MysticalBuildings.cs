@@ -25,6 +25,10 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewValley.Extensions;
+using StardewValley.Buffs;
+using StardewValley.GameData.Objects;
+using StardewValley.GameData.Buffs;
 
 namespace CaveOfMemories
 {
@@ -92,9 +96,9 @@ namespace CaveOfMemories
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             var solidFoundationsApi = apiManager.GetSolidFoundationsApi();
-            foreach (BuildableGameLocation buildableGameLocation in Game1.locations.Where(b => b is BuildableGameLocation))
+            foreach (GameLocation gameLocation in Game1.locations.Where(b => b.buildings is not null))
             {
-                foreach (var building in buildableGameLocation.buildings.Where(b => _targetBuildingID.Contains(b.buildingType.Value)))
+                foreach (var building in gameLocation.buildings.Where(b => _targetBuildingID.Contains(b.buildingType.Value)))
                 {
                     int actualDaysRemaining = 0;
                     var rawDaysRemaining = building.modData.ContainsKey(REFRESH_DAYS_REMAINING) is true ? building.modData[REFRESH_DAYS_REMAINING] : null;
@@ -161,7 +165,7 @@ namespace CaveOfMemories
 
             if (Game1.player.modData.ContainsKey(WARN_OF_TIME_RESET_FLAG))
             {
-                Game1.addHUDMessage(new HUDMessage(i18n.Get("Clock.Message.Warning"), null));
+                Game1.addHUDMessage(new HUDMessage(i18n.Get("Clock.Message.Warning")));
                 Game1.player.currentLocation.playSound("crystal");
                 Game1.player.modData.Remove(WARN_OF_TIME_RESET_FLAG);
             }
@@ -170,9 +174,9 @@ namespace CaveOfMemories
         private void HandleBuildingsBeforeDayEnding()
         {
             var solidFoundationsApi = apiManager.GetSolidFoundationsApi();
-            foreach (BuildableGameLocation buildableGameLocation in Game1.locations.Where(b => b is BuildableGameLocation))
+            foreach (GameLocation gameLocation in Game1.locations.Where(b => b.buildings is not null))
             {
-                foreach (var building in buildableGameLocation.buildings.Where(b => _targetBuildingID.Contains(b.buildingType.Value)))
+                foreach (var building in gameLocation.buildings.Where(b => _targetBuildingID.Contains(b.buildingType.Value)))
                 {
                     switch (building.buildingType.Value)
                     {
@@ -181,7 +185,7 @@ namespace CaveOfMemories
                             {
                                 var targetDate = SDate.Now().AddDays(-(modConfig.PhantomClockDaysToGoBack + 1));
                                 Game1.dayOfMonth = targetDate.Day;
-                                Game1.currentSeason = targetDate.Season;
+                                Game1.currentSeason = targetDate.Season.ToString();
                                 Game1.setGraphicsForSeason();
 
                                 solidFoundationsApi.RemoveBuildingFlags(building, new List<string>() { HAS_COG_FLAG });
@@ -233,22 +237,10 @@ namespace CaveOfMemories
 
             if (cavernTimer >= 0 && Game1.player.currentLocation is UnstableCavern)
             {
-                int color = 2;
-                if (cavernTimer >= 40)
+                Color color = SpriteText.color_White;
+                if (cavernTimer <= 10)
                 {
-                    color = 7;
-                }
-                else if (cavernTimer >= 30)
-                {
-                    color = 6;
-                }
-                else if (cavernTimer >= 20)
-                {
-                    color = 4;
-                }
-                else if (cavernTimer >= 10)
-                {
-                    color = 3;
+                    color = SpriteText.color_Red;
                 }
 
                 Rectangle tsarea = Game1.game1.GraphicsDevice.Viewport.GetTitleSafeArea();
@@ -432,7 +424,7 @@ namespace CaveOfMemories
             }
             if (message.ToLower() == "removecog")
             {
-                farmer.addItemToInventory(new StardewValley.Object(112, 1));
+                farmer.addItemToInventory(new StardewValley.Object("112", 1));
             }
         }
 
@@ -477,22 +469,22 @@ namespace CaveOfMemories
             switch (buffOptions[index])
             {
                 case "Farming":
-                    Game1.player.addedFarmingLevel.Value += buffLevel;
+                    Game1.player.buffs.Apply(new Buff("ReflectiveOrb", displaySource: "Orb of Reflection", effects: new BuffEffects(new BuffAttributesData() { FarmingLevel = buffLevel })));
                     break;
                 case "Mining":
-                    Game1.player.addedMiningLevel.Value += buffLevel;
+                    Game1.player.buffs.Apply(new Buff("ReflectiveOrb", displaySource: "Orb of Reflection", effects: new BuffEffects(new BuffAttributesData() { MiningLevel = buffLevel })));
                     break;
                 case "Fishing":
-                    Game1.player.addedFishingLevel.Value += buffLevel;
+                    Game1.player.buffs.Apply(new Buff("ReflectiveOrb", displaySource: "Orb of Reflection", effects: new BuffEffects(new BuffAttributesData() { FishingLevel = buffLevel })));
                     break;
                 case "Foraging":
-                    Game1.player.addedForagingLevel.Value += buffLevel;
+                    Game1.player.buffs.Apply(new Buff("ReflectiveOrb", displaySource: "Orb of Reflection", effects: new BuffEffects(new BuffAttributesData() { ForagingLevel = buffLevel })));
                     break;
                 case "Luck":
-                    Game1.player.addedLuckLevel.Value += buffLevel;
+                    Game1.player.buffs.Apply(new Buff("ReflectiveOrb", displaySource: "Orb of Reflection", effects: new BuffEffects(new BuffAttributesData() { LuckLevel = buffLevel })));
                     break;
                 case "Speed":
-                    Game1.player.addedSpeed += buffLevel;
+                    Game1.player.buffs.Apply(new Buff("ReflectiveOrb", displaySource: "Orb of Reflection", effects: new BuffEffects(new BuffAttributesData() { Speed = buffLevel })));
                     break;
             }
 
@@ -511,16 +503,16 @@ namespace CaveOfMemories
             switch (message.ToLower())
             {
                 case "sunny":
-                    Game1.weatherForTomorrow = 0;
+                    Game1.weatherForTomorrow = Game1.weather_sunny;
                     return;
                 case "rainy":
-                    Game1.weatherForTomorrow = SDate.Now().AddDays(1).SeasonIndex == 3 ? 5 : 1;
+                    Game1.weatherForTomorrow = Game1.weather_rain;
                     return;
                 case "stormy":
-                    Game1.weatherForTomorrow = 3;
+                    Game1.weatherForTomorrow = Game1.weather_lightning;
                     return;
                 case "random":
-                    Game1.weatherForTomorrow = randomWeatherIndex == 1 && SDate.Now().AddDays(1).SeasonIndex == 3 ? 5 : randomWeatherIndex;
+                    Game1.weatherForTomorrow = randomWeatherIndex == 1 && SDate.Now().AddDays(1).SeasonIndex == 3 ? Game1.weather_snow : randomWeatherIndex == 2 ? Game1.weather_lightning : Game1.weather_rain;
                     return;
             }
         }

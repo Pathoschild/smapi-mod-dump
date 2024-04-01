@@ -21,6 +21,7 @@ using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Pathfinding;
 
 
 namespace GoToBed.Framework {
@@ -89,7 +90,7 @@ namespace GoToBed.Framework {
 
             // New day has started, everything is set up, spouse already left bed.
             // Before we put him/her back into bed we have to remember current position.
-            initialSpousePosition_        = __instance.getTileLocationPoint();
+            initialSpousePosition_        = __instance.TilePoint;
             initialSpouseFacingDirection_ = __instance.FacingDirection;
             // Every day starts in bed.
             __instance.setTilePosition(farmHouse.getSpouseBedSpot(__instance.Name));
@@ -202,7 +203,7 @@ namespace GoToBed.Framework {
                                            int finalFacingDirection,
                                            PathFindController.endBehavior endBehaviorFunction,
                                            bool clearMarriageDialogues) {
-            Point currentPosition = npc.getTileLocationPoint();
+            Point currentPosition = npc.TilePoint;
             if (npc.currentLocation.Equals(farmHouse) && currentPosition != endPoint) {
                 // To set clearMarriageDialogues we need the most complicated constructor...
                 npc.controller = new PathFindController(
@@ -210,7 +211,6 @@ namespace GoToBed.Framework {
                                      farmHouse,
                                      PathFindController.isAtEndPoint,
                                      finalFacingDirection,
-                                     false,
                                      endBehaviorFunction,
                                      10000,
                                      endPoint,

@@ -100,8 +100,8 @@ class Command
     public static void UploadScore(string modId, string stat, int score)
     {
 #if DEBUG
-        LazyInitAPI(modId);
-        Apis[modId].UploadScore(stat, score);
+        LazyInitApi(modId);
+        APIS[modId].UploadScore(stat, score);
 #else
         Log.Info("Nice try");
 #endif

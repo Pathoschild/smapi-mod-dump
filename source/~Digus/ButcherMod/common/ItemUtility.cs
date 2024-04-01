@@ -45,19 +45,19 @@ namespace AnimalHusbandryMod.common
                             location.objects.Remove(pair.Key);
                         if (pair.Value is Chest chest)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)chest.items).ToList())
+                            foreach (Item obj in (chest.Items).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey))
-                                    chest.items.Remove(obj);
+                                    chest.Items.Remove(obj);
                             }
                         }
                         if (pair.Value.heldObject.Value is Chest autoGrabber)
                         {
-                            NetObjectList<Item> items = autoGrabber.items;
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                            var items = autoGrabber.Items;
+                            foreach (Item obj in (autoGrabber.Items).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey))
-                                    autoGrabber.items.Remove(obj);
+                                    autoGrabber.Items.Remove(obj);
                             }
                         }
 
@@ -84,19 +84,19 @@ namespace AnimalHusbandryMod.common
                                         farm.objects.Remove(pair.Key);
                                     if (pair.Value is Chest)
                                     {
-                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)(pair.Value as Chest).items).ToList())
+                                        foreach (Item obj in ((pair.Value as Chest).Items).ToList())
                                         {
                                             if (IsModdedItem(obj, itemKey))
-                                                (pair.Value as Chest).items.Remove(obj);
+                                                (pair.Value as Chest).Items.Remove(obj);
                                         }
                                     }
                                     if (pair.Value.heldObject.Value is Chest autoGrabber)
                                     {
-                                        NetObjectList<Item> items = autoGrabber.items;
-                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                                        var items = autoGrabber.Items;
+                                        foreach (Item obj in (autoGrabber.Items).ToList())
                                         {
                                             if (IsModdedItem(obj, itemKey))
-                                                autoGrabber.items.Remove(obj);
+                                                autoGrabber.Items.Remove(obj);
                                         }
                                     }
                                 }
@@ -115,20 +115,23 @@ namespace AnimalHusbandryMod.common
                                 }
                             }
                         }
-                        else if (building is Mill mill)
+                        else if (building is Building plainBuilding)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)mill.output.Value.items).ToList())
+                            foreach (Chest objList in plainBuilding.buildingChests)
                             {
-                                if (IsModdedItem(obj, itemKey))
-                                    mill.output.Value.items.Remove(obj);
+                                foreach (Item obj in objList.Items)
+                                {
+                                    if (IsModdedItem(obj, itemKey))
+                                        objList.Items.Remove(obj);
+                                }
                             }
                         }
                         else if (building is JunimoHut junimoHut)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)junimoHut.output.Value.items).ToList())
+                            foreach (Item obj in (junimoHut.GetOutputChest().Items).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey))
-                                    junimoHut.output.Value.items.Remove(obj);
+                                    junimoHut.GetOutputChest().Items.Remove(obj);
                             }
                         }
                     }
@@ -142,18 +145,18 @@ namespace AnimalHusbandryMod.common
                     }
                     if (location is FarmHouse farmHouse)
                     {
-                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)farmHouse.fridge.Value.items).ToList())
+                        foreach (Item obj in (farmHouse.fridge.Value.Items).ToList())
                         {
                             if (IsModdedItem(obj, itemKey))
-                                farmHouse.fridge.Value.items.Remove(obj);
+                                farmHouse.fridge.Value.Items.Remove(obj);
                         }
                     } 
                     else if (location is IslandFarmHouse islandFarmHouse)
                     {
-                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)islandFarmHouse.fridge.Value.items).ToList())
+                        foreach (Item obj in (islandFarmHouse.fridge.Value.Items).ToList())
                         {
                             if (IsModdedItem(obj, itemKey))
-                                islandFarmHouse.fridge.Value.items.Remove(obj);
+                                islandFarmHouse.fridge.Value.Items.Remove(obj);
                         }
                     }
                 }
@@ -180,14 +183,14 @@ namespace AnimalHusbandryMod.common
                         if (pair.Value.modData.ContainsKey(itemKey)) return true;
                         if (pair.Value is Chest chest)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)chest.items).ToList())
+                            foreach (Item obj in (chest.Items).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey)) return true;
                             }
                         }
                         if (pair.Value.heldObject.Value is Chest autoGrabber)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                            foreach (Item obj in (autoGrabber.Items).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey)) return true;
                             }
@@ -214,14 +217,14 @@ namespace AnimalHusbandryMod.common
                                     if (pair.Value.modData.ContainsKey(itemKey)) return true;
                                     if (pair.Value is Chest chest)
                                     {
-                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)chest.items).ToList())
+                                        foreach (Item obj in (chest.Items).ToList())
                                         {
                                             if (IsModdedItem(obj, itemKey)) return true;
                                         }
                                     }
                                     if (pair.Value.heldObject.Value is Chest autoGrabber)
                                     {
-                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                                        foreach (Item obj in (autoGrabber.Items).ToList())
                                         {
                                             if (IsModdedItem(obj, itemKey)) return true;
                                         }
@@ -240,16 +243,16 @@ namespace AnimalHusbandryMod.common
                                 }
                             }
                         }
-                        else if (building is Mill mill)
+                        else if (building is Building plainBuilding)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)mill.output.Value.items).ToList())
+                            foreach (Item obj in (plainBuilding.buildingChests.SelectMany(i=>i.Items)).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey)) return true;
                             }
                         }
                         else if (building is JunimoHut junimoHut)
                         {
-                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)junimoHut.output.Value.items).ToList())
+                            foreach (Item obj in (junimoHut.GetOutputChest().Items).ToList())
                             {
                                 if (IsModdedItem(obj, itemKey)) return true;
                             }
@@ -264,14 +267,14 @@ namespace AnimalHusbandryMod.common
                     }
                     if (location is FarmHouse farmHouse)
                     {
-                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)farmHouse.fridge.Value.items).ToList())
+                        foreach (Item obj in (farmHouse.fridge.Value.Items).ToList())
                         {
                             if (IsModdedItem(obj, itemKey)) return true;
                         }
                     }
                     else if (location is IslandFarmHouse islandFarmHouse)
                     {
-                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)islandFarmHouse.fridge.Value.items).ToList())
+                        foreach (Item obj in (islandFarmHouse.fridge.Value.Items).ToList())
                         {
                             if (IsModdedItem(obj, itemKey)) return true;
                         }

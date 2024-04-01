@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,11 @@ namespace FarmTypeManager
             /// <summary>The enumerated spawn type of the object.</summary>
             public ObjectType Type { get; set; } = default(ObjectType);
             /// <summary>The ID of this object. Also known as index or parentSheetIndex.</summary>
-            public int? ID { get; set; } = null;
+            public object ID { get; set; } = null;
+            /// <summary><see cref="ID"/> treated as a string.</summary>
+            /// <remarks>This is part of a quick workaround for item IDs' conversion from integers to strings in SDV v1.6.</remarks>
+            [JsonIgnore]
+            public string StringID { get { return ID?.ToString(); } set { ID = value; } }
             /// <summary>The remaining number of days before this object should be removed from the game.</summary>
             public int? DaysUntilExpire { get; set; } = null;
             /// <summary>The specific in-game time at which this object will spawn.</summary>
@@ -40,6 +45,10 @@ namespace FarmTypeManager
             public ConfigItem ConfigItem { get; set; } = null;
             /// <summary>The monster type of this saved object. Null if this type is not a monster.</summary>
             public MonsterType MonType { get; set; } = null;
+
+            /// <summary>A cache of large object types' tile sizes. Used to improve the speed of the Size property.</summary>
+            [JsonIgnore]
+            private static Dictionary<string, Point> LargeObjectSizeCache = new Dictionary<string, Point>();
 
             /// <summary>A cache of monster classes' tile sizes. Used to improve the speed of the Size property.</summary>
             [JsonIgnore]
@@ -59,10 +68,20 @@ namespace FarmTypeManager
                         case ObjectType.Ore:
                             return new Point(1, 1);
                         case ObjectType.LargeObject:
-                            if (ID == 190 || ID == 254 || ID == 276) //if this seems to be a giant crop
-                                return new Point(3, 3);
-                            else //if this seems to be a resource clump
-                                return new Point(2, 2);
+                            if (!LargeObjectSizeCache.ContainsKey(StringID)) //if this large object type's size has not been cached yet
+                            {
+                                if (DataLoader.GiantCrops(Game1.content).TryGetValue(StringID, out var giantCrop)) //if this is a giant crop
+                                {
+                                    //cache its size from the data
+                                    LargeObjectSizeCache.Add(StringID, giantCrop.TileSize);
+                                }
+                                else
+                                {
+                                    //assume this is a basic 2x2 resource clump and cache that size
+                                    LargeObjectSizeCache.Add(StringID, new Point(2, 2));
+                                }
+                            }
+                            return LargeObjectSizeCache[StringID];
                         case ObjectType.Monster:
                             if (!MonsterSizeCache.ContainsKey(MonType.MonsterName)) //if this monster type's size has not been cached yet
                             {
@@ -95,7 +114,6 @@ namespace FarmTypeManager
                                 else //if this is a known type of 1x1 monster
                                     MonsterSizeCache.Add(MonType.MonsterName, new Point(1, 1));
                             }
-
                             return MonsterSizeCache[MonType.MonsterName];
                         default:
                             return new Point(1, 1); //use default size for unknown enum values

@@ -1,0 +1,6 @@
+{
+  "Version": "2.0.0",
+  "BasicRetainingSoilDays": 1,
+  "QualityRetainingSoilDays": 3,
+  "DeluxeRetainingSoilDays": -1
+}

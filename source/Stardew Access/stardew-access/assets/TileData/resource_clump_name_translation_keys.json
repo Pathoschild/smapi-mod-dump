@@ -9,6 +9,7 @@
 *************************************************/
 
 {
+  "148": "tile-resource_clump-boulder-name",
   "190": "tile-resource_clump-giant_cauliflower-name",
   "254": "tile-resource_clump-giant_melon-name",
   "276": "tile-resource_clump-giant_pumpkin-name",
@@ -19,5 +20,7 @@
   "752": "tile-resource_clump-mine_rock-name",
   "754": "tile-resource_clump-mine_rock-name",
   "756": "tile-resource_clump-mine_rock-name",
-  "758": "tile-resource_clump-mine_rock-name"
+  "758": "tile-resource_clump-mine_rock-name",
+  "44": "tile-resource_clump-giant_green_rain_weed-name",
+  "46": "tile-resource_clump-giant_green_rain_weed-name"
 }

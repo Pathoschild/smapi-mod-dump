@@ -15,22 +15,16 @@ namespace DialogueBoxRedesign
 {
     public interface IGenericModConfigMenuApi
     {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
-
-        void SetDefaultIngameOptinValue( IManifest mod, bool optedIn );
-        
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+        void AddNumberOption(IManifest mod, Func<float> getValue, Action<float> setValue, Func<string> name, Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null, Func<float, string> formatValue = null, string fieldId = null);
     }
     
     /// <summary> The mod config class. More info here: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Config </summary>
     public class ModConfig
     {
-        /// <summary>
-        /// Whether to show a darker gradient background in winter for better text readability.
-        /// </summary>
-        public bool DarkerBackgroundInWinter { get; set; } = true;
+        public float BoxBackgroundOpacity { get; set; } = 0.8f;
         
         /// <summary>
         /// Whether to move the character portrait to the left of the text.
@@ -57,20 +51,26 @@ namespace DialogueBoxRedesign
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(manifest, () =>
+            api.Register(manifest, () =>
             {
                 config = new ModConfig();
                 mod.SaveConfig(config);
             }, () => mod.SaveConfig(config));
             
-            api.SetDefaultIngameOptinValue(manifest, true);
+            api.AddSectionTitle(manifest, () => "Appearance");
 
-            api.RegisterLabel(manifest, "Appearance", null);
-
-            api.RegisterSimpleOption(manifest, "Darker Background In Winter", "Whether to show a darker gradient background in winter for better text readability.", () => config.DarkerBackgroundInWinter, (bool val) => config.DarkerBackgroundInWinter = val);
-            api.RegisterSimpleOption(manifest, "Show Portrait On The Left", "Whether to move the character portrait to the left of the text.", () => config.ShowPortraitOnTheLeft, (bool val) => config.ShowPortraitOnTheLeft = val);
-            api.RegisterSimpleOption(manifest, "Show Speaker Name", "Whether to show the speaker's name above the portrait.", () => config.ShowSpeakerName, (bool val) => config.ShowSpeakerName = val);
-            api.RegisterSimpleOption(manifest, "Show Friendship Jewel", "Whether to show the friendship jewel.", () => config.ShowFriendshipJewel, (bool val) => config.ShowFriendshipJewel = val);
+            api.AddNumberOption(manifest, () => config.BoxBackgroundOpacity, val => config.BoxBackgroundOpacity = val,
+                () => "Box Background Opacity", null, 0.0f, 1.0f, 0.01f);
+            
+            api.AddBoolOption(manifest, () => config.ShowPortraitOnTheLeft, val => config.ShowPortraitOnTheLeft = val,
+                () => "Show Portrait On The Left",
+                () => "Whether to move the character portrait to the left of the text.");
+            api.AddBoolOption(manifest, () => config.ShowSpeakerName, val => config.ShowSpeakerName = val,
+                () => "Show Speaker Name", 
+                () => "Whether to show the speaker's name above the portrait.");
+            api.AddBoolOption(manifest, () => config.ShowFriendshipJewel, val => config.ShowFriendshipJewel = val,
+                () => "Show Friendship Jewel", 
+                () => "Whether to show the friendship jewel.");
         }
     }
 }

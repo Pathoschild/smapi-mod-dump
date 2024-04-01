@@ -33,6 +33,5 @@
   "ConfigRemoveCITooltip": "Remove Crabshell Ring\nAnd Immunity Band Tooltip\nFrom Combined Ring",
   "ConfigRemoveLTooltip": "Remove Lucky Ring Tooltip\nFrom Combined Ring",
   "ConfigOldGlowStoneRingRecipe": "Old Glow Stone Ring Recipe",
-  "ConfigOldIridiumBandRecipe": "Old Iridium Band Recipe",
-  "ConfigFeedback": "Everything else about the mod can currently not be configured. Feedback is welcome."
+  "ConfigOldIridiumBandRecipe": "Old Iridium Band Recipe"
 }

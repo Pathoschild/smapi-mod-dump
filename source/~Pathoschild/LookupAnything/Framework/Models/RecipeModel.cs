@@ -121,8 +121,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
 
         /// <summary>Construct an instance.</summary>
         /// <param name="recipe">The recipe to parse.</param>
+        /// <param name="outputQualifiedItemId">The qualified item ID produced by this recipe.</param>
         /// <param name="ingredients">The items needed to craft the recipe, or <c>null</c> to parse them from the recipe.</param>
-        public RecipeModel(CraftingRecipe recipe, RecipeIngredientModel[]? ingredients = null)
+        public RecipeModel(CraftingRecipe recipe, string? outputQualifiedItemId, RecipeIngredientModel[]? ingredients = null)
             : this(
                 key: recipe.name,
                 type: recipe.isCookingRecipe ? RecipeType.Cooking : RecipeType.Crafting,
@@ -132,11 +133,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                 isKnown: () => recipe.name != null && Game1.player.knowsRecipe(recipe.name),
                 minOutput: recipe.numberProducedPerCraft,
                 machineId: null,
-                isForMachine: _ => false
-            )
-        {
-            this.OutputQualifiedItemId = recipe.itemToProduce[0];
-        }
+                isForMachine: _ => false,
+                outputQualifiedItemId: RecipeModel.QualifyRecipeOutputId(recipe, outputQualifiedItemId) ?? outputQualifiedItemId
+            ) { }
 
         /// <summary>Construct an instance.</summary>
         /// <param name="building">A sample building constructed by the blueprint.</param>
@@ -188,7 +187,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
 
         /// <summary>Parse the ingredients for a recipe.</summary>
         /// <param name="building">The building data.</param>
-        public static RecipeIngredientModel[] ParseIngredients(BuildingData building)
+        public static RecipeIngredientModel[] ParseIngredients(BuildingData? building)
         {
             if (building?.BuildMaterials?.Count > 0)
             {
@@ -224,7 +223,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             switch (this.Type)
             {
                 case RecipeType.Cooking:
-                    return this.OutputQualifiedItemId != null && player.recipesCooked.TryGetValue(this.OutputQualifiedItemId, out int timesCooked) ? timesCooked : 0;
+                    {
+                        string? localId = ItemRegistry.GetData(this.OutputQualifiedItemId)?.ItemId;
+                        if (localId != null)
+                            return player.recipesCooked.TryGetValue(localId, out int timesCooked) ? timesCooked : 0;
+                    }
+                    return 0;
 
                 case RecipeType.Crafting:
                     return player.craftingRecipes.TryGetValue(this.Key, out int timesCrafted) ? timesCrafted : 0;
@@ -232,6 +236,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                 default:
                     return -1;
             }
+        }
+
+        /// <summary>Qualify an item ID produced by a recipe, if needed.</summary>
+        /// <param name="recipe">The recipes whose output is being qualified.</param>
+        /// <param name="itemId">The item ID to qualify.</param>
+        public static string? QualifyRecipeOutputId(CraftingRecipe recipe, string? itemId)
+        {
+            return recipe.bigCraftable
+                ? ItemRegistry.ManuallyQualifyItemId(itemId, ItemRegistry.type_bigCraftable)
+                : ItemRegistry.QualifyItemId(itemId);
         }
     }
 }

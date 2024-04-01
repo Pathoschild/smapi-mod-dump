@@ -19,6 +19,7 @@ using AnimalHusbandryMod.farmer;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Characters;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 using Object = StardewValley.Object;
 
 namespace AnimalHusbandryMod.animals
@@ -80,7 +81,7 @@ namespace AnimalHusbandryMod.animals
 
         private static bool IsLikedTreat(TreatItem treatItem, Object item)
         {
-            return treatItem.LikedTreatsId.Contains(item.ParentSheetIndex) || treatItem.LikedTreatsId.Contains(item.Category) ||
+            return treatItem.LikedTreatsId.Contains(item.ItemId) || treatItem.LikedTreatsId.Contains(item.Category.ToString()) ||
                    (item.ParentSheetIndex == 1720 && DataLoader.DgaApi != null &&
                     treatItem.LikedTreats.Contains(DataLoader.DgaApi.GetDGAItemId(item)));
         }

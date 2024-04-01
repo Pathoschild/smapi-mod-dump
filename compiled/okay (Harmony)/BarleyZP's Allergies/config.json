@@ -1,0 +1,10 @@
+{
+  "Farmer": {
+    "EggAllergy": false,
+    "WheatAllergy": false,
+    "FishAllergy": false,
+    "ShellfishAllergy": false,
+    "TreenutAllergy": false,
+    "DairyAllergy": false
+  }
+}

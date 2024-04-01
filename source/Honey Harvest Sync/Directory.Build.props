@@ -1,0 +1,29 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Authors>voltaek</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/voltaek/StardewMods</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    
+    <!-- ModBuildConfig options, ref: https://github.com/Pathoschild/SMAPI/blob/develop/docs/technical/mod-package.md#configure -->
+    <EnableModZip Condition="'$(Configuration)' == 'Debug'">False</EnableModZip>
+    <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
+    
+    <!-- ModManifestBuilder options, ref: https://github.com/KhloeLeclair/Stardew-ModManifestBuilder -->
+    <ManifestSchema>false</ManifestSchema>
+    <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
+    <Version_AppendConfiguration>false</Version_AppendConfiguration>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1"/>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="StardewValley"/>
+    <Using Include="StardewModdingAPI"/>
+    <Using Alias="Object" Include="System.Object"/>
+    <Using Alias="SObject" Include="StardewValley.Object"/>
+  </ItemGroup>
+</Project>

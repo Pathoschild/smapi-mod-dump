@@ -23,7 +23,7 @@ namespace SpaceShared.UI
     internal
 #endif
 
-            class Button : Element
+            class Button : Element, ISingleTexture
     {
         /*********
         ** Fields
@@ -53,6 +53,8 @@ namespace SpaceShared.UI
         /*********
         ** Public methods
         *********/
+        public Button() { }
+
         public Button(Texture2D tex)
         {
             this.Texture = tex;
@@ -77,8 +79,9 @@ namespace SpaceShared.UI
             if (this.IsHidden())
                 return;
 
-            Vector2 origin = new Vector2(this.Texture.Width / 4f, this.Texture.Height / 2f);
-            b.Draw(this.Texture, this.Position + origin, this.Hover ? this.HoverTextureRect : this.IdleTextureRect, Color.White, 0f, origin, this.Scale, SpriteEffects.None, 0f);
+            var texRect = this.Hover ? this.HoverTextureRect : this.IdleTextureRect;
+            Vector2 origin = new Vector2(texRect.Width / 2f, texRect.Height / 2f);
+            b.Draw(this.Texture, this.Position + origin, texRect, Color.White, 0f, origin, this.Scale, SpriteEffects.None, 0f);
             Game1.activeClickableMenu?.drawMouse(b);
         }
     }

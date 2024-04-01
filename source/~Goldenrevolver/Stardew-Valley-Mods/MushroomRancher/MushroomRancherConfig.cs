@@ -40,8 +40,6 @@ namespace MushroomRancher
 
         public bool RandomizeMonsterPositionOnlyAffectsLivingMushrooms { get; set; } = true;
 
-        public bool RemovableSlimeHutchIncubator { get; set; } = true;
-
         public int IncubatorDuration { get; set; } = 2;
 
         public bool IncubatorDurationIsInDaysInsteadOfMinutes { get; set; } = true;
@@ -138,8 +136,6 @@ namespace MushroomRancher
 
             api.AddTextOption(manifest, () => GetElementFromConfig(InteriorChoices, config.HutchInterior), (string val) => config.HutchInterior = GetIndexFromArrayElement(InteriorChoices, val),
                 GetConfigName(mod, "HutchInterior"), null, InteriorChoices, GetConfigDropdownChoice(mod, "HutchInterior"));
-            api.AddBoolOption(manifest, () => config.RemovableSlimeHutchIncubator, (bool val) => config.RemovableSlimeHutchIncubator = val,
-                GetConfigName(mod, "RemovableSlimeHutchIncubator"), GetConfigDescription(mod, "RemovableSlimeHutchIncubator"));
             api.AddBoolOption(manifest, () => config.RandomizeMonsterPositionInHutch, (bool val) => config.RandomizeMonsterPositionInHutch = val,
                 GetConfigName(mod, "RandomizeMonsterPositionInHutch"), GetConfigDescription(mod, "RandomizeMonsterPositionInHutch"));
             api.AddBoolOption(manifest, () => config.RandomizeMonsterPositionOnlyAffectsLivingMushrooms, (bool val) => config.RandomizeMonsterPositionOnlyAffectsLivingMushrooms = val,

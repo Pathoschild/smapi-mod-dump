@@ -1,0 +1,35 @@
+{
+  "TeleportKey": "H",
+  "SetHomeLocation": "J",
+  "SetLocation1": "NumPad1",
+  "SetLocation2": "NumPad2",
+  "SetLocation3": "NumPad3",
+  "SetLocation4": "NumPad4",
+  "HomeLocation": {
+    "X": 64,
+    "Y": 17,
+    "Map": "Farm"
+  },
+  "Location1": {
+    "X": 8,
+    "Y": 9,
+    "Map": "FarmHouse"
+  },
+  "Location2": {
+    "X": 47,
+    "Y": 28,
+    "Map": "Forest"
+  },
+  "Location3": {
+    "X": 93,
+    "Y": 86,
+    "Map": "Town"
+  },
+  "Location4": {
+    "X": 84,
+    "Y": 17,
+    "Map": "Farm"
+  },
+  "StaminaCost": 15,
+  "SpeedModifier": 2
+}

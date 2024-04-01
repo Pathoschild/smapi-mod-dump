@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} während {{season}}",
 	"tapTree": "{{tapper}} an {{tree}} hängen",
 	"seedFromTree": "{{tree}} schütteln/fällen",
+	"treeMoss": "Find on random mossy trees", // TODO
 
 	// Crafting/Cooking
 	"craftRecipeByName": "{{recipe}} herstellen",
@@ -112,6 +113,7 @@
 	"harvestHay": "Von Gras oder {{wheat}} ernten",
 	"trash": "Müll aus Krebsfallen, Mülltonnen oder vom Angeln",
 	"trashCan": "Müll aus Mülltonnen",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 
 	// Miscellaneous Sources
 	"luckyShorts": "Marnies Zimmer (in Lewis' Hose-Aufgabe am 3. Sommertag)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Preis vom Kranspiel im Kino",
 	"voidEggEvent": "zufälliges Hexenereignis",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Hasen",
 	"animalDuck": "Enten",
 	"animalPig": "Schweine",
+	"animalOstrich": "Ostriches", // TODO
 
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "braucht Hühnerstall",

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Smoked-Fish/AnythingAnywhere
+   Git: https://github.com/Smoked-Fish/AnythingAnywhere.git
+
+mods:
+   Build and Place Anything Anywhere
+
+latest commit:
+   commit 3162e2e9ee8959e1dffba5361f5f69dfa42c9303
+   Author: Smoked Fish <espy.jacob@gmail.com>
+   Date:   Sun Mar 31 23:05:17 2024 -0700
+   
+       trees and farming
+   

@@ -17,8 +17,8 @@ namespace StardewDruid.Cast.Weald
     internal class Grass : CastHandle
     {
 
-        public Grass(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Grass(Vector2 target)
+            : base(target)
         {
 
             castCost = 0;
@@ -53,7 +53,7 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            if (probability == 0 && !Mod.instance.EffectDisabled("Seeds") && riteData.castTask.ContainsKey("masterCreature"))
+            if (probability == 0 && !Mod.instance.EffectDisabled("Seeds") && Mod.instance.rite.castTask.ContainsKey("masterCreature"))
             {
 
                 int wildSeed;

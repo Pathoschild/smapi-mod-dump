@@ -83,7 +83,6 @@
     "skills.increase-foraging": "Augm. Niveau de Cueillette: {{currentLevel}}",
     "skills.increase-fishing": "Augm. Niveau de Pêche: {{currentLevel}}",
     "skills.increase-combat": "Augm. Niveau de Combat: {{currentLevel}}",
-    "skills.reset": "RÉINITIALISER LES COMPÉTENCES !",
 
     // professions
     "professions.title": "Professions",
@@ -124,6 +123,7 @@
     *********/
     "weather.title": "Météo de demain",
     "weather.current": "Actuelle",
+    "weather.explanation": "Click a button below to set the weather for tomorrow (and only tomorrow). This tab has zero effect on weather otherwise.", // TODO
     "weather.sunny": "Soleil",
     "weather.raining": "Pluie",
     "weather.lightning": "Orage",
@@ -163,6 +163,7 @@
     // forest
     "warp-section.forest": "En forêt",
     "warp.hats": "Chapeaux",
+    "warp.mastery-cave": "Mastery Cave", // TODO
     "warp.ranch": "Ferme de Marnie",
     "warp.secret-woods": "Forêt secrète",
     "warp.wizard-tower": "Tour du sorcier",

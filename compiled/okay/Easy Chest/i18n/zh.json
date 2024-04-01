@@ -1,0 +1,8 @@
+{
+  "menutype.EasyChest": "管理宝箱",
+  "menutype.EasyWorkbench": "制作工作台",
+  "config.name.EasyChestKey": "快捷键",
+  "config.tips.EasyChestKey": "远程打开箱子的快捷键",
+  "config.name.ChestSortBy": "排序方式",
+  "config.tips.ChestSortBy": "鼠标滚轮切换箱子的顺序"
+}

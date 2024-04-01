@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 using StardewValley;
+using StardewValley.Tools;
 
 namespace AnimalHusbandryMod.tools
 {
@@ -19,9 +20,9 @@ namespace AnimalHusbandryMod.tools
         protected static void BaseToolDoFunction(Tool instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
         {
             var baseMethod = typeof(Tool).GetMethod("DoFunction", BindingFlags.Public | BindingFlags.Instance);
-            var functionPointer = baseMethod.MethodHandle.GetFunctionPointer();
+            var functionPointer = baseMethod!.MethodHandle.GetFunctionPointer();
             var function = (Action<GameLocation, int, int, int, StardewValley.Farmer>)Activator.CreateInstance(typeof(Action<GameLocation, int, int, int, StardewValley.Farmer>), instance, functionPointer);
-            function(location, x, y, power, who);
+            function?.Invoke(location, x, y, power, who);
         }
     }
 }

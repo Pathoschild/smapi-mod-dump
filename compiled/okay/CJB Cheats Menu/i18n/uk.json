@@ -83,7 +83,6 @@
     "skills.increase-foraging": "Підвищити рів. Збирацтва:{{currentLevel}}",
     "skills.increase-fishing": "Підвищити рів. Рибальства: {{currentLevel}}",
     "skills.increase-combat": "Підвищити рів. Бойових Навичок: {{currentLevel}}",
-    "skills.reset": "СКИНУТИ УСІ НАВИЧКИ!",
 
     // professions
     "professions.title": "Професії",
@@ -124,6 +123,7 @@
     *********/
     "weather.title": "Погода завтра",
     "weather.current": "Стан погоди на завтра",
+    "weather.explanation": "Click a button below to set the weather for tomorrow (and only tomorrow). This tab has zero effect on weather otherwise.", // TODO
     "weather.sunny": "Сонячно",
     "weather.raining": "Дощ",
     "weather.lightning": "Гроза",
@@ -163,6 +163,7 @@
     // forest
     "warp-section.forest": "Ліс",
     "warp.hats": "Кепкі",
+    "warp.mastery-cave": "Mastery Cave", // TODO
     "warp.ranch": "Ранчо Марні",
     "warp.secret-woods": "Таємний ліс",
     "warp.wizard-tower": "Вежа Чарівника",

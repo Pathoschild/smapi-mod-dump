@@ -31,12 +31,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(ResourceClump.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(ResourceClump.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
-            harmony.Patch(AccessTools.Constructor(typeof(ResourceClump), new[] { typeof(int), typeof(int), typeof(int), typeof(Vector2) }), postfix: new HarmonyMethod(GetType(), nameof(ResourceClumpPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(ResourceClump.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(typeof(TerrainFeature), nameof(TerrainFeature.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(ResourceClump), new[] { typeof(int), typeof(int), typeof(int), typeof(Vector2), typeof(int), typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(ResourceClumpPostfix)));
         }
 
-        private static bool DrawPrefix(ResourceClump __instance, float ___shakeTimer, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(ResourceClump __instance, float ___shakeTimer, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -52,7 +52,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     return true;
                 }
 
-                Vector2 position = __instance.tile.Value * 64f;
+                Vector2 position = __instance.Tile * 64f;
                 if (___shakeTimer > 0f)
                 {
                     position.X += (float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 4f;
@@ -61,7 +61,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 var textureOffset = textureModel.GetTextureOffset(textureVariation);
                 Rectangle sourceRect = new Rectangle(0, textureOffset, 32, 32);
 
-                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, position), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (__instance.tile.Y + 1f) * 64f / 10000f + __instance.tile.X / 100000f);
+                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, position), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (__instance.Tile.Y + 1f) * 64f / 10000f + __instance.Tile.X / 100000f);
 
                 return false;
             }
@@ -69,19 +69,22 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             return true;
         }
 
-        private static void SeasonUpdatePostfix(ResourceClump __instance, bool onLoad)
+        private static void SeasonUpdatePostfix(TerrainFeature __instance, bool onLoad)
         {
-            if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
+            if (__instance is ResourceClump resourceClump)
             {
-                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.currentLocation);
-                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.ResourceClump}_{GetResourceClumpName(__instance)}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}");
+                if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]))
+                {
+                    __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.Location).ToString();
+                    __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.ResourceClump}_{GetResourceClumpName(resourceClump)}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}");
+                }
             }
         }
 
         private static void ResourceClumpPostfix(ResourceClump __instance)
         {
             var instanceName = $"{AlternativeTextureModel.TextureType.ResourceClump}_{GetResourceClumpName(__instance)}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

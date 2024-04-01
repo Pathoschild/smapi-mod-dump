@@ -2,6 +2,9 @@
   "config.menutoggle.name": "Open menu keybind",
   "config.menutoggle.tooltip": "Which keybind to use to open the menu.",
   
+  "config.closeonwarp.name": "Close menu on warp",
+  "config.closeonwarp.tooltip": "Whether to close the menu after warping.",
+  
   "config.menustyle.name": "Menu style",
   "config.menustyle.tooltip": "Which menu style to use.",
   "config.menustyle.values.grid": "Grid (legacy)",

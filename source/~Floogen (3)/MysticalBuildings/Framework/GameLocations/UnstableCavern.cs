@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MysticalBuildings.Framework.Extensions;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -55,10 +56,10 @@ namespace CaveOfMemories.Framework.GameLocations
             return "Maps\\" + $"unstable_mine_{index}";
         }
 
-        public override bool isTileOccupiedForPlacement(Vector2 tileLocation, StardewValley.Object toPlace = null)
+        public override bool CanItemBePlacedHere(Vector2 tile, bool itemIsPassable = false, CollisionMask collisionMask = CollisionMask.All, CollisionMask ignorePassables = CollisionMask.Buildings | CollisionMask.Characters | CollisionMask.Farmers | CollisionMask.Flooring | CollisionMask.Furniture | CollisionMask.TerrainFeatures | CollisionMask.LocationSpecific, bool useFarmerTile = false, bool ignorePassablesExactly = false)
         {
             // Preventing player from placing items here
-            return true;
+            return false;
         }
 
         public override void UpdateWhenCurrentLocation(GameTime time)
@@ -92,13 +93,13 @@ namespace CaveOfMemories.Framework.GameLocations
                 if (_timeRemaining < 0)
                 {
                     _isLeaving = true;
-                    Game1.addHUDMessage(new HUDMessage(MysticalBuildings.i18n.Get("Mine.Message.Leaving"), null));
+                    Game1.addHUDMessage(new HUDMessage(MysticalBuildings.i18n.Get("Mine.Message.Leaving")));
                     HandleCavernExit(Game1.player, "Leave");
                 }
                 else if (_timeRemaining < 15000 && _hasBeenWarned is false)
                 {
                     _hasBeenWarned = true;
-                    Game1.addHUDMessage(new HUDMessage(MysticalBuildings.i18n.Get("Mine.Message.Warning"), null));
+                    Game1.addHUDMessage(new HUDMessage(MysticalBuildings.i18n.Get("Mine.Message.Warning")));
                 }
                 else if (_timeRemaining < 3500 && _isCollapsing is false)
                 {
@@ -256,33 +257,33 @@ namespace CaveOfMemories.Framework.GameLocations
         private StardewValley.Object getAppropriateOre(Vector2 tile)
         {
             var mineRandom = new System.Random((int)((long)Game1.uniqueIDForThisGame + (long)tile.X * 777L + (long)tile.Y * 7L + Game1.stats.DaysPlayed + Game1.player.DailyLuck * 500));
-            StardewValley.Object ore = new StardewValley.Object(tile, 751, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false);
+            StardewValley.Object ore = new StardewValley.Object(tile, "751") { CanBeSetDown = true, CanBeGrabbed = false, IsSpawnedObject = false };
             ore.minutesUntilReady.Value = 3;
 
             var chance = mineRandom.NextDouble();
             if (mineRandom.NextDouble() < 0.02)
             {
-                ore = new StardewValley.Object(tile, 765, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false);
+                ore = new StardewValley.Object(tile, "765") { CanBeSetDown = true, CanBeGrabbed = false, IsSpawnedObject = false };
                 ore.minutesUntilReady.Value = 16;
             }
             else if (mineRandom.NextDouble() < 0.25)
             {
-                ore = new StardewValley.Object(tile, (mineRandom.NextDouble() < 0.5) ? 668 : 670, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false);
+                ore = new StardewValley.Object(tile, ((mineRandom.NextDouble() < 0.5) ? 668 : 670).ToString()) { CanBeSetDown = true, CanBeGrabbed = false, IsSpawnedObject = false };
                 ore.minutesUntilReady.Value = 2;
             }
             else if (chance < 0.3)
             {
-                ore = new StardewValley.Object(tile, 764, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false);
+                ore = new StardewValley.Object(tile, "764") { CanBeSetDown = true, CanBeGrabbed = false, IsSpawnedObject = false };
                 ore.minutesUntilReady.Value = 8;
             }
             else if (chance < 0.6)
             {
-                ore = new StardewValley.Object(tile, 764, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false);
+                ore = new StardewValley.Object(tile, "764") { CanBeSetDown = true, CanBeGrabbed = false, IsSpawnedObject = false };
                 ore.minutesUntilReady.Value = 8;
             }
             else if (chance < 0.8)
             {
-                ore = new StardewValley.Object(tile, 290, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false);
+                ore = new StardewValley.Object(tile, "290") { CanBeSetDown = true, CanBeGrabbed = false, IsSpawnedObject = false };
                 ore.minutesUntilReady.Value = 4;
             }
 
@@ -365,57 +366,75 @@ namespace CaveOfMemories.Framework.GameLocations
             double averageDailyLuck = Game1.player.team.AverageDailyLuck(Game1.currentLocation);
             double averageMiningLevel = Game1.player.team.AverageSkillLevel(3, Game1.currentLocation);
             double chanceModifier = averageDailyLuck + averageMiningLevel * 0.005;
+
             if (gemStoneChance != 0.0 && mineRandom.NextDouble() < gemStoneChance + gemStoneChance * chanceModifier)
             {
-                return new StardewValley.Object(tile, mineRandom.Next(59, 70), "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false)
+                return new StardewValley.Object(mineRandom.Next(59, 70).ToString(), 1)
                 {
-                    MinutesUntilReady = 5
+                    name = "Stone",
+                    MinutesUntilReady = 5,
+                    CanBeSetDown = true,
+                    CanBeGrabbed = false,
+                    IsSpawnedObject = false
                 };
             }
+
             if (mineRandom.NextDouble() < chanceForPurpleStone / 2.0 + chanceForPurpleStone * averageMiningLevel * 0.008 + chanceForPurpleStone * (averageDailyLuck / 2.0))
             {
                 whichStone = 44;
             }
+
             if (mineRandom.NextDouble() < chanceForMysticStone + chanceForMysticStone * averageMiningLevel * 0.008 + chanceForMysticStone * (averageDailyLuck / 2.0))
             {
                 whichStone = 46;
             }
+
             whichStone += whichStone % 2;
             if (mineRandom.NextDouble() < 0.1)
             {
                 if (!stoneColor.Equals(Color.White))
                 {
-                    return new ColoredObject((mineRandom.NextDouble() < 0.5) ? 668 : 670, 1, stoneColor)
+                    return new ColoredObject(((mineRandom.NextDouble() < 0.5) ? 668 : 670).ToString(), 1, stoneColor)
                     {
+                        name = "Stone",
                         MinutesUntilReady = 2,
                         CanBeSetDown = true,
-                        name = "Stone",
                         TileLocation = tile,
                         ColorSameIndexAsParentSheetIndex = true,
                         Flipped = (mineRandom.NextDouble() < 0.5)
                     };
                 }
-                return new StardewValley.Object(tile, (mineRandom.NextDouble() < 0.5) ? 668 : 670, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false)
+                return new StardewValley.Object(((mineRandom.NextDouble() < 0.5) ? 668 : 670).ToString(), 1)
                 {
+                    name = "Stone",
                     MinutesUntilReady = 2,
+                    CanBeSetDown = true,
+                    CanBeGrabbed = false,
+                    IsSpawnedObject = false,
                     Flipped = (mineRandom.NextDouble() < 0.5)
                 };
             }
+
             if (!stoneColor.Equals(Color.White))
             {
-                return new ColoredObject(whichStone, 1, stoneColor)
+                return new ColoredObject(whichStone.ToString(), 1, stoneColor)
                 {
+                    name = "Stone",
                     MinutesUntilReady = stoneHealth,
                     CanBeSetDown = true,
-                    name = "Stone",
                     TileLocation = tile,
                     ColorSameIndexAsParentSheetIndex = true,
                     Flipped = (mineRandom.NextDouble() < 0.5)
                 };
             }
-            return new StardewValley.Object(tile, whichStone, "Stone", canBeSetDown: true, canBeGrabbed: false, isHoedirt: false, isSpawnedObject: false)
+
+            return new StardewValley.Object(whichStone.ToString(), 1)
             {
-                MinutesUntilReady = stoneHealth
+                name = "Stone",
+                MinutesUntilReady = stoneHealth,
+                CanBeSetDown = true,
+                CanBeGrabbed = false,
+                IsSpawnedObject = false
             };
         }
     }

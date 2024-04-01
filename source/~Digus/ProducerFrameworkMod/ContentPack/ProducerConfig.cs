@@ -17,12 +17,8 @@ using StardewValley;
 
 namespace ProducerFrameworkMod.ContentPack
 {
-    public class ProducerConfig
+    public class ProducerConfig : ProducerData
     {
-        public string ModUniqueID;
-        public List<string> OverrideMod = new List<string>();
-        public string ProducerName;
-        public List<string> AdditionalProducerNames = new List<string>();
         public bool AlternateFrameProducing;
         public bool AlternateFrameWhenReady;
         public bool DisableBouncingAnimationWhileWorking;
@@ -38,6 +34,8 @@ namespace ProducerFrameworkMod.ContentPack
         public List<string> WorkingSeason;
         public Animation ProducingAnimation;
         public Animation ReadyAnimation;
+
+        public string ProducerIdentification => this.ProducerName ?? this.ProducerQualifiedItemId;
 
         public ProducerConfig()
         {
@@ -70,7 +68,7 @@ namespace ProducerFrameworkMod.ContentPack
         
         public bool CheckSeasonCondition(GameLocation location)
         {
-            return WorkingSeason == null || WorkingSeason.Any(s => s == location.GetSeasonForLocation());
+            return WorkingSeason == null || WorkingSeason.Any(s => s == location.GetSeasonKey());
         }
 
         public bool CheckCurrentTimeCondition()
@@ -116,7 +114,7 @@ namespace ProducerFrameworkMod.ContentPack
                 }
 
                 //Each working period is calculated separately 
-                List<Tuple<int, int>> workingInterval = new List<Tuple<int, int>>();
+                List<Tuple<int, int>> workingInterval = new();
                 if (WorkingTime.End >= WorkingTime.Begin)
                 {
                     workingInterval.Add(new Tuple<int, int>(WorkingTime.Begin, WorkingTime.End));

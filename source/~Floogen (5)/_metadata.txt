@@ -7,9 +7,9 @@ mods:
    Solid Foundations → Automate Integration
 
 latest commit:
-   commit e955ac17c0cf165f74887505243f9b97377e7e8b
+   commit f1cb9bd300a440f1282e1a653a26e24af0db49df
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Fri Oct 6 13:54:24 2023 -0500
+   Date:   Thu Mar 21 10:20:12 2024 -0500
    
-       v1.16.1 released
+       v2.0.1 released
    

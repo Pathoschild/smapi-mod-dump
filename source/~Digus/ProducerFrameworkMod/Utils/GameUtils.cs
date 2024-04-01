@@ -19,7 +19,7 @@ namespace ProducerFrameworkMod.Utils
         public static Weather GetCurrentWeather()
         {
             Weather weather;
-            if (Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) || (SaveGame.loaded?.weddingToday ?? Game1.weddingToday))
+            if (Utility.isFestivalDay(Game1.dayOfMonth, Game1.season) || (SaveGame.loaded?.weddingToday ?? Game1.weddingToday))
             {
                 weather = Weather.Sunny;
             }

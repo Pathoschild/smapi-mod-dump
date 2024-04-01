@@ -1,7 +1,7 @@
 <Project>
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
-		<LangVersion>11.0</LangVersion>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>12.0</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>Nullable</WarningsAsErrors>
@@ -9,11 +9,13 @@
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
 		<IgnoreModFilePatterns>Mono\..*\.dll</IgnoreModFilePatterns>
+		<ModZipPath>$(MSBuildProjectDirectory)\.release</ModZipPath>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="$(MSBuildProjectDirectory)\..\.editorconfig" Link=".editorconfig" />
+		<None Remove="$(MSBuildProjectDirectory)\.release\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 </Project>

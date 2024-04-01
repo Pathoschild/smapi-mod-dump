@@ -21,11 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 4393837a7b0c723b9fc2e0ad58c6681e1582ecba
+   commit bbc4b7a81ef6d11faa7085767ba79943ed077396
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Mar 16 00:01:01 2024 -0400
+   Date:   Sat Mar 30 01:41:21 2024 -0400
    
-       add visual improvements to Small Beach Farm map
-       
-       Thanks to FlashShifter!
+       allow migrating Json Assets items using MigrateId action
    

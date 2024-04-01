@@ -24,21 +24,17 @@
 {
     "Name": "Challenging Community Center Bundles - Vanilla SVE Bundle Pack",
     "Author": "alvadea & jaksha",
-    "Version": "2.3.0",
+    "Version": "3.1.0",
     "Description": "Challenging Vanilla SVE Community Center Bundles",
     "UniqueID": "alja.CCCBVanillaSVE",
-    "MinimumApiVersion": "3.8",
+    "MinimumApiVersion": "4.0.0",
     "ContentPackFor": {
         "UniqueID": "alja.CCCB",
-        "MinimumVersion": "2.3.0"
+        "MinimumVersion": "3.1.0"
     },
     "Dependencies": [
         {
-            "UniqueID": "spacechase0.JsonAssets",
-            "IsRequired": true
-        },
-	{
-            "UniqueID": "FlashShifter.JA.SVE",
+            "UniqueID": "FlashShifter.StardewValleyExpandedCP",
             "IsRequired": true
         }
     ]

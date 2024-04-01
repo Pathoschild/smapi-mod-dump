@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Introduction": "Ah, Mayor Lewis told me you just arrived. I'm Marnie!#$e#I sell livestock and animal care products at my ranch. You should swing by some time.$h",
+  "Resort": "Hehe... finally a chance to show off all my hard work at aerobics club.$h",
+  "Resort_Leaving": "I feel warm.",
+  "Resort_Shore": "Hee hee... It's interesting to see everyone in their bathing suits.",
+  "Resort_Chair": "Ew... the chair's wet.",
+  "Resort_Bar": "Phew... It's hot!$s",
+  "reject_789": "Gah!$4#$b#...Um... What? Heh.. I don't know what that is...$3",
+  "Mon": "I love animals, Mr. @. If you treat yours well I'm sure we'll become good friends!^I just love animals, Ms. @. Treat them kindly and we'll become friends, I'm sure!",
+  "Mon4": "Animals are so innocent, so sweet. And If I don't look after them, who will?$s#$e#I just hope my chickens aren't too upset when I take their eggs.$s",
+  "Thu_2": "You've been here a while, now... how's your farm doing?#$e#Taking care of animals is easy as long as you don't forget about them!$h",
+  "Saloon": "Now that I'm here I can finally relax and socialize a bit.",
+  "Saloon_Tue": "There aren't very many people here today...$s",
+  "Saloon_Wed": "#$1 marnieAnimalSal#I spilled a whole bucket of milk on the floor today, it was horrible. And such a waste of my poor Belinda's hard work.$k$s#$e#It's nice of you to show up! It's a little more lively now.",
+  "Saloon_Thu": "Phew! It sure feels good to kick back after a hard day's work.",
+  "Saloon_Fri": "%Marnie doesn't seem to notice that you're there...",
+  "Saloon_Sun": "*sigh*... I wasn't very productive today.",
+  "Saloon_Sat": "I always see Clint here but he won't talk to anyone. He just glances over his shoulder now and then.$s",
+  "Tue": "My nephew Shane has been staying at my place the last few months.#$e#He helps me out with the chickens, so I'm not complaining.",
+  "Wed": "You can use a scythe to cut feed from grass.#$e#Or you can buy it from me, of course!$h#$e#I could use the cash...$u#$e#Adios.",
+  "Thu": "Hi. Need something?#$e#I might be getting some different kinds of animals in the future.#$e#Although, I'll need to make sure there's a market for them, so you'll have to prove your skill with animals first.#$e#Just keep treating your animals with respect and good things will happen.",
+  "Fri": "You can catch me at the saloon most nights.#$e#Animals are great company, but I need to spend time with people, too.",
+  "Fri4": "#$1 marnieLike#I think someone in town has taken a liking to me. *teehee*$k$h#$e#I would be so lonely if Shane ever moved out.",
+  "Fri6": "I wonder if Mr. Lewis gets lonely in that big house of his... $s#$e#It seems so empty in there, doesn't it?",
+  "Sat": "Have you been to that strange tower west of my house?#$e#One time I heard this terrible, otherworldly noise coming from there.$s#$e#I would avoid that place if I were you...",
+  "Sun": "Hey there, it's good to see ya!#$e#Feel free to visit us any time you please.",
+  "Sun8": "Hi @!$h#$e#I'm glad we've become friends. I know I can trust you to take care of my dear animals."
+}

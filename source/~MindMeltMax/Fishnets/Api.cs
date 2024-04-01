@@ -8,11 +8,7 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fishnets
 {
@@ -28,7 +24,7 @@ namespace Fishnets
         /// <summary>
         /// Get the ParentSheetIndex of the fish net object
         /// </summary>
-        int GetId();
+        string GetId();
     }
 
     public class Api : IApi
@@ -42,9 +38,10 @@ namespace Fishnets
             }
             ModEntry.IMonitor.Log($"Excluded {name} from fishnet drop list");
             Statics.ExcludedFish.Add(name);
+            ModEntry.IHelper.Data.WriteJsonFile($"assets/excludedfish.json", Statics.ExcludedFish);
             return true;
         }
 
-        public int GetId() => ModEntry.ObjectInfo.Id;
+        public string GetId() => ModEntry.ObjectInfo.Id;
     }
 }

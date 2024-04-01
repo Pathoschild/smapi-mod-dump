@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/zack20136/ChestFeatureSet
+   Git: https://github.com/zack20136/ChestFeatureSet.git
+
+mods:
+   Chest Feature Set
+
+latest commit:
+   commit a1fab2af4118686f18f7a3e75aa7c13da80b20e6
+   Author: zack20136 <zacklu90@gmail.com>
+   Date:   Sun Mar 31 13:15:51 2024 +0800
+   
+       fix bugs with BigChest
+   

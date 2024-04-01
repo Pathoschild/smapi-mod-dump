@@ -28,7 +28,7 @@ namespace EnchantableScythesConfig
     /// </summary>
     public class EnchantableScythesConfig
     {
-        public bool GoldenScytheRespawns { get; set; } = true;
+        public bool GoldenScytheRespawns { get; set; } = false;
 
         public bool EnchantableScythes { get; set; } = true;
 
@@ -63,7 +63,7 @@ namespace EnchantableScythesConfig
 
             api.AddSectionTitle(manifest, () => "Fixes", null);
 
-            api.AddBoolOption(manifest, () => config.GoldenScytheRespawns, (bool val) => config.GoldenScytheRespawns = val, () => "Golden Scythe Respawns", null);
+            api.AddBoolOption(manifest, () => config.GoldenScytheRespawns, (bool val) => config.GoldenScytheRespawns = val, () => "Golden Scythe Respawns", () => "The 1.6 update made it a lot harder to lose it, so this is disabled by default now.");
         }
     }
 }

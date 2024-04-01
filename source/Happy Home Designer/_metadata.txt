@@ -6,9 +6,9 @@ mods:
    Happy Home Designer
 
 latest commit:
-   commit c269d8c0f21685f51d2e97e4e4f54a4d3d36a776
+   commit d0c339d42c935ddc6f859c2297d21cac107bbb7e
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Sun Mar 10 16:11:08 2024 -0400
+   Date:   Mon Apr 1 00:36:55 2024 -0400
    
-       disable DGA fixes
+       switch to reference-based index tracking in search
    

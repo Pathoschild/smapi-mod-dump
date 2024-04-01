@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-**One Click Shed Reloader** is a [Stardew Valley](http://stardewvalley.net/) v1.5 mod which lets you harvest and reload
+**One Click Shed Reloader** is a [Stardew Valley](http://stardewvalley.net/) v1.6 mod which lets you harvest and reload
 all supported containers in a Shed, Barn, Coop, Cellar, Cave, or Greenhouse with a single click on the outside of the building. Only the
 house's/cabin's owner can harvest/reload the cellar in multiplayer. Harvesting/reloading the house/cabin itself is NOT supported by this mod.
 
@@ -19,6 +19,7 @@ farmhand in these locations, hover the cursor around the entryway once inside.
 * [Use](#use)
 * [Supported Buildings](#supported-buildings)
 * [Supported Containers](#supported-containers)
+* [Support for Other Mods](#support-for-other-mods)
 * [Notes](#Notes)
 * [Mod Compatibility](#mod-compatibility)
 * [Versions](#versions)
@@ -70,7 +71,13 @@ The following containers are currently supported.
 * Oil Maker
 * Preserves Jar
 * Recycling Machine
+* Statue Of Endless Fortune
+* Statue Of Perfection
 
+## Support for Other Mods
+While I do not officially support any other mods except my own, I have added the ability for you to support any mods you like by modifying the config file
+that is created after running Stardew Valley the first time after installing this mod. Launch Stardew Valley one time and then exit. Then open the config.json
+file in the `Stardew Valley\Mods\OneClickShedReloader` directory. See instructions in that file for how to discover and add new items.
 
 ## Notes
 This mod does not affect your save game files in any way. Due to the required mouse events, this mod likely only works on PC. Other platforms are not officially supported. 
@@ -79,7 +86,7 @@ over a building, or with mods that handle click events on buildings. If you disc
 the [BitwiseJon GitHub page](https://github.com/bitwisejon/StardewValleyMods/issues). Only U.S. English text is provided at this time.
 
 ## Mod Compatibility
-**Note:*** This mod is only compatible with version 1.5 of Stardew Valley (released 12/21/2020) and works in multiplayer as well.  
+**Note:*** This mod is only compatible with version 1.6 of Stardew Valley (released 3/19/2024) and works in multiplayer as well.  
 
 This mod is fully compatible with:
 * [Instant Buildings from Farm](http://www.nexusmods.com/stardewvalley/mods/2070) by me.

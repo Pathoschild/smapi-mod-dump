@@ -1,0 +1,14 @@
+{
+  "WoodNeeded": 5,
+  "CoalNeeded": 1,
+  "FiberNeeded": 1,
+  "DriftwoodMultiplier": 5.0,
+  "HardwoodMultiplier": 5.0,
+  "NewspaperMultiplier": 2.0,
+  "WoolMultiplier": 0.0,
+  "ClothMultiplier": 0.0,
+  "CharcoalKilnWoodNeeded": 10,
+  "CharcoalKilnTimeNeeded": 30,
+  "OutdoorRainPreventsIgniting": false,
+  "LinusTakesCareOfHisFire": false
+}

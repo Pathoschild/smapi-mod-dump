@@ -1,0 +1,3 @@
+page URL: https://www.moddrop.com/stardew-valley/mod/1539617
+IDs: JAS.MushroomLogAdditions
+update keys: GitHub:justastranger/MushroomLogAdditions, ModDrop:1539617

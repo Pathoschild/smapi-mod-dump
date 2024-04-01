@@ -8,30 +8,32 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
-namespace Sounds_Patcher.Utility
+namespace SoundsPatcher.Utility
 {
     public class Config
     {
-        public Dictionary<string, bool> Sounds { get; set; } 
+        public Dictionary<string, bool> Sounds { get; set; }
 
         public Dictionary<string, bool> Songs { get; set; }
 
-        public string MenuKey { get; set; } = "o";
+        public Dictionary<string, bool> UnknownSounds { get; set; }
+
+        public KeybindList MenuKeys { get; set; } = KeybindList.Parse("O, RightStick");
 
         public Config() { }
 
-        public Config(Dictionary<string, bool> sounds, Dictionary<string, bool> songs, string key)
+        public Config(Dictionary<string, bool> sounds, Dictionary<string, bool> songs, Dictionary<string, bool> unknownSounds, KeybindList key)
         {
             Sounds = sounds;
             Songs = songs;
-            MenuKey = key;
+            UnknownSounds = unknownSounds;
+            MenuKeys = key;
         }
     }
 }

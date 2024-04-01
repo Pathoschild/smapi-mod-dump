@@ -24,7 +24,6 @@ namespace CustomCompanions.Framework.Models
     public class RingModel
     {
         public string Name { get; set; }
-        public int ObjectID { get; set; }
         public string Owner { get; set; }
         public Dictionary<string, CompanionData> Companions { get; set; }
     }

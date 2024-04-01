@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} during {{season}}",
 	"tapTree": "Use {{tapper}} on {{tree}}",
 	"seedFromTree": "Shake/chop down {{tree}}",
+	"treeMoss": "Find on random mossy trees",
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "Craft {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Harvest from grass or {{wheat}}",
 	"trash": "Trash from fishing, Crab Pots, or garbage cans",
 	"trashCan": "Trash from garbage cans",
+	"prizeTicket": "Reward from quests and special orders",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Marnie's room (in Mayor's Shorts quest on Summer 3)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Win from Movie Theater crane game",
 	"voidEggEvent": "Random witch event",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)",
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Rabbits",
 	"animalDuck": "Ducks",
 	"animalPig": "Pigs",
+	"animalOstrich": "Ostriches",
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "need Coop",

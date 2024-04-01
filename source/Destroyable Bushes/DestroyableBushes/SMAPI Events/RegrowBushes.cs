@@ -34,7 +34,7 @@ namespace DestroyableBushes
                         {
                             GameLocation location = Game1.getLocationFromName(bushData.LocationName);
 
-                            if (location != null && !bushData.GetCollisionTiles().Any(tile => location.isTileOccupiedForPlacement(tile) || location.terrainFeatures.ContainsKey(tile))) //if this bush's tiles are NOT obstructed by anything (including passable features)
+                            if (location != null && !bushData.GetCollisionTiles().Any(tile => !location.CanItemBePlacedHere(tile) || location.terrainFeatures.ContainsKey(tile))) //if this bush's tiles are NOT obstructed by anything (including passable features)
                             {
                                 try
                                 {

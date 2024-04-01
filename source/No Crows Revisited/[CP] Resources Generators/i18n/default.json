@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/siweipancc/StardewMods
+**
+*************************************************/
+
+{
+  "config.section.Recipes.name": "Recipes Require",
+  "config.section.Recipes.description": "Recipes Require level",
+
+  "config.Recipes_Requirement_ClayMachine.name": "Clay machines",
+  "config.Recipes_Requirement_ClayMachine.values.harder": "Harder",
+  "config.Recipes_Requirement_ClayMachine.values.normal": "Normal",
+  "config.Recipes_Requirement_ClayMachine.values.easier": "Easier",
+  "config.Recipes_Requirement_FiberMachine.name": "Fiber machines",
+  "config.Recipes_Requirement_FiberMachine.values.harder": "Harder",
+  "config.Recipes_Requirement_FiberMachine.values.normal": "Normal",
+  "config.Recipes_Requirement_FiberMachine.values.easier": "Easier",
+  "config.Recipes_Requirement_StoneMachine.name": "Stone machines",
+  "config.Recipes_Requirement_StoneMachine.values.harder": "Harder",
+  "config.Recipes_Requirement_StoneMachine.values.normal": "Normal",
+  "config.Recipes_Requirement_StoneMachine.values.easier": "Easier",
+  "config.Recipes_Requirement_WoodMachine.name": "Wood machines",
+  "config.Recipes_Requirement_WoodMachine.values.harder": "Harder",
+  "config.Recipes_Requirement_WoodMachine.values.normal": "Normal",
+  "config.Recipes_Requirement_WoodMachine.values.easier": "Easier",
+
+  "config.section.GenerateRate.name": "Generate Rate",
+  "config.section.GenerateRate.description": "in minutes",
+  "config.Generate_Rate_Minutes.name": "Generate Rate in minutes",
+
+  "DisplayName.ClayMachine": "Clay Machine",
+  "Description.ClayMachine": "Generate Clay",
+  "DisplayName.FiberMachine": "Fiber Machine",
+  "Description.FiberMachine": "Generate Fiber",
+  "DisplayName.StoneMachine": "Stone Machine",
+  "Description.StoneMachine": "Generate Fiber",
+  "DisplayName.WoodMachine": "Wood Machine",
+  "Description.WoodMachine": "Generate Wood"
+}

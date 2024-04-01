@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "GMCM_Option_ModEnabled_Name": "Mod Enabled",
+  "GMCM_Option_LampItem_Name": "Lamp Item",
+  "GMCM_Option_WishesPerItem_Name": "Wishes/Item",
+  "GMCM_Option_MenuSound_Name": "Menu Sound",
+  "GMCM_Option_WishSound_Name": "Wish Sound",
+  "WishMenuTitle": "What will you wish for? ({0} wishes remaining)",
+  "NoMoreWishes": "This item is out of wishes!"
+}

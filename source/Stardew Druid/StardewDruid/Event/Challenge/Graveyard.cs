@@ -22,8 +22,8 @@ namespace StardewDruid.Event.Challenge
 
         public Shooter bossMonster;
 
-        public Graveyard(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite, quest)
+        public Graveyard(Vector2 target,  Quest quest)
+            : base(target, quest)
         {
 
 
@@ -58,7 +58,7 @@ namespace StardewDruid.Event.Challenge
 
             }
 
-            Game1.addHUDMessage(new HUDMessage($"Defeat the shadows!", "2"));
+            Mod.instance.CastMessage("Defeat the shadows!", 2);
 
             SetTrack("tribal");
 
@@ -72,7 +72,7 @@ namespace StardewDruid.Event.Challenge
             if (bossMonster != null)
             {
 
-                riteData.castLocation.characters.Remove(bossMonster);
+                Mod.instance.rite.castLocation.characters.Remove(bossMonster);
 
                 bossMonster = null;
 
@@ -90,15 +90,15 @@ namespace StardewDruid.Event.Challenge
 
                 List<string> NPCIndex = VillagerData.VillagerIndex("town");
 
-                Game1.addHUDMessage(new HUDMessage($"You have gained favour with the town residents and their friends", ""));
-
                 EventComplete();
 
                 if (!questData.name.Contains("Two"))
                 {
 
+                    Mod.instance.CastMessage("You have gained favour with the town residents and their friends");
+
                     ModUtility.UpdateFriendship(Game1.player, NPCIndex);
-                    Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "The graveyard has a few less shadows." };
+                    Mod.instance.dialogue["Effigy"].AddSpecial("Effigy", "Graveyard");
 
                 }
 
@@ -133,15 +133,13 @@ namespace StardewDruid.Event.Challenge
             if (activeCounter == 1)
             {
 
-                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(12, new(47, 82));
-
-                bossMonster = theMonster as Shooter;
+                bossMonster = new(new Vector2(47, 82), Mod.instance.CombatModifier());
 
                 bossMonster.posturing.Set(true);
 
-                riteData.castLocation.characters.Add(bossMonster);
+                Mod.instance.rite.castLocation.characters.Add(bossMonster);
 
-                bossMonster.update(Game1.currentGameTime, riteData.castLocation);
+                bossMonster.update(Game1.currentGameTime, Mod.instance.rite.castLocation);
 
                 return;
 
@@ -195,13 +193,13 @@ namespace StardewDruid.Event.Challenge
 
                     case 57:
 
-                        ModUtility.AnimateBolt(riteData.castLocation, bossMonster.getTileLocation());
+                        ModUtility.AnimateBolt(Mod.instance.rite.castLocation, bossMonster.Position + new Vector2(32));
 
                         break;
 
                     case 59:
 
-                        ModUtility.AnimateBolt(riteData.castLocation, bossMonster.getTileLocation());
+                        ModUtility.AnimateBolt(Mod.instance.rite.castLocation, bossMonster.Position + new Vector2(32));
 
                         bossMonster.takeDamage(bossMonster.MaxHealth + 5, 0, 0, false, 999, targetPlayer);
 

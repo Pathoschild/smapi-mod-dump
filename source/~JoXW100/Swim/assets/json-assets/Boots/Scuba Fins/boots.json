@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Scuba Fins",
+  "Description": "Make you swim faster!",
+  "Price": 50000,
+  "PurchasePrice": 50000,
+  "Defense": 0,
+  "Immunity": 0,
+  "NameLocalization":
+  {
+    // "es": "",
+    "ko": "스쿠버 핀",
+    // "de": "",
+    // "fr": "",
+    // "hu": "",
+    // "it": "",
+    // "ja": "",
+    "pt": "Barbatanas de mergulho",
+    "ru": "Ласты",
+    // "tr": "",
+    "zh":"水肺深潜脚跟鳍",
+  },
+  "DescriptionLocalization":
+  {
+    // "es": "",
+    "ko": "더 빨리 헤엄칠 수 있습니다!",
+    // "de": "",
+    // "fr": "",
+    // "hu": "",
+    // "it": "",
+    // "ja": "",
+    "pt": "Faz você nadar mais rápido",
+    "ru": "Позволяет плыть быстрее!",
+    // "tr": "",
+    "zh":"让你游得更快！",
+  },
+}

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -22,6 +23,7 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
 using StardewValley.Locations;
+using StardewValley.GameData.Characters;
 
 using LittleNPCs.Framework;
 
@@ -30,15 +32,18 @@ namespace LittleNPCs {
     public class ModEntry : Mod {
         public static IModHelper helper_;
 
+        public static IMonitor monitor_;
+
         public static ModConfig config_;
 
         private int? relativeSeconds_;
 
         // We have to keep track of LittleNPCs vor various reasons.
-        public static List<LittleNPC> LittleNPCsList { get; } = new List<LittleNPC>();
+        public static Dictionary<LittleNPC, Child> TrackedLittleNPCs { get; } = new Dictionary<LittleNPC, Child>();
 
         public override void Entry(IModHelper helper) {
             ModEntry.helper_ = helper;
+            ModEntry.monitor_ = this.Monitor;
 
             // Check for LittleNPC content packs. This is quite heavy but the only way I know so far:
             // We have to check for ContentPatcher packs that depend on LittleNPCs.
@@ -52,7 +57,7 @@ namespace LittleNPCs {
                                  select pack.UniqueID;
 
             if (!littleNPCPacks.Any()) {
-                throw new InvalidOperationException("Could not find a content pack for LittleNPCs");
+                this.Monitor.Log("Could not find a content pack for LittleNPCs. Your LittleNPCs will look like mere toddlers and don't do much.", LogLevel.Error);
             }
 
             foreach (var pack in littleNPCPacks) {
@@ -64,6 +69,7 @@ namespace LittleNPCs {
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.OneSecondUpdateTicking += OnOneSecondUpdateTicking;
             helper.Events.GameLoop.Saving += OnSaving;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
@@ -138,15 +144,23 @@ namespace LittleNPCs {
             relativeSeconds_ = 0;
         }
 
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e) {
+            ProvideFallbackAssets(e, 0);
+            ProvideFallbackAssets(e, 1);
+        }
+
         private void OnOneSecondUpdateTicking(object sender, OneSecondUpdateTickingEventArgs e) {
             // Run only once per day at 60 ticks after OnDayStarted().
             if (!relativeSeconds_.HasValue || ++relativeSeconds_ != 1) {
                 return;
             }
 
-            if (LittleNPCsList.Any()) {
-                this.Monitor.Log($"{nameof(LittleNPCsList)} is not empty, clearing it.", LogLevel.Error);
-                LittleNPCsList.Clear();
+            if (TrackedLittleNPCs.Any()) {
+                foreach (var npc in TrackedLittleNPCs) {
+                    this.Monitor.Log($"{nameof(TrackedLittleNPCs)} still contains {npc.Key.Name}.", LogLevel.Warn);
+                }
+                this.Monitor.Log($"{nameof(TrackedLittleNPCs)} is not empty, clearing it.", LogLevel.Error);
+                TrackedLittleNPCs.Clear();
             }
 
             var farmHouse = Utility.getHomeOfFarmer(Game1.player);
@@ -178,84 +192,73 @@ namespace LittleNPCs {
                     }
 
                     // Add to tracking list.
-                    LittleNPCsList.Add(littleNPC);
+                    TrackedLittleNPCs[littleNPC] = child;
 
                     this.Monitor.Log($"Added LittleNPC {littleNPC.Name}, deactivated child {child.Name}.", LogLevel.Info);
             }
 
             if (config_.DoChildrenVisitVolcanoIsland) {
                 // Add random island schedule.
-                AddRandomIslandSchedule(LittleNPCsList);
+                AddRandomIslandSchedule(TrackedLittleNPCs.Keys.ToList());
             }
         }
 
         private void OnSaving(object sender, SavingEventArgs e) {
-            var npcDispositions = Game1.content.Load<Dictionary<string, string>>("Data/NPCDispositions");
+            var npcDispositions = Game1.content.Load<Dictionary<string, CharacterData>>("Data/Characters");
 
-            // Local function, only needed here.
-            void ConvertLittleNPCsToChildren(Netcode.NetCollection<NPC> npcs) {
-                var littleNPCsToConvert = npcs.OfType<LittleNPC>().ToList();
-                foreach (var littleNPC in littleNPCsToConvert) {
-                    var child = littleNPC.WrappedChild;
-                    // Put hat on (part of the save game).
-                    if (littleNPC.WrappedChildHat is not null) {
-                        child.hat.Value = littleNPC.WrappedChildHat;
+            // Only convert items in our tracking list.
+            foreach (var item in TrackedLittleNPCs) {
+                var littleNPC = item.Key;
+                var child = item.Value;
+
+                this.Monitor.Log($"ConvertLittleNPCsToChildren: {littleNPC.Name}", LogLevel.Info);
+                    
+                // Put hat on (part of the save game).
+                if (littleNPC.WrappedChildHat is not null) {
+                    child.hat.Value = littleNPC.WrappedChildHat;
+                }
+
+                // Copy friendship data.
+                if (Game1.player.friendshipData.TryGetValue(littleNPC.Name, out var friendship)) {
+                    Game1.player.friendshipData[child.Name] = friendship;
+                }
+
+                // Set child visible before saving.
+                child.IsInvisible = false;
+
+                // Remove NPCDispositions to prevent auto-load on next day.
+                npcDispositions.Remove(littleNPC.Name);
+
+                // Remove from game.
+                bool success = false;
+                Utility.ForEachLocation(location => {
+                    for (int i = 0; i < location.characters.Count; ++i) {
+                        if (location.characters[i].Name == littleNPC.Name) {
+                            this.Monitor.Log($"Removed LittleNPC {littleNPC.Name} in {littleNPC.currentLocation.Name}, reactivated child {child.Name}.", LogLevel.Info);
+                            location.characters.RemoveAt(i);
+                            success = true;
+                        
+                            break;
+                        }
                     }
+                
+                    return true;
+                });
 
-                    // Replace LittleNPC by Child object.
-                    npcs.Remove(littleNPC);
-
-                    // Copy friendship data.
-                    if (Game1.player.friendshipData.TryGetValue(littleNPC.Name, out var friendship)) {
-                        Game1.player.friendshipData[child.Name] = friendship;
-                    }
-
-                    // Set child visible before saving.
-                    child.IsInvisible = false;
-
-                    // Remove NPCDispositions to prevent auto-load on next day.
-                    npcDispositions.Remove(littleNPC.Name);
-
-                    // Remove from tracking list.
-                    LittleNPCsList.Remove(littleNPC);
-
-                    this.Monitor.Log($"Removed LittleNPC {littleNPC.Name} in {littleNPC.currentLocation.Name}, reactivated child {child.Name}.", LogLevel.Info);
+                if (!success) {
+                    this.Monitor.Log($"Failed to remove LittleNPC {littleNPC.Name} from tracking list.", LogLevel.Error);
                 }
             }
 
-            // ATTENTION: Avoid Utility.getAllCharacters(), replacing elements in the returned list doesn't work.
-            // We have to iterate over all locations instead.
-
-            // Check outdoor locations and convert LittleNPCs back if necessary.
-            foreach (GameLocation location in Game1.locations) {
-                // Plain old for-loop because we have to replace list elements.
-                var npcs = location.characters;
-                ConvertLittleNPCsToChildren(npcs);
-            }
-
-            // Check indoor locations and convert LittleNPCs back if necessary.
-            foreach (BuildableGameLocation location in Game1.locations.OfType<BuildableGameLocation>()) {
-                foreach (Building building in location.buildings) {
-                    if (building.indoors.Value is not null) {
-                        var npcs = building.indoors.Value.characters;
-                        ConvertLittleNPCsToChildren(npcs);
-                    }
-                }
-            }
-
-            if (LittleNPCsList.Any()) {
-                this.Monitor.Log($"{nameof(LittleNPCsList)} is not empty, clearing it.", LogLevel.Error);
-                LittleNPCsList.Clear();
-            }
+            // Clear tracking list.
+            TrackedLittleNPCs.Clear();
 
             relativeSeconds_ = null;
         }
 
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
-            // Clear state before returning to title.
-            LittleNPCsList.Clear();
-
-            relativeSeconds_ = null;
+            // Forward the call.
+            OnSaving(sender, null);
         }
 
         /// <summary>
@@ -267,7 +270,7 @@ namespace LittleNPCs {
             // IslandSouth.CanVisitIslandToday() and IslandSouth.SetupIslandSchedules() in a conflicting way.
             // To avoid that we just copied the important parts from IslandSouth.SetupIslandSchedules().
             if (Utility.isFestivalDay(Game1.Date.DayOfMonth, Game1.Date.Season)
-             || (Game1.Date.Season == "winter" && Game1.Date.DayOfMonth >= 15 && Game1.Date.DayOfMonth <= 17)) {
+             || (Game1.Date.Season == Season.Winter && Game1.Date.DayOfMonth >= 15 && Game1.Date.DayOfMonth <= 17)) {
                 return;
             }
             IslandSouth islandSouth = Game1.getLocationFromName("IslandSouth") as IslandSouth;
@@ -322,12 +325,63 @@ namespace LittleNPCs {
                     sb.Append("/1800 bed");
 
                     sb.Remove(0, 1);
-                    npc.islandScheduleName.Value = "island";
-                    npc.Schedule = npc.parseMasterSchedule(sb.ToString());
-                    Game1.netWorldState.Value.IslandVisitors[npc.Name] = true;
+                    if (npc.TryLoadSchedule("island", sb.ToString())) {
+                        npc.islandScheduleName.Value = "island";
+                        Game1.netWorldState.Value.IslandVisitors.Add(npc.Name);
+                    }
 
                     this.Monitor.Log($"{npc.Name} will visit Volcano Island today.", StardewModdingAPI.LogLevel.Info);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Provides fallback assets from game content.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="index"></param>
+        private void ProvideFallbackAssets(AssetRequestedEventArgs e, int index) {
+            var littleNPC = new LittleNPCInfo(index, this.Monitor);
+
+            // We also use the sprite texture as portrait but should be good enough as a fallback.
+            string spriteTextureName = string.Concat("Characters/Toddler",
+                                                     (littleNPC.Gender == Gender.Male) ? "" : "_girl");
+
+            // Fallback dialogue.
+            string message = Game1.IsMultiplayer
+                           ? string.Concat("Hi @! Don't worry that I'm still a toddler, ",
+                                           "multiplayer support is not easy to implement.",
+                                           "#$e#",
+                                           "This is work in progress.")
+                           : string.Concat("Hi dad! Please install a content pack for me.",
+                                           "^Hi mom! Please install a content pack for me.",
+                                           "#$e#",
+                                           "Look for StardewValley Mod 15152 on nexusmods.com for details.");
+
+            var dialogue = new Dictionary<string, string>() {
+                { "Mon", message },
+                { "Tue", message },
+                { "Wed", message },
+                { "Thu", message },
+                { "Fri", message },
+                { "Sat", message },
+                { "Sun", message }
+            };
+
+            string prefix = index == 0 ? "FirstLittleNPC" : "SecondLittleNPC";
+
+            if (e.NameWithoutLocale.StartsWith($"Characters/{prefix}")) {
+                // Fallback assets are loaded with low prioriy.
+                e.LoadFrom(() => Game1.content.Load<Texture2D>(spriteTextureName), AssetLoadPriority.Low);
+            }
+
+            if (e.NameWithoutLocale.StartsWith($"Portraits/{prefix}")) {
+                // This uses part of the sprite texture as portrait but should be good enough as a fallback.
+                e.LoadFrom(() => Game1.content.Load<Texture2D>(spriteTextureName), AssetLoadPriority.Low);
+            }
+
+            if (e.NameWithoutLocale.StartsWith($"Characters/Dialogue/{prefix}")) {
+                e.LoadFrom(() => dialogue, AssetLoadPriority.Low);
             }
         }
 
@@ -338,7 +392,7 @@ namespace LittleNPCs {
         /// <returns></returns>
         internal static LittleNPC GetLittleNPC(int childIndex) {
             // The list of LittleNPCs is not sorted by child index, thus we need a query.
-            return LittleNPCsList.FirstOrDefault(c => c.ChildIndex == childIndex);
+            return TrackedLittleNPCs.Keys.FirstOrDefault(c => c.ChildIndex == childIndex);
         }
 
         /// <summary>

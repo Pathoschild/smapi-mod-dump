@@ -39,13 +39,13 @@ namespace ForageFantasy
             }
 
             // if neither is on, we can skip adding our overwrite for better compatibility with other mods
-            if ((mod.Config.AutomationHarvestsGrantXP && mod.Config.BerryBushXPAmount > 0 && mod.Config.BerryBushChanceToGetXP > 0) || mod.Config.BerryBushQuality)
+            if (mod.Config.BerryBushQuality)
             {
                 api.GetBerryBushHarvest += ChangeBerryBushHarvest;
             }
 
             // if neither is on, we can skip adding our overwrite for better compatibility with other mods
-            if ((mod.Config.AutomationHarvestsGrantXP && mod.Config.MushroomBoxXPAmount > 0) || mod.Config.MushroomBoxQuality)
+            if (mod.Config.MushroomBoxQuality)
             {
                 api.GetMushroomHarvest += ChangeMushroomHarvest;
             }
@@ -60,16 +60,10 @@ namespace ForageFantasy
 
             int expAmount = 0;
 
-            double chance = mod.Config.BerryBushChanceToGetXP / 100.0;
-
-            if (mod.Config.AutomationHarvestsGrantXP && Game1.random.NextDouble() < chance)
-            {
-                expAmount = mod.Config.BerryBushXPAmount;
-            }
-
             if (mod.Config.BerryBushQuality)
             {
-                item.Quality = ForageFantasy.DetermineForageQuality(Game1.player);
+                Random r = Utility.CreateDaySaveRandom(tile.X, tile.Y * 777f);
+                item.Quality = ForageFantasy.DetermineForageQuality(Game1.player, r);
             }
             else
             {
@@ -86,9 +80,10 @@ namespace ForageFantasy
                 return new KeyValuePair<StardewObject, int>(item, 0);
             }
 
-            int expAmount = mod.Config.AutomationHarvestsGrantXP ? mod.Config.MushroomBoxXPAmount : 0;
+            int expAmount = 0;
 
-            item.Quality = mod.Config.MushroomBoxQuality ? ForageFantasy.DetermineForageQuality(Game1.MasterPlayer) : StardewObject.lowQuality;
+            Random r = Utility.CreateDaySaveRandom(tile.X, tile.Y * 777f);
+            item.Quality = mod.Config.MushroomBoxQuality ? ForageFantasy.DetermineForageQuality(Game1.MasterPlayer, r) : StardewObject.lowQuality;
 
             return new KeyValuePair<StardewObject, int>(item, expAmount);
         }

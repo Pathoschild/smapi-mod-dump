@@ -25,19 +25,15 @@ namespace ichortower_HatMouseLacey
          *
          * Supports vanilla hats (who.hat, 0 <= id <= 93),
          *   "SV|Hat Name"
-         * json assets hats (who.hat, id >= 94),
-         *   "JA|Hat Name"
+         * modded hats (who.hat, any other id),
+         *   "MOD|Hat Name"
          * and fashion sense hats (read from FS API)
          *   "FS|Hat Name"
-         *
-         * If the hat is "real" and isn't vanilla or json assets, it counts
-         * as "other" and returns:
-         *   "OT|Hat Name"
          */
         public static string GetCurrentHatString(Farmer who)
         {
             /* check FS first, since it overrides physical hats */
-            var fsapi = ModEntry.HELPER.ModRegistry.GetApi<FSApi>(
+            var fsapi = HML.ModHelper.ModRegistry.GetApi<FSApi>(
                     "PeacefulEnd.FashionSense");
             if (fsapi != null) {
                 var pair = fsapi.GetCurrentAppearanceId(FSApi.Type.Hat, who);
@@ -46,23 +42,14 @@ namespace ichortower_HatMouseLacey
                 }
             }
             if (who.hat.Value != null) {
-                int hatId = who.hat.Value.which.Value;
-                if (hatId <= 93) {
-                    return $"SV|{who.hat.Value.Name}";
-                }
-                else {
-                    var jaapi = ModEntry.HELPER.ModRegistry.GetApi<JsonAssets.IApi>(
-                            "spacechase0.JsonAssets");
-                    if (jaapi != null) {
-                        var allHats = jaapi.GetAllHatIds();
-                        foreach (var pair in allHats) {
-                            if (pair.Value == hatId) {
-                                return $"JA|{who.hat.Value.Name}";
-                            }
-                        }
+                /* vanilla hats should have plain integer IDs. also safety
+                 * check for id within expected vanilla range */
+                if (int.TryParse(who.hat.Value.ItemId, out var vanillaId)) {
+                    if (vanillaId <= 93) {
+                        return $"SV|{who.hat.Value.Name}";
                     }
-                    return $"OT|{who.hat.Value.Name}";
                 }
+                return $"MOD|{who.hat.Value.ItemId}";
             }
             return null;
         }

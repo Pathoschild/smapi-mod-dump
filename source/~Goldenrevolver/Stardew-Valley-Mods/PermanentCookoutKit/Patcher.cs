@@ -55,10 +55,55 @@ namespace PermanentCookoutKit
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Torch), nameof(Torch.checkForAction)),
                    prefix: new HarmonyMethod(typeof(Patcher), nameof(CheckForAction_Pre)));
+
+                harmony.Patch(
+                   original: AccessTools.Method(typeof(StardewObject), nameof(StardewObject.placementAction)),
+                   postfix: new HarmonyMethod(typeof(Patcher), nameof(PlacementAction_Post)));
             }
             catch (Exception e)
             {
                 mod.ErrorLog("Error while trying to setup required patches:", e);
+            }
+        }
+
+        public static void PlacementAction_Post(StardewObject __instance, GameLocation location, int x, int y, Farmer who, bool __result)
+        {
+            if (!mod.Config.OutdoorRainPreventsIgniting || !__instance.IsCookoutKitSpawnItem() || !__result)
+            {
+                return;
+            }
+
+            var placementTile = new Vector2(x / 64, y / 64);
+            if (!location.Objects.TryGetValue(placementTile, out var placedObject) || !placedObject.IsCookoutKit())
+            {
+                return;
+            }
+
+            if (location.IsOutdoors && location.IsRainingHere())
+            {
+                // extinguishes the fire, does not truly remove the object
+                placedObject.performRemoveAction();
+
+                if (who != null)
+                {
+                    who.doEmote(Character.sadEmote);
+
+                    var dropPosition = new Vector2(x, y);
+
+                    // partial refund because I'm not mean
+                    if (mod.Config.WoodNeeded > 0)
+                    {
+                        location.debris.Add(new Debris(ItemRegistry.Create(WoodID, mod.Config.WoodNeeded), dropPosition));
+                    }
+                    if (mod.Config.FiberNeeded > 0)
+                    {
+                        location.debris.Add(new Debris(ItemRegistry.Create(FiberID, mod.Config.FiberNeeded), dropPosition));
+                    }
+                    if (mod.Config.CoalNeeded > 0)
+                    {
+                        location.debris.Add(new Debris(ItemRegistry.Create(CoalID, mod.Config.CoalNeeded), dropPosition));
+                    }
+                }
             }
         }
 
@@ -127,7 +172,7 @@ namespace PermanentCookoutKit
             }
         }
 
-        public static bool CheckForAction_Pre(Torch __instance, Farmer who, bool justCheckingForActivity)
+        public static bool CheckForAction_Pre(Torch __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
         {
             if (justCheckingForActivity)
             {
@@ -140,13 +185,21 @@ namespace PermanentCookoutKit
                 return true;
             }
 
+            if (mod.Config.OutdoorRainPreventsIgniting && __instance.Location != null && __instance.Location.IsOutdoors && __instance.Location.IsRainingHere())
+            {
+                who.doEmote(Character.sadEmote);
+
+                __result = true;
+                return false;
+            }
+
             int coalCount = mod.Config.CoalNeeded;
             int baseKindlingCount = mod.Config.FiberNeeded;
             int baseWoodCount = mod.Config.WoodNeeded;
 
-            bool hasCoal = who.Items.ContainsId(CoalID, coalCount);
+            bool hasCoal = coalCount <= 0 || who.Items.ContainsId(CoalID, coalCount);
 
-            bool hasKindling = false;
+            bool hasKindling = baseKindlingCount <= 0;
             string kindlingID = null;
             int actualKindlingCount = -1;
 
@@ -177,7 +230,7 @@ namespace PermanentCookoutKit
                 }
             }
 
-            bool hasWood = false;
+            bool hasWood = baseWoodCount <= 0;
             string chosenWoodID = null;
             int actualWoodCount = -1;
 
@@ -204,9 +257,18 @@ namespace PermanentCookoutKit
 
             if (hasCoal && hasKindling && hasWood)
             {
-                who.Items.ReduceId(CoalID, coalCount);
-                who.Items.ReduceId(kindlingID, actualKindlingCount);
-                who.Items.ReduceId(chosenWoodID, actualWoodCount);
+                if (coalCount > 0)
+                {
+                    who.Items.ReduceId(CoalID, coalCount);
+                }
+                if (actualKindlingCount > 0)
+                {
+                    who.Items.ReduceId(kindlingID, actualKindlingCount);
+                }
+                if (actualWoodCount > 0)
+                {
+                    who.Items.ReduceId(chosenWoodID, actualWoodCount);
+                }
 
                 __instance.IsOn = true;
 
@@ -230,6 +292,7 @@ namespace PermanentCookoutKit
                 Game1.showRedMessage($"{coalCount} {coal.DisplayName}, {baseKindlingCount} {fiber.DisplayName}, {baseWoodCount} {wood.DisplayName}");
             }
 
+            __result = true;
             return false;
         }
 

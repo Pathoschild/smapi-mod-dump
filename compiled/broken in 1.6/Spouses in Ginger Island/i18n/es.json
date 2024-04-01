@@ -1,4 +1,6 @@
 {
+    "config.Blacklist.name": "Lista negra",
+    "config.Blacklist.description": "Parejas que no quieres que visiten la isla. \nSeparado por espacios (' '). E.g: \"Abigail Sam\"",
     "config.advancedConfig.name":"Avanzado...",
     "config.advancedConfig.description": "Permite o prohíbe a ciertos personajes de ir a la isla.",
     "config.ScheduleRandom.name":"Rutina random",
@@ -46,7 +48,7 @@
     "config.Childbedcolor.values.green": "verde",
     
     "config.Devan_Nosit.name":"Devan NPC",
-    "config.Devan_Nosit.description": "Si quieres que alguien cuide a tus hijos durante las visitas a la isla, activa esta opción. (O alternativamente, si sólo quieres que Devan esté en tu partida).",
+    "config.Devan_Nosit.description": "Si quieres que alguien cuide a tus hijos durante las visitas a la isla, activa esta opción.",
     "config.SeasonalDevan.name": "Ropa de temporada",
     "config.SeasonalDevan.description": "Permite a Devan usar ropa de temporada.",
 

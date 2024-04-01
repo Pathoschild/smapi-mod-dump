@@ -6,16 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit d56138433ea60d4d153f1673dc8ee22f486f86c9
+   commit 77413bf025061d8e1d78ebb12cd9e4a1d9e7ba4e
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Fri Jan 12 21:11:57 2024 -0500
+   Date:   Sun Mar 31 22:57:01 2024 -0400
    
-       Mobile Phone integration enhancements
-       
-       Whether to add a phone app is now configurable.
-       
-       Icon for the phone app is now loaded through the content pipeline,
-       so it can be replaced with Content Patcher.
-       
-       Added example CP content pack to illustrate replacing icon.
+       Support for successors of aedenthorn's Mobile Phone mod; release 2.1.0
    

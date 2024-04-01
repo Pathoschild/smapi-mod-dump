@@ -11,96 +11,39 @@
 namespace CrabPotQuality
 {
     using StardewModdingAPI;
-    using StardewValley;
-    using StardewValley.Objects;
-    using StardewObject = StardewValley.Object;
+    using System;
 
     public class CrabPotQuality : Mod
     {
         public static CrabPotQualityConfig Config { get; set; }
 
+        public static IManifest Manifest { get; set; }
+
+        public static CrabPotQuality Mod { get; set; }
+
         public override void Entry(IModHelper helper)
         {
+            Mod = this;
             Config = Helper.ReadConfig<CrabPotQualityConfig>();
+            Manifest = ModManifest;
 
             Helper.Events.GameLoop.GameLaunched += delegate { CrabPotQualityConfig.SetUpModConfigMenu(Config, this); };
 
-            Helper.Events.GameLoop.DayStarted += delegate { OnDayStarted(); };
+            Patcher.PatchAll(this, Config);
         }
 
-        private static void OnDayStarted()
+        public void DebugLog(object o)
         {
-            Utility.ForEachLocation(delegate (GameLocation location)
-            {
-                foreach (var item in location.Objects.Values)
-                {
-                    if (item is CrabPot pot)
-                    {
-                        if (pot != null && pot.heldObject.Value != null && pot.readyForHarvest.Value)
-                        {
-                            // do quality calculation and assignment in two steps in case the object gets replaced with a rainbow shell
-                            int quality = DeterminePotQuality(pot);
-                            pot.heldObject.Value.Quality = quality;
-                        }
-                    }
-                }
-                return true;
-            });
+            Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
         }
 
-        private static int DeterminePotQuality(CrabPot pot)
+        public void ErrorLog(object o, Exception e = null)
         {
-            // if it is magic bait, done before trash check so it's never wasted
-            if (Config.EnableMagicBaitEffect && pot.bait.Value != null && pot.UsesMagicBait())
-            {
-                // give the crab pot a rainbow shell
-                pot.heldObject.Value = ItemRegistry.Create("(O)394") as StardewObject;
-            }
+            string baseMessage = o == null ? "null" : o.ToString();
 
-            // item is trash
-            //if (pot.heldObject.Value.ParentSheetIndex >= 168 && pot.heldObject.Value.ParentSheetIndex < 173)
-            switch (pot.heldObject.Value.QualifiedItemId)
-            {
-                case "(O)168":
-                case "(O)169":
-                case "(O)170":
-                case "(O)171":
-                case "(O)172":
-                    return 0;
-            }
+            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
 
-            Farmer farmer = Game1.getFarmer(pot.owner.Value) ?? Game1.MasterPlayer; // set to host if owner somehow doesn't exist
-
-            if (Config.LuremasterPerkForcesIridiumQuality && farmer.IsLuremaster())
-            {
-                return 4;
-            }
-            else if (Config.MarinerPerkForcesIridiumQuality && farmer.IsMariner())
-            {
-                return 4;
-            }
-
-            int multiplier = 1;
-
-            // if it is wild bait
-            if (Config.EnableWildBaitEffect && pot.bait.Value != null && pot.UsesWildBait())
-            {
-                multiplier = 2;
-            }
-
-            // foraging formula
-            if (Game1.random.NextDouble() < farmer.FishingLevel / 30f * multiplier)
-            {
-                return 2;
-            }
-            else if (Game1.random.NextDouble() < farmer.FishingLevel / 15f * multiplier)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
         }
     }
 }

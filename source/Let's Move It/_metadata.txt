@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Exblosis/StardewValleyMods
+   Git: https://github.com/Exblosis/StardewValleyMods.git
+
+mods:
+   Let's Move It
+
+latest commit:
+   commit 42e95fe290b3376d25e0a6863d8cd633a91357e2
+   Author: Exblosis <7541956+Exblosis@users.noreply.github.com>
+   Date:   Tue Mar 26 17:10:10 2024 +0100
+   
+       Add files via upload
+   

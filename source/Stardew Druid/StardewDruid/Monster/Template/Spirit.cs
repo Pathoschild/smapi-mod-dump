@@ -41,7 +41,7 @@ namespace StardewDruid.Monster.Template
 
         public Spirit() { }
 
-        public Spirit(Vector2 position, int combatModifier)
+        public Spirit(Vector2 position, int combatModifier, bool champion = false)
             : base(position * 64, true)
         {
 
@@ -65,19 +65,24 @@ namespace StardewDruid.Monster.Template
 
             if (Game1.random.Next(3) == 0)
             {
-                objectsToDrop.Add(382); // coal
+                objectsToDrop.Add("382"); // coal
 
             }
             else if (Game1.random.Next(4) == 0 && combatModifier >= 120)
             {
-                objectsToDrop.Add(395); // coffee (edible)
+                objectsToDrop.Add("395"); // coffee (edible)
 
             }
             else if (Game1.random.Next(5) == 0 && combatModifier >= 240)
             {
-                objectsToDrop.Add(251); // tea sapling
+                objectsToDrop.Add("251"); // tea sapling
             }
 
+            if (champion)
+            {
+                isHardModeMonster.Set(true);
+
+            }
 
         }
 
@@ -125,7 +130,7 @@ namespace StardewDruid.Monster.Template
 
                 Vector2 localPosition = getLocalPosition(Game1.viewport) + new Vector2(32 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), 64 + yJumpOffset);
 
-                float depth = Math.Max(0f, drawOnTop ? 0.992f : getStandingY() * 2 / 10000f + 0.00005f);
+                float depth = Math.Max(0f, drawOnTop ? 0.992f : Tile.Y * 2 / 10000f + 0.00005f);
 
                 b.Draw(
                     hatsTexture,
@@ -150,6 +155,21 @@ namespace StardewDruid.Monster.Template
             if (!loadedout) { LoadOut(); }
             base.update(time, location);
         }
+
+        public override void onDealContactDamage(Farmer who)
+        {
+
+            if ((who.health + who.buffs.Defense) - DamageToFarmer < 10)
+            {
+
+                who.health = (DamageToFarmer - who.buffs.Defense) + 10;
+
+                Mod.instance.CriticalCondition();
+
+            }
+
+        }
+
     }
 
 }

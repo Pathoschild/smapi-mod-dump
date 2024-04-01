@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 
@@ -17,11 +18,11 @@ namespace StardewDruid.Cast.Mists
     internal class Tree : CastHandle
     {
 
-        public Tree(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Tree(Vector2 target)
+            : base(target)
         {
 
-            if (rite.caster.ForagingLevel >= 8)
+            if (Game1.player.ForagingLevel >= 8)
             {
 
                 castCost = 1;
@@ -42,15 +43,15 @@ namespace StardewDruid.Cast.Mists
                 return;
             }
 
-            Dictionary<int, int> resinIndex = new()
+            Dictionary<string, int> resinIndex = new()
             {
-                [1] = 725, // Oak
-                [2] = 724, // Maple
-                [3] = 726, // Pine
-                [6] = 247, // Palm
-                [7] = 422, // Purple Mushroom // Mushroom
-                [8] = 419, // Vinegar // Mahogany
-                [9] = 247, // Palm
+                ["1"] = 725, // Oak
+                ["2"] = 724, // Maple
+                ["3"] = 726, // Pine
+                ["6"] = 247, // Palm
+                ["7"] = 422, // Purple Mushroom // Mushroom
+                ["8"] = 419, // Vinegar // Mahogany
+                ["9"] = 247, // Palm
             };
 
             treeFeature.health.Value = 1;
@@ -59,7 +60,7 @@ namespace StardewDruid.Cast.Mists
 
             Mod.instance.virtualAxe.DoFunction(targetLocation, 0, 0, 1, targetPlayer);
 
-            treeFeature.performToolAction(Mod.instance.virtualAxe, 0, targetVector, targetLocation);
+            treeFeature.performToolAction(Mod.instance.virtualAxe, 0, targetVector);
 
             if (randomIndex.Next(4) == 0 && resinIndex.ContainsKey(treeFeature.treeType.Value))
             {

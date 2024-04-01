@@ -14,8 +14,13 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Delegates;
+using StardewValley.GameData;
+using StardewValley.GameData.Objects;
 using StardewValley.Locations;
+using StardewValley.Pathfinding;
 using StardewValley.TerrainFeatures;
+using StardewValley.Triggers;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -25,134 +30,169 @@ namespace ichortower.SecretWoodsSnorlax
 {
     internal class Events
     {
-        public static int FluteId = -1;
         public static bool FluteHeardToday = false;
-        public static JsonAssets.IApi JAApi = null;
 
         public static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            string path;
-            JAApi = ModEntry.HELPER.ModRegistry.GetApi<JsonAssets.IApi>(
-                    "spacechase0.JsonAssets");
-            if (JAApi is null) {
-                ModEntry.MONITOR.Log("CRITICAL: could not load the Json " +
-                        "Assets API. This shouldn't be possible, so this mod " +
-                        "install is probably broken.", LogLevel.Error);
-                ModEntry.MONITOR.Log("Please try reinstalling, updating (if " +
-                        "available), or complaining to ichortower about it.",
-                        LogLevel.Error);
-            }
-            else {
-                path = Path.Combine(ModEntry.HELPER.DirectoryPath,
-                        "assets", "[JA] Embedded Pack");
-                JAApi.LoadAssets(path);
-            }
-
-            /* change moved location if lunna is installed */
+            /* move the secondary location if Lunna is installed */
             bool haveLunna = ModEntry.HELPER.ModRegistry.IsLoaded("Rafseazz.LunnaCP");
             if (haveLunna) {
                 Constants.vec_MovedPosition = new Vector2(7f, 7f);
             }
 
-            /* Load the flute musics (sound effects).
-             * They're short, but snarfing an ogg does take time */
-            Thread t = new Thread((ThreadStart)delegate {
-                Ogg.LoadSound(Constants.name_FluteCue, Path.Combine(
-                        ModEntry.HELPER.DirectoryPath, "assets", "melody.ogg"));
-                Ogg.LoadSound(Constants.name_FluteCueShort, Path.Combine(
-                        ModEntry.HELPER.DirectoryPath, "assets", "melody_short.ogg"));
-            });
-            t.Start();
-
-            /* Set up event commands for the wizard event */
-            var SCApi = ModEntry.HELPER.ModRegistry.GetApi<SpaceCore.IApi>(
-                    "spacechase0.SpaceCore");
-            if (SCApi is null) {
-                ModEntry.MONITOR.Log("CRITICAL: could not load the SpaceCore " +
-                        "API. This shouldn't be possible, so this mod " +
-                        "install is probably broken.", LogLevel.Error);
-                ModEntry.MONITOR.Log("Please try reinstalling, updating (if " +
-                        "available), or complaining to ichortower about it.",
-                        LogLevel.Error);
-            }
-            else {
-                MethodInfo giveKeyMethod = typeof(Events).GetMethod(
-                        "command_giveKey", BindingFlags.Static | BindingFlags.Public);
-                MethodInfo holdKeyMethod = typeof(Events).GetMethod(
-                        "command_holdKey", BindingFlags.Static | BindingFlags.Public);
-                SCApi.AddEventCommand("SWS_giveKey", giveKeyMethod);
-                SCApi.AddEventCommand("SWS_holdKey", holdKeyMethod);
-            }
+            TriggerActionManager.RegisterAction(
+                    $"{Constants.id_Mod}_Action_GiveKey", giveKeyMethod);
         }
 
-        public static void getFluteId()
+        public static bool giveKeyMethod(string[] args,
+                TriggerActionContext context,
+                out string error)
         {
-            if (FluteId == -1) {
-                FluteId = JAApi.GetObjectId(Constants.name_Flute);
+            if (!Game1.IsMasterGame) {
+                error = $"Permitted only for host player.";
+                return false;
             }
+            Object o = ItemRegistry.Create<Object>(Constants.id_Flute, 1, 0);
+            if (o is null) {
+                error = $"Couldn't create {Constants.id_Flute}!";
+                return false;
+            }
+            o.specialItem = true;
+            o.questItem.Value = true;
+            Game1.player.addItemByMenuIfNecessary(o);
+            if (Game1.eventUp && Game1.CurrentEvent != null &&
+                    !Game1.CurrentEvent.skipped) {
+                Game1.player.holdUpItemThenMessage(o);
+            }
+            error = null;
+            return true;
         }
 
-        public static void command_giveKey(Event e, GameLocation location,
-                GameTime time, string[] split)
+        public static ResourceClump getBlockingLog(GameLocation loc)
         {
-            getFluteId();
-            Object flute = new Object(Vector2.Zero, FluteId, 1);
-            e.farmer.addItemByMenuIfNecessary(flute);
-            e.CurrentCommand++;
+            foreach (ResourceClump clump in loc.resourceClumps) {
+                if (clump.Tile == Constants.vec_BlockingPosition &&
+                        clump.parentSheetIndex.Value == 602) {
+                    return clump;
+                }
+            }
+            return null;
         }
 
-        public static void command_holdKey(Event e, GameLocation location,
-                GameTime time, string[] split)
+        public static SnorlaxLog getBigBoi(GameLocation loc)
         {
-            getFluteId();
-            e.farmer.holdUpItemThenMessage(new Object(Vector2.Zero, FluteId, 1));
-            e.CurrentCommand++;
+            foreach (ResourceClump clump in loc.resourceClumps) {
+                if (clump is SnorlaxLog) {
+                    return (SnorlaxLog)clump;
+                }
+            }
+            return null;
         }
 
 
         public static void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            /*
-             * Spawn the snorlax. If the forest log is already gone, put him
-             * in the moved location and flag it. Otherwise, replace the log.
-             */
-            Forest forest = (Forest)Game1.getLocationFromName("Forest");
-            if (Game1.player.mailReceived.Contains(Constants.mail_SnorlaxMoved)) {
-                forest.log = new SnorlaxLog(Constants.vec_MovedPosition);
-                return;
-            }
-            if (forest.log is null) {
-                forest.log = new SnorlaxLog(Constants.vec_MovedPosition);
-                Game1.player.mailReceived.Add(Constants.mail_SnorlaxMoved);
+            // determine where to spawn Snorlax based on whether the vanilla
+            // log is still around (we restore it before saving).
+            GameLocation forest = Game1.getLocationFromName("Forest");
+            ResourceClump log = getBlockingLog(forest);
+            SnorlaxLog boi = null;
+            if (log is null) {
+                Game1.player.mailReceived.Add(Constants.mail_Moved);
+                boi = new SnorlaxLog(Constants.vec_MovedPosition);
             }
             else {
-                forest.log = new SnorlaxLog(Constants.vec_BlockingPosition);
+                forest.resourceClumps.Remove(log);
+                boi = new SnorlaxLog(Constants.vec_BlockingPosition);
             }
+            forest.resourceClumps.Add(boi);
 
-            getFluteId();
+            // allow a new flute cutscene today
             FluteHeardToday = false;
+
+            // migrate 1.5 things to 1.6.
+            Migrate1_5Data();
+
+            // set CTs and corresponding mail flags if the hint system is
+            // active
+            if (Game1.player.mailReceived.Contains($"{Constants.mail_Hints}Active")) {
+                if (!Game1.player.mailReceived.Contains($"{Constants.mail_Hints}1")) {
+                    Game1.player.activeDialogueEvents.TryAdd($"{Constants.ct_Prefix}1", 2);
+                    Game1.player.mailReceived.Add($"{Constants.mail_Hints}1");
+                }
+                else if (!Game1.player.mailReceived.Contains($"{Constants.mail_Hints}2") &&
+                        !Game1.player.activeDialogueEvents.ContainsKey($"{Constants.ct_Prefix}1")) {
+                    Game1.player.activeDialogueEvents.TryAdd($"{Constants.ct_Prefix}2", 2);
+                    Game1.player.mailReceived.Add($"{Constants.mail_Hints}2");
+                }
+                else if (!Game1.player.mailReceived.Contains($"{Constants.mail_Hints}3") &&
+                        !Game1.player.activeDialogueEvents.ContainsKey($"{Constants.ct_Prefix}1") &&
+                        !Game1.player.activeDialogueEvents.ContainsKey($"{Constants.ct_Prefix}2")) {
+                    Game1.player.activeDialogueEvents.TryAdd($"{Constants.ct_Prefix}3", 2);
+                    Game1.player.mailReceived.Add($"{Constants.mail_Hints}3");
+                }
+            }
         }
 
+        public static void Migrate1_5Data()
+        {
+            // having seen the plot event is also the trigger to give a new
+            // flute, since the old one will become an error item
+            if (Game1.player.eventsSeen.Remove(Constants.id_EventOld)) {
+                Game1.player.eventsSeen.Add(Constants.id_Event);
+                giveKeyMethod(new string[]{},
+                        new TriggerActionContext("Manual", new object[]{}, null),
+                        out string err);
+            }
+            // convert old mail flags
+            if (Game1.player.mailReceived.Remove(Constants.mail_OldMoved)) {
+                Game1.player.mailReceived.Add(Constants.mail_Moved);
+            }
+            if (Game1.player.mailReceived.Remove(Constants.mail_OldHints)) {
+                Game1.player.mailReceived.Add($"{Constants.mail_Hints}Active");
+            }
+            // the null farm events are now controlled by mail flags
+            for (int i = 1; i <= 3; ++i) {
+                if (Game1.player.eventsSeen.Remove($"{Constants.id_OldNullEvent}{i}")) {
+                    Game1.player.mailReceived.Add($"{Constants.mail_Hints}{i}");
+                }
+            }
+            // the CTs have different ids as well
+            for (int i = 1; i <= 3; ++i) {
+                var key = $"{Constants.ct_OldPrefix}{i}";
+                if (Game1.player.activeDialogueEvents.ContainsKey(key)) {
+                    Game1.player.activeDialogueEvents[$"{Constants.ct_Prefix}{i}"] =
+                            Game1.player.activeDialogueEvents[key];
+                    Game1.player.activeDialogueEvents.Remove(key);
+                }
+                // convert mail flags for NPCs who have responded to the CT
+                Utility.ForEachVillager(delegate(NPC npc) {
+                    if (Game1.player.mailReceived.Remove($"{npc.Name}_{key}")) {
+                        Game1.player.mailReceived.Add($"{npc.Name}_{Constants.ct_Prefix}{i}");
+                    }
+                    return true;
+                });
+            }
+        }
+
+        /*
+         * When saving at end of day, revert the resourceClumps to how they
+         * would be in vanilla: if snorlax has moved, no blocking log, else
+         * put it back.
+         */
         public static void OnSaving(object sender, SavingEventArgs e)
         {
-            /*
-             * Here, we revert the snorlax to how the log would be in vanilla:
-             * if he's moved, delete the log, and if he hasn't, restore it.
-             */
-            Forest forest = (Forest)Game1.getLocationFromName("Forest");
-            // check the mail id first; fall back to current location
-            if (Game1.player.mailReceived.Contains(Constants.mail_SnorlaxMoved)) {
-                forest.log = null;
+            GameLocation forest = Game1.getLocationFromName("Forest");
+            SnorlaxLog boi = getBigBoi(forest);
+            /* shouldn't happen with this mod installed */
+            if (boi is null) {
                 return;
             }
-            if (forest.log != null && forest.log is SnorlaxLog) {
-                if (forest.log.tile.Value == Constants.vec_BlockingPosition) {
-                    forest.log = new ResourceClump(602, 2, 2, new Vector2(1f, 6f));
-                }
-                else { //if (forest.log.tile.Value.X == 3f)
-                    forest.log = null;
-                }
+            if (!boi.HasMoved()) {
+                forest.resourceClumps.Add(new ResourceClump(602, 2, 2,
+                        Constants.vec_BlockingPosition));
             }
+            forest.resourceClumps.Remove(boi);
         }
 
         /*
@@ -162,15 +202,13 @@ namespace ichortower.SecretWoodsSnorlax
          */
         public static void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
-            getFluteId();
-            if (Game1.player.ActiveObject is null || Game1.player.ActiveObject
-                    .ParentSheetIndex != FluteId) {
-                return;
-            }
-            foreach (var button in e.Pressed) {
-                if (button.IsActionButton()) {
-                    Events.PlayFlute(button);
-                    break;
+            Object obj = Game1.player.ActiveObject;
+            if (obj != null && obj.ItemId.Equals(Constants.id_Flute)) {
+                foreach (var button in e.Pressed) {
+                    if (button.IsActionButton()) {
+                        Events.PlayFlute(button);
+                        break;
+                    }
                 }
             }
         }
@@ -194,17 +232,17 @@ namespace ichortower.SecretWoodsSnorlax
                 return;
             }
             if (Game1.player.currentLocation.Name.Equals("Forest") &&
-                    Game1.player.getTileX() <= 6 &&
-                    Game1.player.getTileY() <= 10) {
+                    Game1.player.Tile.X <= 6 &&
+                    Game1.player.Tile.Y <= 10) {
                 // suppressing input prevents inspecting snorlax while
                 // starting these cutscenes
-                var snorlax = (Game1.player.currentLocation as Forest).log as SnorlaxLog;
+                var snorlax = getBigBoi(Game1.player.currentLocation);
                 if (snorlax != null && !snorlax.HasMoved()) {
                     ModEntry.HELPER.Input.Suppress(button);
                     WakeUpCutscene();
                     return;
                 }
-                else if (!FluteHeardToday) {
+                else if (snorlax != null && !FluteHeardToday) {
                     ModEntry.HELPER.Input.Suppress(button);
                     RelistenCutscene();
                     return;
@@ -223,7 +261,7 @@ namespace ichortower.SecretWoodsSnorlax
             }, delegate {
                 Game1.player.faceDirection(nowFacing);
             });
-            loc.playSoundAt(Constants.name_FluteCueShort, Game1.player.getTileLocation());
+            loc.playSound(Constants.id_FluteCueShort, Game1.player.Tile);
             Game1.player.freezePause = 8*msPerBeat;
         }
 
@@ -238,9 +276,11 @@ namespace ichortower.SecretWoodsSnorlax
             int afterSongPause = 1200;
             int msPerBeat = Constants.msPerBeat;
 
-            var snorlax = (Game1.player.currentLocation as Forest).log as SnorlaxLog;
-            var startloc = new Vector2(2f, 7f);
-            var endloc = new Vector2(4f, 5f);
+            var snorlax = getBigBoi(Game1.player.currentLocation);
+            var startloc = new Vector2(Constants.vec_BlockingPosition.X+1f,
+                    Constants.vec_BlockingPosition.Y+1f);
+            var endloc = new Vector2(Constants.vec_MovedPosition.X+1f,
+                    Constants.vec_MovedPosition.Y+1f);
 
             Game1.player.FarmerSprite.animateOnce(new FarmerSprite.AnimationFrame[14]{
                 new FarmerSprite.AnimationFrame(16, 2*beforeSongPause/3, false, false),
@@ -259,8 +299,8 @@ namespace ichortower.SecretWoodsSnorlax
                 new FarmerSprite.AnimationFrame(100, 4*msPerBeat, true, false),
             });
             DelayedAction.functionAfterDelay(delegate {
-                Game1.player.currentLocation.playSoundAt(Constants.name_FluteCue,
-                        Game1.player.getTileLocation());
+                Game1.player.currentLocation.playSound(Constants.id_FluteCue,
+                        Game1.player.Tile);
             }, beforeSongPause);
             tally += beforeSongPause + 18*msPerBeat;
 
@@ -270,8 +310,8 @@ namespace ichortower.SecretWoodsSnorlax
             tally += afterSongPause;
 
             DelayedAction.functionAfterDelay(delegate {
-                Game1.player.currentLocation.playSoundAt("sandyStep", startloc);
-                Game1.player.currentLocation.playSoundAt("croak", startloc);
+                Game1.player.currentLocation.playSound("sandyStep", startloc);
+                Game1.player.currentLocation.playSound("croak", startloc);
                 snorlax.parentSheetIndex.Value = 1;
                 Game1.player.doEmote(16);
                 Game1.player.setRunning(true);
@@ -286,13 +326,13 @@ namespace ichortower.SecretWoodsSnorlax
 
             DelayedAction.functionAfterDelay(delegate {
                 snorlax.JumpAside();
-                Game1.player.currentLocation.playSoundAt("dwoop", startloc);
+                Game1.player.currentLocation.playSound("dwoop", startloc);
             }, tally);
             tally += 1500;
 
             DelayedAction.functionAfterDelay(delegate {
-                Game1.player.currentLocation.playSoundAt("secret1", endloc);
-                Game1.player.mailReceived.Add(Constants.mail_SnorlaxMoved);
+                Game1.player.currentLocation.playSound("secret1", endloc);
+                Game1.player.mailReceived.Add(Constants.mail_Moved);
                 FluteHeardToday = true;
             }, tally);
             tally += 2000;
@@ -315,7 +355,7 @@ namespace ichortower.SecretWoodsSnorlax
                         alphaFade = 0.01f
                     };
             Game1.player.currentLocation.TemporarySprites.Add(heart);
-            Game1.player.currentLocation.playSoundAt("dwop", tileP);
+            Game1.player.currentLocation.playSound("dwop", tileP);
         }
 
         // bunch of copy-paste from WakeUpCutscene.
@@ -331,8 +371,9 @@ namespace ichortower.SecretWoodsSnorlax
             int afterSongPause = 1200;
             int msPerBeat = Constants.msPerBeat;
 
-            var snorlax = (Game1.player.currentLocation as Forest).log as SnorlaxLog;
-            var soundloc = Constants.vec_MovedPosition + new Vector2(1f, 1f);
+            var snorlax = getBigBoi(Game1.player.currentLocation);
+            var soundloc = new Vector2(Constants.vec_MovedPosition.X+1f,
+                    Constants.vec_MovedPosition.Y+1f);
 
             Game1.player.FarmerSprite.animateOnce(new FarmerSprite.AnimationFrame[14]{
                 new FarmerSprite.AnimationFrame(16, 2*beforeSongPause/3, false, false),
@@ -351,8 +392,8 @@ namespace ichortower.SecretWoodsSnorlax
                 new FarmerSprite.AnimationFrame(100, 4*msPerBeat, true, false),
             });
             DelayedAction.functionAfterDelay(delegate {
-                Game1.player.currentLocation.playSoundAt(Constants.name_FluteCue,
-                        Game1.player.getTileLocation());
+                Game1.player.currentLocation.playSound(Constants.id_FluteCue,
+                        Game1.player.Tile);
             }, beforeSongPause);
 
             DelayedAction.functionAfterDelay(delegate {
@@ -370,7 +411,7 @@ namespace ichortower.SecretWoodsSnorlax
 
             DelayedAction.functionAfterDelay(delegate {
                 snorlax.JumpInPlace();
-                Game1.player.currentLocation.playSoundAt("dwoop", soundloc);
+                Game1.player.currentLocation.playSound("dwoop", soundloc);
             }, tally);
             tally += 1000;
 
@@ -389,9 +430,55 @@ namespace ichortower.SecretWoodsSnorlax
 
         public static void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            /* tricky cheat here, splitting on '/'. through SMAPI, the asset
+            /* Load in the flute object. Requires three asset edits */
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects")) {
+                var modAsset = ModEntry.HELPER.ModContent.Load
+                        <Dictionary<string, ObjectData>>("assets/key_item.json");
+                e.Edit(asset => {
+                    var dict = asset.AsDictionary<string, ObjectData>();
+                    foreach (var entry in modAsset) {
+                        dict.Data[entry.Key] = entry.Value;
+                    }
+                });
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Strings/Objects")) {
+                e.Edit(asset => {
+                    var dict = asset.AsDictionary<string, string>();
+                    dict.Data["ichortower.SecretWoodsSnorlax_StrangeFlute_Name"] =
+                            ModEntry.HELPER.Translation.Get("object.strangeflute.name");
+                    dict.Data["ichortower.SecretWoodsSnorlax_StrangeFlute_Description"] =
+                            ModEntry.HELPER.Translation.Get("object.strangeflute.description");
+                });
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Mods/ichortower.SecretWoodsSnorlax/StrangeFlute")) {
+                e.LoadFrom(() => {
+                    return ModEntry.HELPER.ModContent.Load<Texture2D>("assets/key_item.png");
+                }, AssetLoadPriority.Medium);
+            }
+
+            /* Load in the flute music cues */
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/AudioChanges")) {
+                var modAsset = ModEntry.HELPER.ModContent.Load
+                        <Dictionary<string, AudioCueData>>("assets/audio.json");
+                foreach (var entry in modAsset) {
+                    List<string> map = new();
+                    foreach (var p in entry.Value.FilePaths) {
+                        map.Add(Path.Combine(ModEntry.HELPER.DirectoryPath, p));
+                    }
+                    entry.Value.FilePaths = map;
+                }
+                e.Edit(asset => {
+                    var dict = asset.AsDictionary<string, AudioCueData>();
+                    foreach (var entry in modAsset) {
+                        dict.Data[entry.Key] = entry.Value;
+                    }
+                });
+            }
+
+            /* Add CT dialogue keys.
+             * tricky cheat here, splitting on '/'. through SMAPI, the asset
              * names passed to this function are already normalized */
-            if (e.NameWithoutLocale.IsDirectlyUnderPath("Characters/Dialogue")) {
+            else if (e.NameWithoutLocale.IsDirectlyUnderPath("Characters/Dialogue")) {
                 string npcName = e.NameWithoutLocale.BaseName.Split("/")[2];
                 for (int i = 1; i <= 3; ++i) {
                     var hintline = ModEntry.HELPER.Translation.Get(
@@ -421,7 +508,7 @@ namespace ichortower.SecretWoodsSnorlax
                         <Dictionary<string,string>>(asset);
                 foreach (var entry in snorlax) {
                     string val = entry.Value.Replace("{{moved}}",
-                            Constants.mail_SnorlaxMoved);
+                            Constants.mail_Moved);
                     int haveIndex = -1;
                     int start = 0;
                     while ((haveIndex = val.IndexOf("{{i18n", start)) != -1) {
@@ -438,25 +525,6 @@ namespace ichortower.SecretWoodsSnorlax
                     var dict = asset.AsDictionary<string, string>();
                     foreach (var entry in snorlax) {
                         dict.Data[entry.Key] = entry.Value;
-                    }
-                });
-            }
-
-            /* add the empty farm events that set the CTs when the hints mail
-             * is active */
-            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/Farm")) {
-                e.Edit(asset => {
-                    var dict = asset.AsDictionary<string, string>();
-                    for (int i = 1; i <= 3; ++i) {
-                        string key = $"19112010{i}/n {Constants.mail_SnorlaxHints}";
-                        if (i > 1) {
-                            key += $"/e 19112010{i-1}/A {Constants.ct_Prefix}{i-1}";
-                        }
-                        string script = "continue/-100 -100/farmer -1000 -1000 0" +
-                                "/ignoreEventTileOffset" +
-                                $"/addConversationTopic {Constants.ct_Prefix}{i} 2" +
-                                "/pause 50/end";
-                        dict.Data[key] = script;
                     }
                 });
             }

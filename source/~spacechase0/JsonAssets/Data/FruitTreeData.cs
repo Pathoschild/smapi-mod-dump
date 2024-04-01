@@ -9,15 +9,11 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.Serialization;
 using JsonAssets.Framework;
 
-using Newtonsoft.Json;
-
 namespace JsonAssets.Data
 {
-    [DebuggerDisplay("name = {Name}, id = {Id}")]
     public class FruitTreeData : DataNeedsIdWithTexture
     {
         /*********
@@ -40,28 +36,18 @@ namespace JsonAssets.Data
 
         internal ObjectData Sapling { get; set; }
 
-        [JsonIgnore]
-        internal int ProductId { get; set; } = -1;
-        
-        [JsonIgnore]
-        internal static HashSet<int> SaplingIds { get; } = new();
 
         /*********
         ** Public methods
         *********/
-        public int GetSaplingId()
+        public string GetSaplingId()
         {
-            return this.Sapling.Id;
-        }
-
-        public int GetFruitTreeIndex()
-        {
-            return this.Id;
+            return this.Sapling.Name;
         }
 
         internal string GetFruitTreeInformation()
         {
-            return $"{this.GetFruitTreeIndex()}/{this.Season}/{this.ProductId}/what goes here?";
+            return $"0/{this.Season}/{this.Product}/what goes here?/0/JA\\FruitTree\\{this.Name.FixIdJA()}";
         }
 
 

@@ -8,25 +8,17 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
+using System;
 
 namespace CustomTracker
 {
     /// <summary>The mod's main class.</summary>
     public partial class ModEntry : Mod
     {
-
-
-
-
         /// <summary>Draw a tracker pointing to the provided tile of the player's current location.</summary>
         /// <param name="targetTile">The coordinates of the tile this tracker icon should point toward.</param>
         /// <remarks>
@@ -38,7 +30,7 @@ namespace CustomTracker
             if (Utility.isOnScreen(targetTile * 64f + new Vector2(32f, 32f), 64)) //if the target tile is on the player's screen
                 return; //do not track it
 
-            float scale = MConfig.TrackerPixelScale; //get the intended scale of the sprite
+            float scale = Config.TrackerPixelScale; //get the intended scale of the sprite
             Rectangle bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds; //get the boundaries of the screen
 
             //define relative minimum and maximum sprite positions

@@ -10,8 +10,6 @@ for queries and analysis.**
 of time in the game: speed it up, slow it down, or freeze it altogether. This can happen
 automatically or when you press a key in the game.
 
-Compatible with Stardew Valley 1.2+ on Linux, Mac, and Windows.
-
 ## Contents
 * [Install](#install)
 * [Use](#use)
@@ -131,7 +129,7 @@ keys](https://stardewvalleywiki.com/Modding:Key_bindings#Available_bindings). Se
 </table>
 
 ## Compatibility
-* Works with Stardew Valley 1.5.5+ on Linux/Mac/Windows.
+* Works with Stardew Valley 1.6+ on Linux/macOS/Windows.
 * Works in single-player, multiplayer, and split-screen mode. In multiplayer you must be the main player. (The mod will disable itself if you're not the main player, so it's safe to keep installed.)
 * No known mod conflicts.
 

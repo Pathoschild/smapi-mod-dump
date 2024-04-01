@@ -1,0 +1,10 @@
+{
+  "Name": "No Fence Decay Redux",
+  "Author": "EnderTedi",
+  "Version": "1.0.0",
+  "Description": "Stops Fence Decay From Occuring",
+  "UniqueID": "EnderTedi.NoFenceDecayRedux",
+  "EntryDll": "No Fence Decay - Redux.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20802" ]
+}

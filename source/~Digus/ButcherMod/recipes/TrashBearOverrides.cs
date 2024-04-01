@@ -17,6 +17,7 @@ using AnimalHusbandryMod.common;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Network;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.recipes
 {
@@ -32,8 +33,7 @@ namespace AnimalHusbandryMod.recipes
             if (NetWorldState.checkAnywhereForWorldStateID("trashBear3"))
                 num1 = 3;
             int randomSeedAddition = 777111 + num1;
-            var itemWantedIndex = DataLoader.Helper.Reflection.GetField<int>(__instance,"itemWantedIndex");
-            itemWantedIndex.SetValue(Utility.getRandomPureSeasonalItem(Game1.currentSeason, randomSeedAddition));
+            __instance.itemWantedIndex = Utility.getRandomPureSeasonalItem(Game1.season, randomSeedAddition);
             if (num1 <= 1)
                 return false;
             int num2 = new Random((int)Game1.uniqueIDForThisGame + randomSeedAddition).Next(CraftingRecipe.cookingRecipes.Count);
@@ -42,7 +42,7 @@ namespace AnimalHusbandryMod.recipes
             {
                 if (num3 == num2)
                 {
-                    itemWantedIndex.SetValue(Convert.ToInt32(str.Split('/')[2].Split(' ')[0]));
+                    __instance.itemWantedIndex = str.Split('/')[2].Split(' ')[0];
                     break;
                 }
                 ++num3;

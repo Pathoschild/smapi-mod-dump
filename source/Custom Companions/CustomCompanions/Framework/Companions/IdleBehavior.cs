@@ -57,7 +57,7 @@ namespace CustomCompanions.Framework.Companions
                     break;
                 case "JUMPER":
                     this.behavior = Behavior.JUMPER;
-                    destinationTile = companion.targetTile;
+                    destinationTile = companion.targetTile.Value;
                     break;
                 case "WALK_SQUARE":
                     this.behavior = Behavior.WALK_SQUARE;
@@ -182,12 +182,12 @@ namespace CustomCompanions.Framework.Companions
 
                     if (Game1.random.NextDouble() <= 0.5)
                     {
-                        this.destinationTile = Utility.getRandomAdjacentOpenTile(companion.getTileLocation(), companion.currentLocation) * 64f;
+                        this.destinationTile = Utility.getRandomAdjacentOpenTile(companion.Tile, companion.currentLocation) * 64f;
                     }
                 }
 
                 Vector2 targetPosition = this.destinationTile;
-                Vector2 smoothedPosition = Vector2.Lerp(companion.position, targetPosition, 0.02f);
+                Vector2 smoothedPosition = Vector2.Lerp(companion.Position, targetPosition, 0.02f);
                 companion.PerformJumpMovement(jumpScale, randomJumpBoostMultiplier, gravity, smoothedPosition);
 
                 return true;
@@ -236,12 +236,12 @@ namespace CustomCompanions.Framework.Companions
             Location next_tile = companion.nextPositionTile();
             if (!companion.currentLocation.isTileOnMap(new Vector2(next_tile.X, next_tile.Y)) || companion.currentLocation.isCollidingPosition(companion.nextPosition(targetDirection), Game1.viewport, isFarmer: true, 0, glider: false, companion, pathfinding: false))
             {
-                companion.SetMovingDirection(companion.facingDirection);
+                companion.SetMovingDirection(companion.FacingDirection);
                 this.behaviorTimer = Game1.random.Next(2000, 10000);
 
                 if (Game1.random.NextDouble() < 0.6)
                 {
-                    companion.SetMovingDirection(Utility.GetOppositeFacingDirection(companion.facingDirection));
+                    companion.SetMovingDirection(Utility.GetOppositeFacingDirection(companion.FacingDirection));
                 }
             }
             else

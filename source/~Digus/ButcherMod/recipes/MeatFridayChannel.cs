@@ -21,12 +21,13 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using AnimalHusbandryMod.cooking;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.recipes
 {
     public class MeatFridayChannel : Channel
     {
-        private readonly Dictionary<int, string> _recipes;
+        private Dictionary<int, string> _recipes;
 
         public string GetName => "MeatFriday";
         public string GetScreenTextureName => Game1.mouseCursorsName;
@@ -45,6 +46,11 @@ namespace AnimalHusbandryMod.recipes
         }
 
         public MeatFridayChannel()
+        {
+            ReloadEpisodes();
+        }
+
+        public void ReloadEpisodes()
         {
             this._recipes = new Dictionary<int, string>();
             _recipes.Add(2, Cooking.RoastDuck.GetRecipeChannelString());

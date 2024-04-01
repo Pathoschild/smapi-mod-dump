@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Network;
 using StardewValley.Tools;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -36,10 +35,9 @@ namespace FarmTypeManager
             }
 
             /// <summary>Create a new buried item location with the specified contents.</summary>
-            /// <param name="tileLocation">The tile location of the buried items.</param>
             /// <param name="items">>A set of items the container will drop when broken. Null or empty lists are valid.</param>
-            public BuriedItems(Vector2 tileLocation, IEnumerable<Item> items)
-                : base(tileLocation, 590, 1) //use the typical constructor for an artifact spot
+            public BuriedItems(IEnumerable<Item> items)
+                : base("590", 1) //use the typical constructor for an artifact spot
             {
                 Items.AddRange(items); //add the provided set of items to this object's list
             }
@@ -47,7 +45,7 @@ namespace FarmTypeManager
             protected override void initNetFields()
             {
                 base.initNetFields();
-                NetFields.AddFields(Items); //include this class's custom field
+                NetFields.AddField(Items); //include this class's custom field
             }
 
             /// <summary>An override that indicates this object type should be passable, despite the base method's result.</summary>
@@ -57,7 +55,7 @@ namespace FarmTypeManager
             }
 
             /// <summary>An override that produces customizable items instead of the normal artifact spot object(s).</summary>
-            public override bool performToolAction(Tool t, GameLocation location)
+            public override bool performToolAction(Tool t)
             {
                 //imitate the base method's initial validation process
                 if (this.isTemporarilyInvisible)
@@ -65,14 +63,18 @@ namespace FarmTypeManager
 
                 if (t is Hoe) //if the buried items are being dug up
                 {
-                    releaseContents(location); //drop this object's contents at the given location
+                    GameLocation location = Location;
+                    if (location == null) return false;
+                    Vector2 tile = TileLocation;
+
+                    releaseContents();
 
                     //perform the base method's other artifact spot tasks
-                    if (!location.terrainFeatures.ContainsKey(tileLocation))
-                        location.makeHoeDirt(tileLocation, false); //NOTE: modified to "false" to minimize hoedirt creation on inappropriate tiles
-                    location.playSound("hoeHit", NetAudio.SoundContext.Default);
-                    if (location.objects.ContainsKey(tileLocation))
-                        location.objects.Remove(tileLocation);
+                    if (!location.terrainFeatures.ContainsKey(tile))
+                        location.makeHoeDirt(tile, false);
+                    playNearbySoundAll("hoeHit");
+                    if (location.objects.ContainsKey(tile))
+                        location.objects.Remove(tile);
                 }
 
 
@@ -82,7 +84,7 @@ namespace FarmTypeManager
             /// <summary>Drops the items from this object's "items" list.</summary>
             /// <param name="location">The location of this object.</param>
             /// <remarks>This replaces the method's original behavior and no longer takes Farmer as an argument.</remarks>
-            public void releaseContents(GameLocation location)
+            public void releaseContents()
             {
                 if (Items == null || Items.Count < 1) { return; } //if there are no items listed, do nothing
 
@@ -90,7 +92,7 @@ namespace FarmTypeManager
 
                 foreach (Item item in Items) //for each item in this container's item list
                 {
-                    Game1.createItemDebris(item, itemPosition, Utility.RNG.Next(4), location); //spawn the item as "debris" at this location
+                    Game1.createItemDebris(item, itemPosition, Utility.RNG.Next(4), Location); //spawn the item as "debris" at this location
                 }
             }
         }

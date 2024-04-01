@@ -21,6 +21,6 @@ namespace CustomKissingMod
         public string Name { get; set; }
         public int Frame { get; set; }
         public bool FrameDirectionRight { get; set; }
-        public int? RequiredEvent { get; set; }
+        public string RequiredEvent { get; set; }
     }
 }

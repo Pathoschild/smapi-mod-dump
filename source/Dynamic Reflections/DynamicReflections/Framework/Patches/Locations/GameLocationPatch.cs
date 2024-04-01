@@ -100,7 +100,7 @@ namespace DynamicReflections.Framework.Patches.Tools
                 return;
             }
 
-            var playerTilePosition = Game1.player.getTileLocationPoint();
+            var playerTilePosition = Game1.player.TilePoint;
             if (__instance.lastTouchActionLocation.Equals(Vector2.Zero) && Int32.TryParse(__instance.doesTileHaveProperty(playerTilePosition.X, playerTilePosition.Y, "PuddleIndex", "Back"), out int puddleIndex) && puddleIndex != PuddleManager.DEFAULT_PUDDLE_INDEX)
             {
                 float xOffset = Game1.player.FacingDirection == 3 ? 64f : 0f;
@@ -117,7 +117,7 @@ namespace DynamicReflections.Framework.Patches.Tools
                         break;
                 }
 
-                TemporaryAnimatedSprite splashSprite = new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(0, 0, 64, 64), Game1.random.Next(50, 100), 9, 1, new Vector2(Game1.player.getStandingX() - xOffset, Game1.player.getStandingY() - yOffset), flicker: false, flipped: false, 0f, 0f, DynamicReflections.currentPuddleSettings.RippleColor, 1f, 0f, 0f, 0f);
+                TemporaryAnimatedSprite splashSprite = new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(0, 0, 64, 64), Game1.random.Next(50, 100), 9, 1, new Vector2(Game1.player.StandingPixel.X - xOffset, Game1.player.StandingPixel.Y - yOffset), flicker: false, flipped: false, 0f, 0f, DynamicReflections.currentPuddleSettings.RippleColor, 1f, 0f, 0f, 0f);
                 splashSprite.acceleration = new Vector2(Game1.player.xVelocity, Game1.player.yVelocity);
                 DynamicReflections.puddleManager.puddleRippleSprites.Add(splashSprite);
 

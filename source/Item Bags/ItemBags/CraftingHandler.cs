@@ -13,9 +13,11 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,11 +71,11 @@ namespace ItemBags
             List<ItemBag> SearchedBags = BagsInInventory.ToList();
 
             //  Get the "_materialContainers" protected field that defines additional item containers to search for when using up materials during crafting
-            IReflectedField<List<Chest>> ReflectionResult = Helper.Reflection.GetField<List<Chest>>(CraftingMenu, "_materialContainers", true);
-            List<Chest> MaterialContainers = ReflectionResult.GetValue();
+            IReflectedField<List<IInventory>> ReflectionResult = Helper.Reflection.GetField<List<IInventory>>(CraftingMenu, nameof(CraftingPage._materialContainers), true);
+            List<IInventory> MaterialContainers = ReflectionResult.GetValue();
             if (MaterialContainers != null)
             {
-                SearchedBags.AddRange(MaterialContainers.SelectMany(x => x.items).Where(x => x != null && x is ItemBag).Cast<ItemBag>());
+                SearchedBags.AddRange(MaterialContainers.SelectMany(x => x).Where(x => x != null && x is ItemBag).Cast<ItemBag>());
             }
 
             if (SearchedBags.Any())
@@ -82,7 +84,7 @@ namespace ItemBags
 
                 if (MaterialContainers == null)
                 {
-                    MaterialContainers = new List<Chest>();
+                    MaterialContainers = new List<IInventory>();
                     ReflectionResult.SetValue(MaterialContainers);
                 }
 
@@ -95,7 +97,7 @@ namespace ItemBags
                     {
                         foreach (ItemBag NestedBag in OB.NestedBags.Where(x => AllowUsingBundleBagItemsForCrafting || !(x is BundleBag)))
                         {
-                            List<Item> TemporaryChestContents = new List<Item>();
+                            List<Item> TempItems = new List<Item>();
 
                             foreach (Object Item in NestedBag.Contents)
                             {
@@ -118,21 +120,22 @@ namespace ItemBags
                                     }
 
                                     SplitStacks.Add(Item, Chunks);
-                                    TemporaryChestContents.AddRange(Chunks);
+                                    TempItems.AddRange(Chunks);
                                 }
                                 else
                                 {
-                                    TemporaryChestContents.Add(Item);
+                                    TempItems.Add(Item);
                                 }
                             }
 
-                            Chest TempChest = new Chest(0, TemporaryChestContents, Vector2.Zero, false, 0);
-                            MaterialContainers.Add(TempChest);
+                            Inventory TempInventory = new Inventory();
+                            TempInventory.AddRange(TempItems);
+                            MaterialContainers.Add(TempInventory);
                         }
                     }
                     else
                     {
-                        List<Item> TemporaryChestContents = new List<Item>();
+                        List<Item> TempItems = new List<Item>();
 
                         foreach (Object Item in IB.Contents)
                         {
@@ -155,16 +158,17 @@ namespace ItemBags
                                 }
 
                                 SplitStacks.Add(Item, Chunks);
-                                TemporaryChestContents.AddRange(Chunks);
+                                TempItems.AddRange(Chunks);
                             }
                             else
                             {
-                                TemporaryChestContents.Add(Item);
+                                TempItems.Add(Item);
                             }
                         }
 
-                        Chest TempChest = new Chest(0, TemporaryChestContents, Vector2.Zero, false, 0);
-                        MaterialContainers.Add(TempChest);
+                        Inventory TempInventory = new Inventory();
+                        TempInventory.AddRange(TempItems);
+                        MaterialContainers.Add(TempInventory);
                     }
                 }
             }
@@ -230,7 +234,7 @@ namespace ItemBags
             try
             {
                 GameMenu GM = Game1.activeClickableMenu as GameMenu;
-                if (CurrentTab.HasValue && CurrentTab.Value == GameMenu.craftingTab)
+                if (CurrentTab.HasValue && CurrentTab.Value == GameMenu.craftingTab && GM.pages.Any(x => x is CraftingPage))
                 {
                     OnCraftingPageActivated(GM.pages.First(x => x is CraftingPage) as CraftingPage);
                 }

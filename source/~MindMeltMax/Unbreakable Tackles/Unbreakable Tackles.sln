@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unbreakable Tackles", "Unbreakable Tackles.csproj", "{682DE669-8DC3-493E-87D0-2177F8A23E60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unbreakable Tackles", "Unbreakable Tackles.csproj", "{D4F5D47C-2E1D-471F-8740-6B4107FEE9D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{682DE669-8DC3-493E-87D0-2177F8A23E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{682DE669-8DC3-493E-87D0-2177F8A23E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{682DE669-8DC3-493E-87D0-2177F8A23E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{682DE669-8DC3-493E-87D0-2177F8A23E60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F5D47C-2E1D-471F-8740-6B4107FEE9D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F5D47C-2E1D-471F-8740-6B4107FEE9D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F5D47C-2E1D-471F-8740-6B4107FEE9D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F5D47C-2E1D-471F-8740-6B4107FEE9D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4FBA79BD-4033-4AD4-87D9-0BBA6F55925F}
+		SolutionGuid = {1489995D-2709-4D6D-8933-A028D2C62617}
 	EndGlobalSection
 EndGlobal

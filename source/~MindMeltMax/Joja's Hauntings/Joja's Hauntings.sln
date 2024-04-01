@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joja's Hauntings", "Joja's Hauntings.csproj", "{18A2B3D4-73CD-4E32-88FB-E5F357F153BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joja's Hauntings", "Joja's Hauntings.csproj", "{B0E44019-648D-499D-8E96-9F772F70C93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{18A2B3D4-73CD-4E32-88FB-E5F357F153BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18A2B3D4-73CD-4E32-88FB-E5F357F153BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18A2B3D4-73CD-4E32-88FB-E5F357F153BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18A2B3D4-73CD-4E32-88FB-E5F357F153BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0E44019-648D-499D-8E96-9F772F70C93C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0E44019-648D-499D-8E96-9F772F70C93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0E44019-648D-499D-8E96-9F772F70C93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0E44019-648D-499D-8E96-9F772F70C93C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7717CE1C-0729-4F06-9F2D-97F21D5E89E8}
+		SolutionGuid = {93746B8A-6C3E-4629-B3D6-6230A3F8A073}
 	EndGlobalSection
 EndGlobal

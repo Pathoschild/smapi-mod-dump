@@ -31,7 +31,7 @@ namespace SmartBuilding.HarmonyPatches
             return true;
         }
 
-        public static bool PlacementAction_Prefix(Object __instance, GameLocation location, int x, int y, Farmer who)
+        public static bool PlacementAction_Prefix(SObject __instance, GameLocation location, int x, int y, Farmer who)
         {
             return ShouldPerformAction();
         }

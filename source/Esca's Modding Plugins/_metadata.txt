@@ -6,9 +6,9 @@ mods:
    Esca's Modding Plugins
 
 latest commit:
-   commit ddd485ec487b962d26a1535279f701ca042d58ad
+   commit e64647dc670b6436d276a962f62fe2ed42262d60
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Thu Apr 7 17:06:18 2022 -0500
+   Date:   Sun Mar 24 13:17:32 2024 -0500
    
-       Update to SMAPI 3.14 content system, normalize method names
+       Add i18n info to readme
    

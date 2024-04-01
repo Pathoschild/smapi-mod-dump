@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/2Retr0/PlacementPlus
+**
+*************************************************/
+
+{
+  "Name":              "PlacementPlus",
+  "Author":            "2Retr0",
+  "Version":           "2.1.0",
+  "Description":       "Vastly broadens where objects and buildings can be placed!",
+  "UniqueID":          "2Retr0.PlacementPlus",
+  "EntryDll":          "PlacementPlus.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys":      [ "Nexus:8798", 
+                       "GitHub:2Retr0/PlacementPlus" ]
+}

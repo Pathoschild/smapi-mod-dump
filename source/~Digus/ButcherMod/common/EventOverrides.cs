@@ -50,7 +50,7 @@ namespace AnimalHusbandryMod.common
 
         private static bool _shouldTimePass = true;
 
-        public static void addSpecificTemporarySprite(Event __instance, ref string key, GameLocation location, string[] split)
+        public static void addSpecificTemporarySprite(Event __instance, ref string key, GameLocation location, string[] args)
         {
             if (!key.StartsWith("animalContest"))
             {
@@ -62,16 +62,16 @@ namespace AnimalHusbandryMod.common
                 String outdoorsTextureName = null;
                 switch (SDate.Now().Season)
                 {
-                    case "spring":
+                    case Season.Spring:
                         outdoorsTextureName = spring_outdoorsTileSheetName;
                         break;
-                    case "summer":
+                    case Season.Summer:
                         outdoorsTextureName = summer_outdoorsTileSheetName;
                         break;
-                    case "fall":
+                    case Season.Fall:
                         outdoorsTextureName = fall_outdoorsTileSheetName;
                         break;
-                    case "winter":
+                    case Season.Winter:
                         outdoorsTextureName = winter_outdoorsTileSheetName;
                         break;
                 }
@@ -195,14 +195,14 @@ namespace AnimalHusbandryMod.common
                     new Vector2(31f, 65f) * (float)Game1.tileSize + new Vector2(3f, 3f) * 4f, false, false,
                     (float)((66 * Game1.tileSize) / 10000f) + 0.00002f, 0.0f, Color.White, (float)Game1.pixelZoom, 0.0f, 0.0f, 0.0f, false)
                 {
-                    id = 11f
+                    id = 11
                 });
                 location.TemporarySprites.Add(new TemporaryAnimatedSprite(looseSprites_cursorsName,
                     new Microsoft.Xna.Framework.Rectangle(497, 1918, 11, 11), 999f, 1, 9999,
                     new Vector2(30f, 66f) * (float)Game1.tileSize + new Vector2(32f, -8f), false, false,
                     1f, 0.0f, Color.White, (float)Game1.pixelZoom, 0.0f, 0.0f, 0.0f, false)
                 {
-                    id = 12f
+                    id = 12
                 });
 
             }
@@ -216,7 +216,7 @@ namespace AnimalHusbandryMod.common
                     new Vector2(31f, 65f) * (float)Game1.tileSize + new Vector2(3f, 3f) * 4f, false, false,
                     (float)((66 * Game1.tileSize) / 10000f) + 0.00002f, 0.0f, Color.White, (float)Game1.pixelZoom, 0.0f, 0.0f, 0.0f, false)
                 {
-                    id = 10f
+                    id = 10
                 });
             }
             else if (key == "animalContestJoshDog")
@@ -224,16 +224,16 @@ namespace AnimalHusbandryMod.common
                 String townTextureName = null;
                 switch (SDate.Now().Season)
                 {
-                    case "spring":
+                    case Season.Spring:
                         townTextureName = spring_towntName;
                         break;
-                    case "summer":
+                    case Season.Summer:
                         townTextureName = summer_towntName;
                         break;
-                    case "fall":
+                    case Season.Fall:
                         townTextureName = fall_towntName;
                         break;
-                    case "winter":
+                    case Season.Winter:
                         townTextureName = winter_towntName;
                         break;
                 }
@@ -457,13 +457,13 @@ namespace AnimalHusbandryMod.common
             }
             else if (key == "animalContestRabbitShow")
             {
-                bool flipped = split.Length > 4 && Convert.ToBoolean(split[4]);
+                bool flipped = args.Length > 4 && Convert.ToBoolean(args[4]);
                 location.TemporarySprites.Add(new TemporaryAnimatedSprite(tileSheets_critters,
                     new Microsoft.Xna.Framework.Rectangle(256, 192, 32, 32), 9999f, 1, 999,
-                    new Vector2(Convert.ToSingle(split[2]), Convert.ToSingle(split[3])) * (float)Game1.tileSize + new Vector2(flipped? -7f: -10f, -20f) * 4f, false, flipped,
+                    new Vector2(Convert.ToSingle(args[2]), Convert.ToSingle(args[3])) * (float)Game1.tileSize + new Vector2(flipped? -7f: -10f, -20f) * 4f, false, flipped,
                     (float)((64 * Game1.tileSize) / 10000f) + 0.00002f, 0.0f, Color.White, (float)Game1.pixelZoom, 0.0f, 0.0f, 0.0f, false)
                 {
-                    id = split.Length > 5 ? 5 : 0
+                    id = args.Length > 5 ? 5 : 0
                 });
             }
             else if (key == "animalContestRabbitRun")
@@ -577,7 +577,7 @@ namespace AnimalHusbandryMod.common
         {
             try
             {
-                if (__instance.id == AnimalContestEventBuilder.GetEventId(SDate.Now()))
+                if (__instance.id == AnimalContestEventBuilder.GetEventId(SDate.Now()).ToString())
                 {
                     void OnClose(Farmer who = null)
                     {
@@ -594,8 +594,8 @@ namespace AnimalHusbandryMod.common
                     }
                     if (Game1.IsMultiplayer)
                     {
-                        Game1.player.team.SetLocalReady("animalContestEnd", ready: true);
-                        if (!Game1.player.team.IsReady("animalContestEnd"))
+                        Game1.netReady.SetLocalReady("animalContestEnd", ready: true);
+                        if (!Game1.netReady.IsReady("animalContestEnd"))
                         {
                             ReadyCheckDialog readyCheckDialog = new ReadyCheckDialog("animalContestEnd", allowCancel: false, onConfirm: OnClose);
                             Game1.activeClickableMenu = readyCheckDialog;

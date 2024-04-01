@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/foxwhite25/Stardew-Ultimate-Fertilizer
+**
+*************************************************/
+
+{
+  "Name": "Ultimate Fertilizer",
+  "Author": "fox_white25",
+  "Version": "1.0.4",
+  "Description": "Modify aspects of fertilizers in a configurable way",
+  "UniqueID": "fox_white25.ultimate_fertilizer",
+  "EntryDll": "UltimateFertilizer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["nexus:21318"]
+}

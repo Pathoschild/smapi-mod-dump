@@ -12,7 +12,7 @@ for queries and analysis.**
 - Fixed custom greetings not working.
 
 ## Custom trigger actions:
-- `mistyspring.dynamicdialogues_DoEvent <eventID> <location> [checkprec] [checkseen] [reset_if_not_played]`
+- `mistyspring.dynamicdialogues_DoEvent <eventID> <location> [preconditions] [checkseen] [reset_if_not_played]`
   
   Plays an event. Can only be run from trigger actions during day start.
 
@@ -24,7 +24,7 @@ for queries and analysis.**
 
 - `mistyspring.dynamicdialogues_Speak <NPC> <key> [shouldOverride]`
 
-  Same as events' `speak` command.
+  Same as events' `Speak`, but using a key from character's Dialogue file instead. If `shouldOverride` is true, it will override any ongoing dialogue/menu.
 
 
 - `mistyspring.dynamicdialogues_AddExp <player> <skill> <amt>`
@@ -54,13 +54,49 @@ for queries and analysis.**
   Adds a fire TAS at the given position, extra X/Y can be used for centering on bigger objects
 
 
-- `playerFind <key> [timer]` (Experimental)
+- `objectHunt <ID>`
 
-  An 'object hunt'-ish command, gives the player control back temporarily until they find certain items in the map (or time runs out).
-  Must be accompanied by an edit to `mistyspring.dynamicdialogues\\Commands\\objectHunt`. Documentation can be found [here](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/event-commands.md#object-hunts).
+  Lets you create object hunts, akin to egg hunt and haley's event. To make these, see [the documentation](https://github.com/misty-spring/StardewMods/blob/main/DynamicDialogues/docs/creating-objecthunts.md).
+
+
+- `health <set/add> <amount>`
+  Lets you set/add to player health, depending on what you chose.
+
+
+- `stamina <set/add> <amount>`
+  Lets you set/add to player health, depending on what you chose.
+
+
+- `setDating <who> [breakup]`
+  Changes the relationship with a NPC to dating. If `breakup` is true, they'll break up like a bouquet would.
+  (Note: if they're not datable, this will do nothing.)
+
+
+- `end lastSleepLocation`
+  Ends the event and returns to the last sleeping location, on the last slept bed.
+
+
+- `end warp [x] [y]`
+  Ends the event and warps to desired location. If no arguments are given, the default entry point will be used.
+
+
+- `end house` / `end farmhouse`
+  Ends the event and returns to the farm/farmhouse (as given), on the default entry point.
   
 ## Custom GSQs
 
 - `mistyspring.dynamicdialogues_PlayerWearing <player> <type> <item>`
 
   Checks if the player is wearing the given item. For example, `Current Hat CustomHat` will check if current player is wearing a hat with ID CustomHat.
+
+
+- `mistyspring.dynamicdialogues_ToolUpgrade <player> <tool> [min] [max] [recursive]`
+
+  Checks if the given tool is in the upgrade range. Must be in inventory- if `recursive`, it'll search on chests too.
+
+  For example, `Any Axe 1 3 true` will check whether any player has an axe between copper and gold.
+
+## Item behavior
+You can make items affect others (via the inventory). This includes a few things like: changing quality, price, context tags, replacing the item altogether, etc.
+
+The documentation for it is [here](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/menu-item-actions.md).

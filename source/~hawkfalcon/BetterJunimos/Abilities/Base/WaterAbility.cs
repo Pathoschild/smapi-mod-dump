@@ -46,8 +46,8 @@ namespace BetterJunimos.Abilities {
             return true;
         }
 
-        public List<int> RequiredItems() {
-            return new List<int>();
+        public List<string> RequiredItems() {
+            return new List<string>();
         }
         
         

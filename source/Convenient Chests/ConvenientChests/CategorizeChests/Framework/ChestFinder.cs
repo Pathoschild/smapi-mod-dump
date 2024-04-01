@@ -50,10 +50,10 @@ namespace ConvenientChests.CategorizeChests.Framework
             if (address.LocationType != ChestLocationType.Building)
                 return location;
             
-            if (!(location is BuildableGameLocation buildableLocation))
+            if (!(location is GameLocation buildableLocation))
                 throw new InvalidSaveDataException($"Can't find any buildings in location named {location.Name}");
                 
-            var building = buildableLocation.buildings.SingleOrDefault(b => b.nameOfIndoors == address.BuildingName);
+            var building = buildableLocation.buildings.SingleOrDefault(b => b.GetIndoorsName() == address.BuildingName);
             if (building == null)
                 throw new InvalidSaveDataException($"Save data contains building data in {address.BuildingName} but building does not exist");
 

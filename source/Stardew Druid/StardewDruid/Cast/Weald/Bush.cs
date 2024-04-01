@@ -9,9 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Event.World;
+using StardewDruid.Map;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using System;
 using System.Collections.Generic;
 
 namespace StardewDruid.Cast.Weald
@@ -19,16 +20,16 @@ namespace StardewDruid.Cast.Weald
     internal class Bush : CastHandle
     {
 
-        private readonly StardewValley.TerrainFeatures.Bush bushFeature;
+        public StardewValley.TerrainFeatures.Bush bushFeature;
 
-        public Bush(Vector2 target, Rite rite, StardewValley.TerrainFeatures.Bush bush)
-            : base(target, rite)
+        public Bush(Vector2 target,  StardewValley.TerrainFeatures.Bush bush)
+            : base(target)
         {
 
 
             castCost = 6;
 
-            if (rite.caster.ForagingLevel >= 8)
+            if (Game1.player.ForagingLevel >= 8)
             {
 
                 castCost = 4;
@@ -42,89 +43,52 @@ namespace StardewDruid.Cast.Weald
         public override void CastEffect()
         {
 
-            if (!riteData.castTask.ContainsKey("masterCreature"))
+            if (bushFeature == null)
+            {
+            
+                return;
+         
+            }
+         
+            if (!Mod.instance.rite.castTask.ContainsKey("masterCreature"))
             {
 
                 Mod.instance.UpdateTask("lessonCreature", 1);
 
             }
 
-            /*if (randomIndex.Next(10) == 0 && riteData.spawnIndex["wildspawn"] && Mod.instance.EffectDisabled("Wildspawn"))
+            bushFeature.performToolAction(null, 1, targetVector);
+
+            if(bushFeature.size.Value == 3)
             {
 
-                if (!Mod.instance.eventRegister.ContainsKey("wildspawn"))
+                int age = bushFeature.getAge();
+
+                if (age < 20)
                 {
 
-                    new Event.World.Wildspawn(targetVector, riteData).EventTrigger();
+                    int newage = age++;
+
+                    int newdate = Math.Max(1,(int)Game1.stats.DaysPlayed - newage);
+
+                    targetLocation.terrainFeatures.Remove(targetVector);
+
+                    targetLocation.terrainFeatures.Add(targetVector, new StardewValley.TerrainFeatures.Bush(targetVector,3,targetLocation,newdate));
+
+                    return;
 
                 }
 
-                (Mod.instance.eventRegister["wildspawn"] as Wildspawn).SpawnMonster(targetLocation, targetVector, new() { 99, }, "bush");
+            }
 
-                //StardewValley.Monsters.Monster spawnMonster = Mod.instance.SpawnMonster(targetLocation, targetVector, new() { 99, }, "bush");
-
-            }*/
-
-            bushFeature.performToolAction(null, 1, targetVector, null);
-
-            int probability = randomIndex.Next(25 - riteData.caster.ForagingLevel);
+            int probability = randomIndex.Next(25 - Mod.instance.rite.caster.ForagingLevel);
 
             if (probability > 1)
             {
                 return;
             }
 
-            int objectIndex;
-
-            if (probability == 0)
-            {
-
-                switch (Game1.currentSeason)
-                {
-
-                    case "spring":
-
-                        objectIndex = 296; // salmonberry
-
-                        break;
-
-                    case "summer":
-
-                        objectIndex = 398; // grape
-
-                        break;
-
-                    case "fall":
-
-                        objectIndex = 410; // blackberry
-
-                        break;
-
-                    default:
-
-                        objectIndex = 414; // crystal fruit
-
-                        break;
-
-                }
-
-            }
-            else
-            {
-
-                Dictionary<int, int> objectIndexes = new()
-                {
-                    [0] = 257, // 257 morel
-                    [1] = 257, // 257 morel
-                    [2] = 281, // 281 chanterelle
-                    [3] = 404, // 404 mushroom
-                    [4] = 404, // 404 mushroom
-
-                };
-
-                objectIndex = objectIndexes[randomIndex.Next(5)];
-
-            }
+            int objectIndex = SpawnData.RandomBushForage(bushFeature,probability);
 
             int randomQuality = randomIndex.Next(11 - targetPlayer.foragingLevel.Value);
 
@@ -168,7 +132,7 @@ namespace StardewDruid.Cast.Weald
 
             targetPlayer.gainExperience(2, 2); // gain foraging experience
 
-            bushFeature.performToolAction(null, 1, targetVector, null);
+            bushFeature.performToolAction(null, 1, targetVector);
 
             if (Game1.currentSeason == "summer")
             {
@@ -181,9 +145,9 @@ namespace StardewDruid.Cast.Weald
             else
             {
 
-                Game1.currentLocation.critters.Add(new Butterfly(targetVector + new Vector2(randomIndex.Next(-2, 3), randomIndex.Next(-2, 3)), false));
+                Game1.currentLocation.critters.Add(new Butterfly(targetLocation,targetVector + new Vector2(randomIndex.Next(-2, 3), randomIndex.Next(-2, 3)), false));
 
-                Game1.currentLocation.critters.Add(new Butterfly(targetVector + new Vector2(randomIndex.Next(-2, 3), randomIndex.Next(-2, 3)), false));
+                Game1.currentLocation.critters.Add(new Butterfly(targetLocation,targetVector + new Vector2(randomIndex.Next(-2, 3), randomIndex.Next(-2, 3)), false));
 
             }
 

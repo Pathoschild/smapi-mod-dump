@@ -20,9 +20,6 @@ namespace FlipBuildings.Utilities
 	{
 		public static bool TryToFlip(Building building, bool drawLayers = false)
 		{
-			string modDataKey = !drawLayers ? ModDataKeys.FLIPPED : ModDataKeys.FLIPPED_DRAWLAYERS;
-			string sound = !drawLayers ? "axchop" :  "axe";
-
 			if (building != null)
 			{
 				if (!CanBeFlipped(building, out string cannotFlipMessage))
@@ -31,19 +28,34 @@ namespace FlipBuildings.Utilities
 					Game1.playSound("cancel");
 					return false;
 				}
-				if (!building.modData.ContainsKey(modDataKey))
+				if (!drawLayers)
 				{
-					building.modData.Add(modDataKey, "T");
+					if (!building.modData.ContainsKey(ModDataKeys.FLIPPED))
+					{
+						building.modData.Add(ModDataKeys.FLIPPED, "T");
+					}
+					else
+					{
+						building.modData.Remove(ModDataKeys.FLIPPED);
+					}
+				}
+				if (!building.modData.ContainsKey(ModDataKeys.FLIPPED_DRAWLAYERS))
+				{
+					building.modData.Add(ModDataKeys.FLIPPED_DRAWLAYERS, "T");
 				}
 				else
 				{
-					building.modData.Remove(modDataKey);
+					building.modData.Remove(ModDataKeys.FLIPPED_DRAWLAYERS);
 				}
 				if (!drawLayers)
 				{
 					Flip(building);
+					Game1.playSound("axchop");
 				}
-				Game1.playSound(sound);
+				else
+				{
+					Game1.playSound("axe");
+				}
 				return true;
 			}
 			return false;
@@ -203,6 +215,13 @@ namespace FlipBuildings.Utilities
 						}
 					}
 				}
+				return false;
+			}
+
+			// Temporary restriction to vanilla buildings
+			if (building.buildingType.Value != "Junimo Hut" && building.buildingType.Value != "Earth Obelisk" && building.buildingType.Value != "Water Obelisk" && building.buildingType.Value != "Desert Obelisk" && building.buildingType.Value != "Island Obelisk" && building.buildingType.Value != "Gold Clock" && building.buildingType.Value != "Coop" && building.buildingType.Value != "Barn" && building.buildingType.Value != "Well" && building.buildingType.Value != "Silo" && building.buildingType.Value != "Mill" && building.buildingType.Value != "Shed" && building.buildingType.Value != "Fish Pond" && building.buildingType.Value != "Cabin" && building.buildingType.Value != "Pet Bowl" && building.buildingType.Value != "Stable" && building.buildingType.Value != "Slime Hutch" && building.buildingType.Value != "Big Coop" && building.buildingType.Value != "Deluxe Coop" && building.buildingType.Value != "Big Barn" && building.buildingType.Value != "Deluxe Barn" && building.buildingType.Value != "Big Shed" && building.buildingType.Value != "Shipping Bin" && building.buildingType.Value != "Farmhouse" && building.buildingType.Value != "Greenhouse")
+			{
+				cannotFlipMessage = "The mod is temporarily restricted to vanilla buildings";
 				return false;
 			}
 

@@ -1,0 +1,7 @@
+{
+    // Translation provided by: <leave your name or nexus/discord username here>
+    DestroyRingChestsCommand: "Removes any remaining ring chests used for storing player's rings. Any items contained therein will be dropped at your feet.",
+    OpenForgeCommand: "Opens the forge menu.",
+    RingsName: "Rings", RingsTooltip: "How many ring slots are available.", 
+    BonusTrinketName: "Bonus trinket", BonusTrinketTooltip: "Whether you get two trinket slots for the price of one.",
+}

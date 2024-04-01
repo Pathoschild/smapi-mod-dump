@@ -6,9 +6,9 @@ mods:
    Minecart Patcher
 
 latest commit:
-   commit 4c89e2d1f3cea1fc3fb9bed8d97e3eccdf6180d5
-   Author: bwdy <47769190+bwdy@users.noreply.github.com>
-   Date:   Sat May 20 11:33:38 2023 -0800
+   commit 1535d13e9e83e84b9cd0d58f22281eec7488f058
+   Author: Haphestia <47769190+Haphestia@users.noreply.github.com>
+   Date:   Fri Mar 22 23:09:00 2024 -0800
    
-       bump version for hotfix release
+       Update LICENSE for username change
    

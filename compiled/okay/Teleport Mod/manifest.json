@@ -1,0 +1,9 @@
+{
+  "Name": "Teleport Mod",
+  "Author": "Falson",
+  "Version": "1.0.5",
+  "UniqueID": "Falson.TeleportMod",
+  "Description": "Mod to let you teleport back and forth between home and previous location, for stamina cost. Also speed modifier",
+  "MinimumApiLevel": "3.0.0",
+  "EntryDll": "TeleportMod.dll"
+}

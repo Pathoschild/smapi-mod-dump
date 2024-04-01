@@ -259,7 +259,7 @@ namespace BankOfFerngill.Framework.Menu
             base.draw(spriteBatch);
 
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
-            CommonHelper.DrawTab(_title.bounds.X, _title.bounds.Y, Game1.dialogueFont, _title.name, 1);
+            //CommonHelper.DrawTab(spriteBatch, _title.bounds.X, _title.bounds.Y, Game1.dialogueFont, _title.name, 1);
             spriteBatch.End();
             //End Title Draw
             //Start Page Draw
@@ -276,7 +276,7 @@ namespace BankOfFerngill.Framework.Menu
                 foreach (var tab in _tabs)
                 {
                     var tabId = GetTabId(tab);
-                    CommonHelper.DrawTab(tab.bounds.X + tab.bounds.Width, tab.bounds.Y, Game1.smallFont, tab.label, 2, CurrentTab == tabId ? 1F : 0.7F);
+                    //CommonHelper.DrawTab(spriteBatch, tab.bounds.X + tab.bounds.Width, tab.bounds.Y, Game1.smallFont, tab.label, 2, CurrentTab == tabId ? 1F : 0.7F);
                 }
 
                 _upArrow.draw(spriteBatch);

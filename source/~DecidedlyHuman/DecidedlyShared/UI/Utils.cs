@@ -16,7 +16,7 @@ namespace DecidedlyShared.Ui;
 public class Utils
 {
     public static void DrawBox(SpriteBatch batch, Texture2D texture, Rectangle sourceRect, Rectangle bounds,
-        int topEdgeHeight = 4, int leftEdgeWidth = 4, int rightEdgeWidth = 4, int bottomEdgeHeight = 4)
+        int topEdgeHeight = 16, int leftEdgeWidth = 12, int rightEdgeWidth = 16, int bottomEdgeHeight = 12)
     {
         DrawBox(
             batch,
@@ -35,7 +35,7 @@ public class Utils
 
     public static void DrawBox(SpriteBatch batch, Texture2D texture, Rectangle sourceRect, int xPos, int yPos,
         int width,
-        int height, int topEdgeHeight = 4, int leftEdgeWidth = 4, int rightEdgeWidth = 4, int bottomEdgeHeight = 4)
+        int height, int topEdgeHeight = 16, int leftEdgeWidth = 12, int rightEdgeWidth = 16, int bottomEdgeHeight = 12)
     {
         int topEdgeWidth = (width - (leftEdgeWidth + rightEdgeWidth));
         int leftEdgeHeight = height - (topEdgeHeight + bottomEdgeHeight);

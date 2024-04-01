@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-// Copyright 2020-2022 Jamie Taylor
+// Copyright 2020-2023 Jamie Taylor
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -104,6 +104,7 @@ namespace RangeHighlight {
 
         internal class DefaultShapes {
             private readonly IRangeHighlightAPI api;
+            public uint junimoHutDefaultRange;
             public readonly bool[,] sprinkler = {
                 { false, true, false},
                 { true, false, true },
@@ -111,9 +112,11 @@ namespace RangeHighlight {
             public readonly bool[,] qualitySprinkler;
             public readonly bool[,] iridiumSprinkler;
             public readonly bool[,] iridiumSprinklerWithNozzle;
+            private readonly Dictionary<uint, bool[,]> sprinklerRangeByRadius = new();
             public bool[,] prismaticSprinkler;
             public bool[,] radioactiveSprinkler;
             public readonly bool[,] beehouse;
+            public readonly bool[,] mushroomLog;
             public const int scarecrowRadius = 8;
             public readonly bool[,] scarecrow;
             public const int deluxeScarecrowRadius = 16;
@@ -139,9 +142,14 @@ namespace RangeHighlight {
                 qualitySprinkler = api.GetSquareCircle(1);
                 iridiumSprinkler = api.GetSquareCircle(2);
                 iridiumSprinklerWithNozzle = api.GetSquareCircle(3);
+                sprinklerRangeByRadius.Add(0, sprinkler);
+                sprinklerRangeByRadius.Add(1, qualitySprinkler);
+                sprinklerRangeByRadius.Add(2, iridiumSprinkler);
+                sprinklerRangeByRadius.Add(3, iridiumSprinklerWithNozzle);
                 prismaticSprinkler = api.GetSquareCircle(3);
                 radioactiveSprinkler = api.GetSquareCircle(3);
                 beehouse = api.GetManhattanCircle(5);
+                mushroomLog = api.GetSquareCircle(3);
                 scarecrow = api.GetCartesianCircleWithTruncate(scarecrowRadius);
                 deluxeScarecrow = api.GetCartesianCircleWithTruncate(deluxeScarecrowRadius);
                 SetJunimoRange(8);
@@ -169,9 +177,15 @@ namespace RangeHighlight {
 
             [MemberNotNull(nameof(junimoHut))]
             public void SetJunimoRange(uint r) {
-                junimoHut = api.GetSquareCircle(r);
-                junimoHut[r - 1, r - 1] = junimoHut[r, r - 1] = junimoHut[r + 1, r - 1] = false;
-                junimoHut[r - 1, r] = junimoHut[r + 1, r] = false;
+                junimoHut = MakeJunimoShape(r);
+                junimoHutDefaultRange = r;
+            }
+
+            public bool[,] MakeJunimoShape(uint r) {
+                bool[,] result = api.GetSquareCircle(r);
+                result[r - 1, r - 1] = result[r, r - 1] = result[r + 1, r - 1] = false;
+                result[r - 1, r] = result[r + 1, r] = false;
+                return result;
             }
 
             public bool[,] GetSprinkler(string name, bool hasPressureNozzleAttached) {
@@ -182,6 +196,15 @@ namespace RangeHighlight {
                 return hasPressureNozzleAttached ? qualitySprinkler : sprinkler;
             }
 
+            public bool[,] GetSprinkler(uint radius) {
+                bool[,]? result;
+                if (!sprinklerRangeByRadius.TryGetValue(radius, out result)) {
+                    result = api.GetSquareCircle(radius);
+                    sprinklerRangeByRadius.Add(radius, result);
+                }
+                return result;
+            }
+
             public BombRange GetBomb(string name) {
                 if (name.Contains("mega")) return megaBomb;
                 if (name.Contains("cherry")) return cherryBomb;
@@ -189,34 +212,47 @@ namespace RangeHighlight {
             }
         }
 
-        internal Tuple<Color, bool[,]>? GetDefaultSprinklerHighlight(Item item, int itemID, string itemName) {
-            if (itemName.Contains("sprinkler")) {
-                bool hasPressureNozzleAttached = false;
-                if (item is StardewValley.Object obj) {
-                    var heldObj = obj.heldObject.Value;
-                    if (heldObj != null && heldObj.ParentSheetIndex == 915) {
-                        hasPressureNozzleAttached = true;
+        internal Tuple<Color, bool[,]>? GetDefaultSprinklerHighlight(Item item) {
+            if (item is StardewValley.Object obj) {
+                if (obj.IsSprinkler()) {
+                    int radius = obj.GetModifiedRadiusForSprinkler();
+                    if (radius < 0) {
+                        // nonsense
+                        return null;
                     }
+                    return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler((uint)radius));
                 }
-                return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler(itemName, hasPressureNozzleAttached));
-            } else {
-                return null;
             }
+            // Previous implementation:
+            //string itemName = item.Name.ToLowerInvariant();
+            //if (itemName.Contains("sprinkler")) {
+            //    bool hasPressureNozzleAttached = false;
+            //    if (item is StardewValley.Object obj) {
+            //        var heldObj = obj.heldObject.Value;
+            //        if (heldObj != null && heldObj.ParentSheetIndex == 915) {
+            //            hasPressureNozzleAttached = true;
+            //        }
+            //    }
+            //    return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler(itemName, hasPressureNozzleAttached));
+            //}
+            return null;
         }
         private void installDefaultHighlights() {
             api.AddBuildingRangeHighlighter("jltaylor-us.RangeHighlight/junimoHut",
                 () => config.ShowJunimoRange,
                 () => config.ShowJunimoRangeKey,
                 blueprint => {
-                    if (blueprint.name == "Junimo Hut") {
+                    if (blueprint.Id == "Junimo Hut") {
                         return new Tuple<Color, bool[,], int, int>(config.JunimoRangeTint, defaultShapes.junimoHut, 1, 1);
                     } else {
                         return null;
                     }
                 },
                 building => {
-                    if (building is JunimoHut) {
-                        return new Tuple<Color, bool[,], int, int>(config.JunimoRangeTint, defaultShapes.junimoHut, 1, 1);
+                    if (building is JunimoHut junimoHut) {
+                        // junimoHut.cropHarvestRadius can be set per-building in SDV 1.6.
+                        bool[,] shape = junimoHut.cropHarvestRadius == defaultShapes.junimoHutDefaultRange ? defaultShapes.junimoHut : defaultShapes.MakeJunimoShape((uint)junimoHut.cropHarvestRadius);
+                        return new Tuple<Color, bool[,], int, int>(config.JunimoRangeTint, shape, 1, 1);
                     } else {
                         return null;
                     }
@@ -225,7 +261,7 @@ namespace RangeHighlight {
                 () => config.ShowScarecrowRange,
                 () => config.ShowScarecrowRangeKey,
                 () => config.ShowOtherScarecrowsWhenHoldingScarecrow,
-                (item, itemID, itemName) => {
+                (item) => {
                     if (item is StardewValley.Object sobj && sobj.IsScarecrow()) {
                         int r = sobj.GetRadiusForScarecrow() - 1;
                         if (r < 0) return null; // shouldn't happen?
@@ -233,12 +269,8 @@ namespace RangeHighlight {
                             r == DefaultShapes.scarecrowRadius ? defaultShapes.scarecrow
                                 : r == DefaultShapes.deluxeScarecrowRadius ? defaultShapes.deluxeScarecrow
                                 : api.GetCartesianCircleWithTruncate((uint)r));
-                    } else if (itemName.Contains("arecrow")) {
-                        return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
-                            itemName.Contains("deluxe") ? defaultShapes.deluxeScarecrow : defaultShapes.scarecrow);
-                    } else {
-                        return null;
                     }
+                    return null;
                 });
             api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler",
                 () => config.ShowSprinklerRange,
@@ -249,27 +281,64 @@ namespace RangeHighlight {
                 () => config.ShowBeehouseRange,
                 () => config.ShowBeehouseRangeKey,
                 () => config.ShowOtherBeehousesWhenHoldingBeehouse,
-                (item, itemID, itemName) => {
-                    if (itemName.Contains("bee house")) {
-                        return new Tuple<Color, bool[,]>(config.BeehouseRangeTint, defaultShapes.beehouse);
-                    } else {
-                        return null;
+                (item) => {
+                    // This big mess finds machines that might use a nearby flower as input.
+                    // Let's assume that they are beehouses, or at least something that the
+                    // user probably wants to have highlighted like a beehouse.
+                    if (item is StardewValley.Object obj) {
+                        var machineData = obj.GetMachineData();
+                        if (machineData is not null && machineData.OutputRules is not null) {
+                            foreach (var rule in machineData.OutputRules) {
+                                foreach (var outputItem in rule.OutputItem) {
+                                    foreach (string s in ArgUtility.SplitBySpace(outputItem.ItemId)) {
+                                        if (s == "NEARBY_FLOWER_ID") {
+                                            return new Tuple<Color, bool[,]>(config.BeehouseRangeTint, defaultShapes.beehouse);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
+                    // Previously we just matched on the name, which is a whole lot simpler.
+                    //if (item.Name.ToLowerInvariant().Contains("bee house")) {
+                    //    return new Tuple<Color, bool[,]>(config.BeehouseRangeTint, defaultShapes.beehouse);
+                    //}
+                    return null;
                 });
+            api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/mushroom-log",
+                () => config.ShowMushroomLogRange,
+                () => config.ShowMushroomLogRangeKey,
+                () => config.ShowOtherMushroomLogsWhenHoldingMushroomLog,
+                (item) => {
+                    if (item.QualifiedItemId == "(BC)MushroomLog") {
+                        return new Tuple<Color, bool[,]>(config.MushroomLogRangeTint, defaultShapes.mushroomLog);
+                    }
+                    // we _could_ instead search the object's MachineData (as beehouses do above) and look for
+                    // things with an output rule that has an outputItem that has an OutputMethod that is
+                    // StardewValley.Object.OutputMushroomLog, but that seems awfully complicated given that
+                    // any modded item defined that way might not _want_ a highlight in the same color.
+                    return null;
+                });
+            bool bombsShownThisFrame = false;
             api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/bomb",
                 () => config.ShowBombRange && config.showHeldBombRange,
                 () => new KeybindList(),
                 () => true,
-                null,
-                (item, itemID, itemName) => {
-                    if (!Utility.IsNormalObjectAtParentSheetIndex(item, item.ParentSheetIndex)) return null;
-                    return bombHelper(itemID, 0);
+                () => { bombsShownThisFrame = false; },
+                (item) => {
+                    if (config.hideHeldBombWhenPlacedAreTicking && bombsShownThisFrame) return null;
+                    if (!Utility.IsNormalObjectAtParentSheetIndex(item, item.ItemId)) return null;
+                    return bombHelper(item.ParentSheetIndex, 0);
                 },
                 null);
             api.AddTemporaryAnimatedSpriteHighlighter("jltaylor-us.RangeHighlight/bomb",
                 () => config.ShowBombRange && config.showPlacedBombRange,
                 sprite => {
-                    return bombHelper(sprite.initialParentTileIndex, sprite.bombRadius);
+                    var result = bombHelper(sprite.initialParentTileIndex, sprite.bombRadius);
+                    if (result is not null) {
+                        bombsShownThisFrame = true;
+                    }
+                    return result;
                 });
         }
 

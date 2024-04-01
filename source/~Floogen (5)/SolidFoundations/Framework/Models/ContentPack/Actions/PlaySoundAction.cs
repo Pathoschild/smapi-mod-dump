@@ -11,7 +11,6 @@
 using SolidFoundations.Framework.Models.Data;
 using StardewValley;
 using System;
-using static SolidFoundations.Framework.Models.ContentPack.Actions.SpecialAction;
 
 namespace SolidFoundations.Framework.Models.ContentPack.Actions
 {

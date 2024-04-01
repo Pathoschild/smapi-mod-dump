@@ -28,11 +28,8 @@ namespace FarmTypeManager
                     Monitor.Log($"API not found: Content Patcher (CP).", LogLevel.Trace);
                     return;
                 }
-                else //if the API is available
-                {
-                    Monitor.Log($"API found: Content Patcher (CP).", LogLevel.Trace);
-                }
 
+                Monitor.Log($"API found: Content Patcher (CP).", LogLevel.Trace);
                 Utility.ContentPatcherAPI = api; //pass the API to this mod's static utility property
                 Utility.ContentPatcherVersion = Helper.ModRegistry.Get("Pathoschild.ContentPatcher")?.Manifest.Version; //pass CP's current semantic version
             }
@@ -40,7 +37,7 @@ namespace FarmTypeManager
             {
                 Utility.Monitor.Log($"An error happened while loading FTM's Content Patcher (CP) interface. Any spawn areas with \"CPConditions\" settings will be disabled. The auto-generated error message has been added to the log.", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Trace);
-                Utility.Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                Utility.Monitor.Log($"{ex}", LogLevel.Trace);
             }
         }
     }

@@ -133,12 +133,12 @@ Here's how you'd do that:
 
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
 
    "CustomLocations": [
       // add the in-game location
       {
-         "Name": "Example.ModId_AbigailCloset",
+         "Name": "{{ModId}}_AbigailCloset",
          "FromMapFile": "assets/abigail-closet.tmx"
       }
    ],
@@ -149,14 +149,14 @@ Here's how you'd do that:
          "Action": "EditMap",
          "Target": "Maps/SeedShop",
          "AddWarps": [
-            "8 10 Example.ModId_AbigailCloset 7 20"
+            "8 10 {{ModId}}_AbigailCloset 7 20"
          ]
       },
 
       // conditionally edit the map if needed
       {
          "Action": "EditMap",
-         "Target": "Maps/Example.ModId_AbigailCloset",
+         "Target": "Maps/{{ModId}}_AbigailCloset",
          "FromFile": "assets/abigail-closet-clean.tmx",
          "When": {
             "HasFlag": "AbigailClosetClean" // example custom mail flag
@@ -195,10 +195,10 @@ For example:
 
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
    "CustomLocations": [
       {
-         "Name": "Example.ModId_AbigailCloset",
+         "Name": "{{ModId}}_AbigailCloset",
          "FromMapFile": "assets/abigail-closet.tmx",
          "MigrateLegacyNames": [ "Custom_AbbyRoom" ]
       }

@@ -9,74 +9,803 @@
 *************************************************/
 
 {
-	"Changes": [
-		{
-			"Target": "Data/Events/BusStop",
-			"Action": "EditData",
-			"Entries": {
-				"236751400/f HatMouseLacey 3500/F/O HatMouseLacey/a 33 23 33 24/t 1500 1800/w sunny/z winter": "sweet/12 23/HatMouseLacey 12 22 1 farmer 19 23 3/advancedMove farmer false -6 0 0 -1 3 10/pause 700/emote HatMouseLacey 32 continue/pause 1200/speak HatMouseLacey \"{{i18n:events.14h.0}}\"/waitForAllStationary/animate HatMouseLacey false false 1200 28/animate farmer true false 1200 101/specificTemporarySprite heart 13 21/playSound dwop/pause 1200/speak HatMouseLacey \"{{i18n:events.14h.1}}\"/quickQuestion {{i18n:events.14h.q0}}#{{i18n:events.14h.q1}}#{{i18n:events.14h.q2}}(break)switchEvent hatmouselacey_14h_accept(break)addMailReceived HatMouseLacey_PicnicPostponed/emote HatMouseLacey 40/speak HatMouseLacey \"{{i18n:events.14h.r2}}\"/pause 300/end position 13 22",
-				"236751401/f HatMouseLacey 3500/F/O HatMouseLacey/a 0 23 0 24 33 23 33 24/t 1500 1800/w sunny/z winter/e 236751400/n HatMouseLacey_PicnicPostponed": "sweet/12 23/HatMouseLacey 12 22 1 farmer 13 22 3/pause 1000/speak HatMouseLacey \"{{i18n:events.14h.reboot.0}}\"/quickQuestion {{i18n:events.14h.reboot.q0}}#{{i18n:events.14h.reboot.q1}}#{{i18n:events.14h.reboot.q2}}(break)switchEvent hatmouselacey_14h_accept(break)HML_forgetThisEvent/speak HatMouseLacey \"{{i18n:events.14h.reboot.r2}}\"/pause 300/end position 13 22",
-				"hatmouselacey_14h_accept": "pause 10/skippable/emote farmer 20/speak HatMouseLacey \"{{i18n:events.14h.2}}\"/pause 250/advancedMove HatMouseLacey false 0 1 -5 0 3 10/pause 105/advancedMove farmer false 0 1 -5 0 3 10/pause 300/fade/viewport -1000 -1000/stopAdvancedMoves/changeLocation Forest/switchEvent hatmouselacey_14h_picnic"
-			}
-		},
-		{
-			"Target": "Data/Events/Custom_HatMouseLacey_MouseHouse",
-			"Action": "Load",
-			"FromFile": "data/empty.json"
-		},
-		{
-			"Target": "Data/Events/Custom_HatMouseLacey_MouseHouse",
-			"Action": "EditData",
-			"Entries": {
-				"236750200/f HatMouseLacey 500/p HatMouseLacey": "HML_Upbeat/-200 -200/farmer -100 -100 0 HatMouseLacey 10 14 1/viewport 9 14 true/skippable/pause 500/warp farmer 3 17/playSound woodyStep/playSound doorClose/faceDirection HatMouseLacey 3/emote HatMouseLacey 16/speak HatMouseLacey \"{{i18n:events.2h.0}}\"/pause 200/advancedMove farmer false 0 -2 5 0 1 100/move HatMouseLacey 0 1 2/faceDirection HatMouseLacey 3 continue/speak HatMouseLacey \"{{i18n:events.2h.1}}\"/pause 600/move HatMouseLacey 0 -2 2/faceDirection farmer 0/speak HatMouseLacey \"{{i18n:events.2h.2}}\"/pause 200/showFrame HatMouseLacey 17/pause 130/showFrame HatMouseLacey 18/speak HatMouseLacey \"{{i18n:events.2h.3}}\"/emote farmer 8/pause 1000/faceDirection HatMouseLacey 2/speak HatMouseLacey \"{{i18n:events.2h.4}}\"/pause 250/quickQuestion #{{i18n:events.2h.q0}}#{{i18n:events.2h.q1}}#{{i18n:events.2h.q2}}#{{i18n:events.2h.q3}}(break)friendship HatMouseLacey 10\\emote HatMouseLacey 32\\speak HatMouseLacey \"{{i18n:events.2h.r0}}\"(break)speak HatMouseLacey \"{{i18n:events.2h.r1}}\"(break)speak HatMouseLacey \"{{i18n:events.2h.r2}}\"(break)HML_crueltyScore 1\\friendship HatMouseLacey -20\\speak HatMouseLacey \"{{i18n:events.2h.r3}}\"/move HatMouseLacey 1 0 2/move HatMouseLacey 0 1 2/faceDirection farmer 1/speak HatMouseLacey \"{{i18n:events.2h.5}}\"/faceDirection HatMouseLacey 3/speak HatMouseLacey \"$m hatter#{{i18n:events.2h.6a}}|{{i18n:events.2h.6b}}#$b#{{i18n:events.2h.7}}\"/pause 200/speak HatMouseLacey \"{{i18n:events.2h.8}}\"/addMailReceived HatMouseLacey_HatReactions/addQuest 236750210/pause 500/end",
-				"236751001/f HatMouseLacey 2500/D HatMouseLacey/t 2000 2200/F/p HatMouseLacey/n HatMouseLacey_HouseCall": "none/-100 -100/farmer -50 -50 0 HatMouseLacey 6 13 2/quickQuestion {{i18n:events.10h.abort0}}#{{i18n:events.10h.abort1}}#{{i18n:events.10h.abort2}}(break)playMusic HML_Upbeat\\viewport 8 13 true(break)HML_forgetThisEvent\\end warpOut\\null\\null\\null\\null/addBigProp 13 12 246/skippable/pause 500/warp farmer 3 17/positionOffset farmer 0 16/playSound woodyStep/playSound doorClose/pause 100/emote HatMouseLacey 32/speak HatMouseLacey \"{{i18n:events.10h.0}}\"/advancedMove farmer false 0 -2 4 0 0 -3 1 10/speed HatMouseLacey 4/advancedMove HatMouseLacey false 6 0 0 -1 3 10/speak HatMouseLacey \"{{i18n:events.10h.1}}\"/quickQuestion #{{i18n:events.10h.q0}}#{{i18n:events.10h.q1}}(break)speak HatMouseLacey \"{{i18n:events.10h.r0.0}}\"\\advancedMove HatMouseLacey false 1 1200 -4 0 3 10\\waitForAllStationary\\speak HatMouseLacey \"{{i18n:events.10h.r0.1}}\"\\farmerEat 395\\pause 2000\\faceDirection farmer 1 continue(break)speak HatMouseLacey \"{{i18n:events.10h.r1}}\"\\advancedMove HatMouseLacey false -4 0 3 10\\waitForAllStationary/speak HatMouseLacey \"{{i18n:events.10h.2}}\"/speed HatMouseLacey 3/HML_sit 7 11/pause 350/playSound woodyStep/HML_drawOnTop HatMouseLacey/positionOffset HatMouseLacey -2 -20/positionOffset HatMouseLacey -2 -16/hideShadow HatMouseLacey true/showFrame HatMouseLacey 20/positionOffset HatMouseLacey -2 -16/positionOffset HatMouseLacey -2 -8/positionOffset HatMouseLacey 0 -4/positionOffset HatMouseLacey 0 8/positionOffset HatMouseLacey 0 4/pause 500/playMusic HML_Confession/pause 1000/speak HatMouseLacey \"{{i18n:events.10h.3}}\"/pause 300/showFrame HatMouseLacey 21/pause 1000/showFrame HatMouseLacey 22/positionOffset HatMouseLacey -4 0/pause 120/showFrame HatMouseLacey 20/positionOffset HatMouseLacey -4 0/playSound snowyStep/pause 1000/speak HatMouseLacey \"{{i18n:events.10h.4}}\"/pause 400/showFrame HatMouseLacey 21/pause 400/speak HatMouseLacey \"{{i18n:events.10h.5}}\"/pause 500/speak HatMouseLacey \"{{i18n:events.10h.6}}#$b#$m HatMouseLacey_ApologyAccepted#{{i18n:events.10h.7a}}|{{i18n:events.10h.7b}}#$b#{{i18n:events.10h.8}}\"/speak HatMouseLacey \"{{i18n:events.10h.9}}\"/pause 500/positionOffset HatMouseLacey -2 0/showFrame HatMouseLacey 23/pause 40/positionOffset HatMouseLacey -2 0/playSound snowyStep/pause 1000/speak HatMouseLacey \"{{i18n:events.10h.10}}\"/pause 2200/speak HatMouseLacey \"{{i18n:events.10h.11}}\"/quickQuestion #{{i18n:events.10h.q2}}#{{i18n:events.10h.q3}}#{{i18n:events.10h.q4}}#(break)positionOffset HatMouseLacey 4 0\\showFrame HatMouseLacey 21\\speak HatMouseLacey \"{{i18n:events.10h.r2}}\"(break)positionOffset HatMouseLacey 4 0\\showFrame HatMouseLacey 21\\speak HatMouseLacey \"{{i18n:events.10h.r3}}\"(break)positionOffset HatMouseLacey 4 0\\showFrame HatMouseLacey 21\\speak HatMouseLacey \"$m HatMouseLacey_ApologyAccepted#{{i18n:events.10h.r4.0a}}|{{i18n:events.10h.r4.0b}}#$b#{{i18n:events.10h.r4.1}}\"/pause 300/positionOffset HatMouseLacey -4 0/showFrame HatMouseLacey 23/playSound snowyStep/speak HatMouseLacey \"{{i18n:events.10h.12}}\"/pause 800/unskippable/globalFade/viewport -1000 -1000/pause 600/switchEvent hatmouselacey_10h_continued",
-				"hatmouselacey_10h_continued": "pause 50/message \"{{i18n:events.10h.13.m}}\"/message \"{{i18n:events.10h.14.m}}\"/pause 300/speak HatMouseLacey \"{{i18n:events.10h.15}}\"/HML_timeAfterFade 2200/end warpOut"
-			}
-		},
-		{
-			"Target": "Data/Events/Farm",
-			"Action": "EditData",
-			"Entries": {
-				"236751000/f HatMouseLacey 2505/F/d Fri/w sunny/z winter/x HatMouseLacey_HouseCall true": "null"
-			}
-		},
-		{
-			"Target": "Data/Events/Forest",
-			"Action": "EditData",
-			"Entries": {
-				"236750600/f HatMouseLacey 1500/w sunny/p HatMouseLacey": "HML_Lonely/85 54/HatMouseLacey 85 52 2 farmer 76 49 1/skippable/advancedMove farmer false 8 0 2 10/pause 2000/emote HatMouseLacey 16/faceDirection HatMouseLacey 3/speak HatMouseLacey \"{{i18n:events.6h.0}}\"/pause 500/faceDirection HatMouseLacey 2/speak HatMouseLacey \"{{i18n:events.6h.1}}\"/waitForAllStationary/advancedMove farmer false 0 2 2 10/pause 300/showFrame HatMouseLacey 16/speak HatMouseLacey \"{{i18n:events.6h.2}}\"/pause 500/speak HatMouseLacey \"{{i18n:events.6h.3}}\"/emote farmer 8/pause 600 /speak HatMouseLacey \"{{i18n:events.6h.4}}\"/pause 500/speak HatMouseLacey \"{{i18n:events.6h.5}}\"/pause 450/quickQuestion #{{i18n:events.6h.q0}}#{{i18n:events.6h.q1}}#{{i18n:events.6h.q2}}#{{i18n:events.6h.q3}}#{{i18n:events.6h.q4}}(break)speak HatMouseLacey \"{{i18n:events.6h.r0}}\"\\pause 500(break)speak HatMouseLacey \"{{i18n:events.6h.r1.0}}\"\\faceDirection HatMouseLacey 2\\speak HatMouseLacey \"{{i18n:events.6h.r1.1}}\"(break)speak HatMouseLacey \"{{i18n:events.6h.r2.0}}\"\\faceDirection HatMouseLacey 2\\speak HatMouseLacey \"{{i18n:events.6h.r2.1}}\"(break)friendship HatMouseLacey 20\\faceDirection HatMouseLacey 2\\speak HatMouseLacey \"{{i18n:events.6h.r3}}\"(break)switchEvent hatmouselacey_6h_meanfork/pause 400/faceDirection HatMouseLacey 2 continue/emote HatMouseLacey 60 continue/pause 450/faceDirection HatMouseLacey 3 continue/pause 1200/move HatMouseLacey 0 -1 3/faceDirection farmer 1/playMusic none/speak HatMouseLacey \"{{i18n:events.6h.6}}\"/quickQuestion #{{i18n:events.6h.q5}}#{{i18n:events.6h.q6}}#{{i18n:events.6h.q7}}(break)emote HatMouseLacey 32\\speak HatMouseLacey \"{{i18n:events.6h.r5}}\"(break)pause 300(break)friendship HatMouseLacey -20\\emote HatMouseLacey 40/speak HatMouseLacey \"{{i18n:events.6h.7}}\"/pause 450/advancedMove HatMouseLacey false 2 0 0 6 2 10/pause 1400/advancedMove farmer false 0 -2 -4 0 3 10/pause 1200/unskippable/fade/viewport -1000 -1000/waitForAllStationary/end",
-				"hatmouselacey_6h_meanfork": "friendship HatMouseLacey -180/HML_crueltyScore 2/playMusic none/faceDirection HatMouseLacey 2 continue/emote HatMouseLacey 16 continue/pause 500/faceDirection HatMouseLacey 3/speak HatMouseLacey \"{{i18n:events.6hMean.0}}\"/speed HatMouseLacey 3/advancedMove HatMouseLacey false 0 -1 2 0 3 10/pause 250/faceDirection farmer 1/waitForAllStationary/speak HatMouseLacey \"{{i18n:events.6hMean.1}}\"/speed HatMouseLacey 3/emote HatMouseLacey 12 continue/advancedMove HatMouseLacey false 0 10 2 10/pause 700/faceDirection farmer 2 continue/pause 300/end",
-				"hatmouselacey_14h_picnic": "faceDirection farmer 2 continue/faceDirection HatMouseLacey 2 continue/warp farmer 42 92/positionOffset farmer 0 16/warp HatMouseLacey 43 93/ambientLight 0 0 30/viewport 47 99 true/advancedMove HatMouseLacey false 0 3 1 0 0 1 2 0 2 10/pause 120/advancedMove farmer false 0 4 1 0 0 1 2 0 2 10/pause 900/speak HatMouseLacey \"{{i18n:events.14h.3}}\"/waitForAllStationary/advancedMove HatMouseLacey false 0 1 -1 0 0 1 4 10/pause 1000/speak HatMouseLacey \"{{i18n:events.14h.4}}\"/move farmer 3 0 2/faceDirection HatMouseLacey 1/playSound leafrustle/pause 120/playSound leafrustle/pause 300/addFloorProp 416 46 98 4 2 2/pause 200/advancedMove HatMouseLacey false 2 0 0 -1 1 10/pause 220/speak HatMouseLacey \"{{i18n:events.14h.5}}\"/HML_ambientSunset 80000/pause 240/animate HatMouseLacey false true 420 29 30/pause 170/advancedMove farmer false 0 2 2 10/pause 650/addObject 46 98 200/playSound harvest/pause 550/showFrame farmer 95/positionOffset farmer -4 0/playSound hoeHit/pause 240/addObject 46 99 609/playSound harvest/pause 800/addObject 49 98 903/playSound dwop/pause 900/addObject 49 99 611/playSound harvest/pause 440/stopAnimation HatMouseLacey/advancedMove HatMouseLacey false 0 1 2 10/pause 530/beginSimultaneousCommand/positionOffset HatMouseLacey 4 20/showFrame HatMouseLacey 20/endSimultaneousCommand/playSound hoeHit/pause 1000/speak HatMouseLacey \"{{i18n:events.14h.6}}\"/pause 1000/speak HatMouseLacey \"{{i18n:events.14h.7}}\"/pause 300/speak HatMouseLacey \"{{i18n:events.14h.8}}\"/pause 500/speak HatMouseLacey \"{{i18n:events.14h.9}}\"/pause 1400/positionOffset HatMouseLacey 4 -4/positionOffset HatMouseLacey 4 -4/beginSimultaneousCommand/showFrame HatMouseLacey 31/positionOffset HatMouseLacey 0 -20/playSound snowyStep/endSimultaneousCommand/pause 300/speak HatMouseLacey \"{{i18n:events.14h.10}}\"/pause 3000/speak HatMouseLacey \"{{i18n:events.14h.11}}\"/quickQuestion #{{i18n:events.14h.q3}}#{{i18n:events.14h.q4}}#{{i18n:events.14h.q5}}(break)pause 500(break)speak HatMouseLacey \"{{i18n:events.14h.r4}}\"(break)speak HatMouseLacey \"{{i18n:events.14h.r5}}\"/pause 2000/speak HatMouseLacey \"{{i18n:events.14h.12}}\"/positionOffset HatMouseLacey -8 8/showFrame HatMouseLacey 0/pause 500/positionOffset farmer 4 0/faceDirection farmer 2/faceDirection HatMouseLacey 1 continue/faceDirection farmer 3 continue/switchEvent hatmouselacey_14h_continued",
-				"hatmouselacey_14h_continued": "pause 150/speak HatMouseLacey \"{{i18n:events.14h.13}}\"/emote HatMouseLacey 20/speak HatMouseLacey \"{{i18n:events.14h.14}}\"/HML_timeAfterFade 2100/pause 250/animate HatMouseLacey false true 1000 28/animate farmer true true 1000 101/specificTemporarySprite heart 48 98/playSound dwop/pause 1000/unskippable/globalFade .0045/viewport -1000 -1000/changeLocation FarmHouse/end warpOut"
-			}
-		},
-		{
-			"Target": "Data/Events/Saloon",
-			"Action": "EditData",
-			"Entries": {
-				"236750400/f HatMouseLacey 1000/p HatMouseLacey": "distantBanjo/10 22/HatMouseLacey 10 21 2 farmer 14 24 0 Gus 10 18 2 Emily 15 17 0 Leah 2 20 1 Clint 17 20 0 Shane 18 20 0/skippable/animate Gus false true 200 18 19 20 19/advancedMove Emily false 4 1100 1 0 4 1800 -1 0 4 1300 2 0 0 1 2 1050 1 0 2 1050 0 -1 -3 0 4 10/advancedMove farmer false 0 -3 -2 0 0 -1 4 10/pause 3120/emote farmer 40 continue/pause 150/stopAnimation Gus/advancedMove Gus false 1 0 2 1200 -1 0 2 10/pause 600/emote Gus 40/pause 400/animate Gus false true 200 18 19 20 19/pause 400/advancedMove farmer false 2 800 1 1250 3 1250 0 1 -1 0 3 10/pause 2800/advancedMove Clint false 0 2 2 0 0 1 3 10/pause 1550/faceDirection HatMouseLacey 1/emote HatMouseLacey 32/advancedMove Emily true 4 1900 2 0 4 1900 -1 0 4 1900 1 0 4 1900 -2 0 4 1900 4 1900 1 0 4 1900 -1 0/speak HatMouseLacey \"{{i18n:events.4h.0}}\"/showFrame farmer 97/pause 1200/faceDirection farmer 3 continue/speak HatMouseLacey \"{{i18n:events.4h.1}}\"/quickQuestion #{{i18n:events.4h.q0}}#{{i18n:events.4h.q1}}#{{i18n:events.4h.q2}}(break)speak HatMouseLacey \"{{i18n:events.4h.r0}}\"\\pause 500(break)speak HatMouseLacey \"{{i18n:events.4h.r1}}\"\\pause 500(break)friendship HatMouseLacey -60\\HML_crueltyScore 2\\playMusic none\\speak HatMouseLacey \"{{i18n:events.4h.r2}}\"\\faceDirection HatMouseLacey 2\\end\\null\\null/faceDirection HatMouseLacey 2/speak HatMouseLacey \"{{i18n:events.4h.2}}\"/speak HatMouseLacey \"{{i18n:events.4h.3}}\"/speak HatMouseLacey \"{{i18n:events.4h.4}}\"/pause 250/faceDirection HatMouseLacey 1/speak HatMouseLacey \"{{i18n:events.4h.5}}\"/pause 500/emote HatMouseLacey 28/speak HatMouseLacey \"{{i18n:events.4h.6}}\"/quickQuestion #{{i18n:events.4h.q3}}#{{i18n:events.4h.q4}}#{{i18n:events.4h.q5}}(break)speak HatMouseLacey \"%revealtasteHatMouseLacey303 %revealtasteHatMouseLacey346 %revealtasteHatMouseLacey348 %revealtasteHatMouseLacey459 {{i18n:events.4h.r3}}\"(break)friendship HatMouseLacey 10\\speak HatMouseLacey \"{{i18n:events.4h.r4}}\"(break)HML_crueltyScore 1\\friendship HatMouseLacey -10\\speak HatMouseLacey \"{{i18n:events.4h.r5}}\"\\pause 200\\emote farmer 40 continue\\pause 300\\end\\null\\null/speak HatMouseLacey \"{{i18n:events.4h.7}}\"/pause 200/emote farmer 40 continue/pause 300/emote HatMouseLacey 32 continue/pause 300/unskippable/globalFade/viewport -1000 -1000/end"
-			}
-		},
-		{
-			"Target": "Data/Events/Town",
-			"Action": "EditData",
-			"Entries": {
-				"236750802/n HatMouseLacey_ApologySummons/t 1200 1300": "continue/26 22/HatMouseLacey 26 21 2 farmer 22 29 0/hideShadow HatMouseLacey true/HML_drawOnTop HatMouseLacey true/showFrame HatMouseLacey 20/positionOffset HatMouseLacey 0 8/pause 500/advancedMove farmer false 0 -7 3 0 1 10/pause 1500/speak HatMouseLacey \"{{i18n:events.apology.0}}\"/pause 400/playSound woodyStep/positionOffset HatMouseLacey 0 8/positionOffset HatMouseLacey 0 8/positionOffset HatMouseLacey 0 8/beginSimultaneousCommand/positionOffset HatMouseLacey 0 8/showFrame HatMouseLacey 0/hideShadow HatMouseLacey false/HML_drawOnTop HatMouseLacey false/endSimultaneousCommand/positionOffset HatMouseLacey 0 8/positionOffset HatMouseLacey 0 8/positionOffset HatMouseLacey 0 8/pause 200/faceDirection HatMouseLacey 3/waitForAllStationary/pause 500/speak HatMouseLacey \"{{i18n:events.apology.1}}\"/quickQuestion {{i18n:events.apology.q0}}#{{i18n:events.apology.q1}}#{{i18n:events.apology.q2}}#{{i18n:events.apology.q3}}(break)speak HatMouseLacey \"{{i18n:events.apology.r1}}\"(break)friendship HatMouseLacey -20\\speak HatMouseLacey \"{{i18n:events.apology.r2}}\"(break)friendship HatMouseLacey -10\\speak HatMouseLacey \"{{i18n:events.apology.r3}}\"/pause 200/speak HatMouseLacey \"{{i18n:events.apology.2}}\"/removeQuest 236750810/addMailReceived HatMouseLacey_ApologyAccepted/question fork1 \"{{i18n:events.apology.q4}}#{{i18n:events.apology.q5}}#{{i18n:events.apology.q6}}\"/fork hatmouselaceyApologyMaybeNot/HML_setDating HatMouseLacey/speak HatMouseLacey \"{{i18n:events.apology.3.yes}}\"/pause 300/speak HatMouseLacey \"{{i18n:events.apology.4.yes}}\"/pause 350/advancedMove HatMouseLacey false 3 0 0 6 2 10/pause 2000/end",
-				"hatmouselaceyApologyMaybeNot": "pause 50/speak HatMouseLacey \"{{i18n:events.apology.3.no}}\"/move HatMouseLacey 3 0 1/pause 700/faceDirection HatMouseLacey 3/speak HatMouseLacey \"{{i18n:events.apology.4.no}}\"/pause 300/advancedMove HatMouseLacey false 0 8 2 10/pause 1500/faceDirection farmer 2 continue/pause 400/end",
-				"236750800/f HatMouseLacey 2000/p HatMouseLacey/k 236750801/o Emily": "HML_Upbeat/29 83/HatMouseLacey 28 89 0 farmer 29 75 2 Emily -100 -100 2 Evelyn -100 -100 2 Lewis -100 -100 2/skippable/move farmer 0 6 2 true/move HatMouseLacey 0 -7 0 true/pause 2000/warp Emily 20 89/playSound doorClose/pause 200/advancedMove Emily false 0 1 8 0 0 -6 4 10/pause 200/speak HatMouseLacey \"{{i18n:events.8h.0}}\"/emote farmer 56/speak HatMouseLacey \"{{i18n:events.8h.1}}\"/waitForAllStationary/speak Emily \"{{i18n:events.8h.2.Emily}}\"/faceDirection HatMouseLacey 2 continue/emote HatMouseLacey 16 continue/pause 400/move HatMouseLacey 1 0 3 true/speak HatMouseLacey \"{{i18n:events.8h.3}}\"/advancedMove Emily false 0 -2 1 10/speak Emily \"{{i18n:events.8h.4.Emily}}\"/speak HatMouseLacey \"{{i18n:events.8h.5.toEmily}}\"/speak Emily \"{{i18n:events.8h.6.Emily}}\"/warp Evelyn 49 79/advancedMove Evelyn false 0 2 -14 0 3 10/advancedMove Emily false 0 -10 17 0 0 -1 4 10/HML_warpQueue Emily -100 -100/switchEvent hatmouselacey_8h_part2",
-				"236750801/f HatMouseLacey 2000/p HatMouseLacey/k 236750800/O Emily": "HML_Upbeat/29 83/HatMouseLacey 28 89 0 farmer 29 75 2 Jodi 15 90 1 Evelyn -100 -100 2 Lewis -100 -100 2/skippable/move farmer 0 6 2 true/move HatMouseLacey 0 -7 0 true/advancedMove Jodi false 13 0 0 -6 4 10/pause 2500/speak HatMouseLacey \"{{i18n:events.8h.0}}\"/emote farmer 56/speak HatMouseLacey \"{{i18n:events.8h.1}}\"/waitForAllStationary/speak Jodi \"{{i18n:events.8h.2.Jodi}}\"/faceDirection HatMouseLacey 2 continue/emote HatMouseLacey 16 continue/pause 400/move HatMouseLacey 1 0 3 true/speak HatMouseLacey \"{{i18n:events.8h.3}}\"/advancedMove Jodi false 0 -2 1 10/speak Jodi \"{{i18n:events.8h.4.Jodi}}\"/speak HatMouseLacey \"{{i18n:events.8h.5.toJodi}}\"/speak Jodi \"{{i18n:events.8h.6.Jodi}}\"/warp Evelyn 49 79/advancedMove Evelyn false 0 2 -14 0 3 10/advancedMove Jodi false 0 -10 7 0 0 -10 4 10/HML_warpQueue Jodi -100 -100/switchEvent hatmouselacey_8h_part2",
-				"hatmouselacey_8h_part2": "pause 800/emote HatMouseLacey 40/faceDirection HatMouseLacey 0/speak HatMouseLacey \"{{i18n:events.8h.7}}\"/viewport move 1 0 5000/advancedMove HatMouseLacey false 4 0 1 10/pause 220/advancedMove farmer false 3 0 1 10/speak HatMouseLacey \"{{i18n:events.8h.8}}\"/HML_waitForMovement HatMouseLacey farmer Evelyn/speak Evelyn \"{{i18n:events.8h.9.Evelyn}}\"/speak HatMouseLacey \"{{i18n:events.8h.10}}\"/emote Evelyn 32 continue/pause 500/speak Evelyn \"{{i18n:events.8h.11.Evelyn}}\"/advancedMove Evelyn false 0 -2 -3 0 0 -1 1 10/pause 300/emote HatMouseLacey 28/advancedMove HatMouseLacey false 4 0 0 -1 7 0 0 -2 3 10/pause 750/advancedMove farmer false 11 0 0 -2 1 10/HML_viewportMoveQueue 2 0 2500/HML_viewportMoveQueue 2 -1 3000/pause 600/warp Lewis 58 86/advancedMove Lewis false 0 1 -4 0 0 -6 3 10/speak HatMouseLacey \"{{i18n:events.8h.12}}\"/waitForAllStationary/emote Lewis 16 continue/pause 600/advancedMove Lewis false -10 0 4 10/speak HatMouseLacey \"{{i18n:events.8h.13}}\"/emote farmer 40/pause 500/faceDirection farmer 2/faceDirection HatMouseLacey 2/waitForAllStationary/speak Lewis \"{{i18n:events.8h.14.Lewis}}\"/speak HatMouseLacey \"{{i18n:events.8h.15}}\"/speak Lewis \"{{i18n:events.8h.16.Lewis}}\"/advancedMove Lewis false 0 1 10 0 0 5 4 0 0 -1 4 10/HML_warpQueue Lewis -100 -100/pause 800/emote HatMouseLacey 28/faceDirection HatMouseLacey 3/faceDirection farmer 1/speak HatMouseLacey \"{{i18n:events.8h.17}}\"/pause 300/advancedMove HatMouseLacey false 0 1 2 800 1 800 3 800 0 -1 3 10/pause 3500/speak HatMouseLacey \"{{i18n:events.8h.18}}\"/quickQuestion #{{i18n:events.8h.q0}}#{{i18n:events.8h.q1}}#{{i18n:events.8h.q2}}(break)pause 500(break)speak HatMouseLacey \"{{i18n:events.8h.r1}}\"(break)speak HatMouseLacey \"{{i18n:events.8h.r2}}\"/speak HatMouseLacey \"{{i18n:events.8h.19}}\"/quickQuestion #{{i18n:events.8h.q3}}#{{i18n:events.8h.q4}}#{{i18n:events.8h.q5}}(break)switchEvent hatmouselacey_8h_hug(break)speak HatMouseLacey \"{{i18n:events.8h.r4}}\"(break)HML_crueltyScore 1\\speak HatMouseLacey \"{{i18n:events.8h.r5}}\"/switchEvent hatmouselacey_8h_end",
-				"hatmouselacey_8h_hug": "pause 800/HML_drawOnTop HatMouseLacey true/positionOffset HatMouseLacey -4 0/positionOffset farmer 4 4/positionOffset HatMouseLacey -4 0/positionOffset farmer 4 0/animate HatMouseLacey false true 1000 19/animate farmer false true 1000 58/positionOffset HatMouseLacey -4 0/playSound snowyStep/positionOffset farmer 4 0/pause 1500/speak HatMouseLacey \"{{i18n:events.8h.r3}}\"/pause 2000/positionOffset HatMouseLacey 4 0/positionOffset farmer -4 0/stopAnimation HatMouseLacey/stopAnimation farmer/positionOffset HatMouseLacey 4 0/positionOffset farmer -4 0/playSound snowyStep/positionOffset HatMouseLacey 4 0/positionOffset farmer -4 0/HML_drawOnTop HatMouseLacey false/switchEvent hatmouselacey_8h_end",
-				"hatmouselacey_8h_end": "pause 250/speak HatMouseLacey \"{{i18n:events.8h.20}}\"/pause 200/advancedMove HatMouseLacey false 0 1 2 0 1 500 3 10/pause 2000/speak HatMouseLacey \"{{i18n:events.8h.21}}\"/pause 200/advancedMove HatMouseLacey false 3 0 0 -6 4 10/pause 1800/end"
-			}
-		},
-		{
-			"Target": "Data/mail",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey_HouseCall": "{{i18n:mail.LaceyHouseCall}}",
-				"HatMouseLacey_ApologySummons": "{{i18n:mail.LaceyApologySummons}}"
-			}
-		}
-	]
+  "Changes": [
+    {
+      "LogName": "MouseHouse - blank",
+      "Target": "Data/Events/{{ModId}}_MouseHouse",
+      "Action": "Load",
+      "FromFile": "data/empty.json"
+    },
+
+    {
+      "LogName": "2-heart event",
+      "Target": "Data/Events/{{ModId}}_MouseHouse",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_2Hearts/Friendship {{Lacey}} 500/NpcVisibleHere {{Lacey}}": "
+          {{ModId}}_Music_FittingIn/
+          -200 -200/
+          farmer -100 -100 0 {{Lacey}} 10 14 1/
+          viewport 9 14 true/
+          setSkipActions AddMail Current {{ModId}}_Mail_HatReactions received#AddQuest {{ModId}}_Quest_HatReactions/
+          skippable/
+          pause 500/
+          warp farmer 3 17/
+          playSound woodyStep/
+          playSound doorClose/
+          faceDirection {{Lacey}} 3/
+          emote {{Lacey}} 16/
+          speak {{Lacey}} \"{{i18n:events.2h.0}}\"/
+          pause 200/
+          advancedMove farmer false 0 -2 5 0 1 100/
+          move {{Lacey}} 0 1 2/
+          faceDirection {{Lacey}} 3 true/
+          speak {{Lacey}} \"{{i18n:events.2h.1}}\"/
+          pause 600/
+          move {{Lacey}} 0 -2 2/
+          faceDirection farmer 0/
+          speak {{Lacey}} \"{{i18n:events.2h.2}}\"/
+          pause 200/
+          showFrame {{Lacey}} 17/
+          pause 130/
+          showFrame {{Lacey}} 18/
+          speak {{Lacey}} \"{{i18n:events.2h.3}}\"/
+          emote farmer 8/
+          pause 1000/
+          faceDirection {{Lacey}} 2/
+          speak {{Lacey}} \"{{i18n:events.2h.4}}\"/
+          pause 250/
+          quickQuestion #{{i18n:events.2h.q0}}#{{i18n:events.2h.q1}}#{{i18n:events.2h.q2}}#{{i18n:events.2h.q3}}(break)friendship {{Lacey}} 10\\emote {{Lacey}} 32\\speak {{Lacey}} \"{{i18n:events.2h.r0}}\"(break)speak {{Lacey}} \"{{i18n:events.2h.r1}}\"(break)speak {{Lacey}} \"{{i18n:events.2h.r2}}\"(break){{ModId}}_crueltyScore 1\\friendship {{Lacey}} -20\\speak {{Lacey}} \"{{i18n:events.2h.r3}}\"/
+          move {{Lacey}} 1 0 2/
+          move {{Lacey}} 0 1 2/
+          faceDirection farmer 1/
+          speak {{Lacey}} \"{{i18n:events.2h.5}}\"/
+          faceDirection {{Lacey}} 3/
+          speak {{Lacey}} \"$m hatter#{{i18n:events.2h.6a}}|{{i18n:events.2h.6b}}#$b#{{i18n:events.2h.7}}\"/
+          pause 200/
+          speak {{Lacey}} \"{{i18n:events.2h.8}}\"/
+          setSkipActions \"\"/
+          addMailReceived {{ModId}}_Mail_HatReactions/
+          addQuest {{ModId}}_Quest_HatReactions/
+          pause 500/
+          end"
+      }
+    },
+
+    {
+      "LogName": "4-heart event",
+      "Target": "Data/Events/Saloon",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_4Hearts/Friendship {{Lacey}} 1000/NpcVisibleHere {{Lacey}}": "
+          distantBanjo/
+          10 22/
+          {{Lacey}} 10 21 2 farmer 14 24 0 Gus 10 18 2 Emily 15 17 0 Leah 2 20 1 Clint 17 20 0 Shane 18 20 0/
+          skippable/
+          animate Gus false true 200 18 19 20 19/
+          advancedMove Emily false 4 1100 1 0 4 1800 -1 0 4 1300 2 0 0 1 2 1050 1 0 2 1050 0 -1 -3 0 4 10/
+          advancedMove farmer false 0 -3 -2 0 0 -1 4 10/
+          pause 3120/
+          emote farmer 40 true/
+          pause 150/
+          stopAnimation Gus/
+          advancedMove Gus false 1 0 2 1200 -1 0 2 10/
+          pause 600/
+          emote Gus 40/
+          pause 400/
+          animate Gus false true 200 18 19 20 19/
+          pause 400/
+          advancedMove farmer false 2 800 1 1250 3 1250 0 1 -1 0 3 10/
+          pause 2800/
+          advancedMove Clint false 0 2 2 0 0 1 3 10/
+          pause 1550/
+          faceDirection {{Lacey}} 1/
+          emote {{Lacey}} 32/
+          advancedMove Emily true 4 1900 2 0 4 1900 -1 0 4 1900 1 0 4 1900 -2 0 4 1900 4 1900 1 0 4 1900 -1 0/
+          speak {{Lacey}} \"{{i18n:events.4h.0}}\"/
+          showFrame farmer 97 true/
+          pause 1200/
+          faceDirection farmer 3 true/
+          speak {{Lacey}} \"{{i18n:events.4h.1}}\"/
+          quickQuestion #{{i18n:events.4h.q0}}#{{i18n:events.4h.q1}}#{{i18n:events.4h.q2}}(break)speak {{Lacey}} \"{{i18n:events.4h.r0}}\"\\pause 500(break)speak {{Lacey}} \"{{i18n:events.4h.r1}}\"\\pause 500(break)friendship {{Lacey}} -60\\{{ModId}}_crueltyScore 2\\playMusic none\\speak {{Lacey}} \"{{i18n:events.4h.r2}}\"\\faceDirection {{Lacey}} 2\\end\\null\\null/
+          faceDirection {{Lacey}} 2/
+          speak {{Lacey}} \"{{i18n:events.4h.2}}\"/
+          speak {{Lacey}} \"{{i18n:events.4h.3}}\"/
+          speak {{Lacey}} \"{{i18n:events.4h.4}}\"/
+          pause 250/
+          faceDirection {{Lacey}} 1/
+          speak {{Lacey}} \"{{i18n:events.4h.5}}\"/
+          pause 500/
+          emote {{Lacey}} 28/
+          speak {{Lacey}} \"{{i18n:events.4h.6}}\"/
+          quickQuestion #{{i18n:events.4h.q3}}#{{i18n:events.4h.q4}}#{{i18n:events.4h.q5}}(break)speak {{Lacey}} \"%revealtaste:{{Lacey}}:303 %revealtaste:{{Lacey}}:346 %revealtaste:{{Lacey}}:348 %revealtaste:{{Lacey}}:459 {{i18n:events.4h.r3}}\"(break)friendship {{Lacey}} 10\\speak {{Lacey}} \"{{i18n:events.4h.r4}}\"(break){{ModId}}_crueltyScore 1\\friendship {{Lacey}} -10\\speak {{Lacey}} \"{{i18n:events.4h.r5}}\"\\pause 200\\emote farmer 40 true\\pause 300\\end\\null\\null/
+          speak {{Lacey}} \"{{i18n:events.4h.7}}\"/
+          pause 200/
+          emote farmer 40 true/
+          pause 300/
+          emote {{Lacey}} 32 true/
+          pause 300/
+          unskippable/
+          globalFade/
+          viewport -1000 -1000/
+          end"
+      }
+    },
+
+    {
+      "LogName": "6-heart event",
+      "Target": "Data/Events/Forest",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_6Hearts/Friendship {{Lacey}} 1500/Weather sunny/NpcVisibleHere {{Lacey}}": "
+          {{ModId}}_Music_InALonelyPlace/
+          85 54/
+          {{Lacey}} 85 52 2 farmer 76 49 1/
+          skippable/
+          advancedMove farmer false 8 0 2 10/
+          pause 2000/
+          emote {{Lacey}} 16/
+          faceDirection {{Lacey}} 3/
+          speak {{Lacey}} \"{{i18n:events.6h.0}}\"/
+          pause 500/
+          faceDirection {{Lacey}} 2/
+          speak {{Lacey}} \"{{i18n:events.6h.1}}\"/
+          waitForAllStationary/
+          advancedMove farmer false 0 2 2 10/
+          pause 300/
+          showFrame {{Lacey}} 16/
+          speak {{Lacey}} \"{{i18n:events.6h.2}}\"/
+          pause 500/
+          speak {{Lacey}} \"{{i18n:events.6h.3}}\"/
+          emote farmer 8/
+          pause 600 /
+          speak {{Lacey}} \"{{i18n:events.6h.4}}\"/
+          pause 500/
+          speak {{Lacey}} \"{{i18n:events.6h.5}}\"/
+          pause 450/
+          quickQuestion #{{i18n:events.6h.q0}}#{{i18n:events.6h.q1}}#{{i18n:events.6h.q2}}#{{i18n:events.6h.q3}}#{{i18n:events.6h.q4}}(break)speak {{Lacey}} \"{{i18n:events.6h.r0}}\"\\pause 500(break)speak {{Lacey}} \"{{i18n:events.6h.r1.0}}\"\\faceDirection {{Lacey}} 2\\speak {{Lacey}} \"{{i18n:events.6h.r1.1}}\"(break)speak {{Lacey}} \"{{i18n:events.6h.r2.0}}\"\\faceDirection {{Lacey}} 2\\speak {{Lacey}} \"{{i18n:events.6h.r2.1}}\"(break)friendship {{Lacey}} 20\\faceDirection {{Lacey}} 2\\speak {{Lacey}} \"{{i18n:events.6h.r3}}\"(break)switchEvent {{ModId}}_Event_6Hearts_Mean/
+          pause 400/
+          faceDirection {{Lacey}} 2 true/
+          emote {{Lacey}} 60 true/
+          pause 450/
+          faceDirection {{Lacey}} 3 true/
+          pause 1200/
+          move {{Lacey}} 0 -1 3/
+          faceDirection farmer 1/
+          playMusic none/
+          speak {{Lacey}} \"{{i18n:events.6h.6}}\"/
+          quickQuestion #{{i18n:events.6h.q5}}#{{i18n:events.6h.q6}}#{{i18n:events.6h.q7}}(break)emote {{Lacey}} 32\\speak {{Lacey}} \"{{i18n:events.6h.r5}}\"(break)pause 300(break)friendship {{Lacey}} -20\\emote {{Lacey}} 40/
+          speak {{Lacey}} \"{{i18n:events.6h.7}}\"/
+          pause 450/
+          advancedMove {{Lacey}} false 2 0 0 6 2 10/
+          pause 1400/
+          advancedMove farmer false 0 -2 -4 0 3 10/
+          pause 1200/
+          unskippable/
+          fade/
+          viewport -1000 -1000/
+          waitForAllStationary/
+          end",
+
+        "{{ModId}}_Event_6Hearts_Mean": "
+          friendship {{Lacey}} -180/
+          {{ModId}}_crueltyScore 2/
+          playMusic none/
+          faceDirection {{Lacey}} 2 true/
+          emote {{Lacey}} 16 true/
+          pause 500/
+          faceDirection {{Lacey}} 3/
+          speak {{Lacey}} \"{{i18n:events.6hMean.0}}\"/
+          speed {{Lacey}} 3/
+          advancedMove {{Lacey}} false 0 -1 2 0 3 10/
+          pause 250/
+          faceDirection farmer 1/
+          waitForAllStationary/
+          speak {{Lacey}} \"{{i18n:events.6hMean.1}}\"/
+          speed {{Lacey}} 3/
+          emote {{Lacey}} 12 true/
+          advancedMove {{Lacey}} false 0 10 2 10/
+          pause 700/
+          faceDirection farmer 2 true/
+          pause 300/
+          end",
+      }
+    },
+
+    {
+      "LogName": "8-heart event",
+      "Target": "Data/Events/Town",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_8Hearts/Friendship {{Lacey}} 2000/NpcVisibleHere {{Lacey}}/!Spouse Emily": "
+          {{ModId}}_Music_FittingIn/
+          29 83/
+          {{Lacey}} 28 89 0 farmer 29 75 2 Emily -100 -100 2 Evelyn -100 -100 2 Lewis -100 -100 2/
+          skippable/
+          move farmer 0 6 2 true/
+          move {{Lacey}} 0 -7 0 true/
+          pause 2000/
+          warp Emily 20 89/
+          playSound doorClose/
+          pause 200/
+          advancedMove Emily false 0 1 8 0 0 -6 4 10/
+          pause 200/
+          speak {{Lacey}} \"{{i18n:events.8h.0}}\"/
+          emote farmer 56/
+          speak {{Lacey}} \"{{i18n:events.8h.1}}\"/
+          waitForAllStationary/
+          speak Emily \"{{i18n:events.8h.2.Emily}}\"/
+          faceDirection {{Lacey}} 2 true/
+          emote {{Lacey}} 16 true/
+          pause 400/
+          move {{Lacey}} 1 0 3 true/
+          speak {{Lacey}} \"{{i18n:events.8h.3}}\"/
+          advancedMove Emily false 0 -2 1 10/
+          speak Emily \"{{i18n:events.8h.4.Emily}}\"/
+          speak {{Lacey}} \"{{i18n:events.8h.5.toEmily}}\"/
+          speak Emily \"{{i18n:events.8h.6.Emily}}\"/
+          warp Evelyn 49 79/
+          advancedMove Evelyn false 0 2 -14 0 3 10/
+          advancedMove Emily false 0 -10 17 0 0 -1 4 10/
+          {{ModId}}_warpQueue Emily -100 -100/
+          switchEvent {{ModId}}_Event_8Hearts_Part2",
+
+        "{{ModId}}_Event_8Hearts/Friendship {{Lacey}} 2000/NpcVisibleHere {{Lacey}}/Spouse Emily": "
+          {{ModId}}_Music_FittingIn/
+          29 83/
+          {{Lacey}} 28 89 0 farmer 29 75 2 Jodi 15 90 1 Evelyn -100 -100 2 Lewis -100 -100 2/
+          skippable/
+          move farmer 0 6 2 true/
+          move {{Lacey}} 0 -7 0 true/
+          advancedMove Jodi false 13 0 0 -6 4 10/
+          pause 2500/
+          speak {{Lacey}} \"{{i18n:events.8h.0}}\"/
+          emote farmer 56/
+          speak {{Lacey}} \"{{i18n:events.8h.1}}\"/
+          waitForAllStationary/
+          speak Jodi \"{{i18n:events.8h.2.Jodi}}\"/
+          faceDirection {{Lacey}} 2 true/
+          emote {{Lacey}} 16 true/
+          pause 400/
+          move {{Lacey}} 1 0 3 true/
+          speak {{Lacey}} \"{{i18n:events.8h.3}}\"/
+          advancedMove Jodi false 0 -2 1 10/
+          speak Jodi \"{{i18n:events.8h.4.Jodi}}\"/
+          speak {{Lacey}} \"{{i18n:events.8h.5.toJodi}}\"/
+          speak Jodi \"{{i18n:events.8h.6.Jodi}}\"/
+          warp Evelyn 49 79/
+          advancedMove Evelyn false 0 2 -14 0 3 10/
+          advancedMove Jodi false 0 -10 7 0 0 -10 4 10/
+          {{ModId}}_warpQueue Jodi -100 -100/
+          switchEvent {{ModId}}_Event_8Hearts_Part2",
+
+        "{{ModId}}_Event_8Hearts_Part2": "
+          pause 800/
+          emote {{Lacey}} 40/
+          faceDirection {{Lacey}} 0/
+          speak {{Lacey}} \"{{i18n:events.8h.7}}\"/
+          viewport move 1 0 5000/
+          advancedMove {{Lacey}} false 4 0 1 10/
+          pause 220/
+          advancedMove farmer false 3 0 1 10/
+          speak {{Lacey}} \"{{i18n:events.8h.8}}\"/
+          {{ModId}}_waitForMovement {{Lacey}} farmer Evelyn/
+          speak Evelyn \"{{i18n:events.8h.9.Evelyn}}\"/
+          speak {{Lacey}} \"{{i18n:events.8h.10}}\"/
+          emote Evelyn 32 true/
+          pause 500/
+          speak Evelyn \"{{i18n:events.8h.11.Evelyn}}\"/
+          advancedMove Evelyn false 0 -2 -3 0 0 -1 1 10/
+          pause 300/
+          emote {{Lacey}} 28/
+          advancedMove {{Lacey}} false 4 0 0 -1 7 0 0 -2 3 10/
+          pause 750/
+          advancedMove farmer false 11 0 0 -2 1 10/
+          {{ModId}}_viewportMoveQueue 2 0 2500/
+          {{ModId}}_viewportMoveQueue 2 -1 3000/
+          pause 600/
+          warp Lewis 58 86/
+          advancedMove Lewis false 0 1 -4 0 0 -6 3 10/
+          speak {{Lacey}} \"{{i18n:events.8h.12}}\"/
+          waitForAllStationary/
+          emote Lewis 16 true/
+          pause 600/
+          advancedMove Lewis false -10 0 4 10/
+          speak {{Lacey}} \"{{i18n:events.8h.13}}\"/
+          emote farmer 40/
+          pause 500/
+          faceDirection farmer 2/
+          faceDirection {{Lacey}} 2/
+          waitForAllStationary/
+          speak Lewis \"{{i18n:events.8h.14.Lewis}}\"/
+          speak {{Lacey}} \"{{i18n:events.8h.15}}\"/
+          speak Lewis \"{{i18n:events.8h.16.Lewis}}\"/
+          advancedMove Lewis false 0 1 10 0 0 5 4 0 0 -1 4 10/
+          {{ModId}}_warpQueue Lewis -100 -100/
+          pause 800/
+          emote {{Lacey}} 28/
+          faceDirection {{Lacey}} 3/
+          faceDirection farmer 1/
+          speak {{Lacey}} \"{{i18n:events.8h.17}}\"/
+          pause 300/
+          advancedMove {{Lacey}} false 0 1 2 800 1 800 3 800 0 -1 3 10/
+          pause 3500/
+          speak {{Lacey}} \"{{i18n:events.8h.18}}\"/
+          quickQuestion #{{i18n:events.8h.q0}}#{{i18n:events.8h.q1}}#{{i18n:events.8h.q2}}(break)pause 500(break)speak {{Lacey}} \"{{i18n:events.8h.r1}}\"(break)speak {{Lacey}} \"{{i18n:events.8h.r2}}\"/
+          speak {{Lacey}} \"{{i18n:events.8h.19}}\"/
+          quickQuestion #{{i18n:events.8h.q3}}#{{i18n:events.8h.q4}}#{{i18n:events.8h.q5}}(break)switchEvent {{ModId}}_Event_8Hearts_Hug(break)speak {{Lacey}} \"{{i18n:events.8h.r4}}\"(break){{ModId}}_crueltyScore 1\\speak {{Lacey}} \"{{i18n:events.8h.r5}}\"/
+          switchEvent {{ModId}}_Event_8Hearts_End",
+
+        "{{ModId}}_Event_8Hearts_Hug": "
+          pause 800/
+          {{ModId}}_drawOnTop {{Lacey}} true/
+          positionOffset {{Lacey}} -4 0/
+          positionOffset farmer 4 4/
+          positionOffset {{Lacey}} -4 0/
+          positionOffset farmer 4 0/
+          animate {{Lacey}} false true 1000 19/
+          animate farmer false true 1000 58/
+          positionOffset {{Lacey}} -4 0/
+          playSound snowyStep/
+          positionOffset farmer 4 0/
+          pause 1500/
+          speak {{Lacey}} \"{{i18n:events.8h.r3}}\"/
+          pause 2000/
+          positionOffset {{Lacey}} 4 0/
+          positionOffset farmer -4 0/
+          stopAnimation {{Lacey}}/
+          stopAnimation farmer/
+          positionOffset {{Lacey}} 4 0/
+          positionOffset farmer -4 0/
+          playSound snowyStep/
+          positionOffset {{Lacey}} 4 0/
+          positionOffset farmer -4 0/
+          {{ModId}}_drawOnTop {{Lacey}} false/
+          switchEvent {{ModId}}_Event_8Hearts_End",
+
+        "{{ModId}}_Event_8Hearts_End": "
+          pause 250/
+          speak {{Lacey}} \"{{i18n:events.8h.20}}\"/
+          pause 200/
+          advancedMove {{Lacey}} false 0 1 2 0 1 500 3 10/
+          pause 2000/
+          speak {{Lacey}} \"{{i18n:events.8h.21}}\"/
+          pause 200/
+          advancedMove {{Lacey}} false 3 0 0 -6 4 10/
+          pause 1800/
+          end"
+      }
+    },
+
+    {
+      "LogName": "Apology event - mail",
+      "Target": "Data/mail",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Mail_ApologySummons": "{{i18n:mail.LaceyApologySummons|quest={{ModId}}_Quest_Apology}}"
+      }
+    },
+
+    {
+      "LogName": "Apology Event",
+      "Target": "Data/Events/Town",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_Apology/LocalMail {{ModId}}_Mail_ApologySummons/Time 1200 1300": "
+          continue/
+          26 22/
+          {{Lacey}} 26 21 2 farmer 22 29 0/
+          hideShadow {{Lacey}} true/
+          {{ModId}}_drawOnTop {{Lacey}} true/
+          showFrame {{Lacey}} 20/
+          positionOffset {{Lacey}} 0 8/
+          pause 500/
+          advancedMove farmer false 0 -7 3 0 1 10/
+          pause 1500/
+          speak {{Lacey}} \"{{i18n:events.apology.0}}\"/
+          pause 400/
+          playSound woodyStep/
+          positionOffset {{Lacey}} 0 8/
+          positionOffset {{Lacey}} 0 8/
+          positionOffset {{Lacey}} 0 8/
+          beginSimultaneousCommand/
+          positionOffset {{Lacey}} 0 8/
+          showFrame {{Lacey}} 0/
+          hideShadow {{Lacey}} false/
+          {{ModId}}_drawOnTop {{Lacey}} false/
+          endSimultaneousCommand/
+          positionOffset {{Lacey}} 0 8/
+          positionOffset {{Lacey}} 0 8/
+          positionOffset {{Lacey}} 0 8/
+          pause 200/
+          faceDirection {{Lacey}} 3/
+          waitForAllStationary/
+          pause 500/
+          speak {{Lacey}} \"{{i18n:events.apology.1}}\"/
+          quickQuestion {{i18n:events.apology.q0}}#{{i18n:events.apology.q1}}#{{i18n:events.apology.q2}}#{{i18n:events.apology.q3}}(break)speak {{Lacey}} \"{{i18n:events.apology.r1}}\"(break)friendship {{Lacey}} -20\\speak {{Lacey}} \"{{i18n:events.apology.r2}}\"(break)friendship {{Lacey}} -10\\speak {{Lacey}} \"{{i18n:events.apology.r3}}\"/
+          pause 200/
+          speak {{Lacey}} \"{{i18n:events.apology.2}}\"/
+          removeQuest {{ModId}}_Quest_Apology/
+          addMailReceived {{ModId}}_Mail_ApologyAccepted/
+          question fork1 \"{{i18n:events.apology.q4}}#{{i18n:events.apology.q5}}#{{i18n:events.apology.q6}}\"/
+          fork {{ModId}}_Event_ApologyMaybeNot/
+          {{ModId}}_setDating {{Lacey}}/
+          speak {{Lacey}} \"{{i18n:events.apology.3.yes}}\"/
+          pause 300/
+          speak {{Lacey}} \"{{i18n:events.apology.4.yes}}\"/
+          pause 350/
+          advancedMove {{Lacey}} false 3 0 0 6 2 10/
+          pause 2000/
+          end",
+
+        "{{ModId}}_Event_ApologyMaybeNot": "
+          pause 50/
+          speak {{Lacey}} \"{{i18n:events.apology.3.no}}\"/
+          move {{Lacey}} 3 0 1/
+          pause 700/
+          faceDirection {{Lacey}} 3/
+          speak {{Lacey}} \"{{i18n:events.apology.4.no}}\"/
+          pause 300/
+          advancedMove {{Lacey}} false 0 8 2 10/
+          pause 1500/
+          faceDirection farmer 2 true/
+          pause 400/
+          end"
+      }
+    },
+
+    {
+      "LogName": "10-heart event - mail",
+      "Target": "Data/mail",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Mail_HouseCall": "{{i18n:mail.LaceyHouseCall}}"
+      }
+    },
+
+    {
+      "LogName": "10-heart event - trigger",
+      "Target": "Data/TriggerActions",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_TriggerAction_10Hearts": {
+          "Id": "{{ModId}}_TriggerAction_10Hearts",
+          "Trigger": "LocationChanged",
+          "Location": "Farm",
+          "Condition": "PLAYER_FRIENDSHIP_POINTS Current {{Lacey}} 2505, !IS_FESTIVAL_DAY, !DAY_OF_WEEK Fri, WEATHER Here Sun",
+          "Actions": ["AddMail Current {{ModId}}_Mail_HouseCall Now"]
+        }
+      }
+    },
+
+    {
+      "LogName": "10-heart event",
+      "Target": "Data/Events/{{ModId}}_MouseHouse",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_10Hearts/Friendship {{Lacey}} 2500/Dating {{Lacey}}/Time 2000 2200/!FestivalDay/NpcVisibleHere {{Lacey}}/LocalMail {{ModId}}_Mail_HouseCall": "
+          none/
+          -100 -100/
+          farmer -50 -50 0 {{Lacey}} 6 13 2/
+          quickQuestion {{i18n:events.10h.abort0}}#{{i18n:events.10h.abort1}}#{{i18n:events.10h.abort2}}(break)playMusic {{ModId}}_Music_FittingIn\\viewport 8 13 true(break)eventSeen {{ModId}}_Event_10Hearts false\\end warpOut\\null\\null\\null\\null/
+          addBigProp 13 12 246/
+          setSkipActions {{ModId}}_AdvanceTime 2200#{{ModId}}_WarpOut/
+          skippable/
+          pause 500/
+          warp farmer 3 17/
+          positionOffset farmer 0 16/
+          playSound woodyStep/
+          playSound doorClose/
+          pause 100/
+          emote {{Lacey}} 32/
+          speak {{Lacey}} \"{{i18n:events.10h.0}}\"/
+          advancedMove farmer false 0 -2 4 0 0 -3 1 10/
+          speed {{Lacey}} 4/
+          advancedMove {{Lacey}} false 6 0 0 -1 3 10/
+          speak {{Lacey}} \"{{i18n:events.10h.1}}\"/
+          quickQuestion #{{i18n:events.10h.q0}}#{{i18n:events.10h.q1}}(break)speak {{Lacey}} \"{{i18n:events.10h.r0.0}}\"\\advancedMove {{Lacey}} false 1 1200 -4 0 3 10\\waitForAllStationary\\speak {{Lacey}} \"{{i18n:events.10h.r0.1}}\"\\farmerEat 395\\pause 2000\\faceDirection farmer 1 true(break)speak {{Lacey}} \"{{i18n:events.10h.r1}}\"\\advancedMove {{Lacey}} false -4 0 3 10\\waitForAllStationary/
+          speak {{Lacey}} \"{{i18n:events.10h.2}}\"/
+          speed {{Lacey}} 3/
+          {{ModId}}_sit 7 11/
+          pause 350/
+          playSound woodyStep/
+          {{ModId}}_drawOnTop {{Lacey}}/
+          positionOffset {{Lacey}} -2 -20/
+          positionOffset {{Lacey}} -2 -16/
+          hideShadow {{Lacey}} true/
+          showFrame {{Lacey}} 20/
+          positionOffset {{Lacey}} -2 -16/
+          positionOffset {{Lacey}} -2 -8/
+          positionOffset {{Lacey}} 0 -4/
+          positionOffset {{Lacey}} 0 8/
+          positionOffset {{Lacey}} 0 4/
+          pause 500/
+          playMusic {{ModId}}_Music_FromAMousesHeart/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.10h.3}}\"/
+          pause 300/
+          showFrame {{Lacey}} 21/
+          pause 1000/
+          showFrame {{Lacey}} 22/
+          positionOffset {{Lacey}} -4 0/
+          pause 120/
+          showFrame {{Lacey}} 20/
+          positionOffset {{Lacey}} -4 0/
+          playSound snowyStep/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.10h.4}}\"/
+          pause 400/
+          showFrame {{Lacey}} 21/
+          pause 400/
+          speak {{Lacey}} \"{{i18n:events.10h.5}}\"/
+          pause 500/
+          speak {{Lacey}} \"{{i18n:events.10h.6}}#$b#$m {{ModId}}_Mail_ApologyAccepted#{{i18n:events.10h.7a}}|{{i18n:events.10h.7b}}#$b#{{i18n:events.10h.8}}\"/
+          speak {{Lacey}} \"{{i18n:events.10h.9}}\"/
+          pause 500/
+          positionOffset {{Lacey}} -2 0/
+          showFrame {{Lacey}} 23/
+          pause 40/
+          positionOffset {{Lacey}} -2 0/
+          playSound snowyStep/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.10h.10}}\"/
+          pause 2200/
+          speak {{Lacey}} \"{{i18n:events.10h.11}}\"/
+          quickQuestion #{{i18n:events.10h.q2}}#{{i18n:events.10h.q3}}#{{i18n:events.10h.q4}}#(break)positionOffset {{Lacey}} 4 0\\showFrame {{Lacey}} 21\\speak {{Lacey}} \"{{i18n:events.10h.r2}}\"(break)positionOffset {{Lacey}} 4 0\\showFrame {{Lacey}} 21\\speak {{Lacey}} \"{{i18n:events.10h.r3}}\"(break)positionOffset {{Lacey}} 4 0\\showFrame {{Lacey}} 21\\speak {{Lacey}} \"$m {{ModId}}_Mail_ApologyAccepted#{{i18n:events.10h.r4.0a}}|{{i18n:events.10h.r4.0b}}#$b#{{i18n:events.10h.r4.1}}\"/
+          pause 300/
+          positionOffset {{Lacey}} -4 0/
+          showFrame {{Lacey}} 23/
+          playSound snowyStep/
+          speak {{Lacey}} \"{{i18n:events.10h.12}}\"/
+          pause 800/
+          unskippable/
+          globalFade/
+          viewport -1000 -1000/
+          pause 600/
+          switchEvent {{ModId}}_Event_10Hearts_Part2",
+
+        // this is a part2 so it can easily be replaced when DTF is on
+        "{{ModId}}_Event_10Hearts_Part2": "
+          pause 50/
+          message \"{{i18n:events.10h.13.m}}\"/
+          message \"{{i18n:events.10h.14.m}}\"/
+          pause 300/
+          speak {{Lacey}} \"{{i18n:events.10h.15}}\"/
+          action {{ModId}}_AdvanceTime 2200/
+          end warpOut"
+      }
+    },
+
+    {
+      "LogName": "Custom Wedding",
+      "Target": "Data/Weddings",
+      "Action": "EditData",
+      "TargetField": ["EventScript"],
+      "Entries": {
+        "{{Lacey}}": "
+          {{ModId}}_Music_FromAMousesHeart/
+          -1000 -100/
+          farmer 27 63 2 spouse 28 63 2 Lewis 27 64 2 otherFarmers 29 69 0[SetupContextualWeddingAttendees]/
+          changeLocation Town/
+          showFrame spouse 36/
+          specificTemporarySprite wedding/
+          viewport 27 64 true/
+          pause 4000/
+          speak Lewis \"{{i18n:events.wedding.0}}\"/
+          pause 500/
+          move Lewis 0 1 2/
+          speak Lewis \"{{i18n:events.wedding.1}}\"/
+          pause 750/
+          jump Lewis/
+          speak Lewis \"{{i18n:events.wedding.2}}\"/
+          faceDirection Lewis 0/
+          faceDirection farmer 1/
+          showFrame spouse 37/
+          pause 1000/
+          showFrame Lewis 20/
+          speak Lewis \"[GenderedText [EscapedText [LocalizedText Strings\\StringsFromCSFiles:Utility.cs.5373]] [EscapedText [LocalizedText Strings\\StringsFromCSFiles:Utility.cs.5375]]]\"/
+          pause 500/
+          speak Lewis \"[LocalizedText Strings\\\\StringsFromCSFiles:Utility.cs.5379]\"/
+          playMusic none/
+          pause 1000/
+          showFrame farmer 101/
+          showFrame spouse 38/
+          specificTemporarySprite heart 28 62/
+          playSound dwop/
+          pause 2000/
+          specificTemporarySprite wed/
+          pause 1000/
+          faceDirection farmer 2 true/
+          showFrame spouse 36/
+          [ContextualWeddingCelebrations]move Lewis 0 3 3 true/
+          addConversationTopic {{ModId}}_CT_MarriedTheMouse/
+          pause 6000/
+          faceDirection farmer 1 true/
+          showFrame spouse 37/
+          pause 2500/
+          globalFade/
+          viewport -1000 -1000/
+          pause 1000/
+          message \"[LocalizedText Strings\\StringsFromCSFiles:Utility.cs.5381]\"/
+          pause 500/
+          message \"[LocalizedText Strings\\StringsFromCSFiles:Utility.cs.5383]\"/
+          pause 4000/
+          waitForOtherPlayers weddingEnd[FarmerUniqueID]/
+          end wedding"
+      }
+    },
+
+    {
+      "LogName": "14-heart event - start",
+      "Target": "Data/Events/BusStop",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_14Hearts/Friendship {{Lacey}} 3500/Spouse {{Lacey}}/!FestivalDay/Tile 33 23 33 24/Time 1500 1800/Weather sunny/!Season winter": "
+          sweet/
+          12 23/
+          {{Lacey}} 12 22 1 farmer 19 23 3/
+          advancedMove farmer false -6 0 0 -1 3 10/
+          pause 700/
+          emote {{Lacey}} 32 true/
+          pause 1200/
+          speak {{Lacey}} \"{{i18n:events.14h.0}}\"/
+          waitForAllStationary/
+          animate {{Lacey}} false false 1200 28/
+          animate farmer true false 1200 101/
+          specificTemporarySprite heart 13 21/
+          playSound dwop/
+          pause 1200/
+          speak {{Lacey}} \"{{i18n:events.14h.1}}\"/
+          quickQuestion {{i18n:events.14h.q0}}#{{i18n:events.14h.q1}}#{{i18n:events.14h.q2}}(break)switchEvent {{ModId}}_Event_14Hearts_Accept(break)addMailReceived {{ModId}}_Mail_PicnicPostponed/
+          emote {{Lacey}} 40/
+          speak {{Lacey}} \"{{i18n:events.14h.r2}}\"/
+          pause 300/
+          end position 13 22",
+
+        "{{ModId}}_Event_14Hearts_Postponed/Friendship {{Lacey}} 3500/Spouse {{Lacey}}/!FestivalDay/Tile 0 23 0 24 33 23 33 24/Time 1500 1800/Weather sunny/!Season winter/LocalMail {{ModId}}_Mail_PicnicPostponed": "
+          sweet/
+          12 23/
+          {{Lacey}} 12 22 1 farmer 13 22 3/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.14h.reboot.0}}\"/
+          quickQuestion {{i18n:events.14h.reboot.q0}}#{{i18n:events.14h.reboot.q1}}#{{i18n:events.14h.reboot.q2}}(break)switchEvent {{ModId}}_Event_14Hearts_Accept(break)eventSeen {{ModId}}_Event_14Hearts_Postponed false/
+          speak {{Lacey}} \"{{i18n:events.14h.reboot.r2}}\"/
+          pause 300/
+          end position 13 22",
+
+        "{{ModId}}_Event_14Hearts_Accept": "
+          pause 10/
+          setSkipActions {{ModId}}_AdvanceTime 2100#{{ModId}}_WarpHome/
+          skippable/
+          emote farmer 20/
+          speak {{Lacey}} \"{{i18n:events.14h.2}}\"/
+          pause 250/
+          advancedMove {{Lacey}} false 0 1 -5 0 3 10/
+          pause 105/
+          advancedMove farmer false 0 1 -5 0 3 10/
+          pause 300/
+          fade/
+          viewport -1000 -1000/
+          stopAdvancedMoves/
+          changeLocation Forest/
+          switchEvent {{ModId}}_Event_14Hearts_Picnic"
+      }
+    },
+
+    {
+      "LogName": "14-heart event - destination",
+      "Target": "Data/Events/Forest",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Event_14Hearts_Picnic": "
+          faceDirection farmer 2 true/
+          faceDirection {{Lacey}} 2 true/
+          warp farmer 42 92/
+          positionOffset farmer 0 16/
+          warp {{Lacey}} 43 93/
+          ambientLight 0 0 30/
+          viewport 47 99 true/
+          advancedMove {{Lacey}} false 0 3 1 0 0 1 2 0 2 10/
+          pause 120/
+          advancedMove farmer false 0 4 1 0 0 1 2 0 2 10/
+          pause 900/
+          speak {{Lacey}} \"{{i18n:events.14h.3}}\"/
+          waitForAllStationary/
+          advancedMove {{Lacey}} false 0 1 -1 0 0 1 4 10/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.14h.4}}\"/
+          move farmer 3 0 2/
+          faceDirection {{Lacey}} 1/
+          playSound leafrustle/
+          pause 120/
+          playSound leafrustle/
+          pause 300/
+          addFloorProp 416 46 98 4 2 2/
+          pause 200/
+          advancedMove {{Lacey}} false 2 0 0 -1 1 10/
+          pause 220/
+          speak {{Lacey}} \"{{i18n:events.14h.5}}\"/
+          {{ModId}}_ambientSunset 80000/
+          pause 240/
+          animate {{Lacey}} false true 420 29 30/
+          pause 170/
+          advancedMove farmer false 0 2 2 10/
+          pause 650/
+          addObject 46 98 200/
+          playSound harvest/
+          pause 550/
+          showFrame farmer 95/
+          positionOffset farmer -4 0/
+          playSound hoeHit/
+          pause 240/
+          addObject 46 99 609/
+          playSound harvest/
+          pause 800/
+          addObject 49 98 903/
+          playSound dwop/
+          pause 900/
+          addObject 49 99 611/
+          playSound harvest/
+          pause 440/
+          stopAnimation {{Lacey}}/
+          advancedMove {{Lacey}} false 0 1 2 10/
+          pause 530/
+          beginSimultaneousCommand/
+          positionOffset {{Lacey}} 4 20/
+          showFrame {{Lacey}} 20/
+          endSimultaneousCommand/
+          playSound hoeHit/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.14h.6}}\"/
+          pause 1000/
+          speak {{Lacey}} \"{{i18n:events.14h.7}}\"/
+          pause 300/
+          speak {{Lacey}} \"{{i18n:events.14h.8}}\"/
+          pause 500/
+          speak {{Lacey}} \"{{i18n:events.14h.9}}\"/
+          pause 1400/
+          positionOffset {{Lacey}} 4 -4/
+          positionOffset {{Lacey}} 4 -4/
+          beginSimultaneousCommand/
+          showFrame {{Lacey}} 31/
+          positionOffset {{Lacey}} 0 -20/
+          playSound snowyStep/
+          endSimultaneousCommand/
+          pause 300/
+          speak {{Lacey}} \"{{i18n:events.14h.10}}\"/
+          pause 3000/
+          speak {{Lacey}} \"{{i18n:events.14h.11}}\"/
+          quickQuestion #{{i18n:events.14h.q3}}#{{i18n:events.14h.q4}}#{{i18n:events.14h.q5}}(break)pause 500(break)speak {{Lacey}} \"{{i18n:events.14h.r4}}\"(break)speak {{Lacey}} \"{{i18n:events.14h.r5}}\"/
+          pause 2000/
+          speak {{Lacey}} \"{{i18n:events.14h.12}}\"/
+          positionOffset {{Lacey}} -8 8/
+          showFrame {{Lacey}} 0/
+          pause 500/
+          positionOffset farmer 4 0/
+          faceDirection farmer 2/
+          faceDirection {{Lacey}} 1 true/
+          faceDirection farmer 3 true/
+          switchEvent {{ModId}}_Event_14Hearts_Picnic_Part2",
+
+        // this is a part2 so it can easily be replaced when DTF is on
+        "{{ModId}}_Event_14Hearts_Picnic_Part2": "
+          pause 150/
+          speak {{Lacey}} \"{{i18n:events.14h.13}}\"/
+          emote {{Lacey}} 20/
+          speak {{Lacey}} \"{{i18n:events.14h.14}}\"/
+          pause 250/
+          animate {{Lacey}} false true 1000 28/
+          animate farmer true true 1000 101/
+          specificTemporarySprite heart 48 98/
+          playSound dwop/
+          pause 1000/
+          unskippable/
+          action {{ModId}}_AdvanceTime 2100/
+          globalFade .0045/
+          viewport -1000 -1000/
+          changeLocation FarmHouse/
+          end warpOut"
+      }
+    }
+  ]
 }

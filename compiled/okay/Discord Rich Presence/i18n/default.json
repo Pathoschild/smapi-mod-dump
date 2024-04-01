@@ -1,0 +1,55 @@
+{
+  // Commands
+  "command.reload.desc": "Reloads the config for Discord Rich Presence.",
+  "command.format.desc": "Formats and prints a provided configuration string.",
+  "command.format.result": "Result: {{result}}",
+  "command.tags.desc": "Lists tags usable for configuration strings.",
+  "command.tags.nulls": "{{count}} tags are unavailable; type `discordtags all` to show all",
+
+  // Console Output
+  "console.discordConnected": "Connected to Discord: {{user}}",
+  "notify.reloadConfig": "DiscordRP config reloaded.",
+  "notify.reloadConfig.failed": "Failed to reload Discord RPC config. Check console.",
+
+  // Config Menu
+  "options.ShowGlobalPlayTime": "Show global playtime",
+  "options.AddGetModButton": "Add Get Mod Button",
+  "options.AddGetModButton.desc": "Support the mod by adding a link to it on your rich presence.",
+  "options.preview": "Preview",
+  "options.MenuPresence": "Customize Presence in Menus",
+  "options.GamePresence": "Customize Presence in Game",
+  "options.State": "Line 1 (State)",
+  "options.Details": "Line 2 (Details)",
+  "options.largeImageText": "Large image text",
+  "options.SmallImageText": "Small image text",
+  "options.ForceSmallImage": "Force small image",
+  "options.ForceSmallImage.desc": "Always show small image, even if small text is empty and weather isn't shown.",
+  "options.ShowSeason": "Show season",
+  "options.ShowSeason.desc": "Show the current season on large image",
+  "options.ShowFarmType": "Show farm type",
+  "options.ShowFarmType.desc": "Show the farm type on large image",
+  "options.ShowWeather": "Show weather",
+  "options.ShowWeather.desc": "Show the current weather on small image",
+  "options.ShowPlayTime": "Show play time",
+  "options.ShowPlayTime.desc": "Show how long you've been playing",
+  "options.showAvailableTags": "Show available tags",
+  "options.showAllTags": "Click here to show all tags",
+  "options.unavailableTags": "{{count}} tags are unavailable",
+
+  "options.page.tags": "Tags",
+  "options.page.allTags": "All Tags",
+
+  "tagList.header": "Available tags:",
+  "tagList.modHeader": "{{count}} tags from {{name}}:",
+  "tagList.unknownModsHeader": "{{count}} tags from unknown mods:",
+
+  // GamePresence
+  "gamePresence.gettingStarted": "Getting Started",
+  "gamePresence.startingNewGame": "Starting a New Game",
+
+  "hostingCoop": "Hosting coop",
+  "playingCoop": "Playing coop",
+  "playingSolo": "Playing solo",
+
+  "getModButton": "Get SDV Rich Presence Mod"
+}

@@ -1,0 +1,9 @@
+﻿{
+    "Name": "Auto Break Geode",
+    "Author": "weizinai",
+    "Version": "1.0.1",
+    "Description": "Allows you to automatically break geode.",
+    "UniqueID": "weizinai.AutoBreakGeode",
+    "EntryDll": "AutoBreakGeode.dll",
+    "UpdateKeys": [ "Nexus:20685" ]
+}

@@ -1,0 +1,17 @@
+{
+  "coffeeButton": "Q",
+  "stackAmount": 2,
+  "autoDrink": false,
+  "autoToggleButton": "Space",
+  "logToCosole": true,
+  "BuffsConfig": {
+    "395": {
+      "speed": "2",
+      "duration": "90000"
+    },
+    "253": {
+      "speed": "2",
+      "duration": "300000"
+    }
+  }
+}

@@ -1,0 +1,361 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lisyce/SDV_Allergies_Mod
+**
+*************************************************/
+
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Add medicine to Harvey's clinic",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": [ "Hospital", "Items" ],
+      "Entries": {
+        "BarleyZP.BzpAllergies_AllergyMedicine": {
+          "Id": "BarleyZP.BzpAllergies_AllergyMedicine",
+          "ItemId": "(O)BarleyZP.BzpAllergies_AllergyMedicine",
+          "Price": 1000
+        },
+        "BarleyZP.BzpAllergies_LactasePills": {
+          "Id": "BarleyZP.BzpAllergies_LactasePills",
+          "ItemId": "(O)BarleyZP.BzpAllergies_LactasePills",
+          "Price": 1500
+        }
+      }
+    },
+    {
+      "LogName": "Add custom objects",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "BarleyZP.BzpAllergies_AllergyMedicine": {
+          "Name": "Allergy Medicine",
+          "DisplayName": "Allergy Medicine",
+          "Description": "Drink for relief from an allergic reaction. Can be consumed even when nauseous.",
+          "Type": "Crafting",
+          "Category": 0,
+          "Price": 500,
+          "Texture": "Mods/BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 0,
+          "Edibility": 20,
+          "IsDrink": true,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "medicine_item",
+            "color_dark_purple",
+            "ginger_item"
+          ],
+          "CustomFields": null
+        },
+        "BarleyZP.BzpAllergies_LactasePills": {
+          "Name": "Lactase Pills",
+          "DisplayName": "Lactase Pills",
+          "Description": "Eat before consuming dairy if you're allergic for temporary protection.",
+          "Type": "Crafting",
+          "Category": 0,
+          "Price": 500,
+          "Texture": "Mods/BarleyZP.BzpAllergies/Sprites",
+          "SpriteIndex": 1,
+          "Edibility": 20,
+          "IsDrink": false,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": [
+            "medicine_item",
+            "color_blue"
+          ],
+          "CustomFields": null
+        }
+      }
+    },
+    {
+      "LogName": "Add custom mail",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "BarleyZP.BzpAllergies_harvey_ad": "@,^I heard that you experienced an allergic reaction the other day.^You should come by the clinic sometime and get some medicine so it doesn't happen again!^I've enclosed some Allergy Medicine to get you by until you can stop in.^^-Dr. Harvey%item object BarleyZP.BzpAllergies_AllergyMedicine 1%%[#]Harvey's Allergy Medicine"
+      }
+    },
+    {
+      "LogName": "Abigail Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Abigail",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "You look a little green... did you eat something?"
+      }
+    },
+    {
+      "LogName": "Alex Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Alex",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Yikes! You don't look so good...$7"
+      }
+    },
+    {
+      "LogName": "Caroline Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Caroline",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Are you feeling OK? Maybe some tea would help.[614]"
+      }
+    },
+    {
+      "LogName": "Clint Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Clint",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "%Clint seems concerned for you.$2"
+      }
+    },
+    {
+      "LogName": "Demetrius Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Demetrius",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Oh wow! Looks like you're having a reaction!$6#$b#I wonder if I could study a sample of what you ate...$0"
+      }
+    },
+    {
+      "LogName": "Elliott Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Elliott",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Are you unwell? Perhaps you should relax by the sea for a bit."
+      }
+    },
+    {
+      "LogName": "Emily Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Emily",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Oh! You've definitely got some bad energy surrounding you today!$6"
+      }
+    },
+    {
+      "LogName": "Evelyn Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Evelyn",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Oh, my dear. Let me get you something from the medicine cabinet.[BarleyZP.BzpAllergies_AllergyMedicine]#$e#Don't tell George. He doesn't think I should be buying this 'newfangled medicine', as he likes to say."
+      }
+    },
+    {
+      "LogName": "George Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/George",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Hmmph... Young people these days get sick so easily.#$b#Nobody had any 'allergies' when I was a kid."
+      }
+    },
+    {
+      "LogName": "Gus Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Gus",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "If you're sick, you should get some rest. I better not see you at the saloon if you should be in bed!$3"
+      }
+    },
+    {
+      "LogName": "Haley Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Haley",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Ew, are you sick? Don't get me infected too!$12"
+      }
+    },
+    {
+      "LogName": "Haley Dialogue (Marriage)",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/MarriageDialogueHaley",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Honey, are you alright?$12"
+      }
+    },
+    {
+      "LogName": "Harvey Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Harvey",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Are you having an allergic reaction? Why didn't you come to me sooner!$8#$b#Here, drink this and you should feel much better.[BarleyZP.BzpAllergies_AllergyMedicine]#$0"
+      }
+    },
+    {
+      "LogName": "Jas Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Jas",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Umm... Are you ok?$b#$3"
+      }
+    },
+    {
+      "LogName": "Jodi Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Jodi",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Are you alright? I always tell my boys to make sure they get lots of rest when they're sick."
+      }
+    },
+    {
+      "LogName": "Kent Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Kent",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Woah... I haven't seen a reaction like that since my buddy ate the Algae Soup overseas.$4"
+      }
+    },
+    {
+      "LogName": "Krobus Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Krobus",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "It really is true that some humans get sick when they eat certain foods...$7"
+      }
+    },
+    {
+      "LogName": "Leah Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Leah",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Did you eat some bad mushrooms? You've got to be careful foraging for your own food!$6"
+      }
+    },
+    {
+      "LogName": "Leo Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Leo",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Your green face is scaring the birds...$3"
+      }
+    },
+    {
+      "LogName": "Lewis Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Lewis",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "You know overreacting like that isn't going to get you out of paying taxes.$5"
+      }
+    },
+    {
+      "LogName": "Linus Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Linus",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "You look a bit under the weather."
+      }
+    },
+    {
+      "LogName": "Marnie Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Marnie",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Eek! Are you having an allergic reaction?$4"
+      }
+    },
+    {
+      "LogName": "Maru Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Maru",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "If you've got an allergy, you should get some medicine from the clinic.$3"
+      }
+    },
+    {
+      "LogName": "Pam Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Pam",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "You look like you had too much to drink last night. I know that feeling, farmer."
+      }
+    },
+    {
+      "LogName": "Penny Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Penny",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Oh... I used to get allergies like that too when I was a kid! Be careful of what you eat!$12"
+      }
+    },
+    {
+      "LogName": "Pierre Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Pierre",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Hmmm... Maybe I should start selling some allergy relief too.$1"
+      }
+    },
+    {
+      "LogName": "Robin Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Robin",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Are you having a reaction? Make sure you're reading the labels on what you eat."
+      }
+    },
+    {
+      "LogName": "Sam Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Sam",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Dude, I get pollen allergies myself, but definitely not as bad as that!$8"
+      }
+    },
+    {
+      "LogName": "Sebastian Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Sebastian",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Hey... Are you feeling alright?"
+      }
+    },
+    {
+      "LogName": "Shane Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Shane",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "You look hungover. Don't make it a habit.$2"
+      }
+    },
+    {
+      "LogName": "Vincent Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Vincent",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Woah... That's the face I make when I eat a bug that doesn't taste good.$3"
+      }
+    },
+    {
+      "LogName": "Willy Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Willy",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "You look a bit seasick, son.^You look a bit seasick, lass.$2"
+      }
+    },
+    {
+      "LogName": "Wizard Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Wizard",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Did you tamper with culinary magic? You look ill."
+      }
+    }
+  ]
+}

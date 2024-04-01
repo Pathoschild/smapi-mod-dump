@@ -54,8 +54,8 @@ namespace BetterJunimos.Utils {
 
         private readonly List<IJunimoAbility> _registeredJunimoAbilities = new();
 
-        private static readonly Dictionary<Guid, Dictionary<int, bool>> ItemsInHuts = new();
-        private readonly HashSet<int> _requiredItems = new() {SObject.fertilizerCategory, SObject.SeedsCategory};
+        private static readonly Dictionary<Guid, Dictionary<string, bool>> ItemsInHuts = new();
+        private readonly HashSet<string> _requiredItems = new() {SObject.fertilizerCategory.ToString(), SObject.SeedsCategory.ToString()};
 
 
         public JunimoAbilities(Dictionary<string, bool> enabledAbilities, IMonitor monitor) {
@@ -106,7 +106,7 @@ namespace BetterJunimos.Utils {
             }
 
             if (!Util.Progression.UnlockCosts.ContainsKey(name)) {
-                Util.Progression.UnlockCosts[name] = new UnlockCost {Item = 268, Stack = 1, Remarks = "Starfruit"};
+                Util.Progression.UnlockCosts[name] = new UnlockCost {Item = "268", Stack = 1, Remarks = "Starfruit"};
             }
         }
 
@@ -172,7 +172,7 @@ namespace BetterJunimos.Utils {
         public bool PerformAction(IJunimoAbility ability, Guid id, GameLocation location, Vector2 pos,
             JunimoHarvester junimo) {
             var hut = Util.GetHutFromId(id);
-            var chest = hut.output.Value;
+            var chest = hut.GetOutputChest();
 
             var success = ability.PerformAction(location, pos, junimo, id);
 
@@ -224,30 +224,30 @@ namespace BetterJunimos.Utils {
             return true;
         }
 
-        private static bool ItemInHut(Guid id, int item) {
+        private static bool ItemInHut(Guid id, string item) {
             return ItemsInHuts[id].TryGetValue(item, out var present) && present;
         }
 
-        public static bool ItemInHut(Guid id, List<int> items) {
+        public static bool ItemInHut(Guid id, List<string> items) {
             if (items.Count == 0) return true;
             return items.Any(item => ItemInHut(id, item));
         }
 
         internal void UpdateHutItems(Guid id) {
             var hut = Util.GetHutFromId(id);
-            var chest = hut.output.Value;
-            UpdateHutContainsItems(id, chest, _requiredItems.ToList<int>());
+            var chest = hut.GetOutputChest();
+            UpdateHutContainsItems(id, chest, _requiredItems.ToList<string>());
         }
 
-        private void UpdateHutContainsItems(Guid id, Chest chest, List<int> items) {
+        private void UpdateHutContainsItems(Guid id, Chest chest, List<string> items) {
             foreach (var itemId in items) {
                 if (!ItemsInHuts.ContainsKey(id)) {
-                    ItemsInHuts.Add(id, new Dictionary<int, bool>());
+                    ItemsInHuts.Add(id, new Dictionary<string, bool>());
                 }
 
-                if (itemId > 0) {
-                    ItemsInHuts[id][itemId] = chest.items.Any(item =>
-                        item != null && item.ParentSheetIndex == itemId &&
+                if (itemId != "0") {
+                    ItemsInHuts[id][itemId] = chest.Items.Any(item =>
+                        item != null && item.ItemId.ToString() == itemId &&
                         !(BetterJunimos.Config.JunimoImprovements.AvoidPlantingCoffee &&
                           item.ParentSheetIndex == Util.CoffeeId)
                     );
@@ -258,13 +258,13 @@ namespace BetterJunimos.Utils {
             }
         }
 
-        private static void UpdateHutContainsItemCategory(Guid id, Chest chest, int itemCategory) {
+        private static void UpdateHutContainsItemCategory(Guid id, Chest chest, string itemCategory) {
             if (!ItemsInHuts.ContainsKey(id)) {
-                ItemsInHuts.Add(id, new Dictionary<int, bool>());
+                ItemsInHuts.Add(id, new Dictionary<string, bool>());
             }
 
-            ItemsInHuts[id][itemCategory] = chest.items.Any(item =>
-                item != null && item.Category == itemCategory &&
+            ItemsInHuts[id][itemCategory] = chest.Items.Any(item =>
+                item != null && item.Category.ToString() == itemCategory &&
                 !(BetterJunimos.Config.JunimoImprovements.AvoidPlantingCoffee && item.ParentSheetIndex == Util.CoffeeId)
             );
         }

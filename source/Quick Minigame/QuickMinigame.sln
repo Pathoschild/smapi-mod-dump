@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickMinigame", "QuickMinigame.csproj", "{E1888FE8-6380-43A1-B947-159394BE6CCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickMinigame", "QuickMinigame\QuickMinigame.csproj", "{3EEEA11E-175E-424F-B2AB-4F8BA3500C2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E1888FE8-6380-43A1-B947-159394BE6CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1888FE8-6380-43A1-B947-159394BE6CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1888FE8-6380-43A1-B947-159394BE6CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1888FE8-6380-43A1-B947-159394BE6CCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EEEA11E-175E-424F-B2AB-4F8BA3500C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EEEA11E-175E-424F-B2AB-4F8BA3500C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EEEA11E-175E-424F-B2AB-4F8BA3500C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EEEA11E-175E-424F-B2AB-4F8BA3500C2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

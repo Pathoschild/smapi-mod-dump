@@ -19,6 +19,7 @@ This library is used by the following mods:
 * [Always Scroll Map](https://www.nexusmods.com/stardewvalley/mods/2733):                   Makes the map scroll past the edge of the map.
 * [Bigger Backpack](https://www.nexusmods.com/stardewvalley/mods/1845):                     Adds an additional upgrade to the backpack for 48 slots.
 * [Fix Animal Tool Animations](https://www.nexusmods.com/stardewvalley/mods/3215):          When using the shears or milk pail, the animation no longer plays when no animal is nearby.
+* [Flexible Arms](https://www.nexusmods.com/stardewvalley/mods/20902):                      **NEW!** Makes it easier to aim your tools with a mouse.
 * [Grass Growth](https://www.nexusmods.com/stardewvalley/mods/2732):                        Allows long grass to spread everywhere on your farm.
 * [Yet Another Harvest With Scythe Mod](https://www.nexusmods.com/stardewvalley/mods/2731): Allows you to harvest all crops and forage using the scythe. They can also still be plucked.
 * [Movement Speed](https://www.nexusmods.com/stardewvalley/mods/2736):                      Changes the player's movement speed and charging time of the hoe and watering can.
@@ -36,8 +37,9 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
 #### 7.0:
+* Updated for Stardew Valley 1.6
 * Localization support.
-* Russian & Ukrainian translation
+* Better error checking, reporting & handling.
 
 #### 6.0:
 * Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.

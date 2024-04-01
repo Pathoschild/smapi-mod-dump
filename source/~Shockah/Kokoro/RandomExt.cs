@@ -16,9 +16,6 @@ namespace Shockah.Kokoro;
 
 public static class RandomExt
 {
-	public static bool NextBool(this Random random)
-		=> random.Next(2) == 0;
-
 	public static T NextElement<T>(this Random random, IReadOnlyList<T> list)
 		=> list[random.Next(list.Count)];
 

@@ -1,0 +1,22 @@
+{
+	"Name": "In a Heartbeat",
+	"Author": "Shockah",
+	"Version": "2.0.0",
+	"Description": "Show some extra love to date/marry villagers early. Adds craftable Bouquets and Mermaid's Pendants.",
+	"UniqueID": "Shockah.InAHeartbeat",
+	"EntryDll": "InAHeartbeat.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:17834" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "3.0.0"
+		},
+		{
+			"UniqueID": "spacechase0.SpaceCore",
+			"IsRequired": true,
+			"MinimumVersion": "1.18.0"
+		}
+	]
+}

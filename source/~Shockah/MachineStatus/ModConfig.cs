@@ -47,22 +47,21 @@ public sealed class ModConfig : IVersioned.Modifiable
 	public float NormalAlpha { get; set; } = 0.3f;
 
 	public MachineRenderingOptions.Grouping Grouping { get; set; } = MachineRenderingOptions.Grouping.ByMachine;
-	public IList<MachineRenderingOptions.Sorting> Sorting { get; set; } = new List<MachineRenderingOptions.Sorting>
-	{
+	public List<MachineRenderingOptions.Sorting> Sorting { get; set; } = [
 		MachineRenderingOptions.Sorting.ReadyFirst,
 		MachineRenderingOptions.Sorting.WaitingFirst,
 		MachineRenderingOptions.Sorting.ByMachineAZ,
 		MachineRenderingOptions.Sorting.ByItemAZ
-	};
+	];
 
 	public bool ShowReady { get; set; } = true;
-	public IList<string> ShowReadyExceptions { get; set; } = new List<string>();
+	public List<string> ShowReadyExceptions { get; set; } = [];
 
 	public bool ShowWaiting { get; set; } = false;
-	public IList<string> ShowWaitingExceptions { get; set; } = new List<string> { "*|Cask", "*|Keg", "*|Preserves Jar", "*|Crab Pot", "*|Crystalarium" };
+	public List<string> ShowWaitingExceptions { get; set; } = ["*|Cask", "*|Keg", "*|Preserves Jar", "*|Crab Pot", "*|Crystalarium"];
 
 	public bool ShowBusy { get; set; } = false;
-	public IList<string> ShowBusyExceptions { get; set; } = new List<string>();
+	public List<string> ShowBusyExceptions { get; set; } = [];
 
 	[JsonIgnore]
 	public IReadOnlyList<IWildcardPattern> ShowReadyExceptionPatterns

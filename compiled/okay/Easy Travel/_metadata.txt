@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20872
+IDs: season.EasyMove
+update keys: Nexus:20872

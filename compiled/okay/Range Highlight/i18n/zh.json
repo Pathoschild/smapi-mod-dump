@@ -1,0 +1,76 @@
+// Copyright 2022-2024 Jamie Taylor
+// Translation by nexusmods user zephyrus2002
+{
+    // Strings used in the config menu
+    "config.install-gmcm-options": "如果您安装了 GMCM Options 模组，那么您将能够在此菜单中配置颜色。",
+    "config.refresh-interval": "刷新频率",
+    "config.refresh-interval.tooltip": "刷新覆盖范围的频率（单位为 1/60 秒 约16.7毫秒）",
+    "config.enable": "启用",
+    "config.hotkey": "热键",
+    "config.tint": "颜色",
+    "config.show-others": "在手持设备时显示其它同类建筑范围",
+    "config.hotkeys-toggle": "显示方式切换",
+    "config.hotkeys-toggle.tooltip": "如果勾选，则按热键切换是否高亮建筑范围；否则，在按住热键时高亮。",
+    "config.show-all-key": "高亮所有建筑范围热键",
+    "config.show-all-key.tooltip": "高亮所有建筑范围的热键",
+    "config.highlight-building-on-mouseover": "鼠标悬停时高亮显示建筑",
+    "config.highlight-building-on-mouseover.tooltip": "如果被勾选，则当鼠标指向建筑物时，建筑物的高亮显示",
+    "config.highlight-action-location": "在即将放置建筑位置周围高亮",
+    "config.highlight-action-location.tooltip": "预显示你想安置建筑位置的高亮",
+    "config.highlight-action-location-style.Never": "从不",
+    "config.highlight-action-location-style.WhenMouseHidden": "当鼠标光标被隐藏时",
+    "config.highlight-action-location-style.Always": "始终",
+
+
+    "config.Junimo": "祝尼魔小屋",
+    "config.Junimo.enable.tooltip": "启用祝尼魔小屋范围高亮",
+    "config.Junimo.hotkey.tooltip": "按住此键显示祝尼魔小屋范围",
+    "config.Junimo.tint.tooltip": "祝尼魔小屋范围高亮颜色",
+
+    "config.sprinkler": "洒水器",
+    "config.sprinkler.enable.tooltip": "启用洒水器范围高亮",
+    "config.sprinkler.hotkey.tooltip": "按住此键显示洒水器范围",
+    "config.sprinkler.show-others.tooltip": "手持洒水器时显示已放置洒水器的范围.",
+    "config.sprinkler.tint.tooltip": "洒水器范围的高亮颜色",
+
+    "config.scarecrow": "稻草人",
+    "config.scarecrow.enable.tooltip": "启用稻草人范围高亮显示",
+    "config.scarecrow.hotkey.tooltip": "按住此键显示稻草人范围",
+    "config.scarecrow.show-others.tooltip": "手持稻草人时显示已放置的稻草人范围。",
+    "config.scarecrow.tint.tooltip": "稻草人范围高亮的颜色",
+
+    "config.beehouse": "蜂房",
+    "config.beehouse.enable.tooltip": "启用蜂房范围高亮",
+    "config.beehouse.hotkey.tooltip": "按住此键显示蜂房范围",
+    "config.beehouse.show-others.tooltip": "手持蜂房时显示已放置蜂房的范围",
+    "config.beehouse.tint.tooltip": "蜂箱范围高亮的颜色",
+
+    "config.mushroom-log": "蘑菇原木",
+    "config.mushroom-log.enable.tooltip": "启用蘑菇原木范围高亮",
+    "config.mushroom-log.hotkey.tooltip": "按住这个键高亮蘑菇原木范围",
+    "config.mushroom-log.show-others.tooltip": "当手持蘑菇原木时，高亮显示它的范围",
+    "config.mushroom-log.tint.tooltip": "设定蘑菇原木高亮的颜色",
+
+    "config.bomb": "炸弹",
+    "config.bomb.enable.tooltip": "启用炸弹范围高亮",
+    "config.bomb.held": "手持炸弹",
+    "config.bomb.held.tooltip": "当炸弹被装备时，在鼠标光标位置显示其范围",
+    "config.bomb.placed": "放置的炸弹",
+    "config.bomb.placed.tooltip": "显示已放置在地面上的炸弹的范围",
+    "config.bomb.hide-held-when-ticking": "倒计时隐藏",
+    "config.bomb.hide-held-when-ticking.tooltip": "当有已放置的炸弹在倒计时，不显示手持炸弹的范围",
+    "config.bomb.tint.tooltip": "炸弹范围内石头和物品被摧毁的高亮颜色",
+    "config.bomb.inner.enable": "启用内部范围",
+    "config.bomb.inner.enable.tooltip": "内部范围是炸弹可以使土壤变成耕地的范围",
+    "config.bomb.inner.tint": "内部范围颜色",
+    "config.bomb.inner.tint.tooltip": "炸弹内部范围的高亮颜色",
+    "config.bomb.outer.enable": "启用炸弹外部范围",
+    "config.bomb.outer.enable.tooltip": "外部范围是作物被摧毁、地板被破坏以及玩家受到伤害的范围。",
+    "config.bomb.outer.tint": "外部范围的高亮颜色",
+    "config.bomb.outer.tint.tooltip": "炸弹外部范围的高亮颜色",
+
+    // console messages
+    "message.install-gmcm-options": "您已安装了通用模组菜单配置（Generic Mod Menu Config）模组，但尚未安装 GMCM 选项（GMCM Options）。 如果您安装 GMCM 选项（https://www.nexusmods.com/stardewvalley/mods/10505），您将能够从 {{modName}} 配置菜单内配置颜色。"
+
+}
+ 

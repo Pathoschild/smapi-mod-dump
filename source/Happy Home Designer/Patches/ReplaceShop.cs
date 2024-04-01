@@ -14,8 +14,8 @@ using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -26,10 +26,12 @@ namespace HappyHomeDesigner.Patches
 		internal static void Apply(Harmony harmony)
 		{
 			var patch = new HarmonyMethod(typeof(ReplaceShop), nameof(PatchOpenShop));
+			var targets = typeof(Utility).GetMethods(
+				BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Static
+			).Where(m => m.Name is nameof(Utility.TryOpenShopMenu));
 
-			foreach (var method in typeof(Utility).GetMethodsNamed(nameof(Utility.TryOpenShopMenu), 
-				BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Static))
-				harmony.Patch(method, transpiler: patch);
+			foreach (var method in targets)
+				harmony.TryPatch(method, transpiler: patch);
 		}
 
 		public static IEnumerable<CodeInstruction> PatchOpenShop(IEnumerable<CodeInstruction> src, ILGenerator gen)
@@ -55,27 +57,9 @@ namespace HappyHomeDesigner.Patches
 
 		public static ShopMenu CheckAndReplace(ShopMenu menu)
 		{
-			return menu.ShopId switch
-			{
-				"Catalogue" => 
-					ModEntry.config.ReplaceWallpaperCatalog && 
-					ShowCatalog(Catalog.AvailableCatalogs.Wallpaper, menu) 
-					? null : menu,
-				"Furniture Catalogue" => 
-					ModEntry.config.ReplaceFurnitureCatalog && 
-					ShowCatalog(Catalog.AvailableCatalogs.Furniture, menu) 
-					? null : menu,
-				_ => menu
-			};
-		}
-
-		private static bool ShowCatalog(Catalog.AvailableCatalogs catalogs, ShopMenu menu)
-		{
-			if (Catalog.TryShowCatalog(catalogs, menu))
-				ModEntry.monitor.Log("Table activated!", LogLevel.Debug);
-			else
-				ModEntry.monitor.Log("Failed to display UI", LogLevel.Debug);
-			return true;
+			if (Catalog.TryShowCatalog(menu))
+				return null;
+			return menu;
 		}
 	}
 }

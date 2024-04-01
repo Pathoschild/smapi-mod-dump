@@ -3,7 +3,7 @@
         <AssemblyName>FishExclusions</AssemblyName>
         <RootNamespace>FishExclusions</RootNamespace>
         <Version>1.1.5</Version>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
 

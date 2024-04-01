@@ -10,21 +10,23 @@
 
 using HappyHomeDesigner.Framework;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Objects;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
 
 namespace HappyHomeDesigner.Patches
 {
 	internal class InventoryCombine
 	{
+		private static readonly (string slot, string held, string result)[] Fusions = { 
+			("(F)1226", "(F)1308", "(F)" + AssetManager.CATALOGUE_ID),
+			("(F)" + AssetManager.CATALOGUE_ID, "(F)" + AssetManager.COLLECTORS_ID, "(F)" + AssetManager.DELUXE_ID)
+		};
+
 		public static void Apply(Harmony harmony)
 		{
-			harmony.Patch(
+			harmony.TryPatch(
 				typeof(InventoryMenu).GetMethod(nameof(InventoryMenu.rightClick)),
 				transpiler: new(typeof(InventoryCombine), nameof(InsertCombineCheck))
 			);
@@ -100,36 +102,37 @@ namespace HappyHomeDesigner.Patches
 
 		public static bool TryCombine(ref Item slot, ref Item held, bool playSound)
 		{
-			// furniture in slot
-			if(slot is Furniture furn)
+			foreach (var fusion in Fusions)
 			{
-				// furniture catalog
-				if (furn.ItemId is "1226")
+				if (held is null)
 				{
-					// wall catalog
-					if (held is Furniture heldFurn && heldFurn.ItemId is "1308")
+					if (slot.QualifiedItemId == fusion.result)
 					{
+						slot = ItemRegistry.Create(fusion.slot);
+						held = ItemRegistry.Create(fusion.held);
+
+						if (playSound)
+							Game1.playSound("pickUpItem");
+
+						return true;
+					}
+				} 
+				else
+				{
+					if ((slot.QualifiedItemId == fusion.slot && held.QualifiedItemId == fusion.held) ||
+						(slot.QualifiedItemId == fusion.held && held.QualifiedItemId == fusion.slot))
+					{
+						slot = ItemRegistry.Create(fusion.result);
 						held = null;
-						slot = ItemRegistry.Create<Furniture>(ModEntry.manifest.UniqueID + "_Catalogue");
 
 						if (playSound)
 							Game1.playSound("axe");
 
 						return true;
 					}
-				} 
-				// combined catalog
-				else if (furn.ItemId == ModEntry.manifest.UniqueID + "_Catalogue" && held is null)
-				{
-					held = new Furniture("1308", Vector2.Zero);
-					slot = new Furniture("1226", Vector2.Zero);
-
-					if (playSound)
-						Game1.playSound("pickUpItem");
-
-					return true;
 				}
 			}
+
 			return false;
 		}
 	}

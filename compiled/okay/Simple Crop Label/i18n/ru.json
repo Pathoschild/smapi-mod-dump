@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // ru (russian)
+  // custom tree translation
+  "custom-tree.oak": "Дуб",
+  "custom-tree.maple": "Клен",
+  "custom-tree.pine": "Cосну",
+  "custom-tree.coconut": "Кокос",
+  "custom-tree.mushroom": "Грибное Дерево",
+  "custom-tree.mahogany": "Красное дерево",
+  "custom-tree.palm": "Пальма",
+
+  // growth info translation
+  "growth-info.fully-grown": "развившийся",
+  "growth-info.stage": "фаза",
+  "growth-info.of": "из",
+  "growth-info.days-left": "дней осталось",
+  "growth-info.day-left": "день остался",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Наведение мыши",
+  "config.mouse-hover.desc": "Наведите указатель мыши на плитку обрезки, чтобы отобразить метку, если она включена.",
+  "config.growth-info.name": "Информация о прирост",
+  "config.growth-info.desc": "Отображает рост урожая или стадию сбора урожая, если включено.",
+  "config.custom-keybinds.name": "Связка клавиш",
+  "config.custom-keybinds.desc": "Заменяет значение по умолчанию. Включение Mouse Hover отменяет это."
+}

@@ -1,0 +1,27 @@
+{
+  "Config.EnableConsoleCommands.Name": "Konsol komutlarını etkinleştir",
+  "Config.EnableConsoleCommands.Desc": "FTM'nin konsol komutlarını etkinleştirir.\nBu, Stardew Valley yeniden başlatılana kadar etkili olmayacaktır.",
+  "Config.EnableContentPacks.Name": "İçerik paketlerini etkinleştir",
+  "Config.EnableContentPacks.Desc": "Tüm FTM içerik paketlerini etkinleştirir.\nBu devre dışı bırakılırsa, yalnızca FarmTypeManager/data içindeki dosyalar kullanılır.",
+  "Config.EnableTraceLogMessages.Name": "İzleme günlüğü mesajlarını etkinleştir",
+  "Config.EnableTraceLogMessages.Desc": "SMAPI'nin günlük dosyalarında FTM'nin [TRACE] mesajlarını etkinleştirir.\nBu devre dışı bırakılırsa, günlük dosyaları daha küçük olur, ancak FTM hakkında daha az bilgi sağlarlar.",
+  "Config.EnableEPUDebugMessages.Name": "EPU hata ayıklama mesajlarını etkinleştir",
+  "Config.EnableEPUDebugMessages.Desc": "Expanded Preconditions Utility (EPU) hata ayıklama mesajlarını etkinleştirir.\nBu, ön koşullu modlar oluştururken yardımcı olabilir.",
+  "Config.MonsterLimitPerLocation.Name": "Konum başına canavar sınırı",
+  "Config.MonsterLimitPerLocation.Desc": "FTM'nin tek bir haritada aynı anda izin vereceği maksimum canavar sayısı.\nDaha düşük bir sayı kullanmak oyunun kare hızını artırabilir. 50 yaygın bir öneridir.\nSınırsız canavara izin vermek için NULL yazın."
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

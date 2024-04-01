@@ -40,11 +40,11 @@ PANTRY
 
 1. Spring Crops - 8 out of 9
 
-  Reward: 5 Rain Totems
+  Reward: 10 Rain Totems
 
   40x Parsnip
   30x Garlic
-  30x Potato
+  30x Salal Berry
   20x Cauliflower
   20x Rhuharb
   30x Unmilled Rice
@@ -54,12 +54,12 @@ PANTRY
 
 2. Summer Crops - 8 out of 9
 
-  Reward: 4 Quality Sprinkler
+  Reward: 1 Iridium Sprinkler
 
   50x Blueberry
   20x Poppy
   30x Hot Pepper
-  40x Hops
+  20x Ancient Fiber
   20x Melon
   20x Red Cabbage
   30x Radish
@@ -68,7 +68,7 @@ PANTRY
 
 3. Fall Crops - 8 out of 9
 
-  Reward: 30 Speed-Gro
+  Reward: 5 Deluxe Fertilizer
 
   20x Beet
   40x Eggplant
@@ -92,7 +92,16 @@ PANTRY
   20x Tomato
   15x Pumpkin
 
-5. Animal Products - 8 out of 10
+5. Rare Crops - 4 out of 4
+
+  Reward: 1 Seedmaker
+
+  3x Ancient Fruit
+  3x Sweet Gem Berry
+  10x Starfruit
+  15x Strawberry
+
+6. Animal Products - 8 out of 9
 
   Reward: 1 Oilmaker
 
@@ -100,24 +109,58 @@ PANTRY
   20x Large Egg (Brown)
   20x Large Egg (White)
   15x Large Goat Milk
-  20x Wool
+  3x Rabbit's Foot
   20x Duck Egg
   30x Mayonnaise
   20x Cheese
   20x Goat Cheese
-  3x Rabbit's Foot
 
-6. Artisan Products - 6 out of 10
+7. Fish Farmers - 5 out of 6
+
+  Reward: 1 Oilmaker
+
+  20x Roe
+  20x Aged Roe
+  1x Pearl
+  20x Coral
+  10x Soggy Newspaper
+  20x White Algae
+
+8. Garden - 6 out of 8
+
+Reward: 1 Oilmaker 
+
+  5x Fairy Rose
+  5x Poppy
+  5x Summer Spangle
+  5x Tulip
+  5x Blue Jazz
+  10x Sunflower
+  5x Crocus
+  5x Sweet Pea
+
+9. Artisan Products - 6 out of 7
 
   Reward: 1 Soda Machine
 
-  30x Juice
+  20x Juice
   20x Pickles
   20x Jelly
-  20x Honey
+  10x Apricot
   10x Cherry
   10x Peach
   10x Pomegranate
+
+10. Brewer's - 6 out of 6
+
+  Reward: 1 Soda Machine
+
+  20x Juice
+  25x Beer
+  15x Coffee
+  10x Wine
+  30x Green Tea
+  20x Mead
 
 ======================================================
 
@@ -125,85 +168,104 @@ FISHTANK
 
 1. River Fish - 8 out of 8
 
-  Reward: 1 Worm Bin
+  Reward: 2 Worm Bin
 
-  20x Dorado
-  20x Smallmouth Bass
-  20x Salmon
-  20x Sunfish
-  20x Butterfish
-  20x Shad
-  10x Pike
-  20x Lingcod
+  10x Dorado
+  10x Smallmouth Bass
+  10x Salmon
+  10x Sunfish
+  10x Butterfish
+  10x Shad
+  5x Pike
+  5x Lingcod
 
-2. Lake Fish - 8 out of 8
+2. Lake Fish - 7 out of 7
 
-  Reward: 30 Bait
+  Reward: 50 Wild Bait
 
-  20x Largemouth Bass
-  20x Sturgeon
-  20x Bullhead
-  20x Carp
-  20x Chub
-  20x Perch
-  20x Rainbow Trout
-  20x Minnow
+  10x Minnow
+  10x Sturgeon
+  10x Bullhead
+  15x Carp
+  15x Chub
+  10x Perch
+  10x Rainbow Trout
 
 3. Ocean Fish - 8 out of 10
 
-  Reward: 1 Artifact Trove
+  Reward: 3 Artifact Trove
 
-  10x Pufferfish
-  20x Anchovy
-  20x Tuna
-  20x Sardine
-  20x Red Mullet
-  20x Herring
-  20x Red Snapper
-  20x Sea Cucumber
-  20x Flunder
-  20x Starfish
+  5x Pufferfish
+  10x Anchovy
+  10x Tuna
+  10x Sardine
+  10x Red Mullet
+  10x Herring
+  10x Red Snapper
+  10x Sea Cucumber
+  10x Flounder
+  10x Starfish
 
 4. Night Fishing - 8 out of 8
 
   Reward: 10 Dish O' The Sea
 
-  15x Eel
-  30x Bream
-  20x Walleye
-  20x Squid
-  5x Super Cucumber
-  20x Albacore
-  30x Halibut
-  10x Midnight Carp
+  5x Eel
+  20x Bream
+  5x Walleye
+  10x Squid
+  1x Super Cucumber
+  10x Albacore
+  15x Halibut
+  5x Midnight Carp
 
-5. Specialty Fish - 8 out of 8
+5. Specialty Fish - 7 out of 7
 
   Reward: 1 Fishing Vest
 
   15x Ghostfish
-  10x Stonefish
-  5x Ice Pip
-  20x Woodskip
-  20x Sandfish
-  5x Scorpion Carp
-  5x Spook Fish
+  5x Stonefish
   10x Puppyfish
+  15x Woodskip
+  10x Sandfish
+  3x Scorpion Carp
+  5x Spook Fish
 
-6. Crab Pot - 10 out of 10
+6. Quality Fish - 6 out of 6
+
+  Reward: 1 Fishing Vest
+
+  5x Ghostfish
+  5x Grass Carp
+  5x Bream
+  5x Chub
+  5x Sardine
+  5x Carp
+
+7. Master Fisher's - 5 out of 5
+
+  Reward: 1 Fishing Vest
+
+  3x Octopus
+  3x Lava Eel
+  3x Radioactive Bass
+  3x Ice Pip
+  3x Blobfish
+
+8. Crab Pot - 10 out of 10
 
   Reward: 1 Anchor
 
-  20x Lobster
-  20x Crab
-  20x Cockle
-  20x Mussel
-  20x Shrimp
-  20x Oyster
-  20x Crayfish
-  20x Snail
-  20x Periwinkle
-  20x Driftwood
+  5x Lobster
+  10x Crab
+  10x Cockle
+  10x Mussel
+  10x Shrimp
+  10x Oyster
+  10x Crayfish
+  10x Snail
+  10x Periwinkle
+  10x Driftwood
   
 ======================================================
 
@@ -213,45 +275,45 @@ CRAFTSROOM
 
   Reward: 30 Basic Fertilizer
 
-  20x Wild Horseradish
-  20x Daffodil
-  20x Leek
-  20x Dandelion
-  99x Salmonberry
-  10x Spring Onion  
+  15x Wild Horseradish
+  15x Daffodil
+  15x Leek
+  15x Dandelion
+  30x Salmonberry
+  5x Big Conch
 
 2. Summer Foraging - 6 out of 6
 
   Reward: 1 Beehouse
 
-  20x Spice Berry
-  20x Sweet Pea
-  5x Fiddlehead Fern
-  20x Coral
-  20x Clam
+  15x Spice Berry
+  15x Sweet Pea
+  10x Dried Sand Dollar
+  15x Coral
+  15x Clam
   30x Maple Seed
 
 3. Fall Foraging - 6 out of 6
 
-  Reward: 3 Farmer's Lunch
+  Reward: 3 Tapper
 
-  20x Common Mushroom
-  20x Wild Plum
-  20x Hazelnut
-  99x Blackberry
-  10x Chanterelle
+  15x Common Mushroom
+  15x Wild Plum
+  15x Hazelnut
+  30x Blackberry
+  25x Mushroom Colony
   30x Acorn
 
 4. Winter Foraging - 6 out of 6
 
-  Reward: 3 Tapper
+  Reward: 5 Tea Sapling
 
-  20x Winter Root
-  20x Crystal Fruit
-  10x Snow Yam
-  20x Crocus
+  15x Winter Root
+  15x Crystal Fruit
+  10x Bearberrys
+  15x Crocus
   30x Pine Cone
-  20x Holly
+  15x Holly
 
 5. Construction - 7 out of 7
 
@@ -265,19 +327,51 @@ CRAFTSROOM
   99x Fiber
   50x Sap
 
-6. Exotic Foraging - 6 out of 9
+6. Sticky - 5 out of 6
+
+  Reward: 1 Charcoal Kiln
+
+  50x Sap
+  20x Clay
+  10x Maple Syrup
+  20x Honey
+  40x Slime
+  5x Miner's Treat
+
+7. Exotic Foraging - 6 out of 7
 
   Reward: 1 Apple Sapling
 
-  10x Maple Syrup
+  15x Cave Carrot
   10x Oak Resin
   10x Pine Tar
-  10x Purple Mushroom
+  5x Purple Mushroom
   10x Red Mushroom
   30x Torch
   30x Mixed Seeds
-  10x Coconut
-  20x Quartz
+
+8. Wild Medicine - 6 out of 7
+
+  Reward: 1 Orange Sapling
+
+  5x Purple Mushroom
+  5x Morel
+  10x Pine Tar
+  15x Hot Pepper
+  20x Tea Leaves
+  5x Salad
+  10x Algae Soup
+
+9. Forest - 5 out of 6
+
+  Reward: 1 Dehydrator
+
+  30x Moss
+  30x Tree Fertilizer
+  25x Grass Starter
+  99x Fiber
+  10x River Jelly
+  99x Sap
 
 ======================================================
 
@@ -285,7 +379,7 @@ BOILERROOM
 
 1. Blacksmith's - 5 out of 6
 
-  Reward: 10 Omni Geodes
+  Reward: 25 Omni Geodes
 
   40x Refined Quartz
   30x Coal
@@ -294,32 +388,54 @@ BOILERROOM
   20x Gold Bar
   1x Iridium Bar
 
-2. Geologist's - 7 out of 10
+2. Geologist's - 7 out of 8
 
-  Reward: Crystalarium
+  Reward: Geode Crusher
 
   10x Fire Quartz
-  20x Topaz
-  20x Amethyst
-  10x Emerald
-  10x Ruby
-  15x Jade
-  3x Diamond
-  20x Frozen Tear
-  30x Earth Crystal
+  20x Quartz
+  15x Earth Crystal
   3x Mudstone
+  15x Geode
+  3x Celestine
+  1x Petrified Slime
+  10x Frozen Tear
 
-3. Adventurer's - 7 out of 7
+3. Adventurer's - 6 out of 7
 
-  Reward: 1 Squire Helmet
+  Reward: 1 Slime Egg Press
 
   99x Slime
   99x Bat Wing
-  35x Solar Essence
+  30x Bone Fragment
   35x Void Essence
   20x White Algae
-  30x Bomb
+  5x Monster Musk
   1x Ancient Sword
+
+4. Treasure Hunter's - 6 out of 7
+
+  Reward: Crystalarium
+
+  3x Diamond
+  5x Emerald
+  5x Ruby
+  10x Topaz
+  10x Amethyst
+  10x Jade
+  10x Aquamarine
+
+5. Engineer's - 6 out of 7
+
+  Reward: Telephone
+
+  30x Cherry Bomb
+  15x Bomb
+  5x Mega Bomb
+  20x Battery Pack
+  1x Rusty Cog
+  10x Broken CD
+  10x Explosive Ammo
 
 ======================================================
 
@@ -327,13 +443,13 @@ VAULT
 
 1. 8,000g
 
-  Reward: 1 Gold Pillar
+  Reward: 1 Upright Piano
 
 2. 15,000g
 
   Reward: 1 Gold Brazier
 
-3. 25,000g
+3. 30,000g
 
   Reward: 5 Gold Bars
 
@@ -345,69 +461,65 @@ VAULT
 
 BULLETIN BOARD
 
-1. Chef's - 6 out of 10
+1. Chef's - 6 out of 9
 
   Reward: 1 Tea Set
 
-  20x Mead
-  25x Pale Ale
-  10x Complete Breakfast
-  15x Big Bark Burger
-  30x Triple Shot Espresso
   15x Pumpkin Pie
-  30x Escargot
-  20x Shrimp Cocktail
-  30x Artichoke Dip
-  25x Glazed Butterfish
+  10x Glazed Butterfish
+  20x Artichoke Dip
+  10x Triple Shot Espresso
+  15x Big Bark Burger
+  25x Pale Ale
+  20x Escargot
+  15x Shrimp Cocktail
+  25x Truffle Oil
 
-2. Field Research - 6 out of 10
+2. Field Research - 6 out of 9
 
   Reward: 1 Dino Egg
 
   10x Red Plate
-  5x Ancient Fruit
-  30x Green Tea
-  10x Nautilus Shell
+  5x Ancient Seeds
+  10x Frozen Geode
+  5x Mushroom Berry Rice
   1x Amphibian Fossil
   40x Field Snack
-  10x King Salmon
+  3x Lava Eel
   10x Orange
   20x Truffle
-  10x Frozen Geode
 
-3. Enchanter's - 6 out of 10
+3. Enchanter's - 6 out of 9
 
   Reward: 1 Iridium Band
 
   10x Morel
-  25x Wine
-  5x Dwarf Scroll I
-  20x Frog
-  10x Sweet Gem Berry
+  5x Rainbow Shell
+  3x Dwarf Scroll I
+  5x Frog
+  1x Golden Mask 
   5x Oil of Garlic
-  30x Life Elixir
-  1x Red Slime Egg
-  10x Warp Totem Farm
+  20x Life Elixir
   1x Golden Pumpkin
+  10x Warp Totem Farm
 
-4. Dye - 6 out of 10
+4. Dye - 6 out of 9
 
   Reward: 1 Deluxe Scarecrow
 
-  10x Apricot
-  20x Sea Urchin
-  10x Rainbow Shell
-  15x Blue Jazz
+  5x Sandstone  
+  5x Squid Ink
+  10x Sea Urchin
+  10x Tulip
   10x Duck Feather
   50x Cloth
-  20x Cactus Fruit
-  10x Squid Ink
-  99x Joja Cola
-  20x Aquamarine
+  20x Wool
+  1x Red Slime Egg
+  1x Blue Slime Egg
 
-5. Fodder - 6 out of 10
+5. Fodder - 6 out of 9
 
-  Reward: 1 Iridium Sprinkler
+  Reward: 1 Void Egg
 
   99x Hay
   10x Apple
@@ -415,10 +527,93 @@ BULLETIN BOARD
   25x Green Algae
   50x Corn
   50x Wheat
-  25x Amaranth
-  10x Roasted Hazelnuts
-  30x Wild Bait
-  25x Cave Carrot
+  20x Dulse Seaweed
+  20x Carrot
+  99x Bait
+
+6. Children's - 6 out of 9
+
+  Reward: 1x Plush Bunny
+
+  20x Cookie
+  20x Ice Cream
+  15x Blueberry Tart
+  15x Cranberry Candy
+  15x Poppyseed Muffin
+  20x Pink Cake
+  3x Mixed Berry Pie
+  1x Ancient Doll
+  1x Tent Kit
+
+7. Forager's - 6 out of 9
+
+  Reward: 30x Magic Bait
+
+  99x Salmonberry
+  99x Blackberry
+  15x Mahogany Seed
+  25x Spring Seeds
+  25x Summer Seeds
+  25x Fall Seeds
+  25x Winter Seeds
+  15x Coconut
+  15x Cactus Fruit
+
+8. Home Cook's - 6 out of 9
+
+  Reward: 25x Cookout Kit
+
+  10x Vegetable Medley
+  20x Tortilla
+  10x Fruit Salad
+  10x Salmon Dinner
+  10x Baked Berry Oatmeal
+  10x Pizza
+  10x Spaghetti
+  10x Bruschetta
+  10x Pancakes
+
+9. Helper's - 6 out of 9
+
+  Reward: 5x Treasure Totem
+
+  5x Prize Ticket
+  10x Mystery Box
+  25x Deluxe Bait
+  20x Smoked Fish
+  10x Moss Soup
+  20x Trash
+  5x Cave Jelly
+  1x Chewing Stick
+  15x Pale Broth
+
+10. Spirit's Eve - 6 out of 9
+
+  Reward: 1x Wizard Study
+
+  15x Jack-O-Latern
+  5x Pumpkin Soup
+  1x Squid Ink Ravioli
+  5x Spook Fish
+  5x Midnight Squid
+  15x Dried Mushroom
+  10x Bug Steak
+  1x Bone Flute
+  3x Ghost Crystal
+
+11. Winter Star - 6 out of 9
+
+  Reward: 1x Golden Mystery Box
+
+  15x Cranberry Sauce
+  10x Plum Pudding
+  15x Stuffing
+  15x Powdermelon
+  5x Roasted Hazelnuts
+  50x Crystal Path
+  15x Raisins
+  10x Dried Fruit
+  15x Flute Block
 
 ======================================================
 
@@ -427,10 +622,10 @@ MISSING
 1. Missing - 10 out of 11
 
   1x Magic Rock Candy
-  5x Void Pebble
+  3x Void Pebble
   15x Caviar
-  10x Void Salmon Sushi
-  5x Void Delight
+  3x Void Delight
+  20x Slimejack
   20x Super Meal
   50x Battery Pack
   15x Fish Taco

@@ -10,8 +10,15 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.BigCraftables;
+using StardewValley.GameData.Objects;
+using StardewValley.GameData.Pants;
+using StardewValley.GameData.Shirts;
+using StardewValley.GameData.Tools;
+using StardewValley.GameData.Weapons;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -21,61 +28,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SObject = StardewValley.Object;
-
-namespace Chest_Displays.Utility
+namespace ChestDisplays.Utility
 {
     public static class Utils
     {
-        public static float ItemScale = ModEntry.IConfig.ItemScale;
-        public static float ItemTransparency = ModEntry.IConfig.Transparency;
+        private static float ItemScale = ModEntry.IConfig.ItemScale;
+        private static float ItemTransparency = ModEntry.IConfig.Transparency;
 
-        internal static Dictionary<int, string> objectInformation => Game1.content.Load<Dictionary<int, string>>("Data\\ObjectInformation", LocalizedContentManager.LanguageCode.en);
-        internal static Dictionary<int, string> bigCraftablesInformation => Game1.content.Load<Dictionary<int, string>>("Data\\BigCraftablesInformation", LocalizedContentManager.LanguageCode.en);
-        internal static Dictionary<int, string> clothingInformation => Game1.content.Load<Dictionary<int, string>>("Data\\ClothingInformation", LocalizedContentManager.LanguageCode.en);
-        internal static Dictionary<int, string> hatsInformation => Game1.content.Load<Dictionary<int, string>>("Data\\Hats", LocalizedContentManager.LanguageCode.en);
-        internal static Dictionary<int, string> furnitureInformation => Game1.content.Load<Dictionary<int, string>>("Data\\Furniture", LocalizedContentManager.LanguageCode.en);
-        internal static Dictionary<int, string> weaponsInformation => Game1.content.Load<Dictionary<int, string>>("Data\\Weapons", LocalizedContentManager.LanguageCode.en);
-        internal static Dictionary<int, string> bootsInformation => Game1.content.Load<Dictionary<int, string>>("Data\\Boots", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, ObjectData> objects = Game1.content.Load<Dictionary<string, ObjectData>>("Data\\Objects", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, BigCraftableData> bigCraftables = Game1.content.Load<Dictionary<string, BigCraftableData>>("Data\\BigCraftables", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, ShirtData> shirts = Game1.content.Load<Dictionary<string, ShirtData>>("Data\\Shirts", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, PantsData> pants = Game1.content.Load<Dictionary<string, PantsData>>("Data\\Pants", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, string> hats = Game1.content.Load<Dictionary<string, string>>("Data\\hats", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, string> furniture = Game1.content.Load<Dictionary<string, string>>("Data\\Furniture", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, WeaponData> weapons = Game1.content.Load<Dictionary<string, WeaponData>>("Data\\Weapons", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, ToolData> tools = Game1.content.Load<Dictionary<string, ToolData>>("Data\\Tools", LocalizedContentManager.LanguageCode.en);
+        internal static Dictionary<string, string> boots = Game1.content.Load<Dictionary<string, string>>("Data\\Boots", LocalizedContentManager.LanguageCode.en);
 
-        public static Vector2 PointToVector(Point p) => new(p.X, p.Y);
+        internal static Dictionary<Chest, Item> displayItemsCache = new();
 
         public static int getItemType(Item i)
         {
-            if (i is Hat) return 2;
-            else if (i is Boots) return 8;
-            else if (i is Clothing) return 7;
-            else if (i is Ring) return 4;
-            else if (i is Furniture) return 5;
-            else if (i is MeleeWeapon || i is Slingshot) return 9;
-            else if (i is Tool) return 6;
-            else if (i is SObject sobj && sobj.bigCraftable.Value) return 3;
-
-            return 1;
+            return i switch
+            {
+                Hat _ => 2,
+                Boots _ => 8,
+                Clothing _ => 7,
+                Ring _ => 4,
+                Furniture _ => 5,
+                MeleeWeapon _ => 9,
+                Slingshot _ => 9,
+                Tool _ => 6,
+                Object o => o.bigCraftable.Value ? 3 : 1,
+                _ => 1
+            };
         }
 
-        public static void drawItem(SpriteBatch spriteBatch, Item i, int itemType, int x, int y, Vector2 location, float layerDepth)
+        public static void drawItem(SpriteBatch spriteBatch, Item i, int itemType, Vector2 location, float layerDepth)
         {
             switch (itemType)
             {
                 case 1:
+                    int quality = (i as Object)!.Quality;
                     i.drawInMenu(spriteBatch, location, 0.5f, ItemTransparency, layerDepth, StackDrawType.Hide, Color.White, false);
-                    if (ModEntry.IConfig.DisplayQuality && (i as SObject)!.Quality > 0)
+                    if (ModEntry.IConfig.DisplayQuality && quality > 0)
                     {
-                        float num = (i as SObject)!.Quality < 4 ? 0.0f : (float)((Math.Cos((double)Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
-                        spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(12f, 32f + num), new Rectangle?((i as SObject)!.Quality < 4 ? new Rectangle(338 + ((i as SObject)!.Quality - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8)), Color.White, 0.0f, new Vector2(4f, 4f), (float)(3.0 * 0.5 * (1.0 + num)), SpriteEffects.None, layerDepth + 0.0000001f);
+                        float num = quality < 4 ? 0.0f : (float)((Math.Cos((double)Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
+                        spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(12f, 32f + num), new Rectangle?(quality < 4 ? new Rectangle(338 + (quality - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8)), Color.White, 0.0f, new Vector2(4f, 4f), (float)(3.0 * 0.5 * (1.0 + num)), SpriteEffects.None, layerDepth + 0.0000001f);
                     }
                     break;
                 case 3:
                     i.drawInMenu(spriteBatch, location, ItemScale + .05f, ItemTransparency, layerDepth, StackDrawType.Hide, Color.White, false);
                     break;
-                case 2:
-                case 4:
-                case 5:
-                case 9:
-                case 6:
-                case 7:
-                case 8:
+                default:
                     i.drawInMenu(spriteBatch, location, ItemScale, ItemTransparency, layerDepth, StackDrawType.Hide, Color.White, false);
                     break;
             }
@@ -110,7 +115,7 @@ namespace Chest_Displays.Utility
             };
         }
 
-        public static bool InvalidChest(Chest c) => c.chestType.Value == "Monster" || c.chestType.Value == "OreChest" || c.chestType.Value == "dungeon" || c.chestType.Value == "Grand" || c.giftbox.Value || c.fridge.Value;
+        public static bool InvalidChest(Chest c) => c.Type != "Crafting" || c.giftbox.Value || c.fridge.Value;
 
         public static IEnumerable<SButton> ParseSButton(string btn)
         {
@@ -120,95 +125,97 @@ namespace Chest_Displays.Utility
                     yield return sbtn;
         }
 
-        public static Item? getItemFromName(string name, int itemType, int quality = 0, int upgradeLevel = 0, Color? color = null)
+        internal static void updateCache(Chest c)
         {
-            Item? obj = null;
-            if (string.IsNullOrWhiteSpace(name)) return null;
-            switch (itemType)
-            {
-                default:
-                case 1:
-                    if (color is not null)
-                        obj = new ColoredObject(objectInformation.First(x => x.Value.Split('/')[0] == name).Key, 1, color.Value) { Quality = quality };
-                    else
-                        obj = new SObject(objectInformation.First(x => x.Value.Split('/')[0] == name).Key, 1, quality: quality);
-                    break;
-                case 2:
-                    obj = new Hat(hatsInformation.First(x => x.Value.Split('/')[0] == name).Key);
-                    break;
-                case 3:
-                    obj = new SObject(Vector2.Zero, bigCraftablesInformation.First(x => x.Value.Split('/')[0] == name).Key) { Stack = 1 };
-                    break;
-                case 4:
-                    obj = new Ring(objectInformation.First(x => x.Value.Split('/')[0] == name).Key);
-                    break;
-                case 5:
-                    obj = new Furniture(furnitureInformation.First(x => x.Value.Split('/')[0] == name).Key, Vector2.Zero);
-                    break;
-                case 6:
-                    Tool? t = name switch
-                    {
-                        nameof(Axe) => new Axe(),
-                        nameof(Hoe) => new Hoe(),
-                        nameof(Pickaxe) => new Pickaxe(),
-                        nameof(Shears) => new Shears(),
-                        "Fishing Rod" => new FishingRod(),
-                        "Watering Can" => new WateringCan(),
-                        "Copper Pan" => new Pan(),
-                        "Milk Pail" => new MilkPail(),
-                        "Return Scepter" => new Wand(),
-                        _ => null
-                    };
-                    if (t is not null)
-                    {
-                        t.UpgradeLevel = upgradeLevel;
-                        obj = t;
-                    }
-                    break;
-                case 7:
-                    obj = new Clothing(clothingInformation.First(x => x.Value.Split('/')[0] == name).Key);
-                    break;
-                case 8:
-                    obj = new Boots(bootsInformation.First(x => x.Value.Split('/')[0] == name).Key);
-                    break;
-                case 9:
-                    Func<KeyValuePair<int, string>, bool> query = x => x.Value.Split('/')[0] == name;
-                    if (weaponsInformation.Any(query))
-                    {
-                        if (name.ToLower().Contains("slingshot"))
-                            obj = new Slingshot(weaponsInformation.First(query).Key);
-                        else
-                            obj = new MeleeWeapon(weaponsInformation.First(query).Key);
-                    }
-                    break;
-            }
-
-            return obj;
+            displayItemsCache.Remove(c);
+            if (!c.modData.ContainsKey(ModEntry.IHelper.ModRegistry.ModID))
+                return;
+            var data = JsonConvert.DeserializeObject<ModData>(c.modData[ModEntry.IHelper.ModRegistry.ModID]);
+            Item? i = BuildItemFromData(data);
+            if (i is null)
+                return;
+            displayItemsCache.Add(c, i);
         }
 
-        public static int GetItemIndexInParentSheet(Item i, int itemType)
+        public static Item? BuildItemFromData(ModData? data)
         {
+            if (data == null) 
+                return null;
+            if (string.IsNullOrWhiteSpace(data.ItemId) && !string.IsNullOrWhiteSpace(data.Item))
+                data = updateOldModdata(data);
+            Item? i = ItemRegistry.Create(data.ItemId, quality: data.ItemQuality, allowNull: true);
+            if (i is null)
+                return null;
+            if (i is ColoredObject co)
+                co.color.Value = data.Color!.Value;
+            if (i is Tool t)
+                t.UpgradeLevel = data.UpgradeLevel;
+            return i;
+        }
+
+
+        private static string IndexToQualifiedId(string parentSheetIndex, int itemType, string name = "", int upgradeLevel = -1)
+        {
+            string strindex = parentSheetIndex;
             return itemType switch
             {
-                2 => (i as Hat)!.which.Value,
-                8 => (i as Boots)!.indexInTileSheet.Value,
-                9 => i is MeleeWeapon mw ? mw.CurrentParentTileIndex : (i as Slingshot)!.CurrentParentTileIndex,
-                _ => i.ParentSheetIndex
+                2 => new Hat(strindex).QualifiedItemId,
+                4 => new Ring(strindex).QualifiedItemId,
+                5 => new Furniture(strindex, Vector2.Zero).QualifiedItemId,
+                6 => ToolNameToQualifiedId(name, upgradeLevel),
+                7 => new Clothing(strindex).QualifiedItemId,
+                8 => new Boots(strindex).QualifiedItemId,
+                9 => ItemRegistry.Create($"(W){strindex}").QualifiedItemId,
+                _ => new Object(strindex, 1).QualifiedItemId
             };
         }
 
-        public static string GetItemNameFromIndex(int parentSheetIndex, int itemType)
+        private static string ToolNameToQualifiedId(string name, int upgradeLevel)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                return tools.Keys.First();
+            foreach (var tool in tools)
+                if (tool.Value.ClassName.ToLower() == name.ToLower() && tool.Value.UpgradeLevel == upgradeLevel)
+                    return tool.Key;
+            return tools.Keys.First();
+        }
+
+        private static string? IndexFromName(string name, int itemType)
+        {
+            name = name.ToLower();
             return itemType switch
             {
-                2 => hatsInformation[parentSheetIndex].Split('/')[0],
-                3 => bigCraftablesInformation[parentSheetIndex].Split('/')[0],
-                5 => furnitureInformation[parentSheetIndex].Split('/')[0],
-                7 => clothingInformation[parentSheetIndex].Split('/')[0],
-                8 => bootsInformation[parentSheetIndex].Split('/')[0],
-                9 => weaponsInformation[parentSheetIndex].Split('/')[0],
-                _ => objectInformation[parentSheetIndex].Split('/')[0],
+                2 => hats.FirstOrDefault(x => x.Value.Split('/')[0].ToLower() == name).Key,
+                3 => bigCraftables.FirstOrDefault(x => x.Value.Name.ToLower() == name).Key,
+                5 => furniture.FirstOrDefault(x => x.Value.Split('/')[0].ToLower() == name).Key,
+                7 => getClothingIndex(name),
+                8 => boots.FirstOrDefault(x => x.Value.Split('/')[0].ToLower() == name).Key,
+                9 => weapons.FirstOrDefault(x => x.Value.Name.ToLower() == name).Key,
+                _ => objects.FirstOrDefault(x => x.Value.Name.ToLower() == name).Key
             };
+        }
+
+
+        private static string getClothingIndex(string name)
+        {
+            var _shirt = shirts.FirstOrDefault(x => x.Value.Name.ToLower() == name).Key;
+            var _pants = pants.FirstOrDefault(x => x.Value.Name.ToLower() == name).Key;
+
+            if (string.IsNullOrWhiteSpace(_shirt))
+                return _pants;
+            return _shirt;
+        }
+
+        private static ModData updateOldModdata(ModData data)
+        {
+            string? index = IndexFromName(data.Item, data.ItemType);
+            if (string.IsNullOrWhiteSpace(index) && data.ItemType != 6)
+                ModEntry.IMonitor.Log($"Failed to update modData from version 1.2.0 -> 1.2.1, could not find an index for item {data.Item} of type {data.ItemType}");
+            else
+                data.ItemId = IndexToQualifiedId(index!, data.ItemType, data.Item, data.UpgradeLevel);
+            data.Item = "";
+            data.ItemType = -1;
+            return data;
         }
     }
 }

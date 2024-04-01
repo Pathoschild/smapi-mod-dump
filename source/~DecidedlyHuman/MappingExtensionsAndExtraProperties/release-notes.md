@@ -8,6 +8,26 @@ for queries and analysis.**
 
 # MEEP Release Notes
 
+* 2.3.2
+  * Fixed a massive oversight with spawning invalid farm animals resulting in no later animals being spawned.
+* 2.3.0
+  * Full 1.6 release.
+* 2.2.5
+  * Fixed a bug with farm animal spawning.
+* 2.2.2
+  * "Fixed" (added because I forgot originally... oops) MEEP-spawned farm animals not being able to have their age specified.
+* 2.2.0
+  * Added a new tile property that allows you to set a custom conversation topic.
+* 2.1.0-beta
+  * Added the ability to spawn farm animals!
+* 2.0.4-beta
+  * Added a HUD message to make it clear you can't gift fake NPCs.
+* 2.0.3-beta
+  * Fixed a problem with the letter tile property.
+* 2.0.2-beta
+  * Fixed SpaceCore error.
+* 2.0.0-beta
+  * Release for 1.6 compatibility.
 * 1.3.2
   * I did an oops. The UI close buttons work again, now!
 * 1.3.1

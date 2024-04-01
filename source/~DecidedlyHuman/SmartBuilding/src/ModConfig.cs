@@ -9,7 +9,6 @@
 *************************************************/
 
 using StardewModdingAPI.Utilities;
-using StardewValley;
 
 namespace SmartBuilding
 {

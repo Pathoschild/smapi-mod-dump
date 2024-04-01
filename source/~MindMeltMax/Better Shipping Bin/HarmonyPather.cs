@@ -22,20 +22,16 @@ namespace BetterShipping
 {
     internal static class HarmonyPather
     {
-        private static IModHelper Helper;
-        private static Harmony Instance;
-
         public static void Init(IModHelper helper)
         {
-            Helper = helper;
-            Instance = new Harmony(Helper.ModRegistry.ModID);
+            Harmony harmony = new(helper.ModRegistry.ModID);
 
-            Instance.Patch(
+            harmony.Patch(
                 original: AccessTools.Method(typeof(ShippingBin), nameof(ShippingBin.doAction)),
                 postfix: new HarmonyMethod(typeof(ShippingBinPatch), nameof(ShippingBinPatch.doActionPostfix))
             );
 
-            Instance.Patch(
+            harmony.Patch(
                 original: AccessTools.Method(typeof(IslandWest), nameof(IslandWest.checkAction)),
                 postfix: new HarmonyMethod(typeof(ShippingBinPatch), nameof(ShippingBinPatch.checkActionPostfix))
             );
@@ -44,30 +40,30 @@ namespace BetterShipping
 
     internal static class ShippingBinPatch
     {
-        private static readonly IModHelper Helper = ModEntry.IHelper;
         private static readonly IMonitor Monitor = ModEntry.IMonitor;
 
-        private static readonly Location islandBinPosition = new Location(90, 39);
+        private static readonly Location islandBinPosition = new(90, 39);
 
-        public static void doActionPostfix(Vector2 tileLocation, Farmer who)
+        public static void doActionPostfix()
         {
             try
             {
-                if (Game1.activeClickableMenu is not null and ItemGrabMenu) 
-                    Game1.activeClickableMenu = new BinMenuOverride(Helper, Monitor);
+                if (Game1.activeClickableMenu is ItemGrabMenu) 
+                    Game1.activeClickableMenu = new BinMenuOverride();
             }
-            catch(Exception ex) { Monitor.Log($"Failed to patch ShippingBin.doAction", LogLevel.Error); Monitor.Log($"{ex} - {ex.Message}"); return; }
+            catch(Exception ex) { Monitor.Log($"Failed to patch ShippingBin.doAction", LogLevel.Error); Monitor.Log($"{ex.GetType().FullName} - {ex.Message}\n{ex.StackTrace}"); }
         }
 
-        public static void checkActionPostfix(Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
+        public static void checkActionPostfix(Location tileLocation)
         {
             try
             {
-                if ((tileLocation.X >= islandBinPosition.X || tileLocation.X <= islandBinPosition.X + 1) && (tileLocation.Y == islandBinPosition.Y || tileLocation.Y >= islandBinPosition.Y - 1))
-                    if (Game1.activeClickableMenu is not null and ItemGrabMenu)
-                        Game1.activeClickableMenu = new BinMenuOverride(Helper, Monitor);
+                if ((tileLocation.X >= islandBinPosition.X || tileLocation.X <= islandBinPosition.X + 1) && 
+                    (tileLocation.Y == islandBinPosition.Y || tileLocation.Y >= islandBinPosition.Y - 1) &&
+                    Game1.activeClickableMenu is ItemGrabMenu)
+                    Game1.activeClickableMenu = new BinMenuOverride();
             }
-            catch(Exception ex) { Monitor.Log($"Failed to patch IslandWest.checkAction", LogLevel.Error); Monitor.Log($"{ex} - {ex.Message}"); return; }
+            catch(Exception ex) { Monitor.Log($"Failed to patch IslandWest.checkAction", LogLevel.Error); Monitor.Log($"{ex.GetType().FullName} - {ex.Message}\n{ex.StackTrace}"); }
         }
     }
 }

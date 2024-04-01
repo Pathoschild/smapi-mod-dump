@@ -11,11 +11,11 @@
 {
   "Name": "Easier Monster Eradication",
   "Author": "NormanPCN",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Adjust the amount of monsters slayed for monster eradication goals.",
   "UniqueID": "NormanPCN.EasierMonsterEradication",
   "EntryDll": "EasierMonsterEradication.dll",
-  "MinimumApiVersion": "3.13.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": ["Nexus:11548"],
   "Dependencies": []
 }

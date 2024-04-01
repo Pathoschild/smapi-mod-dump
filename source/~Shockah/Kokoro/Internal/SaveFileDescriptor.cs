@@ -19,7 +19,7 @@ internal sealed class SaveFileDescriptor
 {
 	[JsonProperty] public string GameVersion { get; internal set; } = Game1.version;
 	[JsonProperty] public ISemanticVersion SmapiVersion { get; internal set; } = Constants.ApiVersion;
-	[JsonProperty] public Dictionary<string, ModDescriptor> Mods { get; internal set; } = new();
+	[JsonProperty] public Dictionary<string, ModDescriptor> Mods { get; internal set; } = [];
 
 	public sealed record ModDescriptor(
 		string Name,
@@ -32,8 +32,8 @@ internal sealed class SaveFileDescriptor
 
 	public static Dictionary<string, ModDescriptor> GetModDictionaryFromCurrentState()
 	{
-		Dictionary<string, ModDescriptor> result = new();
-		foreach (var mod in Kokoro.Instance.Helper.ModRegistry.GetAll())
+		Dictionary<string, ModDescriptor> result = [];
+		foreach (var mod in ModEntry.Instance.Helper.ModRegistry.GetAll())
 			result[mod.Manifest.UniqueID] = new(mod.Manifest.Name, mod.Manifest.Author, mod.Manifest.Version);
 		return result;
 	}

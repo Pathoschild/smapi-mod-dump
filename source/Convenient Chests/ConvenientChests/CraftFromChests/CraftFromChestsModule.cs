@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using ConvenientChests.StashToChests;
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -43,43 +44,34 @@ namespace ConvenientChests.CraftFromChests {
             MenuListener.UnregisterEvents();
         }
 
-        private void CraftingMenuShown(object sender, EventArgs e) {
-            var isCooking = Game1.activeClickableMenu is CraftingPage || Game1.activeClickableMenu.GetType().ToString() == "CookingSkill.NewCraftingPage";
-            var page = isCooking
-                           ? Game1.activeClickableMenu
-                           : (Game1.activeClickableMenu as GameMenu)?.pages[MenuListener.CraftingMenuTab] as CraftingPage;
-
+        private void CraftingMenuShown(object sender, CraftingMenuArgs e) {
+            var page = e.Page;
             if (page == null)
                 return;
 
             // Find nearby chests
-            var nearbyChests = GetChests(isCooking).ToList();
+            var nearbyChests = GetChests(e.IsCookingPage).ToList();
             if (!nearbyChests.Any())
                 return;
 
             // Add them as material containers to current CraftingPage
-            var prop = page.GetType().GetField("_materialContainers", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (prop == null) {
-                ModEntry.Log($"CraftFromChests failed: {page.GetType()}._materialContainers not found.");
-                return;
-            }
+            var inventories = nearbyChests.Select(chest => chest.Items as IInventory);
 
-            var original = prop.GetValue(page) as List<Chest>;
-            var modified = new List<Chest>();
-            if (original?.Count > 0)
-                modified.AddRange(original);
-            modified.AddRange(nearbyChests);
+            if (page._materialContainers == null)
+                page._materialContainers = inventories.ToList();
 
-            prop.SetValue(page, modified.Distinct().ToList());
+            else
+                page._materialContainers.AddRange(inventories);
         }
 
         private IEnumerable<Chest> GetChests(bool isCookingScreen) {
             // nearby chests
-            var chests = Game1.player.GetNearbyChests(Config.CraftRadius).Where(c => c.items.Any(i => i != null)).ToList();
+            var chests = Game1.player.GetNearbyChests(Config.CraftRadius).Where(c => c.Items.Any(i => i != null))
+                .ToList();
             foreach (var c in chests)
                 yield return c;
 
-            // always add fridge when on cooking screen
+            // always add home fridge when on cooking screen
             if (!isCookingScreen)
                 yield break;
 

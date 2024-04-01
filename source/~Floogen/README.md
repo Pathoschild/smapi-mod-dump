@@ -24,6 +24,7 @@ Some example alternative textures are included in this repository, which can be 
 ## Translations
 Alternative Textures has been generously translated into several languages by the following users:
 
+* **Korean** - ashajin
 * **Russian** - angel4killer
 * **Thai** - ellipszist
 * **Turkish** - KediDili

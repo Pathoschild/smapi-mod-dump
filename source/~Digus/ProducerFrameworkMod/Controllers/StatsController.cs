@@ -33,7 +33,7 @@ namespace ProducerFrameworkMod.Controllers
         /// <param name="amount">The amount to increment</param>
         public static void IncrementStardewStats(string label, int amount = 1)
         {
-            Game1.stats.incrementStat(label, amount);
+            Game1.stats.Increment(label, amount);
         }
     }
 }

@@ -6,11 +6,9 @@ mods:
    Multitool
 
 latest commit:
-   commit ed3a190bd9523c8a3cc2381db0be8d54df86455a
+   commit b7b565a86256dfc174afd268d518665684f3881e
    Author: Miome <miome.geo@yahoo.com>
-   Date:   Sun Mar 21 15:31:57 2021 -0400
+   Date:   Fri Mar 29 22:20:27 2024 -0400
    
-       Merge pull request #2 from Pathoschild/multi-key-bindings
-       
-       Add support for multi-key bindings
+       Re-fix destroying weeds
    

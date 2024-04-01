@@ -11,7 +11,7 @@
 {
   "Name": "Spawn Monsters",
   "Author": "Berisan",
-  "Version": "3.2.0",
+  "Version": "3.3.0",
   "Description": "Spawn any monster you want, anywhere you want!",
   "UniqueID": "Berisan.SpawnMonsters",
   "EntryDll": "Spawn Monsters.dll",

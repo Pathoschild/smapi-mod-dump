@@ -9,9 +9,9 @@ for queries and analysis.**
 # Stardew Valley Mod - Better Ranching
 Stardew Valley mod that prevents failing milking/shearing attempts and adds an indicator when animals can be petted, milked, or sheared: https://www.nexusmods.com/stardewvalley/mods/859/
 
-Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows. Requires SMAPI 3.13.0 or later.
+Compatible with Stardew Valley 1.6+ on Linux, Mac, and Windows. Requires SMAPI 4.0.0 or later.
 
-**New Update 1.9.2 (2/1/23):** Oh wow! [Profittroll](https://github.com/profitrollgame) added a Ukranian translation for the config settings menu and prompts!
+**Update 2.0.1 (2024/03/26)**: Now working with Stardew Valley 1.6 and SMAPI 4.0.0!!!
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -19,7 +19,6 @@ Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows. Requires SMAPI
     Install the latest version of SMAPI.
     Unzip the mod folder into Stardew Valley/Mods.
     Run the game using SMAPI.
-
 
 <h3>Versions:</h3>
 
@@ -78,12 +77,19 @@ Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows. Requires SMAPI
     * Clean-up code styling
     * Added i18n support 
     * Added Ukranian translation for config menus and prompts
-<h2>Contributors</h2>
-
-* Urbanyeti -- https://github.com/urbanyeti
+* 2.0.0:
+    * Migrated to SDV 1.6 and SMAPI 4.0
+    * Fixed out of range bug when facing away from animals
+    * Added Chinese, French, and German translations
+* 2.0.1:
+    * Fixed issue causing hearts to not display  
+<h2>Other Contributors</h2>
 * vaindil -- https://github.com/vaindil
 * Pathoschild -- https://github.com/Pathoschild
 * minervamaga -- https://github.com/minervamaga
 * floatingatoll -- https://github.com/floatingatoll
 * corrin -- https://github.com/corrinr
 * Profitroll -- https://github.com/profitrollgame
+* BernieAteUsername﻿﻿ -- https://github.com/BernieAteUsername
+* Tenebrosful -- https://github.com/Tenebrosful
+* Admonstrator -- https://github.com/Admonstrator

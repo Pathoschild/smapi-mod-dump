@@ -7,6 +7,7 @@ mods:
    Craft Counter
    Fix Animal Tools
    Fix Scythe Exp
+   Flexible Arms
    Grass Growth
    Movement Speed
    Stardew Hack
@@ -16,9 +17,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 25a30ebbeaaa644ca7f40e97586fa6a52057060b
+   commit 5d287e227efa865fdd023b0fb9f01101aa75fb9c
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Nov 6 13:27:42 2023 +0100
+   Date:   Sat Mar 30 08:16:17 2024 +0100
    
-       [Movement Speed] Removed unimportant stacktrace from trace logging
+       Bump version.
    

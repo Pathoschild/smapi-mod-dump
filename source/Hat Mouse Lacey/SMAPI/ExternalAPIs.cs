@@ -13,6 +13,18 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 
+#nullable enable
+
+namespace ContentPatcher
+{
+    public interface IContentPatcherAPI
+    {
+        void RegisterToken(IManifest mod, string name, Func<IEnumerable<string>?> getValue);
+    }
+}
+
+#nullable disable
+
 namespace GenericModConfigMenu
 {
     public interface IGenericModConfigMenuApi

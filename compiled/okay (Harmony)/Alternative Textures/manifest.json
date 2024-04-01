@@ -1,0 +1,33 @@
+{
+  "Name": "Alternative Textures",
+  "Author": "PeacefulEnd",
+  "Version": "7.2.5",
+  "Description": "Framework which allows the usage of different textures for placeable items in Stardew Valley.",
+  "UniqueID": "PeacefulEnd.AlternativeTextures",
+  "EntryDll": "AlternativeTextures.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:9246" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false,
+      "MinimumVersion": "1.10.14"
+    },
+    {
+      "UniqueID": "spacechase0.MoreGiantCrops",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.DynamicGameAssets",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

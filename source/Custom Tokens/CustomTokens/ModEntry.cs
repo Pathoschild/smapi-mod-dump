@@ -45,9 +45,9 @@ namespace CustomTokens
         internal static DeathAndExhaustionTokens DeathAndExhaustionTokens { get; private set; } = new DeathAndExhaustionTokens();
         internal static QuestData QuestData { get; private set; } = new QuestData();
 
-        public static readonly PerScreen<PlayerData> perScreen = new PerScreen<PlayerData>(createNewState: () => new PlayerData());
+        public static readonly PerScreen<PlayerData> perScreenPlayerData = new PerScreen<PlayerData>(createNewState: () => new PlayerData());
 
-        private static readonly string[] tokens = { "DeathCountMarried", "PassOutCount", "QuestsCompleted", "DeepestVolcanoFloor" };
+        private static readonly string[] tokens = { "DeathCount", "DeathCountMarried", "PassOutCount", "QuestsCompleted", "TotalQuestsCompleted", "DeepestVolcanoFloor" };
 
         public static Update update = new Update();
         public static int deathcounter;
@@ -73,7 +73,7 @@ namespace CustomTokens
             }
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
-            QuestData.Hook(harmony, this.Monitor);
+            QuestData.Hook(harmony, this.Monitor, this.Helper);
         }
 
         /// <summary>Raised after the game is launched, right before the first update tick.</summary>
@@ -94,7 +94,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var currentMineLevel = ModEntry.perScreen.Value.CurrentMineLevel;
+                            var currentMineLevel = ModEntry.perScreenPlayerData.Value.CurrentMineLevel;
 
                             return new[]
                             {
@@ -113,7 +113,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var deepestMineLevel = ModEntry.perScreen.Value.DeepestMineLevel;
+                            var deepestMineLevel = ModEntry.perScreenPlayerData.Value.DeepestMineLevel;
 
                             return new[]
                             {
@@ -132,7 +132,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var currentVolcanoFloor = ModEntry.perScreen.Value.CurrentVolcanoFloor;
+                            var currentVolcanoFloor = ModEntry.perScreenPlayerData.Value.CurrentVolcanoFloor;
 
                             return new[]
                             {
@@ -151,7 +151,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var AnniversaryDay = ModEntry.perScreen.Value.AnniversaryDay;
+                            var AnniversaryDay = ModEntry.perScreenPlayerData.Value.AnniversaryDay;
 
                             return new[]
                             {
@@ -170,7 +170,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var AnniversarySeason = ModEntry.perScreen.Value.AnniversarySeason;
+                            var AnniversarySeason = ModEntry.perScreenPlayerData.Value.AnniversarySeason;
 
                             return new[]
                             {
@@ -189,7 +189,7 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var currentYearsMarried = ModEntry.perScreen.Value.CurrentYearsMarried;
+                           var currentYearsMarried = ModEntry.perScreenPlayerData.Value.CurrentYearsMarried;
 
                            return new[]
                            {
@@ -208,7 +208,7 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var currentdeathcount = (int)Game1.stats.timesUnconscious;
+                           var currentdeathcount = Game1.player.stats.TimesUnconscious;
 
                            return new[]
                            {
@@ -227,8 +227,8 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var currentdeathcountmarried = Game1.player.isMarried()
-                           ? ModEntry.perScreen.Value.DeathCountMarried
+                           var currentdeathcountmarried = Game1.player.isMarriedOrRoommates()
+                           ? ModEntry.perScreenPlayerData.Value.DeathCountMarried
                            : 0;
 
                            return new[]
@@ -254,7 +254,7 @@ namespace CustomTokens
 
                        if (Context.IsWorldReady)
                        {
-                           var currentdeathcount = (int)Game1.stats.timesUnconscious + 1;
+                           var currentdeathcount = Game1.player.stats.TimesUnconscious + 1;
 
                            return new[]
                            {
@@ -277,8 +277,8 @@ namespace CustomTokens
                        CP won't use correct value of DeathCountMarried token during the PlayerKilled event as the token is updated outside of the useable update rates, 
                        Adding 1 to the value of that token ensures token value is correct when content is loaded for event
                        */
-                           var currentdeathcountmarried = Game1.player.isMarried()
-                           ? ModEntry.perScreen.Value.DeathCountMarried + 1
+                           var currentdeathcountmarried = Game1.player.isMarriedOrRoommates()
+                           ? ModEntry.perScreenPlayerData.Value.DeathCountMarried + 1
                            : 0;
 
                            return new[]
@@ -299,7 +299,7 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var currentpassoutcount = ModEntry.perScreen.Value.PassOutCount;
+                           var currentpassoutcount = ModEntry.perScreenPlayerData.Value.PassOutCount;
 
                            return new[]
                            {
@@ -319,7 +319,7 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var currentquestsdone = Game1.stats.questsCompleted;
+                           var currentquestsdone = Game1.player.stats.QuestsCompleted;
 
                            return new[]
                            {
@@ -340,12 +340,12 @@ namespace CustomTokens
                        if (Context.IsWorldReady)
                        {                      
                             // Create array with the length of the QuestsCompleted array list
-                            string[] questsdone = new string[ModEntry.perScreen.Value.QuestsCompleted.Count];
+                            string[] questsdone = new string[ModEntry.perScreenPlayerData.Value.QuestsCompleted.Count];
 
                             // Set each value in new array to be the same as in QuestCompleted
-                            foreach (var quest in ModEntry.perScreen.Value.QuestsCompleted)
+                            foreach (var quest in ModEntry.perScreenPlayerData.Value.QuestsCompleted)
                             {
-                                questsdone.SetValue(quest.ToString(), ModEntry.perScreen.Value.QuestsCompleted.IndexOf(quest));
+                                questsdone.SetValue(quest.ToString(), ModEntry.perScreenPlayerData.Value.QuestsCompleted.IndexOf(quest));
                             }
 
                            return questsdone;
@@ -364,12 +364,12 @@ namespace CustomTokens
                        {
 
                        // Create array with the length of the SpecialOrdersCompleted array list
-                       string[] ordersdone = new string[ModEntry.perScreen.Value.SpecialOrdersCompleted.Count];
+                       string[] ordersdone = new string[ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.Count];
 
                        // Set each value in new array to be the same as in SpecialOrdersCompleted
-                       foreach (var order in ModEntry.perScreen.Value.SpecialOrdersCompleted)
+                       foreach (var order in ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted)
                            {
-                               ordersdone.SetValue(order, ModEntry.perScreen.Value.SpecialOrdersCompleted.IndexOf(order));
+                               ordersdone.SetValue(order, ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.IndexOf(order));
                            }
 
                            return ordersdone;
@@ -387,7 +387,7 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var totalspecialorderscompleted = ModEntry.perScreen.Value.SpecialOrdersCompleted.Count;
+                           var totalspecialorderscompleted = ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.Count;
 
                            return new[]
                            {
@@ -407,7 +407,7 @@ namespace CustomTokens
                    {
                        if (Context.IsWorldReady)
                        {
-                           var totalspecialorderscompleted = ModEntry.perScreen.Value.SpecialOrdersCompleted.Count;
+                           var totalspecialorderscompleted = ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.Count;
 
                            return new[]
                            {
@@ -427,7 +427,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var deepestStandardMineLevel = ModEntry.perScreen.Value.DeepestMineLevel < 121 ? ModEntry.perScreen.Value.DeepestMineLevel : 120;
+                            var deepestStandardMineLevel = ModEntry.perScreenPlayerData.Value.DeepestMineLevel < 121 ? ModEntry.perScreenPlayerData.Value.DeepestMineLevel : 120;
 
                             return new[]
                             {
@@ -446,7 +446,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var deepestSkullCavernMineLevel = ModEntry.perScreen.Value.DeepestMineLevel > 120 ? ModEntry.perScreen.Value.DeepestMineLevel - 120 : 0;
+                            var deepestSkullCavernMineLevel = ModEntry.perScreenPlayerData.Value.DeepestMineLevel > 120 ? ModEntry.perScreenPlayerData.Value.DeepestMineLevel - 120 : 0;
 
                             return new[]
                             {
@@ -465,7 +465,7 @@ namespace CustomTokens
                     {
                         if (Context.IsWorldReady)
                         {
-                            var deepestVolcanoFloor = ModEntry.perScreen.Value.DeepestVolcanoFloor;
+                            var deepestVolcanoFloor = ModEntry.perScreenPlayerData.Value.DeepestVolcanoFloor;
 
                             return new[]
                             {
@@ -491,8 +491,6 @@ namespace CustomTokens
         /// <param name="e">The event arguments.</param>
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
-            deathcounter = (int)Game1.player.stats.timesUnconscious;
-
             // Add mod data to save file if needed
             foreach(var token in tokens)
             {
@@ -508,20 +506,26 @@ namespace CustomTokens
             // Add recorded completed quests from mod data in save file to player data
             foreach(string questid in QuestsComplete)
             {
-                if (questid != "" && ModEntry.perScreen.Value.QuestsCompleted.Contains(int.Parse(questid)) == false)
+                if (questid != "" && ModEntry.perScreenPlayerData.Value.QuestsCompleted.Contains(questid) == false)
                 {
-                    ModEntry.perScreen.Value.QuestsCompleted.Add(int.Parse(questid));
+                    ModEntry.perScreenPlayerData.Value.QuestsCompleted.Add(questid);
                 }
             }
 
-            ModEntry.perScreen.Value.DeepestMineLevel = Game1.player.deepestMineLevel;
-            ModEntry.perScreen.Value.DeathCountMarried = Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCountMarried"] != "" 
+            ModEntry.perScreenPlayerData.Value.DeepestMineLevel = Game1.player.deepestMineLevel;
+            ModEntry.perScreenPlayerData.Value.DeathCountMarried = Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCountMarried"] != "" 
                 ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCountMarried"]) 
                 : 0;
-            ModEntry.perScreen.Value.PassOutCount = Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"] != "" 
+            ModEntry.perScreenPlayerData.Value.PassOutCount = Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"] != "" 
                 ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"])
                 : 0;
-            ModEntry.perScreen.Value.DeepestVolcanoFloor = Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"] != ""
+            ModEntry.perScreenPlayerData.Value.DeathCountMarried = Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCount"] != ""
+               ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCount"])
+               : 0;
+            ModEntry.perScreenPlayerData.Value.PassOutCount = Game1.player.modData[$"{this.ModManifest.UniqueID}.TotalQuestsCompleted"] != ""
+                ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.TotalQuestsCompleted"])
+                : 0;
+            ModEntry.perScreenPlayerData.Value.DeepestVolcanoFloor = Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"] != ""
                 ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"])
                 : 0;
 
@@ -536,26 +540,26 @@ namespace CustomTokens
             // Get years married
             double YearsMarried = Math.Floor(Years);
             // Get Anniversary date
-            var anniversary = SDate.Now().AddDays(-(DaysMarried - 1));
+            var anniversary = SDate.Now().AddDays(-DaysMarried);
 
             // Set tokens for the start of the day
-            ModEntry.perScreen.Value.CurrentYearsMarried = Game1.player.isMarried() == true ? YearsMarried : 0;
+            ModEntry.perScreenPlayerData.Value.CurrentYearsMarried = Game1.player.isMarriedOrRoommates() == true ? YearsMarried : 0;
 
-            ModEntry.perScreen.Value.AnniversarySeason = Game1.player.isMarried() == true ? anniversary.Season : "No season";
+            ModEntry.perScreenPlayerData.Value.AnniversarySeason = Game1.player.isMarriedOrRoommates() == true ? anniversary.Season.ToString() : "No season";
 
-            ModEntry.perScreen.Value.AnniversaryDay = Game1.player.isMarried() == true ? anniversary.Day : 0;
+            ModEntry.perScreenPlayerData.Value.AnniversaryDay = Game1.player.isMarriedOrRoommates() == true ? anniversary.Day : 0;
 
             // Test if player is married
-            if (Game1.player.isMarried() is false)
+            if (Game1.player.isMarriedOrRoommates() is false)
             {
                 // No, relevant trackers will use their default values
 
                 this.Monitor.Log($"{Game1.player.Name} is not married");
 
-                if (config.ResetDeathCountMarriedWhenDivorced == true && ModEntry.perScreen.Value.DeathCountMarried != 0)
+                if (config.ResetDeathCountMarriedWhenDivorced == true && ModEntry.perScreenPlayerData.Value.DeathCountMarried != 0)
                 {
                     // Reset tracker if player is no longer married
-                    ModEntry.perScreen.Value.DeathCountMarried = 0;
+                    ModEntry.perScreenPlayerData.Value.DeathCountMarried = 0;
                 }
             }
 
@@ -574,7 +578,7 @@ namespace CustomTokens
         private void LocationChange(object sender, WarpedEventArgs e)
         {
             // Update location tokens if needed
-            LocationTokens.UpdateLocationTokens(this.Monitor, ModEntry.perScreen);
+            LocationTokens.UpdateLocationTokens(this.Monitor, ModEntry.perScreenPlayerData);
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -583,9 +587,9 @@ namespace CustomTokens
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
         {    
             // Update death or pass out tokens if needed
-            DeathAndExhaustionTokens.UpdateDeathAndExhaustionTokens(this.Helper, this.Monitor, ModEntry.perScreen, this.config, update);
+            DeathAndExhaustionTokens.UpdateDeathAndExhaustionTokens(this.Monitor, ModEntry.perScreenPlayerData, this.config, update);
             // Check if any special orders have been completed
-            QuestData.CheckForCompletedSpecialOrders(ModEntry.perScreen, this.Monitor);
+            QuestData.CheckForCompletedSpecialOrders(ModEntry.perScreenPlayerData, this.Monitor);
 
         }
 
@@ -598,27 +602,27 @@ namespace CustomTokens
             string[] QuestsComplete = Game1.player.modData[$"{this.ModManifest.UniqueID}.QuestsCompleted"].Split('/');
 
             // Remove quests already in mod data so they aren't added again
-            foreach(string questid in QuestsComplete)
+            foreach (string questid in QuestsComplete)
             {
                 if(questid != "")
                 {
-                    ModEntry.perScreen.Value.QuestsCompleted.Remove(int.Parse(questid));
+                    ModEntry.perScreenPlayerData.Value.QuestsCompleted.Remove(questid);
                 }
             }
 
             // Add any newly completed quests to mod data
-            foreach (int questid in ModEntry.perScreen.Value.QuestsCompleted)
+            foreach (var questid in ModEntry.perScreenPlayerData.Value.QuestsCompleted)
             {
                 Game1.player.modData[$"{this.ModManifest.UniqueID}.QuestsCompleted"] = Game1.player.modData[$"{this.ModManifest.UniqueID}.QuestsCompleted"] + $"{questid}/";
             }
 
             // Clear quest data for new day
-            ModEntry.perScreen.Value.QuestsCompleted.Clear();
+            ModEntry.perScreenPlayerData.Value.QuestsCompleted.Clear();
 
             // Update old tracker
-            Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCountMarried"] = ModEntry.perScreen.Value.DeathCountMarried.ToString();
-            Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"] = ModEntry.perScreen.Value.PassOutCount.ToString();
-            Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"] = ModEntry.perScreen.Value.DeepestVolcanoFloor.ToString();
+            Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCountMarried"] = ModEntry.perScreenPlayerData.Value.DeathCountMarried.ToString();
+            Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"] = ModEntry.perScreenPlayerData.Value.PassOutCount.ToString();
+            Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"] = ModEntry.perScreenPlayerData.Value.DeepestVolcanoFloor.ToString();
             this.Monitor.Log("Trackers updated for new day");
         }
 
@@ -629,15 +633,21 @@ namespace CustomTokens
         /// <param name="e">The event arguments.</param>
         private void Title(object sender, ReturnedToTitleEventArgs e)
         {
-            if (ModEntry.perScreen.Value.SpecialOrdersCompleted.Count != 0)
+            if (ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.Count != 0)
             {
-                ModEntry.perScreen.Value.SpecialOrdersCompleted.Clear();
+                ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.Clear();
                 this.Monitor.Log("Clearing Special Order data, ready for new save");
             }
 
-            if (ModEntry.perScreen.Value.QuestsCompleted.Count != 0)
+            if (ModEntry.perScreenPlayerData.Value.QuestsCompleted.Count != 0)
             {
-                ModEntry.perScreen.Value.QuestsCompleted.Clear();               
+                ModEntry.perScreenPlayerData.Value.QuestsCompleted.Clear();               
+                this.Monitor.Log("Clearing Quest data, ready for new save");
+            }
+
+            if (ModEntry.perScreenPlayerData.Value.QuestsCompleted.Count != 0)
+            {
+                ModEntry.perScreenPlayerData.Value.QuestsCompleted.Clear();
                 this.Monitor.Log("Clearing Quest data, ready for new save");
             }
         }
@@ -676,24 +686,24 @@ namespace CustomTokens
             try
             {
                 // Display information in SMAPI console
-                this.Monitor.Log($"\n\nMineLevel: {ModEntry.perScreen.Value.CurrentMineLevel}" +
-                    $"\nVolcanoFloor: {ModEntry.perScreen.Value.CurrentVolcanoFloor}" +
-                    $"\nDeepestNormalMineLevel: { (ModEntry.perScreen.Value.DeepestMineLevel < 121 ? ModEntry.perScreen.Value.DeepestMineLevel : 120)}" +
-                    $"\nDeepestSkullCavernMineLevel: {(ModEntry.perScreen.Value.DeepestMineLevel > 120 ? ModEntry.perScreen.Value.DeepestMineLevel - 120 : 0)}" +
-                    $"\nDeepestVolcanoFloor: {ModEntry.perScreen.Value.DeepestVolcanoFloor}" +
-                    $"\nDeepestMineLevel: {ModEntry.perScreen.Value.DeepestMineLevel}" +
-                    $"\nYearsMarried: {ModEntry.perScreen.Value.CurrentYearsMarried}" +
-                    $"\nAnniversaryDay: {ModEntry.perScreen.Value.AnniversaryDay}" +
-                    $"\nAnniversarySeason: {ModEntry.perScreen.Value.AnniversarySeason}" +
-                    $"\nQuestIDsCompleted: {Quests(ModEntry.perScreen.Value.QuestsCompleted)}" +
-                    $"\nSOIDsCompleted: {Quests(ModEntry.perScreen.Value.SpecialOrdersCompleted)}" +
-                    $"\nSOCompleted: {ModEntry.perScreen.Value.SpecialOrdersCompleted.Count}" +
-                    $"\nQuestsCompleted: {Game1.stats.questsCompleted}" +
-                    $"\nDeathCount: {Game1.stats.timesUnconscious}" +
-                    $"\nDeathCountMarried: {ModEntry.perScreen.Value.DeathCountMarried}" +
-                    $"\nDeathCountPK: {(Game1.player.isMarried() ? Game1.stats.timesUnconscious + 1 : 0)}" +
-                    $"\nDeathCountMarriedPK: {(Game1.player.isMarried() ? ModEntry.perScreen.Value.DeathCountMarried + 1 : 0)}" +
-                    $"\nPassOutCount: {ModEntry.perScreen.Value.PassOutCount}", LogLevel.Info);
+                this.Monitor.Log($"\n\nMineLevel: {ModEntry.perScreenPlayerData.Value.CurrentMineLevel}" +
+                    $"\nVolcanoFloor: {ModEntry.perScreenPlayerData.Value.CurrentVolcanoFloor}" +
+                    $"\nDeepestNormalMineLevel: { (ModEntry.perScreenPlayerData.Value.DeepestMineLevel < 121 ? ModEntry.perScreenPlayerData.Value.DeepestMineLevel : 120)}" +
+                    $"\nDeepestSkullCavernMineLevel: {(ModEntry.perScreenPlayerData.Value.DeepestMineLevel > 120 ? ModEntry.perScreenPlayerData.Value.DeepestMineLevel - 120 : 0)}" +
+                    $"\nDeepestVolcanoFloor: {ModEntry.perScreenPlayerData.Value.DeepestVolcanoFloor}" +
+                    $"\nDeepestMineLevel: {ModEntry.perScreenPlayerData.Value.DeepestMineLevel}" +
+                    $"\nYearsMarried: {ModEntry.perScreenPlayerData.Value.CurrentYearsMarried}" +
+                    $"\nAnniversaryDay: {ModEntry.perScreenPlayerData.Value.AnniversaryDay}" +
+                    $"\nAnniversarySeason: {ModEntry.perScreenPlayerData.Value.AnniversarySeason}" +
+                    $"\nQuestIDsCompleted: {Quests(ModEntry.perScreenPlayerData.Value.QuestsCompleted)}" +
+                    $"\nSOIDsCompleted: {Quests(ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted)}" +
+                    $"\nSOCompleted: {ModEntry.perScreenPlayerData.Value.SpecialOrdersCompleted.Count}" +
+                    $"\nQuestsCompleted: {Game1.player.stats.QuestsCompleted}" +
+                    $"\nDeathCount: {Game1.player.stats.TimesUnconscious}" +
+                    $"\nDeathCountMarried: {ModEntry.perScreenPlayerData.Value.DeathCountMarried}" +
+                    $"\nDeathCountPK: {(Game1.player.isMarriedOrRoommates() ? Game1.player.stats.TimesUnconscious + 1 : 0)}" +
+                    $"\nDeathCountMarriedPK: {(Game1.player.isMarriedOrRoommates() ? ModEntry.perScreenPlayerData.Value.DeathCountMarried + 1 : 0)}" +
+                    $"\nPassOutCount: {ModEntry.perScreenPlayerData.Value.PassOutCount}", LogLevel.Info);
             }
             catch (Exception ex)
             {

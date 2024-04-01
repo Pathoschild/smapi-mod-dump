@@ -18,7 +18,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
     {
         public static GenericTool CreateInstance()
         {
-            var charm = new GenericTool(string.Empty, string.Empty, -1, 6, 6);
+            var charm = new GenericTool();
             charm.modData[ModDataKeys.LOST_FISHING_CHARM_KEY] = true.ToString();
 
             return charm;

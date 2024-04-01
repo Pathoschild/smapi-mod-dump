@@ -13,11 +13,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Network;
+using StardewValley.Extensions;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace FarmTypeManager
 {
@@ -59,7 +61,12 @@ namespace FarmTypeManager
             {
                 base.initNetFields();
                 //use this class's modified set of net fields
-                this.NetFields.AddFields(Items, HitsToBreak, (INetSerializable)this.debris, (INetSerializable)this.breakDebrisSource, (INetSerializable)this.breakDebrisSource2);
+                base.NetFields
+                    .AddField(Items, "Items")
+                    .AddField(HitsToBreak, "HitsToBreak")
+                    .AddField(debris, "debris")
+                    .AddField(breakDebrisSource, "breakDebrisSource")
+                    .AddField(breakDebrisSource2, "breakDebrisSource2");
             }
 
             public BreakableContainerFTM()
@@ -71,7 +78,7 @@ namespace FarmTypeManager
             /// <param name="items">A set of items the container will drop when broken. Null or empty lists are valid.</param>
             /// <param name="isBarrel">If true, the container will use the "barrel" sprite. If false, it will use the "crate" sprite.</param>
             public BreakableContainerFTM(Vector2 tile, IEnumerable<Item> items, bool isBarrel = true)
-                : base(tile, barrel, false)
+                : base(tile, barrel.ToString(), false)
             {
                 Items.AddRange(items);
 
@@ -84,24 +91,25 @@ namespace FarmTypeManager
                 breakDebrisSource2.Value = new Rectangle(611, 1275, 10, 4);
             }
 
-            public override bool performToolAction(Tool t, GameLocation location)
+            public override bool performToolAction(Tool t)
             {
+                if (Location == null)
+                    return false;
+
                 if (t != null && t.isHeavyHitter())
                 {
-                    Multiplayer multiplayer = Utility.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue(); //reflect to access SDV's multiplayer field
-
                     --HitsToBreak.Value;
                     if (t is MeleeWeapon weapon && weapon.type.Value == 2)
                         --HitsToBreak.Value;
                     if (HitsToBreak.Value <= 0)
                     {
-                        location.playSound(BreakSound, NetAudio.SoundContext.Default); //this no longer checks whether "breakSound" is assigned
-                        releaseContents(location); //this now passes the provided location, rather than the tool owner and their location
-                        t.getLastFarmerToUse().currentLocation.objects.Remove(tileLocation.Value);
-                        int num = Game1.random.Next(4, 12);
+                        playNearbySoundAll("barrelBreak"); //this no longer checks whether "breakSound" is assigned
+                        releaseContents();
+                        Location.objects.Remove(TileLocation);
+                        int numDebris = Game1.random.Next(4, 12);
                         //removed the code that determines color based on parent sheet index
-                        for (int index = 0; index < num; ++index)
-                            multiplayer.broadcastSprites(t.getLastFarmerToUse().currentLocation, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextDouble() < 0.5 ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), false, Game1.random.NextDouble() < 0.5, (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0.0f, (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 8.0), (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 64.0), false)
+                        for (int i = 0; i < numDebris; ++i)
+                            Game1.Multiplayer.broadcastSprites(Location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextBool() ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), flicker: false, Game1.random.NextBool(), (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0f, (float)((double)Game1.random.Next(-5, 6) * Math.PI / 8.0), (float)((double)Game1.random.Next(-5, 6) * Math.PI / 64.0))
                             {
                                 motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, (float)Game1.random.Next(-10, -7)),
                                 acceleration = new Vector2(0.0f, 0.3f)
@@ -109,66 +117,70 @@ namespace FarmTypeManager
                     }
                     else //this no longer checks whether "hitSound" is assigned
                     {
-                        this.shakeTimer = 300;
-                        location.playSound(HitSound, NetAudio.SoundContext.Default);
-                        Game1.createRadialDebris(t.getLastFarmerToUse().currentLocation, 12, (int)tileLocation.X, (int)tileLocation.Y, Game1.random.Next(4, 7), false, -1, false, ParentSheetIndex == 120 ? 10000 : -1); //this now reads the container's parent sheet index instead of "containerType"
+                        shakeTimer = 300;
+                        playNearbySoundAll("woodWhack");
+                        Game1.createRadialDebris(Location, debris.Value, (int)tileLocation.X, (int)tileLocation.Y, Game1.random.Next(4, 7), resource: false, -1, item: false, color);
                     }
                 }
                 return false;
             }
 
-            public override bool onExplosion(Farmer who, GameLocation location)
+            public override bool onExplosion(Farmer who)
             {
-                Multiplayer multiplayer = Utility.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue(); //reflect to access SDV's multiplayer field
-
+                if (Location == null)
+                    return true;
                 if (who == null)
                     who = Game1.player;
-                releaseContents(location); //this no longer passes the farmer
-                int num = Game1.random.Next(4, 12);
-                //removed the code that determines color based on parent sheet index
-                for (int index = 0; index < num; ++index)
-                    multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextDouble() < 0.5 ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), false, Game1.random.NextDouble() < 0.5, (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0.0f, (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 8.0), (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 64.0), false)
+
+                releaseContents();
+                int numDebris = Game1.random.Next(4, 12);
+                for (int i = 0; i < numDebris; i++)
+                {
+                    Game1.Multiplayer.broadcastSprites(Location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextBool() ? this.breakDebrisSource.Value : this.breakDebrisSource2.Value, 999f, 1, 0, TileLocation * 64f + new Vector2(32f, 32f), flicker: false, Game1.random.NextBool(), (TileLocation.Y * 64f + 32f) / 10000f, 0.01f, color, 4f, 0f, (float)Game1.random.Next(-5, 6) * (float)Math.PI / 8f, (float)Game1.random.Next(-5, 6) * (float)Math.PI / 64f)
                     {
-                        motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, (float)Game1.random.Next(-10, -7)),
-                        acceleration = new Vector2(0.0f, 0.3f)
+                        motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, Game1.random.Next(-10, -7)),
+                        acceleration = new Vector2(0f, 0.3f)
                     });
+                }
                 return true;
             }
 
             /// <summary>Drops the items from this container's "items" list.</summary>
-            /// <param name="location">The location of the container.</param>
             /// <remarks>This replaces the method's original behavior and no longer takes Farmer as an argument.</remarks>
-            public void releaseContents(GameLocation location)
+            public void releaseContents()
             {
-                if (Items == null || Items.Count < 1) { return; } //if there are no items listed, do nothing
+                if (Items == null || Items.Count < 1 || Location == null) { return; } //if there are no items listed, do nothing
 
                 Vector2 itemPosition = new Vector2(boundingBox.Center.X, boundingBox.Center.Y); //get the "pixel" location where these items should spawn
 
                 foreach (Item item in Items) //for each item in this container's item list
                 {
-                    Game1.createItemDebris(item, itemPosition, Utility.RNG.Next(4), location); //spawn the item as "debris" at this location
+                    Game1.createItemDebris(item, itemPosition, Utility.RNG.Next(4), Location); //spawn the item as "debris" at this location
                 }
             }
 
-            public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
+            public override void updateWhenCurrentLocation(GameTime time)
             {
-                if (this.shakeTimer <= 0)
-                    return;
-                this.shakeTimer -= time.ElapsedGameTime.Milliseconds;
+                if (shakeTimer > 0)
+                {
+                    shakeTimer -= time.ElapsedGameTime.Milliseconds;
+                }
             }
 
             public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
             {
-                Vector2 vector2 = this.getScale() * 4f;
-                Vector2 local = Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * 64), (float)(y * 64 - 64)));
-                Rectangle destinationRectangle = new Rectangle((int)((double)local.X - (double)vector2.X / 2.0), (int)((double)local.Y - (double)vector2.Y / 2.0), (int)(64.0 + (double)vector2.X), (int)(128.0 + (double)vector2.Y / 2.0));
+                Vector2 scaleFactor = this.getScale();
+                scaleFactor *= 4f;
+                Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+                Rectangle destination = new Rectangle((int)(position.X - scaleFactor.X / 2f), (int)(position.Y - scaleFactor.Y / 2f), (int)(64f + scaleFactor.X), (int)(128f + scaleFactor.Y / 2f));
                 if (this.shakeTimer > 0)
                 {
-                    int num = this.shakeTimer / 100 + 1;
-                    destinationRectangle.X += Game1.random.Next(-num, num + 1);
-                    destinationRectangle.Y += Game1.random.Next(-num, num + 1);
+                    int intensity = this.shakeTimer / 100 + 1;
+                    destination.X += Game1.random.Next(-intensity, intensity + 1);
+                    destination.Y += Game1.random.Next(-intensity, intensity + 1);
                 }
-                spriteBatch.Draw(Game1.bigCraftableSpriteSheet, destinationRectangle, new Rectangle?(StardewValley.Object.getSourceRectForBigCraftable(showNextIndex.Value ? ParentSheetIndex + 1 : ParentSheetIndex)), Color.White * alpha, 0.0f, Vector2.Zero, SpriteEffects.None, Math.Max(0.0f, (float)((y + 1) * 64 - 1) / 10000f) + (ParentSheetIndex == 105 ? 0.0015f : 0.0f));
+                ParsedItemData data = ItemRegistry.GetDataOrErrorItem(base.QualifiedItemId);
+                spriteBatch.Draw(data.GetTexture(), destination, data.GetSourceRect(showNextIndex.Value ? 1 : 0), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 1) / 10000f));
             }
         }
     }

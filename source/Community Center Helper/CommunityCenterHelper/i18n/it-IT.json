@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} in {{season}}",
 	"tapTree": "Piazza {{tapper}} su {{tree}}",
 	"seedFromTree": "Scuoti/abbatti {{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 	
 	// Crafting/Cooking
 	"craftRecipeByName": "Fabbrica {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "Mieti dall'erba o dal {{wheat}}",
 	"trash": "Spazzatura dalla pesca, Nassa per granchi, o da i bidoni dei rifiuti",
 	"trashCan": "Spazzatura dai bidoni dei rifiuti",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Stanza di Marnie (nella missione I Pantaloncini del Sindaco in Estate 3)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "Vinci al gioco della gru al Cinema",
 	"voidEggEvent": "Evento casuale della strega",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "Conigli",
 	"animalDuck": "Anatre",
 	"animalPig": "Maiali",
+	"animalOstrich": "Ostriches", // TODO
 	
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "necessaria Stia",

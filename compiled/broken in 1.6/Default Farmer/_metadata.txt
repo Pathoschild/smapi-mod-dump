@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12421
-IDs: tylergibbs2.DefaultFarmer
-update keys: GitHub:tylergibbs2/DefaultFarmer, Nexus:12421

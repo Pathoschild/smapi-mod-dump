@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Internal;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -91,11 +92,14 @@ namespace AlternativeTextures.Framework.UI
             // Set the items to display
             _displayableObjects = new List<Object>();
             _currentlyDisplayedObjects = new List<Object>();
-            foreach (Object item in Utility.getAllFurnituresForFree().Keys)
+
+            var allFurniture = ItemQueryResolver.TryResolve("ALL_ITEMS (F)", context: null);
+            foreach (Object item in allFurniture.Where(f => f.Item is Furniture).Select(f => f.Item as Object))
             {
                 // Set the stack based on the amount of available textures for the item
+                var itemId = $"{AlternativeTextureModel.TextureType.Furniture}_{item.ItemId}";
                 var instanceName = $"{AlternativeTextureModel.TextureType.Furniture}_{item.Name}";
-                int texturesAvailable = AlternativeTextures.textureManager.GetAvailableTextureModels(instanceName, Game1.player.currentLocation.GetSeasonForLocation()).Sum(t => t.Variations);
+                int texturesAvailable = AlternativeTextures.textureManager.GetAvailableTextureModels(itemId, instanceName, Game1.player.currentLocation.GetSeason()).Sum(t => t.Variations);
 
                 item.stack.Value = texturesAvailable;
                 if (texturesAvailable == 0)
@@ -359,8 +363,9 @@ namespace AlternativeTextures.Framework.UI
             }
 
             // Get the textures available
+            string itemId = $"{AlternativeTextureModel.TextureType.Furniture}_{_selectedObject.ItemId}";
             string modelName = $"{AlternativeTextureModel.TextureType.Furniture}_{_selectedObject.Name}";
-            var availableModels = AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation));
+            var availableModels = AlternativeTextures.textureManager.GetAvailableTextureModels(itemId, modelName, Game1.GetSeasonForLocation(Game1.currentLocation));
 
             _displayableTextures = new List<Item>();
             _currentlyDisplayedTextures = new List<Item>();

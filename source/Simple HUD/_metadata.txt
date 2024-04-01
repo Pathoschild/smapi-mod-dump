@@ -6,9 +6,11 @@ mods:
    Simple HUD
 
 latest commit:
-   commit d60681fd8990e999b25f9f650aaf88e1d9a19d58
-   Author: Enaium <wyy-666@hotmail.com>
-   Date:   Thu Apr 28 18:37:53 2022 +0800
+   commit 1f9ee998809fcb03f35ef1e0b427ab667a41d382
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Wed Mar 27 23:54:20 2024 +0800
    
-       first commit
+       Merge pull request #1 from Enaium-StardewValleyMods/develop
+       
+       Develop
    

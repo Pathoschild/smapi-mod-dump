@@ -15,6 +15,6 @@
   "Description": "Farm animals can die of old age, hunger or illness",
   "UniqueID": "Goldenrevolver.AnimalsDie",
   "EntryDll": "AnimalsDie.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:7769" ]
 }

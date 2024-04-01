@@ -1,0 +1,85 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+[size=6][b]Self Serve[/b][/size]
+
+Don't want to wait for shop owners like Marnie and Clint while they're gone? You no longer have to! Access any shop services even while its owner isn't attending it.
+
+[img]https://staticdelivery.nexusmods.com/mods/1303/images/headers/20985_1711335150.jpg[/img]
+[size=5][b]Prerequisites[/b][/size]
+
+Mandatory and optional requirements for use of this mod.
+
+- [url=https://www.nexusmods.com/stardewvalley/mods/2400]SMAPI 4.0[/url] (required)
+- [url=https://www.nexusmods.com/stardewvalley/mods/5098]GMCM 1.12[/url] (optional, but highly recommended)
+
+[b][size=5]Installation[/size][/b]
+
+1. Download and install the required prerequisites.
+2. Download the latest version of this mod through [url=https://www.nexusmods.com/stardewvalley/mods/20985?tab=files]NexusMods[/url] or [url=https://github.com/Dunc4nNT/StardewMods/releases]GitHub releases[/url].
+3. Unzip the downloaded file into the [u]Stardew Valley/Mods[/u] directory.
+4. Launch the game using SMAPI.
+
+[size=5][b]Configuration[/b][/size]
+
+The mod's configurable options can be found below. These can either be adjusted through [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Configuration Menu (GMCM)[/url] or the [u]config.json[/u] file. Editing the options using GMCM is recommended. GMCM will also provide descriptive tooltips if the option itself is not clear.
+
+[list]
+[*]Pierre's General Store
+[*]Willy's Fish Shop
+[*]Ice Cream Shop
+[*]Blacksmith
+[*]Carpenter's
+[*]Marnie's Animal Shop
+[*]Hospital
+[*]Stardrop Saloon Bar
+[*]Bookseller's Shop
+[*]Traveling Merchant
+[*]Resort Bar
+[*]Sandy's Oasis
+[/list]
+[b][size=5]How to Use[/size][/b]
+
+Once you've configured the mod the way you want, simply go to a shop and interact with it!
+
+[b][size=5]Compatibility[/size][/b]
+
+This mod is made for Stardew Valley 1.6 using SMAPI 4.0. This mod will [b]not[/b] work on versions prior to those mentioned.
+
+[b][size=5]Translations[/size][/b]
+
+Currently, only English is supported.
+
+If you'd like another language to be supported and would like to help, please check the [url=https://stardewvalleywiki.com/Modding:Translations]modding translations wiki[/url] and send a[url=https://github.com/Dunc4nNT/StardewMods/pulls] pull request[/url].
+
+[b][size=5]Contact[/size][/b]
+
+[b]Having issues with installing or using the mod?[/b] Leave a comment on the [url=https://www.nexusmods.com/stardewvalley/mods/20985?tab=posts]NexusMods[/url] page detailing which steps you've done, which step you're failing at and if SMAPI is giving an error, please include a link to your [url=https://smapi.io/log]SMAPI log[/url].
+
+[b]Certain you've found a bug?[/b] Please open an [url=https://github.com/Dunc4nNT/StardewMods/issues]issue[/url] using the bug report template and add the appropriate mod label. If you prefer using Nexus, you can leave a report on the [url=https://www.nexusmods.com/stardewvalley/mods/20985?tab=bugs]bug reports page[/url]. [b]Uncertain?[/b] Leave a [url=https://www.nexusmods.com/stardewvalley/mods/20985?tab=posts]comment[/url] first detailing what you've run into, including a link to your [url=https://smapi.io/log]SMAPI log[/url]. [b]Know what you're doing?[/b] Feel free to send a PR if you'd like.
+
+[b]Like to request a new feature or addition to an existing feature?[/b] Please open an [url=https://github.com/Dunc4nNT/StardewMods/issues]issue[/url] using the feature request template and add the appropriate mod label.
+
+[b]I may take a while to see a comment on nexus, you can try contacting me through Discord DMs or the SDV server (never.toxic) if that's the case, or incase of an urgent issue.[/b]
+
+[b][size=5]Links[/size][/b]
+
+- [url=https://www.nexusmods.com/stardewvalley/mods/20985]NexusMods page for this mod[/url]
+- [url=https://github.com/Dunc4nNT/StardewMods]GitHub mono repo with all my mods[/url]
+
+[b][size=5]Credits[/size][/b]
+
+This is a complete rewrite of the [url=https://www.nexusmods.com/stardewvalley/mods/11313]Self Serve mod[/url], made to be compatible with the Stardew Valley 1.6 update. Credit to [url=https://www.nexusmods.com/stardewvalley/users/18901754]Aedenthorn[/url] for the original mod!
+
+[b][size=5]Licensing[/size][/b]
+
+Copyright © 2024 Dunc4nNT
+
+This project is licensed under the Mozilla Public License 2.0 (MPL 2.0). See [url=https://github.com/Dunc4nNT/StardewMods/blob/0872af09b308e89a48b7ac9c9b5ffe927b992b53/LICENSE]LICENSE[/url] for more information.

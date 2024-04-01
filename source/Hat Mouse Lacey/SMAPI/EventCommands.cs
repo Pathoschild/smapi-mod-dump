@@ -12,7 +12,9 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Delegates;
 using StardewValley.Locations;
+using StardewValley.Pathfinding;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -23,15 +25,14 @@ namespace ichortower_HatMouseLacey
     {
         /*
          * Queue holding viewport move targets.
-         * LC_viewportMoveQueue uses this to allow chaining of viewport move
+         * viewportMoveQueue uses this to allow chaining of viewport move
          * commands.
          */
         private static Queue<Vector3> viewportQueue = new Queue<Vector3>();
 
         /*
          * Map from NPC names to queued warp coordinates.
-         * LC_moveWarpQueue uses this to tell NPCs to warp when they are done
-         * moving.
+         * warpQueue uses this to tell NPCs to warp when they are done moving.
          */
         private static Dictionary<string, Vector2> warpQueues = new Dictionary<string, Vector2>();
 
@@ -43,6 +44,25 @@ namespace ichortower_HatMouseLacey
          */
         private static System.EventHandler<UpdateTickedEventArgs> queueTicker = null!;
 
+
+        /*
+         * Registers the event commands.
+         */
+        public static void Register()
+        {
+            MethodInfo[] funcs = typeof(LCEventCommands).GetMethods(
+                    BindingFlags.Public | BindingFlags.Static);
+            foreach (var func in funcs) {
+                if (!func.Name.StartsWith("command_")) {
+                    continue;
+                }
+                string key = func.Name.Replace("command_",
+                        $"{HML.CPId}_");
+                StardewValley.Event.RegisterCommand(key,
+                        (EventCommandDelegate) Delegate.CreateDelegate(
+                        typeof(EventCommandDelegate), func));
+            }
+        }
 
         /*
          * Starts the background ticker (UpdateTicked listener) if it's not
@@ -93,7 +113,7 @@ namespace ichortower_HatMouseLacey
                     stopTicker();
                 }
             };
-            ModEntry.HELPER.Events.GameLoop.UpdateTicked += queueTicker;
+            HML.ModHelper.Events.GameLoop.UpdateTicked += queueTicker;
         }
 
         /*
@@ -103,28 +123,24 @@ namespace ichortower_HatMouseLacey
         public static void stopTicker()
         {
             if (queueTicker != null) {
-                ModEntry.HELPER.Events.GameLoop.UpdateTicked -= queueTicker;
+                HML.ModHelper.Events.GameLoop.UpdateTicked -= queueTicker;
                 queueTicker = null;
             }
         }
 
         /*
-         * LC_ambientSunset <milliseconds>
+         * _ambientSunset <milliseconds>
          *
          * Starts a smooth sunset shift in ambientLight which lasts the given
          * number of milliseconds. Runs in the background via the ticker.
          * (see also ambientSunset_tick)
          */
         public static void command_ambientSunset(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            theEvent.CurrentCommand++;
-            int ms = 30000;
-            if (split.Length >= 2) {
-                ms = Convert.ToInt32(split[1]);
-            }
-            LCSunset.startTime = (int)time.TotalGameTime.TotalMilliseconds;
+            evt.CurrentCommand++;
+            int ms = ArgUtility.GetInt(args, 1, 30000);
+            LCSunset.startTime = (int)Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
             LCSunset.runTime = ms;
             LCSunset.currentTime = 0;
             LCSunset.ambient[0,0] = Game1.ambientLight.R;
@@ -134,7 +150,7 @@ namespace ichortower_HatMouseLacey
         }
 
         /*
-         * LC_crueltyScore <int>
+         * _crueltyScore <int>
          *
          * Add points to the player's accrued "cruelty score".
          * This is a hidden counter which can cause a temporary punishment
@@ -142,13 +158,10 @@ namespace ichortower_HatMouseLacey
          * You can use a large negative value to reset it (it clamps to zero).
          */
         public static void command_crueltyScore(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            int n = 0;
-            if (split.Length >= 2) {
-                n = Convert.ToInt32(split[1]);
-            }
+            evt.CurrentCommand++;
+            int n = ArgUtility.GetInt(args, 1, 0);
             if (n != 0) {
                 if (n < 0 && (-1*n) > LCModData.CrueltyScore) {
                     LCModData.CrueltyScore = 0;
@@ -157,240 +170,150 @@ namespace ichortower_HatMouseLacey
                     LCModData.CrueltyScore += n;
                 }
             }
-            theEvent.CurrentCommand++;
         }
 
         /*
-         * LC_drawOnTop <NPC> [false]
+         * _drawOnTop <NPC> [false]
          *
          * Set the named NPC's 'drawOnTop' field, which causes them to render
          * above objects and other actors during scene draws.
-         * Specify 'false' to unset the flag. Absence or any other value will
-         * set it to true.
+         * Specify 'true' or 'false'. Omitting the flag is the same as 'true'.
          */
         public static void command_drawOnTop(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
+            evt.CurrentCommand++;
+            string npc;
+            string err;
             bool top = true;
-            if (split.Length >= 2) {
-                if (split.Length >= 3 && split[2].Equals("false")) {
-                    top = false;
-                }
-                NPC who = theEvent.getActorByName(split[1]);
-                if (who != null) {
-                    who.drawOnTop = top;
-                }
+            if (!ArgUtility.TryGet(args, 1, out npc, out err) ||
+                    !ArgUtility.TryGetOptionalBool(args, 2, out top,
+                        out err, defaultValue:true)) {
+                Log.Warn($"{args[0]} failed to parse: {err}");
+                return;
             }
-            theEvent.CurrentCommand++;
+            NPC who = evt.getActorByName(npc);
+            if (who != null) {
+                who.drawOnTop = top;
+            }
         }
 
-        /*
-         * LC_forgetThisEvent
-         *
-         * Avoids flagging this event as seen when it finishes (technically,
-         * removes its id from the list of seen events after it is automat-
-         * ically added).
-         *
-         * This adds a callback to onEventFinished, which is run during
-         * Game1.eventFinished, which *usually* happens after endBehaviors/
-         * exitEvent sets the id as seen. I think it's possible to trigger
-         * these out of order, but not in our use case.
-         */
-        public static void command_forgetThisEvent(
-                GameLocation location, GameTime time, string[] split)
-        {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            int id = theEvent.id;
-            theEvent.onEventFinished = (Action)Delegate.Combine(
-                    theEvent.onEventFinished, new Action(delegate() {
-                        Game1.player.eventsSeen.Remove(id);
-                    }));
-            theEvent.CurrentCommand++;
-        }
 
         /*
-         * LC_setDating <NPC>
+         * _setDating <NPC>
          *
          * Set the player to be dating the named villager.
          */
         public static void command_setDating(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            Friendship f = Game1.player.friendshipData[split[1]];
+            evt.CurrentCommand++;
+            string npc;
+            if (!ArgUtility.TryGet(args, 1, out npc, out string err)) {
+                Log.Warn($"{args[0]} failed to parse: {err}");
+                return;
+            }
+            Friendship f = Game1.player.friendshipData[npc];
             if (f != null && !f.IsDating()) {
                 f.Status = FriendshipStatus.Dating;
-                NPC n = Game1.getCharacterFromName(split[1], mustBeVillager:true);
+                NPC n = Game1.getCharacterFromName(npc, mustBeVillager:true);
                 Multiplayer mp = (Multiplayer)typeof(Game1)
                         .GetField("multiplayer", BindingFlags.Static | BindingFlags.NonPublic)
                         .GetValue(null);
                 mp.globalChatInfoMessage("Dating",
                         Game1.player.Name, n.displayName);
             }
-            theEvent.CurrentCommand++;
         }
 
         /*
-         * LC_sit <x> <y>
+         * _sit <x> <y>
          *
-         * Cause the player farmer to sit in the mapSeat at the given (x,y)
+         * Cause the player farmer to sit in the MapSeat at the given (x,y)
          * tile position.
-         * Tile must be a seat, must be unoccupied, must be in range.
+         * Will fail if tile is not a MapSeat.
+         * Will *NOT* fail if the seat is occupied! See Patcher for more info
+         * (MapSeat__IsBlocked__Postfix).
          */
         public static void command_sit(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            int X = Convert.ToInt32(split[1]);
-            int Y = Convert.ToInt32(split[2]);
-            foreach (MapSeat chair in location.mapSeats) {
-                if (chair.OccupiesTile(X, Y) && !chair.IsBlocked(location)) {
-                    theEvent.farmer.CanMove = true;
-                    theEvent.farmer.BeginSitting(chair);
-                    theEvent.farmer.CanMove = false;
-                    break;
-                }
-            }
-            theEvent.CurrentCommand++;
-        }
-
-        /*
-         * LC_timeAfterFade hhmm(int)
-         *
-         * Set a time of day to advance to after the current event ends.
-         * Works like the festival time skips (machines process, etc.), with
-         * one major difference: it doesn't put player spouses to bed unless
-         * the target time is 10 pm or later. Other NPCs get reset to their
-         * default locations, but that's a cheat since I only use 9pm, 10pm,
-         * and 11pm as target times.
-         */
-        public static void command_timeAfterFade(
-                GameLocation location, GameTime time, string[] split)
-        {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            theEvent.CurrentCommand++;
-            int targetTime = 0;
-            if (split.Length >= 2) {
-                targetTime = Convert.ToInt32(split[1]);
-            }
-            if (targetTime <= Game1.timeOfDay) {
+            evt.CurrentCommand++;
+            int X;
+            int Y;
+            string err;
+            if (!ArgUtility.TryGetInt(args, 1, out X, out err) ||
+                    !ArgUtility.TryGetInt(args, 2, out Y, out err)) {
+                Log.Warn($"{args[0]} failed to parse: {err}");
                 return;
             }
-            int timePass = Utility.CalculateMinutesBetweenTimes(Game1.timeOfDay, targetTime);
-            Game1.timeOfDayAfterFade = targetTime;
-
-            /*
-             * Most of this copied from Event.exitEvent (the festival time-
-             * advancing code), with minor edits.
-             */
-            foreach (NPC person in theEvent.actors) {
-                if (person != null) {
-                    theEvent.resetDialogueIfNecessary(person);
+            foreach (MapSeat chair in context.Location.mapSeats) {
+                if (chair.OccupiesTile(X, Y)) {
+                    evt.farmer.CanMove = true;
+                    evt.farmer.BeginSitting(chair);
+                    evt.farmer.CanMove = false;
+                    return;
                 }
             }
-            foreach (GameLocation loc in Game1.locations) {
-                foreach (Vector2 position in new List<Vector2>(loc.objects.Keys)) {
-                    if (loc.objects[position].minutesElapsed(timePass, loc)) {
-                        loc.objects.Remove(position);
-                    }
-                }
-                if (loc is Farm) {
-                    (loc as Farm).timeUpdate(timePass);
-                }
-            }
-            if (!Game1.IsMasterGame) {
-                return;
-            }
-            foreach (NPC person in Utility.getAllCharacters()) {
-                if (!person.isVillager()) {
-                    continue;
-                }
-                Farmer spouseFarmer = person.getSpouse();
-                if (spouseFarmer != null && spouseFarmer.isMarried()) {
-                    FarmHouse home = Utility.getHomeOfFarmer(spouseFarmer);
-                    if (targetTime >= 2200) {
-                        person.controller = null;
-                        person.temporaryController = null;
-                        person.Halt();
-                        Game1.warpCharacter(person, home,
-                                Utility.PointToVector2(home.getSpouseBedSpot(spouseFarmer.spouse)));
-                        if (home.GetSpouseBed() != null) {
-                            FarmHouse.spouseSleepEndFunction(person, home);
-                        }
-                        person.ignoreScheduleToday = true;
-                    }
-                    else if (targetTime >= 1800) {
-                        person.currentMarriageDialogue.Clear();
-                        person.checkForMarriageDialogue(1800, home);
-                    }
-                    else if (targetTime >= 1100) {
-                        person.currentMarriageDialogue.Clear();
-                        person.checkForMarriageDialogue(1100, home);
-                    }
-                    continue;
-                }
-                if ( person.currentLocation != null && person.DefaultMap != null) {
-                    person.doingEndOfRouteAnimation.Value = false;
-                    person.nextEndOfRouteMessage = null;
-                    person.endOfRouteMessage.Value = null;
-                    person.controller = null;
-                    person.temporaryController = null;
-                    person.Halt();
-                    Game1.warpCharacter(person, person.DefaultMap,
-                            person.DefaultPosition / 64f);
-                    person.ignoreScheduleToday = true;
-                }
-            }
+            Log.Warn($"{args[0]}: no MapSeat found at ({X},{Y})");
         }
 
+
         /*
-         * LC_unsit
+         * _unsit
          *
          * Cause the player farmer to stop sitting on their seat.
+         * I don't use this one, so I left it commented out.
          */
+        /*
         public static void command_unsit(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            theEvent.farmer.CanMove = true;
-            theEvent.farmer.StopSitting(true);
-            theEvent.farmer.CanMove = false;
-            theEvent.CurrentCommand++;
+            evt.CurrentCommand++;
+            evt.farmer.CanMove = true;
+            evt.farmer.StopSitting(true);
+            evt.farmer.CanMove = false;
         }
+        */
 
         /*
-         * LC_viewportMoveQueue <xspeed> <yspeed> <milliseconds>
+         * _viewportMoveQueue <xspeed> <yspeed> <milliseconds>
          *
          * Works just like "viewport move", but queues the move instead of
          * overwriting any current one. This lets you chain moves while e.g.
          * dialogue occurs (player input makes it impossible to time).
          */
         public static void command_viewportMoveQueue(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
+            evt.CurrentCommand++;
             FieldInfo targetField = typeof(StardewValley.Event)
                     .GetField("viewportTarget", BindingFlags.NonPublic | BindingFlags.Instance);
-            Vector3 privTarget = (Vector3)targetField.GetValue(theEvent);
-            Vector3 newTarget = new Vector3(Convert.ToInt32(split[1]),
-                    Convert.ToInt32(split[2]), Convert.ToInt32(split[3]));
-            theEvent.CurrentCommand++;
-            if (privTarget.Equals(Vector3.Zero)) {
-                targetField.SetValue(theEvent, newTarget);
+            Vector3 privTarget = (Vector3)targetField.GetValue(evt);
+            string err;
+            if (!ArgUtility.TryGetInt(args, 1, out int x, out err) ||
+                    !ArgUtility.TryGetInt(args, 2, out int y, out err) ||
+                    !ArgUtility.TryGetInt(args, 3, out int z, out err)) {
+                Log.Warn($"{args[0]} failed to parse: {err}");
                 return;
             }
-            viewportQueue.Enqueue(newTarget);
-            startTicker();
+
+            Vector3 newTarget = new Vector3(x, y, z);
+            if (privTarget.Equals(Vector3.Zero)) {
+                targetField.SetValue(evt, newTarget);
+            }
+            else {
+                viewportQueue.Enqueue(newTarget);
+                startTicker();
+            }
         }
 
         /*
-         * LC_waitForMovement <actor> [<actor>...]
+         * _waitForMovement <actor> [<actor>...]
          *
          * Like waitForAllStationary, except it takes any number of actor
          * names, and waits only for those actors to stop. Other actors
          * may continue moving.
-         *   e.g. 'LC_waitForStationary farmer Emily' waits only for
+         *   e.g. '_waitForMovement farmer Emily' waits only for
          *     farmer and Emily before proceeding.
          *
          * There is one more subtle difference: waitForAllStationary only
@@ -399,12 +322,11 @@ namespace ichortower_HatMouseLacey
          * active on the character, to allow such pauses.
          */
         public static void command_waitForMovement(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
             bool wait = false;
-            for (int i = 1; i < split.Length; ++i) {
-                StardewValley.Character actor = theEvent.getCharacterByName(split[i]);
+            for (int i = 1; i < args.Length; ++i) {
+                Character actor = evt.getCharacterByName(args[i]);
                 if (actor is null) {
                     continue;
                 }
@@ -412,37 +334,41 @@ namespace ichortower_HatMouseLacey
                     wait = true;
                     break;
                 }
-                if (theEvent.npcControllers != null &&
-                        theEvent.npcControllers.Exists(c => c.puppet.Equals(actor))) {
+                if (evt.npcControllers != null &&
+                        evt.npcControllers.Exists(c => c.puppet.Equals(actor))) {
                     wait = true;
                     break;
                 }
             }
             if (!wait) {
-                theEvent.CurrentCommand++;
+                evt.CurrentCommand++;
             }
         }
 
         /*
-         * LC_warpQueue <actor> <x> <y>
+         * _warpQueue <actor> <x> <y>
          *
          * Wait for an actor to stop moving, then warp them to coordinates
          * (x, y). Runs in the background, so the event proceeds after reading
          * this command.
          */
         public static void command_warpQueue(
-                GameLocation location, GameTime time, string[] split)
+                Event evt, string[] args, EventContext context)
         {
-            StardewValley.Event theEvent = Game1.CurrentEvent;
-            StardewValley.Character actor = theEvent.getCharacterByName(split[1]);
+            evt.CurrentCommand++;
+            string err;
+            if (!ArgUtility.TryGet(args, 1, out string name, out err) ||
+                    !ArgUtility.TryGetInt(args, 2, out int X, out err) ||
+                    !ArgUtility.TryGetInt(args, 3, out int Y, out err)) {
+                Log.Warn($"{args[0]} failed to parse: {err}");
+                return;
+            }
+            Character actor = evt.getCharacterByName(name);
             if (actor != null) {
-                warpQueues[split[1]] = new Vector2(
-                        Convert.ToInt32(split[2]), Convert.ToInt32(split[3]));
+                warpQueues[name] = new Vector2(X, Y);
                 startTicker();
             }
-            theEvent.CurrentCommand++;
         }
-
 
 
         /* === other, non-command functions === */

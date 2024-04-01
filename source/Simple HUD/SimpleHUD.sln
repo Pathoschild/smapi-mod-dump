@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHUD", "SimpleHUD.csproj", "{D65415F8-A55E-4A21-92D9-836C4E96E019}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHUD", "SimpleHUD\SimpleHUD.csproj", "{498CCD0E-800C-494C-B522-1CAB4FB7EA4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D65415F8-A55E-4A21-92D9-836C4E96E019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D65415F8-A55E-4A21-92D9-836C4E96E019}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D65415F8-A55E-4A21-92D9-836C4E96E019}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D65415F8-A55E-4A21-92D9-836C4E96E019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{498CCD0E-800C-494C-B522-1CAB4FB7EA4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{498CCD0E-800C-494C-B522-1CAB4FB7EA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{498CCD0E-800C-494C-B522-1CAB4FB7EA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{498CCD0E-800C-494C-B522-1CAB4FB7EA4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

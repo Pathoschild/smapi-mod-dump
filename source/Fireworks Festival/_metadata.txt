@@ -6,9 +6,9 @@ mods:
    Fireworks Festival
 
 latest commit:
-   commit 282b247da64f1e1d67386f4c8839cb0617d55931
+   commit b659eb86c88536c8f47900b4b98d15909622ac0e
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Sat Mar 16 21:13:33 2024 -0400
+   Date:   Thu Mar 21 15:13:29 2024 -0400
    
-       Use new ActionsOnPurchase, rename objects better
+       Update README.md for 1.6
    

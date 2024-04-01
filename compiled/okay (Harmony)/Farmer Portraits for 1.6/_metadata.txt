@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20713
+IDs: mistyspring.aedenthornFarmerPortraits
+update keys: Nexus:20713, GitHub:aedenthorn/StardewValleyMods

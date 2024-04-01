@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Content Patcher Editor",
+  "Author": "aedenthorn",
+  "Version": "0.5.2",
+  "Description": "Content Patcher Editor.",
+  "UniqueID": "aedenthorn.ContentPatcherEditor",
+  "EntryDll": "ContentPatcherEditor.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "ContentPatcherEditor"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": [ "Nexus:17661" ]
+}

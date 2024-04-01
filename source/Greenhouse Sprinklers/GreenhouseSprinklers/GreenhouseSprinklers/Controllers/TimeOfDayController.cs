@@ -38,6 +38,11 @@ namespace Bpendragon.GreenhouseSprinklers
         {
             var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
             Monitor.Log($"OnDayEnding hit. Greenhouse Level {GetUpgradeLevel(gh)}");
+            if(!(Game1.player.hasOrWillReceiveMail("ccPantry") || Game1.player.hasOrWillReceiveMail("jojaPantry")))
+            {
+                Monitor.Log("Player has not unlocked the Greenhouse, further checks skipped");
+                return;
+            }
             AddLetterIfNeeded(GetUpgradeLevel(gh));
 
             if (gh.buildingType.Value.StartsWith("GreenhouseSprinklers"))

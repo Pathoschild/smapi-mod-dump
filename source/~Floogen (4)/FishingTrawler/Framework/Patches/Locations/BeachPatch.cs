@@ -46,7 +46,7 @@ namespace FishingTrawler.Patches.Locations
                 return;
             }
 
-            if (FishingTrawler.murphyNPC != null && FishingTrawler.murphyNPC.getTileX() == tileLocation.X && Enumerable.Range(FishingTrawler.murphyNPC.getTileY() - 1, 3).Contains(tileLocation.Y))
+            if (FishingTrawler.murphyNPC != null && FishingTrawler.murphyNPC.Tile.X == tileLocation.X && Enumerable.Range((int)(FishingTrawler.murphyNPC.Tile.Y - 1), 3).Contains(tileLocation.Y))
             {
                 __result = FishingTrawler.murphyNPC.checkAction(who, __instance);
                 return;
@@ -64,7 +64,7 @@ namespace FishingTrawler.Patches.Locations
                 case "TrawlerRewardStorage":
                     __result = true;
 
-                    if (FishingTrawler.rewardChest.items.Count() == 0)
+                    if (FishingTrawler.rewardChest.Items.Count() == 0)
                     {
                         Game1.drawObjectDialogue(FishingTrawler.i18n.Get("game_message.empty_crate"));
                         break;
@@ -166,11 +166,11 @@ namespace FishingTrawler.Patches.Locations
             }
 
             // Update the appearance of the reward chest
-            if (FishingTrawler.rewardChest.items.Count() == 0 && __instance.getTileIndexAt(new Point(82, 37), "Buildings") != 10)
+            if (FishingTrawler.rewardChest.Items.Count() == 0 && __instance.getTileIndexAt(new Point(82, 37), "Buildings") != 10)
             {
                 SwapRewardChestTiles(__instance, 10);
             }
-            else if (FishingTrawler.rewardChest.items.Count() > 0 && __instance.getTileIndexAt(new Point(82, 37), "Buildings") != 0)
+            else if (FishingTrawler.rewardChest.Items.Count() > 0 && __instance.getTileIndexAt(new Point(82, 37), "Buildings") != 0)
             {
                 SwapRewardChestTiles(__instance, 0);
             }

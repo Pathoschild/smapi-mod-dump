@@ -7,7 +7,8 @@
         <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>Core Functionality for drbirbdev mods</Description>
-        <Version>1.0.0</Version>
+        <ManifestComment>false</ManifestComment>
+        <Version>1.0.3</Version>
         <UpdateKeys>Nexus:19140</UpdateKeys>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -31,5 +32,5 @@
     <ItemGroup>
         <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="false" />
     </ItemGroup>
-    
+
 </Project>

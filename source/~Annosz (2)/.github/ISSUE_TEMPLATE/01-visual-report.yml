@@ -1,0 +1,85 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/Annosz/UIInfoSuite2
+##
+##################################################
+
+name: Visual Bug Report
+description: |
+  Any issue that affects how UI Elements are rendered to the screen.
+title: "[Visual Bug]: "
+labels: ["bug (visual)", "triage"]
+assignees:
+  - drewhoener
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Visual Bug Report
+        This report is used for reporting issues that pertain to how elements are rendered to the screen.
+        If you are experiencing a crash, or another type of bug, please go and fill out that issue template instead.
+
+        Thanks for taking the time to report an issue!
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod Version
+      description: What version of UIInfoSuite2 are you running?
+      placeholder: "v2.3.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: multiplayer
+    attributes:
+      label: Multiplayer
+      description: |
+        Did this issue occur in multiplayer?
+        If so, indicate whether you were the client or the host.
+      options:
+        - Single Player
+        - Multiplayer (Host)
+        - Multiplayer (Non-Host)
+        - Split-Screen
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: visual-settings
+    attributes:
+      label: Visual Settings
+      description: |
+        Provide your UI Zoom and UI Scale settings to help us reproduce this issue.
+      placeholder: "UI Scale: 100%, Zoom: 100%"
+    validations:
+      required: true
+  - type: input
+    id: log-link
+    attributes:
+      label: SMAPI Log
+      description: |
+        Be sure to check your SMAPI log for errors or other red text!
+        Upload your log to https://smapi.io/log and share the link here :)
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Please describe what happened, as well as what you expected to happen.
+        If possible, please include images or steps to reproduce your issue!
+      value: |
+        ### Issue
+        <!---
+            Describe Your Issue, include screenshots if able
+        --->
+
+        ### Steps to Reproduce
+        1. First
+        2. Second
+        3. Third
+        4. Fourth
+    validations:
+      required: true

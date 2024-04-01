@@ -22,8 +22,6 @@ namespace StardewDruid.Event.Challenge
     public class ChallengeHandle : EventHandle
     {
 
-        public readonly Quest questData;
-
         public Vector2 challengeWithin;
 
         public Vector2 challengeRange;
@@ -42,8 +40,8 @@ namespace StardewDruid.Event.Challenge
 
         public int challengeWarning;
 
-        public ChallengeHandle(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite)
+        public ChallengeHandle(Vector2 target,  Quest quest)
+            : base(target)
         {
 
             questData = quest;
@@ -57,7 +55,7 @@ namespace StardewDruid.Event.Challenge
 
             Mod.instance.RegisterEvent(this, "active");
 
-            Game1.addHUDMessage(new HUDMessage($"Challenge Initiated", ""));
+            Mod.instance.CastMessage("Challenge Initiated");
 
             /*if (Context.IsMultiplayer)
             {
@@ -70,7 +68,7 @@ namespace StardewDruid.Event.Challenge
                     value = questData.name,
                     description = questData.questTitle,
                     time = Game1.currentGameTime.TotalGameTime.TotalMilliseconds,
-                    location = riteData.castLocation.Name,
+                    location = Mod.instance.rite.castLocation.Name,
                     expire = (int)expireTime,
                 };
 
@@ -83,7 +81,7 @@ namespace StardewDruid.Event.Challenge
         public void SetupSpawn()
         {
 
-            monsterHandle = new(targetVector, riteData.castLocation);
+            monsterHandle = new(targetVector, Mod.instance.rite.castLocation);
 
             monsterHandle.spawnIndex = challengeSpawn;
 
@@ -107,7 +105,7 @@ namespace StardewDruid.Event.Challenge
             foreach (Vector2 torchVector in spawnTorches)
             {
 
-                Brazier brazier = new(targetLocation, torchVector);
+                LightHandle brazier = new(targetLocation, torchVector);
 
                 braziers.Add(brazier);
 
@@ -122,7 +120,7 @@ namespace StardewDruid.Event.Challenge
         public override bool EventActive()
         {
 
-            if (Vector2.Distance(Game1.player.getTileLocation(), targetVector) > challengeZone)
+            if (Vector2.Distance(Game1.player.Tile, targetVector) > challengeZone)
             {
 
                 challengeWarning++;
@@ -153,7 +151,7 @@ namespace StardewDruid.Event.Challenge
                 if(braziers.Count > 0)
                 {
                     
-                    foreach(Brazier brazier in braziers) {
+                    foreach(LightHandle brazier in braziers) {
 
                         brazier.reset();
                     
@@ -181,16 +179,17 @@ namespace StardewDruid.Event.Challenge
 
         public override void MinutesLeft(int minutes)
         {
-            Game1.addHUDMessage(new HUDMessage($"Hold ground for another {minutes} minutes", "2"));
+
+            Mod.instance.CastMessage($"Hold ground for another {minutes} minutes",2);
+
         }
 
         public override void EventAbort()
         {
 
-            Game1.addHUDMessage(new HUDMessage($"Try the challenge again tomorrow", ""));
+            Mod.instance.CastMessage("Try the challenge again tomorrow");
 
         }
-
 
         public override bool EventExpire()
         {
@@ -210,27 +209,6 @@ namespace StardewDruid.Event.Challenge
 
             EventQuery();
         
-        }
-
-        public virtual void EventQuery(string eventQuery = "EventComplete")
-        {
-
-            if (Context.IsMultiplayer)
-            {
-                QueryData queryData = new()
-                {
-                    name = questData.name,
-                    value = questData.name,
-                    description = questData.questTitle,
-                    time = Game1.currentGameTime.TotalGameTime.TotalMilliseconds,
-                    location = riteData.castLocation.Name,
-                    expire = (int)expireTime,
-                };
-
-                Mod.instance.EventQuery(queryData, eventQuery);
-
-            }
-
         }
 
         public override void EventInterval()

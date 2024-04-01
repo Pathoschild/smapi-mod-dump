@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using SpaceCore.Patches;
@@ -38,61 +39,20 @@ namespace SpaceCore.Framework
         // Update these each game update
         private readonly Type[] VanillaMainTypes =
         {
-            typeof(Tool),
+            typeof(Character),
             typeof(GameLocation),
-            typeof(Duggy),
-            typeof(Bug),
-            typeof(BigSlime),
-            typeof(Ghost),
-            typeof(Child),
-            typeof(Pet),
-            typeof(Dog),
-            typeof(Cat),
-            typeof(Horse),
-            typeof(GreenSlime),
-            typeof(LavaCrab),
-            typeof(RockCrab),
-            typeof(ShadowGuy),
-            typeof(SquidKid),
-            typeof(Grub),
-            typeof(Fly),
-            typeof(DustSpirit),
+            typeof(Item),
             typeof(Quest),
-            typeof(MetalHead),
-            typeof(ShadowGirl),
-            typeof(Monster),
-            typeof(JunimoHarvester),
             typeof(TerrainFeature)
         };
         private readonly Type[] VanillaFarmerTypes =
         {
-            typeof(Tool)
+            typeof(Item)
         };
         private readonly Type[] VanillaGameLocationTypes =
         {
-            typeof(Tool),
-            typeof(Duggy),
-            typeof(Ghost),
-            typeof(GreenSlime),
-            typeof(LavaCrab),
-            typeof(RockCrab),
-            typeof(ShadowGuy),
-            typeof(Child),
-            typeof(Pet),
-            typeof(Dog),
-            typeof(Cat),
-            typeof(Horse),
-            typeof(SquidKid),
-            typeof(Grub),
-            typeof(Fly),
-            typeof(DustSpirit),
-            typeof(Bug),
-            typeof(BigSlime),
-            typeof(BreakableContainer),
-            typeof(MetalHead),
-            typeof(ShadowGirl),
-            typeof(Monster),
-            typeof(JunimoHarvester),
+            typeof(Character),
+            typeof(Item),
             typeof(TerrainFeature)
         };
 
@@ -140,13 +100,19 @@ namespace SpaceCore.Framework
             }
         }
 
+        private Dictionary<Type, XmlSerializer> serializersAlreadyDone = new();
+
         public XmlSerializer InitializeSerializer(Type baseType, Type[] extra = null)
         {
+            if (serializersAlreadyDone.ContainsKey(baseType))
+                return serializersAlreadyDone[baseType];
+
             var types = extra?.Length > 0
                 ? extra.Concat(SpaceCore.ModTypes)
                 : SpaceCore.ModTypes;
 
             XmlSerializer serializer = new(baseType, types.ToArray());
+            serializersAlreadyDone.Add(baseType, serializer);
             this.NotifyPyTk(serializer);
             return serializer;
         }

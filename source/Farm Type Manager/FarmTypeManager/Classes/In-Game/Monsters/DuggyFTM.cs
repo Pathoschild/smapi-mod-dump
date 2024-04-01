@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Monsters;
 using System;
 using System.Xml.Serialization;
@@ -85,12 +86,12 @@ namespace FarmTypeManager.Monsters
                 return;
             this.behaviorAtGameTick(time);
 
-            Layer backLayer = location?.map?.GetLayer("Back"); //if this monster's location exists and is loaded, get the back layer
+            Layer backLayer = location?.map?.RequireLayer("Back"); //if this monster's location exists and is loaded, get the back layer
             if (backLayer != null) //if the layer exists
             {
                 //perform the original removal check
                 if ((double)this.Position.X < 0.0 || (double)this.Position.X > (double)(backLayer.LayerWidth * 64) || ((double)this.Position.Y < 0.0 || (double)this.Position.Y > (double)(backLayer.LayerHeight * 64)))
-                    location.characters.Remove((NPC)this);
+                    location.characters.Remove(this);
             }
 
             this.updateGlow();
@@ -109,35 +110,35 @@ namespace FarmTypeManager.Monsters
             if (this.Sprite.currentFrame < 4)
             {
                 boundingBox.Inflate(128, 128);
-                if (!this.IsInvisible || boundingBox.Contains(this.Player.getStandingX(), this.Player.getStandingY()))
+                if (!this.IsInvisible || boundingBox.Contains(Player.StandingPixel))
                 {
                     if (this.IsInvisible)
                     {
                         if (currentLocation?.map != null) //if the player has access to the current location's map (a necessary check for farmhands in some locations)
                         {
                             //only check for the NPCBarrier flag, ignoring the base Duggy's other movement restrictions
-                            if (this.currentLocation.map.GetLayer("Back").Tiles[(int)this.Player.getTileLocation().X, (int)this.Player.getTileLocation().Y].Properties.ContainsKey("NPCBarrier"))
+                            if (currentLocation.map.RequireLayer("Back").Tiles[Player.TilePoint.X, Player.TilePoint.Y].Properties.ContainsKey("NPCBarrier"))
                                 return;
                         }
                         this.Position = new Vector2(this.Player.Position.X, this.Player.Position.Y + (float)this.Player.Sprite.SpriteHeight - (float)this.Sprite.SpriteHeight);
                         this.currentLocation.localSound(nameof(Duggy));
-                        this.Position = this.Player.getTileLocation() * 64f;
+                        this.Position = this.Player.Tile * 64f;
                     }
                     this.IsInvisible = false;
                     this.Sprite.interval = 100f;
-                    this.Sprite.AnimateDown(time, 0, "");
+                    this.Sprite.AnimateDown(time);
                 }
             }
             if (this.Sprite.currentFrame >= 4 && this.Sprite.currentFrame < 8)
             {
-                boundingBox.Inflate((int)sbyte.MinValue, (int)sbyte.MinValue);
-                this.currentLocation.isCollidingPosition(boundingBox, Game1.viewport, false, 8, false, (Character)this);
-                this.Sprite.AnimateRight(time, 0, "");
+                boundingBox.Inflate(-128, -128);
+                this.currentLocation.isCollidingPosition(boundingBox, Game1.viewport, false, 8, false, this);
+                this.Sprite.AnimateRight(time);
                 this.Sprite.interval = 220f;
                 this.DamageToFarmer = CustomDamage; //use customizable damage instead of hardcoded values
             }
             if (this.Sprite.currentFrame >= 8)
-                this.Sprite.AnimateUp(time, 0, "");
+                this.Sprite.AnimateUp(time);
             if (this.Sprite.currentFrame < 10)
                 return;
             this.IsInvisible = true;
@@ -149,34 +150,37 @@ namespace FarmTypeManager.Monsters
         /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
         private void Monster_behaviorAtGameTick(GameTime time)
         {
-            if (base.timeBeforeAIMovementAgain > 0f)
+            if (timeBeforeAIMovementAgain > 0f)
             {
-                base.timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+                timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
             }
-            if (this.Player?.isRafting != true || !this.withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
+            if (Player?.isRafting != true || !withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
             {
                 return;
             }
-            if (Math.Abs(this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y) > 192)
+            IsWalkingTowardPlayer = false;
+            Point monsterPixel = StandingPixel;
+            Point playerPixel = Player.StandingPixel;
+            if (Math.Abs(playerPixel.Y - monsterPixel.Y) > 192)
             {
-                if (this.Player.GetBoundingBox().Center.X - this.GetBoundingBox().Center.X > 0)
+                if (playerPixel.X - monsterPixel.X > 0)
                 {
-                    this.SetMovingLeft(b: true);
+                    SetMovingLeft(b: true);
                 }
                 else
                 {
-                    this.SetMovingRight(b: true);
+                    SetMovingRight(b: true);
                 }
             }
-            else if (this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y > 0)
+            else if (playerPixel.Y - monsterPixel.Y > 0)
             {
-                this.SetMovingUp(b: true);
+                SetMovingUp(b: true);
             }
             else
             {
-                this.SetMovingDown(b: true);
+                SetMovingDown(b: true);
             }
-            this.MovePosition(time, Game1.viewport, base.currentLocation);
+            MovePosition(time, Game1.viewport, currentLocation);
         }
     }
 }

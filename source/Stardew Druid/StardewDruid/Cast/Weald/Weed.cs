@@ -19,8 +19,8 @@ namespace StardewDruid.Cast.Weald
 
         public float damage;
 
-        public Weed(Vector2 target, Rite rite, float Damage)
-            : base(target, rite)
+        public Weed(Vector2 target,  float Damage)
+            : base(target)
         {
 
             castCost = 1;
@@ -54,20 +54,25 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            ModUtility.DamageMonsters(targetLocation, ModUtility.MonsterProximity(targetLocation, targetVector * 64, explodeRadius, true), targetPlayer, (int)(damage * 0.25));
+            ModUtility.DamageMonsters(targetLocation, ModUtility.MonsterProximity(targetLocation, new() { targetVector * 64 }, explodeRadius, true), targetPlayer, (int)(damage * 0.25));
 
-            List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, explodeRadius, powerLevel:1);
+            //List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, explodeRadius, powerLevel:2);
+            ModUtility.Explode(targetLocation, targetVector, targetPlayer, explodeRadius, powerLevel:2);
+
+            ModUtility.AnimateImpact(targetLocation, targetVector* 64 + new Vector2(32), 1);
 
             targetLocation.playSound("flameSpellHit");
 
-            foreach (Vector2 vector in impactVectors)
+            /*foreach (Vector2 vector in impactVectors)
             {
                 ModUtility.AnimateDestruction(targetLocation, vector);
 
-            }
+            }*/
 
             castFire = true;
 
+            //Vector2 cursorVector = targetVector * 64 + new Vector2(0, 8);
+            //ModUtility.AnimateCursor(targetLocation, cursorVector, cursorVector);
         }
 
     }

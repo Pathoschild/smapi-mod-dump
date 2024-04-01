@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Forage Pointers",
+  "Author": "Bpendragon",
+  "Version": "1.1.0",
+  "Description": "Adds little arrows over forage, radius increases with foraging level",
+  "UniqueID": "Bpendragon.ForagePointers",
+  "EntryDll": "ForagePointers.dll",
+  "UpdateKeys": [ "Nexus:7781", "GitHub:Bpendragon/ForagePointers" ]
+}

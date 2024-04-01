@@ -25,6 +25,5 @@ namespace StardewAquarium.Models
         public Rectangle DolphinRange { get; set; }
 
         public int DolphinAnimationFrames { get; set; }
-
     }
 }

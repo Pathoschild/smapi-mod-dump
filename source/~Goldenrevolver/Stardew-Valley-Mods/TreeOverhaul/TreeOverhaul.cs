@@ -63,8 +63,7 @@ namespace TreeOverhaul
                 {
                     IDictionary<string, WildTreeData> data = asset.AsDictionary<string, WildTreeData>().Data;
 
-                    var normalTrees = new string[] { Tree.bushyTree, Tree.leafyTree, Tree.pineTree, Tree.mahoganyTree, Tree.palmTree, Tree.palmTree2 };
-                    //var palmTrees = new string[] { Tree.palmTree, Tree.palmTree2 };
+                    var normalTrees = new string[] { Tree.bushyTree, Tree.leafyTree, Tree.pineTree, Tree.mahoganyTree, Tree.greenRainTreeBushy, Tree.greenRainTreeLeafy, Tree.greenRainTreeFern, Tree.mysticTree };
 
                     foreach (var entry in data)
                     {
@@ -99,6 +98,41 @@ namespace TreeOverhaul
                                 mushroomTreeData.GrowthChance = Math.Clamp(Config.CustomMushroomTreeGrowthChance / 100f, 0f, 1f);
                             }
                         }
+                        else if (entry.Key is Tree.palmTree or Tree.palmTree2)
+                        {
+                            var palmTreeData = entry.Value;
+
+                            if (Config.NormalTreesGrowInWinter)
+                            {
+                                palmTreeData.GrowsInWinter = true;
+
+                                if (palmTreeData.IsStumpDuringWinter)
+                                {
+                                    palmTreeData.IsStumpDuringWinter = false;
+                                    FixWinterTapper(palmTreeData);
+                                }
+                            }
+
+                            if (Config.CustomPalmTreeSeedOnShakeChance >= 0)
+                            {
+                                palmTreeData.SeedOnShakeChance = Math.Clamp(Config.CustomPalmTreeSeedOnShakeChance / 100f, 0f, 1f);
+                            }
+
+                            if (Config.CustomPalmTreeSeedOnChopChance >= 0)
+                            {
+                                palmTreeData.SeedOnChopChance = Math.Clamp(Config.CustomPalmTreeSeedOnChopChance / 100f, 0f, 1f);
+                            }
+
+                            if (Config.CustomPalmTreeSpawnSeedNearbyChance >= 0)
+                            {
+                                palmTreeData.SeedSpreadChance = Math.Clamp(Config.CustomPalmTreeSpawnSeedNearbyChance / 100f, 0f, 1f);
+                            }
+
+                            if (Config.CustomPalmTreeGrowthChance >= 0)
+                            {
+                                palmTreeData.GrowthChance = Math.Clamp(Config.CustomPalmTreeGrowthChance / 100f, 0f, 1f);
+                            }
+                        }
                         else
                         {
                             bool isNormalTree = normalTrees.Contains(entry.Key);
@@ -119,6 +153,16 @@ namespace TreeOverhaul
 
                             if (isNormalTree || Config.CustomChancesAlsoAffectCustomTrees)
                             {
+                                if (Config.CustomTreeGrowthChance >= 0)
+                                {
+                                    treeData.GrowthChance = Math.Clamp(Config.CustomTreeGrowthChance / 100f, 0f, 1f);
+                                }
+
+                                if (entry.Key == Tree.mysticTree)
+                                {
+                                    continue;
+                                }
+
                                 if (Config.CustomSeedOnShakeChance >= 0)
                                 {
                                     treeData.SeedOnShakeChance = Math.Clamp(Config.CustomSeedOnShakeChance / 100f, 0f, 1f);
@@ -133,19 +177,22 @@ namespace TreeOverhaul
                                 {
                                     treeData.SeedSpreadChance = Math.Clamp(Config.CustomSpawnSeedNearbyChance / 100f, 0f, 1f);
                                 }
-
-                                if (Config.CustomTreeGrowthChance >= 0)
-                                {
-                                    treeData.GrowthChance = Math.Clamp(Config.CustomTreeGrowthChance / 100f, 0f, 1f);
-                                }
                             }
                         }
                     }
 
-                    if (Config.BuffMahoganyTreeGrowthChance && data.TryGetValue(Tree.mahoganyTree, out var mahoganyTreeData) && data.TryGetValue(Tree.bushyTree, out var oakTreeData))
+                    if (data.TryGetValue(Tree.bushyTree, out var oakTreeData))
                     {
-                        mahoganyTreeData.GrowthChance = oakTreeData.GrowthChance;
-                        mahoganyTreeData.FertilizedGrowthChance = oakTreeData.FertilizedGrowthChance;
+                        if (Config.BuffMahoganyTreeGrowthChance && data.TryGetValue(Tree.mahoganyTree, out var mahoganyTreeData))
+                        {
+                            mahoganyTreeData.GrowthChance = oakTreeData.GrowthChance;
+                            mahoganyTreeData.FertilizedGrowthChance = oakTreeData.FertilizedGrowthChance;
+                        }
+                        if (Config.BuffMysticTreeGrowthChance && data.TryGetValue(Tree.mysticTree, out var mythicTreeData))
+                        {
+                            mythicTreeData.GrowthChance = oakTreeData.GrowthChance;
+                            mythicTreeData.FertilizedGrowthChance = oakTreeData.FertilizedGrowthChance;
+                        }
                     }
                 }, AssetEditPriority.Late);
             }

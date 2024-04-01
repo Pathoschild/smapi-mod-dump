@@ -1,0 +1,16 @@
+{
+  "Name": "CellarAvailable",
+  "Author": "Candidus42",
+  "Version": "1.5.0",
+  "Description": "Cellar available for any farm house size",
+  "UniqueID": "Candidus42.CellarAvailable",
+  "EntryDll": "CellarAvailable.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus: 5104" ],
+  "Dependencies": [
+    {
+      "UniqueID": "aedenthorn.MultipleSpouses",
+      "IsRequired": false
+    }
+  ]
+}

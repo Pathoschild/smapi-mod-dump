@@ -11,12 +11,10 @@
 using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
+using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SolidFoundations.Framework.Managers
 {
@@ -52,6 +50,8 @@ namespace SolidFoundations.Framework.Managers
         public void AddBuilding(ExtendedBuildingModel model)
         {
             _idToModels[model.ID] = model;
+
+            Game1.buildingData[model.ID] = model;
         }
 
         public bool UpdateModel(ExtendedBuildingModel model)
@@ -60,7 +60,9 @@ namespace SolidFoundations.Framework.Managers
             {
                 return false;
             }
+
             _idToModels[model.ID] = model;
+            Game1.buildingData[model.ID] = model;
 
             return true;
         }
@@ -145,19 +147,18 @@ namespace SolidFoundations.Framework.Managers
             return String.IsNullOrEmpty(buildingId) is false && _idToModels.ContainsKey(buildingId);
         }
 
-        // TODO: After SDV v1.6, revise GetAllActiveBuildings to handle all buildings, instead of just SF buildings
-        public List<GenericBuilding> GetAllActiveBuildings(BuildableGameLocation buildableGameLocation)
+        public List<Building> GetAllActiveBuildings(GameLocation buildableGameLocation)
         {
-            var activeBuildings = new List<GenericBuilding>();
+            var activeBuildings = new List<Building>();
             foreach (var building in buildableGameLocation.buildings)
             {
-                if (building is not GenericBuilding genericBuilding || genericBuilding is null)
+                if (building is null || DoesBuildingModelExist(building.buildingType.Value))
                 {
                     continue;
                 }
-                activeBuildings.Add(genericBuilding);
+                activeBuildings.Add(building);
 
-                if (genericBuilding.indoors.Value is not null && genericBuilding.indoors.Value is BuildableGameLocation subBuildableGameLocation)
+                if (building.indoors.Value is not null && building.indoors.Value is GameLocation subBuildableGameLocation)
                 {
                     activeBuildings.AddRange(GetAllActiveBuildings(subBuildableGameLocation));
                 }
@@ -166,17 +167,17 @@ namespace SolidFoundations.Framework.Managers
             return activeBuildings;
         }
 
-        public List<GenericBuilding> GetAllActiveBuildings()
+        public List<Building> GetAllActiveBuildings()
         {
-            var activeBuildings = new List<GenericBuilding>();
+            var activeBuildings = new List<Building>();
             foreach (var location in Game1.locations)
             {
-                if (location is not BuildableGameLocation buildableGameLocation || buildableGameLocation.buildings is null)
+                if (location is not GameLocation gameLocation || gameLocation.buildings is null)
                 {
                     continue;
                 }
 
-                activeBuildings.AddRange(GetAllActiveBuildings(buildableGameLocation));
+                activeBuildings.AddRange(GetAllActiveBuildings(gameLocation));
             }
 
             return activeBuildings;

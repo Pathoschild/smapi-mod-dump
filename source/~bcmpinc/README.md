@@ -15,6 +15,7 @@ Android is not supported. In particular Wear More Rings and Bigger Backpack will
 * [Always Scroll Map](/AlwaysScrollMap):                     Makes the map scroll past the edge of the map.
 * [Bigger Backpack](/BiggerBackpack):                        Adds a backpack upgrade for up to 48 inventory slots.
 * [Craft Counter](/CraftCounter):                            Adds a counter to the description of crafting recipes telling how often it has been crafted.
+* [Flexible Arms](/FlexibleArms):                            Makes it easier to aim your tools with a mouse.
 * [Fix Animal Tool Animations](/FixAnimalTools):             When using the shears or milk pail, the animation no longer plays when no animal is nearby.
 * [Grass Growth](/GrassGrowth):                              Allows long grass to spread everywhere on your farm.
 * [Movement Speed](/MovementSpeed):                          Changes the player's movement speed and charging time of the hoe and watering can.
@@ -25,4 +26,9 @@ Android is not supported. In particular Wear More Rings and Bigger Backpack will
 
 ## Compiling
 
-Open `StardewHack2.sln` in Visual Studio 2019 (or whatever development tool you are using) and hope it compiles. :)
+Open `StardewHack2.sln` in Visual Studio 2022 (or whatever development tool you are using) and hope it compiles. :)
+
+## Translating
+
+Starting with version 7.0 my mods have support for translation files. If you like to help out, I've combined all the translation files into a single file: 
+[default.json](/translations/default.json). To get your translation included in the next release, create a new issue and attach your translated file.

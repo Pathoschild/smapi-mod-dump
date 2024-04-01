@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-// Copyright 2020-2022 Jamie Taylor
+// Copyright 2020-2023 Jamie Taylor
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -16,8 +16,12 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Menus;
 
 namespace RangeHighlight {
+    using BuildingHighlighterResult = Tuple<Color, bool[,], int, int>;
+    using ItemHighlighterResult = Tuple<Color, bool[,]>;
+    using TASHighlighterResult = Tuple<Color, bool[,]>;
     public class RangeHighlightAPI : IRangeHighlightAPI {
         private readonly TheMod theMod;
         private ModConfig config => theMod.config;
@@ -66,11 +70,6 @@ namespace RangeHighlight {
             return result;
         }
 
-        [Obsolete("GetCartesianCircle is deprecated.  Use GetCartesianCircleWithTruncate instead.")]
-        public bool[,] GetCartesianCircle(uint radius, bool excludeCenter = true) {
-            return GetCartesianCircleWithTruncate(radius, excludeCenter);
-        }
-
         public bool[,] GetCartesianCircleWithTruncate(uint radius, bool excludeCenter = true) {
             int r = (int)radius;
             return GetCircle(r, excludeCenter, (i, j) =>
@@ -107,105 +106,53 @@ namespace RangeHighlight {
 
         // ----- Building Highlighters ----
 
-        public void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<BluePrint, List<Tuple<Color, bool[,], int, int>>?>? blueprintHighlighter, Func<Building, List<Tuple<Color, bool[,], int, int>>?> buildingHighlighter) {
+
+        public BuildingHighlighterResult BuildingHighlighterResult(Color tint, bool[,] shape, int centerOffsetX, int centerOffsetY) {
+            return new(tint, shape, centerOffsetX, centerOffsetY);
+        }
+
+        public void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<CarpenterMenu.BlueprintEntry, List<BuildingHighlighterResult>?>? blueprintHighlighter, Func<Building, List<Tuple<Color, bool[,], int, int>>?> buildingHighlighter) {
             rangeHighlighter.AddBuildingHighlighter(uniqueId, isEnabled, hotkey, blueprintHighlighter, buildingHighlighter);
         }
 
-        public void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<BluePrint, Tuple<Color, bool[,], int, int>?>? blueprintHighlighter, Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter) {
-            Func<Building, List<Tuple<Color, bool[,], int, int>>?> wrappedBuildingHighlighter =
+        public void AddBuildingRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<CarpenterMenu.BlueprintEntry, BuildingHighlighterResult?>? blueprintHighlighter, Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter) {
+            Func<Building, List<BuildingHighlighterResult>?> wrappedBuildingHighlighter =
                 (Building b) => {
                     var orig = buildingHighlighter(b);
                     if (orig is null) return null;
-                    return new List<Tuple<Color, bool[,], int, int>>(1) { orig };
+                    return new List<BuildingHighlighterResult>(1) { orig };
                 };
-            Func<BluePrint, List<Tuple<Color, bool[,], int, int>>?>? wrappedBpHighlighter =
-                blueprintHighlighter is null ? null : (BluePrint bp) => {
+            Func<CarpenterMenu.BlueprintEntry, List<BuildingHighlighterResult>?>? wrappedBpHighlighter =
+                blueprintHighlighter is null ? null : (CarpenterMenu.BlueprintEntry bp) => {
                     var orig = blueprintHighlighter(bp);
                     if (orig is null) return null;
-                    return new List<Tuple<Color, bool[,], int, int>>(1) { orig };
+                    return new List<BuildingHighlighterResult>(1) { orig };
                 };
             rangeHighlighter.AddBuildingHighlighter(uniqueId, isEnabled, hotkey, wrappedBpHighlighter, wrappedBuildingHighlighter);
         }
 
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        public void AddBuildingRangeHighlighter(string uniqueId, KeybindList hotkey, Func<Building, Tuple<Color, bool[,], int, int>?> highlighter) {
-            AddBuildingRangeHighlighter(uniqueId, () => true, () => hotkey, null, highlighter);
-        }
-
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void IRangeHighlightAPI.AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey, Func<Building, Tuple<Color, bool[,], int, int>?> highlighter) {
-            AddBuildingRangeHighlighter(uniqueId, KeybindList.ForSingle(hotkey ?? SButton.None), highlighter);
-        }
-
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        public void AddBuildingRangeHighlighter(string uniqueId, KeybindList hotkey,
-                Func<BluePrint, Tuple<Color, bool[,], int, int>?> blueprintHighlighter,
-                Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter) {
-            AddBuildingRangeHighlighter(uniqueId, () => true, () => hotkey, blueprintHighlighter, buildingHighlighter);
-        }
-
-        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void IRangeHighlightAPI.AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey,
-                Func<BluePrint, Tuple<Color, bool[,], int, int>?> blueprintHighlighter,
-                Func<Building, Tuple<Color, bool[,], int, int>?> buildingHighlighter) {
-            AddBuildingRangeHighlighter(uniqueId, KeybindList.ForSingle(hotkey ?? SButton.None), blueprintHighlighter, buildingHighlighter);
+        public void RemoveBuildingRangeHighlighter(string uniqueId) {
+            rangeHighlighter.RemoveBuildingHighlighter(uniqueId);
         }
 
         // ----- Item Highlighters ----
 
-        public void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, int, string, List<Tuple<Color, bool[,]>>?> highlighter, Action? onRangeCalculationFinish) {
+        public ItemHighlighterResult ItemHighlighterResult(Color tint, bool[,] shape) {
+            return new(tint, shape);
+        }
+
+        public void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, List<ItemHighlighterResult>?> highlighter, Action? onRangeCalculationFinish) {
             rangeHighlighter.AddItemHighlighter(uniqueId, isEnabled, hotkey, highlightOthersWhenHeld, highlighter, onRangeCalculationStart, onRangeCalculationFinish);
         }
 
-        public void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter) {
-            Func<Item, int, string, List<Tuple<Color, bool[,]>>?> wrappedHighlighter =
-                (Item i, int idx, string name) => {
-                    var orig = highlighter(i, idx, name);
+        public void AddItemRangeHighlighter(string uniqueId, Func<bool> isEnabled, Func<KeybindList> hotkey, Func<bool> highlightOthersWhenHeld, Func<Item, ItemHighlighterResult?> highlighter) {
+            Func<Item, List<ItemHighlighterResult>?> wrappedHighlighter =
+                (Item i) => {
+                    var orig = highlighter(i);
                     if (orig is null) return null;
-                    return new List<Tuple<Color, bool[,]>>(1) { orig };
+                    return new List<ItemHighlighterResult>(1) { orig };
                 };
             AddItemRangeHighlighter(uniqueId, isEnabled, hotkey, highlightOthersWhenHeld, null, wrappedHighlighter, null);
-        }
-
-
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void IRangeHighlightAPI.AddItemRangeHighlighter(string uniqueId, SButton? hotkey, Func<string, Tuple<Color, bool[,]>?> highlighter) {
-            AddItemRangeHighlighter(uniqueId, KeybindList.ForSingle(hotkey ?? SButton.None), true, (Item item, int itemID, string lowerName) => { return highlighter(lowerName); });
-        }
-
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void IRangeHighlightAPI.AddItemRangeHighlighter(string uniqueId, SButton? hotkey, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter) {
-            AddItemRangeHighlighter(uniqueId, KeybindList.ForSingle(hotkey ?? SButton.None), true, highlighter);
-        }
-
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        public void AddItemRangeHighlighter(string uniqueId, KeybindList hotkey, bool highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter) {
-            AddItemRangeHighlighter(uniqueId, () => true, () => hotkey, () => highlightOthersWhenHeld, highlighter);
-        }
-
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void IRangeHighlightAPI.AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter) {
-            AddItemRangeHighlighter(uniqueId, KeybindList.ForSingle(hotkey ?? SButton.None), highlightOthersWhenHeld, highlighter);
-        }
-
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        public void AddItemRangeHighlighter(string uniqueId, KeybindList hotkey, bool highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter, Action? onRangeCalculationFinish) {
-            Func<Item, int, string, List<Tuple<Color, bool[,]>>?> wrappedHighlighter =
-                (Item i, int idx, string name) => {
-                    var orig = highlighter(i, idx, name);
-                    if (orig is null) return null;
-                    return new List<Tuple<Color, bool[,]>>(1) { orig };
-                };
-            rangeHighlighter.AddItemHighlighter(uniqueId, () => true, () => hotkey, () => highlightOthersWhenHeld, wrappedHighlighter, onRangeCalculationStart, onRangeCalculationFinish);
-        }
-
-        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
-        void IRangeHighlightAPI.AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Action? onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>?> highlighter, Action? onRangeCalculationFinish) {
-            AddItemRangeHighlighter(uniqueId, KeybindList.ForSingle(hotkey ?? SButton.None), highlightOthersWhenHeld, onRangeCalculationStart, highlighter, onRangeCalculationFinish);
-        }
-
-        public void RemoveBuildingRangeHighlighter(string uniqueId) {
-            rangeHighlighter.RemoveBuildingHighlighter(uniqueId);
         }
 
         public void RemoveItemRangeHighlighter(string uniqueId) {
@@ -214,17 +161,21 @@ namespace RangeHighlight {
 
         // ----- Temporary Animated Sprite Highlighters ----
 
-        public void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled, Func<TemporaryAnimatedSprite, Tuple<Color, bool[,]>?> highlighter) {
-            Func<TemporaryAnimatedSprite, List<Tuple<Color, bool[,]>>?> wrappedHighlighter =
+        public TASHighlighterResult TASHighlighterResult(Color tint, bool[,] shape) {
+            return new(tint, shape);
+        }
+
+        public void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled, Func<TemporaryAnimatedSprite, TASHighlighterResult?> highlighter) {
+            Func<TemporaryAnimatedSprite, List<TASHighlighterResult>?> wrappedHighlighter =
                 (TemporaryAnimatedSprite tas) => {
                     var orig = highlighter(tas);
                     if (orig is null) return null;
-                    return new List<Tuple<Color, bool[,]>>(1) { orig };
+                    return new List<TASHighlighterResult>(1) { orig };
                 };
             rangeHighlighter.AddTemporaryAnimatedSpriteHighlighter(uniqueId, isEnabled, wrappedHighlighter);
         }
 
-        public void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled, Func<TemporaryAnimatedSprite, List<Tuple<Color, bool[,]>>?> highlighter) {
+        public void AddTemporaryAnimatedSpriteHighlighter(string uniqueId, Func<bool> isEnabled, Func<TemporaryAnimatedSprite, List<TASHighlighterResult>?> highlighter) {
             rangeHighlighter.AddTemporaryAnimatedSpriteHighlighter(uniqueId, isEnabled, highlighter);
         }
 

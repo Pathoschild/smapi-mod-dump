@@ -9,7 +9,6 @@
 *************************************************/
 
 using HappyHomeDesigner.Integration;
-using HappyHomeDesigner.Menus;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,27 +19,27 @@ using StardewValley;
 using StardewValley.GameData.Shops;
 using StardewValley.Internal;
 using StardewValley.Menus;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace HappyHomeDesigner.Framework
 {
 	public static class ModUtilities
 	{
+		[Flags]
+		public enum CatalogType {None = 0, Furniture = 1, Wallpaper = 2, Collector = 4};
+
 		private static readonly FieldInfo OldValueBackingField =
 			typeof(MouseWheelScrolledEventArgs).GetField("<OldValue>k__BackingField", 
 				BindingFlags.Instance | BindingFlags.NonPublic);
 
-		public static bool CanDelete(this Item item)
+		public static bool CanDelete(this Item item, ICollection<string> knownIDs)
 		{
-			if (item is not Furniture furn)
-				return false;
-
-			return FurniturePage.knownFurnitureIDs is not null && FurniturePage.knownFurnitureIDs.Contains(furn.ItemId);
+			return knownIDs is not null && item is not null && knownIDs.Contains(item.QualifiedItemId);
 		}
 
 		public static bool TryFindAssembly(string name, [NotNullWhen(true)] out Assembly assembly)
@@ -132,9 +131,6 @@ namespace HappyHomeDesigner.Framework
 				);
 		}
 
-		public static T ToDelegate<T>(this MethodInfo method) where T : Delegate
-			=> (T)Delegate.CreateDelegate(typeof(T), method);
-
 		public static T ToDelegate<T>(this MethodInfo method, object target) where T : Delegate
 			=> (T)Delegate.CreateDelegate(typeof(T), target, method);
 
@@ -189,36 +185,70 @@ namespace HappyHomeDesigner.Framework
 		public static Rectangle ToRect(this xTile.Dimensions.Rectangle rect)
 			=> new(rect.X, rect.Y, rect.Width, rect.Height);
 
-		public static IEnumerable<ISalable> GetCatalogItems(bool furniture, ShopMenu existing = null)
+		public static IEnumerable<ISalable> GetAdditionalCatalogItems(this IEnumerable<ISalable> original, string ID)
 		{
-			var name = furniture ? "Furniture Catalogue" : "Catalogue";
-			IEnumerable<ISalable> output;
+			var output = original;
 
-			if (existing is null)
-			{
-
-				if (!DataLoader.Shops(Game1.content).TryGetValue(name, out var catalog))
-					return Array.Empty<ISalable>();
-
-				 output = ShopBuilder.GetShopStock(name, catalog).Keys;
-			} else
-			{
-				output = existing.forSale;
-			}
-
-			if (CustomFurniture.Installed && furniture)
+			if (CustomFurniture.Installed && ID.Contains("Furniture"))
 				output = output.Concat(CustomFurniture.customFurniture);
 
 			return output;
 		}
 
-		public static IEnumerable<MethodInfo> GetMethodsNamed(this Type type, string name, BindingFlags flags = BindingFlags.Default)
+		public static bool CountsAsCatalog(this ShopMenu shop, bool ignore_config = false)
 		{
-			foreach (var item in type.GetMethods(flags))
+			return shop.ShopId switch
 			{
-				if (item.Name == name)
-					yield return item;
+				"Furniture Catalogue" => (ignore_config || ModEntry.config.ReplaceFurnitureCatalog),
+				"Catalogue" => (ignore_config || ModEntry.config.ReplaceWallpaperCatalog),
+				_ =>
+					(ignore_config || ModEntry.config.ReplaceRareCatalogs) &&
+					shop.ShopData is ShopData data &&
+					data.CustomFields is Dictionary<string, string> fields &&
+					fields.ContainsKey("HappyHomeDesigner/Catalogue")
+			};
+		}
+
+		public static IEnumerable<ISalable> GenerateCombined(CatalogType catalog)
+		{
+			IEnumerable<ISalable> output = Array.Empty<ISalable>();
+			var shopData = DataLoader.Shops(Game1.content);
+
+			if (catalog.HasFlag(CatalogType.Furniture) && shopData.TryGetValue("Furniture Catalogue", out var data))
+				output = output.Concat(ShopBuilder.GetShopStock("Furniture Catalogue", data).Keys);
+
+			if (catalog.HasFlag(CatalogType.Wallpaper) && shopData.TryGetValue("Catalogue", out data))
+				output = output.Concat(ShopBuilder.GetShopStock("Catalogue", data).Keys);
+
+			if (catalog.HasFlag(CatalogType.Collector))
+			{
+				foreach ((var id, var sdata) in shopData)
+				{
+					if (sdata.CustomFields is Dictionary<string, string> fields && 
+						fields.ContainsKey("HappyHomeDesigner/Catalogue"))
+					{
+						output = output.Concat(ShopBuilder.GetShopStock(id, sdata).Keys);
+					}
+				}
 			}
+
+			return output;
+		}
+
+		public static bool TryPatch(this Harmony harmony, MethodInfo method, HarmonyMethod prefix = null, 
+			HarmonyMethod postfix = null, HarmonyMethod transpiler = null, HarmonyMethod finalizer = null, 
+			[CallerMemberName] string source = null)
+		{
+			try
+			{
+				harmony.Patch(method, prefix, postfix, transpiler, finalizer);
+			} 
+			catch (Exception e)
+			{
+				ModEntry.monitor.Log($"Failed to patch {method?.Name ?? "NULL"} from {source ?? "NULL"}:\t {e}", LogLevel.Error);
+				return false;
+			}
+			return true;
 		}
 	}
 }

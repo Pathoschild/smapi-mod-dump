@@ -17,15 +17,16 @@ namespace EnchantableScythesConfig
     using StardewValley.Constants;
     using StardewValley.Enchantments;
     using StardewValley.Extensions;
+    using StardewValley.TerrainFeatures;
     using StardewValley.Tools;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection.Emit;
 
     public class Patcher
     {
         private static EnchantableScythes mod;
-
-        // TODO check what iridium scythe does on release
 
         public static void PatchAll(EnchantableScythes scytheFixes)
         {
@@ -56,12 +57,104 @@ namespace EnchantableScythesConfig
                     postfix: new HarmonyMethod(typeof(Patcher), nameof(AddHaymakerOnlyWorkaround)));
 
                 harmony.Patch(
+                    original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.performToolAction)),
+                    transpiler: new HarmonyMethod(typeof(Patcher), nameof(FixHaymakerScytheFiberSeeds)));
+
+                harmony.Patch(
                     original: AccessTools.Method(typeof(MeleeWeapon), nameof(MeleeWeapon.Forge)),
                     postfix: new HarmonyMethod(typeof(Patcher), nameof(Forge_Post)));
             }
             catch (Exception e)
             {
                 mod.ErrorLog("Error while trying to setup required patches:", e);
+            }
+        }
+
+        // last checked for 1.6 alpha (base game bug still exists)
+        public static IEnumerable<CodeInstruction> FixHaymakerScytheFiberSeeds(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            try
+            {
+                var instructionsList = instructions.ToList();
+
+                // we check for this code construct: 'if (crop.indexOfHarvest == "771" && t.hasEnchantmentOfType<HaymakerEnchantment>())'
+                // if this bug gets fixed by moving the 'crop.indexOfHarvest == "771"' if statement
+                // into the 'crop.harvest' if statement, then we want this transpiler to not do anything
+
+                for (int i = 8; i < instructionsList.Count - 5; i++)
+                {
+                    if (instructionsList[i].opcode == OpCodes.Ldstr
+                        && (string)instructionsList[i].operand == "771"
+                        && instructionsList[i - 7].opcode == OpCodes.Ldstr
+                        && (string)instructionsList[i - 7].operand == MeleeWeapon.iridiumScytheID
+                        && instructionsList[i + 4].opcode == OpCodes.Callvirt
+                        && instructionsList[i + 4].operand != null)
+                    {
+                        var hayMakerMethodSignature = instructionsList[i + 4].operand.ToString().ToLower();
+
+                        if (!hayMakerMethodSignature.Contains("hasenchantmentoftype")
+                            || !hayMakerMethodSignature.Contains("haymakerenchantment"))
+                        {
+                            continue;
+                        }
+
+                        instructionsList.InsertRange(i + 5, new List<CodeInstruction>()
+                            {
+                                new CodeInstruction(OpCodes.Ldarg_1),
+                                new CodeInstruction(OpCodes.Call, typeof(Patcher).GetMethod(nameof(BlockExtraFiberFromImmatureFiberSeeds))),
+                            });
+
+                        for (int j = i + 5; j < instructionsList.Count - 2; j++)
+                        {
+                            if (instructionsList[j].opcode != OpCodes.Callvirt)
+                            {
+                                continue;
+                            }
+
+                            var harvestMethodSignature = instructionsList[j].operand.ToString().ToLower();
+
+                            if (!harvestMethodSignature.Contains("harvest"))
+                            {
+                                continue;
+                            }
+
+                            instructionsList.InsertRange(j + 2, new List<CodeInstruction>()
+                                {
+                                    new CodeInstruction(OpCodes.Ldarg_0),
+                                    new CodeInstruction(OpCodes.Ldarg_1),
+                                    new CodeInstruction(OpCodes.Ldarg_3),
+                                    new CodeInstruction(OpCodes.Call, typeof(Patcher).GetMethod(nameof(GiveExtraFiberSeedsOnHarvest))),
+                                });
+
+                            break;
+                        }
+
+                        break;
+                    }
+                }
+
+                return instructionsList.AsEnumerable();
+            }
+            catch (Exception e)
+            {
+                mod.ErrorLog("There was an exception in a transpiler patch", e);
+                return instructions;
+            }
+        }
+
+        public static bool BlockExtraFiberFromImmatureFiberSeeds(bool hasHaymaker, Tool t)
+        {
+            return hasHaymaker && !t.isScythe();
+        }
+
+        public static void GiveExtraFiberSeedsOnHarvest(HoeDirt dirt, Tool t, Vector2 tileLocation)
+        {
+            if (dirt.crop != null && dirt.crop.indexOfHarvest.Value == "771" && t.hasEnchantmentOfType<HaymakerEnchantment>())
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    Game1.createItemDebris(ItemRegistry.Create("(O)771"), new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 32f), -1);
+                }
             }
         }
 

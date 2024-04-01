@@ -11,34 +11,24 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SolidFoundations.Framework.Extensions;
 using SolidFoundations.Framework.External.ContentPatcher;
-using SolidFoundations.Framework.External.SpaceCore;
 using SolidFoundations.Framework.Interfaces.Internal;
 using SolidFoundations.Framework.Managers;
-using SolidFoundations.Framework.Models.Buildings;
 using SolidFoundations.Framework.Models.ContentPack;
-using SolidFoundations.Framework.Models.ContentPack.Actions;
+using SolidFoundations.Framework.Models.ContentPack.Compatibility;
 using SolidFoundations.Framework.Patches.Buildings;
-using SolidFoundations.Framework.Patches.Core;
+using SolidFoundations.Framework.Patches.GameData;
 using SolidFoundations.Framework.Utilities;
-using SolidFoundations.Framework.Utilities.Backport;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
+using StardewValley.GameData.Buildings;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text.Json;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using xTile;
-using xTile.Tiles;
 
 namespace SolidFoundations
 {
@@ -52,8 +42,8 @@ namespace SolidFoundations
 
         // Managers
         internal static ApiManager apiManager;
-        internal static AssetManager assetManager;
         internal static BuildingManager buildingManager;
+        internal static LightManager lightManager;
 
         public override void Entry(IModHelper helper)
         {
@@ -72,34 +62,25 @@ namespace SolidFoundations
 
             // Set up the managers
             apiManager = new ApiManager(monitor);
-            assetManager = new AssetManager(monitor, helper);
             buildingManager = new BuildingManager(monitor, helper);
+            lightManager = new LightManager(monitor, helper);
 
             // Load our Harmony patches
             try
             {
                 var harmony = new Harmony(this.ModManifest.UniqueID);
 
-                // Apply location patches
-                new GameLocationPatch(monitor, helper).Apply(harmony);
-
                 // Apply building patches
-                new BluePrintPatch(monitor, helper).Apply(harmony);
                 new BuildingPatch(monitor, helper).Apply(harmony);
 
-                // Apply menu patches
-                new CarpenterMenuPatch(monitor, helper).Apply(harmony);
-                new PurchaseAnimalsMenuPatch(monitor, helper).Apply(harmony);
-                new BuildingPaintMenuPatch(monitor, helper).Apply(harmony);
+                // Apply GameData patches
+                new BuildingDataPatch(monitor, helper).Apply(harmony);
+
+                // Apply language patches
+                new LocalizedContentManagerPatch(monitor, helper).Apply(harmony);
 
                 // Apply object patch
                 new ChestPatch(monitor, helper).Apply(harmony);
-
-                // Apply core patches                
-                new GamePatch(monitor, helper).Apply(harmony);
-
-                // Apply etc. patches
-                new QuestionEventPatch(monitor, helper).Apply(harmony);
             }
             catch (Exception e)
             {
@@ -112,60 +93,48 @@ namespace SolidFoundations
             helper.ConsoleCommands.Add("sf_place_building", "Adds a building in the current location at given tile.\n\nUsage: sf_place_building MODEL_ID TILE_X TILE_Y", this.PlaceBuildingAtTile);
 
             // Hook into the required events
-            helper.Events.Content.AssetsInvalidated += OnAssetInvalidated;
+            helper.Events.Content.AssetReady += OnAssetReady;
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
-            helper.Events.GameLoop.DayEnding += OnDayEnding;
-            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            helper.Events.GameLoop.Saved += OnSaved;
 
             helper.Events.World.BuildingListChanged += OnBuildingListChanged;
         }
 
-        // TODO: Remove this once this framework has been updated for SDV v1.6
         private bool IsGameVersionCompatible()
         {
-            var incompatibleVersion = new Version("1.6.0");
+            var requiredMinimumVersion = new Version("1.6.0");
             var gameVersion = new Version(Game1.version);
 
-            return incompatibleVersion > gameVersion;
+            return gameVersion >= requiredMinimumVersion;
         }
 
         private void OnBuildingListChanged(object sender, BuildingListChangedEventArgs e)
         {
-            foreach (GenericBuilding building in e.Added.Where(b => b is GenericBuilding))
+            foreach (var building in e.Added)
             {
-                RefreshCustomBuilding(e.Location, building, true);
+                building.ResetLights(e.Location);
+            }
+
+            foreach (var building in e.Removed)
+            {
+                building.ClearLightSources(e.Location);
             }
         }
 
-        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        private void OnSaved(object sender, SavedEventArgs e)
         {
-            // Load any owned content packs
-            LoadContentPacks();
-
-            // Invalidate the BuildingsData cache to reapply any patches
-            modHelper.GameContent.InvalidateCache("Data/BuildingsData");
+            // Handle retiring any the obsolete SolidFoundations\building.json cache
+            SaveMigration.RetireBuildingCache();
         }
 
-        // TODO: When using SDV v1.6, delete this event hook (will preserve modData flag removal)
-        [EventPriority(EventPriority.High + 1)]
-        private void OnDayEnding(object sender, DayEndingEventArgs e)
-        {
-            api.OnBeforeBuildingSerialization(new EventArgs());
-            SafelyCacheCustomBuildings();
-        }
-
-        // TODO: When using SDV v1.6, repurpose this to convert all GenericBuildings into SDV Buildings
         [EventPriority(EventPriority.High + 1)]
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            // Load the buildings into the backported BuildingsData
-            _ = Helper.GameContent.Load<Dictionary<string, ExtendedBuildingModel>>("Data/BuildingsData");
-
-            LoadCachedCustomBuildings();
-            api.OnAfterBuildingRestoration(new EventArgs());
+            // Handle loading the obsolete SolidFoundations\building.json cache
+            SaveMigration.LoadBuildingCache(monitor, buildingManager);
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -185,26 +154,65 @@ namespace SolidFoundations
                 var saveAnywhereApi = apiManager.GetSaveAnywhereApi();
 
                 // Hook into save related events
-                saveAnywhereApi.BeforeSave += delegate { SafelyCacheCustomBuildings(); };
-                saveAnywhereApi.AfterLoad += delegate { LoadCachedCustomBuildings(); };
-            }
-            if (Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets") && apiManager.HookIntoJsonAssets(Helper))
-            {
-                // Do nothing
+                saveAnywhereApi.AfterLoad += delegate { SaveMigration.LoadBuildingCache(monitor, buildingManager); };
             }
 
             // Load any owned content packs
             LoadContentPacks();
 
-            // Set up the backported GameStateQuery
-            GameStateQuery.SetupQueryTypes();
+            // Register our game state queries
+            GameStateQueries.Register();
+        }
+
+        private void OnAssetReady(object sender, AssetReadyEventArgs e)
+        {
+            if (e.Name.IsEquivalentTo("Data/Buildings") is false)
+            {
+                return;
+            }
+
+            // Correct the DrawLayers.Texture and Skins.Texture ids
+            foreach (ExtendedBuildingModel actualModel in buildingManager.GetAllBuildingModels())
+            {
+                if (actualModel.DrawLayers is not null)
+                {
+                    foreach (var layer in actualModel.DrawLayers.Where(t => String.IsNullOrEmpty(t.Texture) is false))
+                    {
+                        var spriteAsset = $"{actualModel.ID}_Sprites_{Path.GetFileNameWithoutExtension(layer.Texture)}";
+                        if (buildingManager.GetTextureAsset(spriteAsset) is not null)
+                        {
+                            layer.Texture = spriteAsset;
+                        }
+                    }
+                }
+
+                if (actualModel.Skins is not null)
+                {
+                    foreach (var skin in actualModel.Skins.Where(t => String.IsNullOrEmpty(t.Texture) is false))
+                    {
+                        var skinAsset = $"{actualModel.ID}_Skins_{Path.GetFileNameWithoutExtension(skin.Texture)}";
+                        if (buildingManager.GetTextureAsset(skinAsset) is not null)
+                        {
+                            skin.Texture = skinAsset;
+                        }
+                    }
+                }
+
+                buildingManager.AddBuilding(actualModel);
+            }
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/BuildingsData"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings"))
             {
-                e.LoadFrom(() => buildingManager.GetIdToModels(), AssetLoadPriority.High);
+                e.Edit(asset =>
+                {
+                    foreach (var idToModel in buildingManager.GetIdToModels())
+                    {
+                        asset.AsDictionary<string, BuildingData>().Data[idToModel.Key] = idToModel.Value;
+                    }
+                });
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/PaintData"))
             {
@@ -244,7 +252,7 @@ namespace SolidFoundations
 
                         if (String.IsNullOrEmpty(parsedMaskText) is false)
                         {
-                            data[skin.ID] = parsedMaskText;
+                            data[skin.Id] = parsedMaskText;
                         }
                     }
                 });
@@ -271,420 +279,11 @@ namespace SolidFoundations
             }
         }
 
-        private void OnAssetInvalidated(object sender, AssetsInvalidatedEventArgs e)
-        {
-            var asset = e.NamesWithoutLocale.FirstOrDefault(a => a.IsEquivalentTo("Data/BuildingsData"));
-            if (asset is null)
-            {
-                return;
-            }
-
-            // Force load the changes
-            var idToModels = Helper.GameContent.Load<Dictionary<string, ExtendedBuildingModel>>(asset);
-
-            // Correct the DrawLayers.Texture and Skins.Texture ids
-            foreach (ExtendedBuildingModel model in idToModels.Values)
-            {
-                if (model.DrawLayers is not null)
-                {
-                    foreach (var layer in model.DrawLayers.Where(t => String.IsNullOrEmpty(t.Texture) is false))
-                    {
-                        var spriteAsset = $"{model.ID}_Sprites_{Path.GetFileNameWithoutExtension(layer.Texture)}";
-                        if (buildingManager.GetTextureAsset(spriteAsset) is not null)
-                        {
-                            layer.Texture = spriteAsset;
-                        }
-                    }
-                }
-
-                if (model.Skins is not null)
-                {
-                    foreach (var skin in model.Skins.Where(t => String.IsNullOrEmpty(t.Texture) is false))
-                    {
-                        var skinAsset = $"{model.ID}_Skins_{Path.GetFileNameWithoutExtension(skin.Texture)}";
-                        if (buildingManager.GetTextureAsset(skinAsset) is not null)
-                        {
-                            skin.Texture = skinAsset;
-                        }
-                    }
-                }
-            }
-        }
-
         public override object GetApi()
         {
             return api;
         }
 
-        private void SafelyCacheCustomBuildings()
-        {
-            if (!Game1.IsMasterGame || String.IsNullOrEmpty(Constants.CurrentSavePath))
-            {
-                return;
-            }
-            var externalSaveFolderPath = Path.Combine(Constants.CurrentSavePath, "SolidFoundations");
-
-            // Cache any old building.json, in case we need to restore
-            string cachedBuildingPath = null;
-            if (String.IsNullOrEmpty(Constants.CurrentSavePath) is false && File.Exists(Path.Combine(externalSaveFolderPath, "buildings.json")))
-            {
-                cachedBuildingPath = Path.Combine(externalSaveFolderPath, "buildings_old.json");
-                File.Move(Path.Combine(externalSaveFolderPath, "buildings.json"), cachedBuildingPath, true);
-            }
-
-            try
-            {
-                // Create the SolidFoundations folder near the save file, if one doesn't exist
-                if (!Directory.Exists(externalSaveFolderPath))
-                {
-                    Directory.CreateDirectory(externalSaveFolderPath);
-                }
-
-                // Remove any custom areas
-                var allCustomBuildings = buildingManager.GetAllActiveBuildings();
-                foreach (var customBuilding in allCustomBuildings)
-                {
-                    if (customBuilding.indoors.Value is not null && Game1.locations.Contains(customBuilding.indoors.Value))
-                    {
-                        Game1.locations.Remove(customBuilding.indoors.Value);
-                        Game1._locationLookup.Remove(customBuilding.indoors.Value.NameOrUniqueName);
-                    }
-                }
-
-                // Process each buildable location and archive the relevant data
-                var existingBuildingsToCache = new List<GenericBuilding>();
-                foreach (BuildableGameLocation buildableLocation in Game1.locations.Where(l => l is BuildableGameLocation buildableLocation && buildableLocation is not null && buildableLocation.buildings is not null))
-                {
-                    var archivedBuildingsData = new List<ArchivedBuildingData>();
-                    foreach (GenericBuilding customBuilding in buildableLocation.buildings.Where(b => b is GenericBuilding))
-                    {
-                        // Skip custom buildings that are nested under other custom buildings
-                        if (allCustomBuildings.Any(b => b.indoors.Value is BuildableGameLocation subBuildableLocation && subBuildableLocation is not null && subBuildableLocation.buildings is not null && subBuildableLocation.buildings.Contains(customBuilding)))
-                        {
-                            continue;
-                        }
-
-                        // Remove any FlagType.Temporary stored in the buildings modData
-                        foreach (var key in customBuilding.modData.Keys.Where(k => k.Contains(ModDataKeys.FLAG_BASE)).ToList())
-                        {
-                            if (customBuilding.modData[key] == SpecialAction.FlagType.Temporary.ToString())
-                            {
-                                customBuilding.modData.Remove(key);
-                            }
-                        }
-
-                        // Prepare the custom building objects for this location to be stored externally
-                        existingBuildingsToCache.Add(customBuilding);
-                        archivedBuildingsData.Add(new ArchivedBuildingData() { Id = customBuilding.Id, TileX = customBuilding.tileX.Value, TileY = customBuilding.tileY.Value });
-                    }
-
-                    foreach (GenericBuilding customBuilding in buildableLocation.buildings.Where(b => b is GenericBuilding).ToList())
-                    {
-                        // Remove the building from the location to avoid serialization issues
-                        buildableLocation.buildings.Remove(customBuilding);
-                    }
-
-                    // Archive the custom building data for this location
-                    buildableLocation.modData[ModDataKeys.LOCATION_CUSTOM_BUILDINGS] = JsonSerializer.Serialize(archivedBuildingsData);
-                }
-
-                // Get all known types for serialization
-                var knownTypes = existingBuildingsToCache.Where(b => b is not null && b.Model is not null && String.IsNullOrEmpty(b.Model.IndoorMapType) is false && b.Model.IndoorMapTypeAssembly.Equals("Stardew Valley", StringComparison.OrdinalIgnoreCase) is false).Select(b => Type.GetType($"{b.Model.IndoorMapType},{b.Model.IndoorMapTypeAssembly}")).ToArray();
-                knownTypes = knownTypes.Concat(DGAIntegration.SpacecoreTypes).ToArray();
-
-                // Do precheck to see if any buildings can't be serialized and if so, skip them with a warning
-                XmlSerializer filterSerializer = new XmlSerializer(typeof(GenericBuilding), knownTypes);
-                foreach (var building in existingBuildingsToCache.ToList())
-                {
-                    using (MemoryStream outStream = new MemoryStream())
-                    {
-                        try
-                        {
-                            filterSerializer.Serialize(outStream, building);
-                        }
-                        catch (Exception ex)
-                        {
-                            Monitor.Log($"Failed to save the building {building.Id} at {building.LocationName}: Removing it to allow for saving!", LogLevel.Warn);
-                            Monitor.Log($"Failed to save the building {building.Id} at {building.LocationName}: {ex}", LogLevel.Trace);
-
-                            existingBuildingsToCache.Remove(building);
-                        }
-
-                        outStream.Flush();
-                    }
-                }
-
-                // Save the custom building objects externally, at the player's save file location
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GenericBuilding>), knownTypes);
-                using (StreamWriter writer = new StreamWriter(Path.Combine(externalSaveFolderPath, "buildings.json")))
-                {
-                    xmlSerializer.Serialize(writer, existingBuildingsToCache);
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log("Failed to cache the custom buildings: Any changes made in the last game day will be lost to allow for saving!", LogLevel.Warn);
-                Monitor.Log($"Failed to cache the custom buildings: {ex}", LogLevel.Trace);
-
-                foreach (BuildableGameLocation buildableLocation in Game1.locations.Where(l => l is BuildableGameLocation buildableLocation && buildableLocation is not null && buildableLocation.buildings is not null))
-                {
-                    foreach (GenericBuilding customBuilding in buildableLocation.buildings.Where(b => b is GenericBuilding).ToList())
-                    {
-                        try
-                        {
-                            // Remove the building from the location to avoid serialization issues
-                            buildableLocation.buildings.Remove(customBuilding);
-                        }
-                        catch (Exception subEx)
-                        {
-                            var buildingName = customBuilding is null || customBuilding.Model is null ? "Unknown" : customBuilding.Model.Name;
-                            Monitor.Log($"Failed to delete the custom building {buildingName}: Saving may fail!", LogLevel.Warn);
-                            Monitor.Log($"Failed to delete the custom building {buildingName}: {subEx}", LogLevel.Trace);
-                        }
-                    }
-                }
-
-                if (String.IsNullOrEmpty(cachedBuildingPath) is false)
-                {
-                    Monitor.Log($"Attempting to restore old buildings cache...", LogLevel.Trace);
-                    try
-                    {
-                        File.Copy(cachedBuildingPath, Path.Combine(externalSaveFolderPath, "buildings.json"), true);
-                        Monitor.Log($"Restored old buildings cache!", LogLevel.Trace);
-                    }
-                    catch (Exception restoreEx)
-                    {
-                        Monitor.Log("Failed to restore buildings.json backup, no custom buildings will be loaded.", LogLevel.Error);
-                        Monitor.Log($"Failed to restore buildings.json backup: {restoreEx}", LogLevel.Trace);
-
-                        if (File.Exists(Path.Combine(externalSaveFolderPath, "buildings.json")))
-                        {
-                            File.Delete(Path.Combine(externalSaveFolderPath, "buildings.json"));
-                        }
-                    }
-                }
-            }
-        }
-
-        private void LoadCachedCustomBuildings()
-        {
-            if (!Game1.IsMasterGame || String.IsNullOrEmpty(Constants.CurrentSavePath) || !File.Exists(Path.Combine(Constants.CurrentSavePath, "SolidFoundations", "buildings.json")))
-            {
-                this.RefreshAllCustomBuildings();
-                return;
-            }
-            var customBuildingsExternalSavePath = Path.Combine(Constants.CurrentSavePath, "SolidFoundations", "buildings.json");
-
-            // Get all known types for serialization
-            Type[] knownTypes = Type.EmptyTypes;
-            try
-            {
-                knownTypes = buildingManager.GetAllBuildingModels().Where(model => String.IsNullOrEmpty(model.IndoorMapType) is false && model.IndoorMapTypeAssembly.Equals("Stardew Valley", StringComparison.OrdinalIgnoreCase) is false).Select(model => Type.GetType($"{model.IndoorMapType},{model.IndoorMapTypeAssembly}")).ToArray();
-                knownTypes = knownTypes.Concat(DGAIntegration.SpacecoreTypes).ToArray();
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed to get known types, some buildings may fail to load: {ex}", LogLevel.Trace);
-            }
-
-            var externallySavedCustomBuildings = new List<GenericBuilding>();
-            try
-            {
-                // Get the externally saved custom building objects
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GenericBuilding>), knownTypes);
-
-                using (StreamReader textReader = new StreamReader(customBuildingsExternalSavePath))
-                {
-                    externallySavedCustomBuildings = (List<GenericBuilding>)xmlSerializer.Deserialize(textReader);
-                }
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    Monitor.Log($"Failed initial loading of custom buildings: {ex}", LogLevel.Trace);
-                    Monitor.Log($"Attempting to remove SpaceCore-related items from the cached buildings...", LogLevel.Trace);
-
-                    // Load the XML and remove any nodes with the xsi:type of "Mods_..."
-                    XDocument doc = XDocument.Load(customBuildingsExternalSavePath);
-                    var invalidNodes = doc.Descendants().Where(n => n.Attributes().FirstOrDefault(y => y.Name.LocalName == "type") is var nodeType && nodeType is not null && nodeType.Value.Contains("Mods_", StringComparison.OrdinalIgnoreCase)).Select(n => n).ToList();
-                    invalidNodes.ForEach(x => x.Remove());
-
-                    // Attempt the secondary deserialization
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GenericBuilding>), knownTypes);
-                    externallySavedCustomBuildings = (List<GenericBuilding>)xmlSerializer.Deserialize(doc.CreateReader());
-
-                    Monitor.Log($"Cleanup of the cached buildings was successful!", LogLevel.Trace);
-                }
-                catch (Exception secondaryEx)
-                {
-                    Monitor.Log("Failed to load the cached custom buildings: No custom buildings will be loaded!", LogLevel.Warn);
-                    Monitor.Log($"Failed to load the cached custom buildings: {secondaryEx}", LogLevel.Trace);
-
-                    return;
-                }
-            }
-
-            // Process each buildable location and restore any installed custom buildings
-            foreach (BuildableGameLocation buildableLocation in Game1.locations.Where(l => l is BuildableGameLocation && l.modData.ContainsKey(ModDataKeys.LOCATION_CUSTOM_BUILDINGS)).ToList())
-            {
-                // Get the archived custom building data for this location
-                var archivedBuildingsData = JsonSerializer.Deserialize<List<ArchivedBuildingData>>(buildableLocation.modData[ModDataKeys.LOCATION_CUSTOM_BUILDINGS]);
-
-                // Go through each ArchivedBuildingData to confirm that a) the Id exists via BuildingManager and b) there is a match in locationNamesToCustomBuildings to its Id and TileLocation
-                foreach (var archivedData in archivedBuildingsData)
-                {
-                    try
-                    {
-                        if (!buildingManager.DoesBuildingModelExist(archivedData.Id) || !externallySavedCustomBuildings.Any(b => b.LocationName == buildableLocation.NameOrUniqueName))
-                        {
-                            continue;
-                        }
-
-                        GenericBuilding customBuilding = externallySavedCustomBuildings.FirstOrDefault(b => b.Id == archivedData.Id && b.tileX.Value == archivedData.TileX && b.tileY.Value == archivedData.TileY);
-                        if (customBuilding is null)
-                        {
-                            continue;
-                        }
-
-                        if (SetupCustomBuildingForLocation(buildableLocation, customBuilding) is false)
-                        {
-                            continue;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log($"Failed to load cached custom building {archivedData.Id} at [{archivedData.TileX}, {archivedData.TileY}] within the map {buildableLocation.NameOrUniqueName}, see log for details.", LogLevel.Warn);
-                        Monitor.Log($"Failure to load the custom building: {ex}", LogLevel.Trace);
-                    }
-                }
-            }
-
-            var allCustomBuildings = buildingManager.GetAllActiveBuildings();
-            foreach (GameLocation gameLocation in allCustomBuildings.Where(b => b.indoors.Value is GameLocation gameLocation && gameLocation is not null).Select(b => b.indoors.Value).Distinct())
-            {
-                int overnightMinutesElapsed = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
-
-                // Trigger the missed DayUpdate
-                gameLocation.DayUpdate(Game1.dayOfMonth);
-                gameLocation.passTimeForObjects(overnightMinutesElapsed);
-
-                // Trigger any missed postFarmEventOvernightAction
-                foreach (Action postFarmEventOvernightAction in gameLocation.postFarmEventOvernightActions)
-                {
-                    postFarmEventOvernightAction();
-                }
-                gameLocation.postFarmEventOvernightActions.Clear();
-            }
-
-            // Called missed Farm updates
-            foreach (GenericBuilding building in Game1.getFarm().buildings.Where(b => b is GenericBuilding).ToList())
-            {
-                building.dayUpdate(Game1.dayOfMonth);
-            }
-        }
-
-        private bool SetupCustomBuildingForLocation(BuildableGameLocation buildableLocation, GenericBuilding customBuilding)
-        {
-            try
-            {
-                GameLocation interior = null;
-                if (customBuilding.indoors.Value is not null)
-                {
-                    interior = customBuilding.indoors.Value;
-
-                    if (Game1.locations.Contains(interior) is false && buildableLocation is not Farm)
-                    {
-                        Game1.locations.Add(interior);
-                    }
-                }
-
-                // Update the building's model
-                customBuilding.RefreshModel(buildingManager.GetSpecificBuildingModel(customBuilding.Id));
-
-                // Set the location
-                customBuilding.buildingLocation.Value = buildableLocation;
-
-                // Load the building
-                customBuilding.load();
-
-                // Establish any buildings within this building
-                if (interior is BuildableGameLocation subBuildableLocation && subBuildableLocation is not null && subBuildableLocation.buildings is not null)
-                {
-                    foreach (var subBuilding in subBuildableLocation.buildings.ToList())
-                    {
-                        if (subBuilding is GenericBuilding subCustomBuilding)
-                        {
-                            subBuildableLocation.buildings.Remove(subCustomBuilding);
-                            SetupCustomBuildingForLocation(subBuildableLocation, subCustomBuilding);
-                            continue;
-                        }
-
-                        // Handle vanilla buildings
-                        subBuilding.load();
-                        if (subBuilding.indoors.Value is not null && subBuilding.indoors.Value.warps is not null)
-                        {
-                            foreach (Warp warp in subBuilding.indoors.Value.warps)
-                            {
-                                warp.TargetName = subBuildableLocation.NameOrUniqueName;
-                            }
-                        }
-                    }
-                }
-
-                // Restore the archived custom building
-                buildableLocation.buildings.Add(customBuilding);
-
-                // Clear any grass and other debris
-                var validIndexesForRemoval = new List<int>()
-                {
-                    343,
-                    450,
-                    294,
-                    295,
-                    675,
-                    674,
-                    784,
-                    677,
-                    676,
-                    785,
-                    679,
-                    678,
-                    786,
-                    674
-                };
-
-                for (int x = 0; x < customBuilding.tilesWide.Value; x++)
-                {
-                    for (int y = 0; y < customBuilding.tilesHigh.Value; y++)
-                    {
-                        var targetTile = new Vector2(customBuilding.tileX.Value + x, customBuilding.tileY.Value + y);
-                        if (buildableLocation.terrainFeatures.ContainsKey(targetTile) && buildableLocation.terrainFeatures[targetTile] is Grass grass && grass is not null)
-                        {
-                            buildableLocation.terrainFeatures.Remove(targetTile);
-                        }
-                        else if (buildableLocation.terrainFeatures.ContainsKey(targetTile) && buildableLocation.terrainFeatures[targetTile] is Tree tree && tree is not null)
-                        {
-                            buildableLocation.terrainFeatures.Remove(targetTile);
-                        }
-                        else if (buildableLocation.objects.ContainsKey(targetTile) && buildableLocation.objects[targetTile] is StardewValley.Object obj && obj is not null && validIndexesForRemoval.Contains(obj.ParentSheetIndex))
-                        {
-                            buildableLocation.objects.Remove(targetTile);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed to setup cached custom building {customBuilding.Id} at [{customBuilding.tileX}, {customBuilding.tileY}] within the map {buildableLocation.NameOrUniqueName}, see log for details.", LogLevel.Warn);
-                Monitor.Log($"Failed to setup cached custom building {customBuilding.Id} at [{customBuilding.tileX}, {customBuilding.tileY}] within the map {buildableLocation.NameOrUniqueName}: {ex}", LogLevel.Trace);
-                return false;
-            }
-
-            return true;
-        }
-
-        // TODO: When SDV v1.6 is released, revise this method to load the buildings into BuildingsData
         private void LoadContentPacks(bool silent = false)
         {
             // Clear the existing cache of custom buildings
@@ -803,8 +402,10 @@ namespace SolidFoundations
                 }
 
                 // Load in the buildings
+                int modelsWithCompatibilityIssues = 0;
                 foreach (var folder in buildingsFolder)
                 {
+                    bool isUsingStringBasedRectangles = false;
                     if (!File.Exists(Path.Combine(folder.FullName, "building.json")))
                     {
                         if (folder.GetDirectories().Count() == 0)
@@ -819,12 +420,33 @@ namespace SolidFoundations
                     var modelPath = Path.Combine(parentFolderName, folder.Name, "building.json");
 
                     // Parse the model and assign it the content pack's owner
-                    ExtendedBuildingModel buildingModel = contentPack.ReadJsonFile<ExtendedBuildingModel>(modelPath);
+                    ExtendedBuildingModel buildingModel = null;
+                    try
+                    {
+                        buildingModel = contentPack.ReadJsonFile<ExtendedBuildingModel>(modelPath);
+                    }
+                    catch (Newtonsoft.Json.JsonReaderException)
+                    {
+                        // Alert that the pack is using string-based Rectangles
+                        Monitor.Log($"Attempting to resolve ExtendedBuildingModel read issue by handling string-based Rectangles for {modelPath}", LogLevel.Trace);
+
+                        // Attempt to handle string-based Rectangle classes (SourceRect / AnimalDoor)
+                        buildingModel = contentPack.ReadJsonFile<OldExtendedBuildingModel>(modelPath);
+
+                        isUsingStringBasedRectangles = true;
+                        Monitor.Log($"{buildingModel.ID} is using the outdated string-based Rectangles for the \"SourceRect\" or \"AnimalDoor\" properties. Solid Foundations will handle this, though the value should be changed to use the recommended formatting for compatibility.", LogLevel.Trace);
+                    }
 
                     // Verify the required Name property is set
                     if (String.IsNullOrEmpty(buildingModel.Name))
                     {
                         Monitor.Log($"Unable to add building from content pack {contentPack.Manifest.Name}: Missing the Name property", LogLevel.Warn);
+                        continue;
+                    }
+
+                    if (buildingModel is null)
+                    {
+                        Monitor.Log($"Unable to add building from {modelPath}: The model is invalid", LogLevel.Warn);
                         continue;
                     }
 
@@ -893,7 +515,7 @@ namespace SolidFoundations
                                         skin.PaintMaskTexture = $"{skinAsset}_PaintMask";
                                         buildingManager.AddTextureAsset(skin.PaintMaskTexture, buildingManager.GetTextureAsset(maskAsset));
 
-                                        Monitor.Log($"Loaded the building {buildingModel.ID} skin {skin.ID} mask texture: {skin.PaintMaskTexture}", LogLevel.Trace);
+                                        Monitor.Log($"Loaded the building {buildingModel.ID} skin {skin.Id} mask texture: {skin.PaintMaskTexture}", LogLevel.Trace);
                                     }
                                 }
                                 else if (File.Exists(Path.Combine(folder.FullName, "paint_mask.png")))
@@ -901,7 +523,7 @@ namespace SolidFoundations
                                     skin.PaintMaskTexture = $"{skinAsset}_PaintMask";
                                     buildingManager.AddTextureAsset(skin.PaintMaskTexture, contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, folder.Name, "paint_mask.png")).Name);
 
-                                    Monitor.Log($"Loaded the building {buildingModel.ID} skin {skin.ID} mask texture using the default paint mask", LogLevel.Trace);
+                                    Monitor.Log($"Loaded the building {buildingModel.ID} skin {skin.Id} mask texture using the default paint mask", LogLevel.Trace);
                                 }
 
                                 skin.Texture = skinAsset;
@@ -956,10 +578,20 @@ namespace SolidFoundations
                     if (contentPack.Translation is not null)
                     {
                         buildingModel.Translations = contentPack.Translation;
+
+                        // Preserve the translation keys for name / description
+                        buildingModel.NameTranslationKey = buildingModel.Name;
+                        buildingModel.DescriptionTranslationKey = buildingModel.Description;
+
+                        buildingModel.Name = buildingModel.GetTranslation(buildingModel.NameTranslationKey);
+                        buildingModel.Description = buildingModel.GetTranslation(buildingModel.DescriptionTranslationKey);
                     }
 
                     // Check for any compatibility issues
-                    HandleCompatibilityIssues(buildingModel, silent);
+                    if (HandleCompatibilityIssues(buildingModel) || isUsingStringBasedRectangles)
+                    {
+                        modelsWithCompatibilityIssues += 1;
+                    }
 
                     // Track the model
                     buildingManager.AddBuilding(buildingModel);
@@ -968,6 +600,11 @@ namespace SolidFoundations
                     Monitor.Log($"Loaded the building {buildingModel.ID}", LogLevel.Trace);
                 }
 
+                // Display a warning that the pack will work, but has potential issues if used without Solid Foundations
+                if (modelsWithCompatibilityIssues > 0)
+                {
+                    Monitor.Log($"There were compatibility issues that were handled for {modelsWithCompatibilityIssues} {(modelsWithCompatibilityIssues > 1 ? "models" : "model")} within {contentPack.Manifest.Name}. See the log for details.", silent ? LogLevel.Trace : LogLevel.Warn);
+                }
             }
             catch (Exception ex)
             {
@@ -975,72 +612,61 @@ namespace SolidFoundations
             }
         }
 
-        private void HandleCompatibilityIssues(ExtendedBuildingModel model, bool silent)
+        private bool HandleCompatibilityIssues(ExtendedBuildingModel model)
         {
             if (model is null)
             {
-                return;
+                return false;
             }
 
-            if (model.Builder.Equals("Carpenter", StringComparison.OrdinalIgnoreCase))
+            bool hasCompatibilityIssue = false;
+            if (string.Equals(model.Builder, "Carpenter", StringComparison.OrdinalIgnoreCase))
             {
-                Monitor.Log($"{model.ID} is using the outdated value \"Carpenter\" for the \"Builder\" property. Solid Foundations will handle this, though the value should be changed to \"Robin\" for forward compatibility.", silent ? LogLevel.Trace : LogLevel.Warn);
+                Monitor.Log($"[COMPATIBILITY] {model.ID} is using the outdated value \"Carpenter\" for the \"Builder\" property. Solid Foundations will handle this, though the value should be changed to \"Robin\" for compatibility.", LogLevel.Trace);
 
                 model.Builder = "Robin";
+                hasCompatibilityIssue = true;
             }
-
-            if (model.MagicalConstruction is null && model.Builder.Equals("Wizard", StringComparison.OrdinalIgnoreCase))
+            else if (model.MagicalConstruction is null && string.Equals(model.Builder, "Wizard", StringComparison.OrdinalIgnoreCase))
             {
-                Monitor.Log($"{model.ID} is using the value \"Wizard\" for the \"Builder\" property, but has not declared the \"MagicalConstruction\" property. Solid Foundations will infer \"MagicalConstruction\" as true, though for forward compatibility this should be set manually.", silent ? LogLevel.Trace : LogLevel.Warn);
+                Monitor.Log($"[COMPATIBILITY] {model.ID} is using the value \"Wizard\" for the \"Builder\" property, but has not declared the \"MagicalConstruction\" property. Solid Foundations will infer \"MagicalConstruction\" as true, though for compatibility this should be set manually.", LogLevel.Trace);
 
                 model.MagicalConstruction = true;
+                hasCompatibilityIssue = true;
             }
+
+            if (string.Equals(model.IndoorMapType, "StardewValley.Locations.BuildableGameLocation", StringComparison.OrdinalIgnoreCase))
+            {
+                Monitor.Log($"[COMPATIBILITY] {model.ID} is using an outdated value \"StardewValley.Locations.BuildableGameLocation\" for the \"IndoorMapType\" property. Solid Foundations will handle this, though the value should be changed to \"StardewValley.GameLocation\" and the map property \"CanBuildHere\" should be set for compatibility.", LogLevel.Trace);
+
+                model.IndoorMapType = "StardewValley.GameLocation";
+
+                model.ForceLocationToBeBuildable = true;
+                hasCompatibilityIssue = true;
+            }
+
+            if (model.DrawLayers is not null && model.DrawLayers.Any(l => l.DrawBehindBase is true))
+            {
+                Monitor.Log($"[COMPATIBILITY] {model.ID} is using an outdated property \"DrawBehindBase\". Solid Foundations will handle this, though property should be changed to \"DrawInBackground\".", LogLevel.Trace);
+
+                foreach (var layer in model.DrawLayers.Where(l => l.DrawBehindBase is true))
+                {
+                    layer.DrawInBackground = true;
+                }
+                hasCompatibilityIssue = true;
+            }
+
+            return hasCompatibilityIssue;
         }
 
-        private void RefreshAllCustomBuildings(bool resetTexture = true)
+        private void RefreshAllCustomBuildings()
         {
-            foreach (BuildableGameLocation buildableLocation in Game1.locations.Where(l => l is BuildableGameLocation))
+            foreach (GameLocation location in Game1.locations.Where(l => l.buildings is not null))
             {
-                foreach (GenericBuilding building in buildableLocation.buildings.Where(b => b is GenericBuilding))
+                foreach (Building building in location.buildings.Where(b => buildingManager.DoesBuildingModelExist(b.buildingType.Value)))
                 {
-                    RefreshCustomBuilding(buildableLocation, building, resetTexture);
+                    building.RefreshModel(buildingManager.GetSpecificBuildingModel(building.buildingType.Value));
                 }
-            }
-        }
-
-        private void RefreshCustomBuilding(GameLocation location, GenericBuilding building, bool resetTexture = true)
-        {
-            try
-            {
-                var model = buildingManager.GetSpecificBuildingModel(building.Id);
-                if (model is not null)
-                {
-                    // Remove any FlagType.Temporary stored in the buildings modData
-                    foreach (var key in building.modData.Keys.Where(k => k.Contains(ModDataKeys.FLAG_BASE)).ToList())
-                    {
-                        if (building.modData[key] == SpecialAction.FlagType.Temporary.ToString())
-                        {
-                            building.modData.Remove(key);
-                        }
-                    }
-
-                    building.RefreshModel(model);
-
-                    if (resetTexture)
-                    {
-                        Helper.GameContent.InvalidateCache(model.Texture);
-                        building.resetTexture();
-                    }
-                }
-                else
-                {
-                    throw new Exception("Model is null.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed to refresh {building.Id} | {building.textureName()} from {location.NameOrUniqueName}!", LogLevel.Warn);
-                Monitor.Log($"Failed to refresh {building.Id} | {building.textureName()} from {location.NameOrUniqueName}: {ex}", LogLevel.Trace);
             }
         }
 
@@ -1052,13 +678,13 @@ namespace SolidFoundations
                 return;
             }
 
-            var targetTile = Game1.player.getTileLocation();
+            var targetTile = Game1.player.Tile;
             if (args.Length > 2 && Int32.TryParse(args[1], out int xTile) && Int32.TryParse(args[2], out int yTile))
             {
                 targetTile = new Vector2(xTile, yTile);
             }
 
-            monitor.Log(api.ConstructBuildingImmediately(args[0], Game1.getFarm(), targetTile).Value.ToString(), LogLevel.Debug);
+            monitor.Log(api.ConstructBuildingImmediately(args[0], Game1.currentLocation, targetTile).Value.ToString(), LogLevel.Debug);
         }
     }
 }

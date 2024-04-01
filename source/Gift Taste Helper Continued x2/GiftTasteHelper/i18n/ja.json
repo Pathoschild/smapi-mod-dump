@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/GiftTasteHelper
+**
+*************************************************/
+
+{
+  "tooltip.title.favorite": "好きな贈り物",
+  "tooltip.title.none": "既知の贈り物はありません",
+
+  "options.display": "表示",
+  "options.showOnCalendar": "カレンダーに表示",
+  "options.showOnCalendar.desc": "誕生日にマウスを乗せると、カレンダーにツールチップを表示します",
+  "options.showOnSocialPage": "ソーシャルページに表示",
+  "options.showOnSocialPage.desc": "NPCにマウスを乗せると、ソーシャルページにツールチップを表示します",
+  "options.showOnlyKnownGifts": "知られているプレゼントのみ表示",
+  "options.showOnlyKnownGifts.desc": "すでにこのNPCに贈ったプレゼントのみ表示します",
+  "options.showUniversalGifts": "ユニバーサルプレゼントを表示",
+  "options.showUniversalGifts.desc": "ツールチップにユニバーサルプレゼントを表示します",
+  "options.showGiftsForUnmetNPCs": "未知のNPCのプレゼントを表示",
+  "options.showGiftsForUnmetNPCs.desc": "まだ出会っていないNPCのプレゼントを表示します",
+  "options.hideTooltipWhenNoGiftsKnown": "知られているプレゼントがない場合に非表示",
+  "options.hideTooltipWhenNoGiftsKnown.desc": "知られているプレゼントがない場合にツールチップを非表示にします",
+  "options.colorizeUniversalGiftNames": "ユニバーサルプレゼントの名前を色分けする",
+  "options.colorizeUniversalGiftNames.desc": "ユニバーサルプレゼントの名前を色分けします",
+  "options.other": "その他",
+  "options.maxGiftsToDisplay": "表示する最大のプレゼント数",
+  "options.maxGiftsToDisplay.desc": "ツールチップに表示する最大のプレゼント数（0は制限なし）",
+  "options.shareKnownGiftsWithAllSaves": "すべてのセーブファイルで知られているプレゼントを共有",
+  "options.shareKnownGiftsWithAllSaves.desc": "すべてのセーブファイルで知られているプレゼントを共有します"
+}

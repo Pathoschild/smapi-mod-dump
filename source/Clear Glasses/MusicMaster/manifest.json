@@ -1,0 +1,11 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aurpine/Stardew-SpriteMaster
+**
+*************************************************/
+
+{"Name":"MusicMaster","Author":"mkukli","Version":"0.15.0-beta.16.0","Description":"Allows the user to completely replace the game's soundtrack.'","UniqueID":"DigitalCarbide.MusicMaster","EntryDll":"MusicMaster.dll","MinimumApiVersion":"3.15.0","UpdateKeys":["Nexus:4922","GitHub:ameisen/SV-SpriteMaster"]}

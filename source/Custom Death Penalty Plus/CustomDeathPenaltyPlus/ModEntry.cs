@@ -21,8 +21,6 @@ using StardewValley;
 using System.Linq;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using GenericModConfigMenu;
-//using GenericModConfigMenu;
 
 namespace CustomDeathPenaltyPlus
 {
@@ -520,21 +518,13 @@ namespace CustomDeathPenaltyPlus
                             || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null) 
                             && location.StartsWith("IslandFarm") == false)
                         {
-                            int tileX = 12;
-                            int tileY = 18;
-                            switch (Game1.player.HouseUpgradeLevel)
+                            int tileX = 27;
+                            int tileY = 28;
+                            if (Game1.player.HouseUpgradeLevel == 0)
                             {
-                                case 0:
-                                    tileX = 3;
-                                    tileY = 9;
-                                    break;
-                                case 1:
-                                    tileX = 9;
-                                    tileY = 8;
-                                    break;
-                                default:
-                                    break;
-                            }
+                                tileX = 3;
+                                tileY = 9;
+                            }                           
                             Game1.CurrentEvent.setExitLocation(Game1.player.homeLocation.Value, tileX, tileY);
                         }
                         location = null;
@@ -573,8 +563,7 @@ namespace CustomDeathPenaltyPlus
                     else
                     {
                         // Yes, inform other players you're ready for a new day
-
-                        Game1.player.team.SetLocalReady("sleep", true);
+                        //Game1.player.team.SetLocalReady("sleep", true);
 
                         // Ensures new day will load, will become false after new day is loaded
                         Game1.player.passedOut = true;
@@ -789,7 +778,7 @@ namespace CustomDeathPenaltyPlus
                 // Read data from message into a new class instance of Multiplayer
                 Multiplayer multiplayer = e.ReadAs<Multiplayer>();
                 // Display a new HUD message to say that the dead player needs a new day to be started
-                Game1.addHUDMessage(new HUDMessage($"{multiplayer.PlayerWhoDied} will need the rest of the day to recover.", null));
+                Game1.addHUDMessage(new HUDMessage($"{multiplayer.PlayerWhoDied} will need the rest of the day to recover."));
             }
         }
 

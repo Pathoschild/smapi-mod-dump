@@ -1,4 +1,5 @@
 {
   "ContentPatcherPatchingMode": "PatchFluentToken",
-  "CurrentLocaleOverride": ""
+  "CurrentLocaleOverride": "",
+  "DeveloperMode": false
 }

@@ -88,7 +88,7 @@ namespace FarmTypeManager
                     GameLocation location = Game1.getLocationFromName(spawns[0].SavedObject.MapName); //get the location matching this object's map name (NOTE: do not use the area name, which may be different)
 
 
-                    int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
+                    int[] customTiles = Array.Empty<int>(); //the set of custom tiles to use (to be selected based on the spawn object's type)
                     int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)
 
                     switch (spawns[0].SavedObject.Type)
@@ -146,7 +146,7 @@ namespace FarmTypeManager
                                 spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                spawned = Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
+                                spawned = Utility.SpawnLargeObject(spawns[y].SavedObject.ID.ToString(), location, spawns[y].SavedObject.Tile); //spawn large object
                                 break;
                             case SavedObject.ObjectType.Ore:
                                 int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful

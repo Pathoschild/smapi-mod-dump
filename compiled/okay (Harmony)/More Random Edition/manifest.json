@@ -1,10 +1,10 @@
 {
   "Name": "More Random Edition",
   "Author": "Chikakoo; doomdonuts",
-  "Version": "0.7.0-alpha.20240315",
+  "Version": "0.7.0-alpha.20240328",
   "Description": "Randomizes many gameplay and visual aspects of the game, see the readme for more info.",
   "UniqueID": "Chikakoo.Randomizer",
   "EntryDll": "More Random Edition.dll",
-  "MinimumApiVersion": "4.0.0-alpha.20240310",
+  "MinimumApiVersion": "4.0.3",
   "UpdateKeys": [ "Nexus:5311" ]
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>1.16.1</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<Version>2.0.1</Version>
+		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip>false</EnableModZip>
@@ -15,14 +15,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Framework\Assets\appearance_button.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 		<None Update="manifest.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -37,7 +34,7 @@
 			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
 			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\releases\latest\SolidFoundations"' -Recurse -Force
-			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\releases\latest\SolidFoundations"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\bin\Debug\$(TargetFramework)" "C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\releases\latest\SolidFoundations"
 			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\releases\SolidFoundations-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\SolidFoundations\SolidFoundations\releases\latest\SolidFoundations"
 
 			powershell Remove-Item -Path '$(GameModsPath)\SolidFoundations' -Recurse -Force

@@ -1,0 +1,8 @@
+{
+    DisableGrowthName:  "Вимкнути рост",  DisableGrowthTooltip:  "Вимикає зростання та поширення трави.",
+    GrowEverywhereName: "Трава всюди", GrowEverywhereTooltip: "Трава поширюється всюди.",
+    GrowthChanceName:   "Шанс зростання",   GrowthChanceTooltip:   "Шанс, що трава виросте або пошириться.",
+    SpreadChanceName:   "Шанс розповсюдження",   SpreadChanceTooltip:   "Шанс для кожного сусіднього тайла, що трава пошириться саме туди.",
+    DailyGrowthName:    "Щоденне зростання",    DailyGrowthTooltip:    "Кількість ітерацій, які застосовуються до росту трави в день.",
+    MonthlyGrowthName:  "Щомісячне зростання",  MonthlyGrowthTooltip:  "Додаткові ітерації, які застосовуються до росту трави на початку кожного місяця.",
+}

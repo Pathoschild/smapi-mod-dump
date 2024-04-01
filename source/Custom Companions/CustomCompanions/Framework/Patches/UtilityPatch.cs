@@ -36,24 +36,15 @@ namespace CustomCompanions.Framework.Patches
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_utility, nameof(Utility.isThereAFarmerOrCharacterWithinDistance), new[] { typeof(Vector2), typeof(int), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(IsThereAFarmerOrCharacterWithinDistancePostfix)));
+            harmony.Patch(AccessTools.Method(_utility, nameof(Utility.GetNpcsWithinDistance), new[] { typeof(Vector2), typeof(int), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(GetNpcsWithinDistancePostfix)));
             harmony.Patch(AccessTools.Method(_utility, nameof(Utility.checkForCharacterInteractionAtTile), new[] { typeof(Vector2), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(CheckForCharacterInteractionAtTilePostfix)));
         }
 
-        private static void IsThereAFarmerOrCharacterWithinDistancePostfix(Utility __instance, ref Character __result, Vector2 tileLocation, int tilesAway, GameLocation environment)
+        private static void GetNpcsWithinDistancePostfix(Utility __instance, ref IEnumerable<NPC> __result, Vector2 centerTile, int tilesAway, GameLocation location)
         {
-            if (__result != null && CompanionManager.IsCustomCompanion(__result))
+            if (__result != null)
             {
-                foreach (NPC c in environment.characters.Where(c => !CompanionManager.IsCustomCompanion(c)))
-                {
-                    if (Vector2.Distance(c.getTileLocation(), tileLocation) <= tilesAway)
-                    {
-                        __result = c;
-                        return;
-                    }
-                }
-
-                __result = null;
+                __result = __result.Where(n => CompanionManager.IsCustomCompanion(n) is false);
             }
         }
 

@@ -106,7 +106,7 @@ namespace SereneGreenhouse.Patches.GameLocation
 
             // Spawn the critters
             __instance.critters = new List<Critter>();
-            if (Game1.isDarkOut())
+            if (Game1.isDarkOut(__instance))
             {
                 foreach (Vector2 tile in fireflySpawnLocations)
                 {

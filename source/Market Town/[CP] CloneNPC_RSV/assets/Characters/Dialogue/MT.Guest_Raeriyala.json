@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Mon": "Hello",
+  "Tue": "Hello",
+  "Wed": "Hello",
+  "Thu": "Hello",
+  "Fri": "Hello",
+  "Sat": "Hello",
+  "Sun": "Hello",
+  "spring_12": "Oh! How fun must it be to partake in tomorrow's festival!$h",
+  "spring_23": "The flowers bloom a lot more beautifully when the festival of flowers commences.$4#$b#Oh how I adore the locals and their customs!",
+  "summer_10": "Oh my! I wonder how those soups taste, oh farmer.#$b#Well, good luck tomorrow!",
+  "summer_27": "I can't wait to welcome the Lunaloos as they pass by tomorrow night.$h#$b#My love and I will have some quality time together as well!$4#$b#It's been so long!$h",
+  "fall_15": "I hope you have a wonderful time at the festival tomorrow, oh farmer.$h#$b#Your grandmother loved that festival dearly.$4",
+  "fall_19": "The flora and fauna sing alongside the music of tomorrow's festivities.$h",
+  "fall_26": "The spirits are a lot more active tomorrow night.#$b#Be wary of the hostile ones.$s",
+  "winter_7": "Have you heard of the legendary fishes around the valley?#$b#One of them is actually an elder spirit!$h#$b#I hope he's doing well.",
+  "winter_24": "Oh! You're going to be offering gifts to one another tomorrow, right?#$b#Such an interesting custom!$h",
+  "winter_27": "The spirit of resolutions sometimes visits this mountain.#$b#She's not really a handful as all she does is sleep.$h",
+}

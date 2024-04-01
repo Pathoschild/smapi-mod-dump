@@ -18,6 +18,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Pathfinding;
 
 using GoToBed.Framework;
 
@@ -57,7 +58,7 @@ namespace GoToBed {
             // Intercept sleep dialogue as suggested by Pathos.
             if (e.NewMenu is DialogueBox dialogue) {
                 string text = this.Helper.Reflection.GetField<List<string>>(dialogue, "dialogues").GetValue().FirstOrDefault();
-                string sleepText = Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3996");
+                string sleepText = Game1.content.LoadString("Strings\\Locations:FarmHouse_Bed_GoToSleep");
                 if (text == sleepText) {
                     // handle "Go to sleep for the night?" dialogue
                     this.Monitor.Log("Go to bed?", LogLevel.Debug);
@@ -78,13 +79,7 @@ namespace GoToBed {
                 if (Game1.player.currentLocation is FarmHouse) {
                     farmHouse = Game1.player.currentLocation as FarmHouse;
 
-                    // Check SDV version: SMAPI 3.8 is not usable with SDV 1.4 .
-                    bool isSDV14 = StardewModdingAPI.Constants.ApiVersion.IsOlderThan("3.8.0");
-                    // Compatibility with SDV 1.4: Access old and new API via reflection.
-                    IReflectedMethod getBed = isSDV14
-                                            ? this.Helper.Reflection.GetMethod(farmHouse, nameof(FarmHouse.getBedSpot))
-                                            : this.Helper.Reflection.GetMethod(farmHouse, "GetPlayerBedSpot");
-                    Game1.player.position.Y = getBed.Invoke<Point>().Y * 64f + 24f;
+                    Game1.player.position.Y = farmHouse.GetPlayerBedSpot().Y * 64f + 24f;
                 }
 
                 // Take hat off. We could check for a hat and store it in the inventory
@@ -95,7 +90,7 @@ namespace GoToBed {
                 Game1.player.changeIntoSwimsuit();
 
                 // Player is not married or spouse already went to bed or current location is not farm house.
-                if (!Game1.player.isMarried() || Game1.timeOfDay > config_.SpouseGoToBedTime || farmHouse == null) {
+                if (!Game1.player.isMarriedOrRoommates() || Game1.timeOfDay > config_.SpouseGoToBedTime || farmHouse == null) {
                     FarmerSleep();
 
                     return;
@@ -117,7 +112,8 @@ namespace GoToBed {
                 // Spouse goes to bed.
                 this.Monitor.Log($"Spouse {spouse.Name} goes to bed", LogLevel.Debug);
 
-                spouse.controller =
+                spouse.controller = null;
+                spouse.temporaryController =
                     new PathFindController(
                         spouse,
                         farmHouse,
@@ -131,7 +127,7 @@ namespace GoToBed {
                             FarmerSleep();
                         });
 
-                if (spouse.controller.pathToEndPoint == null) {
+                if (spouse.temporaryController.pathToEndPoint == null) {
                     this.Monitor.Log($"Spouse {spouse.Name} can't reach bed", LogLevel.Warn);
 
                     FarmerSleep();

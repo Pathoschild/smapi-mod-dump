@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit 5a8cd7c2f06f94aae1b051aa999d198af64f5d3d
+   commit 692ef99a9b39db865a57dbc440ec949d97c7be77
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Thu Mar 14 00:16:44 2024 -0400
+   Date:   Thu Mar 28 21:52:32 2024 -0400
    
-       Added French translation and updated readme.
+       Prevented opening the schedule if in a minigame.
    

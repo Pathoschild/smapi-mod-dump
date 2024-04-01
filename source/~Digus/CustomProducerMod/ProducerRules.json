@@ -173,16 +173,27 @@
         "OutputQuality": 2,
         "Sounds": [ "Ship" ]
     },
-    { //Mayonnaise
+    { //Gold Egg Mayonnaise
         "ProducerName": "Mayonnaise Machine",
-        "InputIdentifier": "176",
+        "InputIdentifier": "928",
         "MinutesUntilReady": 180,
         "OutputIdentifier": "306",
+        "OutputQuality": 2,
+        "OutputStack": 3,
+        "Sounds": [ "Ship" ]
+    },
+    { //Ostrich Egg Mayonnaise
+        "ProducerName": "Mayonnaise Machine",
+        "InputIdentifier": "289",
+        "MinutesUntilReady": 180,
+        "OutputIdentifier": "306",
+        "KeepInputQuality": true,
+        "OutputStack": 10,
         "Sounds": [ "Ship" ]
     },
     { //Mayonnaise
         "ProducerName": "Mayonnaise Machine",
-        "InputIdentifier": "180",
+        "InputIdentifier": "egg_item",
         "MinutesUntilReady": 180,
         "OutputIdentifier": "306",
         "Sounds": [ "Ship" ]
@@ -411,6 +422,16 @@
         "Sounds": [ "furnace" ],
         "PlacingAnimation": "Fire"
     },
+    { //Radioactive Bar
+        "ProducerName": "Furnace",
+        "InputIdentifier": "909",
+        "InputStack": 5,
+        "MinutesUntilReady": 560,
+        "FuelIdentifier": "382",
+        "OutputIdentifier": "910",
+        "Sounds": [ "furnace" ],
+        "PlacingAnimation": "Fire"
+    },
     { //Wilted Bouquet
         "ProducerName": "Furnace",
         "InputIdentifier": "458",
@@ -503,9 +524,11 @@
     },
     { // Honey
         "ProducerName": "Bee House",
+        "ProducerQualifiedItemId": "(BC)10",
         "MinutesUntilReady": 6400,
         "SubtractTimeOfDay": true,
         "OutputIdentifier": "340",
+        "PreserveType": "Honey",
         "InputPriceBased": true,
         "OutputPriceIncrement": 100,
         "OutputPriceMultiplier": 2,

@@ -1,0 +1,14 @@
+﻿{
+    "Name": "돼지저금통",
+    "Description": "이 작은 도자기 돼지가 어떻게 그렇게 귀할 수 있었나요?",
+
+    "Deposit": "저금하기",
+    "Withdraw": "출금하기",
+    "Label": "이름",
+    "Close": "창 닫기",
+
+    "Stored": "저축액 : ",
+
+    "Label_No_Permission": "{0}의 저금통 라벨을 편집할 수 없습니다",
+    "Withdraw_Deposit_No_Permission": "호스트({0})가 공유 돼지 저금통을 비활성화했습니다"
+}

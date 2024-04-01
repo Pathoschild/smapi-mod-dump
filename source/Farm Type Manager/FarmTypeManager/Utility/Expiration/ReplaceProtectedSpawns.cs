@@ -11,11 +11,10 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -24,7 +23,7 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Check each saved object with an expiration setting, respawning them if they were removed after being saved (e.g. by the weekly forage removal process).</summary>
+            /// <summary>Check each saved object with an expiration setting and respawn it if it disappeared after saving (e.g. due to automatic cleanup or not being serialized).</summary>
             /// <param name="save">The save data to the checked.</param>
             public static void ReplaceProtectedSpawns(InternalSaveData save)
             {
@@ -74,38 +73,33 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
-                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
-                        if (location is Farm farm)
-                        {
-                            resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
-                        }
-                        else if (location is MineShaft mine)
-                        {
-                            resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
-                        }
-                        else
-                        {
-                            resourceClumps = location.largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
-                        }
-
                         bool stillExists = false; //does this large object still exist?
 
-                        foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
+                        string largeObjectStringID = saved.ID?.ToString();
+                        foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {
-                            if (clump is ResourceClump smallClump)
+                            if (clump.Tile.X == saved.Tile.X && clump.Tile.Y == saved.Tile.Y) //if its tile location matches
                             {
-                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && smallClump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                if (clump is GiantCrop crop)
                                 {
-                                    stillExists = true;
-                                    break; //stop searching the clump list
+                                    if (crop.Id == largeObjectStringID) //if this is a crop and the ID matches
+                                    {
+                                        stillExists = true;
+                                        break;
+                                    }
                                 }
-                            }
-                            else if (clump is LargeResourceClump largeClump)
-                            {
-                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && largeClump.Clump.Value.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                else if (Utility.ItemExtensionsAPI?.IsClump(largeObjectStringID) == true) //if IE is installed
+                                {
+                                    if (clump.modData.TryGetValue("mistyspring.ItemExtensions/CustomClumpId", out string itemExtensionsClumpID) && largeObjectStringID == itemExtensionsClumpID) //if this is an IE clump and the ID matches
+                                    {
+                                        stillExists = true;
+                                        break;
+                                    }
+                                }
+                                else if (largeObjectStringID == (clump.parentSheetIndex.Value.ToString() ?? "")) //if this is NOT any other kind of clump, and the index matches
                                 {
                                     stillExists = true;
-                                    break; //stop searching the clump list
+                                    break;
                                 }
                             }
                         }
@@ -116,7 +110,7 @@ namespace FarmTypeManager
 
                             if (IsTileValid(location, saved.Tile, saved.Size, "High")) //if the object's tile is valid for large object placement (defaulting to "high" strictness)
                             {
-                                SpawnLargeObject(saved.ID.Value, location, saved.Tile); //respawn the object
+                                SpawnLargeObject(saved.ID?.ToString(), location, saved.Tile); //respawn the object
                                 respawned++; //increment respawn tracker
                             }
                             else //if the object's tile is invalid
@@ -127,30 +121,99 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item
                     {
-                        missing++; //increment missing tracker (note: items should always be removed overnight)
-
-                        //this mod should remove all of its forage items overnight, so respawn this item without checking for its existence
-                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium") && !location.terrainFeatures.ContainsKey(saved.Tile)) //if the item's tile is clear enough to respawn
+                        switch (saved.ConfigItem?.Category.ToLower()) //check category to determine how to replace this item
                         {
-                            //update this item's ID, in case it changed due to other mods
-                            string[] categoryAndName = saved.Name.Split(':');
-                            int? newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                            case "(bc)":
+                            case "bc":
+                            case "bigcraftable":
+                            case "bigcraftables":
+                            case "big craftable":
+                            case "big craftables":
+                                StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
 
-                            if (newID.HasValue) //if a new ID was successfully generated
-                            {
-                                respawned++; //increment respawn tracker
-                                saved.ID = newID; //save the new ID
-                                SpawnForage(saved, location, saved.Tile); //respawn the item
-                            }
-                            else //if a new ID could not be generated
-                            {
-                                uninstalled++; //increment uninstalled mod tracker
-                                Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Item name: {saved.Name}", LogLevel.Trace);
-                            }
-                        }
-                        else //if this object's tile is obstructed
-                        {
-                            blocked++; //increment obstruction tracker
+                                if (realObject == null) //if the object no longer exists
+                                {
+                                    missing++; //increment missing object tracker
+
+                                    if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the object's tile is clear enough to respawn
+                                    {
+                                        saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                        if (saved.ID != null) //if a valid ID was found for this object
+                                        {
+                                            respawned++; //increment respawn tracker
+                                            SpawnForage(saved, location, saved.Tile); //respawn it
+                                        }
+                                        else
+                                        {
+                                            uninstalled++; //increment uninstalled mod tracker
+                                            Monitor.LogOnce($"Couldn't find a valid ID for a previously saved big craftable. Name: {saved.Name}", LogLevel.Trace);
+                                        }
+                                    }
+                                    else //if the object's tile is occupied
+                                    {
+                                        blocked++; //increment obstruction tracker
+                                    }
+                                }
+                                else if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                    realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
+
+                                break;
+
+                            case "(f)":
+                            case "f":
+                            case "furniture": //if this has the furniture category
+                                bool stillExists = false;
+                                foreach (Furniture realFurniture in location.furniture)
+                                {
+                                    if (realFurniture.TileLocation.Equals(saved.Tile) && realFurniture.ItemId.Equals(saved.StringID, StringComparison.Ordinal)) //if furniture exists with a matching tile and ID
+                                    {
+                                        stillExists = true;
+                                        break; //stop checking furniture after finding a match
+                                    }
+                                }
+
+                                if (!stillExists) //if the furniture no longer exists
+                                {
+                                    missing++; //increment missing tracker
+
+                                    saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                    //note: furniture can overlap and should be more persistent than most objects, so tile validity is not checked here
+                                    if (saved.ID != null) //if a valid ID was found for this object
+                                    {
+                                        respawned++; //increment respawn tracker
+                                        SpawnForage(saved, location, saved.Tile); //respawn it
+                                    }
+                                    else
+                                    {
+                                        uninstalled++; //increment uninstalled mod tracker
+                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved furniture item. Name: {saved.Name}", LogLevel.Trace);
+                                    }
+                                }
+                                break;
+
+                            default: //if this is any other kind of item (and thus a PlacedItem)
+                                missing++; //increment missing tracker (PlacedItem should always be removed overnight)
+
+                                //assume that this must have been removed overnight; respawn the item without checking for its existence
+                                if (!location.terrainFeatures.ContainsKey(saved.Tile) && IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's tile is clear enough to respawn
+                                {
+                                    saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                    if (saved.ID != null) //if a valid ID was found for this object
+                                    {
+                                        respawned++; //increment respawn tracker
+                                        SpawnForage(saved, location, saved.Tile); //respawn it (note: furniture exists in a list, so a tile validity check isn't required)
+                                    }
+                                    else
+                                    {
+                                        uninstalled++; //increment uninstalled mod tracker
+                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Name: {saved.Name}", LogLevel.Trace);
+                                    }
+                                }
+                                else //if this object's tile is obstructed
+                                {
+                                    blocked++; //increment obstruction tracker
+                                }
+                                break;
                         }
                     }
                     else if (saved.Type == SavedObject.ObjectType.Container) //if this is a container
@@ -195,6 +258,8 @@ namespace FarmTypeManager
                                 blocked++; //increment obstruction tracker
                             }
                         }
+                        else if (realObject != null && realFurniture == null && saved.ConfigItem?.CanBePickedUp == false) //if this is a non-furniture object flagged as "cannot be picked up"
+                            realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
                     }
                     else //if this is forage or ore
                     {
@@ -221,7 +286,7 @@ namespace FarmTypeManager
                                             saved.ID = GetItemID("object", saved.Name);
                                     }
 
-                                    if (saved.ID.HasValue) //if a valid ID was found for this object
+                                    if (saved.ID != null) //if a valid ID was found for this object
                                     {
                                         respawned++; //increment respawn tracker
                                         SpawnForage(saved, location, saved.Tile); //respawn it
@@ -243,6 +308,8 @@ namespace FarmTypeManager
                                 blocked++; //increment obstruction tracker
                             }
                         }
+                        else if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                            realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
                     }
                 }
 

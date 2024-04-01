@@ -1,0 +1,31 @@
+{
+    // Config settings
+    "config.option.failed_harvest.name": "防止收获失败",
+    "config.option.failed_harvest.description": "跳过挤奶/剪毛失败动画和音效。注意：如果您在安卓使用“点击移动&自动攻击”控制模式，请关闭此选项。",
+    "config.option.animal_produce.name": "显示动物产品",
+    "config.option.animal_produce.description": "动物产品可收获时，在动物上方显示产品。",
+    "config.option.hearts_animal.name": "显示农场动物爱心",
+    "config.option.hearts_animal.description": "在尚未抚摸的动物上方显示爱心 (奶牛、鸭子等等)。",
+    "config.option.hearts_pet.name": "显示宠物爱心",
+    "config.option.hearts_pet.description": "在尚未抚摸的宠物上方显示爱心 (猫、狗等等)。",
+    "config.option.hearts_enabled.name": "[!] 开启爱心",
+    "config.option.hearts_enabled.description": "允许在动物上方显示爱心。注意：如关闭这一选项，所有本mod的爱心显示将被隐藏（动物、宠物等等）。",
+    "config.option.hearts_max_friendship.name": "好感到达上限后隐藏爱心",
+    "config.option.hearts_max_friendship.description": "如动物或宠物到达最高等级好感度，则隐藏爱心。注意：请谨慎选择。如果当日未抚摸动物或宠物，其好感度会下降！",
+
+    // Other messages
+    "notification.inventory_full": "库存已满",
+
+    "action.out_of_range.milk": "挤奶",
+    "action.out_of_range.shear": "剪毛",
+    "notification.out_of_range": "超出{{ranchActionPresent}}范围",
+
+    "product.milk": "奶",
+    "product.wool": "羊毛",
+
+    "notification.util_action": "{{Name}}宝宝将在{{Days}}天后生产{{Product}}.",
+
+    "action.unable.milk": "挤奶",
+    "action.unable.shear": "剪毛",
+    "notification.unable": "还没到{{Action}}的时候"
+}

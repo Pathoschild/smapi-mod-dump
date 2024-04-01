@@ -21,13 +21,15 @@ namespace EventLimiter
     {
         private static IMonitor monitor;
         private static ModConfig config;
-        private static List<int> internalexceptions;
+        private static List<string> internalexceptions;
+        private static List<string> NormalisedEventids;
 
-        public static void Hook(Harmony harmony, IMonitor monitor, ModConfig config, List<int> internalexceptions)
+        public static void Hook(Harmony harmony, IMonitor monitor, ModConfig config, List<string> internalexceptions, List<string> normalisedeventids)
         {
             Patches.monitor = monitor;
             Patches.config = config;
             Patches.internalexceptions = internalexceptions;
+            Patches.NormalisedEventids = normalisedeventids;
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.startEvent)),
@@ -44,10 +46,16 @@ namespace EventLimiter
         {
             try
             {
-                if (evt.id > 0 && evt.id != 60367 && evt.isFestival == false)
+                if (evt.isWedding || evt.isFestival || ModEntry.StoryProgressionEvents.Contains(evt.id) == true)
+                {
+                    monitor.Log("Current event is important and unskippable!");
+                    return;
+                }
+
+                else
                 {
                     // Check if the event is an exception, skip the rest of the method if so
-                    if (config.Exceptions != null && config.Exceptions.Contains(evt.id) == true)
+                    if (NormalisedEventids != null && NormalisedEventids.Contains(evt.id) == true)
                     {
                         monitor.Log("Made exception for event with id " + evt.id);
                         return;
@@ -97,7 +105,7 @@ namespace EventLimiter
                 // Exit method if counters shouldn't increment (event exception not counting towards limit)
                 if (config.ExemptEventsCountTowardsLimit == false 
                     && (
-                        (config.Exceptions != null && config.Exceptions.Contains(__instance.id) == true) 
+                        (NormalisedEventids != null && NormalisedEventids.Contains(__instance.id) == true) 
                         || 
                         (internalexceptions != null && internalexceptions.Contains(__instance.id) == true)
                        )
@@ -107,7 +115,7 @@ namespace EventLimiter
                 }
 
                 // Increment counters after a non-hardcoded event is finished
-                if (__instance.id > 0 && __instance.id != 60367 && __instance.isFestival == false)
+                if (__instance.isWedding == false || __instance.isFestival == false || ModEntry.StoryProgressionEvents.Contains(__instance.id) == false)
                 {
                     ModEntry.EventCounterDay.Value++;
                     ModEntry.EventCounterRow.Value++;

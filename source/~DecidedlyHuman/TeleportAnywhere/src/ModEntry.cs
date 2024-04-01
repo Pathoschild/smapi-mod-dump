@@ -8,15 +8,13 @@
 **
 *************************************************/
 
-using System;
-using DecidedlyShared.Input;
+
 using DecidedlyShared.Logging;
 using DecidedlyShared.Utilities;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using TeleportAnywhere.UI;
 using TeleportAnywhere.Utilities;
 using xTile.Layers;
 using xTile.Tiles;
@@ -41,7 +39,6 @@ namespace TeleportAnywhere
             helper.Events.Display.MenuChanged += this.DisplayOnMenuChanged;
             helper.Events.GameLoop.UpdateTicked += this.GameLoopOnUpdateTicked;
             this.logger = new Logger(this.Monitor, helper.Translation);
-            InputEvents.InitInput(helper, (s, level) => { this.Monitor.Log(s, level); });
             // helper.Events.Display.Rendered += DisplayOnRenderedHud;
             Maps.PopulateMapList();
         }

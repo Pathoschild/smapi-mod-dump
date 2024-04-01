@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EasyMove",
+  "Author": "season",
+  "Version": "0.0.2",
+  "Description": "right click scepter to travel.",
+  "UniqueID": "season.EasyMove",
+  "EntryDll": "EasyMove.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:20872" ]
+}

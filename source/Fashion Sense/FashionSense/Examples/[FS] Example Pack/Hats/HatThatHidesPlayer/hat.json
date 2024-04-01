@@ -1,0 +1,83 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FashionSense
+**
+*************************************************/
+
+{
+  // See the wiki for all hat properties: https://github.com/Floogen/FashionSense/wiki/Hat-Model-Properties
+
+  "Name": "Hat That Hides The Player",
+  "FrontHat": {
+    "DisableGrayscale": true,
+    "HidePlayerBase": true,
+    "HideHair": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  },
+  "RightHat": {
+    "DisableGrayscale": true,
+    "HidePlayerBase": true,
+    "HideHair": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 16
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  },
+  "LeftHat": {
+    "DisableGrayscale": true,
+    "HidePlayerBase": true,
+    "HideHair": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 32
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  },
+  "BackHat": {
+    "DisableGrayscale": true,
+    "HidePlayerBase": true,
+    "HideHair": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 48
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  }
+}

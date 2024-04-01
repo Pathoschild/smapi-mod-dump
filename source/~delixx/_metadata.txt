@@ -1,15 +1,15 @@
 urls:
-   web: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
-   Git: https://gitlab.com/delixx/stardew-valley-custom-farm-loader.git
+   web: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
+   Git: https://gitlab.com/delixx/stardew-valley/custom-farm-loader.git
 
 mods:
    Custom Farm Loader
    Easy Farm Switcher
 
 latest commit:
-   commit e881cd555555f229fc1dfb8243647300b09138ca
+   commit 3cbe5467b06d87e6b736bd629960c92ea415348f
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Wed Mar 13 17:41:50 2024 +0100
+   Date:   Fri Mar 22 18:38:52 2024 +0100
    
-       updated to 24073
+       added hotfix for world map base game bug
    

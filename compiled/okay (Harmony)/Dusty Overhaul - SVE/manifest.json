@@ -1,0 +1,24 @@
+{
+  "Name": "[SMAPI] Dusty Overhaul - SVE",
+  "Author": "CyanFire",
+  "Version": "2.6.1",
+  "Description": "Code for Dusty Overhaul - SVE",
+  "UniqueID": "CF.SMAPI.DustyOverhaulSVE",
+  "EntryDll": "DustyOverhaulSVE.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:13265" ],
+  "Dependencies": [
+    {
+      "UniqueID": "CF.FarmhouseFixes",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+      "IsRequired": false // disabled locally
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

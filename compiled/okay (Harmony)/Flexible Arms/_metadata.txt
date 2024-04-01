@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20902
+IDs: bcmpinc.FlexibleArms
+update keys: Nexus:20902, GitHub:bcmpinc/StardewHack

@@ -18,7 +18,6 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace CJBCheatsMenu.Framework.Cheats.Warps
@@ -163,7 +162,7 @@ namespace CJBCheatsMenu.Framework.Cheats.Warps
             string cabinName = Game1.player.homeLocation.Value;
             if (!Context.IsMainPlayer && cabinName != null)
             {
-                foreach (BuildableGameLocation location in Game1.locations.OfType<BuildableGameLocation>())
+                foreach (GameLocation location in Game1.locations)
                 {
                     foreach (Building building in location.buildings)
                     {

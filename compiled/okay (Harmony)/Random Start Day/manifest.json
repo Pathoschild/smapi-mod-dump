@@ -1,0 +1,10 @@
+{
+  "Name": "Random Start Day",
+  "Author": "idermailer",
+  "Version": "2.0.1",
+  "Description": "Moving day is not fixed anymore",
+  "UniqueID": "idermailer.RandomStartDay",
+  "EntryDll": "RandomStartDay.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:13225" ]
+}

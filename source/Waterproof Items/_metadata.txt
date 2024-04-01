@@ -6,9 +6,9 @@ mods:
    Waterproof Items
 
 latest commit:
-   commit 4de57d0b9fe33686358cfbe06632fcd7e3129935
+   commit 703c6aade5cf4c81aaab9ffce43197e76038310e
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Mar 17 09:29:35 2024 -0500
+   Date:   Sun Mar 24 13:14:01 2024 -0500
    
-       Update readme, license date
+       Add i18n info to readme
    

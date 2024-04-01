@@ -15,16 +15,19 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewModdingAPI.Utilities;
 
 namespace Trading.Utilities
 {
     public class Config
     {
-        public string TradeMenuButton { get; set; } = "G, LeftStick";
+        public KeybindList TradeMenuButton { get; set; } = new(new Keybind(SButton.G), new(SButton.LeftStick));
+
+        //public string TradeMenuButton { get; set; } = "G, LeftStick";
 
         public bool Global { get; set; }
 
-        [JsonIgnore]
+        /*[JsonIgnore]
         public IEnumerable<SButton> TradeMenuSButton => ParseButtons(TradeMenuButton);
 
         private IEnumerable<SButton> ParseButtons(string btn)
@@ -36,6 +39,6 @@ namespace Trading.Utilities
                     open.Add(sButton);
 
             return open;
-        }
+        }*/
     }
 }

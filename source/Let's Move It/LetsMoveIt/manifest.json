@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Exblosis/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "LetsMoveIt",
+  "Author": "Exblosis",
+  "Version": "0.4.1",
+  "Description": "Let's Move It.",
+  "UniqueID": "Exblosis.LetsMoveIt",
+  "EntryDll": "LetsMoveIt.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20943" ]
+}

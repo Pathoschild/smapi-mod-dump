@@ -277,20 +277,12 @@ namespace CustomDeathPenaltyPlus
                 {
                     var cabin = (Context.IsMainPlayer ? "FarmHouse" : Game1.player.homeLocation.Value) ?? "FarmHouse";
                     // Get tile where player should spawn, same as (doorX, doorY - 2) position  
-                    int tileX = 12;
-                    int tileY = 18;
-                    switch (Game1.player.HouseUpgradeLevel)
+                    int tileX = 27;
+                    int tileY = 28;
+                    if (Game1.player.HouseUpgradeLevel == 0)
                     {
-                        case 0:
-                            tileX = 3;
-                            tileY = 9;
-                            break;
-                        case 1:
-                            tileX = 9;
-                            tileY = 8;
-                            break;
-                        default:
-                            break;
+                        tileX = 3;
+                        tileY = 9;
                     }
 
                     eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledFarm"], tileX, tileY, cabin, i18n.string_whathappened(), i18n.string_somethingbad());

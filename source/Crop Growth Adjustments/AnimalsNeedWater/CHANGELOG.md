@@ -8,8 +8,24 @@ for queries and analysis.**
 
 # Version history for AnimalsNeedWater
 
-## Upcoming
-- Updated to latest SMAPI version.
+## 1.5.3
+Released March 25, 2024.
+- Changed water pathfinding logic. Water pathfinding should work properly now.
+- Lowered default friendship loss when animal was left thirsty (20 -> 10 points).
+- Animals now drink from all water sources (wells, rivers, fish ponds, etc.) by default.
+
+## 1.5.2
+Released March 24, 2024.
+- Fixed not being able to water troughs using upgraded watering cans.
+
+## 1.5.1
+Released March 23, 2024.
+- Fixed not being able to water crops and pet bowl.
+
+## 1.5.0
+Released March 23, 2024.
+- Updated for SMAPI 4.0 and Stardew Valley 1.6
+- Migrated to .NET 6
 - Replaced xnb tilesheets with PNGs.
 
 ## 1.4.0

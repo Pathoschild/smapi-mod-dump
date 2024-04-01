@@ -11,10 +11,10 @@
 {
     "Name": "Sounds Patcher",
     "Author": "MindMeltMax",
-    "Version": "2.0.0",
+    "Version": "2.0.1",
     "Description": "Allows you to disable sounds",
     "UniqueID": "MindMeltMax.SoundsPatcher",
     "EntryDll": "Sounds Patcher.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": ["Nexus:7465"]
 }

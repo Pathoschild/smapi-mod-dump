@@ -1,0 +1,14 @@
+{
+  "PassableCrops": true,
+  "PassableScarecrows": true,
+  "PassableSprinklers": true,
+  "PassableForage": true,
+  "PassableTeaBushes": true,
+  "PassableTreeGrowth": 4,
+  "PassableFruitTreeGrowth": 1,
+  "PassableWeeds": true,
+  "PassableByAll": false,
+  "SlowDownWhenPassing": true,
+  "ShakeWhenPassing": true,
+  "UseCustomDrawing": true
+}

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+** Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
 **
 *************************************************/
 
@@ -137,6 +137,7 @@ namespace Unlockable_Bundles.Lib
         public static bool ShowDebugNames = false;
 
         private Dictionary<string, List<Item>> RequiredItems = new();
+        private Dictionary<string, List<Item>> RequiredItemsWithExceptions = new();
         public Unlockable(UnlockableModel model)
         {
             this.ID = model.ID;
@@ -328,7 +329,7 @@ namespace Unlockable_Bundles.Lib
                 _ => -1
             };
         }
-        public static bool isExceptionItem(string id) => id.ToLower() == "money" || id == "(O)858" || id == "(O)73";
+        public static bool isExceptionItem(string id) => id.ToLower().Trim() == "money" || id == "(O)858" || id == "(O)73";
         public static string getIDFromReqSplit(string key)
         {
             var id = key.Split(":").First().Trim();
@@ -542,6 +543,26 @@ namespace Unlockable_Bundles.Lib
             }
 
             RequiredItems.Add(reqKey, items);
+            return items;
+        }
+
+        public List<Item> getRequiredItemsAllowExceptions(string reqKey)
+        {
+            if (RequiredItemsWithExceptions.TryGetValue(reqKey, out List<Item> cachedItems))
+                return cachedItems;
+
+            var items = new List<Item>();
+
+            foreach (var req in reqKey.Split(",")) {
+                var id = getIDFromReqSplit(req);
+                if (id.ToLower().Trim() == "money")
+                    continue;
+
+                var quality = getQualityFromReqSplit(req);
+                items.Add(parseItem(id, 0, quality));
+            }
+
+            RequiredItemsWithExceptions.Add(reqKey, items);
             return items;
         }
 

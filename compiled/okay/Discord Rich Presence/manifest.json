@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Rich Presence",
+  "Author": "RuiNtD",
+  "Version": "3.0.1",
+  "Description": "Shows your in-game state on your Discord profile.",
+  "UniqueID": "RuiNtD.RichPresence",
+  "EntryDll": "SVRichPresence.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [
+    "Nexus:2156",
+    "GitHub:RuiNtD/SVRichPresence"
+  ]
+}

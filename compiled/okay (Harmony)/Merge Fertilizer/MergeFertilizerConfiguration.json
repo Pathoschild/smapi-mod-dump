@@ -1,0 +1,33 @@
+{
+  "ThreeInOne": false,
+
+  "texturePath1": "assets/mix_fertilizer_top_down.png",
+  "texturePath2": "assets/intermix_fertilizer_top_down.png",
+  "texturePath3": "assets/blend_fertilizer_top_down.png",
+
+  "NewFertilizerObjects": "/assets/NewFertilizerObjects.json",
+  "NewFertilizerRecipes": "/assets/NewFertilizerRecipes.json",
+  "NewFertilizerRecipesThreeInOne": "/assets/NewFertilizerRecipesThreeInOne.json",
+  "NameAndDescription": "/assets/NameAndDescription.json",
+  "NameAndDescription_zh": "/assets/NameAndDescription.zh-CN.json",
+
+  "FertilizerID1": "TianXiaobai.MergeFertilizer.Mix_Fertilizer",
+  "FertilizerID2": "TianXiaobai.MergeFertilizer.Intermix_Fertilizer",
+  "FertilizerID3": "TianXiaobai.MergeFertilizer.Blend_Fertilizer",
+
+  "SpeedBoost1": 0.1,
+  "SpeedBoost2": 0.25,
+  "SpeedBoost3": 0.33,
+
+  "QualityLevel1": 1,
+  "QualityLevel2": 2,
+  "QualityLevel3": 3,
+
+  "FertilizerIndex1": 3,
+  "FertilizerIndex2": 4,
+  "FertilizerIndex3": 5,
+
+  "RetentionChance1": 0.33,
+  "RetentionChance2": 0.66,
+  "RetentionChance3": 1
+}

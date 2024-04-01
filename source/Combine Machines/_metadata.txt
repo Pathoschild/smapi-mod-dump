@@ -6,9 +6,9 @@ mods:
    Combine Machines
 
 latest commit:
-   commit 241ed0fb34a3858666f72896a5b94d7162a69ddb
+   commit 31c979b79014b0c2432da2a115ef1f4195879d1d
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sun Jun 4 19:23:06 2023 -0400
+   Date:   Sat Mar 23 01:10:23 2024 -0400
    
-       Re-do Scarecrow radius patching logic which had been broken by a prior game update. Update germany de localization.
+       Add Generic Mod Config Menu support.
    

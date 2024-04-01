@@ -70,8 +70,8 @@ public class MultiPageLinkOption<T>
 			mod: mod,
 			name: Name,
 			tooltip: Tooltip,
-			draw: (b, position) => Draw(b, position),
-			height: () => GetHeight(),
+			draw: Draw,
+			height: GetHeight,
 			beforeMenuOpened: () =>
 			{
 				LastMouseLeftPressed = null;
@@ -83,10 +83,10 @@ public class MultiPageLinkOption<T>
 		);
 	}
 
-	private Vector2 GetGMCMSize()
+	private static Vector2 GetGMCMSize()
 		=> new(Math.Min(1200, Game1.uiViewport.Width - 200), Game1.uiViewport.Height - 128 - 116);
 
-	private Vector2 GetGMCMPosition(Vector2? size = null)
+	private static Vector2 GetGMCMPosition(Vector2? size = null)
 	{
 		Vector2 gmcmSize = size ?? GetGMCMSize();
 		return new((Game1.uiViewport.Width - gmcmSize.X) / 2, (Game1.uiViewport.Height - gmcmSize.Y) / 2);
@@ -124,7 +124,7 @@ public class MultiPageLinkOption<T>
 
 			Vector2 measure = new(SpriteText.getWidthOfString(text), SpriteText.getHeightOfString(text));
 			bool hoverLink = mouseX >= valuePosition.X && mouseY >= valuePosition.Y && mouseX < valuePosition.X + measure.X && mouseY < valuePosition.Y + measure.Y;
-			SpriteText.drawString(b, text, (int)valuePosition.X, (int)valuePosition.Y, layerDepth: 1, color: hoverGMCM && hoverLink ? SpriteText.color_Gray : -1);
+			SpriteText.drawString(b, text, (int)valuePosition.X, (int)valuePosition.Y, layerDepth: 1, color: hoverGMCM && hoverLink ? SpriteText.color_Gray : null);
 
 			if (hoverGMCM && hoverLink)
 			{

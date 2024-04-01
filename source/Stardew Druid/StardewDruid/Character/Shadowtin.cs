@@ -14,10 +14,10 @@ using Netcode;
 using StardewDruid.Cast;
 using StardewDruid.Dialogue;
 using StardewDruid.Event;
-using StardewDruid.Event.World;
 using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Objects;
 using System;
@@ -30,15 +30,9 @@ namespace StardewDruid.Character
     public class Shadowtin : StardewDruid.Character.Character
     {
 
-        public NetBool netSweepActive = new(false);
         public NetBool netForageActive = new(false);
-
-        public Dictionary<int, Rectangle> sweepFrames;
-
         public Vector2 forageVector;
         public Dictionary<int, Rectangle> forageFrames;
-
-        public int sweepTimer;
 
         public Shadowtin()
         {
@@ -53,69 +47,161 @@ namespace StardewDruid.Character
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(new INetSerializable[2]
-            {
-                 netSweepActive,
-                 netForageActive,
-            });
+            NetFields.AddField(netForageActive, "netForageActive");
+
         }
 
         public override void LoadOut()
         {
 
+            LoadBase();
+
             characterTexture = CharacterData.CharacterTexture(Name);
 
-            barrages = new();
+            walkFrames = FrameSeries(32, 32, 0, 128, 6);
 
-            roamVectors = new List<Vector2>();
-
-            eventVectors = new List<Vector2>();
-
-            targetVectors = new();
-
-            opponentThreshold = 640;
-
-            gait = 2f;
-
-            modeActive = mode.random;
-
-            behaviourActive = behaviour.idle;
-
-            idleInterval = 90;
-
-            moveLength = 4;
-            moveInterval = 12;
-
-            specialInterval = 30;
-
-            walkFrames = WalkFrames(32, 32);
-
-            dashFrames = WalkFrames(32, 32);
-
-            dashFrames[0][2] = new Rectangle(64, 192, 32, 32);
-            dashFrames[1][2] = new Rectangle(32, 192, 32, 32);
-            dashFrames[2][2] = new Rectangle(0, 192, 32, 32);
-            dashFrames[3][2] = new Rectangle(96, 192, 32, 32);
-
-            sweepFrames = new()
+            haltFrames = new()
             {
-
-                [0] = new Rectangle(0, 160, 64, 32),
-                [1] = new Rectangle(64, 160, 64, 32),
-                [2] = new Rectangle(0, 128, 64, 32),
-                [3] = new Rectangle(64, 128, 64, 32),
+                [0] = new(0, 64, 32, 32),
+                [1] = new(0, 32, 32, 32),
+                [2] = new(0, 0, 32, 32),
+                [3] = new(0, 96, 32, 32),
 
             };
 
-            haltFrames = sweepFrames;
+            idleFrames = new()
+            {
+                [0] = new()
+                {
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                },
+                [1] = new()
+                {
+                    new Rectangle(192, 320, 64, 64),
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                    new Rectangle(128, 320, 64, 64),
+                },
+                [2] = new()
+                {
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                },
+                [3] = new()
+                {
+                    new Rectangle(64, 320, 64, 64),
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                    new Rectangle(0, 320, 64, 64),
+                },
+            };
 
-            specialFrames = sweepFrames;
+            specialFrames = new()
+            {
+                [0] = new()
+                {
+
+                    new(64, 64, 32, 32),
+                    new(96, 64, 32, 32),
+
+                },
+                [1] = new()
+                {
+
+                    new(64, 32, 32, 32),
+                    new(96, 32, 32, 32),
+
+                },
+                [2] = new()
+                {
+
+                    new(64, 0, 32, 32),
+                    new(96, 0, 32, 32),
+
+                },
+                [3] = new()
+                {
+
+                    new(64, 96, 32, 32),
+                    new(96, 96, 32, 32),
+
+                },
+
+            };
+
+            dashCeiling = 2;
+            dashFloor = 1;
+
+            dashFrames = new()
+            {
+                [0] = new()
+                {
+                    new(0, 192, 32, 32),
+                    new(32, 64, 32, 32),
+                    new(32, 64, 32, 32),
+                },
+                [1] = new()
+                {
+                    new(0, 160, 32, 32),
+                    new(32, 32, 32, 32),
+                    new(32, 32, 32, 32),
+                },
+                [2] = new()
+                {
+                    new(0, 128, 32, 32),
+                    new(32, 0, 32, 32),
+                    new(32, 0, 32, 32),
+                },
+                [3] = new()
+                {
+                    new(0, 224, 32, 32),
+                    new(32, 96, 32, 32),
+                    new(32, 96, 32, 32),
+                },
+            };
+
+            sweepFrames = new()
+            {
+                [0] = new()
+                {
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                },
+                [1] = new()
+                {
+                    new Rectangle(0, 384, 64, 64),
+                    new Rectangle(64, 384, 64, 64),
+                    new Rectangle(128, 384, 64, 64),
+                    new Rectangle(192, 384, 64, 64),
+                },
+                [2] = new()
+                {
+                    new Rectangle(0, 256, 64, 64),
+                    new Rectangle(64, 256, 64, 64),
+                    new Rectangle(128, 256, 64, 64),
+                    new Rectangle(192, 256, 64, 64),
+                },
+                [3] = new()
+                {
+                    new Rectangle(0, 320, 64, 64),
+                    new Rectangle(64, 320, 64, 64),
+                    new Rectangle(128, 320, 64, 64),
+                    new Rectangle(192, 320, 64, 64),
+                },
+            };
 
             forageFrames = new()
             {
 
-                [0] = new Rectangle(0, 224, 32, 32),
-                [1] = new Rectangle(32, 224, 32, 32),
+                [0] = new Rectangle(128, 0, 32, 32),
+                [1] = new Rectangle(160, 0, 32, 32),
 
             };
 
@@ -138,14 +224,14 @@ namespace StardewDruid.Character
 
             }
 
+            Vector2 localPosition = getLocalPosition(Game1.viewport);
+
+            float drawLayer = (float)StandingPixel.Y / 10000f;
+
             if (IsEmoting && !Game1.eventUp)
             {
-                Vector2 localPosition2 = getLocalPosition(Game1.viewport);
-                localPosition2.Y -= 160;
-                b.Draw(Game1.emoteSpriteSheet, localPosition2, new Microsoft.Xna.Framework.Rectangle(base.CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, base.CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, getStandingY() / 10000f);
+                b.Draw(Game1.emoteSpriteSheet, localPosition - new Vector2(0,160), new Microsoft.Xna.Framework.Rectangle(base.CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, base.CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, drawLayer);
             }
-
-            Vector2 localPosition = getLocalPosition(Game1.viewport);
 
             b.Draw(
                 Game1.shadowTexture,
@@ -155,26 +241,26 @@ namespace StardewDruid.Character
                 Vector2.Zero,
                 4f,
                 SpriteEffects.None,
-                Math.Max(0.0f, getStandingY() / 10000f) - 0.0001f
+                drawLayer - 0.0001f
                 );
 
             if (netHaltActive.Value)
             {
 
-                int chooseFrame = idleFrame.Value % 6;
+                int chooseFrame = idleFrame % 8;
 
-                if (chooseFrame <2)
+                if (chooseFrame <5)
                 {
                     b.Draw(
                         characterTexture,
                         localPosition - new Vector2(32, 64f),
-                        walkFrames[netDirection.Value][0],
+                        haltFrames[netDirection.Value],
                         Color.White,
                         0f,
                         Vector2.Zero,
                         4f,
                         flip || (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                        Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                        drawLayer
                     );
 
                     return;
@@ -183,14 +269,14 @@ namespace StardewDruid.Character
 
                 b.Draw(
                      characterTexture,
-                     localPosition - new Vector2(96, 64f),
-                     haltFrames[chooseFrame - 2],
+                     localPosition - new Vector2(96, 96f),
+                     idleFrames[netDirection.Value][chooseFrame-4],
                      Color.White,
                      0f,
                      Vector2.Zero,
                      4f,
                      flip || (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                     Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                     drawLayer
                  );
 
             }
@@ -199,14 +285,14 @@ namespace StardewDruid.Character
 
                 b.Draw(
                      characterTexture,
-                     localPosition - new Vector2(96, 64f),
-                     sweepFrames[specialFrame.Value],
+                     localPosition - new Vector2(96, 96f),
+                     sweepFrames[netDirection.Value][sweepFrame],
                      Color.White,
                      0f,
                      Vector2.Zero,
                      4f,
                      flip || (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                     Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                     drawLayer
                  );
 
             }
@@ -216,13 +302,13 @@ namespace StardewDruid.Character
                 b.Draw(
                     characterTexture,
                     localPosition - new Vector2(64, 64f),
-                    forageFrames[specialFrame.Value],
+                    forageFrames[specialFrame],
                     Color.White,
                     0.0f,
                     Vector2.Zero,
                     4f,
                     SpriteEffects.None,
-                    Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                    drawLayer
                 );
 
             }
@@ -232,13 +318,13 @@ namespace StardewDruid.Character
                 b.Draw(
                     characterTexture,
                     localPosition - new Vector2(96, 64f),
-                    specialFrames[netDirection.Value],
+                    specialFrames[netDirection.Value][specialFrame],
                     Color.White,
                     0.0f,
                     Vector2.Zero,
                     4f,
                     flip || (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? (SpriteEffects)1 : 0,
-                    Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                    drawLayer
                 );
 
             }
@@ -248,13 +334,13 @@ namespace StardewDruid.Character
                 b.Draw(
                     characterTexture,
                     localPosition - new Vector2(32, 64f),
-                    dashFrames[netDirection.Value][moveFrame.Value],
+                    dashFrames[netDirection.Value][dashFrame],
                     Color.White,
                     0f,
                     Vector2.Zero,
                     4f,
                     flip || (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                    drawLayer
                 );
 
             }
@@ -263,13 +349,13 @@ namespace StardewDruid.Character
                 b.Draw(
                     characterTexture,
                     localPosition - new Vector2(32, 64f),
-                    walkFrames[netDirection.Value][moveFrame.Value],
+                    walkFrames[netDirection.Value][moveFrame],
                     Color.White,
                     0f,
                     Vector2.Zero,
                     4f,
                     flip || (netDirection.Value % 2 == 0 && netAlternative.Value == 3) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                    Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f))
+                    drawLayer
                 );
 
             }
@@ -279,7 +365,7 @@ namespace StardewDruid.Character
         public override Rectangle GetBoundingBox()
         {
 
-            return new Rectangle ((int)Position.X, (int)Position.Y, 64, 64);
+            return new Rectangle ((int)Position.X+ 8, (int)Position.Y + 8, 48, 48);
 
         }
 
@@ -290,13 +376,35 @@ namespace StardewDruid.Character
 
         public override bool checkAction(Farmer who, GameLocation l)
         {
-            if (!base.checkAction(who, l))
+
+            if (Mod.instance.eventRegister.ContainsKey("transform"))
             {
-                
+
+                Mod.instance.CastMessage("Unable to converse while transformed");
+
                 return false;
 
             }
-                
+
+            foreach (NPC character in currentLocation.characters)
+            {
+
+                if (character is StardewValley.Monsters.Monster monster && (double)Vector2.Distance(Position, monster.Position) <= 1280.0)
+                {
+
+                    return false;
+
+                }
+
+            }
+
+            if (netDashActive.Value || netSpecialActive.Value)
+            {
+
+                return false;
+
+            }
+
             if (!Mod.instance.dialogue.ContainsKey(nameof(Shadowtin)))
             {
                 
@@ -309,9 +417,20 @@ namespace StardewDruid.Character
                 dialogue[nameof(Shadowtin)] = shadowtin;
             
             }
-            
+
+            if (netSceneActive.Value && Mod.instance.dialogue[nameof(Shadowtin)].specialDialogue.Count == 0)
+            {
+
+                return false;
+
+            }
+
             Mod.instance.dialogue[nameof(Shadowtin)].DialogueApproach();
-            
+
+            Halt();
+
+            NextTarget(who.Position);
+
             return true;
         
         }
@@ -320,33 +439,8 @@ namespace StardewDruid.Character
         {
             base.ResetActives();
 
-            netSweepActive.Set(false);
-
-            sweepTimer = 0;
-
             netForageActive.Set(false);
         
-        }
-
-        public override void UpdateMove()
-        {
-
-            base.UpdateMove();
-
-            if (netDashActive.Value)
-            {
-                
-                float distance = Vector2.Distance(Position, targetVectors.First());
-
-                if (distance < 320 && moveFrame.Value > 2)
-                {
-
-                    moveFrame.Set(2);
-
-                }
-
-            }
-
         }
 
         public override void UpdateSpecial()
@@ -360,7 +454,7 @@ namespace StardewDruid.Character
 
                     Position = (forageVector * 64);
 
-                    ModUtility.AnimateQuickWarp(currentLocation, Position, "Solar");
+                    ModUtility.AnimateQuickWarp(currentLocation, Position);
 
                 }
 
@@ -376,9 +470,11 @@ namespace StardewDruid.Character
                         {
 
                             currentLocation.digUpArtifactSpot((int)forageVector.X, (int)forageVector.Y, Mod.instance.trackRegister["Shadowtin"].followPlayer);
+
                             currentLocation.objects.Remove(forageVector);
+                        
                         }
-                        else if (targetObject.isForage(currentLocation))
+                        else if (targetObject.isForage())
                         {
 
 
@@ -419,7 +515,7 @@ namespace StardewDruid.Character
 
                                 Chest chest = chests.Last();
 
-                                StardewValley.Item objectInstance = new StardewValley.Object(targetObject.ParentSheetIndex, 1, false, -1, 4);
+                                StardewValley.Item objectInstance = new StardewValley.Object(targetObject.ParentSheetIndex.ToString(), 1, false, -1, 4);
 
                                 chest.addItem(objectInstance);
 
@@ -455,38 +551,9 @@ namespace StardewDruid.Character
 
                     netForageActive.Set(false);
 
-                    specialFrame.Set(0);
-
-                    behaviourActive = behaviour.idle;
+                    specialFrame=(0);
 
                     cooldownTimer = 120;
-
-                }
-
-            }
-
-            if (netSweepActive.Value)
-            {
-
-                sweepTimer--;
-
-                if (sweepTimer % 15 == 0)
-                {
-
-                    int nextFrame = specialFrame.Value + 1;
-
-                    if (nextFrame > 3) { nextFrame = 0; }
-
-                    specialFrame.Set(nextFrame);
-
-                }
-
-                if (sweepTimer <= 0)
-                {
-
-                    netSweepActive.Set(false);
-
-                    specialFrame.Set(0);
 
                 }
 
@@ -498,101 +565,22 @@ namespace StardewDruid.Character
                 if (specialTimer % 30== 0)
                 {
 
-                    int nextFrame = specialFrame.Value + 1;
+                    int nextFrame = specialFrame+ 1;
 
                     if (nextFrame > 1) { nextFrame = 0; }
 
-                    specialFrame.Set(nextFrame);
+                    specialFrame=(nextFrame);
 
                 }
 
             }
 
-            if (barrages.Count > 0)
-            {
-
-                UpdateBarrages();
-
-            }
-
         }
 
-        public override bool MonsterAttack(StardewValley.Monsters.Monster targetMonster)
+        public override void TargetRandom(int level = 8)
         {
 
-            float distance = Vector2.Distance(Position, targetMonster.Position);
-
-            if (distance >= 128f && distance <= 640f)
-            {
-
-                Vector2 vector2 = new(targetMonster.Position.X - Position.X - 32f, targetMonster.Position.Y - Position.Y);
-
-                if ((double)Math.Abs(vector2.Y) <= 128.0)
-                {
-
-                    netSpecialActive.Set(true);
-
-                    behaviourActive = behaviour.special;
-
-                    specialTimer = 60;
-
-                    NextTarget(targetMonster.Position, -1);
-
-                    ResetAll();
-
-                    BarrageHandle beam = new(currentLocation, targetMonster.getTileLocation(), getTileLocation(), 2, 1, "Blue", -1, Mod.instance.DamageLevel());
-
-                    beam.type = BarrageHandle.barrageType.beam;
-
-                    barrages.Add(beam);
-
-                }
-                else
-                {
-
-                    behaviourActive = behaviour.dash;
-
-                    moveTimer = (int)(distance / gait * 5);
-
-                    netDashActive.Set(true);
-
-                    NextTarget(targetMonster.Position, -1);
-
-                }
-
-                return true;
-
-            }
-
-            return false;
-
-        }
-
-        public override void HitMonster(StardewValley.Monsters.Monster monsterCharacter)
-        {
-
-            DealDamageToMonster(monsterCharacter,true);
-
-            targetVectors.Clear();
-
-            netSweepActive.Set(true);
-
-            int nextFrame = netDirection.Value + 1;
-
-            if (nextFrame > 3) { nextFrame = 0; }
-
-            specialFrame.Set(nextFrame);
-
-            sweepTimer = 60;
-
-            cooldownTimer = 120;
-
-        }
-
-        public override void TargetRandom()
-        {
-
-            if (netFollowActive)
+            if (netFollowActive.Value)
             {
 
                 targetVectors.Clear();
@@ -620,7 +608,7 @@ namespace StardewDruid.Character
 
                             StardewValley.Object targetObject = currentLocation.objects[objectVector];
 
-                            if (targetObject.Name.Contains("Artifact Spot") || targetObject.isForage(currentLocation))
+                            if (targetObject.Name.Contains("Artifact Spot") || targetObject.isForage())
                             {
 
                                 forageVector = objectVector;

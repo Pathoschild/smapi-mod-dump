@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -53,10 +55,9 @@ namespace PostBoxMod
 
             Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             Helper.Events.Content.AssetRequested += this.OnAssetRequested;
-            Helper.Events.Display.MenuChanged += this.OnMenuChanged;
             Helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            Helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             Helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-            Helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
 
             this.PostboxTexture = Helper.ModContent.Load<Texture2D>("assets/Postbox.png");
         }
@@ -68,24 +69,15 @@ namespace PostBoxMod
         /// <param name="e">The event data.</param>
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/Blueprints"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings"))
             {
-                e.Edit(this.EditBluePrints);
+                e.Edit(this.EditBuildings);
             }
             else if (e.Name.IsEquivalentTo("Buildings/Postbox"))
             {
                 e.LoadFrom(() => this.PostboxTexture, AssetLoadPriority.Exclusive);
             }
         }
-
-        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            if(e.FromModID == "i-saac-b.PostBoxMod"){
-                PostageMessage message = e.ReadAs<PostageMessage>();
-                Postbox.outgoing.Add(new Tuple<StardewValley.Object, string, Farmer>(new StardewValley.Object(Vector2.Zero, message.itemId, 0), message.receiver, Game1.getFarmer(message.senderId)));
-            }
-        }
-
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
@@ -116,6 +108,13 @@ namespace PostBoxMod
                 tooltip: () => "G cost for the Postbox",
                 getValue: () => this.Config.PostboxCost,
                 setValue: value => this.Config.PostboxCost = value
+            ); 
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => "Postbox Build Time",
+                tooltip: () => "Number of days to build",
+                getValue: () => this.Config.PostboxBuildTime,
+                setValue: value => this.Config.PostboxBuildTime = value
             );
             configMenu.AddTextOption(
                  mod: this.ModManifest,
@@ -142,13 +141,12 @@ namespace PostBoxMod
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            this.Helper.GameContent.InvalidateCacheAndLocalized("Data/Blueprints");
+            this.Helper.GameContent.InvalidateCacheAndLocalized("Data/Buildings");
         }
 
-        // add data to the blueprints xnb
-        private void EditBluePrints(IAssetData asset)
+        // add data to the buildings xnb
+        private void EditBuildings(IAssetData asset)
         {
-            int cost = Config.PostboxCost;
             string material = "335 3 330 5 390 50";
             switch (Config.PostboxMaterialCost) {
                 case "Normal": break;
@@ -158,7 +156,44 @@ namespace PostBoxMod
                 case "Custom": material = Config.CustomPostboxMaterialCost; break;
                 default: break;
             }
-            asset.AsDictionary<string, string>().Data.Add("Postbox", $"{material}/3/2/-1/-1/-2/-1/null/{Helper.Translation.Get("blueprint-title")}/{Helper.Translation.Get("blueprint-description")}/Buildings/none/96/96/-1/null/Farm/{cost}/false");
+
+            // Doesn't appear to be loading correctly from JSON, so hacky fix updating important info follows.
+            var model = this.Helper.Data.ReadJsonFile<StardewValley.GameData.Buildings.BuildingData>("Postbox.json") ?? new StardewValley.GameData.Buildings.BuildingData();
+
+            model.Name = this.Helper.Translation.Get("blueprint-title");
+            model.Description = this.Helper.Translation.Get("blueprint-description");
+            model.BuildMaterials = ParseMaterials(material);
+            model.BuildCost = Config.PostboxCost;
+            model.BuildDays = Config.PostboxBuildTime;
+            model.Size.X = 3; 
+            model.Size.Y = 2;
+            model.ActionTiles = new List<StardewValley.GameData.Buildings.BuildingActionTile>();
+            StardewValley.GameData.Buildings.BuildingActionTile actionTile = new StardewValley.GameData.Buildings.BuildingActionTile();
+            actionTile.Tile.X = 1; 
+            actionTile.Tile.Y = 1;
+            actionTile.Id = "deposit";
+            actionTile.Action = "";
+            model.ActionTiles.Add(actionTile);
+            model.BuildingType = "Postbox";
+
+            asset.AsDictionary<string, StardewValley.GameData.Buildings.BuildingData>().Data.Add("Postbox", model);
+        }
+
+        private List<StardewValley.GameData.Buildings.BuildingMaterial> ParseMaterials(string material)
+        {
+            string[] data = material.Split(' ');
+            List<StardewValley.GameData.Buildings.BuildingMaterial> results = new List<StardewValley.GameData.Buildings.BuildingMaterial>();
+
+            for (int i = 0; i < data.Length-1; i+=2)
+            {
+                StardewValley.GameData.Buildings.BuildingMaterial bmm = new StardewValley.GameData.Buildings.BuildingMaterial();
+                bmm.ItemId = data[i];
+                bmm.Amount = int.Parse(data[i+1]);
+                results.Add(bmm);
+            }
+
+            return results;
+            
         }
 
         //debugging
@@ -166,7 +201,7 @@ namespace PostBoxMod
         {
             Monitor.Log("Checking for unconverted Postbox...", LogLevel.Debug);
             Farm farm = Game1.getFarm();
-            for (int i = 0; i < farm.buildings.Count; ++i)  
+            for (int i = 0; i < farm.buildings.Count; ++i)
             {
                 Building building = farm.buildings[i];
                 if (building.buildingType.Value == "Postbox" && !(building is Postbox))
@@ -186,16 +221,10 @@ namespace PostBoxMod
             }
         }
 
-        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+        private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
-            if (e.NewMenu is StardewValley.Menus.CarpenterMenu Menu)
-            {
-                if (!Helper.Reflection.GetField<bool>(Menu, "magicalConstruction").GetValue())
-                {
-                    var Blueprints = Helper.Reflection.GetField<List<BluePrint>>(Menu, "blueprints").GetValue();
-                    Blueprints.Add(new BluePrint("Postbox"));
-                }
-            }
+            Postbox.process();
         }
+
     }
 }

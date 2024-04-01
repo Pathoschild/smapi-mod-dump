@@ -1,0 +1,20 @@
+{
+  "Name": "BarleyZP Allergies",
+  "Author": "BarleyZP",
+  "Version": "1.0.1",
+  "Description": "BarleyZP's Allergy Mod",
+  "UniqueID": "BarleyZP.BzpAllergies",
+  "EntryDll": "BzpAllergies.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:21238" ],
+  "Dependencies": [
+    {
+      "UniqueID": "BarleyZP.BzpAllergies.CP",
+      "IsRequired": false // changed locally
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

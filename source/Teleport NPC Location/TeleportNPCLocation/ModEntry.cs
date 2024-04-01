@@ -171,17 +171,6 @@ namespace TeleportNPCLocation
 
         }
 
-        private static IEnumerable<GameLocation> GetAllStaticLocations()
-        {
-            return Game1.locations
-                .Concat(
-                    from location in Game1.locations.OfType<BuildableGameLocation>()
-                    from building in location.buildings
-                    where building.indoors.Value != null
-                    select building.indoors.Value
-                );
-        }
-
         /// <summary>Parse ban npc list string.</summary>
         private string[] ParseBanNPCListString()
         {
@@ -209,14 +198,12 @@ namespace TeleportNPCLocation
         {
             var villagers = new List<NPC>();
 
-            foreach (GameLocation location in GetAllStaticLocations())
+            Utility.ForEachCharacter(npc =>
             {
-                foreach (var npc in location.characters)
-                {
-                    if (npc != null && !villagers.Contains(npc) && npc.isVillager())
-                        villagers.Add(npc);
-                }
-            }
+                if (npc != null && !villagers.Contains(npc) && npc.IsVillager)
+                    villagers.Add(npc);
+                return true;
+            });
 
             return villagers;
         }

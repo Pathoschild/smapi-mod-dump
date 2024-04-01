@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,10 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(FruitTree.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(FruitTree.draw), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(FruitTree.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
-            harmony.Patch(AccessTools.Constructor(typeof(FruitTree), new[] { typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(FruitTreePostfix)));
-            harmony.Patch(AccessTools.Constructor(typeof(FruitTree), new[] { typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(FruitTreePostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(FruitTree), null), postfix: new HarmonyMethod(GetType(), nameof(FruitTreePostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(FruitTree), new[] { typeof(string), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(FruitTreePostfix)));
 
             if (PatchTemplate.IsDGAUsed())
             {
@@ -56,7 +57,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             }
         }
 
-        private static bool DrawPrefix(FruitTree __instance, float ___shakeRotation, float ___shakeTimer, float ___alpha, List<Leaf> ___leaves, NetBool ___falling, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(FruitTree __instance, float ___shakeRotation, float ___shakeTimer, float ___alpha, List<Leaf> ___leaves, NetBool ___falling, SpriteBatch spriteBatch)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -71,8 +72,9 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     return true;
                 }
+                Vector2 tileLocation = __instance.Tile;
 
-                string season = Game1.GetSeasonForLocation(__instance.currentLocation);
+                string season = Game1.GetSeasonForLocation(__instance.Location).ToString();
                 if ((bool)__instance.greenHouseTileTree)
                 {
                     spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), new Rectangle(669, 1957, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1E-08f);
@@ -99,41 +101,46 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                             break;
                     }
 
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f + positionOffset.X, tileLocation.Y * 64f - (float)sourceRect.Height + 128f + positionOffset.Y)), sourceRect, Color.White, ___shakeRotation, new Vector2(24f, 80f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f - tileLocation.X / 1000000f);
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f + positionOffset.X, tileLocation.Y * 64f - (float)sourceRect.Height + 128f + positionOffset.Y)), sourceRect, Color.White, ___shakeRotation, new Vector2(24f, 80f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, __instance.getBoundingBox().Bottom / 10000f - tileLocation.X / 1000000f);
                 }
                 else
                 {
+                    Rectangle boundingBox = __instance.getBoundingBox();
                     if (!__instance.stump || (bool)___falling)
                     {
+                        bool ignoreSeason = __instance.IgnoresSeasonsHere();
                         if (!___falling)
                         {
-                            spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f)), new Rectangle((12 + (__instance.greenHouseTree ? 1 : Utility.getSeasonNumber(season)) * 3) * 16, textureOffset * 5 * 16 + 64, 48, 16), ((int)__instance.struckByLightningCountdown > 0) ? (Color.Gray * ___alpha) : (Color.White * ___alpha), 0f, new Vector2(24f, 16f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1E-07f);
+                            spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f)), new Rectangle((12 + (ignoreSeason ? 1 : Utility.getSeasonNumber(season)) * 3) * 16, textureOffset * 5 * 16 + 64, 48, 16), ((int)__instance.struckByLightningCountdown > 0) ? (Color.Gray * ___alpha) : (Color.White * ___alpha), 0f, new Vector2(24f, 16f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1E-07f);
                         }
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f)), new Rectangle((12 + (__instance.greenHouseTree ? 1 : Utility.getSeasonNumber(season)) * 3) * 16, textureOffset * 5 * 16, 48, 64), ((int)__instance.struckByLightningCountdown > 0) ? (Color.Gray * ___alpha) : (Color.White * ___alpha), ___shakeRotation, new Vector2(24f, 80f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.001f - tileLocation.X / 1000000f);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 64f)), new Rectangle((12 + (ignoreSeason ? 1 : Utility.getSeasonNumber(season)) * 3) * 16, textureOffset * 5 * 16, 48, 64), ((int)__instance.struckByLightningCountdown > 0) ? (Color.Gray * ___alpha) : (Color.White * ___alpha), ___shakeRotation, new Vector2(24f, 80f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f + 0.001f - tileLocation.X / 1000000f);
                     }
-                    if ((float)__instance.health >= 1f || (!___falling && (float)__instance.health > -99f))
+                    if (__instance.health.Value >= 1f || (!___falling && __instance.health.Value > -99f))
                     {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f + ((___shakeTimer > 0f) ? ((float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 2f) : 0f), tileLocation.Y * 64f + 64f)), new Rectangle(384, textureOffset * 5 * 16 + 48, 48, 32), ((int)__instance.struckByLightningCountdown > 0) ? (Color.Gray * ___alpha) : (Color.White * ___alpha), 0f, new Vector2(24f, 32f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((bool)__instance.stump && !___falling) ? ((float)__instance.getBoundingBox(tileLocation).Bottom / 10000f) : ((float)__instance.getBoundingBox(tileLocation).Bottom / 10000f - 0.001f - tileLocation.X / 1000000f));
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f + ((___shakeTimer > 0f) ? ((float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 2f) : 0f), tileLocation.Y * 64f + 64f)), new Rectangle(384, textureOffset * 5 * 16 + 48, 48, 32), ((int)__instance.struckByLightningCountdown > 0) ? (Color.Gray * ___alpha) : (Color.White * ___alpha), 0f, new Vector2(24f, 32f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((bool)__instance.stump && !___falling) ? (boundingBox.Bottom / 10000f) : (boundingBox.Bottom / 10000f - 0.001f - tileLocation.X / 1000000f));
                     }
-                    for (int i = 0; i < (int)__instance.fruitsOnTree; i++)
+                    for (int i = 0; i < __instance.fruit.Count; i++)
                     {
+                        ParsedItemData obj = ((__instance.struckByLightningCountdown.Value > 0) ? ItemRegistry.GetDataOrErrorItem("(O)382") : ItemRegistry.GetDataOrErrorItem(__instance.fruit[i].QualifiedItemId));
+                        Texture2D texture = obj.GetTexture();
+                        Rectangle sourceRect = obj.GetSourceRect();
                         switch (i)
                         {
                             case 0:
-                                spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f - 64f + tileLocation.X * 200f % 64f / 2f, tileLocation.Y * 64f - 192f - tileLocation.X % 64f / 3f)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, ((int)__instance.struckByLightningCountdown > 0) ? 382 : ((int)__instance.indexOfFruit), 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.002f - tileLocation.X / 1000000f);
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f - 64f + tileLocation.X * 200f % 64f / 2f, tileLocation.Y * 64f - 192f - tileLocation.X % 64f / 3f)), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)boundingBox.Bottom / 10000f + 0.002f - tileLocation.X / 1000000f);
                                 break;
                             case 1:
-                                spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f - 256f + tileLocation.X * 232f % 64f / 3f)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, ((int)__instance.struckByLightningCountdown > 0) ? 382 : ((int)__instance.indexOfFruit), 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.002f - tileLocation.X / 1000000f);
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f - 256f + tileLocation.X * 232f % 64f / 3f)), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)boundingBox.Bottom / 10000f + 0.002f - tileLocation.X / 1000000f);
                                 break;
                             case 2:
-                                spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + tileLocation.X * 200f % 64f / 3f, tileLocation.Y * 64f - 160f + tileLocation.X * 200f % 64f / 3f)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, ((int)__instance.struckByLightningCountdown > 0) ? 382 : ((int)__instance.indexOfFruit), 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.FlipHorizontally, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.002f - tileLocation.X / 1000000f);
+                                spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + tileLocation.X * 200f % 64f / 3f, tileLocation.Y * 64f - 160f + tileLocation.X * 200f % 64f / 3f)), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.FlipHorizontally, (float)boundingBox.Bottom / 10000f + 0.002f - tileLocation.X / 1000000f);
                                 break;
                         }
                     }
                 }
                 foreach (Leaf j in ___leaves)
                 {
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, j.position), new Rectangle((24 + Utility.getSeasonNumber(season)) * 16, textureOffset * 5 * 16, 8, 8), Color.White, j.rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.01f);
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, j.position), new Rectangle((24 + Utility.getSeasonNumber(season)) * 16, textureOffset * 5 * 16, 8, 8), Color.White, j.rotation, Vector2.Zero, 4f, SpriteEffects.None, __instance.getBoundingBox().Bottom / 10000f + 0.01f);
                 }
 
                 return false;
@@ -145,16 +152,23 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SEASON) && !String.IsNullOrEmpty(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]) && __instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_SAPLING_NAME))
             {
-                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.currentLocation);
+                __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON] = Game1.GetSeasonForLocation(__instance.Location).ToString();
                 __instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME] = String.Concat(__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_OWNER], ".", $"{AlternativeTextureModel.TextureType.FruitTree}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SAPLING_NAME]}_{__instance.modData[ModDataKeys.ALTERNATIVE_TEXTURE_SEASON]}");
             }
         }
 
-        private static void FruitTreePostfix(FruitTree __instance, int saplingIndex)
+        private static void FruitTreePostfix(FruitTree __instance)
         {
-            var saplingName = Game1.objectInformation.ContainsKey(saplingIndex) ? Game1.objectInformation[saplingIndex].Split('/')[0] : String.Empty;
+            string id = __instance.treeId.Value;
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return;
+            }
+
+            var saplingName = Game1.objectData.ContainsKey(id) ? Game1.objectData[id].Name : String.Empty;
             var instanceName = $"{AlternativeTextureModel.TextureType.FruitTree}_{saplingName}";
-            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.Location)}";
 
             if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {

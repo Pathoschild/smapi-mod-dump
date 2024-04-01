@@ -10,7 +10,7 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Updated for Stardew Valley 1.5.6.
+* Updated for Stardew Valley 1.6.
 * Added update keys.
 * Embedded `.pdb` data into the DLL, which fixes error line numbers in Linux/macOS logs.
 * Fixed ladders dropped by a monster or placed with a staircase not immediately passable.

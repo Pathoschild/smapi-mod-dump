@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -27,7 +27,6 @@ namespace Custom_Farm_Loader.Lib
         private static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
-        private static Dictionary<string, string> CachedFishData;
 
         private string Name = ""; //Makes debugging easier
 
@@ -53,8 +52,6 @@ namespace Custom_Farm_Loader.Lib
             Mod = mod;
             Monitor = mod.Monitor;
             Helper = mod.Helper;
-
-            CachedFishData = Game1.content.Load<Dictionary<string, string>>("Data\\Fish");
         }
 
         public static List<Fish> parseFishJsonArray(JProperty jArray)
@@ -62,12 +59,12 @@ namespace Custom_Farm_Loader.Lib
             List<Fish> ret = new List<Fish>();
 
             foreach (JObject obj in jArray.First())
-                ret.AddRange(checkGroups(obj));
+                ret.Add(parseFishJObject(obj));
 
             return ret;
         }
 
-        public static Fish parseFishJObject(JObject obj, bool forAll = false)
+        public static Fish parseFishJObject(JObject obj)
         {
             Fish fish = new Fish();
 
@@ -105,15 +102,10 @@ namespace Custom_Farm_Loader.Lib
                 }
             }
 
-            if (!forAll) {
-                fish.updateType();
-                fish.applyDefaultIfNotChanged();
-            }
-
             return fish;
         }
 
-        private void updateType()
+        public void updateType()
         {
             if (Id == "" || Id.StartsWith("("))
                 return;
@@ -138,59 +130,10 @@ namespace Custom_Farm_Loader.Lib
                 if (Id.ToLower() == "farm")
                     Id = "Farm_Standard";
 
-                Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
-                var fishLocationData = locationData.FirstOrDefault(el => el.Key.ToLower() == Id.ToLower());
-
-                if (fishLocationData.Key != null)
-                    return;
+                return;
             }
 
             throw new Exception($"Fish ID not found: {Id}");
-        }
-
-        private static List<Fish> checkGroups(JObject obj)
-        {
-            var baseFish = parseFishJObject(obj);
-
-            if (baseFish.Type == FishType.Location) {
-                Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
-                var fishLocationData = locationData.FirstOrDefault(el => el.Key.ToLower() == baseFish.Id.ToLower());
-
-                if (fishLocationData.Key != null)
-                    return parseFishLocationData(fishLocationData.Value, obj);
-            }
-
-            return new List<Fish>() { parseFishJObject(obj) };
-        }
-
-        private static List<Fish> parseFishLocationData(LocationData data, JObject obj)
-        {
-            List<Fish> ret = new List<Fish>();
-
-            foreach (var fish in data.Fish) {
-                if (fish.IsBossFish)
-                    continue;
-
-                var newFish = parseFishJObject(obj);
-                newFish.Id = fish.Id;
-                newFish.Type = FishType.Item;
-                newFish.applyDefaultIfNotChanged();
-
-                if (newFish.ChangedChance)
-                    newFish.Chance *= fish.Chance;
-
-                if (!newFish.Filter.ChangedSeasons) {
-                    newFish.Filter.Seasons = new List<string>() { fish.Season.ToString() };
-                    ret.Add(newFish);
-
-                } else {
-                    if (!ret.Exists(el => el.Id == newFish.Id))
-                        ret.Add(newFish);
-                }
-            }
-
-
-            return ret;
         }
 
         public void applyDefaultIfNotChanged()
@@ -198,11 +141,13 @@ namespace Custom_Farm_Loader.Lib
             if (Type != FishType.Item)
                 return;
 
-            if (!CachedFishData.ContainsKey(Id))
+            var fishAsset = Game1.content.Load<Dictionary<string, string>>("Data\\Fish");
+
+            if (!fishAsset.ContainsKey(Id))
                 return;
 
             Type = FishType.Item;
-            var fishData = CachedFishData[Id];
+            var fishData = fishAsset[Id];
             var split = fishData.Split('/');
 
             Name = split[0];

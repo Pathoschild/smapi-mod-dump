@@ -58,7 +58,8 @@ namespace FarmTypeManager
                     { "Mussel", 0 },
                     { "Fossil", 0 },
                     { "Clay", 0 },
-                    { "CinderShard", 0 }
+                    { "CinderShard", 0 },
+                    { "Coal", 0 }
                 };
 
                 //weighted chance to spawn ore at the minimum required skill level (e.g. by default, iron starts spawning at level 4 mining skill with a 15% chance, but is 0% before that)
@@ -86,7 +87,8 @@ namespace FarmTypeManager
                     { "Mussel", 0 },
                     { "Fossil", 0 },
                     { "Clay", 0 },
-                    { "CinderShard", 0 }
+                    { "CinderShard", 0 },
+                    { "Coal", 0 }
                 };
 
                 //weighted chance to spawn ore at level 10 mining skill; for any levels in between "starting" and level 10, the odds are gradually adjusted (e.g. by default, stone is 66% at level 0, 57% at level 5, and 48% at level 10)
@@ -114,7 +116,8 @@ namespace FarmTypeManager
                     { "Mussel", 0 },
                     { "Fossil", 0 },
                     { "Clay", 0 },
-                    { "CinderShard", 0 }
+                    { "CinderShard", 0 },
+                    { "Coal", 0 }
                 };
 
                 CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for those who want to use their own custom terrain type

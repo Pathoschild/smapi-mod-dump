@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Custom NPC Exclusions",
+  "Author": "Esca",
+  "Version": "1.6.0",
+  "Description": "Allows modders to exclude custom NPCs from quests and events via Content Patcher.",
+  "UniqueID": "Esca.CustomNPCExclusions",
+  "EntryDll": "CustomNPCExclusions.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:7089", "GitHub:Esca-MMC/CustomNPCExclusions", "ModDrop:847997" ]
+}

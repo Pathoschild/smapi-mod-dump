@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "events": [
+    {
+      "name": "Harvey-event-0",
+      "location": "JoshHouse",
+      "eventId": "56",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Harvey-event-1",
+      "location": "Hospital",
+      "eventId": "57",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Harvey-event-2",
+      "location": "SeedShop",
+      "eventId": "58",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Harvey-event-3",
+      "location": "Hospital",
+      "eventId": "571102",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Harvey-event-4",
+      "location": "Railroad",
+      "eventId": "528052",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Harvey-event-5",
+      "location": "FarmHouse",
+      "eventId": "3917626",
+      "night": false,
+      "mail": null
+    }
+  ]
+}

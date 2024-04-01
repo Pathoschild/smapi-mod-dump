@@ -11,5 +11,14 @@
 {
   "artifact_start": "Starting to Spawn Artifact Spots.",
   "artifact_spawned": "Spawned {{artifact_spawns}} Artifact Spots.",
-  "artifact_loc_error": "The location was empty. Something may have gone wrong."
+  "artifact_loc_error": "The location was empty. Something may have gone wrong.",
+  "config_mod_name": "Increased Artifact Spots",
+  "config_artifact_average_artifact_spots_text": "Average Artifact Spots Spawned",
+  "config_artifact_average_artifact_spots_description": "Estimated amount of artifacts to spawn",
+  "config_artifact_spawn_farm_text": "Spawn on Farm",
+  "config_artifact_spawn_farm_description": "Whether artifact spots should be spawned on the farm.",
+  "config_artifact_force_average_spawn_spots_text": "Force Average Spawn Spots",
+  "config_artifact_force_average_spawn_spots_description": "For the mod to spawn as many artifact spots as possible without going over the Average amt set. (May cause major lag)",
+  "config_artifact_show_spawned_spots_text": "Show spawned artifact spots.",
+  "config_artifact_show_spawned_spots_description": "Enable or Disable if we should show artifact spots."
 }

@@ -6,11 +6,11 @@ mods:
    Name Tags
 
 latest commit:
-   commit 706d89c410d0478e0ccef1cc63108803d5494bbc
+   commit b0e39ade93be4e4e9f56e0e19f4d9e40272876c5
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Tue May 4 15:09:19 2021 +0800
+   Date:   Wed Mar 27 23:17:48 2024 +0800
    
-       Merge pull request #4 from Enaium-StardewValleyMods/develop
+       Merge pull request #5 from Enaium-StardewValleyMods/develop
        
-       Update manifest.json
+       update to 1.6
    

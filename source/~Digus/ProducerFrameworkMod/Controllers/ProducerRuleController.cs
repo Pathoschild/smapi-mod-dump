@@ -19,7 +19,9 @@ using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewValley.GameData.Objects;
 using Object = StardewValley.Object;
+using System.Security.AccessControl;
 
 namespace ProducerFrameworkMod.Controllers
 {
@@ -33,7 +35,8 @@ namespace ProducerFrameworkMod.Controllers
         /// <returns>true if should be excluded</returns>
         public static bool IsInputExcluded(ProducerRule producerRule, Object input)
         {
-            return producerRule.ExcludeIdentifiers != null && (producerRule.ExcludeIdentifiers.Contains(input.ParentSheetIndex.ToString())
+            return producerRule.ExcludeIdentifiers != null && (producerRule.ExcludeIdentifiers.Contains(input.QualifiedItemId.ToString())
+                                                               ||producerRule.ExcludeIdentifiers.Contains(input.ItemId.ToString())
                                                                || producerRule.ExcludeIdentifiers.Contains(input.Name)
                                                                || producerRule.ExcludeIdentifiers.Contains(input.Category.ToString())
                                                                || producerRule.ExcludeIdentifiers.Intersect(input.GetContextTags()).Any());
@@ -70,22 +73,25 @@ namespace ProducerFrameworkMod.Controllers
         /// <param name="who">The farmer to check</param>
         public static void ValidateIfAnyFuelStackLessThanRequired(ProducerRule producerRule, Farmer who, bool probe)
         {
-            foreach (Tuple<int, int> fuel in producerRule.FuelList)
+            foreach (Tuple<string, int> fuel in producerRule.FuelList)
             {
-                if (!who.hasItemInInventory(fuel.Item1, fuel.Item2))
+                if (!(who.getItemCount(fuel.Item1) >= fuel.Item2))
                 {
                     if (!probe)
                     {
-                        if (fuel.Item1 >= 0)
+                        if (ItemRegistry.Exists(fuel.Item1))
                         {
-                            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation",ContentSource.GameContent);
-                            var objectName = Lexicon.makePlural(ObjectUtils.GetObjectParameter(objects[fuel.Item1], (int) ObjectParameter.DisplayName), fuel.Item2 == 1);
-                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new {amount = fuel.Item2, objectName}));
+                                var objectName = Lexicon.makePlural(ItemRegistry.GetData(fuel.Item1).DisplayName, fuel.Item2 == 1);
+                                throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new { amount = fuel.Item2, objectName }));
                         }
                         else
                         {
-                            var objectName = ObjectUtils.GetCategoryName(fuel.Item1);
-                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new {amount = fuel.Item2, objectName}));
+                            var objectName = fuel.Item1;
+                            if (int.TryParse(fuel.Item1, out int item1))
+                            {
+                                objectName = ObjectUtils.GetCategoryName(item1);
+                            }
+                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new { amount = fuel.Item2, objectName }));
                         }
                     }
                     else
@@ -97,24 +103,21 @@ namespace ProducerFrameworkMod.Controllers
         }
 
         public static OutputConfig ProduceOutput(ProducerRule producerRule, Object producer,
-            Func<int, int, bool> fuelSearch, Farmer who, GameLocation location
+            Func<string, int, bool> fuelSearch, Farmer who, GameLocation location
             , ProducerConfig producerConfig = null, Object input = null
             , bool probe = false, bool noSoundAndAnimation = false)
         {
-            if (who == null)
-            {
-                who = Game1.getFarmer((long)producer.owner);
-            }
+            who ??= Game1.getFarmer((long)producer.owner.Value);
             Vector2 tileLocation = producer.TileLocation;
             Random random = ProducerRuleController.GetRandomForProducing(tileLocation);
             OutputConfig outputConfig = OutputConfigController.ChooseOutput(producerRule.OutputConfigs, random, fuelSearch, location, input);
             if (outputConfig != null)
             {
-                Object output = producerRule.LookForInputWhenReady == null ? OutputConfigController.CreateOutput(outputConfig, input, random) : new Object(outputConfig.OutputIndex,1);
-
-                producer.heldObject.Value = output;
+                Object output = producerRule.LookForInputWhenReady == null ? OutputConfigController.CreateOutput(outputConfig, input, random) : ItemRegistry.Create<Object>(outputConfig.OutputItemId);
+                
                 if (!probe)
                 {
+                    producer.heldObject.Value = output;
                     if (producerRule.LookForInputWhenReady == null)
                     {
                         OutputConfigController.LoadOutputName(outputConfig, producer.heldObject.Value, input, who);
@@ -126,12 +129,13 @@ namespace ProducerFrameworkMod.Controllers
                         SoundUtil.PlayDelayedSound(producerRule.DelayedSounds, location);
                     }
 
-                    producer.minutesUntilReady.Value = outputConfig.MinutesUntilReady ?? producerRule.MinutesUntilReady;
+                    producer.MinutesUntilReady = outputConfig.MinutesUntilReady ?? producerRule.MinutesUntilReady;
                     if (producerRule.SubtractTimeOfDay)
                     {
-                        producer.minutesUntilReady.Value = Math.Max(producer.minutesUntilReady.Value - Utility.ConvertTimeToMinutes(Game1.timeOfDay) + 360, 1);
+                        producer.MinutesUntilReady = Math.Max(producer.MinutesUntilReady - Utility.ConvertTimeToMinutes(Game1.timeOfDay) + 360, 1);
                     }
 
+                    producer.lastOutputRuleId.Value = null;
                     if (producerConfig != null)
                     {
                         producer.showNextIndex.Value = producerConfig.AlternateFrameProducing;
@@ -141,7 +145,7 @@ namespace ProducerFrameworkMod.Controllers
                     {
                         AnimationController.DisplayAnimation(producerRule.PlacingAnimation.Value,
                             producerRule.PlacingAnimationColor, location, tileLocation,
-                            new Vector2(producerRule.PlacingAnimationOffsetX, producerRule.PlacingAnimationOffsetY));
+                            new(producerRule.PlacingAnimationOffsetX, producerRule.PlacingAnimationOffsetY));
                     }
 
                     if (location.hasLightSource(LightSourceConfigController.GenerateIdentifier(tileLocation)))
@@ -165,7 +169,7 @@ namespace ProducerFrameworkMod.Controllers
         /// <returns>The random instnace</returns>
         public static Random GetRandomForProducing(Vector2 tileLocation)
         {
-            return new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed * (int)Game1.stats.DaysPlayed * 1000000531 + (int)tileLocation.X * (int)tileLocation.X * 100207 + (int)tileLocation.Y * (int)tileLocation.Y * 1031 + Game1.timeOfDay/10);
+            return new((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed * (int)Game1.stats.DaysPlayed * 1000000531 + (int)tileLocation.X * (int)tileLocation.X * 100207 + (int)tileLocation.Y * (int)tileLocation.Y * 1031 + Game1.timeOfDay/10);
         }
 
         public static void ClearProduction(Object producer, GameLocation location)
@@ -173,32 +177,32 @@ namespace ProducerFrameworkMod.Controllers
             producer.heldObject.Value = (Object)null;
             producer.readyForHarvest.Value = false;
             producer.showNextIndex.Value = false;
-            producer.minutesUntilReady.Value = -1;
+            producer.MinutesUntilReady = -1;
 
-            if (ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig && producerConfig.LightSource?.AlwaysOn == true)
+            if (ProducerController.GetProducerConfig(producer.QualifiedItemId) is ProducerConfig producerConfig && producerConfig.LightSource?.AlwaysOn == true)
             {
-                int identifier = LightSourceConfigController.GenerateIdentifier(producer.tileLocation);
+                int identifier = LightSourceConfigController.GenerateIdentifier(producer.TileLocation);
                 if (location.hasLightSource(identifier))
                 {
                     location.removeLightSource(identifier);
-                    producer.initializeLightSource(producer.tileLocation);
+                    producer.initializeLightSource(producer.TileLocation);
                 }
             }
         }
 
         public static void PrepareOutput(Object producer, GameLocation location, Farmer who)
         {
-            foreach (ProducerRule producerRule in ProducerController.GetProducerRules(producer.Name))
+            foreach (ProducerRule producerRule in ProducerController.GetProducerRules(producer.QualifiedItemId))
             {
                 if (producerRule.LookForInputWhenReady is InputSearchConfig inputSearchConfig)
                 {
-                    if (producerRule.OutputConfigs.Find(o => o.OutputIndex == producer.heldObject.Value.ParentSheetIndex) is
+                    if (producerRule.OutputConfigs.Find(o => o.OutputItemId == producer.heldObject.Value.QualifiedItemId) is
                         OutputConfig outputConfig)
                     {
-                        Object input = ProducerRuleController.SearchInput(location, producer.tileLocation,
+                        Object input = ProducerRuleController.SearchInput(location, producer.TileLocation,
                             inputSearchConfig);
                         producer.heldObject.Value = OutputConfigController.CreateOutput(outputConfig, input,
-                            ProducerRuleController.GetRandomForProducing(producer.tileLocation));
+                            ProducerRuleController.GetRandomForProducing(producer.TileLocation));
                         OutputConfigController.LoadOutputName(outputConfig, producer.heldObject.Value, input, who);
                         break;
                     }
@@ -211,8 +215,8 @@ namespace ProducerFrameworkMod.Controllers
             Vector2 startTileLocation,
             InputSearchConfig inputSearchConfig)
         {
-            Queue<Vector2> tilesQueue = new Queue<Vector2>();
-            HashSet<Vector2> visitedTiles = new HashSet<Vector2>();
+            Queue<Vector2> tilesQueue = new();
+            HashSet<Vector2> visitedTiles = new();
             tilesQueue.Enqueue(startTileLocation);
             int maxRange = inputSearchConfig.Range;
             for (int currentRange = 0; (maxRange >= 0 || maxRange < 0 && currentRange <= 150) && tilesQueue.Count > 0; ++currentRange)
@@ -221,11 +225,11 @@ namespace ProducerFrameworkMod.Controllers
                 if (inputSearchConfig.GardenPot || inputSearchConfig.Crop)
                 {
                     Crop crop = null;
-                    if (inputSearchConfig.Crop && location.terrainFeatures.ContainsKey(currentTile) && location.terrainFeatures[currentTile] is HoeDirt hoeDirt && hoeDirt.crop != null && hoeDirt.readyForHarvest() && (!inputSearchConfig.ExcludeForageCrops || !(hoeDirt.crop.forageCrop)))
+                    if (inputSearchConfig.Crop && location.terrainFeatures.ContainsKey(currentTile) && location.terrainFeatures[currentTile] is HoeDirt hoeDirt && hoeDirt.crop != null && hoeDirt.readyForHarvest() && (!inputSearchConfig.ExcludeForageCrops || !(hoeDirt.crop.forageCrop.Value)))
                     {
                         crop = hoeDirt.crop;
                     }
-                    else if (inputSearchConfig.GardenPot && location.Objects.ContainsKey(currentTile) && location.Objects[currentTile] is IndoorPot indoorPot && indoorPot.hoeDirt.Value is HoeDirt potHoeDirt && potHoeDirt.crop != null && potHoeDirt.readyForHarvest() && (!inputSearchConfig.ExcludeForageCrops || !(potHoeDirt.crop.forageCrop)))
+                    else if (inputSearchConfig.GardenPot && location.Objects.ContainsKey(currentTile) && location.Objects[currentTile] is IndoorPot indoorPot && indoorPot.hoeDirt.Value is HoeDirt potHoeDirt && potHoeDirt.crop != null && potHoeDirt.readyForHarvest() && (!inputSearchConfig.ExcludeForageCrops || !(potHoeDirt.crop.forageCrop.Value)))
                     {
                         crop = potHoeDirt.crop;
                     }
@@ -238,7 +242,7 @@ namespace ProducerFrameworkMod.Controllers
                         }
                         else
                         {
-                            Object obj = new Object(crop.indexOfHarvest.Value, 1, false, -1, 0);
+                            Object obj = new(crop.indexOfHarvest.Value, 1, false, -1, 0);
                             if (inputSearchConfig.InputIdentifier.Any(i => i == obj.Name || i == obj.Category.ToString()))
                             {
                                 found = true;
@@ -248,7 +252,7 @@ namespace ProducerFrameworkMod.Controllers
                         {
                             if (!crop.programColored.Value)
                             {
-                                return new Object(crop.indexOfHarvest.Value, 1);
+                                return new(crop.indexOfHarvest.Value, 1);
                             }
                             else
                             {
@@ -257,27 +261,24 @@ namespace ProducerFrameworkMod.Controllers
                         }
                     }
                 }
-                if (inputSearchConfig.FruitTree && location.terrainFeatures.ContainsKey(currentTile) && location.terrainFeatures[currentTile] is FruitTree fruitTree && fruitTree.fruitsOnTree.Value > 0)
+                if (inputSearchConfig.FruitTree && location.terrainFeatures.ContainsKey(currentTile) && location.terrainFeatures[currentTile] is FruitTree fruitTree && fruitTree.fruit.Count > 0)
                 {
-                    bool found = false;
-                    if (inputSearchConfig.InputIdentifier.Contains(fruitTree.indexOfFruit.Value.ToString()))
+                    Item foundFruit = null;
+                    foundFruit = fruitTree.fruit.FirstOrDefault(f => inputSearchConfig.InputIdentifier.Contains(f.ItemId));
+                    
+                    if (foundFruit == null)
                     {
-                        found = true;
-                    }
-                    else
-                    {
-                        Object obj = new Object(fruitTree.indexOfFruit.Value, 1, false, -1, 0);
-                        if (inputSearchConfig.InputIdentifier.Any(i => i == obj.Name || i == obj.Category.ToString()))
+                        foreach (var fruit in fruitTree.fruit)
                         {
-                            found = true;
+                            foundFruit = fruitTree.fruit.FirstOrDefault(f => inputSearchConfig.InputIdentifier.Contains(fruit.Name) || inputSearchConfig.InputIdentifier.Contains(fruit.Category.ToString()));
                         }
                     }
-                    if (found)
+                    if (foundFruit != null)
                     {
-                        return new Object(fruitTree.indexOfFruit.Value, 1);
+                        return (Object)foundFruit.getOne();
                     }
                 }
-                if (inputSearchConfig.BigCraftable && location.Objects.ContainsKey(currentTile) && location.Objects[currentTile] is Object bigCraftable && bigCraftable.bigCraftable && bigCraftable.heldObject.Value is Object heldObject && bigCraftable.readyForHarvest.Value)
+                if (inputSearchConfig.BigCraftable && location.Objects.ContainsKey(currentTile) && location.Objects[currentTile] is Object bigCraftable && bigCraftable.bigCraftable.Value && bigCraftable.heldObject.Value is Object heldObject && bigCraftable.readyForHarvest.Value)
                 {
                     bool found = false;
                     if (inputSearchConfig.InputIdentifier.Contains(heldObject.ParentSheetIndex.ToString()))
@@ -286,7 +287,7 @@ namespace ProducerFrameworkMod.Controllers
                     }
                     else
                     {
-                        Object obj = new Object(heldObject.ParentSheetIndex, 1, false, -1, 0);
+                        Object obj = new(heldObject.ItemId, 1, false, -1, 0);
                         if (inputSearchConfig.InputIdentifier.Any(i => i == obj.Name || i == obj.Category.ToString()))
                         {
                             found = true;

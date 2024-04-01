@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using SpousesIsland.Additions;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using xTile;
 using static SpousesIsland.ModEntry;
@@ -19,8 +20,6 @@ namespace SpousesIsland.Events;
 internal static class Asset
 {
     private static readonly string[] Integrated = { "Abigail", "Alex", "Elliott", "Emily", "Haley", "Harvey", "Krobus", "Leah", "Maru", "Penny", "Sam", "Sebastian", "Shane", "Claire", "Lance", "Olivia", "Sophia", "Victor", "Wizard" };
-
-    private static readonly List<string> MapNames = new() { "Island_FieldOffice", "Island_N", "Island_S", "Island_SE", "Island_SouthEastCave", "Island_W", "IslandEast", "IslandFarmCave", "IslandShrine", "IslandSouthEastCave_pirates", "IslandWestCave1" }; //"BusStop", 
 
     internal static void Requested(object sender, AssetRequestedEventArgs e)
     {
@@ -60,7 +59,7 @@ internal static class Asset
 
         IslandMaps(e);
         
-        if (ModInfo is null || ModInfo.LittleNpcs == false)
+        if (ModInfo is null || ModInfo.LittleNpcs == false || !Context.IsWorldReady || Children is null || Children.Count < 1)
             return;
         
         if(e.NameWithoutLocale.IsEquivalentTo($"Characters/schedules/{Information.LittleNpcName(Children[0], "FirstLittleNPC")}"))
@@ -83,7 +82,8 @@ internal static class Asset
     {
         Mon.LogOnce("Patching Island maps to allow NPC warping.");
         
-        if (e.NameWithoutLocale.IsEquivalentTo("Maps/FishShop"))
+        //only on island visit
+        if (e.NameWithoutLocale.IsEquivalentTo("Maps/FishShop") && IslandToday)
         {
             e.Edit(asset =>
             {
@@ -94,7 +94,7 @@ internal static class Asset
             return;
         }
         
-        if (e.NameWithoutLocale.IsEquivalentTo("Maps/Beach"))
+        if (e.NameWithoutLocale.IsEquivalentTo("Maps/Beach") && IslandToday)
         {
             e.Edit(asset =>
             {
@@ -116,26 +116,14 @@ internal static class Asset
             return;
         }
         
-        var noPathName = e.NameWithoutLocale.BaseName.Remove(0, 5);
-        if (MapNames.Contains(noPathName))
+        if (e.NameWithoutLocale.IsEquivalentTo("Maps/Island_W"))
         {
             e.Edit(asset =>
             {
                 var editor = asset.AsMap();
                 var map = editor.Data;
-                if (!map.Properties.TryGetValue("Warp", out var warpData))
-                {
-                    Mon.Log($"No warp data in {e.NameWithoutLocale}...NPCs won't warp there.", Level);
-                    return;
-                }
                 
-                if (noPathName.Equals("Island_W")) 
-                    warpData += " 77 39 IslandFarmHouse 14 17";
-                
-                CreateOrAddProperty(map, "NPCWarp", warpData);
-
-                if (!noPathName.Equals("Island_W")) 
-                    return;
+                CreateOrAddProperty(map, "NPCWarp", "77 39 IslandFarmHouse 14 17");
                 
                 var bridgeBarrier = map.GetLayer("Back").Tiles[62, 16];
                 bridgeBarrier?.Properties.Remove("NPCBarrier");

@@ -105,5 +105,6 @@
 	"config.exceptions.manual.tooltip": "Comma-separated machine names to make exceptions for.\nUse the * character for a wildcard.\nUse the ? character for a word wildcard.\nUse the | character for a word boundary.\n\nFor example, \"*|Cask\" will match \"Cask\", but also \"Advanced Cask\".",
 	"config.machine.category.artisan.name": "Artisan",
 	"config.machine.category.refining.name": "Refining",
-	"config.machine.category.misc.name": "Misc"
+	"config.machine.category.misc.name": "Misc",
+	"config.machine.category.uncategorized.name": "Uncategorized"
 }

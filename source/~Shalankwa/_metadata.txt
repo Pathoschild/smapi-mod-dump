@@ -4,7 +4,7 @@ urls:
 
 mods:
    Warp Multiplayer
-   Warp To Friends
+   Warp to Friends
 
 latest commit:
    commit 2b66d4834019a4c371fea34d286fd4aadcabf556

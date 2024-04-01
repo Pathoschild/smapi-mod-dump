@@ -1,0 +1,10 @@
+{
+    "Name": "AddMoney",
+    "Author": "Pempi",
+    "Version": "1.0.1", // fixed locally
+    "Description": "Agregar 1500 de oro al presionar la letra P",
+    "UniqueID": "pempi.addMoney",
+    "EntryDll": "addMoney.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": []
+  }

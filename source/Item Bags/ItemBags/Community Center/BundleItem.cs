@@ -21,7 +21,7 @@ namespace ItemBags.Community_Center
     public class BundleItem
     {
         public BundleTask Task { get; }
-        public int Id { get; }
+        public string Id { get; }
         public int Quantity { get; }
         public ObjectQuality MinQuality { get; }
         public bool IsCompleted { get; set; }
@@ -29,7 +29,7 @@ namespace ItemBags.Community_Center
         /// (Some tasks (such as "Exotic Foraging Bundle") give the player several options, like only needing to complete 5/9 items)</summary>
         public bool IsRequired { get { return Task.AreAllItemsRequired; } }
 
-        public BundleItem(BundleTask Task, int Id, int Quantity, ObjectQuality MinQuality, bool IsCompleted)
+        public BundleItem(BundleTask Task, string Id, int Quantity, ObjectQuality MinQuality, bool IsCompleted)
         {
             this.Task = Task;
             this.Id = Id;
@@ -44,7 +44,7 @@ namespace ItemBags.Community_Center
         {
             this.Task = Task;
             List<string> Entries = RawData.Split(' ').ToList();
-            this.Id = int.Parse(Entries[0]);
+            this.Id = Entries[0];
             this.Quantity = int.Parse(Entries[1]);
             this.MinQuality = (ObjectQuality)int.Parse(Entries[2]);
             this.IsCompleted = false;

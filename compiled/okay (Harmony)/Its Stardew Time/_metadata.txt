@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20847
+IDs: Cabbose.Sage.ItsStardewTime
+update keys: Nexus:20847

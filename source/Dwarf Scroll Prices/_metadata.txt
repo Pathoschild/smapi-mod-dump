@@ -6,9 +6,11 @@ mods:
    Dwarf Scroll Prices
 
 latest commit:
-   commit 3ad10aa985c9f4927bfede3ef6ea41858f2846f9
+   commit 775a85e7ab8234cbd2065fffee17b972b79d1451
    Author: noriteway <131356289+noriteway@users.noreply.github.com>
-   Date:   Thu Apr 20 04:33:22 2023 -0700
+   Date:   Sun Mar 31 18:48:50 2024 -0700
    
-       Update Key
+       Mute and Fullscreen toggles v1
+       
+       Accounts for mute in title menu and fixed fullscreen toggle logic. Refactored and commented.
    

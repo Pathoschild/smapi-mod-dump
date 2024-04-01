@@ -9,177 +9,219 @@
 *************************************************/
 
 {
-	"Changes": [
-		{
-			"LogName": "House exterior tiles",
-			"Target": "Maps/Forest",
-			"Action": "EditMap",
-			"MapTiles": [
-				// touch up mudroom so bush shadow doesn't show through
-				{
-					"Position": {"X": 30, "Y": 94},
-					"Layer": "Front",
-					"SetTilesheet": "outdoors",
-					"SetIndex": 1943
-				},
-				{
-					"Position": {"X": 31, "Y": 94},
-					"Layer": "Front",
-					"SetTilesheet": "outdoors",
-					"SetIndex": 1944
-				},
-				// add door warp
-				{
-					"Position": {"X": 31, "Y": 95},
-					"Layer": "Buildings",
-					"SetProperties": {"Action": "LockedDoorWarp 3 17 Custom_HatMouseLacey_MouseHouse 730 2200 HatMouseLacey 500"}
-				},
-				// stop Lacey from pathing over maple island
-				{
-					"Position": {"X": 77, "Y": 49},
-					"Layer": "Back",
-					"SetProperties": {"NoPath": "T"}
-				},
-				// edit some bushes
-				{
-					"Position": {"X": 37, "Y": 93},
-					"Layer": "Paths",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 38, "Y": 91},
-					"Layer": "Paths",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 39, "Y": 91},
-					"Layer": "Paths",
-					"SetTilesheet": "Paths",
-					"SetIndex": 25
-				},
-				{
-					"Position": {"X": 29, "Y": 96},
-					"Layer": "Paths",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 25, "Y": 97},
-					"Layer": "Paths",
-					"Remove": true
-				},
-				// remove tree stump
-				{
-					"Position": {"X": 37, "Y": 98},
-					"Layer": "Buildings",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 37, "Y": 97},
-					"Layer": "Front",
-					"Remove": true
-				},
-				// unconditionally remove reimagined 3 fence
-				{
-					"Position": {"X": 37, "Y": 93},
-					"Layer": "Buildings",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 38, "Y": 93},
-					"Layer": "Buildings",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 37, "Y": 92},
-					"Layer": "Front",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 38, "Y": 92},
-					"Layer": "Front",
-					"Remove": true
-				}
-			]
-		},
-		{
-			"LogName": "Stardew Valley Fair hat stall",
-			"Target": "Maps/Town-Fair",
-			"Action": "EditMap",
-			"FromFile": "assets/FairStall.tmx",
-			"ToArea": {
-				"X": "{{festival_fall16_stallX}}",
-				"Y": "{{festival_fall16_stallY}}",
-				"Width": 3,
-				"Height": 4
-			},
-			"PatchMode": "Overlay"
-		},
-		{
-			"LogName": "Fair stall tilesheet",
-			"Target": "Maps/hatmouseLaceyStall",
-			"Action": "Load",
-			"FromFile": "assets/hatmouseLaceyStall_{{RecolorPalette}}_all.png"
-		},
-		{
-			"LogName": "Interior tilesheet",
-			"Target": "Maps/hatmouseLaceyInterior",
-			"Action": "Load",
-			"FromFile": "assets/hatmouseLaceyInterior_{{InteriorPalette}}_all.png"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "data/maps-{{MatchRetexture}}-tex.json"
-		},
-		{
-			"LogName": "Map inspection point strings",
-			"Target": "Strings/StringsFromMaps",
-			"Action": "EditData",
-			"Entries": {
-				"HatMouseLacey.MouseHouse.drawers": "{{i18n:mapstrings.MouseHouse.drawers}}",
-				"HatMouseLacey.MouseHouse.hatstuff": "{{i18n:mapstrings.MouseHouse.hatstuff}}",
-				"HatMouseLacey.MouseHouse.photo": "{{i18n:mapstrings.MouseHouse.photo}}",
-				"HatMouseLacey.MouseHouse.stepladder": "{{i18n:mapstrings.MouseHouse.stepladder}}",
-				"HatMouseLacey.MouseHouse.stool": "{{i18n:mapstrings.MouseHouse.stool}}",
-				"HatMouseLacey.MouseSpouse.drawers": "{{i18n:mapstrings.MouseSpouse.drawers}}",
-				"HatMouseLacey.MouseSpouse.photo": "{{i18n:mapstrings.MouseSpouse.photo}}",
-				"HatMouseLacey.MouseSpouse.stool": "{{i18n:mapstrings.MouseSpouse.stool}}",
-				"EOF": ""
-			}
-		},
-		{
-			"LogName": "Remove items from cabin when vacant",
-			"Target": "Maps/Custom_HatMouseLacey_MouseHouse",
-			"Action": "EditMap",
-			"MapTiles": [
-				{
-					"Position": {"X": 11, "Y": 4},
-					"Layer": "Buildings",
-					"SetProperties": {"Message": null}
-				},
-				{
-					"Position": {"X": 12, "Y": 4},
-					"Layer": "Buildings",
-					"SetProperties": {"Message": null}
-				},
-				{
-					"Position": {"X": 13, "Y": 13},
-					"Layer": "Buildings",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 10, "Y": 16},
-					"Layer": "Buildings",
-					"Remove": true
-				},
-				{
-					"Position": {"X": 12, "Y": 3},
-					"Layer": "Front",
-					"Remove": true
-				}
-			],
-			"When": {
-				"Relationship:HatMouseLacey": "Married"
-			}
-		}
-	]
+  "Changes": [
+    {
+      "LogName": "Lacey's cabin - location",
+      "Target": "Data/Locations",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_MouseHouse": {
+          "DisplayName": "{{i18n:houseDisplayName}}",
+          "DefaultArrivalTile": { "X": 3, "Y": 16 },
+          "CreateOnLoad": {
+            "MapPath": "Maps/{{ModId}}_MouseHouse"
+          },
+          "FormerLocationNames": ["Custom_HatMouseLacey_MouseHouse"],
+          "ArtifactSpots": [],
+          "Music": [],
+          "MusicDefault": null,
+          "MusicContext": "Default",
+          "CustomFields": {}
+        }
+      }
+    },
+    {
+      "LogName": "Lacey's cabin - map",
+      "Target": "Maps/{{ModId}}_MouseHouse",
+      "Action": "Load",
+      "FromFile": "assets/maps/MouseHouse.tmx"
+    },
+    {
+      "LogName": "Lacey's cabin - exterior tile patches",
+      "Target": "Maps/Forest",
+      "Action": "EditMap",
+      "MapTiles": [
+        // touch up mudroom so bush shadow doesn't show through
+        {
+          "Position": {"X": 30, "Y": 94},
+          "Layer": "Front",
+          "SetTilesheet": "outdoors",
+          "SetIndex": 1943
+        },
+        {
+          "Position": {"X": 31, "Y": 94},
+          "Layer": "Front",
+          "SetTilesheet": "outdoors",
+          "SetIndex": 1944
+        },
+        // add door warp
+        {
+          "Position": {"X": 31, "Y": 95},
+          "Layer": "Buildings",
+          "SetProperties": {"Action": "LockedDoorWarp 3 17 {{ModId}}_MouseHouse 730 2200 {{Lacey}} 500"}
+        },
+        // stop Lacey from pathing over maple island
+        {
+          "Position": {"X": 77, "Y": 49},
+          "Layer": "Back",
+          "SetProperties": {"NoPath": "T"}
+        },
+        // edit some bushes
+        {
+          "Position": {"X": 37, "Y": 93},
+          "Layer": "Paths",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 38, "Y": 91},
+          "Layer": "Paths",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 39, "Y": 91},
+          "Layer": "Paths",
+          "SetTilesheet": "Paths",
+          "SetIndex": 25
+        },
+        {
+          "Position": {"X": 29, "Y": 96},
+          "Layer": "Paths",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 25, "Y": 97},
+          "Layer": "Paths",
+          "Remove": true
+        },
+        // remove tree stump
+        {
+          "Position": {"X": 37, "Y": 98},
+          "Layer": "Buildings",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 37, "Y": 97},
+          "Layer": "Front",
+          "Remove": true
+        },
+        // unconditionally remove reimagined 3 fence
+        {
+          "Position": {"X": 37, "Y": 93},
+          "Layer": "Buildings",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 38, "Y": 93},
+          "Layer": "Buildings",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 37, "Y": 92},
+          "Layer": "Front",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 38, "Y": 92},
+          "Layer": "Front",
+          "Remove": true
+        }
+      ]
+    },
+    {
+      "LogName": "Stardew Valley Fair hat stall",
+      "Target": "Maps/Town-Fair",
+      "Action": "EditMap",
+      "FromFile": "assets/maps/FairStall.tmx",
+      "ToArea": {
+        "X": "{{festival_fall16_stallX}}",
+        "Y": "{{festival_fall16_stallY}}",
+        "Width": 3,
+        "Height": 4
+      },
+      "PatchMode": "Overlay"
+    },
+    {
+      "LogName": "Fair hat stall tilesheet",
+      "Target": "Maps/hatmouselaceyStall",
+      "Action": "Load",
+      "FromFile": "assets/maps/hatmouselaceyStall_{{RecolorPalette}}_all.png"
+    },
+    {
+      "LogName": "Interior tilesheet",
+      "Target": "Maps/hatmouselaceyInterior",
+      "Action": "Load",
+      "FromFile": "assets/maps/hatmouselaceyInterior_{{InteriorPalette}}_all.png"
+    },
+    {
+      "Action": "Include",
+      "FromFile": "data/maps-{{MatchRetexture}}-tex.json"
+    },
+    {
+      "LogName": "Map inspection point strings",
+      "Target": "Strings/StringsFromMaps",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}.MouseHouse.drawers": "{{i18n:mapstrings.MouseHouse.drawers}}",
+        "{{ModId}}.MouseHouse.hatstuff": "{{i18n:mapstrings.MouseHouse.hatstuff}}",
+        "{{ModId}}.MouseHouse.stepladder": "{{i18n:mapstrings.MouseHouse.stepladder}}",
+        "{{ModId}}.MouseHouse.stool": "{{i18n:mapstrings.MouseHouse.stool}}",
+        "{{ModId}}.MouseSpouse.drawers": "{{i18n:mapstrings.MouseSpouse.drawers}}",
+        "{{ModId}}.MouseSpouse.stool": "{{i18n:mapstrings.MouseSpouse.stool}}",
+        "EOF": ""
+      }
+    },
+    {
+      "LogName": "Family photo image",
+      "Target": "Maps/{{ModId}}/FamilyPhoto",
+      "Action": "Load",
+      "FromFile": "assets/maps/familyPhoto.png"
+    },
+    {
+      "LogName": "Lacey's cabin - remove items when vacant",
+      "Target": "Maps/{{ModId}}_MouseHouse",
+      "Action": "EditMap",
+      "MapTiles": [
+        {
+          "Position": {"X": 11, "Y": 4},
+          "Layer": "Buildings",
+          "SetProperties": {"Action": null}
+        },
+        {
+          "Position": {"X": 12, "Y": 4},
+          "Layer": "Buildings",
+          "SetProperties": {"Action": null}
+        },
+        {
+          "Position": {"X": 13, "Y": 13},
+          "Layer": "Buildings",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 10, "Y": 16},
+          "Layer": "Buildings",
+          "Remove": true
+        },
+        {
+          "Position": {"X": 12, "Y": 3},
+          "Layer": "Front",
+          "Remove": true
+        }
+      ],
+      "When": {
+        "Relationship:{{Lacey}}": "Married"
+      }
+    },
+    {
+      "LogName": "Spouse patio",
+      "Target": "Maps/{{ModId}}_SpousePatio",
+      "Action": "Load",
+      "FromFile": "assets/maps/spouse-patio.tmx"
+    },
+    {
+      "LogName": "Spouse room",
+      "Target": "Maps/{{ModId}}_SpouseRoom",
+      "Action": "Load",
+      "FromFile": "assets/maps/spouse-room.tmx"
+    }
+  ]
 }

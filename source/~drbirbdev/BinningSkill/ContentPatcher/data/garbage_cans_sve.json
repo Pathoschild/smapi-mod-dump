@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans" ],
+            "Fields": {
+                "drbirbdev.BinningSkill_Railroad_Spa": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 5 57 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Mountain_AdventurersGuild": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Custom_AdventurerSummit 28 22 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Forest_Marnie": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Forest 87 23 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Desert_Sandy": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Desert 16 12 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_Town_JojaNorth": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Town 103 41 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_Woods": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Woods 24 4 Iron"
+                    }
+                },
+                "drbirbdev.BinningSkill_Club": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Club 13 4 Gold"
+                    }
+                },
+                "drbirbdev.BinningSkill_Railroad_SummitPath": {
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 49 15 Prismatic"
+                    }
+                }
+            }
+        }
+    ]
+}

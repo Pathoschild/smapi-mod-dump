@@ -86,7 +86,7 @@ namespace Spawn_Monsters
                     return;
                 }
                 MonsterData.Monster m = MonsterData.ForName(args[0]);
-                Vector2 location = Game1.player.getTileLocation();
+                Vector2 location = Game1.player.Tile;
 
                 if (m.Equals((MonsterData.Monster)(-1))) {
                     Monitor.Log($"There is no Monster with the name {args[0]}", LogLevel.Info);
@@ -148,7 +148,7 @@ namespace Spawn_Monsters
         }
 
         public void FarmerPosition(string command, string[] args) {
-            Monitor.Log("The Farmer's coordinates are: " + Game1.player.getTileLocation(), LogLevel.Info);
+            Monitor.Log("The Farmer's coordinates are: " + Game1.player.Tile, LogLevel.Info);
         }
 
         public void DeleteJelly(string command, string[] args) {

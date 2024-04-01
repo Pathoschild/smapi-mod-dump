@@ -10,10 +10,13 @@ for queries and analysis.**
 
 ## TODO
 
-* Nothing, it's perfect haha
+* Nothing
 
 ## Changelog
-
+* 3.0 RELEASE
+  * Update for SDV 1.6 / SMAPI 4.0
+* 3.1.2
+  * Missing from this repo
 * 2.0.8 RELEASE
   * Redo asset loaders for new SMAPI
   * How bout we actually bundle the CP mod into the bundle this time

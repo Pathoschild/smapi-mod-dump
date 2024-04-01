@@ -31,6 +31,7 @@ using StardewValley.Network;
 using System.Reflection.Emit;
 using System.Reflection;
 using xTile.ObjectModel;
+using StardewValley.SpecialOrders;
 
 namespace StardewValleyExpanded
 {

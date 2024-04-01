@@ -3,7 +3,9 @@ urls:
    Git: https://github.com/ceruleandeep/CeruleanStardewMods.git
 
 mods:
+   Better Junimos Forestry
    Junimo Dialog
+   Market Day
    Multiple Spouse Dialogs
    No Cooties
    Personal Effects Redux

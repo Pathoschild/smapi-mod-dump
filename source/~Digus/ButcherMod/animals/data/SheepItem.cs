@@ -22,7 +22,7 @@ namespace AnimalHusbandryMod.animals.data
         public int MaximumNumberOfMeat { get; set; }
         public int MinimumDaysBetweenTreats { get; set; }
         public object[] LikedTreats { get; set; }
-        public ISet<int> LikedTreatsId { get; set; }
+        public ISet<string> LikedTreatsId { get; set; }
         public int MinimumNumberOfExtraWool { get; set; }
         public int MaximumNumberOfExtraWool { get; set; }        
         public int? MinimumDaysUtillBirth { get; set; }
@@ -34,7 +34,7 @@ namespace AnimalHusbandryMod.animals.data
             MaximumNumberOfMeat = 16;
             MinimumDaysBetweenTreats = 3;
             LikedTreats = new object[] { 78, 250, 280 };
-            LikedTreatsId = new HashSet<int>();
+            LikedTreatsId = new HashSet<string>();
             MinimumNumberOfExtraWool = 0;
             MaximumNumberOfExtraWool = 2;
             MinimumDaysUtillBirth = 8;

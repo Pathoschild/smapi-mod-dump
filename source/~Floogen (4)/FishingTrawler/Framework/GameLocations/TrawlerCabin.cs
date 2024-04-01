@@ -13,6 +13,7 @@ using FishingTrawler.Messages;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Buffs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,13 +106,13 @@ namespace FishingTrawler.GameLocations
 
         public override void cleanupBeforePlayerExit()
         {
-            if (Game1.startedJukeboxMusic)
-            {
-                FishingTrawler.SetTrawlerTheme(Game1.getMusicTrackName());
-            }
-            else if (string.IsNullOrEmpty(miniJukeboxTrack.Value) && !string.IsNullOrEmpty(FishingTrawler.trawlerThemeSong))
+            if (string.IsNullOrEmpty(miniJukeboxTrack.Value) && !string.IsNullOrEmpty(FishingTrawler.trawlerThemeSong))
             {
                 FishingTrawler.SetTrawlerTheme(null);
+            }
+            else
+            {
+                FishingTrawler.SetTrawlerTheme(Game1.getMusicTrackName());
             }
             _hasLeftStartingArea = true;
 
@@ -150,19 +151,18 @@ namespace FishingTrawler.GameLocations
                 }
                 else if (actionProperty == "Coffee" && base.IsWithinRangeOfTile(tileLocation.X, tileLocation.Y, 1, 1, who) is true)
                 {
-                    var coffeeBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.source == COFFEE_MACHINE_SOURCE);
-                    if (coffeeBuff is not null)
+                    if (who.buffs.AppliedBuffs.TryGetValue(COFFEE_MACHINE_SOURCE, out var coffeeBuff) is true)
                     {
                         coffeeBuff.millisecondsDuration = GetCoffeeBuff().millisecondsDuration;
                     }
                     else
                     {
-                        Game1.buffsDisplay.addOtherBuff(GetCoffeeBuff());
+                        who.applyBuff(GetCoffeeBuff());
                     }
 
                     if (base.IsMessageAlreadyDisplayed(FishingTrawler.i18n.Get("game_message.coffee_machine.drink")) is false)
                     {
-                        Game1.addHUDMessage(new HUDMessage(FishingTrawler.i18n.Get("game_message.coffee_machine.drink"), null) { timeLeft = 1000f });
+                        Game1.addHUDMessage(new HUDMessage(FishingTrawler.i18n.Get("game_message.coffee_machine.drink")) { timeLeft = 1000f, noIcon = true });
                     }
 
                     base.playSound("gulp");
@@ -267,10 +267,8 @@ namespace FishingTrawler.GameLocations
         public Buff GetCoffeeBuff()
         {
             int speedBuff = 9;
-            var buff = new Buff(null, hasSwiftWinds is true ? 60000 * 3 : 60000, COFFEE_MACHINE_SOURCE, speedBuff) { displaySource = FishingTrawler.i18n.Get("etc.coffee_machine") };
-
-            // Set the speed buff to +2 (+3 if using Swift Winds flag)
-            buff.buffAttributes[speedBuff] = hasSwiftWinds is true ? 3 : 2;
+            var buffEffect = new BuffEffects(new StardewValley.GameData.Buffs.BuffAttributesData() { Speed = hasSwiftWinds is true ? 3 : 2 });
+            var buff = new Buff(COFFEE_MACHINE_SOURCE, FishingTrawler.i18n.Get("etc.coffee_machine"), duration: hasSwiftWinds is true ? 60000 * 3 : 60000, iconSheetIndex: speedBuff, effects: buffEffect);
 
             return buff;
         }

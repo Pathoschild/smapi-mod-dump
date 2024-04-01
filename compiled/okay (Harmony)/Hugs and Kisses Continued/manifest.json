@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Hugs and Kisses Continued",
+  "Author": "JoXW, aedenthorn",
+  "Version": "2.0.0",
+  "Description": "Hugs and kisses.",
+  "UniqueID": "JoXW.HugsAndKisses",
+  "EntryDll": "HugsAndKisses.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21019" ]
+}

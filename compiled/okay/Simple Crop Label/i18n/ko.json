@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // ko (korean)
+  // custom tree translation
+  "custom-tree.oak": "떡갈 나무",
+  "custom-tree.maple": "단풍 나무",
+  "custom-tree.pine": "소나무",
+  "custom-tree.coconut": "코코넛 나무",
+  "custom-tree.mushroom": "버섯 나무",
+  "custom-tree.mahogany": "마호가니 나무",
+  "custom-tree.palm": "야자수",
+
+  // growth info translation
+  "growth-info.fully-grown": "완전한 성장",
+  "growth-info.stage": "단계",
+  "growth-info.of": "의",
+  "growth-info.days-left": "남은 일",
+  "growth-info.day-left": "남은 날",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "마우스 오버",
+  "config.mouse-hover.desc": "활성화된 경우 레이블을 표시하려면 자르기 타일 위로 마우스를 이동합니다.",
+  "config.growth-info.name": "성장 정보",
+  "config.growth-info.desc": "활성화되면 작물 성장 또는 수확 단계를 표시합니다.",
+  "config.custom-keybinds.name": "커스텀 키바인드",
+  "config.custom-keybinds.desc": "기본값을 대체합니다. 마우스 호버를 활성화하면 이를 재정의합니다."
+}

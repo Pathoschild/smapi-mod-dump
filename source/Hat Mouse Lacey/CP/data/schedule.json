@@ -9,17 +9,95 @@
 *************************************************/
 
 {
-	"fall_16": "610 Custom_HatMouseLacey_MouseHouse 11 15 2/640 Town 1 89 2/1530 Custom_HatMouseLacey_MouseHouse 8 11 2 hatmouselacey_sit_down/2200 bed",
-	"winter_15": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/1000 Custom_HatMouseLacey_MouseHouse 7 11 2 hatmouselacey_sit_down/1130 Town 44 90 3 \"Characters\\Dialogue\\HatMouseLacey:winter.nightmarket.wait\"/1620 Beach 11 38 1 \"Characters\\Dialogue\\HatMouseLacey:winter_15.nightmarket0\"/1910 Beach 37 36 2 hatmouselacey_sit_down \"Characters\\Dialogue\\HatMouseLacey:winter_15.nightmarket1\"/2130 bed",
-	"winter_17": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/1000 Custom_HatMouseLacey_MouseHouse 7 11 2 hatmouselacey_sit_down/1130 Town 43 77 2 hatmouselacey_sit_down \"Characters\\Dialogue\\HatMouseLacey:winter.nightmarket.wait\"/1620 Beach 13 36 2 \"Characters\\Dialogue\\HatMouseLacey:winter_17.nightmarket0\"/1850 Beach 27 34 2 \"Characters\\Dialogue\\HatMouseLacey:winter_17.nightmarket1\"/2130 bed",
-	"marriage_Mon": "800 SeedShop 12 27 square_1_5_3/1110 Custom_HatMouseLacey_MouseHouse 12 15 2/1540 Custom_HatMouseLacey_MouseHouse 7 11 2 hatmouselacey_sit_down/1620 Town 32 77 1/2000 BusStop -1 23 3",
-	"marriage_winter_15": "1000 SeedShop 12 27 square_1_5_3/1230 Town 44 90 3/1620 Beach 11 38 1 \"Characters\\Dialogue\\MarriageDialogueHatMouseLacey:winter_15.nightmarket0\"/1910 Beach 38 36 2 \"Characters\\Dialogue\\MarriageDialogueHatMouseLacey:winter_15.nightmarket1\"/2100 BusStop -1 23 3",
-	"marriage_winter_17": "1200 Town 43 77 hatmouselacey_sit_down/1620 Beach 13 36 2 \"Characters\\Dialogue\\MarriageDialogueHatMouseLacey:winter_17.nightmarket0\"/1910 Beach 27 34 2 \"Characters\\Dialogue\\MarriageDialogueHatMouseLacey:winter_17.nightmarket1\"/2100 BusStop -1 23 3",
-	"rain": "GOTO winter",
-	"Tue": "630 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/720 SeedShop 12 27 square_1_5_3/1320 Custom_HatMouseLacey_MouseHouse 10 14 2 hatmouselacey_sewing/1900 Custom_HatMouseLacey_MouseHouse 7 11 2 hatmouselacey_sit_down/2200 bed",
-	"Wed": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 CommunityCenter 10 25 2 hatmouselacey_sewing \"Characters\\Dialogue\\HatMouseLacey:Wed.cc_0\"/1440 CommunityCenter 24 8 2 hatmouselacey_sit_down \"Characters\\Dialogue\\HatMouseLacey:Wed.cc_1\"/1640 Saloon 10 21 2/2030 bed",
-	"Fri": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/900 Forest 41 41 0/1100 Town 43 78 2 hatmouselacey_sewing/1510 Town 43 77 2 hatmouselacey_sit_down/1700 Saloon 10 21 2/2030 bed",
-	"winter": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/1000 Custom_HatMouseLacey_MouseHouse 7 11 2 hatmouselacey_sit_down/1200 Custom_HatMouseLacey_MouseHouse 12 5 0/1300 Saloon 10 21 2/2030 bed",
-	"spring": "GOTO default",
-	"default": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/900 Forest 57 67 0/1130 Forest 52 78 2 hatmouselacey_sewing/1500 Forest 51 81 2/a1800 Forest 33 99 2/1940 Custom_HatMouseLacey_MouseHouse 10 14 2 hatmouselacey_sewing/2200 bed"
+  "Changes": [
+    {
+      "Target": "Characters/Schedules/{{Lacey}}",
+      "Action": "EditData",
+      "Entries": {
+        // basics
+        "default": "
+          630 14 12 0/
+          700 10 15 2 {{anim}}_sewing/
+          900 Forest 57 67 0/
+          1130 52 78 2 {{anim}}_sewing/
+          1500 51 81 2/
+          a1800 33 99 2/
+          1940 {{ModId}}_MouseHouse 10 14 2 {{anim}}_sewing/
+          2200 bed",
+        "spring": "GOTO default",
+        "rain": "GOTO winter",
+        "winter": "
+          630 14 12 0/
+          700 10 15 2 {{anim}}_sewing/
+          1000 7 11 2 {{anim}}_sit_down/
+          1200 12 5 0/
+          1300 Saloon 10 21 2/
+          2030 bed",
+        "Tue": "
+          630 10 15 2 {{anim}}_sewing/
+          720 SeedShop 12 27 square_1_5_3/
+          1320 {{ModId}}_MouseHouse 10 14 2 {{anim}}_sewing/
+          1900 7 11 2 {{anim}}_sit_down/
+          2200 bed",
+        "Wed": "
+          630 14 12 0/
+          700 CommunityCenter 10 25 2 {{anim}}_sewing \"Characters\\Dialogue\\{{Lacey}}:Wed.cc_0\"/
+          1440 24 8 2 {{Lacey}}_sit_down \"Characters\\Dialogue\\{{Lacey}}:Wed.cc_1\"/
+          1640 Saloon 10 21 2/
+          2030 bed",
+        "Fri": "
+          630 14 12 0/
+          700 10 15 2 {{anim}}_sewing/
+          900 Forest 41 41 0/
+          1100 Town 43 78 2 {{anim}}_sewing/
+          1510 43 77 2 {{anim}}_sit_down/
+          1700 Saloon 10 21 2/
+          2030 bed",
+
+        // specific days
+        "fall_16": "
+          610 11 15 2/
+          640 Town 1 89 2/
+          1530 {{ModId}}_MouseHouse 8 11 2 {{anim}}_sit_down/
+          2200 bed",
+        "winter_15": "
+          630 14 12 0/
+          700 10 15 2 {{anim}}_sewing/
+          1000 7 11 2 {{anim}}_sit_down/
+          1130 Town 44 90 3 \"Characters\\Dialogue\\{{Lacey}}:winter.nightmarket.wait\"/
+          1620 Beach 11 38 1 \"Characters\\Dialogue\\{{Lacey}}:winter_15.nightmarket0\"/
+          1910 37 36 2 {{anim}}_sit_down \"Characters\\Dialogue\\{{Lacey}}:winter_15.nightmarket1\"/
+          2130 bed",
+        "winter_17": "
+          630 14 12 0/
+          700 10 15 2 {{anim}}_sewing/
+          1000 7 11 2 {{anim}}_sit_down/
+          1130 Town 43 77 2 {{anim}}_sit_down \"Characters\\Dialogue\\{{Lacey}}:winter.nightmarket.wait\"/
+          1620 Beach 13 36 2 \"Characters\\Dialogue\\{{Lacey}}:winter_17.nightmarket0\"/
+          1850 27 34 2 \"Characters\\Dialogue\\{{Lacey}}:winter_17.nightmarket1\"/
+          2130 bed",
+
+        // marriage
+        "marriage_Mon": "
+          800 SeedShop 12 27 square_1_5_3/
+          1110 {{ModId}}_MouseHouse 12 15 2/
+          1540 7 11 2 {{anim}}_sit_down/
+          1620 Town 32 77 1/
+          2000 BusStop -1 23 3",
+        "marriage_winter_15": "
+          1000 SeedShop 12 27 square_1_5_3/
+          1230 Town 44 90 3/
+          1620 Beach 11 38 1 \"Characters\\Dialogue\\MarriageDialogue{{Lacey}}:winter_15.nightmarket0\"/
+          1910 38 36 2 \"Characters\\Dialogue\\MarriageDialogue{{Lacey}}:winter_15.nightmarket1\"/
+          2100 BusStop -1 23 3",
+        "marriage_winter_17": "
+          1200 Town 43 77 {{anim}}_sit_down/
+          1620 Beach 13 36 2 \"Characters\\Dialogue\\MarriageDialogue{{Lacey}}:winter_17.nightmarket0\"/
+          1910 27 34 2 \"Characters\\Dialogue\\MarriageDialogue{{Lacey}}:winter_17.nightmarket1\"/
+          2100 BusStop -1 23 3",
+
+        "EOF": ""
+      }
+    }
+  ]
 }

@@ -1,0 +1,26 @@
+{
+  "NoQualityInput": {
+    "MinAmount": 1,
+    "MaxAmount": 4,
+    "AllowMixed": true,
+    "AllowAncient": true
+  },
+  "SilverQualityInput": {
+    "MinAmount": 2,
+    "MaxAmount": 5,
+    "AllowMixed": true,
+    "AllowAncient": true
+  },
+  "GoldQualityInput": {
+    "MinAmount": 3,
+    "MaxAmount": 6,
+    "AllowMixed": true,
+    "AllowAncient": true
+  },
+  "IridiumQualityInput": {
+    "MinAmount": 4,
+    "MaxAmount": 7,
+    "AllowMixed": true,
+    "AllowAncient": true
+  }
+}

@@ -30,7 +30,7 @@ namespace TimeSpeed.Framework
         ** Accessors
         *********/
         /// <summary>The game's default tick interval in milliseconds for the current location.</summary>
-        public int CurrentDefaultTickInterval => 7000 + (Game1.currentLocation?.getExtraMillisecondsPerInGameMinuteForThisLocation() ?? 0);
+        public int CurrentDefaultTickInterval => 7000 + (Game1.currentLocation?.ExtraMillisecondsPerInGameMinute ?? 0);
 
         /// <summary>The percentage of the <see cref="CurrentDefaultTickInterval"/> that's elapsed since the last tick.</summary>
         public double TickProgress

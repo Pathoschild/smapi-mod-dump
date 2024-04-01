@@ -1,16 +1,26 @@
 ﻿{
   "Name": "TeleportPoint",
   "Author": "Enaium",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Record teleport point",
   "UniqueID": "Enaium.TeleportPoint",
   "EntryDll": "TeleportPoint.dll",
-  "MinimumApiVersion": "3.8.0",
-  "UpdateKeys": ["GitHub:Enaium-StardewValleyMods/TeleportPoint"],
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "CurseForge:436830"
+  ],
   "Dependencies": [
     {
       "UniqueID": "Enaium.EnaiumToolKit",
-      "MinimumVersion": "1.4.1"
+      "MinimumVersion": "1.5.0"
     }
-  ]
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Contact": {
+        "HomePage": "https://github.com/Enaium-StardewValleyMods/TeleportPoint",
+        "Issues": "https://github.com/Enaium-StardewValleyMods/TeleportPoint/issues"
+      }
+    }
+  }
 }

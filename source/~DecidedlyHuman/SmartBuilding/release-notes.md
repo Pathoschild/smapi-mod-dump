@@ -7,7 +7,9 @@ for queries and analysis.**
 ----
 
 # Smart Building release notes
-
+## 1.8.0
+#### Fixes
+* 1.6 compatibility.
 ## 1.7.12
 Fixed some GMCM naming issues that made things look terrible.
 ## 1.7.11

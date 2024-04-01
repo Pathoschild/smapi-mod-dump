@@ -6,9 +6,9 @@ mods:
    Hat Mouse Lacey
 
 latest commit:
-   commit 351896436b6aca3fd904f02fecdaa0812ea62844
+   commit b610dbd11fbbd854c035e104061f2f71ef957abf
    Author: ichortower <sudo.ichor@proton.me>
-   Date:   Tue Jan 9 23:10:48 2024 -0500
+   Date:   Tue Mar 19 11:36:47 2024 -0400
    
-       Merge branch 'release-1.1.3' into main
+       Merge branch 'release-1.2.0' into main
    

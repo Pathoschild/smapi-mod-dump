@@ -28,7 +28,7 @@ namespace CombineMachines.Helpers
             {
                 if (_EmojiSpritesheet == null || _EmojiSpritesheet.IsDisposed)
                 {
-                    _EmojiSpritesheet = ModEntry.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/emojis", ContentSource.GameContent);
+                    _EmojiSpritesheet = ModEntry.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/emojis");
                 }
                 return _EmojiSpritesheet;
             }
@@ -41,7 +41,7 @@ namespace CombineMachines.Helpers
             {
                 if (_PlayerStatusList == null || _PlayerStatusList.IsDisposed)
                 {
-                    _PlayerStatusList = ModEntry.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/PlayerStatusList", ContentSource.GameContent);
+                    _PlayerStatusList = ModEntry.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/PlayerStatusList");
                 }
                 return _PlayerStatusList;
             }

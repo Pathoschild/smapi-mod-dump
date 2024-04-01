@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-[{
+[
+    {
         "ProducerName": "Still",
         "InputIdentifier": "Wine",
         "InputStack": 4,
@@ -20,17 +21,19 @@
         "KeepInputQuality": true,
         "InputPriceBased": true,
         "OutputPriceMultiplier": 4.5,
-        "AdditionalOutputs": [{
+        "AdditionalOutputs": [
+            {
                 "OutputIdentifier": "Tequila Blanco",
-                "RequiredInputParentIdentifier": ["Cactus Fruit"],
+                "RequiredInputParentIdentifier": [ "Cactus Fruit" ],
                 "KeepInputQuality": true,
                 "InputPriceBased": true,
                 "OutputPriceMultiplier": 4.5,
-                "OutputProbability": 1,
-            },
+                "OutputProbability": 1
+            }
         ],
-        "Sounds": ["Ship"],
-    }, {
+        "Sounds": [ "Ship" ]
+    },
+    {
         "ProducerName": "Still",
         "InputIdentifier": "Sake",
         "InputStack": 4,
@@ -40,13 +43,14 @@
         "KeepInputQuality": true,
         "InputPriceBased": true,
         "OutputPriceMultiplier": 4.5,
-        "Sounds": ["Ship"],
-    }, {
+        "Sounds": [ "Ship" ]
+    },
+    {
         "ProducerName": "Still",
         "InputIdentifier": "Vodka",
         "FuelIdentifier": "Coal",
         "AdditionalFuel": {
-            "Juniper Berry": 1,
+            "Juniper Berry": 1
         },
         "MinutesUntilReady": 1600,
         "OutputIdentifier": "Gin",
@@ -55,8 +59,9 @@
         "KeepInputQuality": true,
         "InputPriceBased": true,
         "OutputPriceMultiplier": 2,
-        "Sounds": ["Ship"],
-    }, {
+        "Sounds": [ "Ship" ]
+    },
+    {
         "ProducerName": "Keg",
         "InputIdentifier": "Moonshine",
         "MinutesUntilReady": 10000,
@@ -64,10 +69,11 @@
         "InputPriceBased": true,
         "OutputPriceMultiplier": 3,
         "KeepInputQuality": true,
-        "Sounds": ["Ship", "bubbles"],
+        "Sounds": [ "Ship", "bubbles" ],
         "PlacingAnimation": "Bubbles",
         "PlacingAnimationColorName": "Brown"
-    }, {
+    },
+    {
         "ProducerName": "Keg",
         "InputIdentifier": "Tequila Blanco",
         "MinutesUntilReady": 10000,
@@ -76,10 +82,11 @@
         "InputPriceBased": true,
         "OutputPriceMultiplier": 3,
         "KeepInputQuality": true,
-        "Sounds": ["Ship", "bubbles"],
+        "Sounds": [ "Ship", "bubbles" ],
         "PlacingAnimation": "Bubbles",
         "PlacingAnimationColorName": "Brown"
-    }, {
+    },
+    {
         "ProducerName": "Keg",
         "InputIdentifier": "White Rum",
         "MinutesUntilReady": 10000,
@@ -87,17 +94,50 @@
         "InputPriceBased": true,
         "OutputPriceMultiplier": 3,
         "KeepInputQuality": true,
-        "Sounds": ["Ship", "bubbles"],
+        "Sounds": [ "Ship", "bubbles" ],
         "PlacingAnimation": "Bubbles",
         "PlacingAnimationColorName": "Brown"
-    }, {
+    },
+    {
         "ProducerName": "Keg",
         "InputIdentifier": "Unmilled Rice",
         "MinutesUntilReady": 2250,
         "OutputIdentifier": "Sake",
         "OutputName": "Saké",
-        "Sounds": ["Ship", "bubbles"],
+        "Sounds": [ "Ship", "bubbles" ],
         "PlacingAnimation": "Bubbles",
         "PlacingAnimationColorName": "Brown"
+    },
+    {
+        "ProducerName": "Still",
+        "InputIdentifier": "Juice",
+        "InputStack": 4,
+        "FuelIdentifier": "Coal",
+        "MinutesUntilReady": 1600,
+        "OutputIdentifier": "Vodka",
+        "OutputName": "{inputName} Vodka",
+        "KeepInputParentIndex": true,
+        "KeepInputQuality": true,
+        "InputPriceBased": true,
+        "OutputPriceMultiplier": 4.5,
+        "AdditionalOutputs": [
+            {
+                "OutputIdentifier": "Moonshine",
+                "RequiredInputParentIdentifier": [ "Corn" ],
+                "KeepInputQuality": true,
+                "InputPriceBased": true,
+                "OutputPriceMultiplier": 4.5,
+                "OutputProbability": 1
+            },
+            {
+                "OutputIdentifier": "White Rum",
+                "RequiredInputParentIdentifier": [ "Beet" ],
+                "KeepInputQuality": true,
+                "InputPriceBased": true,
+                "OutputPriceMultiplier": 4.5,
+                "OutputProbability": 1
+            }
+        ],
+        "Sounds": [ "Ship" ]
     }
 ]

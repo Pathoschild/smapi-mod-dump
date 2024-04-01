@@ -25,23 +25,19 @@ namespace FarmTypeManager
 
                 if (api == null) //if the API is NOT available
                 {
-                    Monitor.Log($"Optional API not found: Expanded Preconditions Utility (EPU).", LogLevel.Trace);
+                    Monitor.Log($"API not found: Expanded Preconditions Utility (EPU).", LogLevel.Trace);
                     return;
                 }
-                else //if the API is available
-                {
-                    Monitor.Log($"Optional API found: Expanded Preconditions Utility (EPU).", LogLevel.Trace);
-                }
 
+                Monitor.Log($"API found: Expanded Preconditions Utility (EPU).", LogLevel.Trace);
                 api.Initialize(Utility.MConfig.EnableEPUDebugMessages, this.ModManifest.UniqueID); //initialize the API
-
                 Utility.EPUConditionsChecker = api; //pass the API to this mod's static utility property
             }
             catch (Exception ex)
             {
                 Utility.Monitor.Log($"An error happened while loading FTM's Expanded Preconditions Utility interface. Any spawn areas with \"EPUPreconditions\" settings will be disabled. The auto-generated error message has been added to the log.", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Trace);
-                Utility.Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                Utility.Monitor.Log($"{ex}", LogLevel.Trace);
             }
         }
     }

@@ -15,6 +15,6 @@
   "Description": "Adds a configurable hotkey to drop your currently selected item",
   "UniqueID": "Goldenrevolver.DropItHotkey",
   "EntryDll": "DropItHotkey.dll",
-  "MinimumApiVersion": "4.0.0-alpha",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:7971" ]
 }

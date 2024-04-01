@@ -1,0 +1,10 @@
+{
+  "Name": "Predictor",
+  "Author": "JoXW",
+  "Version": "0.2.0",
+  "Description": "Predicts various RNG outcomes.",
+  "UniqueID": "JoXW.Predictor",
+  "EntryDll": "Predictor.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21332" ]
+}

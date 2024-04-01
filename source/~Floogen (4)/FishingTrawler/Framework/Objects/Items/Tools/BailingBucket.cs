@@ -121,7 +121,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
 
         public static GenericTool CreateInstance()
         {
-            var bucket = new GenericTool(string.Empty, string.Empty, -1, 6, 6);
+            var bucket = new GenericTool();
             bucket.modData[ModDataKeys.BAILING_BUCKET_KEY] = true.ToString();
 
             return bucket;

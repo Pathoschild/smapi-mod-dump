@@ -1,0 +1,10 @@
+{
+  "Name": "Stardew Web",
+  "Author": "Prism 99",
+  "Version": "1.0.2",
+  "Description": "Adds a web Portal view of your Stardew Valley Farm.",
+  "UniqueID": "prism99.stardewweb",
+  "EntryDll": "StardewWeb.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:8715" ]
+}

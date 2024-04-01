@@ -41,84 +41,84 @@ namespace CustomKissingMod
                     Name = "Abigail",
                     Frame = 33,
                     FrameDirectionRight = false,
-                    RequiredEvent = 901756
+                    RequiredEvent = "901756"
                 },
                 new NpcConfig
                 {
                     Name = "Alex",
                     Frame = 42,
                     FrameDirectionRight = true,
-                    RequiredEvent = 911526
+                    RequiredEvent = "911526"
                 },
                 new NpcConfig
                 {
                     Name = "Elliott",
                     Frame = 35,
                     FrameDirectionRight = false,
-                    RequiredEvent = 43
+                    RequiredEvent = "43"
                 },
                 new NpcConfig
                 {
                     Name = "Emily",
                     Frame = 33,
                     FrameDirectionRight = false,
-                    RequiredEvent = 2123343
+                    RequiredEvent = "2123343"
                 },
                 new NpcConfig
                 {
                     Name = "Haley",
                     Frame = 28,
                     FrameDirectionRight = true,
-                    RequiredEvent = 15
+                    RequiredEvent = "15"
                 },
                 new NpcConfig
                 {
                     Name = "Harvey",
                     Frame = 31,
                     FrameDirectionRight = false,
-                    RequiredEvent = 528052
+                    RequiredEvent = "528052"
                 },
                 new NpcConfig
                 {
                     Name = "Leah",
                     Frame = 25,
                     FrameDirectionRight = true,
-                    RequiredEvent = 54
+                    RequiredEvent = "54"
                 },
                 new NpcConfig
                 {
                     Name = "Maru",
                     Frame = 28,
                     FrameDirectionRight = false,
-                    RequiredEvent = 10
+                    RequiredEvent = "10"
                 },
                 new NpcConfig
                 {
                     Name = "Penny",
                     Frame = 35,
                     FrameDirectionRight = true,
-                    RequiredEvent = 38
+                    RequiredEvent = "38"
                 },
                 new NpcConfig
                 {
                     Name = "Sam",
                     Frame = 36,
                     FrameDirectionRight = true,
-                    RequiredEvent = 233104
+                    RequiredEvent = "233104"
                 },
                 new NpcConfig
                 {
                     Name = "Sebastian",
                     Frame = 40,
                     FrameDirectionRight = false,
-                    RequiredEvent = 384882
+                    RequiredEvent = "384882"
                 },
                 new NpcConfig
                 {
                     Name = "Shane",
                     Frame = 34,
                     FrameDirectionRight = false,
-                    RequiredEvent = 9581348
+                    RequiredEvent = "9581348"
                 }
             };
         }

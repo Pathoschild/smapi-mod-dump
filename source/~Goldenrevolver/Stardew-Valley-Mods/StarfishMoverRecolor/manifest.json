@@ -15,5 +15,5 @@
   "Description": "Made for 'The Song of the Mermaid' by 'Naya'.",
   "UniqueID": "Goldenrevolver.StarfishMoverRecolor",
   "EntryDll": "StarfishMoverRecolor.dll",
-  "MinimumApiVersion": "4.0.0-alpha"
+  "MinimumApiVersion": "4.0.0"
 }

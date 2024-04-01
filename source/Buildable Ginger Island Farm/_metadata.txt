@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/mouahrara/BuildableGingerIslandFarm
+   Git: https://github.com/mouahrara/BuildableGingerIslandFarm.git
+
+mods:
+   Buildable Ginger Island Farm
+
+latest commit:
+   commit d99338989e55c76dbe0a3ab5db33ebba3af6bda8
+   Author: mouahrara <mouahrara@users.noreply.github.com>
+   Date:   Mon Jan 22 15:21:49 2024 +0100
+   
+       Buildable Ginger Island Farm 1.0.0
+   

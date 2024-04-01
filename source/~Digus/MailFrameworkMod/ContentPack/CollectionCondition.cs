@@ -20,7 +20,7 @@ namespace MailFrameworkMod.ContentPack
     {
         public Collection Collection;
         public string Name;
-        public int Index;
+        public string Index;
         public int Amount;
     }
 }

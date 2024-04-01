@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "spoiled": " (Spoiled)",
+  "spoiled-desc": "This item has spoiled.",
+  "1-day-old": " (1 day old)",
+  "x-days-old": " ({0} days old)",
+  "x-y-days-old": " ({0}/{1} days old)"
+}

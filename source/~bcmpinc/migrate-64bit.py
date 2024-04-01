@@ -11,10 +11,13 @@ for f in files:
         text = file.read()
 
     # Bump api version
-    text = re.sub('net452', 'net5.0', text)
+    text = re.sub('net5.0', 'net6.0', text)
 
     # Bump build package version
-    text = re.sub('"3.4.0"', '"3.4.0-beta.20210813"', text)
+    #text = re.sub('"3.4.0"', '"3.4.0-beta.20210813"', text)
+
+    # Bump solutionversion
+    #text = re.sub('<Version>\d[.]\d', '<Version>7.0', text)
 
     with open(f, "w") as file:
         file.write(text)

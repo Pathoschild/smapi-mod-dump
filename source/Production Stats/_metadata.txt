@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/FlameHorizon/ProductionStats
+   Git: https://github.com/FlameHorizon/ProductionStats.git
+
+mods:
+   Production Stats
+
+latest commit:
+   commit 3dd6dad3c07296d8e0d6afb35c48cc23bf1cf20b
+   Author: FlameHorizon <maciejpiotrowsk@gmail.com>
+   Date:   Fri Mar 29 09:01:08 2024 +0100
+   
+       Merge branch 'main' of https://github.com/FlameHorizon/ProductionStats
+   

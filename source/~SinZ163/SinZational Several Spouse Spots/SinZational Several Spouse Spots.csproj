@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>SeveralSpouseSpots</RootNamespace>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Name>SinZational Several Spouse Spots</Name>
+    <Authors>SinZ</Authors>
+    <Version>1.1.0</Version>
+    <Description>A mod that implements multiplayer spouse patios</Description>
+    <UniqueId>SinZ.SeveralSpouseSpots</UniqueId>
+    <MinimumApiVersion>4.0</MinimumApiVersion>
+    <UpdateKeys>Nexus:20655</UpdateKeys>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+  </ItemGroup>
+</Project>

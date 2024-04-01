@@ -16,5 +16,20 @@
   "UniqueID": "com.dayloncrider.stardewvalley.lastdaytoplant",
   "EntryDll": "LastDayToPlant.dll",
   "MinimumApiVersion": "3.8.0",
-  "UpdateKeys": [ "Nexus:7917"]
+  "UpdateKeys": [ "Nexus:7917"],
+  "Languages": [
+    {
+      "Code": "en",
+      "DisplayName": "English",
+      "IsPrimary": true
+    },
+    {
+      "Code": "es",
+      "DisplayName": "Español"
+    },
+    {
+      "Code": "pt",
+      "DisplayName": "Português"
+    }
+  ]
 }

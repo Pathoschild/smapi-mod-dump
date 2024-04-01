@@ -1,0 +1,20 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "SinZ.SharedSpaces",
+  "Name": "SinZational Shared Spaces",
+  "Author": "SinZ",
+  "Version": "1.0.2",
+  "Description": "A mod that implements multiplayer stacked cabins",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "SinZational Shared Spaces.dll",
+  "UpdateKeys": [
+    "Nexus:20654"
+  ]
+}

@@ -13,7 +13,7 @@
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/ellehouse_{{RecolorPalette}}_{{Season}}.png",
+			"FromFile": "assets/textures/ellehouse_{{RecolorPalette}}_{{Season}}.png",
 			"FromArea": {"X": 0, "Y": 0, "Width": 37, "Height": 56},
 			"ToArea": {"X": 288, "Y": 1208, "Width": 37, "Height": 56},
 			"PatchMode": "Overlay"
@@ -21,7 +21,7 @@
 		{
 			"Target": "LooseSprites/Cursors",
 			"Action": "EditImage",
-			"FromFile": "assets/ellestorefront_{{RecolorPalette}}_{{Season}}.png",
+			"FromFile": "assets/textures/ellestorefront_{{RecolorPalette}}_{{Season}}.png",
 			"ToArea": {"X": 631, "Y": 1969, "Width": 15, "Height": 20}
 		}
 	]

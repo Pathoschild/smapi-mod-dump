@@ -1,0 +1,10 @@
+{
+  "Name": "Community Bundle Item Tooltip",
+  "Author": "Musbah Sinno",
+  "Version": "1.4.1",
+  "Description": "Adding a tooltip to items telling you if they are needed in a bundle.",
+  "UniqueID": "musbah.bundleTooltip",
+  "EntryDll": "StardewValleyBundleTooltips.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:1329" ]
+}

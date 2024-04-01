@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Load Jelly Icons",
+            "Action": "EditData",
+            "Target": "furyx639.SpritePatcher/Patches",
+            "When": {
+                "HasValue: {{Fruits}}": "true"
+            },
+            "Entries": {
+                "{{ModId}}/JellyIcons": {
+                    "Target": "Maps/springobjects",
+                    "Area": {"X": 128, "Y": 224, "Width": 16, "Height": 16},
+                    "DrawMethods": ["Menu", "Held", "World"],
+                    "PatchMode": "Replace",
+                    "Code": "WithPreserve(preserve => SetTexture(`{{Jelly}}`, GetIndexFromString(`{{Fruits}}`, preserve.InternalName)));"
+                }
+            }
+        },
+        {
+            "LogName": "Load Jelly Icon Overlay",
+            "Action": "EditData",
+            "Target": "furyx639.SpritePatcher/Patches",
+            "Entries": {
+                "{{ModId}}/JellyIconOverlay": {
+                    "Target": "Maps/springobjects",
+                    "Area": {"X": 134, "Y": 233, "Width": 4, "Height": 4},
+                    "DrawMethods": ["Menu", "Held", "World"],
+                    "PatchMode": "Overlay",
+                    "Priority": -1,
+                    "Code": "WithPreserve(preserve => SetTexture(preserve, scale:0.25f));"
+                }
+            }
+        }
+    ]
+}

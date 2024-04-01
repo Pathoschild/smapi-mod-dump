@@ -19,11 +19,11 @@ namespace StardewDruid.Cast.Mists
     internal class Scarecrow : CastHandle
     {
 
-        public Scarecrow(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Scarecrow(Vector2 target)
+            : base(target)
         {
 
-            castCost = Math.Max(12, 48 - rite.caster.FarmingLevel * 3);
+            castCost = Math.Max(12, 48 - Game1.player.FarmingLevel * 3);
 
         }
 
@@ -96,7 +96,7 @@ namespace StardewDruid.Cast.Mists
 
             castFire = true;
 
-            ModUtility.AnimateBolt(targetLocation, targetVector);
+            ModUtility.AnimateBolt(targetLocation, targetVector * 64 + new Vector2(32));
 
             Utility.addSprinklesToLocation(targetLocation, (int)targetVector.X - 1, (int)targetVector.Y - 1, 3, 3, 999, 333, Color.White);
 

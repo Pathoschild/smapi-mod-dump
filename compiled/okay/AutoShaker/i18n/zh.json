@@ -1,0 +1,72 @@
+﻿{
+  "Action.Shake.Future": "摇晃",
+
+  "Key.Bushes": "灌木丛",
+  "Key.Forageables": "可觅食",
+  "Key.FruitTrees": "果树",
+  "Key.WildTrees": "野生树木",
+
+  "Link.Bushes.Text": "灌木丛 切换>",
+  "Link.Forageables.Text": "觅食 切换>",
+  "Link.FruitTrees.Text": "果树 切换>",
+  "Link.WildTrees.Text": "野生树木 切换>",
+
+  "Log.DisabledConfig": "{{subjects}} 未进行交互,因为 [{{configName}}] 配置设置当前处于禁用状态",
+  "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
+  "Log.Eod.TotalStat": "[{{amount}}] Total Forages",
+  "Log.FruitNotReady": "果树在有{{amount}}果实可用之前不会动摇.这可以通过 {{configName}} 配置设置进行设置.",
+  "Log.MissingHoe": "{{subject}} 不会﻿被觅食,因为在玩家的物品栏中没有找到锄头.可以通过禁用 {{configName}}",
+  "Log.MissingToolMoss": "苔藓不会被觅食,因为在玩家的物品栏中没有找到工具,因此可以关闭此设置.可以通过禁用 {{configName}}",
+
+  "Message.AutoForagerToggled": "自动觅食 {{state}}",
+  "Message.MissingHoe": "缺少锄头.",
+  "Message.MissingToolMoss": "缺少一个工具.",
+
+  "Note.ShakeWalnutBushes": "这些核桃是游戏的最终内容,很难找到.启用此选项确实在某种程度上使此内容变得微不足道.",
+
+  "Option.FruitsReadyToShake.Name": "准备摇晃的最小水果数",
+  "Option.FruitsReadyToShake.Tooltip": "在自动觅食者摇晃果树之前,果树应准备好的最小水果量.",
+  "Option.IsForagerActive.Name": "觅食是否开启？",
+  "Option.IsForagerActive.Tooltip": "自动觅食是否会摇晃树木和灌木丛并觅食.",
+  "Option.RequireHoe.Name": "是否需要用锄头来觅食{{whitespace}}生姜,雪山药还有冬根？",
+  "Option.RequireHoe.Tooltip": "玩家需要在他们的工具栏中放一把锄头来觅食某些物品,例如生姜和雪山药.",
+  "Option.RequireToolMoss.Name": "是否需要任何工具来觅食{{whitespace}}树上的苔藓？",
+  "Option.RequireToolMoss.Tooltip": "玩家是否需要在他们的库存中拥有任何工具才能从树上觅食苔藓.",
+  "Option.ShakeDistance.Name": "摇晃距离",
+  "Option.ShakeDistance.Tooltip": "禁用'{{playerMagnetismName}}'时摇晃灌木丛的距离.",
+  "Option.ToggleAction.Name": "觅食任何{{subject}}？",
+  "Option.ToggleAction.Description.Reward": "是否为{{reward}}提供{{action}} {{subject}}.",
+  "Option.ToggleAction.Description.Reward.Note": "是否为 {{action}} {{subject}} 换取 {{reward}}.注释: {{note}}.",
+  "Option.ToggleForager.Name": "切换觅食键绑定",
+  "Option.ToggleForager.Tooltip": "绑定可打开和关闭自动觅食.",
+  "Option.UsePlayerMagnetism.Name": "使用玩家磁力距离？",
+  "Option.UsePlayerMagnetism.Tooltip": "在寻找要摇晃或觅食的东西时是否使用玩家当前的磁力距离.注意:覆盖 '{{shakeDistanceName}}'",
+
+  "Page.Bushes.Title": "灌木丛",
+  "Page.Bushes.Description": "是否从灌木丛中觅食出以下项目:",
+  "Page.Forageables.Title": "可觅食",
+  "Page.Forageables.Description": "是否应觅食以下物品:",
+  "Page.FruitTrees.Title": "果树",
+  "Page.FruitTrees.Description": "是否应从果树中摇出以下物品:",
+  "Page.WildTrees.Title": "野生树木",
+  "Page.WildTrees.Description": "是否应从野生树木中摇晃以下物品:",
+
+  "Reward.Blackberries": "黑莓",
+  "Reward.GoldenWalnuts": "金胡桃",
+  "Reward.Salmonberries": "树莓",
+  "Reward.TeaLeaves": "茶叶",
+
+  "Section.Bushes.Text": "灌木丛 切换",
+  "Section.FruitTrees.Text": "果树 切换",
+  "Section.General.Text": "常规选项",
+  "Section.WildTree.Text": "野生树木 切换",
+
+  "State.Activated": "已激活",
+  "State.Deactivated": "已停用",
+
+  "Subject.BlackberryBushes": "黑莓灌木",
+  "Subject.GingerRoots": "姜",
+  "Subject.SalmonberryBushes": "树莓灌木",
+  "Subject.TeaBushes": "茶苗",
+  "Subject.WalnutBushes": "核桃树丛"
+}

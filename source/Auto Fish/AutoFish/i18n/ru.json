@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/WhiteMinds/mod-sv-autofish
+**
+*************************************************/
+
+{
+  "maxCastPower.name": "Максимальная сила заброса",
+  "autoHit.name": "Автоматическое попадание",
+  "fastBite.name": "Быстрый клев",
+  "catchTreasure.name": "Ловить сокровища (Отключите эту опцию при поимке легендарной рыбы)",
+  "fasterSpeed.name": "Увеличенная скорость",
+  "triggerKeepAutoFish.name": "Автоматически поддерживать авто-рыбалку",
+  "keepAutoFishKey.name": "Клавиша для поддержания авто-рыбалки",
+  "autoLootTreasure.name": "Автоматический сбор сокровищ",
+  "autoLootFishAndTrash.name": "Автоматический сбор рыбы и мусора"
+}

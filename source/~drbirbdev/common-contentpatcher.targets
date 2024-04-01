@@ -7,12 +7,24 @@
     <Target Name="DeployPack" AfterTargets="Build">
         <Message Text="Running DeployPack target..." />
         <ItemGroup>
-            <_FilesToCopy Include="$(ProjectDir)ContentPatcher/**/*" />
+            <_ContentPatcherFiles Include="$(ProjectDir)ContentPatcher/**/*" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(_FilesToCopy)" DestinationFiles="@(_FilesToCopy->'$(GameModsPath)/$(AssemblyName) [CP]/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(_ContentPatcherFiles)" DestinationFiles="@(_ContentPatcherFiles->'$(GameModsPath)/$(AssemblyName) [CP]/%(RecursiveDir)%(Filename)%(Extension)')" />
+    </Target>
+
+    <Target Name="ZipPack" AfterTargets="DeployPack">
+        <Message Text="Running ZipPack target..." />
+        <ItemGroup>
+            <_ModFiles Include="$(GameModsPath)/**/*" />
+            <_FilesToDelete Include="$(GamePath)temp/$(AssemblyName)/$(AssemblyName)/$(AssemblyName)/config.json" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(_ModFiles)" DestinationFiles="@(_ModFiles->'$(GamePath)temp/$(AssemblyName)/$(AssemblyName)/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Delete Files="@(_FilesToDelete)" />
         <!-- Use ZipDirectory after build. -->
-        <ZipDirectory DestinationFile="$(ModZipPath)/$(AssemblyName) $(Version).zip" SourceDirectory="$(GameModsPath)" Overwrite="True" />
+        <ZipDirectory DestinationFile="$(ModZipPath)/$(AssemblyName) $(Version).zip" SourceDirectory="$(GamePath)temp/$(AssemblyName)" Overwrite="True" />
+        <RemoveDir Directories="$(GamePath)temp" />
     </Target>
 
     <ItemGroup>

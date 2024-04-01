@@ -1,0 +1,11 @@
+{
+  "maxCastPower": true,
+  "autoHit": true,
+  "fastBite": false,
+  "catchTreasure": true,
+  "fasterSpeed": false,
+  "triggerKeepAutoFish": true,
+  "keepAutoFishKey": "Insert",
+  "autoLootTreasure": true,
+  "autoLootFishAndTrash": true
+}

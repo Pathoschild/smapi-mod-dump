@@ -1,0 +1,11 @@
+{
+  "ShowObjectOutlines": false,
+  "ShowArtifactSpotItems": true,
+  "ShowMineableItems": true,
+  "ShowLadderOutline": true,
+  "ShowFishInMinigame": true,
+  "ShowFishChances": true,
+  "ShowTrashChances": false,
+  "ShowSecretNoteChances": false,
+  "ShowLessFishInfo": false
+}

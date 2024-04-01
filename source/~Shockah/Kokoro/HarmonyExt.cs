@@ -152,7 +152,7 @@ public static class HarmonyExt
 		}
 	}
 
-	public static (int patched, int total) TryPatchVirtual(
+	public static int TryPatchVirtual(
 		this Harmony self,
 		Func<MethodBase?> original,
 		IMonitor monitor,
@@ -168,19 +168,17 @@ public static class HarmonyExt
 		if (originalMethod is null)
 		{
 			monitor.Log($"Could not patch method - the mod may not work correctly.\nReason: Unknown method to patch.", problemLogLevel);
-			return (0, 1);
+			return 0;
 		}
 
+		int patched = 0;
 		try
 		{
-			int patched = 0;
-			int total = 0;
 			Type? declaringType = originalMethod.DeclaringType;
 			if (declaringType == null)
 				throw new ArgumentException($"{nameof(original)}.{nameof(originalMethod.DeclaringType)} is null.");
 			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				total++;
 				IEnumerable<Type> subtypes = Enumerable.Empty<Type>();
 				try
 				{
@@ -233,12 +231,12 @@ public static class HarmonyExt
 					}
 				}
 			}
-			return (patched, total);
+			return patched;
 		}
 		catch (Exception ex)
 		{
 			monitor.Log($"Could not patch method {originalMethod} - the mod may not work correctly.\nReason: {ex}", problemLogLevel);
-			return (0, 1);
+			return patched;
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace ConvenientChests.CategorizeChests
         {
             return Game1.locations
                 .Concat(
-                    from location in Game1.locations.OfType<BuildableGameLocation>()
+                    from location in Game1.locations.OfType<GameLocation>()
                     from building in location.buildings
                     where building.indoors.Value != null
                     select building.indoors.Value

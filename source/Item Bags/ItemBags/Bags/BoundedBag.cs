@@ -29,9 +29,6 @@ using ItemBags.Menus;
 using ItemBags.Persistence;
 using ItemBags.Helpers;
 using System.Runtime.Serialization;
-#if !ANDROID
-//using PyTK.CustomElementHandler;
-#endif
 
 namespace ItemBags.Bags
 {
@@ -40,15 +37,11 @@ namespace ItemBags.Bags
     [XmlRoot(ElementName = "BoundedBag", Namespace = "")]
     [KnownType(typeof(BundleBag))]
     [XmlInclude(typeof(BundleBag))]
-#if ANDROID
     public class BoundedBag : ItemBag
-#else
-    public class BoundedBag : ItemBag//, ISaveElement
-#endif
     {
         public class AllowedObject
         {
-            public int Id { get; }
+            public string Id { get; }
             public ReadOnlyCollection<ObjectQuality> Qualities { get; }
             public bool HasQualities { get; }
             public bool IsBigCraftable { get; }
@@ -77,7 +70,7 @@ namespace ItemBags.Bags
 
             public bool IsMatch(Object Item)
             {
-                return Item != null && Item.ParentSheetIndex == this.Id && Item.bigCraftable.Value == this.IsBigCraftable && IsValidQuality(Item);
+                return Item != null && Item.ItemId == this.Id && Item.bigCraftable.Value == this.IsBigCraftable && IsValidQuality(Item);
             }
 
             public override string ToString()
@@ -332,23 +325,6 @@ namespace ItemBags.Bags
             }
         }
 
-#region PyTK CustomElementHandler
-        public virtual object getReplacement()
-        {
-            return new Object(168, 1);
-        }
-
-        public Dictionary<string, string> getAdditionalSaveData()
-        {
-            return new BagInstance(-1, this).ToPyTKAdditionalSaveData();
-        }
-
-        public void rebuild(Dictionary<string, string> additionalSaveData, object replacement)
-        {
-            BagInstance Data = BagInstance.FromPyTKAdditionalSaveData(additionalSaveData);
-            LoadSettings(Data);
-        }
-
         protected override void LoadSettings(BagInstance Data)
         {
             if (Data != null)
@@ -412,11 +388,11 @@ namespace ItemBags.Bags
                 }
             }
         }
-#endregion PyTK CustomElementHandler
 
         internal override bool OnJsonAssetsItemIdsFixed(IJsonAssetsAPI API, bool AllowResyncing)
         {
-            this.AllowedObjects = new ReadOnlyCollection<AllowedObject>(SizeInfo.Items.Select(x => new AllowedObject(x)).ToList());
+            if (SizeInfo != null)
+                this.AllowedObjects = new ReadOnlyCollection<AllowedObject>(SizeInfo.Items.Select(x => new AllowedObject(x)).ToList());
             return ValidateContentsIds(API, AllowResyncing);
         }
 
@@ -530,6 +506,19 @@ namespace ItemBags.Bags
             else
             {
                 base.drawTooltip(spriteBatch, ref x, ref y, font, alpha, overrideText);
+            }
+        }
+
+        protected override Item GetOneNew() => new BoundedBag(TypeInfo, Size, Autofill);
+        protected override void GetOneCopyFrom(Item source)
+        {
+            base.GetOneCopyFrom(source);
+            if (source is BoundedBag bag)
+            {
+                TypeInfo = bag.TypeInfo;
+                Size = bag.Size;
+                Autofill = bag.Autofill;
+                ExcludedAutofillItems = bag.ExcludedAutofillItems;
             }
         }
     }

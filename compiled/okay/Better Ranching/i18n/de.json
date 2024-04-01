@@ -1,0 +1,31 @@
+{
+    // Config settings
+    "config.option.failed_harvest.name": "Verhindert Ernteausfall",
+    "config.option.failed_harvest.description": "Verhindert die Animation und den Sound beim Fehlschlagen von Melk/Scher-Vorgängen, wenn kein korrektes Tier ausgewählt wurde. Hinweis: Deaktiviere dies, wenn Du 'Tap-to-move & Auto-Attack' auf Android verwendest.",
+    "config.option.animal_produce.name": "Zeige, was die Tiere produzieren",
+    "config.option.animal_produce.description": "Zeige, was die Tiere produzieren, wenn geerntet werden kann",
+    "config.option.hearts_animal.name": "Zeige Herzen über Farmtieren",
+    "config.option.hearts_animal.description": "Zeige Herzen über den Farmtieren (Kühe, Enten, etc.), wenn sie noch nicht gestreichelt wurden.",
+    "config.option.hearts_pet.name": "Zeige Herzen über Haustieren",
+    "config.option.hearts_pet.description": "Zeige Herzen über den Haustieren (Hund, Katze, etc.), wenn sie noch nicht gestreichelt wurden.",
+    "config.option.hearts_enabled.name": "[!] Zeige Herzen",
+    "config.option.hearts_enabled.description": "Zeige Herzen über den Tieren. Warnung: Wenn Du dies deaktivierst, werden ALLE Herzen, die durch diesen Mod aktiviert wurden, versteckt (Tiere, Haustiere, etc.)",
+    "config.option.hearts_max_friendship.name": "Verstecke Herzen bei maximaler Freundschaft",
+    "config.option.hearts_max_friendship.description": "Verstecke die Herzen, wenn die Freundschaft mit einem Tier oder Haustier das maximale Level erreicht hat. Warnung: Sei vorsichtig damit, denn die Freundschaft wird am Ende des Tages sinken, wenn Du Dein Tier nicht streichelst!",
+
+    // Other messages
+    "notification.inventory_full": "Inventar voll",
+
+    "action.out_of_range.milk": "melken",
+    "action.out_of_range.shear": "scheren",
+    "notification.out_of_range": "Außerhalb des Radius um, zu {{ranchActionPresent}}!",
+
+    "product.milk": "Milch",
+    "product.wool": "Wolle",
+
+    "notification.util_action": "Baby {{Name}} wird {{Product}} in {{Days}} Tagen produzieren.",
+
+    "action.unable.milk": "melken",
+    "action.unable.shear": "scheren",
+    "notification.unable": "Nichts zu {{Action}}"
+}

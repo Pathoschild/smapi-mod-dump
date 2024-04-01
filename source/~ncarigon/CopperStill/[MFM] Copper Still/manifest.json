@@ -11,13 +11,12 @@
 {
 	"Name": "[MFM] Copper Still",
 	"Author": "NCarigon",
-    "Version": "1.0.5",
+	"Version": "1.1.1",
 	"Description": "Mail content for Copper Still.",
 	"UniqueID": "NCarigon.CopperStillMFM",
-	"MinimumApiVersion": "3.8.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "nexus:15333" ],
 	"ContentPackFor": {
-		"UniqueID": "DIGUS.MailFrameworkMod",
-        "MinimumVersion": "1.10.1"
+		"UniqueID": "DIGUS.MailFrameworkMod"
 	}
 }

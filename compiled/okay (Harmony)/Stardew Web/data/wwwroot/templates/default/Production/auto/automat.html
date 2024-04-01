@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    #HEAD#
+    <style>
+        .highlight {
+            background-color: #ddd !important;
+        }
+    </style>
+    <script>
+        function LocalSubPageLoaded() {
+            $(".clickable-row").click(function () {
+                if ($(this).hasClass("highlight")) {
+                    //$(this).removeClass('highlight');
+                }
+                else
+                    $(this).addClass('highlight').siblings().removeClass('highlight');
+                var id = $(this).data('id');
+                loaddetails(id);
+            })
+           
+            SubPageLoaded('Farm', 'Automation');
+        }
+
+        function AddRule()
+        {
+            ClickAndOpen('/Production/auto/add');
+        }
+        function DeleteRule(ruleId)
+        {
+            ClickAndOpen('/Production/auto/delete/' + ruleId);
+        }
+
+        function loaddetails(actionName)
+        {
+            if (actionName != null && actionName.length > 0)
+            {
+                var sUrl = '/Production/autorule/' + actionName;
+                fetch(sUrl)
+                    .then(response => {
+                        if (response.ok) {
+                            response.json().then(data => {
+                                document.getElementById('details').innerHTML = data.HTML;
+                                //document.getElementById('alphabar').innerHTML = data.AlphaBar;
+                             });
+                        } else document.getElementById('details').innerHTML = 'Network response was not ok.';
+                    })
+                    .catch(error =>
+                        document.getElementById('details').innerHTML = 'Fetch error: ' + error
+                    );
+            }
+        }
+    </script>
+
+</head>
+
+<body onload="LocalSubPageLoaded();">
+    #MENUBAR#
+
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+
+        #CONTENT#
+    </div>
+
+</body>
+</html>

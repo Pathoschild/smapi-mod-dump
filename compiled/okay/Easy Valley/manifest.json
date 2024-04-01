@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EasyValley",
+  "Author": "season",
+  "Version": "0.0.1",
+  "Description": "Make it easier for you to live in StardwValley.",
+  "UniqueID": "season.EasyValley",
+  "EntryDll": "EasyValley.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21181" ]
+}

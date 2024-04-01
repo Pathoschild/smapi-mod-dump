@@ -6,9 +6,11 @@ mods:
    Discord Rich Presence
 
 latest commit:
-   commit aae409f71079fa62d4c76fa97c0448a3a6b7d149
+   commit 5d9c816cc6f014ba5a6649c4c94a9b6bbaba4dea
    Author: RuiNtD <RuiNtD@outlook.com>
-   Date:   Sun Oct 1 09:12:16 2023 -0600
+   Date:   Mon Mar 25 16:36:23 2024 -0600
    
-       Bump version
+       Hotfix for tag list not working
+       
+       It worked in DEBUG...
    

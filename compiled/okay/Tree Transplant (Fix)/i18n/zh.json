@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "选择要移植的树木",
+  "Menu_PlacementText": "选择新的移植位置",
+  "Menu_InvalidPlace": "不能放这里!",
+  "Menu_InvalidCap": "不可移植正在采树脂的树木!",
+  "Carpenter_Option": "树木移植"
+}

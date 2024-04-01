@@ -1,12 +1,12 @@
 {
-  "Name": "Redraw Pelican Town",
+  "Name": "Redraw Pelican Town (Config)",
   "Author": "JefGrizli",
-  "Version": "1.4.1", // fixed locally
+  "Version": "1.0.1",
   "Description": "Config of Registered Tokens for RPT(E) and dependant mods.",
   "UniqueID": "JefGrizli.RedrawPelicanTownC",
   "EntryDll": "RedrawPelicanTown.dll",
   "MinimumApiVersion": "3.13.0",
-  "UpdateKeys": [ "Nexus:???" ],
+  "UpdateKeys": [ "Nexus:15564@Config" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher"

@@ -1,9 +1,0 @@
-{
-  "Name": "Winter Rain",
-  "Author": "idermailer",
-  "Version": "1.0.1",
-  "Description": "It rains in winter",
-  "UniqueID": "idermailer.WinterRain",
-  "EntryDll": "WinterRain.dll",
-  "UpdateKeys": [ "Nexus:13767" ]
-}

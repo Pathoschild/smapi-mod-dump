@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4713
+IDs: mondopandora.stardewnotification, stardewnotification
+update keys: Nexus:4713, GitHub:Sakorona/SDVMods

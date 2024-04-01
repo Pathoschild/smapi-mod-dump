@@ -11,17 +11,17 @@
 {
 	"Name": "Hats on Hats",
 	"Author": "Shockah",
-	"Version": "1.0.0",
+	"Version": "2.0.0",
 	"Description": "Hats on hats.",
 	"UniqueID": "Shockah.HatsOnHats",
 	"EntryDll": "HatsOnHats.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "Nexus:17280" ],
 	"Dependencies": [
 		{
 			"UniqueID": "Shockah.Kokoro",
 			"IsRequired": true,
-			"MinimumVersion": "2.0.1"
+			"MinimumVersion": "3.0.0"
 		}
 	]
 }

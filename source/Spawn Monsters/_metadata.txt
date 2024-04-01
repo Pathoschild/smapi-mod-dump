@@ -6,9 +6,9 @@ mods:
    Spawn Monsters
 
 latest commit:
-   commit e02fa05b91a9e7bcfb2ba4118b1945d4c8dc9895
+   commit aef4c21a35d01e375934882b16530c2d461542c8
    Author: Berisan <berisan@berisan.dev>
-   Date:   Fri May 21 15:02:06 2021 +0000
+   Date:   Sun Mar 31 19:30:36 2024 +0200
    
-       Use dotnet 4.5
+       SDV 1.6 compatibility, target .NET 6
    

@@ -43,7 +43,7 @@ namespace StardewHack.WearMoreRings
         static private Ring MakeRing(int which) {
             if (which < 0) return null;
             try {
-                return new Ring(which);
+                return new Ring(which.ToString());
             } catch {
                 // Ring no longer exists, so delete it.
                 ModEntry.getInstance().Monitor.Log($"Failed to create ring with id {which}.", LogLevel.Warn);
@@ -92,7 +92,7 @@ namespace StardewHack.WearMoreRings
             if (!(existing_chest is Chest)) return false;
 
             monitor.Log(string.Format("Destroying ring chest with id {0}.", id), LogLevel.Trace);
-            var inv = (existing_chest as Chest).items;
+            var inv = (existing_chest as Chest).Items;
                         
             for (var slot = 0; slot < inv.Count; slot++) {
                 MigrateRing(slot + 2, inv[slot]);

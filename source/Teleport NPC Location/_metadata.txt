@@ -6,9 +6,9 @@ mods:
    Teleport NPC Location
 
 latest commit:
-   commit dc76d015604118a7cfcc82f01b2e7469cd6fda77
+   commit fcf0f37c1ccbc1e05b30f63ef0a6be0f4dfbf285
    Author: ccr <chencrstu@163.com>
-   Date:   Sat Sep 9 12:42:27 2023 +0800
+   Date:   Sun Mar 24 15:26:33 2024 +0800
    
-       Refactor code
+       1.6 Compatible
    

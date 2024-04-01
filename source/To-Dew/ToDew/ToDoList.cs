@@ -201,7 +201,11 @@ namespace ToDew {
 
         private void DoAddItem(string text) {
             ListItem item = new ListItem(theMod.Helper.Multiplayer.GetNewID(), text);
-            theList.Items.Add(item);
+            if (theMod.config.addLocation == ListAddLocation.Bottom) {
+                theList.Items.Add(item);
+            } else {
+                theList.Items.Insert(0, item);
+            }
             Save();
         }
 

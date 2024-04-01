@@ -6,9 +6,13 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 83a3bf4f8f5f453e123bfbef808bd6868cc8d05f
+   commit 2bca9b0a8e9525e422be2572519d53c9a50f8ea0
    Author: Mohammad Shoaib Khan <khanshoaibpers@outlook.com>
-   Date:   Mon Mar 18 23:39:02 2024 +0530
+   Date:   Mon Apr 1 00:49:23 2024 +0530
    
-       ðŸ”– Bump version to v1.6.0-alpha.3
+       âœ¨ :bug: Add item sell price and fix tile info menu
+       
+       - Added speaking hovered inventory item's sell price if the player has received the
+         price catalogue book; closes #293
+       - Fixed tile info menu not opening; closes #286
    

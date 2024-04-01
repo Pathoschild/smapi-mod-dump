@@ -1,0 +1,48 @@
+﻿{
+  "ID": "prism99.advize.stardewrealty.largegreenhouse",
+  "Name": "prism99.advize.stardewrealty.largegreenhouse",
+  "DisplayName": "[LocalizedText SDR\\Strings\\Objects:sdr.largegreenhouse.displayname]",
+  "Description": "[LocalizedText SDR\\Strings\\Objects:sdr.largegreenhouse.description]",
+  "InteriorMapName": "largegreenhouse.tmx",
+  "BuildingTextureName": "largegreenhouse.png",
+  "Conditions": "PLAYER_HAS_MAIL Host ccPantry",
+  "SourceRectangle": {
+    "X": 0,
+    "Y": 0,
+    "Width": 92,
+    "Height": 133
+  },
+  "HumanDoor": {
+    "X": 2,
+    "Y": 2
+  },
+  "AnimalDoor": {
+    "X": 0,
+    "Y": 0
+  },
+  "MaxOccupancy": 0,
+  "Size": {
+    "X": 6,
+    "Y": 3
+  },
+  "DrawShadow": true,
+  "BuildDays": 3,
+  "Cost": 50000,
+  "Material": {
+    "(O)709": 100,
+    "(O)338": 200,
+    "(O)390": 100
+  },
+  "Builder": "Robin",
+  "CollisionMap": "XXXXXXX\nXXXXXXX\nXXXXXXX\nXXXXXXX",
+  "Upgrades": null,
+  "MachineName": "",
+  "IsGreenhouse": true,
+  "NightLights": [
+    {
+      "NightLightRadius": 4,
+      "NightLightType": 8
+    }
+  ]
+
+}

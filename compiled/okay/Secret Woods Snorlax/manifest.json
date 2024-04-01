@@ -2,10 +2,10 @@
 	"Name": "Secret Woods Snorlax",
 	"Author": "ichortower",
 	"Description": "Replaces the log blocking off the Secret Woods with a Snorlax.",
-	"Version": "1.3.0-alpha",
+	"Version": "1.3.0",
 	"UniqueID": "ichortower.SecretWoodsSnorlax",
 	"EntryDll": "SecretWoodsSnorlax.dll",
-	"MinimumApiVersion": "4.0.0-alpha",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": ["Nexus:19112", "GitHub:ichortower/SecretWoodsSnorlax"],
 	"Dependencies": [
 		{

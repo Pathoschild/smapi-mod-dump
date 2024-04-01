@@ -10,6 +10,7 @@
 
 namespace ForageFantasy
 {
+    using HarmonyLib;
     using StardewValley;
     using StardewValley.GameData.FruitTrees;
     using StardewValley.TerrainFeatures;
@@ -34,7 +35,21 @@ namespace ForageFantasy
 
         public static string TreeTypeToName(ForageFantasy mod, TerrainFeature tree)
         {
-            string key = (tree is FruitTree) ? "FruitTree" : TreeTypeToNameKey((Tree)tree);
+            string key;
+
+            if (tree is FruitTree fruitTree)
+            {
+                if (fruitTree.daysUntilMature.Value > 0 && ItemRegistry.Exists(fruitTree.treeId.Value))
+                {
+                    return ItemRegistry.Create(fruitTree.treeId.Value).DisplayName;
+                }
+
+                key = "FruitTree";
+            }
+            else
+            {
+                key = TreeTypeToNameKey((Tree)tree);
+            }
 
             return mod.Helper.Translation.Get($"TreeMenu{key}");
         }
@@ -50,12 +65,13 @@ namespace ForageFantasy
         {
             return tree?.treeType.Value switch
             {
-                "1" => "OakTree",
-                "2" => "MapleTree",
-                "3" => "PineTree",
-                "9" or "6" => "PalmTree",
+                "1" or "10" => "OakTree",
+                "2" or "11" => "MapleTree",
+                "3" or "12" => "PineTree",
+                "6" or "9" => "PalmTree",
                 "7" => "MushroomTree",
                 "8" => "MahoganyTree",
+                "13" => "MysticTree",
                 _ => "UnknownTree",
             };
         }
@@ -83,6 +99,12 @@ namespace ForageFantasy
         public string GetFruitTreeStatusMessage()
         {
             FruitTree fruitTree = tree as FruitTree;
+            FruitTreeData data = fruitTree.GetData();
+
+            if (fruitTree.daysUntilMature.Value > 0)
+            {
+                return mod.Helper.Translation.Get("TreeMenuMatureIn", new { info = GetTreeAgeString(fruitTree.daysUntilMature.Value) });
+            }
 
             var daysAged = -fruitTree.daysUntilMature.Value;
 
@@ -99,71 +121,73 @@ namespace ForageFantasy
                 output.Append('\n');
             }
 
-            if (!fruitTree.stump.Value)
+            if (fruitTree.stump.Value)
             {
-                bool hasProduce = fruitTree.fruit.Count > 0;
+                // remove last newline character
+                return output.ToString()[0..^1];
+            }
 
-                FruitTreeData data = fruitTree.GetData();
-                var defaultFruit = data?.Fruit.Where((t) => t.Id == "Default").FirstOrDefault();
+            bool hasProduce = fruitTree.fruit.Count > 0;
 
-                string produceName = null;
+            var defaultFruit = data?.Fruit.Where((t) => t.Id == "Default").FirstOrDefault();
 
-                if (fruitTree.struckByLightningCountdown.Value > 1)
+            string produceName = null;
+
+            if (fruitTree.struckByLightningCountdown.Value > 1)
+            {
+                // a fruit tree struck by lightning returns coal
+                produceName = ItemRegistry.Create("(O)382").DisplayName;
+            }
+            else if (defaultFruit?.ItemId != null && ItemRegistry.Exists(defaultFruit.ItemId))
+            {
+                produceName = ItemRegistry.Create(defaultFruit.ItemId).DisplayName;
+            }
+            else
+            {
+                produceName = mod.Helper.Translation.Get("TreeMenuUnknownProduct");
+            }
+
+            output.Append(mod.Helper.Translation.Get("TreeMenuProduct", new { product = produceName }));
+            output.Append('\n');
+
+            if (!hasProduce)
+            {
+                if (fruitTree.IsInSeasonHere())
                 {
-                    // a fruit tree struck by lightning returns coal
-                    produceName = ItemRegistry.Create("(O)382").DisplayName;
-                }
-                else if (defaultFruit?.ItemId != null && ItemRegistry.Exists(defaultFruit.ItemId))
-                {
-                    produceName = ItemRegistry.Create(defaultFruit.ItemId).DisplayName;
+                    string dayString = mod.Helper.Translation.Get("TreeMenu1Day");
+                    output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = dayString }));
+                    output.Append('\n');
                 }
                 else
                 {
-                    produceName = mod.Helper.Translation.Get("TreeMenuUnknownProduct");
-                }
+                    int bestNextSeasonDiff = 10;
 
-                output.Append(mod.Helper.Translation.Get("TreeMenuProduct", new { product = produceName }));
-                output.Append('\n');
+                    Season currentSeason = Game1.season;
 
-                if (!hasProduce)
-                {
-                    if (fruitTree.IsInSeasonHere())
+                    List<Season> growSeasons = data?.Seasons;
+                    if (growSeasons != null && growSeasons.Count > 0)
                     {
-                        string dayString = mod.Helper.Translation.Get("TreeMenu1Day");
-                        output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = dayString }));
-                        output.Append('\n');
-                    }
-                    else
-                    {
-                        int bestNextSeasonDiff = 10;
-
-                        Season currentSeason = Game1.season;
-
-                        List<Season> growSeasons = data?.Seasons;
-                        if (growSeasons != null && growSeasons.Count > 0)
+                        foreach (Season growSeason in growSeasons)
                         {
-                            foreach (Season growSeason in growSeasons)
-                            {
-                                int seasonDiff = (-((int)currentSeason - (int)growSeason) + 4) % 4;
+                            int seasonDiff = (-((int)currentSeason - (int)growSeason) + 4) % 4;
 
-                                if (seasonDiff < bestNextSeasonDiff)
-                                {
-                                    bestNextSeasonDiff = seasonDiff;
-                                }
+                            if (seasonDiff < bestNextSeasonDiff)
+                            {
+                                bestNextSeasonDiff = seasonDiff;
                             }
                         }
-
-                        string seasonToBear = mod.Helper.Translation.Get("TreeMenuUnknownSeason");
-
-                        if (bestNextSeasonDiff < 10)
-                        {
-                            Season bestSeaon = (Season)(((int)currentSeason + bestNextSeasonDiff + 4) % 4);
-                            seasonToBear = Utility.getSeasonNameFromNumber((int)bestSeaon);
-                        }
-
-                        output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = seasonToBear }));
-                        output.Append('\n');
                     }
+
+                    string seasonToBear = mod.Helper.Translation.Get("TreeMenuUnknownSeason");
+
+                    if (bestNextSeasonDiff < 10)
+                    {
+                        Season bestSeaon = (Season)(((int)currentSeason + bestNextSeasonDiff + 4) % 4);
+                        seasonToBear = Utility.getSeasonNameFromNumber((int)bestSeaon);
+                    }
+
+                    output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = seasonToBear }));
+                    output.Append('\n');
                 }
             }
 
@@ -174,6 +198,28 @@ namespace ForageFantasy
         public string GetTreeStatusMessage()
         {
             Tree normalTree = tree as Tree;
+            var data = normalTree.GetData();
+
+            if (normalTree.growthStage.Value < 5)
+            {
+                int stagesUntilMature = 5 - normalTree.growthStage.Value;
+
+                string matureText;
+                if (GetTreeSeason(normalTree) == Season.Winter && data != null && !data.GrowsInWinter && !normalTree.fertilized.Value)
+                {
+                    matureText = mod.Helper.Translation.Get("TreeMenuNotInWinter");
+                }
+                else if (stagesUntilMature == 1)
+                {
+                    matureText = mod.Helper.Translation.Get("TreeMenu1GrowthStage");
+                }
+                else
+                {
+                    matureText = mod.Helper.Translation.Get("TreeMenuNGrowthStages", new { n = stagesUntilMature });
+                }
+
+                return mod.Helper.Translation.Get("TreeMenuMatureIn", new { info = matureText });
+            }
 
             int daysAged = 0;
             tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out string moddata);
@@ -200,6 +246,40 @@ namespace ForageFantasy
                 }
             }
 
+            if (!normalTree.stump.Value && data != null)
+            {
+                int stagesUntilMoss = Tree.stageForMossGrowth - normalTree.growthStage.Value;
+
+                string infoText;
+                if (!data.GrowsMoss)
+                {
+                    infoText = mod.Helper.Translation.Get("TreeMenuNo");
+                }
+                else if (normalTree.Location.IsGreenhouse)
+                {
+                    infoText = mod.Helper.Translation.Get("TreeMenuNotInGreenHouse");
+                }
+                else if (GetTreeSeason(normalTree) == Season.Winter)
+                {
+                    infoText = mod.Helper.Translation.Get("TreeMenuNotInWinter");
+                }
+                else if (stagesUntilMoss <= 0)
+                {
+                    infoText = mod.Helper.Translation.Get("TreeMenuYes");
+                }
+                else if (stagesUntilMoss == 1)
+                {
+                    infoText = mod.Helper.Translation.Get("TreeMenuIn1GrowthStage");
+                }
+                else
+                {
+                    infoText = mod.Helper.Translation.Get("TreeMenuInNGrowthStages", new { n = stagesUntilMoss });
+                }
+
+                output.Append(mod.Helper.Translation.Get("TreeMenuMossInfo", new { info = infoText }));
+                output.Append('\n');
+            }
+
             if (normalTree.tapped.Value)
             {
                 StardewObject tile_object = tree.Location.getObjectAtTile((int)tree.Tile.X, (int)tree.Tile.Y);
@@ -222,6 +302,11 @@ namespace ForageFantasy
 
             // remove last newline character
             return output.ToString()[0..^1];
+        }
+
+        private Season? GetTreeSeason(Tree normalTree)
+        {
+            return (Season?)AccessTools.Field(typeof(Tree), "localSeason").GetValue(normalTree);
         }
 
         private string FormatTapperMinutesUntil(int minutes)

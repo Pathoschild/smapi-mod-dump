@@ -11,10 +11,10 @@
 {
   "Name": "EscapeRope",
   "Author": "Kissa",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Adds an easy way to escape the mines!",
   "UniqueID": "Kissa.EscapeRope",
   "EntryDll": "EscapeRope.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": ["nexus:XXXX"]
 }

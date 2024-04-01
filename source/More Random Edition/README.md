@@ -175,10 +175,25 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 
 ## 0.7.0 Changelog (Next Release)
 * Updated for 1.6 compatibility
+  * Randomize most of the new 1.6 crafting recipes
+  * Added some of the new 1.6 items as crafting ingredients
+  * Randomized the four new artifact spot crops
+  * Updated item IDs so that string IDs are supported in the randomizer
+    * Help mitigate errors from other mods
+    * Allows for the new Stardew items to be randomized, as some of them do not use integer IDs
+  * The 1.6 update changed the filesize of rain graphics - the following changes were made accordingly:
+    * The custom rain graphics were redrawn and will now work
+    * The cats and dogs rain was removed for now, since there's not a lot of space for that much detail
+    * The readme was updated with the new dimensions
 * Randomize missing crafting recipes from 1.5
   * Does not yet include the endgame Ginger island ones that need radioactive ore/bars
 * Recipes that roll eggs or milk will now accept any item from that category
+* Carpenter shop changes
+  * Randomized the cost of building a Pet Bowl
+  * Do not randomize cabins, since they aren't meant to cost much anymore
 * Added bone fragments to the monster drop shuffle
+* Updated the Egg Bundle to look for items in the Egg category
+  * Prevents potential issues with playing in non-english locales
 * Reworked fruit tree randomization to take advantage of the new options
   * 2 trees now give items from a random category
   * 1 tree gives a random item from the "Objects" list ("O" Sapling)
@@ -194,6 +209,8 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 * Reworked the RNG so that things can be added/modified without impacting everything for existing farms
   * Turning settings off should make saves load faster, as we can skip unnecessary RNG calls
 * Allow custom weapon images to be used even if the weapons themselves aren't randomized
+* Cleaned up several parts of the spoiler log so it's more human-readable
+* Fixed the name randomizers to better handle more data than this mod expects to better support mods that add more content
 * Fixed the spoiler log's names for the Transmute Iron and Gold recipes
 * Fixed shop stock issues related to loading different farms in one play session
 * Fixed tappers requiring tapper products to craft
@@ -201,7 +218,7 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
   * Also redid it so it's an overlay, which eliminates the need to store each modified title screen image
   
 ## Known Issues
-* Music restarts when you transition screens, even if it's the same song
+* [Fixed in 0.7.0] Music restarts when you transition screens, even if it's the same song
 * This mod does not fully support other languages (but it does for the most part)
   * Randomly generated weapon/crop names are English
   * The mad-lib style crop descriptions are English

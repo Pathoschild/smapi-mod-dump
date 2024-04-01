@@ -213,7 +213,7 @@ namespace FunnySnek.AntiCheat.Server
         /// <param name="text">The text to send.</param>
         private void SendDirectMessage(long playerID, string text)
         {
-            Game1.server.sendMessage(playerID, Multiplayer.chatMessage, Game1.player, this.Helper.Content.CurrentLocaleConstant, text);
+            Game1.server.sendMessage(playerID, Multiplayer.chatMessage, Game1.player, this.Helper.GameContent.CurrentLocaleConstant, text);
         }
 
         /// <summary>Kick a player from the server.</summary>

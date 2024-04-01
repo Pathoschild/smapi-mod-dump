@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Internationalization</AssemblyName>
+    <RootNamespace>Internationalization</RootNamespace>
+    <Version>0.2</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <EnableHarmony>false</EnableHarmony>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;MSB3277</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Static\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="Translation Summary">
+		
+	</Target>
+	
+</Project>

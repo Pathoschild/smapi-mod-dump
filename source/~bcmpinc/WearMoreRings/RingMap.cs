@@ -55,7 +55,7 @@ namespace StardewHack.WearMoreRings
                 }
             } else {
                 // Create a new combined ring for storage.
-                container = new CombinedRing(880);
+                container = new CombinedRing();
                 this[0] = who.leftRing.Value;
                 this[1] = who.rightRing.Value;
                 who.leftRing.Value = container;
@@ -71,7 +71,7 @@ namespace StardewHack.WearMoreRings
         public void limitSize(int capacity) {
             for (int i=capacity; i<slot_map.Length; i++) {
                 if (slot_map[i] >= 0) { 
-                    this[i].onUnequip(who, who.currentLocation);
+                    this[i].onUnequip(who);
                     Utility.CollectOrDrop(this[i]);
                     this[i] = null;
                 }
@@ -132,7 +132,7 @@ namespace StardewHack.WearMoreRings
                 new_pos = Array.FindIndex(slot_map, val => val < 0);
             }
             if (new_pos < 0 || new_pos >= ModEntry.getConfig().Rings) return false;
-            r.onEquip(who, who.currentLocation);
+            r.onEquip(who);
             this[new_pos] = r;
             return true;
         }
@@ -158,8 +158,8 @@ namespace StardewHack.WearMoreRings
             }
 
             // Mark the combined ring for its purpose.
-            container.UpdateDescription();
-            container.DisplayName = string.Format(RING_NAME, who.displayName);
+            // container.UpdateDescription();
+            // container.DisplayName = string.Format(RING_NAME, who.displayName);
 
             // Save ring position data.
             who.modData[DATA_KEY] = string.Join(",", slot_map);

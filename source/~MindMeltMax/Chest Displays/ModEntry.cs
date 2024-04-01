@@ -8,8 +8,10 @@
 **
 *************************************************/
 
-using Chest_Displays.Patches;
-using Chest_Displays.Utility;
+global using Object = StardewValley.Object;
+global using SUtils = StardewValley.Utility;
+using ChestDisplays.Patches;
+using ChestDisplays.Utility;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewModdingAPI;
@@ -19,10 +21,7 @@ using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
 
-using SObject = StardewValley.Object;
-using SUtils = StardewValley.Utility;
-
-namespace Chest_Displays
+namespace ChestDisplays
 {
     public class ModEntry : Mod
     {
@@ -30,7 +29,6 @@ namespace Chest_Displays
         public static IMonitor IMonitor;
         public static Config IConfig;
 
-        public bool host = false;
         private bool hadSavedData = false;
 
         public override void Entry(IModHelper helper)
@@ -50,16 +48,18 @@ namespace Chest_Displays
         {
             IConfig = Helper.ReadConfig<Config>();
             if (!IConfig.ChangeItemButtons.Any())
-            {
-                Monitor.Log($"No valid entry button found, button has been reset to defaults ('\"' on keyboard and LeftStick on controller)", LogLevel.Warn);
+            { 
+                Monitor.Log($"No valid entry button found, button has been reset to defaults ('\"' on keyboard and 'LeftStick' on controller)", LogLevel.Warn);
                 IConfig.ChangeItemKey = "OemQuotes, LeftStick";
                 Helper.WriteConfig(IConfig);
             }
+            Monitor.Log($"Loaded Chest Displays with input keys {IConfig.ChangeItemKey}");
         }
 
         private void GameLoop_Saving(object sender, SavingEventArgs e)
         {
-            if (!host) return;
+            if (!Context.IsMainPlayer) 
+                return;
 
             if (hadSavedData)
                 Helper.Data.WriteSaveData<object>($"MindMeltMax.ChestDisplay", null);
@@ -68,12 +68,19 @@ namespace Chest_Displays
 
         private void GameLoop_SaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
-            if (Context.IsMainPlayer) host = true;
-            if (!host) return;
+            foreach (var l in Game1.locations)
+                foreach (var o in l.Objects.Values)
+                    if (o is Chest c && c.modData.ContainsKey(Helper.ModRegistry.ModID))
+                        Utils.updateCache(c);
 
+            if (!Context.IsMainPlayer) 
+                return;
+
+            #region BackWardsCompat
             var data = Helper.Data.ReadSaveData<List<SaveData>>($"MindMeltMax.ChestDisplay");
             if (data == null) return;
             hadSavedData = true;
+            Monitor.LogOnce($"Old save data was found, The mod will now attempt to update to the new version");
             for (int i = 0; i < data.Count; i++)
             {
                 var item = data[i];
@@ -83,20 +90,20 @@ namespace Chest_Displays
                 if (loc.Objects.ContainsKey(key) && loc.Objects[key] is Chest c)
                 {
                     Item obj = SUtils.getItemFromStandardTextDescription(item.ItemDescription, Game1.player);
-                    if (obj is null) continue;
-                    int itemType = Utils.getItemType(obj);
+                    if (obj is null) 
+                        continue;
                     ModData modData = new()
-                    { 
-                        Item = obj is Tool t ? t.BaseName : Utils.GetItemNameFromIndex(Utils.GetItemIndexInParentSheet(obj, itemType), itemType), 
-                        ItemType = Utils.getItemType(obj), 
-                        ItemQuality = obj is SObject o ? o.Quality : -1, 
+                    {
+                        ItemId = obj.QualifiedItemId,
+                        ItemQuality = obj is Object o ? o.Quality : -1, 
                         Color = null, 
                         UpgradeLevel = -1 
                     };
 
                     c.modData[Helper.ModRegistry.ModID] = JsonConvert.SerializeObject(modData);
-                }    
+                }
             }
+            #endregion
         }
 
         private void onGameLaunch(object? sender, GameLaunchedEventArgs e) => Patcher.Init(Helper);
@@ -111,7 +118,7 @@ namespace Chest_Displays
                 var tile = Game1.player.GetGrabTile();
                 var OatT = Game1.player.currentLocation.getObjectAtTile((int)tile.X, (int)tile.Y);
 
-                if (OatT is not null and Chest c)
+                if (OatT is Chest c)
                     Game1.activeClickableMenu = new ChangeDisplayMenu(c);
             }
         }

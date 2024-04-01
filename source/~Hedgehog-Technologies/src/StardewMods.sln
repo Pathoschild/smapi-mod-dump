@@ -5,7 +5,42 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllowBeachSprinklers", "AllowBeachSprinklers\AllowBeachSprinklers.csproj", "{965CEE22-9B66-4885-8A43-ACA4243D7D78}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoShaker", "AutoShaker\AutoShaker.csproj", "{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoForager", "AutoForager\AutoForager.csproj", "{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root_docs", "root_docs", "{FE6E2A1B-718A-4B10-B91F-B472C235825F}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{9AE7A420-CF76-4D17-B83A-D667B1BA5B83}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\FUNDING.yml = ..\.github\FUNDING.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{2CDDDF85-892B-4679-9FBF-5D8B269F6895}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ref", "ref", "{EDBF30AC-26CB-405A-8B9F-9AD4163C3F21}"
+	ProjectSection(SolutionItems) = preProject
+		ref\.gitignore = ref\.gitignore
+		ref\MonoGame.Framework.dll = ref\MonoGame.Framework.dll
+		ref\README.md = ref\README.md
+		ref\Stardew Valley.dll = ref\Stardew Valley.dll
+		ref\StardewModdingAPI.dll = ref\StardewModdingAPI.dll
+		ref\StardewValley.GameData.dll = ref\StardewValley.GameData.dll
+		ref\UpdateReferenceDlls.ps1 = ref\UpdateReferenceDlls.ps1
+		ref\xTile.dll = ref\xTile.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "smapi-internal", "smapi-internal", "{48A1A977-A1D7-4572-BF55-20102CC2E3F4}"
+	ProjectSection(SolutionItems) = preProject
+		ref\smapi-internal\SMAPI.Toolkit.CoreInterfaces.dll = ref\smapi-internal\SMAPI.Toolkit.CoreInterfaces.dll
+		ref\smapi-internal\SMAPI.Toolkit.CoreInterfaces.xml = ref\smapi-internal\SMAPI.Toolkit.CoreInterfaces.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +59,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2CDDDF85-892B-4679-9FBF-5D8B269F6895} = {9AE7A420-CF76-4D17-B83A-D667B1BA5B83}
+		{48A1A977-A1D7-4572-BF55-20102CC2E3F4} = {EDBF30AC-26CB-405A-8B9F-9AD4163C3F21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}

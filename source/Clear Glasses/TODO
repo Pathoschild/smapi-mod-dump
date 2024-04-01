@@ -1,0 +1,5 @@
+Finish implementing animated sprite support.
+Add functionality to handle sliced images gracefully.
+Handle render target images gracefully (use heuristics to determine if they're normal render targets like the engine uses, or temporary ones used by mods to generate overlays)
+Update the memory cache to hook SMAPI/CP's store. This could eliminate a large swath of allocations.
+Update the cache system overall to hook SMAPI/CP's store, to potentially eliminate a number of D3D callbacks.

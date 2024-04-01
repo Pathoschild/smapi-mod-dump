@@ -13,6 +13,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
@@ -21,6 +22,7 @@ namespace CustomCaskMod
     /// <summary>The mod entry class loaded by SMAPI.</summary>
     public class CustomCaskModEntry : Mod
     {
+        internal static DataLoader DataLoader { get; set; }
         internal static IMonitor ModMonitor { get; set; }
         internal new static IModHelper Helper { get; set; }
 
@@ -50,18 +52,13 @@ namespace CustomCaskMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            new DataLoader(Helper, ModManifest);
+            DataLoader = new DataLoader(Helper, ModManifest);
 
             var harmony = new Harmony("Digus.CustomCaskMod");
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.IsValidCaskLocation)),
                 prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.IsValidCaskLocation)) { priority = Priority.VeryHigh }
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Cask), nameof(Cask.GetAgingMultiplierForItem)),
-                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.GetAgingMultiplierForItemPrefix)){ priority = Priority.VeryHigh },
-                postfix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.GetAgingMultiplierForItemPostfix))
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.checkForMaturity)),
@@ -74,10 +71,6 @@ namespace CustomCaskMod
             harmony.Patch(
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.performToolAction)),
                 transpiler: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.performToolAction_Transpiler))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Cask), nameof(Cask.performObjectDropInAction)),
-                transpiler: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.performObjectDropInAction_Transpiler))
             );
         }
 

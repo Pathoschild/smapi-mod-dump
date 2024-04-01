@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AnimalHusbandryMod.common;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.meats
 {
@@ -33,10 +34,9 @@ namespace AnimalHusbandryMod.meats
             return true;            
         }
 
-        public static bool isPotentialBasicShippedCategory(ref int index, ref string category, ref bool __result)
+        public static bool isPotentialBasicShipped(ref int category, ref bool __result)
         {
-            int.TryParse(category, out var categoryInt);
-            if  (categoryInt == -14)
+            if  (category == -14)
             {
                 __result = true;
                 return false;

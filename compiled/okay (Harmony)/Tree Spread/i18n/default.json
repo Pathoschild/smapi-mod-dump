@@ -1,0 +1,5 @@
+{
+    SeedChanceMultiplierName: "Seed Chance Multiplier", SeedChanceMultiplierTooltip: "Chance that a tree will have a seed will be multiplied by this factor. Normally this is 5%.",
+    OnlyPreventTappedName:    "Only Prevent Tapped",    OnlyPreventTappedTooltip:    "Whether only tapped trees are prevented from spreading.",
+    RetainSeedName:           "Retain Seed",            RetainSeedTooltip:           "Whether the tree should keep its seed during the night, to compensate for trees not spreading. Vanilla SDV removes seeds during the night.",
+}

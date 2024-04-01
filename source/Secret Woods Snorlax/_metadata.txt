@@ -6,9 +6,9 @@ mods:
    Secret Woods Snorlax
 
 latest commit:
-   commit 67f6efba17af0fa672fcb1101b997118cd8b6e19
+   commit 03fd15b70033b9691ec8c7f4d297a1ef91d60704
    Author: ichortower <sudo.ichor@proton.me>
-   Date:   Sun Nov 26 21:07:47 2023 -0500
+   Date:   Wed Mar 20 21:56:44 2024 -0400
    
-       Merge branch 'hotfix-1.1.1' into main
+       Hotfix: use Lacey's new internal name so her bonus clue works.
    

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+Version 1.0.0
+
+- Added support for Pierre's general store
+- Added support for Willy's fish shop
+- Added support for the ice cream shop
+- Added support for the Blacksmith
+- Added support for the Carpenter's shop
+- Added support for Marnie's animal shop
+- Added support for the hospital
+- Added support for the Stardrop saloon bar
+- Added support for the bookseller
+- Added support for the traveling merchant
+- Added support for the resort bar

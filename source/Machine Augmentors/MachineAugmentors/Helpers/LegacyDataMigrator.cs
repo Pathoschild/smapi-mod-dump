@@ -21,7 +21,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SObject = StardewValley.Object;
 
 namespace MachineAugmentors.Helpers
 {
@@ -39,14 +38,14 @@ namespace MachineAugmentors.Helpers
         {
             //
             // Copied from CommonHelper in Pathoschild's repo: https://github.com/Pathoschild/StardewMods
+            // https://github.com/Pathoschild/StardewMods/blob/develop/Common/CommonHelper.cs
             //
 
             var locations = Game1.locations
                 .Concat(
-                    from location in Game1.locations.OfType<BuildableGameLocation>()
-                    from building in location.buildings
-                    where building.indoors.Value != null
-                    select building.indoors.Value
+                    from location in Game1.locations
+                    from indoors in location.GetInstancedBuildingInteriors()
+                    select indoors
                 );
 
             if (includeTempLevels)
@@ -85,8 +84,8 @@ namespace MachineAugmentors.Helpers
             {
                 if (item is Chest chest)
                 {
-                    for (int i = 0; i < chest.items.Count; i++)
-                        TryMigrateData(chest.items[i], replacement => chest.items[i] = replacement);
+                    for (int i = 0; i < chest.Items.Count; i++)
+                        TryMigrateData(chest.Items[i], replacement => chest.Items[i] = replacement);
                 }
                 else if (item is SObject obj)
                 {

@@ -107,7 +107,8 @@ namespace stardew_access.Patches
                     heart_count = heartCount,
                     age,
                     parent_name = parent,
-                    mood = ___animal.getMoodMessage()
+                    mood = ___animal.getMoodMessage(),
+                    has_received_animal_cracker = ___animal.hasEatenAnimalCracker.Value ? 1 : 0,
                 },
                 TranslationCategory.Menu);
             Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; }); // Adds delay

@@ -32,7 +32,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         internal void Apply(Harmony harmony)
         {
             harmony.Patch(AccessTools.Method(_object, nameof(Fence.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Fence.performObjectDropInAction), new[] { typeof(Item), typeof(bool), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(PerformObjectDropInActionPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Fence.performObjectDropInAction), new[] { typeof(Item), typeof(bool), typeof(Farmer), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(PerformObjectDropInActionPostfix)));
 
             if (PatchTemplate.IsDGAUsed())
             {
@@ -69,8 +69,8 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     return true;
                 }
                 int sourceRectPosition = 1;
-                int drawSum = __instance.getDrawSum(Game1.currentLocation);
-                if ((float)__instance.health > 1f || __instance.repairQueued.Value)
+                int drawSum = __instance.getDrawSum();
+                if ((float)__instance.health.Value > 1f || __instance.repairQueued.Value)
                 {
                     sourceRectPosition = Fence.fenceDrawGuide[drawSum];
                 }
@@ -110,11 +110,11 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     switch (drawSum)
                     {
                         case 10:
-                            if (__instance.whichType.Value == 2)
+                            if (__instance.ItemId == "323")
                             {
                                 offset2.X = -4f;
                             }
-                            else if (__instance.whichType.Value == 3)
+                            else if (__instance.ItemId == "324")
                             {
                                 offset2.X = 8f;
                             }
@@ -124,11 +124,11 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                             }
                             break;
                         case 100:
-                            if (__instance.whichType.Value == 2)
+                            if (__instance.ItemId == "323")
                             {
                                 offset2.X = 0f;
                             }
-                            else if (__instance.whichType.Value == 3)
+                            else if (__instance.ItemId == "324")
                             {
                                 offset2.X = -8f;
                             }
@@ -138,15 +138,15 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                             }
                             break;
                     }
-                    if ((int)__instance.whichType == 2)
+                    if (__instance.ItemId == "323")
                     {
                         offset2.Y = 16f;
                     }
-                    else if ((int)__instance.whichType == 3)
+                    else if (__instance.ItemId == "324")
                     {
                         offset2.Y -= 8f;
                     }
-                    if ((int)__instance.whichType == 3)
+                    if (__instance.ItemId == "324")
                     {
                         offset2.X -= 2f;
                     }
@@ -161,12 +161,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             return true;
         }
 
-        private static void PerformObjectDropInActionPostfix(Fence __instance, bool __result, Item dropIn, bool probe, Farmer who)
+        private static void PerformObjectDropInActionPostfix(Fence __instance, bool __result, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed = false)
         {
             // Assign Gate modData to this fence (if applicable)
-            if (dropIn.parentSheetIndex == 325 && __result)
+            if (dropInItem.parentSheetIndex == 325 && __result)
             {
-                var instanceName = $"{AlternativeTextureModel.TextureType.Craftable}_{Game1.objectInformation[dropIn.parentSheetIndex].Split('/')[0]}";
+                var instanceName = $"{AlternativeTextureModel.TextureType.Craftable}_{Game1.objectData[dropInItem.ItemId].Name}";
                 var instanceSeasonName = $"{instanceName}_{Game1.currentSeason}";
 
                 if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))

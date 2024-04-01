@@ -1,0 +1,6 @@
+{
+  "FloatingAnimation.Name": "Enable floating animation",
+  "FloatingAnimation.Desc": "Items on water will have a cosmetic floating animation.",
+  "TeleportItemsOutOfWater.Name": "Teleport items out of water",
+  "TeleportItemsOutOfWater.Desc": "When items fall into water, they will teleport to the nearest player."
+}

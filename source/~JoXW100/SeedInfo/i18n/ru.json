@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "need-fertilizer--1": "Месяц закончится раньше, чем это успеет вырасти.",
+  "need-fertilizer-0": "Дней хватит, чтобы успеть вырастить это.",
+  "need-fertilizer-465": "Вам нужен 'Скоророст', если Вы хотите успеть вырастить это.",
+  "need-fertilizer-466": "Вам нужен 'Скоророст Делюкс', если Вы хотите успеть вырастить это.",
+  "need-fertilizer-918": "Вам нужен 'Гипер Скоророст', если Вы хотите успеть вырастить это."
+}

@@ -180,6 +180,7 @@ static_tile-forest-bridge_4 = Bridge 4
 static_tile-forest-bridge_5 = Bridge 5
 static_tile-forest-abandoned_house = Abandoned House
 static_tile-forest-sewage_pipe = sewage pipe
+static_tile-forest-mastery_cave_door = Mastery Cave
 
 # Greenhouse
 
@@ -226,6 +227,7 @@ static_tile-island_field_office-island_survey = Island Survey
 
 static_tile-island_north-dig_site_parrot_express = Dig Site Parrot Express
 static_tile-island_north-volcano_parrot_express = Volcano Parrot Express
+static_tile-island_north-volcano_entrance = Volcano Entrance
 
 ## Island Shrine
 
@@ -263,6 +265,13 @@ static_tile-island_west_cave_1-crystal_2 = Crystal 2
 static_tile-island_west_cave_1-crystal_3 = Crystal 3
 static_tile-island_west_cave_1-crystal_4 = Crystal 4
 static_tile-island_west_cave_1-crystal_5 = Crystal 5
+
+## Volcano
+
+static_tile-volcanodungeon0-island_north_entrance_east = Island North Entrance (east)
+static_tile-volcanodungeon0-island_north_entrance_west = Island North Entrance (west)
+static_tile-volcanodungeon5-dwarf_shop = Dwarf Shop
+
 
 # Joja Mart
 
@@ -382,6 +391,16 @@ static_tile-manor_house-lost_and_found_box = Lost and Found Box
 static_tile-manor_house-mayors_room_door = Mayor's Room
 static_tile-manor_house-mayors_oven = Mayor's Oven
 static_tile-manor_house-mayors_fridge = Mayor's Fridge
+static_tile-manor_house-prize_ticket_machine = Prize Ticket Machine
+
+# Mastery Cave
+
+static_tile-mastery_cave-mastery_pedestal = Mastery Pedestal
+static_tile-mastery_cave-wall_of_combat = Wall of Combat
+static_tile-mastery_cave-wall_of_foraging = Wall of Foraging
+static_tile-mastery_cave-wall_of_farming = Wall of Farming
+static_tile-mastery_cave-wall_of_fishing = Wall of Fishing
+static_tile-mastery_cave-wall_of_mining = Wall of Mining
 
 # Mermaid House
 
@@ -393,6 +412,8 @@ static_tile-mermaid_house-clam_shell_5 = Clam Shell 5
 
 # Mine
 
+static_tile-mine-mountain_entrance_east = Mountain Entrance (East)
+static_tile-mine-mountain_entrance_west = Mountain Entrance (West)
 static_tile-mine-quarry_mine_ladder = Quarry Mine Ladder
 static_tile-mine-icy_pool = Icy Pool
 static_tile-mine-lava_pool = Lava Pool
@@ -401,10 +422,12 @@ static_tile-mine-lava_pool = Lava Pool
 
 static_tile-mountain-mine_bridge = Mine Bridge
 static_tile-mountain-quarry_bridge = Quarry Bridge
+static_tile-mountain-quarry_mine_entrance = Quarry Mine Entrance
 static_tile-mountain-bridge_1 = Bridge 1
 static_tile-mountain-bridge_2 = Bridge 2
 static_tile-mountain-mountain_warp_statue = Mountain Warp Statue
 static_tile-mountain-science_house_secondary_door = Science House Secondary
+static_tile-mountain-linus_campfire = Linus' Campfire
 
 # Movie Theater
 
@@ -527,6 +550,7 @@ static_tile-town-joja_bridge = Joja Bridge
 static_tile-town-beach_bridge = Beach Bridge
 static_tile-town-smelter = Smelter
 static_tile-town-fountain = Fountain
+static_tile-town-bookseller = Bookseller
 
 # Trailer (home of Pam and Penny)
 
@@ -562,5 +586,4 @@ static_tile-wizard_house_basement-shrine_of_illusions = Shrine of Illusions
 
 static_tile-tunnel-safe = Safe
 static_tile-undergroundmine77377-grim_reaper_statue = Grim Reaper Statue
-static_tile-volcanodungeon5-dwarf_shop = Dwarf Shop
 static_tile-woods-old_master_cannoli = Old Master Cannoli

@@ -1,0 +1,46 @@
+{
+  "Custom_EastScarpe": {
+    "Sounds": [
+      {
+        "Trigger": "OnTick",
+        "Sound": "seagulls",
+        "Area": {
+          "X": 0,
+          "Y": 85,
+          "Width": -1,
+          "Height": -1
+        },
+        "Chance": 0.003,
+        "Time": "600-1900"
+      }
+    ],
+    "Critters": [
+      {
+        "Trigger": "OnEntry",
+        "Critter": "Seagull",
+        "Area": {
+          "X": 0,
+          "Y": 85,
+          "Width": -1,
+          "Height": -1
+        },
+        "CountPerCluster": "0-3",
+        "Chance": 1,
+        "ChanceOnWater": 0.5,
+        "ChanceOnLand": 1
+      }
+    ],
+    "SeaMonsterSpawn": [
+      {
+        "Trigger": "OnTick",
+        "Chance": 1E-05
+      }
+    ],
+    "WaterColor": [
+      {
+        "Color": "#00660066", //uses the stardew string to color utility function
+        "Conditions": "SEASON summer,DAY_OF_MONTH 12 13 14"
+      }
+    ]
+  }
+}

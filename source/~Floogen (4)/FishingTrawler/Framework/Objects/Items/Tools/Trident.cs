@@ -15,6 +15,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
+using StardewValley.GameData.Locations;
+using StardewValley.ItemTypeDefinitions;
+using StardewValley.Menus;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -36,7 +39,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
 
     public class Trident
     {
-        internal static int caughtFishId;
+        internal static string caughtFishId;
         internal static double fishSize;
         internal static int fishQuality;
         internal static int fishCount;
@@ -52,7 +55,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
 
         public static GenericTool CreateInstance()
         {
-            var trident = new GenericTool(string.Empty, string.Empty, -1, 6, 6);
+            var trident = new GenericTool();
             trident.modData[ModDataKeys.TRIDENT_TOOL_KEY] = true.ToString();
 
             return trident;
@@ -70,7 +73,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
 
         private static void Reset(Farmer who)
         {
-            caughtFishId = -1;
+            caughtFishId = null;
             animationState = AnimationState.Idle;
 
             who.forceCanMove();
@@ -84,7 +87,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
             }
             Reset(who);
 
-            var standingPosition = who.getTileLocation();
+            var standingPosition = who.Tile;
             switch (who.FacingDirection)
             {
                 case Game1.up:
@@ -110,20 +113,20 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
             targetPosition = standingPosition;
 
             // Check to see if there are fish in this location
-            var fishObject = location.getFish(-1f, -1, Game1.random.Next(0, 6), who, -1f, targetPosition);
+            var fishObject = location.getFish(-1f, null, Game1.random.Next(0, 6), who, -1f, targetPosition);
             if (fishObject is null)
             {
                 who.currentLocation.playSound("cancel");
                 Game1.addHUDMessage(new HUDMessage(FishingTrawler.i18n.Get("game_message.trident.no_fish"), 3) { timeLeft = 1000f });
                 return false;
             }
-            else if (FishingRod.isFishBossFish(fishObject.ParentSheetIndex) is true)
+            else if (fishObject.TryGetTempData<bool>("IsBossFish", out bool isBossFish) && isBossFish is true)
             {
                 who.currentLocation.playSound("cancel");
                 Game1.addHUDMessage(new HUDMessage(FishingTrawler.i18n.Get("game_message.trident.boss_fish"), 2) { timeLeft = 1000f });
                 return false;
             }
-            caughtFishId = fishObject.ParentSheetIndex;
+            caughtFishId = fishObject.ItemId;
 
             // Handle exhaustion
             if (who.Stamina <= 1f)
@@ -180,9 +183,9 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
             return quality;
         }
 
-        private static double GetFishSize(Farmer who, int whichFish)
+        private static double GetFishSize(Farmer who, string whichFish)
         {
-            Dictionary<int, string> data = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+            Dictionary<string, string> data = Game1.content.Load<Dictionary<string, string>>("Data\\Fish");
 
             int minFishSize = 0;
             if (data.ContainsKey(whichFish))
@@ -194,31 +197,23 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
             return Math.Round(minFishSize + Game1.random.NextDouble(), 2);
         }
 
-        private static int GetRandomFishForLocation(GameLocation location)
+        private static string GetRandomFishForLocation(GameLocation location)
         {
-            List<int> eligibleFishIds = new List<int>();
+            List<string> eligibleFishIds = new List<string>();
 
             // Iterate through any valid locations to find the fish eligible for rewarding (fish need to be in season and player must have minimum level for it)
-            Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+            Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
             if (!locationData.ContainsKey(location.Name))
             {
-                return -1;
+                return null;
             }
 
-            string[] rawFishData = locationData[location.Name].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
-            Dictionary<int, string> rawFishDataWithLocation = new Dictionary<int, string>();
-            if (rawFishData.Length > 1)
-            {
-                for (int j = 0; j < rawFishData.Length; j += 2)
-                {
-                    rawFishDataWithLocation[Convert.ToInt32(rawFishData[j])] = rawFishData[j + 1];
-                }
-            }
-            eligibleFishIds.AddRange(rawFishDataWithLocation.Keys.Where(i => !TrawlerRewards.forbiddenFish.Contains(i)).Distinct());
+            var rawFishData = locationData[location.Name].Fish.Where(f => f.IsBossFish is false).Select(f => f.Id);
+            eligibleFishIds.AddRange(rawFishData.Where(i => !TrawlerRewards.forbiddenFish.Contains(i)).Distinct());
 
             if (eligibleFishIds.Count == 0)
             {
-                return -1;
+                return null;
             }
 
             return eligibleFishIds[Game1.random.Next(eligibleFishIds.Count)];
@@ -394,7 +389,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
 
         public static void Draw(SpriteBatch b, Farmer who)
         {
-            if (animationState is AnimationState.ShowFish && caughtFishId > 0)
+            if (animationState is AnimationState.ShowFish && string.IsNullOrEmpty(caughtFishId) is false)
             {
                 ReplicateVanillaFishDisplay(b, who);
             }
@@ -425,7 +420,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
                                 break;
                         }
 
-                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(0, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.06f);
+                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(0, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.06f);
                         break;
                     case AnimationState.Throw:
                         switch (who.FacingDirection)
@@ -446,7 +441,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
                                 break;
                         }
 
-                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(0, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.06f);
+                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(0, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.06f);
                         break;
                     case AnimationState.Kneel:
                         switch (who.FacingDirection)
@@ -467,7 +462,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
                                 break;
                         }
 
-                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(16, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.06f);
+                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(16, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.06f);
                         break;
                     case AnimationState.WaitAfterKneel:
                         switch (who.FacingDirection)
@@ -488,7 +483,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
                                 break;
                         }
 
-                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(16, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.06f);
+                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(16, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.06f);
                         break;
                     case AnimationState.StartPullup:
                         switch (who.FacingDirection)
@@ -509,7 +504,7 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
                                 break;
                         }
 
-                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(16, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.06f);
+                        b.Draw(FishingTrawler.assetManager.TridentTexture, Game1.GlobalToLocal(Game1.viewport, who.Position + offset), new Rectangle(16, 0, 16, 16), Color.White * 0.8f, rotation, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.06f);
                         break;
                 }
             }
@@ -521,33 +516,35 @@ namespace FishingTrawler.Framework.Objects.Items.Tools
 
             float yOffset = 4f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2);
 
+            ParsedItemData fishData = ItemRegistry.GetDataOrErrorItem(Trident.caughtFishId);
+
             var dynamicReflectionsApi = FishingTrawler.apiManager.GetDynamicReflectionsInterface();
             if (ShouldSkipForDynamicReflections(dynamicReflectionsApi) is false)
             {
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-120f, -288f + yOffset)), new Rectangle(31, 1870, 73, 49), Color.White * 0.8f, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.06f);
-                b.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-124f, -284f + yOffset) + new Vector2(44f, 68f)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, Trident.caughtFishId, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.0001f + 0.06f);
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-120f, -288f + yOffset)), new Rectangle(31, 1870, 73, 49), Color.White * 0.8f, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.06f);
+                b.Draw(fishData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-124f, -284f + yOffset) + new Vector2(44f, 68f)), fishData.GetSourceRect(), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.0001f + 0.06f);
             }
 
             // Draw held fish
-            b.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(0f, -56f)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, Trident.caughtFishId, 16, 16), Color.White, ((float)Math.PI * 3f / 4f), new Vector2(8f, 8f), 3f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.002f + 0.06f);
+            b.Draw(fishData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(0f, -56f)), fishData.GetSourceRect(), Color.White, ((float)Math.PI * 3f / 4f), new Vector2(8f, 8f), 3f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.002f + 0.06f);
             if (caughtDoubleFish)
             {
-                b.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-8f, -56f)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, Trident.caughtFishId, 16, 16), Color.White, ((float)Math.PI * 4f / 5f), new Vector2(8f, 8f), 3f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.002f + 0.058f);
+                b.Draw(fishData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-8f, -56f)), fishData.GetSourceRect(), Color.White, ((float)Math.PI * 4f / 5f), new Vector2(8f, 8f), 3f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.002f + 0.058f);
             }
 
             if (ShouldSkipForDynamicReflections(dynamicReflectionsApi) is false)
             {
-                string name = Game1.objectInformation[caughtFishId].Split('/')[4];
-                b.DrawString(Game1.smallFont, name, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(26f - Game1.smallFont.MeasureString(name).X / 2f, -278f + yOffset)), Game1.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.002f + 0.06f);
+                string name = fishData.DisplayName;
+                b.DrawString(Game1.smallFont, name, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(26f - Game1.smallFont.MeasureString(name).X / 2f, -278f + yOffset)), Game1.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.002f + 0.06f);
                 if (fishSize != -1)
                 {
-                    b.DrawString(Game1.smallFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:FishingRod.cs.14082"), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(20f, -214f + yOffset)), Game1.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.002f + 0.06f);
-                    b.DrawString(Game1.smallFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:FishingRod.cs.14083", (LocalizedContentManager.CurrentLanguageCode != 0) ? Math.Round((double)fishSize * 2.54) : ((double)fishSize)), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(85f - Game1.smallFont.MeasureString(Game1.content.LoadString("Strings\\StringsFromCSFiles:FishingRod.cs.14083", (LocalizedContentManager.CurrentLanguageCode != 0) ? Math.Round((double)fishSize * 2.54) : ((double)fishSize))).X / 2f, -179f + yOffset)), isRecordSizeFish ? (Color.Blue * Math.Min(1f, yOffset / 8f + 1.5f)) : Game1.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (float)who.getStandingY() / 10000f + 0.002f + 0.06f);
+                    b.DrawString(Game1.smallFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:FishingRod.cs.14082"), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(20f, -214f + yOffset)), Game1.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.002f + 0.06f);
+                    b.DrawString(Game1.smallFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:FishingRod.cs.14083", (LocalizedContentManager.CurrentLanguageCode != 0) ? Math.Round((double)fishSize * 2.54) : ((double)fishSize)), Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(85f - Game1.smallFont.MeasureString(Game1.content.LoadString("Strings\\StringsFromCSFiles:FishingRod.cs.14083", (LocalizedContentManager.CurrentLanguageCode != 0) ? Math.Round((double)fishSize * 2.54) : ((double)fishSize))).X / 2f, -179f + yOffset)), isRecordSizeFish ? (Color.Blue * Math.Min(1f, yOffset / 8f + 1.5f)) : Game1.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (float)who.StandingPixel.Y / 10000f + 0.002f + 0.06f);
                 }
 
                 if (caughtDoubleFish)
                 {
-                    Utility.drawTinyDigits(2, b, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-120f, -284f + yOffset) + new Vector2(23f, 29f) * 4f), 3f, (float)who.getStandingY() / 10000f + 0.0001f + 0.061f, Color.White);
+                    Utility.drawTinyDigits(2, b, Game1.GlobalToLocal(Game1.viewport, who.Position + new Vector2(-120f, -284f + yOffset) + new Vector2(23f, 29f) * 4f), 3f, (float)who.StandingPixel.Y / 10000f + 0.0001f + 0.061f, Color.White);
                 }
             }
         }

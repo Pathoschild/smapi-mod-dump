@@ -14,9 +14,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Audio;
+using StardewValley.Extensions;
 using StardewValley.Menus;
 
 namespace CustomKissingMod
@@ -30,14 +33,14 @@ namespace CustomKissingMod
             if (npcConfig != null && __result != true && !__instance.isMarried() && CanKissNpc(who, __instance) && who.IsLocalPlayer)
             {
                 int timeOfDay = Game1.timeOfDay;
-                    
+                
                 if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() &&
                     (__instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200) &&
                     (!__instance.isMoving() && who.ActiveObject == null))
                 {
                     __instance.faceDirection(-3);
-                    __instance.faceGeneralDirection(who.getStandingPosition(), 0, false);
-                    who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
+                    __instance.faceGeneralDirection(who.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
+                    who.faceGeneralDirection(__instance.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
                     if (__instance.FacingDirection == 3 || __instance.FacingDirection == 1)
                     {
                         int frame = npcConfig.Frame;
@@ -46,27 +49,24 @@ namespace CustomKissingMod
                         bool flip = flag && __instance.FacingDirection == 3 || !flag && __instance.FacingDirection == 1;
                         if (HasRequiredFriendshipToKiss(who, __instance))
                         {
-                            __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>()
-                            {
-                                new FarmerSprite.AnimationFrame(frame, Game1.IsMultiplayer ? 1010 : 10, false, flip,
-                                    new AnimatedSprite.endOfAnimationBehavior(__instance.haltMe), true)
-                            });
+                            int delay = (__instance.movementPause = (Game1.IsMultiplayer ? 1000 : 10));
+                            __instance.Sprite.ClearAnimation();
+                            __instance.Sprite.AddFrame(new FarmerSprite.AnimationFrame(frame, delay, secondaryArm: false, flip, __instance.haltMe, behaviorAtEndOfFrame: true));
+
                             if (!__instance.hasBeenKissedToday.Value)
                             {
                                 who.changeFriendship(DataLoader.ModConfig.KissingFriendshipPoints, __instance);
-                                DataLoader.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[1]
+                                DataLoader.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue()
+                                    .broadcastSprites
+                                    (who.currentLocation, new TemporaryAnimatedSprite("LooseSprites\\Cursors"
+                                        , new Microsoft.Xna.Framework.Rectangle(211, 428, 7, 6), 2000f, 1, 0
+                                        , __instance.Tile * 64f + new Vector2(16f, -64f), flicker: false
+                                        , flipped: false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f)
                                 {
-                                    new TemporaryAnimatedSprite("LooseSprites\\Cursors",
-                                        new Microsoft.Xna.Framework.Rectangle(211, 428, 7, 6), 2000f, 1, 0,
-                                        new Vector2((float) __instance.getTileX(), (float) __instance.getTileY()) *
-                                        64f + new Vector2(16f, -64f), false, false, 1f, 0.0f, Color.White, 4f, 0.0f,
-                                        0.0f, 0.0f, false)
-                                    {
-                                        motion = new Vector2(0.0f, -0.5f),
-                                        alphaFade = 0.01f
-                                    }
+                                    motion = new Vector2(0f, -0.5f),
+                                    alphaFade = 0.01f
                                 });
-                                l.playSound("dwop");
+                                l.playSound("dwop", null, null, SoundContext.NPC);
                                 if (!DataLoader.ModConfig.DisableExhaustionReset)
                                 {
                                     who.exhausted.Value = false;
@@ -80,7 +80,7 @@ namespace CustomKissingMod
                                         {
                                             who.changeFriendship(DataLoader.ModConfig.JealousyFriendshipPoints, characterFromName);
                                             characterFromName.CurrentDialogue.Clear();
-                                            characterFromName.CurrentDialogue.Push(new StardewValley.Dialogue(DataLoader.Helper.Translation.Get("Jealousy.Dialog", new { npcName = (object)__instance.displayName }), characterFromName));
+                                            characterFromName.CurrentDialogue.Push(new StardewValley.Dialogue(characterFromName, null, DataLoader.Helper.Translation.Get("Jealousy.Dialog", new { npcName = (object)__instance.displayName })));
                                         }
                                     }
                                 }
@@ -91,23 +91,15 @@ namespace CustomKissingMod
                         }
                         else
                         {
-                            __instance.faceDirection(Game1.random.NextDouble() < 0.5 ? 2 : 0);
-                            __instance.doEmote(12, true);
+                            __instance.faceDirection(Game1.random.Choose(2, 0));
+                            __instance.doEmote(12);
                         }
-
-                        who.CanMove = false;
-                        who.FarmerSprite.PauseForSingleAnimation = false;
-                        if (flag && !flip || !flag & flip)
-                            who.faceDirection(3);
-                        else
-                            who.faceDirection(1);
-                        who.FarmerSprite.animateOnce(new List<FarmerSprite.AnimationFrame>()
+                        int playerFaceDirection = 1;
+                        if ((flag && !flip) || (!flag && flip))
                         {
-                            new FarmerSprite.AnimationFrame(101, 1000, 0, false, who.FacingDirection == 3,
-                                (AnimatedSprite.endOfAnimationBehavior) null, false, 0),
-                            new FarmerSprite.AnimationFrame(6, 1, false, who.FacingDirection == 3,
-                                new AnimatedSprite.endOfAnimationBehavior(Farmer.completelyStopAnimating), false)
-                        }.ToArray());
+                            playerFaceDirection = 3;
+                        }
+                        who.PerformKiss(playerFaceDirection);
                         __result = true;
                     }
                 }
@@ -126,7 +118,7 @@ namespace CustomKissingMod
                         __instance.Sprite.currentFrame = frame;
                         var oldAnimationFrame = __instance.Sprite.CurrentAnimation[__instance.Sprite.currentAnimationIndex];
                         __instance.Sprite.CurrentAnimation[__instance.Sprite.currentAnimationIndex] =
-                            new FarmerSprite.AnimationFrame(frame, 0, oldAnimationFrame.milliseconds, oldAnimationFrame.secondaryArm,
+                            new FarmerSprite.AnimationFrame(frame, 0, oldAnimationFrame.milliseconds, oldAnimationFrame.armOffset,
                                 flip, oldAnimationFrame.frameStartBehavior, oldAnimationFrame.frameEndBehavior, 0);
                         __instance.Sprite.UpdateSourceRect();
                     }
@@ -141,7 +133,7 @@ namespace CustomKissingMod
                    && (who.friendshipData[npc.Name].IsDating() 
                        || DataLoader.ModConfig.DisableDatingRequirement)
                    && (npcConfig.RequiredEvent == null 
-                       || who.eventsSeen.Contains(npcConfig.RequiredEvent.Value) 
+                       || who.eventsSeen.Contains(npcConfig.RequiredEvent) 
                        || DataLoader.ModConfig.DisableEventRequirement);
         }
 

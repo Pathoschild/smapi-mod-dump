@@ -3,10 +3,8 @@
 	<PropertyGroup>
 	  <AssemblyName>MachineAugmentors</AssemblyName>
 	  <RootNamespace>MachineAugmentors</RootNamespace>
-	  <Version>1-sully</Version>
-	  <TargetFramework>net5.0</TargetFramework>
+	  <TargetFramework>net6.0</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-	  <ImplicitUsings>enable</ImplicitUsings>
 	  <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 	

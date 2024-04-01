@@ -9,9 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
 
@@ -24,21 +22,20 @@ namespace DestroyableBushes
         /// <param name="harmony">This mod's Harmony instance.</param>
         public static void ApplyPatch(Harmony harmony)
         {
-            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BushesAreDestroyable)}\": postfixing SDV method \"Bush.isDestroyable(GameLocation, Vector2)\".", LogLevel.Trace);
+            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BushesAreDestroyable)}\": postfixing SDV method \"Bush.isDestroyable()\".", LogLevel.Trace);
             harmony.Patch(
-                original: AccessTools.Method(typeof(Bush), nameof(Bush.isDestroyable), new[] { typeof(GameLocation), typeof(Vector2) }),
+                original: AccessTools.Method(typeof(Bush), nameof(Bush.isDestroyable)),
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_BushesAreDestroyable), nameof(isDestroyable_Postfix))
             );
         }
 
         /// <summary>Makes all bushes destroyable by appropriate tools.</summary>
         /// <remarks>
-        /// This causes <see cref="Bush.isDestroyable(GameLocation, Vector2)"/> to always return true.
-        /// Currently, this change allows axes with at least 1 upgrade to chop down any bush.
+        /// This causes <see cref="Bush.isDestroyable()"/> to return true, allowing axes with at least 1 upgrade to destroy bushes.
         /// </remarks>
         /// <param name="__instance">The <see cref="Bush"/> being checked.</param>
         /// <param name="__result">True if this bush is destroyable.</param>
-        public static void isDestroyable_Postfix(GameLocation location, Bush __instance, ref bool __result)
+        public static void isDestroyable_Postfix(Bush __instance, ref bool __result)
         {
             try
             {
@@ -46,7 +43,7 @@ namespace DestroyableBushes
                 {
                     foreach (string locationName in ModEntry.Config.DestroyableBushLocations) //for each name in the list
                     {
-                        if (locationName.Equals(location?.Name ?? "", StringComparison.OrdinalIgnoreCase)) //if the listed name matches the bush's location name
+                        if (locationName.Equals(__instance.Location?.Name ?? "", StringComparison.OrdinalIgnoreCase)) //if the listed name matches the bush's location name
                         {
                             __result = true; //return true
                             return;

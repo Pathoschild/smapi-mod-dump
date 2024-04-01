@@ -188,7 +188,7 @@ namespace MushroomRancher
                         break;
 
                     case MushroomRancher.magmaCapId:
-                        monster = MushroomRancher.CreateFriendlyMagmaCap(v, mod);
+                        monster = MushroomRancher.CreateFriendlyMagmaCap(v);
                         break;
                 }
 

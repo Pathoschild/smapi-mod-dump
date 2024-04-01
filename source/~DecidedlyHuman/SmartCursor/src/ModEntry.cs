@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -274,6 +273,10 @@ namespace SmartCursor
         /// </summary>
         private void GameLoopOnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
+            // Guard against fishing rod usage.
+            if (Game1.player.CurrentTool is FishingRod)
+                return;
+
             //TODO should we update GamePadState and MouseState before checking isHoldKeyDown?
             //TODO don't call this from GameLoopOnUpdateTicked
             this.updateTargetedObject();
@@ -281,13 +284,16 @@ namespace SmartCursor
             GamePadState gamepadState = Game1.input.GetGamePadState();
             MouseState mouseState = Game1.input.GetMouseState();
 
+            if (this.isHoldKeyDown)
+                this.Helper.Input.Suppress(SButton.MouseRight);
+
             // Now, if our cooldown timer has passed and the correct keys are held, we want to hit again.
             if (this.isHoldKeyDown && (gamepadState.IsButtonDown(Buttons.X)
                                        || mouseState.LeftButton == ButtonState.Pressed) && !Game1.player.UsingTool)
             {
                 // if (Game1.player.UsingTool)
                 //     return;
-                Game1.player.UsingTool = true;
+                // Game1.player.UsingTool = true;
 
                 var dummy = new Farmer();
 
@@ -298,13 +304,15 @@ namespace SmartCursor
                     this.GatherResources(Game1.currentLocation);
                 }
 
-                Game1.player.EndUsingTool();
+                // Game1.player.EndUsingTool();
             }
         }
 
         private void BreakObject(Farmer player, Tool tool, bool refundStamina)
         {
             float startingStamina = player.stamina;
+
+            player.BeginUsingTool();
 
             tool.DoFunction(
                 Game1.currentLocation,
@@ -322,7 +330,7 @@ namespace SmartCursor
         private Vector2? GetTileToTargetForPlayer(Farmer player)
         {
             // Grab a reference for our player tile.
-            Vector2 playerTile = Game1.player.getTileLocation();
+            Vector2 playerTile = Game1.player.Tile;
 
             if (player.CurrentTool == null)
             {
@@ -516,11 +524,18 @@ namespace SmartCursor
         /// <param name="e"></param>
         private void InputOnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
+            // Guard against fishing rod usage.
+            if (Game1.player.CurrentTool is FishingRod)
+                return;
+
             if (e.Button == this.config.SmartCursorHold)
                 this.isHoldKeyDown = true;
 
             var dummy = new Farmer();
             this.isHoldKeyDown = e.IsDown(this.config.SmartCursorHold);
+
+            if (this.isHoldKeyDown)
+                this.Helper.Input.Suppress(SButton.MouseRight);
 
             if ((e.Button == SButton.MouseLeft || e.Button == SButton.ControllerX ||
                  Game1.input.GetMouseState().LeftButton == ButtonState.Pressed) && !Game1.player.UsingTool)
@@ -563,7 +578,7 @@ namespace SmartCursor
             // First, we loop through the location's objects and add them to our breakable resources list.
             foreach (KeyValuePair<Vector2, SObject> pair in location.Objects.Pairs)
             {
-                if (pair.Value.Category == 0)
+                if (pair.Value.Type.Equals("Litter"))
                     this.breakableResources.Add(new BreakableEntity(pair.Value, this.config));
             }
 
@@ -586,15 +601,6 @@ namespace SmartCursor
             {
                 this.breakableResources.Add(new BreakableEntity(clump, this.config));
                 // this.logger.Log($"Clump parentSheetIndex: {clump.parentSheetIndex}");
-            }
-
-            // And, in case we're in the Secret Woods...
-            if (location is Woods)
-            {
-                foreach (var clump in (location as Woods).stumps)
-                {
-                    this.breakableResources.Add((new BreakableEntity(clump, this.config)));
-                }
             }
 
             time.Stop();

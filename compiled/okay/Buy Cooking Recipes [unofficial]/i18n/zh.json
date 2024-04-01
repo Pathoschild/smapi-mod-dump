@@ -1,0 +1,4 @@
+{
+  "maxNumberOfRecipesPerWeek.name": "最大数量",
+  "maxNumberOfRecipesPerWeek.description": "每周随机显示可购买的食谱最大数量.（最低一个）"
+}

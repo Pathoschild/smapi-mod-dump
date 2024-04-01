@@ -39,7 +39,12 @@
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "@, mi stai derubando! Credevo fossi una persona migliore.$3#$b#Stavolta non ti farò la sanzione @, visto che comunque non potresti permettertela.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Essere lontani dagli altri non significa che il mio negozio sia più facile da derubare, @.$2#$b#Non ti preoccupare della sanzione per questa volta @, vai via e basta.$2",
     "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Vuoi davvero così disperatamente un gelato, @?$7#$b#Per stavolta ti lascio solo con un ammonimento.$5",
-    //
+
+    //1.6 strings
+    "TheMightyAmondee.Shoplifter/CaughtGusResort": "Stai seriamete taccheggiando @?$3#$b#*Sospira* Se paghi la sanzione di {{fineamount}}o dimenticherò di averti visto taccheggiare, ok?$2",
+    "TheMightyAmondee.Shoplifter/CaughtGusResort_NoMoney": "Stai seriamete taccheggiando @?$3#$b#*Sospira* Stavolta ti lascio stare e non ti faccio una sanzione.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled": "Davvero @? Pensavi di poter prenderti una TV senza pagare?$3#$b#Ti farò una sanzione di {{fineamount}}o per questo... Forse questo ti farà da deterrente.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_RareItemsEnabled_NoMoney": "Davvero @? Pensavi di poter prenderti una TV senza pagare?$3#$b#Visto che non te la puoi permettere, questa volta chiuderò un'occhio sulla sanzione.$2",
 
     // Translations thanks to AlixNauts!
     "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Quanto spesso puoi taccheggiare?",  
@@ -57,6 +62,10 @@
     "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Numero di giorni di divieto",
     "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Il numero di giorni per cui si viene banditi",
     "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Raggio di cattura",
-    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Distanza massima a cui un abitante del villaggio deve trovarsi per individuare il giocatore"
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Distanza massima a cui un abitante del villaggio deve trovarsi per individuare il giocatore",
+    //
+    //TODO Improve 1.6 translations
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChance":"Possibilità di oggetto raro",
+    "TheMightyAmondee.Shoplifter/GMCM_RareStockChanceTooltip":"La possibilità che appaiano articoli rari in stock."
     //
   }

@@ -84,8 +84,7 @@ namespace CaveOfMemories.Framework.UI
             };
 
             // Get the NPCs to display
-            List<NPC> characters = new List<NPC>();
-            Utility.getAllCharacters(characters);
+            List<NPC> characters = Utility.getAllCharacters();
             foreach (var npc in characters.OrderBy(n => n.displayName))
             {
                 if (npc.Portrait is not null && npc.CanSocialize is true)
@@ -168,11 +167,11 @@ namespace CaveOfMemories.Framework.UI
                     var targetNpc = eventableCharacters[textureIndex];
                     if (Game1.player.friendshipData.ContainsKey(targetNpc.Name) is false)
                     {
-                        Game1.addHUDMessage(new HUDMessage(CaveOfMemories.i18n.Get("Dialogue.Memory.DontKnow"), null));
+                        Game1.addHUDMessage(new HUDMessage(CaveOfMemories.i18n.Get("Dialogue.Memory.DontKnow")));
                     }
                     else if (_caveOfMemories.GetEventsForNPC(targetNpc).Count == 0)
                     {
-                        Game1.addHUDMessage(new HUDMessage(String.Format(CaveOfMemories.i18n.Get("Dialogue.Memory.NoEvents"), targetNpc.displayName), null));
+                        Game1.addHUDMessage(new HUDMessage(String.Format(CaveOfMemories.i18n.Get("Dialogue.Memory.NoEvents"), targetNpc.displayName)));
                     }
                     else
                     {

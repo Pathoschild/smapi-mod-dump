@@ -41,10 +41,10 @@ namespace DynamicReflections.Framework.Patches.Tiles
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPostfix)));
 
-            harmony.CreateReversePatcher(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int) }), new HarmonyMethod(GetType(), nameof(DrawReversePatch))).Patch();
+            harmony.CreateReversePatcher(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), new HarmonyMethod(GetType(), nameof(DrawReversePatch))).Patch();
 
             // Perform PyTK related patches
             if (DynamicReflections.modHelper.ModRegistry.IsLoaded("Platonymous.Toolkit"))
@@ -79,7 +79,7 @@ namespace DynamicReflections.Framework.Patches.Tiles
             }
         }
 
-        private static bool DrawPrefix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom)
+        private static bool DrawPrefix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset = 0f)
         {
             if (__instance is null || String.IsNullOrEmpty(__instance.Id))
             {
@@ -213,7 +213,7 @@ namespace DynamicReflections.Framework.Patches.Tiles
             return true;
         }
 
-        private static void DrawPostfix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom)
+        private static void DrawPostfix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset = 0f)
         {
             if (__instance is null || String.IsNullOrEmpty(__instance.Id))
             {
@@ -224,11 +224,6 @@ namespace DynamicReflections.Framework.Patches.Tiles
             {
                 if (DynamicReflections.isDrawingPuddles is true)
                 {
-                    // Draw the puddles ontop of the "Back" layer
-                    DynamicReflections.isFilteringPuddles = true;
-                    LayerPatch.DrawReversePatch(__instance, displayDevice, mapViewport, displayOffset, wrapAround, pixelZoom);
-                    DynamicReflections.isFilteringPuddles = false;
-
                     SpriteBatchToolkit.CacheSpriteBatchSettings(Game1.spriteBatch, endSpriteBatch: true);
 
                     // Draw puddle reflection
@@ -236,11 +231,17 @@ namespace DynamicReflections.Framework.Patches.Tiles
 
                     // Resume previous SpriteBatch
                     SpriteBatchToolkit.ResumeCachedSpriteBatch(Game1.spriteBatch);
+
+                    // Draw the puddles ontop of the "Back" layer
+                    DynamicReflections.isFilteringPuddles = true;
+                    LayerPatch.DrawReversePatch(__instance, displayDevice, mapViewport, displayOffset, wrapAround, pixelZoom);
+                    DynamicReflections.isFilteringPuddles = false;
+
                 }
             }
         }
 
-        internal static void DrawReversePatch(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom)
+        internal static void DrawReversePatch(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset = 0f)
         {
             new NotImplementedException("It's a stub!");
         }

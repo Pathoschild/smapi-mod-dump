@@ -12,6 +12,8 @@ for queries and analysis.**
 ## Contents
 * [Installation](#installation)
 * [Options](#options)
+* [Translation](#translation)
+	* [Available Languages](#available-languages)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -37,3 +39,15 @@ Name | Valid settings | Description
 -----|----------------|------------
 FloatingAnimation | **true** or false | If true, items on water will have a cosmetic floating animation.
 TeleportItemsOutOfWater | true or **false** | If true, when items fall into water, they will teleport to the nearest player.
+
+## Translation
+Waterproof Items supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
+
+The mod will load a file from the `WaterproofItems/i18n` folder that matches the current language code. If no matching translation exists, it will use [`default.json`](https://github.com/Esca-MMC/WaterproofItems/blob/master/WaterproofItems/i18n/default.json).
+
+See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) page for more information. Please feel free to submit translation files through GitHub, Nexus Mods, ModDrop, or Discord.
+
+### Available Languages
+Language | File | Contributor(s)
+---------|------|------------
+English | [default.json](https://github.com/Esca-MMC/WaterproofItems/blob/master/WaterproofItems/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)

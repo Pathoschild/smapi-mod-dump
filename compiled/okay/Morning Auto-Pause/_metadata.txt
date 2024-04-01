@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21266
+IDs: Zamiel.MorningAutoPause
+update keys: GitHub:Zamiell/stardew-valley-mods, Nexus:21266

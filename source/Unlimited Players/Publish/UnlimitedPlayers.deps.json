@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Armitxes/StardewValley_UnlimitedPlayers
+**
+*************************************************/
+
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "UnlimitedPlayers/2024.3.30": {
+        "dependencies": {
+          "Pathoschild.Stardew.ModBuildConfig": "4.1.1"
+        },
+        "runtime": {
+          "UnlimitedPlayers.dll": {}
+        }
+      },
+      "Pathoschild.Stardew.ModBuildConfig/4.1.1": {}
+    }
+  },
+  "libraries": {
+    "UnlimitedPlayers/2024.3.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Pathoschild.Stardew.ModBuildConfig/4.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iLEtUWuj+vFTa0HNJmOm0yMIx5ZnED3WHxM1groLUUcFQWV63IMyF5lSQ9d0dteFu7t2dbl/scLwHBdjk0d7AA==",
+      "path": "pathoschild.stardew.modbuildconfig/4.1.1",
+      "hashPath": "pathoschild.stardew.modbuildconfig.4.1.1.nupkg.sha512"
+    }
+  }
+}

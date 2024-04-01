@@ -5,11 +5,14 @@ urls:
 mods:
    Automate Chests
    Profiler
+   SinZational Several Spouse Spots
+   SinZational Shared Spaces
+   SinZational Spending Services
 
 latest commit:
-   commit 8a206fae06bb63d228342cb768b8b097640d8f1f
+   commit 1f42190df004ccba3a7d09e38cfe5ff2c027acf8
    Author: SinZ <github@361zn.is>
-   Date:   Sat Jan 27 11:22:53 2024 +1100
+   Date:   Tue Mar 26 21:24:38 2024 +1100
    
-       Bump profiler to 2.0
+       Updates
    

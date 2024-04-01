@@ -50,7 +50,7 @@ internal partial class SelectableGridOption
 	private readonly Lazy<TextureRectangle> FlagTexture = new(() => new(Game1.emoteSpriteSheet, new(0, 64, 16, 16)));
 
 	private IReadOnlySet<IntPoint> OriginalValues = new HashSet<IntPoint>();
-	private HashSet<IntPoint> CurrentValues = new();
+	private HashSet<IntPoint> CurrentValues = [];
 	private bool? LastMouseLeftPressed;
 	private bool? LastMouseRightPressed;
 	private int Length = 3;
@@ -123,10 +123,10 @@ internal partial class SelectableGridOption
 		Length = Math.Max(Length, newLength);
 	}
 
-	private Vector2 GetGMCMSize()
+	private static Vector2 GetGMCMSize()
 		=> new(Math.Min(1200, Game1.uiViewport.Width - 200), Game1.uiViewport.Height - 128 - 116);
 
-	private Vector2 GetGMCMPosition(Vector2? size = null)
+	private static Vector2 GetGMCMPosition(Vector2? size = null)
 	{
 		Vector2 gmcmSize = size ?? GetGMCMSize();
 		return new((Game1.uiViewport.Width - gmcmSize.X) / 2, (Game1.uiViewport.Height - gmcmSize.Y) / 2);
@@ -371,7 +371,7 @@ partial class SelectableGridOption
 		public ArrayMap<Marking> Markings { get; private set; }
 		public ArrayMap<int> BombCountCache { get; private set; }
 
-		private static readonly IntPoint[] NeighborOffsets = new IntPoint[] { new(-1, -1), new(0, -1), new(1, -1), new(-1, 0), new(1, 0), new(-1, 1), new(0, 1), new(1, 1) };
+		private static readonly IntPoint[] NeighborOffsets = [new(-1, -1), new(0, -1), new(1, -1), new(-1, 0), new(1, 0), new(-1, 1), new(0, 1), new(1, 1)];
 
 		public Minesweeper(int width, int height)
 		{

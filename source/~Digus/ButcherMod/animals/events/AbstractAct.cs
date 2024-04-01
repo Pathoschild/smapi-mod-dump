@@ -22,12 +22,12 @@ namespace AnimalHusbandryMod.animals.events
     public abstract class AbstractAct : IAnimalContestAct
     {
         public abstract string NpcName { get; }
-        public virtual int? RequiredEvent { get; }
+        public virtual string RequiredEvent { get; }
         public abstract string GetAct(AnimalContestItem animalContestInfo, List<AnimalContestItem> history);
 
         public virtual bool Available(List<AnimalContestItem> history)
         {
-            return !RequiredEvent.HasValue || Game1.player.eventsSeen.Contains(RequiredEvent.Value);
+            return RequiredEvent == null || Game1.player.eventsSeen.Contains(RequiredEvent);
         }
 
         protected string TranslationKey(string keyPostFix)

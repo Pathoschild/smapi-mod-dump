@@ -10,13 +10,11 @@
 
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -64,7 +62,7 @@ namespace FarmTypeManager
 
                         for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for removal purposes)
                         {
-                            if (location.characters[x] is Monster monster && monster.id == saved.ID) //if this is a monster with an ID that matches the saved ID
+                            if (location.characters[x] is Monster monster && int.TryParse(saved.ID?.ToString(), out int monsterID) && monster.id == monsterID) //if this is a monster with an ID that matches the saved ID
                             {
                                 stillExists = true;
                                 if (endOfDay) //if expirations should be processed
@@ -98,38 +96,33 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.ResourceClump) //if this is a resource clump
                     {
-                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of resource clumps at this location
-                        if (location is Farm farm)
-                        {
-                            resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
-                        }
-                        else if (location is MineShaft mine)
-                        {
-                            resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
-                        }
-                        else
-                        {
-                            resourceClumps = location.largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
-                        }
+                        ResourceClump existingObject = null; //the in-game object, if it currently exists
 
-                        TerrainFeature existingObject = null; //the in-game object, if it currently exists
-
-                        foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
+                        string largeObjectStringID = saved.ID?.ToString();
+                        foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {
-                            if (clump is ResourceClump smallClump)
+                            if (clump.Tile.X == saved.Tile.X && clump.Tile.Y == saved.Tile.Y) //if its tile location matches
                             {
-                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && smallClump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                if (clump is GiantCrop crop)
                                 {
-                                    existingObject = smallClump;
-                                    break; //stop searching the clump list
+                                    if (crop.Id == largeObjectStringID) //if this is a crop and the ID matches
+                                    {
+                                        existingObject = clump;
+                                        break;
+                                    }
                                 }
-                            }
-                            else if (clump is LargeResourceClump largeClump)
-                            {
-                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && largeClump.Clump.Value.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                else if (Utility.ItemExtensionsAPI?.IsClump(largeObjectStringID) == true) //if IE is installed
                                 {
-                                    existingObject = largeClump;
-                                    break; //stop searching the clump list
+                                    if (clump.modData.TryGetValue("mistyspring.ItemExtensions/CustomClumpId", out string itemExtensionsClumpID) && largeObjectStringID == itemExtensionsClumpID) //if this is an IE clump and the ID matches
+                                    {
+                                        existingObject = clump;
+                                        break;
+                                    }
+                                }
+                                else if (largeObjectStringID == (clump.parentSheetIndex.Value.ToString() ?? "")) //if this is NOT any other kind of clump, and the index matches
+                                {
+                                    existingObject = clump;
+                                    break;
                                 }
                             }
                         }
@@ -142,17 +135,7 @@ namespace FarmTypeManager
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
 
-                                    if (existingObject is ResourceClump clump) //if this is NOT a custom class that always needs removal
-                                    {
-                                        if (location is Farm farmLoc)
-                                        {
-                                            farmLoc.resourceClumps.Remove(clump); //remove this object from the farm's resource clumps list
-                                        }
-                                        else if (location is MineShaft mineLoc)
-                                        {
-                                            mineLoc.resourceClumps.Remove(clump); //remove this object from the mine's resource clumps list
-                                        }
-                                    }
+                                    location.resourceClumps.Remove(existingObject); //remove this object from the farm's resource clumps list
 
                                     objectsToRemove.Add(saved); //mark object for removal from save
                                 }
@@ -161,11 +144,6 @@ namespace FarmTypeManager
                                     saved.DaysUntilExpire--; //decrease counter by 1
                                 }
                             }
-
-                            if (existingObject is LargeResourceClump largeClump) //if this is a custom class that always needs removal
-                            {
-                                location.largeTerrainFeatures.Remove(largeClump); //remove this object from the large terrain features list (NOTE: this must be done even for unexpired LargeResourceClumps to avoid SDV save errors)
-                            }
                         }
                         else //if the object no longer exists
                         {
@@ -173,28 +151,92 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
-                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item, i.e. "debris" containing an item
+                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a non-standard forage item (PlacedItem, furniture, etc)
                     {
                         bool stillExists = false; //does this item still exist?
 
-                        //if a PlacedItem terrain feature exists at the saved tile & contains an item with a matching name
-                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ParentSheetIndex == saved.ID.Value)
+                        switch (saved.ConfigItem?.Category.ToLower())
                         {
-                            stillExists = true;
-                            location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+                            case "(bc)":
+                            case "bc":
+                            case "bigcraftable":
+                            case "bigcraftables":
+                            case "big craftable":
+                            case "big craftables":
+                                //if a big craftable exists at the saved tile with a matching ID
+                                if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.bigCraftable.Value == true && realObject.ItemId == saved.StringID)
+                                {
+                                    stillExists = true;
 
-                            if (endOfDay) //if expirations should be processed
-                            {
-                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
-                                {
-                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. Name: {placedItem.Item?.Name}. Location: {saved.MapName}.");
-                                    objectsToRemove.Add(saved); //mark this for removal from save
+                                    if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                        realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
+
+                                    if (endOfDay) //if expirations should be processed
+                                    {
+                                        if (saved.DaysUntilExpire == 1) //if the BC should expire tonight
+                                        {
+                                            Monitor.VerboseLog($"Removing expired object. Type: Big Craftable. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                            realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                            realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
+                                            location.removeObject(saved.Tile, false); //remove the object from the game
+                                            objectsToRemove.Add(saved); //mark object for removal from save
+                                        }
+                                        else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                        {
+                                            saved.DaysUntilExpire--; //decrease counter by 1
+                                        }
+                                    }
                                 }
-                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                break;
+                            case "(f)":
+                            case "f":
+                            case "furniture":
+                                foreach (Furniture realFurniture in location.furniture)
                                 {
-                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                    if (realFurniture.TileLocation.Equals(saved.Tile) && realFurniture.ItemId.Equals(saved.StringID, StringComparison.Ordinal)) //if furniture exists with a matching tile and ID
+                                    {
+                                        stillExists = true;
+
+                                        if (endOfDay) //if expirations should be processed
+                                        {
+                                            if (saved.DaysUntilExpire == 1) //if this should expire tonight
+                                            {
+                                                Monitor.VerboseLog($"Removing expired object. Type: Furniture. Name: {realFurniture.Name}. Location: {saved.MapName}.");
+                                                location.furniture.Remove(realFurniture); //remove the furniture from the game
+                                                objectsToRemove.Add(saved); //mark this for removal from save
+                                            }
+                                            else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                            {
+                                                saved.DaysUntilExpire--; //decrease counter by 1
+                                            }
+                                        }
+
+                                        break; //stop checking furniture after finding a match
+                                    }
                                 }
-                            }
+                                break;
+                            default:
+                                //if a PlacedItem exists at the saved tile & contains an item with a matching ID
+                                if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ItemId == saved.StringID)
+                                {
+                                    stillExists = true;
+                                    location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+                                    placedItem.Item = null; //clear the reference to the contained item
+
+                                    if (endOfDay) //if expirations should be processed
+                                    {
+                                        if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                        {
+                                            Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. Name: {placedItem.Item?.Name}. Location: {saved.MapName}.");
+                                            objectsToRemove.Add(saved); //mark this for removal from save
+                                        }
+                                        else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                        {
+                                            saved.DaysUntilExpire--; //decrease counter by 1
+                                        }
+                                    }
+                                }
+                                break;
                         }
 
                         if (!stillExists) //if this item no longer exists
@@ -244,13 +286,14 @@ namespace FarmTypeManager
                             {
                                 if (realObject is Chest chest) //if this is a chest
                                 {
-                                    while (chest.items.Count < saved.ConfigItem?.Contents.Count) //while this chest has less items than the saved object's "contents"
+                                    while (chest.Items.Count < saved.ConfigItem?.Contents.Count) //while this chest has less items than the saved object's "contents"
                                     {
                                         saved.ConfigItem.Contents.RemoveAt(0); //remove a missing item from the ConfigItem's contents (note: chests output the item at index 0 when used)
                                     }
                                 }
 
-                                realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                 location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
 
                                 if (endOfDay) //if expirations should be processed
@@ -290,6 +333,7 @@ namespace FarmTypeManager
                         )
                         {
                             location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+                            placedItem.Item = null; //clear the reference to the contained item
 
                             if (endOfDay) //if expirations should be processed
                             {
@@ -306,13 +350,12 @@ namespace FarmTypeManager
                         }
                         else if (location.GetFurnitureAt(saved.Tile) is Furniture realFurniture && DGAItemAPI?.GetDGAItemId(realFurniture) == saved.Name) //if matching furniture exists here
                         {
-                            location.furniture.Remove(realFurniture); //remove this furniture, regardless of expiration
-
                             if (endOfDay) //if expirations should be processed
                             {
-                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                if (saved.DaysUntilExpire == 1) //if this should expire tonight
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: DGA furniture. Name: {saved.Name}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                    location.furniture.Remove(realFurniture); //remove this furniture
                                     objectsToRemove.Add(saved); //mark this for removal from save
                                 }
                                 else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
@@ -325,12 +368,16 @@ namespace FarmTypeManager
                         {
                             if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && DGAItemAPI?.GetDGAItemId(realObject) == saved.Name) //if an object exists in the saved location & matches the saved object (according to DGA's API)
                             {
+                                if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                    realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
+
                                 if (endOfDay) //if expirations should be processed
                                 {
                                     if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                                     {
                                         Monitor.VerboseLog($"Removing expired object. Type: DGA object. Name: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                        realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                        realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                        realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                         location.removeObject(saved.Tile, false); //remove the object from the game
                                         objectsToRemove.Add(saved); //mark object for removal from save
                                     }
@@ -349,14 +396,18 @@ namespace FarmTypeManager
                     }
                     else //if this is a StardewValley.Object (e.g. forage or ore)
                     {
-                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID
+                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.bigCraftable.Value == false && realObject.ItemId == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
                         {
+                            if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
+
                             if (endOfDay) //if expirations should be processed
                             {
                                 if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                    realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                    realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                    realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                     location.removeObject(saved.Tile, false); //remove the object from the game
                                     objectsToRemove.Add(saved); //mark object for removal from save
                                 }

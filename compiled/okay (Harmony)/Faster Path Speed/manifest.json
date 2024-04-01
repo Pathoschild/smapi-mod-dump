@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Faster Path Speed",
+	"Author": "gaussfire",
+	"Version": "1.3.0",
+	"Description": "Increases movement speed on placed paths.",
+	"UniqueID": "gaussfire.FasterPathSpeed",
+	"EntryDll": "FasterPathSpeed.dll",
+	"MinimumApiVersion": "4.0.0-alpha",
+	"UpdateKeys": ["Nexus:9344"]
+}

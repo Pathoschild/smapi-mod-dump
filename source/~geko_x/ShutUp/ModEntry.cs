@@ -42,21 +42,19 @@ namespace ShutUp {
 
 			var harmony = new Harmony(this.ModManifest.UniqueID);
 
+			// public static bool playSound(string cueName, int? pitch = null)
 			//harmony.Patch(
-			//	original: Type.GetType(nameof(StardewValley.Game1)).GetMethod(nameof(Game1.playSound), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance),
+			//	original: AccessTools.Method(typeof(StardewValley.Game1), nameof(StardewValley.Game1.playSound)),
 			//	prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.playSound_prePatch_GekoX_ShutUp))
 			//);
 
+			Monitor.Log("Patching StardewValley.Audio.SoundsHelper.PlayLocal", LogLevel.Debug);
 			harmony.Patch(
-				original: AccessTools.Method(typeof(StardewValley.Game1), nameof(StardewValley.Game1.playSound)),
-				prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.playSound_prePatch_GekoX_ShutUp))
+				original: AccessTools.Method(typeof(StardewValley.Audio.SoundsHelper), nameof(StardewValley.Audio.SoundsHelper.PlayLocal)),
+				prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.playLocal_PrePatch_GekoX_ShutUp))
 			);
 
-			harmony.Patch(
-				original: AccessTools.Method(typeof(StardewValley.Game1), nameof(StardewValley.Game1.playSoundPitched)),
-				prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.playSoundPitched_prePatch_GekoX_ShutUp))
-			);
-
+			Monitor.Log("Done", LogLevel.Debug);
 		}
 
 	}

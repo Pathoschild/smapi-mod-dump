@@ -6,9 +6,9 @@ mods:
    Custom Tokens
 
 latest commit:
-   commit a2668f6de768590e3efb2122061de4848aa6bad5
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Mon Mar 20 09:45:39 2023 +1100
+   commit 947c1b3e0b5e52afd09dc64a05a3fd6e7bf6a3fc
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Tue Mar 26 08:30:55 2024 +1100
    
-       Update README.md
+       Fix error in anniversary calculation
    

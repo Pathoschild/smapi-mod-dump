@@ -8,14 +8,10 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewValley;
-using StardewValley.Objects;
-using StardewValley.Tools;
+using StardewValley.Mods;
 using System.Collections.Generic;
-using System.Linq;
-using SObject = StardewValley.Object;
 
 namespace Trading.Utilities
 {
@@ -30,7 +26,7 @@ namespace Trading.Utilities
         public static implicit operator NetworkPlayer(Farmer farmer) => new(farmer.UniqueMultiplayerID);
     }
 
-    /*internal class NetworkObject
+    internal class NetworkObject
     {
         public string QualifiedId { get; set; }
 
@@ -39,11 +35,11 @@ namespace Trading.Utilities
         public int Stack { get; set; }
 
         [JsonIgnore]
-        public ModDataDictionary? ModData 
+        public ModDataDictionary ModData 
         {
             get
             {
-                ModDataDictionary dict = new ModDataDictionary();
+                ModDataDictionary dict = new();
                 if (NetModData is not null)
                     foreach (var key in NetModData.Keys)
                         dict[key] = NetModData[key];
@@ -64,14 +60,21 @@ namespace Trading.Utilities
                     NetModData[key] = modData[key];
         }
 
-        public static implicit operator NetworkObject(SObject obj) => new NetworkObject(obj.QualifiedId, obj.Quality, obj.Stack, obj.modData);
+        public static explicit operator NetworkObject(Item obj) => new(obj.QualifiedItemId, obj.Quality, obj.Stack, obj.modData);
 
-        public static implicit operator SObject(NetworkObject obj) => new SObject(obj.QualifiedId, obj.Stack, quality: obj.Quality) { modData = obj.ModData };
-    }*/
+        public static explicit operator Item(NetworkObject obj)
+        {
+            Item i = ItemRegistry.Create(obj.QualifiedId, obj.Stack, obj.Quality);
+            foreach (var item in obj.NetModData)
+                i.modData[item.Key] = item.Value;
+            return i;
+        }
+    }
 
     /// <summary>
     /// To be replaced with NetworkObject after the new 1.6 update
     /// </summary>
+    /*[Obsolete("Replaced with NetworkObject")]
     internal class TemporaryNetworkObject
     {
         public string ItemName { get; set; }
@@ -130,8 +133,8 @@ namespace Trading.Utilities
             return new(itemName, itemType, quality, stack, itemColor, obj is Tool tu ? tu.UpgradeLevel : 0, obj.modData);
         }
 
-        public static implicit operator Item?(TemporaryNetworkObject obj) => ItemFactory.getItemFromName(obj.ItemName, obj.ItemType, obj.Stack, obj.Quality, obj.UpgradeLevel, obj.Color, obj.ModData);
-    }
+        public static implicit operator Item?(TemporaryNetworkObject obj) => ItemFactory.getItemFromName(obj.ItemName, obj.ItemType, obj.Stack, obj.Quality, obj.UpgradeLevel, obj.Color);
+    }*/
 
     internal class NetworkInventory
     {
@@ -139,9 +142,9 @@ namespace Trading.Utilities
 
         public float Gold { get; set; }
 
-        public List<TemporaryNetworkObject> Inventory { get; set; }
+        public List<NetworkObject> Inventory { get; set; }
 
-        public NetworkInventory(long sender, float gold, List<TemporaryNetworkObject> inventory)
+        public NetworkInventory(long sender, float gold, List<NetworkObject> inventory)
         {
             SenderId = sender;
             Gold = gold;

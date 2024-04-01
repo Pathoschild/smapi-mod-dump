@@ -31,49 +31,53 @@ namespace StardewDruid.Dialogue
         {
             string stage = QuestData.StageProgress().Last();
 
-            if (npc is StardewDruid.Character.Effigy)
+            switch (stage)
             {
-                switch (stage)
-                {
-                    case "none":
-                    case "weald":
-                    case "mists":
-                    case "stars":
+                case "none":
+                case "weald":
+                case "mists":
+                case "stars":
 
+                    DelayedAction.functionAfterDelay(ProgressQuests, 100);
+
+                    return;
+
+                case "hidden":
+
+                    DelayedAction.functionAfterDelay(HiddenQuests, 100);
+
+                    return;
+
+                case "Jester":
+
+                    DelayedAction.functionAfterDelay(JesterQuest, 100);
+
+                    return;
+
+                case "fates":
+                case "ether":
+
+                    if (npc is StardewDruid.Character.Jester)
+                    {
                         DelayedAction.functionAfterDelay(ProgressQuests, 100);
-
                         return;
+                    }
 
-                    case "hidden":
+                    break;
 
-                        DelayedAction.functionAfterDelay(HiddenQuests, 100);
+                case "town":
+                case "beach":
+                case "woods":
+                    
+                    if (Context.IsMainPlayer)
+                    {
 
-                        return;
+                        DelayedAction.functionAfterDelay(HeartQuests, 100);
 
-                    case "Jester":
+                    }
 
-                        DelayedAction.functionAfterDelay(JesterQuest, 100);
+                    return;
 
-                        return;
-
-                }
-            
-            }
-
-            if (npc is StardewDruid.Character.Jester)
-            {
-
-                switch (stage)
-                {
-
-                    case "fates":
-                    case "ether":
-
-                        DelayedAction.functionAfterDelay(ProgressQuests, 100);
-
-                        return;
-                }
-            
             }
 
             if (!Mod.instance.limits.Contains(npc.Name) && Context.IsMainPlayer)
@@ -93,27 +97,174 @@ namespace StardewDruid.Dialogue
 
         public void ReturnTomorrow()
         {
-            
-            if (npc is StardewDruid.Character.Effigy)
+            string str = "Return to me tomorrow. I will listen for the voices of the wild and tell you what I hear.";
+
+            if (npc is StardewDruid.Character.Shadowtin)
             {
 
-                Game1.drawDialogue(npc, "Return to me tomorrow. I will listen for the voices of the wild and tell you what I hear.");
+                 str = "We need a good rest before we confront the shadows of tomorrow.";
 
             }
             else if (npc is StardewDruid.Character.Jester)
             {
 
-                Game1.drawDialogue(npc, "Prrr... (Jester is deep in thought about tomorrow's possibilities)");
+                str = "Prrr... (Jester is deep in thought about tomorrow's possibilities)";
 
             }
-            else // Shadowtin
+
+            npc.CurrentDialogue.Push(new(npc, "0", str));
+
+            Game1.drawDialogue(npc);
+
+        }
+
+        public void HeartQuests()
+        {
+
+            string intro = "I have something to ask you";
+
+            string stage = QuestData.StageProgress().Last();
+
+            List<Response> responseList = new List<Response>();
+
+            switch (stage)
             {
-                
-                Game1.drawDialogue(npc, "We need a good rest before we confront the shadows of tomorrow.");
+
+                case "beach":
+
+                    if (npc is StardewDruid.Character.Effigy)
+                    {
+
+                        intro = "We all have somewhere to be today.";
+
+                        responseList.Add(new Response("accept", "(personal quest) You have somewhere to be?"));
+
+                    }
+
+                    if (npc is StardewDruid.Character.Jester)
+                    {
+                        
+                        intro = "Wood-face looks like he could do with some cheer and company.";
+
+                        responseList.Add(new Response("request", "(take hint) I'll go see what I can do for our friend."));
+
+                    }
+
+                    if (npc is StardewDruid.Character.Shadowtin)
+                    {
+
+                        intro = "The animated scarecrow appears to have become concerned with matters beyond the scope of it's directive. " +
+                            "From the way it lingers near the borders of the farm, I suspect it prepares to abandon it's post. Figuratively speaking of course. " +
+                            "Though there's still the option to fix it to an actual post. But would it be more stuck-up or less?";
+
+                        responseList.Add(new Response("request", "(take hint) I'll ask the Effigy what it intends."));
+
+                    }
+
+                    break;
+
+                case "town":
+
+                    if (npc is StardewDruid.Character.Effigy)
+                    {
+
+                        intro = "Our leonine ally has spent enough time in melancholy and idleness. A beast of it's stature requires proper exercise and stimulation.";
+
+                        responseList.Add(new Response("request", "(take hint) Jester might like to go for a walk."));
+                    
+                    }
+
+                    if (npc is StardewDruid.Character.Jester)
+                    {
+
+                        intro = "Hey farmer. Do you feel like things have been pretty intense lately?";
+
+                        responseList.Add(new Response("accept", "(personal quest) We've been through a lot. You've come a long way since getting lost on the mountain."));
+
+                    }
+
+                    if (npc is StardewDruid.Character.Shadowtin)
+                    {
+
+                        intro = "Something's up with your cat friend.";
+
+                        responseList.Add(new Response("request", "(take hint) That cat's always up to something. I'll go see what."));
+
+                    }
+
+                    break;
+
+                case "woods":
+
+                    if (npc is StardewDruid.Character.Effigy)
+                    {
+                        intro = "The shadowfolk appears eager to contract you into one of his schemes. " +
+                            "Perhaps he'll prove he is worth the opportunity you've afforded him. " +
+                            "Or perhaps he'll prove that prejudice against his kind is still justified. " +
+                            "I will trust in your judgement either way.";
+
+                        responseList.Add(new Response("request", "(take hint) Thanks, I'll go see what Shadowtin requires."));
+                    }
+
+                    if (npc is StardewDruid.Character.Jester)
+                    {
+                        intro = "Metal-face told me he is looking for a professional for a job. I profess to null, apparently.";
+
+                        responseList.Add(new Response("request", "(take hint) Don't take it personally. I'll go talk to him."));
+
+                    }
+
+                    if (npc is StardewDruid.Character.Shadowtin)
+                    {
+
+                        intro = "So Dragon master, I've got a few leads for us.";
+
+                        responseList.Add(new Response("accept", "(personal quest) I'm open to your ideas"));
+
+                    }
+
+                    break;
 
             }
 
-                
+            responseList.Add(new Response("quests", "(quests) Is there anything else that needs my attention?"));
+
+            GameLocation.afterQuestionBehavior questionBehavior = new(HeartResponse);
+
+            Game1.player.currentLocation.createQuestionDialogue(intro, responseList.ToArray(), questionBehavior, npc);
+
+        }
+
+        public void HeartResponse(Farmer visitor, string answer)
+        {
+
+            switch (answer)
+            {
+
+                case "accept":
+
+                    DelayedAction.functionAfterDelay(ProgressQuests, 100);
+
+                    break;
+
+                case "quests":
+
+                    if (!Mod.instance.limits.Contains(npc.Name) && Context.IsMainPlayer)
+                    {
+
+                        DelayedAction.functionAfterDelay(CycleQuests, 100);
+
+                    }
+                    else
+                    {
+
+                        ReturnTomorrow();
+
+                    }
+
+                    break;
+            }
+
         }
 
         public void ProgressQuests()
@@ -129,12 +280,13 @@ namespace StardewDruid.Dialogue
             }
             else
             {
-                string str = Mod.instance.QuestDiscuss(quest);
+                string str = Map.QuestData.QuestList()[quest].questDiscuss;
 
                 Mod.instance.CastMessage("Druid journal has been updated");
 
-                Game1.drawDialogue(npc, str);
+                npc.CurrentDialogue.Push(new(npc, "0", str));
 
+                Game1.drawDialogue(npc);
             }
 
         }
@@ -144,47 +296,69 @@ namespace StardewDruid.Dialogue
             
             QuestData.NextProgress();
 
-            Game1.drawDialogue(npc, "Those with a twisted connection to the otherworld may remain tethered to the Valley long after their mortal vessel wastes away. " +
+            string str = "Those with a twisted connection to the otherworld may remain tethered to the Valley long after their mortal vessel wastes away. " +
                 "Strike them with bolt and flame to draw out and disperse their corrupted energies. " +
-                "(Check your quest log for new challenges)");
-        
+                "(Check your quest log for new challenges. You only need to complete one challenge to progress your Druid journey)";
+
+            npc.CurrentDialogue.Push(new(npc, "0", str));
+
+            Game1.drawDialogue(npc);
+
+
         }
 
         public void JesterQuest()
         {
-           
-            if (QuestData.NextProgress() == "approachJester")
-            {
-                
-                string str = "Fortune gazes upon you... but it can't be her. One of her kin perhaps.";
-                
-                List<Response> responseList = new List<Response>()
-                {
-                    new Response("Jester", "What do you mean?")
-                
-                };
-                
-                GameLocation.afterQuestionBehavior questionBehavior = new(AnswerJester);
-                
-                Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
 
-                return;
-            
-            }
-            
-            CycleQuests();
+            string str = "Fortune gazes upon you... but it can't be her. One of her kin perhaps.";
+                
+            List<Response> responseList = new List<Response>()
+            {
+                new Response("quests", "(challenges) Is the valley safe?"),
+                new Response("Jester", "(main quest) What do you mean?"),
+                
+            };
+                
+            GameLocation.afterQuestionBehavior questionBehavior = new(AnswerJester);
+                
+            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
 
         }
 
         public void AnswerJester(Farmer visitor, string answer)
         {
-            Game1.drawDialogue(npc,
-                "I have said little of why the monarchs fell into their long slumber, and why the circle of druids was established here to care for the sacred places in their stead. " +
-                "Amongst all the knowledge I still posess, these particular secrets are obscured. I can only say that traces of the remain towards the eastern face of the Mountain. " +
-                "Be careful. The secrets of the Mountain's past are known to be guarded by the Fates themselves.");
-            /*Game1.drawDialogue(npc, "I felt the industry of the forest spirits the night they toiled on the span across the mountain ravine. " +
-                "They restored not only a bridge over land but between two destinies. " +
-                "Should you decide to cross, a fateful encounter awaits you.");*/
+
+            switch (answer)
+            {
+
+                case "Jester":
+
+                    QuestData.NextProgress();
+
+                    string str = "I have said little of why the monarchs fell into their long slumber, and why the circle of druids was established here to care for the sacred places in their stead. " +
+                        "I know the truth is hidden within the core of my being, but the path to it is obscured. The only knowledge I am certain of is that answers may lie towards the eastern face of the Mountain. " +
+                        "As the new leader of the circle, it's up to you to seek out the truth of the past. Be careful. Such secrets are known to be guarded by the Fates themselves.";
+
+                    npc.CurrentDialogue.Push(new(npc, "0", str));
+
+                    Game1.drawDialogue(npc);
+                    return;
+
+            }
+
+            if (!Mod.instance.limits.Contains(npc.Name) && Context.IsMainPlayer)
+            {
+
+                DelayedAction.functionAfterDelay(CycleQuests, 100);
+
+            }
+            else
+            {
+
+                ReturnTomorrow();
+
+            }
+
         }
 
         public void CycleQuests()
@@ -236,7 +410,7 @@ namespace StardewDruid.Dialogue
 
         }
 
-        public void AnswerThreats(Farmer effigyVisitor, string effigyAnswer)
+        public void AnswerThreats(Farmer visitor, string answer)
         {
             
             string dialogueText = "The valley will withstand the threat as it can, as it always has.";
@@ -256,7 +430,7 @@ namespace StardewDruid.Dialogue
             }
 
 
-            switch (effigyAnswer)
+            switch (answer)
             {
                 case "accept":
                     
@@ -330,7 +504,9 @@ namespace StardewDruid.Dialogue
 
                         Mod.instance.limits.Add(npc.Name);
 
-                        string quest1 = questList[Game1.random.Next(questList.Count)]; Mod.instance.NewQuest(quest1);
+                        string quest1 = questList[Game1.random.Next(questList.Count)]; 
+                        
+                        Mod.instance.NewQuest(quest1);
 
                         //foreach (string quest in questList){ Mod.instance.NewQuest(quest);}
 
@@ -364,7 +540,7 @@ namespace StardewDruid.Dialogue
 
                 case "crypt":
 
-                    dialogueText = "Now to the final resting place of the humanfolk.";
+                    dialogueText = "Let's see what the old gang's been up to";
 
                     Mod.instance.NewQuest("challengeEtherTwo");
 
@@ -392,7 +568,9 @@ namespace StardewDruid.Dialogue
 
             }
 
-            Game1.drawDialogue(npc, dialogueText);
+            npc.CurrentDialogue.Push(new(npc, "0", dialogueText));
+
+            Game1.drawDialogue(npc);
 
         }
 

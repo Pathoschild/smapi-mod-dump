@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "welcome": "Что Вы хотите сделать с {0}?",
+  "pickup": "Поднять.",
+  "remove": "Убрать.",
+  "rename": "Переименовать.",
+  "move": "Передвинуть.",
+  "take": "Взять.",
+  "grow": "Вырастить.",
+  "revive": "Оживить.",
+  "water": "Полить.",
+  "kill": "Убить.",
+
+  "what-name": "Во что Вы хотите это переименовать?",
+  "confirm-remove": "Вы действительно хотите удалить это из игры?",
+  "confirm-move": "Передвинуть куда?",
+
+  "up": "Вверх",
+  "down": "Вниз",
+  "left": "Влево",
+  "right": "Вправо",
+
+  "cancel": "Выйти"
+}

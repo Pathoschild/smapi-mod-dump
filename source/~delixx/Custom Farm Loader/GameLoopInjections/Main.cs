@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -45,7 +45,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
             _HoeDirt.Initialize(mod);
             DailyUpdateEvents.Initialize(mod);
             AssetsRequested.Initialize(mod);
-            VisibleFishPatches.Initialize(mod);
+            BusStopHotfix.Initialize();
 
             Helper.Events.GameLoop.DayStarted += DayStarted;
         }

@@ -74,7 +74,7 @@ namespace CombineMachines.Patches
     [HarmonyPatch(typeof(SObject), nameof(SObject.performRemoveAction))]
     public static class PerformRemoveActionPatch
     {
-        public static bool Prefix(SObject __instance, Vector2 tileLocation, GameLocation environment)
+        public static bool Prefix(SObject __instance)
         {
             try
             {
@@ -82,8 +82,8 @@ namespace CombineMachines.Patches
                 //  refund the other 2 combined quantity
                 if (__instance.IsCombinableObject() && __instance.TryGetCombinedQuantity(out int CombinedQuantity) && CombinedQuantity > 1)
                 {
-                    SObject CombinedRefund = new SObject(Vector2.Zero, __instance.ParentSheetIndex, false) { Stack = CombinedQuantity - 1 };
-                    Game1.createItemDebris(CombinedRefund, tileLocation * 64f, (Game1.player.FacingDirection + 2) % 4, null, -1);
+                    SObject CombinedRefund = new SObject(Vector2.Zero, __instance.ItemId, false) { Stack = CombinedQuantity - 1 };
+                    Game1.createItemDebris(CombinedRefund, __instance.TileLocation * 64f, (Game1.player.FacingDirection + 2) % 4, null, -1);
                 }
                 return true;
             }

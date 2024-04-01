@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
@@ -49,8 +50,9 @@ namespace DestroyableBushes
             else //if x y arguments were NOT provided
             {
                 //get the player's current tile position
-                x = Game1.player.getTileX();
-                y = Game1.player.getTileY();
+                Vector2 tile = Game1.player.Tile;
+                x = (int)tile.X;
+                y = (int)tile.Y;
             }
 
             GameLocation location;

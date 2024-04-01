@@ -36,7 +36,7 @@ namespace Shockah.FlexibleSprinklers
 
 			IReadOnlyList<WateringStep> ISprinklerBehavior.GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers)
 			{
-				List<WateringStep> results = new();
+				List<WateringStep> results = [];
 				foreach (var sprinkler in sprinklers)
 					foreach (var step in GetSprinklerTilesWithSteps(map, sprinkler))
 						results.Add(step);

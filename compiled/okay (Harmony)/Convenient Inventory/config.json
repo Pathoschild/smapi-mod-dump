@@ -1,0 +1,16 @@
+{
+  "IsEnableQuickStack": true,
+  "QuickStackRange": 5,
+  "IsQuickStackIntoBuildingsWithInventories": true,
+  "IsQuickStackOverflowItems": true,
+  "IsQuickStackTooltipDrawNearbyChests": true,
+  "IsEnableQuickStackHotkey": false,
+  "QuickStackKeyboardHotkey": "K",
+  "QuickStackControllerHotkey": "LeftStick",
+  "IsQuickStackIgnoreItemQuality": false,
+  "IsEnableFavoriteItems": true,
+  "FavoriteItemsHighlightTextureChoice": 2,
+  "FavoriteItemsKeyboardHotkey": "LeftAlt",
+  "FavoriteItemsControllerHotkey": "LeftShoulder",
+  "IsEnableInventoryPageSideWarp": true
+}

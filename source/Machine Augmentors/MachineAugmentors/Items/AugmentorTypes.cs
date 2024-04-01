@@ -344,7 +344,7 @@ namespace MachineAugmentors.Items
                     int SpawnedQuantity = WeightedRound(Chance);
                     if (SpawnedQuantity > 0)
                     {
-                        Object Coal = new Object(382, SpawnedQuantity, false, -1, 0);
+                        Object Coal = new Object("382", SpawnedQuantity, false, -1, 0);
                         int SpawnDirection = Randomizer.Next(4);
                         Game1.createItemDebris(Coal, PODIData.Machine.TileLocation * Game1.tileSize, SpawnDirection, null, -1);
                     }

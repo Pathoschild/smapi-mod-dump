@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ZhuoYun233/YetAnotherAutoWatering-StardrewValleyMod
+**
+*************************************************/
+
+{
+  "Name": "Yet Another Auto Watering",
+  "Author": "zhuoyun233",
+  "Version": "1.2.0",
+  "Description": "Automatically watering your crops, compatible with 1.6 version",
+  "UniqueID": "zhuoyun233.YetAnotherAutoWatering",
+  "EntryDll": "YetAnotherAutoWatering.dll",
+  "MinimumApiVersion": "4.0.1",
+  "UpdateKeys": [ "Nexus:21036" ]
+}

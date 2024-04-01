@@ -12,7 +12,7 @@ config-contentPatcherPatchingMode = { content-patcher-mod-name } patching
         {"   "}Content Patcher will be patched to directly allow the usage of any tokens registered for each mod.
 
         Technical details:
-        By default (as of { content-patcher-mod-name } version 1.x), { content-patcher-mod-name } mods
+        By default (as of { content-patcher-mod-name } version 2.x), { content-patcher-mod-name } mods
         have to spell out the whole name of the Fluent localization token, including their ID.
         Enabling the "Patch all tokens" is discouraged, but if you are working on your own C# mod
         which adds tokens for { content-patcher-mod-name } mods, it will allow those to also be used directly.

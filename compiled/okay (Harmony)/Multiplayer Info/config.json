@@ -1,5 +1,6 @@
 {
   "Enabled": true,
+  "ToggleButton": "F6",
   "ShowSelf": false,
   "ShowHostCrown": true,
   "HideHealthBars": false,

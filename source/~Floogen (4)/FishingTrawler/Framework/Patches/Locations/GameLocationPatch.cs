@@ -131,7 +131,7 @@ namespace FishingTrawler.Patches.Locations
             string actionProperty = __instance.doesTileHaveProperty(xTile, yTile, "CustomAction", "Buildings");
             if (actionProperty != null && actionProperty == "TrawlerRewardStorage")
             {
-                if (!Enumerable.Range(who.getTileX() - 1, 3).Contains(xTile) || !Enumerable.Range(who.getTileY() - 1, 3).Contains(yTile))
+                if (!Enumerable.Range((int)(who.Tile.X - 1), 3).Contains(xTile) || !Enumerable.Range((int)(who.Tile.Y - 1), 3).Contains(yTile))
                 {
                     Game1.mouseCursorTransparency = 0.5f;
                 }
@@ -141,7 +141,7 @@ namespace FishingTrawler.Patches.Locations
 
             if (actionProperty != null && actionProperty == "TrawlerNote")
             {
-                if (!Enumerable.Range(who.getTileX() - 1, 3).Contains(xTile) || !Enumerable.Range(who.getTileY() - 1, 3).Contains(yTile))
+                if (!Enumerable.Range((int)(who.Tile.X - 1), 3).Contains(xTile) || !Enumerable.Range((int)(who.Tile.Y - 1), 3).Contains(yTile))
                 {
                     Game1.mouseCursorTransparency = 0.5f;
                 }
@@ -149,7 +149,7 @@ namespace FishingTrawler.Patches.Locations
                 __result = true;
             }
 
-            if (FishingTrawler.murphyNPC != null && FishingTrawler.murphyNPC.getTileX() == xTile && FishingTrawler.murphyNPC.getTileY() == yTile)
+            if (FishingTrawler.murphyNPC != null && FishingTrawler.murphyNPC.Tile.X == xTile && FishingTrawler.murphyNPC.Tile.Y == yTile)
             {
                 if (!Utility.tileWithinRadiusOfPlayer(xTile, yTile, 1, who))
                 {

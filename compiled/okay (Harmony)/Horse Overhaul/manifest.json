@@ -1,0 +1,10 @@
+{
+  "Name": "Horse Overhaul",
+  "Author": "Goldenrevolver",
+  "Version": "1.5.4",
+  "Description": "Thin horse with saddle bags. Give your horse pets, food and water for friendship and increased speed.",
+  "UniqueID": "Goldenrevolver.HorseOverhaul",
+  "EntryDll": "HorseOverhaul.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:7911" ]
+}

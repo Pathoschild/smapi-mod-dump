@@ -37,8 +37,8 @@ She visits the Night Market on Winter 15 *and* Winter 17.
 
 ## Something is wrong with the Forest map around Lacey's house.
 
-This mod adds a SMAPI console command `lacey_map_repair`. Try running that in
-your SMAPI terminal and see if that helps (this function runs itself
+This mod adds a SMAPI console command `hatmouselacey map_repair`. Try running
+that in your SMAPI terminal and see if that helps (this function runs itself
 automatically if needed, so it shouldn't be necessary to do this).
 
 If it still looks wrong to you, please open a ticket so I can take a look at
@@ -55,9 +55,10 @@ Enter the forest on a sunny day when she's there.
 * *8 hearts*\
 Enter town when she's there.
 * *(the secret event)*\
-After receiving the letter, enter town between 12 noon and 1 pm.
+After receiving a letter with instructions to this effect, enter town between
+12 noon and 1 pm.
 * *10 hearts*\
-After receiving the letter, enter her house after 8 pm when she's there
+After receiving an invitation, enter her house after 8 pm when she's there
 (not on a festival day).
 * *14 hearts*\
 Enter the bus stop *from town* on a sunny day, not in winter, between 3 pm
@@ -68,7 +69,7 @@ and 6 pm.
 * **Love**: Morel, Fiddlehead Fern, Radish, Artichoke, Coffee, Cheese
 * **Like**: Wheat, Corn, Rice, Unmilled Rice, Hardwood, *Fruits*, *Vegetables*
 * **Neutral**: *Gems*, *Seeds*
-* **Dislike**: Pale Ale, Beer, Wine, Mead, Juice, Rabbit's Foot, *Milks*, *Animal Products*
+* **Dislike**: Juice, Rabbit's Foot, *Alcoholic Items*, *Milks*, *Animal Products*
 * **Hate**: none
 
 These are her specified tastes. Anything not listed uses the Universal taste
@@ -81,13 +82,6 @@ if you already showed her your hat, you don't get the reaction again.
 
 There isn't currently a way to see (in game) which hats you've already shown
 her. Maybe a future update will include this.
-
-## I got Lacey to 8 hearts and tried to give her a bouquet, but she turned me down. What gives?
-
-I bet you said some mean things to her in her heart events, and she's probably
-mad at you about it.
-
-Go get a good night's sleep. You'll feel better in the morning.
 
 ## Is that a reference to...?
 Here's a list of intentional references to other media:
@@ -140,6 +134,13 @@ thing.
 * *"This town has a strange definition of 'potluck'."*\
 I, the author, am delivering this line.
 
+## I got Lacey to 8 hearts and tried to give her a bouquet, but she turned me down. What gives?
+
+This is the trigger for the secret event. Lacey is mad at you for saying some
+mean things to her in her heart events.
+
+Go get a good night's sleep. You'll feel better in the morning.
+
 ## What happened to Lacey's family?
 
 See below.
@@ -150,13 +151,19 @@ There is a canon (i.e. my headcanon) answer for these two questions. I have
 deliberately not specified it, so that your headcanon can take its place. That
 will probably be more satisfying to you than reading mine.
 
-## Our kids don't look right: my config was wrongly set. How do I fix it?
+## Our kids don't look right. How do I fix it?
 
-This mod includes a console command `mousify_child` which you can use to change
-your kids. In the SMAPI console window, type `mousify_child <child's name>
-<number>` and press Enter to run it. This will transform your child permanently
-(but you can always run it again). This doesn't change the child's gender or
-age, just its mouseness.
+**If you are using Unique Children**: that mod reimplements child rendering,
+so you will have to find the baby and toddler images in this mod's files and
+put them manually inside Unique Children's folder so it can display them.
+See that mod's instructions for details; I can't provide any more support than
+that.
+
+Otherwise, this mod includes a console command `mousify_child` which you can
+use to change your kids. In the SMAPI console window, type `hatmouselacey
+mousify_child <child's name> <number>` and press Enter to run it. This will
+transform your child permanently (but you can always run it again). This
+doesn't change the child's gender or age, just its mouseness.
 
 Specify the `<number>` for the child you want:
 

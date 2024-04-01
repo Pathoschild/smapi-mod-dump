@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,7 +23,11 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using StardewValley.GameData;
+using StardewValley.GameData.BigCraftables;
+using StardewValley.GameData.Objects;
 using SObject = StardewValley.Object;
 
 namespace OneSprinklerOneScarecrow
@@ -30,102 +35,121 @@ namespace OneSprinklerOneScarecrow
     public class ModEntry : Mod
     {
         private Config _config;
-        private AddCrowsPatch addcrows;
+        
+        private bool isDebugging = false;
         
         public override void Entry(IModHelper helper)
         {
             
             //helper.Events.Player.InventoryChanged += InventoryChanged;
             _config = helper.ReadConfig<Config>();
-            addcrows = new AddCrowsPatch(Monitor);
             
+
+
             //Lets activate the asset editor
-            //helper.Content.AssetEditors.Add(new AssetEditor(helper, Monitor, helper.Translation, _config));
             helper.Events.Content.AssetRequested += ContentEvent_AssetRequested;
 
             //Events that happen in the game
-            helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
 
             
             //Apply Harmony Patches
+            
             var harmony = new Harmony(this.ModManifest.UniqueID);
-            Monitor.Log("Patching Farm.addCrows with AddCrowsPatch");
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Farm), nameof(Farm.addCrows), new Type[] {}),
-                prefix: new HarmonyMethod(typeof(AddCrowsPatch), nameof(AddCrowsPatch.Prefix))
-            );
+            
 
             Monitor.Log("Patching Object.IsSprinkler with IsSprinklerPatch");
             harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.IsSprinkler), new Type[] {  }),
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.IsSprinkler)),
                 prefix: new HarmonyMethod(typeof(IsSprinklerPatch), nameof(IsSprinklerPatch.Prefix))
             );
 
-            Monitor.Log("Patching Object.GetBaseRadiusForSprinkler with GetBaseRadiusForSprinklerPatch");
+            //Patch GetBaseRadius
+            Monitor.Log("Patching Object.GetBaseRadiusForSprinkler");
             harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.GetBaseRadiusForSprinkler), new Type[] { }),
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.GetBaseRadiusForSprinkler)),
                 prefix: new HarmonyMethod(typeof(GetBaseRadiusForSprinklerPatch), nameof(GetBaseRadiusForSprinklerPatch.Prefix))
-            );
+                );
+
 
         }
 
         private void ContentEvent_AssetRequested(object sender, AssetRequestedEventArgs e)
         {
+            //Sprinkler
             HaxorSprinkler.TranslatedName = Helper.Translation.Get("haxorsprinkler.name");
             HaxorSprinkler.TranslatedDescription = Helper.Translation.Get("haxorsprinkler.description");
+            HaxorSprinkler.Texture = Helper.ModContent.GetInternalAssetName("assets/HaxorSprinkler.png").ToString()?.Replace("/", "\\");
+
+            //Scarecrow
             HaxorScarecrow.TranslatedName = Helper.Translation.Get("haxorscarecrow.name");
             HaxorScarecrow.TranslatedDescription = Helper.Translation.Get("haxorscarecrow.description");
+            HaxorScarecrow.Texture = Helper.ModContent.GetInternalAssetName("assets/HaxorScarecrow.png").ToString()?.Replace("/", "\\");
             
+
             //Lets start editing the content files.
-            if (e.NameWithoutLocale.IsEquivalentTo("Maps/springobjects"))
-            {
-                e.Edit(asset =>
-                {
-                    Texture2D sprinkler =
-                        Helper.ModContent.Load<Texture2D>("Assets/HaxorSprinkler.png");
-                    Texture2D oldImage = asset.AsImage().Data;
 
-                    asset.ReplaceWith(new Texture2D(Game1.graphics.GraphicsDevice,
-                        oldImage.Width,
-                        System.Math.Max(oldImage.Height, 1200 / 24 * 16)));
-                    asset.AsImage().PatchImage(oldImage);
-                    asset.AsImage().PatchImage(sprinkler, targetArea: this.GetRectangle(HaxorSprinkler.ParentSheetIndex));
-                });
-            }
-            else if (e.NameWithoutLocale.IsEquivalentTo("TileSheets/Craftables"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
             {
                 e.Edit(asset =>
                 {
-                    Texture2D scarecrow = Helper.ModContent.Load<Texture2D>("Assets/HaxorScareCrow.png");
-                    Texture2D oldImage = asset.AsImage().Data;
+                    var data = asset.AsDictionary<string, ObjectData>();
 
-                    asset.ReplaceWith(new Texture2D(Game1.graphics.GraphicsDevice,
-                        oldImage.Width,
-                        System.Math.Max(oldImage.Height, 1200 / 8 * 32)));
-                    asset.AsImage().PatchImage(oldImage);
-                    asset.AsImage().PatchImage(scarecrow, targetArea: this.GetRectangleCraftables(HaxorScarecrow.ParentSheetIndex));
-                });
-                
-            }
-            else if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation"))
-            {
-                e.Edit(asset =>
-                {
-                    string ass = $"{HaxorSprinkler.Name}/{HaxorSprinkler.Price}/{HaxorSprinkler.Edibility}/{HaxorSprinkler.Type} {HaxorSprinkler.Category}/{HaxorSprinkler.TranslatedName}/{HaxorSprinkler.TranslatedDescription}";
-                    asset.AsDictionary<int, string>().Data.Add(HaxorSprinkler.ParentSheetIndex, ass);
-                    Monitor.Log($"Added Name: {HaxorSprinkler.Name}({HaxorSprinkler.TranslatedName}) Id: {HaxorSprinkler.ParentSheetIndex}.\r\n {ass}");
+                    var haxorSprinkler = new ObjectData()
+                    {
+                        Name = HaxorSprinkler.ItemID,
+                        DisplayName = HaxorSprinkler.TranslatedName,
+                        Price = HaxorSprinkler.Price,
+                        Description = HaxorSprinkler.TranslatedDescription,
+                        SpriteIndex = HaxorSprinkler.ParentSheetIndex,
+                        Texture = HaxorSprinkler.Texture,
+                        Type = HaxorSprinkler.Type,
+                        Category = HaxorSprinkler.Category
+                    };
+
+                    var newItem = new Dictionary<string, ObjectData>()
+                    {
+                        { HaxorSprinkler.ItemID, haxorSprinkler }
+                    };
+
+                    foreach (var a in newItem.Where(a => !data.Data.Contains(a)))
+                    {
+                        data.Data.Add(a);
+                    }
+
                 });
                 
 
                 
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftablesInformation"))
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables"))
             {
                 e.Edit(asset =>
                 {
-                    asset.AsDictionary<int, string>().Data.Add(HaxorScarecrow.ParentSheetIndex, $"{HaxorScarecrow.Name}/{HaxorScarecrow.Price}/{HaxorScarecrow.Edibility}/{HaxorScarecrow.Type} {HaxorScarecrow.Category}/{HaxorScarecrow.TranslatedDescription}/true/false/0/{HaxorScarecrow.TranslatedName}");
-                    Monitor.Log($"Added Name: {HaxorScarecrow.Name}({HaxorScarecrow.TranslatedName}). Id: {HaxorScarecrow.ParentSheetIndex}");
+                    var data = asset.AsDictionary<string, BigCraftableData>();
+
+                    var haxorCrow = new BigCraftableData()
+                    {
+                        Name = HaxorScarecrow.ItemID,
+                        DisplayName = HaxorScarecrow.TranslatedName,
+                        Price = HaxorScarecrow.Price,
+                        Description = HaxorScarecrow.TranslatedDescription,
+                        SpriteIndex = HaxorScarecrow.ParentSheetIndex,
+                        Texture = HaxorScarecrow.Texture,
+                        CanBePlacedOutdoors = HaxorScarecrow.CanBePlacedOutside,
+                        CanBePlacedIndoors = HaxorScarecrow.CanBePlacedInside,
+                        ContextTags = new List<string>(){"crow_scare", "crow_scare_radius_300"}
+                        
+                    };
+
+                    var newItem = new Dictionary<string, BigCraftableData>() {{HaxorScarecrow.ItemID, haxorCrow }};
+                    
+                    foreach (var a in newItem.Where(a => !data.Data.Contains(a)))
+                    {
+                        data.Data.Add(a);
+                    }
                 });
                 
             }
@@ -147,11 +171,11 @@ namespace OneSprinklerOneScarecrow
                 {
                     var curData = asset.AsDictionary<string, string>();
                     //bool isEn = asset.Locale == "en";
-                    string isEnSprik = asset.Locale != "en" ? $"/{HaxorSprinkler.TranslatedName}" : "";
-                    string isEnScare = asset.Locale != "en" ? $"/{HaxorScarecrow.TranslatedName}" : "";
+                    var isEnSprik = asset.Locale != "en" ? $"/{HaxorSprinkler.TranslatedName}" : "";
+                    var isEnScare = asset.Locale != "en" ? $"/{HaxorScarecrow.TranslatedName}" : "";
                     Monitor.Log("Made it to the else");
-                    string sprinklerIngredientsOut = !_config.ActivateHarderIngredients ? $"390 100/Home/{HaxorSprinkler.ParentSheetIndex}/false/null{isEnSprik}" : $"386 10/Home/{HaxorSprinkler.ParentSheetIndex}/false/null{isEnSprik}";
-                    string scarecrowIngredientsOut = !_config.ActivateHarderIngredients ? $"388 100/Home/{HaxorScarecrow.ParentSheetIndex}/true/null{isEnScare}" : $"337 10/Home/{HaxorScarecrow.ParentSheetIndex}/true/null{isEnScare}";
+                    var sprinklerIngredientsOut = !_config.ActivateHarderIngredients ? $"390 100/Home/{HaxorSprinkler.ItemID}/false/null{isEnSprik}" : $"386 10/Home/{HaxorSprinkler.ItemID}/false/null{isEnSprik}";
+                    var scarecrowIngredientsOut = !_config.ActivateHarderIngredients ? $"388 100/Home/{HaxorScarecrow.ItemID}/true/null{isEnScare}" : $"337 10/Home/{HaxorScarecrow.ItemID}/true/null{isEnScare}";
 
                     if (curData.Data.ContainsKey("Haxor Sprinkler"))
                         curData.Data["Haxor Sprinkler"] = sprinklerIngredientsOut;
@@ -169,37 +193,40 @@ namespace OneSprinklerOneScarecrow
                         }
                         catch (Exception ex)
                         {
-                            Monitor.Log($"There was an error editing crafting recipes. {ex.ToString()}");
+                            Monitor.Log($"There was an error editing crafting recipes. {ex}");
                         }
 
                     }
                 });
                 
-            }
-        }
-        /// <summary>
-        /// Event that gets ran when the game is launched
-        /// </summary>
-        /// <param name="sender">The sender</param>
-        /// <param name="e">Event Args</param>
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            IJsonAssetsApi jsonApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-            if (jsonApi != null)
+            }/*
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectContextTags"))
             {
-                IDictionary<string, int> objectIds = jsonApi.GetAllObjectIds();
-                IDictionary<string, int> bigCraftIds = jsonApi.GetAllBigCraftableIds();
-                Monitor.Log($"Checked GetAlObjectIds Found: {objectIds.Count}, GetAllBigCraftables Found: {bigCraftIds.Count}");
-                foreach(var v in bigCraftIds)
-                    Monitor.Log($"Id: {v.Value}");
-                /*
-                Monitor.Log($"Last ObJect Id: {objectIds.Last().Value}. Last BigCraftable id: {bigCraftIds.Last().Value}.");
-                HaxorSprinkler.ParentSheetIndex = objectIds.Last().Value + 1;
-                HaxorScarecrow.ParentSheetIndex = bigCraftIds.Last().Value + 1;*/
+                e.Edit(asset =>
+                {
+                    asset.AsDictionary<string, string>().Data.Add($"{HaxorScarecrow.Name}", "crow_scare, crow_scare_radius_300");
+                    Monitor.Log($"Added context tags for HaxorScarecrow.");
+                });
+            }*/
+        }
+
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (!Context.IsWorldReady || !Context.IsPlayerFree)
+                return;
+
+            if (e.IsDown(SButton.NumPad7) && isDebugging)
+            {
+                var data = Game1.bigCraftableData; //asset.AsDictionary<string, BigCraftableData>().Data;
+
+                if (data is null)
+                    return;
+
+                foreach (var d in data)
+                {
+                    Monitor.Log($"String: {d.Key}, Data: {d.Value.DisplayName}");
+                }
             }
-            else
-                Monitor.Log("JsonAssetsApi will null.");
-                
         }
 
         /// <summary>
@@ -215,55 +242,39 @@ namespace OneSprinklerOneScarecrow
             //Run FixLegacyItem.
             FixLegacyItems();
         }
-
-        /// <summary>
-        /// Event that runs when a new day is started
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">The EventArgs</param>
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
-        {
-            //Make sure the game is loaded
-            if (!Context.IsWorldReady)
-                return;
-
-            //Go through each location and modify the sprinklers.
-            foreach (var loc in GetLocations())
-            {
-                foreach (SObject obj in loc.Objects.Values)
-                {
-                    if (obj.Name == "Haxor Sprinkler")
-                    {
-                        //go through and and do the watering
-                        foreach (var waterSpots in loc.terrainFeatures.Pairs)
-                        {
-                            if (waterSpots.Value is HoeDirt dirt)
-                                dirt.state.Value = HoeDirt.watered;
-                        }
-                    }
-                }
-            }
-        }
+        
 
         /// <summary>
         /// Method that will search the farm and make sure it gets rid of old haxor items.
         /// </summary>
         private void FixLegacyItems()
         {
-            Dictionary<Vector2, SObject> obj = new Dictionary<Vector2, SObject>();
+            var obj = new Dictionary<Vector2, SObject>();
             foreach (var o in Game1.getFarm().objects.Pairs)
             {
                 if (o.Value.Name.Contains("Haxor Sprinkler") && o.Value.ParentSheetIndex != HaxorSprinkler.ParentSheetIndex)
                     obj.Add(o.Key, o.Value);
                 else if (o.Value.ParentSheetIndex == 273)
                     o.Value.ParentSheetIndex = HaxorScarecrow.ParentSheetIndex;
-                else if (o.Value.Name.Contains("Haxarecrow") && o.Value.ParentSheetIndex != HaxorScarecrow.ParentSheetIndex)
+                else if (o.Value.Name.Contains("Haxor Scarecrow") && o.Value.ParentSheetIndex != HaxorScarecrow.ParentSheetIndex)
                     obj.Add(o.Key, o.Value);
             }
             foreach (var i in obj)
             {
                 Game1.getFarm().objects.Remove(i.Key);
-                Monitor.Log($"Removed Legacy Item: Name: {i.Value.Name}");
+                var newSprinkler = new SObject(HaxorSprinkler.ItemID, 1);
+                var newScare = new SObject(i.Key, HaxorScarecrow.ItemID);
+                var replacedWith = i.Value.Name.Contains("Sprinkler") ? $"Replaced with {HaxorSprinkler.ItemID}" : $"Replaced with {HaxorScarecrow.ItemID}";
+                if (i.Value.Name.Contains("Sprinkler"))
+                    Game1.getFarm().objects.Add(i.Key, newSprinkler);
+                if (i.Value.Name.Contains("Scare"))
+                {
+                    //newScare.bigCraftable.Value = true;
+                    Game1.getFarm().objects.Add(i.Key, newScare);
+                }
+                    
+
+                Monitor.Log($"Removed Legacy Item: Name: {i.Value.Name}, {replacedWith}");
             }
 
         }
@@ -273,7 +284,7 @@ namespace OneSprinklerOneScarecrow
         /// </summary>
         private void AddRecipes()
         {
-            Dictionary<string, int> curRecipes = new Dictionary<string, int>();
+            var curRecipes = new Dictionary<string, int>();
 
             foreach (var r in Game1.player.craftingRecipes.Pairs)
             {
@@ -289,37 +300,27 @@ namespace OneSprinklerOneScarecrow
                 }
             }
             //Now that they have been removed, lets add the new ones.
-            Game1.player.craftingRecipes.Add("Haxor Sprinkler", 0);
-            Game1.player.craftingRecipes.Add("Haxor Scarecrow", 0);
+            Game1.player.craftingRecipes.Add(HaxorSprinkler.Name, 0);
+            Game1.player.craftingRecipes.Add(HaxorScarecrow.Name, 0);
             Monitor.Log("Added the Haxor item recipes.");
         }
-        
+
         /// <summary>Get all in-game locations.</summary>
         private IEnumerable<GameLocation> GetLocations()
         {
-            foreach (GameLocation location in Game1.locations)
+            var mainLocations = (Context.IsMainPlayer ? Game1.locations : this.Helper.Multiplayer.GetActiveLocations()).ToArray();
+
+            foreach (var location in mainLocations.Concat(MineShaft.activeMines).Concat(VolcanoDungeon.activeLevels))
             {
                 yield return location;
-                if (location is BuildableGameLocation buildableLocation)
+
+                foreach (var building in location.buildings)
                 {
-                    foreach (Building building in buildableLocation.buildings)
-                    {
-                        if (building.indoors.Value != null)
-                            yield return building.indoors.Value;
-                    }
+                    if (building.indoors.Value != null)
+                        yield return building.indoors.Value;
                 }
             }
         }
-
-        //Custom Methods
-        public Rectangle GetRectangle(int id)
-        {
-            return new Rectangle(id % 24 * 16, id / 24 * 16, 16, 16);
-        }
-
-        public Rectangle GetRectangleCraftables(int id)
-        {
-            return new Rectangle(id % 8 * 16, id / 8 * 32, 16, 32);
-        }
+       
     }
 }

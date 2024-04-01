@@ -17,12 +17,11 @@ using System.Threading.Tasks;
 using StardewValley;
 using ItemBags.Bags;
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace ItemBags.Menus
 {
-    [JsonObject(Title = "GamepadSettings")]
     [DataContract(Name = "GamepadSettings", Namespace = "")]
     public sealed class GamepadControls
     {

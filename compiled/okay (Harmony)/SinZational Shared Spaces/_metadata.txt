@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20654
+IDs: SinZ.SharedSpaces
+update keys: Nexus:20654, GitHub:SinZ163/StardewMods

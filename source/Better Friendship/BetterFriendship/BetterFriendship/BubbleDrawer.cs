@@ -20,7 +20,7 @@ namespace BetterFriendship
 {
     public class BubbleDrawer
     {
-        public Vector2 BubbleOffset { get; private set; }
+        private Vector2 BubbleOffset { get; set; }
         private readonly ModConfig _config;
         private readonly Dictionary<string, (int item, double time)> _lastCycled = new();
         private readonly Rectangle _giftSourceRectangle = new(167, 175, 12, 11);
@@ -77,13 +77,12 @@ namespace BetterFriendship
                     {
                         DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
-                        var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
-                            bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
+                        var itemData = ItemRegistry.GetData(bestItems[selectedItem].item.QualifiedItemId);
 
-                        spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                        spriteBatch.Draw(itemData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2(
                                 xPosition + BubbleOffset.X + 6,
                                 yPosition - BubbleOffset.Y + hoverVal + 10)),
-                            objectSourceRect,
+                            itemData.GetSourceRect(),
                             Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None, 1);
                     }
 
@@ -109,13 +108,12 @@ namespace BetterFriendship
                     {
                         DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
 
-                        var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
-                                bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
+                        var itemData = ItemRegistry.GetData(bestItems[selectedItem].item.QualifiedItemId);
 
-                        spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                        spriteBatch.Draw(itemData.GetTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2(
                                 xPosition + BubbleOffset.X + 8,
                                 yPosition - BubbleOffset.Y + hoverVal + 8)),
-                            objectSourceRect,
+                            itemData.GetSourceRect(),
                             Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
                             1);
 

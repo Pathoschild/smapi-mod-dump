@@ -5,7 +5,7 @@
 		<meta name="author" content="Esca-MMC">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>Farm Type Manager Config Editor v1.16.0</title>
+		<title>Farm Type Manager Config Editor v1.17.0</title>
 		
 		<style>		
 			/* title box */
@@ -614,7 +614,7 @@
 	<body class="preload">
 		<header>
 			<div class="titlebox">
-				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.16.0</sub></h1>
+				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.17.0</sub></h1>
 				
 				<nav>
 					<button class="titlebox-button" id="load" onclick="document.getElementById('load-input').click();">Load</button>
@@ -1098,7 +1098,7 @@
 							
 							<div class="setting" style="height: 25em">
 								<div class="selection">
-									<label for="Forage-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to forage spawning.<br/><br/>Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
+									<label for="Forage-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to forage spawning.<br /><br />Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
 									<select class="view" name="Forage-EC" id="Forage-EC" style="width:14em" onchange="viewSelect(this)">
 										<option>Years</option>
 										<option>Seasons</option>
@@ -1106,15 +1106,16 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>Game state queries</option>
 										<option>CP conditions</option>
 										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-Years-Div">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit forage spawning to specific in-game years.<br/><br/>Each field can add years in a different format.</span></span></legend>
+										<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit forage spawning to specific in-game years.<br /><br />Each field can add years in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -1161,10 +1162,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-Seasons-Div" style="display:none">
 									<fieldset class="border" style="max-width:300px">
-									<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn forage.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
+										<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn forage.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1189,10 +1190,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-Days-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit forage spawning to specific in-game days.<br/><br/>Each field can add days in a different format.</span></span></legend>
+										<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit forage spawning to specific in-game days.<br /><br />Each field can add days in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -1239,10 +1240,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-WeatherYesterday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>after</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1271,10 +1272,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-WeatherToday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn <b>during</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1303,10 +1304,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-WeatherTomorrow-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>before</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1336,9 +1337,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="Forage-EC-GameStateQueries-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+										<legend>Game state queries<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>at least one</b> of these game state query (GSQ) conditions is true.<br /><br />See the wiki's page about '<a href="https://stardewvalleywiki.com/Modding:Game_state_queries" target="_blank">game state queries</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Forage-EC-GameStateQueries" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Forage-EC-GameStateQueries-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Forage-EC-GameStateQueries-Add"></label>
+													<input type="text" name="Forage-EC-GameStateQueries-Add" id="Forage-EC-GameStateQueries-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Forage-EC-GameStateQueries-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="Forage-EC-CPConditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br /></br>Example entry:<br />"DayOfWeek": "Tuesday"<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -1369,7 +1401,7 @@
 
 								<div class="setting" id="Forage-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>at least one</b> of these precondition strings is true.<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br /><br />Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -1397,10 +1429,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Forage-EC-LNOS-Div" style="display:none">
 									<fieldset class="border" style="max-width:350px">
-									<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, forage will only spawn for that many days, and then stop permanently!<br/><br/>If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
+										<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, forage will only spawn for that many days, and then stop permanently!<br /><br />If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
 										<input type="number" name="Forage-EC-LNOS" id="Forage-EC-LNOS" style="width:6em;">
 									</fieldset>
 								</div>
@@ -1958,7 +1990,7 @@
 						
 							<div class="setting" style="height: 25em">
 								<div class="selection">
-									<label for="LargeObject-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to object spawning.<br/><br/>Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
+									<label for="LargeObject-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to object spawning.<br /><br />Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
 									<select class="view" name="LargeObject-EC" id="LargeObject-EC" style="width:14em" onchange="viewSelect(this)">
 										<option>Years</option>
 										<option>Seasons</option>
@@ -1966,15 +1998,16 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>Game state queries</option>
 										<option>CP conditions</option>
 										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-Years-Div">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit object spawning to specific in-game years.<br/><br/>Each field can add years in a different format.</span></span></legend>
+										<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit object spawning to specific in-game years.<br /><br />Each field can add years in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -2021,10 +2054,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-Seasons-Div" style="display:none">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn objects.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
+										<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn objects.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -2049,10 +2082,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-Days-Div" style="display:none">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit object spawning to specific in-game days.<br/><br/>Each field can add days in a different format.</span></span></legend>
+										<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit object spawning to specific in-game days.<br /><br />Each field can add days in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -2099,10 +2132,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-WeatherYesterday-Div" style="display:none">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Objects will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Objects will only spawn the day <b>after</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -2131,10 +2164,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-WeatherToday-Div" style="display:none">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Objects will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Objects will only spawn <b>during</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -2163,10 +2196,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-WeatherTomorrow-Div" style="display:none">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Objects will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Objects will only spawn the day <b>before</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -2196,9 +2229,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="LargeObject-EC-GameStateQueries-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+										<legend>Game state queries<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>at least one</b> of these game state query (GSQ) conditions is true.<br /><br />See the wiki's page about '<a href="https://stardewvalleywiki.com/Modding:Game_state_queries" target="_blank">game state queries</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="LargeObject-EC-GameStateQueries" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="LargeObject-EC-GameStateQueries-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="LargeObject-EC-GameStateQueries-Add"></label>
+													<input type="text" name="LargeObject-EC-GameStateQueries-Add" id="LargeObject-EC-GameStateQueries-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="LargeObject-EC-GameStateQueries-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="LargeObject-EC-CPConditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br /></br>Example entry:<br />"DayOfWeek": "Tuesday"<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -2229,7 +2293,7 @@
 
 								<div class="setting" id="LargeObject-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>at least one</b> of these precondition strings is true.<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br /><br />Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -2257,11 +2321,11 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="LargeObject-EC-LNOS-Div" style="display:none">
 									<fieldset class="border" style="max-width:50%">
-									<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, objects will only spawn for that many days, and then stop permanently!<br/><br/>If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
-										<input type="number" name="LargeObject-EC-LNOS" id="LargeObject-EC-LNOS" style="width:6em;">		
+										<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, objects will only spawn for that many days, and then stop permanently!<br /><br />If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
+										<input type="number" name="LargeObject-EC-LNOS" id="LargeObject-EC-LNOS" style="width:6em;">
 									</fieldset>
 								</div>
 							</div>
@@ -2995,7 +3059,7 @@
 							
 							<div class="setting" style="height: 25em">
 								<div class="selection">
-									<label for="Ore-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to ore spawning.<br/><br/>Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
+									<label for="Ore-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to ore spawning.<br /><br />Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
 									<select class="view" name="Ore-EC" id="Ore-EC" style="width:14em" onchange="viewSelect(this)">
 										<option>Years</option>
 										<option>Seasons</option>
@@ -3003,15 +3067,16 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>Game state queries</option>
 										<option>CP conditions</option>
 										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-Years-Div">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit ore spawning to specific in-game years.<br/><br/>Each field can add years in a different format.</span></span></legend>
+										<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit ore spawning to specific in-game years.<br /><br />Each field can add years in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -3058,10 +3123,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-Seasons-Div" style="display:none">
 									<fieldset class="border" style="max-width:300px">
-									<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn ore.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
+										<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn ore.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -3086,10 +3151,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-Days-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit ore spawning to specific in-game days.<br/><br/>Each field can add days in a different format.</span></span></legend>
+										<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit ore spawning to specific in-game days.<br /><br />Each field can add days in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -3136,10 +3201,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-WeatherYesterday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Ore will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Ore will only spawn the day <b>after</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -3168,10 +3233,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-WeatherToday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Ore will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Ore will only spawn <b>during</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -3200,10 +3265,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-WeatherTomorrow-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Ore will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Ore will only spawn the day <b>before</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -3233,9 +3298,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="Ore-EC-GameStateQueries-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+										<legend>Game state queries<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>at least one</b> of these game state query (GSQ) conditions is true.<br /><br />See the wiki's page about '<a href="https://stardewvalleywiki.com/Modding:Game_state_queries" target="_blank">game state queries</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Ore-EC-GameStateQueries" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Ore-EC-GameStateQueries-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Ore-EC-GameStateQueries-Add"></label>
+													<input type="text" name="Ore-EC-GameStateQueries-Add" id="Ore-EC-GameStateQueries-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Ore-EC-GameStateQueries-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="Ore-EC-CPConditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br /></br>Example entry:<br />"DayOfWeek": "Tuesday"<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -3266,7 +3362,7 @@
 
 								<div class="setting" id="Ore-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>at least one</b> of these precondition strings is true.<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br /><br />Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -3294,10 +3390,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Ore-EC-LNOS-Div" style="display:none">
 									<fieldset class="border" style="max-width:350px">
-									<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, ore will only spawn for that many days, and then stop permanently!<br/><br/>If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
+										<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, ore will only spawn for that many days, and then stop permanently!<br /><br />If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
 										<input type="number" name="Ore-EC-LNOS" id="Ore-EC-LNOS" style="width:6em;">
 									</fieldset>
 								</div>
@@ -4373,7 +4469,7 @@
 							
 							<div class="setting" style="height: 25em">
 								<div class="selection">
-									<label for="Monster-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to monster spawning.<br/><br/>Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
+									<label for="Monster-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to monster spawning.<br /><br />Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
 									<select class="view" name="Monster-EC" id="Monster-EC" style="width:14em" onchange="viewSelect(this)">
 										<option>Years</option>
 										<option>Seasons</option>
@@ -4381,15 +4477,16 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>Game state queries</option>
 										<option>CP conditions</option>
 										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-Years-Div">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit monster spawning to specific in-game years.<br/><br/>Each field can add years in a different format.</span></span></legend>
+										<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit monster spawning to specific in-game years.<br /><br />Each field can add years in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -4436,10 +4533,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-Seasons-Div" style="display:none">
 									<fieldset class="border" style="max-width:300px">
-									<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn monsters.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
+										<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn monsters.<br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -4464,10 +4561,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-Days-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit monster spawning to specific in-game days.<br/><br/>Each field can add days in a different format.</span></span></legend>
+										<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit monster spawning to specific in-game days.<br /><br />Each field can add days in a different format.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -4514,10 +4611,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-WeatherYesterday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn the day <b>after</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -4546,10 +4643,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-WeatherToday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn <b>during</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -4578,10 +4675,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-WeatherTomorrow-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn the day <b>before</b> these weather types.<br /><br />Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br /><br />Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -4611,9 +4708,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="Monster-EC-GameStateQueries-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+										<legend>Game state queries<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>at least one</b> of these game state query (GSQ) conditions is true.<br /><br />See the wiki's page about '<a href="https://stardewvalleywiki.com/Modding:Game_state_queries" target="_blank">game state queries</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Monster-EC-GameStateQueries" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-GameStateQueries-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Monster-EC-GameStateQueries-Add"></label>
+													<input type="text" name="Monster-EC-GameStateQueries-Add" id="Monster-EC-GameStateQueries-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Monster-EC-GameStateQueries-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="Monster-EC-CPConditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>all</b> of these conditions are true at the start of each day.<br/><br/>Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>all</b> of these conditions are true at the start of each day.<br /><br />Its format is based on Content Patcher's "When" field.<br /></br>Example entry:<br />"DayOfWeek": "Tuesday"<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -4644,7 +4772,7 @@
 
 								<div class="setting" id="Monster-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>at least one</b> of these precondition strings is true.<br /><br />This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br /><br />Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -4672,10 +4800,10 @@
 										</table>
 									</fieldset>
 								</div>
-								
+
 								<div class="setting" id="Monster-EC-LNOS-Div" style="display:none">
 									<fieldset class="border" style="max-width:350px">
-									<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, monsters will only spawn for that many days, and then stop permanently!<br/><br/>If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
+										<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, monsters will only spawn for that many days, and then stop permanently!<br /><br />If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
 										<input type="number" name="Monster-EC-LNOS" id="Monster-EC-LNOS" style="width:6em;">
 									</fieldset>
 								</div>
@@ -5367,7 +5495,7 @@
 						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
 						return; //quit without filling in settings
 					}
-					else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null || text.includes("CPConditions") == false) //if this seems like an out-of-date confg file
+                    else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null || text.includes("GameStateQueries") == false) //if this seems like an out-of-date confg file
 					{
 						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems outdated or incomplete.\n\nPlease load a Stardew farm that uses this config to automatically update it.";
 						return; //quit without filling in settings
@@ -6099,6 +6227,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "GameStateQueries": [],
 						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
@@ -6143,6 +6272,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "GameStateQueries": [],
 						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
@@ -6184,6 +6314,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "GameStateQueries": [],
 						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
@@ -6223,6 +6354,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "GameStateQueries": [],
 						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
@@ -6293,7 +6425,7 @@
 			{
 				areas = json.Large_Object_Spawn_Settings.Areas;
 			}
-			else if (selector.id.include("Ore")) //if ore area
+			else if (selector.id.includes("Ore")) //if ore area
 			{
 				areas = json.Ore_Spawn_Settings.Areas;
 			}
@@ -6324,10 +6456,30 @@
 				textbox.value = ""; //clear the textbox
 				return;
 			}
-			
+
 			selector.options[selector.selectedIndex].text = textbox.value; //update the selected option's ID
 			areas[areaIndex - 2].UniqueAreaID = textbox.value; //update the stored area ID
 			textbox.value = ""; //clear the textbox
+
+			//update the relevant area list with any changes made above
+            if (selector.id.includes("Forage")) //if forage area
+            {
+				json.Forage_Spawn_Settings.Areas = areas;
+            }
+            else if (selector.id.includes("LargeObject")) //if large object area
+            {
+				json.Large_Object_Spawn_Settings.Areas = areas;
+            }
+            else if (selector.id.includes("Ore")) //if ore area
+            {
+				json.Ore_Spawn_Settings.Areas = areas;
+            }
+            else //if monster area
+            {
+				json.Monster_Spawn_Settings.Areas = areas;
+			}
+
+            areaSelect(selector); //store the currently selected area again
 		}
 		
 		//delete the currently selected area
@@ -6654,6 +6806,12 @@
 						}
 					}
 
+					prev.ExtraConditions.GameStateQueries = [];
+                    for (var x = 0; x < document.getElementById("Forage-EC-GameStateQueries").options.length; x++) //for each GSQ
+                    {
+                        prev.ExtraConditions.GameStateQueries.push(document.getElementById("Forage-EC-GameStateQueries").options[x].text);
+                    }
+
 					prev.ExtraConditions.CPConditions = {};
 					var CPConditionsText = "{"; //start with an opening brace
 					for (var x = 0; x < document.getElementById("Forage-EC-CPConditions").options.length; x++) //for each CP condition
@@ -6925,6 +7083,14 @@
 						}
 					}
 
+                    document.getElementById("Forage-EC-GameStateQueries").options.length = 0;
+                    for (var x = 0; x < curr.ExtraConditions.GameStateQueries.length; x++) //for each GSQ
+                    {
+                        var option = document.createElement("option");
+                        option.text = curr.ExtraConditions.GameStateQueries[x];
+                        document.getElementById("Forage-EC-GameStateQueries").options.add(option);
+                    }
+
 					document.getElementById("Forage-EC-CPConditions").options.length = 0;
 					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
 					{
@@ -7105,6 +7271,12 @@
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
 					}
+
+                    prev.ExtraConditions.GameStateQueries = [];
+                    for (var x = 0; x < document.getElementById("LargeObject-EC-GameStateQueries").options.length; x++) //for each GSQ
+                    {
+                        prev.ExtraConditions.GameStateQueries.push(document.getElementById("LargeObject-EC-GameStateQueries").options[x].text);
+                    }
 
 					prev.ExtraConditions.CPConditions = {};
 					var CPConditionsText = "{"; //start with an opening brace
@@ -7323,6 +7495,14 @@
 							}
 						}
 					}
+
+                    document.getElementById("LargeObject-EC-GameStateQueries").options.length = 0;
+                    for (var x = 0; x < curr.ExtraConditions.GameStateQueries.length; x++) //for each GSQ
+                    {
+                        var option = document.createElement("option");
+                        option.text = curr.ExtraConditions.GameStateQueries[x];
+                        document.getElementById("LargeObject-EC-GameStateQueries").options.add(option);
+                    }
 
 					document.getElementById("LargeObject-EC-CPConditions").options.length = 0;
 					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
@@ -7584,6 +7764,12 @@
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
 					}
+
+                    prev.ExtraConditions.GameStateQueries = [];
+                    for (var x = 0; x < document.getElementById("Ore-EC-GameStateQueries").options.length; x++) //for each GSQ
+                    {
+                        prev.ExtraConditions.GameStateQueries.push(document.getElementById("Ore-EC-GameStateQueries").options[x].text);
+                    }
 
 					prev.ExtraConditions.CPConditions = {};
 					var CPConditionsText = "{"; //start with an opening brace
@@ -7886,6 +8072,14 @@
 						}
 					}
 
+                    document.getElementById("Ore-EC-GameStateQueries").options.length = 0;
+                    for (var x = 0; x < curr.ExtraConditions.GameStateQueries.length; x++) //for each GSQ
+                    {
+                        var option = document.createElement("option");
+                        option.text = curr.ExtraConditions.GameStateQueries[x];
+                        document.getElementById("Ore-EC-GameStateQueries").options.add(option);
+                    }
+
 					document.getElementById("Ore-EC-CPConditions").options.length = 0;
 					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
 					{
@@ -8059,6 +8253,12 @@
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
 					}
+
+                    prev.ExtraConditions.GameStateQueries = [];
+                    for (var x = 0; x < document.getElementById("Monster-EC-GameStateQueries").options.length; x++) //for each GSQ
+                    {
+                        prev.ExtraConditions.GameStateQueries.push(document.getElementById("Monster-EC-GameStateQueries").options[x].text);
+                    }
 
 					prev.ExtraConditions.CPConditions = {};
 					var CPConditionsText = "{"; //start with an opening brace
@@ -8281,6 +8481,14 @@
 							}
 						}
 					}
+
+                    document.getElementById("Monster-EC-GameStateQueries").options.length = 0;
+                    for (var x = 0; x < curr.ExtraConditions.GameStateQueries.length; x++) //for each GSQ
+                    {
+                        var option = document.createElement("option");
+                        option.text = curr.ExtraConditions.GameStateQueries[x];
+                        document.getElementById("Monster-EC-GameStateQueries").options.add(option);
+                    }
 
 					document.getElementById("Monster-EC-CPConditions").options.length = 0;
 					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition

@@ -1,0 +1,22 @@
+﻿{
+  "Name": "MultiSave",
+  "Author": "aedenthorn (updated by GrimatGaming)",
+  "Version": "0.1.9-unofficial.1-GrimatGaming",
+  "Description": "MultiSave.",
+  "UniqueID": "aedenthorn.MultiSave",
+  "EntryDll": "MultiSave.dll",
+  "MinimumApiVersion": "4.0.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "MultiSave"
+  },
+  "UpdateKeys": [ "Nexus:15402" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

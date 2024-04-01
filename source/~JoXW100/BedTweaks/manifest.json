@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoXW100/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Bed Tweaks",
+  "Author": "aedenthorn",
+  "Version": "0.3.0",
+  "Description": "Tweaks the bed.",
+  "UniqueID": "aedenthorn.BedTweaks",
+  "EntryDll": "BedTweaks.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "BedTweaks"
+  },
+  "UpdateKeys": [ "Nexus:10023" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "aedenthorn.FreeLove",
+      "IsRequired": false
+    }
+  ]
+}

@@ -20,7 +20,7 @@ namespace MailServicesMod
 {
     internal class NpcUtility
     {
-        public static NPC getCharacterFromName(string npcName)
+        public static NPC GetCharacterFromName(string npcName)
         {
             var npc = Game1.getCharacterFromName(npcName);
             if (npc == null)
@@ -28,7 +28,7 @@ namespace MailServicesMod
                 var movieTheaterLocation = Game1.locations.FirstOrDefault(l => l is MovieTheater);
                 if (movieTheaterLocation != null)
                 {
-                    npc = movieTheaterLocation.getCharacters().FirstOrDefault(character => !character.eventActor && character.Name.Equals(npcName));
+                    npc = movieTheaterLocation.characters.FirstOrDefault(character => !character.EventActor && character.Name.Equals(npcName));
                 }
             }
             if (npc == null) throw new Exception($"Character '{npcName}' not found.");

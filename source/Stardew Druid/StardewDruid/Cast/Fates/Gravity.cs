@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewValley;
 using System;
 
 namespace StardewDruid.Cast.Fates
@@ -18,11 +19,11 @@ namespace StardewDruid.Cast.Fates
 
         public int type;
 
-        public Gravity(Vector2 target, Rite rite, int Type = 0)
-            : base(target, rite)
+        public Gravity(Vector2 target,  int Type = 0)
+            : base(target)
         {
 
-            int castCombat = rite.caster.CombatLevel / 2;
+            int castCombat = Game1.player.CombatLevel / 2;
 
             castCost = Math.Max(6, 12 - castCombat);
 
@@ -33,14 +34,14 @@ namespace StardewDruid.Cast.Fates
         public override void CastEffect()
         {
 
-            if (!riteData.castTask.ContainsKey("masterGravity"))
+            if (!Mod.instance.rite.castTask.ContainsKey("masterGravity"))
             {
 
                 Mod.instance.UpdateTask("lessonGravity", 1);
 
             }
 
-            Event.World.Gravity gravityEvent = new(targetVector, riteData, type,Mod.instance.DamageLevel());
+            GravityEvent gravityEvent = new(targetVector, type, Mod.instance.DamageLevel());
 
             gravityEvent.EventTrigger();
 

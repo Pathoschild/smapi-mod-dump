@@ -51,6 +51,7 @@ namespace MailFrameworkMod
             helper.ConsoleCommands.Add("player_addreceivedmail", "Adds a mail as received.\n\nUsage: player_addreceivedmail <value>\n- value: name of the mail.", Commands.AddsReceivedMail);
             helper.ConsoleCommands.Add("player_removereceivedmail", "Remove a mail from the list of received mail.\n\nUsage: player_removereceivedmail <value>\n- value: name of the mail.", Commands.RemoveReceivedMail);
             helper.ConsoleCommands.Add("player_debug_updatemailbox", "Updates de player mailbox. Use it for debug propose only.", Commands.DebugUpdateMailbox);
+            helper.ConsoleCommands.Add("mfm_reloadcontentpacks", "Reload all content packs. Use it for debug propose only.", Commands.ReloadContentPacks);
         }
 
 
@@ -96,7 +97,7 @@ namespace MailFrameworkMod
         /// <param name="e">The event arguments.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            if (MailDao.HasRepositoryChanged())
+            if (MailRepository.HasRepositoryChanged())
             {
                 Helper.GameContent.InvalidateCache(DataLoader.MailAssetName);
             }

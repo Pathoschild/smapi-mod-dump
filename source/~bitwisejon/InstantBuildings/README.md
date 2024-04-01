@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.5 mod which lets you build any building normally sold by the 
+**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.6 mod which lets you build any building normally sold by the 
 carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician 
 buildings are included too! You can also upgrade your house or cabin instantly to add the kitchen, nursery, and cellar directly from your farm
 without having to wait. The configuration file allows you to turn off the resource requirements needed to build/upgrade so you can play around in 
@@ -20,6 +20,7 @@ without it crashing.
 * [Install](#install)
 * [Use](#use)
 * [Buildings](#buildings)
+* [Support for Other Mods](#support-for-other-mods)
 * [Configuration](#configuration)
 * [Mod Compatibility](#mod-compatibility)
 * [Versions](#versions)
@@ -71,6 +72,11 @@ The following buildings can be upgraded instantly provided you already have the 
 
 In multiplayer, any player can use the build menu and the new building will appear instantly for all players.
 
+## Support for Other Mods
+While I do not officially support any other mods except my own, the new version of the Instant Build Menu in version 6 of Stardew Valley now inherits
+directly from the Carpenter Menu. This means that ALL blueprints added by the Carpenter, Magician, and any other mod will now be available for building
+on the farm. This has only been tested with the [TractorMod](http://www.nexusmods.com/stardewvalley/mods/1401), though.
+
 ## House/Cabin Upgrades
 Pressing the 'U' key prompts Robin to ask if the player wants to upgrade their house or cabin to the next available level. Clicking 'Yes' will instantly
 upgrade the house/cabin to that upgrade level and change the appearance of the building. The player can immediately hit 'U' again to continue upgrading.
@@ -88,7 +94,7 @@ setting | default | effect
 `PerformInstantHouseUpgradeButton` | `U` | Change this value to bind the Instant House/Cabin Upgrade feature to another key.
 
 ## Mod Compatibility
-**Note:*** This mod is only compatible with version 1.5 of Stardew Valley (released 12/21/2020) and works in multiplayer as well. 
+**Note:*** This mod is only compatible with version 1.6 of Stardew Valley (released 3/19/2024) and works in multiplayer as well. 
 
 This mod is fully compatible with:
 * [TractorMod](http://www.nexusmods.com/stardewvalley/mods/1401) by Pathoschild. The Tractor Garage will appear in the build menu if the mod is installed.

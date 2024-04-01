@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Polyamory Sweet Wedding",
+  "Author": "ApryllForever",
+  "Version": "1.0.10",
+  "Description": "Wedding part of the Polyamory Sweet!",
+  "UniqueID": "ApryllForever.PolyamorySweetWedding",
+  "EntryDll": "PolyamorySweetWedding.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "Nexus:20599" ],
+
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

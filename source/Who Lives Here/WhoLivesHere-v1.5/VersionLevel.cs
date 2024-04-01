@@ -29,8 +29,8 @@ namespace WhoLivesHere
         {
             if (Game1.currentLocation is BuildableGameLocation gl)
             {
-                Building building= gl.getBuildingAt(Game1.currentCursorTile);
-                if (building !=null && building.indoors.Value != null && building.indoors.Value is AnimalHouse house)
+                Building building = gl.getBuildingAt(Game1.currentCursorTile);
+                if (building != null && building.indoors.Value != null && building.indoors.Value is AnimalHouse house)
                     return house;
             }
 
@@ -38,7 +38,14 @@ namespace WhoLivesHere
         }
         public static int MaxCapacity(Building house)
         {
-            return house.maxOccupants;
+            return house.buildingType.Value switch
+            {
+                "Big Coop" => 8,
+                "Deluxe Coop" => 12,
+                "Big Barn" => 8,
+                "Deluxe Barn" => 12,
+                _ => house.maxOccupants
+            };
         }
         public static bool WasFeed(FarmAnimal animal)
         {
@@ -84,6 +91,29 @@ namespace WhoLivesHere
             }
 
             return false;
+        }
+        public static void HudRendered(SpriteBatch b)
+        {
+            if (Game1.currentLocation is BuildableGameLocation bl)
+                foreach (Building building in bl.buildings)
+                    if (building.indoors.Value is AnimalHouse animalHouse)
+                    {
+                        bool anyHayMissing = animalHouse.numberOfObjectsWithName("Hay") < animalHouse.animalLimit.Value;
+                        //var anyProduce = _config.DrawBubbleBuildingsWithProduce && building is Coop &&
+                        //                 animalHouse.objects.Values.Any(o =>
+                        //                     Array.BinarySearch(AnimalTaskEngine.CollectableAnimalProducts, o.ParentSheetIndex) >= 0);
+
+                        Vector2 v = new Vector2(building.tileX.Value * Game1.tileSize - Game1.viewport.X + Game1.tileSize * 1.1f,
+                            building.tileY.Value * Game1.tileSize - Game1.viewport.Y + Game1.tileSize / 2);
+
+                        if (building is Barn)
+                            v.Y += Game1.tileSize / 2f;
+
+                        if (anyHayMissing)
+                        {
+                            WhoLivesHereLogic.DrawBubble(b, Game1.objectSpriteSheet, new Rectangle(160, 112, 16, 16), v);
+                        }
+                    }
         }
     }
 }

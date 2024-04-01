@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Target": "Data/AudioChanges",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Music_FittingIn": {
+          "ID": "{{ModId}}_Music_FittingIn",
+          "FilePaths": ["{{AbsoluteFilePath: assets/music/FittingIn.ogg}}"],
+          "Category": "Music",
+          "StreamedVorbis": true,
+          "Looped": true
+        },
+        "{{ModId}}_Music_InALonelyPlace": {
+          "ID": "{{ModId}}_Music_InALonelyPlace",
+          "FilePaths": ["{{AbsoluteFilePath: assets/music/InALonelyPlace.ogg}}"],
+          "Category": "Music",
+          "StreamedVorbis": true,
+          "Looped": true
+        },
+        "{{ModId}}_Music_FromAMousesHeart": {
+          "ID": "{{ModId}}_Music_FromAMousesHeart",
+          "FilePaths": ["{{AbsoluteFilePath: assets/music/FromAMousesHeart.ogg}}"],
+          "Category": "Music",
+          "StreamedVorbis": true,
+          "Looped": true
+        }
+      }
+    },
+    {
+      "Target": "Data/JukeboxTracks",
+      "Action": "EditData",
+      "Entries": {
+        "{{ModId}}_Music_FittingIn": {
+          "Name": "{{i18n:csfiles.jukebox.FittingIn}}"
+        },
+        "{{ModId}}_Music_InALonelyPlace": {
+          "Name": "{{i18n:csfiles.jukebox.InALonelyPlace}}"
+        },
+        "{{ModId}}_Music_FromAMousesHeart": {
+          "Name": "{{i18n:csfiles.jukebox.FromAMousesHeart}}"
+        }
+      }
+    }
+  ]
+}

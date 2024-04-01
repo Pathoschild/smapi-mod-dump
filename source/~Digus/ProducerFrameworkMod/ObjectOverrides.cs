@@ -21,7 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
+using StardewValley.ItemTypeDefinitions;
 using Object = StardewValley.Object;
+#pragma warning disable IDE1006
 
 namespace ProducerFrameworkMod
 {
@@ -31,9 +33,8 @@ namespace ProducerFrameworkMod
         [HarmonyPriority(Priority.First)]
         internal static bool PerformObjectDropInAction(Object __instance, Item dropInItem, bool probe, Farmer who, ref bool __result)
         {
-            if (__instance.isTemporarilyInvisible || !(dropInItem is Object))
+            if (__instance.isTemporarilyInvisible || dropInItem is not Object input)
                 return false;
-            Object input = (Object) dropInItem;
 
             bool failLocationCondition = false;
             bool failSeasonCondition = false;
@@ -43,7 +44,7 @@ namespace ProducerFrameworkMod
                 return true;
             }
 
-            ProducerConfig producerConfig = ProducerController.GetProducerConfig(__instance.Name);
+            ProducerConfig producerConfig = ProducerController.GetProducerConfig(__instance.QualifiedItemId);
 
             GameLocation location = who.currentLocation;
             if (producerConfig != null)
@@ -62,7 +63,7 @@ namespace ProducerFrameworkMod
                 }
             }
 
-            if (ProducerController.GetProducerItem(__instance.name, input) is ProducerRule producerRule)
+            if (ProducerController.GetProducerItem(__instance.QualifiedItemId, input) is ProducerRule producerRule)
             {
                 if (ProducerRuleController.IsInputExcluded(producerRule, input))
                 {
@@ -89,7 +90,7 @@ namespace ProducerFrameworkMod
                     ProducerRuleController.ValidateIfAnyFuelStackLessThanRequired(producerRule, who, probe);
 
                     OutputConfig outputConfig = ProducerRuleController.ProduceOutput(producerRule, __instance,
-                        (i, q) => who.hasItemInInventory(i, q), who, location, producerConfig, input, probe);
+                        (i, q) => who.getItemCount(i) >= q, who, location, producerConfig, input, probe);
                     if (outputConfig != null)
                     {
                         if (!probe)
@@ -126,21 +127,21 @@ namespace ProducerFrameworkMod
             return !failLocationCondition && !failSeasonCondition;
         }
 
-        private static bool RemoveItemsFromInventory(Farmer farmer, int index, int stack)
+        private static bool RemoveItemsFromInventory(Farmer farmer, string index, int stack)
         {
-            if (farmer.hasItemInInventory(index, stack, 0))
+            if (farmer.getItemCount(index) >= stack)
             {
-                for (int index1 = 0; index1 < farmer.items.Count; ++index1)
+                for (int index1 = 0; index1 < farmer.Items.Count; ++index1)
                 {
-                    if (farmer.items[index1] != null && farmer.items[index1] is Object object1 && (object1.ParentSheetIndex == index || object1.Category == index))
+                    if (farmer.Items[index1] != null && farmer.Items[index1] is Object object1 && (object1.QualifiedItemId == index || (int.TryParse(index, out int c) && object1.Category == c)))
                     {
-                        if (farmer.items[index1].Stack > stack)
+                        if (farmer.Items[index1].Stack > stack)
                         {
-                            farmer.items[index1].Stack -= stack;
+                            farmer.Items[index1].Stack -= stack;
                             return true;
                         }
-                        stack -= farmer.items[index1].Stack;
-                        farmer.items[index1] = (Item)null;
+                        stack -= farmer.Items[index1].Stack;
+                        farmer.Items[index1] = (Item)null;
                     }
                     if (stack <= 0)
                         return true;
@@ -151,7 +152,7 @@ namespace ProducerFrameworkMod
 
         internal static void checkForActionPostfix(Object __instance, Farmer who, bool justCheckingForActivity, bool __result, bool __state)
         {
-            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.heldObject.Value == null)
+            if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { } producerConfig && __instance.heldObject.Value == null)
             {
                 if (__instance.MinutesUntilReady <= 0)
                 {
@@ -160,20 +161,21 @@ namespace ProducerFrameworkMod
 
                 if (!__state && !justCheckingForActivity && __result && producerConfig.LightSource?.AlwaysOn == true)
                 {
-                    int identifier = LightSourceConfigController.GenerateIdentifier(__instance.tileLocation);
+                    int identifier = LightSourceConfigController.GenerateIdentifier(__instance.TileLocation);
                     if (who.currentLocation.hasLightSource(identifier))
                     {
                         who.currentLocation.removeLightSource(identifier);
-                        __instance.initializeLightSource(__instance.tileLocation);
+                        __instance.initializeLightSource(__instance.TileLocation);
                     }
                 }
             }
         }
 
-        internal static bool minutesElapsedPrefix(Object __instance, ref int minutes, GameLocation environment, out bool __state)
+        internal static bool minutesElapsedPrefix(Object __instance, ref int minutes, out bool __state)
         {
+            GameLocation environment = __instance.Location;
             __state = false;
-            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
+            if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { } producerConfig)
             {
                 if (!producerConfig.CheckWeatherCondition())
                 {
@@ -185,36 +187,36 @@ namespace ProducerFrameworkMod
                     return false;
                 }
 
-                if (producerConfig.ProducerName == "Bee House" && producerConfig.WorkingOutdoors != true)
+                if (producerConfig.ProducerQualifiedItemId == "(BC)10" && producerConfig.WorkingOutdoors != true)
                 {
                     if (Game1.IsMasterGame)
                     {
-                        __instance.minutesUntilReady.Value -= minutes;
+                        __instance.MinutesUntilReady -= minutes;
                     }
-                    if (__instance.minutesUntilReady.Value <= 0)
+                    if (__instance.MinutesUntilReady <= 0)
                     {
                         if (!__instance.readyForHarvest.Value)
                         {
-                            environment.playSound("dwop", NetAudio.SoundContext.Default);
+                            environment.playSound("dwop");
                         }
                         __instance.readyForHarvest.Value = true;
-                        __instance.minutesUntilReady.Value = 0;
-                        __instance.onReadyForHarvest(environment);
+                        __instance.MinutesUntilReady = 0;
+                        __instance.onReadyForHarvest();
                         __instance.showNextIndex.Value = true;
                         if (__instance.lightSource != null)
                         {
-                            environment.removeLightSource(__instance.lightSource.identifier.Value);
+                            environment.removeLightSource(__instance.lightSource.Identifier);
                             __instance.lightSource = (LightSource)null;
                         }
                     }
                     if (!__instance.readyForHarvest.Value && Game1.random.NextDouble() < 0.33)
                     {
-                        __instance.addWorkingAnimation(environment);
+                        __instance.addWorkingAnimation();
                     }
                     return false;
                 }
 
-                if (producerConfig.LightSource?.AlwaysOn == true && __instance.minutesUntilReady - minutes <= 0 && __instance.heldObject.Value != null && !__instance.readyForHarvest)
+                if (producerConfig.LightSource?.AlwaysOn == true && __instance.MinutesUntilReady - minutes <= 0 && __instance.heldObject.Value != null && !__instance.readyForHarvest.Value)
                 {
                     __state = true;
                 }
@@ -224,19 +226,19 @@ namespace ProducerFrameworkMod
 
         internal static void minutesElapsedPostfix(Object __instance, bool __state)
         {
-            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.heldObject.Value != null && __instance.MinutesUntilReady <= 0)
+            if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { } producerConfig && __instance.heldObject.Value != null && __instance.MinutesUntilReady <= 0)
             {
                 __instance.showNextIndex.Value = producerConfig.AlternateFrameWhenReady;
             }
             if (__state)
             {
-                __instance.initializeLightSource(__instance.tileLocation);
+                __instance.initializeLightSource(__instance.TileLocation);
             }
         }
 
-        public static IEnumerable<CodeInstruction> draw_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        public static IEnumerable<CodeInstruction> draw_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            LinkedList<CodeInstruction> newInstructions = new LinkedList<CodeInstruction>(instructions);
+            LinkedList<CodeInstruction> newInstructions = new(instructions);
             CodeInstruction codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Callvirt && c.operand?.ToString() == "Microsoft.Xna.Framework.Vector2 getScale()");
             LinkedListNode<CodeInstruction> linkedListNode = newInstructions.Find(codeInstruction);
             if (linkedListNode != null && codeInstruction != null)
@@ -257,7 +259,7 @@ namespace ProducerFrameworkMod
 
         public static Vector2 getScale(Object __instance)
         {
-            if(ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.MinutesUntilReady > 0 && __instance.heldObject.Value != null)
+            if(ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { } producerConfig && __instance.MinutesUntilReady > 0 && __instance.heldObject.Value != null)
             {
                 if (producerConfig.DisableBouncingAnimationWhileWorking)
                 {
@@ -291,18 +293,18 @@ namespace ProducerFrameworkMod
             float layerDepth,
             Object producer)
         {
-            if (producer.heldObject.Value != null && ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig)
+            if (producer.heldObject.Value != null && ProducerController.GetProducerConfig(producer.QualifiedItemId) is ProducerConfig producerConfig)
             {
-                if (producerConfig.ProducingAnimation is Animation producingAnimation && producer.minutesUntilReady > 0 && producerConfig.CheckSeasonCondition(Game1.currentLocation) && producerConfig.CheckWeatherCondition() && producerConfig.CheckCurrentTimeCondition())
+                if (producerConfig.ProducingAnimation is { } producingAnimation && producer.MinutesUntilReady > 0 && producerConfig.CheckSeasonCondition(Game1.currentLocation) && producerConfig.CheckWeatherCondition() && producerConfig.CheckCurrentTimeCondition())
                 {
                     List<int> animationList;
-                    if (producingAnimation.AdditionalAnimationsId.ContainsKey(producer.heldObject.Value.ParentSheetIndex)) 
+                    if (producingAnimation.AdditionalAnimationsId.ContainsKey(producer.heldObject.Value.ItemId)) 
                     {
-                        animationList = producingAnimation.AdditionalAnimationsId[producer.heldObject.Value.ParentSheetIndex];
+                        animationList = producingAnimation.AdditionalAnimationsId[producer.heldObject.Value.ItemId];
                     } 
-                    else if (producingAnimation.AdditionalAnimationsId.ContainsKey(producer.heldObject.Value.Category))
+                    else if (producingAnimation.AdditionalAnimationsId.ContainsKey(producer.heldObject.Value.Category.ToString()))
                     {
-                        animationList = producingAnimation.AdditionalAnimationsId[producer.heldObject.Value.Category];
+                        animationList = producingAnimation.AdditionalAnimationsId[producer.heldObject.Value.Category.ToString()];
                     } 
                     else
                     {
@@ -315,16 +317,16 @@ namespace ProducerFrameworkMod
                         return;
                     }
                 }
-                else if (producerConfig.ReadyAnimation is Animation readyAnimation && producer.readyForHarvest.Value)
+                else if (producerConfig.ReadyAnimation is { } readyAnimation && producer.readyForHarvest.Value)
                 {
                     List<int> animationList;
-                    if (readyAnimation.AdditionalAnimationsId.ContainsKey(producer.heldObject.Value.ParentSheetIndex))
+                    if (readyAnimation.AdditionalAnimationsId.TryGetValue(producer.heldObject.Value.ItemId, out var value1))
                     {
-                        animationList = readyAnimation.AdditionalAnimationsId[producer.heldObject.Value.ParentSheetIndex];
+                        animationList = value1;
                     }
-                    else if (readyAnimation.AdditionalAnimationsId.ContainsKey(producer.heldObject.Value.Category))
+                    else if (readyAnimation.AdditionalAnimationsId.TryGetValue(producer.heldObject.Value.Category.ToString(), out var value2))
                     {
-                        animationList = readyAnimation.AdditionalAnimationsId[producer.heldObject.Value.Category];
+                        animationList = value2;
                     }
                     else
                     {
@@ -350,7 +352,7 @@ namespace ProducerFrameworkMod
         [HarmonyPriority(Priority.First)]
         internal static bool performDropDownAction(Object __instance, Farmer who, bool __result)
         {
-            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
+            if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { } producerConfig)
             {
                 try
                 {
@@ -362,9 +364,9 @@ namespace ProducerFrameworkMod
                     {
                         if (producerConfig.CheckSeasonCondition(who.currentLocation) && NoInputStartMode.Placement == producerConfig.NoInputStartMode)
                         {
-                            if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
+                            if (ProducerController.GetProducerItem(__instance.QualifiedItemId, null) is { } producerRule)
                             {
-                                ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.hasItemInInventory(i, q), who, who.currentLocation, producerConfig);
+                                ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.getItemCount(i) >= q, who, who.currentLocation, producerConfig);
                             }
                         }
                         return __result = false;
@@ -394,7 +396,7 @@ namespace ProducerFrameworkMod
 
             ProducerRuleController.PrepareOutput(__instance, who.currentLocation, who);
 
-            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
+            if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { } producerConfig)
             {
                 if (producerConfig.NoInputStartMode != null || producerConfig.IncrementStatsOnOutput.Count > 0 || producerConfig.IncrementStatsLabelOnOutput.Count > 0)
                 {
@@ -420,7 +422,7 @@ namespace ProducerFrameworkMod
                     __result = true;
                     if (producerConfig.NoInputStartMode == NoInputStartMode.Placement)
                     {
-                        if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
+                        if (ProducerController.GetProducerItem(__instance.QualifiedItemId, null) is { } producerRule)
                         {
                             try { 
                                 if (!producerConfig.CheckLocationCondition(who.currentLocation))
@@ -448,13 +450,14 @@ namespace ProducerFrameworkMod
         }
 
         [HarmonyPriority(Priority.First)]
-        public static bool DayUpdate(Object __instance, GameLocation location)
+        public static bool DayUpdate(Object __instance)
         {
+            GameLocation location = __instance.Location;
             if (__instance.bigCraftable.Value)
             {
-                if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
+                if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is ProducerConfig producerConfig)
                 {
-                    if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
+                    if (ProducerController.GetProducerItem(__instance.QualifiedItemId, null) is ProducerRule producerRule)
                     {
                         if (!producerConfig.CheckSeasonCondition(location) || ! producerConfig.CheckLocationCondition(location))
                         {
@@ -469,8 +472,8 @@ namespace ProducerFrameworkMod
                                 {
                                     try
                                     {
-                                        Farmer who = Game1.getFarmer((long)__instance.owner);
-                                        ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.hasItemInInventory(i, q), who, who.currentLocation, producerConfig);
+                                        Farmer who = Game1.getFarmer((long)__instance.owner.Value);
+                                        ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.getItemCount(i) >= q, who, who.currentLocation, producerConfig);
                                     }
                                     catch (RestrictionException)
                                     {
@@ -488,16 +491,15 @@ namespace ProducerFrameworkMod
 
         internal static bool LoadDisplayName(Object __instance, ref string __result)
         {
-            if (__instance.GetCustomName() is string customName && !__instance.preserve.Value.HasValue && __instance.ParentSheetIndex != 463 && __instance.ParentSheetIndex != 464 && __instance.ParentSheetIndex != 340 )
+            if (__instance.GetCustomName() is { } customName && !__instance.preserve.Value.HasValue && __instance.ParentSheetIndex != 463 && __instance.ParentSheetIndex != 464 && __instance.ParentSheetIndex != 340 )
             {
-                IDictionary<int, string> objects = Game1.objectInformation;
                 string translation = customName;
                 
-                if (objects.TryGetValue(__instance.ParentSheetIndex, out var instanceData) && ObjectUtils.GetObjectParameter(instanceData, (int)ObjectParameter.Name) != __instance.Name)
+                if (ItemRegistry.GetData(__instance.QualifiedItemId) is { } instanceData && instanceData.InternalName != __instance.Name)
                 {
                     if (translation.Contains("{outputName}"))
                     {
-                        translation = translation.Replace("{outputName}",ObjectUtils.GetObjectParameter(instanceData, (int) ObjectParameter.DisplayName));
+                        translation = translation.Replace("{outputName}", instanceData.DisplayName);
                     }
                 }
                 else
@@ -508,13 +510,13 @@ namespace ProducerFrameworkMod
                 
                 if (translation.Contains("{inputName}"))
                 {
-                    if (__instance.preservedParentSheetIndex.Value == -1)
+                    if (__instance.preservedParentSheetIndex.Value == "-1")
                     {
                         translation = translation.Replace("{inputName}", __instance.GetGenericParentName());
                     }
-                    else if (objects.TryGetValue(__instance.preservedParentSheetIndex.Value, out var preservedData))
+                    else if (ItemRegistry.GetData(__instance.preservedParentSheetIndex.Value) is { } preservedData)
                     {
-                        translation = translation.Replace("{inputName}", ObjectUtils.GetObjectParameter(preservedData,(int)ObjectParameter.DisplayName));
+                        translation = translation.Replace("{inputName}", preservedData.DisplayName);
                     }
                     else
                     {
@@ -528,10 +530,10 @@ namespace ProducerFrameworkMod
                 }
                 if (translation.Contains("{farmerName}"))
                 {
-                    string farmerName = Game1.getAllFarmers().FirstOrDefault(f => __instance.Name.Contains(f.name))?.Name ?? Game1.player.Name;
+                    string farmerName = Game1.getAllFarmers().FirstOrDefault(f => __instance.Name.Contains(f.Name))?.Name ?? Game1.player.Name;
                     translation = translation.Replace("{farmerName}", farmerName);
                 }
-                Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
+                Regex regex = new("[ ]{2,}", RegexOptions.None);
 
                 __result = regex.Replace(translation, " ");
                 return false;
@@ -543,9 +545,9 @@ namespace ProducerFrameworkMod
         {
             if (__instance.bigCraftable.Value)
             {
-                if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && producerConfig.LightSource is ContentPack.LightSourceConfig lightSourceConfig)
+                if (ProducerController.GetProducerConfig(__instance.QualifiedItemId) is { LightSource: { } lightSourceConfig })
                 {
-                    if (__instance.minutesUntilReady > 0 || lightSourceConfig.AlwaysOn)
+                    if (__instance.MinutesUntilReady > 0 || lightSourceConfig.AlwaysOn)
                     {
                         LightSourceConfigController.CreateLightSource(__instance, tileLocation, lightSourceConfig);
                     }

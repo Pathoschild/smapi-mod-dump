@@ -1,0 +1,18 @@
+{
+  "HarvestRadius": -1,
+  "RegrowCropHarvest": true,
+  "SingleCropHarvest": false,
+  "FlowerHarvest": false,
+  "FruitTreeHarvest": true,
+  "ForageHarvest": true,
+  "BushHarvest": true,
+  "CollectableMachineHarvest": true,
+  "ProcessingMachineHarvest": true,
+  "DigUpArtifactSpot": true,
+  "WateringCrop": true,
+  "StirGarbageCan": true,
+  "KegAutoInput": true,
+  "PreservesJarAutoInput": true,
+  "CaskAutoInput": true,
+  "AutoInputKeyAssist": "LeftShift"
+}

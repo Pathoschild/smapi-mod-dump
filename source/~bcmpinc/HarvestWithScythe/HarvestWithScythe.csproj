@@ -3,8 +3,8 @@
   <PropertyGroup>
     <AssemblyName>HarvestWithScythe</AssemblyName>
     <RootNamespace>StardewHack.HarvestWithScythe</RootNamespace>
-    <Version>4.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <Version>7.3</Version>
+    <TargetFramework>net6.0</TargetFramework>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <EnableHarmony>true</EnableHarmony>

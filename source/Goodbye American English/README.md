@@ -29,6 +29,16 @@ In Version 1.5.0, the NameReplacer has become more advanced, thanks to Harmony! 
 
 To turn Harmony patching off, set AllowAdvancedNameReplacer to false in the config. This stops some replacements from occurring but can prevent issues if the game is experiencing problems.
 
+In 1.6.0 the format of the NameReplacer has been updated for readability and to be better compatible with Stardew Valley 1.6. The old format is still currently supported but this will likely break in the future so updating the NameReplacer is highly recommended.
+#### 1.6.0 ####
+In version 1.6.0 the format of the NameReplacer has changed to better support the new object data format. The old format is still currently accepted, but this will likely change in the future.
+
+For Objects: Name replacement entries are in the format: "ItemName": "NewItemName", e.g to turn Hot Pepper into Chilli, the entry would be "Hot Pepper": "Chilli".
+
+For Concession snacks: Name replacement entries are in the format: "ConcessionName_C":"NameToReplaceWith", e.g to turn Cotton Candy into Fairy Floss, the entry would be "Cotton Candy_C":"Fairy Floss"
+
+#### 1.5.0 ####
+
 The format has also been updated for concessions to fix some recognition issues. For concessions the form is now "SnackID_C":"Name/NameToReplaceWith"
 
 Input name replacements for objects are in the form "ObjectID":"O/Name/NameToReplaceWith" (first field is a capital O) e.g "272":"O/Eggplant/Aubergine". See https://stardewcommunitywiki.com/Modding:Object_data for object IDs
@@ -67,9 +77,22 @@ Rock Candy | 23
 
 ## Advanced NameReplacer ##
 
-Editing preserve names works a little differently.
+Editing preserve names works a little differently. The format has also been updated in 1.6.0, but the old format is still currently supported. This won't be guaranteed in the future.
 
 #### Generic edits ####
+
+##### 1.6.0 #####
+Universal edits to all preserve names i.e all Jelly becomes Jam are in the form "PP_PreserveType":"EditType/NameToReplaceWith".
+
+To break it down:
+
+The PreserveType is the preserve to change. Either: "Juice", "Wine", "Pickles", "Jelly", "Roe", "Wild Honey" or "Honey". Edits for "Wild Honey" replaces the entire object name.
+
+The EditType can be one of "prefix" or "suffix". Basically, put the preserve word before "prefix" or after "suffix" the object name. Either will replace the entire name for "Wild Honey".
+
+E.g "PP_Jelly": "suffix/Jam"
+
+##### 1.5.0 #####
 
 Universal edits to all preserve names i.e all Jelly becomes Jam are in the form "PreserveType":"PP/EditType/NameToReplaceWith".
 
@@ -84,10 +107,27 @@ E.g "Jelly": "PP/suffix/Jam"
 #### Independent edits ####
 
 Unique preserve edits can be done when AllowAdvancedNameReplacer is true (which is the default) in the config. 
+Generic edits are mutually exclusive (can only prefix or suffix, not both). Unique edits will override generic edits.
+
+##### 1.6.0 #####
+Unique edits are in the form "P_(O)ObjectID_PreserveType":"EditType/NameToReplaceWith".
+
+To break it down:
+
+The ObjectID refers to the object ID of the item to replace the preserve name for. i.e Potato's ID to change Potato Juice to something else.
+
+The PreserveType refers to the preserve to change. Either: "Juice", "Wine", "Pickles", "Jelly", "Roe" or "Honey".
+
+The EditType can be one of "prefix", "suffix" or "replace". Basically, put the preserve word before "prefix" or after "suffix" the object name. "replace" will replace the entire name with something else. For "replace" using {0} will insert the object name in it's place.
+
+E.g "P_(O)613_Jelly": "suffix/Sauce", (this changes Apple Jelly to Apple Sauce)
+
+##### 1.5.0 #####
 
 Unique edits are in the form "ObjectID_PreserveType":"P/EditType/NameToReplaceWith".
 
 To break it down:
+
 The ObjectID refers to the object ID of the item to replace the preserve name for. i.e Potato's ID to change Potato Juice to something else.
 
 The PreserveType refers to the preserve to change. Either: "Juice", "Wine", "Pickles", "Jelly", "Roe" or "Honey".
@@ -96,7 +136,7 @@ The EditType can be one of "prefix", "suffix" or "replace". Basically, put the p
 
 E.g "192_Juice": "P/replace/Vodka" or "376_Honey": "P/replace/Wild {0} Nectar" or "266_Pickles": "P/suffix/Sauerkraut"
 
-Generic  edits are mutually exclusive (can only prefix or suffix, not both). Unique edits will override generic edits.
+
 
 
 

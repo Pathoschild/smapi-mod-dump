@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using StardewHack.Library;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
@@ -73,27 +74,38 @@ namespace StardewHack
         public override void Entry(IModHelper helper) {
             this.helper = helper;
 
-            // Use the Mod's UniqueID to create the harmony instance.
-            string UniqueID = helper.ModRegistry.ModID;
-            Monitor.Log($"Applying bytecode patches for {UniqueID}.", LogLevel.Debug);
-            harmony = new Harmony(UniqueID);
+            try {
+                ModChecks.validateAssemblyVersion(this);
+                ModChecks.checkIncompatible(this);
 
-            // Let the mod register its patches.
-            HackEntry(helper);
+                // Use the Mod's UniqueID to create the harmony instance.
+                string UniqueID = helper.ModRegistry.ModID;
+                Monitor.Log($"Applying bytecode patches for {UniqueID}.", LogLevel.Debug);
+                harmony = new Harmony(UniqueID);
 
-            // Apply the registered patches.
-            // Any patched that are added by calls to ChainPatch during patching will be applied as well.
-            var apply = getApplyPatchProxy(UniqueID);
-            while (to_be_patched.Count > 0) {
-                var method = to_be_patched.Pop();
-                try {
-                    harmony.Patch(method, null, null, new HarmonyMethod(apply));
-                } catch (Exception err) {
-                    MarkAsBroken(err);
+                // Let the mod register its patches.
+                HackEntry(helper);
+
+                // Apply the registered patches.
+                // Any patched that are added by calls to ChainPatch during patching will be applied as well.
+                var apply = getApplyPatchProxy(UniqueID);
+                while (to_be_patched.Count > 0) {
+                    var method = to_be_patched.Pop();
+                    try {
+                        harmony.Patch(method, null, null, new HarmonyMethod(apply));
+                    } catch (Exception err) {
+                        MarkAsBroken(err);
+                    }
                 }
+            } catch (Exception err) {
+                Monitor.Log("The mod failed to initialize cleanly. To avoid further problems, the game will not load.", LogLevel.Error);
+                Monitor.Log("The mod is either broken or incompatible with your version of Stardew Valley, or any of your other mods.", LogLevel.Error);
+                Monitor.Log("Please try updating the mod, or otherwise removing it.", LogLevel.Error);
+                Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at " + getReportUrl() + ".", LogLevel.Error);
+                ModChecks.InitializationError(this);
+                LogException(err);
             }
         }
-
 
         public abstract void HackEntry(IModHelper helper);
 
@@ -169,7 +181,7 @@ namespace StardewHack
                 Monitor.Log("The patch failed to apply cleanly. Usually this means the mod needs to be updated.", LogLevel.Alert);
                 Monitor.Log("As a result, this mod does not function properly or at all.", LogLevel.Alert);
                 Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at " + getReportUrl() + ".", LogLevel.Alert);
-                Library.ModEntry.broken_mods.Add(helper.ModRegistry.ModID);
+                ModChecks.failedPatches(this);
                 broken = true;
             }
             LogException(err);
@@ -264,7 +276,7 @@ namespace StardewHack
             string methodName = "ApplyPatch";
 
             TypeBuilder typeBuilder = ProxyModule.DefineType(className);
-                MethodBuilder methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes.Public | MethodAttributes.Static, apply.ReturnType, apply.GetParameters().Types());
+            MethodBuilder methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes.Public | MethodAttributes.Static, apply.ReturnType, apply.GetParameters().Types());
 
             if (apply.GetParameters().Length != 3) throw new InvalidOperationException("StardewHack cannot build patch proxy.");
             ILGenerator il = methodBuilder.GetILGenerator();

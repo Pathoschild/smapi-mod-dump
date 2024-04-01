@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley/personal-indoor-farm
+**
+*************************************************/
+
+{
+	"Door1.Name": "Dimension Door - Aether",
+	"Door2.Name": "Dimension Door - Erebus",
+	"Door3.Name": "Dimension Door - Chaos",
+	"Door.Empty": "There's nothing behind this door.",
+	"Door.Offline": "You shouldn't snoop around when your friend is away!",
+	"Painting.Name": "Painting of the Season",
+	"Synchronizer.Name": "Space Time Synchronizer",
+	"Synchronizer.Description": "Synchronises your personal indoor farm to pelican towns date",
+	"Synchronizer.Buff.Name": "Space Time Distortion",
+	"Synchronizer.Buff.Description": "Then is Now, but where am I?",
+	"NoContentPacks": "You have the door, but no room content pack to go with it",
+}

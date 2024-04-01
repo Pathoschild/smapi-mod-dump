@@ -8,6 +8,8 @@ mods:
    Crab Pot Loot Has Quality and Bait Effects
    Drop It - Drop Item Hotkey
    Enchantable Scythes and Golden Scythe Respawns
+   Enchanted Adventurer's Guild Rewards
+   Enchanted Cowboy Boots
    Forage Fantasy
    Harvest Moon FoMT-like Watering Can and Hoe Area
    Horse Overhaul
@@ -19,9 +21,9 @@ mods:
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit 8a8b14fdb2a9563099c9c34befcc65205c320c34
+   commit 7ec44cc0c1a58aab94ee341d829e42e65a8fa424
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Fri Mar 15 11:13:30 2024 +0100
+   Date:   Sun Mar 31 13:45:34 2024 +0200
    
-       Horse Overhaul: new feature: limited interaction while on riding the horse, also refactored harmony patches into multiple classes
+       Crab Pot Quality: Fixed default case for double loot being 100% instead of 0%
    

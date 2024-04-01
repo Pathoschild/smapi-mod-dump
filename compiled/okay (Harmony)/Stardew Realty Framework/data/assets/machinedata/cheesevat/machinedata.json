@@ -1,0 +1,102 @@
+﻿{
+  "MachineId": "(BC)prism99.advize.stardewrealty.cheesevat",
+  "MachineData": {
+    "HasInput": false,
+    "HasOutput": false,
+    "OutputRules": [
+      {
+        "Id": "lg goat milk",
+        "DaysUntilReady": -1,
+        "MinutesUntilReady": 150,
+        "OutputItem": [
+          {
+            "Id": "(O)426",
+            "MinStack": 50,
+            "MaxStack": 50,
+            "ItemId": "(O)426"
+          }
+        ],
+        "Triggers": [
+          {
+            "Id": "lg goat milk put in",
+            "Trigger": 1,
+            "RequiredCount": 25,
+            "RequiredTags": [],
+            "RequiredItemId": "(O)438"
+          }
+        ],
+        "UseFirstValidOutput": true
+      },
+      {
+        "Id": "goat milk",
+        "DaysUntilReady": -1,
+        "MinutesUntilReady": 150,
+        "OutputItem": [
+          {
+            "Id": "(O)426",
+            "MinStack": 50,
+            "MaxStack": 50,
+            "ItemId": "(O)426"
+          }
+        ],
+        "Triggers": [
+          {
+            "Id": "goat milk put in",
+            "Trigger": 1,
+            "RequiredCount": 50,
+            "RequiredTags": [],
+            "RequiredItemId": "(O)436"
+          }
+        ],
+        "UseFirstValidOutput": true
+      },
+      {
+        "Id": "Add large milk",
+        "DaysUntilReady": -1,
+        "MinutesUntilReady": 150,
+        "OutputItem": [
+          {
+            "Id": "(O)424",
+            "MinStack": 50,
+            "MaxStack": 50,
+            "ItemId": "(O)424"
+          }
+        ],
+        "Triggers": [
+          {
+            "Id": "Large Stuff put in",
+            "Trigger": 1,
+            "RequiredCount": 25,
+            "RequiredTags": [],
+            "RequiredItemId": "(O)186"
+          }
+        ],
+        "UseFirstValidOutput": true
+      },
+      {
+        "Id": "Add milk",
+        "DaysUntilReady": -1,
+        "MinutesUntilReady": 150,
+        "OutputItem": [
+          {
+            "Id": "(O)424",
+            "MinStack": 50,
+            "MaxStack": 50,
+            "ItemId": "(O)424"
+          }
+        ],
+        "Triggers": [
+          {
+            "Id": "Stuff put in",
+            "Trigger": 1,
+            "RequiredCount": 50,
+            "RequiredTags": [ "milk_item" ],
+            "RequiredItemId": null
+          }
+        ],
+        "UseFirstValidOutput": true,
+        "InvalidCountMessage": "You need to add 50 small milk at a time."
+      }
+    ]
+  }
+}

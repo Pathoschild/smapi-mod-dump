@@ -1,0 +1,35 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "Yes",
+  "No": "No",
+  "GotPetted": "Got petted: {{value}}",
+  "GotWater": "Got water: {{value}}",
+  "GotFood": "Got food: {{value}}",
+  "Friendship": "Friendship: {{value}}",
+  "HorseWarning": "You cannot do that while riding a horse!",
+  "AteEnough": "{{name}} ate enough for today.",
+  "AteFood": "{{name}} ate your {{foodName}}.",
+  "AteFoodLove": "They loved eating that.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "They liked eating that.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "It was too common of a snack for them to really enjoy it.", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "Has Heater: {{value}}",
+  "DontFeedChocolate": "Chocolate? You can't be serious!",
+  "LactoseIntolerantPets": "Most cats and dogs are lactose intolerant.",
+  "LactoseIntolerantHorses": "Most adult horses are lactose intolerant.",
+  "HorseHerbivore": "Horses are true herbivores, they cannot eat meat.",
+  "HorseNoBread": "Horses shouldn't eat processed food like bread.",
+  "HorseEatShouldnt": "Horses shouldn't eat that.",
+  "HorseEatHay": "Your horse has enough hay in the stable.",
+  "HorseEatFiber": "Your horse has enough grass to eat everywhere.",
+  "HorseEatCoffee": "Horses shouldn't consume coffee or caffeine of any kind.",
+  "HorseEatCabbage": "Horses shouldn't eat cabbage or relatives of the cabbage family.",
+  "HorseEatOnion": "Horses shouldn't eat onions or relatives of the onion family.",
+  "HorseEatNightshade": "Horses shouldn't eat members from the nightshade family including potatoes, tomatoes, peppers or eggplants.",
+  "HorseEatHorseRadish": "Despite the name, horseradish is dangerous for horses, while normal radish is not.", // if 'horseradish' in your native language does not include the word 'horse', please don't add the 'Despite the name' part into your translation
+  "HorseEatDislike": "Your horse doesn't want to eat that.",
+  "Owner": "Belongs to: {{ownerName}}",
+  "UnknownName": "Unknown"
+}

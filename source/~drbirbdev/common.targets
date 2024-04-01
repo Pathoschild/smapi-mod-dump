@@ -4,6 +4,7 @@
         <Authors>drbirbdev</Authors>
         <UniqueId>$(Authors).$(AssemblyName)</UniqueId>
         <EntryDll>$(AssemblyName)</EntryDll>
+        <ManifestComment>false</ManifestComment>
         <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
@@ -13,6 +14,7 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <EnableHarmony>true</EnableHarmony>
         <GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\</GamePath>
+        <EnableModZip Condition="$(Configuration) == 'Debug'">false</EnableModZip>
     </PropertyGroup>
 
     <!--import mod build package-->

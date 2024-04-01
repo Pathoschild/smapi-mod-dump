@@ -66,6 +66,7 @@
 	"treeDuringSeason": "{{tree}} ใน{{season}}",
 	"tapTree": "ใช้ {{tapper}} ติดบน{{tree}}",
 	"seedFromTree": "เขย่า/ตัด{{tree}}",
+	"treeMoss": "Find on random mossy trees", // TODO
 
 	// Crafting/Cooking
 	"craftRecipeByName": "คราฟ {{recipe}}",
@@ -112,6 +113,7 @@
 	"harvestHay": "เก็บเกี่ยวได้จากต้นหญ้า หรือ {{wheat}}",
 	"trash": "ขยะที่ได้จากการตกปลา, ที่ดักปู, ถึงขยะ",
 	"trashCan": "ขยะจากถังขยะ",
+	"prizeTicket": "Reward from quests and special orders", // TODO
 
 	// Miscellaneous Sources
 	"luckyShorts": "ห้องของมานี (ในเควส Mayor's Shorts ฤดูร้อน วันที่ 3)",
@@ -120,6 +122,7 @@
 	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
 	"winCraneGame": "ได้จากตู้เครนเกมที่โรงหนัง",
 	"voidEggEvent": "สุ่มในเหตุการณ์แม่มด",
+	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
 
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -293,6 +296,7 @@
 	"animalRabbit": "กระต่าย",
 	"animalDuck": "เป็ด",
 	"animalPig": "หมู",
+	"animalOstrich": "Ostriches", // TODO
 
 	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
 	"animalReqCoopLv1": "ต้องการเล้า (Coop)",

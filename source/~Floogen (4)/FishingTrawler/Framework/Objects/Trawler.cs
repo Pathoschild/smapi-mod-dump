@@ -103,10 +103,10 @@ namespace FishingTrawler.Objects
             string id = location.currentEvent is null ? "Empty" : location.currentEvent.id.ToString();
             FishingTrawler.monitor.Log($"Starting event for {Game1.player.Name}: {location.currentEvent is null} | {id}", LogLevel.Trace);
 
-            string eventString = "/-1000 -1000/farmer 0 0 0/playMusic none/fade/viewport -5000 -5000/warp farmer -100 -100/locationSpecificCommand despawn_murphy/locationSpecificCommand close_gate/changeMapTile Buildings 87 41 19/changeMapTile Buildings 87 42 24/changeMapTile Buildings 87 43 4/fade/viewport 83 38/locationSpecificCommand non_blocking_pause 1000/playSound furnace/locationSpecificCommand animate_boat_start/locationSpecificCommand non_blocking_pause 1000/locationSpecificCommand boat_depart/fade/viewport -5000 -5000/changeMapTile Buildings 87 41 14/changeMapTile Buildings 87 42 19/changeMapTile Buildings 87 43 24/locationSpecificCommand warp_to_cabin/end warpOut";
+            string eventString = "none/-1000 -1000/farmer 0 0 0/playMusic none/fade/viewport -5000 -5000/warp farmer -100 -100/locationSpecificCommand despawn_murphy/locationSpecificCommand close_gate/changeMapTile Buildings 87 41 19/changeMapTile Buildings 87 42 24/changeMapTile Buildings 87 43 4/fade/viewport 83 38/locationSpecificCommand non_blocking_pause 1000/playSound furnace/locationSpecificCommand animate_boat_start/locationSpecificCommand non_blocking_pause 1000/locationSpecificCommand boat_depart/fade/viewport -5000 -5000/changeMapTile Buildings 87 41 14/changeMapTile Buildings 87 42 19/changeMapTile Buildings 87 43 24/locationSpecificCommand warp_to_cabin/end warpOut";
             if (location is IslandSouthEast)
             {
-                eventString = "/-1000 -1000/farmer 0 0 0/playMusic none/fade/viewport -5000 -5000/warp farmer -100 -100/locationSpecificCommand despawn_murphy/locationSpecificCommand close_gate/changeMapTile Buildings 10 42 19/changeMapTile Buildings 10 43 24/changeMapTile Buildings 10 44 4/fade/viewport 22 39/locationSpecificCommand non_blocking_pause 1000/playSound furnace/locationSpecificCommand animate_boat_start/locationSpecificCommand non_blocking_pause 1000/locationSpecificCommand boat_depart/fade/viewport -5000 -5000/changeMapTile Buildings 10 42 14/changeMapTile Buildings 10 43 19/changeMapTile Buildings 10 44 24/locationSpecificCommand warp_to_cabin/end warpOut";
+                eventString = "none/-1000 -1000/farmer 0 0 0/playMusic none/fade/viewport -5000 -5000/warp farmer -100 -100/locationSpecificCommand despawn_murphy/locationSpecificCommand close_gate/changeMapTile Buildings 10 42 19/changeMapTile Buildings 10 43 24/changeMapTile Buildings 10 44 4/fade/viewport 22 39/locationSpecificCommand non_blocking_pause 1000/playSound furnace/locationSpecificCommand animate_boat_start/locationSpecificCommand non_blocking_pause 1000/locationSpecificCommand boat_depart/fade/viewport -5000 -5000/changeMapTile Buildings 10 42 14/changeMapTile Buildings 10 43 19/changeMapTile Buildings 10 44 24/locationSpecificCommand warp_to_cabin/end warpOut";
             }
 
             if (Context.IsMultiplayer)
@@ -129,7 +129,7 @@ namespace FishingTrawler.Objects
                     farmerActor.UsingTool = false;
                     farmerActor.Items.Clear();
                     farmerActor.hidden.Value = false;
-                    Event @event = new Event(eventString, FishingTrawler.BOAT_DEPART_EVENT_ID, farmerActor);
+                    Event @event = new Event(eventString, null, FishingTrawler.BOAT_DEPART_EVENT_ID, farmerActor);
                     @event.showWorldCharacters = false;
                     @event.showGroundObjects = true;
                     @event.ignoreObjectCollisions = false;
@@ -146,7 +146,7 @@ namespace FishingTrawler.Objects
                 return;
             }
 
-            _boatEvent = new Event(eventString, FishingTrawler.BOAT_DEPART_EVENT_ID, Game1.player);
+            _boatEvent = new Event(eventString, null, FishingTrawler.BOAT_DEPART_EVENT_ID, Game1.player);
             _boatEvent.showWorldCharacters = false;
             _boatEvent.showGroundObjects = true;
             _boatEvent.ignoreObjectCollisions = false;
@@ -156,7 +156,6 @@ namespace FishingTrawler.Objects
             Event boatEvent = _boatEvent;
             boatEvent.onEventFinished = (Action)Delegate.Combine(boatEvent.onEventFinished, new Action(OnBoatEventEnd));
             location.currentEvent = _boatEvent;
-            _boatEvent.checkForNextCommand(location, Game1.currentGameTime);
 
             Game1.eventUp = true;
         }
@@ -224,7 +223,7 @@ namespace FishingTrawler.Objects
             {
                 zoneOfDeparture = new Rectangle(5, 31, 10, 16);
             }
-            return location.farmers.Where(f => zoneOfDeparture.Contains(f.getTileX(), f.getTileY()) && !FishingTrawler.HasFarmerGoneSailing(f)).ToList();
+            return location.farmers.Where(f => zoneOfDeparture.Contains(f.Tile.X, f.Tile.Y) && !FishingTrawler.HasFarmerGoneSailing(f)).ToList();
         }
     }
 }

@@ -28,13 +28,15 @@ namespace TeleportNPCLocation.framework
             if (location == null)
                 return;
 
-            DelayedAction.delayedBehavior teleportFunction = delegate {
+            Action teleportFunction = delegate {
                 //Insert here the coordinates you want to teleport to
                 //int[] offset = FindNPCAroundSpace(location, npc);
                 int[] offset = { 0, 0, 0 };
 
-                int X = npc.getTileX() + offset[0];
-                int Y = npc.getTileY() + offset[1];
+                int X = npc.TilePoint.X + offset[0];
+                int Y = npc.TilePoint.Y + offset[1];
+
+               
 
                 // The direction you want the Farmer to face after the teleport
                 // 0 = up, 1 = right, 2 = down, 3 = left
@@ -43,6 +45,7 @@ namespace TeleportNPCLocation.framework
                 // The teleport command itself
                 Game1.warpFarmer(new LocationRequest(location.NameOrUniqueName, location.uniqueName.Value != null, location), X, Y, direction);
             };
+
 
 
             // Delayed action to be executed after a set time (here 0,1 seconds)
@@ -64,8 +67,8 @@ namespace TeleportNPCLocation.framework
 
             for (int i = 0; i < tileOffset.GetLength(0); i++)
             {
-                int xTile = npc.getTileX() + tileOffset[i, 0];
-                int yTile = npc.getTileY() + tileOffset[i, 1];
+                int xTile = npc.TilePoint.X + tileOffset[i, 0];
+                int yTile = npc.TilePoint.Y + tileOffset[i, 1];
 
                 if (location.doesTileHaveProperty(xTile, yTile, "Water", "Back") != null)
                     continue;

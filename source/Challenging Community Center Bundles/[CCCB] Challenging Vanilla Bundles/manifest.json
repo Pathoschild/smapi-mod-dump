@@ -24,12 +24,12 @@
 {
     "Name": "Challenging Community Center Bundles - Vanilla Bundle Pack",
     "Author": "alvadea & jaksha",
-    "Version": "2.3.0",
+    "Version": "3.1.0",
     "Description": "Challenging Vanilla Community Center Bundles",
     "UniqueID": "alja.CCCBVanilla",
-    "MinimumApiVersion": "3.8",
+    "MinimumApiVersion": "4.0.0",
     "ContentPackFor": {
         "UniqueID": "alja.CCCB",
-        "MinimumVersion": "2.3.0"
+        "MinimumVersion": "3.1.0"
     }
 }

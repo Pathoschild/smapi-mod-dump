@@ -8,39 +8,69 @@
 **
 *************************************************/
 
-using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.Characters;
 
 namespace PassiveFriendship
 {
     public class ModEntry : Mod
     {
-        private ModConfig Config;
+        ModConfig? Config;
 
-        GameLocation gameLocation;
+        GameLocation? gameLocation;
 
-        Dictionary<string, string> disposition;
+        Dictionary<string, CharacterData>? disposition;
 
         //Config bools
         int radius;
-        int friendshipGainedPerInterval;
         bool notifyInConsole;
+        int timeIntervalLength;
+        int friendshipGainedPerInterval;
 
-        readonly int fourteenHeartPoints = 3749;
-        readonly int tenHeartPoints = 2749;
-        readonly int eightHeartPoints = 2249;
+        int timeCounter;
+
+        // Constants for full-heart amounts
+        const int fourteenHeartPoints = 3749;
+        const int tenHeartPoints = 2749;
+        const int eightHeartPoints = 2249;
+
         public override void Entry(IModHelper helper)
         {
-            //Config options being set
+            //Config options being set & verified
             Config = Helper.ReadConfig<ModConfig>();
             radius = Config.FriendshipRadius;
-            friendshipGainedPerInterval = Config.AmountOfFriendshipGainedPerTenMinutes;
+            if (radius < 0)
+            {
+                radius = 2;
+                Monitor.Log("Error: Config option \"FriendshipRadius\" must be an integer and at least 0. " +
+                    "Option has been auto-set to 2.", LogLevel.Error);
+            }
             notifyInConsole = Config.NotifyAboutFriendshipInConsole;
+            timeIntervalLength = Config.TimeIntervalLengthInTenMinuteIncrements;
+            if (timeIntervalLength < 1)
+            {
+                timeIntervalLength = 1;
+                Monitor.Log("Error: Config option \"TimeIntervalLengthInTenMinuteIncrements\" must be an integer and at " +
+                    "least 1 (the value of 1 corresponds to 10 in-game minutes). Option has been auto-set to 1.", LogLevel.Error);
+            }
+            else if (timeIntervalLength > 26)
+            {
+                timeIntervalLength = 26;
+                Monitor.Log("Error: Config option \"TimeIntervalLengthInTenMinuteIncrements\" must be an integer and at " +
+                    "most 26 (the value of 1 corresponds to 10 in-game minutes). Option has been auto-set to 26.", LogLevel.Error);
+            }
+            timeCounter = timeIntervalLength;
+
+            friendshipGainedPerInterval = Config.AmountOfFriendshipGainedPerTimeInterval;
+            if (friendshipGainedPerInterval < 1)
+            {
+                friendshipGainedPerInterval = 1;
+                Monitor.Log("Error: Config option \"AmountOfFriendshipGainedPerTimeInterval\" must be an integer and at " +
+                    "least 1. Option has been auto-set to 1.", LogLevel.Error);
+            }
 
             //Event handler
             helper.Events.GameLoop.TimeChanged += OnTimeChanged;
@@ -63,63 +93,79 @@ namespace PassiveFriendship
         {
             //Stops if world isn't ready, then resets lists for next time interval
             if (!Context.IsWorldReady) return;
-            disposition = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
+            timeCounter--;
+            Monitor.Log(timeCounter.ToString(), LogLevel.Debug);
+            disposition = Game1.content.Load<Dictionary<string, CharacterData>>("Data\\Characters");
             SetListsForNewTime();
-            Vector2 playerLocation = Game1.player.getTileLocation();
-            foreach (NPC character in gameLocation.characters)
+            Vector2 playerLocation = Game1.player.Tile;
+            if (gameLocation != null)
             {
-                Vector2 npcLocation = character.getTileLocation();
-                if (!disposition.ContainsKey(character.name)) continue;
-                if (VillagerIsNearPlayer(playerLocation, npcLocation))
+                foreach (NPC character in gameLocation.characters)
                 {
-                    NPCList.nearbyVillagersNow.Add(character.name.ToString().ToLower(), character.datable);
+                    Vector2 npcLocation = character.Tile;
+                    if (!disposition.ContainsKey(character.Name)) continue;
+                    if (VillagerIsWithinRadiusOfPlayer(playerLocation, npcLocation))
+                    {
+                        NPCList.nearbyVillagersNow.Add(character.Name.ToString().ToLower(), character.datable.Value);
+                    }
                 }
             }
-            //If character is present for 2 or more time changes & friendship isn't maxed, add a point of friendship
-            foreach (KeyValuePair<string, Friendship> character in Game1.player.friendshipData.Pairs)
+            else
             {
-                if (NPCList.nearbyVillagersBefore.ContainsKey(character.Key.ToLower()))
-                {
-                    if (NPCList.nearbyVillagersNow.ContainsKey(character.Key.ToLower()))
-                    {
-                        try
-                        {
-                            bool isDatable = NPCList.nearbyVillagersNow[character.Key.ToLower()];
+                Monitor.Log("Error: Game location is null - I can't search for friends on your map, " +
+                    "so I can't help you gain friendship!", LogLevel.Error);
+            }
 
-                            if (!isDatable && character.Value.Points < tenHeartPoints)
+            if (timeCounter <= 0)
+            {
+                timeCounter = timeIntervalLength;
+                //If character is present for 2 or more time changes & friendship isn't maxed, add a point of friendship
+                foreach (KeyValuePair<string, Friendship> character in Game1.player.friendshipData.Pairs)
+                {
+                    if (NPCList.nearbyVillagersBefore.ContainsKey(character.Key.ToLower()))
+                    {
+                        if (NPCList.nearbyVillagersNow.ContainsKey(character.Key.ToLower()))
+                        {
+                            try
                             {
-                                character.Value.Points += friendshipGainedPerInterval;
-                            }
-                            else if (isDatable)
-                            {
-                                /* If you're married and below 15 hearts, or
-                                 * if you're dating and below 11 hearts, or
-                                 * if you're not dating and below 9 hearts,
-                                 * add a friendship point. */
-                                if ((character.Value.Status == FriendshipStatus.Married && character.Value.Points < fourteenHeartPoints) ||
-                                    (character.Value.Status == FriendshipStatus.Dating && character.Value.Points < tenHeartPoints) ||
-                                    (character.Value.Points < eightHeartPoints))
+                                bool isDatable = NPCList.nearbyVillagersNow[character.Key.ToLower()];
+
+                                if (!isDatable && character.Value.Points < tenHeartPoints)
                                 {
                                     character.Value.Points += friendshipGainedPerInterval;
                                 }
+                                else if (isDatable)
+                                {
+                                    /* If you're married and below 15 hearts, or
+                                     * if you're dating and below 11 hearts, or
+                                     * if you're not dating and below 9 hearts,
+                                     * add a friendship point. */
+                                    if ((character.Value.Status == FriendshipStatus.Married && character.Value.Points < fourteenHeartPoints) ||
+                                        (character.Value.Status == FriendshipStatus.Dating && character.Value.Points < tenHeartPoints) ||
+                                        (character.Value.Points < eightHeartPoints))
+                                    {
+                                        character.Value.Points += friendshipGainedPerInterval;
+                                    }
+                                }
+                                if (notifyInConsole)
+                                {
+                                    bool singlePoint = friendshipGainedPerInterval == 1;
+                                    Monitor.Log($"Gained {(singlePoint ? "a " : "")}point{(singlePoint ? "" : "s")} of friendship with {character.Key} at time {e.NewTime}. " +
+                                                $"Now at {character.Value.Points} points.", LogLevel.Debug);
+                                }
                             }
-                            if (notifyInConsole)
+                            catch
                             {
-                                Monitor.Log($"Gained a point of friendship with {character.Key} at time {e.NewTime}. " +
-                                            $"Now at {character.Value.Points} points.", LogLevel.Debug);
+                                Monitor.Log($"Error: Something happened with {character.Key}. Please report this " +
+                                    $"to the evidently ineffective mod author.", LogLevel.Error);
                             }
-                        }
-                        catch
-                        {
-                            this.Monitor.Log($"ERROR! Something happened with {character.Key}. Please report this " +
-                                $"to the evidently ineffective mod author.", LogLevel.Error);
                         }
                     }
                 }
             }
         }
         //Checks if character is within radius
-        private bool VillagerIsNearPlayer(Vector2 playerLocation, Vector2 npcLocation)
+        private bool VillagerIsWithinRadiusOfPlayer(Vector2 playerLocation, Vector2 npcLocation)
         {
             float xDistance = npcLocation.X - playerLocation.X;
             float yDistance = npcLocation.Y - playerLocation.Y;
@@ -149,6 +195,7 @@ namespace PassiveFriendship
     {
         public int FriendshipRadius { get; set; } = 2;
         public bool NotifyAboutFriendshipInConsole { get; set; } = false;
-        public int AmountOfFriendshipGainedPerTenMinutes { get; set; } = 1;
+        public int TimeIntervalLengthInTenMinuteIncrements { get; set; } = 1;
+        public int AmountOfFriendshipGainedPerTimeInterval { get; set; } = 1;
     }
 }

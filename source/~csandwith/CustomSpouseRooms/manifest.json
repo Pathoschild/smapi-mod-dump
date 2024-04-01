@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/csandwith/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Custom Spouse Rooms",
+  "Author": "datamancer",
+  "Version": "0.9.3",
+  "Description": "Custom spouse rooms.",
+  "UniqueID": "datamancer.CustomSpouseRooms",
+  "EntryDll": "CustomSpouseRooms.dll",
+  "MinimumApiVersion": "4.0.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "datamancer",
+    "Directory": "_releases",
+    "ModFolder": "CustomSpouseRooms"
+  },
+  "UpdateKeys": [ "Nexus:20966", "ModDrop:1534005" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "aedenthorn.FreeLove",
+      "IsRequired": false
+    }
+  ]
+}

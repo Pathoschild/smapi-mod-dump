@@ -6,9 +6,10 @@ mods:
    I Don't Use That Water
 
 latest commit:
-   commit 901227a8c9df56fab7172bdac799d720fd4967b9
+   commit 4dcbd7fdebf2a00c786733d56a8105cd44185522
    Author: idermailer <idermailer@gmail.com>
-   Date:   Fri Oct 7 04:37:29 2022 +0900
+   Date:   Fri Mar 22 20:27:40 2024 +0900
    
-       ì´ˆê¸° ì»¤ë°‹.
+       just version number up(1.0.1 -> 1.1.0)
+       (Water Source property is not case-sensitive)
    

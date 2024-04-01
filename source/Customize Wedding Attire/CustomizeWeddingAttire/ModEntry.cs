@@ -31,6 +31,7 @@ namespace CustomizeWeddingAttire
         public const string dressOption = "weddingAttire.dressOption";
         public const string noneOption = "weddingAttire.noneOption";
         public const string defaultOption = "weddingAttire.defaultOption";
+        public const string customOption = "weddingAttire.customOption";
 
         // Remember if last tick was a wedding
         private bool wasWedding = false;
@@ -71,6 +72,7 @@ namespace CustomizeWeddingAttire
             {
                 // Set up the modData recording wedding attire preferences even when GMCM is not installed
                 Game1.player.modData[$"{this.ModManifest.UniqueID}/weddingAttirePref"] = this.Config.WeddingAttire;
+                Game1.player.modData[$"{this.ModManifest.UniqueID}/customAttirePref"] = this.Config.CustomShirt + "|" + this.Config.CustomPants + "|" + this.Config.PantsR + "|" + this.Config.PantsG + "|" + this.Config.PantsB;
                 Monitor.Log("Saving player preferences into modData",LogLevel.Trace);
                 return;
             }
@@ -83,6 +85,7 @@ namespace CustomizeWeddingAttire
                     Helper.WriteConfig(Config);
                     // Refresh the modData recording wedding attire preferences for this player
                     Game1.player.modData[$"{this.ModManifest.UniqueID}/weddingAttirePref"] = this.Config.WeddingAttire;
+                    Game1.player.modData[$"{this.ModManifest.UniqueID}/customAttirePref"] = this.Config.CustomShirt + "|" + this.Config.CustomPants + "|" + this.Config.PantsR + "|" + this.Config.PantsG + "|" + this.Config.PantsB;
                     Monitor.Log("Saving player preferences into modData", LogLevel.Trace);
                 }
             );
@@ -105,16 +108,73 @@ namespace CustomizeWeddingAttire
                     tuxOption,
                     dressOption,
                     noneOption,
-                    defaultOption
+                    defaultOption,
+                    customOption
                     },
                     formatAllowedValue: (str) => this.Helper.Translation.Get(str)
+                );
+                configMenu.AddPageLink(
+                    mod: this.ModManifest,
+                    pageId: "customWedding",
+                    text: () => this.Helper.Translation.Get("customSection.title"),
+                    tooltip: () => this.Helper.Translation.Get("customSection.description")
+                );
+                configMenu.AddPage(
+                    mod: this.ModManifest,
+                    pageId: "customWedding",
+                    pageTitle: () => this.Helper.Translation.Get("customSection.title")
+                );
+                configMenu.AddTextOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("customShirt.title"),
+                    tooltip: () => this.Helper.Translation.Get("customShirt.description"),
+                    getValue: () => this.Config.CustomShirt,
+                    setValue: value => this.Config.CustomShirt = value
+                );
+                configMenu.AddTextOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("customPants.title"),
+                    tooltip: () => this.Helper.Translation.Get("customPants.description"),
+                    getValue: () => this.Config.CustomPants,
+                    setValue: value => this.Config.CustomPants = value
+                );
+                configMenu.AddNumberOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("pantsR.title"),
+                    tooltip: () => this.Helper.Translation.Get("pantsR.description"),
+                    getValue: () => this.Config.PantsR,
+                    setValue: value => this.Config.PantsR = value,
+                    min: 0,
+                    max: 255,
+                    interval: 1
+                );
+                configMenu.AddNumberOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("pantsG.title"),
+                    tooltip: () => this.Helper.Translation.Get("pantsG.description"),
+                    getValue: () => this.Config.PantsG,
+                    setValue: value => this.Config.PantsG = value,
+                    min: 0,
+                    max: 255,
+                    interval: 1
+                );
+                configMenu.AddNumberOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("pantsB.title"),
+                    tooltip: () => this.Helper.Translation.Get("pantsB.description"),
+                    getValue: () => this.Config.PantsB,
+                    setValue: value => this.Config.PantsB = value,
+                    min: 0,
+                    max: 255,
+                    interval: 1
                 );
             } else {
                 var values = new string[] {
                     tuxOption,
                     dressOption,
                     noneOption,
-                    defaultOption
+                    defaultOption,
+                    customOption
                     };
                 configMenuExt.AddImageOption(
                     mod: this.ModManifest,
@@ -136,6 +196,9 @@ namespace CustomizeWeddingAttire
 
                         } else if (v == 1) { // dress
                             WeddingPatcher.putInDress(farmer);
+                        } else if (v == 4)
+                        {
+                            WeddingPatcher.putInCustom(farmer, this.Config.CustomShirt, this.Config.CustomPants, this.Config.PantsR, this.Config.PantsG, this.Config.PantsB);
                         }
                         farmer.FarmerRenderer.draw(b, farmer.FarmerSprite.CurrentAnimationFrame, farmer.FarmerSprite.CurrentFrame, farmer.FarmerSprite.SourceRect, pos, Vector2.Zero, 0.8f, Color.White, 0f, 1f, farmer);
                         farmer.changeShirt("-1");
@@ -148,7 +211,42 @@ namespace CustomizeWeddingAttire
                     arrowLocation: (int)IGMCMOptionsAPI.ImageOptionArrowLocation.Sides,
                     labelLocation: (int)IGMCMOptionsAPI.ImageOptionLabelLocation.Top
                 );
-
+                configMenu.AddPageLink(
+                    mod: this.ModManifest,
+                    pageId: "customWedding",
+                    text: () => this.Helper.Translation.Get("customSection.title"),
+                    tooltip: () => this.Helper.Translation.Get("customSection.description")
+                );
+                configMenu.AddPage(
+                    mod: this.ModManifest,
+                    pageId: "customWedding",
+                    pageTitle: () => this.Helper.Translation.Get("customSection.title")
+                );
+                configMenu.AddTextOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("customShirt.title"),
+                    tooltip: () => this.Helper.Translation.Get("customShirt.description"),
+                    getValue: () => this.Config.CustomShirt,
+                    setValue: value => this.Config.CustomShirt = value
+                );
+                configMenu.AddTextOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("customPants.title"),
+                    tooltip: () => this.Helper.Translation.Get("customPants.description"),
+                    getValue: () => this.Config.CustomPants,
+                    setValue: value => this.Config.CustomPants = value
+                );
+                configMenuExt.AddColorOption(
+                    mod: this.ModManifest,
+                    getValue: () => new Color(this.Config.PantsR, this.Config.PantsG, this.Config.PantsB),
+                    setValue: color => {
+                        this.Config.PantsR = color.R;
+                        this.Config.PantsG = color.G;
+                        this.Config.PantsB = color.B;
+                        },
+                    name: () => this.Helper.Translation.Get("pantsColor.title"),
+                    tooltip: () => this.Helper.Translation.Get("pantsColor.description")
+                    ) ;
             }
         }
 

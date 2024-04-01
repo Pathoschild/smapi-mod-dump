@@ -8,6 +8,11 @@ for queries and analysis.**
 
 # Version history for CropGrowthAdjustments
 
+## 1.3.0
+Released March 23, 2024.
+- Updated for SMAPI 4.0 and Stardew Valley 1.6
+- Migrated to .NET 6
+
 ## 1.2.0
 Released December 30, 2023.
 - Reworked the way special sprites are handled, removing the hard limit on the number of active sprite replacements.

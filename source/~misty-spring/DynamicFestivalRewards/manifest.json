@@ -11,12 +11,12 @@
 {
   "Name": "Dynamic festival rewards",
   "Author": "mistyspring",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Randomizes money won in egg festival.",
   "UniqueID": "mistyspring.DynamicFestivalRewards",
   "EntryDll": "DynamicFestivalRewards.dll",
   "MinimumApiVersion": "3.14.0",
-  "UpdateKeys": ["nexus:?"],
+  "UpdateKeys": ["nexus:20253"],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",

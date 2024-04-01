@@ -97,7 +97,7 @@ namespace FishingTrawler.GameLocations
 
             // Set water tiles for Dynamic Reflections
             var backLayer = this.map.GetLayer("Back");
-            this.waterTiles = new bool[backLayer.LayerWidth, backLayer.LayerHeight];
+            this.waterTiles = new WaterTiles(new bool[backLayer.LayerWidth, backLayer.LayerHeight]);
             for (int x = 0; x < backLayer.LayerWidth; x++)
             {
                 for (int y = 0; y < backLayer.LayerHeight; y++)
@@ -420,8 +420,8 @@ namespace FishingTrawler.GameLocations
 
         public bool IsPlayerByBoatEdge(Farmer who)
         {
-            int playerX = who.getStandingX() / 64;
-            int playerY = who.getStandingY() / 64;
+            int playerX = who.StandingPixel.X / 64;
+            int playerY = who.StandingPixel.Y / 64;
 
             string actionProperty = doesTileHaveProperty(playerX, playerY, "CustomAction", "Back");
             if (actionProperty != null && actionProperty == "EmptyBucketSpot")

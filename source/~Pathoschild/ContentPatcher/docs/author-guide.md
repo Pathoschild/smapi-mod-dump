@@ -74,7 +74,7 @@ For example, here's a `content.json` which replaces Abigail's portraits with you
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "Load",
@@ -129,7 +129,7 @@ So if you wanted to change Abigail's portraits, you would use Content Patcher to
 5. Create a `content.json` file with this content:
    ```js
    {
-       "Format": "1.29.0",
+       "Format": "2.0.0",
        "Changes": [
            // your changes will go here
        ]
@@ -142,7 +142,7 @@ That's it! You now have a working Content Patcher pack, though it doesn't do any
 That `Format` field is the version of Content Patcher for which you designed the content pack. This
 is used to keep your content pack compatible with future versions.
 
-You should always use the latest format version (currently `1.29.0`) to enable the latest features,
+You should always use the latest format version (currently `2.0.0`) to enable the latest features,
 avoid obsolete behavior, and reduce startup time.
 
 ### Changes
@@ -175,7 +175,7 @@ would change her portraits in-game:
 
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
    "Changes": [
       {
          "Action": "Load",
@@ -197,26 +197,26 @@ See the [`Action: Load` documentation](author-guide/action-load.md) for more inf
 <td>
 
 `EditData` changes the data read from a data asset. This supports simple lookup assets like
-`Data/ObjectInformation`, or full data model assets like `Data/WildTrees`. Any number of content
-packs can edit the same asset.
+`Data/Achievements`, or full data model assets like `Data/Objects`. Any number of content packs
+can edit the same asset.
 
 This lets you...
 * add, edit, or delete entries;
 * reorder entries in a list;
 * or edit individual fields within an entry.
 
-For example, this doubles the price of coffee (see [object fields](https://stardewvalleywiki.com/Modding:Object_data)):
+For example, this doubles the price of moss soup (see [object fields](https://stardewvalleywiki.com/Modding:Object_data)):
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "EditData",
-            "Target": "Data/ObjectInformation",
+            "Target": "Data/Objects",
             "Fields": {
-                "395": {   // item #395 (coffee)
-                    1: 300 // set field 1 (price) to 300g
+                "MossSoup": {
+                    "Price": 80
                 }
             }
         }
@@ -246,7 +246,7 @@ For example, if your content pack has an `assets/tuna.png` image with a custom
 
 ```js
 {
-   "Format": "1.29.0",
+   "Format": "2.0.0",
    "Changes": [
       {
          "Action": "EditImage",
@@ -277,7 +277,7 @@ This lets you...
 For example, this replaces the town square with a custom version in your content folder:
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "EditMap",
@@ -304,7 +304,7 @@ exactly as if they were directly in `content.json`.
 For example, you can combine this with [tokens and condition](#tokens) to load a dynamic file:
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "Include",
@@ -340,7 +340,7 @@ For example, this gives Abigail a different portrait for each season:
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "Load",
@@ -355,7 +355,7 @@ Or this gives her different seasonal portraits if you're married to her:
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "Load",
@@ -380,7 +380,7 @@ For example, you can use config values as [tokens and conditions](#tokens):
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "ConfigSchema": {
         "EnableJohn": {
             "AllowValues": "true, false",
@@ -411,7 +411,7 @@ in any Content Patcher field that allows [tokens](#tokens):
 
 ```js
 {
-    "Format": "1.29.0",
+    "Format": "2.0.0",
     "Changes": [
         {
             "Action": "EditData",

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using DecidedlyShared.APIs;
 using DecidedlyShared.Logging;
 using Microsoft.Xna.Framework;
-using DecidedlyShared.APIs;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -164,12 +163,12 @@ namespace SmartBuilding.Utilities
                     }
 
                     // Here, we want to display a message if the floor COULD be placed if the appropriate setting were enabled.
-                    if (!here.isTileLocationTotallyClearAndPlaceable(v) && !this.config.LessRestrictiveFloorPlacement)
+                    if (!here.isTileLocationOpen(v) && !this.config.LessRestrictiveFloorPlacement)
                         this.logger.Log(I18n.SmartBuilding_Message_CheatyOptions_MoreLaxFloorPlacement_Disabled(),
                             LogLevel.Trace, true);
 
                     // At this point, we return appropriately with vanilla logic, or true depending on the placement setting.
-                    return this.config.LessRestrictiveFloorPlacement || here.isTileLocationTotallyClearAndPlaceable(v);
+                    return this.config.LessRestrictiveFloorPlacement || here.isTileLocationOpen(v);
                 case ItemType.Chest:
                     // We want to be extra safe here, so we confirm it is in fact of type Chest.
                     if (i is Chest)
@@ -178,7 +177,7 @@ namespace SmartBuilding.Utilities
                         var chest = (Chest)i;
 
                         // ...and return false if it contains any items.
-                        if (chest.items.Any())
+                        if (chest.Items.Count > 0)
                             return false;
                     }
 
@@ -219,7 +218,7 @@ namespace SmartBuilding.Utilities
                             }
 
                             // At this point, we fall to vanilla logic to determine placement validity.
-                            return hd.canPlantThisSeedHere(i.ParentSheetIndex, (int)v.X, (int)v.Y, true);
+                            return hd.canPlantThisSeedHere(i.ItemId, true);
                         }
 
                     return false;
@@ -292,7 +291,7 @@ namespace SmartBuilding.Utilities
                                 // If it is, we grab a reference to the HoeDirt to use its canPlantThisSeedHere method.
                                 var hd = (HoeDirt)here.terrainFeatures[v];
 
-                                return hd.canPlantThisSeedHere(i.ParentSheetIndex, (int)v.X, (int)v.Y);
+                                return hd.canPlantThisSeedHere(i.ItemId, false);
                             }
                         }
 
@@ -453,7 +452,7 @@ namespace SmartBuilding.Utilities
                     if (this.config.LessRestrictiveObjectPlacement)
                     {
                         // If the less restrictive object placement setting is enabled, we first want to check if vanilla logic dictates the object be placeable.
-                        if (Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v))
+                        if (Game1.currentLocation.isTileLocationOpen(v))
                             // It dictates that it is, so we can simply return true.
                             return true;
                         // Otherwise, we want to check for an object already present in this location.
@@ -462,7 +461,7 @@ namespace SmartBuilding.Utilities
                             return true;
                     }
 
-                    if (Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v))
+                    if (Game1.currentLocation.isTileLocationOpen(v))
                         // This is true, so we simply return true.
                         return true;
                     // It's false, so we want to warn that placement would be possible if the correct setting were enabled, and there's no object in the tile.

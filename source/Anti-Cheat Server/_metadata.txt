@@ -6,9 +6,9 @@ mods:
    Anti-Cheat Server
 
 latest commit:
-   commit 7630a5360fe2e1721d6bde860aed9464f0d7a44d
+   commit 6fae1e9a1a169438b9e16ad8049bfe90ded626f0
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Feb 23 18:08:01 2022 -0500
+   Date:   Tue Mar 19 03:26:15 2024 -0400
    
        Merge branch 'develop'
    

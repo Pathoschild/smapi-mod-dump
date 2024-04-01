@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+  "Name": "MarketTown - Cloned NPC Vanilla",
+  "Author": "d5a1lamdtd",
+  "Version": "5.0.0",
+  "Description": "Clone of Vanilla NPC",
+  "UniqueID": "d5a1lamdtd.MarketTown.CloneNPC_Vanilla",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": ["Nexus:???"],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+"Dependencies": [
+    {
+      "UniqueID": "SuperAardvark.AntiSocial",
+      "IsRequired": false
+    }
+]
+}

@@ -31,11 +31,20 @@ namespace FarmTypeManager
 
                 if (lootList != null) //if this monster has a loot list
                 {
-                    Utility.Monitor.VerboseLog($"Dropping loot for defeated monster. Monster: {monster.displayName}. ID: {monster.id}. Location: {monster.getTileX()},{monster.getTileY()} ({monster.currentLocation.Name}).");
+                    Utility.Monitor.VerboseLog($"Dropping loot for defeated monster. Monster: {monster.displayName}. ID: {monster.id}. Location: {monster.Tile.X},{monster.Tile.Y} ({monster.currentLocation.Name}).");
 
                     //get the position where the monster's loot should drop
                     Point center = monster.GetBoundingBox().Center;
                     Vector2 lootPosition = new Vector2(center.X, center.Y);
+
+                    //temporary workaround for an issue with Pepper Rex in SDV 1.6 (if health <= 0, GetBoundingBox returns -100,-100,0,0)
+                    if (lootPosition.X == -100 && lootPosition.Y == -100 && monster is DinoMonster)
+                    {
+                        Rectangle rexBoundingBox = new Rectangle((int)monster.Position.X + 8, (int)monster.Position.Y, monster.Sprite.SpriteWidth * 4 * 3 / 4, 64);
+                        center = rexBoundingBox.Center;
+                        lootPosition = new Vector2(center.X, center.Y);
+                    }
+
 
                     foreach (SavedObject loot in lootList) //for each loot object
                     {

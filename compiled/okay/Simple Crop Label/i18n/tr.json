@@ -1,0 +1,26 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // tr (turkish)
+  // custom tree translation
+  "custom-tree.oak": "Meşe Ağacı",
+  "custom-tree.maple": "Akçaağaç",
+  "custom-tree.pine": "Çam Ağacı",
+  "custom-tree.coconut": "Hindistan Cevizi Ağacı",
+  "custom-tree.mushroom": "Mantar Ağacı",
+  "custom-tree.mahogany": "Maun Ağacı",
+  "custom-tree.palm": "Palmiye",
+
+  // growth info translation
+  "growth-info.fully-grown": "Tam büyümüş",
+  "growth-info.stage": "faz",
+  "growth-info.of": "-nin",
+  "growth-info.days-left": "kalan günler",
+  "growth-info.day-left": "kalan gün",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Mouse Hover",
+  "config.mouse-hover.desc": "Etkinleştirildiğinde etiketi görüntülemek için fareyi kırpma döşemesinin üzerine getirin.",
+  "config.growth-info.name": "Büyüme Bilgileri",
+  "config.growth-info.desc": "Etkinleştirildiğinde ürün büyümesini veya hasat aşamasını görüntüler.",
+  "config.custom-keybinds.name": "Keybind",
+  "config.custom-keybinds.desc": "Varsayılanı değiştirir. Mouse Hover'ın etkinleştirilmesi bunu geçersiz kılar."
+}

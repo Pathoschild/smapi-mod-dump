@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Input;
 
 namespace MPInfo
 {
@@ -27,21 +28,27 @@ namespace MPInfo
         CenterRight,
     }
 
-    internal class ModEntry : Mod 
+    internal class ModEntry : Mod
     {
         internal static ModEntry Instance;
         internal static Config Config = null!;
 
         private int lastMaxHealth;
         private int lastHealth;
+        private bool enabled;
 
-        public override void Entry(IModHelper helper) 
+        public bool IsEnabled => enabled;
+
+        public override void Entry(IModHelper helper)
         {
             Instance = this;
             PlayerInfoBox.Crown = helper.ModContent.Load<Texture2D>("Assets/Crown.png");
             Config = helper.ReadConfig<Config>();
+            enabled = Config.Enabled;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
 
             helper.Events.Multiplayer.PeerConnected += OnPlayerJoin;
             helper.Events.Multiplayer.PeerDisconnected += OnPlayerLeave;
@@ -60,7 +67,7 @@ namespace MPInfo
             ResetDisplays();
         }
 
-        private void ResetDisplays(IEnumerable<long>? playerIds = null) 
+        private void ResetDisplays(IEnumerable<long>? playerIds = null)
         {
             var displays = Game1.onScreenMenus.OfType<PlayerInfoBox>().ToArray();
             for (int i = 0; i < displays.Length; i++)
@@ -72,7 +79,7 @@ namespace MPInfo
             PlayerInfoBox.RedrawAll();
         }
 
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) 
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
@@ -89,18 +96,25 @@ namespace MPInfo
                 name: () => "Enabled",
                 tooltip: () => "",
                 getValue: () => Config.Enabled,
-                setValue: value => 
+                setValue: value =>
                 {
-                    Config.Enabled = value;
+                    Config.Enabled = enabled = value;
                     PlayerInfoBox.RedrawAll();
                 }
+            );
+            configMenu.AddKeybind(
+                mod: ModManifest,
+                name: () => "Button to toggle display",
+                tooltip: () => "",
+                getValue: () => Config.ToggleButton,
+                setValue: value => Config.ToggleButton = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
                 name: () => "Show Self",
                 tooltip: () => "",
                 getValue: () => Config.ShowSelf,
-                setValue: value => 
+                setValue: value =>
                 {
                     Config.ShowSelf = value;
                     PlayerInfoBox.RedrawAll();
@@ -167,14 +181,20 @@ namespace MPInfo
              );
         }
 
-        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) 
+        public void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button == Config.ToggleButton)
+                enabled = !enabled;
+        }
+
+        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
             lastHealth = Game1.player.health;
             lastMaxHealth = Game1.player.maxHealth;
             ResetDisplays();
         }
 
-        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) 
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
@@ -199,7 +219,7 @@ namespace MPInfo
             ForceUpdate();
         }
 
-        private void OnMultiplayerDataReceived(object? sender, ModMessageReceivedEventArgs e) 
+        private void OnMultiplayerDataReceived(object? sender, ModMessageReceivedEventArgs e)
         {
             if (e.FromModID != Helper.ModRegistry.ModID)
                 return;

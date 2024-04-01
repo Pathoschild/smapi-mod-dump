@@ -13,7 +13,7 @@
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/flowervalleyhouse_{{season}}.png",
+			"FromFile": "assets/textures/flowervalleyhouse_{{season}}.png",
 			"ToArea": {"X": 288, "Y": 1136, "Width": 112, "Height": 128},
 			"PatchMode": "Overlay"
 		},
@@ -21,7 +21,7 @@
 		{
 			"Target": "LooseSprites/Cursors",
 			"Action": "EditImage",
-			"FromFile": "assets/flowervalleystorefront_notwinter.png",
+			"FromFile": "assets/textures/flowervalleystorefront_notwinter.png",
 			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
 			"When": {
 				"Season": "spring, summer, fall"
@@ -30,7 +30,7 @@
 		{
 			"Target": "LooseSprites/Cursors",
 			"Action": "EditImage",
-			"FromFile": "assets/flowervalleystorefront_winter.png",
+			"FromFile": "assets/textures/flowervalleystorefront_winter.png",
 			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
 			"When": {
 				"Season": "winter"

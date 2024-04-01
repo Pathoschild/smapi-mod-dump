@@ -8,62 +8,66 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 using GenericModConfigMenu;
-using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Crops;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 
 namespace StardewHack.HarvestWithScythe
 {
     public enum HarvestModeEnum {
-        HAND,
-        SCYTHE,
-        BOTH, // I.e. determined by whether the scythe is equipped.
-        GOLD, // I.e. hand, unless the golden scythe is equipped.
+        NONE, // crop cannot be harvested at all.
+        HAND, // prevent scythe harvesting.
+        IRID, // vanilla default.
+        GOLD, // golden scythe can be used.
+        BOTH, // determined by whether a scythe is equipped.
+        SCYTHE, // cannot be harvested by hand.
+    }
+
+    public enum PluckingScytheEnum {
+        NEVER,
+        INVALID,
+        ALWAYS,
     }
 
     public class ModConfig {
         /** Whether a sword can be used instead of a normal scythe. */
         public bool HarvestWithSword = false;
+
+        /** Whether the scythe should work too on forage not above tilled soil. */
+        public bool HarvestAllForage = true;
+
+        /** Whether you can still pluck plants with a scythe equipped. */
+        public PluckingScytheEnum PluckingScythe = PluckingScytheEnum.INVALID;
     
-        public class HarvestModeClass {
-            /** How should flowers be harvested? 
-             * Any Crop that is `programColored` is considered a flower.
-             * In addition, sunflowers are also considered flowers. */
-            public HarvestModeEnum Flowers = HarvestModeEnum.BOTH;
-            
-            /** How should forage be harvested? 
-             * Any Object where `isForage() && isSpawnedObject && !questItem` evaluates to true is considered forage. */
-            public HarvestModeEnum Forage = HarvestModeEnum.BOTH;
-            
-            /** How should spring onions be harvested?
-             * Any Crop that is `forageCrop` is considered a spring onion. */
-            public HarvestModeEnum SpringOnion = HarvestModeEnum.BOTH;
-            
-            /** How should pluckable crops be harvested? 
-             * Any Crop that has `harvestMethod == 0` is considered a pluckable crop. */
-            public HarvestModeEnum PluckableCrops = HarvestModeEnum.BOTH;
-            
-            /** How should scythable crops be harvested?
-             * Any Crop that has `harvestMethod == 1` is considered a scythable crop. */
-            public HarvestModeEnum ScythableCrops = HarvestModeEnum.SCYTHE;
-        }
-        public HarvestModeClass HarvestMode = new HarvestModeClass();
+        /** How should flowers be harvested? 
+         * Any object whose harvest has Object.flowersCategory. */
+        public HarvestModeEnum Flowers = HarvestModeEnum.BOTH;
+
+        /** How should forage be harvested? 
+         * Any Object where `isForage() && isSpawnedObject && !questItem` evaluates to true is considered forage. */
+        public HarvestModeEnum Forage = HarvestModeEnum.BOTH;
+
+        /** How should pluckable crops & forage be harvested? 
+         * Any Crop that has `GetHarvestMethod() == HarvestMethod.Grab` is considered a pluckable crop.
+         * Any object that sits on top of HoeDirt is considered forage. */
+        public HarvestModeEnum PluckableCrops = HarvestModeEnum.BOTH;
+
+        /** How should scythable crops be harvested?
+         * Any Crop that has `GetHarvestMethod() == HarvestMethod.Scythe` is considered a scythable crop. */
+        public HarvestModeEnum ScythableCrops = HarvestModeEnum.SCYTHE;
     }
 
     /**
      * This is the core of the Harvest With Scythe mod.
      *
-     * Crops are either harvested by hand, which is initiatied by HoeDirt.PerformUseAction(), 
+     * Crops are either harvested by hand, which is initiated by HoeDirt.PerformUseAction(), 
      * or harvested by scythe, which is initiated by HoeDirt.PerformToolAction().
      * These methods check whether the crop is allowed to be harvested by this method and 
      * then passes control to Crop.harvest() to perform the actual harvesting. 
@@ -76,710 +80,393 @@ namespace StardewHack.HarvestWithScythe
      * Hence HoeDirt.Perform*Action must set this field to the appropriate value and restore 
      * it afterwards.
      *
-     * Flowers can have different colors, which is not supported by the original scythe harvesting 
-     * code. To support it, this mod provides a `CreateDebris()` method as a proxy for spawning the
-     * dropped crops/flowers.
+     * Flowers can have different colors, which is supported by the scythe harvesting code
+     * in SDV 1.6. Whether a crop is a flower is detected using IsFlower, which is based on
+     * Utility.findCloseFlower.
      *
-     * Forage are plain Objects where `isForage() && isSpawnedObject && !questItem` evaluates to true.
-     * Those are handled by GameLocation.checkAction() and Object.performToolAction(). As the 
-     * game does not provide logic for scythe harvesting of forage, this is provided by this mod, 
-     * see ScytheForage().
-     *
+     * Forage are plain Objects that exist on top of HoeDirt.
      */
     public class ModEntry : HackWithConfig<ModEntry, ModConfig> {
         public override void HackEntry(IModHelper helper) {
             I18n.Init(helper.Translation);
-
-            Patch((Crop c) => c.harvest(0, 0, null, null), Crop_harvest);
-            Patch((HoeDirt hd) => hd.performToolAction(null, 0, new Vector2(), null), HoeDirt_performToolAction);
-            Patch((HoeDirt hd) => hd.performUseAction(new Vector2(), null), HoeDirt_performUseAction);
+            Patch((Crop c) => c.harvest(0,0,null,null,false), Crop_harvest);
+            Patch((HoeDirt hd) => hd.performUseAction(Vector2.Zero), HoeDirt_performUseAction);
+            Patch((HoeDirt hd) => hd.performToolAction(null, 0, Vector2.Zero), HoeDirt_performToolAction);
 
             // If forage harvesting is configured to allow scythe.
-            Patch((StardewValley.Object o) => o.performToolAction(null, null), Object_performToolAction);
+            Patch((Object o) => o.performToolAction(null), Object_performToolAction);
             Patch((GameLocation gl) => gl.checkAction(new xTile.Dimensions.Location(), new xTile.Dimensions.Rectangle(), null), GameLocation_checkAction);
-
-            Patch((Grass g) => g.performToolAction(null, 0, new Vector2(), null), Grass_performToolAction);
-
-            helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
         }
 
-        /** Keeps track of whether the player is mounted. 
-         * This is used to support compatibility with the tractor mod.
-         * Normally this can be checked with `Game1.player.mount != null`, however
-         * when using tools, that mod sets mount temporarily to null.
-         */
-        static bool PlayerIsMounted = false;
-
-        static void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e) {
-            PlayerIsMounted = Game1.player.mount != null;
-        }
-
-#region ModConfig
-
+        #region ModConfig
         protected override void InitializeApi(IGenericModConfigMenuApi api) {
             api.AddBoolOption(mod: ModManifest, name: I18n.HarvestWithSwordName, tooltip: I18n.HarvestWithSwordTooltip, getValue: () => config.HarvestWithSword, setValue: (bool val) => config.HarvestWithSword = val);
+            api.AddBoolOption(mod: ModManifest, name: I18n.AllForageName,        tooltip: I18n.AllForageTooltip,        getValue: () => config.HarvestAllForage, setValue: (bool val) => config.HarvestAllForage = val);
+            {// PluckingScythe Settings
+                var options_dict = new Dictionary<PluckingScytheEnum, string>() {
+                    {PluckingScytheEnum.NEVER,   I18n.PSNever()},
+                    {PluckingScytheEnum.INVALID, I18n.PSInvalid()},
+                    {PluckingScytheEnum.ALWAYS,  I18n.PSAlways()},
+                };
+                var reverse_dict = options_dict.ToDictionary(x=>x.Value, x=>x.Key);
+                string[] options = options_dict.Values.ToArray();
+                api.AddTextOption(mod: ModManifest, name: I18n.PluckingScytheName, tooltip: I18n.PluckingScytheTooltip, getValue: () => options_dict[config.PluckingScythe], setValue: (string val) => config.PluckingScythe = reverse_dict[val], allowedValues: options);
+            }
+            {// HarvestMode Settings
+                var options_dict = new Dictionary<HarvestModeEnum, string>() {
+                    {HarvestModeEnum.HAND,   I18n.HMHand()},
+                    {HarvestModeEnum.IRID,   I18n.HMIrid()},
+                    {HarvestModeEnum.GOLD,   I18n.HMGold()},
+                    {HarvestModeEnum.BOTH,   I18n.HMBoth()},
+                    {HarvestModeEnum.SCYTHE, I18n.HMScythe()},
+                    {HarvestModeEnum.NONE,   I18n.HMNone()},
+                };
+                var reverse_dict = options_dict.ToDictionary(x=>x.Value, x=>x.Key);
+                string[] options = options_dict.Values.ToArray();
 
-            var options_dict = new Dictionary<HarvestModeEnum, string>()
-            {
-                {HarvestModeEnum.HAND,   I18n.Hand()  },
-                {HarvestModeEnum.SCYTHE, I18n.Scythe()},
-                {HarvestModeEnum.BOTH,   I18n.Both()  },
-                {HarvestModeEnum.GOLD,   I18n.Gold()  },
-            };
-            var reverse_dict = options_dict.ToDictionary(x=>x.Value, x=>x.Key);
-            string[] options = options_dict.Values.ToArray();
-
-            api.AddSectionTitle(mod: ModManifest, text: I18n.HarvestModeSection);
-            api.AddParagraph(mod: ModManifest, text: I18n.HarvestModeDescription);
-            api.AddTextOption(mod: ModManifest, name: I18n.PluckableCropsName, tooltip: I18n.PluckableCropsTooltip, getValue: () => options_dict[config.HarvestMode.PluckableCrops], setValue: (string val) => config.HarvestMode.PluckableCrops = reverse_dict[val], allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: I18n.ScythableCropsName, tooltip: I18n.ScythableCropsTooltip, getValue: () => options_dict[config.HarvestMode.ScythableCrops], setValue: (string val) => config.HarvestMode.ScythableCrops = reverse_dict[val], allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: I18n.FlowersName,        tooltip: I18n.FlowersTooltip,        getValue: () => options_dict[config.HarvestMode.Flowers       ], setValue: (string val) => config.HarvestMode.Flowers        = reverse_dict[val], allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: I18n.ForageName,         tooltip: I18n.ForageTooltip,         getValue: () => options_dict[config.HarvestMode.Forage        ], setValue: (string val) => config.HarvestMode.Forage         = reverse_dict[val], allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: I18n.SpringOnionName,    tooltip: I18n.SpringOnionTooltip,    getValue: () => options_dict[config.HarvestMode.SpringOnion   ], setValue: (string val) => config.HarvestMode.SpringOnion    = reverse_dict[val], allowedValues: options);
+                api.AddSectionTitle(mod: ModManifest, text: I18n.HarvestModeSection);
+                api.AddTextOption(mod: ModManifest, name: I18n.PluckableCropsName, tooltip: I18n.PluckableCropsTooltip, getValue: () => options_dict[config.PluckableCrops], setValue: (string val) => config.PluckableCrops = reverse_dict[val], allowedValues: options);
+                api.AddTextOption(mod: ModManifest, name: I18n.ScythableCropsName, tooltip: I18n.ScythableCropsTooltip, getValue: () => options_dict[config.ScythableCrops], setValue: (string val) => config.ScythableCrops = reverse_dict[val], allowedValues: options);
+                api.AddTextOption(mod: ModManifest, name: I18n.FlowersName,        tooltip: I18n.FlowersTooltip,        getValue: () => options_dict[config.Flowers       ], setValue: (string val) => config.Flowers        = reverse_dict[val], allowedValues: options);
+                api.AddTextOption(mod: ModManifest, name: I18n.ForageName,         tooltip: I18n.ForageTooltip,         getValue: () => options_dict[config.Forage        ], setValue: (string val) => config.Forage         = reverse_dict[val], allowedValues: options);
+            }
         } 
 #endregion 
 
 #region CanHarvest methods
-        public const int HARVEST_PLUCKING = Crop.grabHarvest;
-        public const int HARVEST_SCYTHING = Crop.sickleHarvest;
-        public const int SUNFLOWER = 421;
+        static public bool IsFlower(Crop crop)
+        {
+            var data = ItemRegistry.GetData(crop.indexOfHarvest.Value);
+            return data?.Category == Object.flowersCategory;
+        }
 
         static public bool IsScythe(Tool t) {
+            if (t == null) return false;
             if (t is MeleeWeapon) {
                 return getInstance().config.HarvestWithSword || (t as MeleeWeapon).isScythe();
             }
             return false;
         }
 
-        /** Check whether the used harvest method is allowed for the given harvest mode. */
-        public static bool CanHarvest(HarvestModeEnum mode, int method) {
-            var t = Game1.player.CurrentTool;
-            if (IsScythe(t)) {
-                if (mode == HarvestModeEnum.BOTH) {
-                    // If mode is BOTH, then set mode depending on whether the scythe is currently equipped.
-                    mode = HarvestModeEnum.SCYTHE;
-                } else if (mode == HarvestModeEnum.GOLD && t.InitialParentTileIndex == MeleeWeapon.goldenScythe) {
-                    // If mode is GOLD, then set mode depending on whether the golden scythe is currently equipped.
-                    mode = HarvestModeEnum.SCYTHE;
-                }
-            }
-
-            // Determine if the currently used harvesting method is currently allowed.
-            if (method == HARVEST_PLUCKING) {
-                return mode != HarvestModeEnum.SCYTHE;
-            } else {
-                return mode == HarvestModeEnum.SCYTHE;
+        public static bool CheckMode(HarvestModeEnum mode, Tool tool) {
+            switch (mode) {
+                case HarvestModeEnum.SCYTHE: return true;
+                case HarvestModeEnum.BOTH: return true;
+                case HarvestModeEnum.GOLD: return tool.ItemId == MeleeWeapon.goldenScytheId || tool.ItemId == MeleeWeapon.iridiumScytheID;
+                case HarvestModeEnum.IRID: return tool.ItemId == MeleeWeapon.iridiumScytheID;
+                case HarvestModeEnum.HAND: return false;
+                case HarvestModeEnum.NONE: return false;
+                default:
+                    throw new System.Exception("unreachable code");
             }
         }
 
-        /** Determine whether the given crop can be harvested using the given method. */
-        public static bool CanHarvestCrop(Crop crop, int method) {
-            if (PlayerIsMounted) return true;
-
-            // Get harvest settings from config
-            ModConfig.HarvestModeClass config = getInstance().config.HarvestMode;
-            HarvestModeEnum mode;
-            if (crop.programColored.Value || crop.indexOfHarvest.Value == SUNFLOWER) {
-                mode = config.Flowers;
-            } else if (crop.forageCrop.Value) {
-                mode = config.SpringOnion;
-            } else if (crop.harvestMethod.Value == 0) {
-                mode = config.PluckableCrops;
-            } else {
-                mode = config.ScythableCrops;
-            }
-            return CanHarvest(mode, method);
+        public static HarvestModeEnum GetHarvestSetting(Crop crop) {
+            ModConfig config = getInstance().config;
+            if (crop.GetHarvestMethod() == HarvestMethod.Scythe) return config.ScythableCrops;
+            if (IsFlower(crop)) return config.Flowers;
+            return config.PluckableCrops;
         }
 
-        /** Determine whether the given object can be harvested using the given method. 
-         * Assumes that isForage() returned true. */
-        public static bool CanHarvestObject(StardewValley.Object obj, GameLocation loc, int method) {
-            // Get harvest settings from config
-            ModConfig.HarvestModeClass config = getInstance().config.HarvestMode;
-            HarvestModeEnum mode;
-            if (obj.IsSpawnedObject && !obj.questItem.Value && obj.isForage(loc)) {
-                mode = config.Forage;
-            } else {
-                mode = HARVEST_PLUCKING;
-            }
-            return CanHarvest(mode, method);
+        /** Determine whether the given crop can be harvested using a scythe. */
+        public static bool CanScytheCrop(Crop crop, Tool tool) {
+            if (crop == null) return false;
+            return CheckMode(GetHarvestSetting(crop), tool);
+        }
+
+        public static bool CanScytheForage(Tool tool) {
+            ModConfig config = getInstance().config;
+            return CheckMode(config.Forage, tool);
         }
 #endregion
-    
-#region Patch Crop_harvest
-        // Changes the vector to be pre-multiplied by 64, so it's easier to use for spawning debris.
-        // Vector is stored in loc_3.
-        private LocalBuilder Crop_harvest_fix_vector() {
-            CodeInstruction vector2_ldloca_S = null;
-            CodeInstruction vector2_constructor = null;
 
-            // Remove line (2x)
-            // Vector2 vector = new Vector2 ((float)xTile, (float)yTile);
-            for (int i = 0; i < 2; i++) {
-                var vec = FindCode (
-                    OpCodes.Ldloca_S,
-                    OpCodes.Ldarg_1,
-                    OpCodes.Conv_R4,
-                    OpCodes.Ldarg_2,
-                    OpCodes.Conv_R4,
-                    OpCodes.Call
-                );
-                vector2_ldloca_S    = vec[0];
-                vector2_constructor = vec[5];
-                vec.Remove();
-            }
-            var var_vector = (LocalBuilder)vector2_ldloca_S.operand;
-            
-            // Add to begin of function
-            // Vector2 vector = new Vector2 ((float)xTile*64., (float)yTile*64.);
-            BeginCode().Append(
-                vector2_ldloca_S,
-                Instructions.Ldarg_1(),
-                Instructions.Conv_R4(),
-                Instructions.Ldc_R4(64),
-                Instructions.Mul(),
-                Instructions.Ldarg_2(),
-                Instructions.Conv_R4(),
-                Instructions.Ldc_R4(64),
-                Instructions.Mul(),
-                vector2_constructor
-            );
-            
-            // Replace (4x):
-            //   from: new Vector2 (vector.X * 64f, vector.Y * 64f)
-            //   to:   vector
-            for (int i = 0; i < 4; i++) {
-                FindCode(
-                    null,
-                    OpCodes.Ldfld,
-                    Instructions.Ldc_R4(64),
-                    OpCodes.Mul,
-                    null,
-                    OpCodes.Ldfld,
-                    Instructions.Ldc_R4(64),
-                    OpCodes.Mul,
-                    OpCodes.Newobj
-                ).Replace(
-                    Instructions.Ldloc_S(var_vector)
-                );
-            }
-            
-            // Return the location of the vector variable.
-            return var_vector;
-        }
-
-        // Support harvesting of spring onions with scythe
-        private void Crop_harvest_support_spring_onion(LocalBuilder var_vector) {
-            if (config.HarvestMode.SpringOnion == HarvestModeEnum.HAND) return;
-
-            // Note: the branch
-            //   if (this.forageCrop)
-            // refers mainly to the crop spring union.
-
-            InstructionMatcher addItemToInventoryBool = Instructions.Callvirt(typeof(Farmer), nameof(Farmer.addItemToInventoryBool), typeof(Item), typeof(bool));
-
-            if (helper.ModRegistry.IsLoaded("spacechase0.MoreRings")) {
-                try {
-                    addItemToInventoryBool = InstructionMatcher.AnyOf(
-                        addItemToInventoryBool,
-                        Instructions.Callvirt(AccessTools.TypeByName("MoreRings.Patches.CropPatcher"), "Farmer_AddItemToInventoryBool", typeof(Farmer), typeof(Item), typeof(bool))
-                    );
-                } catch (Exception e) {
-                    Monitor.Log("The More Rings mod was loaded, but MoreRings.Patches.CropPatcher.Farmer_AddItemToInventoryBool(...) was not found.");
-                    LogException(e, LogLevel.Warn);
-                }
-            }
-
-            // Find the lines:
-            InstructionRange AddItem;
-            AddItem = FindCode(
-                // if (Game1.player.addItemToInventoryBool (@object, false)) {
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                InstructionMatcher.AnyOf( // @object
-                    OpCodes.Ldloc_0,
-                    OpCodes.Ldloc_1
-                ),
-                OpCodes.Ldc_I4_0,
-                addItemToInventoryBool,
-                OpCodes.Brfalse
-            );
-            
-            var ldarg_0 = Instructions.Ldarg_0();
-            var Ldloc_object = AddItem[1];
-            var tail = AttachLabel(AddItem.FindNext(
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.regrowAfterHarvest))
-            )[0]);
-
-            // Insert check for harvesting with scythe and act accordingly.
-            AddItem.ReplaceJump(0, ldarg_0);
-            AddItem.Prepend(
-                // if (this.harvestMethod != 0) {
-                ldarg_0,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
-                Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
-                Instructions.Brfalse(AttachLabel(AddItem[0])),
-                // Game1.createItemDebris (@object, vector, -1, null, -1)
-                Ldloc_object, // @object
-                Instructions.Ldloc_S(var_vector), // vector
-                Instructions.Ldc_I4_M1(), // -1
-                Instructions.Ldnull(), // null
-                Instructions.Ldc_I4_M1(), // -1
-                Instructions.Call(typeof(Game1), nameof(Game1.createItemDebris), typeof(Item), typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int)),
-                Instructions.Pop(), // For SDV 1.4
-                // Jump to tail
-                Instructions.Br(tail)
-            );
-        }
-
-        // For colored flowers we need to call createItemDebris instead of createObjectDebris
-        // Returns the local variable used for storing the quality of the crop.
-        private LocalBuilder Crop_harvest_colored_flowers(LocalBuilder var_vector) {
-            var code = FindCode(
-                // Game1.createObjectDebris (indexOfHarvest, xTile, yTile, -1, num3, 1f, null);
-                OpCodes.Ldarg_0,
-                OpCodes.Ldfld,
-                OpCodes.Call,
-                OpCodes.Ldarg_1,
-                OpCodes.Ldarg_2,
-                OpCodes.Ldc_I4_M1,
-                OpCodes.Ldloc_S, // [6] num3: quality
-                OpCodes.Ldc_R4,
-                OpCodes.Ldnull,
-                OpCodes.Call
-            );
-            var var_quality = code[6].operand as LocalBuilder; // num3
-            code.Replace(
-                // CreateDebris(this, num3);
-                Instructions.Ldarg_0(), // this
-                Instructions.Ldloc_S(var_quality), // num3
-                Instructions.Ldloc_S(var_vector), // vector
-                Instructions.Call(typeof(ModEntry), nameof(CreateDebris), typeof(Crop), typeof(int), typeof(Vector2))
-            );
-            return var_quality;
-        }
-
-       /**
-        * Patch code to drop sunflower seeds when harvesting with scythe.
-        * Patch code to let harvesting with scythe drop only 1 item.
-        * The other item drops are handled by the plucking code. 
-        */
-       void Crop_harvest_sunflower_drops(LocalBuilder var_quality) {
-            // Remove start of loop
-            var start_loop = FindCode(
-                // for (int i = 0
-                OpCodes.Ldc_I4_0,
-                OpCodes.Stloc_S,
-                OpCodes.Br,
-                // junimoHarvester != null
-                Instructions.Ldarg_S(4),
-                OpCodes.Brfalse
-            );
-            
-            // Get a reference to the 'i' variable.
-            var var_i = start_loop[1].operand as LocalBuilder;
-            // Remove the head of the loop.
-            start_loop.length = 3;
-            start_loop.Remove();
-
-            // Find the start of the 'drop sunflower seeds' part.
-            var DropSunflowerSeeds = FindCode(
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.indexOfHarvest)),
-                OpCodes.Call, // Netcode
-                Instructions.Ldc_I4(421), // 421 = Item ID of Sunflower.
-                OpCodes.Bne_Un
-            );
-            // Set quality for seeds to 0.
-            DropSunflowerSeeds.Append(
-                Instructions.Ldc_I4_0(),
-                Instructions.Stloc_S(var_quality)
-            );
-
-            // Remove end of loop and everything after that until the end of the harvest==1 branch.
-            var ScytheBranchTail = FindCode(
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
-                OpCodes.Call, // Netcode
-                OpCodes.Ldc_I4_1,
-                OpCodes.Bne_Un
-            ).Follow(4);
-            ScytheBranchTail.ExtendBackwards(
-                Instructions.Ldloc_S(var_i),
-                OpCodes.Ldc_I4_1,
-                OpCodes.Add,
-                Instructions.Stloc_S(var_i),
-                Instructions.Ldloc_S(var_i),
-                OpCodes.Ldloc_S, // num2
-                OpCodes.Blt
-            );
-            
-            // Change jump to end of loop into jump to drop sunflower seeds.
-            ScytheBranchTail.ReplaceJump(0, DropSunflowerSeeds[0]);
-
-            // Rewrite the tail of the Scythe harvest branch. 
-            ScytheBranchTail.Replace(
-                // Jump to the 'drop subflower seeds' part.
-                Instructions.Br(AttachLabel(DropSunflowerSeeds[0]))
-            );
-        }
-
+#region Patch Crop
         void Crop_harvest() {
-            var var_vector = Crop_harvest_fix_vector();
-            Crop_harvest_support_spring_onion(var_vector);
-            //var var_quality = Crop_harvest_colored_flowers(var_vector);
-            //Crop_harvest_sunflower_drops(var_quality);
-        }
+            var code = FindCode(
+                // HarvestMethod harvestMethod = data?.HarvestMethod ?? HarvestMethod.Grab;
+                OpCodes.Ldloc_S,
+                OpCodes.Brtrue_S,
+                OpCodes.Ldc_I4_0,
+                OpCodes.Br_S,
 
-        // Proxy method for creating an object suitable for spawning as debris.
-        public static void CreateDebris(Crop crop, int quality, Vector2 vector) {
-            Item dropped_item;
-            if (crop.programColored.Value) {
-                dropped_item = new StardewValley.Objects.ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value) {
-                    Quality = quality
-                };
-            } else {
-                dropped_item = new StardewValley.Object(crop.indexOfHarvest.Value, 1, false, -1, quality);
-            }
-            Game1.createItemDebris(dropped_item, vector, -1, null, -1);
+	            // if (harvestMethod == HarvestMethod.Scythe || isForcedScytheHarvest)
+                OpCodes.Ldloc_S,
+                Instructions.Ldfld(typeof(CropData), nameof(CropData.HarvestMethod)),
+                OpCodes.Stloc_S,
+                OpCodes.Ldloc_S,
+                OpCodes.Ldc_I4_1,
+                OpCodes.Ceq,
+                OpCodes.Ldarg_S,
+                OpCodes.Or,
+                OpCodes.Brfalse
+            );
+            code.Replace(
+                // if (isForcedScytheHarvest)
+                code[code.length-3],
+                code[code.length-1]
+            );
         }
 #endregion
 
 #region Patch HoeDirt
+        void HoeDirt_performUseAction() {
+            // Change the code that determines the harvest method for the crop &
+            // checks and handles Iridium Scythe to allow any scythe that our mod accepts.
+            var code = FindCode(
+                // HarvestMethod harvestMethod = this.crop.GetHarvestMethod();
+                OpCodes.Ldarg_0,
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                Instructions.Callvirt(typeof(Crop), nameof(Crop.GetHarvestMethod)),
+                OpCodes.Stloc_1,
 
-        static readonly InstructionMatcher HoeDirt_crop = Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop));
+                // if (Game1.player.CurrentTool != null && Game1.player.CurrentTool.isScythe() && Game1.player.CurrentTool.ItemId == "66")
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
+                OpCodes.Brfalse_S,
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
+                Instructions.Callvirt(typeof(Tool), nameof(Tool.isScythe)),
+                OpCodes.Brfalse_S,
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
+                Instructions.Callvirt_get(typeof(Item), nameof(Item.ItemId)),
+                Instructions.Ldstr("66"),
+                OpCodes.Call,
+                OpCodes.Brfalse_S,
+
+                // harvestMethod = HarvestMethod.Scythe;
+                OpCodes.Ldc_I4_1,
+                OpCodes.Stloc_1
+            );
+            code.Replace(
+                Instructions.Ldarg_0(),
+                code[0],
+                code[1],
+                Instructions.Call(typeof(ModEntry), nameof(get_harvest_method), typeof(HoeDirt), typeof(Tool)),
+                Instructions.Stloc_1()
+            );
+
+            // Replace the second Tool.isScythe call with our own.
+            code = code.FindNext(
+                Instructions.Callvirt(typeof(Tool), nameof(Tool.isScythe))
+            );
+            code[0] = Instructions.Call(typeof(ModEntry), nameof(IsScythe), typeof(Tool));
+        }
+
+        static HarvestMethod get_harvest_method(HoeDirt dirt, Tool tool) {
+            return get_harvest_method(GetHarvestSetting(dirt.crop), tool);
+        }
+
+        static HarvestMethod get_harvest_method(HarvestModeEnum mode, Tool tool) {
+            // Always force scythe if this is set as a non-pluckable crop (SCYTHE & NONE).
+            if (mode == HarvestModeEnum.SCYTHE || mode == HarvestModeEnum.NONE) return HarvestMethod.Scythe;
+
+            // Force scythe when trying to pluck depending on setting and whether the player is wielding a (valid) scythe.
+            switch (getConfig().PluckingScythe) {
+                case PluckingScytheEnum.NEVER:
+                    if (IsScythe(tool)) return HarvestMethod.Scythe;
+                    break;
+                case PluckingScytheEnum.INVALID:
+                    // Return whether the current tool can be used to harvest the crop.
+                    if (IsScythe(tool) && CheckMode(mode, tool)) {
+                        return HarvestMethod.Scythe;
+                    }
+                    break;
+                case PluckingScytheEnum.ALWAYS:
+                    break;
+            }
+            return HarvestMethod.Grab;
+        }
 
         void HoeDirt_performToolAction() {
-            var isScytheCode = FindCode(
-                // if (t is MeleeWeapon && 
-                OpCodes.Ldarg_1,
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                OpCodes.Brfalse,
-
-                // (t as MeleeWeapon).isScythe()))
-                OpCodes.Ldarg_1,
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                OpCodes.Ldc_I4_M1,
-                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
-                OpCodes.Brfalse            
-            );
-            isScytheCode.Replace(
-                isScytheCode[0],
-                Instructions.Call(GetType(), nameof(IsScythe), typeof(Tool)),
-                isScytheCode[2]
-            );
-
-            // Find the first (and only) harvestMethod==1 check.
-            var HarvestMethodCheck = isScytheCode.FindNext(
-                OpCodes.Ldarg_0,
-                HoeDirt_crop,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
-                OpCodes.Call, // Netcode implicit conversion
-                OpCodes.Ldc_I4_1,
-                OpCodes.Bne_Un
-            );
-
-            // Change the harvestMethod==1 check to:
-            //   damage=harvestMethod; 
-            //   if (CanHarvestCrop(crop, 1)) {
-            //   harvestMethod=1
-            // This code block is followed by a call to crop.harvest().
-            HarvestMethodCheck.Replace(
-                // damage = crop.harvestMethod.
-                HarvestMethodCheck[0],
-                HarvestMethodCheck[1],
-                HarvestMethodCheck[2],
-                HarvestMethodCheck[3],
-                Instructions.Starg_S(2), // damage
-
-                // if (CanHarvestCrop(crop, 1)) {
-                HarvestMethodCheck[0],
-                HarvestMethodCheck[1],
-                Instructions.Ldc_I4_1(),
-                Instructions.Call(typeof(ModEntry), nameof(CanHarvestCrop), typeof(Crop), typeof(int)),
-                Instructions.Brfalse((Label)HarvestMethodCheck[5].operand),
-                
-                // crop.harvestMethod = 1
-                HarvestMethodCheck[0],
-                HarvestMethodCheck[1],
-                HarvestMethodCheck[2],
-                Instructions.Ldc_I4_1(),
-                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value))
-            );
-
-            // Restore harvestMethod by setting harvestMethod=damage 
-            // after the following crop!=null check.
-            HarvestMethodCheck.FindNext(
-                OpCodes.Ldarg_0,
-                HoeDirt_crop,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.dead)),
-                OpCodes.Call, // Netcode
-                OpCodes.Brfalse
-            ).Prepend(
-                HarvestMethodCheck[0],
-                HarvestMethodCheck[1],
-                HarvestMethodCheck[2],
-                Instructions.Ldarg_2(), // damage
-                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value))
-            );
-        }
-
-
-        private void HoeDirt_performUseAction_hand(LocalBuilder var_temp_harvestMethod) {
-            // Do plucking logic
-            var harvest_hand = FindCode(
-                // if ((int)crop.harvestMethod == 0) {
-                OpCodes.Ldarg_0,
-                HoeDirt_crop,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
-                OpCodes.Call, // NetCode implicit cast.
-                OpCodes.Brtrue
-            );
-            harvest_hand.Replace(
-                // var temp_harvestmethod = crop.harvestMethod;
-                harvest_hand[0],
-                harvest_hand[1],
-                harvest_hand[2],
-                harvest_hand[3],
-                Instructions.Stloc_S(var_temp_harvestMethod),
-                
-                // if (ModEntry.CanHarvestCrop(crop, 0)) {
-                Instructions.Ldarg_0(),
-                harvest_hand[1],
-                Instructions.Ldc_I4_0(),
-                Instructions.Call(typeof(ModEntry), nameof(CanHarvestCrop), typeof(Crop), typeof(int)),
-                Instructions.Brfalse((Label)harvest_hand[4].operand),
-                
-                // crop.harvestMethod = 0;
-                Instructions.Ldarg_0(),
-                harvest_hand[1],
-                harvest_hand[2],
-                Instructions.Ldc_I4_0(),
-                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value))
-            );
-        }
-
-        private void HoeDirt_performUseAction_scythe(LocalBuilder var_temp_harvestMethod) {
-            // Do scything logic
-            var harvest_scythe = FindCode(
-                // if ((int)crop.harvestMethod == 1) {
-                OpCodes.Ldarg_0,
-                HoeDirt_crop,
-                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
-                OpCodes.Call, // NetCode implicit cast.
-                OpCodes.Ldc_I4_1,
-                OpCodes.Bne_Un
-            );
-            harvest_scythe.Replace(
-                // crop.harvestMethod = temp_harvestmethod;
-                harvest_scythe[0],
-                harvest_scythe[1],
-                harvest_scythe[2],
-                Instructions.Ldloc_S(var_temp_harvestMethod),
-                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value)),
-
-                // if (ModEntry.CanHarvestCrop(crop, 1)) {
-                Instructions.Ldarg_0(),
-                harvest_scythe[1],
-                Instructions.Ldc_I4_1(),
-                Instructions.Call(typeof(ModEntry), nameof(CanHarvestCrop), typeof(Crop), typeof(int)),
-                Instructions.Brfalse((Label)harvest_scythe[5].operand)
-            );
-
-            harvest_scythe = harvest_scythe.FindNext(
-                // Game1.player.CurrentTool is MeleeWeapon &&
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                OpCodes.Brfalse,
-
-                // (Game1.player.CurrentTool as MeleeWeapon).isScythe()
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                OpCodes.Ldc_I4_M1,
-                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
+            // Replace Tool.isScythe call with our own method.
+            var code = FindCode(
+                Instructions.Ldarg_1(),
+                Instructions.Callvirt(typeof(Tool), nameof(Tool.isScythe)),
                 OpCodes.Brfalse
             );
+            code[1] = Instructions.Call(typeof(ModEntry), nameof(IsScythe), typeof(Tool));
 
-            harvest_scythe.Replace(
-                harvest_scythe[0],
-                harvest_scythe[1],
-                Instructions.Call(GetType(), nameof(IsScythe), typeof(Tool)),
-                harvest_scythe[3]
+            // Replace the scythe check code with our own.
+            var crop = FindCode(
+                // if ((obj != null && obj.GetHarvestMethod() == HarvestMethod.Scythe) || (this.crop != null && t.ItemId == "66"))
+                OpCodes.Ldarg_0,
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                OpCodes.Dup,
+                OpCodes.Brtrue_S,
+                OpCodes.Pop,
+                OpCodes.Ldc_I4_0,
+                OpCodes.Br_S,
+                Instructions.Call(typeof(Crop), nameof(Crop.GetHarvestMethod)),
+                OpCodes.Ldc_I4_1,
+                OpCodes.Ceq,
+                OpCodes.Brtrue_S,
+                OpCodes.Ldarg_0,
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                OpCodes.Brfalse,
+                OpCodes.Ldarg_1,
+                Instructions.Callvirt_get(typeof(Item), nameof(Item.ItemId)),
+                Instructions.Ldstr("66"),
+                OpCodes.Call,
+                OpCodes.Brfalse
+            );
+            crop.length--;
+            crop.Replace(
+                // if (ModEntry.CanScytheCrop(this.crop, t))
+                Instructions.Ldarg_0(),
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                Instructions.Ldarg_1(),
+                Instructions.Call(typeof(ModEntry), nameof(CanScytheCrop), typeof(Crop), typeof(Tool))
+            );
+
+            // Add fix for forage, including quality & xp
+            var forage = crop.FindNext(
+                // if (this.crop == null && 
+                OpCodes.Ldarg_0,
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                OpCodes.Brtrue_S,
+                // t.ItemId == "66" &&
+                OpCodes.Ldarg_1,
+                Instructions.Callvirt_get(typeof(Item), nameof(Item.ItemId)),
+                Instructions.Ldstr("66"),
+                OpCodes.Call,
+                OpCodes.Brfalse
+            );
+            forage.Extend(
+	            // location.objects.Remove(tileLocation);
+                OpCodes.Ldloc_0,
+                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
+                OpCodes.Ldarg_3,
+                OpCodes.Callvirt,
+                OpCodes.Pop
+	        );
+            forage.Replace(
+                Instructions.Ldarg_0(),
+                Instructions.Ldarg_1(),
+                Instructions.Ldloc_0(),
+                Instructions.Ldarg_3(),
+                Instructions.Call(typeof(ModEntry), nameof(harvest_forage_with_xp), typeof(HoeDirt), typeof(Tool), typeof(GameLocation), typeof(Vector2))
             );
         }
 
-        void HoeDirt_performUseAction() {
-            LocalBuilder var_temp_harvestMethod = generator.DeclareLocal(typeof(int));
-            HoeDirt_performUseAction_hand(var_temp_harvestMethod);
-            HoeDirt_performUseAction_scythe(var_temp_harvestMethod);
+        static void harvest_forage_with_xp(HoeDirt dirt, Tool t, GameLocation location, Vector2 tileLocation) {
+            if (dirt.crop == null && CanScytheForage(t) && location.objects.ContainsKey(tileLocation) && location.objects[tileLocation].isForage()) {
+				Object o = location.objects[tileLocation];
+                harvest_forage_with_xp(o, t, tileLocation);
+				location.objects.Remove(tileLocation);
+			}
+        }
+
+        static void harvest_forage_with_xp(Object o, Tool t, Vector2 tileLocation) {
+            System.Random r = Utility.CreateDaySaveRandom(tileLocation.X, tileLocation.Y * 777f);
+            var who = t.getLastFarmerToUse();
+			if (t.getLastFarmerToUse() != null && who.professions.Contains(16)) {
+				o.Quality = 4;
+			} else if (r.NextDouble() < (double)(who.ForagingLevel / 30f)) {
+				o.Quality = 2;
+			} else if (r.NextDouble() < (double)(who.ForagingLevel / 15f)) {
+				o.Quality = 1;
+			}
+            who.gainExperience(2, 7);
+            Game1.stats.ItemsForaged += 1;
+            var vector = new Vector2(tileLocation.X * 64f + 32f, tileLocation.Y * 64f + 32f);
+			Game1.createItemDebris(o, vector, -1);
+            if (who.professions.Contains(13) && r.NextDouble() < 0.2) {
+                who.gainExperience(2, 7);
+                Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
+            }
         }
 #endregion
 
 #region Patch Object
         void Object_performToolAction() {
+            // Inject code that allows harvesting forage objects with the scythe.
             var code = BeginCode();
             Label begin = AttachLabel(code[0]);
             code.Prepend(
                 // Hook
                 Instructions.Ldarg_0(),
                 Instructions.Ldarg_1(),
-                Instructions.Ldarg_2(),
-                Instructions.Call(typeof(ModEntry), nameof(ScytheForage), typeof(StardewValley.Object), typeof(Tool), typeof(GameLocation)),
+                Instructions.Call(typeof(ModEntry), nameof(ScytheForage), typeof(Object), typeof(Tool)),
                 Instructions.Brfalse(begin),
                 Instructions.Ldc_I4_1(),
                 Instructions.Ret()
             );
         }
 
-        public static bool ScytheForage(StardewValley.Object o, Tool t, GameLocation loc) {
-            if (IsScythe(t)) {
-                if (CanHarvestObject(o, loc, HARVEST_SCYTHING)) {
-                    var who = t.getLastFarmerToUse();
-                    var vector = o.TileLocation;
-                    // For objects stored in GameLocation.Objects, the TileLocation is not always set.
-                    // So determine its location by looping trough all such objects.
-#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
-                    if (vector.X==0 && vector.Y==0) {
-#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
-                        foreach (System.Collections.Generic.KeyValuePair<Vector2, StardewValley.Object> pair in loc.Objects.Pairs) {
-                            if (pair.Value.Equals(o)) {
-                                vector = pair.Key;
-                                break;
-                            }
+        public static bool ScytheForage(Object o, Tool t) {
+            var config = getConfig();
+            if (config.HarvestAllForage && IsForage(o) && IsScythe(t) && CanScytheForage(t)) {
+                var vector = o.TileLocation;
+                // For objects stored in GameLocation.Objects, the TileLocation is not always set.
+                // So determine its location by looping trough all such objects.
+                if (vector == Vector2.Zero) {
+                    getInstance().Monitor.LogOnce("Harvesting forage with invalid location.", LogLevel.Info);
+                    var loc = o.Location;
+                    foreach (KeyValuePair<Vector2, Object> pair in loc.Objects.Pairs) {
+                        if (pair.Value.Equals(o)) {
+                            vector = pair.Key;
+                            break;
                         }
                     }
-                    Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
-                    if (who.professions.Contains(16)) {
-                        o.Quality = 4;
-                    } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 30)) {
-                        o.Quality = 2;
-                    } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 15)) {
-                        o.Quality = 1;
-                    }
-                    vector *= 64.0f;
-                    who.gainExperience(2, 7);
-                    Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
-                    Game1.stats.ItemsForaged += 1;
-                    if (who.professions.Contains(13) && random.NextDouble() < 0.2) {
-                        Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
-                        who.gainExperience(2, 7);
-                    }
-                    return true;
                 }
-            } 
-            return false;
+                harvest_forage_with_xp(o, t, vector);
+                return true;
+            } else {
+                return false;
+            }
         }
-
+        
         void GameLocation_checkAction() {
-            var var_object = generator.DeclareLocal(typeof(StardewValley.Object));
-            InstructionRange code;
-            Label cant_harvest;
-            code = FindCode(
-                // if (who.couldInventoryAcceptThisItem (objects [vector])) {
-                OpCodes.Ldarg_3, // who
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
-                OpCodes.Ldloc_1,
-                OpCodes.Callvirt,
-                // <- Insert is here.
-                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item)),
-                OpCodes.Brfalse
+            var code = FindCode(
+                // int oldQuality = obj.quality;
+                OpCodes.Ldloc_3, // obj
+                Instructions.Ldfld(typeof(Item), nameof(Item.quality)),
+                OpCodes.Call,
+                OpCodes.Stloc_S
             );
-            cant_harvest = (Label)code[6].operand;
-
-            // Check whether harvesting forage by hand is allowed.
-            code.Replace(
-                // var object = objects [vector];
-                code[1], // objects
-                code[2],
-                code[3],
-                code[4],
-                Instructions.Stloc_S(var_object),
-
-                // if (ModEntry.CanHarvestObject(object, location, 0)) {
-                Instructions.Ldloc_S(var_object),
-                Instructions.Ldarg_0(),
-                Instructions.Ldc_I4_0(),
-                Instructions.Call(typeof(ModEntry), nameof(CanHarvestObject), typeof(StardewValley.Object), typeof(GameLocation), typeof(int)),
-                Instructions.Brfalse(cant_harvest),
-
-                // if (who.couldInventoryAcceptThisItem (object)) {
-                code[0], // who
-                Instructions.Ldloc_S(var_object),
-                code[5], // couldInventoryAcceptThisItem
-                code[6]
-            );
-
-            // Move to this.objects [vector].Quality = quality;
-            code = code.FindNext(
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
-                OpCodes.Ldloc_1,
-                OpCodes.Callvirt,
-                OpCodes.Ldloc_S,
-                Instructions.Callvirt_set(typeof(StardewValley.Object), nameof(StardewValley.Object.Quality))
-            );
-            var label_dont_scythe = AttachLabel(code.End[0]);
-            // Append code to handle trigger harvest with scythe.
-            code.Append(
-                // if (ModEntry.CanHarvestObject(object, location, HARVEST_SCYTHING) {
-                Instructions.Ldloc_S(var_object),
-                Instructions.Ldarg_0(),
-                Instructions.Ldc_I4_1(), // HARVEST_SCYTHING
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CanHarvestObject), typeof(StardewValley.Object), typeof(GameLocation), typeof(int)),
-                Instructions.Brfalse(label_dont_scythe),
-                // ModEntry.TryScythe()
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.TryScythe))
+            // (Nothing jumps here.)
+            code.Prepend(
+                Instructions.Ldloc_3(),
+                Instructions.Ldarg_3(),
+                Instructions.Call(typeof(ModEntry), nameof(MayTriggerScythe), typeof(Object), typeof(Farmer)),
+                Instructions.Brfalse(AttachLabel(code[0])),
+                Instructions.Ldc_I4_1(),
+                Instructions.Ret()
             );
         }
         
-        static void TryScythe() {
-            // Copied from HoeDirt.performUseAction()
-            // TODO: Filter items that are not considered forage.
-            if (!PlayerIsMounted && Game1.player.CurrentTool != null && IsScythe(Game1.player.CurrentTool)) {
-                Game1.player.CanMove = false;
-                Game1.player.UsingTool = true;
-                Game1.player.canReleaseTool = true;
-                Game1.player.Halt ();
-                try {
-                    Game1.player.CurrentTool.beginUsing (Game1.currentLocation, (int)Game1.player.lastClick.X, (int)Game1.player.lastClick.Y, Game1.player);
-                } catch (Exception) {
-                }
-                ((MeleeWeapon)Game1.player.CurrentTool).setFarmerAnimating (Game1.player);
-            } 
+        static bool IsForage(Object o) {
+            // This somewhat reliably decides if something is forage.
+            return o.IsSpawnedObject && !o.questItem.Value && o.isForage();
         }
 
-        #endregion
+        static bool MayTriggerScythe(Object o, Farmer who) {
+            // Force scythe when trying to pluck depending on setting and whether the player is wielding a (valid) scythe.
+            var tool = who.CurrentTool;
+            if (IsForage(o) && (getConfig().HarvestAllForage || o.Location.isTileHoeDirt(o.TileLocation))) {
+                var mode = get_harvest_method(getConfig().Forage, tool);
+                if (mode == HarvestMethod.Grab) return false;
 
-#region Grass
-        private void Grass_performToolAction() {
-            var isScytheCode = FindCode(
-                // if (t is MeleeWeapon && 
-                OpCodes.Ldarg_1,
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                OpCodes.Brfalse,
-
-                // (t.Name.Contains("Scythe") || 
-                OpCodes.Ldarg_1,
-                Instructions.Callvirt_get(typeof(Item), nameof(Item.Name)),
-                Instructions.Ldstr("Scythe"),
-                OpCodes.Callvirt,
-                OpCodes.Brtrue,
-
-                // (t as MeleeWeapon).isScythe()))
-                OpCodes.Ldarg_1,
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                OpCodes.Ldc_I4_M1,
-                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
-                OpCodes.Brfalse
-            );
-            isScytheCode.Replace(
-                isScytheCode[0],
-                Instructions.Call(GetType(), nameof(IsScythe), typeof(Tool)),
-                isScytheCode[2]
-            );
+                // Copied from HoeDirt.performUseAction()
+                if (IsScythe(tool) && CanScytheForage(tool)) {
+                    who.CanMove = false;
+                    who.UsingTool = true;
+                    who.canReleaseTool = true;
+                    who.Halt();
+                    try {
+                        tool.beginUsing(o.Location, (int)who.lastClick.X, (int)who.lastClick.Y, who);
+                    } catch (System.Exception) {
+                    }
+                    ((MeleeWeapon)tool).setFarmerAnimating (Game1.player);
+                } else if (Game1.didPlayerJustClickAtAll(ignoreNonMouseHeldInput: true)) {
+                    // Requires scythe message
+                    Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:HoeDirt.cs.13915"));
+                }
+                return true;
+            } else {
+                return false;
+            }
         }
 
 #endregion

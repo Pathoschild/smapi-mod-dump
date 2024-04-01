@@ -11,7 +11,6 @@ mods:
    Farm Rearranger
    Hay Bales as Silos
    Limited Campfire Cooking
-   Market Day
    Multi Yield Crops
    Multiplayer Mod Checker
    Platonic Relationships
@@ -23,9 +22,9 @@ mods:
    Upgrade Empty Cabins
 
 latest commit:
-   commit b733e5454653c599f125885c80f46ec4f541c3a2
-   Author: Yiminxue Zheng <yiminxuezheng@gmail.com>
-   Date:   Wed Apr 14 09:55:55 2021 -0400
+   commit a2e925b38fcb45cd59d6bc6f204b550bdbb9779b
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Tue Mar 19 03:11:58 2024 -0400
    
-       Merge branch 'Develop'
+       Merge branch 'develop'
    

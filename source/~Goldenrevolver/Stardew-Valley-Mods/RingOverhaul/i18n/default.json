@@ -38,7 +38,5 @@
   "ConfigOldIridiumBandRecipe": "Old Iridium Band Recipe",
   "ConfigOldIridiumBandRecipeDescription": "Disabling the 'Iridium Band Changes Enabled' setting also force enables this setting",
   "ConfigIridiumBandChangesEnabled": "Iridium Band Changes Enabled",
-  "ConfigIridiumBandChangesEnabledDescription": "Disabling this setting also force enables the 'Old Iridium Band Recipe' setting",
-  "ConfigPrecisionBuffsSlingshotDamage": "Precision Buffs Slingshot Damage",
-  "ConfigFeedback": "Everything else about the mod can currently not be configured. Feedback is welcome."
+  "ConfigIridiumBandChangesEnabledDescription": "Disabling this setting also force enables the 'Old Iridium Band Recipe' setting"
 }

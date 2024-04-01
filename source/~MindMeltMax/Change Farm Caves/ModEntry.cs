@@ -10,6 +10,7 @@
 
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using System;
 
 namespace ChangeFarmCaves
@@ -21,6 +22,8 @@ namespace ChangeFarmCaves
         internal static ITranslationHelper ITranslations;
         internal static Config IConfig;
 
+        internal static FarmCave FarmCave => Game1.RequireLocation<FarmCave>("FarmCave");
+
         public override void Entry(IModHelper helper)
         {
             IHelper = Helper;
@@ -28,16 +31,15 @@ namespace ChangeFarmCaves
             ITranslations = Helper.Translation;
             IConfig = Helper.ReadConfig<Config>();
 
-            Helper.Events.GameLoop.GameLaunched += (s, e) => Patcher.Patch(helper);
+            Helper.Events.GameLoop.GameLaunched += (s, e) => Patches.Patch(helper);
             Helper.Events.GameLoop.DayStarted += (s, e) =>
             {
-                if (!Game1.IsMasterGame) return;
-                var farmCave = Game1.getLocationFromName("FarmCave");
-                string data = farmCave.modData.ContainsKey("ChangeFarmCaves.ShouldChange") ? farmCave.modData["ChangeFarmCaves.ShouldChange"] : null;
-                if (data is not null)
+                if (!Game1.IsMasterGame) 
+                    return;
+                if (FarmCave.modData.TryGetValue("ChangeFarmCaves.ShouldChange", out string data))
                 {
                     new Event().answerDialogue(data.Split(',')[0], Convert.ToInt32(data.Split(',')[1]));
-                    farmCave.modData.Remove("ChangeFarmCaves.ShouldChange");
+                    FarmCave.modData.Remove("ChangeFarmCaves.ShouldChange");
                 }
             };
         }

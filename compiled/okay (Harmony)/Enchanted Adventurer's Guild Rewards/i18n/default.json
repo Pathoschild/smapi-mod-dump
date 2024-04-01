@@ -1,0 +1,7 @@
+{
+  "SkeletonMask_BonusDescription": "Empowers the {{boneSwordName}}.",
+  "TemplarsBladeVampiricCorruptionProgress": "The {{templarsBladeName}} absorbs some of the foe's life force",
+  "TemplarsBladeHolyCorruptionProgress": "The {{templarsBladeName}} absorbs some of the foe's arcane energy",
+  "TemplarsBladeHolyAndVampiricCorruptionProgress": "The {{templarsBladeName}} absorbs some of the foe's life force and arcane energy",
+  "TemplarsBladeCorruptionTransform": "The {{templarsBladeName}} transformed into the {{transformSwordName}}"
+}

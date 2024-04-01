@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/HappyHomeDesigner
+**
+*************************************************/
+
+{
+	"Catalogue" : "Happy Home Catalogue/table/2 2/-1/1/230000/-1/{0}/0/{1}/true",
+	"CollectorsCatalogue" : "Collector's Catalogue/table/1 2/1 1/1/50000/-1/{0}/2/{1}/true",
+	"DeluxeCatalogue" : "Designer's Dream Catalogue'/table/2 2/2 1/1/300000/-1/{0}/6/{1}/true"
+}

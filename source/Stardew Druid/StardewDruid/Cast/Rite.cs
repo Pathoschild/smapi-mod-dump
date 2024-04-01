@@ -9,22 +9,33 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Netcode;
+using StardewDruid.Cast.Ether;
+using StardewDruid.Cast.Fates;
+using StardewDruid.Cast.Mists;
+using StardewDruid.Cast.Stars;
 using StardewDruid.Dialogue;
-using StardewDruid.Event.World;
+using StardewDruid.Event;
 using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buffs;
 using StardewValley.Characters;
+using StardewValley.GameData.HomeRenovations;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Xml.Linq;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
+using static StardewDruid.Event.SpellHandle;
 
 
 namespace StardewDruid.Cast
@@ -36,17 +47,15 @@ namespace StardewDruid.Cast
 
         public string castType;
 
-        public bool castBuffs;
-
         public int castLevel;
 
         public Vector2 castVector;
 
+        public int castTool;
+
         public StardewValley.Farmer caster;
 
         public StardewValley.GameLocation castLocation;
-
-        public int direction;
 
         public Dictionary<string, int> castTask;
 
@@ -58,14 +67,165 @@ namespace StardewDruid.Cast
 
         public int moveCheck;
 
+        public List<Type> castLimits;
+
+        public List<TemporaryAnimatedSprite> castAnimations;
+
+        public int castInterval;
+
+        public int castTimer;
+
+        public bool castActive;
+
+        public List<Vector2> vectorList;
+
+        public Dictionary<string, List<string>> witnesses;
+
+        public List<TemporaryAnimatedSprite> chargeAnimations;
+
+        public string chargeType;
+
+        public int chargeTimer;
+
+        public bool chargeActive;
+
+        public string chargeLocation;
+
+        Texture2D buffTexture;
+
+        public string appliedBuff;
+
         public Rite()
         {
 
             caster = Game1.player;
 
+            randomIndex = new();
+
+            castAnimations = new();
+
+            chargeAnimations = new();
+
+            witnesses = new();
+
+            buffTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Displays.png"));
+
+            reset();
+
+        }
+
+        public void shutdown()
+        {
+
+            if (castAnimations.Count > 0)
+            {
+
+                foreach (TemporaryAnimatedSprite sprite in castAnimations)
+                {
+
+                    sprite.Parent.temporarySprites.Remove(sprite);
+
+                }
+
+                castAnimations.Clear();
+
+            }
+
+            castActive = false;
+
+        }
+
+        public void reset()
+        {
+
+            effectCasts = new();
+
+            castSource = new();
+
+            castLimits = new();
+
+            castInterval = 40;
+
+            vectorList = new();
+
+            castLevel = 0;
+
             castLocation = caster.currentLocation;
 
-            randomIndex = new();
+            castTask = Mod.instance.TaskList();
+
+        }
+
+        public bool start()
+        {
+
+            int toolIndex = Mod.instance.AttuneableWeapon();
+
+            if (toolIndex == -1)
+            {
+
+                Mod.instance.CastMessage("Rite requires a melee weapon or tool");
+
+                return false;
+
+            }
+
+            string activeBlessing = Mod.instance.CurrentBlessing();
+
+            if (Mod.instance.CurrentProgress() <= 1)
+            {
+
+                activeBlessing = "none";
+
+            }
+            else if (Mod.instance.Config.slotAttune)
+            {
+
+                activeBlessing = GetSlotBlessing();
+
+                if (activeBlessing == "none")
+                {
+
+                    Mod.instance.CastMessage("No rite attuned to slot " + (Game1.player.CurrentToolIndex + 1));
+
+                    return false;
+
+                }
+
+            }
+            else
+            {
+
+                if (Mod.instance.weaponAttunement.ContainsKey(toolIndex))
+                {
+
+                    activeBlessing = Mod.instance.weaponAttunement[toolIndex];
+
+                    if (!Mod.instance.blessingList.Contains(activeBlessing))
+                    {
+
+                        Mod.instance.CastMessage("I'm not attuned to this artifact... perhaps the Effigy can help");
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+            if(activeBlessing != castType)
+            {
+
+                shutdown();
+
+            }
+
+            castType = activeBlessing;
+
+            castTool = toolIndex;
+
+            castLocation = caster.currentLocation;
 
             spawnIndex = Map.SpawnData.SpawnIndex(castLocation);
 
@@ -76,9 +236,561 @@ namespace StardewDruid.Cast
 
             }
 
-            effectCasts = new();
+            CastVector();
 
-            castSource = new(0);
+            reset();
+
+            if (activeBlessing == "stars" || activeBlessing == "fates")
+            {
+
+                castInterval = 60;
+
+            }
+
+            castActive = true;
+
+            return true;
+
+        }
+
+        public void update()
+        {
+
+            castTimer--;
+
+            ChargeUpdate();
+
+            if (!castActive)
+            {
+                
+                return;
+
+            }
+
+            List<TemporaryAnimatedSprite> decorations;
+
+            if (castTimer <= 0)
+            {
+
+                if (!(castLevel == 0 || Mod.instance.Config.riteButtons.GetState() == SButtonState.Held))
+                {
+
+                    shutdown();
+
+                    return;
+
+                }
+
+                if (Mod.instance.Config.slotAttune)
+                {
+
+                    string slot = GetSlotBlessing();
+
+                    if (castType != slot || Game1.player.currentLocation.Name != castLocation.Name)
+                    {
+
+                        if (!start())
+                        {
+
+                            shutdown();
+
+                            return;
+
+                        }
+
+                    }
+
+                }
+                else
+                {
+
+                    int toolIndex = Mod.instance.AttuneableWeapon();
+
+                    if (castTool != toolIndex || Game1.player.currentLocation.Name != castLocation.Name)
+                    {
+
+                        if (!start())
+                        {
+
+                            shutdown();
+
+                            return;
+
+                        }
+
+                    }
+
+                }
+
+                if (castLevel == 0)
+                {
+
+                    if (Mod.instance.CheckTrigger())
+                    {
+
+                        shutdown();
+
+                        return;
+
+                    }
+
+                }
+                
+
+                if (castType == "none")
+                {
+
+                    if (Mod.instance.CurrentProgress() <= 1)
+                    {
+
+                        Mod.instance.CastMessage(Mod.instance.Config.journalButtons.ToString() + " to open Druid Journal and get started");
+                    }
+                    else
+                    {
+
+                        Mod.instance.CastMessage("Nothing happened... ");
+                    }
+
+                    shutdown();
+
+                    return;
+
+                }
+
+                if (spawnIndex.Count == 0 && !Mod.instance.eventRegister.ContainsKey("active"))
+                {
+
+                    Mod.instance.CastMessage("Unable to reach the otherworldly plane from this location");
+
+                    shutdown();
+
+                    return;
+
+                }
+
+                if (Game1.player.Stamina <= 32 || (Game1.player.health/Game1.player.maxHealth) <= 0.3)
+                {
+
+                    Mod.instance.AutoConsume();
+
+                    if (Game1.player.Stamina <= 32)
+                    {
+
+                        if (castLevel > 0)
+                        {
+                            Mod.instance.CastMessage("Not enough energy to continue rite", 3);
+
+                        }
+                        else
+                        {
+                            Mod.instance.CastMessage("Not enough energy to perform rite", 3);
+
+                        }
+
+                        shutdown();
+
+                        return;
+
+                    }
+
+                }
+
+                CastVector();
+
+                cast();
+
+                castTimer = castInterval;
+
+                castLevel++;
+
+                if (castAnimations.Count > 0)
+                {
+
+                    TemporaryAnimatedSprite decoration = castAnimations.First();
+
+                    if (!decoration.Parent.temporarySprites.Contains(decoration))
+                    {
+
+                        castAnimations.Clear();
+
+                    }
+
+                    if(decoration.Parent != castLocation)
+                    {
+
+                        foreach(TemporaryAnimatedSprite sprite in castAnimations)
+                        {
+
+                            sprite.Parent.temporarySprites.Remove(sprite);
+
+                        }
+
+                        castAnimations.Clear();
+
+                    }
+
+                }
+
+            }
+
+            if (castAnimations.Count == 0)
+            {
+
+                decorations = ModUtility.AnimateDecoration(castLocation, caster.Position, castType,1f,2400);
+
+                castAnimations = decorations;
+
+            }
+            else
+            {
+                foreach (TemporaryAnimatedSprite sprite in castAnimations)
+                {
+
+                    if (sprite.timer >= 2000)
+                    {
+
+                        sprite.reset();
+
+                    }
+
+                    sprite.position = caster.Position - new Vector2(64, 64);
+
+                }
+
+            }
+
+        }
+
+        public void charge(string button)
+        {
+
+            if(button == "none") { return; }
+
+            if (button == "Special")
+            {
+
+                if (!castActive) { return; }
+
+                if (castType == "ether") { return; }
+
+                if (chargeActive && chargeType != castType)
+                {
+
+                    ChargeShutdown();
+
+                }
+
+                ChargeSet(castType);
+
+                return;
+
+            }
+
+            if(button == "Action")
+            {
+
+                if (!chargeActive) { return; }
+
+                if (Mod.instance.AttuneableWeapon() == -1) { return; }
+
+                int radius = Mod.instance.eventRegister.ContainsKey("transform") ? 2 : 1;
+
+                switch (chargeType)
+                {
+
+                    case "chaos":
+
+                        if (!Mod.instance.eventRegister.ContainsKey("chaos"))
+                        {
+
+                            List<StardewValley.Monsters.Monster> checkMonsters = GetMonstersAround(Game1.player.FacingDirection, 4, 3);
+
+                            if (checkMonsters.Count > 0)
+                            {
+
+                                SpellHandle barrage = new(Game1.player.currentLocation, checkMonsters.First().Position, Game1.player.Position, 2, 1, -1, Mod.instance.DamageLevel(), 4);
+
+                                barrage.type = SpellHandle.barrages.chaos;
+
+                                barrage.LaunchChaos();
+
+                                Mod.instance.spellRegister.Add(barrage);
+
+                            }
+
+                        }
+
+                        break;
+
+                    case "fates":
+
+                        if (!Mod.instance.eventRegister.ContainsKey("shield"))
+                        {
+
+                            List<StardewValley.Monsters.Monster> checkMonsters = GetMonstersAround(Game1.player.FacingDirection, radius, radius);
+
+                            if (checkMonsters.Count > 0)
+                            {
+
+                                ShieldEvent shieldEvent = new(Game1.player.Position);
+
+                                shieldEvent.EventTrigger();
+
+                                TemporaryAnimatedSprite cursorAnimation = new(0, 300, 1, 1, Game1.player.Position - new Vector2(32,32), false, false)
+                                {
+
+                                    sourceRect = new(32,32,32,32),
+
+                                    sourceRectStartingPos = new Vector2(32, 32),
+
+                                    texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Cursors.png")),
+
+                                    scale = 4f,
+
+                                    layerDepth = 0.001f,
+
+                                    alpha = 0.25f,
+
+                                };
+
+                                Game1.player.currentLocation.temporarySprites.Add(cursorAnimation);
+
+                            }
+
+                        }
+
+                        break;
+
+                    case "stars":
+
+                        if (!Mod.instance.eventRegister.ContainsKey("burst"))
+                        {
+
+                            List<StardewValley.Monsters.Monster> checkMonsters = GetMonstersAround(Game1.player.FacingDirection, radius, radius);
+
+                            if (checkMonsters.Count > 0)
+                            {
+
+                                BurstEvent burstEvent = new(Game1.player.Position, checkMonsters);
+
+                                burstEvent.EventTrigger();
+
+                            }
+
+                        }
+
+                        break;
+
+                    case "mists":
+
+                        if (!Mod.instance.eventRegister.ContainsKey("veil"))
+                        {
+
+                            List<StardewValley.Monsters.Monster> checkMonsters = GetMonstersAround(Game1.player.FacingDirection, radius, radius);
+
+                            if (checkMonsters.Count > 0)
+                            {
+
+                                VeilEvent veilEvent = new(Game1.player.Position);
+
+                                veilEvent.EventTrigger();
+
+                            }
+
+                        }
+
+                        break;
+
+                    default: // weald
+
+                        if (!Mod.instance.eventRegister.ContainsKey("sap"))
+                        {
+
+                            List<StardewValley.Monsters.Monster> checkMonsters = GetMonstersAround(Game1.player.FacingDirection, radius, radius);
+
+                            if (checkMonsters.Count > 0)
+                            {
+
+                                SapEvent sapEvent = new(Game1.player.Position,checkMonsters);
+
+                                sapEvent.EventTrigger();
+
+                            }
+
+                        }
+
+                        break;
+
+                }
+
+            }
+
+        }
+
+        public void ChargeUpdate()
+        {
+
+            if (!chargeActive)
+            {
+
+                return;
+
+            }
+
+            chargeTimer--;
+
+            if (chargeTimer <= 0)
+            {
+
+                ChargeShutdown();
+
+                return;
+
+            }
+
+            if(chargeLocation != Game1.player.currentLocation.Name)
+            {
+
+                ChargeShutdown();
+
+                chargeActive = true;
+
+                chargeLocation = Game1.player.currentLocation.Name;
+
+            }
+
+            if (chargeAnimations.Count == 0)
+            {
+
+                TemporaryAnimatedSprite cursor = ModUtility.AnimateCharge(caster.currentLocation, caster.Position, chargeType);
+
+                chargeAnimations.Add(cursor);
+
+            }
+            else
+            {
+                foreach (TemporaryAnimatedSprite sprite in chargeAnimations)
+                {
+
+                    if (sprite.timer >= 2000)
+                    {
+
+                        sprite.reset();
+
+                    }
+
+                    sprite.position = caster.Position - new Vector2(24, 24);
+
+                }
+
+            }
+
+        }
+
+        public void ChargeShutdown()
+        {
+
+            if (chargeAnimations.Count > 0)
+            {
+
+                foreach (TemporaryAnimatedSprite sprite in chargeAnimations)
+                {
+
+                    sprite.Parent.temporarySprites.Remove(sprite);
+
+                }
+
+                chargeAnimations.Clear();
+
+            }
+
+            chargeActive = false;
+
+        }
+
+        public void ChargeSet(string type)
+        {
+
+            int progress = Mod.instance.CurrentProgress();
+
+            switch (type)
+            {
+                case "fates":
+
+                    if(progress < 25) { return; }
+
+                    break;
+
+                case "stars":
+
+                    if (progress < 16) { return; }
+
+                    if (chargeTimer > 0 && chargeType == "mists" && progress >= 37)
+                    {
+
+                        type = "chaos";
+
+                    }
+
+                    break;
+
+                case "mists":
+
+                    if (progress < 12) { return; }
+
+                    if (chargeTimer > 0 && chargeType == "stars" && progress >= 37)
+                    {
+
+                        type = "chaos";
+
+                    }
+
+                    break;
+
+                default: // weald
+
+                    if (progress < 6) { return; }
+
+                    break;
+
+            }
+
+            chargeActive = true;
+
+            chargeType = type;
+
+            chargeTimer = 7200;
+
+            chargeLocation = Game1.player.currentLocation.Name;
+
+        }
+
+        public bool Witnessed(string type, NPC witness)
+        {
+
+            if (!witnesses.ContainsKey(type))
+            {
+
+                witnesses[type] = new()
+                {
+                    witness.Name,
+
+                };
+
+                return false;
+
+            }
+
+            if (!witnesses[type].Contains(witness.Name))
+            {
+
+                witnesses[type].Add(witness.Name);
+
+                return false;
+
+            }
+
+            return true;
 
         }
 
@@ -94,7 +806,16 @@ namespace StardewDruid.Cast
 
             }
 
-            switch (num % 12)
+            int real = num % 12;
+
+            if (!Mod.instance.Customisation.slotAttunement.ContainsKey(real))
+            {
+
+                return "none";
+
+            }
+
+            switch (Mod.instance.Customisation.slotAttunement[real])
             {
                 case 0:
                     slotBlessing = "weald";
@@ -111,6 +832,16 @@ namespace StardewDruid.Cast
                 case 4:
                     slotBlessing = "ether";
                     break;
+                default:
+                    slotBlessing = "none";
+                    break;
+            }
+
+            if (!Mod.instance.blessingList.Contains(slotBlessing))
+            {
+
+                return "none";
+
             }
 
             return slotBlessing;
@@ -126,28 +857,37 @@ namespace StardewDruid.Cast
                 case "mists":
                 case "fates":
 
-                    if (castLevel % 4 == 0)
-                    {
+                    //if (castLevel % 2 == 0)
+                    //{
 
-                        List<int> targetList = GetTargetCursor(Game1.player.getTileLocation(), Game1.player.FacingDirection, 5);
-
-                        direction = targetList[0];
+                        List<int> targetList = GetTargetCursor(Game1.player.Tile, Game1.player.FacingDirection, 5);
 
                         castVector = new(targetList[1], targetList[2]);
 
-                    }
+                    //}
 
                     break;
 
                 default: // earth / stars / fates
 
-                    direction = Game1.player.FacingDirection;
-
-                    castVector = Game1.player.getTileLocation();
+                    castVector = Game1.player.Tile;
 
                     break;
 
             }
+
+        }
+
+        public static List<StardewValley.Monsters.Monster> GetMonstersAround(int direction, int distance, int radius)
+        {
+
+            List<int> checkVectors = GetTargetDirectional(Game1.player.Tile, direction, distance);
+
+            Vector2 checkVector = new(checkVectors[1], checkVectors[2]);
+
+            List<StardewValley.Monsters.Monster> checkMonsters = ModUtility.MonsterProximity(Game1.player.currentLocation, new() { checkVector * 64 }, radius);
+
+            return checkMonsters;
 
         }
 
@@ -258,14 +998,14 @@ namespace StardewDruid.Cast
 
         }
 
-        public void CastRite()
+        public void cast()
         {
 
             Vector2 castPosition = castVector * 64;
 
             float castLimit = 480;
 
-            if (castLocation.characters.Count > 0)
+            if (castLocation.characters.Count > 0 && !Mod.instance.eventRegister.ContainsKey("active"))
             {
 
                 foreach (NPC riteWitness in castLocation.characters)
@@ -294,7 +1034,7 @@ namespace StardewDruid.Cast
                     if (Vector2.Distance(riteWitness.Position, castPosition) < castLimit)
                     {
 
-                        if (Mod.instance.WitnessedRite(castType, riteWitness))
+                        if (Witnessed(castType, riteWitness))
                         {
 
                             continue;
@@ -305,11 +1045,14 @@ namespace StardewDruid.Cast
                         {
 
                             petPet.checkAction(caster, castLocation);
+
+                            continue;
+
                         }
 
                         if (Game1.NPCGiftTastes.ContainsKey(riteWitness.Name))
                         {
-
+ 
                             if (castType == "stars")
                             {
 
@@ -326,13 +1069,13 @@ namespace StardewDruid.Cast
                             {
 
 
-                                effectCasts[riteWitness.Position] = new Cast.Fates.Trick(castVector, this, riteWitness);
+                                effectCasts[riteWitness.Position] = new Cast.Fates.Trick(castVector, riteWitness);
 
                             }
                             else
                             {
 
-                                effectCasts[riteWitness.Position] = new Cast.Weald.Villager(castVector, this, riteWitness);
+                                effectCasts[riteWitness.Position] = new Cast.Weald.Villager(castVector, riteWitness);
 
                             }
 
@@ -357,7 +1100,7 @@ namespace StardewDruid.Cast
 
                     }
 
-                    Cast.Weald.Animal animalCast = new(castVector, this, pair.Value);
+                    Cast.Weald.Animal animalCast = new(castVector, pair.Value);
 
                     animalCast.CastEffect();
 
@@ -378,7 +1121,7 @@ namespace StardewDruid.Cast
 
                     }
 
-                    Cast.Weald.Animal animalCast = new(castVector, this, pair.Value);
+                    Cast.Weald.Animal animalCast = new(castVector, pair.Value);
 
                     animalCast.CastEffect();
 
@@ -387,30 +1130,23 @@ namespace StardewDruid.Cast
 
             }
 
-            if (castBuffs)
+            Vector2 casterVector = caster.Tile;
+
+            if (castLocation.terrainFeatures.ContainsKey(casterVector))
             {
 
-                Vector2 casterVector = caster.getTileLocation();
-
-                if (castLocation.terrainFeatures.ContainsKey(casterVector))
+                if (castLocation.terrainFeatures[casterVector] is StardewValley.TerrainFeatures.Grass)
                 {
 
-                    if (castLocation.terrainFeatures[casterVector] is StardewValley.TerrainFeatures.Grass)
-                    {
-                        Buff speedBuff = new("Druidic Freneticism", 6000, "Rite of the " + castType, 9);
+                    BuffEffects buffEffect = new();
 
-                        speedBuff.buffAttributes[9] = 2;
+                    buffEffect.Speed.Set(2);
 
-                        speedBuff.which = 184652;
+                    string riteDisplay = "Rite of the " + castType[0].ToString().ToUpper() + castType.Substring(1);
 
-                        if (!Game1.buffsDisplay.hasBuff(184652))
-                        {
+                    Buff speedBuff = new("184652",source: riteDisplay, displaySource: riteDisplay, duration:3000, displayName:"Druidic Freneticism",description:"Speed increased when casting amongst Grass", effects: buffEffect);
 
-                            Game1.buffsDisplay.addOtherBuff(speedBuff);
-
-                        }
-
-                    }
+                    caster.buffs.Apply(speedBuff);
 
                 }
 
@@ -443,7 +1179,7 @@ namespace StardewDruid.Cast
 
                     break;
 
-                default: //CastEarth
+                default:
 
                     CastWeald();
 
@@ -471,7 +1207,7 @@ namespace StardewDruid.Cast
 
                     Type effectType = effectHandle.GetType();
 
-                    if (Mod.instance.activeData.castLimits.Contains(effectType))
+                    if (castLimits.Contains(effectType))
                     {
 
                         continue;
@@ -490,7 +1226,7 @@ namespace StardewDruid.Cast
                     if (effectHandle.castLimit)
                     {
 
-                        Mod.instance.activeData.castLimits.Add(effectEntry.Value.GetType());
+                        castLimits.Add(effectEntry.Value.GetType());
 
                     }
 
@@ -534,6 +1270,8 @@ namespace StardewDruid.Cast
 
             float damageLevel = Mod.instance.DamageLevel();
 
+            //Dictionary<string, int> taskList = Mod.instance.TaskList();
+
             //---------------------------------------------
             // Weald Sound
             //---------------------------------------------
@@ -551,29 +1289,16 @@ namespace StardewDruid.Cast
                 if (soundLevel == 1)
                 {
 
-                    Game1.player.currentLocation.playSoundPitched("discoverMineral", 600 + (pitchLevel * 200));
+                    Game1.player.currentLocation.playSound("discoverMineral", castVector * 64, 600 + (pitchLevel * 200));
 
                 }
 
                 if (soundLevel == 3)
                 {
 
-                    Game1.player.currentLocation.playSoundPitched("discoverMineral", 700 + (pitchLevel * 200));
+                    Game1.player.currentLocation.playSound("discoverMineral", castVector * 64, 700 + (pitchLevel * 200));
 
                 }
-
-            }
-
-            //---------------------------------------------
-            // Wisps
-            //---------------------------------------------
-
-            if (Mod.instance.TaskList().ContainsKey("masterWisps"))
-            {
-
-
-
-
 
             }
 
@@ -603,7 +1328,7 @@ namespace StardewDruid.Cast
                                 if (Map.SpawnData.StoneIndex().Contains(tileObject.ParentSheetIndex))
                                 {
 
-                                    effectCasts[tileVector] = new Cast.Weald.Weed(tileVector, this, damageLevel);
+                                    effectCasts[tileVector] = new Cast.Weald.Weed(tileVector, damageLevel);
 
                                 }
 
@@ -611,13 +1336,13 @@ namespace StardewDruid.Cast
                             else if (tileObject.name.Contains("Weeds") || tileObject.name.Contains("Twig"))
                             {
 
-                                effectCasts[tileVector] = new Cast.Weald.Weed(tileVector, this, damageLevel);
+                                effectCasts[tileVector] = new Cast.Weald.Weed(tileVector, damageLevel);
 
                             }
                             else if (castLocation is MineShaft && tileObject is BreakableContainer)
                             {
 
-                                effectCasts[tileVector] = new Cast.Weald.Weed(tileVector, this, damageLevel);
+                                effectCasts[tileVector] = new Cast.Weald.Weed(tileVector, damageLevel);
 
                             }
 
@@ -696,7 +1421,7 @@ namespace StardewDruid.Cast
 
                     }
 
-                    Vector2 featureVector = bushFeature.tilePosition.Value;
+                    Vector2 featureVector = bushFeature.Tile;
 
                     if (Mod.instance.featureCasts[locationName].ContainsKey(featureVector)) // already served
                     {
@@ -708,15 +1433,17 @@ namespace StardewDruid.Cast
                     if (Vector2.Distance(featureVector, castVector) < castLimit)
                     {
 
-                        effectCasts[featureVector] = new Cast.Weald.Bush(featureVector, this, bushFeature);
+                        effectCasts[featureVector] = new Cast.Weald.Bush(featureVector, bushFeature);
 
                         Mod.instance.featureCasts[locationName].Add(featureVector, 1);
 
                     }
 
+
                 }
 
             }
+
 
             if (castLocation.resourceClumps.Count > 0 && progressLevel >= 3)
             {
@@ -724,7 +1451,7 @@ namespace StardewDruid.Cast
                 foreach (ResourceClump resourceClump in castLocation.resourceClumps)
                 {
 
-                    Vector2 featureVector = resourceClump.tile.Value;
+                    Vector2 featureVector = resourceClump.Tile;
 
                     if (Mod.instance.featureCasts[locationName].ContainsKey(featureVector)) // already served
                     {
@@ -742,13 +1469,13 @@ namespace StardewDruid.Cast
                             case 600:
                             case 602:
 
-                                effectCasts[featureVector] = new Cast.Weald.Stump(featureVector, this, resourceClump, "Farm");
+                                effectCasts[featureVector] = new Cast.Weald.Stump(featureVector, resourceClump, "Farm");
 
                                 break;
 
                             default:
 
-                                effectCasts[featureVector] = new Cast.Weald.Boulder(featureVector, this, resourceClump);
+                                effectCasts[featureVector] = new Cast.Weald.Boulder(featureVector, resourceClump);
 
                                 break;
 
@@ -761,7 +1488,7 @@ namespace StardewDruid.Cast
 
             }
 
-            if (castLocation is Woods woodyLocation && progressLevel >= 3)
+            /*if (castLocation is Woods woodyLocation && progressLevel >= 3)
             {
 
                 foreach (ResourceClump resourceClump in woodyLocation.stumps)
@@ -779,15 +1506,16 @@ namespace StardewDruid.Cast
                     if (Vector2.Distance(featureVector, castVector) < castLimit)
                     {
 
-                        effectCasts[featureVector] = new Cast.Weald.Stump(featureVector, this, resourceClump, "Woods");
+                        effectCasts[featureVector] = new Cast.Weald.Stump(featureVector, resourceClump, "Woods");
 
                         Mod.instance.featureCasts[locationName][featureVector] = 1;
 
                     }
 
+
                 }
 
-            }
+            }*/
 
             // ---------------------------------------------
             // Random Effect Center Selection
@@ -850,6 +1578,28 @@ namespace StardewDruid.Cast
 
             }
 
+            //---------------------------------------------
+            // Wisps
+            //---------------------------------------------
+
+            if (progressLevel >= 36)
+            {
+                
+                for (int v = 0; v < centerVectors.Count; v++)
+                {
+                    
+                    Vector2 centerVector = centerVectors[v];
+
+                    CastWisps(centerVector);
+
+                }
+
+            }
+
+            // ---------------------------------------------
+            // Radial casts
+            // ---------------------------------------------
+
             int castRadius = 3;
 
             if (Mod.instance.virtualHoe.UpgradeLevel >= 3 || Mod.instance.virtualCan.UpgradeLevel >= 3)
@@ -905,7 +1655,7 @@ namespace StardewDruid.Cast
 
                                 if (tileIndex == 1938)
                                 {
-                                    effectCasts[tileVector] = new Cast.Weald.Bowl(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Weald.Bowl(tileVector);
                                 }
 
                             }
@@ -925,7 +1675,7 @@ namespace StardewDruid.Cast
                                 if (tidalList.Contains(buildingTile.TileIndex))
                                 {
 
-                                    effectCasts[tileVector] = new Cast.Weald.Pool(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Weald.Pool(tileVector);
 
                                 }
 
@@ -958,17 +1708,19 @@ namespace StardewDruid.Cast
                                         if (fruitFeature.growthStage.Value >= 4)
                                         {
 
-                                            effectCasts[tileVector] = new Cast.Weald.FruitTree(tileVector, this);
+                                            effectCasts[tileVector] = new Cast.Weald.FruitTree(tileVector);
 
                                         }
                                         else if (progressLevel >= 5)
                                         {
 
-                                            effectCasts[tileVector] = new Cast.Weald.FruitSapling(tileVector, this);
+                                            effectCasts[tileVector] = new Cast.Weald.FruitSapling(tileVector);
 
                                         }
 
                                         Mod.instance.targetCasts[locationName][tileVector] = "Tree";
+
+                                        ModUtility.AnimateCursor(castLocation, tileVector * 64);
 
                                         break;
 
@@ -979,19 +1731,21 @@ namespace StardewDruid.Cast
                                         if (treeFeature.growthStage.Value >= 5)
                                         {
 
-                                            effectCasts[tileVector] = new Cast.Weald.Tree(tileVector, this);
+                                            effectCasts[tileVector] = new Cast.Weald.Tree(tileVector);
 
                                             Mod.instance.targetCasts[locationName][tileVector] = "Tree";
 
                                         }
-                                        else if (progressLevel >= 5 && treeFeature.fertilized.Value == false)
+                                        else if (progressLevel >= 5)
                                         {
 
-                                            effectCasts[tileVector] = new Cast.Weald.Sapling(tileVector, this);
+                                            effectCasts[tileVector] = new Cast.Weald.Sapling(tileVector);
 
                                             Mod.instance.targetCasts[locationName][tileVector] = "Sapling";
 
                                         }
+
+                                        ModUtility.AnimateCursor(castLocation, tileVector * 64);
 
                                         break;
 
@@ -1002,7 +1756,7 @@ namespace StardewDruid.Cast
 
                                         Microsoft.Xna.Framework.Rectangle tileRectangle = new(tileX * 64 + 1, tileY * 64 + 1, 62, 62);
 
-                                        grassFeature.doCollisionAction(tileRectangle, 2, tileVector, null, Game1.currentLocation);
+                                        grassFeature.doCollisionAction(tileRectangle, 2, tileVector, Game1.player);
 
                                         grassVectors.Add(tileVector);
 
@@ -1016,7 +1770,7 @@ namespace StardewDruid.Cast
                                             if (spawnIndex["cropseed"])
                                             {
 
-                                                effectCasts[tileVector] = new Cast.Weald.Crop(tileVector, this);
+                                                effectCasts[tileVector] = new Cast.Weald.Crop(tileVector);
 
                                             }
 
@@ -1080,7 +1834,7 @@ namespace StardewDruid.Cast
                         if (grassVectors.Contains(tileVector))
                         {
 
-                            effectCasts[tileVector] = new Cast.Weald.Grass(tileVector, this);
+                            effectCasts[tileVector] = new Cast.Weald.Grass(tileVector);
 
                             Mod.instance.terrainCasts[locationName][terrainVector] = "Grass";
 
@@ -1109,7 +1863,7 @@ namespace StardewDruid.Cast
                             if (backTile.TileIndexProperties.TryGetValue("Trough", out _))
                             {
 
-                                effectCasts[tileVector] = new Cast.Weald.Trough(tileVector, this);
+                                effectCasts[tileVector] = new Cast.Weald.Trough(tileVector);
 
                                 Mod.instance.targetCasts[locationName][tileVector] = "Trough";
 
@@ -1133,13 +1887,13 @@ namespace StardewDruid.Cast
                                     if (castLocation.Name.Contains("Farm"))
                                     {
 
-                                        effectCasts[tileVector] = new Cast.Weald.Pool(tileVector, this);
+                                        effectCasts[tileVector] = new Cast.Weald.Pool(tileVector);
 
                                     }
                                     else
                                     {
 
-                                        effectCasts[tileVector] = new Cast.Weald.Water(tileVector, this);
+                                        effectCasts[tileVector] = new Cast.Weald.Water(tileVector);
 
                                     }
 
@@ -1187,7 +1941,7 @@ namespace StardewDruid.Cast
                                 if (typeValue == "Dirt" || backTile.TileIndexProperties.TryGetValue("Diggable", out _))
                                 {
 
-                                    effectCasts[tileVector] = new Cast.Weald.Dirt(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Weald.Dirt(tileVector);
 
                                     Mod.instance.terrainCasts[locationName][terrainVector] = "Dirt";
 
@@ -1198,7 +1952,7 @@ namespace StardewDruid.Cast
                                 if (typeValue == "Grass" && backTile.TileIndexProperties.TryGetValue("NoSpawn", out _) == false)
                                 {
 
-                                    effectCasts[tileVector] = new Cast.Weald.Lawn(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Weald.Lawn(tileVector);
 
                                     Mod.instance.terrainCasts[locationName][terrainVector] = "Lawn";
 
@@ -1214,24 +1968,7 @@ namespace StardewDruid.Cast
 
                 }
 
-                if (castLevel % 4 == 0 && v == 0)
-                {
-
-                    ModUtility.AnimateRadiusDecoration(castLocation, centerVector, "Weald", 0.75f, 0.5f, 2400f);
-
-                }
-                else if (castLevel % 4 == 2)
-                {
-
-                    ModUtility.AnimateRadiusDecoration(castLocation, centerVector, "Weald", 0.5f, 0.5f, 2400f);
-
-                }
-                else
-                {
-
-                    ModUtility.AnimateSprout(castLocation, centerVector);
-
-                }
+                ModUtility.AnimateGlare(castLocation, centerVector * 64);
 
             }
 
@@ -1246,7 +1983,6 @@ namespace StardewDruid.Cast
                 return;
 
             }
-
 
             if (!Mod.instance.rockCasts.ContainsKey(castLocation.Name))
             {
@@ -1303,7 +2039,23 @@ namespace StardewDruid.Cast
 
                     newVector = castSelection[castIndex];
 
-                    effectCasts[newVector] = new Cast.Weald.Rockfall(newVector, this, damageLevel);
+                    string terrain = ModUtility.GroundCheck(castLocation, newVector);
+
+                    if (terrain != "ground" && terrain != "water")
+                    {
+
+                        continue;
+
+                    }
+
+                    effectCasts[newVector] = new Cast.Weald.Rockfall(newVector, damageLevel,terrain);
+
+                    if(Mod.instance.CurrentProgress() >= 36)
+                    {
+
+                        CastWisps(newVector);
+
+                    }
 
                 }
 
@@ -1315,10 +2067,31 @@ namespace StardewDruid.Cast
 
         }
 
+        public void CastWisps(Vector2 vector)
+        {
+
+            Vector2 wispVector = new((int)(vector.X / 12), (int)(vector.Y / 12));
+
+            if (!Mod.instance.eventRegister.ContainsKey("wisp"))
+            {
+
+                new Cast.Weald.WispEvent(vector).EventTrigger();
+
+            }
+
+            if ((Mod.instance.eventRegister["wisp"] as Weald.WispEvent).wisps.ContainsKey(wispVector))
+            {
+                return;
+            }
+
+            (Mod.instance.eventRegister["wisp"] as Weald.WispEvent).wisps[wispVector] = new(castLocation, vector, 1, 20);
+
+        }
+
         public void CastMists()
         {
 
-            int chargeLevel = (castLevel % 4) + 1;
+            //int chargeLevel = (castLevel % 4) + 1;
 
             int progressLevel = Mod.instance.CurrentProgress();
 
@@ -1331,7 +2104,16 @@ namespace StardewDruid.Cast
             if (castLevel == 1)
             {
 
-                Game1.player.currentLocation.playSoundPitched("thunder_small", 600 + (new Random().Next(5) * 200));
+                Game1.player.currentLocation.playSound("thunder_small", castVector*64, 600 + (new Random().Next(5) * 200));
+
+            }
+
+            if (Mod.instance.eventRegister.ContainsKey("wisp"))
+            {
+
+                Vector2 wispVector = new((int)(castVector.X / 12), (int)(castVector.Y / 12));
+
+                (Mod.instance.eventRegister["wisp"] as Weald.WispEvent).UpdateWisp(wispVector,2);
 
             }
 
@@ -1350,11 +2132,15 @@ namespace StardewDruid.Cast
 
             List<string> specialCasts = Mod.instance.specialCasts[locationName];
 
-            float castLimit = chargeLevel * 2.25f;
+            //float castLimit = chargeLevel * 2.25f;
+
+            float castLimit = 5f;
+
+            Vector2 negativeVector = new(-1);
 
             Vector2 warpVector = Map.WarpData.WarpVectors(castLocation);
 
-            if (warpVector != Vector2.One && !specialCasts.Contains("warp"))
+            if (warpVector != negativeVector && !specialCasts.Contains("warp"))
             {
 
                 if (Vector2.Distance(castVector, warpVector) <= castLimit)
@@ -1362,7 +2148,7 @@ namespace StardewDruid.Cast
 
                     int targetIndex = Map.WarpData.WarpTotems(castLocation);
 
-                    effectCasts[warpVector] = new Cast.Mists.Totem(warpVector, this, targetIndex);
+                    effectCasts[warpVector] = new Cast.Mists.Totem(warpVector, targetIndex);
 
                     Mod.instance.specialCasts[locationName].Add("warp");
 
@@ -1377,13 +2163,13 @@ namespace StardewDruid.Cast
 
                 Vector2 fireVector = Map.FireData.FireVectors(castLocation);
 
-                if (fireVector != Vector2.One && !specialCasts.Contains("fire"))
+                if (fireVector != negativeVector && !specialCasts.Contains("fire"))
                 {
 
                     if (Vector2.Distance(castVector, fireVector) <= castLimit)
                     {
 
-                        effectCasts[fireVector] = new Cast.Mists.Campfire(fireVector, this);
+                        effectCasts[fireVector] = new Cast.Mists.Campfire(fireVector);
 
                         Mod.instance.specialCasts[locationName].Add("fire");
 
@@ -1401,7 +2187,7 @@ namespace StardewDruid.Cast
                 foreach (ResourceClump resourceClump in castLocation.resourceClumps)
                 {
 
-                    Vector2 featureVector = resourceClump.tile.Value;
+                    Vector2 featureVector = resourceClump.Tile;
 
                     if (Vector2.Distance(featureVector, castVector) <= castLimit)
                     {
@@ -1412,13 +2198,13 @@ namespace StardewDruid.Cast
                             case 600:
                             case 602:
 
-                                effectCasts[featureVector] = new Cast.Mists.Stump(featureVector, this, resourceClump, "Farm");
+                                effectCasts[featureVector] = new Cast.Mists.Stump(featureVector, resourceClump, "Farm");
 
                                 break;
 
                             default:
 
-                                effectCasts[featureVector] = new Cast.Mists.Boulder(featureVector, this, resourceClump);
+                                effectCasts[featureVector] = new Cast.Mists.Boulder(featureVector, resourceClump);
 
                                 break;
 
@@ -1432,7 +2218,7 @@ namespace StardewDruid.Cast
 
             }
 
-            if (castLocation is Woods woodyLocation)
+            /*if (castLocation is Woods woodyLocation)
             {
 
                 foreach (ResourceClump resourceClump in woodyLocation.stumps)
@@ -1443,7 +2229,7 @@ namespace StardewDruid.Cast
                     if (Vector2.Distance(featureVector, castVector) <= castLimit)
                     {
 
-                        effectCasts[featureVector] = new Cast.Mists.Stump(featureVector, this, resourceClump, "Woods");
+                        effectCasts[featureVector] = new Cast.Mists.Stump(featureVector, resourceClump, "Woods");
 
                         centerVectors.Add(featureVector);
 
@@ -1464,7 +2250,7 @@ namespace StardewDruid.Cast
                     if (Vector2.Distance(featureVector, castVector) <= castLimit)
                     {
 
-                        effectCasts[featureVector] = new Cast.Mists.Stump(featureVector, this, forestLocation.log, "Log");
+                        effectCasts[featureVector] = new Cast.Mists.Stump(featureVector, forestLocation.log, "Log");
 
                         centerVectors.Add(featureVector);
 
@@ -1472,14 +2258,14 @@ namespace StardewDruid.Cast
 
                 }
 
-
-            }
+            }*/
 
             // ---------------------------------------------
             // Water effect
             // ---------------------------------------------
 
-            if (progressLevel >= 11 && chargeLevel == 1)
+            //if (progressLevel >= 11 && chargeLevel == 1)
+            if (progressLevel >= 11 && (castLevel % 4) == 0)
             {
 
                 if (spawnIndex["fishspot"])
@@ -1488,7 +2274,7 @@ namespace StardewDruid.Cast
                     if (ModUtility.WaterCheck(castLocation, castVector))
                     {
                         
-                        effectCasts[castVector] = new Cast.Mists.Water(castVector, this);
+                        effectCasts[castVector] = new Cast.Mists.Water(castVector);
 
                         centerVectors.Add(castVector);
 
@@ -1504,7 +2290,7 @@ namespace StardewDruid.Cast
                     if (volcanoLocation.waterTiles[tileX, tileY] && !volcanoLocation.cooledLavaTiles.ContainsKey(castVector))
                     {
 
-                        effectCasts[castVector] = new Cast.Mists.Lava(castVector, this);
+                        effectCasts[castVector] = new Cast.Mists.Lava(castVector);
 
                         centerVectors.Add(castVector);
 
@@ -1556,9 +2342,9 @@ namespace StardewDruid.Cast
                         if (monsterDifference < smiteThreshold)
                         {
 
-                            Vector2 monsterVector = monsterCharacter.getTileLocation();
+                            Vector2 monsterVector = monsterCharacter.Tile;
 
-                            effectCasts[monsterVector] = new Cast.Mists.Smite(monsterVector, this, monsterCharacter, damageLevel);
+                            effectCasts[monsterVector] = new Cast.Mists.Smite(monsterVector, monsterCharacter, damageLevel);
 
                             centerVectors.Add(monsterVector);
 
@@ -1573,9 +2359,9 @@ namespace StardewDruid.Cast
                         if(monsterDifference < smiteRange && monsterProximity < smiteThreshold)
                         {
 
-                            Vector2 monsterVector = monsterCharacter.getTileLocation();
+                            Vector2 monsterVector = monsterCharacter.Tile;
 
-                            effectCasts[monsterVector] = new Cast.Mists.Smite(monsterVector, this, monsterCharacter, damageLevel);
+                            effectCasts[monsterVector] = new Cast.Mists.Smite(monsterVector, monsterCharacter, damageLevel);
 
                             centerVectors.Add(monsterVector);
 
@@ -1594,7 +2380,7 @@ namespace StardewDruid.Cast
  
                 }
 
-                for (int i = 0; i < 1; i++)
+                /*for (int i = 0; i < 1; i++)
                 {
 
                     if (smiteCount == 0 || Mod.instance.eventRegister.ContainsKey("veil"))
@@ -1604,11 +2390,11 @@ namespace StardewDruid.Cast
 
                     }
 
-                    StardewDruid.Event.World.Veil veilEvent = new(caster.Position, this);
+                    VeilEvent veilEvent = new(caster.Position);
                     
                     veilEvent.EventTrigger();
 
-                }
+                }*/
 
             }
 
@@ -1618,12 +2404,15 @@ namespace StardewDruid.Cast
             
             List<Vector2> tileVectors;
 
-            for (int i = 0; i < 2; i++)
+            //for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
 
-                int castRange = (chargeLevel * 2) - 2 + i;
+                //int castRange = (chargeLevel * 2) - 2 + i;
 
-                tileVectors = ModUtility.GetTilesWithinRadius(castLocation, castVector, castRange);
+                //tileVectors = ModUtility.GetTilesWithinRadius(castLocation, castVector, castRange);
+
+                tileVectors = ModUtility.GetTilesWithinRadius(castLocation, castVector, i);
 
                 List<Vector2> betweenVectors = ModUtility.GetTilesBetweenVectors(castLocation, caster.Position, castVector*64);
 
@@ -1657,7 +2446,7 @@ namespace StardewDruid.Cast
 
                                     }
 
-                                    effectCasts[tileVector] = new Cast.Mists.Rod(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Mists.Rod(tileVector);
 
                                     Mod.instance.specialCasts[locationName].Add("rod" + j.ToString());
 
@@ -1675,7 +2464,7 @@ namespace StardewDruid.Cast
 
                                 if (!specialCasts.Contains("campfire") && progressLevel >= 10)
                                 {
-                                    effectCasts[tileVector] = new Cast.Mists.Campfire(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Mists.Campfire(tileVector);
 
                                     Mod.instance.specialCasts[locationName].Add("campfire");
 
@@ -1683,21 +2472,38 @@ namespace StardewDruid.Cast
 
                                 }
                             }
-                            else if (targetObject is Torch && targetObject.ParentSheetIndex == 93) // crafted candle torch
+                            else if (targetObject.ItemId == "93") // crafted candle torch
                             {
 
-                                if (progressLevel >= 13 && !Mod.instance.eventRegister.ContainsKey("active"))
+                                /*if (!targetObject.ItemId.Contains("93"))
                                 {
-                                    if (spawnIndex["portal"])
-                                    {
+                                    Mod.instance.Monitor.Log("Torch of item Id " + targetObject.ItemId + " cannot be used for summoning", LogLevel.Debug);
+                                    break;
 
-                                        effectCasts[tileVector] = new Cast.Mists.Portal(tileVector, this);
+                                }*/
 
-                                        centerVectors.Add(tileVector);
-
-                                    }
+                                if (Mod.instance.eventRegister.ContainsKey("active"))
+                                {
+                                    Mod.instance.Monitor.Log("Cannot conduct summoning because "+Mod.instance.eventRegister["active"].GetType().ToString()+" is active", LogLevel.Debug);
+                                    break;
 
                                 }
+
+                                if(progressLevel < 13)
+                                {
+                                    Mod.instance.Monitor.Log("Cannot conduct summoning because your progress level is too low", LogLevel.Debug);
+                                    break;
+                                }
+
+                                if (!spawnIndex["portal"])
+                                {
+                                    Mod.instance.Monitor.Log("Cannot conduct summoning because it isn't supported by this map type", LogLevel.Debug);
+                                    break;
+                                }
+
+                                effectCasts[tileVector] = new Cast.Mists.Summon(tileVector);
+
+                                centerVectors.Add(tileVector);
 
                             }
                             else if (targetObject.IsScarecrow())
@@ -1708,7 +2514,7 @@ namespace StardewDruid.Cast
                                 if (progressLevel >= 10 && !Game1.isRaining && !specialCasts.Contains(scid))
                                 {
 
-                                    effectCasts[tileVector] = new Cast.Mists.Scarecrow(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Mists.Scarecrow(tileVector);
 
                                     Mod.instance.specialCasts[locationName].Add(scid);
 
@@ -1720,7 +2526,7 @@ namespace StardewDruid.Cast
                             else if (targetObject.Name.Contains("Artifact Spot")) //&& Mod.instance.virtualHoe.UpgradeLevel >= 3)
                             {
 
-                                effectCasts[tileVector] = new Cast.Mists.Artifact(tileVector, this);
+                                effectCasts[tileVector] = new Cast.Mists.Artifact(tileVector);
 
                                 centerVectors.Add(tileVector);
 
@@ -1744,7 +2550,7 @@ namespace StardewDruid.Cast
                                 if (treeFeature.stump.Value)
                                 {
 
-                                    effectCasts[tileVector] = new Cast.Mists.Tree(tileVector, this);
+                                    effectCasts[tileVector] = new Cast.Mists.Tree(tileVector);
 
                                     centerVectors.Add(tileVector);
 
@@ -1762,7 +2568,7 @@ namespace StardewDruid.Cast
 
             }
 
-            if (centerVectors.Count == 0 && castLevel % 4 == 0)
+            if (centerVectors.Count == 0)
             {
 
                 centerVectors.Add(castVector);
@@ -1772,7 +2578,9 @@ namespace StardewDruid.Cast
             foreach (var centerVector in centerVectors)
             {
 
-                ModUtility.AnimateRadiusDecoration(castLocation, centerVector, "Mists", 1f, 0.5f, 1000f);
+                Vector2 centerPosition = centerVector * 64;
+
+                ModUtility.AnimateCursor(castLocation, centerPosition, "mists",600);
 
             }
 
@@ -1781,134 +2589,135 @@ namespace StardewDruid.Cast
         public void CastStars()
         {
 
-            //int castAttempt = (castLevel % 6);
-            int castAttempt = (castLevel % 4);
-
             List<Vector2> meteorVectors = new();
 
-            List<Vector2> castSelection = ModUtility.GetTilesWithinRadius(castLocation, castVector, castAttempt + 2); // 2,3,4,5,6,7
+            int difficulty = Mod.instance.DifficultyLevel();
 
-            if (randomIndex.Next(2) == 0) { castSelection.Reverse(); }
-
-            int castSelect = castSelection.Count; // 12, 16, 24, 28, 32, 28
-
-            if (castSelect == 0)
+            if (!Mod.instance.TaskList().ContainsKey("masterMeteor"))
             {
 
-                return;
+                difficulty = 2;
 
             }
 
-            List<int> segmentList = new() // 1, 1, 2, 3, 3, 4
-            {
-                12, 16, 12, 9, //11, 7
-            };
+            int meteorLimit = 1;
 
-            int castSegment = segmentList[castAttempt];
+            int meteorLevel = castLevel % 4;
 
-            List<int> cycleList = new()
-            {
-                1, 1, 2, 3, //3, //4
-            };
-
-            int castCycle = cycleList[castAttempt];
-
-            int castIndex;
-
-            Vector2 newVector;
-
-            float damageLevel = Mod.instance.DamageLevel();
-
-            for (int k = 0; k < castCycle; k++)
+            if(meteorLevel == 0)
             {
 
-                int castLower = castSegment * k;
+                vectorList = new()
+                {
+                    new Vector2(3,-4),
+                    new Vector2(-3,-4),
+                    new Vector2(5,0),
+                    new Vector2(-5,0),
+                    new Vector2(3,4),
+                    new Vector2(-3,4),
+                };
 
-                if (castLower + 2 >= castSelect)
+            }
+
+            if(meteorLevel > 1)
+            {
+
+                meteorLimit = 2;
+
+            }
+
+            if (difficulty < 3)
+            {
+
+                foreach (NPC nonPlayableCharacter in castLocation.characters)
                 {
 
-                    continue;
-
-                }
-
-                int monsterIndex = Math.Min(castLower + castSegment / 2, castSelection.Count - 1);
-
-                Vector2 monsterTest = castSelection[monsterIndex];
-
-                bool priorityCast = false;
-
-                string difficulty = Mod.instance.DifficultyLevel();
-
-                int difficultyLevel = 1;
-
-                switch (difficulty)
-                {
-
-                    case "medium":
-
-                        difficultyLevel = 2;
-
-                        break;
-
-                    case "hard":
-
-                        difficultyLevel = 3;
-
-                        break;
-
-                }
-
-                if (difficultyLevel < 2)
-                {
-
-                    foreach (NPC character in this.castLocation.characters)
+                    if (meteorVectors.Count >= meteorLimit)
                     {
 
-                        if (character is StardewValley.Monsters.Monster monster && Vector2.Distance(monster.Position, monsterTest * 64f) < 192.0)
+                        break;
+
+                    }
+
+                    if (nonPlayableCharacter is StardewValley.Monsters.Monster monsterCharacter)
+                    {
+
+                        Vector2 monsterVector = monsterCharacter.Tile;
+
+                        if(meteorVectors.Count > 0)
                         {
 
-                            Vector2 tileLocation = monster.getTileLocation();
+                            if(Vector2.Distance(monsterVector,meteorVectors.First()) < 4)
+                            {
+                                
+                                continue;
+                            
+                            }
 
-                            effectCasts[tileLocation] = new Cast.Stars.Meteor(tileLocation, this, damageLevel);
+                        }
 
-                            meteorVectors.Add(tileLocation);
+                        if (Vector2.Distance(castVector, monsterVector) > 6)
+                        {
 
-                            priorityCast = true;
+                            continue;
+
+                        }
+
+                        meteorVectors.Add(monsterVector);
+
+                    }
+
+
+                }
+
+            }
+
+            if(difficulty < 2 && (castLocation is MineShaft || castLocation is VolcanoDungeon))
+            {
+
+                for (int i = 2; i < 6; i++)
+                {
+
+                    if (meteorVectors.Count >= meteorLimit)
+                    {
+
+                        break;
+
+                    }
+
+                    List<Vector2> objectVectors = ModUtility.GetTilesWithinRadius(castLocation, castVector, i);
+
+                    foreach (Vector2 objectVector in objectVectors)
+                    {
+
+                        if (meteorVectors.Count >= meteorLimit)
+                        {
 
                             break;
 
                         }
 
-                    }
-                
-                }
-
-
-                int castHigher = Math.Min(castLower + castSegment, castSelection.Count);
-
-                if (castLocation.objects.Count() > 0 && !priorityCast && difficultyLevel < 3)
-                {
-
-                    for (int j = castLower; j < castHigher; j++)
-                    {
-
-                        newVector = castSelection[j];
-
-                        if (castLocation.objects.ContainsKey(newVector))
+                        if (castLocation.objects.ContainsKey(objectVector))
                         {
 
-                            StardewValley.Object tileObject = castLocation.objects[newVector];
+                            StardewValley.Object targetObject = castLocation.objects[objectVector];
 
-                            if (tileObject.name.Contains("Stone"))
+                            if (targetObject.Name == "Stone")
                             {
 
-                                effectCasts[newVector] = new Cast.Stars.Meteor(newVector, this, damageLevel);
+                                if (meteorVectors.Count > 0)
+                                {
 
-                                meteorVectors.Add(newVector);
+                                    if (Vector2.Distance(objectVector, meteorVectors.First()) < 5)
+                                    {
 
-                                priorityCast = true;
+                                        continue;
 
-                                break;
+                                    }
+
+                                }
+
+                                meteorVectors.Add(objectVector);
 
                             }
 
@@ -1916,69 +2725,109 @@ namespace StardewDruid.Cast
 
                     }
 
-
-                }
-
-                if (!priorityCast)
-                {
-
-                    castIndex = randomIndex.Next(castLower, castHigher);
-
-                    newVector = castSelection[castIndex];
-
-                    effectCasts[newVector] = new Cast.Stars.Meteor(newVector, this, damageLevel);
-
-                    meteorVectors.Add(newVector);
-
-                }
-
-                if (!castTask.ContainsKey("masterMeteor"))
-                {
-
-                    Mod.instance.UpdateTask("lessonMeteor", 1);
-
                 }
 
             }
 
-            for (int a = 0; a < 1; a++)
+            if(meteorVectors.Count > 0)
             {
 
-                if (!castTask.ContainsKey("masterGravity"))
+                foreach(Vector2 meteorVector in meteorVectors)
                 {
 
-                    break;
+                    for(int i = vectorList.Count - 1; i >= 0; i--)
+                    {
+
+                        if(Vector2.Distance(meteorVector, vectorList[i]) <= 3)
+                        {
+
+                            vectorList.RemoveAt(i);
+
+                            break;
+
+                        }
+
+                    }
 
                 }
-
-                if (!Mod.instance.eventRegister.ContainsKey("gravity"))
-                {
-
-                    break;
-
-                }
-
-                if (castLevel != 0)
-                {
-
-                    break;
-
-                }
-
-                if (Mod.instance.eventRegister.ContainsKey("comet"))
-                {
-
-                    break;
-
-                }
-
-                Vector2 cometVector = (Mod.instance.eventRegister["gravity"] as Gravity).targetVector;
-
-                Event.World.Comet cometEvent = new(cometVector, this, damageLevel);
-
-                cometEvent.EventTrigger();
 
             }
+
+            if(meteorVectors.Count < meteorLimit)
+            {
+
+                for(int i = 0; i < meteorLimit - meteorVectors.Count; i++)
+                {
+                    
+                    Vector2 randomVector = vectorList[randomIndex.Next(vectorList.Count)];
+
+                    vectorList.Remove(randomVector);
+
+                    meteorVectors.Add(castVector + randomVector);
+
+                }
+
+            }
+
+            foreach (Vector2 meteorVector in meteorVectors)
+            {
+
+                effectCasts[meteorVector] = new Cast.Stars.Meteor(meteorVector, Mod.instance.DamageLevel());
+
+            }
+
+            if (Mod.instance.eventRegister.ContainsKey("wisp"))
+            {
+                
+                Vector2 wispVector;
+
+                foreach(Vector2 meteorVector in meteorVectors)
+                {
+
+                    wispVector = new((int)(castVector.X / 12),(int)(castVector.Y / 12));
+
+                    (Mod.instance.eventRegister["wisp"] as Weald.WispEvent).UpdateWisp(wispVector, 3);
+
+                }
+
+            }
+
+            if (castLevel == 0)
+            {
+
+                CastComet();
+
+            }
+
+        }
+
+        public void CastComet()
+        {
+            
+            if (!castTask.ContainsKey("masterGravity"))
+            {
+
+                return;
+
+            }
+
+            if (!Mod.instance.eventRegister.ContainsKey("gravity"))
+            {
+
+                return;
+
+            }
+
+            if (Mod.instance.eventRegister.ContainsKey("comet"))
+            {
+
+                return;
+
+            }
+
+            Vector2 cometVector = (Mod.instance.eventRegister["gravity"] as GravityEvent).targetVector;
+
+            effectCasts[cometVector] = new Cast.Stars.Meteor(cometVector, Mod.instance.DamageLevel(), true);
 
         }
 
@@ -2087,7 +2936,7 @@ namespace StardewDruid.Cast
 
                         StardewValley.Object targetObject = castLocation.objects[tileVector];
 
-                        effectCasts[tileVector] = new Cast.Fates.Enchant(tileVector, this, targetObject, useSource);
+                        effectCasts[tileVector] = new Cast.Fates.Enchant(tileVector, targetObject, useSource);
 
                         Mod.instance.targetCasts[locationName][tileVector] = "Machine";
 
@@ -2121,7 +2970,7 @@ namespace StardewDruid.Cast
 
                 if (castLocation.warps.Count() <= 0) { if (castLocation is not MineShaft) { break; } }
 
-                Event.World.Escape escapeEvent = new(caster.Position, this);
+                Escape escapeEvent = new(caster.Position);
 
                 escapeEvent.EventTrigger();
 
@@ -2144,7 +2993,7 @@ namespace StardewDruid.Cast
 
                 if (Mod.instance.eventRegister.ContainsKey("gravity")) { break; }
 
-                //List<int> targetList = GetTargetCursor(caster.getTileLocation(), caster.FacingDirection, 5);
+                //List<int> targetList = GetTargetCursor(caster.Tile, caster.FacingDirection, 5);
 
                 //Vector2 wellVector = new(targetList[1], targetList[2]);
 
@@ -2168,7 +3017,7 @@ namespace StardewDruid.Cast
 
                         if (specialCasts.Contains(scid)) { continue; }
 
-                        effectCasts[tileVector] = new Cast.Fates.Gravity(tileVector, this, 0);
+                        effectCasts[tileVector] = new Cast.Fates.Gravity(tileVector, 0);
 
                         Mod.instance.specialCasts[locationName].Add(scid);
 
@@ -2192,7 +3041,7 @@ namespace StardewDruid.Cast
 
                 if (Mod.instance.eventRegister.ContainsKey("gravity")) { break; }
 
-                //List<int> targetList = GetTargetCursor(caster.getTileLocation(), caster.FacingDirection, 5);
+                //List<int> targetList = GetTargetCursor(caster.Tile, caster.FacingDirection, 5);
 
                 //Vector2 wellVector = new(targetList[1], targetList[2]);
 
@@ -2209,7 +3058,7 @@ namespace StardewDruid.Cast
 
                     if (monsterDifference > 640f) { continue; }
 
-                    effectCasts[wellVector] = new Cast.Fates.Gravity(wellVector, this, 1);
+                    effectCasts[wellVector] = new Cast.Fates.Gravity(wellVector, 1);
 
                     return;
 
@@ -2228,7 +3077,7 @@ namespace StardewDruid.Cast
 
                 if (Mod.instance.eventRegister.ContainsKey("gravity")) { break; }
 
-                //List<int> targetList = GetTargetCursor(caster.getTileLocation(), caster.FacingDirection, 5);
+                //List<int> targetList = GetTargetCursor(caster.Tile, caster.FacingDirection, 5);
 
                 //Vector2 wellVector = new(targetList[1], targetList[2]);
 
@@ -2238,7 +3087,7 @@ namespace StardewDruid.Cast
 
                 if (specialCasts.Contains(scid)) { continue; }
 
-                effectCasts[wellVector] = new Cast.Fates.Gravity(wellVector, this,0);
+                effectCasts[wellVector] = new Cast.Fates.Gravity(wellVector,0);
 
                 Mod.instance.specialCasts[locationName].Add(scid);
 
@@ -2258,20 +3107,22 @@ namespace StardewDruid.Cast
 
                 if (Mod.instance.eventRegister.ContainsKey("whisk")) { break; }
 
+                if (Mod.instance.eventRegister.ContainsKey("transform")) { break; };
+
                 if (!spawnIndex["whisk"]) { break; }
 
                 if (castLevel != 0) { break; }
 
-                Dictionary<int, Vector2> whiskVectors = new()
+                /*Dictionary<int, Vector2> whiskVectors = new()
                 {
 
-                    [0] = new Vector2(0, -2),
+                    [0] = new Vector2(0, -1),
 
-                    [1] = new Vector2(2, 0),
+                    [1] = new Vector2(1, 0),
 
-                    [2] = new Vector2(0, 2),
+                    [2] = new Vector2(0, 1),
 
-                    [3] = new Vector2(-2, 0),
+                    [3] = new Vector2(-1, 0),
 
                 };
 
@@ -2284,33 +3135,34 @@ namespace StardewDruid.Cast
 
                 }
 
-                Vector2 whiskSegment = whiskVectors[whiskDirection];
+                Vector2 whiskSegment = whiskVectors[whiskDirection];*/
 
-                int whiskRange = 8;
+                int whiskRange = 18;
 
                 if (castTask.ContainsKey("masterWhisk"))
                 {
 
-                    whiskRange += 2;
+                    whiskRange += 6;
 
                 }
 
-                Vector2 originVector = caster.getTileLocation();
+                Vector2 originVector = caster.Tile;
 
-                for (int i = whiskRange; i > 3; i--)
+                for (int i = whiskRange; i > 8; i--)
                 {
 
                     //Vector2 whiskDestiny = castVector + (whiskSegment * i);
 
-                    Vector2 whiskDestiny = originVector + (whiskSegment * i);
+                    //Vector2 whiskDestiny = originVector + (whiskSegment * i);
 
-                    if (i == whiskRange)
-                    {
-                        List<int> targetList = GetTargetCursor(caster.getTileLocation(), whiskDirection, 16, 8);
+                    //if (i == whiskRange)
+                    //{
+                        
+                        List<int> targetList = GetTargetCursor(caster.Tile, caster.FacingDirection, i, 8);
 
-                        whiskDestiny = new(targetList[1], targetList[2]);
+                        Vector2 whiskDestiny = new(targetList[1], targetList[2]);
 
-                    }
+                    //}
 
                     if (ModUtility.GroundCheck(castLocation, whiskDestiny) != "ground")
                     {
@@ -2331,13 +3183,14 @@ namespace StardewDruid.Cast
 
                     if (castLocation.isCollidingPosition(boundingBox, Game1.viewport, isFarmer: false, 0, glider: false, caster, pathfinding: false))
                     {
+                        
                         continue;
 
                     }
 
-                    //effectCasts[whiskDestiny] = new Cast.Fates.Whisk(castVector, this, whiskDestiny);
+                    //effectCasts[whiskDestiny] = new Cast.Fates.Whisk(castVector, whiskDestiny);
 
-                    effectCasts[whiskDestiny] = new Cast.Fates.Whisk(originVector, this, whiskDestiny);
+                    effectCasts[whiskDestiny] = new Cast.Fates.Whisk(originVector, whiskDestiny);
 
                     break;
 
@@ -2483,12 +3336,12 @@ namespace StardewDruid.Cast
 
                 int extend = 120;
 
-                if (Mod.instance.TaskList().ContainsKey("masterTransform"))
+                if (castTask.ContainsKey("masterTransform"))
                 {
                     extend = 180;
                 }
 
-                Transform transform = new Transform(caster.Position, this, extend);
+                Transform transform = new Transform(caster.Position, extend);
 
                 if (progressLevel >= 29)
                 {
@@ -2503,8 +3356,6 @@ namespace StardewDruid.Cast
                 }
 
                 transform.EventTrigger();
-
-                ModUtility.AnimateRadiusDecoration(castLocation, caster.getTileLocation() - new Vector2(0, 1), "Ether", 0.75f, 1.25f, 500f, 999f);
 
                 if (progressLevel < 32)
                 {
@@ -2547,7 +3398,7 @@ namespace StardewDruid.Cast
 
                 }
 
-                Crate treasure = new Crate(this);
+                Crate treasure = new Crate(castVector);
 
                 treasure.EventTrigger();
 
@@ -2570,11 +3421,132 @@ namespace StardewDruid.Cast
 
                 if (castLocation.warps.Count() <= 0) { if (castLocation is not MineShaft) { break; } }
 
-                Event.World.Escape escapeEvent = new(caster.Position, this);
+                Escape escapeEvent = new(caster.Position);
 
                 escapeEvent.EventTrigger();
 
             }
+
+        }
+
+        public void RiteBuff()
+        {
+
+            int toolIndex = Mod.instance.AttuneableWeapon();
+
+            if (toolIndex == -1)
+            {
+                Mod.instance.Monitor.Log("1", LogLevel.Debug);
+                RemoveBuff();
+                return;
+
+            }
+
+            string activeBlessing = Mod.instance.CurrentBlessing();
+
+            if (Mod.instance.CurrentProgress() <= 1)
+            {
+                Mod.instance.Monitor.Log("2", LogLevel.Debug);
+                RemoveBuff();
+                return;
+
+            }
+            else if (Mod.instance.Config.slotAttune)
+            {
+
+                activeBlessing = GetSlotBlessing();
+
+            }
+            else
+            {
+
+                if (Mod.instance.weaponAttunement.ContainsKey(toolIndex))
+                {
+
+                    activeBlessing = Mod.instance.weaponAttunement[toolIndex];
+
+                    if (!Mod.instance.blessingList.Contains(activeBlessing))
+                    {
+                        Mod.instance.Monitor.Log("3", LogLevel.Debug);
+                        RemoveBuff();
+                        return;
+
+                    }
+
+                }
+
+            }
+
+            if (activeBlessing == "none")
+            {
+                Mod.instance.Monitor.Log("4", LogLevel.Debug);
+                RemoveBuff();
+                return;
+
+            }
+
+            if(appliedBuff == activeBlessing)
+            {
+
+                if (Game1.player.buffs.IsApplied("184651"))
+                {
+                    return;
+
+                }
+
+            }
+
+            string display = "Rite of the " + activeBlessing[0].ToString().ToUpper() + activeBlessing.Substring(1);
+
+            int buffIndex = 0;
+
+            switch (activeBlessing)
+            {
+
+                case "mists":
+
+                    buffIndex = 1;
+
+                    break;
+
+                case "stars":
+
+                    buffIndex = 2;
+
+                    break;
+
+                case "fates":
+
+                    buffIndex = 3;
+
+                    break;
+
+                case "ether":
+
+                    buffIndex = 4;
+
+                    break;
+
+            }
+
+            appliedBuff = activeBlessing;
+
+            Buff riteBuff = new("184651", source: "Stardew Druid", displaySource: "Stardew Druid", duration: Buff.ENDLESS, iconTexture:buffTexture, iconSheetIndex: buffIndex, displayName: display, description: "Actively selected rite");
+
+            Game1.player.buffs.Apply(riteBuff);
+
+        }
+
+        public void RemoveBuff()
+        {
+
+            if (Game1.player.buffs.IsApplied("184651"))
+            {
+
+                Game1.player.buffs.Remove("184651");
+
+            }
+
 
         }
 

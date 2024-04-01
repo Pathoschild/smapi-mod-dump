@@ -56,7 +56,7 @@
         ]
       },
       {
-        "Frame": 3,
+        "Frame": 15,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -66,7 +66,7 @@
         ]
       },
       {
-        "Frame": 4,
+        "Frame": 16,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -1303,6 +1303,28 @@
         ]
       },
       {
+        "Frame": 3,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 0
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 1
+          }
+        ]
+      },
+      {
         "Frame": 5,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
@@ -1320,7 +1342,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 1
+            "Value": 2
           }
         ]
       },
@@ -1342,7 +1364,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 2
+            "Value": 1
           }
         ]
       },
@@ -1351,8 +1373,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 18
           }
         ]
       },
@@ -1361,8 +1384,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 1
           }
         ]
       },
@@ -1371,8 +1395,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 0
           }
         ]
       },
@@ -1381,8 +1406,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 2
           }
         ]
       },
@@ -1391,8 +1417,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 19
           }
         ]
       },
@@ -1401,28 +1428,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 15,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 16,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 2
           }
         ]
       }
@@ -1466,7 +1474,7 @@
         ]
       },
       {
-        "Frame": 3,
+        "Frame": 15,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -1476,7 +1484,7 @@
         ]
       },
       {
-        "Frame": 4,
+        "Frame": 16,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -2243,6 +2251,28 @@
         ]
       },
       {
+        "Frame": 3,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 6
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 7
+          }
+        ]
+      },
+      {
         "Frame": 5,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
@@ -2260,7 +2290,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 7
+            "Value": 8
           }
         ]
       },
@@ -2282,7 +2312,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 8
+            "Value": 21
           }
         ]
       },
@@ -2291,8 +2321,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 17
           }
         ]
       },
@@ -2301,8 +2332,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 6
           }
         ]
       },
@@ -2311,8 +2343,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 20
           }
         ]
       },
@@ -2321,28 +2354,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 13,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 14,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 11
           }
         ]
       }
@@ -2386,7 +2400,7 @@
         ]
       },
       {
-        "Frame": 3,
+        "Frame": 15,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -2396,7 +2410,7 @@
         ]
       },
       {
-        "Frame": 4,
+        "Frame": 16,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -3163,6 +3177,28 @@
         ]
       },
       {
+        "Frame": 3,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 12
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 13
+          }
+        ]
+      },
+      {
         "Frame": 5,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
@@ -3180,7 +3216,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 13
+            "Value": 14
           }
         ]
       },
@@ -3202,7 +3238,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 14
+            "Value": 13
           }
         ]
       },
@@ -3211,8 +3247,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 22
           }
         ]
       },
@@ -3221,8 +3258,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 13
           }
         ]
       },
@@ -3231,8 +3269,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 12
           }
         ]
       },
@@ -3241,8 +3280,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 14
           }
         ]
       },
@@ -3251,8 +3291,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 23
           }
         ]
       },
@@ -3261,28 +3302,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 15,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 16,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 14
           }
         ]
       }
@@ -3327,7 +3349,7 @@
         ]
       },
       {
-        "Frame": 3,
+        "Frame": 15,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -3337,7 +3359,7 @@
         ]
       },
       {
-        "Frame": 4,
+        "Frame": 16,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
@@ -4104,6 +4126,28 @@
         ]
       },
       {
+        "Frame": 3,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 6
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "EndWhenFarmerFrameUpdates": true,
+        "Conditions": [
+          {
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 7
+          }
+        ]
+      },
+      {
         "Frame": 5,
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
@@ -4121,7 +4165,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 7
+            "Value": 8
           }
         ]
       },
@@ -4143,7 +4187,7 @@
           {
             "Name": "CurrentFarmerFrame",
             "Operator": "EqualTo",
-            "Value": 8
+            "Value": 21
           }
         ]
       },
@@ -4152,8 +4196,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 17
           }
         ]
       },
@@ -4162,8 +4207,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 6
           }
         ]
       },
@@ -4172,8 +4218,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 20
           }
         ]
       },
@@ -4182,28 +4229,9 @@
         "EndWhenFarmerFrameUpdates": true,
         "Conditions": [
           {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 13,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
-          }
-        ]
-      },
-      {
-        "Frame": 14,
-        "EndWhenFarmerFrameUpdates": true,
-        "Conditions": [
-          {
-            "Name": "IsRunning",
-            "Value": true
+            "Name": "CurrentFarmerFrame",
+            "Operator": "EqualTo",
+            "Value": 11
           }
         ]
       }

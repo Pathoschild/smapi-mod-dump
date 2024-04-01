@@ -1,0 +1,7 @@
+﻿{
+  "ContextName": "prism99.advize.stardewrealty.wind",
+  "CopyDefaultFields": true,
+  "LocationContextData": {
+    "WeatherConditions": [ { "Weather": "Wind" } ]
+  }
+}

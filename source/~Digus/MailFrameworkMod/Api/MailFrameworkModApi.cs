@@ -59,17 +59,17 @@ namespace MailFrameworkMod.Api
             letter.AutoOpen = iLetter.AutoOpen;
             letter.I18N = iLetter.I18N;
 
-            MailDao.SaveLetter(letter);
+            MailRepository.SaveLetter(letter);
         }
 
         public ILetter GetLetter(string id)
         {
-            return new ApiLetter(MailDao.FindLetter(id));
+            return new ApiLetter(MailRepository.FindLetter(id));
         }
 
         public string GetMailDataString(string id)
         {
-            return MailDao.FindLetter(id)?.ToMailDataString();
+            return MailRepository.FindLetter(id)?.ToMailDataString();
         }
     }
 }

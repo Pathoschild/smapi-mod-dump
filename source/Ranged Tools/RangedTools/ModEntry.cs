@@ -115,7 +115,7 @@ namespace RangedTools
                 patchPrefix(harmonyInstance, typeof(GameLocation), nameof(GameLocation.damageMonster),
                             typeof(ModEntry), nameof(ModEntry.Prefix_damageMonster),
                             new Type[] { typeof(Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float),
-                                         typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) });
+                                         typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer), typeof(bool) });
                 
                 patchPrefix(harmonyInstance, typeof(GameLocation), "isMonsterDamageApplicable",
                             typeof(ModEntry), nameof(ModEntry.Prefix_isMonsterDamageApplicable));
@@ -560,7 +560,6 @@ namespace RangedTools
             return !Game1.fadeToBlack
                 && !Game1.dialogueUp
                 && !Game1.eventUp
-                && !Game1.menuUp
                 && Game1.currentMinigame == null
                 && !Game1.player.hasMenuOpen.Value
                 && !Game1.player.isRidingHorse()
@@ -620,7 +619,7 @@ namespace RangedTools
             try
             {
                 if (!positionValidForExtendedRange(who, specialClickLocation) // Disable override if target position is out of range
-                 || (who.toolPower > 0 && !Config.AllowRangedChargeEffects)) // Disable override for charged tool use unless enabled
+                 || (who.toolPower.Value > 0 && !Config.AllowRangedChargeEffects)) // Disable override for charged tool use unless enabled
                     specialClickActive = false;
                 else if (holdingToolButton()) // Itherwise, force use of override as long as a Tool Button is being held
                     specialClickActive = true;
@@ -646,7 +645,7 @@ namespace RangedTools
         public static bool Prefix_GetToolLocation(ref Vector2 __result)
         {
             // If tool has been charged and ranged charge option is not enabled, disable override.
-            if (Game1.player != null && Game1.player.toolPower > 0 && !Config.AllowRangedChargeEffects)
+            if (Game1.player != null && Game1.player.toolPower.Value > 0 && !Config.AllowRangedChargeEffects)
             {
                 specialClickActive = false;
                 return true; // Go to original function
@@ -670,15 +669,13 @@ namespace RangedTools
         {
             try
             {
-                bool bigCraftable = (item as StardewValley.Object).bigCraftable.Value;
-                
                 // Base game relies on short range to prevent placing Crab Pots in unreachable places, so always use default range.
-                if (!bigCraftable && item.ParentSheetIndex == 710) // Crab Pot
+                if (item.QualifiedItemId == "(O)710") // Crab Pot
                     return true; // Go to original function
                 
                 // Though original behavior shows green when placing Tapper as long as highlighted tile is in range,
                 // this becomes particularly confusing at longer range settings, so check that there is in fact an empty tree.
-                if (bigCraftable && item.ParentSheetIndex == 105) // Tapper
+                if (item.QualifiedItemId == "(BC)105") // Tapper
                 {
                     Vector2 tile = new Vector2(x / 64, y / 64);
                     if (!f.currentLocation.terrainFeatures.ContainsKey(tile) // No special terrain at tile
@@ -736,7 +733,7 @@ namespace RangedTools
         {
             try
             {
-                if (__instance.toolPower > 0) // If charging tool, just use original function
+                if (__instance.toolPower.Value > 0) // If charging tool, just use original function
                     return true; // Go to original function
                 
                 // Abort cases from original function
@@ -850,10 +847,8 @@ namespace RangedTools
         {
             try
             {
-                bool bigCraftable = (item as StardewValley.Object).bigCraftable.Value;
-                
                 // Base game relies on short range to prevent placing Crab Pots in unreachable places, so always use default range.
-                if (!bigCraftable && item.ParentSheetIndex == 710) // Crab Pot
+                if (item.QualifiedItemId == "(O)710") // Crab Pot
                 {
                     tileRadiusOverride = 0;
                     return true; // Go to original function
@@ -900,7 +895,7 @@ namespace RangedTools
                 Point point = new Point(x / 64, y / 64);
                 if (!Config.UseHalfTilePositions) // Standard method: Round player's position down to nearest tile
                 {
-                    Vector2 tileLocation = f.getTileLocation();
+                    Vector2 tileLocation = f.Tile;
                     __result = (double)Math.Abs((float)point.X - tileLocation.X) <= (double)tileRadius && (double)Math.Abs((float)point.Y - tileLocation.Y) <= (double)tileRadius;
                 }
                 else // New method: Determine extents of tiles in range based on player position rounded favorably up/down
@@ -948,7 +943,7 @@ namespace RangedTools
                 Point point = new Point(xTile, yTile);
                 if (!Config.UseHalfTilePositions) // Standard method: Round player's position down to nearest tile
                 {
-                    Vector2 tileLocation = f.getTileLocation();
+                    Vector2 tileLocation = f.Tile;
                     __result = (double)Math.Abs((float)point.X - tileLocation.X) <= (double)tileRadius && (double)Math.Abs((float)point.Y - tileLocation.Y) <= (double)tileRadius;
                 }
                 else // New method: Determine extents of tiles in range based on player position rounded favorably up/down
@@ -1039,7 +1034,7 @@ namespace RangedTools
                     continue;
                 
                 // Perform tool action on terrain.
-                if (location.terrainFeatures[terrainKey].performToolAction(__instance, 0, terrainKey, location))
+                if (location.terrainFeatures[terrainKey].performToolAction(__instance, 0, terrainKey))
                     location.terrainFeatures.Remove(terrainKey);
             }
             
@@ -1050,7 +1045,7 @@ namespace RangedTools
                     continue;
                 
                 // Perform tool action on object.
-                if (location.objects[objectKey].performToolAction(__instance, location))
+                if (location.objects[objectKey].performToolAction(__instance))
                     location.objects.Remove(objectKey);
             }
             
@@ -1145,7 +1140,7 @@ namespace RangedTools
                 
                 // Go through all keys in objects looking for Crab Pots, and check if the tile is within range to be acted upon.
                 int objectRadius = Config.ObjectPlaceRange;
-                Vector2 playerLocation = who.getTileLocation();
+                Vector2 playerLocation = who.Tile;
                 foreach (Vector2 objectKey in __instance.objects.Keys)
                 {
                     StardewValley.Object obj = __instance.objects[objectKey];

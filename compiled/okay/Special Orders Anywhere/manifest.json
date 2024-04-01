@@ -1,10 +1,10 @@
-﻿{
-  "Name": "Special Orders Anywhere",
+{
+  "Name": "Menu Cycle",
   "Author": "AcidicNic",
-  "Version": "3.0.0",
-  "Description": "Quickly cycle through varies menus. Access your Calendar, Daily Quests, Special Orders, Qi's Special Orders, and Journal anywhere.",
+  "Version": "4.0.1",
+  "Description": "Quickly cycle through varies menus. Access the Calendar, Daily Quests, Special Orders, and Qi's Special Orders anywhere. (Previously, \"Special Orders Anywhere\")",
   "UniqueID": "acidicNic.SpecialOrdersAnywhere",
-  "EntryDll": "SpecialOrdersAnywhere.dll",
+  "EntryDll": "MenuCycle.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:7588" ]
+  "UpdateKeys": ["Nexus:7588"]
 }

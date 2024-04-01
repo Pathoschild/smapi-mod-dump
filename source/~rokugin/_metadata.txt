@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/rokugin/StardewMods
+   Git: https://github.com/rokugin/StardewMods.git
+
+mods:
+   Better Stardrops
+   Clint's Backstock
+   Custom Locks Updated
+
+latest commit:
+   commit 8c1118acd1005f6d88baa9aa95b6d2c3f3f4476c
+   Author: rokugin <rokugin@gmail.com>
+   Date:   Sun Mar 31 02:37:51 2024 -0700
+   
+       Add stamina buff, Reorganize mod options in GMCM
+   

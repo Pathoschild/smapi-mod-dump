@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NermNermNerm/StardewMods
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/manifest.json",
+    "Name": "Questable Tractor Mod",
+    "Author": "NermNermNerm",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "3.14.0",
+    "UniqueID": "NermNermNerm.QuestableTractor",
+    "Description": "Lets you get the tractor early, but only after some quests are done",
+    "EntryDll": "QuestableTractor.dll",
+    "UpdateKeys": [ "Nexus:20703" ],
+    "Dependencies": [
+        {
+            "UniqueID": "Pathoschild.TractorMod",
+            "MinimumVersion": "4.17.0",
+            "IsRequired": true
+        }
+    ]
+}

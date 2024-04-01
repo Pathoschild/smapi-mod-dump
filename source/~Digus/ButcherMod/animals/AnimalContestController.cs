@@ -23,6 +23,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.animals
 {
@@ -87,7 +88,7 @@ namespace AnimalHusbandryMod.animals
         public static String GetNextContestDateKey()
         {
             SDate date = GetNextContestDate();
-            return $"{date.Year:00}{Utility.getSeasonNumber(date.Season)}{date.Day:00}";
+            return $"{date.Year:00}{date.SeasonIndex}{date.Day:00}";
         }
 
         public static Character GetNextContestParticipant()
@@ -208,12 +209,12 @@ namespace AnimalHusbandryMod.animals
 
         public static bool HasFertilityBonus(FarmAnimal farmAnimal)
         {
-            return HasWon(farmAnimal) && new[]{ "spring" , "summer"}.Contains(farmAnimal.GetDayParticipatedContest()?.Season);
+            return HasWon(farmAnimal) && new[]{ "spring" , "summer"}.Contains(farmAnimal.GetDayParticipatedContest()?.SeasonKey);
         }
 
         public static bool HasProductionBonus(FarmAnimal farmAnimal)
         {
-            return HasWon(farmAnimal) && new[] { "fall", "winter" }.Contains(farmAnimal.GetDayParticipatedContest()?.Season);
+            return HasWon(farmAnimal) && new[] { "fall", "winter" }.Contains(farmAnimal.GetDayParticipatedContest()?.SeasonKey);
         }
 
         public static void UpdateContestCount()

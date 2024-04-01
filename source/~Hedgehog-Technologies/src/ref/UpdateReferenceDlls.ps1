@@ -1,0 +1,7 @@
+refasmer.exe -v -c -p -O "." "D:\SteamLibrary\steamapps\common\Stardew Valley\MonoGame.Framework.dll"
+refasmer.exe -v -c -p -O "." "D:\SteamLibrary\steamapps\common\Stardew Valley\Stardew Valley.dll"
+refasmer.exe -v -c -p -O "." "D:\SteamLibrary\steamapps\common\Stardew Valley\StardewModdingAPI.dll"
+refasmer.exe -v -c -p -O "." "D:\SteamLibrary\steamapps\common\Stardew Valley\StardewValley.GameData.dll"
+refasmer.exe -v -c -p -O "." "D:\SteamLibrary\steamapps\common\Stardew Valley\xTile.dll"
+refasmer.exe -v -c -p -O ".\smapi-internal" "D:\SteamLibrary\steamapps\common\Stardew Valley\smapi-internal\SMAPI.Toolkit.CoreInterfaces.dll"
+Copy-Item "D:\SteamLibrary\steamapps\common\Stardew Valley\smapi-internal\SMAPI.Toolkit.CoreInterfaces.xml" -Destination ".\smapi-internal"

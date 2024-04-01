@@ -95,7 +95,7 @@ namespace MailServicesMod
 
         internal static void DeleteConfigMenu(IManifest manifest)
         {
-            GetApi().UnregisterModConfig(MailServicesModEntry.Manifest);
+            GetApi()?.UnregisterModConfig(MailServicesModEntry.Manifest);
         }
 
         private static GenericModConfigMenuApi GetApi()

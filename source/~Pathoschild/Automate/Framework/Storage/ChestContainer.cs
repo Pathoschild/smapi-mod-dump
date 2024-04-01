@@ -59,7 +59,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Storage
         public object InventoryReferenceId { get; }
 
         /// <inheritdoc />
-        public IInventory Inventory => this.Chest.Items;
+        public IInventory Inventory => this.Chest.GetItemsForPlayer();
 
 
         /*********

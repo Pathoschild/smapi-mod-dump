@@ -11,17 +11,17 @@
 {
     "Name": "Junimo Warp",
     "Author": "Shockah",
-    "Version": "1.0.2",
+    "Version": "2.0.0",
     "Description": "Instant player transportation between Junimo Chests.",
     "UniqueID": "Shockah.JunimoWarp",
     "EntryDll": "JunimoWarp.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:15676" ],
     "Dependencies": [
         {
             "UniqueID": "Shockah.Kokoro",
             "IsRequired": true,
-            "MinimumVersion": "2.0.0"
+            "MinimumVersion": "3.0.0"
         }
     ]
 }

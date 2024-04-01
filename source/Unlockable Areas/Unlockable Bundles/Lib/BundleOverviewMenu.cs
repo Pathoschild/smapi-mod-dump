@@ -554,7 +554,7 @@ namespace Unlockable_Bundles.Lib
 
             //Progress
             var progressDisplay = $"{u._alreadyPaid.Count()}/{(u.ShopType is ShopType.CCBundle or ShopType.AltCCBundle ? u.BundleSlots : u._price.Count())}";
-            var progressPos = Game1.dialogueFont.MeasureString(locationDisplay).X < 699 - Game1.smallFont.MeasureString(progressDisplay).Length()
+            var progressPos = Game1.dialogueFont.MeasureString(locationDisplay).X < 699 - Game1.dialogueFont.MeasureString(progressDisplay).Length()
                     ? new Vector2(xPositionOnScreen + 700 - Game1.smallFont.MeasureString(progressDisplay).Length(), yPositionOnScreen + height - 186)
                     : new Vector2(xPositionOnScreen + 42, yPositionOnScreen + height - 220);
             b.DrawString(Game1.dialogueFont, progressDisplay, progressPos, Color.DarkSlateGray);

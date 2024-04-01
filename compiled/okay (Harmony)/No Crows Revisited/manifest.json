@@ -1,0 +1,12 @@
+{
+  "Name": "NoCrows Revisited",
+  "Author": "Siweipancc",
+  "Version": "0.0.2",
+  "Description": "NoCrows in Farm.",
+  "UniqueID": "Siweipancc.NoCrowsRevisited",
+  "EntryDll": "NoCrowsRevisited.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:21129"
+  ]
+}

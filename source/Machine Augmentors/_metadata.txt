@@ -6,11 +6,9 @@ mods:
    Machine Augmentors
 
 latest commit:
-   commit 08c0091eeb23e69854fd81b618724a2419c0d4af
-   Author: SlayerDharok <kevinaugustino@hotmail.com>
-   Date:   Thu Jun 30 22:14:42 2022 -0400
+   commit 162a5c3e279ccabfa0edf6043a286a93dee055a2
+   Author: Kevin Augustino <kevinaugustino@hotmail.com>
+   Date:   Fri Mar 22 02:29:13 2024 -0400
    
-       Merge pull request #4 from CaptainSully/master
-       
-       Update to target .net 5.0 instead of .net framework. Replace PyTK dependency with SpaceCore for serializing items.
+       1.6 Compatibility update (untested)
    

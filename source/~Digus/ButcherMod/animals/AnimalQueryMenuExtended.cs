@@ -23,6 +23,7 @@ using AnimalHusbandryMod.tools;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.animals
 {
@@ -143,7 +144,7 @@ namespace AnimalHusbandryMod.animals
                 }
             }
 
-            if (!DataLoader.ModConfig.DisableMeat && MeatController.CanGetMeatFrom(farmAnimal))
+            if (!DataLoader.ModConfig.DisableMeat && MeatController.CanGetMeatFrom(farmAnimal) && !DataLoader.ModConfig.DisableMeatButton)
             {
                 if (!this._farmAnimal.isBaby())
                 {
@@ -213,7 +214,7 @@ namespace AnimalHusbandryMod.animals
                 return;
             if (_movingAnimal.GetValue())
             {
-                Building buildingAt = (Game1.getLocationFromName("Farm") as Farm).getBuildingAt(new Vector2((float)((x + Game1.viewport.X) / Game1.tileSize), (float)((y + Game1.viewport.Y) / Game1.tileSize)));
+                Building buildingAt = Game1.getFarm().getBuildingAt(new Vector2((float)((Game1.getOldMouseX(ui_scale: false) + Game1.viewport.X) / Game1.tileSize), (float)((Game1.getOldMouseY(ui_scale: false) + Game1.viewport.Y) / Game1.tileSize)));
                 if 
                 (
                     buildingAt != null                     
@@ -237,13 +238,13 @@ namespace AnimalHusbandryMod.animals
             {
                 if (this.yesButton.containsPoint(x, y))
                 {
-                    (this._farmAnimal.home.indoors.Value as AnimalHouse)?.animalsThatLiveHere.Remove(this._farmAnimal.myID.Value);
+                    (this._farmAnimal.home.GetIndoors() as AnimalHouse)?.animalsThatLiveHere.Remove(this._farmAnimal.myID.Value);
                     this._farmAnimal.health.Value = -1;
-                    int num1 = this._farmAnimal.frontBackSourceRect.Width / 2;
+                    int num1 = this._farmAnimal.Sprite.SourceRect.Width / 2;
                     for (int index = 0; index < num1; ++index)
                     {
                         int num2 = Game1.random.Next(25, 200);
-                        Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(5, this._farmAnimal.position + new Vector2((float)Game1.random.Next(-Game1.tileSize / 2, this._farmAnimal.frontBackSourceRect.Width * 3), (float)Game1.random.Next(-Game1.tileSize / 2, this._farmAnimal.frontBackSourceRect.Height * 3)), new Color((int)byte.MaxValue - num2, (int)byte.MaxValue, (int)byte.MaxValue - num2), 8, false, Game1.random.NextDouble() < 0.5 ? 50f : (float)Game1.random.Next(30, 200), 0, Game1.tileSize, -1f, Game1.tileSize, Game1.random.NextDouble() < 0.5 ? 0 : Game1.random.Next(0, 600))
+                        Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(5, this._farmAnimal.Position + new Vector2((float)Game1.random.Next(-Game1.tileSize / 2, this._farmAnimal.Sprite.SourceRect.Width * 3), (float)Game1.random.Next(-Game1.tileSize / 2, this._farmAnimal.Sprite.SourceRect.Height * 3)), new Color((int)byte.MaxValue - num2, (int)byte.MaxValue, (int)byte.MaxValue - num2), 8, false, Game1.random.NextDouble() < 0.5 ? 50f : (float)Game1.random.Next(30, 200), 0, Game1.tileSize, -1f, Game1.tileSize, Game1.random.NextDouble() < 0.5 ? 0 : Game1.random.Next(0, 600))
                         {
                             scale = (float)Game1.random.Next(2, 5) * 0.25f,
                             alpha = (float)Game1.random.Next(2, 5) * 0.25f,
@@ -314,15 +315,15 @@ namespace AnimalHusbandryMod.animals
             base.performHoverAction(x, y);
             if (_movingAnimal.GetValue())
             {
-                Vector2 tile = new Vector2((float)((x + Game1.viewport.X) / Game1.tileSize), (float)((y + Game1.viewport.Y) / Game1.tileSize));
-                Farm locationFromName = Game1.getLocationFromName("Farm") as Farm;
+                Vector2 tile = new Vector2((float)((Game1.getOldMouseX(ui_scale: false) + Game1.viewport.X) / Game1.tileSize), (float)((Game1.getOldMouseY(ui_scale: false) + Game1.viewport.Y) / Game1.tileSize));
+                Farm locationFromName = Game1.getFarm();
                 Building buildingAt = locationFromName.getBuildingAt(tile);
                 if (buildingAt != null 
                     && buildingAt.color.Equals(Color.LightGreen * 0.8f)
                     && PregnancyController.IsAnimalPregnant(this._farmAnimal)
                     && PregnancyController.CheckBuildingLimit(this._farmAnimal))
                 {
-                    buildingAt.color.Value = Color.Red * 0.8f;
+                    buildingAt.color = Color.Red * 0.8f;
                 }
             }
             else
@@ -393,7 +394,7 @@ namespace AnimalHusbandryMod.animals
                             SDate date = this._farmAnimal.GetDayParticipatedContest();
                             if (date != null)
                             {
-                                _hoverText.SetValue(DataLoader.i18n.Get(messageKey, new { contestDate = Utility.getDateStringFor(date.Day, Utility.getSeasonNumber(date.Season), date.Year) }));
+                                _hoverText.SetValue(DataLoader.i18n.Get(messageKey, new { contestDate = date.ToLocaleString()}));
                             }
                         }
                     }
@@ -414,37 +415,41 @@ namespace AnimalHusbandryMod.animals
 
             if (!movingAnimal && !Game1.globalFade)
             {
-                b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
-                Game1.drawDialogueBox(this.xPositionOnScreen, this.yPositionOnScreen + 128, AnimalQueryMenu.width, AnimalQueryMenu.height - 128, false, true, (string)null, false);
-                if ((int)this._farmAnimal.harvestType.Value != 2)
-                    this._textBox.Draw(b);
-                int num1 = (this._farmAnimal.age.Value + 1) / 28 + 1;
-                string text1;
-                if (num1 > 1)
-                    text1 = Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", (object)num1);
-                else
-                    text1 = Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1");
-                if (this._farmAnimal.age.Value < (int)this._farmAnimal.ageWhenMature.Value)
-                    text1 += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
-                Utility.drawTextWithShadow(b, text1, Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + Game1.tileSize / 2), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + Game1.tileSize / 4 + Game1.tileSize * 2)), Game1.textColor, 1f, -1f, -1, -1, 1f, 3);
-                int num2 = 0;
+                if (!Game1.options.showClearBackgrounds)
+                {
+                    b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
+                }
+                Game1.drawDialogueBox(base.xPositionOnScreen, base.yPositionOnScreen + 128, AnimalQueryMenu.width, AnimalQueryMenu.height - 128, speaker: false, drawOnlyBox: true);
+                this._textBox.Draw(b);
+                int age = (this._farmAnimal.GetDaysOwned() + 1) / 28 + 1;
+                string ageText = ((age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age));
+                if (this._farmAnimal.isBaby())
+                {
+                    ageText += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
+                }
+                Utility.drawTextWithShadow(b, ageText, Game1.smallFont, new Vector2(base.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32, base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 16 + 128), Game1.textColor);
+                int yOffset = 0;
                 if (this._parentName != null)
                 {
-                    num2 = Game1.tileSize / 3;
+                    yOffset = Game1.tileSize / 3;
                     Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\UI:AnimalQuery_Parent", (object)this._parentName), Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + Game1.tileSize / 2), (float)(Game1.tileSize / 2 + this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + Game1.tileSize / 4 + Game1.tileSize * 2)), Game1.textColor, 1f, -1f, -1, -1, 1f, 3);
                 }
-                int num3 = loveLevel * 1000.0 % 200.0 >= 100.0 ? (int)(loveLevel * 1000.0 / 200.0) : -100;
+                int halfHeart = loveLevel * 1000.0 % 200.0 >= 100.0 ? (int)(loveLevel * 1000.0 / 200.0) : -100;
                 for (int index = 0; index < 5; ++index)
                 {
-                    b.Draw(Game1.mouseCursors, new Vector2((float)(this.xPositionOnScreen + Game1.tileSize * 3 / 2 + 8 * Game1.pixelZoom * index), (float)(num2 + this.yPositionOnScreen - Game1.tileSize / 2 + Game1.tileSize * 5)), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(211 + (loveLevel * 1000.0 <= (double)((index + 1) * 195) ? 7 : 0), 428, 7, 6)), Color.White, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, 0.89f);
-                    if (num3 == index)
-                        b.Draw(Game1.mouseCursors, new Vector2((float)(this.xPositionOnScreen + Game1.tileSize * 3 / 2 + 8 * Game1.pixelZoom * index), (float)(num2 + this.yPositionOnScreen - Game1.tileSize / 2 + Game1.tileSize * 5)), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(211, 428, 4, 6)), Color.White, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, 0.891f);
+                    b.Draw(Game1.mouseCursors, new Vector2((float)(this.xPositionOnScreen + Game1.tileSize * 3 / 2 + 8 * Game1.pixelZoom * index), (float)(yOffset + this.yPositionOnScreen - Game1.tileSize / 2 + Game1.tileSize * 5)), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(211 + (loveLevel * 1000.0 <= (double)((index + 1) * 195) ? 7 : 0), 428, 7, 6)), Color.White, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, 0.89f);
+                    if (halfHeart == index)
+                        b.Draw(Game1.mouseCursors, new Vector2((float)(this.xPositionOnScreen + Game1.tileSize * 3 / 2 + 8 * Game1.pixelZoom * index), (float)(yOffset + this.yPositionOnScreen - Game1.tileSize / 2 + Game1.tileSize * 5)), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(211, 428, 4, 6)), Color.White, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, 0.891f);
                 }
-                Utility.drawTextWithShadow(b, Game1.parseText(this._farmAnimal.getMoodMessage(), Game1.smallFont, AnimalQueryMenu.width - IClickableMenu.spaceToClearSideBorder * 2 - Game1.tileSize), Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + Game1.tileSize / 2), (float)(num2 + this.yPositionOnScreen + Game1.tileSize * 6 - Game1.tileSize + Game1.pixelZoom)), Game1.textColor, 1f, -1f, -1, -1, 1f, 3);
+                Utility.drawTextWithShadow(b, Game1.parseText(this._farmAnimal.getMoodMessage(), Game1.smallFont, AnimalQueryMenu.width - IClickableMenu.spaceToClearSideBorder * 2 - Game1.tileSize), Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + Game1.tileSize / 2), (float)(yOffset + this.yPositionOnScreen + Game1.tileSize * 6 - Game1.tileSize + Game1.pixelZoom)), Game1.textColor, 1f, -1f, -1, -1, 1f, 3);
                 this.okButton.draw(b);
                 this.sellButton.draw(b);
                 this.moveHomeButton.draw(b);
                 allowReproductionButton?.draw(b);
+                if (this._farmAnimal != null && this._farmAnimal.hasEatenAnimalCracker.Value && Game1.objectSpriteSheet_2 != null)
+                {
+                    Utility.drawWithShadow(b, Game1.objectSpriteSheet_2, new Vector2((float)(base.xPositionOnScreen + AnimalQueryMenu.width) - 105.6f, (float)base.yPositionOnScreen + 224f), new Microsoft.Xna.Framework.Rectangle(16, 240, 16, 16), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 0.89f);
+                }
                 // START pregnancyStatus treatStatus meatButton
                 animalContestIndicator?.draw(b);
                 pregnantStatus?.draw(b);
@@ -454,62 +459,65 @@ namespace AnimalHusbandryMod.animals
                 // ADDED || confirmingMeat
                 if (confirmingSell || confirmingMeat)
                 {
-                    b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
+                    if (!Game1.options.showClearBackgrounds)
+                    {
+                        b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
+                    }
                     Game1.drawDialogueBox(Game1.viewport.Width / 2 - Game1.tileSize * 5 / 2, Game1.viewport.Height / 2 - Game1.tileSize * 3, Game1.tileSize * 5, Game1.tileSize * 4, false, true, (string)null, false);
-                    string text2 = Game1.content.LoadString("Strings\\UI:AnimalQuery_ConfirmSell");
-                    b.DrawString(Game1.dialogueFont, text2, new Vector2((float)(Game1.viewport.Width / 2) - Game1.dialogueFont.MeasureString(text2).X / 2f, (float)(Game1.viewport.Height / 2 - Game1.tileSize * 3 / 2 + 8)), Game1.textColor);
+                    string confirmText = Game1.content.LoadString("Strings\\UI:AnimalQuery_ConfirmSell");
+                    b.DrawString(Game1.dialogueFont, confirmText, new Vector2((float)(Game1.viewport.Width / 2) - Game1.dialogueFont.MeasureString(confirmText).X / 2f, (float)(Game1.viewport.Height / 2 - Game1.tileSize * 3 / 2 + 8)), Game1.textColor);
                     this.yesButton.draw(b);
                     this.noButton.draw(b);
                 }
-                else if (!string.IsNullOrEmpty(hoverText))
-                    IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont, 0, 0, -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+                else
+                {
+                    string text = hoverText;
+                    if (text != null && text.Length > 0)
+                    {
+                        IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
+                    }
+                }
             }
             else if (!Game1.globalFade)
             {
-                string text = Game1.content.LoadString("Strings\\UI:AnimalQuery_ChooseBuilding", (object)this._farmAnimal.displayHouse, (object)this._farmAnimal.displayType);
-                Game1.drawDialogueBox(Game1.tileSize / 2, -Game1.tileSize, (int)Game1.dialogueFont.MeasureString(text).X + IClickableMenu.borderWidth * 2 + Game1.tileSize / 4, Game1.tileSize * 2 + IClickableMenu.borderWidth * 2, false, true, (string)null, false);
+                string text = Game1.content.LoadString("Strings\\UI:AnimalQuery_ChooseBuilding", this._farmAnimal.displayHouse, this._farmAnimal.displayType);
+                Game1.drawDialogueBox(Game1.tileSize / 2, -Game1.tileSize, (int)Game1.dialogueFont.MeasureString(text).X + IClickableMenu.borderWidth * 2 + Game1.tileSize / 4, Game1.tileSize * 2 + IClickableMenu.borderWidth * 2, speaker: false, drawOnlyBox: true);
                 b.DrawString(Game1.dialogueFont, text, new Vector2((float)(Game1.tileSize / 2 + IClickableMenu.spaceToClearSideBorder * 2 + 8), (float)(Game1.tileSize / 2 + Game1.pixelZoom * 3)), Game1.textColor);
                 this.okButton.draw(b);
             }
             this.drawMouse(b);
         }
 
-        public static bool Pet(FarmAnimal __instance, ref Farmer who)
+        public static bool Pet(FarmAnimal __instance, ref Farmer who, bool is_auto_pet)
         {
-            if (!who.FarmerSprite.PauseForSingleAnimation
-                && !(Game1.timeOfDay >= 1900 && !__instance.isMoving()))
+            if (who.FarmerSprite.PauseForSingleAnimation) return true;
+            if (is_auto_pet) return true;
+            if (Game1.timeOfDay >= 1900 && !__instance.isMoving()) return true;
+            if (!__instance.wasPet.Value) return true;
+            if (who.ActiveObject is { QualifiedItemId: "(O)178" }) return true;
+            if (!__instance.hasEatenAnimalCracker.Value && who is { ActiveObject.QualifiedItemId: "(O)GoldenAnimalCracker" }) return true;
+            who.Halt();
+            who.faceGeneralDirection(__instance.Position, 0, opposite: false, useTileCalculations: false);
+            __instance.Halt();
+            __instance.Sprite.StopAnimation();
+            __instance.uniqueFrameAccumulator = -1;
+            switch (Game1.player.FacingDirection)
             {
-                if(__instance.wasPet.Value
-                        &&(
-                            who.ActiveObject == null 
-                            || who.ActiveObject.ParentSheetIndex != 178)
-                        )
-                {
-                    who.Halt();
-                    who.faceGeneralDirection(__instance.Position, 0, false);
-                    __instance.Halt();
-                    __instance.Sprite.StopAnimation();
-                    __instance.uniqueFrameAccumulator = -1;
-                    switch (Game1.player.FacingDirection)
-                    {
-                        case 0:
-                            __instance.Sprite.currentFrame = 0;
-                            break;
-                        case 1:
-                            __instance.Sprite.currentFrame = 12;
-                            break;
-                        case 2:
-                            __instance.Sprite.currentFrame = 8;
-                            break;
-                        case 3:
-                            __instance.Sprite.currentFrame = 4;
-                            break;
-                    }
-                    Game1.activeClickableMenu = (IClickableMenu)new AnimalQueryMenuExtended(__instance);
-                    return false;
-                }
+                case 0:
+                    __instance.Sprite.currentFrame = 0;
+                    break;
+                case 1:
+                    __instance.Sprite.currentFrame = 12;
+                    break;
+                case 2:
+                    __instance.Sprite.currentFrame = 8;
+                    break;
+                case 3:
+                    __instance.Sprite.currentFrame = 4;
+                    break;
             }
-            return true;
+            Game1.activeClickableMenu = (IClickableMenu)new AnimalQueryMenuExtended(__instance);
+            return false;
         }
     }
 }

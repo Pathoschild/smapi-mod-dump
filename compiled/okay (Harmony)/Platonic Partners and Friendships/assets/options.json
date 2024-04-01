@@ -1,0 +1,251 @@
+[
+	/*{
+		"Name": "ExampleOption", //Internal name of the config option. must be unique for every option. You also pass this to ConfigValue token to get its value.
+		"Type": "bool", //Whether this is a string(value type that accepts any text), bool(value type that only accepts 'True' and 'False'), or a subtitle to be just displayed
+		"Default": "True", //Default value for this option. If AllowedValues isnt empty or if this is a bool option, this must be assigned. For bool options, this must be set to either 'True' or 'False' (this is a weird issue with C# itself). Capitalization matters.
+
+		"AllowedValues": "",
+		//If you want this option to be textbox, leave it empty. If this is a bool, its ignored. Otherwise, give it a comma delimited list.
+		//For exp: "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex". You should never set it to null, but it is fine to omit.
+
+		"EnableWithMod": "Pathoschild.ContentPatcher",
+		//The mod(s) this option is dependent on, if the mod(s) aren't installed it wont be added into the menu, but will still exist in mod internals.
+		//You can make it check 'and' and 'or' by using && for 'and', and || for 'or' , example: "ModID1 && ModID2"
+		//As a bonus, you can make it reverse check by adding a ! in front of the mod ID, for exp: "!ModID1 || ModID2" means "if ModID1 isnt installed or ModID2 is installed, enable this option"
+		//Note: Code related to it doesnt account properly for usage of || and && at the same time. Can't say I know what to do if this is ever needed though.
+
+		"NameKey": "",
+		"TooltipKey": ""
+		//These two override (if specified) the basic translation getting behaivor for options that should apply individually to each NPC(but it doesn't have to actually be an NPC), while they are supposed to use same name and description 
+		//They have some specialized behaivor in code to get the main NPC name (this is what '{name}' bits are for), let me know if you need more of/from this type of option.
+	},
+	*/
+	{
+		"Name": "RelationshipTypes",
+		"Type": "subtitle"
+	},
+	{
+		"Name": "AbigailRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "AlexRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "ElliottRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "EmilyRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "HaleyRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "HarveyRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "LeahRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "MaruRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "PennyRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "SamRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "SebastianRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "ShaneRelationshipType",
+		"Type": "string",
+		"Default": "FullyPlatonic",
+		"AllowedValues": "FullyPlatonic,RomanceWithoutSex,SexWithoutRomance,RomanceAndSex",
+		"NameKey": "GMCM.RelationshipTypes.Name",
+		"TooltipKey": "GMCM.RelationshipTypes.Desc"
+	},
+	{
+		"Name": "PartnershipConfiguration",
+		"Type": "subtitle"
+	},
+	{
+		"Name": "TermOfEndearment",
+		"Type": "string",
+		"Default": "@",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "AlwaysAdopt",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "CustomPlatonicLabels",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "PlatonicLabel_bouquet",
+		"Type": "string",
+		"Default": "best friend",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "PlatonicLabel_housemate",
+		"Type": "string",
+		"Default": "partner",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "CustomRomanticLabels",
+		"Type": "string",
+		"Default": "Off",
+		"AllowedValues": "PPaFNPCs,AllNPCs,Off"
+	},
+	{
+		"Name": "RomanticLabel_bouquet",
+		"Type": "string",
+		"Default": "dating",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "RomanticLabel_housemate",
+		"Type": "string",
+		"Default": "spouse",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "RelationshipLabel",
+		"Type": "string",
+		"Default": "partners",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "Visual",
+		"Type": "subtitle"
+	},
+	{
+		"Name": "BraceletTheme",
+		"Type": "string",
+		"Default": "stardrop",
+		"AllowedValues": "stardrop,rainbow,aroflag,aceflag"
+	},
+	{
+		"Name": "UseLovePortraits",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "EditPortraits_FullyPlatonic",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "EditPortraits_RomanceWithoutSex",
+		"Type": "bool",
+		"Default": "False",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "EditPortraits_SexWithoutRomance",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": ""
+	},
+	{
+		"Name": "EditSprites",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": "",
+		"EnableWithMod": "!DSVTeam.DiverseStardewValley"
+	},
+	{
+		"Name": "Compatibility",
+		"Type": "subtitle"
+	},
+	{
+		"Name": "Auncle",
+		"Type": "string",
+		"Default": "Nini",
+		"AllowedValues": "",
+		"EnableWithMod": "tenthousandcats.ImmersiveCShane && iss.immersivespouses"
+	},
+	{
+		"Name": "SpousesReact_ExInvolvement",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": "",
+		"EnableWithMod": "CasualInvidia.SpousesReactToDeath"
+	},
+	{
+		"Name": "Schedules",
+		"Type": "subtitle"
+	},
+	{
+		"Name": "EnableScheduleChanges",
+		"Type": "bool",
+		"Default": "True",
+		"AllowedValues": "",
+		"EnableWithMod": "!missmarlot.bachelorsstayfriends"
+	}
+]

@@ -25,21 +25,18 @@ namespace FarmTypeManager
 
                 if (api == null) //if the API is NOT available
                 {
-                    Monitor.Log($"Optional API not found: Dynamic Game Assets (DGA).", LogLevel.Trace);
+                    Monitor.Log($"API not found: Dynamic Game Assets (DGA).", LogLevel.Trace);
                     return;
                 }
-                else //if the API is available
-                {
-                    Monitor.Log($"Optional API found: Dynamic Game Assets (DGA).", LogLevel.Trace);
-                }
 
+                Monitor.Log($"API found: Dynamic Game Assets (DGA).", LogLevel.Trace);
                 Utility.DGAItemAPI = api; //pass the API to this mod's static utility property
             }
             catch (Exception ex)
             {
                 Utility.Monitor.Log($"An error happened while loading FTM's Dynamic Game Assets (DGA) interface. FTM will be unable to spawn custom items added by DGA. The auto-generated error message has been added to the log.", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Trace);
-                Utility.Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                Utility.Monitor.Log($"{ex}", LogLevel.Trace);
             }
         }
     }

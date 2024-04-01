@@ -10,8 +10,8 @@ for queries and analysis.**
 Combines features of [StackToNearbyChests](https://www.nexusmods.com/stardewvalley/mods/1787) and [CategorizeChests](https://www.nexusmods.com/stardewvalley/mods/1300), and allows crafting from nearby chests.
 
 ## Requirements
-Stardew Valley 1.3  
-[SMAPI 2.6](https://smapi.io)
+Stardew Valley 1.6  
+[SMAPI 4.0](https://smapi.io)
 
 ## Thanks to...
 * [Pathoschild](https://github.com/Pathoschild) for [SMAPI](https://github.com/Pathoschild/SMAPI)

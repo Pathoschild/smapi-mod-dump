@@ -9,11 +9,14 @@
 *************************************************/
 
 using System;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Buffs;
 using StardewValley.TerrainFeatures;
 
 namespace Sprint {
@@ -33,6 +36,7 @@ namespace Sprint {
 
 		private int actualSprintSpeed = 0;
 		private float actualStaminaDrain = 0;
+		private bool enableStaminaDrain = true;
 		private int actualSprintIncrease = 0;
 
 		private bool enableFloorSpeed = true;
@@ -46,8 +50,19 @@ namespace Sprint {
 
 		private const string MESSAGE_SPRINT_SPEED = "SprintSpeed";
 		private const string MESSAGE_SPRINT_STAMINA = "Stamina";
+		private const string MESSAGE_SPRINT_STAMINA_DRAIN = "StaminaDrain";
 		private const string MESSAGE_ENABLE_FLOOR = "EnableFloor";
 		private const string MESSAGE_FLOOR_SPEED = "FloorSpeed";
+
+		private const string BUFF_ID = "geko_x.zoomyfarmer.buff.zoomy";
+
+		private Buff buffZoomy = new Buff(
+			id: BUFF_ID,
+			duration: -2, // Rest of day
+			effects: new BuffEffects() {
+				Speed = { 0 } // shortcut for buff.Speed.Value = 10
+			}
+		);
 
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -166,9 +181,9 @@ namespace Sprint {
 
 			if (this.isPlayerSprinting.Value && this.enableFloorSpeed) {
 
-				if(currentTile.Value != Game1.player.getTileLocation()) {
+				if(currentTile.Value != Game1.player.Tile) {
 
-					currentTile.Value = Game1.player.getTileLocation();
+					currentTile.Value = Game1.player.Tile;
 					GameLocation location = Game1.player.currentLocation;
 
 					bool isThisTilePath = isTileAPath(location, currentTile.Value);
@@ -176,20 +191,11 @@ namespace Sprint {
 					Monitor.Log($"Stepping in new tile: {currentTile}. Is path: {isThisTilePath}", LogLevel.Trace);
 
 					if (isThisTilePath && wasLastTilePath.Value) {
-
-						// Reset the current added speed and re-add, but with the tile mod
-						Game1.player.addedSpeed -= this.actualSprintIncrease;
-						this.actualSprintIncrease = this.actualSprintSpeed - ModConfig.defaultFarmerSpeed + this.additionalFloorSpeed;
-
-						Game1.player.addedSpeed += this.actualSprintIncrease;
+						applyBuff(this.actualSprintIncrease + this.additionalFloorSpeed);
 					}
 
 					else {
-						// Reset the current added speed and re-add, but without the tile mod
-						Game1.player.addedSpeed -= this.actualSprintIncrease;
-						this.actualSprintIncrease = this.actualSprintSpeed - ModConfig.defaultFarmerSpeed;
-
-						Game1.player.addedSpeed += this.actualSprintIncrease;
+						applyBuff(this.actualSprintIncrease);
 					}
 
 					wasLastTilePath.Value = isThisTilePath;
@@ -198,13 +204,14 @@ namespace Sprint {
 
 			// addedSpeed gets set to 0 every 10minUpdate.
 			// Re-add the sprint speed if we should be sprinting when this happens
-			if (this.isPlayerSprinting.Value && Game1.player.addedSpeed == 0) {
-				Game1.player.addedSpeed += this.actualSprintIncrease;
-			}
+			//if (this.isPlayerSprinting.Value && Game1.player.addedSpeed == 0) {
+			//	Game1.player.addedSpeed += this.actualSprintIncrease;
+			//}
 
 			// Exhausted, stop sprinting regardless
-			if (Game1.player.stamina <= 0)
+			if (Game1.player.stamina <= 0) {
 				StopSprint();
+			}
 		}
 
 		private void StartSprint() {
@@ -212,11 +219,14 @@ namespace Sprint {
 			if (this.isPlayerSprinting.Value)
 				return;
 
+			if (!this.enableStaminaDrain)
+				return;
+
 			if (Game1.player.stamina < this.actualStaminaDrain)
 				return;
 
 			this.isPlayerSprinting.Value = true;
-			Game1.player.addedSpeed += this.actualSprintIncrease;
+			applyBuff(this.actualSprintIncrease);
 		}
 
 		private void StopSprint() {
@@ -226,22 +236,37 @@ namespace Sprint {
 
 			this.isPlayerSprinting.Value = false;
 			this.isPlayerToggleSprinting.Value = false;
-			Game1.player.addedSpeed -= this.actualSprintIncrease;
+			//Game1.player.addedSpeed -= this.actualSprintIncrease;
 
 			// If for whatever reason the added speed is negative, just set it to 0
 			// This prevents crops and grass disappearing when sprinting,
 			//  but will remove any negative speed modifiers (like long grass)
-			if (Game1.player.addedSpeed < 0) {
-				Monitor.Log("Player speed reset to 0", LogLevel.Trace);
-				Game1.player.addedSpeed = 0;
-			}
+			//if (Game1.player.addedSpeed < 0) {
+			//	Monitor.Log("Player speed reset to 0", LogLevel.Trace);
+			//	Game1.player.addedSpeed = 0;
+			//}
+
+			applyBuff(0);
 		}
+
+		private void applyBuff(float amount) {
+			buffZoomy.effects.Speed.Value = amount;
+			buffZoomy.visible = false;
+			Game1.player.applyBuff(buffZoomy);
+		}
+
+		/*
+		 * Stamina drain
+		 */
 
 		private void OnSecondTicked(object sender, OneSecondUpdateTickedEventArgs e) {
 			if (!Context.IsWorldReady)
 				return;
 
 			if (!Context.IsPlayerFree)
+				return;
+
+			if(!config.enableStaminaDrain)
 				return;
 
 			if (this.isPlayerSprinting.Value && !Game1.paused && Game1.player.isMoving()) {
@@ -277,6 +302,7 @@ namespace Sprint {
 
 			modhelper.Multiplayer.SendMessage<int>(this.actualSprintSpeed, MESSAGE_SPRINT_SPEED, new[] { this.ModManifest.UniqueID }, playerIds);
 			modhelper.Multiplayer.SendMessage<float>(this.actualStaminaDrain, MESSAGE_SPRINT_STAMINA, new[] { this.ModManifest.UniqueID }, playerIds);
+			modhelper.Multiplayer.SendMessage<bool>(this.enableStaminaDrain, MESSAGE_SPRINT_STAMINA_DRAIN, new[] { this.ModManifest.UniqueID }, playerIds);
 			modhelper.Multiplayer.SendMessage<bool>(this.enableFloorSpeed, MESSAGE_ENABLE_FLOOR, new[] { this.ModManifest.UniqueID }, playerIds);
 			modhelper.Multiplayer.SendMessage<int>(this.additionalFloorSpeed, MESSAGE_FLOOR_SPEED, new[] { this.ModManifest.UniqueID }, playerIds);
 		}
@@ -294,7 +320,12 @@ namespace Sprint {
 					this.actualStaminaDrain = e.ReadAs<float>();
 				}
 
-				if(e.Type == MESSAGE_ENABLE_FLOOR) {
+				if (e.Type == MESSAGE_SPRINT_STAMINA_DRAIN)
+				{
+					this.enableStaminaDrain = e.ReadAs<bool>();
+				}
+
+				if (e.Type == MESSAGE_ENABLE_FLOOR) {
 					this.enableFloorSpeed = e.ReadAs<bool>();
 				}
 
@@ -321,6 +352,7 @@ namespace Sprint {
 		public static int defaultFarmerSpeed = 5;
 
 		public int sprintSpeed { get; set; } = 7;
+		public bool enableStaminaDrain = true;
 		public float staminaDrainPerSecond { get; set; } = 1f;
 
 		public SButton sprintKey { get; set; } = SButton.LeftControl;

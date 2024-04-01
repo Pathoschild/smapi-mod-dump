@@ -5,10 +5,10 @@
     <AssemblyName>CustomTokens</AssemblyName>
     <RootNamespace>CustomTokens</RootNamespace>
     <Version>1.5.1</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/KDERazorback/SvFishingMod
+   Git: https://github.com/KDERazorback/SvFishingMod.git
+
+mods:
+   SV Fishing Mod
+
+latest commit:
+   commit fcab7b208301930dc78ad3d87c6c12f99f62c481
+   Author: Fabian R <kderazorback@me.com>
+   Date:   Mon Dec 21 12:50:25 2020 -0600
+   
+       Update README.md
+       
+       Ammend latest commit.
+   

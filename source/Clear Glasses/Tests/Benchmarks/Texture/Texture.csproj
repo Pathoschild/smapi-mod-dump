@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\Common.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <StartupObject>Texture.Texture</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="pufferchick_xbrz.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.1" />
+    <PackageReference Include="System.Data.HashFunction.CityHash" Version="2.0.0" />
+    <PackageReference Include="System.Data.HashFunction.xxHash" Version="2.0.0" />
+  </ItemGroup>
+</Project>

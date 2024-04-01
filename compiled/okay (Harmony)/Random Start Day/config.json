@@ -1,0 +1,13 @@
+{
+  "DisableAll": false,
+  "AllowSpringSummerFallWinter": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "AvoidFestivalDay": false,
+  "AlwaysStartAt1st": false,
+  "UseWheatSeeds": true,
+  "UseWinter28toYear1": true
+}

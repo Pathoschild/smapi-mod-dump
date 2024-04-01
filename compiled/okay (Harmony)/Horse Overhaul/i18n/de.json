@@ -1,0 +1,33 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "Ja",
+  "No": "Nein",
+  "GotPetted": "Gestreichelt: {{value}}",
+  "GotWater": "Wasser gegeben: {{value}}",
+  "GotFood": "Essen gegeben: {{value}}",
+  "Friendship": "Freundschaft: {{value}}",
+  "HorseWarning": "Während des Reitens nicht möglich!",
+  "AteEnough": "{{name}} hat für heute genug gefressen.",
+  "AteFood": "{{name}} hat deine/n {{foodName}} gefressen.",
+  "AteFoodLove": "Es hat es geliebt.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "Es hat es gemocht.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "Der Snack war zu öde um wirklich zu schmecken.", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "Hat Heizgerät: {{value}}",
+  "DontFeedChocolate": "Schokolade? Ernsthaft?!",
+  "LactoseIntolerantPets": "Die meisten Katzen und Hunde sind Laktose-intolerant.",
+  "LactoseIntolerantHorses": "Die meisten ausgewachsenen Pferde sind Laktose-intolerant.",
+  "HorseHerbivore": "Pferde sind Pflanzenfresser, sie können kein Fleisch fressen.",
+  "HorseNoBread": "Pferde sollten keine verarbeiteten Lebensmittel wie Brot fressen.",
+  "HorseEatShouldnt": "Pferde sollte das nicht fressen.",
+  "HorseEatHay": "Dein Pferd hat genug Heu im Stall.",
+  "HorseEatFiber": "Dein Pferd hat überall genug Grass zum Fressen.",
+  "HorseEatCoffee": "Pferde sollten keine Art von Kaffee oder Koffein konsumieren.",
+  "HorseEatCabbage": "Pferde sollten keinen Kohl oder verwandte Pflanzenarten fressen.",
+  "HorseEatOnion": "Pferde sollten keine Zwiebeln oder verwandte Pflanzenarten fressen.",
+  "HorseEatNightshade": "Pferde sollten keine Nachtschattengewächse fressen, wie Kartoffeln, Tomaten, Paprika oder Auberginen.",
+  "HorseEatHorseRadish": "Meerrettich ist sehr gefährlich für Pferde, Garten-Rettich hingegen ist okay.",
+  "HorseEatDislike": "Dein Pferd möchte das nicht fressen."
+}

@@ -11,7 +11,7 @@
 {
     "Name": "Producer Framework Mod",
     "Author": "Digus",
-    "Version": "1.7.4",
+    "Version": "1.8.0",
     "Description": "Framework to add rules to produce objects or change the vanilla rules.",
     "UniqueID": "Digus.ProducerFrameworkMod",
     "EntryDll": "ProducerFrameworkMod.dll",

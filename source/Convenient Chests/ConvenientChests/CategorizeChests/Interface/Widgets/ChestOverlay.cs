@@ -11,6 +11,7 @@
 using System;
 using ConvenientChests.StashToChests;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
@@ -19,27 +20,27 @@ using StardewValley.Objects;
 
 namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     internal class ChestOverlay : Widget {
-        private ItemGrabMenu           ItemGrabMenu   { get; }
-        private CategorizeChestsModule Module         { get; }
-        private Chest                  Chest          { get; }
-        private ITooltipManager        TooltipManager { get; }
+        private ItemGrabMenu ItemGrabMenu { get; }
+        private CategorizeChestsModule Module { get; }
+        private Chest Chest { get; }
+        private ITooltipManager TooltipManager { get; }
 
-        private readonly InventoryMenu                   InventoryMenu;
+        private readonly InventoryMenu InventoryMenu;
         private readonly InventoryMenu.highlightThisItem DefaultChestHighlighter;
         private readonly InventoryMenu.highlightThisItem DefaultInventoryHighlighter;
 
-        private TextButton   OpenButton   { get; set; }
-        private TextButton   StashButton  { get; set; }
+        private TextButton CategorizeButton { get; set; }
+        private TextButton StashButton { get; set; }
         private CategoryMenu CategoryMenu { get; set; }
 
-        public ChestOverlay(CategorizeChestsModule module, Chest chest, ItemGrabMenu menu, ITooltipManager tooltipManager) {
-            Module         = module;
-            Chest          = chest;
-            ItemGrabMenu   = menu;
-            InventoryMenu  = menu.ItemsToGrabMenu;
-            TooltipManager = tooltipManager;
+        public ChestOverlay(CategorizeChestsModule module, Chest chest, ItemGrabMenu menu) {
+            Module = module;
+            Chest = chest;
+            ItemGrabMenu = menu;
+            InventoryMenu = menu.ItemsToGrabMenu;
+            TooltipManager = new TooltipManager();
 
-            DefaultChestHighlighter     = ItemGrabMenu.inventory.highlightMethod;
+            DefaultChestHighlighter = ItemGrabMenu.inventory.highlightMethod;
             DefaultInventoryHighlighter = InventoryMenu.highlightMethod;
 
             AddButtons();
@@ -49,16 +50,21 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             base.OnParent(parent);
 
             if (parent == null) return;
-            Width  = parent.Width;
+            Width = parent.Width;
             Height = parent.Height;
         }
 
-        private void AddButtons() {
-            OpenButton         =  new TextButton("Categorize", Sprites.LeftProtrudingTab);
-            OpenButton.OnPress += ToggleMenu;
-            AddChild(OpenButton);
+        public override void Draw(SpriteBatch batch) {
+            base.Draw(batch);
+            TooltipManager.Draw(batch);
+        }
 
-            StashButton         =  new TextButton(ChooseStashButtonLabel(), Sprites.LeftProtrudingTab);
+        private void AddButtons() {
+            CategorizeButton = new TextButton("Categorize", Sprites.LeftProtrudingTab);
+            CategorizeButton.OnPress += ToggleMenu;
+            AddChild(CategorizeButton);
+
+            StashButton = new TextButton(ChooseStashButtonLabel(), Sprites.LeftProtrudingTab);
             StashButton.OnPress += StashItems;
             AddChild(StashButton);
 
@@ -66,23 +72,26 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         }
 
         private void PositionButtons() {
-            StashButton.Width = OpenButton.Width = Math.Max(StashButton.Width, OpenButton.Width);
+            var delta = Chest.SpecialChestType == Chest.SpecialChestTypes.BigChest ? -128 : -112;
 
-            OpenButton.Position = new Point(
-                    ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - OpenButton.Width - 112 * Game1.pixelZoom,
-                    ItemGrabMenu.yPositionOnScreen                                             + 22  * Game1.pixelZoom
-                );
+            StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
+
+            CategorizeButton.Position = new Point(
+                ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width +
+                delta * Game1.pixelZoom,
+                ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom
+            );
 
             StashButton.Position = new Point(
-                    OpenButton.Position.X + OpenButton.Width  - StashButton.Width,
-                    OpenButton.Position.Y + OpenButton.Height - 0
-                );
+                CategorizeButton.Position.X + CategorizeButton.Width - StashButton.Width,
+                CategorizeButton.Position.Y + CategorizeButton.Height - 0
+            );
         }
 
         private string ChooseStashButtonLabel() {
             return Module.Config.StashKey == SButton.None
-                       ? "Stash"
-                       : $"Stash ({Module.Config.StashKey})";
+                ? "Stash"
+                : $"Stash ({Module.Config.StashKey})";
         }
 
         private void ToggleMenu() {
@@ -97,9 +106,9 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             var chestData = Module.ChestDataManager.GetChestData(Chest);
             CategoryMenu = new CategoryMenu(chestData, Module.ItemDataManager, TooltipManager, ItemGrabMenu.width - 24);
             CategoryMenu.Position = new Point(
-                    ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
-                    ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
-                );
+                ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
+                ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
+            );
 
             CategoryMenu.OnClose += CloseCategoryMenu;
             AddChild(CategoryMenu);
@@ -128,11 +137,11 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         private void SetItemsClickable(bool clickable) {
             if (clickable) {
                 ItemGrabMenu.inventory.highlightMethod = DefaultChestHighlighter;
-                InventoryMenu.highlightMethod          = DefaultInventoryHighlighter;
+                InventoryMenu.highlightMethod = DefaultInventoryHighlighter;
             }
             else {
                 ItemGrabMenu.inventory.highlightMethod = i => false;
-                InventoryMenu.highlightMethod          = i => false;
+                InventoryMenu.highlightMethod = i => false;
             }
         }
     }

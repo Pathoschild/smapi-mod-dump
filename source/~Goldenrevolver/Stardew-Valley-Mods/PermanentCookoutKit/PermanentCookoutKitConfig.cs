@@ -54,6 +54,10 @@ namespace PermanentCookoutKit
 
         public int CharcoalKilnTimeNeeded { get; set; } = 30;
 
+        public bool OutdoorRainPreventsIgniting { get; set; } = false;
+
+        public bool LinusTakesCareOfHisFire { get; set; } = false;
+
         public static void VerifyConfigValues(PermanentCookoutKitConfig config, PermanentCookoutKit mod)
         {
             bool invalidConfig = false;
@@ -174,6 +178,11 @@ namespace PermanentCookoutKit
             api.AddNumberOption(manifest, () => config.NewspaperMultiplier, (float val) => config.NewspaperMultiplier = val, () => "Newspaper Multiplier¹", null, 0);
             api.AddNumberOption(manifest, () => config.WoolMultiplier, (float val) => config.WoolMultiplier = val, () => "Wool Multiplier¹", null, 0);
             api.AddNumberOption(manifest, () => config.ClothMultiplier, (float val) => config.ClothMultiplier = val, () => "Cloth Multiplier¹", null, 0);
+
+            api.AddSectionTitle(manifest, () => "Immersion", null);
+
+            api.AddBoolOption(manifest, () => config.OutdoorRainPreventsIgniting, (bool val) => config.OutdoorRainPreventsIgniting = val, () => "Outdoor Rain Prevents Igniting", null);
+            api.AddBoolOption(manifest, () => config.LinusTakesCareOfHisFire, (bool val) => config.LinusTakesCareOfHisFire = val, () => "Linus Takes Care Of His Fire", () => "Linus will try to turn on his campfire every morning, but if 'OutdoorRainPreventsIgniting' is on and it's raining, it will turn off.");
 
             // this is a spacer
             api.AddSectionTitle(manifest, () => string.Empty, null);

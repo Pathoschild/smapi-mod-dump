@@ -13,6 +13,10 @@ for queries and analysis.**
 
 # Version changes
 
+### 1.3.0
+
+- Changed release version for StardewValley 1.6.0
+
 ### 1.3.0-alpha
 
 - Updated for StardewValley 1.6.0-alpha

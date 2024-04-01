@@ -33,7 +33,24 @@ namespace MultitoolMod
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
             helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
-            this.multitool = new Multitool(this);
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.SaveCreated += this.OnSaveCreated;
+        }
+        private void initalizeMultitool()
+        {
+            if (this.multitool == null)
+            {
+                this.multitool = new Multitool(this);
+            }
+        }
+        private void OnSaveCreated(object sender, SaveCreatedEventArgs e)
+        {
+            initalizeMultitool();
+        }
+
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            initalizeMultitool();
         }
 
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -55,7 +72,7 @@ namespace MultitoolMod
                 Vector2 tileVec = e.Cursor.Tile;
                 IDictionary<String, System.Object> properties = multitool.Get_Properties(x, y);
                 string formattedProperties = $"At {x}/{y} (tile {xtile}/{ytile}) found the following properties: " + multitool.Format_Properties(properties);
-                this.Monitor.Log(formattedProperties);
+                this.Monitor.Log(formattedProperties,LogLevel.Info);
                 Game1.addHUDMessage(new HUDMessage(formattedProperties));
             }
             else if (this.Config.ToolButton.JustPressed())

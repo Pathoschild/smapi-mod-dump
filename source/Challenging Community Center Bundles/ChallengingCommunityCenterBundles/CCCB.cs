@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
-using System.Text.RegularExpressions;
 
 namespace CCCB
 {
@@ -62,23 +61,23 @@ namespace CCCB
             else
             {
                 this.Monitor.Log($"Your Config Settings are invalid.", LogLevel.Error);
-                if (BundlePacks.ContainsKey("Vanilla"))
+                if (BundlePacks.ContainsKey("Pure_Vanilla"))
                 {
-                    this.CustomBundleData = BundlePacks["Vanilla"];
-                    this.Monitor.Log($"Game will be using Vanilla Bundles instead.", LogLevel.Info);
+                    this.CustomBundleData = BundlePacks["Pure_Vanilla"];
+                    this.Monitor.Log($"Game will be using pure Vanilla Bundles instead.", LogLevel.Info);
                 }
                 else
                 {
                     return;
-                }   
+                }
             }
-            
-            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+
+            helper.Events.GameLoop.DayStarted += this.OnSaveLoaded;
             helper.Events.GameLoop.Saving += this.OnSaving;
-            helper.Events.GameLoop.Saved += this.OnSaved;
+            helper.Events.GameLoop.DayEnding += this.OnSaving;
         }
 
-        //Set up the new bundles
+        // Set up the new bundles
         private void OnSaveLoaded(object sender, EventArgs e)
         {
             this.OldBundleData.Clear();
@@ -86,32 +85,28 @@ namespace CCCB
 
             if (Context.IsWorldReady)
             {
-                var api = this.Helper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
-
                 Dictionary<string, string> BundleData = Game1.netWorldState.Value.BundleData;
 
                 for (int index = 0; index < BundleData.Count; index++)
                 {
-                    string[] BundleName = BundleData.ElementAt(index).Value.Split('/'); //The Name of the Game Bundles
+                    string[] BundleName = BundleData.ElementAt(index).Value.Split('/'); // The Name of the Game Bundles
                     string Key = BundleData.ElementAt(index).Key;
 
+                    // For named bundles
                     if (this.CustomBundleData.ContainsKey(BundleName[0]))
                     {
-                        string pattern = @"(?<=ObjectId:)[A-Za-z ]+";
-
-                        foreach (Match result in Regex.Matches(this.CustomBundleData[BundleName[0]], pattern))
-                        {
-                            int objectId = api.GetObjectId(result.ToString());
-                            if (api != null)
-                            {
-                                this.CustomBundleData[BundleName[0]] = this.CustomBundleData[BundleName[0]].Replace("{{spacechase0.jsonAssets/ObjectId:" + result.ToString() + "}}", objectId.ToString());
-                            }
-                        }
-
-                        //Save the old bundle data to secure the savegame
+                        // Save the old bundle data to secure the savegame
                         this.OldBundleData.Add(Key, BundleData[Key]);
-                        //Get the new bundle data
+                        // Get the new bundle data
                         this.NewBundleData.Add(Key, this.CustomBundleData[BundleName[0]]);
+                    }
+
+                    if (this.CustomBundleData.ContainsKey(Key))
+                    {
+                        // Save the old bundle data to secure the savegame
+                        this.OldBundleData.Add(Key, BundleData[Key]);
+                        // Get the new bundle data
+                        this.NewBundleData.Add(Key, this.CustomBundleData[Key]);
                     }
                 }
                 Game1.netWorldState.Value.SetBundleData(this.NewBundleData);
@@ -121,18 +116,13 @@ namespace CCCB
         //Change the data back to the vanilla bundles for saving (and hopefully saving all savegames)
         private void OnSaving(object sender, EventArgs e)
         {
+            //If using Pure_Vanilla the bundles will be overwritten to reset the save game
+            //Note: this will also reset all kinds of remixed bundles to the old vanilla presets
+            if (this.Config.BundleVariant == "Pure_Vanilla" && BundlePacks.ContainsKey("Pure_Vanilla"))
+            {
+                return;
+            }
             Game1.netWorldState.Value.SetBundleData(this.OldBundleData);
         }
-
-        //Change the bundles back to the new data after save was completed
-        private void OnSaved(object sender, EventArgs e)
-        {
-            Game1.netWorldState.Value.SetBundleData(this.NewBundleData);
-        }
-    }
-
-    public interface IJsonAssetsAPI
-    {
-        int GetObjectId(string name);
     }
 }

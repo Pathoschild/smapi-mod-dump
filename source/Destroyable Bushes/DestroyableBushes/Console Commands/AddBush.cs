@@ -63,8 +63,9 @@ namespace DestroyableBushes
             else //if x y arguments were NOT provided
             {
                 //get the player's current tile position
-                x = Game1.player.getTileX();
-                y = Game1.player.getTileY();
+                Vector2 tile = Game1.player.Tile;
+                x = (int)tile.X;
+                y = (int)tile.Y;
             }
 
             GameLocation location;
@@ -104,16 +105,16 @@ namespace DestroyableBushes
                 {
                     default: //unknown facing position (should be unreachable)
                     case 0: //up
-                        bush.tilePosition.Value = new Vector2(bush.tilePosition.X, bush.tilePosition.Y - 1); //move bush up 1 tile
+                        bush.Tile = new Vector2(bush.Tile.X, bush.Tile.Y - 1); //move bush up 1 tile
                         break;
                     case 1: //right
-                        bush.tilePosition.Value = new Vector2(bush.tilePosition.X + 1, bush.tilePosition.Y); //move bush right 1 tile
+                        bush.Tile = new Vector2(bush.Tile.X + 1, bush.Tile.Y); //move bush right 1 tile
                         break;
                     case 2: //down
-                        bush.tilePosition.Value = new Vector2(bush.tilePosition.X, bush.tilePosition.Y + 1); //move bush down 1 tile
+                        bush.Tile = new Vector2(bush.Tile.X, bush.Tile.Y + 1); //move bush down 1 tile
                         break;
                     case 3: //left
-                        bush.tilePosition.Value = new Vector2(bush.tilePosition.X - 1, bush.tilePosition.Y); //move bush left 1 tile
+                        bush.Tile = new Vector2(bush.Tile.X - 1, bush.Tile.Y); //move bush left 1 tile
                         break;
                 }
             }

@@ -135,7 +135,7 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Change UI Texture of the mod to fit better with popular re-texture mods (Default: Auto - Auto-detect re-texture mods in the game and pick the appropriate preset) - Save and restart the game to apply this change",
                 optionGet: () => ModConfig.GetInstance().RetexturePreset,
                 optionSet: value => ModConfig.GetInstance().RetexturePreset = value,
-                choices: new string[] { "auto", "default", "vintage2", "overgrown", "earthy", "legacy"}
+                choices: new string[] { "auto", "default", "vintage2", "overgrown", "earthy", "legacy", "alternative"}
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
@@ -327,6 +327,21 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Hydration value restored for player by drinking river, lake water or water from watering can (Default: 5)",
                 optionGet: () => (float)ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking,
                 optionSet: value => ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking = (double)value
+            );
+            api.RegisterChoiceOption(
+                mod: context.ModManifest,
+                optionName: "Environment Hydration Mode",
+                optionDesc: "Change how to drink water from water tile and watering can (default = right click, strict = <secondary layer button> + right click, disable = no trigger)",
+                optionGet: () => ModConfig.GetInstance().EnvironmentHydrationMode,
+                optionSet: value => ModConfig.GetInstance().EnvironmentHydrationMode = value,
+                choices: new string[] { "default", "strict", "disable" }
+            );
+            api.AddKeybind(
+                mod: context.ModManifest,
+                name: () => "Secondary Layer Button",
+                tooltip: () => "Keybind to enable secondary layer action",
+                getValue: () => ModConfig.GetInstance().SecondaryLayerButton,
+                setValue: value => ModConfig.GetInstance().SecondaryLayerButton = value
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
@@ -884,7 +899,7 @@ namespace StardewSurvivalProject.source.api
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
                 optionName: "Stamina Drain on Sprinting",
-                optionDesc: "How much stamina player lose every tick when they are sprinting (Default: 0.03)",
+                optionDesc: "How much stamina player lose every tick when they are sprinting (Default: 0.05)",
                 optionGet: () => ModConfig.GetInstance().StaminaDrainOnSprintingPerTick,
                 optionSet: value => ModConfig.GetInstance().StaminaDrainOnSprintingPerTick = value
             );

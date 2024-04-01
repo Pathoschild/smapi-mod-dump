@@ -6,11 +6,9 @@ mods:
    Destroyable Bushes
 
 latest commit:
-   commit 2c85ffc5205d7cb9f23eda4680ff02906cdc75b6
-   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Tue Nov 21 22:48:55 2023 -0600
+   commit 86b6674060a306c913b9b446ecb05d7765feda9d
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Thu Mar 28 17:46:59 2024 -0500
    
-       Merge pull request #5 from sanyao1001/master
-       
-       Add Chinese translation by sanyao1001
+       Run code cleanup
    

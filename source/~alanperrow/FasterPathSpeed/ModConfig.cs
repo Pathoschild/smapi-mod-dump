@@ -24,6 +24,6 @@ namespace FasterPathSpeed
 
         public bool IsUseCustomPathSpeedBuffValues { get; set; } = false;
 
-        public CustomPathSpeedBuffValues CustomPathSpeedBuffValues { get; set; }
+        public CustomPathSpeedBuffValues CustomPathSpeedBuffValues { get; set; } = new();
     }
 }

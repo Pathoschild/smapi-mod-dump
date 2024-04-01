@@ -19,4 +19,6 @@
 	"White Rum": 1.0,
 	"Dark Rum": 1.0,
 	"Soju": 1.0,
+	// Sake aging speed matches Pale Ale
+	"Sake": 1.66
 }

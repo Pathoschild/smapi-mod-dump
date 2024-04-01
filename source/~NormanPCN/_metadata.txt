@@ -9,13 +9,9 @@ mods:
    Longer Fence Life
 
 latest commit:
-   commit 25b320f0558df3dd80f8dc1e1dae5934eb4c67e8
+   commit 574da77b63141e30b39b82f5a2db55d547962897
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Fri May 26 10:34:09 2023 -0700
+   Date:   Fri Mar 29 19:25:53 2024 -0700
    
-       Combat Controls. Controller, facing direction
-       
-       Better controller use. Not cursor facing direction feature.
-       Facing direction now works during auto swing.
-       Disconnected slick moves from the mouse cursor fix feature. Helps controller.
+       Updates for Stardew 1.6
    

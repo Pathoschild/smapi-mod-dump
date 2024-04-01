@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "drbirbdev.GameboyArcade",
+  "Name": "GameboyArcade",
+  "Author": "drbirbdev",
+  "Version": "0.2.0",
+  "Description": "A Library for enabling Gameboy Roms to be played as in-game arcade machines.",
+  "MinimumApiVersion": "4.0",
+  "EntryDll": "GameboyArcade.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "drbirbdev.BirbCore",
+      "MinimumVersion": "1.0.3"
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [
+    "ModDrop:1318487"
+  ]
+}

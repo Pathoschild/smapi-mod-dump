@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+** Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles
 **
 *************************************************/
 
@@ -23,6 +23,7 @@ using System.Linq;
 using Unlockable_Bundles.Lib.Enums;
 using static StardewValley.BellsAndWhistles.ParrotUpgradePerch;
 using Unlockable_Bundles.Lib.AdvancedPricing;
+using StardewValley.Triggers;
 
 namespace Unlockable_Bundles
 {
@@ -120,12 +121,24 @@ namespace Unlockable_Bundles
                 case "eventtest":
                     eventTest(); break;
 
+                case "triggeraction" or "action":
+                    triggerAction(args); break;
+
                 default:
                     Monitor.Log("Unknown Command: " + args[0], LogLevel.Error); break;
             }
         }
+
+        private void triggerAction(string[] args)
+        {
+            var action = args.Skip(1).Join(null, " ");
+
+            if(!TriggerActionManager.TryRunAction(action, out string error, out Exception exception))
+                Monitor.Log(error, LogLevel.Error);
+        }
+
         private void printValidCommands() =>
-            Monitor.Log("Valid Commands: help, purchase, event, location, mailkey, discover, undiscover, showdebugnames, quality, tags, item", LogLevel.Info);
+            Monitor.Log("Valid Commands: help, purchase, event, location, mailkey, discover, undiscover, showdebugnames, quality, tags, item, triggeraction", LogLevel.Info);
 
         private void printHelp() =>
             Monitor.Log(
@@ -139,7 +152,8 @@ namespace Unlockable_Bundles
                 "SHOWDEBUGNAMES     Toggles bundle keys & bundle names in the bundle overview menu\n" +
                 "QUALITY 0-4        Sets the quality of the currently held item\n" +
                 "CONTEXTTAGS        Prints all context tags of the currently held item. Alt. TAGS\n" +
-                "ITEM ID [AMOUNT]   Adds the specified item to your inventory. Accepts UB specific Syntax"
+                "ITEM ID [AMOUNT]   Adds the specified item to your inventory. Accepts UB specific Syntax\n" +
+                "ACTION ARGS        Executes the specified Triggeraction ARGS"
                     , LogLevel.Info);
 
         private void addItem(string[] args)

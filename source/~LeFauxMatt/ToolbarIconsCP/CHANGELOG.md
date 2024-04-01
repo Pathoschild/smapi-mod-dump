@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-# Toolbar Icons for FuryCore Change Log
+# Toolbar Icons Content Pack Change Log
 
 ## 2.5.0 (September 17, 2022)
 

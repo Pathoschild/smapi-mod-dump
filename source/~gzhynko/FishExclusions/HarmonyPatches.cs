@@ -20,8 +20,8 @@ namespace FishExclusions
     public class HarmonyPatches
     {
         /// <summary> Patch for the GameLocation.getFish method. </summary>
-        public static void GetFish(GameLocation __instance, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who,
-            double baitPotency, Vector2 bobberTile, ref Object __result, string locationName = null)
+        public static void GetFish(GameLocation __instance, float millisecondsAfterNibble, string bait, int waterDepth, Farmer who,
+            double baitPotency, Vector2 bobberTile, ref Item __result, string locationName = null)
         {
             if (!ModEntry.ExclusionsEnabled) return;
             
@@ -57,7 +57,7 @@ namespace FishExclusions
             
             // Return Trash or the item specified in config in case all possible
             // fish for this water body / season / weather is excluded.
-            if(bannedIds.Contains(lastResult.ParentSheetIndex)) lastResult = new Object(itemToCatchIfNoVariantsLeft, 1);
+            if(bannedIds.Contains(lastResult.ParentSheetIndex)) lastResult = ItemRegistry.Create(itemToCatchIfNoVariantsLeft.ToString());
 
             __result = lastResult;
         }

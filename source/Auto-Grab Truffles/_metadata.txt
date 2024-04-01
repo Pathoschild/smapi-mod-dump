@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/qixing-jk/QiXingAutoGrabTruffles
+   Git: https://github.com/qixing-jk/QiXingAutoGrabTruffles.git
+
+mods:
+   Auto-Grab Truffles
+
+latest commit:
+   commit a7b1a5ce1d6a77a8f884c0094791ceeb0cd590f5
+   Author: qixing-jk <vq3d5d8c@duck.com>
+   Date:   Sun Mar 24 01:00:27 2024 +0800
+   
+       Create LICENSE
+   

@@ -1,0 +1,14 @@
+﻿{
+    "Name": "Piggy Bank",
+    "Description": "How could this little porcelain pig be so valuable?",
+
+    "Deposit": "Deposit Gold",
+    "Withdraw": "Withdraw Gold",
+    "Label": "Label Piggy Bank",
+    "Close": "Close Piggy Bank",
+
+    "Stored": "Stored Gold : ",
+
+    "Label_No_Permission": "Can't edit the label of {0}'s piggy bank",
+    "Withdraw_Deposit_No_Permission": "The host ({0}) has disabled shared piggy banks"
+}

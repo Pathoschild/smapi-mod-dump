@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Caua-Oliveira/StardewValley-AutomateToolSwap
+**
+*************************************************/
+
+{
+  "Name": "AutomateToolSwap",
+  "Author": "Trapyy",
+  "Version": "2.0.5",
+  "Description": "Swap tool based on what you are trying to break",
+  "UniqueID": "Trapyy.AutomatetoolSwap",
+  "EntryDll": "AutomateToolSwap.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:21050", "GitHub:Caua-Oliveira/StardewValley-AutomateToolSwap" ]
+}

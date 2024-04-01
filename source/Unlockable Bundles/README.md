@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles**
+**Source repository: https://gitlab.com/delixx/stardew-valley/unlockable-bundles**
 
 ----
 

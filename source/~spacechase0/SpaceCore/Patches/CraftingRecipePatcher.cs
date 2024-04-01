@@ -17,6 +17,7 @@ using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -62,13 +63,13 @@ namespace SpaceCore.Patches
         *********/
         /// <summary>The method to call before <see cref="CraftingRecipe.consumeIngredients"/>.</summary>
         /// <returns>Returns whether to run the original method.</returns>
-        private static bool Before_CraftingRecipe_ConsumeIngredients(CraftingRecipe __instance, List<Chest> additional_materials)
+        private static bool Before_CraftingRecipe_ConsumeIngredients(CraftingRecipe __instance, List<IInventory> additionalMaterials)
         {
             if (__instance is Framework.CustomCraftingRecipe ccr)
             {
                 foreach (var ingredient in ccr.recipe.Ingredients)
                 {
-                    ingredient.Consume(additional_materials);
+                    ingredient.Consume(additionalMaterials);
                 }
                 return false;
             }

@@ -1,0 +1,19 @@
+{
+  "Name": "GreenhouseGatherersAutomate",
+  "Author": "PeacefulEnd",
+  "Version": "3.0.4",
+  "Description": "Allows custom behavior with Pathoschild's Automate mod.",
+  "UniqueID": "PeacefulEnd.GreenhouseGatherers.Automate",
+  "EntryDll": "GreenhouseGatherersAutomate.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+   {
+      "UniqueID": "PeacefulEnd.GreenhouseGatherers",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "Pathoschild.Automate",
+      "IsRequired": true
+   }
+]
+}

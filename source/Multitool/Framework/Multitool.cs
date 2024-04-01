@@ -26,9 +26,10 @@ using StardewValley.Locations;
 using SObject = StardewValley.Object;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using MultitoolMod;
+using StardewValley.GameData.Crops;
+using System.ComponentModel.Design;
+using static StardewValley.Minigames.CraneGame;
 
-// TODO: Look at stardewvalley bash script, figure out command arguments and
-// env variables for mono, see if can launch from debugger.
 // TODO: Add Summaries and param desc to all functions
 
 
@@ -36,11 +37,6 @@ namespace MultitoolMod.Framework
 {
     public class Multitool : Tool
     {
-        public Axe axe;
-        public Pickaxe pickaxe;
-        public MeleeWeapon scythe;
-        public WateringCan wateringCan;
-        public Hoe hoe;
         public IDictionary<string, Tool> attachedTools;
         public MultitoolMod mod;
         public ICursorPosition cursor;
@@ -49,31 +45,26 @@ namespace MultitoolMod.Framework
         {
             this.mod = m;
             this.attachedTools = new Dictionary<string, Tool>();
-            this.axe = new Axe();
-            this.pickaxe = new Pickaxe();
-            this.scythe = new MeleeWeapon(47);
-            this.scythe = (MeleeWeapon)this.scythe.getOne();
-            this.scythe.Category = -99;
-            this.wateringCan = new WateringCan();
-            this.hoe = new Hoe();
-            attachedTools["axe"] = this.axe;
-            attachedTools["pickaxe"] = this.pickaxe;
-            attachedTools["melee"] = this.scythe;
-            attachedTools["wateringcan"] = this.wateringCan;
-            attachedTools["hoe"] = this.hoe;
+            attachedTools["axe"] = new Axe();
+            attachedTools["pickaxe"] = new Pickaxe();
+            attachedTools["melee"] = new MeleeWeapon("47");
+            attachedTools["scythe"] = new MeleeWeapon("47");
+            attachedTools["scythe"].Category = -99;
+            attachedTools["wateringcan"] = new WateringCan();
+            attachedTools["hoe"] = new Hoe();
         }
 
-        public override Item getOne()
+        protected override Item GetOneNew()
         {
             return new Multitool(null);
         }
         protected override string loadDisplayName()
         {
-            return Game1.content.LoadString("A tool for all trades");
+            return "A tool for all trades";
         }
         protected override string loadDescription()
         {
-            return Game1.content.LoadString("A tool for all trades");
+            return "A tool for all trades";
         }
 
         public override void DoFunction(GameLocation location, int x, int y, int power, Farmer who)
@@ -97,13 +88,26 @@ namespace MultitoolMod.Framework
                             HoeDirt dirt = (HoeDirt)properties["hoedirt_dirt"];
                             if (Game1.player.CurrentItem.Category == StardewValley.Object.SeedsCategory)
                             {
-                                dirt.plant(Game1.player.CurrentItem.parentSheetIndex.Get(), xtile, ytile, Game1.player, false, Game1.currentLocation);
-                                Game1.player.consumeObject(Game1.player.CurrentItem.parentSheetIndex.Get(), 1);
+                                if (dirt.plant(Game1.player.CurrentItem.ItemId, Game1.player, false))
+                                {
+                                    //Only take item if planting was successful
+                                    Game1.player.Items.ReduceId(Game1.player.CurrentItem.QualifiedItemId, 1);
+                                }
+                                else
+                                {
+                                    Game1.addHUDMessage(new HUDMessage($"{Game1.player.CurrentItem.DisplayName} can't be planted here."));
+                                }
                             }
                             else if (Game1.player.CurrentItem.Category == StardewValley.Object.fertilizerCategory)
                             {
-                                dirt.plant(Game1.player.CurrentItem.parentSheetIndex.Get(), xtile, ytile, Game1.player, true, Game1.currentLocation);
-                                Game1.player.consumeObject(Game1.player.CurrentItem.parentSheetIndex.Get(), 1);
+                                if (dirt.plant(Game1.player.CurrentItem.ItemId, Game1.player, true))
+                                {
+                                    Game1.player.Items.ReduceId(Game1.player.CurrentItem.QualifiedItemId, 1);
+                                }
+                                else
+                                {
+                                    Game1.addHUDMessage(new HUDMessage($"{Game1.player.CurrentItem.DisplayName} can't be placed here."));
+                                }
                             }
                         }
                         else
@@ -113,7 +117,7 @@ namespace MultitoolMod.Framework
                     }
                     catch (System.Collections.Generic.KeyNotFoundException)
                     {
-                        Game1.addHUDMessage(new HUDMessage($"{Game1.player.CurrentItem} {Game1.player.CurrentItem.parentSheetIndex.Get()} 201"));
+                        Game1.addHUDMessage(new HUDMessage($"{Game1.player.CurrentItem} {Game1.player.CurrentItem.QualifiedItemId} 201"));
                         return;
                     }
                 }
@@ -135,16 +139,75 @@ namespace MultitoolMod.Framework
                 }
                 return;
             }
-            if (toolName == "melee")
+            if (toolName == "scythe")
             {
-                //TODO this doesn't land at the right location
+                MeleeWeapon scythe = (MeleeWeapon)attachedTools["scythe"];
+                if ((bool)properties["bool_fullyGrownCrop"] || (bool)properties["bool_hasDeadCrop"])
+                {
+                    HoeDirt dirt = (HoeDirt)properties["hoedirt_dirt"];
+                    who.playNearbySoundLocal("swordswipe");
+                    dirt.performToolAction(scythe, 1, new Vector2(xtile, ytile));
+                    return;
+                }
+                if ((bool)properties["bool_isWeed"])
+                {
+                    SObject weed = (SObject)properties["object_tileObj"];
+                    scythe.lastUser = who;
+                    who.playNearbySoundLocal("swordswipe");
+                    weed.performToolAction(scythe);
+                    location.objects.Remove(new Vector2(xtile, ytile));
+                    return;
+                }
+                //This doesn't land at the right location, don't use it
                 //this.scythe.DoDamage(Game1.currentLocation, x, y, 0, power, who);
                 return;
-            } 
+                /*
+ * Attempted to get scythe an area. Doesn't land at correct location.
+ * 
+ * Vector2 vector = new Vector2(x,y);
+Vector2 tileLocation = Vector2.Zero;
+Vector2 tileLocation2 = Vector2.Zero;
+Rectangle boundingBox = new Rectangle((int)vector.X + 8, (int)vector.Y + who.FarmerSprite.getHeight() - 32, 48, 32);
+Rectangle areaOfEffect = this.scythe.getAreaOfEffect(x, y, who.FacingDirection, ref tileLocation, ref tileLocation2, who.GetBoundingBox(), who.FarmerSprite.currentAnimationIndex);
+foreach (Vector2 item in Utility.removeDuplicates(Utility.getListOfTileLocationsForBordersOfNonTileRectangle(areaOfEffect)))
+{
+    if (location.terrainFeatures.TryGetValue(item, out var value) && value.performToolAction(this, 0, item))
+    {
+        location.terrainFeatures.Remove(item);
+    }
+
+    if (location.objects.TryGetValue(item, out var value2) && value2.performToolAction(this))
+    {
+        location.objects.Remove(item);
+    }
+
+    if (location.performToolAction(this, (int)item.X, (int)item.Y))
+    {
+        break;
+    }
+}*/
+            }
             else
             {
                 tool.DoFunction(location, x, y, power, who);
                 return;
+                /* From Game1.pressUseToolButton
+                *       if (!(player.CurrentTool is MeleeWeapon) || didPlayerJustLeftClick(ignoreNonMouseHeldInput: true))
+           {
+               int facingDirection = player.FacingDirection;
+               Vector2 toolLocation = player.GetToolLocation(position);
+               player.FacingDirection = player.getGeneralDirectionTowards(new Vector2((int)toolLocation.X, (int)toolLocation.Y));
+               player.lastClick = new Vector2((int)position.X, (int)position.Y);
+               player.BeginUsingTool();
+               if (!player.usingTool)
+               {
+                   player.FacingDirection = facingDirection;
+               }
+               else if (player.FarmerSprite.IsPlayingBasicAnimation(facingDirection, carrying: true) || player.FarmerSprite.IsPlayingBasicAnimation(facingDirection, carrying: false))
+               {
+                   player.FarmerSprite.StopAnimation();
+               }
+           } */
             }
         }
 
@@ -154,28 +217,14 @@ namespace MultitoolMod.Framework
             {
                 if (item is Tool)
                 {
-                    if (item is Pickaxe p)
+                    if (((Tool)item).isScythe())
                     {
-                        this.pickaxe.upgradeLevel.Set(p.upgradeLevel.Get());
+                        this.attachedTools["scythe"] = (MeleeWeapon)item;
+                        return;
                     }
-                    else if (item is Axe a)
+                    else
                     {
-                        this.axe.upgradeLevel.Set(a.upgradeLevel.Get());
-                    }
-                    else if (item is WateringCan w)
-                    {
-                        this.wateringCan.upgradeLevel.Set(w.upgradeLevel.Get());
-                        this.wateringCan.waterCanMax = w.waterCanMax;
-                        this.wateringCan.WaterLeft=w.WaterLeft;
-
-                    }
-                    else if (item is Hoe h)
-                    {
-                        this.hoe.upgradeLevel.Set(h.upgradeLevel.Get());
-                    }
-                    else if (((Tool)item).Name == "Scythe")
-                    {
-                        this.scythe = (MeleeWeapon)item;
+                        this.attachedTools[item.GetType().Name.ToLower()] = (Tool)item;
                     }
                 }
             }
@@ -212,6 +261,8 @@ namespace MultitoolMod.Framework
                 {"string_tileObjName", null},
                 {"string_useTool", null},
                 {"type_tileObjType", null},
+                {"crop_liveCrop", null},
+                {"grass_Grass", null }
             };
 
             int xtile = (int)x / Game1.tileSize;
@@ -233,7 +284,7 @@ namespace MultitoolMod.Framework
             if ((bool)properties["bool_isResourceClump"])
             {
                 properties["ResourceClump_clump"] = (System.Object)clump;
-                switch (clump.parentSheetIndex)
+                switch (clump.parentSheetIndex.Get())
                 {
                     //TODO: Add large crops
                     case ResourceClump.boulderIndex:
@@ -276,7 +327,7 @@ namespace MultitoolMod.Framework
                 }
                 else if (tileObj.Name.ToLower().Contains("weed"))
                 {
-                    properties["string_useTool"] = (System.Object)"melee";
+                    properties["string_useTool"] = (System.Object)"scythe";
                     properties["bool_isWeed"] = (System.Object)true;
                     properties["bool_isDirt"] = (System.Object)false;
                 }
@@ -287,7 +338,7 @@ namespace MultitoolMod.Framework
                 }
                 else if (tileObj is StardewValley.Objects.IndoorPot pot)
                 {
-                    properties = Get_HoeDirtProperties(pot.hoeDirt, properties);
+                    properties = Get_HoeDirtProperties(pot.hoeDirt.Get(), properties);
                 }
                 else if (tileObj.ParentSheetIndex == 590)
                 {
@@ -319,8 +370,9 @@ namespace MultitoolMod.Framework
                     }
                     else if (tileFeature is Grass grass)
                     {
-                        properties["string_useTool"] = (System.Object)"melee";
+                        properties["string_useTool"] = (System.Object)"scythe";
                         properties["bool_hasGrass"] = (System.Object)true;
+                        properties["grass_Grass"] = grass;
                     }
                 }
             }
@@ -329,7 +381,7 @@ namespace MultitoolMod.Framework
                 properties["bool_isWater"] = (System.Object)true;
                 properties["string_useTool"] = (System.Object)"wateringcan";
             }
-    
+
             return properties;
         }
 
@@ -338,11 +390,12 @@ namespace MultitoolMod.Framework
             properties["hoedirt_dirt"] = dirt;
             if (dirt.crop != null)
             {
+                properties["crop_Crop"] = (System.Object)dirt.crop;
                 if (dirt.crop.dead.Get())
                 {
                     properties["bool_hasDeadCrop"] = (System.Object)true;
                     properties["bool_hasLiveLCrop"] = (System.Object)false;
-                    properties["string_useTool"] = (System.Object)"melee";
+                    properties["string_useTool"] = (System.Object)"scythe";
                 }
                 else
                 {
@@ -352,9 +405,9 @@ namespace MultitoolMod.Framework
                     properties["bool_fullyGrownCrop"] = (System.Object)canHarvestNow;
                     if (canHarvestNow)
                     {
-                        if (dirt.crop.harvestMethod.Value == Crop.sickleHarvest)
+                        if (dirt.crop.GetHarvestMethod() == HarvestMethod.Scythe)
                         {
-                            properties["string_useTool"] = (System.Object)"melee";
+                            properties["string_useTool"] = (System.Object)"scythe";
                         }
                         else
                         {
@@ -430,7 +483,7 @@ namespace MultitoolMod.Framework
             Rectangle tileArea = this.GetAbsoluteTileArea(tile);
             foreach (ResourceClump clump in this.GetResourceClumps(location))
             {
-                if (clump.getBoundingBox(clump.tile.Value).Intersects(tileArea))
+                if (clump.getBoundingBox().Intersects(tileArea))
                     return clump;
             }
 

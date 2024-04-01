@@ -18,9 +18,21 @@ namespace BetterFriendship
         public bool DisplayTalkPrompts { get; set; } = true;
         public bool DisplayGenericGiftPrompts { get; set; } = true;
         public int GiftCycleDelay { get; set; } = 2000;
-        public bool IgnoreMaxedFriendships { get; set; } = false;
-        public bool SpousePromptsOverride { get; set; } = false;
+        public bool IgnoreMaxedFriendships { get; set; }
+        public bool SpousePromptsOverride { get; set; }
         public bool DisplayBubbles { get; set; } = true;
+
+        private int _bubbleDisplayRange = 3; // nice for only up-close bubbles
+        
+        public int BubbleDisplayRange
+        {
+            get => _bubbleDisplayRange;
+            set
+            {
+                _bubbleDisplayRange = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _giftPreference = "like";
         private int _giftCycleCount = 5;
@@ -58,7 +70,7 @@ namespace BetterFriendship
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

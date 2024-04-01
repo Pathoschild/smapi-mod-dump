@@ -18,8 +18,8 @@ namespace StardewDruid.Cast.Weald
     internal class Bowl : CastHandle
     {
 
-        public Bowl(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Bowl(Vector2 target)
+            : base(target)
         {
             castCost = 0;
         }
@@ -27,13 +27,11 @@ namespace StardewDruid.Cast.Weald
         public override void CastEffect()
         {
 
-            WateringCan wateringCan = new();
+            Mod.instance.virtualCan.WaterLeft = 100;
 
-            wateringCan.WaterLeft = 100;
+            (targetLocation as Farm).performToolAction(Mod.instance.virtualCan, (int)targetVector.X, (int)targetVector.Y);
 
-            (targetLocation as Farm).performToolAction(wateringCan, (int)targetVector.X, (int)targetVector.Y);
-
-            Utility.addSprinklesToLocation(targetLocation, (int)targetVector.X - 1, (int)targetVector.Y - 1, 3, 3, 999, 333, Color.White);
+            ModUtility.AnimateSparkles(targetLocation, targetVector, Color.White);
 
             return;
 

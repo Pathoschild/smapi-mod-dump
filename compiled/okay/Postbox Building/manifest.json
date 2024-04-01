@@ -1,0 +1,15 @@
+{
+  "Name": "PostBoxMod",
+  "Author": "i-saac-b",
+  "Version": "1.0.2",
+  "Description": "Adds a postbox as a constructable building to allow remote gifting to townsfolk.",
+  "UniqueID": "i-saac-b.PostBoxMod",
+  "EntryDll": "PostBoxMod.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:17614", "GitHub:i-saac-b/PostBoxMod" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
+}

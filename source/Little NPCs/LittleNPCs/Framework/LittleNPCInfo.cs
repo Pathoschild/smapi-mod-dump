@@ -30,7 +30,7 @@ namespace LittleNPCs.Framework {
 
         public string DisplayName { get; private set; }
 
-        public string Gender { get; private set; }
+        public Gender Gender { get; private set; }
 
         public SDate Birthday { get; private set; }
 
@@ -44,7 +44,7 @@ namespace LittleNPCs.Framework {
                     // Internal asset name of a LittleNPC already has a prefix.
                     Name = littleNPC.Name;
                     DisplayName = littleNPC.displayName;
-                    Gender = littleNPC.Gender == 0 ? "male": "female";
+                    Gender = littleNPC.Gender;
                     Birthday = littleNPC.GetBirthday();
                     LoadedFrom = LoadState.LittleNPC;
                     monitor_.VerboseLog($"GetLittleNPC({childIndex}) returns {Name}");
@@ -56,7 +56,7 @@ namespace LittleNPCs.Framework {
                     if (child is not null) {
                         Name = CreateInternalAssetName(childIndex, child.Name);
                         DisplayName = child.Name;
-                        Gender = child.Gender == 0 ? "male": "female";
+                        Gender = child.Gender;
                         Birthday = LittleNPC.GetBirthday(child);
                         LoadedFrom = LoadState.Child;
                         monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns {Name}");
@@ -73,7 +73,7 @@ namespace LittleNPCs.Framework {
                 if (child is not null) {
                     Name = CreateInternalAssetName(childIndex, child.Name);
                     DisplayName = child.Name;
-                    Gender = child.Gender == 0 ? "male": "female";
+                    Gender = child.Gender;
                     Birthday = LittleNPC.GetBirthday(child);
                     LoadedFrom = LoadState.SaveGame;
                     monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns {Name}");
@@ -99,7 +99,7 @@ namespace LittleNPCs.Framework {
             // Remove spaces. This could to equal names but there's still the prefix to distinguish them. 
             string sanitizedChildName = childName.Replace(' ', '_');
             
-            return $"{prefix}{sanitizedChildName}";
+            return $"{prefix}{sanitizedChildName}{Game1.player.UniqueMultiplayerID}";
         }
     }
 }

@@ -114,6 +114,19 @@ namespace CustomizeWeddingAttire {
             Bottom = 1
         }
 
+        /// <summary>Add a <c cref="Color">Color</c> option at the current position in the GMCM form.</summary>
+        /// <param name="mod">The mod's manifest.</param>
+        /// <param name="getValue">Get the current value from the mod config.</param>
+        /// <param name="setValue">Set a new value in the mod config.</param>
+        /// <param name="name">The label text to show in the form.</param>
+        /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+        /// <param name="showAlpha">Whether the color picker should allow setting the Alpha channel</param>
+        /// <param name="colorPickerStyle">Flags to control how the color picker is rendered.  <see cref="ColorPickerStyle"/></param>
+        /// <param name="fieldId">The unique field ID for use with GMCM's <c>OnFieldChanged</c>, or <c>null</c> to auto-generate a randomized ID.</param>
+        void AddColorOption(IManifest mod, Func<Color> getValue, Action<Color> setValue, Func<string> name,
+            Func<string>? tooltip = null, bool showAlpha = true, uint colorPickerStyle = 0, string? fieldId = null);
+
+
     }
 
 }

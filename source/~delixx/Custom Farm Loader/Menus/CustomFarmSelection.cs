@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -181,7 +181,7 @@ namespace Custom_Farm_Loader.Menus
             loadVanillaFarms();
             loadModFarms();
 
-            if (Game1.whichFarm == 7 || IncludeVanilla)
+            if (!_CharacterCustomizationMenu.isVanillaFarmSelected() || IncludeVanilla)
                 CurrentCustomFarm = CustomFarms.Find(e => e.ID == Game1.GetFarmTypeID());
             DescriptionScrollIndex = 0;
             SplitPreviewDescription = new string[] { };
@@ -194,11 +194,12 @@ namespace Custom_Farm_Loader.Menus
 
         private void loadVanillaFarms()
         {
-            CustomFarms.RemoveAll(el => new List<string>() { "0", "1", "2", "3", "4", "5", "6" }.Contains(el.ID));
+            CustomFarms.RemoveAll(el => new List<string>() { "0", "1", "2", "3", "4", "5", "6", "MeadowlandsFarm" }.Contains(el.ID));
 
             if (!IncludeVanilla)
                 return;
 
+            //v[0] = CustomFarm.VanillaTypes, v[1] = Label key
             var v = new string[][] {
                 new string[] { "Standard", "FarmStandard" },
                 new string[] { "Riverland", "FarmFishing" },
@@ -227,7 +228,6 @@ namespace Custom_Farm_Loader.Menus
 
                 CustomFarms.Add(f);
             }
-
         }
 
         private void loadModFarms()
@@ -237,6 +237,8 @@ namespace Custom_Farm_Loader.Menus
 
             foreach (ModFarmType farm in modFarms) {
                 if (CustomFarms.Exists(el => el.ID == farm.Id))
+                    continue;
+                if (farm.Id == "MeadowlandsFarm" && !IncludeVanilla)
                     continue;
 
                 ModFarms.Add(farm);
@@ -273,11 +275,24 @@ namespace Custom_Farm_Loader.Menus
                 if (farm.Id.Contains("."))
                     newCustomFarm.Author = farm.Id.Split(".").First();
 
+                applyModdedVanillaFarm(farm, newCustomFarm);
+
                 CustomFarms.Add(newCustomFarm);
             }
 
             CustomFarms = CustomFarms.OrderBy(o => o.Name).ToList();
         }
+
+        private static void applyModdedVanillaFarm(ModFarmType farm, CustomFarm newCustomFarm)
+        {
+            if (farm.Id != "MeadowlandsFarm")
+                return;
+            var label = newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath);
+
+            newCustomFarm.Name = label.Split("_").First();
+            newCustomFarm.Author = "ConcernedApe";
+        }
+
         private string findMapAuthor(ModFarmType modFarm)
         {
             List<Tuple<string, int>> relatedModRating = new List<Tuple<string, int>>();
@@ -334,57 +349,57 @@ namespace Custom_Farm_Loader.Menus
         }
 
 
-            //Some custom farm maps have complicated logic where they want to display the world map depending on season and whether SVE is installed
-            //This is a hard coded way for CFL to still be able to display them properly during farm selection
-            //despite not really having access to CP logic
-            private Texture2D loadKnownWorldMapExceptions(ModFarmType modFarm)
-            {
-                Dictionary<string, string[]> knownWorldMapExceptions
-                 = new Dictionary<string, string[]> {
+        //Some custom farm maps have complicated logic where they want to display the world map depending on season and whether SVE is installed
+        //This is a hard coded way for CFL to still be able to display them properly during farm selection
+        //despite not really having access to CP logic
+        private Texture2D loadKnownWorldMapExceptions(ModFarmType modFarm)
+        {
+            Dictionary<string, string[]> knownWorldMapExceptions
+             = new Dictionary<string, string[]> {
                  { "A_TK.FarmProjectForaging/WaFF", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFF.png" } },
                  { "A_TK.FarmProjectForaging/WaFFLE", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFFLE.png" } }
-                 };
+             };
 
-                if (!knownWorldMapExceptions.ContainsKey(modFarm.Id))
-                    return null;
-
-                var map = knownWorldMapExceptions[modFarm.Id];
-                var path = UtilityMisc.getRelativeModDirectory(map[0]);
-
-                Monitor.LogOnce($"Found '{modFarm.Id}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
-
-                try {
-                    return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
-                } catch (Exception ex) {
-                    Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.Id}'");
-                }
-
+            if (!knownWorldMapExceptions.ContainsKey(modFarm.Id))
                 return null;
+
+            var map = knownWorldMapExceptions[modFarm.Id];
+            var path = UtilityMisc.getRelativeModDirectory(map[0]);
+
+            Monitor.LogOnce($"Found '{modFarm.Id}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
+
+            try {
+                return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
+            } catch (Exception ex) {
+                Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.Id}'");
             }
 
-            private void assignCurrentFarmPreview()
-            {
-                CurrentFarmPreview = null;
+            return null;
+        }
 
-                if (CurrentCustomFarm == null || CurrentCustomFarm.Preview == "")
-                    return;
+        private void assignCurrentFarmPreview()
+        {
+            CurrentFarmPreview = null;
 
-                try {
-                    CurrentFarmPreview = ModEntry._Helper.ModContent.Load<Texture2D>(CurrentCustomFarm.Preview);
-                } catch (Exception ex) {
-                    ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", LogLevel.Warn);
-                }
+            if (CurrentCustomFarm == null || CurrentCustomFarm.Preview == "")
+                return;
 
-
+            try {
+                CurrentFarmPreview = ModEntry._Helper.ModContent.Load<Texture2D>(CurrentCustomFarm.Preview);
+            } catch (Exception ex) {
+                ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", LogLevel.Warn);
             }
 
-            public void updatePosition()
-            {
-                width = 1000 + IClickableMenu.borderWidth * 2;
-                height = 600 + IClickableMenu.borderWidth * 2;
-                xPositionOnScreen = Game1.uiViewport.Width / 2 - (1000 + IClickableMenu.borderWidth * 2) / 2;
-                yPositionOnScreen = Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2;
-            }
+
+        }
+
+        public void updatePosition()
+        {
+            width = 1000 + IClickableMenu.borderWidth * 2;
+            height = 600 + IClickableMenu.borderWidth * 2;
+            xPositionOnScreen = Game1.uiViewport.Width / 2 - (1000 + IClickableMenu.borderWidth * 2) / 2;
+            yPositionOnScreen = Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2;
+        }
 
         public override void snapToDefaultClickableComponent()
         {

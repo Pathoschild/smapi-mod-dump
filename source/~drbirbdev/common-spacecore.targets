@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <SMAPIDependency Include="spacechase0.SpaceCore" Required="true" />
+        <SMAPIDependency Include="spacechase0.SpaceCore" Required="true" Version="1.21.0"/>
     </ItemGroup>
 
 </Project>

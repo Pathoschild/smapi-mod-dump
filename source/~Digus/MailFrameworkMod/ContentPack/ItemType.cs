@@ -20,6 +20,7 @@ namespace MailFrameworkMod.ContentPack
         Furniture,
         Weapon,
         Boots,
-        DGA
+        DGA,
+        QualifiedItemId
     }
 }

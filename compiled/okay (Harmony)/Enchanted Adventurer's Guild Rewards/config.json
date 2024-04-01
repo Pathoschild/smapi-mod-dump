@@ -1,0 +1,14 @@
+{
+  "EnableTemplarsBladeCorruption": true,
+  "DarkSwordCorruptionKills": 10,
+  "HolyBladeCorruptionKills": 10,
+  "ShowCorruptionProgressMessages": true,
+  "ShowCorruptionFinishMessage": false,
+  "SkeletonMaskBoneThrowSynergy": true,
+  "BoneProjectileDamageMultiplier": 1.0,
+  "SomeHatsGrantDefense": true,
+  "EnableBugKillerInsectHead": true,
+  "RevertInsectHeadBuff": false,
+  "RenameEnglishDarkSwordToDarkBlade": true,
+  "EnableDebugSwordRecipes": false
+}

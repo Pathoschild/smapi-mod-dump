@@ -12,7 +12,6 @@ using DecidedlyShared.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 
 namespace DecidedlyShared.Ui;
 

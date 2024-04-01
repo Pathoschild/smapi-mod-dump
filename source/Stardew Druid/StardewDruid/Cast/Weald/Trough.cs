@@ -15,8 +15,8 @@ namespace StardewDruid.Cast.Weald
     internal class Trough : CastHandle
     {
 
-        public Trough(Vector2 target, Rite rite)
-            : base(target, rite)
+        public Trough(Vector2 target)
+            : base(target)
         {
 
         }
@@ -28,7 +28,7 @@ namespace StardewDruid.Cast.Weald
                 return;
             }
 
-            targetLocation.objects.Add(targetVector, new StardewValley.Object(178, 1));
+            targetLocation.objects.Add(targetVector, new StardewValley.Object("178", 1));
 
             return;
 

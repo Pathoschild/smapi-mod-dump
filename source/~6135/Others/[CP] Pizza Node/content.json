@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/6135/StardewValley.ProfitCalculator
+**
+*************************************************/
+
+{
+  "Format": "2.0",
+  "Changes": [
+    {
+      "LogName": "Add resource",
+      "Action": "EditData",
+      "Target": "Mods/mistyspring.ItemExtensions/Resources",
+      "Entries": {
+        "6135.PizzaNode_0": {
+          "Name": "6135.PizzaNode_0",
+          "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+          "Description": "This stone smells like pizza.",
+          "Texture": "Maps\\springobjects",
+          "SpriteIndex": 206,
+          "Width": 1,
+          "Height": 1,
+          "Health": 2,
+          "ItemDropped": "(O)206",
+          "MinDrops": 1,
+          "MaxDrops": 1,
+          "ExtraItems": [
+            {
+              "ItemId": "(O)206",
+              "Chance": 0.5,
+              "MinStack": 1,
+              "MaxStack": 2,
+              "Quality": 0
+            }
+          ],
+          "Debris": "stone",
+          "FailSounds": [
+            "clubhit",
+            "clank"
+          ],
+          "BreakingSound": "stoneCrack",
+          "Sound": "hammer",
+          "AddHay": 0,
+          "SecretNotes": true,
+          "Shake": true,
+          "CountTowards": "None",
+          "Tool": "Pickaxe",
+          "SayWrongTool": null,
+          "MinToolLevel": 0,
+          "Exp": 12,
+          "Skill": "mining",
+          "ContextTags": [],
+          "CustomFields": {},
+          "Light": null,
+          "OnDestroy": null,
+          "MineSpawns": [ //You can spawn ores in the mines, and specify difficulty or conditions.
+            {
+              "Floors": "1/49", // from 1 to 49
+              "SpawnFrequency": 0.025, //2.5% to spawn
+              "Type": "All" //on any difficulty
+            },
+            {
+              "Floors": "50/-999", // from 50 to last
+              "SpawnFrequency": 0.075, //7.5% to spawn
+              "Type": "All" //on any difficulty
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/aurpine/Stardew-SpriteMaster
+   Git: https://github.com/aurpine/Stardew-SpriteMaster.git
+
+mods:
+   Clear Glasses
+
+latest commit:
+   commit 78be77906a1ad05100908fba6e1020b2d3503e12
+   Author: Ameisen <14104310+ameisen@users.noreply.github.com>
+   Date:   Sat Feb 11 18:12:44 2023 -0600
+   
+       Re-enabling redundant value checks.
+   

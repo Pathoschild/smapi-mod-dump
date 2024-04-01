@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+global using static Trading.Utilities.Messages;
+global using Object = StardewValley.Object;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -40,7 +42,7 @@ namespace Trading
             IConfig = Helper.ReadConfig<Config>();
         }
 
-        private void onWindowSizeChanged(object sender, WindowResizedEventArgs e)
+        private void onWindowSizeChanged(object? sender, WindowResizedEventArgs e)
         {
             if (Game1.activeClickableMenu is TradeMenu tm)
                 Game1.activeClickableMenu = new TradeMenu(tm.Sender, tm.Receiver, tm.Pending, tm.ReceiverItems, tm.ReceiverGold, tm.SenderItems, tm.SenderGold);
@@ -48,7 +50,7 @@ namespace Trading
                 Game1.activeClickableMenu = new PlayerSelectMenu(psm.Sender, psm.NearbyFarmers);
         }
 
-        private void onSaveLoaded(object sender, SaveLoadedEventArgs e)
+        private void onSaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
             tradeResponses = new[]
             {
@@ -57,67 +59,55 @@ namespace Trading
             };
         }
 
-        private void onButtonDown(object sender, ButtonPressedEventArgs e)
+        private void onButtonDown(object? sender, ButtonPressedEventArgs e)
         {
-            if (!Context.CanPlayerMove || !Context.IsMultiplayer || !IConfig.TradeMenuSButton.Any(x => x == e.Button)) return;
+            if (!Context.CanPlayerMove || !Context.IsMultiplayer || Game1.getOnlineFarmers().Count <= 1 || !IConfig.TradeMenuButton.IsDown()) 
+                return;
             Game1.activeClickableMenu = new PlayerSelectMenu(Game1.player);
-            Helper.Multiplayer.SendMessage("", Utilites.MSG_PollStatus, ModId, (Game1.activeClickableMenu as PlayerSelectMenu)!.NearbyFarmers.Select(x => x.Key.UniqueMultiplayerID).ToArray());
-            /*foreach (var farmer in Game1.getOnlineFarmers())
-            {
-                if (Utilites.InRadiusOff(farmer.getTileLocation(), Game1.player.getTileLocation(), IConfig.Radius) && farmer.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID)
-                {
-                    var sPlayer = Helper.Multiplayer.GetConnectedPlayer(farmer.UniqueMultiplayerID);
-                    if (sPlayer != null && sPlayer.HasSmapi && sPlayer.Mods.Any(x => x.ID == Helper.ModRegistry.ModID))
-                    {
-                        Helper.Multiplayer.SendMessage((NetworkPlayer)Game1.player, Utilites.MSG_RequestTrade, ModId, new[] { farmer.UniqueMultiplayerID });
-                        Game1.activeClickableMenu = new TradeMenu(Game1.player, farmer, true);
-                        break;
-                    }
-                }
-            }*/
+            Helper.Multiplayer.SendMessage("", MSG_PollStatus, ModId, (Game1.activeClickableMenu as PlayerSelectMenu)!.NearbyFarmers.Select(x => x.Key.UniqueMultiplayerID).ToArray());
         }
 
-        private void onMultiplayerMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        private void onMultiplayerMessageReceived(object? sender, ModMessageReceivedEventArgs e)
         {
             if (e.FromModID != Helper.ModRegistry.ModID) 
                 return;
 
             switch (e.Type)
             {
-                case Utilites.MSG_RequestTrade:
+                case MSG_RequestTrade:
                     if (Game1.activeClickableMenu is not null || Game1.eventUp)
                     {
-                        Helper.Multiplayer.SendMessage(Utilites.MSG_Busy, Utilites.MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
+                        Helper.Multiplayer.SendMessage(MSG_Busy, MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
                         return;
                     }
                     Game1.currentLocation.createQuestionDialogue(string.Format(ITranslations.TradeRequest, Game1.getFarmer(e.ReadAs<NetworkPlayer>().SenderId).Name), tradeResponses, (f, k) => 
                     {
                         if (k == "Accept")
                         {
-                            Helper.Multiplayer.SendMessage((NetworkPlayer)Game1.player, Utilites.MSG_TradeRequestAccept, ModId, new[] { e.ReadAs<NetworkPlayer>().SenderId });
+                            Helper.Multiplayer.SendMessage((NetworkPlayer)Game1.player, MSG_TradeRequestAccept, ModId, new[] { e.ReadAs<NetworkPlayer>().SenderId });
                             Game1.activeClickableMenu = new TradeMenu(Game1.player, Game1.getFarmer(e.ReadAs<NetworkPlayer>().SenderId), false);
                         }
                         else
-                            Helper.Multiplayer.SendMessage((NetworkPlayer)Game1.player, Utilites.MSG_TradeRequestDecline, ModId, new[] { e.ReadAs<NetworkPlayer>().SenderId });
+                            Helper.Multiplayer.SendMessage((NetworkPlayer)Game1.player, MSG_TradeRequestDecline, ModId, new[] { e.ReadAs<NetworkPlayer>().SenderId });
                     });
                     break;
-                case Utilites.MSG_TradeRequestAccept:
+                case MSG_TradeRequestAccept:
                     Game1.activeClickableMenu = new TradeMenu(Game1.player, Game1.getFarmer(e.ReadAs<NetworkPlayer>().SenderId), false);
                     break;
-                case Utilites.MSG_TradeRequestDecline:
+                case MSG_TradeRequestDecline:
                     Game1.activeClickableMenu.exitThisMenu();
                     Game1.drawDialogueBox(string.Format(ITranslations.TradeDeclined, Game1.getFarmer(e.ReadAs<NetworkPlayer>().SenderId).Name));
                     break;
-                case Utilites.MSG_UpdateTradeInventory:
-                    if (Game1.activeClickableMenu is not null and TradeMenu tm1)
+                case MSG_UpdateTradeInventory:
+                    if (Game1.activeClickableMenu is TradeMenu tm1)
                     {
                         var msg = e.ReadAs<NetworkInventory>();
                         tm1.ReceiverItems = Utilites.ParseItems(msg.Inventory);
                         tm1.ReceiverGold = msg.Gold;
                     }
                     break;
-                case Utilites.MSG_SendTradeOffer:
-                    if (Game1.activeClickableMenu is not null and TradeMenu tm2)
+                case MSG_SendTradeOffer:
+                    if (Game1.activeClickableMenu is TradeMenu tm2)
                     {
                         if (tm2.SentOffer || tm2.ReceivedOffer)
                             tm2.AcceptedOffer = true;
@@ -125,8 +115,8 @@ namespace Trading
                             tm2.ReceivedOffer = true;
                     }
                     break;
-                case Utilites.MSG_DeclineOffer:
-                    if (Game1.activeClickableMenu is not null and TradeMenu tm3)
+                case MSG_DeclineOffer:
+                    if (Game1.activeClickableMenu is TradeMenu tm3)
                     {
                         tm3.SentOffer = false;
                         tm3.ReceivedOffer = false;
@@ -134,8 +124,8 @@ namespace Trading
                         tm3.ConfirmedOffer = false;
                     }
                     break;
-                case Utilites.MSG_ConfirmTrade:
-                    if (Game1.activeClickableMenu is not null and TradeMenu tm4)
+                case MSG_ConfirmTrade:
+                    if (Game1.activeClickableMenu is TradeMenu tm4)
                     {
                         if (!tm4.AcceptedOffer) break;
                         if (!tm4.ConfirmedOffer)
@@ -153,20 +143,20 @@ namespace Trading
                         return;
                     }
                     break;
-                case Utilites.MSG_ExitTrade:
-                    if (Game1.activeClickableMenu is not null and TradeMenu tm5)
+                case MSG_ExitTrade:
+                    if (Game1.activeClickableMenu is TradeMenu tm5)
                         tm5.exit();
                     Game1.activeClickableMenu?.exitThisMenu();
                     break;
-                case Utilites.MSG_PollStatus:
+                case MSG_PollStatus:
                     if (Game1.activeClickableMenu is not null || Game1.eventUp)
-                        Helper.Multiplayer.SendMessage(Utilites.MSG_Busy, Utilites.MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
+                        Helper.Multiplayer.SendMessage(MSG_Busy, MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
                     else
-                        Helper.Multiplayer.SendMessage(Utilites.MSG_Available, Utilites.MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
+                        Helper.Multiplayer.SendMessage(MSG_Available, MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
                     break;
-                case Utilites.MSG_RespondStatus:
+                case MSG_RespondStatus:
                     if (Game1.activeClickableMenu is PlayerSelectMenu psm)
-                        psm.NearbyFarmers[Game1.getFarmer(e.FromPlayerID)] = e.ReadAs<string>() == Utilites.MSG_Available;
+                        psm.NearbyFarmers[Game1.getFarmer(e.FromPlayerID)] = e.ReadAs<string>() == MSG_Available;
                     break;
             }
         }

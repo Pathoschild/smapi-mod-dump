@@ -22,12 +22,12 @@ namespace EscasModdingPlugins
     /// <summary>Draws exclamation point indicators above "Action" "CustomBoard" property tiles based on an optional parameter.</summary>
     public static class DisplayNewOrderExclamationPoint
     {
-        /// <summary>True if these commands are currently enabled.</summary>
+        /// <summary>True if this class's behavior is currently enabled.</summary>
 		public static bool Enabled { get; private set; } = false;
         /// <summary>The monitor instance to use for console/log messages.</summary>
         private static IMonitor Monitor { get; set; } = null;
 
-        /// <summary>Initializes this class's SMAPI console commands.</summary>
+        /// <summary>Initializes this class and enables its features.</summary>
         /// <param name="helper">The helper instance to use for API access.</param>
         /// <param name="monitor">The monitor instance to use for console/log messages.</param>
         public static void Enable(IModHelper helper, IMonitor monitor)

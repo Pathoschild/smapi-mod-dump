@@ -94,7 +94,7 @@ Common problems are documented here. If you don't see your problem here and need
 There should be 0 build errors on the master branch. If you encounter any, you might try:
 
 * Clean Solution, then Build Solution
-* Project --> DailyScreenshot Properties, "Target framework" needs to be set to `.NET 5.0`
+* Project --> DailyScreenshot Properties, "Target framework" needs to be set to `.NET 6.0` (as of SDV v1.6)
 * Project --> Manage NuGet Packages... --> In the upper-right corner, "Package source" needs to be set to `nuget.org`
 * Project --> Manage NuGet Packages... --> Installed tab should show the packages mentioned in the [DailyScreenshot.csproj](./DailyScreenshot/DailyScreenshot.csproj) file.
 * The above should most likely resolve any issues, but if there are still errors, you might also try:

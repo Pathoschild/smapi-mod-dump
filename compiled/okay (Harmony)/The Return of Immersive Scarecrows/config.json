@@ -1,0 +1,12 @@
+{
+  "EnableMod": true,
+  "Debug": false,
+  "ShowRangeWhenPlacing": true,
+  "Scale": 4.0,
+  "Alpha": 1.0,
+  "DrawOffsetX": 0,
+  "DrawOffsetY": 0,
+  "DrawOffsetZ": 0,
+  "PickupButton": "E",
+  "ShowRangeButton": "LeftAlt"
+}

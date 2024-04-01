@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-using System;
 
 namespace HappyHomeDesigner.Menus
 {
@@ -28,6 +27,8 @@ namespace HappyHomeDesigner.Menus
 
 		public abstract ClickableTextureComponent GetTab();
 		public virtual void Exit() { }
+
+		public abstract int Count();
 
 		public virtual void Resize(Rectangle region)
 		{

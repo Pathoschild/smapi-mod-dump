@@ -23,33 +23,32 @@ namespace CropWalker
 {
     internal class ModEntry : Mod
     {
-        private Harmony harmony;
         private static Config IConfig;
         private static IMonitor IMonitor;
 
         public override void Entry(IModHelper helper)
         {
-            harmony = new(Helper.ModRegistry.ModID);
+            Harmony harmony = new(Helper.ModRegistry.ModID);
             IMonitor = Monitor;
             IConfig = Helper.ReadConfig<Config>();
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.doCollisionAction)),
-                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.doCollisionActionHoeDirt_postfix))
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(doCollisionActionHoeDirtPostfix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.isPassable)),
-                prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.isPassable_prefix))
+                prefix: new HarmonyMethod(typeof(ModEntry), nameof(isPassablePrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Grass), nameof(Grass.doCollisionAction)),
-                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.doCollisionActionGrass_postfix))
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(doCollisionActionGrassPostfix))
             );
         }
 
-        private static void doCollisionActionHoeDirt_postfix(Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, GameLocation location, HoeDirt __instance)
+        private static void doCollisionActionHoeDirtPostfix(Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, HoeDirt __instance)
         {
             try
             {
@@ -61,7 +60,7 @@ namespace CropWalker
             catch (Exception ex) { IMonitor.Log($"Failed patching {nameof(HoeDirt.doCollisionAction)}", LogLevel.Error); IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}"); return; }
         }
 
-        private static bool isPassable_prefix(Character c, HoeDirt __instance, ref bool __result)
+        private static bool isPassablePrefix(Character c, ref bool __result)
         {
             try
             {
@@ -73,12 +72,11 @@ namespace CropWalker
             catch (Exception ex) { IMonitor.Log($"Failed patching {nameof(HoeDirt.isPassable)}", LogLevel.Error); IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}"); return true; }
         }
 
-        private static void doCollisionActionGrass_postfix(Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, GameLocation location, Grass __instance)
+        private static void doCollisionActionGrassPostfix(Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, Grass __instance)
         {
             try
             {
-                //                                          Not for cobwebs, suffer like the rest of us
-                if (!IConfig.FastGrass || (__instance.grassType.Value == Grass.cobweb || who is not Farmer))
+                if (!IConfig.FastGrass || who is not Farmer)
                     return;
                 (who as Farmer)!.temporarySpeedBuff = 0f;
                 return;

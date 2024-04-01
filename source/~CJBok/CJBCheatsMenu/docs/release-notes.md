@@ -9,6 +9,38 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.35.1
+Released 29 March 2024 for SMAPI 4.0.0 or later.
+
+* Removed 'reset skills' option.  
+  _This was risky (since there's no record of the level perks previously applied) and didn't really work correctly._
+* Restored pre-1.35 fast lightning rod behavior, so they can still be used to intercept lightning.
+* Improved translations. Thanks to BernieAteUsername (updated Chinese)!
+
+## 1.35.0
+Released 24 March 2024 for SMAPI 4.0.0 or later.
+
+* Overhauled machine support. This adds 'fast machines' options for...
+  * all new machines in Stardew Valley 1.6;
+  * all custom machines added to the new `Data/Machines` asset;
+  * all custom buildings with item conversion rules in the new `Data/Buildings` asset;
+  * lightning rods.
+* Added mastery cave warp.
+* Added explanation to weather tab to dispel common misconception that it has persistent effects on weather.
+
+## 1.34.1
+Released 21 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed 'durable tackle' option not applied to the new second slot.
+
+## 1.34.0
+Released 19 March 2024 for SMAPI 4.0.0 or later.
+
+* Updated for Stardew Valley 1.6.
+* Removed problematic item filtering. (All problematic items were fixed in Stardew Valley 1.6.)
+* Using the grow hotkey on a full-grown tea bush or fruit tree now produces tea leaves or fruit if it's in season.
+* Improved translations. Thanks to ellipszist (updated Thai)!
+
 ## 1.33.5
 Released 01 December 2023 for SMAPI 3.14.0 or later.
 

@@ -11,9 +11,10 @@
 {
     "Name": "Piggy Bank Mod",
     "Author": "MindMeltMax",
-    "Version": "1.2.4",
+    "Version": "1.3.1",
     "Description": "Adds a piggy bank to store gold",
     "UniqueID": "MindMeltMax.PiggyBank",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:6934" ],
     "EntryDll": "Piggy Bank Mod.dll"
 }

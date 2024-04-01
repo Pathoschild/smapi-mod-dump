@@ -1,0 +1,74 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aurpine/Stardew-SpriteMaster
+**
+*************************************************/
+
+pytk things to patch:
+    public static Texture2D [PyTKMod] Premultiply(Texture2D texture)
+    {
+        var data = GC.AllocateUninitializedArray<Color>(texture.Width * texture.Height);
+        texture.GetData(data);
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            if (data[i].A == 0)
+                continue;
+
+            data[i] = Color.FromNonPremultiplied(data[i].ToVector4());
+        }
+
+        texture.SetData(data);
+        return texture;
+    }
+
+    public static bool [PyTKMod] PatchImage(IAssetDataForImage __instance, ref Texture2D source, ref Rectangle? sourceArea, Rectangle? targetArea, PatchMode patchMode)
+    {
+        var a = new Rectangle(0, 0, __instance.Data.Width, __instance.Data.Height);
+        var s = new Rectangle(0, 0, source.Width, source.Height);
+        var sr = sourceArea ?? s ;
+        var tr = targetArea ?? sr ;
+
+        if (__instance.Data is ScaledTexture2D && source is not ScaledTexture2D)
+            return true;
+
+        if (source is ScaledTexture2D scaled)
+        {
+            if (a == tr && patchMode == PatchMode.Replace)
+            {
+                __instance.ReplaceWith(source);
+                return true;
+            }
+
+            if (patchMode == PatchMode.Overlay)
+                scaled.AsOverlay = true;
+
+            if (scaled.AsOverlay)
+            {
+                var data = GC.AllocateUninitializedArray<Color>(tr.Width * tr.Height);
+                __instance.Data.getArea(tr).GetData(data);
+                scaled.SetData(data);
+            }
+
+            if (__instance.Data is MappedTexture2D map)
+                map.Set(tr, source);
+            else
+                __instance.ReplaceWith(new MappedTexture2D(__instance.Data, new Dictionary<Rectangle?, Texture2D>() { { tr, source } }));
+        }
+        else if (__instance.Data is MappedTexture2D map)
+        {
+            map.Set(tr, (sr.Width != source.Width || sr.Height != source.Height) ? source.getArea(sr) : source);
+            return false;
+        }
+        else if (__instance.Data is ScaledTexture2D)
+        {
+            __instance.ReplaceWith(new MappedTexture2D(__instance.Data, new Dictionary<Rectangle?, Texture2D>() { { tr, (sr.Width != source.Width || sr.Height != source.Height) ? source.getArea(sr) : source } }));
+            return false;
+        }
+
+        return true;
+    }

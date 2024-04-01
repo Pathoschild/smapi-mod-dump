@@ -24,12 +24,19 @@ namespace StardewDruid.Dialogue
 
         public override void DialogueApproach()
         {
+            
             if (specialDialogue.Count > 0)
             {
 
-                DialogueSpecial();
+                if (DialogueSpecial())
+                {
+
+                    return;
+
+                }
 
             }
+
             else if (Mod.instance.QuestOpen("approachShadowtin"))
             {
 
@@ -45,10 +52,13 @@ namespace StardewDruid.Dialogue
 
                 List<string> stringList = QuestData.StageProgress();
 
-                if (!stringList.Contains("complete"))
+                if (!stringList.Contains("Shadowtin"))
                 {
+                    str = "Am I supposed to know you?";
 
-                    Game1.drawDialogue(npc, "Am I supposed to know you?");
+                    npc.CurrentDialogue.Push(new(npc, "0", str));
+
+                    Game1.drawDialogue(npc);
 
                     Mod.instance.CastMessage("Complete more quests to unlock Shadowtin content");
 
@@ -90,7 +100,13 @@ namespace StardewDruid.Dialogue
                     new Adventure(npc).Approach();
                     break;
                 case "none":
-                    Game1.drawDialogue(npc, "The shadow warrior continues to watch you.");
+
+                    string str = "The shadow warrior continues to watch you.";
+
+                    npc.CurrentDialogue.Push(new(npc, "0", str));
+
+                    Game1.drawDialogue(npc);
+
                     break;
 
             }
@@ -116,8 +132,11 @@ namespace StardewDruid.Dialogue
                     return;
             }
 
-            Game1.drawDialogue(npc, "The shadow warrior continues to watch you.");
+            string str = "The shadow warrior continues to watch you.";
 
+            npc.CurrentDialogue.Push(new(npc, "0", str));
+
+            Game1.drawDialogue(npc);
         }
 
         public void DialogueIntro()
@@ -153,14 +172,26 @@ namespace StardewDruid.Dialogue
 
         public void ReplyAccept()
         {
-            Game1.drawDialogue(npc, "You have shown wisdom, Dragon master. I make my services and research available to you. You'll find me in the farmcave your companions loiter within.");
+
+            string str = "You demonstrate the wisdom of the ancient ones, Dragon master. I make my services and research available to you. You'll find me in the farmcave your companions loiter within.";
+
+            npc.CurrentDialogue.Push(new(npc, "0", str));
+
+            Game1.drawDialogue(npc);
             CompleteIntro();
         }
 
         public void ReplyRefuse()
         {
-            Game1.drawDialogue(npc, "The surface expedition has failed, and my shadowhome will offer no protection from the wrath of Deep. I'll consult your companions instead. I'm sure they will see the opportunities you do not.");
+
+            string str = "The surface expedition has failed, and my shadowhome will offer no protection from the wrath of Deep. I'll consult your companions instead. I'm sure they will see the opportunities you do not.";
+
+            npc.CurrentDialogue.Push(new(npc, "0", str));
+
+            Game1.drawDialogue(npc);
+
             CompleteIntro();
+
         }
 
         public void CompleteIntro()

@@ -1,0 +1,9 @@
+{
+  "ub_not_enough1": "'{{displayName}}'이 부족합니다",
+  "ub_not_enough2": "'{{displayName}}'이 더 필요합니다.",
+  "ub_parrot_ask": "*끼엑*... {{item}}! *끼엑*... 줄래?",
+  "ub_parrot_money": "더 샤이니",
+  "ub_speech_ask": "{{item}}? 멋지네요! 저도 가져도 될까요?",
+  "ub_speech_money": "돈",
+  "ub_empty_overview": "여기에서 수정된 번들을 발견한 후 추적할 수 있습니다.",
+}

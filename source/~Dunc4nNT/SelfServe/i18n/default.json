@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+{
+  "message.config-reloaded": "Configuration file reloaded.",
+
+  "config.shops.town-section": "Town Shops",
+  "config.shops.pierres-general-shop.name": "Pierre's General Store",
+  "config.shops.pierres-general-shop.tooltip": "Whether Pierre's general store is always open.",
+  "config.shops.blacksmith-shop.name": "Blacksmith",
+  "config.shops.blacksmith-shop.tooltip": "Whether Clint's blacksmith shop is always open.",
+  "config.shops.saloon-shop.name": "Stardrop Saloon Bar",
+  "config.shops.saloon-shop.tooltip": "Whether the Stardrop saloon bar is always open.",
+  "config.shops.hospital-shop.name": "Hospital",
+  "config.shops.hospital-shop.tooltip": "Whether the hospital's shop is always opened.",
+  "config.shops.ice-cream-shop.name": "Ice Cream Shop",
+  "config.shops.ice-cream-shop.tooltip": "Whether the ice cream shop is always open.",
+  "config.shops.bookseller-shop.name": "Bookseller's Shop",
+  "config.shops.bookseller-shop.tooltip": "Whether the bookseller's shop is always open.",
+
+  "config.shops.beach-section": "Beach Shops",
+  "config.shops.willys-fish-shop.name": "Willy's Fish Shop",
+  "config.shops.willys-fish-shop.tooltip": "Whether Willy's fish shop is always open.",
+
+  "config.shops.mountain-section": "Mountain Shops",
+  "config.shops.carpenters-shop.name": "Carpenter's",
+  "config.shops.carpenters-shop.tooltip": "Whether Robin's carpenter's shop is always open.",
+
+  "config.shops.forest-section": "Cindersap Forest Shops",
+  "config.shops.marnies-animal-shop.name": "Marnie's Animal Shop",
+  "config.shops.marnies-animal-shop.tooltip": "Whether Marnie's animal shop is always open.",
+  "config.shops.traveling-merchant-shop.name": "Traveling Merchant",
+  "config.shops.traveling-merchant-shop.tooltip": "Whether the traveling merchant is always open when the cart is in the forest.",
+
+  "config.shops.desert-section": "Desert Shops",
+  "config.shops.sandy-oasis-shop.name": "The Oasis",
+  "config.shops.sandy-oasis-shop.tooltip": "Whether Sandy's Oasis is always open.",
+  "config.shops.desert-trader-shop.name": "Desert Trader",
+  "config.shops.desert-trader-shop.tooltip": "Whether the desert trader's shop is always open.",
+
+  "config.shops.ginger-island-section": "Ginger Island Shops",
+  "config.shops.resort-bar-shop.name": "Resort Bar",
+  "config.shops.resort-bar-shop.tooltip": "Whether the resort bar is always open.",
+
+  "config.shops.night-market-section": "Night Market Shops",
+  "config.shops.night-market-painter-shop.name": "Painter",
+  "config.shops.night-market-painter-shop.tooltip": "Whether the painter's shop is always open.",
+  "config.shops.night-market-magic-boat-shop.name": "Magic Boat",
+  "config.shops.night-market-magic-boat-shop.tooltip": "Whether the magic boat shop is always open.",
+  "config.shops.night-market-traveling-marchant-shop.name": "Traveling Merchant",
+  "config.shops.night-market-traveling-marchant-shop.tooltip": "Whether the traveling merchant is always open when the cart is at the beach.",
+  "config.shops.night-market-decoration-boat-shop.name": "Decoration Boat",
+  "config.shops.night-market-decoration-boat-shop.tooltip": "Whether the decoration boat shop is always open."
+}

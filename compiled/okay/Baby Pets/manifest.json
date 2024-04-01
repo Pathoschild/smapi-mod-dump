@@ -1,0 +1,13 @@
+{
+  "Name": "BabyPets",
+  "Author": "DellyBelly",
+  "Version": "1.0.0",
+  "Description": "Let your pets start as babies and grow up just like farm animals",
+  "UniqueID": "DellyBelly.BabyPets",
+  "EntryDll": "BabyPets.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:20967"],
+  "Dependencies": [
+	  { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": false }
+  ]
+}

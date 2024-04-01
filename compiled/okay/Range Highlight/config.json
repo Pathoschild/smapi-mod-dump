@@ -4,12 +4,14 @@
   "ShowSprinklerRange": true,
   "ShowScarecrowRange": true,
   "ShowBeehouseRange": true,
+  "ShowMushroomLogRange": true,
   "ShowBombRange": true,
   "HighlightBuildingsOnMouseover": true,
   "HighlightActionLocation": "Always",
   "ShowOtherSprinklersWhenHoldingSprinkler": true,
   "ShowOtherScarecrowsWhenHoldingScarecrow": true,
   "ShowOtherBeehousesWhenHoldingBeehouse": false,
+  "ShowOtherMushroomLogsWhenHoldingMushroomLog": false,
   "showHeldBombRange": true,
   "showPlacedBombRange": true,
   "hideHeldBombWhenPlacedAreTicking": true,
@@ -19,6 +21,7 @@
   "ShowSprinklerRangeKey": "R",
   "ShowScarecrowRangeKey": "O",
   "ShowBeehouseRangeKey": "H",
+  "ShowMushroomLogRangeKey": "None",
   "ShowJunimoRangeKey": "J",
   "hotkeysToggle": false,
   "JunimoRangeTint": {
@@ -43,6 +46,12 @@
     "B": 153,
     "G": 255,
     "R": 255,
+    "A": 178
+  },
+  "MushroomLogRangeTint": {
+    "B": 150,
+    "G": 93,
+    "R": 32,
     "A": 178
   },
   "BombRangeTint": {

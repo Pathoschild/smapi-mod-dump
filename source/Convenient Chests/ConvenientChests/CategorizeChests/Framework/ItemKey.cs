@@ -8,80 +8,92 @@
 **
 *************************************************/
 
-using System;
-using Microsoft.Xna.Framework;
+using System.Diagnostics.Contracts;
 using StardewValley;
-using StardewValley.Objects;
+using StardewValley.GameData.Objects;
+using StardewValley.ItemTypeDefinitions;
+using StardewValley.Menus;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
 namespace ConvenientChests.CategorizeChests.Framework {
-    internal struct ItemKey {
-        public ItemType ItemType    { get; }
-        public int      ObjectIndex { get; }
+    public readonly struct ItemKey {
+        public string ItemId { get; }
+        public string TypeDefinition { get; }
 
-        public ItemKey(ItemType itemType, int parentSheetIndex) {
-            ItemType    = itemType;
-            ObjectIndex = parentSheetIndex;
+        public string QualifiedItemId => $"{TypeDefinition}{ItemId}";
+
+        public ItemKey(string typeDefinition, string itemId) {
+            TypeDefinition = typeDefinition;
+            ItemId = itemId;
         }
 
-        public override int GetHashCode() => (int) ItemType * 10000 + ObjectIndex;
-
-        public override string ToString() => $"{ItemType}:{ObjectIndex}";
-
-        public override bool Equals(object obj) => obj is ItemKey itemKey          &&
-                                                   itemKey.ItemType    == ItemType &&
-                                                   itemKey.ObjectIndex == ObjectIndex;
-
-        public Item GetOne() {
-            switch (ItemType) {
-                case ItemType.Boots:
-                    return new Boots(ObjectIndex);
-
-                case ItemType.Furniture:
-                    return new Furniture(ObjectIndex, Vector2.Zero);
-
-                case ItemType.Hat:
-                    return new Hat(ObjectIndex);
-
-                case ItemType.Fish:
-                case ItemType.Object:
-                case ItemType.BigCraftable:
-                    return new Object(ObjectIndex, 1);
-
-                case ItemType.Ring:
-                    return new Ring(ObjectIndex);
-
-                case ItemType.Tool:
-                    return ToolFactory.getToolFromDescription((byte) ObjectIndex, Tool.stone);
-
-                case ItemType.Wallpaper:
-                    return new Wallpaper(ObjectIndex);
-
-                case ItemType.Flooring:
-                    return new Wallpaper(ObjectIndex, true);
-
-                case ItemType.Weapon:
-                    return new MeleeWeapon(ObjectIndex);
-
-                case ItemType.Gate:
-                    return new Fence(Vector2.Zero, ObjectIndex, true);
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+        public ItemKey(string qualifiedItemId) {
+            var item = ItemRegistry.Create(qualifiedItemId);
+            TypeDefinition = item.TypeDefinitionId;
+            ItemId = item.ItemId;
         }
+
+        public override int GetHashCode() => QualifiedItemId.GetHashCode();
+        public override string ToString() => QualifiedItemId;
+
+        public override bool Equals(object obj)
+            => obj is ItemKey itemKey &&
+               itemKey.TypeDefinition == TypeDefinition &&
+               itemKey.ItemId == ItemId;
+
+        [Pure]
+        public Item GetOne() => ItemRegistry.Create(QualifiedItemId);
+        public T GetOne<T>() where T : Item => ItemRegistry.Create<T>(QualifiedItemId);
+
+        public ParsedItemData GetParsedData() => ItemRegistry.GetData(QualifiedItemId);
+        public T GetRawData<T>() => (T) GetParsedData().RawData;
 
         public string GetCategory() {
-            // move scythe to tools
-            if (ItemType == ItemType.Weapon && ObjectIndex == MeleeWeapon.scythe)
-                return Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14307");
+            switch (TypeDefinition) {
+                case "(T)":
+                case "(W)" when MeleeWeapon.IsScythe(QualifiedItemId): // move scythes to tools
+                    return Object.GetCategoryDisplayName(Object.toolCategory);
 
-            if (ItemType != ItemType.Object)
-                return ItemType.ToString();
+                case "(W)":
+                    return "Weapons";
 
-            var categoryName = GetOne().getCategoryName();
-            return string.IsNullOrEmpty(categoryName) ? "Miscellaneous" : categoryName;
+                case "(H)":
+                    return "Hats";
+
+                case "(P)":
+                    return "Pants";
+
+                case "(S)":
+                    return "Shirts";
+
+                case "(FL)":
+                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Wallpaper.cs.13203"); // Flooring
+
+                case "(WP)":
+                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Wallpaper.cs.13204"); // Wallpaper
+
+                case "(BC)":
+                    return GetOne<Object>().GetMachineData() != null
+                               ? "Machine"
+                               : Game1.content.LoadString(@"Strings\StringsFromCSFiles:Object.cs.12863"); // Crafting
+
+                case "(M)":
+                    return "Mannequin";
+
+                case "(F)":
+                    return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12847"); // Furniture
+            }
+
+            // try to use the in-game category logic
+            var item         = GetOne();
+            var categoryName = item.getCategoryName();
+            if (!string.IsNullOrEmpty(categoryName))
+                return categoryName;
+
+            return TypeDefinition == "(O)" && ((Object) item).Edibility > 0
+                       ? "Consumable"
+                       : "Miscellaneous";
         }
     }
 }

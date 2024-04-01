@@ -3,7 +3,7 @@
         <AssemblyName>EventBlackBars</AssemblyName>
         <RootNamespace>EventBlackBars</RootNamespace>
         <Version>1.0.3</Version>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
 

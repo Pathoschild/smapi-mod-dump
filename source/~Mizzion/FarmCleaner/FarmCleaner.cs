@@ -41,13 +41,16 @@ namespace FarmCleaner
         private readonly Dictionary<Vector2, ResourceClump> _largelog = new();
         private readonly Dictionary<Vector2, ResourceClump> _largestone = new();
         private readonly Dictionary<Vector2, SObject> _forage = new();
-        private readonly Dictionary<Vector2, SObject> _ores = new();
+        private readonly Dictionary<Vector2, SObject> _copperOres = new();
+        private readonly Dictionary<Vector2, SObject> _ironOres = new();
+        private readonly Dictionary<Vector2, SObject> _goldOres = new();
+        private readonly Dictionary<Vector2, SObject> _iridiumOres = new();
 
         private readonly List<Vector2> _mineLadders = new();
-        public int[] NonNormalStones = {75, 290, 751, 765, 764};
+        public string[] NonNormalStones = {"75", "290", "751", "765", "764"};
 
         //Variables to control Amounts of items added
-        private int _mixedSeedsCount, _coalCount, _geodeCount, _hayCount, _woodCount, _fiberCount, _stoneCount, _hardWoodCount, _missedWeeds, _acornCount, _mapleCount, _pineConeCount, _sapCount, _oreCount;
+        private int _mixedSeedsCount, _coalCount, _geodeCount, _hayCount, _woodCount, _fiberCount, _stoneCount, _hardWoodCount, _missedWeeds, _acornCount, _mapleCount, _pineConeCount, _sapCount, _copperCount, _ironCount, _goldCount, _iridiumCount;
         
 
         public override void Entry(IModHelper helper)
@@ -103,6 +106,14 @@ namespace FarmCleaner
                 tooltip: () => "To remove stone or not to.",
                 getValue: () => this._config.StoneRemoval,
                 setValue: value => this._config.StoneRemoval = value
+            );
+            //Ore Removal
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Break Ore Stones",
+                tooltip: () => "To break ore stones or not to.",
+                getValue: () => this._config.BreakOres,
+                setValue: value => this._config.BreakOres = value
             );
             //Twig Removal
             configMenu.AddBoolOption(
@@ -290,14 +301,13 @@ namespace FarmCleaner
             if (!Context.IsWorldReady || !Game1.getFarm().IsOutdoors)
                 return;
 
-            if (e.IsDown(SButton.NumPad3))
+            if (e.IsDown(SButton.NumPad9))
             {
                 if (Game1.player.currentLocation is not null && !Game1.player.currentLocation.Name.Contains("Farm"))
                     DoLocationClean();
                 else
                     DoClean();
             }
-
             if (e.IsDown(SButton.NumPad8))
             {
                 GetObjects(Game1.player.currentLocation);
@@ -306,11 +316,16 @@ namespace FarmCleaner
             {
                 if(Game1.player.currentLocation is MineShaft mine)
                 {
-                    int X = (Game1.player.getStandingX() / 64) + 1;
-                    int Y = (Game1.player.getStandingY() / 64) + 1;
-                    mine.createLadderAt(new Vector2(X, Y));
-                    Monitor.Log($"X: {X}, Y: {Y}", LogLevel.Debug);
+                    var x = (Game1.player.getStandingX() / 64) + 1;
+                    var y = (Game1.player.getStandingY() / 64) + 1;
+                    mine.createLadderAt(new Vector2(x, y));
+                    Monitor.Log($"X: {x}, Y: {y}", LogLevel.Debug);
                 }
+            }
+            if (e.IsDown(SButton.F5))
+            {
+                _config = Helper.ReadConfig<FcConfig>();
+                Monitor.Log("Config was reloaded.");
             }
         }
 
@@ -350,7 +365,16 @@ namespace FarmCleaner
             _largelog.Clear();
             _largestone.Clear();
             _forage.Clear();
+            _copperOres.Clear();
+            _ironOres.Clear();
+            _goldOres.Clear();
+            _iridiumOres.Clear();
             _mineLadders.Clear();
+
+            //Reset counts 
+            _mixedSeedsCount =
+                _coalCount = _geodeCount = _hayCount = _woodCount = _fiberCount = _stoneCount = _hardWoodCount = _missedWeeds = _acornCount = _mapleCount = _pineConeCount = _sapCount = 0;
+
             if (loc.Name.Contains("Farm"))
             {
                 //Objects.
@@ -361,8 +385,16 @@ namespace FarmCleaner
                     if (obj.Value.Name.ToLower().Contains("twig"))
                         _twig.Add(obj.Key, obj.Value);
                     //Filter out Geodes, and Ore stones
-                    if (obj.Value.Name.ToLower().Contains("stone") && !NonNormalStones.Contains(obj.Value.ParentSheetIndex))
+                    if (obj.Value.Name.ToLower().Contains("stone") && !NonNormalStones.Contains(obj.Value.ItemID))
                         _stone.Add(obj.Key, obj.Value);
+                    if(obj.Value.ItemID.Contains("751"))
+                        _copperOres.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("290"))
+                        _ironOres.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("764"))
+                        _goldOres.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("765"))
+                        _iridiumOres.Add(obj.Key, obj.Value);
                 }
 
 
@@ -379,11 +411,11 @@ namespace FarmCleaner
                 //Resource Clumps
                 foreach (var clumps in farm.resourceClumps.ToList())
                 {
-                    if (clumps.parentSheetIndex.Value == 600)
+                    if (clumps.parentSheetIndex.Value == "600")
                         _stump.Add(clumps.tile.Value, clumps);
-                    if (clumps.parentSheetIndex.Value == 602)
+                    if (clumps.parentSheetIndex.Value == "602")
                         _largelog.Add(clumps.tile.Value, clumps);
-                    if (clumps.parentSheetIndex.Value == 672)
+                    if (clumps.parentSheetIndex.Value == "672")
                         _largestone.Add(clumps.tile.Value, clumps);
                 }
             }
@@ -399,8 +431,16 @@ namespace FarmCleaner
                     if(obj.Value.isForage(loc))
                         _forage.Add(obj.Key, obj.Value);
                     //Filter out Geodes, and Ore stones
-                    if (obj.Value.Name.ToLower().Contains("stone") && !NonNormalStones.Contains(obj.Value.ParentSheetIndex))
+                    if (obj.Value.Name.ToLower().Contains("stone") && !NonNormalStones.Contains(obj.Value.ItemID))
                         _stone.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("751"))
+                        _copperOres.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("290"))
+                        _ironOres.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("764"))
+                        _goldOres.Add(obj.Key, obj.Value);
+                    if (obj.Value.ItemID.Contains("765"))
+                        _iridiumOres.Add(obj.Key, obj.Value);
                 }
 
 
@@ -417,11 +457,11 @@ namespace FarmCleaner
                 //Resource Clumps
                 foreach (var clumps in loc.resourceClumps.ToList())
                 {
-                    if (clumps.parentSheetIndex.Value == 600)
+                    if (clumps.parentSheetIndex.Value == "600")
                         _stump.Add(clumps.tile.Value, clumps);
-                    if (clumps.parentSheetIndex.Value == 602)
+                    if (clumps.parentSheetIndex.Value == "602")
                         _largelog.Add(clumps.tile.Value, clumps);
-                    if (clumps.parentSheetIndex.Value == 672)
+                    if (clumps.parentSheetIndex.Value == "672")
                         _largestone.Add(clumps.tile.Value, clumps);
                 }
             }
@@ -437,7 +477,7 @@ namespace FarmCleaner
             
             //Reset the counts
             _mixedSeedsCount =
-                _coalCount = _geodeCount = _hayCount = _woodCount = _fiberCount = _stoneCount = _hardWoodCount = _missedWeeds = _acornCount = _mapleCount = _pineConeCount = _sapCount = 0;
+                _coalCount = _geodeCount = _hayCount = _woodCount = _fiberCount = _stoneCount = _hardWoodCount = _missedWeeds = _acornCount = _mapleCount = _pineConeCount = _sapCount = _copperCount = _ironCount = _goldCount = _iridiumCount = 0;
 
             //Lets make sure the chest exists.
 
@@ -454,7 +494,6 @@ namespace FarmCleaner
                 farm.objects.Add(_config.ChestLocation, myChest);
             }
 
-            Monitor.Log("Passed the Chest Check");
             //Remove grass and add hay.
             if (_config.GrassRemoval && _grass.Any())
             {
@@ -464,7 +503,7 @@ namespace FarmCleaner
                     var amt = 1 * rnd.Next(1, 2);
 
                     farm.terrainFeatures.Remove(gr.Key);
-                    Item i = new SObject(178, amt);
+                    Item i = new SObject("(O)178", amt);
                     _hayCount += amt;
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
@@ -476,7 +515,6 @@ namespace FarmCleaner
                 foreach (var trees in _saplings.ToList())
                 {
                     var t = (STree)trees.Value;
-                    var tType = t.treeType.Value;
                     var tGrowth = t.growthStage.Value;
                     var tSeed = GetSeed(t);
                     rnd = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + (int)trees.Key.X * 7 + (int)trees.Key.Y * 11);
@@ -509,7 +547,6 @@ namespace FarmCleaner
                     }
 
                     var r = rnd.Next(1, 4);
-                    Monitor.Log($"{r} => {Math.PI / 2.0}");
                     //Check to see if Sap should have dropped
                     if (r > Math.PI / 2.0)
                     {
@@ -542,7 +579,7 @@ namespace FarmCleaner
                     _woodCount += 12;
                     myChest.addItem(DoItem(388, 12));
 
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(2, Game1.random.Next(2, 12));
                 }
             }
             //Remove weeds and adds them
@@ -558,7 +595,7 @@ namespace FarmCleaner
                         continue;
                     }
 
-                    Item i = new SObject(pid, 1);
+                    Item i = new SObject($"{pid}", 1);
                     if (pid == 770)
                         _mixedSeedsCount++;
                     else
@@ -574,7 +611,7 @@ namespace FarmCleaner
                 {
                     farm.objects.Remove(st.Key);
                     var pid = BreakStone((int)st.Key.X, (int)st.Key.Y);
-                    var amt = (pid == 382 || pid == 390) ? rnd.Next(1, 3) : 1;
+                    var amt = pid is 382 or 390 ? rnd.Next(1, 3) : 1;
                     if (pid == 382)
                         _coalCount += amt;
                     if (pid is >= 535 and < 538)
@@ -582,9 +619,9 @@ namespace FarmCleaner
                     if (pid == 390)
                         _stoneCount += amt;
 
-                    Item i = new SObject(pid, amt);
+                    Item i = new SObject($"{pid}", amt);
                     myChest.addItem(i);
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(3, Game1.random.Next(2,12));
                 }
             }
             //Remove twigs and adds wood
@@ -593,10 +630,10 @@ namespace FarmCleaner
                 foreach (var twigs in _twig.ToList())
                 {
                     farm.objects.Remove(twigs.Key);
-                    Item i = new SObject(388, 1);
+                    Item i = new SObject("388", 1);
                     _woodCount++;
                     myChest.addItem(i);
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(2, Game1.random.Next(2, 12));
                 }
             }
             //Remove stumps and adds HardWood
@@ -605,10 +642,10 @@ namespace FarmCleaner
                 foreach (var stumps in _stump.ToList())
                 {
                     farm.resourceClumps.Remove(stumps.Value);
-                    Item i = new SObject(709, 2);
+                    Item i = new SObject("709", 2);
                     _hardWoodCount += 2;
                     myChest.addItem(i);
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(2, Game1.random.Next(2, 12));
                 }
             }
             //Remove large logs and adds hardwood
@@ -617,10 +654,10 @@ namespace FarmCleaner
                 foreach (var logs in _largelog.ToList())
                 {
                     farm.resourceClumps.Remove(logs.Value);
-                    Item i = new SObject(709, 8);
+                    Item i = new SObject("709", 8);
                     _hardWoodCount += 8;
                     myChest.addItem(i);
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(2, Game1.random.Next(2, 12));
                 }
             }
             //Remove large stones and adds stone
@@ -629,10 +666,10 @@ namespace FarmCleaner
                 foreach (var stones in _largestone.ToList())
                 {
                     farm.resourceClumps.Remove(stones.Value);
-                    Item i = new SObject(390, 15);
+                    Item i = new SObject("390", 15);
                     _stoneCount += 15;
                     myChest.addItem(i);
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(3, Game1.random.Next(2, 12));
                 }
             }
 
@@ -654,6 +691,22 @@ namespace FarmCleaner
                 $"Removed the Following Items:\n\n Grass: {_grass.Count} \n Trees: {_saplings.Count} \n Weeds: {_weeds.Count} \n Stones: {_stone.Count} \n Twigs: {_twig.Count} \n Stumps: {_stump.Count} \n LargeLogs: {_largelog.Count} \n Large Stone: {_largestone.Count}\n\n {addedToChest}");
         }
 
+        private void Clean()
+        {
+            Monitor.Log("FarmCleaner Starting the clean process.");
+            FillDictionary();
+            Game1.player.currentLocation.terrainFeatures.TryGetValue()
+            if (loc is null)
+                return;
+            if (terrain is null && obj is null)
+                return;
+
+            //Lets start the processing.
+            if (terrain is not null)
+            {
+
+            }
+        }
         private void DoLocationClean()
         {
             Monitor.Log("Running Cleaner");
@@ -669,7 +722,7 @@ namespace FarmCleaner
             //Make sure loc isn't null
             if (loc is null)
             {
-                Monitor.Log($"Couldn't find a game location.", LogLevel.Trace);
+                Monitor.Log($"Couldn't find a game location.");
                 return;
             }
             var farm = Game1.getFarm();
@@ -695,7 +748,7 @@ namespace FarmCleaner
                     var amt = 1 * rnd.Next(1, 2);
 
                     loc.terrainFeatures.Remove(gr.Key);
-                    Item i = new SObject(178, amt);
+                    Item i = new SObject("178", amt);
                     _hayCount += amt;
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
@@ -707,7 +760,6 @@ namespace FarmCleaner
                 foreach (var trees in _saplings.ToList())
                 {
                     var t = (STree)trees.Value;
-                    var tType = t.treeType.Value;
                     var tGrowth = t.growthStage.Value;
                     var tSeed = GetSeed(t);
                     rnd = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + (int)trees.Key.X * 7 + (int)trees.Key.Y * 11);
@@ -789,7 +841,7 @@ namespace FarmCleaner
                         continue;
                     }
 
-                    Item i = new SObject(pid, 1);
+                    Item i = new SObject($"{pid}", 1);
                     if (pid == 770)
                         _mixedSeedsCount++;
                     else
@@ -806,8 +858,7 @@ namespace FarmCleaner
                     if (loc.Name.Contains("UndergroundMine"))
                     {
 
-                        int r = rnd.Next(1, _stone.Keys.Count);
-                        var l = Game1.player.currentLocation as MineShaft;
+                        var r = rnd.Next(1, _stone.Keys.Count);
                         if (r == 1)
                         {
                             //l.createLadderAt(new Vector2(st.Key.X, st.Key.Y));
@@ -836,9 +887,53 @@ namespace FarmCleaner
                             lo.createLadderAt(new Vector2(mine.X, mine.Y));
                         }
                     }
-                    Item i = new SObject(pid, amt);
+                    Item i = new SObject($"{pid}", amt);
                     myChest.addItem(i);
-                    Game1.player.gainExperience(2, 12);
+                    Game1.player.gainExperience(3, Game1.random.Next(0, 12));
+                }
+            }
+            //Remove Ore Stone and Adds Ores
+            if (_config.BreakOres && (_copperOres.Any() || _ironOres.Any() || _goldOres.Any() || _iridiumOres.Any()))
+            {
+                //Lets handle Copper
+                foreach (var copper in _copperOres.ToList())
+                {
+                    loc.objects.Remove(copper.Key);
+                    _copperCount++;
+                    var amt = Game1.random.Next(1, 5);
+                    Item i = new SObject($"751", amt);
+                    myChest.addItem(i);
+                    Game1.player.gainExperience(3, Game1.random.Next(0, 12));
+                }
+                //Lets handle Iron
+                foreach (var iron in _ironOres.ToList())
+                {
+                    loc.objects.Remove(iron.Key);
+                    _ironCount++;
+                    var amt = Game1.random.Next(1, 5);
+                    Item i = new SObject($"380", amt);
+                    myChest.addItem(i);
+                    Game1.player.gainExperience(3, Game1.random.Next(0, 12));
+                }
+                //Lets handle Gold
+                foreach (var gold in _goldOres.ToList())
+                {
+                    loc.objects.Remove(gold.Key);
+                    _goldCount++;
+                    var amt = Game1.random.Next(1, 5);
+                    Item i = new SObject($"764", amt);
+                    myChest.addItem(i);
+                    Game1.player.gainExperience(3, Game1.random.Next(0, 12));
+                }
+                //Lets handle Iridium
+                foreach (var iridium in _iridiumOres.ToList())
+                {
+                    loc.objects.Remove(iridium.Key);
+                    _iridiumCount++;
+                    var amt = Game1.random.Next(1, 5);
+                    Item i = new SObject($"765", amt);
+                    myChest.addItem(i);
+                    Game1.player.gainExperience(3, Game1.random.Next(0, 12));
                 }
             }
             //Remove twigs and adds wood
@@ -847,19 +942,19 @@ namespace FarmCleaner
                 foreach (var twigs in _twig.ToList())
                 {
                     loc.objects.Remove(twigs.Key);
-                    Item i = new SObject(388, 1);
+                    Item i = new SObject("388", 1);
                     _woodCount++;
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
                 }
             }
-
+            //Remove Forage Items
             if (_config.ForageRemoval && _forage.Any())
             {
                 foreach (var forage in _forage.ToList())
                 {
                     loc.objects.Remove(forage.Key);
-                    Item i = new SObject(forage.Value.ParentSheetIndex, 1);
+                    Item i = new SObject($"{forage.Value.itemId.Value}", 1);
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
                 }
@@ -870,7 +965,7 @@ namespace FarmCleaner
                 foreach (var stumps in _stump.ToList())
                 {
                     loc.resourceClumps.Remove(stumps.Value);
-                    Item i = new SObject(709, 2);
+                    Item i = new SObject("709", 2);
                     _hardWoodCount += 2;
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
@@ -882,7 +977,7 @@ namespace FarmCleaner
                 foreach (var logs in _largelog.ToList())
                 {
                     loc.resourceClumps.Remove(logs.Value);
-                    Item i = new SObject(709, 8);
+                    Item i = new SObject("709", 8);
                     _hardWoodCount += 8;
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
@@ -894,7 +989,7 @@ namespace FarmCleaner
                 foreach (var stones in _largestone.ToList())
                 {
                     loc.resourceClumps.Remove(stones.Value);
-                    Item i = new SObject(390, 15);
+                    Item i = new SObject("390", 15);
                     _stoneCount += 15;
                     myChest.addItem(i);
                     Game1.player.gainExperience(2, 12);
@@ -913,6 +1008,10 @@ namespace FarmCleaner
             addedToChest += _pineConeCount > 0 ? $"\n Pine Cones: {_pineConeCount}" : "";
             addedToChest += _coalCount > 0 ? $"\n Coal: {_coalCount}" : "";
             addedToChest += _geodeCount > 0 ? $"\n Geodes: {_geodeCount}" : "";
+            addedToChest += _copperCount > 0 ? $"\n Copper Ores: {_copperCount}" : "";
+            addedToChest += _ironCount > 0 ? $"\n Iron Ores: {_ironCount}" : "";
+            addedToChest += _goldCount > 0 ? $"\n Gold Ores: {_goldCount}" : "";
+            addedToChest += _iridiumCount > 0 ? $"\n Iridium Ores: {_iridiumCount}" : "";
 
             //Throw out the final message.
             Monitor.Log(
@@ -921,11 +1020,11 @@ namespace FarmCleaner
 
         private void GetObjects(GameLocation loc)
         {
-            string foundObjects = "Found Objects: ";
-            string foundTerrain = "Found Terrain: ";
-            string terrain = "";
-            string forage = "";
-            string foundForage = "Found Forage: ";
+            var foundObjects = "Found Objects: ";
+            var foundTerrain = "Found Terrain: ";
+            var terrain = "";
+            var forage = "";
+            var foundForage = "Found Forage: ";
             int objNum = 0, terNum = 0, forNum = 0;
             //Objects.
             foreach (var obj in loc.objects.Pairs.ToList())
@@ -986,12 +1085,20 @@ namespace FarmCleaner
         {
             var seedId = tree.treeType.Value switch
             {
-                1 => //Oak
+                "1" => //Oak
                     309,
-                2 => //Maple
+                "2" => //Maple
                     310,
-                3 => //Pine
+                "3" => //Pine
                     311,
+                "6" => //Palm
+                    88,
+                "7" => //Mushroom
+                    891,
+                "8" => //Mahogony
+                    292,
+                "9" => //Palm2
+                    88,
                 _ => 309
             };
 
@@ -1000,21 +1107,26 @@ namespace FarmCleaner
 
         private static Item DoItem(int itemId)
         {
-            Item i = new SObject(itemId, 1);
+            Item i = new SObject($"{itemId}", 1);
             return i;
         }
+
         private static Item DoItem(int itemId, int amount)
         {
-            Item i = new SObject(itemId, amount);
-            return i;
+            Item i = new SObject($"{itemId}", amount);
+        return i;
         }
+        
         internal enum TreeType
         {
             Oak = Tree.bushyTree,
             Maple = Tree.leafyTree,
             Pine = Tree.pineTree,
             Palm = Tree.palmTree,
-            BigMushroom = Tree.mushroomTree
+            BigMushroom = Tree.mushroomTree,
+            Mahogany = Tree.mahoganyTree,
+            Palm2 = Tree.palmTree2
+
         }
 
         internal enum TreeStage

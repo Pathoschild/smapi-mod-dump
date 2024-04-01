@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21086
+IDs: selph.ExtraFuelConfig
+update keys: Nexus:21086, GitHub:zombifier/My_Stardew_Mods

@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SinZ163/StardewMods
+**
+*************************************************/
+
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "SinZ.SeleneSupport",
+  "Name": "SinZational Selene Suport",
+  "Author": "SinZ",
+  "Version": "0.0.1",
+  "Description": "A mod that allows 'content packs' written in Lua to be loaded as real SMAPI mods.",
+  "MinimumApiVersion": "3.18",
+  "EntryDll": "SinZationalSeleneSupport.dll"
+}

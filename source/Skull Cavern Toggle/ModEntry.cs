@@ -29,6 +29,7 @@ namespace SkullCavernToggle
             helper.Events.Input.ButtonPressed += this.Toggle;
             helper.Events.Player.Warped += this.OnWarp;
             helper.Events.Multiplayer.ModMessageReceived += this.MessageReceived;
+            helper.Events.GameLoop.DayStarted += this.DayStarted;
 
             this.config = helper.ReadConfig<ModConfig>();
         }
@@ -44,6 +45,18 @@ namespace SkullCavernToggle
             }
         }
 
+        // Fix conflicting shrines
+        private void DayStarted(object sender, DayStartedEventArgs e)
+        {
+            if (Game1.netWorldState.Value.SkullCavesDifficulty > 1)
+            {
+                Game1.netWorldState.Value.SkullCavesDifficulty = 1;
+            }
+            else if (Game1.netWorldState.Value.SkullCavesDifficulty < 0)
+            {
+                Game1.netWorldState.Value.SkullCavesDifficulty = 0;
+            }
+        }
 
         // Are the toggle conditions met?
         private bool ShouldToggle()
@@ -64,7 +77,7 @@ namespace SkullCavernToggle
                 // Yes, is it complete?
 
                 // Iterate through completed quests
-                foreach (string soid in new List<string>(order.Keys))
+                foreach (string soid in new List<string>(order))
                 {
                     // Is quest part of the collection?
                     if (soid.Contains("QiChallenge10") == true)
@@ -103,7 +116,7 @@ namespace SkullCavernToggle
                     // Yes, is it complete?
 
                     // Iterate through completed orders
-                    foreach (string soid in new List<string>(order.Keys))
+                    foreach (string soid in new List<string>(order))
                     {
                         
                         if (soid.Contains("QiChallenge10") == true)
@@ -134,14 +147,14 @@ namespace SkullCavernToggle
             {
                 // Normal
                 Game1.netWorldState.Value.SkullCavesDifficulty = 0;
-                Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to normal", null));
+                Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to normal") { noIcon = true});
 
             }
             else
             {
                 // Dangerous
                 Game1.netWorldState.Value.SkullCavesDifficulty = 1;
-                Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to dangerous", null));
+                Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to dangerous") { noIcon = true });
             }
 
             // Fix shrine appearance for new difficulty
@@ -171,14 +184,14 @@ namespace SkullCavernToggle
                     {
                         // Normal
                         Game1.netWorldState.Value.SkullCavesDifficulty = 0;
-                        Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to normal", null));
+                        Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to normal") { noIcon = true });
 
                     }
                     else
                     {
                         // Dangerous
                         Game1.netWorldState.Value.SkullCavesDifficulty = 1;
-                        Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to dangerous", null));
+                        Game1.addHUDMessage(new HUDMessage("Skull Cavern toggled to dangerous") { noIcon = true });
                     }
 
                     // Log new difficulty, difficulty will update after the clock ticks in multiplayer (10 in-game minutes)
@@ -205,11 +218,9 @@ namespace SkullCavernToggle
             }
 
             // Using shrine
-            else if (true &&
-                (false
+            else if (
                 // Correct button is pressed
-                || e.Button == SButton.MouseRight
-                || e.Button == SButton.ControllerA)
+                e.Button.IsActionButton() == true
                 // World is ready
                 && Context.IsWorldReady == true
                 // Correct location
@@ -221,16 +232,34 @@ namespace SkullCavernToggle
             {
                 GameLocation location = Game1.currentLocation;
 
-                // If player clicks this location (shrine) display the appropriate response
-                if (false
-                    || (e.Cursor.GrabTile.X == 2 && e.Cursor.GrabTile.Y == 2) 
-                    || (e.Cursor.GrabTile.X == 2 && e.Cursor.GrabTile.Y == 3) 
-                    || (e.Cursor.GrabTile.X == 2 && e.Cursor.GrabTile.Y == 4))
+                var TileX = e.Cursor.GrabTile.X;
+                var TileY = e.Cursor.GrabTile.Y;
+
+                // Use tiles relative to player location for controller uses (don't use the cursor position)
+                if (e.Button == SButton.ControllerA)
+                {
+                    if (Game1.player.FacingDirection != 2 && Game1.player.Tile.X == 2 && Game1.player.Tile.Y == 5)
+                    {
+                        TileX = Game1.player.Tile.X;
+                        TileY = Game1.player.Tile.Y - 2;
+                    }
+
+                    else if(Game1.player.FacingDirection == 3 && Game1.player.Tile.X == 3 && Game1.player.Tile.Y == 4)
+                    {
+                        TileX = Game1.player.Tile.X - 1;
+                        TileY = Game1.player.Tile.Y - 1;
+                    }
+                }
+
+                // Get tile properties
+                string[] tileproperty = location.doesTileHavePropertyNoNull((int)TileX, (int)TileY, "Action", "Buildings").Split(' ');
+
+                // If player clicks tile with SnakeShrine property, display the appropriate response
+                if (tileproperty[0] == "SnakeShrine")
                 {                   
                     if (ShouldToggle() == true)
                     {
-                       
-                       
+                                             
                         if (Game1.netWorldState.Value.SkullCavesDifficulty > 0)
                         {
                             location.createQuestionDialogue("--Shrine Of Greater Challenge--^Summon an ancient magi-seal protection, returning the Skull Cavern to it's original state?", location.createYesNoResponses(), delegate (Farmer _, string answer)
@@ -279,11 +308,11 @@ namespace SkullCavernToggle
                 // Display message to say difficulty toggled, delay in changes means opposite conditions are used for display purposes
                 if(Game1.netWorldState.Value.SkullCavesDifficulty > 0)
                 {
-                    Game1.addHUDMessage(new HUDMessage($"Skull Cavern difficulty toggled to normal by {message.Player}", null));
+                    Game1.addHUDMessage(new HUDMessage($"Skull Cavern difficulty toggled to normal by {message.Player}") { noIcon = true });
                 }
                 else
                 {
-                    Game1.addHUDMessage(new HUDMessage($"Skull Cavern difficulty toggled to dangerous by {message.Player}", null));
+                    Game1.addHUDMessage(new HUDMessage($"Skull Cavern difficulty toggled to dangerous by {message.Player}") { noIcon = true });
                 }
                 
                 // Update shrine tiles using opposite conditions

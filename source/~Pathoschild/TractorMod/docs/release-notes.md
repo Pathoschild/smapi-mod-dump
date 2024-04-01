@@ -9,11 +9,39 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release for Stardew Valley 1.6
+## 4.17.2
+Released 23 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed 'no sounds' option not working.
+* Fixed grass not dropping hay when scythed by the tractor.
+* Fixed player visually stooping from tractor to grab crops.
+* Fixed tractor sounds not always updated if you change the mid-game.
+* Fixed tractors/garages built before Stardew Valley 1.6 turning into horses/stables.
+* Fixed engine stop sound sometimes played when exiting to title or loading a save even if you weren't on the tractor.
+
+**Migration note for players:**
+* If you already saved after the tractor turned into a horse, unfortunately you'll need to rebuild the garage. You can
+  make the new garage free by opening the mod's `config.json` file in a text editor and replacing these fields with:
+  ```json
+    "BuildPrice": 0,
+    "BuildMaterials": { },
+  ```
+
+## 4.17.1
+Released 20 March 2024 for SMAPI 4.0.0 or later.
+
+* Fixed error collecting forage with the tractor.
+* Fixed unable to break large stumps or boulders with the tractor.
+* Fixed tractor sounds continuing if you exit to title while riding the tractor.
+
+## 4.17.0
+Released 19 March 2024 for SMAPI 4.0.0 or later.
+
 * Updated for Stardew Valley 1.6.
-* Added tractor sounds (configurable).
+* Added tractor sounds.  
+  _You can disable them through Generic Mod Config Menu or by editing the `config.json` file if desired._
 * Added custom buff icon + name.
-* Improved translations. Thanks to EmWhyKay (updated Turkish)!
+* Improved translations. Thanks to EmWhyKay (updated Turkish) and MakinDay (updated Italian)!
 * Fixed errors if some config fields are set to null.
 
 ## 4.16.6

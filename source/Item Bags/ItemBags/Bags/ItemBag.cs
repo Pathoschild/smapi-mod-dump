@@ -85,11 +85,11 @@ namespace ItemBags.Bags
         /// <summary>The default color tints to use when rendering the bag icon in your inventory/toolbar.</summary>
         protected static readonly Dictionary<ContainerSize, Color> BaseColorMasks = new Dictionary<ContainerSize, Color>()
         {
-            { ContainerSize.Small, new Color(165, 165, 165) }, // StardewValley.Tool class does not have a 'stoneColor' so this is my best guess at a faithful stone-like color
-            { ContainerSize.Medium, Tool.copperColor },
-            { ContainerSize.Large, Tool.steelColor },
-            { ContainerSize.Giant, Tool.goldColor },
-            { ContainerSize.Massive, Tool.iridiumColor }
+            { ContainerSize.Small, new Color(165, 165, 165) },
+            { ContainerSize.Medium, new Color(198, 108, 43) },
+            { ContainerSize.Large, new Color(197, 226, 222) },
+            { ContainerSize.Giant, new Color(248, 255, 73) },
+            { ContainerSize.Massive, new Color(144, 135, 181) }
         };
 
         /// <summary>The source rectangles of the quality sprites within the <see cref="Game1.mouseCursors"/> spritesheet</summary>
@@ -239,14 +239,17 @@ namespace ItemBags.Bags
             {
                 //  This should probably never happen unless maybe a subclass of Object didn't properly override the getOne() method
                 ItemBagsMod.ModInstance.Monitor.Log(string.Format("ItemBags: Warning - Item.getOne() did not return a valid copy for {0}. A copy of this item might not be properly created.", Item.DisplayName), LogLevel.Warn);
-                if (Item.bigCraftable.Value)
-                {
-                    return new Object(Item.TileLocation, Item.ParentSheetIndex, Item.IsRecipe) { Stack = 0, Price = Item.Price };
-                }
-                else
-                {
-                    return new Object(Item.ParentSheetIndex, 0, Item.IsRecipe, Item.Price, Item.Quality);
-                }
+                //if (Item.bigCraftable.Value)
+                //{
+                //    return new Object(Item.TileLocation, Item.ParentSheetIndex, Item.IsRecipe) { Stack = 0, Price = Item.Price };
+                //}
+                //else
+                //{
+                //    return new Object(Item.ParentSheetIndex, 0, Item.IsRecipe, Item.Price, Item.Quality);
+                //}
+                Item i = ItemRegistry.Create(Item.QualifiedItemId, 0, Item.Quality);
+                i.Stack = 0;
+                return i as Object;
             }
         }
 
@@ -395,7 +398,7 @@ namespace ItemBags.Bags
         /// <para/>If you intend to modify the contents of the chest, use <see cref="MoveToBag(Object, int, out int, bool, IList{Item}, bool, bool)"/> or <see cref="MoveFromBag(Object, int, out int, bool, IList{Item}, int, bool, bool)"/>
         /// </summary>
         [XmlIgnore]
-        public virtual Chest heldObject { get { return new Chest(0, Contents.Where(x => x != null).Cast<Item>().ToList(), Vector2.Zero); } }
+        public virtual Chest heldObject { get { return new Chest(Contents.Where(x => x != null).Cast<Item>().ToList(), Vector2.Zero); } }
         #endregion Lookup Anything Compatibility
 
         internal const int RecentlyModifiedHistorySize = 12;
@@ -490,12 +493,13 @@ namespace ItemBags.Bags
                         int IdBeforeFixing = Item.ParentSheetIndex;
 
                         bool IsItemStillValid = true;
-                        try { IsItemStillValid = !API.FixIdsInItem(Item); }
-                        catch (Exception ex2) 
-                        {
-                            string Msg = $"Error while invoking JsonAssets API 'FixIdsInItem' for id {IdBeforeFixing} (Previous item name: {Item.DisplayName}): {ex2.Message}\n\n{ex2.ToString()}";
-                            ItemBagsMod.ModInstance.Monitor.Log(Msg, LogLevel.Error); 
-                        }
+                        //  JsonAssets removed these API calls when updating for 1.6
+                        //try { IsItemStillValid = !API.FixIdsInItem(Item); }
+                        //catch (Exception ex2) 
+                        //{
+                        //    string Msg = $"Error while invoking JsonAssets API 'FixIdsInItem' for id {IdBeforeFixing} (Previous item name: {Item.DisplayName}): {ex2.Message}\n\n{ex2.ToString()}";
+                        //    ItemBagsMod.ModInstance.Monitor.Log(Msg, LogLevel.Error); 
+                        //}
 
                         if (!IsItemStillValid)
                         {
@@ -535,14 +539,13 @@ namespace ItemBags.Bags
         }
 
         /// <summary>Default parameterless constructor intended for use by XML Serialization. Do not use this constructor to instantiate a bag.</summary>
-        private ItemBag() : base("", "", 0, Tool.wateringCanSpriteIndex, Tool.wateringCanMenuIndex)
+        private ItemBag() : base()
         {
             BagInstanceString = new NetString(null);
             BagInstanceString.fieldChangeEvent += BagInstanceString_fieldChangeEvent;
             NetFields.AddField(BagInstanceString);
 
-            Stackable = false;
-            DisplayName = BaseName;
+            displayName = BaseName;
             InstantUse = true;
 
             this.Size = ContainerSize.Small;
@@ -558,15 +561,18 @@ namespace ItemBags.Bags
         /// <param name="IconTexturePosition">The SourceRectangle portion of the <paramref name="Icon"/> Texture.</param>
         /// <param name="IconRenderOffset">An offset to use when rendering Parameter=<paramref name="Icon"/>. If zero/null, then the additional icon would appear in the center of the bag's inventory icon.</param>
         protected ItemBag(string BaseName, string Description, ContainerSize Size, Texture2D Icon = null, Rectangle? IconTexturePosition = null, 
-            Vector2? IconRenderOffset = null, float IconScale = 1.0f, float IconTransparency = 1.0f)
-            : base(BaseName, Description, 0, Tool.wateringCanSpriteIndex, Tool.wateringCanMenuIndex)
+            Vector2? IconRenderOffset = null, float IconScale = 1.0f, float IconTransparency = 1.0f) : base()
+            //: base(BaseName, Description, 0, Tool.wateringCanSpriteIndex, Tool.wateringCanMenuIndex)
         {
+            this.BaseName = BaseName;
+            Name = BaseName;
+            description = Description;
+
             BagInstanceString = new NetString(null);
             BagInstanceString.fieldChangeEvent += BagInstanceString_fieldChangeEvent;
             NetFields.AddField(BagInstanceString);
 
-            Stackable = false;
-            DisplayName = BaseName;
+            displayName = BaseName;
             InstantUse = true;
 
             this.Size = Size;
@@ -670,10 +676,10 @@ namespace ItemBags.Bags
             return
                 Item != null &&
                 //!Item.specialItem && // Removed this restriction because apparently Gunther donation rewards are marked as specialItem=true
-                (Item.questItem == null || !Item.questItem.Value) &&    // Possible TODO: check if void salmons are questItems. 
-                                                                        // I ran into an issue where right after I caught one, it didn't get autofilled. 
-                                                                        // But when I reloaded the save it was now getting autofilled so something is different after it got deserialized
-                (Item.heldObject == null || Item.heldObject.Value == null) &&
+                !Item.questItem.Value &&    // Possible TODO: check if void salmons are questItems. 
+                                            // I ran into an issue where right after I caught one, it didn't get autofilled. 
+                                            // But when I reloaded the save it was now getting autofilled so something is different after it got deserialized
+                Item.heldObject.Value == null &&
                 !IsSecretNote(Item) &&
                 !Item.isLostItem && (!Item.GetType().IsSubclassOf(typeof(Object)) || Item is ColoredObject);
         }
@@ -1182,7 +1188,7 @@ namespace ItemBags.Bags
             return Item.Stack == Qty;
         }
 
-        public override int salePrice()
+        public override int salePrice(bool ignoreProfitMargins = false)
         {
             if (IsEmpty())
                 return GetPurchasePrice();
@@ -1210,11 +1216,7 @@ namespace ItemBags.Bags
             //base.DoFunction(location, x, y, power, who);
         }
 
-        public override string DisplayName
-        {
-            get { return string.Format("{0} {1}", ItemBagsMod.Translate(string.Format("Size{0}Name", Size.GetDescription())), BaseName); }
-            set { /*base.DisplayName = value;*/ }
-        }
+        public override string DisplayName => $"{ItemBagsMod.Translate($"Size{Size.GetDescription()}Name")} {BaseName}";
 
         protected override string loadDisplayName()
         {
@@ -1227,12 +1229,18 @@ namespace ItemBags.Bags
             set { /*base.BaseName = value;*/ }
         }
 
-        public override Item getOne()
+        protected override void GetOneCopyFrom(Item source)
         {
-            return this; //(Item)new ItemBag();
+            base.GetOneCopyFrom(source);
+            if (source is ItemBag bag)
+            {
+                Contents = bag.Contents;
+                CustomIconSourceTexture = bag.CustomIconSourceTexture;
+                CustomIconTexturePosition = bag.CustomIconTexturePosition;
+            }
         }
 
-#region Stack
+        #region Stack
         public override int Stack
         {
             get { return 1; }
@@ -1355,15 +1363,9 @@ namespace ItemBags.Bags
             return false;
         }
 
-        public override bool canBePlacedHere(GameLocation l, Vector2 tile)
+        public override bool canBePlacedHere(GameLocation l, Vector2 tile, CollisionMask collisionMask = StardewValley.CollisionMask.All, bool showError = false)
         {
-            //return base.canBePlacedHere(l, tile);
-            return false;
-        }
-
-        public override bool canBePlacedInWater()
-        {
-            //return base.canBePlacedInWater();
+            //return base.canBePlacedHere(l, tile, collisionMask, showError);
             return false;
         }
 

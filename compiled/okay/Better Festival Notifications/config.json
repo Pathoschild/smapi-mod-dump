@@ -1,0 +1,11 @@
+{
+  "PlayStartSound": true,
+  "StartSound": "crystal",
+  "WarnHoursAheadOfTime": 2,
+  "PlayWarnSound": true,
+  "ShowWarnNotification": true,
+  "WarnSound": "phone",
+  "PlayOverSound": false,
+  "ShowOverNotification": false,
+  "OverSound": "ghost"
+}

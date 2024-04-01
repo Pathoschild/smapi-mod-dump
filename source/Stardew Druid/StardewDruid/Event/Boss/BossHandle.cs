@@ -22,10 +22,8 @@ namespace StardewDruid.Event.Boss
     public class BossHandle : EventHandle
     {
 
-        public readonly Quest questData;
-
-        public BossHandle(Vector2 target, Rite rite, Quest quest)
-            : base(target, rite)
+        public BossHandle(Vector2 target,  Quest quest)
+            : base(target)
         {
 
             questData = quest;
@@ -39,7 +37,7 @@ namespace StardewDruid.Event.Boss
 
             Mod.instance.RegisterEvent(this, "active");
 
-            Game1.addHUDMessage(new HUDMessage($"Boss fight initiated", ""));
+            Mod.instance.CastMessage("Boss fight initiated");
 
         }
 
@@ -61,7 +59,7 @@ namespace StardewDruid.Event.Boss
                 if (braziers.Count > 0)
                 {
 
-                    foreach (Brazier brazier in braziers)
+                    foreach (LightHandle brazier in braziers)
                     {
 
                         brazier.reset();
@@ -90,7 +88,9 @@ namespace StardewDruid.Event.Boss
 
         public override void MinutesLeft(int minutes)
         {
-            Game1.addHUDMessage(new HUDMessage($"{minutes} minutes left to defeat the boss!", "2"));
+
+            Mod.instance.CastMessage($"{minutes} minutes left to defeat the boss!",2);
+
         }
 
         public virtual void EventComplete()
@@ -102,38 +102,15 @@ namespace StardewDruid.Event.Boss
 
         }
 
-        public virtual void EventQuery(string eventQuery = "EventComplete")
-        {
-
-            if (Context.IsMultiplayer)
-            {
-                QueryData queryData = new()
-                {
-                    name = questData.name,
-                    value = questData.name,
-                    description = questData.questTitle,
-                    time = Game1.currentGameTime.TotalGameTime.TotalMilliseconds,
-                    location = riteData.castLocation.Name,
-                    expire = (int)expireTime,
-                    targetX = (int)targetVector.X,
-                    targetY = (int)targetVector.Y,
-                };
-
-                Mod.instance.EventQuery(queryData, eventQuery);
-
-            }
-
-        }
 
         public override void EventAbort()
         {
 
-            Game1.addHUDMessage(new HUDMessage($"Boss fight aborted", ""));
+            Mod.instance.CastMessage("Boss fight aborted, try again tomorrow!",3,true);
 
             base.EventAbort();
 
         }
-
 
     }
 

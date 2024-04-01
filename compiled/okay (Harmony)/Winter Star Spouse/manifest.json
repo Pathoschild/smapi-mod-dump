@@ -1,18 +1,30 @@
-﻿{
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "drbirbdev.WinterStarSpouse",
   "Name": "WinterStarSpouse",
   "Author": "drbirbdev",
-  "Version": "1.0.6",
+  "Version": "1.1.0",
   "Description": "Customize how often you spouse is your winter star secret santa.",
-  "UniqueID": "drbirbdev.WinterStarSpouse",
+  "MinimumApiVersion": "4.0",
   "EntryDll": "WinterStarSpouse.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [
-    "Nexus:14164"
-  ],
   "Dependencies": [
+    {
+      "UniqueID": "drbirbdev.BirbCore",
+      "MinimumVersion": "1.0.0"
+    },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
       "IsRequired": false
     }
+  ],
+  "UpdateKeys": [
+    "Nexus:14164"
   ]
 }

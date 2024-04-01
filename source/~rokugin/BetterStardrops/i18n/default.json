@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "enabled.label": "Enabled",
+  "buff-power.label": "Buff Power",
+  "attack-options.label": "Attack Buff",
+  "attack-buff.tooltip": "Attack granted per Stardrop. Default: 5",
+  "defense-options.label": "Defense Buff",
+  "defense-buff.tooltip": "Defense granted per Stardrop. Default: 3",
+  "immunity-options.label": "Immunity Buff",
+  "immunity-buff.tooltip": "Immunity granted per Stardrop. Default: 3",
+  "health-options.label": "Health Buff",
+  "health-buff.tooltip": "Max health granted per Stardrop. Default: 15",
+  "stamina-options.label": "Stamina Buff",
+  "stamina-buff.tooltip": "Max stamina granted per Stardrop. Default 6",
+  "combat-options.label": "Combat Skill Level Buff",
+  "combat-buff.tooltip": "Bonus combat skill levels granted per Stardrop. Default: 1",
+  "farming-options.label": "Farming Skill Level Buff",
+  "farming-buff.tooltip": "Bonus farming skill levels granted per Stardrop. Default: 1",
+  "fishing-options.label": "Fishing Skill Level Buff",
+  "fishing-buff.tooltip": "Bonus fishing skill levels granted per Stardrop. Default: 1",
+  "foraging-options.label": "Foraging Skill Level Buff",
+  "foraging-buff.tooltip": "Bonus foraging skill levels granted per Stardrop. Default: 1",
+  "luck-options.label": "Luck Skill Level Buff",
+  "luck-buff.tooltip": "Bonus luck skill levels granted per Stardrop. Default: 1",
+  "mining-options.label": "Mining Skill Level Buff",
+  "mining-buff.tooltip": "Bonus mining skill levels granted per Stardrop. Default: 1",
+  "magnetic-options.label": "Magnetic Radius Buff",
+  "magnetic-buff.tooltip": "Magnetic radius increase granted per Stardrop. Default: 1",
+  "debugging.label": "Debugging Options",
+  "smapi.label": "Show SMAPI Logging",
+  "smapi.tooltip": "Shows informational logs in SMAPI console"
+}

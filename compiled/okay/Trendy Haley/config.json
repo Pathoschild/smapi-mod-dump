@@ -1,12 +1,13 @@
 {
   "SaveGame": {
-    "vanilla_312998571": {
+    "WTDR131A_371442546": {
       "HairColor": {
-        "B": 75,
-        "G": 140,
-        "R": 174,
+        "B": 26,
+        "G": 195,
+        "R": 234,
         "A": 255
       },
+      "HairDyeInterval": "OncePerSeason",
       "ColorIsFading": true,
       "AlphaBlend": false,
       "SpouseLookAlike": false

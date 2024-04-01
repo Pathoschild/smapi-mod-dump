@@ -13,7 +13,7 @@
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/yelloghouse_all.png",
+			"FromFile": "assets/textures/yelloghouse_all.png",
 			"ToArea": {"X": 288, "Y": 1136, "Width": 112, "Height": 128},
 			"PatchMode": "Overlay"
 		},
@@ -21,7 +21,7 @@
 		{
 			"Target": "LooseSprites/Cursors",
 			"Action": "EditImage",
-			"FromFile": "assets/yellogstorefront_all.png",
+			"FromFile": "assets/textures/yellogstorefront_all.png",
 			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
 			"PatchMode": "Replace"
 		},

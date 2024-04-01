@@ -11,9 +11,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Shockah.Kokoro;
-using Shockah.Kokoro.Stardew;
 using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,107 +20,48 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.FlexibleSprinklers
 {
-	internal enum FindGameLocationContext
-	{
-		GetSprinklerTiles,
-		IsInSprinklerRangeBroadphase,
-
-		FlexibleSprinklersGetModifiedSprinklerCoverage,
-		FlexibleSprinklersGetUnmodifiedSprinklerCoverage
-	}
-
 	internal static class VanillaPatches
 	{
 		internal static bool IsVanillaQueryInProgress = false;
-		internal static FindGameLocationContext? FindGameLocationContextOverride;
-		internal static GameLocation? CurrentLocation;
 		internal static Vector2? SprinklerTileOverride;
 
 		internal static void Apply(Harmony harmony)
 		{
 			harmony.TryPatch(
-				monitor: FlexibleSprinklers.Instance.Monitor,
-				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.GetSprinklerTiles)),
+				monitor: ModEntry.Instance.Monitor,
+				original: () => AccessTools.DeclaredMethod(typeof(SObject), nameof(SObject.GetSprinklerTiles)),
 				prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_GetSprinklerTiles_Prefix)),
 				postfix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_GetSprinklerTiles_Postfix))
 			);
 
 			harmony.TryPatch(
-				monitor: FlexibleSprinklers.Instance.Monitor,
-				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.placementAction)),
-				prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_placementAction_Prefix))
-			);
-
-			harmony.TryPatch(
-				monitor: FlexibleSprinklers.Instance.Monitor,
-				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.IsInSprinklerRangeBroadphase)),
+				monitor: ModEntry.Instance.Monitor,
+				original: () => AccessTools.DeclaredMethod(typeof(SObject), nameof(SObject.IsInSprinklerRangeBroadphase)),
 				prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_IsInSprinklerRangeBroadphase_Prefix)),
 				postfix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_IsInSprinklerRangeBroadphase_Postfix))
 			);
 
 			harmony.TryPatch(
-				monitor: FlexibleSprinklers.Instance.Monitor,
-				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.ApplySprinklerAnimation)),
+				monitor: ModEntry.Instance.Monitor,
+				original: () => AccessTools.DeclaredMethod(typeof(SObject), nameof(SObject.ApplySprinklerAnimation)),
 				prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_ApplySprinklerAnimation_Prefix))
 			);
 
-			harmony.TryPatch(
-				monitor: FlexibleSprinklers.Instance.Monitor,
-				original: () => AccessTools.Method(typeof(SlimeHutch), nameof(SlimeHutch.DayUpdate)),
-				prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(SlimeHutch_DayUpdate_Prefix))
-			);
-
-			foreach (var nestedType in typeof(SObject).GetTypeInfo().DeclaredNestedTypes)
+			foreach (var method in typeof(SObject).GetTypeInfo().DeclaredMethods)
 			{
-				if (!nestedType.DeclaredFields.Where(f => f.FieldType == typeof(SObject) && f.Name.EndsWith("__this")).Any())
-					continue;
-				if (!nestedType.DeclaredFields.Where(f => f.FieldType == typeof(GameLocation) && f.Name == "location").Any())
+				if (!method.Name.StartsWith("<DayUpdate>"))
 					continue;
 
-				foreach (var method in nestedType.DeclaredMethods)
-				{
-					if (!method.Name.StartsWith("<DayUpdate>"))
-						continue;
-
-					harmony.TryPatch(
-						monitor: FlexibleSprinklers.Instance.Monitor,
-						original: () => method,
-						prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_DayUpdatePostFarmEventOvernightActionsDelegate_Prefix))
-					);
-					goto done;
-				}
+				harmony.TryPatch(
+					monitor: ModEntry.Instance.Monitor,
+					original: () => method,
+					prefix: new HarmonyMethod(typeof(VanillaPatches), nameof(Object_DayUpdatePostFarmEventOvernightActionsDelegate_Prefix))
+				);
+				goto done;
 			}
 
-			FlexibleSprinklers.Instance.Monitor.Log($"Could not patch base methods - FlexibleSprinklers probably won't work.\nReason: Cannot patch DayUpdate/PostFarmEventOvernightActions/Delegate.", LogLevel.Error);
+			ModEntry.Instance.Monitor.Log($"Could not patch base methods - FlexibleSprinklers probably won't work.\nReason: Cannot patch DayUpdate/PostFarmEventOvernightActions/Delegate.", LogLevel.Error);
 			done:;
-		}
-
-		private static GameLocation? FindGameLocationForObject(SObject @object, FindGameLocationContext context)
-		{
-			var location = @object.FindGameLocation(CurrentLocation);
-			if (location is null)
-			{
-				Action<string, LogLevel> logMethod;
-				if (Game1.player.CurrentItem == @object)
-				{
-					logMethod = FlexibleSprinklers.Instance.Monitor.LogOnce;
-					logMethod($"Could not find the location the {@object.Name} is in, but it's the current player item; most likely a UI Info Suite check is in progress.", LogLevel.Debug);
-				}
-				else if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
-				{
-					logMethod = FlexibleSprinklers.Instance.Monitor.LogOnce;
-					logMethod($"Could not find the location the {@object.Name} is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
-				}
-				else
-				{
-					logMethod = FlexibleSprinklers.Instance.Monitor.Log;
-					logMethod($"Could not find the location the {@object.Name} is in.", LogLevel.Error);
-				}
-
-				logMethod($"FindGameLocationContext: {context}", LogLevel.Trace);
-				logMethod($"Player location: {(Game1.player.currentLocation is null ? "<null>" : FlexibleSprinklers.GetNameForLocation(Game1.player.currentLocation))}", LogLevel.Trace);
-			}
-			return location;
 		}
 
 		private static List<Vector2> Object_GetSprinklerTiles_Result(SObject __instance)
@@ -133,21 +72,19 @@ namespace Shockah.FlexibleSprinklers
 				SprinklerTileOverride = null;
 				return result;
 			}
+			if (__instance.Location is null)
+				return [];
 
-			var location = FindGameLocationForObject(__instance, FindGameLocationContextOverride is null ? FindGameLocationContext.GetSprinklerTiles : FindGameLocationContextOverride.Value);
-			if (location is null)
-				return new List<Vector2>();
-
-			if (FlexibleSprinklers.Instance.SprinklerBehavior is ISprinklerBehavior.Independent independent)
+			if (ModEntry.Instance.SprinklerBehavior is ISprinklerBehavior.Independent independent)
 			{
 				return independent.GetSprinklerTiles(
-					new GameLocationMap(location, FlexibleSprinklers.Instance.CustomWaterableTileProviders),
-					FlexibleSprinklers.Instance.GetSprinklerInfo(__instance)
+					new GameLocationMap(__instance.Location, ModEntry.Instance.CustomWaterableTileProviders),
+					ModEntry.Instance.GetSprinklerInfo(__instance)
 				).Select(e => new Vector2(e.X, e.Y)).ToList();
 			}
 			else
 			{
-				return new List<Vector2>();
+				return [];
 			}
 		}
 
@@ -155,7 +92,7 @@ namespace Shockah.FlexibleSprinklers
 		{
 			if (IsVanillaQueryInProgress)
 				return true;
-			if (FlexibleSprinklers.Instance.Config.CompatibilityMode)
+			if (ModEntry.Instance.Config.CompatibilityMode)
 				return true;
 			__result = Object_GetSprinklerTiles_Result(__instance);
 			return false;
@@ -165,27 +102,20 @@ namespace Shockah.FlexibleSprinklers
 		{
 			if (IsVanillaQueryInProgress)
 				return;
-			if (!FlexibleSprinklers.Instance.Config.CompatibilityMode)
+			if (!ModEntry.Instance.Config.CompatibilityMode)
 				return;
 			__result = Object_GetSprinklerTiles_Result(__instance);
 		}
 
-		private static bool Object_placementAction_Prefix(GameLocation location)
-		{
-			CurrentLocation = location;
-			return true;
-		}
-
 		private static bool Object_IsInSprinklerRangeBroadphase_Result(SObject __instance, Vector2 target)
 		{
-			var location = FindGameLocationForObject(__instance, FindGameLocationContextOverride is null ? FindGameLocationContext.IsInSprinklerRangeBroadphase : FindGameLocationContextOverride.Value);
-			if (location is null)
+			if (__instance.Location is null)
 				return true;
 
 			var wasVanillaQueryInProgress = IsVanillaQueryInProgress;
 			IsVanillaQueryInProgress = true;
 			var manhattanDistance = Math.Abs(target.X - __instance.TileLocation.X) + Math.Abs(target.Y - __instance.TileLocation.Y);
-			var result = manhattanDistance <= FlexibleSprinklers.Instance.GetSprinklerMaxRange(__instance) && FlexibleSprinklers.Instance.IsTileInRangeOfAnySprinkler(location, new IntPoint((int)target.X, (int)target.Y));
+			var result = manhattanDistance <= ModEntry.Instance.GetSprinklerMaxRange(__instance) && ModEntry.Instance.IsTileInRangeOfAnySprinkler(__instance.Location, new IntPoint((int)target.X, (int)target.Y));
 			IsVanillaQueryInProgress = wasVanillaQueryInProgress;
 			if (result)
 				SprinklerTileOverride = target;
@@ -194,7 +124,7 @@ namespace Shockah.FlexibleSprinklers
 
 		private static bool Object_IsInSprinklerRangeBroadphase_Prefix(SObject __instance, Vector2 target, ref bool __result)
 		{
-			if (FlexibleSprinklers.Instance.Config.CompatibilityMode)
+			if (ModEntry.Instance.Config.CompatibilityMode)
 				return true;
 			__result = Object_IsInSprinklerRangeBroadphase_Result(__instance, target);
 			return false;
@@ -202,20 +132,23 @@ namespace Shockah.FlexibleSprinklers
 
 		private static void Object_IsInSprinklerRangeBroadphase_Postfix(SObject __instance, Vector2 target, ref bool __result)
 		{
-			if (!FlexibleSprinklers.Instance.Config.CompatibilityMode)
+			if (!ModEntry.Instance.Config.CompatibilityMode)
 				return;
 			__result = Object_IsInSprinklerRangeBroadphase_Result(__instance, target);
 		}
 
-		private static void Object_ApplySprinklerAnimation_Prefix(SObject __instance, GameLocation location)
+		private static void Object_ApplySprinklerAnimation_Prefix(SObject __instance)
 		{
-			// remove all temporary sprites related to this sprinkler
-			location.TemporarySprites.RemoveAll(sprite => sprite.id == __instance.TileLocation.X * 4000f + __instance.TileLocation.Y);
-		}
+			if (__instance.Location is null)
+				return;
 
-		private static void SlimeHutch_DayUpdate_Prefix(SlimeHutch __instance)
-		{
-			CurrentLocation = __instance;
+			// remove all temporary sprites related to this sprinkler
+			for (int i = __instance.Location.TemporarySprites.Count - 1; i >= 0; i--)
+			{
+				var sprite = __instance.Location.TemporarySprites[i];
+				if (sprite.id == __instance.TileLocation.X * 4000f + __instance.TileLocation.Y)
+					__instance.Location.TemporarySprites.RemoveAt(i);
+			}
 		}
 
 		private static bool Object_DayUpdatePostFarmEventOvernightActionsDelegate_Prefix()

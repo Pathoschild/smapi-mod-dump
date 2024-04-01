@@ -20,8 +20,6 @@ namespace HappyHomeDesigner.Integration
 {
 	internal class CustomFurniture
 	{
-		// Why do I even need to do this? why doesn't plato just postfix the utility method?
-
 		public static IEnumerable<ISalable> customFurniture;
 		public static bool Installed;
 		

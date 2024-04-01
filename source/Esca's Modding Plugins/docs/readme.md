@@ -14,6 +14,8 @@ A mod for the game Stardew Valley that adds new data assets, map/tile properties
   * [Multiplayer Note](#multiplayer-note)
 * [Features for Players](#features-for-players)
 * [Features for Modders](#features-for-modders)
+* [Translation](#translation)
+	* [Available Languages](#available-languages)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -54,3 +56,16 @@ Destroyable Bushes | Mark bushes as destroyable at specific locations and/or til
 Fish Locations | Give locations multiple "zones" with different fish, including fish from other locations. (See the [Data/Locations](https://stardewvalleywiki.com/Modding:Location_data) asset.)
 Kitchen Features | Allow players to open the cooking menu at non-farmhouse locations, similar to [Action kitchen](https://stardewvalleywiki.com/Modding:Maps#Tile_properties_2). Also includes an option to allow players to place [Mini-Fridges](https://stardewvalleywiki.com/Mini-Fridge).
 Water Color | Change the color of all water at a location.
+
+
+## Translation
+EMP supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
+
+The mod will load a file from the `EscasModdingPlugins/i18n` folder that matches the current language code. If no matching translation exists, it will use [`default.json`](https://github.com/Esca-MMC/EscasModdingPlugins/blob/master/EscasModdingPlugins/i18n/default.json).
+
+See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) page for more information. Please feel free to submit translation files through GitHub, Nexus Mods, ModDrop, or Discord.
+
+### Available Languages
+Language | File | Contributor(s)
+---------|------|------------
+English | [default.json](https://github.com/Esca-MMC/EscasModdingPlugins/blob/master/EscasModdingPlugins/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)

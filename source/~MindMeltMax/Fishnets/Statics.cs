@@ -10,9 +10,11 @@
 
 using Fishnets.Data;
 using StardewValley;
+using StardewValley.GameData.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,26 +22,14 @@ namespace Fishnets
 {
     internal static class Statics
     {
-        internal readonly static List<string> ExcludedFish = new()
-        {
-            "Crimsonfish",
-            "Angler",
-            "Legend",
-            "Mutant Carp",
-            "Glacierfish",
-            "Son of Crimsonfish",
-            "Ms. Angler",
-            "Legend II",
-            "Radioactive Carp",
-            "Glacierfish Jr."
-        };
+        internal static List<string> ExcludedFish;
 
-        internal static Object GetRandomFishForLocation(int bait, Farmer who, string locationName) //Actually going to try to explain this code, to make sure I still understand later
+        internal static Object GetRandomFishForLocation(string bait, Farmer who, string locationName) //Actually going to try to explain this code, to make sure I still understand later
         {
-            Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+            Dictionary<string, LocationData> locationData = ModEntry.IHelper.GameContent.Load<Dictionary<string, LocationData>>("Data\\Locations");
 
-            int parentSheetIndex = -1; //Index of the fish to return
-            bool flag2 = bait == 908; //If magic bait, run magic code
+            string itemId = ""; //QualifiedItemId of the fish to return
+            bool flag2 = bait == "908"; //If magic bait, run magic code
             string locationKey = locationName;
             if (locationKey == "BeachNightMarket") //BeachNightMarket == Beach as far as locationData is concerned
                 locationKey = "Beach";
@@ -48,26 +38,26 @@ namespace Fishnets
             {
                 GameLocation location = Game1.getLocationFromName(locationKey);
 
-                string[] arr1 = locationData[locationKey].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' '); //Get an array of fish id + zone id (see https://stardewvalleywiki.com/Modding:Location_data)
-                if (flag2) //If magic bait, ignore season
-                {
-                    List<string> strings = new();
-                    for (int i = 0; i < 4; ++i)
-                        if (locationData[locationKey].Split('/')[4 + i].Split(' ').Length > 1)
-                            strings.AddRange(locationData[locationKey].Split('/')[4 + i].Split(' '));
-                    arr1 = strings.ToArray();
-                }
-                Dictionary<string, string> data = new();
-                if (arr1.Length > 1) //Create dictionary separating fish id and zone id
-                    for (int i = 0; i < arr1.Length; i += 2)
-                        data[arr1[i]] = arr1[i + 1];
-                string[] keys = data.Keys.ToArray();
-                Dictionary<int, string> fishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+                List<string> keys = new(locationData[locationKey].Fish.SelectMany(x => x.Id.Split('|')));
+                Dictionary<string, string> fishData = ModEntry.IHelper.GameContent.Load<Dictionary<string, string>>("Data\\Fish");
                 Utility.Shuffle(Game1.random, keys); //Randomize the fish ids
-                for (int i = 0; i < keys.Length; ++i)
+                for (int i = 0; i < keys.Count; ++i)
                 {
                     bool flag3 = false; //If weather matches, allow catch
-                    string[] fish = fishData[Convert.ToInt32(keys[i])].Split('/');
+                    if (ItemRegistry.GetTypeDefinition($"{keys[i].Split(')')[0]})") != ItemRegistry.GetObjectTypeDefinition()) //Filter out non-object keys
+                        continue;
+                    if (!fishData.TryGetValue(UnQualifyItemId(keys[i]), out string fishStr))
+                    {
+                        ModEntry.IMonitor.Log($"Tried to catch fish with id {keys[i]}, but it could not be found in the fish data");
+                        continue;
+                    }
+                    string cond = locationData[locationKey].Fish.First(x => x.Id.Contains(keys[i])).Condition;
+                    if (!string.IsNullOrWhiteSpace(cond) && !GameStateQuery.CheckConditions(cond, location, who))
+                    {
+                        ModEntry.IMonitor.Log($"Conditions for catching fish with id {keys[i]} failed");
+                        continue;
+                    }
+                    string[] fish = fishStr.Split('/');
                     if (ExcludedFish.Contains(fish[0])) //If the fish's name appears in the list of excluded fish, move on
                         continue; 
                     if (fish[7] != "both") //If fish can't be caught during both rain and sunshine...
@@ -89,56 +79,49 @@ namespace Fishnets
                         double chance3 = Math.Min(chance2, 0.899999976158142); //Get chance below 0.9
                         if (Game1.random.NextDouble() <= chance3) //If success catch fish at current index
                         {
-                            parentSheetIndex = Convert.ToInt32(keys[i]);
+                            itemId = keys[i];
                             break;
                         }
                     }
                 }
             }
-            int stackSize = bait == 774 && Game1.random.NextDouble() <= .15 ? 2 : 1; //If using wild bait, get small chance for double catch
-            if (parentSheetIndex == -1) //If no catch made, catch trash
+            int stackSize = bait == "774" && Game1.random.NextDouble() <= .15 ? 2 : 1; //If using wild bait, get small chance for double catch
+            if (string.IsNullOrWhiteSpace(itemId)) //If no catch made, catch trash
             {
-                parentSheetIndex = Game1.random.Next(167, 173);
+                itemId = $"(O){Game1.random.Next(167, 173)}";
                 stackSize = 1;
             }
             if (Game1.random.NextDouble() <= .15 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS")) //If has qi crop challenge active, get small chance to get qi beans instead
-                parentSheetIndex = 890;
-            Object obj = new(parentSheetIndex, stackSize); //Create fish from id and return
+                itemId = "(O)890";
+            Object obj = (Object)ItemRegistry.Create(itemId, stackSize); //Create fish from id and return
             return obj;
         }
 
-        internal static bool CanCatchThisFish(int index, string locationName)
+        internal static bool CanCatchThisFish(string itemId, string locationName)
         {
-            Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+            Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
 
             string locationKey = locationName;
             if (locationKey == "BeachNightMarket")
                 locationKey = "Beach";
+            if (!locationData.TryGetValue(locationKey, out LocationData data))
+                return false;
 
-            if (locationData.ContainsKey(locationKey))
-            {
-                string[] arr1 = locationData[locationKey].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
-
-                Dictionary<string, string> data = new();
-                if (arr1.Length > 1)
-                    for (int i = 0; i < arr1.Length; i += 2)
-                        data[arr1[i]] = arr1[i + 1];
-                string[] keys = data.Keys.ToArray();
-
-                return keys.Any(x => x == $"{index}");
-            }
-
+            foreach (var fish in data.Fish)
+                if (fish.ItemId == itemId)
+                    return true;
             return false;
         }
 
         internal static Object? GetObjectFromSerializable(FishNetSerializable serializable)
         {
             Object? o = null;
+            string id = serializable.ObjectId;
             if (serializable.IsJAObject)
             {
-                int id = ModEntry.IJsonAssetsApi.GetObjectId(serializable.ObjectName);
-                if (id != -1)
-                    o = new(id, serializable.ObjectStack) { Quality = serializable.ObjectQuality };
+                id = ModEntry.IJsonAssetsApi.GetObjectId(serializable.ObjectName);
+                if (string.IsNullOrWhiteSpace(id))
+                    id = serializable.ObjectId;
             }
             else if (serializable.IsDGAObject)
             {
@@ -149,10 +132,12 @@ namespace Fishnets
                     o.Stack = serializable.ObjectStack;
                     o.Quality = serializable.ObjectQuality;
                 }
+                return o;
             }
-            else if (serializable.ObjectId >= 0)
-                o = new(serializable.ObjectId, serializable.ObjectStack) { Quality = serializable.ObjectQuality };
+            o = (Object?)ItemRegistry.Create(id, serializable.ObjectStack, serializable.ObjectQuality, true);
             return o;
         }
+
+        private static string UnQualifyItemId(string id) => ItemRegistry.IsQualifiedItemId(id) ? id.Split(')')[1] : id;
     }
 }

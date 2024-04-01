@@ -285,8 +285,6 @@ namespace StardewDruid.Location
 
         public static void SkullCavernWarp()
         {
-
-            Game1.inMine = true;
             Game1.warpFarmer("UndergroundMine145", 13, 20, 2);
             Game1.xLocationAfterWarp = 13;
             Game1.yLocationAfterWarp = 20;
@@ -435,7 +433,7 @@ namespace StardewDruid.Location
         public static void SkullCavernExit()
         {
 
-            Vector2 ladderTile = Game1.player.getTileLocation();
+            Vector2 ladderTile = Game1.player.Tile;
 
             GameLocation location = Game1.getLocationFromName("UndergroundMine145");
 

@@ -31,6 +31,7 @@ using StardewValley.Network;
 using System.Reflection.Emit;
 using System.Reflection;
 using xTile.ObjectModel;
+using StardewValley.GameData;
 
 namespace StardewValleyExpanded
 {
@@ -60,12 +61,12 @@ namespace StardewValleyExpanded
         {
             if (Game1.currentLocation.NameOrUniqueName == "Custom_EnchantedGrove")
             {
-                Game1.changeMusicTrack("Nexus", music_context: Game1.MusicContext.Default);
+                Game1.changeMusicTrack("FlashShifter.StardewValleyExpandedCP_Nexus", music_context: MusicContext.Default);
             }
 
             if (Game1.currentLocation.NameOrUniqueName == "Custom_JojaEmporium")
             {
-                Game1.changeMusicTrack("movieTheater", music_context: Game1.MusicContext.Default);
+                Game1.changeMusicTrack("movieTheater", music_context: MusicContext.Default);
             }
         }
 
@@ -73,12 +74,12 @@ namespace StardewValleyExpanded
         {
             if (Game1.currentLocation.NameOrUniqueName == "Custom_EnchantedGrove")
             {
-                Game1.changeMusicTrack("none", music_context: Game1.MusicContext.Default);
+                Game1.changeMusicTrack("none", music_context: MusicContext.Default);
             }
 
             if (Game1.currentLocation.NameOrUniqueName == "Custom_JojaEmporium")
             {
-                Game1.changeMusicTrack("none", music_context: Game1.MusicContext.Default);
+                Game1.changeMusicTrack("none", music_context: MusicContext.Default);
             }
         }
 

@@ -66,6 +66,7 @@ namespace ScheduleViewer
                 Animation = schedulePathDescription.endOfRouteBehavior;
             }
 
+            [JsonConstructor]
             public ScheduleEntry(int time, Vector2 position, int facingDirection, string location, string animation)
             {
                 Time = time;
@@ -106,6 +107,16 @@ namespace ScheduleViewer
                 NPC = npc;
             }
 
+            [JsonConstructor]
+            public NPCSchedule(string displayName, List<ScheduleEntry> entries, bool canSocialize, bool isOnSchedule, string currentLocation)
+            {
+                DisplayName = displayName;
+                Entries = entries;
+                CanSocialize = canSocialize;
+                IsOnSchedule = isOnSchedule;
+                CurrentLocation = currentLocation;
+            }
+
             internal void Deconstruct(out List<ScheduleEntry> entries, out string currentLocation, out bool isOnSchedule, out string displayName, out NPC npc)
             {
                 entries = Entries;
@@ -134,7 +145,7 @@ namespace ScheduleViewer
             }
             catch
             {
-                ModEntry.Console.Log($"Error when trying to update the current location for ${Message.Item1}.", LogLevel.Warn);
+                ModEntry.Console.Log($"Error when trying to update the current location for {Message.Item1}.", LogLevel.Warn);
             }
         }
 

@@ -1,21 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Authors>voltaek</Authors>
-    <Version>1.1.1</Version>
-    
-    <!-- TEMP REVERT <Description>Ready-for-harvest bee houses show the flower that will flavor its honey or the artisan honey you'll receive.</Description>-->
-    <Description>Ready-for-harvest bee houses show the artisan honey you'll receive.</Description>
-    
+    <Version>2.0.1</Version>
+    <Description>Ready-for-harvest bee houses show the flower that will flavor its honey or the artisan honey you'll receive.</Description>
     <UniqueId>voltaek.HoneyHarvestSync</UniqueId>
-    <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
     <UpdateKeys>Nexus:20493</UpdateKeys>
-    <ManifestSchema>false</ManifestSchema>
-    <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
-  </ItemGroup>
 </Project>

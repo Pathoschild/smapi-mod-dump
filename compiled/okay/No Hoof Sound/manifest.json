@@ -1,0 +1,9 @@
+{
+  "Name": "No Hoof Sound",
+  "Author": "AbelSdf",
+  "Version": "1.0.0",
+  "Description": "消除马蹄声。 Eliminating horseshoe sounds.",
+  "UniqueID": "AbelSdf.NoHoofSound",
+  "EntryDll": "NoHoofSound.dll",
+  "UpdateKeys": []
+}

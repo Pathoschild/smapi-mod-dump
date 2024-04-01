@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
 using StardewDruid.Map;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ namespace StardewDruid.Event
 
         public Vector2 targetVector;
 
+        public Vector2 targetPosition;
+
         public List<TemporaryAnimatedSprite> targets;
 
         public List<TemporaryAnimatedSprite> animationList;
@@ -42,7 +45,7 @@ namespace StardewDruid.Event
 
         public List<StardewDruid.Character.Actor> actors;
 
-        public Vector2 voicePosition;
+        public float triggerThreshold;
 
         public TriggerHandle(GameLocation location, Map.Quest quest)
         {
@@ -57,6 +60,8 @@ namespace StardewDruid.Event
 
             targetVector = new(0);
 
+            triggerThreshold = 448;
+
             animationRotate = false;
 
             animationColor = new Color(0, 1f, 0, 1f);
@@ -69,8 +74,6 @@ namespace StardewDruid.Event
             }
 
             actors = new();
-
-            voicePosition = new(0);
 
         }
 
@@ -101,13 +104,20 @@ namespace StardewDruid.Event
 
         }
 
-        public virtual bool CheckMarker(Rite rite)
+        public virtual bool CheckMarker()
         {
+            
+            if (Vector2.Distance(Game1.player.Position, targetVector*64) > triggerThreshold)
+            {
+
+                return false;
+
+            }
 
             if (questData.triggerBlessing != null)
             {
 
-                if (rite.castType != questData.triggerBlessing)
+                if (Mod.instance.rite.castType != questData.triggerBlessing)
                 {
 
                     return false;
@@ -116,40 +126,32 @@ namespace StardewDruid.Event
 
             }
 
-            if (Vector2.Distance(rite.castVector, targetVector) <= 5f)
+            if (questData.startTime != 0)
             {
 
-                if (questData.startTime != 0)
+                if (Game1.timeOfDay < questData.startTime)
                 {
 
-                    if (Game1.timeOfDay < questData.startTime)
-                    {
+                    Mod.instance.CastMessage("Return later today");
 
-                        Mod.instance.CastMessage("Return later today");
-
-                        return false;
-
-                    }
+                    return false;
 
                 }
 
-                EventRemove();
-
-                Mod.instance.triggerList.Remove(questData.name);
-
-                Mod.instance.locationPoll["trigger"] = null;
-
-                ModUtility.AnimateHands(Game1.player, Game1.player.FacingDirection, 500);
-
-                Game1.player.currentLocation.playSound("yoba");
-
-                QuestData.QuestHandle(targetVector, rite, questData);
-
-                return true;
-
             }
 
-            return false;
+            return true;
+
+        }
+
+        public virtual void TriggerQuest()
+        {
+
+            ModUtility.AnimateHands(Game1.player, Game1.player.FacingDirection, 500);
+
+            Game1.player.currentLocation.playSound("yoba");
+
+            QuestData.QuestHandle(targetVector, questData);
 
         }
 
@@ -279,17 +281,24 @@ namespace StardewDruid.Event
 
         }
 
+        public void AddActor(Vector2 targetPosition)
+        {
+
+            StardewDruid.Character.Actor disembodied = CharacterData.DisembodiedVoice(targetLocation, targetPosition);
+
+            targetLocation.characters.Add(disembodied);
+
+            actors.Add(disembodied);
+
+        }
+
         public void CastVoice(string message, int duration = 2000)
         {
 
             if (actors.Count <= 0)
             {
 
-                StardewDruid.Character.Actor disembodied = CharacterData.DisembodiedVoice(targetLocation, voicePosition);
-
-                targetLocation.characters.Add(disembodied);
-
-                actors.Add(disembodied);
+                AddActor(targetVector * 64);
 
             }
 

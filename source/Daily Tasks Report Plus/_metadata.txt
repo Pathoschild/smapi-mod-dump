@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Prism-99/DailyTaskReportPlus
+   Git: https://github.com/Prism-99/DailyTaskReportPlus.git
+
+mods:
+   Daily Tasks Report Plus
+
+latest commit:
+   commit 0e6e0265c7c85e2b42dcae1f15f7146821147d7a
+   Author: Prism-99 <86083756+Prism-99@users.noreply.github.com>
+   Date:   Fri Mar 29 14:16:25 2024 -0400
+   
+       Update README.md
+   

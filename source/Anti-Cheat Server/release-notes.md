@@ -7,6 +7,11 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 9.1.1
+Released 19 March 2024 for SMAPI 4.0.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.6 and SMAPI 4.0.0.
+
 ## 9.1.0
 Released 23 February 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

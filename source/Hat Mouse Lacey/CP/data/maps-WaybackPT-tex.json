@@ -13,7 +13,7 @@
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/waybackhouse_notwinter.png",
+			"FromFile": "assets/textures/waybackhouse_notwinter.png",
 			"FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
 			"ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
 			"PatchMode": "Overlay",
@@ -24,7 +24,7 @@
 		{
 			"Target": "Maps/{{season}}_outdoorsTileSheet",
 			"Action": "EditImage",
-			"FromFile": "assets/waybackhouse_winter.png",
+			"FromFile": "assets/textures/waybackhouse_winter.png",
 			"FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
 			"ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
 			"PatchMode": "Overlay",
@@ -35,7 +35,7 @@
 		{
 			"Target": "LooseSprites/Cursors",
 			"Action": "EditImage",
-			"FromFile": "assets/waybackstorefront_all.png",
+			"FromFile": "assets/textures/waybackstorefront_all.png",
 			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32}
 		}
 	]

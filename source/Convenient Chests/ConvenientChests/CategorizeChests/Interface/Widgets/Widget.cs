@@ -16,20 +16,17 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets
-{
+namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     /// <summary>
     /// A positioned, resizable element in the interface
     /// that can also contain other elements.
     /// </summary>
-    public class Widget : IDisposable
-    {
+    public class Widget : IDisposable {
         Widget _Parent;
-        public Widget Parent
-        {
+
+        public Widget Parent {
             get => _Parent;
-            set
-            {
+            set {
                 _Parent = value;
                 OnParent(value);
             }
@@ -40,104 +37,89 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
 
         public Point Position { get; set; }
 
-        public int X
-        {
+        public int X {
             get => Position.X;
             set { Position = new Point(value, Position.Y); }
         }
 
-        public int Y
-        {
+        public int Y {
             get => Position.Y;
             set { Position = new Point(Position.X, value); }
         }
 
         int _Width;
-        public int Width
-        {
+
+        public int Width {
             get => _Width;
-            set
-            {
+            set {
                 _Width = value;
                 OnDimensionsChanged();
             }
         }
 
         int _Height;
-        public int Height
-        {
+
+        public int Height {
             get { return _Height; }
-            set
-            {
+            set {
                 _Height = value;
                 OnDimensionsChanged();
             }
         }
 
-        public Widget()
-        {
+        public Widget() {
             Position = Point.Zero;
             Width = 1;
             Height = 1;
         }
 
-        protected virtual void OnParent(Widget parent)
-        {
+        protected virtual void OnParent(Widget parent) {
         }
 
-        public virtual void Draw(SpriteBatch batch)
-        {
+        public virtual void Draw(SpriteBatch batch) {
             DrawChildren(batch);
         }
 
-        protected void DrawChildren(SpriteBatch batch)
-        {
-            foreach (var child in Children)
-            {
+        protected void DrawChildren(SpriteBatch batch) {
+            foreach (var child in Children) {
                 child.Draw(batch);
             }
         }
 
-        public Rectangle LocalBounds => new Rectangle(0, 0, Width, Height);
-        public Rectangle GlobalBounds => new Rectangle(GlobalPosition.X, GlobalPosition.Y, Width, Height);
+        public Point Size => new(Width, Height);
+        public Rectangle LocalBounds => new(Point.Zero, Size);
+        public Rectangle GlobalBounds => new(GlobalPosition, Size);
+
         public Point GlobalPosition => Globalize(Point.Zero);
 
-        public bool Contains(Point point)
-        {
+        public bool Contains(Point point) {
             return point.X >= Position.X && point.X <= Position.X + Width
-                   && point.Y >= Position.Y && point.Y <= Position.Y + Height;
+                                         && point.Y >= Position.Y && point.Y <= Position.Y + Height;
         }
 
-        public Point Globalize(Point point)
-        {
+        public Point Globalize(Point point) {
             var global = new Point(point.X + Position.X, point.Y + Position.Y);
-            return Parent != null ? Parent.Globalize(global) : global;
+            return Parent?.Globalize(global) ?? global;
         }
 
-        public virtual bool ReceiveButtonPress(SButton input)
-        {
+        public virtual bool ReceiveButtonPress(SButton input) {
             return PropagateButtonPress(input);
         }
 
-        public virtual bool ReceiveLeftClick(Point point)
-        {
+        public virtual bool ReceiveLeftClick(Point point) {
             return PropagateLeftClick(point);
         }
 
-        public virtual bool ReceiveCursorHover(Point point)
-        {
+        public virtual bool ReceiveCursorHover(Point point) {
             return PropagateCursorHover(point);
         }
 
-        public virtual bool ReceiveScrollWheelAction(int amount)
-        {
+        public virtual bool ReceiveScrollWheelAction(int amount) {
             return PropagateScrollWheelAction(amount);
         }
 
-        protected bool PropagateButtonPress(SButton input)
-        {
-            foreach (var child in Children)
-            {
+        protected bool PropagateButtonPress(SButton input) {
+            foreach (var child in Children) {
                 var handled = child.ReceiveButtonPress(input);
                 if (handled)
                     return true;
@@ -146,10 +128,8 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
             return false;
         }
 
-        protected bool PropagateScrollWheelAction(int amount)
-        {
-            foreach (var child in Children)
-            {
+        protected bool PropagateScrollWheelAction(int amount) {
+            foreach (var child in Children) {
                 var handled = child.ReceiveScrollWheelAction(amount);
                 if (handled)
                     return true;
@@ -158,40 +138,35 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
             return false;
         }
 
-        protected bool PropagateLeftClick(Point point)
-        {
-            foreach (var child in Children)
-            {
+        protected bool PropagateLeftClick(Point point) {
+            foreach (var child in Children) {
                 var localPoint = new Point(point.X - child.Position.X, point.Y - child.Position.Y);
 
-                if (child.LocalBounds.Contains(localPoint))
-                {
+                if (child.LocalBounds.Contains(localPoint)) {
                     var handled = child.ReceiveLeftClick(localPoint);
                     if (handled)
                         return true;
                 }
             }
+
             return false;
         }
 
-        protected bool PropagateCursorHover(Point point)
-        {
-            foreach (var child in Children)
-            {
+        protected bool PropagateCursorHover(Point point) {
+            foreach (var child in Children) {
                 var localPoint = new Point(point.X - child.Position.X, point.Y - child.Position.Y);
 
-                if (child.LocalBounds.Contains(localPoint))
-                {
+                if (child.LocalBounds.Contains(localPoint)) {
                     var handled = child.ReceiveCursorHover(localPoint);
                     if (handled)
                         return true;
                 }
             }
+
             return false;
         }
 
-        public T AddChild<T>(T child) where T : Widget
-        {
+        public T AddChild<T>(T child) where T : Widget {
             child.Parent = this;
             _Children.Add(child);
 
@@ -200,16 +175,14 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
             return child;
         }
 
-        public void RemoveChild(Widget child)
-        {
+        public void RemoveChild(Widget child) {
             _Children.Remove(child);
             child.Parent = null;
 
             OnContentsChanged();
         }
 
-        public void RemoveChildren()
-        {
+        public void RemoveChildren() {
             RemoveChildren(c => true);
         }
 
@@ -225,23 +198,19 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
             OnContentsChanged();
         }
 
-        protected virtual void OnContentsChanged()
-        {
+        protected virtual void OnContentsChanged() {
         }
 
-        protected virtual void OnDimensionsChanged()
-        {
+        protected virtual void OnDimensionsChanged() {
         }
 
-        public void CenterHorizontally()
-        {
-            var containerWidth = (Parent != null) ? Parent.Width : Game1.viewport.Width; // TODO
+        public void CenterHorizontally() {
+            var containerWidth = Parent?.Width ?? Game1.uiViewport.Width;
             X = containerWidth / 2 - Width / 2;
         }
 
-        public void CenterVertically()
-        {
-            var containerHeight = (Parent != null) ? Parent.Height : Game1.viewport.Height; // TODO
+        public void CenterVertically() {
+            var containerHeight = Parent?.Height ?? Game1.uiViewport.Height;
             Y = containerHeight / 2 - Height / 2;
         }
 

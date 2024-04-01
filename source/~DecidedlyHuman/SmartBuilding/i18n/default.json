@@ -95,6 +95,7 @@
     "smart-building.error.terrain-feature.flooring.could-not-identify-floor-type": "TF-01: Couldn't figure out the type of floor. This may be a modded floor/path we don't understand.",
     "smart-building.error.terrain-feature.generic.already-present": "TF-02: There was already a TerrainFeature present. Maybe someone hoed the ground or placed a path before committing the build?",
     "smart-building.error.terrain-feature.generic.unknown-error": "TF-03: There was something in the way of placing this. Maybe hoed dirt or a path?",
+    "smart-building.error.terrain-feature.could-not-find-flooring-with-item-id": "TF-04: Couldn't find any flooring with this item ID.",
     "smart-building.error.chest.could-not-identify-chest": "C-01: Couldn't recognise this item as a chest. This may be a bug, or a modded chest.",
     "smart-building.error.seeds.placement-failed": "S-01: There was a problem placing the seed.",
     "smart-building.error.fertiliser.already-fertilised": "F-01: The crop or HoeDirt was already fertilised.",

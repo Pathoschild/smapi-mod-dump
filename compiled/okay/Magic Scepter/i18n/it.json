@@ -1,0 +1,12 @@
+{
+  "dialog.title": "Scegli una posizion:",
+  "dialog.location.farm": "La fattoria",
+  "dialog.location.beach": "La spiaggia",
+  "dialog.location.mountain": "Le montagne",
+  "dialog.location.desert": "Il deserto",
+  "dialog.location.island": "Isola Zenzero",
+  "dialog.location.islandFarm": "Fattoria dell'isola",
+  "dialog.location.miniObelisk": "Mini-obelisco",
+  "dialog.location.miniObeliskNumber": "Mini-obelisco #{{number}}",
+  "dialog.cancel": "Annulla"
+}

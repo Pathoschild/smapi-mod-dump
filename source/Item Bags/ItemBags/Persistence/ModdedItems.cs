@@ -15,6 +15,9 @@ using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.BigCraftables;
+using StardewValley.GameData.Objects;
+using StardewValley.ItemTypeDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,14 +27,12 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using static ItemBags.Persistence.BagSizeConfig;
 using Object = StardewValley.Object;
 
 namespace ItemBags.Persistence
 {
     /// <summary>Represents a <see cref="BoundedBag"/> that can store custom items belonging to other mods.</summary>
-    [JsonObject(Title = "ModdedBag")]
     [DataContract(Name = "ModdedBag", Namespace = "")]
     public class ModdedBag
     {
@@ -113,34 +114,75 @@ namespace ItemBags.Persistence
                     if (Objects != null)
                     {
                         //  Index all regular Objects by their names
-                        Dictionary<string, int> AllObjectIds = new Dictionary<string, int>();
-                        foreach (System.Collections.Generic.KeyValuePair<int, string> KVP in Game1.objectInformation)
+                        Dictionary<string, string> AllObjectIds = new Dictionary<string, string>();
+                        foreach (System.Collections.Generic.KeyValuePair<string, ObjectData> KVP in Game1.objectData)
                         {
-                            string ObjectName = KVP.Value.Split('/').First();
+                            string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
                             if (!AllObjectIds.ContainsKey(ObjectName))
                                 AllObjectIds.Add(ObjectName, KVP.Key);
                         }
 
                         foreach (string ModdedItemName in Objects)
                         {
-                            //  Try to guess if the item has multiple different valid qualities, based on the it's category
-                            bool HasQualities = true;
-                            if (AllObjectIds.TryGetValue(ModdedItemName, out int ItemId))
+                            ModdedItem Item;
+                            if (AllObjectIds.TryGetValue(ModdedItemName, out string ItemId))
                             {
-                                Object SampleItem = new Object(ItemId, 1, false, -1, 0);
-                                if (SampleItem != null)
-                                    HasQualities = CategoriesWithQualities.Contains(SampleItem.Category);
+                                //  Try to guess if the item has multiple different valid qualities, based on its category
+                                bool HasQualities = CategoriesWithQualities.Contains(Game1.objectData[ItemId].Category);
+                                Item = new ModdedItem(ItemId, true, false, HasQualities, RequiredSize);
+                            }
+                            else
+                            {
+                                Item = new ModdedItem(ModdedItemName, false, false, true, RequiredSize);
                             }
 
-                            Items.Add(new ModdedItem(ModdedItemName, false, HasQualities, RequiredSize));
+                            Items.Add(Item);
                         }
                     }
-                    //List<string> Crops = API.GetAllCropsFromContentPack(ModUniqueId);
-                    //if (Crops != null)
-                    //    Items.AddRange(Crops.Select(x => new ModdedItem(x, false, false, RequiredSize)));
+
                     List<string> BigCraftables = API.GetAllBigCraftablesFromContentPack(ModUniqueId);
                     if (BigCraftables != null)
-                        Items.AddRange(BigCraftables.Select(x => new ModdedItem(x, true, false, RequiredSize)));
+                    {
+                        //  Index all BigCraftables by their names
+                        Dictionary<string, string> AllBigCraftableIds = new Dictionary<string, string>();
+                        foreach (System.Collections.Generic.KeyValuePair<string, BigCraftableData> KVP in Game1.bigCraftableData)
+                        {
+                            string BigCraftableName = KVP.Value.DisplayName ?? KVP.Value.Name;
+                            if (!AllBigCraftableIds.ContainsKey(BigCraftableName))
+                                AllBigCraftableIds.Add(BigCraftableName, KVP.Key);
+                        }
+
+                        foreach (string ModdedItemName in BigCraftables)
+                        {
+                            ModdedItem Item;
+                            if (AllBigCraftableIds.TryGetValue(ModdedItemName, out string ItemId))
+                            {
+                                Item = new ModdedItem(ItemId, true, true, false, RequiredSize);
+                            }
+                            else
+                            {
+                                Item = new ModdedItem(ModdedItemName, false, true, false, RequiredSize);
+                            }
+
+                            Items.Add(Item);
+                        }
+                    }
+                }
+            }
+
+            //  Try to find CP items belonging to this mod by looking through Game1.objectData for ObjectData whose name or texture property begins with the mod's unique Id
+            //  (Because it's very common to prefix modded QualifiedItemIds with the mod's UniqueId)
+            if (!Items.Any())
+            {
+                IEnumerable<ObjectData> Matches = Game1.objectData.Values.Where(x => !string.IsNullOrEmpty(x.Name) && (x.Name.StartsWith(ModUniqueId) || (!string.IsNullOrEmpty(x.Texture) && x.Texture.StartsWith(ModUniqueId))));
+                foreach (ObjectData Match in Matches)
+                {
+                    string Id = Match.Name;
+                    bool HasQualities = CategoriesWithQualities.Contains(Match.Category);
+                    ModdedItem Item = new ModdedItem(Id, true, false, HasQualities, RequiredSize);
+                    ItemMetadata Metadata = ItemRegistry.ResolveMetadata(Id);
+                    bool IsBigCraftable = Metadata.TypeIdentifier == "(BC)";
+                    Items.Add(Item);
                 }
             }
 
@@ -166,15 +208,28 @@ namespace ItemBags.Persistence
         {
             IModHelper Helper = ItemBagsMod.ModInstance.Helper;
 
+#if LEGACY_CODE
             //  Load modded items from JsonAssets the moment it finishes registering items
             if (Helper.ModRegistry.IsLoaded(ItemBagsMod.JAUniqueId))
             {
                 IJsonAssetsAPI API = Helper.ModRegistry.GetApi<IJsonAssetsAPI>(ItemBagsMod.JAUniqueId);
                 if (API != null)
                 {
-                    API.IdsFixed += (sender, e) => { OnJsonAssetsIdsFixed(API, ItemBagsMod.BagConfig, true); };
+                    //  JsonAssets removed this API call when updating for 1.6
+                    //API.IdsFixed += (sender, e) => { OnJsonAssetsIdsFixed(API, ItemBagsMod.BagConfig, true); };
                 }
             }
+#else
+            Helper.Events.GameLoop.SaveLoaded += (sender, e) =>
+            {
+                void DoWork()
+                {
+                    IJsonAssetsAPI API = Helper.ModRegistry.IsLoaded(ItemBagsMod.JAUniqueId) ? Helper.ModRegistry.GetApi<IJsonAssetsAPI>(ItemBagsMod.JAUniqueId) : null;
+                    OnJsonAssetsIdsFixed(API, ItemBagsMod.BagConfig, true);
+                }
+                DelayHelpers.InvokeLater(1, DoWork);
+            };
+#endif
         }
 
         internal static void OnConnectedToHost()
@@ -203,24 +258,27 @@ namespace ItemBags.Persistence
                 {
                     ItemBagsMod.ModInstance.Monitor.Log("Loading Modded Bags type info", LogLevel.Debug);
 
-                    Dictionary<string, int> AllBigCraftableIds = new Dictionary<string, int>();
-                    foreach (System.Collections.Generic.KeyValuePair<int, string> KVP in Game1.bigCraftablesInformation)
+                    Dictionary<string, string> AllBigCraftableIds = new Dictionary<string, string>();
+                    foreach (System.Collections.Generic.KeyValuePair<string, BigCraftableData> KVP in Game1.bigCraftableData)
                     {
-                        string ObjectName = KVP.Value.Split('/').First();
+                        string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
                         if (!AllBigCraftableIds.ContainsKey(ObjectName))
                             AllBigCraftableIds.Add(ObjectName, KVP.Key);
                     }
 
-                    Dictionary<string, int> AllObjectIds = new Dictionary<string, int>();
-                    foreach (System.Collections.Generic.KeyValuePair<int, string> KVP in Game1.objectInformation)
+                    Dictionary<string, string> AllObjectIds = new Dictionary<string, string>();
+                    foreach (System.Collections.Generic.KeyValuePair<string, ObjectData> KVP in Game1.objectData)
                     {
-                        string ObjectName = KVP.Value.Split('/').First();
+                        string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
                         if (!AllObjectIds.ContainsKey(ObjectName))
                             AllObjectIds.Add(ObjectName, KVP.Key);
                     }
 
-                    IDictionary<string, int> JABigCraftableIds = API.GetAllBigCraftableIds();
-                    IDictionary<string, int> JAObjectIds = API.GetAllObjectIds();
+                    //  JsonAssets removed these API calls when updating for 1.6
+                    //IDictionary<string, int> JABigCraftableIds = API.GetAllBigCraftableIds();
+                    //IDictionary<string, int> JAObjectIds = API.GetAllObjectIds();
+                    IDictionary<string, int> JABigCraftableIds = new Dictionary<string, int>();
+                    IDictionary<string, int> JAObjectIds = new Dictionary<string, int>();
 
                     //  Now that JsonAssets has finished loading the modded items, go through each one, and convert the items into StoreableBagItems (which requires an Id instead of just a Name)
                     foreach (System.Collections.Generic.KeyValuePair<ModdedBag, BagType> KVP in ItemBagsMod.TemporaryModdedBagTypes)
@@ -310,7 +368,6 @@ namespace ItemBags.Persistence
     }
 
     /// <summary>Represents modded items that should be merged into non-modded bags, such as storing a modded seed item in the built-in "Seed Bag"</summary>
-    [JsonObject(Title = "ModdedItems")]
     [DataContract(Name = "ModdedItems", Namespace = "")]
     public class ModdedItems
     {
@@ -351,24 +408,27 @@ namespace ItemBags.Persistence
                     }
                 }
 
-                Dictionary<string, int> AllBigCraftableIds = new Dictionary<string, int>();
-                foreach (System.Collections.Generic.KeyValuePair<int, string> KVP in Game1.bigCraftablesInformation)
+                Dictionary<string, string> AllBigCraftableIds = new Dictionary<string, string>();
+                foreach (System.Collections.Generic.KeyValuePair<string, BigCraftableData> KVP in Game1.bigCraftableData)
                 {
-                    string ObjectName = KVP.Value.Split('/').First();
+                    string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
                     if (!AllBigCraftableIds.ContainsKey(ObjectName))
                         AllBigCraftableIds.Add(ObjectName, KVP.Key);
                 }
 
-                Dictionary<string, int> AllObjectIds = new Dictionary<string, int>();
-                foreach (System.Collections.Generic.KeyValuePair<int, string> KVP in Game1.objectInformation)
+                Dictionary<string, string> AllObjectIds = new Dictionary<string, string>();
+                foreach (System.Collections.Generic.KeyValuePair<string, ObjectData> KVP in Game1.objectData)
                 {
-                    string ObjectName = KVP.Value.Split('/').First();
+                    string ObjectName = KVP.Value.DisplayName ?? KVP.Value.Name;
                     if (!AllObjectIds.ContainsKey(ObjectName))
                         AllObjectIds.Add(ObjectName, KVP.Key);
                 }
 
-                IDictionary<string, int> JABigCraftableIds = API.GetAllBigCraftableIds();
-                IDictionary<string, int> JAObjectIds = API.GetAllObjectIds();
+                //  JsonAssets removed these API calls when updating for 1.6
+                //IDictionary<string, int> JABigCraftableIds = API.GetAllBigCraftableIds();
+                //IDictionary<string, int> JAObjectIds = API.GetAllObjectIds();
+                IDictionary<string, int> JABigCraftableIds = new Dictionary<string, int>();
+                IDictionary<string, int> JAObjectIds = new Dictionary<string, int>();
 
                 //  Import items from each ModAddon
                 foreach (ModAddon ModAddon in ModAddons)
@@ -385,13 +445,13 @@ namespace ItemBags.Persistence
                             {
                                 foreach (ModdedItem Item in BagAddon.Items)
                                 {
-                                    int Id = -1;
-                                    if (Item.ObjectId.HasValue)
-                                        Id = Item.ObjectId.Value;
+                                    string Id = null;
+                                    if (!string.IsNullOrEmpty(Item.ObjectId))
+                                        Id = Item.ObjectId;
                                     else
                                     {
-                                        if ((Item.IsBigCraftable && !JABigCraftableIds.TryGetValue(Item.Name, out Id) && !AllBigCraftableIds.TryGetValue(Item.Name, out Id)) ||
-                                            (!Item.IsBigCraftable && !JAObjectIds.TryGetValue(Item.Name, out Id) && !AllObjectIds.TryGetValue(Item.Name, out Id)))
+                                        if ((Item.IsBigCraftable && !JABigCraftableIds.TryGetValue(Item.Name, out int IntId) && !AllBigCraftableIds.TryGetValue(Item.Name, out Id)) ||
+                                            (!Item.IsBigCraftable && !JAObjectIds.TryGetValue(Item.Name, out IntId) && !AllObjectIds.TryGetValue(Item.Name, out Id)))
                                         {
                                             string Message = string.Format("Warning - no item with Name = '{0}' was found. This item will not be imported to Bag '{1}'.", Item.Name, BagAddon.Name);
                                             ItemBagsMod.ModInstance.Monitor.Log(Message, LogLevel.Warn);
@@ -417,7 +477,6 @@ namespace ItemBags.Persistence
         }
     }
 
-    [JsonObject(Title = "ModAddon")]
     [DataContract(Name = "ModAddon", Namespace = "")]
     public class ModAddon
     {
@@ -427,7 +486,6 @@ namespace ItemBags.Persistence
         public List<BagAddon> BagAddons { get; set; } = new List<BagAddon>();
     }
 
-    [JsonObject(Title = "BagAddon")]
     [DataContract(Name = "BagAddon", Namespace = "")]
     public class BagAddon
     {
@@ -439,7 +497,6 @@ namespace ItemBags.Persistence
         public List<ModdedItem> Items { get; set; } = new List<ModdedItem>();
     }
 
-    [JsonObject(Title = "Item")]
     [DataContract(Name = "Item", Namespace = "")]
     public class ModdedItem
     {
@@ -458,7 +515,7 @@ namespace ItemBags.Persistence
         /// <summary>Optional. You only need to specify either <see cref="Name"/> or <see cref="ObjectId"/>, not both.<para/>
         /// Do not use <see cref="ObjectId"/> if the item does not have a static item id (such as a JsonAssets modded item).</summary>
         [JsonProperty("ObjectId")]
-        public int? ObjectId { get; set; } = null;
+        public string ObjectId { get; set; } = null;
 
         public ModdedItem()
         {
@@ -469,13 +526,22 @@ namespace ItemBags.Persistence
             this.ObjectId = null;
         }
 
-        public ModdedItem(string Name, bool IsBigCraftable, bool HasQualities, ContainerSize Size)
+        public ModdedItem(string NameOrId, bool IsId, bool IsBigCraftable, bool HasQualities, ContainerSize Size)
         {
-            this.Name = Name;
+            if (IsId)
+            {
+                this.Name = null;
+                this.ObjectId = NameOrId;
+            }
+            else
+            {
+                this.Name = NameOrId;
+                this.ObjectId = null;
+            }
+
             this.IsBigCraftable = IsBigCraftable;
             this.HasQualities = HasQualities;
             this.SizeString = Size.ToString();
-            this.ObjectId = null;
         }
 
         public ModdedItem(Object Item, bool HasStableId)
@@ -483,7 +549,7 @@ namespace ItemBags.Persistence
             if (HasStableId)
             {
                 this.Name = null;
-                this.ObjectId = Item.ParentSheetIndex;
+                this.ObjectId = Item.ItemId; //Item.QualifiedItemId ?? Item.ItemId;
             }
             else
             {
@@ -501,17 +567,17 @@ namespace ItemBags.Persistence
 
         /// <param name="JABigCraftableIds">Ids of BigCraftable items added through JsonAssets. See also: <see cref="IJsonAssetsAPI.GetAllBigCraftableIds"/></param>
         /// <param name="JAObjectIds">Ids of Objects added through JsonAssets. See also: <see cref="IJsonAssetsAPI.GetAllObjectIds"/></param>
-        public StoreableBagItem ToStoreableBagItem(IDictionary<string, int> JABigCraftableIds, IDictionary<string, int> JAObjectIds, IDictionary<string, int> AllBigCraftableIds, IDictionary<string, int> AllObjectIds)
+        public StoreableBagItem ToStoreableBagItem(IDictionary<string, int> JABigCraftableIds, IDictionary<string, int> JAObjectIds, IDictionary<string, string> AllBigCraftableIds, IDictionary<string, string> AllObjectIds)
         {
-            if (ObjectId.HasValue)
+            if (!string.IsNullOrEmpty(ObjectId))
             {
-                return new StoreableBagItem(ObjectId.Value, HasQualities, null, IsBigCraftable);
+                return new StoreableBagItem(ObjectId, HasQualities, null, IsBigCraftable);
             }
             else if (IsBigCraftable)
             {
                 if (JABigCraftableIds.TryGetValue(Name, out int JAId))
                     return new StoreableBagItem(JAId, HasQualities, null, IsBigCraftable);
-                else if (AllBigCraftableIds.TryGetValue(Name, out int Id))
+                else if (AllBigCraftableIds.TryGetValue(Name, out string Id))
                     return new StoreableBagItem(Id, HasQualities, null, IsBigCraftable);
                 else
                     return null;
@@ -520,7 +586,7 @@ namespace ItemBags.Persistence
             {
                 if (JAObjectIds.TryGetValue(Name, out int JAId))
                     return new StoreableBagItem(JAId, HasQualities, null, IsBigCraftable);
-                else if (AllObjectIds.TryGetValue(Name, out int Id))
+                else if (AllObjectIds.TryGetValue(Name, out string Id))
                     return new StoreableBagItem(Id, HasQualities, null, IsBigCraftable);
                 else
                     return null;

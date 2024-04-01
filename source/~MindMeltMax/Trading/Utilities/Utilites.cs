@@ -8,20 +8,14 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
-using SObject = StardewValley.Object;
 
 namespace Trading.Utilities
 {
-    internal static class Utilites
+    internal static class Messages
     {
         public const string MSG_RequestTrade = "Trading.RequestTrade";
         public const string MSG_TradeRequestAccept = "Trading.AcceptRequest";
@@ -36,15 +30,10 @@ namespace Trading.Utilities
 
         public const string MSG_Available = "Trading.Available";
         public const string MSG_Busy = "Trading.Busy";
+    }
 
-        public static bool InRadiusOff(Vector2 pointA, Vector2 pointB, int radius = 1)
-        {
-            return pointA.X >= pointB.X - radius && 
-                   pointA.X <= pointB.X + radius && 
-                   pointA.Y >= pointB.Y - radius && 
-                   pointA.Y <= pointB.Y + radius;
-        }
-
+    internal static class Utilites
+    {
         /// <summary>
         /// https://stackoverflow.com/a/19308859
         /// </summary>
@@ -72,15 +61,15 @@ namespace Trading.Utilities
             return sb.ToString();
         }
 
-        public static List<TemporaryNetworkObject> ParseItems(List<Item> items)
+        public static List<NetworkObject> ParseItems(List<Item> items)
         {
-            List<TemporaryNetworkObject> res = new();
+            List<NetworkObject> res = new();
             foreach (var item in items)
-                res.Add((TemporaryNetworkObject)item);
+                res.Add((NetworkObject)item);
             return res;
         }
 
-        public static List<Item> ParseItems(List<TemporaryNetworkObject> items)
+        public static List<Item> ParseItems(List<NetworkObject> items)
         {
             List<Item> res = new();
             foreach (var item in items)

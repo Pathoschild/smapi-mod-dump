@@ -16,15 +16,21 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.GameData.Locations;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 
-namespace FishReminder
-{
+namespace FishReminder;
+
     public class FishReminder : Mod//To do Change the fish dictionary to int, string. That wasy I can cross reference based on int.
     {
         //private string fishNeeded;
 
         private FishConfig _config;
+
+        private Dictionary<string, FishInfo> _fish = new();
+
+        private List<string> caughtFish = new();
         
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
@@ -41,19 +47,19 @@ namespace FishReminder
 
         private void AssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/mail"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail"))
             {
                 e.Edit(asset =>
                 {
-                    var i18n = Helper.Translation;
-                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                    data["fishReminderDaily"] = i18n.Get("fishReminderDaily",
+                    var i18N = Helper.Translation;
+                    var data = asset.AsDictionary<string, string>().Data;
+                    data["fishReminderDaily"] = i18N.Get("fishReminderDaily",
                         new { player = Game1.player.Name, fish = GetNeededFish() });
 
-                    data["fishReminderWeekly"] = i18n.Get("fishReminderWeekly",
+                    data["fishReminderWeekly"] = i18N.Get("fishReminderWeekly",
                         new { player = Game1.player.Name, fish = GetNeededFish() });
 
-                    data["fishReminderMonthly"] = i18n.Get("fishReminderMonthly",
+                    data["fishReminderMonthly"] = i18N.Get("fishReminderMonthly",
                         new { player = Game1.player.Name, fish = GetNeededFish() });
                 });
             }
@@ -73,77 +79,74 @@ namespace FishReminder
                 _config = Helper.ReadConfig<FishConfig>();
                 Monitor.Log("Config file was reloaded.");
             }
-            else if (e.IsDown(SButton.F6))
+            else if (e.IsDown(SButton.Home))
             {
-                string fishes = GetNeededFish(true, true);
-                Monitor.Log(fishes);
+                //GrabFishInfo();
+                GrabFishInfo();
+                GetNeededFish();
             }
-            else if (e.IsDown(SButton.F7))
+            else if (e.IsDown(SButton.NumPad3))
             {
-                char[] trimmer = { ',' };
-                var f = GetNeededFishLocation();
-                string um = "", des = "", fo = "", t = "", m = "", bw = "", b = "", w = "", s = "", bl = "", ws = "";
+                var locations = DataLoader.Locations(Game1.content);
+                var fishData = DataLoader.Fish(Game1.content);
 
-                string outter = "";
+                //Print out Location Data
 
-                var o = from i in f
-                    orderby i.Value
-                    select i;
-
-
-                foreach (var i in o)
+                foreach (var location in locations)
                 {
-                    if (i.Value.Contains("Under"))
-                        um += $"{i.Key}, ";
-                    if (i.Value.Contains("Des"))
-                        des += $"{i.Key}, ";
-                    if (i.Value.Contains("For"))
-                        fo += $"{i.Key}, ";
-                    if (i.Value.Contains("Tow"))
-                        t += $"{i.Key}, ";
-                    if (i.Value.Contains("Moun"))
-                        m += $"{i.Key}, ";
-                    if (i.Value.Contains("Back"))
-                        bw += $"{i.Key}, ";
-                    if (i.Value.Contains("Bea"))
-                        b += $"{i.Key}, ";
-                    if (i.Value.Contains("Woods"))
-                        w += $"{i.Key}, ";
-                    if (i.Value.Contains("Sewer"))
-                        s += $"{i.Key}, ";
-                    if (i.Value.Contains("BugLand"))
-                        bl += $"{i.Key}, ";
-                    if (i.Value.Contains("Witch"))
-                        ws += $"{i.Key}, ";
+                    var fishInArea = location.Value.Fish;
+                    var fishString = "";
+                    var itemName = "";
+
+
+
+                    foreach (var fin in fishInArea)
+                    {
+
+                        if (!string.IsNullOrEmpty(fin.FishAreaId))
+                        {
+                            if (!string.IsNullOrEmpty(fin.ItemId))
+                            {
+                                var item = ItemRegistry.GetMetadata(fin.ItemId);
+                                if (!item.Exists())
+                                    continue;
+
+                                var it = item.CreateItemOrErrorItem();
+                                itemName = it.Name;
+                            }
+
+
+                            //fishString += $"{fin.ItemId}({itemName}), ";
+
+                            //fishString += $"{fin.ItemId}, ";
+                        }
+
+                        if (!string.IsNullOrEmpty(itemName))
+                        {
+                            fishString += $"Location: {location.Key} Chance: {fin.Chance} Season: {fin.Season} FishAreaId: {fin.FishAreaId} MinFishingLevel: {fin.MinFishingLevel} MinDistanceFromShore: {fin.MinDistanceFromShore} MaxDistanceFromShore: {fin.MaxDistanceFromShore} ApplyDailyLuck: {fin.ApplyDailyLuck} CuriosityLureBuff: {fin.CuriosityLureBuff} CatchLimit: {fin.CatchLimit} IsBossFish: {fin.IsBossFish} SetFlagOnCatch: {fin.SetFlagOnCatch} RequiredMagicBelt: {fin.RequireMagicBait} Precedence: {fin.Precedence} IgnoreFishDataRequirements: {fin.IgnoreFishDataRequirements} CanBeInherited: {fin.CanBeInherited} ItemId: {fin.ItemId}({itemName}) \r";
+                        }
+                        else
+                            fishString += $"Location: {location.Key} Chance: {fin.Chance} Season: {fin.Season} FishAreaId: {fin.FishAreaId} MinFishingLevel: {fin.MinFishingLevel} MinDistanceFromShore: {fin.MinDistanceFromShore} MaxDistanceFromShore: {fin.MaxDistanceFromShore} ApplyDailyLuck: {fin.ApplyDailyLuck} CuriosityLureBuff: {fin.CuriosityLureBuff} CatchLimit: {fin.CatchLimit} IsBossFish: {fin.IsBossFish} SetFlagOnCatch: {fin.SetFlagOnCatch} RequiredMagicBelt: {fin.RequireMagicBait} Precedence: {fin.Precedence} IgnoreFishDataRequirements: {fin.IgnoreFishDataRequirements} CanBeInherited: {fin.CanBeInherited} ItemId: {fin.ItemId} \r";
+                    }
+                    if (!string.IsNullOrEmpty(fishString))
+                        Monitor.Log($"[Fish Area Id] Key: {location.Key} Value: {fishString}");
+
+                    /*
+                    foreach (var f in location.Value.FishAreas)
+                    {
+                        Monitor.Log($"[Fish Areas] Key: {f.Key} Value: {f.Value.DisplayName}");
+                    }*/
                 }
 
-                var undergroundmine = string.IsNullOrEmpty(um) ? "" : $"Underground Mine^{um.Trim().TrimEnd(trimmer)}^^";
-                var desert = string.IsNullOrEmpty(des) ? "" : $"Desert^{des.Trim().TrimEnd(trimmer)}^^";
-                var forest = string.IsNullOrEmpty(fo) ? "" : $"Forest^{fo.Trim().TrimEnd(trimmer)}^^";
-                var town = string.IsNullOrEmpty(t) ? "" : $"Town^{t.Trim().TrimEnd(trimmer)}^^";
-                var mountain = string.IsNullOrEmpty(m) ? "" : $"Mountain^{m.Trim().TrimEnd(trimmer)}^^";
-                var backwoods = string.IsNullOrEmpty(bw) ? "" : $"Back Woods^{bw.Trim().TrimEnd(trimmer)}^^";
-                var beach = string.IsNullOrEmpty(b) ? "" : $"Beach^{b.Trim().TrimEnd(trimmer)}^^";
-                var woods = string.IsNullOrEmpty(w) ? "" : $"Woods^{w.Trim().TrimEnd(trimmer)}^^";
-                var sewer = string.IsNullOrEmpty(s) ? "" : $"Sewer^{s.Trim().TrimEnd(trimmer)}^^";
-                var bugland = string.IsNullOrEmpty(bl) ? "" : $"Bug Land^{bl.Trim().TrimEnd(trimmer)}^^";
-                var witchswamp = string.IsNullOrEmpty(ws) ? "" : $"Witch Swamp^{ws.Trim().TrimEnd(trimmer)}^^";
-                //populate outter
-                outter =
-                    $"{undergroundmine}{desert}{forest}{town}{mountain}{backwoods}{beach}{woods}{sewer}{bugland}{witchswamp}";
-                Game1.activeClickableMenu = new LetterViewerMenu(outter);
-            }
-            else if (e.IsDown(SButton.F9))
-            {
-                var fish = Helper.GameContent.Load<Dictionary<int, string> > ("Data\\fish");
-                //string[] locData = loc.Value.Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
-                foreach (var f in fish)
+
+                //Print out Fish Data
+                /*
+                foreach (var fish in fishData)
                 {
-                    var fdata = f.Value.Split('/');
-                    Game1.player.fishCaught.Add(f.Key, new int[2] {1, 1});
-                    Monitor.Log($"Added: {fdata[0]} to the list.");
-                }
+                    Monitor.Log($"[Fish Data] Key: {fish.Key} Value: {fish.Value}");
+                }*/
             }
+
         }
 
         /// <summary>Event that fires before a world is saved</summary>
@@ -154,7 +157,7 @@ namespace FishReminder
             var today = SDate.Now();
             var tomorrow = today.AddDays(1);
 
-            string fishNed = GetNeededFish();
+            var fishNed = GetNeededFish();
             if (string.IsNullOrEmpty(fishNed))
                 return;
 
@@ -164,7 +167,8 @@ namespace FishReminder
                     if (_config.SendReminderMailMonthly)
                     {
                         Helper.GameContent.InvalidateCache("Data/mail");
-                        Game1.player.mailForTomorrow.Add("fishReminderMonthly");
+                        if(!Game1.player.mailbox.Contains("fishReminderMonthly"))
+                            Game1.player.mailForTomorrow.Add("fishReminderMonthly");
                     }
                     break;
                 case 8:
@@ -173,14 +177,16 @@ namespace FishReminder
                     if (_config.SendReminderMailWeekly)
                     {
                         Helper.GameContent.InvalidateCache("Data/mail");
-                        Game1.player.mailForTomorrow.Add("fishReminderWeekly");
+                        if (!Game1.player.mailbox.Contains("fishReminderWeekly"))
+                            Game1.player.mailForTomorrow.Add("fishReminderWeekly");
                     }
                     break;
                 default:
                     if (_config.SendReminderMailDaily)
                     {
                         Helper.GameContent.InvalidateCache("Data/mail");
-                        Game1.player.mailForTomorrow.Add("fishReminderDaily");
+                        if (!Game1.player.mailbox.Contains("fishReminderDaily"))
+                            Game1.player.mailForTomorrow.Add("fishReminderDaily");
                     }
 
                     break;
@@ -188,116 +194,99 @@ namespace FishReminder
         }
 
         //Private Methods
-        /// <summary>Grabs the fish that a player still needs.</summary>
-        /// <param name="doSeason">Whether or not the current season should be accounted for.</param>
-        /// <param name="doWeather">Whether or not the current weather should be accounted for. Not implemented yet</param>
+
+        
+
         private string GetNeededFish(bool doSeason = true, bool doWeather = false)
         {
-            string neededFish = "";
-            char[] trimmer = { ',' };
-            var f = GetNeededFishLocation();
-            string um = "", des = "", fo = "", t = "", m = "", bw = "", b = "", w = "", s = "", bl = "", ws = "";
+            var locations = DataLoader.Locations(Game1.content);
+            GrabFishInfo();
 
-            string outter = "";
+            var neededFish = "";
 
-            var o = from i in f
-                    orderby i.Value
-                    select i;
-
-
-            foreach (var i in o)
+            foreach (var location in locations)
             {
-                if (i.Value.Contains("Under"))
-                    um += $"{i.Key}, ";
-                if (i.Value.Contains("Des"))
-                    des += $"{i.Key}, ";
-                if (i.Value.Contains("For"))
-                    fo += $"{i.Key}, ";
-                if (i.Value.Contains("Tow"))
-                    t += $"{i.Key}, ";
-                if (i.Value.Contains("Moun"))
-                    m += $"{i.Key}, ";
-                if (i.Value.Contains("Back"))
-                    bw += $"{i.Key}, ";
-                if (i.Value.Contains("Bea"))
-                    b += $"{i.Key}, ";
-                if (i.Value.Contains("Woods"))
-                    w += $"{i.Key}, ";
-                if (i.Value.Contains("Sewer"))
-                    s += $"{i.Key}, ";
-                if (i.Value.Contains("BugLand"))
-                    bl += $"{i.Key}, ";
-                if (i.Value.Contains("Witch"))
-                    ws += $"{i.Key}, ";
-            }
+                var fishAvailable = location.Value.Fish;
+                var fishNotCaught = "";
 
-            var undergroundmine = string.IsNullOrEmpty(um) ? "" : $"Underground Mine^{um.Trim().TrimEnd(trimmer)}^^";
-            var desert = string.IsNullOrEmpty(des) ? "" : $"Desert^{des.Trim().TrimEnd(trimmer)}^^";
-            var forest = string.IsNullOrEmpty(fo) ? "" : $"Forest^{fo.Trim().TrimEnd(trimmer)}^^";
-            var town = string.IsNullOrEmpty(t) ? "" : $"Town^{t.Trim().TrimEnd(trimmer)}^^";
-            var mountain = string.IsNullOrEmpty(m) ? "" : $"Mountain^{m.Trim().TrimEnd(trimmer)}^^";
-            var backwoods = string.IsNullOrEmpty(bw) ? "" : $"Back Woods^{bw.Trim().TrimEnd(trimmer)}^^";
-            var beach = string.IsNullOrEmpty(b) ? "" : $"Beach^{b.Trim().TrimEnd(trimmer)}^^";
-            var woods = string.IsNullOrEmpty(w) ? "" : $"Woods^{w.Trim().TrimEnd(trimmer)}^^";
-            var sewer = string.IsNullOrEmpty(s) ? "" : $"Sewer^{s.Trim().TrimEnd(trimmer)}^^";
-            var bugland = string.IsNullOrEmpty(bl) ? "" : $"Bug Land^{bl.Trim().TrimEnd(trimmer)}^^";
-            var witchswamp = string.IsNullOrEmpty(ws) ? "" : $"Witch Swamp^{ws.Trim().TrimEnd(trimmer)}^^";
-            //populate outter
-            //outter =
-                //$"{undergroundmine}{desert}{forest}{town}{mountain}{backwoods}{beach}{woods}{sewer}{bugland}{witchswamp}";
-            /*
-            //Open the fish data file, and grab the needed info
-            IDictionary<int, string> fish = Game1.content.Load<Dictionary<int, string>>("Data\\fish");
-            
-            //Go through and grab what fish the player needs based on season
-            foreach (var f in fish)
-            {
-                var fishSplit = f.Value.Split('/');
-                var seasons = fishSplit[6].Split(' ');
-                //var weather = fishSplit[7];
-
-                //Make sure the player needs the fish.
-                if (!Game1.player.fishCaught.ContainsKey(f.Key) && doSeason && seasons.Contains(Game1.currentSeason))
+                foreach (var fish in fishAvailable)
                 {
-                    neededFish += $"{fishSplit[0]}, ";
-                }
-            }*/
-            //return neededFish
-            //return neededFish.Trim().TrimEnd(trimmer);
-            return $"{undergroundmine}{desert}{forest}{town}{mountain}{backwoods}{beach}{woods}{sewer}{bugland}{witchswamp}";
-        }
-
-        /// <summary>Grabs the fish that a player still needs.</summary>
-        /// <param name="doSeason">Whether or not the current season should be accounted for.</param>
-        /// <param name="doWeather">Whether or not the current weather should be accounted for. Not implemented yet</param>
-        private Dictionary<string,string> GetNeededFishLocation(bool doSeason = true, bool doWeather = false)
-        {
-             Dictionary<string, string> fishNames = new Dictionary<string, string>();
-
-            //Open the fish data file, and grab the needed info
-            IDictionary<int, string> fish = Game1.content.Load<Dictionary<int, string>>("Data\\fish");
-
-            //Open Location, so we can gather the fish data based on it
-            IDictionary<string, string> locations = Game1.content.Load<Dictionary<string, string>>("Data\\locations");
-
-            foreach (var loc in locations)
-            {
-                string[] locData = loc.Value.Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
-                //go through the location data for the fish that can be gotten from there.
-                if (locData.Length > 1)
-                {
-                    for (int i = 0; i < locData.Length; i += 2)
+                    if (!string.IsNullOrEmpty(fish.ItemId))
                     {
-                        string[] fishData = fish[Convert.ToInt32(locData[i])].Split('/');
-                        if (!fishNames.ContainsKey(fishData[0]) && 
-                            !Game1.player.fishCaught.ContainsKey(Convert.ToInt32(locData[i])))
-                            fishNames.Add(fishData[0], loc.Key);
+                        var fishToBeCaught = ItemRegistry.GetMetadata(fish.ItemId);
+
+                        if (!fishToBeCaught.Exists())
+                            continue;
+
+                        if (!Game1.player.fishCaught.ContainsKey(fish.ItemId) && _fish.ContainsKey(fish.ItemId))
+                        {
+
+                            fishNotCaught += $"{fishToBeCaught.CreateItemOrErrorItem().Name} ";
+                        }
+
                     }
                 }
-                    
+
+                if (!string.IsNullOrEmpty(fishNotCaught))
+                {
+                neededFish = $"{location.Key}: {fishNotCaught}";
+                Monitor.Log($"{neededFish}");
+                }
+                
+
             }
 
-            return fishNames;
+
+            return neededFish;
+
+        }
+
+        private void GrabFishInfo()
+        {
+            _fish.Clear();
+            var fishData = DataLoader.Fish(Game1.content);
+            var outPut = new Dictionary<string, string>();
+
+            foreach (var fish in fishData)
+            {
+                var fisher = fish.Value.Split('/');
+                if (fisher.Length == 14)
+                {
+                   // Monitor.Log($"Id: {fish.Key}, Fish Name: {fisher[0]} Spawns In: {fisher[6]}");
+                    _fish.Add($"(O){fish.Key}", new FishInfo()
+                    {
+                        FishId = fish.Key,
+                        FishName = fisher[0],
+                        Difficulty = fisher[1],
+                        DartingRandomness = fisher[2],
+                        MinSize = fisher[3],
+                        MaxSize = fisher[4],
+                        Times = fisher[5],
+                        Season = fisher[6],
+                        Weather = fisher[7],
+                        Locations = fisher[8],
+                        MaxDepth = fisher[9],
+                        SpawnMultiplier = fisher[10],
+                        DepthMultiplier = fisher[11],
+                        FishingLevelNeeded = fisher[12],
+                        IncludeInFirstCatchTutorial = fisher[13]
+
+
+
+                    });
+                }
+            }
+            //caughtFish.Clear();
+
+        //Populate caughtFish
+        /*
+        foreach (var f in Game1.player.fishCaught.Keys)
+        {
+            if (caughtFish.Contains(f))
+                continue;
+            
+            caughtFish.Add(f);
+            Monitor.Log(f);
+        }*/
         }
     }
-}

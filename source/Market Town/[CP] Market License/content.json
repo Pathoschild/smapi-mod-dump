@@ -1,0 +1,112 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/congha22/foodstore
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "Changes": [
+        // add item
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "MT.Objects.MarketLicense": {
+                    "Name": "Market License",
+                    "Displayname": "Market License",
+                    "Description": "The Ferngill Republic requires this license for all shop owners. To register your Building as a business, you must display this License on a Sign at all times. Any change made will take effect the next day.",
+                    "Type": "Basic",
+                    "Price": 7500,
+
+                    "Texture": "{{InternalAssetKey: assets/MarketLicense.png}}",
+                    "SpriteIndex": 0
+                      },
+                "MT.Objects.RestaurantLicense": {
+                    "Name": "Restaurant License",
+                    "Displayname": "Restaurant License",
+                    "Description": "The Ferngill Republic issues this License to Restaurant owner to operate food service. To register your Building as a Restaurant, the License must be displayed on a Sign. Any change made will take effect the next day.",
+                    "Type": "Basic",
+                    "Price": 4000,
+
+                    "Texture": "{{InternalAssetKey: assets/RestaurantLicense.png}}",
+                    "SpriteIndex": 0
+                      },
+                "MT.Objects.MuseumLicense": {
+                    "Name": "Museum License",
+                    "Displayname": "Museum License",
+                    "Description": "Display this on a Sign will register your Building as public Museum and visitors will visits. Any change made will take effect the next day.",
+                    "Type": "Basic",
+                    "Price": 5000,
+
+                    "Texture": "{{InternalAssetKey: assets/MuseumLicense.png}}",
+                    "SpriteIndex": 0
+                      }
+            }
+        },
+
+
+
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [ "DesertTrade", "Items" ],
+            "Entries": {
+                "MT.Objects.MarketLicense": {
+                    "Id": "MT.Objects.MarketLicense",
+                    "ItemId": "(O)MT.Objects.MarketLicense",
+                    "Price": 15000,
+                    "TradeItemId": 336,
+                    "TradeItemAmount": 5,
+                    "Condition": "PLAYER_HAS_MAIL any MT.MarketTownLicense received"
+
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [ "Festival_StardewValleyFair_StarTokens", "Items" ],
+            "Entries": {
+                "MT.Objects.MarketLicense": {
+                    "Id": "MT.Objects.MarketLicense",
+                    "ItemId": "(O)MT.Objects.MarketLicense",
+                    "Price": 3000,
+                    "Condition": "PLAYER_HAS_MAIL any MT.MarketTownLicense received"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [ "Saloon", "Items" ],
+            "Entries": {
+                "MT.Objects.RestaurantLicense": {
+                    "Id": "MT.Objects.RestaurantLicense",
+                    "ItemId": "(O)MT.Objects.RestaurantLicense",
+                    "Price": 8000,
+                    "TradeItemId": 336,
+                    "TradeItemAmount": 2,
+                    "Condition": "PLAYER_HAS_MAIL any MT.RestaurantLicense received"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [ "AdventureShop", "Items" ],
+            "Entries": {
+                "MT.Objects.MuseumLicense": {
+                    "Id": "MT.Objects.MuseumLicense",
+                    "ItemId": "(O)MT.Objects.MuseumLicense",
+                    "Price": 10000,
+                    "Condition": "PLAYER_HAS_MAIL any MT.MuseumLicense received"
+                }
+            }
+        }
+    ]
+}

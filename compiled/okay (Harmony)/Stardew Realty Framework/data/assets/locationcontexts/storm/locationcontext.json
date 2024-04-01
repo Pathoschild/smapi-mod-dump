@@ -1,0 +1,7 @@
+﻿{
+  "ContextName": "prism99.advize.stardewrealty.storm",
+  "CopyDefaultFields": true,
+  "LocationContextData": {
+    "WeatherConditions": [ { "Weather": "Storm" } ]
+  }
+}

@@ -25,8 +25,8 @@ namespace ItemBags.Community_Center
     public class BundleTask
     {
         public BundleRoom Room { get; }
+        /// <summary>This name is always in English. See also: <see cref="TranslatedName"/></summary>
         public string Name { get; }
-        /// <summary>May be null if using the game's default language. Check <see cref="Name"/> if so.</summary>
         public string TranslatedName { get; }
 
         public int BundleIndex { get; }
@@ -98,11 +98,13 @@ namespace ItemBags.Community_Center
             this.SpriteColorIndex = int.Parse(Entries[3]);
 
             bool IsEnglish = LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en;
-            if (!IsEnglish)
+            if (!IsEnglish || Entries.Last() == Name)
             {
                 this.TranslatedName = Entries.Last();
                 Entries.RemoveAt(Entries.Count - 1);
             }
+
+            //TODO I think 1.6 added the BundleIndex at the end? So probably should do Entries.RemoveAt(Entries.Count - 1);
 
             try
             {
@@ -112,7 +114,12 @@ namespace ItemBags.Community_Center
                 }
                 else
                 {
-                    this.RequiredItemCount = int.Parse(Entries[4]);
+                    //  Game version 1.6 now allows empty entries in the bundle data, such as:
+                    //  "Spring Crops/O 465 20/24 1 0 188 1 0 190 1 0 192 1 0/0///Spring Crops"
+                    if (int.TryParse(Entries[4], out int RequiredCt))
+                        this.RequiredItemCount = RequiredCt;
+                    else
+                        this.RequiredItemCount = Items.Count;
 
                     if (Entries.Count > 5)
                     {
@@ -150,10 +157,10 @@ namespace ItemBags.Community_Center
             }
         }
 
-        private static HashSet<int> InvalidItemIds = new HashSet<int>(new List<int>() { 639, 640, 641, 642, 643 });
+        private static HashSet<string> InvalidItemIds = new List<string>() { "639", "640", "641", "642", "643" }.ToHashSet();
         /// <summary>In the game data for bundles ("Data/Bundles.xnb"), The Bundle at "Pantry/4" contains several Item Ids which don't seem to correspond to an actual item. 
         /// "Pantry/4" (The "Animal Bundle") data contains 12 item Ids even though the Community Center menu only displays 6 different items for that bundle. No clue why.</summary>
-        internal static bool IsValidItemId(int Id)
+        internal static bool IsValidItemId(string Id)
         {
             return !InvalidItemIds.Contains(Id);
         }

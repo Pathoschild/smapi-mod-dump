@@ -6,9 +6,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit ee332258fa3efd747b4e0a0fee52bafe89f72a63
+   commit 941bb125c8e56f7708535305656a025e200e2452
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Aug 13 16:04:02 2023 -0500
+   Date:   Tue Mar 19 10:02:58 2024 -0500
    
-       Add protection to non-arg overload too
+       Set version to 1.6.0, update license year
    

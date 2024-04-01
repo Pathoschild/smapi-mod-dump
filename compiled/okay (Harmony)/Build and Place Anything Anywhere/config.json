@@ -1,0 +1,17 @@
+{
+  "Keys": {
+    "ReloadConfig": "None"
+  },
+  "EnableFurniture": true,
+  "EnableRugTweaks": true,
+  "EnableWallFurnitureIndoors": false,
+  "EnableFreePlace": false,
+  "EnableBuilding": true,
+  "BuildMenu": "OemComma",
+  "WizardBuildMenu": "OemPeriod",
+  "EnableFreeBuild": false,
+  "TableTweakBind": "LeftShift",
+  "EnableTableTweak": true,
+  "AllowMiniObelisksAnywhere": true,
+  "EnableJukeboxFunctionality": true
+}

@@ -11,7 +11,6 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,7 +40,7 @@ namespace FarmTypeManager
 
                 List<string> locations = new List<string>(); //create a blank list
 
-                foreach (BuildableGameLocation buildable in Game1.locations.OfType<BuildableGameLocation>()) //for each buildable location in the game
+                foreach (GameLocation buildable in Game1.locations) //for each buildable location in the game
                 {
                     foreach (Building building in buildable.buildings.Where(building => building.indoors.Value != null)) //for each building with an interior location ("indoors")
                     {

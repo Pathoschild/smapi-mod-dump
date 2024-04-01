@@ -23,9 +23,9 @@ mods:
    XP Display
 
 latest commit:
-   commit e063bc6d17f91d46e9852dbda0402c455598682c
+   commit c7333c879cdd4c043b2f6360dc910dd07a4d0fef
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Mon Aug 14 23:55:35 2023 +0200
+   Date:   Wed Mar 20 22:55:52 2024 +0100
    
-       InAHeartbeat: Version 1.0.0
+       EarlyGingerIsland: Version 2.0.0
    

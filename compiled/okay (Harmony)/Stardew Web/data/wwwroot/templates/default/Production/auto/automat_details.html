@@ -1,0 +1,27 @@
+﻿<div class="message_board_title_flex">Automation Actions</div>
+<div class="message_paper_board_flex base_font_flex">
+    <button onclick="AddRule(); return false;">Add</button>
+    <div style="max-height:400px; overflow:auto;">
+        <table id="infoTable" class="stardew_table" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th class="stardew_header fixed_header">Automation Name</th>
+                    <th class="stardew_header fixed_header">Description</th>
+                    <th class="stardew_header fixed_header">Type</th>
+                    <th class="stardew_header fixed_header">Enabled</th>
+                    <th class="stardew_header fixed_header">Start</th>
+                    <th class="stardew_header fixed_header">End</th>
+                </tr>
+            </thead>
+            <tbody>
+                #ROWS#
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="message_board_title_flex">Automation Rule Details</div>
+<div class="message_paper_board_flex base_font_flex">
+    <div id="details" style="max-height:500px; overflow:auto;">
+        #DETAILS#
+    </div>
+</div>

@@ -33,7 +33,7 @@ Advanced Tokens:
 - ``Child``, holds information about each child that can be accessed with additional input arguments.
 
 ### Using Custom Tokens:
-- SMAPI must be installed, minimum version is 3.12
+- SMAPI must be installed, minimum version is 4.0
 - Ensure Custom Tokens is listed as a dependency in your content pack
 - Tokens used must be prefixed with the mod's unique ID e.g TheMightyAmondee.CustomTokens/MineLevel
 - Many tokens require an update rate faster than CP's default as they can change throughout the day

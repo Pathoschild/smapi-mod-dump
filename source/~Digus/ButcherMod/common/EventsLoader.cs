@@ -16,13 +16,15 @@ using System.Threading.Tasks;
 using AnimalHusbandryMod.animals;
 using AnimalHusbandryMod.animals.events;
 using AnimalHusbandryMod.farmer;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace AnimalHusbandryMod.common
 {
-    public class EventsLoader : IAssetEditor
+    public class EventsLoader
     {
         private static readonly List<CustomEvent> CustomEvents = new List<CustomEvent>();
 
@@ -30,21 +32,19 @@ namespace AnimalHusbandryMod.common
 
         private const char EventKeySeparator = ':';
 
-        public bool CanEdit<T>(IAssetInfo asset)
+        public void Edit(object sender, AssetRequestedEventArgs args)
         {
-            return asset.AssetNameEquals("Data\\Events\\Town");
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("Data\\Events\\Town"))
+            if (args.NameWithoutLocale.IsEquivalentTo("Data/Events/Town"))
             {
-                var data = asset.AsDictionary<string, string>().Data;
-                foreach (CustomEvent customEvent in CustomEvents)
+                args.Edit(asset =>
                 {
-                    data[customEvent.Key] = customEvent.Script;
-                }
-                CheckSyncEvent(data);
+                    var data = asset.AsDictionary<string, string>().Data;
+                    foreach (CustomEvent customEvent in CustomEvents)
+                    {
+                        data[customEvent.Key] = customEvent.Script;
+                    }
+                    CheckSyncEvent(data);
+                });
             }
         }
 
@@ -59,7 +59,7 @@ namespace AnimalHusbandryMod.common
                     CustomEvent customEvent = AnimalContestEventBuilder.CreateEvent(SDate.Now());
                     SyncEvent(customEvent);
                     CustomEvents.Add(customEvent);
-                    DataLoader.Helper.Content.InvalidateCache("Data\\Events\\Town");
+                    DataLoader.Helper.GameContent.InvalidateCache("Data/Events/Town");
                     Game1.showGlobalMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", DataLoader.i18n.Get("AnimalContest.Message.Name")) + Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2637"));
                 }
                 else
@@ -77,7 +77,7 @@ namespace AnimalHusbandryMod.common
             {
                 CustomEvents.ForEach(e =>
                 {
-                    var id = Convert.ToInt32(e.Key.Split('/')[0]);
+                    var id = e.Key.Split('/')[0];
                     if (!Game1.player.eventsSeen.Contains(id))
                     {
                         if (FarmerLoader.FarmerData.AnimalContestData.Find(i => i.EventId == id) is var
@@ -96,7 +96,7 @@ namespace AnimalHusbandryMod.common
             {
                 if (k == "TempEventScript")
                 {
-                    DataLoader.Helper.Content.InvalidateCache("Data\\Events\\Town");
+                    DataLoader.Helper.GameContent.InvalidateCache("Data/Events/Town");
                 }
             };
         }

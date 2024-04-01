@@ -22,6 +22,7 @@ using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
 using HarmonyLib;
 using StardewModdingAPI.Utilities;
+using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod.animals
 {
@@ -227,15 +228,10 @@ namespace AnimalHusbandryMod.animals
                         : (long) Game1.player.UniqueMultiplayerID)
                 {
                     Name = name,
-                    displayName = name,
-                    home = building
+                    displayName = name
                 };
                 farmAnimal.parentId.Value = parentAnimal.Value.myID.Value;
-                farmAnimal.homeLocation.Value = new Vector2((float) building.tileX.Value, (float) building.tileY.Value);
-                farmAnimal.setRandomPosition(farmAnimal.home.indoors.Value);
-                AnimalHouse animalHouse = (building.indoors.Value as AnimalHouse);
-                animalHouse?.animals.Add(farmAnimal.myID.Value, farmAnimal);
-                animalHouse?.animalsThatLiveHere.Add(farmAnimal.myID.Value);
+                ((AnimalHouse)building.indoors.Value).adoptAnimal(farmAnimal);
 
                 bool? allowReproductionBeforeInsemination = parentAnimal.Value.GetAllowReproductionBeforeInsemination();
                 parentAnimal.Value.allowReproduction.Value = allowReproductionBeforeInsemination ?? parentAnimal.Value.allowReproduction.Value;

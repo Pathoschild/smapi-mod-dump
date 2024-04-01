@@ -6,9 +6,9 @@ mods:
    Passive Friendship
 
 latest commit:
-   commit d914ead074c8438ebdf2bd865d1076781c366db9
-   Author: Jude Vargas <judevargas222@gmail.com>
-   Date:   Thu Jul 22 02:08:53 2021 -0400
+   commit 79b0c0e5bd35265e9d2f83d0e4adafbe59f90dee
+   Author: Jude Vargas <judevargas22@gmail.com>
+   Date:   Tue Mar 26 01:46:36 2024 -0400
    
-       Potentially fixed a bug to allow player to gain friendship with non-vanilla NPCs
+       Create README.md
    

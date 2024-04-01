@@ -305,7 +305,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     });
                 }
             }
-            Game1.currentLocation.removeTemporarySpritesWithID(98765f);
+            Game1.currentLocation.removeTemporarySpritesWithID(98765);
             TimeUntilSqwawk = 1f;
         }
 

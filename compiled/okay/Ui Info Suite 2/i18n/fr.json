@@ -1,0 +1,76 @@
+{
+  // GUI - Game Menu
+  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
+  //GUI - Billboard
+  "Billboard": "Tableau d'annonces",
+  "Calendar": "Calendrier",
+  //GUI - Seed shop
+  "HarvestPrice": "Valeur de la récolte",
+  //Production
+  "Days": "jours",
+  "Hours": "heures",
+  "Minutes": "minutes",
+  //Harvest
+  "DaysToMature": "jours pour mûrir",
+  "ReadyToHarvest": "Prêt à récolter!",
+  //Display icons - General
+  "TodaysRecipe": "Recette d'aujourd'hui: ",
+  "TravelingMerchantIsInTown": "Le marchand itinérant est en ville!",
+  "RainNextDay": "Il va pleuvoir demain",
+  "ThunderstormNextDay": "Il va y avoir un orage demain",
+  "SnowNextDay": "Il va neiger demain",
+  "IslandRainNextDay": "Il va pleuvoir demain",
+  "IslandThunderstormNextDay": "Il va y avoir un orage demain",
+  "DaysUntilToolIsUpgraded": "{0} jour(s) avant que {1} ne termine de s'améliorer",
+  "ToolIsFinishedBeingUpgraded": "{0} est terminé!",
+  "NpcBirthday": "Anniversaire de {0}",
+  "RobinBuildingStatus": "Robin aura fini votre nouveau batiment dans {0} jour(s)",
+  "RobinHouseUpgradeStatus": "Robin aura fini d'améliorer ta maison dans {0} jour(s)",
+  // Display icons - Foragables
+  "CanFindSalmonberry": "Vous pouvez trouver des baies rouges aujourd'hui",
+  "CanFindBlackberry": "Vous pouvez trouver des baies noires aujourd'hui",
+  "CanFindHazelnut": "Vous pouvez trouver des noisettes sur les arbres aujourd'hui ",
+  //Display icons - Luck
+  "DailyLuckValue": "Ta chance du jour est {0}",
+  "FeelingLucky": "Tu te sens chanceux !!",
+  "LuckyButNotTooLucky": "Tu te sens chanceux... mais pas trop",
+  "NotFeelingLuckyAtAll": "Tu ne te sens pas du tout chanceux...",
+  "MaybeStayHome": "Tu devrais peut etre rester à la maison aujourd'hui...",
+  "LuckStatus1": "Tu te sens chanceux!",
+  "LuckStatus2": "Tu te sens un peu chanceux",
+  "LuckStatus3": "La journée est entre tes mains",
+  "LuckStatus4": "Les esprits sont plutôt neutre aujourd'hui",
+  "LuckStatus5": "La chance n'est pas avec toi aujourd'hui",
+  "LuckStatus6": "Tu ferais mieux de rester à la maison aujourd'hui",
+  //Settings - General
+  "ShowLevelUpAnimation": "Montrer l'animation de gain de niveau",
+  "ShowExperienceBar": "Montrer la barre d'exp.",
+  "AllowExperienceBarToFadeOut": "Permettre à la barre d'exp. de disparaître",
+  "ShowExperienceGain": "Montrer le gain d'exp.",
+  "ShowLocationOfTownsPeople": "Montrer les habitants sur la carte",
+  "ShowAnimalsNeedPets": "Montrer les animaux à câliner",
+  "HideAnimalPetOnMaxFriendship": "Cacher lorsque l'amitié est à son maximum",
+  "ShowCropAndBarrelTooltip": "Montrer le temps des récoltes/barils",
+  "ShowItemEffectRanges": "Montrer portée épouvantails/arroseurs",
+  "ShowExtraItemInformation": "Montrer informations supp. des objets",
+  "ShowHarvestPricesInShop": "Montrer le prix des récoles en magasin",
+  //Settings - Tabs info
+  "DisplayCalendarAndBillboard": "Montrer Calendrier/Tableau d'annonces",
+  "ShowHeartFills": "Montrer le remplissage des coeurs",
+  "ShowTodaysGifts": "Montrer les cadeaux offerts aujourd'hui",
+  //Settings - Show icons
+  "ShowBirthdayIcon": "Montrer l'icône d'anniversaire",
+  "HideBirthdayIfFullFriendShip": "Cacher lorsque l'amitié est à son maximum",
+  "ShowTravelingMerchant": "Montrer le marchand itinérant",
+  "HideMerchantWhenVisited": "Cacher pendant la visite",
+  "ShowRainyDay": "Montrer les jours de pluie",
+  "ShowWhenNewRecipesAreAvailable": "Montrer quand nouvelles recettes disp.",
+  "ShowToolUpgradeStatus": "Montrer état de l'amélioration des outils",
+  "ShowRobinBuildingStatusIcon": "Montrer l'avancée du chantier de Robin",
+  "ShowLuckIcon": "Montrer l'icône de chance",
+  "ShowExactValue": "Montrer la valeur exacte",
+  "ShowSeasonalBerry": "Montrer les cultures de saison",
+  "ShowSeasonalBerryHazelnut": "Montrer les noisettes sur les arbres",
+  //Others
+  "LevelUp": "Gain de niveau"
+}

@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/StephHoel/ModsStardewValley
+   Git: https://github.com/StephHoel/ModsStardewValley.git
+
+mods:
+   Add Money
+   Auto Water
+   Configure Machine Speed
+
+latest commit:
+   commit e57e8ff578f993192e66d9a23fb461f0a9f6ba57
+   Author: Steph Hoel <steph.hoel@gmail.com>
+   Date:   Sun Mar 31 21:28:19 2024 -0300
+   
+       v1.1.11
+   

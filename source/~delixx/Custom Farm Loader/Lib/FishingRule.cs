@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+** Source repository: https://gitlab.com/delixx/stardew-valley/custom-farm-loader
 **
 *************************************************/
 
@@ -19,6 +19,7 @@ using StardewValley;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley.Tools;
+using StardewValley.GameData.Locations;
 
 namespace Custom_Farm_Loader.Lib
 {
@@ -44,7 +45,7 @@ namespace Custom_Farm_Loader.Lib
         public string LocationName = "Farm";
 
         public bool ChangedCatchOceanCrabPotFish = false;
-
+        private List<Fish> RewardPool = null;
 
         public static List<FishingRule> parseFishingRuleJsonArray(JProperty fishingRuleArray, IManifest manifest)
         {
@@ -105,9 +106,33 @@ namespace Custom_Farm_Loader.Lib
 
             return fishingRule;
         }
-        public StardewValley.Object getFish(bool isUsingMagicBait, float millisecondsAfterNibble, string bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
+
+        public List<Fish> getRewardPool()
         {
-            var validFish = Fish.FindAll(el => el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who));
+            if (RewardPool is not null)
+                return RewardPool;
+            RewardPool = new();
+
+            Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
+
+            foreach (var f in Fish) {
+                f.updateType();
+
+                if(f.Type == FishType.Location) {
+                    RewardPool.Add(f);
+                    continue;
+                }
+
+                f.applyDefaultIfNotChanged();
+                RewardPool.Add(f);
+            }
+
+            return RewardPool;
+        }
+
+        public Item getFish(bool isUsingMagicBait, float millisecondsAfterNibble, string bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
+        {
+            var validFish = getRewardPool().FindAll(el => el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who));
             validFish = UtilityMisc.PickSomeInRandomOrder(validFish, validFish.Count).ToList();
             string whichFish = "";
             FishType fishType = FishType.Item;
@@ -119,10 +144,24 @@ namespace Custom_Farm_Loader.Lib
                 if (fish.ChanceModifiedByLuck)
                     chance += who.DailyLuck;
 
+                bool beginnersRod = who != null && who.CurrentTool != null && who.CurrentTool is FishingRod && who.CurrentTool.UpgradeLevel == 1;
+
+                if (fish.Type == FishType.Location) {
+                    if (Game1.random.NextDouble() > chance)
+                        continue;
+                    CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+
+                    //Trying to prevent infinite recursion, even though it should never get to this
+                    if (customFarm.FishingRules.Any(e => e.LocationName == fish.Id))
+                        continue;
+
+                    return GameLocation.GetFishFromLocationData(fish.Id, new Vector2(0,0), waterDepth, who, beginnersRod, false);
+                }
+
                 if (chance > 0.9)
                     chance = 0.9;
 
-                bool beginnersRod = who != null && who.CurrentTool != null && who.CurrentTool is FishingRod && who.CurrentTool.UpgradeLevel == 1;
+                
                 if (beginnersRod) {
                     chance *= 1.1;
 

@@ -6,9 +6,9 @@ mods:
    Loved Labels Redux
 
 latest commit:
-   commit 07aa40acbcc06eadb59947c0a3d79cf867ef4ef7
+   commit c87c8561abb88ef72fa91db8cf9dc6b7db40db8e
    Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Sat Sep 2 13:42:16 2023 +0100
+   Date:   Fri Mar 29 11:08:47 2024 +0000
    
-       Fix logs
+       Added translations and updated for 1.6
    

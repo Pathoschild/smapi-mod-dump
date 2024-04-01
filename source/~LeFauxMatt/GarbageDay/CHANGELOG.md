@@ -8,12 +8,24 @@ for queries and analysis.**
 
 # Garbage Day Change Log
 
-## 3.0.2 (Unreleased)
+## 3.1.2 (Unreleased)
+
+### Fixed
+
+* Fixed error that occurs when custom maps are installed.
+* Fixed api integration with Toolbar Icons.
+
+## 3.1.1 (March 19, 2024)
 
 ### Changed
 
-* `garbage_clear` command removes all garbage cans placed by this mod.
-* Internal refactoring.
+* Rebuild against final SDV 1.6 and SMAPI 4.0.0.
+
+## 3.1.0 (March 19, 2024)
+
+### Changed
+
+* Updated for SDV 1.6 and .NET 6
 
 ## 3.0.1 (August 21, 2022)
 

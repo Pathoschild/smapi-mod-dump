@@ -14,6 +14,8 @@ A mod for the game Stardew Valley, allowing players to use a custom forage track
 * [Customization](#customization)
   * [Changing settings](#changing-settings)
   * [Customizing the tracker icon](#customizing-the-tracker-icon)
+* [Translation](#translation)
+	* [Available Languages](#available-languages)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -60,3 +62,15 @@ To modify the custom tracker icon, edit or replace **tracker.png** in the `[CP] 
 To modify the background drawn behind forage icons, edit or replace **forage_background.png** in the `[CP] CustomTracker\assets` folder.
 
 Note that the background image is expected to be 16 x 16 pixels. Backgrounds with different sizes will not center the forage icon correctly.
+
+## Translation
+Custom Tracker supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
+
+The mod will load a file from the `CustomTracker/i18n` folder that matches the current language code. If no matching translation exists, it will use [`default.json`](https://github.com/Esca-MMC/CustomTracker/blob/master/CustomTracker/i18n/default.json).
+
+See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) page for more information. Please feel free to submit translation files through GitHub, Nexus Mods, ModDrop, or Discord.
+
+### Available Languages
+Language | File | Contributor(s)
+---------|------|------------
+English | [default.json](https://github.com/Esca-MMC/CustomTracker/blob/master/CustomTracker/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)

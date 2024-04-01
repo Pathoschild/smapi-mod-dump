@@ -9,19 +9,18 @@
 *************************************************/
 
 using System;
-using StardewValley.Objects;
-using System.Collections;
 using System.Collections.Generic;
-using StardewValley.Locations;
 using StardewValley;
 using System.Linq;
-using StardewModdingAPI;
+using StardewValley.GameData.Shops;
+using StardewValley.Internal;
 
 namespace Shoplifter
 {	
 	public class ShopStock
 	{
-		public static ArrayList CurrentStock = new ArrayList();
+		private readonly static List<Item> BasicStock = new List<Item>();
+        private readonly static List<Item> RareStock = new List<Item>();
 
         /// <summary>
         /// Generates a random list of stock for the given shop
@@ -30,339 +29,135 @@ namespace Shoplifter
         /// <param name="maxquantity">The maximum quantity of each stock</param>
         /// <param name="which">The shop to generate stock for</param>
         /// <returns>The generated stock list</returns>
-        public static Dictionary<ISalable, int[]> generateRandomStock(int maxstock, int maxquantity, string which)
-		{           
-            GameLocation location = Game1.currentLocation;
-			Dictionary<ISalable, int[]> stock = new Dictionary<ISalable, int[]>();
-			HashSet<int> stockIndices = new HashSet<int>();
+        public static Dictionary<ISalable, ItemStockInformation> generateRandomStock(int maxstock, int maxquantity, string which, float rarestockchance)
+		{
+            //if (!System.Diagnostics.Debugger.IsAttached) { System.Diagnostics.Debugger.Launch(); }
+            Dictionary<ISalable, ItemStockInformation> stock = new Dictionary<ISalable, ItemStockInformation>();
 			Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + ModEntry.PerScreenShopliftCounter.Value);
 			int stocklimit = random.Next(1, maxstock + 1);
-			int index;
+            var shopstock = ShopBuilder.GetShopStock(which);
+            var addrarestockchance = random.NextDouble();
 
-			switch (which)
+            if (shopstock != null)
             {
-				// Pierre's shop
-				case "SeedShop":
-					foreach (var shopstock in (location as SeedShop).shopStock())
-					{
-                        // Stops illegal stock being added, will result in an error item
-                        if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
+                foreach (var stockinfo in shopstock)
+                {
+                    var stockobject = stockinfo.Key as StardewValley.Object;
 
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-                            if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-                            {
-                                var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-                            else
-                            {
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
-                        }
-						
-					}
-
-                    // Grass starter if nothing available
-                    if (CurrentStock.Count == 0)
+                    if (stockobject == null || stockobject.QualifiedItemId.StartsWith("(O)") == false || stockobject.IsRecipe == true || stockobject.bigCraftable.Value == true)
                     {
-                        CurrentStock.Add(297);
-                    }
-                    break;
+                        var stockitem = stockinfo.Key as Item;
 
-				// Willy's shop
-				case "FishShop":
-					foreach (var shopstock in Utility.getFishShopStock(Game1.player))
-					{
+                        if (ModEntry.IDGAItem?.GetDGAItemId(stockitem) != null)
+                        {
+                            var id = ModEntry.IDGAItem?.SpawnDGAItem(ModEntry.IDGAItem.GetDGAItemId(stockitem)) as ISalable as Item ?? stockitem;
 
-						// Stops illegal stock being added, will result in an error item
-						if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
-
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-                            if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-                            {
-                                var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-                            else
-                            {
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
+                            RareStock.Add(id);
                         }
-                    }
-
-                    // Trout soup if nothing available
-                    if (CurrentStock.Count == 0)
-                    {
-                        CurrentStock.Add(219);
-                    }
-                    break;
-
-				// Robin's shop
-				case "Carpenters":
-					foreach (var shopstock in Utility.getCarpenterStock())
-					{
-                        // Stops illegal stock being added, will result in an error item
-                        if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
-
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-                            if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-                            {
-                                var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-                            else
-                            {
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
+                        else
+                        {
+                            RareStock.Add(stockitem);
                         }
                         
+                        continue;
                     }
-                    // Wood if nothing available
-                    if (CurrentStock.Count == 0)
+
+                    // Add object to array
+                    if (stockobject != null)
                     {
-                        CurrentStock.Add(388);
-                    }
-                    break;
-
-				// Marnie's shop
-				case "AnimalShop":
-					foreach (var shopstock in Utility.getAnimalShopStock())
-					{
-						// Stops illegal stock being added, will result in an error item
-						if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
-
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-                            if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-                            {
-                                var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-                            else
-                            {
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
+                        if (stockobject.Category < -94)
+                        {
+                            RareStock.Add(stockobject);
+                            continue;
                         }
-					}
-                    // Hay if nothing available
-                    if (CurrentStock.Count == 0)
-                    {
-                        CurrentStock.Add(178);
-                    }
-                    break;
 
-				// Clint's shop
-				case "Blacksmith":
-					foreach (var shopstock in Utility.getBlacksmithStock())
-					{
+                        if (ModEntry.IDGAItem?.GetDGAItemId(stockobject) != null)
+                        {
+                            var id = ModEntry.IDGAItem?.SpawnDGAItem(ModEntry.IDGAItem.GetDGAItemId(stockobject)) as ISalable as Item ?? stockobject;
 
-						// Stops illegal stock being added, will result in an error item
-						if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
-
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-							if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-							{
-								var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-							else
-							{
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
-						}
-					}
-                    // Coal if nothing available
-                    if (CurrentStock.Count == 0)
-                    {
-                        CurrentStock.Add(382);
-                    }
-                    break;
-
-				// Gus' shop
-				case "Saloon":
-					foreach (var shopstock in Utility.getSaloonStock())
-					{
-
-						// Stops illegal stock being added, will result in an error item
-						if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
-
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-                            if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-                            {
-                                var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-                            else
-                            {
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
+                            BasicStock.Add(id);
                         }
-					}
-                    // Beer if nothing available
-                    if (CurrentStock.Count == 0)
-                    {
-                        CurrentStock.Add(346);
-                    }
-                    break;
 
-				// Harvey's shop
-				case "HospitalShop":
-					foreach (var shopstock in Utility.getHospitalStock())
-					{
-
-						// Stops illegal stock being added, will result in an error item
-						if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
-						{
-							continue;
-						}
-
-						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable.Value == false)
-						{
-                            if (ModEntry.IDGAItem?.GetDGAItemId(shopstock.Key as StardewValley.Object) != null)
-                            {
-                                var id = ModEntry.IDGAItem.GetDGAItemId(shopstock.Key as StardewValley.Object);
-
-                                CurrentStock.Add(id);
-                            }
-
-                            else
-                            {
-                                index = (shopstock.Key as StardewValley.Object).ParentSheetIndex;
-
-                                CurrentStock.Add(index);
-                            }
+                        else
+                        {
+                            BasicStock.Add(stockobject);
                         }
-					}
-                    // Muscle Remedy if nothing available
-                    if (CurrentStock.Count == 0)
-                    {
-                        CurrentStock.Add(351);
                     }
-                    break;
-				// Icecream Stand
-				case "IceCreamStand":
-					CurrentStock.Add(233);
-                    break;
+                }
+            }           
 
-				// Sandy's shop
-				case "SandyShop":
-
-                    // Add object id to array
-                    CurrentStock.Add(802);
-                    CurrentStock.Add(478);
-                    CurrentStock.Add(486);
-                    CurrentStock.Add(494);
-
-                    switch (Game1.dayOfMonth % 7)
-                    {
-                        case 0:
-                            CurrentStock.Add(233);
-                            break;
-                        case 1:
-                            CurrentStock.Add(88);
-                            break;
-                        case 2:
-                            CurrentStock.Add(90);
-                            break;
-                        case 3:
-                            CurrentStock.Add(749);
-                            break;
-                        case 4:
-                            CurrentStock.Add(466);
-                            break;
-                        case 5:
-                            CurrentStock.Add(340);
-                            break;
-                        case 6:
-                            CurrentStock.Add(371);
-                            break;
-                    }
-                    break;
-				default:
-					CurrentStock.Add(340);
-					break;
-			}
-			
-			// Add generated stock to store from array
-			for (int i = 0; i < stocklimit; i++)
-			{
-                int quantity = random.Next(1, maxquantity + 1);
-				var item = random.Next(0, CurrentStock.Count);
-
-				if (CurrentStock.Count == 0)
-				{
-					break;
-				}
-
-				if (CurrentStock[item] is String && ModEntry.IDGAItem.SpawnDGAItem(CurrentStock[item].ToString()) as StardewValley.ISalable as Item != null)
-				{
-					var dgaitem = (ModEntry.IDGAItem.SpawnDGAItem(CurrentStock[item].ToString()) as StardewValley.ISalable) as Item;
-					dgaitem.Stack = quantity;
-                    Utility.AddStock(stock, dgaitem, 0, quantity);
-					CurrentStock.RemoveAt(item);
-					continue;
-				}
-
-                Utility.AddStock(stock, new StardewValley.Object((int)CurrentStock[item], quantity), 0, quantity);
-                CurrentStock.RemoveAt(item);
+            if (BasicStock.Count == 0)
+            {
+                switch (which)
+                {
+                    case "SeedShop":
+                        // Grass starter if nothing available
+                        BasicStock.Add(new StardewValley.Object("297", 1));
+                        break;
+                    case "FishShop":
+                        // Trout soup if nothing available
+                        BasicStock.Add(new StardewValley.Object("219", 1));
+                        break;
+                    case "Carpenter":
+                        // Wood if nothing available
+                        BasicStock.Add(new StardewValley.Object("388", 1));
+                        break;
+                    case "Hospital":
+                        // Muscle Remedy if nothing available
+                        BasicStock.Add(new StardewValley.Object("351", 1));
+                        break;
+                    case "AnimalShop":
+                        // Hay if nothing available
+                        BasicStock.Add(new StardewValley.Object("178", 1));
+                        break;
+                    case "Saloon":
+                        // Beer if nothing available
+                        BasicStock.Add(new StardewValley.Object("346", 1));
+                        break;
+                    case "Blacksmith":
+                        // Coal if nothing available
+                        BasicStock.Add(new StardewValley.Object("382", 1));
+                        break;
+                    case "IceCreamStand":
+                        // Icecream if nothing available
+                        BasicStock.Add(new StardewValley.Object("233", 1));
+                        break;
+                    case "Sandy":
+                        // Cactus seeds if nothing available
+                        BasicStock.Add(new StardewValley.Object("802", 1));                       
+                        break;
+                        // Should all else fail, add banana sapling as stock (nice)
+                    default:
+                        BasicStock.Add(new StardewValley.Object("69", 1));
+                        break;
+                }
+                
             }
 
-			// Clear stock array
-			CurrentStock.Clear();
+            // Add generated stock to store from array
+            for (int i = 0; i < stocklimit; i++)
+			{
+                int quantity = random.Next(1, maxquantity + 1);
+				var itemindex = random.Next(0, BasicStock.Count);
+
+                if (BasicStock.Count == 0)
+                {
+                    break;
+                }
+                stock.Add(BasicStock[itemindex], new ItemStockInformation(0, quantity, null, null, LimitedStockMode.None));
+                BasicStock.RemoveAt(itemindex);
+            }
+
+            if (RareStock.Count > 0 && addrarestockchance <= rarestockchance)
+            {
+                var itemindex = random.Next(0, RareStock.Count);               
+
+                stock.Add(RareStock[itemindex], new ItemStockInformation(0, 1, null, null, LimitedStockMode.None));
+            }
+
+			// Clear stock list
+			BasicStock.Clear();
+            RareStock.Clear();
 
 			return stock;
 		}

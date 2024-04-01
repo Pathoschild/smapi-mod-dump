@@ -9,6 +9,11 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.6.0
+Released on 20 March 2024 for SMAPI 4.0.0 or later. Updated by abhiaagarwal01.
+
+* Updated for Stardew Valley 1.6.0
+
 ## 1.0.4
 Released 23 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

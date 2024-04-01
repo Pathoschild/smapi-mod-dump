@@ -34,15 +34,15 @@ namespace Spawn_Monsters
             Rectangle boundingBox = GetBoundingBox();
             if (Sprite.currentFrame < 4) {
                 boundingBox.Inflate(128, 128);
-                if (!IsInvisible || boundingBox.Contains(Player.getStandingX(), Player.getStandingY())) {
+                if (!IsInvisible || boundingBox.Contains(Player.getStandingPosition().X, Player.getStandingPosition().Y)) {
                     if (IsInvisible) {
-                        if (currentLocation.map.GetLayer("Back").Tiles[(int)Player.getTileLocation().X, (int)Player.getTileLocation().Y].Properties.ContainsKey("NPCBarrier") || !currentLocation.map.GetLayer("Back").Tiles[(int)Player.getTileLocation().X, (int)Player.getTileLocation().Y].TileIndexProperties.ContainsKey("Diggable") && currentLocation.map.GetLayer("Back").Tiles[(int)Player.getTileLocation().X, (int)Player.getTileLocation().Y].TileIndex != 0) {
+                        if (currentLocation.map.GetLayer("Back").Tiles[(int)Player.Tile.X, (int)Player.Tile.Y].Properties.ContainsKey("NPCBarrier") || !currentLocation.map.GetLayer("Back").Tiles[(int)Player.Tile.X, (int)Player.Tile.Y].TileIndexProperties.ContainsKey("Diggable") && currentLocation.map.GetLayer("Back").Tiles[(int)Player.Tile.X, (int)Player.Tile.Y].TileIndex != 0) {
                             return;
                         }
 
                         Position = new Vector2(Player.Position.X, Player.Position.Y + Player.Sprite.SpriteHeight - Sprite.SpriteHeight);
                         currentLocation.localSound(nameof(StardewValley.Monsters.Duggy));
-                        Position = Player.getTileLocation() * 64f;
+                        Position = Player.Tile * 64f;
                     }
                     IsInvisible = false;
                     Sprite.interval = 100f;
@@ -66,7 +66,7 @@ namespace Spawn_Monsters
 
             IsInvisible = true;
             Sprite.currentFrame = 0;
-            Vector2 tileLocation = getTileLocation();
+            Vector2 tileLocation = Tile;
             //this.currentLocation.map.GetLayer("Back").Tiles[(int)tileLocation.X, (int)tileLocation.Y].TileIndex = 0;
             //this.currentLocation.removeEverythingExceptCharactersFromThisTile((int)tileLocation.X, (int)tileLocation.Y);
             DamageToFarmer = 0;

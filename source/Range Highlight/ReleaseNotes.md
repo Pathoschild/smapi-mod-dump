@@ -9,6 +9,49 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 4.1.1
+
+### User-visible Changes
+
+Added French translation from GitHub user Tenebrosful
+
+## Version 4.1.0
+
+### User-visible Changes
+
+* Added support for the Mushroom Log
+* Added Chinese translation, thanks to nexusmods user zephyrus2002
+
+## Version 4.0.2
+
+### User-visible Changes
+
+Fixed log error spam for items with a null Name when using Better Beehouses.
+
+## Version 4.0.1
+
+### User-visible Changes
+
+Fixed crash with Better Beehouses.
+
+## Version 4.0.0
+
+Updated for Stardew Valley 1.6 and SMAPI 4.0.
+
+### User-visible Changes
+
+* Lots of internal stuff was updated for SDV 1.6, so integrations with other
+  mods may be broken.
+* Added configuration option to hide held bomb ranges when there is a currently
+  "ticking" already-placed bomb.
+
+### API Changes
+
+* Removed deprecated APIs
+* A match from one highlighter no longer stops matching on other highlighters.
+* Item highlighters no longer take arguments for item ID and name.
+
+
 ## Version 3.6.1
 
 ### User-visible changes
@@ -16,6 +59,7 @@ for queries and analysis.**
 * Fix integration with Better Junimos when using its "Junimos work for wages"
   option.  (This also makes in-game changes to its configuration for junimo
   range reflected immediately instead of requiring a return to the title screen.)
+
 
 ## Version 3.6.0
 

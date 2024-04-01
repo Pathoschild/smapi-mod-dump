@@ -127,6 +127,19 @@ namespace ItemBags
             }
         }
 
+        //  Failsafe in case user has a bag for modded items in their inventory, but they've deleted the modded bag's Type Definition.
+        //  This can cause crashes due to null reference exceptions in overridden methods (such as salePrice(bool ignoreProfitMargins = false) )
+        private static bool ValidateBag(ItemBag Bag)
+        {
+            if (Bag is BoundedBag BoundedBag && Bag is not BundleBag && BoundedBag.TypeInfo == null)
+            {
+                BoundedBag.TryRemoveInvalidItems(Game1.player.Items, Game1.player.MaxItems);
+                return false;
+            }
+            else
+                return true;
+        }
+
         private static void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -196,14 +209,16 @@ namespace ItemBags
                                 Game1.player.addItemToInventory(Game1.player.CursorSlotItem, ClickedItemIndex);
                                 Game1.player.CursorSlotItem = null;
 
-                                DraggedBag.OpenContents(Game1.player.Items, Game1.player.MaxItems);
+                                if (ValidateBag(DraggedBag))
+                                    DraggedBag.OpenContents(Game1.player.Items, Game1.player.MaxItems);
                             }
                         }
                         //  Right-click an ItemBag to open it
                         else if ((e.Button == SButton.MouseRight || (IsGamepadInput && GamepadControls.IsMatch(GamepadButtons, GamepadControls.Current.OpenBagFromInventory)))
                             && ClickedItem is ItemBag ClickedBag && Game1.player.CursorSlotItem == null)
                         {
-                            ClickedBag.OpenContents(Game1.player.Items, Game1.player.MaxItems);
+                            if (ValidateBag(ClickedBag))
+                                ClickedBag.OpenContents(Game1.player.Items, Game1.player.MaxItems);
                         }
 
                         //  Handle dropping an item into a bag from the Inventory menu
@@ -215,7 +230,7 @@ namespace ItemBags
                                 IB.MoveToBag(Obj, Qty, out int MovedQty, true, Game1.player.Items);
 
                                 if (e.Button == SButton.MouseLeft)
-                                // || (MovedQty > 0 && Obj.Stack == 0) // Handle moving the last quantity with a right-click
+                                    //|| (MovedQty > 0 && Obj.Stack == 0)) // Handle moving the last quantity with a right-click
                                 {
                                     //  Clicking the bag will have made it become the held CursorSlotItem, so queue up an action that will swap them back on next game tick
                                     QueueCursorSlotIndex = ClickedItemIndex;
@@ -234,7 +249,7 @@ namespace ItemBags
                     {
                         try
                         {
-                            List<ClickableComponent> toolbarButtons = typeof(Toolbar).GetField("buttons", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(toolbar) as List<ClickableComponent>;
+                            List<ClickableComponent> toolbarButtons = typeof(Toolbar).GetField("buttons", BindingFlags.Public | BindingFlags.Instance).GetValue(toolbar) as List<ClickableComponent>;
                             if (toolbarButtons != null)
                             {
                                 //  Find the slot on the toolbar that they clicked, if any
@@ -255,7 +270,7 @@ namespace ItemBags
 
                                         //  Get the corresponding Item from the player's inventory
                                         Item item = Game1.player.Items[ActualIndex];
-                                        if (item is ItemBag IB)
+                                        if (item is ItemBag IB && ValidateBag(IB))
                                         {
                                             IB.OpenContents(Game1.player.Items, Game1.player.MaxItems);
                                         }
@@ -278,7 +293,7 @@ namespace ItemBags
                         if (Component != null && Component.bounds.Contains(CursorPos))
                         {
                             Item ClickedInvItem = i < 0 || i >= IGM.inventory.actualInventory.Count ? null : IGM.inventory.actualInventory[i];
-                            if (ClickedInvItem is ItemBag IB)
+                            if (ClickedInvItem is ItemBag IB && ValidateBag(IB))
                             {
                                 IB.OpenContents(IGM.inventory.actualInventory, Game1.player.MaxItems);
                             }
@@ -298,7 +313,7 @@ namespace ItemBags
                             if (Component != null && Component.bounds.Contains(CursorPos))
                             {
                                 Item ClickedChestItem = i < 0 || i >= IGM.ItemsToGrabMenu.actualInventory.Count ? null : IGM.ItemsToGrabMenu.actualInventory[i];
-                                if (ClickedChestItem is ItemBag IB)
+                                if (ClickedChestItem is ItemBag IB && ValidateBag(IB))
                                 {
                                     IB.OpenContents(IGM.ItemsToGrabMenu.actualInventory, IGM.ItemsToGrabMenu.capacity);
                                 }

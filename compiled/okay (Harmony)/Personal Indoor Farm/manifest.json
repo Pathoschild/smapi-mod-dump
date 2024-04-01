@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Personal Indoor Farm",
+  "Author": "DeLiXx",
+  "Version": "1.0.1",
+  "Description": "Framework for personal indoor farms",
+  "UniqueID": "DLX.PIF",
+  "EntryDll": "PersonalIndoorFarm.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:20537" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

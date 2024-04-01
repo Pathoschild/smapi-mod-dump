@@ -1,0 +1,665 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EastScarp</name>
+    </assembly>
+    <members>
+        <member name="T:EastScarp.AssetManager">
+            <summary>
+            Manages assets for this mod.
+            </summary>
+        </member>
+        <member name="P:EastScarp.AssetManager.EmojiOverride">
+            <summary>
+            Gets the assetname used to register emoji overrides.
+            </summary>
+        </member>
+        <member name="P:EastScarp.AssetManager.Untimed">
+            <summary>
+            Gets the orders to make untimed.
+            </summary>
+        </member>
+        <member name="P:EastScarp.AssetManager.Data">
+            <summary>
+            Gets the location extension data.
+            </summary>
+        </member>
+        <member name="M:EastScarp.AssetManager.Init(StardewModdingAPI.IGameContentHelper)">
+            <summary>
+            Initializes this asset manager.
+            </summary>
+            <param name="parser">game content helper.</param>
+        </member>
+        <member name="M:EastScarp.AssetManager.Apply(StardewModdingAPI.Events.AssetRequestedEventArgs)">
+            <inheritdoc cref="E:StardewModdingAPI.Events.IContentEvents.AssetRequested"/>
+        </member>
+        <member name="M:EastScarp.AssetManager.Invalidate(System.Collections.Generic.IReadOnlySet{StardewModdingAPI.IAssetName})">
+            <inheritdoc cref="E:StardewModdingAPI.Events.IContentEvents.AssetsInvalidated"/>
+        </member>
+        <member name="M:EastScarp.AssetManager.GetDurationOverride">
+            <summary>
+            Gets the duration override dictionary.
+            </summary>
+            <returns>The duration override dictionary.</returns>
+        </member>
+        <member name="M:EastScarp.AssetManager.GetUntimed">
+            <summary>
+            Gets the untiled special order quest keys I manage.
+            </summary>
+            <returns>Hashset of quest keys.</returns>
+        </member>
+        <member name="T:EastScarp.Extensions">
+            <summary>
+            The extensions for this mod.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Extensions.ClampMap(Microsoft.Xna.Framework.Rectangle,StardewValley.GameLocation)">
+            <summary>
+            Given a Rectangle area, clamps it to the current map.
+            </summary>
+            <param name="rectangle">rectangle.</param>
+            <param name="location">map to clamp to.</param>
+            <returns>clamped rectangle.</returns>
+        </member>
+        <member name="M:EastScarp.Extensions.LogError(StardewModdingAPI.IMonitor,System.String,System.Exception)">
+            <summary>
+            Logs an exception.
+            </summary>
+            <param name="monitor">Logging instance to use.</param>
+            <param name="action">The current actions being taken when the exception happened.</param>
+            <param name="ex">The exception.</param>
+        </member>
+        <member name="M:EastScarp.Extensions.TrySplitOnce(System.ReadOnlySpan{System.Char},System.Char,System.ReadOnlySpan{System.Char}@,System.ReadOnlySpan{System.Char}@)">
+            <summary>
+            Tries to split once by a deliminator.
+            </summary>
+            <param name="str">Text to split.</param>
+            <param name="deliminator">Deliminator to split by.</param>
+            <param name="first">The part that precedes the deliminator, or the whole text if not found.</param>
+            <param name="second">The part that is after the deliminator.</param>
+            <returns>True if successful, false otherwise.</returns>
+        </member>
+        <member name="T:EastScarp.Framework.AudioManager">
+            <summary>
+            Manages playing audio cues.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Framework.Critters">
+            <summary>
+            Manages critters.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Framework.Critters.SpawnCritter(System.Collections.Generic.List{EastScarp.Models.CritterSpawn},EastScarp.Models.SpawnTrigger,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>
+            Spawns critters for this mod.
+            </summary>
+            <param name="spawns">Critters to spawn.</param>
+            <param name="trigger">The trigger condition.</param>
+            <param name="location">The location to spawn critters.</param>
+            <param name="farmer">The farmer instance.</param>
+        </member>
+        <member name="T:EastScarp.Framework.PhoneRingCommand">
+            <summary>
+            A console command to ring the phone.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Framework.PhoneRingCommand.RingPhone(System.String,System.String[])">
+            <summary>
+            Causes the phone to ring.
+            </summary>
+            <param name="command">command name.</param>
+            <param name="args">arguments.</param>
+        </member>
+        <member name="T:EastScarp.HarmonyPatches.CustomEmoji">
+            <summary>
+            Handles loading custom emoji.
+            </summary>
+        </member>
+        <member name="M:EastScarp.HarmonyPatches.CustomEmoji.Init(StardewModdingAPI.IGameContentHelper)">
+            <summary>
+            Initializes the asset cache.
+            </summary>
+            <param name="gameContentHelper">Game content helper.</param>
+        </member>
+        <member name="M:EastScarp.HarmonyPatches.CustomEmoji.Reset(System.Collections.Generic.IReadOnlySet{StardewModdingAPI.IAssetName})">
+            <summary>
+            Handles invalidations.
+            </summary>
+            <param name="assets">IReadOnly set of assetnames.</param>
+        </member>
+        <member name="M:EastScarp.HarmonyPatches.CustomEmoji.Ready(StardewModdingAPI.Events.AssetReadyEventArgs)">
+            <summary>
+            Removes paths from the failed texture load cache if someone readies them.
+            </summary>
+            <param name="e">Asset event args.</param>
+        </member>
+        <member name="T:EastScarp.HarmonyPatches.EventNPCScaling">
+            <summary>
+            Handles applying the scale to event actors.
+            </summary>
+        </member>
+        <member name="T:EastScarp.HarmonyPatches.FruitTreePatches">
+            <summary>
+            Patches against fruit trees.
+            </summary>
+        </member>
+        <member name="T:EastScarp.HarmonyPatches.ScalePatches">
+            <summary>
+            Patches for scaling NPCs.
+            </summary>
+        </member>
+        <member name="M:EastScarp.HarmonyPatches.ScalePatches.ApplyScale(StardewValley.NPC)">
+            <summary>
+            Applies scaling to a specific NPC instance.
+            </summary>
+            <param name="__instance">The npc instance.</param>
+        </member>
+        <member name="T:EastScarp.HarmonyPatches.SpecialOrderPatches">
+            <summary>
+            Holds patches against Special Orders.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.AmbientSound">
+            <summary>
+            Represents an ambient sound to play.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.AmbientSound.Trigger">
+            <summary>
+            Gets or sets the trigger to use.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.AmbientSound.Sound">
+            <summary>
+            Gets or sets the sound to play.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.AmbientSound.Pitches">
+            <summary>
+            Gets or sets if given, a list of pitches to use.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.BaseEntry">
+            <summary>
+            The base class for an entry.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.BaseEntry.Conditions">
+            <summary>
+            Gets or sets the <see cref="T:StardewValley.GameStateQuery"/> to check, or null for always true.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.BaseEntry.Chance">
+            <summary>
+            Gets or sets the chance this entry should apply.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.BaseEntry.Time">
+            <summary>
+            Gets or sets a value indicating when this entry should apply.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.BaseEntry.CheckCondition(StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>
+            Checks to see if the conditions associated with this entry are satisfied.
+            </summary>
+            <param name="location">The game location to use, or null for current location.</param>
+            <param name="player">The player to use, or null for current player.</param>
+            <returns>True if allowed, false otherwise.</returns>
+        </member>
+        <member name="T:EastScarp.Models.CritterSpawn">
+            <summary>
+            Data to spawn a critter.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.CritterSpawn.Trigger">
+            <summary>
+            When this trigger should apply.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.EmojiData">
+            <summary>
+            The data used for emoji overrides.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.EmojiData.AssetName">
+            <summary>
+            Gets or sets the asset location of the emoji.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.EmojiData.Location">
+            <summary>
+            Gets or sets the upper left pixel of the emoji. All emoji are 9x9.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.LocationArea.Area">
+            <summary>
+            The rectangular area to check. Defaults to the whole map.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.LocationArea.Contains(Microsoft.Xna.Framework.Point)">
+            <summary>Checks to see if the point exists within the rectangle.</summary>
+        </member>
+        <member name="T:EastScarp.Models.LocationDataModel">
+            <summary>
+            The additional per-location data.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.LocationDataModel.Sounds">
+            <summary>
+            Gets or sets a list of ambient sounds to play.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.LocationDataModel.SeaMonsterSpawn">
+            <summary>
+            Gets or sets a list of sea monsters to spawn.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.LocationDataModel.WaterColor">
+            <summary>
+            Gets or sets a list of water colors to set on warp.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.LocationDataModel.Critters">
+            <summary>
+            Gets or sets a list of critters to spawn.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.RRange">
+            <summary>
+            Represents a range, inclusive.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.RRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:EastScarp.Models.RRange"/> struct.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.RRange.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:EastScarp.Models.RRange"/> struct.
+            </summary>
+            <param name="min">Minimum value.</param>
+            <param name="max">Maximum value.</param>
+        </member>
+        <member name="P:EastScarp.Models.RRange.Min">
+            <summary>
+            Gets or sets the minimum value.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.RRange.Max">
+            <summary>
+            Gets or sets the maximum value.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.RRange.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:EastScarp.Models.RRange.TryParse(System.String,System.Nullable{EastScarp.Models.RRange}@)">
+            <summary>
+            Tries to parse a string value to a range.
+            </summary>
+            <param name="value">Value to parse.</param>
+            <param name="result">Range if parsed, default if not.</param>
+            <returns>True if parsable, false otherwise.</returns>
+        </member>
+        <member name="M:EastScarp.Models.RRange.Get">
+            <summary>
+            Gets a random value in this range.
+            </summary>
+            <returns>Random value in this range.</returns>
+        </member>
+        <member name="T:EastScarp.Models.RRangeConverter">
+            <summary>
+            Handles json conversions for a range.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.RRangeConverter.CanConvert(System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:EastScarp.Models.RRangeConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="M:EastScarp.Models.RRangeConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="T:EastScarp.Models.SeaMonsterSpawn">
+            <summary>
+            A trigger to spawn the sea monster.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.SpawnTrigger">
+            <summary>
+            The event to trigger the spawn at.
+            </summary>
+        </member>
+        <member name="F:EastScarp.Models.SpawnTrigger.OnEntry">
+            <summary>
+            When the player enters the map.
+            </summary>
+        </member>
+        <member name="F:EastScarp.Models.SpawnTrigger.OnTimeChange">
+            <summary>
+            When the clock changes.
+            </summary>
+        </member>
+        <member name="F:EastScarp.Models.SpawnTrigger.OnSecond">
+            <summary>
+            Every second.
+            </summary>
+        </member>
+        <member name="F:EastScarp.Models.SpawnTrigger.OnTick">
+            <summary>
+            Every tick (60x a second.) Use sparingly.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.TimeRange">
+            <summary>
+            Represents an range in time (inclusive.)
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.TimeRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:EastScarp.Models.TimeRange"/> class.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.TimeRange.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:EastScarp.Models.TimeRange"/> class.
+            </summary>
+            <param name="startTime">the start time.</param>
+            <param name="endTime">the end time.</param>
+        </member>
+        <member name="P:EastScarp.Models.TimeRange.StartTime">
+            <summary>
+            Gets or sets the start time.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.TimeRange.EndTime">
+            <summary>
+            Gets or sets the end time.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.TimeRange.CompareTo(EastScarp.Models.TimeRange)">
+            <inheritdoc/>
+        </member>
+        <member name="M:EastScarp.Models.TimeRange.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:EastScarp.Models.TimeRange.TryParse(System.String,EastScarp.Models.TimeRange@)">
+            <summary>
+            Tries to parse a string to a <see cref="T:System.TimeSpan"/>.
+            </summary>
+            <param name="value">The string to parse.</param>
+            <param name="result">The timespan.</param>
+            <returns>True if successful, false otherwise.</returns>
+        </member>
+        <member name="M:EastScarp.Models.TimeRange.FoldTimes(EastScarp.Models.TimeRange[])">
+            <summary>
+            Merges together a list of times to remove overlaps.
+            </summary>
+            <param name="times">List of times.</param>
+            <returns>Array of times.</returns>
+        </member>
+        <member name="T:EastScarp.Models.TimeRangeConverter">
+            <summary>
+            Converts a time range to and from json.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.TimeRangeConverter.CanConvert(System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:EastScarp.Models.TimeRangeConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="M:EastScarp.Models.TimeRangeConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="T:EastScarp.Models.WaterColor">
+            <summary>
+            A color to apply to the water.
+            </summary>
+        </member>
+        <member name="P:EastScarp.Models.WaterColor.Color">
+            <summary>
+            Gets or sets the color to set the water.
+            </summary>
+        </member>
+        <member name="T:EastScarp.Models.CritterTypeExtensions">
+            <summary>
+            Extension methods for <see cref="T:EastScarp.Models.CritterType" />
+            </summary>
+        </member>
+        <member name="F:EastScarp.Models.CritterTypeExtensions.Length">
+            <summary>
+            The number of members in the enum.
+            This is a non-distinct count of defined names.
+            </summary>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.ToStringFast(EastScarp.Models.CritterType)">
+            <summary>
+            Returns the string representation of the <see cref="T:EastScarp.Models.CritterType"/> value.
+            If the attribute is decorated with a <c>[Display]</c> attribute, then
+            uses the provided value. Otherwise uses the name of the member, equivalent to
+            calling <c>ToString()</c> on <paramref name="value"/>.
+            </summary>
+            <param name="value">The value to retrieve the string value for</param>
+            <returns>The string representation of the value</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.IsDefined(EastScarp.Models.CritterType)">
+            <summary>
+            Returns a boolean telling whether the given enum value exists in the enumeration.
+            </summary>
+            <param name="value">The value to check if it's defined</param>
+            <returns><c>true</c> if the value exists in the enumeration, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.IsDefined(System.String)">
+            <summary>
+            Returns a boolean telling whether an enum with the given name exists in the enumeration.
+            </summary>
+            <param name="name">The name to check if it's defined</param>
+            <returns><c>true</c> if a member with the name exists in the enumeration, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.IsDefined(System.String,System.Boolean)">
+            <summary>
+            Returns a boolean telling whether an enum with the given name exists in the enumeration,
+            or if a member decorated with a <c>[Display]</c> attribute
+            with the required name exists.
+            </summary>
+            <param name="name">The name to check if it's defined</param>
+            <param name="allowMatchingMetadataAttribute">If <c>true</c>, considers the value of metadata attributes,otherwise ignores them</param>
+            <returns><c>true</c> if a member with the name exists in the enumeration, or a member is decorated
+            with a <c>[Display]</c> attribute with the name, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.IsDefined(System.ReadOnlySpan{System.Char}@)">
+            <summary>
+            Returns a boolean telling whether an enum with the given name exists in the enumeration
+            </summary>
+            <param name="name">The name to check if it's defined</param>
+            <returns><c>true</c> if a member with the name exists in the enumeration, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.IsDefined(System.ReadOnlySpan{System.Char}@,System.Boolean)">
+            <summary>
+            Returns a boolean telling whether an enum with the given name exists in the enumeration,
+            or optionally if a member decorated with a <c>[Display]</c> attribute
+            with the required name exists.
+            Slower then the <see cref="M:EastScarp.Models.CritterTypeExtensions.IsDefined(System.String,System.Boolean)" /> overload, but doesn't allocate memory./>
+            </summary>
+            <param name="name">The name to check if it's defined</param>
+            <param name="allowMatchingMetadataAttribute">If <c>true</c>, considers the value of metadata attributes,otherwise ignores them</param>
+            <returns><c>true</c> if a member with the name exists in the enumeration, or a member is decorated
+            with a <c>[Display]</c> attribute with the name, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.TryParse(System.String,EastScarp.Models.CritterType@)">
+            <summary>
+            Converts the string representation of the name or numeric value of
+            an <see cref="T:EastScarp.Models.CritterType" /> to the equivalent instance.
+            The return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="name">The case-sensitive string representation of the enumeration name or underlying value to convert</param>
+            <param name="value">When this method returns, contains an object of type 
+            <see cref="T:EastScarp.Models.CritterType" /> whose
+            value is represented by <paramref name="value"/> if the parse operation succeeds.
+            If the parse operation fails, contains the default value of the underlying type
+            of <see cref="T:EastScarp.Models.CritterType" />. This parameter is passed uninitialized.</param>
+            <returns><c>true</c> if the value parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.TryParse(System.String,EastScarp.Models.CritterType@,System.Boolean)">
+            <summary>
+            Converts the string representation of the name or numeric value of
+            an <see cref="T:EastScarp.Models.CritterType" /> to the equivalent instance.
+            The return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="name">The string representation of the enumeration name or underlying value to convert</param>
+            <param name="value">When this method returns, contains an object of type 
+            <see cref="T:EastScarp.Models.CritterType" /> whose
+            value is represented by <paramref name="value"/> if the parse operation succeeds.
+            If the parse operation fails, contains the default value of the underlying type
+            of <see cref="T:EastScarp.Models.CritterType" />. This parameter is passed uninitialized.</param>
+            <param name="ignoreCase"><c>true</c> to read value in case insensitive mode; <c>false</c> to read value in case sensitive mode.</param>
+            <returns><c>true</c> if the value parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.TryParse(System.String,EastScarp.Models.CritterType@,System.Boolean,System.Boolean)">
+            <summary>
+            Converts the string representation of the name or numeric value of
+            an <see cref="T:EastScarp.Models.CritterType" /> to the equivalent instance.
+            The return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="name">The string representation of the enumeration name or underlying value to convert</param>
+            <param name="value">When this method returns, contains an object of type 
+            <see cref="T:EastScarp.Models.CritterType" /> whose
+            value is represented by <paramref name="value"/> if the parse operation succeeds.
+            If the parse operation fails, contains the default value of the underlying type
+            of <see cref="T:EastScarp.Models.CritterType" />. This parameter is passed uninitialized.</param>
+            <param name="ignoreCase"><c>true</c> to read value in case insensitive mode; <c>false</c> to read value in case sensitive mode.</param>
+            <param name="allowMatchingMetadataAttribute">If <c>true</c>, considers the value included in metadata attributes such as
+            <c>[Display]</c> attribute when parsing, otherwise only considers the member names.</param>
+            <returns><c>true</c> if the value parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.TryParse(System.ReadOnlySpan{System.Char}@,EastScarp.Models.CritterType@)">
+            <summary>
+            Converts the span representation of the name or numeric value of
+            an <see cref="T:EastScarp.Models.CritterType" /> to the equivalent instance.
+            The return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="name">The span representation of the enumeration name or underlying value to convert</param>
+            <param name="value">When this method returns, contains an object of type 
+            <see cref="T:EastScarp.Models.CritterType" /> whose
+            value is represented by <paramref name="value"/> if the parse operation succeeds.
+            If the parse operation fails, contains the default value of the underlying type
+            of <see cref="T:EastScarp.Models.CritterType" />. This parameter is passed uninitialized.</param>
+            <returns><c>true</c> if the value parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.TryParse(System.ReadOnlySpan{System.Char}@,EastScarp.Models.CritterType@,System.Boolean)">
+            <summary>
+            Converts the span representation of the name or numeric value of
+            an <see cref="T:EastScarp.Models.CritterType" /> to the equivalent instance.
+            The return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="name">The span representation of the enumeration name or underlying value to convert</param>
+            <param name="value">When this method returns, contains an object of type 
+            <see cref="T:EastScarp.Models.CritterType" /> whose
+            value is represented by <paramref name="value"/> if the parse operation succeeds.
+            If the parse operation fails, contains the default value of the underlying type
+            of <see cref="T:EastScarp.Models.CritterType" />. This parameter is passed uninitialized.</param>
+            <param name="ignoreCase"><c>true</c> to read value in case insensitive mode; <c>false</c> to read value in case sensitive mode.</param>
+            <returns><c>true</c> if the value parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.TryParse(System.ReadOnlySpan{System.Char}@,EastScarp.Models.CritterType@,System.Boolean,System.Boolean)">
+            <summary>
+            Converts the span representation of the name or numeric value of
+            an <see cref="T:EastScarp.Models.CritterType" /> to the equivalent instance.
+            The return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="name">The span representation of the enumeration name or underlying value to convert</param>
+            <param name="result">When this method returns, contains an object of type 
+            <see cref="T:EastScarp.Models.CritterType" /> whose
+            value is represented by <paramref name="result"/> if the parse operation succeeds.
+            If the parse operation fails, contains the default value of the underlying type
+            of <see cref="T:EastScarp.Models.CritterType" />. This parameter is passed uninitialized.</param>
+            <param name="ignoreCase"><c>true</c> to read value in case insensitive mode; <c>false</c> to read value in case sensitive mode.</param>
+            <param name="allowMatchingMetadataAttribute">If <c>true</c>, considers the value included in metadata attributes such as
+            <c>[Display]</c> attribute when parsing, otherwise only considers the member names.</param>
+            <returns><c>true</c> if the value parameter was converted successfully; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.GetValues">
+            <summary>
+            Retrieves an array of the values of the members defined in
+            <see cref="T:EastScarp.Models.CritterType" />.
+            Note that this returns a new array with every invocation, so
+            should be cached if appropriate.
+            </summary>
+            <returns>An array of the values defined in <see cref="T:EastScarp.Models.CritterType" /></returns>
+        </member>
+        <member name="M:EastScarp.Models.CritterTypeExtensions.GetNames">
+            <summary>
+            Retrieves an array of the names of the members defined in
+            <see cref="T:EastScarp.Models.CritterType" />.
+            Note that this returns a new array with every invocation, so
+            should be cached if appropriate.
+            </summary>
+            <returns>An array of the names of the members defined in <see cref="T:EastScarp.Models.CritterType" /></returns>
+        </member>
+        <member name="T:EastScarp.ModEntry">
+            <inheritdoc />
+        </member>
+        <member name="P:EastScarp.ModEntry.ModMonitor">
+            <summary>Gets the logger for this mod.</summary>
+        </member>
+        <member name="M:EastScarp.ModEntry.Entry(StardewModdingAPI.IModHelper)">
+            <inheritdoc />
+        </member>
+        <member name="M:EastScarp.ModEntry.OnPlayerWarped(System.Object,StardewModdingAPI.Events.WarpedEventArgs)">
+            <inheritdoc cref="E:StardewModdingAPI.Events.IPlayerEvents.Warped"/>
+        </member>
+        <member name="M:EastScarp.ModEntry.SpawnCrittersAndMonsters(EastScarp.Models.LocationDataModel,EastScarp.Models.SpawnTrigger,StardewValley.GameLocation,StardewValley.Farmer)">
+            <summary>
+            Handles spawning for a specific data model.
+            </summary>
+            <param name="data">The data to spawn for.</param>
+            <param name="trigger">The trigger it was called for.</param>
+            <param name="location">The current location.</param>
+            <param name="player">The current player.</param>
+        </member>
+        <member name="T:EastScarp.I18n">
+            <summary>Get translations from the mod's <c>i18n</c> folder.</summary>
+            <remarks>This is auto-generated from the <c>i18n/default.json</c> file when the project is compiled.</remarks>
+        </member>
+        <member name="F:EastScarp.I18n.Translations">
+            <summary>The mod's translation helper.</summary>
+        </member>
+        <member name="M:EastScarp.I18n.Init(StardewModdingAPI.ITranslationHelper)">
+            <summary>Construct an instance.</summary>
+            <param name="translations">The mod's translation helper.</param>
+        </member>
+        <member name="M:EastScarp.I18n.FruitTree_Forbidden">
+            <summary>Get a translation equivalent to "This fruit tree is not yours.".</summary>
+        </member>
+        <member name="M:EastScarp.I18n.GetByKey(System.String,System.Object)">
+            <summary>Get a translation by its key.</summary>
+            <param name="key">The translation key.</param>
+            <param name="tokens">An object containing token key/value pairs. This can be an anonymous object (like <c>new { value = 42, name = "Cranberries" }</c>), a dictionary, or a class instance.</param>
+        </member>
+        <member name="T:SinZsEventTester.IEventTesterAPI">
+            <summary>
+            The API for this mod.
+            </summary>
+        </member>
+        <member name="M:SinZsEventTester.IEventTesterAPI.RegisterAsset(StardewModdingAPI.IAssetName,System.Func{System.String,System.Boolean})">
+            <summary>
+            Registers an asset to be analyzed by the GSQ checker.
+            </summary>
+            <param name="assetName">The asset to analyze.</param>
+            <param name="filter">A filter to select which string fields/properties should be considered GSQ fields.</param>
+            <returns>true if added, false otherwise.</returns>
+        </member>
+        <member name="M:SinZsEventTester.IEventTesterAPI.RegisterAsset(StardewModdingAPI.IAssetName,System.Collections.Generic.HashSet{System.String})">
+            <summary>
+            Registers an asset to be analyzed by the GSQ checker.
+            </summary>
+            <param name="assetName">The asset to analyze.</param>
+            <param name="additionalGSQNames">Additional strings that may correspond to fields that should be consider GSQ fields.</param>
+            <returns>True if added, false otherwise.</returns>
+        </member>
+    </members>
+</doc>

@@ -106,6 +106,88 @@ namespace CombineMachines
             DelayHelpers.Entry(helper);
             ModDataPersistenceHelper.Entry(helper, ModDataQuantityKey, ModDataOutputModifiedKey);
             PatchesHandler.Entry(helper);
+
+            helper.Events.GameLoop.GameLaunched += (sender, e) => TryRegisterGMCM();
+        }
+
+        private void TryRegisterGMCM()
+        {
+            const string GMCMUniqueId = "spacechase0.GenericModConfigMenu";
+            if (!Helper.ModRegistry.IsLoaded(GMCMUniqueId))
+                return;
+            IGenericModConfigMenuApi API = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>(GMCMUniqueId);
+            if (API == null)
+                return;
+
+            API.Register(ModManifest,
+                () => UserConfig = new UserConfig(),
+                () => Helper.Data.WriteJsonFile(UserConfig.DefaultFilename, UserConfig));
+
+            API.AddNumberOption(ModManifest,
+                () => (int)(UserConfig.CombinePenalty * 100),
+                (int val) => UserConfig.CombinePenalty = val / 100.0,
+                () => "Combine Penalty",
+                () => "A penalty to the processing power for each machine you combine.\n\n" +
+                        "EX: If set to 3, then the processing power loses 3% with each successive machine you add together.\n2 machines is 197% (-3%), 3 machines is 291% (-3%, -6%), 4 machines is 382% (-3%, -6%, -9%) etc.\n\n" +
+                        "Recommended value: 3. Use 0 for no penalty.", 
+                0, 10, 1
+            );
+
+            API.AddNumberOption(ModManifest,
+                () => (int)(UserConfig.MinimumEffect * 100),
+                (int val) => UserConfig.MinimumEffect = val / 100.0,
+                () => "Minimum Effect",
+                () => "The minimum boost to processing power that adding an additional machine will give.\nThis means that the combine penalty can never scale so high that you get\nless than this amount of processing power from adding another machine together.\n\n" +
+                        "EX: If set to 30, and combine penalty is 5, the first 14 machines (100-14x5 is 30)\nyou add together will result in progressively worse increases to processing power.\nThen each machine thereafter will add +30% power instead of continuing to worsen.\n\n" +
+                        "Recommended value: 25.", 
+                0, 100, 5
+            );
+
+            API.AddTextOption(ModManifest,
+                () => UserConfig.ProcessingMode.ToString(),
+                (val) => UserConfig.ProcessingMode = Enum.Parse<ProcessingMode>(val),
+                () => "Processing Mode",
+                () => "MultiplyItems: processing power will multiply the products of the machine,\nbut the machine will still take the normal amount of time to process its items.\n\n" +
+                        "IncreaseSpeed: processing power will speed up how quickly the machine processes items,\nbut it will still process the normal amount of items per cycle\n" +
+                        "(Minimum processing time: 10 in-game minutes due to technical limitations).",
+                Enum.GetValues<ProcessingMode>().Select(x => x.ToString()).ToArray()
+            );
+
+            API.AddTextOption(
+                ModManifest,
+                () => string.Join(",", UserConfig.ProcessingModeExclusions),
+                (val) => UserConfig.ProcessingModeExclusions = val.Split(',').ToList(),
+                () => "Processing Mode Exclusions",
+                () => "A comma-separated list of the names of machines that you want to use the opposite processing mode on.\n\n" +
+                    "EX: If Processing Mode is set to MultiplyItems, and the exclusions is set to \"Lightning Rod,Worm Bin\",\nthen every machine EXCEPT lightning rod and worm bin will use MultiplyItems mode,\nwhereas lightning rod and worm bin will use IncreaseSpeed mode."
+            );
+
+            API.AddBoolOption(
+                ModManifest,
+                () => UserConfig.FurnaceMultiplyCoalInputs,
+                (val) => UserConfig.FurnaceMultiplyCoalInputs = val,
+                () => "Multiply Coal Inputs",
+                () => "If enabled, furnaces will consume 1 coal per bar produced.\nIf disabled, furnaces will consume 1 coal per processing cycle,\nregardless of how many bars are produced.\n\n" +
+                    "Recommended value: true. Only set to false if you feel like cheating a bit."
+            );
+
+            API.AddBoolOption(
+                ModManifest,
+                () => UserConfig.ToolTipShowDuration,
+                (val) => UserConfig.ToolTipShowDuration = val,
+                () => "ToolTips: Show duration",
+                () => "If enabled, hovering over a machine that is using IncreaseSpeed processing mode will display\na tooltip that shows how many minutes remaining until it's done processing.\n\n" +
+                    "Recommended value: true."
+            );
+
+            API.AddBoolOption(
+                ModManifest,
+                () => UserConfig.ToolTipShowQuantity,
+                (val) => UserConfig.ToolTipShowQuantity = val,
+                () => "ToolTips: Show quantity",
+                () => "If enabled, hovering over a machine that is using MultiplyItems processing mode will display\na tooltip that shows how many outputs will be produced when the machine is done processing.\n\n" +
+                    "Recommended value: true."
+            );
         }
 
         internal static void LoadUserConfig()

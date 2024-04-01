@@ -11,15 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DecidedlyShared.Logging;
 using DecidedlyShared.APIs;
+using DecidedlyShared.Logging;
 using SmartBuilding.Utilities;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using xTile.ObjectModel;
-using Object = StardewValley.Object;
 
 namespace SmartBuilding
 {
@@ -50,7 +48,7 @@ namespace SmartBuilding
                     if (item != null)
                         try
                         {
-                            var type = this.identificationUtils.IdentifyItemType(item as Object);
+                            var type = this.identificationUtils.IdentifyItemType(item as SObject);
                             this.logger.Log($"ItemType of {item.Name}: {type}.");
 
                             if (this.dgaApi?.GetDGAItemId(item) != null)

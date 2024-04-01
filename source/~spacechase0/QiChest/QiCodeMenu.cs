@@ -90,7 +90,6 @@ namespace QiChest
                     this.colorSelection = (x - area.X) / 36;
                     try
                     {
-                        Console.WriteLine("meow?" + i);
                         Game1.playSound("coin");
                     }
                     catch (Exception)
@@ -101,6 +100,7 @@ namespace QiChest
                         int code = int.Parse(c.modData[Mod.ModDataKey]);
                         code = code.AdjustQiCode(i, this.colorSelection);
                         c.modData[Mod.ModDataKey] = code.ToString();
+                        c.GlobalInventoryId = "QiChest_" + code.ToString();
                         (this.itemToDrawColored as Chest).resetLidFrame();
                     }
                 }
