@@ -114,7 +114,24 @@ namespace CustomCaskMod
             }
             return newInstructions;
         }
-        
+
+        internal static bool TryApplyFairyDust(SObject __instance, bool probe, ref bool __result)
+        {
+            if (__instance.GetMachineData() != null) return true;
+            if (__instance.MinutesUntilReady <= 0) return true;
+            if (!AgerController.HasAger(__instance.QualifiedItemId)) return true;
+            if (!probe)
+            {
+                Utility.addSprinklesToLocation(__instance.Location, (int)__instance.TileLocation.X,
+                    (int)__instance.TileLocation.Y, 1, 2, 400, 40, Color.White);
+                Game1.playSound("yoba");
+                __instance.MinutesUntilReady = 0;
+                __instance.minutesElapsed(0);
+            }
+            __result = true;
+            return false;
+        }
+
         private static bool IsVanillaCask(SObject cask)
         {
             return cask.Name == "Cask";

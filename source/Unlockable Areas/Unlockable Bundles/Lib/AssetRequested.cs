@@ -19,23 +19,16 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.GameData;
 using System.IO;
 using Unlockable_Bundles.Lib.AdvancedPricing;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib
 {
     public class AssetRequested
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
-        //TODO: For clients mail language is currently the same as the hosts, I should translate at the 'UpdateMailData' mod message received
         public static Dictionary<string, string> MailData = new Dictionary<string, string>();
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Helper.Events.Content.AssetRequested += OnAssetRequested;
         }
 

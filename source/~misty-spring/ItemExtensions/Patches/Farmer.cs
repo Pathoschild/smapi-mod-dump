@@ -11,6 +11,7 @@
 using HarmonyLib;
 using ItemExtensions.Models;
 using ItemExtensions.Models.Contained;
+using ItemExtensions.Models.Items;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -373,7 +374,7 @@ public class FarmerPatches
             animatedSprite.lightID = (int)Game1.random.NextInt64();
         }
         
-        who.currentLocation.temporarySprites.Add(animatedSprite);
+        Game1.Multiplayer.broadcastSprites(who.currentLocation, animatedSprite);
         who.itemToEat = null;
         return;
 
@@ -413,7 +414,7 @@ public class FarmerPatches
                     acceleration = new Vector2(x: 0.0f, y: 0.5f),
                     alpha = animation.Food.Transparency
                 };
-                who.currentLocation.temporarySprites.Add(animatedSprite2);
+                Game1.Multiplayer.broadcastSprites(who.currentLocation, animatedSprite2);
             }
         }
         
@@ -489,7 +490,7 @@ public class FarmerPatches
             delayBeforeAnimationStart = delay
         };
         
-        who.currentLocation.temporarySprites.Add(animatedSprite);
+        Game1.Multiplayer.broadcastSprites(who.currentLocation, animatedSprite);
     }
     #endregion
 

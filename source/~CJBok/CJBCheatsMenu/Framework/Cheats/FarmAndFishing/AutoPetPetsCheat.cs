@@ -9,12 +9,13 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Linq;
 using CJBCheatsMenu.Framework.Components;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
@@ -57,10 +58,14 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
             if (!e.IsOneSecond || !Context.IsWorldReady)
                 return;
 
-            foreach (Pet pet in this.GetAllPets())
+            // Some mods (like A New Dream) add custom pets outside the farm which react to being pet. Only pet pets in
+            // the standard locations (i.e. farm and farmhouses) to avoid issues like repeating dialogues.
+            Farm farm = Game1.getFarm();
+            this.ApplyInLocation(farm);
+            foreach (Building building in farm.buildings)
             {
-                if (!pet.lastPetDay.TryGetValue(Game1.player.UniqueMultiplayerID, out int lastPetDay) || lastPetDay < Game1.Date.TotalDays)
-                    pet.checkAction(Game1.player, pet.currentLocation);
+                if (building.GetIndoors() is FarmHouse home)
+                    this.ApplyInLocation(home);
             }
         }
 
@@ -68,17 +73,18 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
         /*********
         ** Private methods
         *********/
-        /// <summary>Get all pets in the game.</summary>
-        /// <remarks>Derived from <see cref="Farmer.getPet"/>.</remarks>
-        private IEnumerable<Pet> GetAllPets()
+        /// <summary>Pet all pets in a location.</summary>
+        /// <param name="location">The location to search for pets.</param>
+        private void ApplyInLocation(GameLocation location)
         {
-            return
-                Game1.getFarm().characters.OfType<Pet>()
-                .Concat(
-                    from player in Game1.getAllFarmers()
-                    from pet in Utility.getHomeOfFarmer(player).characters.OfType<Pet>()
-                    select pet
-                );
+            if (location.characters.Count > 0)
+            {
+                foreach (NPC character in location.characters)
+                {
+                    if (character is Pet pet && (!pet.lastPetDay.TryGetValue(Game1.player.UniqueMultiplayerID, out int lastPetDay) || lastPetDay != Game1.Date.TotalDays))
+                        pet.checkAction(Game1.player, pet.currentLocation);
+                }
+            }
         }
     }
 }

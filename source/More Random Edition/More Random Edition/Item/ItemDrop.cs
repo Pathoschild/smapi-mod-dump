@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewValley;
+using System;
 using System.Collections.Generic;
 
 namespace Randomizer
@@ -22,8 +24,8 @@ namespace Randomizer
 
 		public ItemDrop(ObjectIndexes itemId, double probability)
 		{
-			ItemToDrop = ItemList.Items[itemId];
-			Probability = probability;
+			ItemToDrop = itemId.GetItem();
+            Probability = probability;
 		}
 
         /// <summary>
@@ -42,11 +44,28 @@ namespace Randomizer
 			string[] itemTokens = itemDropString.Split(' ');
 			for (int i = 0; i + 1 < itemTokens.Length; i += 2)
 			{
-				if (!int.TryParse(itemTokens[i], out int itemId))
+				ObjectIndexes itemIndex = ObjectIndexes.Slime;
+				string itemId = itemTokens[i].Trim();
+
+                if (itemId == "-4")
+                {
+                    itemIndex = ObjectIndexes.Coal;
+                }
+                else if (itemId == "-6")
+                {
+                    itemIndex = ObjectIndexes.GoldOre;
+                }
+				else
 				{
-					Globals.ConsoleError($"Invalid token when parsing monster item drop in string: {itemDropString}");
-					itemId = (int)ObjectIndexes.Slime;
-				}
+                    try
+                    {
+                        itemIndex = ObjectIndexesExtentions.GetObjectIndex(itemId);
+                    }
+                    catch (Exception)
+                    {
+                        Globals.ConsoleError($"Invalid token when parsing monster item drop in string: {itemDropString}");
+                    }
+                }
 
 				if (!double.TryParse(itemTokens[i + 1], out double probability))
 				{
@@ -54,16 +73,7 @@ namespace Randomizer
 					probability = 0.75;
 				}
 
-				if (itemId == -4)
-				{
-					itemId = (int)ObjectIndexes.Coal;
-				}
-				else if (itemId == -6)
-				{
-					itemId = (int)ObjectIndexes.GoldOre;
-				}
-
-				itemDrops.Add(new ItemDrop((ObjectIndexes)itemId, probability));
+				itemDrops.Add(new ItemDrop(itemIndex, probability));
 			}
 
 			return itemDrops;

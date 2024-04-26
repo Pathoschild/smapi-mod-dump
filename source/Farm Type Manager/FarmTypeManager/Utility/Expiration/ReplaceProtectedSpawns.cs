@@ -156,7 +156,39 @@ namespace FarmTypeManager
                                 }
                                 else if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
                                     realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
+                                break;
 
+                            case "fence":
+                            case "fences":
+                            case "gate":
+                            case "gates":
+                                realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+
+                                if (realObject == null) //if the object no longer exists
+                                {
+                                    missing++; //increment missing object tracker
+
+                                    if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the object's tile is clear enough to respawn
+                                    {
+                                        saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                        if (saved.ID != null) //if a valid ID was found for this object
+                                        {
+                                            respawned++; //increment respawn tracker
+                                            SpawnForage(saved, location, saved.Tile); //respawn it
+                                        }
+                                        else
+                                        {
+                                            uninstalled++; //increment uninstalled mod tracker
+                                            Monitor.LogOnce($"Couldn't find a valid ID for a previously saved fence. Name: {saved.Name}", LogLevel.Trace);
+                                        }
+                                    }
+                                    else //if the object's tile is occupied
+                                    {
+                                        blocked++; //increment obstruction tracker
+                                    }
+                                }
+                                else if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                    realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
                                 break;
 
                             case "(f)":

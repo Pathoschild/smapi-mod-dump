@@ -6,11 +6,13 @@ mods:
    Better Stardrops
    Clint's Backstock
    Custom Locks Updated
+   Passable Descents
+   Safe Lightning Updated
 
 latest commit:
-   commit 8c1118acd1005f6d88baa9aa95b6d2c3f3f4476c
+   commit dc2f12f242c4be232265abfa61dca2567836899d
    Author: rokugin <rokugin@gmail.com>
-   Date:   Sun Mar 31 02:37:51 2024 -0700
+   Date:   Thu Apr 25 18:43:05 2024 -0700
    
-       Add stamina buff, Reorganize mod options in GMCM
+       Convert mountain check action prefix to transpiler, Convert game location perform touch action prefix to transpiler, Convert game location locked door warp prefix to transpiler, TODO: finish game location perform action transpiler conversion, disabled harmony debugging, remove unused code
    

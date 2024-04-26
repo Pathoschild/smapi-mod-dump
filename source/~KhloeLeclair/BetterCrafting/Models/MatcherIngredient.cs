@@ -25,25 +25,32 @@ using StardewModdingAPI;
 
 namespace Leclair.Stardew.BetterCrafting.Models;
 
-public class MatcherIngredient : IOptimizedIngredient, IRecyclable {
+public class MatcherIngredient : IOptimizedIngredient, IConsumptionTrackingIngredient, IConditionalIngredient, IRecyclable {
 
 	public readonly Func<Item, bool> ItemMatcher;
 	private readonly (Func<Item, bool>, int)[] IngList;
 
+	public readonly float RecycleRate;
+
 	private readonly Func<string> _displayName;
 	private readonly Func<Texture2D> _texture;
+
+	private readonly Func<Item?>? _recycleTo;
 
 	private Rectangle? _source;
 
 	private readonly bool IsFuzzyRecycle;
 
-	public MatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Item? recycleTo = null) {
+	public MatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Func<Item?>? recycleTo = null, float recycleRate = 1f, string? condition = null) {
 		ItemMatcher = matcher;
 		Quantity = quantity;
+		RecycleRate = recycleRate;
 
 		_displayName = displayName;
 		_texture = texture;
 		_source = source;
+
+		Condition = condition;
 
 		IngList = new (Func<Item, bool>, int)[] {
 			(ItemMatcher, Quantity)
@@ -52,10 +59,16 @@ public class MatcherIngredient : IOptimizedIngredient, IRecyclable {
 		RecycledSprite = new(item => SpriteHelper.GetSprite(item), () => RecycledItem?.Item1);
 		if (recycleTo is not null) {
 			IsFuzzyRecycle = false;
-			RecycledItem = new(recycleTo);
+			_recycleTo = recycleTo;
 		} else
 			IsFuzzyRecycle = true;
 	}
+
+	#region IConditionalIngredient
+
+	public string? Condition { get; }
+
+	#endregion
 
 	#region IRecyclable
 
@@ -67,11 +80,16 @@ public class MatcherIngredient : IOptimizedIngredient, IRecyclable {
 		if (RecycledItem is not null)
 			return;
 
+		if ( _recycleTo is not null ) {
+			RecycledItem = new(_recycleTo());
+			return;
+		}
+
 		Item? result = null;
 		int price = 0;
 		int count = 0;
 
-		foreach(Item item in ModEntry.Instance.GetMatchingItems(ItemMatcher)) {
+		foreach(Item item in ModEntry.Instance.ItemCache.GetMatchingItems(ItemMatcher)) {
 			int ip = item.salePrice();
 			count++;
 			if (result is null || ip < price) { 
@@ -107,10 +125,13 @@ public class MatcherIngredient : IOptimizedIngredient, IRecyclable {
 	}
 
 	public int GetRecycleQuantity(Farmer who, Item? recycledItem, bool fuzzyItems) {
-		return Quantity;
+		return (int) (Quantity * RecycleRate);
 	}
 
 	public bool CanRecycle(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		if (RecycleRate <= 0f)
+			return false;
+
 		if (!fuzzyItems && IsFuzzyRecycle)
 			return false;
 
@@ -123,8 +144,15 @@ public class MatcherIngredient : IOptimizedIngredient, IRecyclable {
 			return null;
 
 		LoadRecycledItem();
-		if (RecycledItem.Item1 is not null)
-			return IRecyclable.GetManyOf(RecycledItem.Item1, Quantity);
+		if (RecycledItem.Item1 is not null) {
+			var output = IRecyclable.GetManyOf(RecycledItem.Item1, GetRecycleQuantity(who, recycledItem, fuzzyItems));
+
+			if (_recycleTo is not null)
+				// Reset it so it's different the next time.
+				RecycledItem = null;
+
+			return output;
+		}
 
 		return null;
 	}
@@ -149,16 +177,20 @@ public class MatcherIngredient : IOptimizedIngredient, IRecyclable {
 
 	public int Quantity { get; }
 
-	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality) {
 		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality);
 	}
 
-	public bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+	public bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality) {
 		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality, limit: quantity) >= quantity;
 	}
 
-	public void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst) {
-		InventoryHelper.ConsumeItems(IngList, who, inventories, maxQuality, lowQualityFirst);
+	public void Consume(Farmer who, IList<IBCInventory>? inventories, int max_quality, bool low_quality_first) {
+		Consume(who, inventories, max_quality, low_quality_first, null);
+	}
+
+	public void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst, IList<Item>? consumedItems) {
+		InventoryHelper.ConsumeItems(IngList, who, inventories, maxQuality, lowQualityFirst, consumedItems);
 	}
 
 	#endregion

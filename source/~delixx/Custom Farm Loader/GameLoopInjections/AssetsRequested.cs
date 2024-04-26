@@ -108,7 +108,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 string id = e.NameWithoutLocale.BaseName.Split("CFL_Map/")[1];
                 CustomFarm customFarm = CustomFarm.get(id);
 
-                e.LoadFromModFile<xTile.Map>($"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}{Path.DirectorySeparatorChar}{customFarm.MapFile}", AssetLoadPriority.Exclusive);
+                var file = $"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}{Path.DirectorySeparatorChar}{customFarm.MapFile}";
+                e.LoadFromModFile<xTile.Map>(file, AssetLoadPriority.Exclusive);
 
                 return;
             }

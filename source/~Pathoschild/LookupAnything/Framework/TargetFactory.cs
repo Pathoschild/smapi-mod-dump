@@ -115,9 +115,35 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             ).ToArray();
 
             // choose best match
-            return
-                candidates.FirstOrDefault(p => p.target.SpriteIntersectsPixel(tile, position, p.spriteArea))?.target // sprite pixel under cursor
-                ?? candidates.FirstOrDefault(p => p.isAtTile)?.target; // tile under cursor
+            {
+                ITarget? fallback = null;
+
+                // sprite pixel under cursor
+                foreach (var candidate in candidates)
+                {
+                    try
+                    {
+                        if (candidate.target.SpriteIntersectsPixel(tile, position, candidate.spriteArea))
+                            return candidate.target;
+                    }
+                    catch
+                    {
+                        // if the sprite check fails (e.g. due to an invalid texture), select this target if we don't
+                        // find a more specific one (since it did pass the world area check above)
+                        fallback ??= candidate.target;
+                    }
+                }
+
+                // tile under cursor
+                foreach (var candidate in candidates)
+                {
+                    if (candidate.isAtTile)
+                        return candidate.target;
+                }
+
+                // fallback
+                return fallback;
+            }
         }
 
         /****

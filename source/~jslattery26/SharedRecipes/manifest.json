@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jslattery26/stardew_mods
+**
+*************************************************/
+
+{
+  "Name": "SharedRecipes",
+  "Author": "jslattery26",
+  "Version": "1.0.0",
+  "Description": "SharedRecipes between farmers and farmhands",
+  "UniqueID": "jslattery26.SharedRecipes",
+  "EntryDll": "SharedRecipes.dll",
+  "UpdateKeys": ["GitHub:jslattery26/stardew_mods"]
+}

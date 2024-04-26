@@ -6,9 +6,9 @@ mods:
    mouahrara's Module Collection
 
 latest commit:
-   commit 27a101c3df69ca6f49cd8b4721a6de7700bd5326
+   commit cc678b8e8a34aa8b250682427449933ceb186bd8
    Author: mouahrara <mouahrara.noreply@protonmail.com>
-   Date:   Wed Mar 27 23:11:31 2024 +0100
+   Date:   Sun Apr 21 18:39:50 2024 +0200
    
-       Removed the Simultaneous services module, as Stardew Valley 1.6.3 now includes this feature
+       mouahrara's Module Collection 2.0.2
    

@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ScheduleViewer.Interfaces;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -47,7 +50,7 @@ namespace ScheduleViewer
             // set up event handlers
             helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
             helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
@@ -57,8 +60,8 @@ namespace ScheduleViewer
         /*********
         ** Private methods
         *********/
-        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // check for mismatched GameVersion and Mods between host and current player
             foreach (IMultiplayerPeer peer in this.Helper.Multiplayer.GetConnectedPlayers())
@@ -104,62 +107,84 @@ namespace ScheduleViewer
             }
 
             // get Generic Mod Config Menu's API (if it's installed)
-            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null) return;
+            var configMenuApi = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenuApi != null)
+            {
+                // register mod
+                configMenuApi.Register(
+                    ModManifest,
+                    () => Config = new ModConfig(),
+                    () => Helper.WriteConfig(Config)
+                );
 
-            // register mod
-            configMenu.Register(
-                ModManifest,
-                () => Config = new ModConfig(),
-                () => Helper.WriteConfig(Config)
-            );
+                // add some config options
+                configMenuApi.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.title.general"));
+                configMenuApi.AddKeybind(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.show_schedule_key.name"),
+                    getValue: () => Config.ShowSchedulesKey,
+                    setValue: value => Config.ShowSchedulesKey = value
+                );
+                configMenuApi.AddBoolOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.disable_hover.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.disable_hover.description"),
+                    getValue: () => Config.DisableHover,
+                    setValue: value => Config.DisableHover = value
+                );
+                configMenuApi.AddBoolOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.use_large_font.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.use_large_font.description"),
+                    getValue: () => Config.UseLargerFontForScheduleDetails,
+                    setValue: value => Config.UseLargerFontForScheduleDetails = value
+                );
+                configMenuApi.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.title.filter_sort"));
+                configMenuApi.AddTextOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.sort_options.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.sort_options.description"),
+                    getValue: () => Config.NPCSortOrder.ToString(),
+                    setValue: value => Config.NPCSortOrder = parseSortType(value),
+                    allowedValues: Enum.GetNames(typeof(ModConfig.SortType)),
+                    formatAllowedValue: type => this.Helper.Translation.Get($"config.option.sort_options.option_{(ushort)parseSortType(type)}")
+                );
+                configMenuApi.AddBoolOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.only_show_met_npcs.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.only_show_met_npcs.description"),
+                    getValue: () => Config.OnlyShowMetNPCs,
+                    setValue: value => Config.OnlyShowMetNPCs = value
+                );
+                configMenuApi.AddBoolOption(
+                    ModManifest,
+                    name: () => this.Helper.Translation.Get("config.option.only_show_socializable_npcs.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.option.only_show_socializable_npcs.description"),
+                    getValue: () => Config.OnlyShowSocializableNPCs,
+                    setValue: value => Config.OnlyShowSocializableNPCs = value
+                );
+            }
 
-            // add some config options
-            configMenu.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.title.general"));
-            configMenu.AddKeybind(
-                ModManifest,
-                name: () => this.Helper.Translation.Get("config.option.show_schedule_key.name"),
-                getValue: () => Config.ShowSchedulesKey,
-                setValue: value => Config.ShowSchedulesKey = value
-            );
-            configMenu.AddBoolOption(
-                ModManifest,
-                name: () => this.Helper.Translation.Get("config.option.disable_hover.name"),
-                tooltip: () => this.Helper.Translation.Get("config.option.disable_hover.description"),
-                getValue: () => Config.DisableHover,
-                setValue: value => Config.DisableHover = value
-            );
-            configMenu.AddBoolOption(
-                ModManifest,
-                name: () => this.Helper.Translation.Get("config.option.use_large_font.name"),
-                tooltip: () => this.Helper.Translation.Get("config.option.use_large_font.description"),
-                getValue: () => Config.UseLargerFontForScheduleDetails,
-                setValue: value => Config.UseLargerFontForScheduleDetails = value
-            );
-            configMenu.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.title.filter_sort"));
-            configMenu.AddTextOption(
-                ModManifest,
-                name: () => this.Helper.Translation.Get("config.option.sort_options.name"),
-                tooltip: () => this.Helper.Translation.Get("config.option.sort_options.description"),
-                getValue: () => Config.NPCSortOrder.ToString(),
-                setValue: value => Config.NPCSortOrder = parseSortType(value),
-                allowedValues: Enum.GetNames(typeof(ModConfig.SortType)),
-                formatAllowedValue: type => this.Helper.Translation.Get($"config.option.sort_options.option_{(ushort)parseSortType(type)}")
-            );
-            configMenu.AddBoolOption(
-                ModManifest,
-                name: () => this.Helper.Translation.Get("config.option.only_show_met_npcs.name"),
-                tooltip: () => this.Helper.Translation.Get("config.option.only_show_met_npcs.description"),
-                getValue: () => Config.OnlyShowMetNPCs,
-                setValue: value => Config.OnlyShowMetNPCs = value
-            );
-            configMenu.AddBoolOption(
-                ModManifest,
-                name: () => this.Helper.Translation.Get("config.option.only_show_socializable_npcs.name"),
-                tooltip: () => this.Helper.Translation.Get("config.option.only_show_socializable_npcs.description"),
-                getValue: () => Config.OnlyShowSocializableNPCs,
-                setValue: value => Config.OnlyShowSocializableNPCs = value
-            );
+            var mobilePhoneApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>("JoXW.MobilePhone");
+            if (mobilePhoneApi != null)
+            {
+                Texture2D appIcon = Helper.ModContent.Load<Texture2D>("assets/app_icon.png");
+                bool success = mobilePhoneApi.AddApp(Helper.ModRegistry.ModID, "Schedule Viewer", OpenMenu, appIcon);
+                Console.Log($"Added app to Mobile Phone Continued successfully? {success}", LogLevel.Debug);
+            }
+
+            var toolbarIconsApi = Helper.ModRegistry.GetApi<IToolbarIconsApi>("furyx639.ToolbarIcons");
+            if (toolbarIconsApi != null)
+            {
+                toolbarIconsApi.AddToolbarIcon(ModManifest.UniqueID, Helper.ModContent.GetInternalAssetName("assets/Icons.png").BaseName, new Rectangle(0, 24, 16, 16), this.Helper.Translation.Get("schedule_details_page.header"));
+                toolbarIconsApi.Subscribe(args =>
+                {
+                    if (args.Id.Equals(ModManifest.UniqueID))
+                    {
+                        OpenMenu();
+                    }
+                });
+            }
         }
 
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>

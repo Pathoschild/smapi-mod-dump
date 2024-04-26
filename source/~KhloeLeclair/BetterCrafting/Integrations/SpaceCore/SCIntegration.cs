@@ -29,6 +29,8 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Leclair.Stardew.BetterCrafting.Models;
+using StardewValley.ItemTypeDefinitions;
+using StardewValley.GameData.Objects;
 
 namespace Leclair.Stardew.BetterCrafting.Integrations.SpaceCore;
 
@@ -40,8 +42,13 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 	private readonly ModuleBuilder? Module;
 
 	private readonly Type? CustomCraftingRecipe;
+	private readonly Type? CustomSkills;
+
 	private readonly IDictionary? CookingRecipes;
 	private readonly IDictionary? CraftingRecipes;
+	private readonly IDictionary? SkillsByName;
+
+	public static readonly string SKILL_BUFF_PREFIX = "spacechase.SpaceCore.SkillBuff.";
 
 	public SCIntegration(ModEntry mod)
 	: base(mod, "spacechase0.SpaceCore", "1.8.1") {
@@ -51,9 +58,11 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 
 		try {
 			CustomCraftingRecipe = Type.GetType("SpaceCore.CustomCraftingRecipe, SpaceCore");
+			CustomSkills = Type.GetType("SpaceCore.Skills, SpaceCore");
 
 			CookingRecipes = mod.Helper.Reflection.GetField<IDictionary>(CustomCraftingRecipe!, "CookingRecipes", true).GetValue();
 			CraftingRecipes = mod.Helper.Reflection.GetField<IDictionary>(CustomCraftingRecipe!, "CraftingRecipes", true).GetValue();
+			SkillsByName = mod.Helper.Reflection.GetField<IDictionary>(CustomSkills!, "SkillsByName", true).GetValue();
 
 			var builder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName($"Leclair.Stardew.BetterCrafting.Proxies, Version={GetType().Assembly.GetName().Version}, Culture=neutral"), AssemblyBuilderAccess.Run);
 			var module = builder.DefineDynamicModule($"Proxies");
@@ -69,11 +78,85 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 		}
 
 		mod.Recipes.AddProvider(this);
+
+		mod.Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+
 	}
 
-	public int RecipePriority => 10;
+	private void GameLoop_DayStarted(object? sender, StardewModdingAPI.Events.DayStartedEventArgs e) {
+		// Get a list of all existing SC Buff rules.
+		var old_handlers = Self.Recipes.GetRuleHandlers()
+			.Where(pair => pair.Key.StartsWith("scbuff:") && pair.Value is SCBuffRuleHandler)
+			.Select(pair => ((SCBuffRuleHandler) pair.Value).SkillId)
+			.ToHashSet();
 
-	public bool CacheAdditionalRecipes => true;
+		// For each skill, set up a buff rule if one doesn't exist.
+		foreach(var skill in GetSkills()) {
+			if (string.IsNullOrEmpty(skill.Id))
+				continue;
+
+			// If we had an entry for the skill already, we don't
+			// need to make a new one. Just remove it from the list
+			// and skip.
+			if (old_handlers.Remove(skill.Id))
+				continue;
+
+			Self.Recipes.RegisterRuleHandler($"scbuff:{skill.Id}", new SCBuffRuleHandler(skill));
+		}
+
+		// Unregister any skills that no longer exist.
+		foreach(string handler in old_handlers)
+			Self.Recipes.UnregisterRuleHandler($"scbuff:{handler}");
+	}
+
+	#region Skill Handling
+
+	public string[]? GetSkillNames() {
+		if (!IsLoaded)
+			return null;
+
+		return API.GetCustomSkills();
+	}
+
+	public IEnumerable<ISCSkill> GetSkills() {
+		if (!IsLoaded || ProxyMan is null || SkillsByName is null)
+			yield break;
+
+		foreach(object value in SkillsByName.Values) {
+			if (!ProxyMan.TryProxy<ISCSkill>(value, out var skill))
+				continue;
+
+			yield return skill;
+		}
+	}
+
+	public ISCSkill? GetSkill(string name) {
+		if (!IsLoaded || ProxyMan is null || SkillsByName is null || ! SkillsByName.Contains(name))
+			return null;
+
+		object? thing = SkillsByName[name];
+		if (thing is not null && ProxyMan.TryProxy<ISCSkill>(thing, out var skill))
+			return skill;
+
+		return null;
+	}
+
+	public IEnumerable<(ISCSkill, float)> GetItemBuffs(ObjectData data) {
+		if (data.Buffs is null)
+			yield break;
+
+		foreach(var buff in data.Buffs) {
+			if (buff.CustomFields is null)
+				continue;
+
+			foreach(var pair in buff.CustomFields)
+				if (pair.Key.StartsWith(SKILL_BUFF_PREFIX) && float.TryParse(pair.Value, out float value)) {
+					string name = pair.Key[SKILL_BUFF_PREFIX.Length..];
+					if (GetSkill(name) is ISCSkill skill)
+						yield return (skill, value);
+				}
+		}
+	}
 
 	public void AddCustomSkillExperience(Farmer farmer, string skill, int amt) {
 		if (!IsLoaded)
@@ -82,15 +165,23 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 		API.AddExperienceForCustomSkill(farmer, skill, amt);
 	}
 
-	public IEnumerable<IRecipe>? GetAdditionalRecipes(bool cooking) {
-		return null;
-	}
-
 	public int GetCustomSkillLevel(Farmer farmer, string skill) {
 		if (!IsLoaded)
 			return 0;
 
 		return API.GetLevelForCustomSkill(farmer, skill);
+	}
+
+	#endregion
+
+	#region Recipe
+
+	public int RecipePriority => 10;
+
+	public bool CacheAdditionalRecipes => true;
+
+	public IEnumerable<IRecipe>? GetAdditionalRecipes(bool cooking) {
+		return null;
 	}
 
 	public IRecipe? GetRecipe(CraftingRecipe recipe) {
@@ -123,34 +214,23 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 			IIngredient? result = null;
 
 			try {
+				matcher = ProxyMan.ObtainProxy<IIngredientMatcher>(ing);
+
 				if (cls.Equals("SpaceCore.CustomCraftingRecipe+ObjectIngredientMatcher")) {
-					matcher = ProxyMan.ObtainProxy<IIngredientMatcher>(ing);
-					int? index = Self.Helper.Reflection.GetField<int>(ing, "objectIndex", false)?.GetValue();
-					if (index.HasValue)
-						result = new BaseIngredient(index.Value, matcher.Quantity);
-
-				} else if (cls.Equals("DynamicGameAssets.DGACustomCraftingRecipe+DGAIngredientMatcher")) {
-					IItemAbstraction? itemAbstraction;
-					try {
-						object? abstraction = Self.Helper.Reflection.GetField<object>(ing, "ingred", true).GetValue();
-						itemAbstraction = abstraction is null ? null : ProxyMan.ObtainProxy<IItemAbstraction>(abstraction);
-					} catch {
-						itemAbstraction = null;
-					}
-
-					result = new DGAIngredient(ing, Self, itemAbstraction);
+					// Private stuff.
+					string? index = Self.Helper.Reflection.GetField<string>(ing, "objectIndex", false)?.GetValue();
+					if (!string.IsNullOrEmpty(index))
+						result = new BaseIngredient(index, matcher.Quantity);
 
 				} else
-					result = new SCIngredient(ing, Self);
+					result = new SCIngredient(matcher);
 
 			} catch (Exception ex) {
 				Log($"An error occurred while handling a SpaceCore IngredientMatcher for the recipe {recipe.name}. This recipe will not be craftable.", LogLevel.Warn, ex);
 				result = null;
 			}
 
-			if (result == null)
-				result = new ErrorIngredient();
-
+			result ??= new ErrorIngredient();
 			ingreds.Add(result);
 		}
 
@@ -164,7 +244,16 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 
 		} catch(Exception ex) {
 			Log($"An error occurred while accessing a custom SpaceCore recipe. We cannot handle the recipe: {recipe.name}", LogLevel.Error, ex);
-			return null;
+
+			// Make the recipe impossible to craft by adding an error ingredient.
+			// That way it won't be crafted *incorrectly*.
+			return new RecipeBuilder(recipe)
+				.Texture(() => Game1.mouseCursors)
+				.Source(() => ErrorIngredient.SOURCE)
+				.AddIngredient(new ErrorIngredient())
+				.Build();
 		}
 	}
+
+	#endregion
 }

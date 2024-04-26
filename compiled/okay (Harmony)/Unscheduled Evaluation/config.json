@@ -1,0 +1,7 @@
+{
+  "EnableAlwaysActiveShrinePatch": true,
+  "SkippableShrineCandles": false,
+  "SkippableEvaluation1": false,
+  "SkippableEvaluation2": false,
+  "GrandpaNote": "{0}-\n\nWhen you are ready for me, place a diamond on this shrine.\n\n-Grandpa"
+}

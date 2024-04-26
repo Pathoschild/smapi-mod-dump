@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Active Menu Anywhere",
     "Author": "weizinai",
-    "Version": "1.1.2",
+    "Version": "1.4.0",
     "Description": "Active menu anywhere.",
     "UniqueID": "weizinai.ActiveMenuAnywhere",
     "EntryDll": "ActiveMenuAnywhere.dll",

@@ -55,7 +55,6 @@ namespace MultiplayerPrairieKing.Utility
         public long id = -69;
     }
 
-
     //Bullet Sync
     public class PK_BulletSpawn
     {
@@ -113,7 +112,7 @@ namespace MultiplayerPrairieKing.Utility
 
     public class PK_ExitGame
     {
-
+        public int errorCode = -1;
     }
 
     public class PK_StartLevelTransition
@@ -131,10 +130,15 @@ namespace MultiplayerPrairieKing.Utility
 
     }
 
+    public class PK_RestartGame
+    {
+
+    }
+
     //Basic Lobby messages
     public class PK_StartHosting
     {
-
+        public int arcadeMachine = -1; 
     }
 
     public class PK_StopHosting
@@ -150,6 +154,7 @@ namespace MultiplayerPrairieKing.Utility
     public class PK_LobbyInfo
     {
         public List<long> playerList;
+        public SaveState saveState;
         public int difficulty = (int)DIFFICULTY.NORMAL;
     }
 }

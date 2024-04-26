@@ -20,7 +20,7 @@ namespace BZP_Allergies.HarmonyPatches
     internal class PatchEatQuestionPopup : Initializable
     {
         [HarmonyPrefix]
-        static bool CreateQuestionDialogue_Prefix(ref string question)
+        static void CreateQuestionDialogue_Prefix(ref string question)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace BZP_Allergies.HarmonyPatches
                 
                 if (Game1.player.ActiveObject == null)
                 {
-                    return true;
+                    return;
                 }                
                 string activeObjectName = Game1.player.ActiveObject.DisplayName;
                 string eatQuestion = string.Format(stringsData["Game1.cs.3160"], activeObjectName);
@@ -47,7 +47,6 @@ namespace BZP_Allergies.HarmonyPatches
             {
                 Monitor.Log($"Failed in {nameof(CreateQuestionDialogue_Prefix)}:\n{ex}", LogLevel.Error);
             }
-            return true; // run original logic
         }
     }
 

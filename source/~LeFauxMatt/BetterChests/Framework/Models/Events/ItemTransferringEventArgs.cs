@@ -12,22 +12,33 @@ namespace StardewMods.BetterChests.Framework.Models.Events;
 
 using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
 
-/// <summary>The event arguments before an item is transferred into a container.</summary>
-internal sealed class ItemTransferringEventArgs(IStorageContainer into, Item item, bool force) : EventArgs,
-    IItemTransferring
+/// <inheritdoc cref="StardewMods.Common.Services.Integrations.BetterChests.Interfaces.IItemTransferring" />
+internal sealed class ItemTransferringEventArgs : EventArgs, IItemTransferring
 {
-    /// <summary>Gets a value indicating whether the transfer is being forced.</summary>
-    public bool IsForced { get; } = force;
+    /// <summary>Initializes a new instance of the <see cref="ItemTransferringEventArgs" /> class.</summary>
+    /// <param name="into">The container being transferred into.</param>
+    /// <param name="item">The item being transferred.</param>
+    public ItemTransferringEventArgs(IStorageContainer into, Item item)
+    {
+        this.Into = into;
+        this.Item = item;
+    }
 
-    /// <summary>Gets the destination container to which the item was sent.</summary>
-    public IStorageContainer Into { get; } = into;
+    /// <inheritdoc />
+    public IStorageContainer Into { get; }
 
-    /// <summary>Gets the item that was transferred.</summary>
-    public Item Item { get; } = item;
+    /// <inheritdoc />
+    public Item Item { get; }
 
-    /// <summary>Gets a value indicating whether the the transfer is prevented.</summary>
+    /// <inheritdoc />
+    public bool IsAllowed { get; private set; }
+
+    /// <inheritdoc />
     public bool IsPrevented { get; private set; }
 
-    /// <summary>Prevent the transfer.</summary>
+    /// <inheritdoc />
+    public void AllowTransfer() => this.IsAllowed = true;
+
+    /// <inheritdoc />
     public void PreventTransfer() => this.IsPrevented = true;
 }

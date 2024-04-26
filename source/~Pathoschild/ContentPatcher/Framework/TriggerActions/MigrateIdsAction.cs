@@ -209,7 +209,7 @@ namespace ContentPatcher.Framework.TriggerActions
                     return false;
                 }
 
-                // map json Assets ID
+                // map Json Assets ID
                 if (this.TryReadJsonAssetsId(oldId, jsonAssetMap, out string[] oldIds, out error))
                 {
                     foreach (string id in oldIds)
@@ -244,7 +244,7 @@ namespace ContentPatcher.Framework.TriggerActions
             {
                 if (mapQualifiedIds.TryGetValue(item.QualifiedItemId, out ItemMetadata? data))
                 {
-                    if (int.TryParse(item.ItemId, out int oldIndex) && item.ParentSheetIndex == oldIndex)
+                    if (item.ParentSheetIndex == 0 || (int.TryParse(item.ItemId, out int oldIndex) && item.ParentSheetIndex == oldIndex))
                         item.ParentSheetIndex = data.GetParsedData()?.SpriteIndex ?? item.ParentSheetIndex;
 
                     item.ItemId = data.LocalItemId;
@@ -434,7 +434,7 @@ namespace ContentPatcher.Framework.TriggerActions
         /// <param name="jsonAssetsMap">The Json Assets ID map loaded via <see cref="LoadJsonAssetsMap"/>.</param>
         /// <param name="oldIds">The old IDs in the save file to match, if found.</param>
         /// <param name="error">The error message indicating why the format is invalid, if applicable.</param>
-        /// <returns>Returns true if the ID was successfully parsed as a Json Assets item specifier and found in the Json Assets ID map, else false.</returns>
+        /// <returns>Returns whether the ID was successfully parsed as a Json Assets item specifier, regardless of whether it was found in the Json Assets ID map.</returns>
         private bool TryReadJsonAssetsId(string rawId, Lazy<Dictionary<string, Dictionary<string, string>>> jsonAssetsMap, out string[] oldIds, out string? error)
         {
             // not a Json Assets ID
@@ -468,18 +468,10 @@ namespace ContentPatcher.Framework.TriggerActions
                 return false;
             }
 
-            // item not mapped
-            if (!jsonAssetsMap.Value.TryGetValue(type, out Dictionary<string, string>? map) || !map.TryGetValue(name, out string? newId))
-            {
-                oldIds = Array.Empty<string>();
-                error = null;
-                return false;
-            }
-
-            // map item
-            oldIds = typeIds.Length > 0
+            // get real qualified item IDs (if any)
+            oldIds = jsonAssetsMap.Value.TryGetValue(type, out Dictionary<string, string>? map) && map.TryGetValue(name, out string? newId)
                 ? typeIds.Select(prefix => prefix + newId).ToArray()
-                : new[] { newId };
+                : Array.Empty<string>();
             error = null;
             return true;
         }

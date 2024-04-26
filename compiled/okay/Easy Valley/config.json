@@ -11,5 +11,6 @@
   "AllowMaxEnchantmentTimes": 1,
   "EnchantmentToolPrice": 5000,
   "EnableElevator": false,
-  "DesertElevatorMaxLevel": 100
+  "DesertElevatorMaxLevel": 100,
+  "EnableUnlockRecipes": false
 }

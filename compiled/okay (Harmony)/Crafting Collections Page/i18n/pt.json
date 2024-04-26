@@ -1,0 +1,12 @@
+{
+  "craft_collection.number_crafted": "Número Criado: {{num}}",
+  "craft_collection.properties.title": "Crafting Collections Page",
+  "craft_collection.properties.enable_name": "Enabled",
+  "craft_collection.properties.enable_description": "Display the Crafting page in the Collections menu",
+  "craft_collection.properties.hide_unknown_name": "Hide unknown blueprints",
+  "craft_collection.properties.hide_unknown_description": "Hide unknown blueprints in the Collections page, similar to the Crafting page.",
+  "craft_collection.properties.show_wedding_ring_name": "Show Wedding Ring",
+  "craft_collection.properties.show_wedding_ring_description": "Show the Wedding Ring recipe in multiplayer. (The Wedding Ring is not required for perfection)",
+  "craft_collection.patch_error_prefix": "Error while patching Crafting Collections: {{error}}",
+  "craft_collection.error_prefix": "Crafting Collection Page has failed: {{error}}"
+}

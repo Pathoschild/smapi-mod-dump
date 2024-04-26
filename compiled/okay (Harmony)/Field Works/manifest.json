@@ -1,7 +1,7 @@
 ﻿{
   "Name": "FieldWorks",
   "Author": "ChiroxT",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Harvests, Plants, Fertalizes and Waters all seeds in your Inventory, when holding shift while clicking",
   "UniqueID": "treinke.FieldWorks",
   "EntryDll": "FieldWorks.dll",

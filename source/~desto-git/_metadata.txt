@@ -7,9 +7,9 @@ mods:
    Gift Decline
 
 latest commit:
-   commit c2287ddfcd8b3348c0bf118bf9b80a9ac944c15e
+   commit 4d25574d17455cf9f577af9edf29cb01bbc2ae23
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Sun Aug 15 04:06:25 2021 +0200
+   Date:   Mon Apr 22 17:18:36 2024 +0200
    
-       [GD] don't throw on a new save (for real this time)
+       add the latest update to the CHANGELOGs
    

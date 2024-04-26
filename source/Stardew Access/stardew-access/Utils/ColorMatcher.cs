@@ -26,6 +26,11 @@ namespace stardew_access.Utils
         private const string ColorsFileName = "colors.json";
 
         /// <summary>
+        /// Name of the expanded colors JSON file to load.
+        /// </summary>
+        private const string ColorsFileNameExtra = "colors_extra.json";
+
+        /// <summary>
         /// Dictionary mapping color codes to color names.
         /// </summary>
         private static readonly Dictionary<string, string> _colorCodeToName = LoadColors();
@@ -112,12 +117,12 @@ namespace stardew_access.Utils
         /// <returns>A dictionary with color codes as keys and color names as values.</returns>
         private static Dictionary<string, string> LoadColors()
         {
-            const string ColorsFileName = "colors.json"; // Assuming the file name is colors.json
+            string colorsFileName = MainClass.Config.ExtraColors ? ColorsFileNameExtra : ColorsFileName;
             var colorCodeToName = new Dictionary<string, string>();
 
-            if (!JsonLoader.TryLoadJsonFile(ColorsFileName, out JToken? colorToken) || colorToken == null)
+            if (!JsonLoader.TryLoadJsonFile(colorsFileName, out JToken? colorToken) || colorToken == null)
             {
-                Log.Warn($"Unable to load assets/{ColorsFileName}.");
+                Log.Warn($"Unable to load assets/{colorsFileName}.");
                 return colorCodeToName;
             }
 

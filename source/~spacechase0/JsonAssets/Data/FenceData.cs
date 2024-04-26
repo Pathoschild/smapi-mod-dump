@@ -32,7 +32,12 @@ namespace JsonAssets.Data
         internal ObjectData CorrespondingObject { get; set; }
 
         /// <inheritdoc />
-        public string Description { get; set; }
+        public string Description
+        {
+            get => descript;
+            set => descript = value ?? " ";
+        }
+        private string descript = " ";
 
         public int MaxHealth { get; set; } = 1;
         public object RepairMaterial { get; set; }
@@ -58,6 +63,23 @@ namespace JsonAssets.Data
         /// <inheritdoc />
         public string TranslationKey { get; set; }
 
+
+        internal StardewValley.GameData.Fences.FenceData GetFenceInformation()
+        {
+            string tool = "StardewValley.Tools.Axe";
+            if (BreakTool == FenceBreakToolType.Pickaxe)
+            {
+                tool = "StardewValley.Tools.Pickaxe";
+            }
+            var fence = new StardewValley.GameData.Fences.FenceData()
+            {
+                Health = MaxHealth,
+                Texture = $"JA\\Fence\\{Name.FixIdJA("O")}",
+                RemovalToolTypes = new List<string> { tool },
+                PlacementSound = PlacementSound
+            };
+            return fence;
+        }
 
         /*********
         ** Private methods

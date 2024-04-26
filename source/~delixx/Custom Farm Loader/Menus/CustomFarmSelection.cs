@@ -20,6 +20,7 @@ using Custom_Farm_Loader.Lib;
 using StardewValley.BellsAndWhistles;
 using StardewValley.GameData;
 using StardewModdingAPI;
+using System.IO;
 
 namespace Custom_Farm_Loader.Menus
 {
@@ -366,10 +367,10 @@ namespace Custom_Farm_Loader.Menus
             var map = knownWorldMapExceptions[modFarm.Id];
             var path = UtilityMisc.getRelativeModDirectory(map[0]);
 
-            Monitor.LogOnce($"Found '{modFarm.Id}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
+            Monitor.LogOnce($"Found '{modFarm.Id}' as part of known world map exceptions. Attempting hard coded load in '{path}{Path.DirectorySeparatorChar}{map[1]}'");
 
             try {
-                return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
+                return Helper.ModContent.Load<Texture2D>($"{path}{Path.DirectorySeparatorChar}{map[1]}");
             } catch (Exception ex) {
                 Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.Id}'");
             }

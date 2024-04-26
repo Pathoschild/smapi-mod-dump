@@ -11,10 +11,11 @@
 {
     "Name": "Mobile Phone Themes",
     "Author": "JoXW, Trapezohedron",
-    "Version": "0.3.1",
+    "Version": "0.3.2",
     "Description": "Adds skins and backgrounds to the mobile phone.",
     "UniqueID": "JoXW.MobilePhoneThemes",
     "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:21017@Trapezohedron" ],
     "ContentPackFor": {
         "UniqueID": "JoXW.MobilePhone",
         "MinimumVersion": "1.0.0"

@@ -1,13 +1,17 @@
 {
   "Name": "Farmhouse Fixes",
   "Author": "CyanFire",
-  "Version": "1.7.6",
+  "Version": "1.7.8",
   "Description": "Various fixes/QOL improvements for farmhouse/cabins",
   "UniqueID": "CF.FarmhouseFixes",
   "EntryDll": "FarmhouseFixes.dll",
   "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:16507" ],
   "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    },
     {
       "UniqueID": "Pathoschild.ContentPatcher",
       "IsRequired": false

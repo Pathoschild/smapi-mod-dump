@@ -38,8 +38,8 @@ internal class ScarecrowLabel : ObjectLabel
     public override void GenerateLabel()
     {
         base.GenerateLabel();
-        Description.Add(I18n.LabelScarecrowCropsProtected(GetScarecrowCrops().Count()));
-        Description.Add(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
+        AddBorder(I18n.LabelScarecrowCropsProtected(GetScarecrowCrops().Count()));
+        AddBorder(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
     }
 
     public override void DrawOnOverlay(SpriteBatch spriteBatch)

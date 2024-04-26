@@ -1,0 +1,10 @@
+{
+  "Name": "Smaller Fish Ponds",
+  "Author": "platinummyr",
+  "Version": "1.1.0",
+  "Description": "Makes Fish Ponds smaller (3x3 instead of 5x5).",
+  "UniqueID": "platinummyr.SmallerFishPonds",
+  "MinimumApiVersion": "4.0.0",
+  "EntryDll": "SmallerFishPonds.dll",
+  "UpdateKeys": [ "Nexus:21900" ]
+}

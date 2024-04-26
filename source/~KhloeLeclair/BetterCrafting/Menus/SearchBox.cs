@@ -29,6 +29,8 @@ public class SearchBox : MenuSubscriber<ModEntry> {
 
 	public readonly Action<string?> onSearch;
 
+	public readonly BetterCraftingPage Menu;
+
 	public ClickableTextureComponent btnSearch;
 
 	public TextBox txtInput;
@@ -36,15 +38,17 @@ public class SearchBox : MenuSubscriber<ModEntry> {
 
 	public bool UsingKB = false;
 
-	public SearchBox(ModEntry mod, int x, int y, int width, int height, Action<string?> onSearch, string? old = null)
+	public SearchBox(ModEntry mod, BetterCraftingPage menu, int x, int y, int width, int height, Action<string?> onSearch, string? old = null)
 	: base(mod) {
+
+		Menu = menu;
 
 		initialize(x, y, width, height, true);
 
 		this.onSearch = onSearch;
 
 		txtInput = new TextBox(
-			textBoxTexture: Game1.content.Load<Texture2D>("LooseSprites\\textBox"),
+			textBoxTexture: Game1.content.Load<Texture2D>(@"LooseSprites\textBox"),
 			null,
 			Game1.smallFont,
 			Game1.textColor
@@ -78,7 +82,7 @@ public class SearchBox : MenuSubscriber<ModEntry> {
 
 		btnSearch = new ClickableTextureComponent(
 			new Rectangle(0, 0, 64, 64),
-			Sprites.Buttons.Texture,
+			menu.ButtonTexture ?? Sprites.Buttons.Texture,
 			Sprites.Buttons.SEARCH_ON,
 			4f
 		) {
@@ -204,32 +208,36 @@ public class SearchBox : MenuSubscriber<ModEntry> {
 		// Tip
 		bool kb_open = Game1.textEntry != null;
 
-		if (! kb_open)
-			SimpleHelper.Builder()
+		if (!kb_open) {
+			var layout = SimpleHelper.Builder()
 				.FormatText(
 					I18n.Tooltip_Search_Tip(FlowHelper.EscapeFormatText(I18n.Search_IngredientPrefix()), FlowHelper.EscapeFormatText(I18n.Search_LikePrefix()), FlowHelper.EscapeFormatText(I18n.Search_LovePrefix())),
 					wrapText: true,
 					minWidth: width
 				)
-				.GetLayout()
-				.DrawHover(
-					b,
-					Game1.smallFont,
-					overrideX: xPositionOnScreen,
-					overrideY: yPositionOnScreen + height + 16
-				);
+				.GetLayout();
+
+			Menu.DrawSimpleNodeHover(
+				layout,
+				b,
+				overrideX: xPositionOnScreen,
+				overrideY: yPositionOnScreen + height + 16
+			);
+		}
 
 		// Background
 		RenderHelper.DrawBox(
 			b,
-			texture: Game1.menuTexture,
-			sourceRect: new Rectangle(0, 256, 60, 60),
+			texture: Menu.Background ?? Game1.menuTexture,
+			sourceRect: Menu.Background is null
+				? RenderHelper.Sprites.NativeDialogue.ThinBox // new Rectangle(0, 256, 60, 60),
+				: RenderHelper.Sprites.CustomBCraft.ThinBox,
 			x: xPositionOnScreen,
 			y: yPositionOnScreen,
 			width: width,
 			height: height,
 			color: Color.White,
-			scale: 1f
+			scale: Menu.Background is null ? 1f : 4f
 		);
 
 		txtInput.Draw(b);

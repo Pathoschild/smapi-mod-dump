@@ -23,6 +23,8 @@ using StardewModdingAPI.Events;
 using StardewValley.Objects;
 using Unlockable_Bundles.Lib.Enums;
 using Unlockable_Bundles.API;
+using static Unlockable_Bundles.ModEntry;
+using StardewModdingAPI.Utilities;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -30,23 +32,15 @@ namespace Unlockable_Bundles.Lib
     //DayEnding shop removal happens in SaveDataEvents
     public class ShopPlacement
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public static List<GameLocation> ModifiedLocations = new List<GameLocation>();
 
         //This flag is supposed to prevent locationListChanged from possibly running before dayStarted
         public static bool HasDayStarted = false;
 
-        public static List<Unlockable> UnappliedMapPatches = new();
+        public static PerScreen<List<UnlockableModel>> UnappliedMapPatches = new(() => new List<UnlockableModel>());
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Helper.Events.GameLoop.DayStarted += dayStarted;
             Helper.Events.World.LocationListChanged += locationListChanged;
 
@@ -54,13 +48,18 @@ namespace Unlockable_Bundles.Lib
             Helper.Events.GameLoop.ReturnedToTitle += delegate { cleanupDay(); };
         }
 
-        private static void cleanupDay()
+        public static void cleanupDay()
         {
+            Multiplayer.IsScreenReady.Value = false;
+            //A splitscreen player leaving through the options menu triggers ReturnedToTitle :3
+            if (Context.ScreenId > 0)
+                return;
+
             UnlockableBundlesAPI.IsReady = false;
             HasDayStarted = false;
             ModData.Instance = null;
 
-            UpdateHandler.clearCache();
+            MapPatches.clearCache();
             UnlockableBundlesAPI.clearCache();
         }
 
@@ -94,7 +93,7 @@ namespace Unlockable_Bundles.Lib
             Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/Bundles"));
 
             UnlockableBundlesAPI.clearCache();
-            UpdateHandler.clearCache();
+            MapPatches.clearCache();
 
             ModData.Instance = new ModData();
             UnlockableBundlesAPI.IsReady = false;
@@ -104,14 +103,16 @@ namespace Unlockable_Bundles.Lib
         [EventPriority(EventPriority.Low)] //EventPriority needs to be low, or CP will be very inconsistent with token evaluations before UB dayStarted
         public static void dayStarted(object sender, DayStartedEventArgs e)
         {
-            if (Context.ScreenId > 0)
+            Monitor.Log("Processing ShopPlacement.DayStarted event for: " + Multiplayer.getDebugName(), DebugLogLevel);
+
+            if (SaveAnywhereHandler.DelayBundlePlacement)
                 return;
 
             if (!Context.IsMainPlayer) {
-                foreach (var unlockable in UnappliedMapPatches)
-                    UpdateHandler.applyUnlockable(unlockable);
+                foreach (var unlockable in UnappliedMapPatches.Value)
+                    MapPatches.applyUnlockable(new Unlockable(unlockable), !Context.IsOnHostComputer);
 
-                UnappliedMapPatches.Clear();
+                UnappliedMapPatches.Value.Clear();
                 return;
             }
 
@@ -141,7 +142,8 @@ namespace Unlockable_Bundles.Lib
 
                     if (ModData.isUnlockablePurchased(entry.Key, location.NameOrUniqueName)) {
                         applyList.Add((UnlockableModel)unlockable);
-                        UpdateHandler.applyUnlockable(unlockable);
+                        MapPatches.applyUnlockable(unlockable);
+
                     } else
                         placeShop(unlockable, loc);
 
@@ -151,10 +153,10 @@ namespace Unlockable_Bundles.Lib
                 }
             }
 
-            ModEntry._Helper.Multiplayer.SendMessage(new KeyValuePair<List<UnlockableModel>, ModData>(applyList, ModData.Instance), "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
-            ModEntry._Helper.Multiplayer.SendMessage(AssetRequested.MailData, "UpdateMailData", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+            Helper.Multiplayer.SendMessage(new KeyValuePair<List<UnlockableModel>, ModData>(applyList, ModData.Instance), "UnlockablesReady", modIDs: new[] { ModManifest.UniqueID });
+            Helper.Multiplayer.SendMessage(AssetRequested.MailData, "UpdateMailData", modIDs: new[] { ModManifest.UniqueID });
             Helper.GameContent.InvalidateCache("Data/Mail"); //I kind of wish I could just append my mail data instead of reloading the entire asset
-            ModEntry._API.raiseIsReady(new IsReadyEventArgs(Game1.player));
+            ModAPI.raiseIsReady(new IsReadyEventArgs(Game1.player));
         }
 
         private static void validateUnlockable(UnlockableModel u)
@@ -204,9 +206,9 @@ namespace Unlockable_Bundles.Lib
 
             if (!location.IsTileOccupiedBy(unlockable.ShopPosition, collisionMask: CollisionMask.Objects)) {
                 location.setObject(unlockable.ShopPosition, shopObject);
-                Monitor.Log($"Placed Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'");
+                Monitor.Log($"Placed Bundle for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'", DebugLogLevel);
             } else
-                Monitor.Log($"Failed to place Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}' as it is occupied", LogLevel.Warn);
+                Monitor.Log($"Failed to place Bundle for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}' as it is occupied", LogLevel.Warn);
         }
 
         public static bool shopExists(Unlockable unlockable)

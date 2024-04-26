@@ -1,0 +1,11 @@
+{
+  "Silent": false,
+  "ShowBirthdays": true,
+  "ShowFestivals": true,
+  "ShowBookseller": true,
+  "ShowHelpWantedQuests": true,
+  "ShowSpecialOrder": true,
+  "Opacity": 0.3,
+  "Scale": 1.0,
+  "AgendaKey": "Q"
+}

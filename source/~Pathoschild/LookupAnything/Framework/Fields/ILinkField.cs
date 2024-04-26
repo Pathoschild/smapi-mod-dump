@@ -18,7 +18,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /*********
         ** Public methods
         *********/
-        /// <summary>Get the subject the link points to.</summary>
+        /// <summary>Get the subject the link points to, or <c>null</c> to stay on the current subject.</summary>
         ISubject? GetLinkSubject();
     }
 }

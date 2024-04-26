@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit bbc4b7a81ef6d11faa7085767ba79943ed077396
+   commit f5760f1e93e68cf09853504b041b8831b2e0d341
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Mar 30 01:41:21 2024 -0400
+   Date:   Tue Apr 23 02:53:16 2024 -0400
    
-       allow migrating Json Assets items using MigrateId action
+       update machine list in Automate readme
    

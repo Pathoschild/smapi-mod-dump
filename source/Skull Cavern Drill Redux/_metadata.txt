@@ -6,9 +6,11 @@ mods:
    Skull Cavern Drill Redux
 
 latest commit:
-   commit e266f41a5aff7ded8d0e5a60c867eeb784167f66
-   Author: AndrewGraber <andrewcgraber@gmail.com>
-   Date:   Fri May 5 03:33:11 2023 -0400
+   commit 6a6a55339f740da89750c604b84010a86efe4f30
+   Author: Andrew Graber <andrewcgraber@gmail.com>
+   Date:   Thu Apr 11 02:50:06 2024 -0400
    
-       Merge branch 'main' of professional:AndrewGraber/Skull-Cavern-Drill-Redux into main
+       Merge pull request #1 from AndrewGraber/1.6-Update
+       
+       1.6 update merge into main branch
    

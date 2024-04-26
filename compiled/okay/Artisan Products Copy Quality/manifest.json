@@ -1,0 +1,20 @@
+﻿{
+    "Name": "Artisan Products Copy Quality",
+    "Author": "justastranger",
+    "Version": "1.1.0",
+    "Description": "Iterates through certain machines and all of their outputs so the CopyQuality flag can be enabled. Replicates 'Quality Artisan Products' in pure SMAPI code that is much easier to expand.",
+    "UniqueID": "JAS.ArtisanProductsCopyQuality",
+    "EntryDll": "ArtisanProductsCopyQuality.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "GitHub:justastranger/ArtisanProductsCopyQuality"
+    ],
+    "Dependencies": [
+        {
+            "Name": "Generic Mod Config Menu",
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "MinimumVersion": "1.12.0",
+            "IsRequired": false
+        }
+    ]
+}

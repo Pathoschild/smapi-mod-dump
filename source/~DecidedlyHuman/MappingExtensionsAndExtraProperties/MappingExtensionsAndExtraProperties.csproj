@@ -8,7 +8,7 @@
         <Description>Extra map features and tile/map properties to spice up your custom maps.</Description>
         <MinimumApiVersion>3.18.0</MinimumApiVersion>
         <UpdateKeys>Nexus:14493</UpdateKeys>
-        <Version>2.3.2</Version>
+        <Version>2.3.6</Version>
     </PropertyGroup>
 
     <PropertyGroup>

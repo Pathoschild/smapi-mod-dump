@@ -1,0 +1,54 @@
+﻿{
+    /*********
+    ** Farm info
+    *********/
+    "farm.name": "Pequena Fazenda na Praia",
+    "farm.description": "Uma pequena praia fértil, onde você pode pescar tanto peixes de rio quanto de oceano.",
+
+    "farm.fish-areas.river": "Rio",
+    "farm.fish-areas.estuary": "Estuário",
+    "farm.fish-areas.ocean": "Oceano",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    /****
+    ** Farm options
+    ****/
+    "config.farm-options-section": "Opções da fazenda",
+
+    "config.beach-sounds.name": "Tocar sons da praia",
+    "config.beach-sounds.tooltip": "Tocar a música de fundo da praia (ou seja, sons das ondas) na fazenda.",
+
+    "config.spawn-monsters.name": "Spawnar monstros por padrão",
+    "config.spawn-monsters.tooltip": "O valor padrão para a opção 'spawnar monstros à noite' ao criar um novo jogo. Você ainda pode alterar a opção ao criar um novo jogo. Isso não tem efeito em jogos salvos existentes.",
+
+    /****
+    ** Farm layout
+    ****/
+    "config.farm-layout-section": "Layout da fazenda",
+
+    "config.campfire.name": "Adicionar fogueira",
+    "config.campfire.tooltip": "Adiciona uma fogueira funcional na frente da casa da fazenda.",
+
+    "config.pier.name": "Adicionar um cais de pesca",
+    "config.pier.tooltip": "Adiciona um cais onde você pode pescar.",
+
+    "config.islands.name": "Adicionar ilhas",
+    "config.islands.tooltip": "Adiciona ilhas oceânicas com área de terra adicional.",
+
+    "config.shipping-bin-path.name": "Adicionar caminho para a caixa de remessas",
+    "config.shipping-bin-path.tooltip": "Adiciona caminhos de pedra na frente da caixa de remessas.",
+
+    /****
+    ** Farm positions
+    ****/
+    "config.farm-positions-section": "Posições da fazenda",
+
+    "config.pier-x.name": "Cais de pesca X",
+    "config.pier-x.tooltip": "A posição do bloco onde o cais de pesca deve ser adicionado, se estiver habilitado. Defina tanto X quanto Y como zero para posicionar automaticamente.",
+
+    "config.pier-y.name": "Cais de pesca Y",
+    "config.pier-y.tooltip": "A posição do bloco onde o cais de pesca deve ser adicionado, se estiver habilitado. Defina tanto X quanto Y como zero para posicionar automaticamente."
+}

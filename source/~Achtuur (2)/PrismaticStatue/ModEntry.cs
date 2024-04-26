@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AchtuurCore;
 using AchtuurCore.Patches;
 using MailFrameworkMod;
 using MailFrameworkMod.Api;
@@ -20,6 +21,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using SObject = StardewValley.Object;
 
 namespace PrismaticStatue;
@@ -48,20 +50,6 @@ public class ModEntry : Mod
     internal StatueOverlay UIOverlay;
 
     internal int animationTickCounter = 0;
-
-    internal static IEnumerable<int> GetPossibleStatueIDs()
-    {
-        if (SpeedupStatue.ID is null)
-            yield break;
-
-        for (int i = SpeedupStatue.ID.Value; i < SpeedupStatue.ID.Value + AnimationFrames; i++)
-            yield return i;
-    }
-
-    internal static bool IsStatueID(int id)
-    {
-        return SpeedupStatue.ID is not null && id >= SpeedupStatue.ID && id < SpeedupStatue.ID + ModEntry.AnimationFrames;
-    }
     internal void RemoveMachineGroup(int i)
     {
         this.SpedupMachineGroups[i].RestoreAllMachines();
@@ -111,12 +99,22 @@ public class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
         helper.Events.GameLoop.SaveLoaded += this.OnSaveLoad;
         helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
+        helper.Events.GameLoop.DayStarted += this.OnDayStarted;
         helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
+        helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
         helper.Events.Display.RenderedWorld += this.OnRenderedWorld;
         helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 
         // Animation stuff
         helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+    }
+
+    private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+    {
+        foreach(SpedUpMachineGroup group in this.SpedupMachineGroups)
+        {
+            group.RestoreAllMachines();
+        }
     }
 
     private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -134,20 +132,23 @@ public class ModEntry : Mod
     }
 
 
+    // Animation currently broke due to JA changes
     private void UpdateAnimationFrame()
     {
-        if (!Context.IsWorldReady || SpeedupStatue.ID is null)
-            return;
 
-        foreach (SObject sobj in Game1.currentLocation.objects.Values)
-        {
-            if (ModEntry.IsStatueID(sobj.ParentSheetIndex))
-            {
-                sobj.ParentSheetIndex++;
-                if (sobj.ParentSheetIndex >= SpeedupStatue.ID.Value + ModEntry.AnimationFrames)
-                    sobj.ParentSheetIndex = SpeedupStatue.ID.Value;
-            }
-        }
+        //if (!Context.IsWorldReady || SpeedupStatue.ID is null)
+        //    return;
+
+        //IEnumerable<SObject> prismatic_statues = Game1.currentLocation.objects.Values
+        //    .Where(sobj => sobj.QualifiedItemId == SpeedupStatue.ID);
+
+        //foreach (SObject sobj in prismatic_statues)
+        //{
+        //    //sobj.ParentSheetIndex++;
+        //    sobj.showNextIndex.Value = true;
+        //    if (sobj.ParentSheetIndex >= ModEntry.AnimationFrames)
+        //        sobj.ParentSheetIndex = 0;
+        //}
     }
 
     private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
@@ -209,7 +210,6 @@ public class ModEntry : Mod
         CreateRecipeUnlockMail();
         JsonAssetsAPI.LoadAssets(Path.Combine(Helper.DirectoryPath, this.ContentPackPath));
 
-
         // Add statue to automate factory
         AutomateAPI.AddFactory(new StatueFactory());
     }
@@ -217,50 +217,59 @@ public class ModEntry : Mod
     private void OnSaveLoad(object sender, EventArgs e)
     {
         // Get id here, as id is not available before save loads
-        SpeedupStatue.ID = JsonAssetsAPI.GetBigCraftableId(StatueName);
+        string unqualified_id = JsonAssetsAPI.GetBigCraftableId(StatueName);
+        SpeedupStatue.ID = ItemRegistry.Create<SObject>(unqualified_id).QualifiedItemId;
+        Logger.DebugLog(ModEntry.Instance.Monitor, $"{SpeedupStatue.ID}");
+    }
+
+    private void OnDayStarted(object sender, EventArgs e)
+    {
+        foreach(SpedUpMachineGroup group in SpedupMachineGroups)
+        {
+            group.OnDayStarted();
+        }
     }
 
     private void CreateRecipeUnlockMail()
     {
-        MailDao.SaveLetter(
-            new Letter(
-                id: "Achtuur.PrismaticStatue.StatueRecipeMail",
-                text: "mail_statuerecipe.text",
-                recipe: null,
-                (l) =>
-                {
-                    return !Game1.player.mailReceived.Contains(l.Id) &&
-                    Game1.player.getFriendshipHeartLevelForNPC("Robin") >= 6 &&
-                    Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= 6 &&
-                    (Game1.player.hasCompletedCommunityCenter() ||
-                    false/*completed jojamart */);
-                },
-                (l) => Game1.player.mailReceived.Add(l.Id)
-            )
-            {
-                Title = "mail_statuerecipe.title",
-                I18N = Helper.Translation
-            }
-        );
-
-        MailDao.SaveLetter(
-            new Letter(
-                id: "Achtuur.PrismaticStatue.StatueUseMail",
-                text: "mail_statueuse.text",
-                recipe: null,
-                (l) =>
-                {
-                    return !Game1.player.mailReceived.Contains(l.Id) &&
-                    Game1.player.mailReceived.Contains("Achtuur.PrismaticStatue.StatueRecipeMail") &&
-                    Game1.player.knowsRecipe(StatueName);
-                },
-                (l) => Game1.player.mailReceived.Add(l.Id),
-                whichBG: 2 // Wizard background
-            )
-            {
-                Title = "mail_statueuse.title",
-                I18N = Helper.Translation
-            }
-        );
+        //MailDao.SaveLetter(
+        //    new Letter(
+        //        id: "Achtuur.PrismaticStatue.StatueRecipeMail",
+        //        text: "mail_statuerecipe.text",
+        //        recipe: null,
+        //        (l) =>
+        //        {
+        //            return !Game1.player.mailReceived.Contains(l.Id) &&
+        //            Game1.player.getFriendshipHeartLevelForNPC("Robin") >= 6 &&
+        //            Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= 6 &&
+        //            (Game1.player.hasCompletedCommunityCenter() ||
+        //            false/*completed jojamart */);
+        //        },
+        //        (l) => Game1.player.mailReceived.Add(l.Id)
+        //    )
+        //    {
+        //        Title = "mail_statuerecipe.title",
+        //        I18N = Helper.Translation
+        //    }
+        //);
+        //MailDao.SaveLetter(
+        //    new Letter(
+        //        id: "Achtuur.PrismaticStatue.StatueUseMail",
+        //        text: "mail_statueuse.text",
+        //        recipe: null,
+        //        (l) =>
+        //        {
+        //            return !Game1.player.mailReceived.Contains(l.Id) &&
+        //            Game1.player.mailReceived.Contains("Achtuur.PrismaticStatue.StatueRecipeMail") &&
+        //            Game1.player.knowsRecipe(StatueName);
+        //        },
+        //        (l) => Game1.player.mailReceived.Add(l.Id),
+        //        whichBG: 2 // Wizard background
+        //    )
+        //    {
+        //        Title = "mail_statueuse.title",
+        //        I18N = Helper.Translation
+        //    }
+        //);
     }
 }

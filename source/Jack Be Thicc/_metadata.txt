@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DeadRobotDev/StardewMods
+   Git: https://github.com/DeadRobotDev/StardewMods.git
+
+mods:
+   Jack Be Thicc
+
+latest commit:
+   commit ce4374567ee76485edc8c2bb1a6b55276b347152
+   Author: DeadRobotDev <99739042+DeadRobotDev@users.noreply.github.com>
+   Date:   Mon Apr 1 08:07:42 2024 +0100
+   
+       feat: add Jack Be Thicc mod
+   

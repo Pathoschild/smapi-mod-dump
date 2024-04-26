@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Easy Island Puzzle",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Too lazy too actually crack this code",
+  "UniqueID": "MindMeltMax.EasyIslandPuzzle",
+  "EntryDll": "EasyIslandPuzzle.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "nexus:22642" ]
+}

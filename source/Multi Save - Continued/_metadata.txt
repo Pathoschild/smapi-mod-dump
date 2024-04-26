@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/recon88/Multi-Save-Continued
+   Git: https://github.com/recon88/Multi-Save-Continued.git
+
+mods:
+   Multi Save - Continued
+
+latest commit:
+   commit 8c70160850445c1dd397f95023a09bdd8094dc1e
+   Author: recon <recon88@users.noreply.github.com>
+   Date:   Tue Apr 23 14:38:36 2024 +0200
+   
+       Delete bin/Release/net6.0 directory
+   

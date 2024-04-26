@@ -8,7 +8,7 @@
         <Description>Allows you to build fences/walls/paths, etc. in a much more streamlined way.</Description>
         <MinimumApiVersion>3.15.0</MinimumApiVersion>
         <UpdateKeys>Nexus:11158</UpdateKeys>
-        <Version>1.8.0</Version>
+        <Version>1.8.8</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -19,5 +19,8 @@
         <None Update="release-notes.md">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+
+        <SMAPIDependency Include="furyx639.ToolbarIcons" Version="2.7.1" Required="false"/>
+
     </ItemGroup>
 </Project>

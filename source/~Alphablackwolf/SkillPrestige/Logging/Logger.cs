@@ -12,51 +12,58 @@ using System;
 
 namespace SkillPrestige.Logging
 {
-    /// <summary>
-    /// A wrapper for the Stardew Valley logger to simplify the interface and restrict what is logged.
-    /// </summary>
+    /// <summary>A wrapper for the Stardew Valley logger to simplify the interface and restrict what is logged.</summary>
     public static class Logger
     {
+        /*********
+        ** Public methods
+        *********/
         public static void LogVerbose(string message)
         {
-            if(Options.Instance.LogLevel >= LogLevel.Verbose) SkillPrestigeMod.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Trace);
+            if (ModEntry.Config.LogLevel >= LogLevel.Verbose)
+                // ReSharper disable once RedundantArgumentDefaultValue - Default values can change
+                ModEntry.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Trace);
         }
 
         public static void LogInformation(string message)
         {
-            if (Options.Instance.LogLevel >= LogLevel.Information) SkillPrestigeMod.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Info);
+            if (ModEntry.Config.LogLevel >= LogLevel.Information)
+                ModEntry.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Info);
         }
 
         public static void LogWarning(string message)
         {
-            if (Options.Instance.LogLevel >= LogLevel.Warning) SkillPrestigeMod.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Warn);
+            if (ModEntry.Config.LogLevel >= LogLevel.Warning)
+                ModEntry.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Warn);
         }
 
         public static void LogError(string message)
         {
-            if (Options.Instance.LogLevel >= LogLevel.Error) SkillPrestigeMod.LogMonitor.Log(message.AddErrorText(), StardewModdingAPI.LogLevel.Error);
+            if (ModEntry.Config.LogLevel >= LogLevel.Error)
+                ModEntry.LogMonitor.Log(message.AddErrorText(), StardewModdingAPI.LogLevel.Error);
         }
 
         public static void LogCritical(string message)
         {
-            if (Options.Instance.LogLevel >= LogLevel.Critical) SkillPrestigeMod.LogMonitor.Log(message.AddErrorText(), StardewModdingAPI.LogLevel.Alert);
+            if (ModEntry.Config.LogLevel >= LogLevel.Critical)
+                ModEntry.LogMonitor.Log(message.AddErrorText(), StardewModdingAPI.LogLevel.Alert);
         }
 
         public static void LogCriticalWarning(string message)
         {
-            if (Options.Instance.LogLevel >= LogLevel.Critical) SkillPrestigeMod.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Alert);
+            if (ModEntry.Config.LogLevel >= LogLevel.Critical)
+                ModEntry.LogMonitor.Log(message, StardewModdingAPI.LogLevel.Alert);
         }
 
         public static void LogDisplay(string message)
         {
-            SkillPrestigeMod.LogMonitor.Log(message);
+            ModEntry.LogMonitor.Log(message);
         }
 
-        public static void LogOptionsError(string message)
-        {
-            SkillPrestigeMod.LogMonitor.Log(message.AddErrorText());
-        }
 
+        /*********
+        ** Private methods
+        *********/
         private static string AddErrorText(this string message)
         {
             return $"{message}{Environment.NewLine}Please file a bug report on NexusMods.";

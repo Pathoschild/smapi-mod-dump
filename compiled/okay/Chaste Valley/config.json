@@ -1,0 +1,9 @@
+{
+  "ChasterAuthToken": "",
+  "HoursForDying": 24,
+  "HoursForFainting": 12,
+  "HoursForDamagedCommunityCenter": 1,
+  "HoursForMissingMoneyPerDayGoal": 1,
+  "MoneyPerDayGoalIncrement": 20,
+  "MaxMoneyPerDayGoal": 5000
+}

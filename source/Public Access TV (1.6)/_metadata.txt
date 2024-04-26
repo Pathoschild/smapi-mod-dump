@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/emurphy42/PredictiveMods
+   Git: https://github.com/emurphy42/PredictiveMods.git
+
+mods:
+   Public Access TV (1.6)
+
+latest commit:
+   commit eec3e6f7870b11a9255aaeb3592744ff9359ee10
+   Author: emurphy42 <emurphy42@gmail.com>
+   Date:   Thu Apr 18 19:07:13 2024 -0700
+   
+       PredictiveCore: extend range from 1.6.3 to 1.7.0
+   

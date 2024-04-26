@@ -1,6 +1,4 @@
-# FIXME revert to GOG location after 1.6 release
-#GAME_DIR=${HOME}/GOG Games/Stardew Valley/game
-GAME_DIR=${HOME}/.local/share/Steam/steamapps/common/Stardew Valley
+GAME_DIR=${HOME}/GOG Games/Stardew Valley/game
 MOD_DIR_CP=${GAME_DIR}/Mods/HatMouseLacey
 MOD_DIR_SMAPI=${GAME_DIR}/Mods/HatMouseLacey_Core
 

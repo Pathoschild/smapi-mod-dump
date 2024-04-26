@@ -13,6 +13,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using ProducerFrameworkMod.Api;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using SObject = StardewValley.Object;
 
 namespace ProducerFrameworkMod
@@ -28,13 +29,22 @@ namespace ProducerFrameworkMod
             Helper = helper;
             
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            helper.Events.GameLoop.GameLaunched += DataLoader.LoadContentPacks;
+            helper.Events.GameLoop.UpdateTicking += OnGameLoopOnUpdateTicking ;
             helper.Events.GameLoop.SaveLoaded += DataLoader.LoadContentPacks;
         }
 
+        private void OnGameLoopOnUpdateTicking(object sender, UpdateTickingEventArgs args)
+        {
+            if (args.Ticks == 120)
+            {
+                DataLoader.LoadContentPacks(sender, args);
+                Helper.Events.GameLoop.UpdateTicking -= OnGameLoopOnUpdateTicking;
+            }
+        }
+
         /*********
-        ** Private methods
-        *********/
+         ** Private methods
+         *********/
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
@@ -77,6 +87,10 @@ namespace ProducerFrameworkMod
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.initializeLightSource)),
                 prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.initializeLightSource))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.TryApplyFairyDust)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.TryApplyFairyDust))
             );
         }
 

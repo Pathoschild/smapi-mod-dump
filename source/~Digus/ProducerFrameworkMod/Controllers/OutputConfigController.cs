@@ -138,23 +138,24 @@ namespace ProducerFrameworkMod.Controllers
         public static Object CreateOutput(OutputConfig outputConfig, Object input, Random random)
         {
             Object output;
-            if (outputConfig.OutputItemId == "(O)93" || outputConfig.OutputItemId == "(O)94")
+            if (outputConfig.OutputItemId is "(O)93" or "(O)94")
             {
-                output = new Torch(outputConfig.OutputStack, outputConfig.OutputItemId);
+                output = new Torch(outputConfig.OutputStack, ItemRegistry.GetDataOrErrorItem(outputConfig.OutputItemId).ItemId);
             }
-            else if (outputConfig.OutputColorConfig is ColoredObjectConfig coloredObjectConfig)
+            else if (outputConfig.OutputColorConfig is { } coloredObjectConfig)
             {
+                var outputItemId = ItemRegistry.GetDataOrErrorItem(outputConfig.OutputItemId).ItemId;
                 switch (coloredObjectConfig.Type)
                 {
                     case ColorType.ObjectColor when input is ColoredObject coloredObject:
-                        output = new ColoredObject(outputConfig.OutputItemId, outputConfig.OutputStack, coloredObject.color.Value);
+                        output = new ColoredObject(outputItemId, outputConfig.OutputStack, coloredObject.color.Value);
                         break;
                     case ColorType.ObjectDyeColor when TailoringMenu.GetDyeColor(input) is { } color:
-                        output = new ColoredObject(outputConfig.OutputItemId, outputConfig.OutputStack, color);
+                        output = new ColoredObject(outputItemId, outputConfig.OutputStack, color);
                         break;
                     case ColorType.DefinedColor:
                     default:
-                        output = new ColoredObject(outputConfig.OutputItemId, outputConfig.OutputStack, new Color(coloredObjectConfig.Red, coloredObjectConfig.Green, coloredObjectConfig.Blue));
+                        output = new ColoredObject(outputItemId, outputConfig.OutputStack, new Color(coloredObjectConfig.Red, coloredObjectConfig.Green, coloredObjectConfig.Blue));
                         break;
                 }
             }

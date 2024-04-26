@@ -23,6 +23,8 @@ using BasePlayer = MultiplayerPrairieKing.Entities.BasePlayer;
 using MultiplayerPrairieKing;
 using MultiplayerPrairieKing.Components;
 using MultiplayerPrairieKing.Utility;
+using static MultiplayerPrairieKing.GamePatches;
+using System.Text.Json;
 
 namespace MultiPlayerPrairie
 {
@@ -30,80 +32,15 @@ namespace MultiPlayerPrairie
     /// <summary>The mod entry point.</summary>
     public class ModMultiPlayerPrairieKing : Mod
     {
+        
+
+        //The Mod Configuration
         public ModConfig Config;
 
-        public class GameLocationPatches
-        {
-            //Opens up Dialogue options when the player interacts with the arcade machine
-            public static bool ShowPrairieKingMenu_Prefix()
-            {
-                instance.playerID.Value = Game1.player.UniqueMultiplayerID;
-                //These Three options are taken from the game code, and would be available anyway
-                string question = Game1.content.LoadString("Strings\\Locations:Saloon_Arcade_Cowboy_Menu");
+        //A Hashid of the last arcade machine that has been interacted with. Is used by save files to reference the machine.
+        public int lastInteractedArcadeMachine = -1;
 
-                Response[] prairieKingOptions = new Response[4];
-                prairieKingOptions[0] = new Response("Continue", Game1.content.LoadString("Strings\\Locations:Saloon_Arcade_Cowboy_Continue"));
-                prairieKingOptions[1] = new Response("NewGame", Game1.content.LoadString("Strings\\Locations:Saloon_Arcade_Cowboy_NewGame"));
-                prairieKingOptions[3] = new Response("Exit", Game1.content.LoadString("Strings\\Locations:Saloon_Arcade_Minecart_Exit"));
-
-                //Display additional Host/Join option depending on if theres a lobby available
-                if(instance.isHostAvailable)
-                    prairieKingOptions[2] = new Response("JoinMultiplayer", "Join Co-op Journey");
-                else
-                    prairieKingOptions[2] = new Response("HostMultiplayer", "Host Co-op Journey");
-
-                //Create the dialogue
-                Game1.currentLocation.createQuestionDialogue(question, prairieKingOptions, new GameLocation.afterQuestionBehavior(ArcadeDialogueSet));
-
-                //Always Skip original code
-                return false;
-            }
-
-            // Callback for choosing from the dialogue options when interacting with the arcade machine
-            static public void ArcadeDialogueSet(Farmer who, string dialogue_id)
-            {
-                switch(dialogue_id)
-                {
-                    case "NewGame":
-                        Game1.player.jotpkProgress.Value = null;
-                        Game1.currentMinigame = new StardewValley.Minigames.AbigailGame();
-                        break;
-                    case "Continue":
-                        Game1.currentMinigame = new StardewValley.Minigames.AbigailGame();
-                        break;
-                    case "JoinMultiplayer":
-                        instance.isHost.Value = false;
-
-                        //NET Join Lobby
-                        PK_JoinLobby mJoinLobby = new()
-                        {
-                            playerId = instance.playerID.Value
-                        };
-                        instance.Helper.Multiplayer.SendMessage(mJoinLobby, "PK_JoinLobby");
-
-                        //Start Game
-                        Game1.player.jotpkProgress.Value = null;
-                        Game1.currentMinigame = new GameMultiplayerPrairieKing(instance, instance.isHost.Value);
-                        break;
-                    case "HostMultiplayer":
-                        //When host is available
-                        instance.isHost.Value = true;
-                        instance.isHostAvailable = true;
-
-                        instance.playerList.Clear();
-                        instance.playerList.Add(instance.playerID.Value);
-
-                        //NET Start Hosting
-                        PK_StartHosting mStartHosting = new();
-                        instance.Helper.Multiplayer.SendMessage(mStartHosting, "PK_StartHosting");
-
-                        Game1.player.jotpkProgress.Value = null;
-                        Game1.currentMinigame = new GameMultiplayerPrairieKing(ModMultiPlayerPrairieKing.instance, ModMultiPlayerPrairieKing.instance.isHost.Value);
-
-                        break;
-                }
-            }
-        }
+        public const int maxPlayers = 4;
 
         //The instance of the Mod
         public static ModMultiPlayerPrairieKing instance;
@@ -116,7 +53,9 @@ namespace MultiPlayerPrairie
 
         public readonly PerScreen<long> playerID = new();
 
-        public List<long> playerList = new();
+        public readonly PerScreen<List<long>> playerList = new();
+
+        //public readonly PerScreen<SaveState> saveState = new();
 
         /*********
         ** Public methods
@@ -126,30 +65,37 @@ namespace MultiPlayerPrairie
         public override void Entry(IModHelper helper)
         {
             instance = this;
-
-            //Generate random long because apparently multiplayer helper aint ready yet?
-
-            //playerID = Helper.Multiplayer.GetNewID();
-
             Config = Helper.ReadConfig<ModConfig>();
+            
 
             //Load custom texture for players
             BasePlayer.texture = helper.ModContent.Load<Texture2D>("assets/poppetjes.png");
             GameMultiplayerPrairieKing.shopBubbleTexture = helper.ModContent.Load<Texture2D>("assets/shopBubble.png");
-            UI.startScreenTexture = helper.ModContent.Load<Texture2D>("assets/jotpk_start_screen.png");
-            UI.startScreenPoppetjesTexture = helper.ModContent.Load<Texture2D>("assets/poppetjes_lobby.png");
+            UI.StartScreenTexture = helper.ModContent.Load<Texture2D>("assets/jotpk_start_screen.png");
+            UI.StartScreenPoppetjesTexture = helper.ModContent.Load<Texture2D>("assets/poppetjes_lobby.png");
+            UI.CheckMarkTexture = helper.ModContent.Load<Texture2D>("assets/CheckMark.png");
 
             //Register to events
             helper.Events.GameLoop.UpdateTicking += this.OnUpdateTick;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
+            helper.Events.Multiplayer.PeerConnected += this.OnPeerConnected;
 
             //Patch the showPrairieKingMenu method to show an additional "Host / Join co-op Journey" option.
             var harmony = new Harmony(this.ModManifest.UniqueID);
+
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.showPrairieKingMenu)),
                 prefix: new HarmonyMethod(typeof(GameLocationPatches), nameof(GameLocationPatches.ShowPrairieKingMenu_Prefix))
+            );
+
+            //Patch the CheckForActionOnPrairieKingArcadeSystem method to remember the specific arcade machine that was interacted with
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Object), "CheckForActionOnPrairieKingArcadeSystem"),
+                prefix: new HarmonyMethod(typeof(GameLocationPatches), nameof(GameLocationPatches.CheckForActionOnPrairieKingArcadeSystem_Postfix))
             );
 
             //Console commands
@@ -157,6 +103,57 @@ namespace MultiPlayerPrairie
             helper.ConsoleCommands.Add("pk_SetCoins", "Sets the amount of coins the player has in prairie king.", this.SetCoins);
             helper.ConsoleCommands.Add("pk_UsePowerup", "Use a defined powerup by id", this.UsePowerup);
             helper.ConsoleCommands.Add("pk_GoCrazy", "We ballin.", this.GoCrazy);
+        }
+
+        public SaveState GetSaveState()
+        {
+            if (Game1.getFarmer(playerID.Value).modData.ContainsKey("pk_savestate"))
+            {
+                string jsonString = Game1.getFarmer(playerID.Value).modData["pk_savestate"];
+                SaveState saveState = JsonSerializer.Deserialize<SaveState>(jsonString);
+                return saveState;
+            }
+            return null;
+        }
+
+        public void UpdateSaveState(SaveState saveState)
+        {
+            if(saveState == null)
+            {
+                if (Game1.getFarmer(playerID.Value).modData.ContainsKey("pk_savestate"))
+                {
+                    Game1.getFarmer(playerID.Value).modData.Remove("pk_savestate");
+                }
+            }
+
+            string jsonString = JsonSerializer.Serialize(saveState);
+            Game1.getFarmer(playerID.Value).modData["pk_savestate"] = jsonString;
+
+            Monitor.Log("Saved PrairieKing saveState: " + jsonString, LogLevel.Info);
+        }
+
+        public void SyncMessage(object data, SYNC_SCOPE scope = SYNC_SCOPE.PLAYERS, long singleID = -1)
+        {
+            if(scope == SYNC_SCOPE.SINGLE)
+            {
+                if (singleID == -1)
+                {
+                    Monitor.Log("Trying to send message to undefined player", LogLevel.Warn);
+                    return;
+                }
+                List<long> pList = new List<long>
+                {
+                    singleID
+                };
+                Helper.Multiplayer.SendMessage(data, data.GetType().Name, new string[] { ModManifest.UniqueID }, pList.ToArray());
+            }
+            else if(scope == SYNC_SCOPE.PLAYERS)
+            {
+                Helper.Multiplayer.SendMessage(data, data.GetType().Name, new string[] { ModManifest.UniqueID }, playerList.Value.ToArray());
+            }
+            else if(scope == SYNC_SCOPE.GLOBAL) {
+                Helper.Multiplayer.SendMessage(data, data.GetType().Name, new string[] { ModManifest.UniqueID });
+            }
         }
 
         private void UsePowerup(string command, string[] args)
@@ -183,7 +180,18 @@ namespace MultiPlayerPrairie
         private void SkipToStage(string command, string[] args)
         {
             GameMultiplayerPrairieKing PK_game = (GameMultiplayerPrairieKing)Game1.currentMinigame;
-            PK_game.NETskipLevel(int.Parse(args[0]));
+
+            int targetLevel;
+
+            bool success = int.TryParse(args[0], out targetLevel);
+
+            if(!success)
+            {
+                Monitor.Log("Incorrect arguement");
+                return;
+            }
+
+            PK_game.NETskipLevel(targetLevel);
         }
 
 
@@ -191,12 +199,41 @@ namespace MultiPlayerPrairie
         {
             isHostAvailable = false;
             isHost.Value = false;
+            lastInteractedArcadeMachine = -1;
         }
 
         private void OnSaveLoaded(object sencer, SaveLoadedEventArgs e)
         {
+            playerList.Value = new List<long>();
+
             isHostAvailable = false;
             isHost.Value = false;
+            lastInteractedArcadeMachine = -1;
+
+            // Read SaveData
+            //saveState.Value = Helper.Data.ReadSaveData<SaveState>("prairiekingSaveStates");
+            //if (saveState.Value != null) Monitor.Log("Successfully loaded Prairieking savestate from savefile");
+
+            
+        }
+
+        private void OnSaving(object sencer, SavingEventArgs e)
+        {
+
+
+            // Save the priairie king savestates
+            //Helper.Data.WriteSaveData("prairiekingSaveStates", saveState.Value);
+            //Monitor.Log("Successfully saved Prairieking savestate to savefile");
+        }
+
+        private void OnPeerConnected(object sencer, PeerConnectedEventArgs e)
+        {
+            /*
+            if(sa)
+            PK_SyncSaveState mSyncSaveState = new();
+
+            SyncMessage(mSyncSaveState, SYNC_SCOPE.SINGLE, e.Peer.PlayerID);
+            */
         }
 
 
@@ -214,7 +251,7 @@ namespace MultiPlayerPrairie
                     instance.isHostAvailable = false;
                     //NET Stop Hosting
                     PK_StopHosting mStopHosting = new();
-                    instance.Helper.Multiplayer.SendMessage(mStopHosting, "PK_StopHosting");
+                    instance.SyncMessage(mStopHosting, SYNC_SCOPE.GLOBAL);
                     instance.isHost.Value = false;
                     break;
             }
@@ -260,12 +297,59 @@ namespace MultiPlayerPrairie
 
                         //Add player to the lobby
                         PK_JoinLobby mJoinLobby = e.ReadAs<PK_JoinLobby>();
-                        playerList.Add(mJoinLobby.playerId);
+
+                        if(playerList.Value.Count >= maxPlayers)
+                        {
+                            PK_ExitGame mExitMessage = new()
+                            {
+                                errorCode = (int)ERROR.MATCH_FULL
+                            };
+
+                            Monitor.Log("Sending to: " + e.FromPlayerID, LogLevel.Info);
+                            SyncMessage(mExitMessage, SYNC_SCOPE.SINGLE, e.FromPlayerID);
+                            break;
+                        }
+
+                        //Return an error to the person who is trying to join, when the match has already started
+                        if (Game1.currentMinigame is GameMultiplayerPrairieKing PK_Game1)
+                        {
+                            if (!PK_Game1.ui.onStartMenu)
+                            {
+                                PK_ExitGame mExitMessage = new()
+                                {
+                                    errorCode = (int)ERROR.MATCH_STARTED
+                                };
+
+                                Monitor.Log("Sending to: " + e.FromPlayerID, LogLevel.Info);
+                                SyncMessage(mExitMessage, SYNC_SCOPE.SINGLE, e.FromPlayerID);
+                                break;
+                            }
+                        }
+
+                        //Return an error to the joining person, if the game starts from the save file in which the joining person wasnt in
+                        if (GetSaveState() != null)
+                        {
+                            int idx = GetSaveState().playerSaveStates.FindIndex(x => x.PlayerID == e.FromPlayerID);
+                            if (idx == -1)
+                            {
+                                PK_ExitGame mExitMessage = new()
+                                {
+                                    errorCode = (int)ERROR.NOT_IN_LIST
+                                };
+
+                                Monitor.Log("Sending to: " + e.FromPlayerID, LogLevel.Info);
+                                SyncMessage(mExitMessage, SYNC_SCOPE.SINGLE, e.FromPlayerID);
+                                break;
+                            }
+                        }
+
+                        playerList.Value.Add(mJoinLobby.playerId);
 
                         //Send the new lobby information to the rest of the gang
                         PK_LobbyInfo mLobbyInfoMessage = new()
                         {
-                            playerList = playerList
+                            playerList = playerList.Value,
+                            saveState = GetSaveState(),
                         };
 
                         DIFFICULTY difficulty;
@@ -275,13 +359,14 @@ namespace MultiPlayerPrairie
                         else difficulty = DIFFICULTY.NORMAL;
 
                         mLobbyInfoMessage.difficulty = (int)difficulty;
-                        Helper.Multiplayer.SendMessage(mLobbyInfoMessage, "PK_LobbyInfo");
+                        SyncMessage(mLobbyInfoMessage);
 
                         if (Game1.currentMinigame is GameMultiplayerPrairieKing PK_Game)
                         {
                             PK_Game.difficulty = (DIFFICULTY)mLobbyInfoMessage.difficulty;
                         }
 
+                        Game1.playSound("Pickup_Coin15");
                         break;
                     }
 
@@ -289,12 +374,15 @@ namespace MultiPlayerPrairie
                     {
                         //Update playerList information
                         PK_LobbyInfo mLobbyInfo = e.ReadAs<PK_LobbyInfo>();
-                        playerList = mLobbyInfo.playerList;
+                        playerList.Value = mLobbyInfo.playerList;
 
                         if (Game1.currentMinigame is GameMultiplayerPrairieKing PK_Game)
                         {
                             PK_Game.difficulty = (DIFFICULTY)mLobbyInfo.difficulty;
+                            PK_Game.multiplayerSaveState = mLobbyInfo.saveState;
                         }
+
+                        Game1.playSound("Pickup_Coin15");
                         break;
                     }
             }
@@ -319,8 +407,6 @@ namespace MultiPlayerPrairie
                         id = mPowerupSpawn.id
                     };
                     PK_game.powerups.Add(powerupSpawn);
-
-                    Monitor.Log(e.Type + " event, spawning " + powerupType.ToString() + " with id " +powerupSpawn.id, LogLevel.Debug);
                     break;
 
                 case "PK_PowerupPickup":
@@ -344,6 +430,7 @@ namespace MultiPlayerPrairie
                 case "PK_BuyItem":
                     PK_BuyItem mBuyItem = e.ReadAs<PK_BuyItem>();
                     PK_game.playerList[mBuyItem.playerId].HoldItem((ITEM_TYPE)mBuyItem.type, 2500);
+                    PK_game.BuyItem(PK_game.playerList[mBuyItem.playerId], (ITEM_TYPE)mBuyItem.type);
                     break;
 
                 case "PK_PlayerMove":
@@ -494,6 +581,13 @@ namespace MultiPlayerPrairie
                     Game1.playSound("Pickup_Coin15");
                     break;
 
+                case "PK_RestartGame":
+                    PK_game.gamerestartTimer = 1500;
+                    PK_game.gameOver = false;
+                    PK_game.ui.currentGameOverOption = 0;
+                    Game1.playSound("Pickup_Coin15");
+                    break;
+
                 case "PK_EnemyKilled":
                     PK_EnemyKilled mEnemyKilled = e.ReadAs<PK_EnemyKilled>();
 
@@ -507,20 +601,37 @@ namespace MultiPlayerPrairie
                             PK_game.monsters.RemoveAt(i);
                             PK_game.AddGuts(m.position.Location, m.type);
                             Game1.playSound("Cowboy_monsterDie");
-
-                            Monitor.Log("Monser killed by event: " + m.id, LogLevel.Debug);
                         }
                     }
                     break;
 
                 case "PK_ExitGame":
-                    PK_game.forceQuit();
+                    PK_ExitGame mExitGame = e.ReadAs<PK_ExitGame>();
+
+                    if (PK_game != null)
+                    {
+                        PK_game.forceQuit();
+                    }
+                    if((ERROR)mExitGame.errorCode == ERROR.MATCH_FULL)
+                    {
+                        Game1.drawObjectDialogue("The maximum number of players in this Prarie King lobby has been reached. Sorry.");
+                    }
+                    else if ((ERROR)mExitGame.errorCode == ERROR.MATCH_STARTED)
+                    {
+                        Game1.drawObjectDialogue("The prairie king game has already started. Sorry.");
+                    }
+                    else if ((ERROR)mExitGame.errorCode == ERROR.NOT_IN_LIST)
+                    {
+                        Game1.drawObjectDialogue("You are not in the save file from which this game starts. Sorry.");
+                    }
+
+                    Monitor.Log("Received exit game for: " + playerID.Value + " from: " + e.FromPlayerID, LogLevel.Info);
                     Game1.currentMinigame = null;
                     isHostAvailable = false;
                     isHost.Value = false;
                     break;
+                    
             }
-
         }
     }
 }

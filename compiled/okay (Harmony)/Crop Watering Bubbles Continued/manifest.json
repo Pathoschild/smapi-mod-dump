@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Crop Watering Bubbles Continued",
+  "Author": "aedenthorn, tem696969696969",
+  "Version": "0.2.7",
+  "Description": "Visual indicators to show your crops are thirsty.",
+  "UniqueID": "tem696969696969.CropWateringBubbles",
+  "EntryDll": "CropWateringBubbles.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21428" ]
+}

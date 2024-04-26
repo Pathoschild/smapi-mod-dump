@@ -19,6 +19,7 @@ namespace FishExclusions.Types
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
         void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
         void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
         void AddParagraph(IManifest mod, Func<string> text);
     }
 
@@ -28,15 +29,15 @@ namespace FishExclusions.Types
         /// <summary>
         /// The items to exclude.
         /// </summary>
-        public ItemsToExclude ItemsToExclude { get; set; } = new ItemsToExclude();
+        public ItemsToExclude ItemsToExclude { get; set; } = new ();
         
         /// <summary>
         /// The ID of the item to catch if all possible fish for this water body / season / weather is excluded.
         /// </summary>
-        public int ItemToCatchIfAllFishIsExcluded { get; set; } = 168;
+        public string ItemToCatchIfAllFishIsExcluded { get; set; } = "168";
         
         /// <summary>
-        /// The number of times to retry the 'fish choosing' algorithm before giving up and catching the item specified above.
+        /// The number of times to retry fish selection before giving up and catching the item specified above.
         /// WARNING: Large numbers can cause a Stack Overflow exception. Use with caution.
         /// </summary>
         public int TimesToRetry { get; set; } = 20;
@@ -59,10 +60,10 @@ namespace FishExclusions.Types
             
             api.AddSectionTitle(manifest, () => "General");
 
-            api.AddNumberOption(manifest, () => config.ItemToCatchIfAllFishIsExcluded, val => config.ItemToCatchIfAllFishIsExcluded = val, () => "Item To Catch If All Fish Is Excluded", () => "The ID of the item to catch if all possible fish for this water body / season / weather is excluded.");
-            api.AddNumberOption(manifest, () => config.TimesToRetry, val => config.TimesToRetry = val, () => "Times To Retry", () => "The number of times to retry the 'fish choosing' algorithm before giving up and catching the item specified above.", 5, 50);
+            api.AddTextOption(manifest, () => config.ItemToCatchIfAllFishIsExcluded, val => config.ItemToCatchIfAllFishIsExcluded = val, () => "Item To Catch If All Fish Is Excluded", () => "The ID of the item to catch if all possible fish for this location / season / weather is excluded.");
+            api.AddNumberOption(manifest, () => config.TimesToRetry, val => config.TimesToRetry = val, () => "Times To Retry", () => "The number of times to retry fish selection before giving up and catching the item specified above. WARNING: Large numbers can cause a Stack Overflow exception. Use with caution.", 5, 50);
 
-            api.AddParagraph(manifest, () => "To edit the actual excluded fish, please use the config file. For instructions on how to add the exclusions, refer to the mod description on Nexus.");
+            api.AddParagraph(manifest, () => "To edit the actual excluded fish, use the config.json file located in [Stardew Valley folder]/Mods/FishExclusions. For instructions on how to add exclusions, refer to the mod description on Nexus.");
         }
     }
 
@@ -71,12 +72,12 @@ namespace FishExclusions.Types
         /// <summary>
         /// Season- and location-independent exclusions.
         /// </summary>
-        public object[] CommonExclusions { get; set; } = { };
+        public string[] CommonExclusions { get; set; } = Array.Empty<string>();
         
         /// <summary>
         /// Season- and/or location-dependent exclusions.
         /// </summary>
-        public List<ConditionalExclusion> ConditionalExclusions { get; set; } = new List<ConditionalExclusion>();
+        public List<ConditionalExclusion> ConditionalExclusions { get; set; } = new ();
     }
 
     public class ConditionalExclusion
@@ -87,6 +88,6 @@ namespace FishExclusions.Types
 
         public string Location { get; set; } = "";
         
-        public object[] FishToExclude { get; set; } = { };
+        public string[] Exclusions { get; set; } = Array.Empty<string>();
     }
 }

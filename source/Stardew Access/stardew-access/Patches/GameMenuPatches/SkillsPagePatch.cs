@@ -11,10 +11,12 @@
 using HarmonyLib;
 using stardew_access.Translation;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches;
 
+// TODO Maybe also include community center progress and season info
 internal class SkillsPagePatch : IPatch
 {
     public void Apply(Harmony harmony)
@@ -33,12 +35,22 @@ internal class SkillsPagePatch : IPatch
 
             if (MainClass.Config.PrimaryInfoKey.JustPressed())
             {
+                int currentMasteryLevel = MasteryTrackerMenu.getCurrentMasteryLevel();
+                int currentMasteryPoints = (int)Game1.stats.Get("MasteryExp") - MasteryTrackerMenu.getMasteryExpNeededForLevel(currentMasteryLevel);
+                int requiredMasteryPoints = MasteryTrackerMenu.getMasteryExpNeededForLevel(currentMasteryLevel + 1) - MasteryTrackerMenu.getMasteryExpNeededForLevel(currentMasteryLevel);
+
                 string toSpeak = Translator.Instance.Translate("menu-skills_page-player_info", tokens: new
                 {
                     name = Game1.player.Name,
                     title = Game1.player.getTitle(),
                     golden_walnut_count = Game1.netWorldState.Value.GoldenWalnuts,
                     qi_gem_count = Game1.player.QiGems,
+                    house_upgrade_level = Game1.player.HouseUpgradeLevel + 1,
+                    lowest_mine_level = MineShaft.lowestLevelReached < 0 ? 0 : MineShaft.lowestLevelReached,
+                    stardrop_count = Utility.numStardropsFound(Game1.player),
+                    mastery_level = Game1.stats.Get("MasteryExp") != 0 ? currentMasteryLevel : -1,
+                    current_mastery_points = currentMasteryPoints,
+                    required_mastery_points = requiredMasteryPoints,
                 }, translationCategory: TranslationCategory.Menu);
                 MainClass.ScreenReader.Say(toSpeak, true);
                 return;
@@ -68,6 +80,7 @@ internal class SkillsPagePatch : IPatch
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(___hoverTitle) && string.IsNullOrWhiteSpace(___hoverText)) return;
             MainClass.ScreenReader.SayWithMenuChecker($"{___hoverTitle},\n{___hoverText}".Trim(), true);
             return;
         }

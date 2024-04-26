@@ -1,0 +1,11 @@
+{
+  "Name": "NPC Gift Multipliers",
+  "Version": "1.0.0",
+  "EntryDll": "NPCGiftMultipliers.dll",
+  "UniqueID": "harvz.NPCGiftMultipliers",
+  "Author": "XxHarvzBackxX",
+  "Description": "Allows the player to manipulate gift friendship point amounts.",
+  "MinimumApiVersion": "4.0.0",
+  "MinimumGameVersion": "1.6",
+  "UpdateKeys": [ "Nexus:23139" ]
+}

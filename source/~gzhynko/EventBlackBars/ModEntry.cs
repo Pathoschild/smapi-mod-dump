@@ -22,38 +22,36 @@ namespace EventBlackBars
     public class ModEntry : Mod
     {
         public static ModEntry Instance;
-        public static IMonitor ModMonitor;
-
+        public static Texture2D BlackRectangle;
+        public static GraphicsDevice GraphicsDevice;
+        
+        public static bool RenderBars;
+        public static float BarHeight;
+        
         private bool _barsMovingIn;
         private bool _barsMovingOut;
-        private bool _renderBars;
-        
-        private Texture2D _blackRectangle;
-        private GraphicsDevice _graphicsDevice;
-        public ModConfig Config;
+        private ModConfig _config;
 
-        private float _barHeight;
 
         /// <summary> The mod entry point, called after the mod is first loaded. </summary>
         /// <param name="helper"> Provides simplified APIs for writing mods. </param>
         public override void Entry(IModHelper helper)
         {
-            ModMonitor = Monitor;
             Instance = this;
 
-            helper.Events.Display.RenderedWorld += OnRenderedWorld;
+            helper.Events.Display.RenderingStep += OnRenderingStep;
             helper.Events.Display.WindowResized += OnWindowResized;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             
-            Config = Helper.ReadConfig<ModConfig>();
-            _graphicsDevice = Game1.graphics.GraphicsDevice;
-            PrepareAssets(_graphicsDevice);
+            _config = Helper.ReadConfig<ModConfig>();
+            GraphicsDevice = Game1.graphics.GraphicsDevice;
+            PrepareAssets(GraphicsDevice);
         }
 
         public void SaveConfig(ModConfig newConfig)
         {
-            Config = newConfig;
+            _config = newConfig;
             Helper.WriteConfig(newConfig);
         }
 
@@ -63,20 +61,20 @@ namespace EventBlackBars
         public void StartMovingBars(Direction direction)
         {
             // don't start to move out the bars if they are not moved in
-            if(direction == Direction.MoveOut && _barHeight <= 0) return;
+            if(direction == Direction.MoveOut && BarHeight <= 0) return;
             
-            _renderBars = true;
+            RenderBars = true;
             
-            if (Config.MoveBarsInSmoothly)
+            if (_config.MoveBarsInSmoothly)
             {
-                _barHeight = direction == Direction.MoveIn ? 0 : GetMaxBarHeight(_graphicsDevice);
+                BarHeight = direction == Direction.MoveIn ? 0 : GetMaxBarHeight(GraphicsDevice);
 
                 _barsMovingIn = direction == Direction.MoveIn;
                 _barsMovingOut = direction == Direction.MoveOut;
             }
             else
             {
-                _barHeight = direction == Direction.MoveIn ? GetMaxBarHeight(_graphicsDevice) : 0;
+                BarHeight = direction == Direction.MoveIn ? GetMaxBarHeight(GraphicsDevice) : 0;
             }
         }
         
@@ -85,29 +83,16 @@ namespace EventBlackBars
         /// </summary>
         private void PrepareAssets(GraphicsDevice graphicsDevice)
         {
-            _blackRectangle = new Texture2D(graphicsDevice, 1, 1);
-            _blackRectangle.SetData(new [] { Color.Black });
+            BlackRectangle = new Texture2D(graphicsDevice, 1, 1);
+            BlackRectangle.SetData(new [] { Color.Black });
         }
 
         /// <summary>
         /// Draw the bars.
         /// </summary>
-        private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
+        private void OnRenderingStep(object sender, RenderingStepEventArgs e)
         {
-            if (!_renderBars) return;
             
-            var viewportWidth = _graphicsDevice.Viewport.Width;
-            var viewportHeight = _graphicsDevice.Viewport.Height;
-            
-            // Top bar
-            e.SpriteBatch.Draw(_blackRectangle, new Vector2(0, 0), null,
-                Color.White, 0f, Vector2.Zero, new Vector2(viewportWidth, _barHeight),
-                SpriteEffects.None, 0f);
-            
-            // Bottom bar
-            e.SpriteBatch.Draw(_blackRectangle, new Vector2(0, viewportHeight - _barHeight), null,
-                Color.White, 0f, Vector2.Zero, new Vector2(viewportWidth, _barHeight),
-                SpriteEffects.None, 0f);
         }
         
         /// <summary>
@@ -115,25 +100,25 @@ namespace EventBlackBars
         /// </summary>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!_barsMovingIn && !_barsMovingOut || !Config.MoveBarsInSmoothly) return;
+            if (!_barsMovingIn && !_barsMovingOut || !_config.MoveBarsInSmoothly) return;
 
-            var maxBarHeight = GetMaxBarHeight(_graphicsDevice);
+            var maxBarHeight = GetMaxBarHeight(GraphicsDevice);
             var desiredBarHeight = _barsMovingIn ? maxBarHeight : 0;
             const float speed = 1f;
             
             // Quit resizing the bars when the desired height is about to be reached.
-            if (Math.Abs(_barHeight - desiredBarHeight) <= 1f)
+            if (Math.Abs(BarHeight - desiredBarHeight) <= 1f)
             {
                 _barsMovingIn = _barsMovingOut = false;
-                _barHeight = desiredBarHeight;
+                BarHeight = desiredBarHeight;
 
-                _renderBars = desiredBarHeight != 0;
+                RenderBars = desiredBarHeight != 0;
                 
                 return;
             }
             
             // Gradually change the bar height.
-            _barHeight = desiredBarHeight > _barHeight ? _barHeight += speed : _barHeight -= speed;
+            BarHeight = desiredBarHeight > BarHeight ? BarHeight += speed : BarHeight -= speed;
         }
         
         /// <summary>
@@ -141,9 +126,9 @@ namespace EventBlackBars
         /// </summary>
         private void OnWindowResized(object sender, WindowResizedEventArgs e)
         {
-            if(_barsMovingIn || _barsMovingOut || _barHeight <= 0) return;
+            if(_barsMovingIn || _barsMovingOut || BarHeight <= 0) return;
 
-            _barHeight = GetMaxBarHeight(_graphicsDevice);
+            BarHeight = GetMaxBarHeight(GraphicsDevice);
         }
         
         private void ApplyHarmonyPatches()
@@ -152,7 +137,12 @@ namespace EventBlackBars
 
             harmony.Patch(
                 AccessTools.Method(typeof(Event), nameof(Event.exitEvent)),
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.EventEnd))
+                prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.EventEnd))
+            );
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Event), nameof(Event.drawAfterMap)),
+                prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.DrawAfterMap))
             );
             
             harmony.Patch(
@@ -167,7 +157,7 @@ namespace EventBlackBars
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             ApplyHarmonyPatches();
-            ModConfig.SetUpModConfigMenu(Config, this);
+            ModConfig.SetUpModConfigMenu(_config, this);
         }
 
         /// <summary>
@@ -176,7 +166,7 @@ namespace EventBlackBars
         private int GetMaxBarHeight(GraphicsDevice graphicsDevice)
         {
             return Convert.ToInt16(graphicsDevice.Viewport.Height *
-                                   MathHelper.Clamp((float)Config.BarHeightPercentage / 100f, 0f, 1f));
+                                   MathHelper.Clamp((float)_config.BarHeightPercentage / 100f, 0f, 1f));
         }
     }
 

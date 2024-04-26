@@ -109,13 +109,14 @@ namespace Desert_Bloom.Lib
         public static void trySpreadGrass(GameLocation farm, KeyValuePair<Vector2, TerrainFeature> kvp, int xCoord, int yCoord, int xOffset, int yOffset)
         {
             if (farm.isTileOnMap(xCoord, yCoord)
-                && farm.doesTileHaveProperty(xCoord + xOffset, yCoord + yOffset, "NoSpawn", "Back") == null) {
+                && farm.doesTileHaveProperty(xCoord + xOffset, yCoord + yOffset, "NoSpawn", "Back") == null
+                && farm.isTilePassable(kvp.Key + new Vector2(xOffset, yOffset))) {
 
                 var diggable = farm.doesTileHaveProperty(xCoord + xOffset, yCoord + yOffset, "Diggable", "Back") != null;
 
                 var spreadFactor = BetterGrassSpread
-                    ? diggable ? 0.15 : 0.4
-                    : diggable ? 0 : 0.25;
+                    ? diggable ? 0.15 : 0.3
+                    : diggable ? 0 : 0.15;
 
                 if (spreadFactor != 0 && Game1.random.NextDouble() < spreadFactor)
                     farm.terrainFeatures.TryAdd(kvp.Key + new Vector2(xOffset, yOffset), new Grass((byte)((Grass)kvp.Value).grassType.Value, Game1.random.Next(1, 3)));

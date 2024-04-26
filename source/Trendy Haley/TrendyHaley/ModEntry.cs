@@ -100,72 +100,102 @@ namespace TrendyHaley {
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) {
             // Check for RandomFlowerQueen CP mod.
             hasRandomFlowerQueen_ = this.Helper.ModRegistry.IsLoaded("Candidus42.RandomFlowerQueen");
+            
+            // Read persisted config.
+            config_ = this.Helper.ReadConfig<ModConfig>();
 
             // GenericModConfigMenu support.
-            var configMenu_ = this.Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu_ is null) {
+            var configMenu = this.Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null) {
                 return;
             }
             
-            configMenu_.Register(this.ModManifest,
+            // Local function, only used by config menu.
+            ConfigEntry GetCurrentConfig() {
+                if (Context.IsWorldReady) {
+                    return config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"];
+                }
+
+                // First call happens before anything is ready.
+                if (config_ is null) {
+                    return new ConfigEntry();
+                }
+                
+                // Create default entry if necessary.
+                if (!config_.SaveGame.ContainsKey("Default")) {
+                    config_.SaveGame["Default"] = new ConfigEntry();
+                    // Set alpha channel to opaque.
+                    config_.SaveGame["Default"].HairColor = RandomColor();
+                }
+
+                return config_.SaveGame["Default"];
+            }
+
+            configMenu.Register(this.ModManifest,
                                  () => config_ = new ModConfig(),
                                  () => this.Helper.WriteConfig(config_));
 
-            configMenu_.AddNumberOption(this.ModManifest,
-                                        () => Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor.R : 0,
-                                        (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor
-                                                    = new Color(config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor, 255) { R = (byte) val };
+            configMenu.AddNumberOption(this.ModManifest,
+                                        () => GetCurrentConfig().HairColor.R,
+                                        (val) => {
+                                                   GetCurrentConfig().HairColor = GetCurrentConfig().HairColor with { R = (byte) val };
                                                    ComputeAndSetHairColor();
                                                  },
                                         () => "Hair color red channel",
                                         min: 0,
                                         max: 255);
 
-            configMenu_.AddNumberOption(this.ModManifest,
-                                        () => Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor.G : 0,
-                                        (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor
-                                                    = new Color(config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor, 255) { G = (byte) val };
+            configMenu.AddNumberOption(this.ModManifest,
+                                        () => GetCurrentConfig().HairColor.G,
+                                        (val) => {
+                                                    GetCurrentConfig().HairColor = GetCurrentConfig().HairColor with { G = (byte) val };
                                                     ComputeAndSetHairColor();
                                                  },
                                         () => "Hair color green channel",
                                         min: 0,
                                         max: 255);
 
-            configMenu_.AddNumberOption(this.ModManifest,
-                                        () => Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor.B : 0,
-                                        (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor
-                                                    = new Color(config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairColor, 255) { B = (byte) val };
+            configMenu.AddNumberOption(this.ModManifest,
+                                        () => GetCurrentConfig().HairColor.B,
+                                        (val) => {
+                                                    GetCurrentConfig().HairColor = GetCurrentConfig().HairColor with { B = (byte) val };
                                                     ComputeAndSetHairColor();
                                                  },
                                         () => "Hair color blue channel",
                                         min: 0,
                                         max: 255);
 
-            configMenu_.AddTextOption(this.ModManifest,
-                                      () => (Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairDyeInterval : ConfigEntry.Interval.OncePerSeason).ToString(),
-                                      (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].HairDyeInterval = Enum.Parse<ConfigEntry.Interval>(val);
+            configMenu.AddTextOption(this.ModManifest,
+                                      () => GetCurrentConfig().HairDyeInterval.ToString(),
+                                      (val) => {
+                                                 GetCurrentConfig().HairDyeInterval = Enum.Parse<ConfigEntry.Interval>(val);
                                                  ComputeAndSetHairColor(); },
                                       () => "Hair dye interval",
                                       null,
                                       Enum.GetNames<ConfigEntry.Interval>());
 
-            configMenu_.AddBoolOption(this.ModManifest,
-                                      () => Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].ColorIsFading : false,
-                                      (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].ColorIsFading = val;
+            configMenu.AddBoolOption(this.ModManifest,
+                                      () => GetCurrentConfig().ColorIsFading,
+                                      (val) => {
+                                                 GetCurrentConfig().ColorIsFading = val;
                                                  ComputeAndSetHairColor();
                                                },
                                       () => "Color is fading");
 
-            configMenu_.AddBoolOption(this.ModManifest,
-                                      () => Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].AlphaBlend : false,
-                                      (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].AlphaBlend = val;
-                                                 ComputeAndSetHairColor(); },
+            configMenu.AddBoolOption(this.ModManifest,
+                                      () => GetCurrentConfig().AlphaBlend,
+                                      (val) => {
+                                                 GetCurrentConfig().AlphaBlend = val;
+                                                 ComputeAndSetHairColor();
+                                               },
                                       () => "Alpha blend");
 
-            configMenu_.AddBoolOption(this.ModManifest,
-                                      () => Context.IsWorldReady ? config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].SpouseLookAlike : false,
-                                      (val) => { config_.SaveGame[$"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}"].SpouseLookAlike = val;
-                                                 ComputeAndSetHairColor(); },
+            configMenu.AddBoolOption(this.ModManifest,
+                                      () => GetCurrentConfig().SpouseLookAlike,
+                                      (val) => {
+                                                 GetCurrentConfig().SpouseLookAlike = val;
+                                                 ComputeAndSetHairColor();
+                                               },
                                       () => "Spouse look alike");
         }
 
@@ -180,11 +210,24 @@ namespace TrendyHaley {
             if (!config_.SaveGame.ContainsKey(saveGameName)) {
                 config_.SaveGame.Add(saveGameName, new ConfigEntry());
             }
+            
+            // Copy and remove default entry if present.
+            if (config_.SaveGame.ContainsKey("Default")) {
+                config_.SaveGame[saveGameName] = config_.SaveGame["Default"];
+                config_.SaveGame.Remove("Default");
+            }
 
             ComputeAndSetHairColor();
         }
 
         private void ComputeAndSetHairColor() {
+            // Save config.
+            this.Helper.WriteConfig(config_);
+            
+            if (!Context.IsWorldReady) {
+                return;
+            }
+
             string saveGameName = $"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}";
 
             // Check relationship of farmer and Haley.
@@ -261,8 +304,13 @@ namespace TrendyHaley {
             else {
                 // We have to load the recolored hair overlay every day, otherwise it falls back to vanilla.
                 Color hairColor = config_.SaveGame[saveGameName].HairColor;
-
                 SetHairColor(hairColor);
+                
+                if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
+                    spouseHairColor_ = hairColor;
+                    Game1.player.changeHairColor(spouseHairColor_);
+                    this.Monitor.Log($"{Game1.player.Name} has the same hair color as Haley");
+                }
             }
         }
 

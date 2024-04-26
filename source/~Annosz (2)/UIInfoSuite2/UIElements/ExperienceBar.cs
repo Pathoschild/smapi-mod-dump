@@ -8,12 +8,8 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
 using StardewModdingAPI.Enums;
 using StardewModdingAPI.Events;
@@ -27,7 +23,7 @@ using UIInfoSuite2.UIElements.ExperienceElements;
 
 namespace UIInfoSuite2.UIElements;
 
-public partial class ExperienceBar : IDisposable
+public partial class ExperienceBar
 {
 #region Properties
   private readonly PerScreen<Item> _previousItem = new();
@@ -57,7 +53,8 @@ public partial class ExperienceBar : IDisposable
     { SkillType.Fishing, new Rectangle(20, 428, 10, 10) },
     { SkillType.Foraging, new Rectangle(60, 428, 10, 10) },
     { SkillType.Mining, new Rectangle(30, 428, 10, 10) },
-    { SkillType.Combat, new Rectangle(120, 428, 10, 10) }
+    { SkillType.Combat, new Rectangle(120, 428, 10, 10) },
+    { SkillType.Luck, new Rectangle(50, 428, 10, 10) }
   };
 
   private static readonly Dictionary<SkillType, Color> ExperienceFillColor = new()
@@ -66,15 +63,14 @@ public partial class ExperienceBar : IDisposable
     { SkillType.Fishing, new Color(17, 84, 252, 0.63f) },
     { SkillType.Foraging, new Color(0, 234, 0, 0.63f) },
     { SkillType.Mining, new Color(145, 104, 63, 0.63f) },
-    { SkillType.Combat, new Color(204, 0, 3, 0.63f) }
+    { SkillType.Combat, new Color(204, 0, 3, 0.63f) },
+    { SkillType.Luck, new Color(232, 223, 42, 0.63f) }
   };
 
   private readonly PerScreen<Rectangle> _experienceIconRectangle = new(() => SkillIconRectangles[SkillType.Farming]);
 
   private readonly PerScreen<Rectangle> _levelUpIconRectangle = new(() => SkillIconRectangles[SkillType.Farming]);
   private readonly PerScreen<Color> _experienceFillColor = new(() => ExperienceFillColor[SkillType.Farming]);
-
-  private SoundEffectInstance _soundEffect;
 
   private bool ExperienceBarFadeoutEnabled { get; set; } = true;
   private bool ExperienceGainTextEnabled { get; set; } = true;
@@ -90,34 +86,10 @@ public partial class ExperienceBar : IDisposable
   {
     _helper = helper;
 
-    InitializeSound();
-
     if (_helper.ModRegistry.IsLoaded("DevinLematty.LevelExtender"))
     {
       _levelExtenderApi = _helper.ModRegistry.GetApi<ILevelExtender>("DevinLematty.LevelExtender");
     }
-  }
-
-  private void InitializeSound()
-  {
-    var path = string.Empty;
-    try
-    {
-      path = Path.Combine(_helper.DirectoryPath, "assets", "LevelUp.wav");
-      _soundEffect = SoundEffect.FromStream(new FileStream(path, FileMode.Open)).CreateInstance();
-    }
-    catch (Exception ex)
-    {
-      ModEntry.MonitorObject.Log(
-        "Error loading sound file from " + path + ": " + ex.Message + Environment.NewLine + ex.StackTrace,
-        LogLevel.Error
-      );
-    }
-  }
-
-  public void Dispose()
-  {
-    _soundEffect.Dispose();
   }
 
   public void ToggleOption(
@@ -199,7 +171,7 @@ public partial class ExperienceBar : IDisposable
 
       _experienceBarVisibleTimer.Value = ExperienceBarVisibleTicks;
 
-      PlayLevelUpSoundEffect();
+      SoundHelper.Play(Sounds.LevelUp);
     }
   }
 
@@ -306,23 +278,6 @@ public partial class ExperienceBar : IDisposable
         _currentLevelExtenderExperience.Value[i] = _levelExtenderApi.CurrentXP()[i];
       }
     }
-  }
-
-  private void PlayLevelUpSoundEffect()
-  {
-    if (_soundEffect == null)
-    {
-      return;
-    }
-
-    _soundEffect.Volume = Game1.options.soundVolumeLevel;
-    Task.Factory.StartNew(
-      async () =>
-      {
-        await Task.Delay(200);
-        _soundEffect?.Play();
-      }
-    );
   }
 
   private bool TryGetCurrentLevelIndexFromSkillChange(out int currentLevelIndex)

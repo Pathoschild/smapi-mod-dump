@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "Name": "Resource Storage",
+  "Author": "aedenthorn",
+  "Version": "0.6.0",
+  "Description": "Resource Storage.",
+  "UniqueID": "aedenthorn.ResourceStorage",
+  "EntryDll": "ResourceStorage.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "ResourceStorage"
+  },
+  "UpdateKeys": [ "Nexus:17951" ]
+}

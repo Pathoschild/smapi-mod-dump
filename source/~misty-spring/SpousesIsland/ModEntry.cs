@@ -181,71 +181,89 @@ public sealed class ModEntry : Mod
         );
         #endregion
 
-        if (ModInfo.LittleNpcs)
+        configMenu.AddPageLink(
+            mod: ModManifest, 
+            pageId: "C2Nconfig",
+            text: () => GetChildTitle(true),
+            tooltip: () => Helper.Translation.Get("config.Child2NPC.description")
+            );
+            
+        configMenu.AddPage(
+            mod: ModManifest, 
+            pageId: "C2Nconfig", 
+            pageTitle: () => GetChildTitle(false)
+            );
+            
+        configMenu.AddBoolOption(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.Enabled"),
+            tooltip: () => Helper.Translation.Get("config.Devan_Nosit.description"),
+            getValue: () => Config.Devan,
+            setValue: value => Config.Devan = value
+            );
+            
+        configMenu.AddBoolOption(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.ChildVisitIsland.name"),
+            tooltip: () => Helper.Translation.Get("config.ChildVisitIsland.description"),
+            getValue: () => Config.AllowChildren,
+            setValue: value => Config.AllowChildren = value
+            );
+            
+        configMenu.AddBoolOption(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.ChildRoom.name"),
+            tooltip: () => Helper.Translation.Get("config.ChildRoom.description"),
+            getValue: () => Config.ChildRoom, 
+            setValue: value => Config.ChildRoom = value 
+            );
+        
+        configMenu.AddBoolOption(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.UseFurnitureBed.name"),
+            tooltip: () => Helper.Translation.Get("config.UseFurnitureBed.description"),
+            getValue: () => Config.UseFurnitureBed,
+            setValue: value => Config.UseFurnitureBed = value 
+            );
+
+            //if it's not bed furniture: lets you decide the "mod bed" color.
+        if (Config.UseFurnitureBed) 
+            return; 
+            
+        configMenu.AddTextOption(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.Childbedcolor.name"),
+            tooltip: () => Helper.Translation.Get("config.Childbedcolor.description"),
+            getValue: () => Config.Childbedcolor,
+            setValue: value => Config.Childbedcolor = value,
+            allowedValues: new[] { "1", "2", "3", "4", "5", "6" }
+        );
+        
+        configMenu.AddImage(
+            mod: ModManifest,
+            texture: () => Help.ModContent.Load<Texture2D>("assets/KidbedSamples.png"),
+            texturePixelArea: null,
+            scale: 1
+        );
+    }
+
+    private static string GetChildTitle(bool addDots)
+    {
+        var result =
+            string.Concat(
+                Game1.content.LoadString("Strings/StringsFromCSFiles:Dialogue.cs.793")[0].ToString().ToUpper(),
+                Game1.content.LoadString("Strings/StringsFromCSFiles:Dialogue.cs.793").AsSpan(1));
+
+        var dots = LocalizedContentManager.CurrentLanguageCode switch
         {
-            configMenu.AddPageLink(
-                mod: ModManifest,
-                pageId: "C2Nconfig",
-                text: () => ChildrenTitle,
-                tooltip: () => Helper.Translation.Get("config.Child2NPC.description")
-            );
-            
-            configMenu.AddPage(
-                mod: ModManifest,
-                pageId: "C2Nconfig",
-                pageTitle: () => ChildrenTitle
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.Enabled"),
-                tooltip: () => Helper.Translation.Get("config.Devan_Nosit.description"),
-                getValue: () => Config.Devan,
-                setValue: value => Config.Devan = value
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.ChildVisitIsland.name"),
-                tooltip: () => Helper.Translation.Get("config.ChildVisitIsland.description"),
-                getValue: () => Config.AllowChildren,
-                setValue: value => Config.AllowChildren = value
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.ChildRoom.name"),
-                tooltip: () => Helper.Translation.Get("config.ChildRoom.description"),
-                getValue: () => Config.ChildRoom,
-                setValue: value => Config.ChildRoom = value 
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.UseFurnitureBed.name"),
-                tooltip: () => Helper.Translation.Get("config.UseFurnitureBed.description"),
-                getValue: () => Config.UseFurnitureBed,
-                setValue: value => Config.UseFurnitureBed = value 
-            );
-            
-            if (Config.UseFurnitureBed == false) //if it's not bed furniture: lets you decide the "mod bed" color.
-            {
-                configMenu.AddTextOption(
-                    mod: ModManifest,
-                    name: () => Helper.Translation.Get("config.Childbedcolor.name"),
-                    tooltip: () => Helper.Translation.Get("config.Childbedcolor.description"),
-                    getValue: () => Config.Childbedcolor,
-                    setValue: value => Config.Childbedcolor = value,
-                    allowedValues: new[] { "1", "2", "3", "4", "5", "6" }
-                );
-                configMenu.AddImage(
-                    mod: ModManifest,
-                    texture: () => Help.ModContent.Load<Texture2D>("assets/KidbedSamples.png"),
-                    texturePixelArea: null,
-                    scale: 1
-                );
-            }
-        }
+            LocalizedContentManager.LanguageCode.ja or LocalizedContentManager.LanguageCode.zh => "。。。",
+            _ => "..."
+        };
+
+        if (addDots)
+            return result + dots;
+        
+        return result;
     }
 
     private static void SaveLoaded(object sender, SaveLoadedEventArgs e) => CheckPlayer();
@@ -271,6 +289,7 @@ public sealed class ModEntry : Mod
 
         if (Status == null)
         {
+            Status ??= new Dictionary<string, (int, bool)>();
             IsFromTicket = false;
             return;
         }
@@ -324,15 +343,6 @@ public sealed class ModEntry : Mod
 #endif
     #endregion
     
-    private static string ChildrenTitle { 
-        get
-        {
-            var plural = Lexicon.makePlural(Game1.content.LoadString("Strings/StringsFromCSFiles:Dialogue.cs.793"));
-            var s = Lexicon.capitalize(plural);
-            return s; 
-        }
-    }
-    
     private static void ParseBlacklist()
     {
         Blacklist.Clear();
@@ -369,6 +379,6 @@ public sealed class ModEntry : Mod
     internal static InstalledMods ModInfo;
     internal static List<string> Blacklist { get; set; } = new();
     internal static bool DevanExists { get; set; }
-    internal static Dictionary<string,(int, bool)> Status { get; private set; }
+    internal static Dictionary<string,(int, bool)> Status { get; set; }
     #endregion
 }

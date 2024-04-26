@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Visible Fish",
   "Author": "shekurika",
-  "Version": "0.4",
+  "Version": "0.4.1",
   "Description": "Shows fish in the water",
   "UniqueID": "shekurika.WaterFish",
   "EntryDll": "showFishInWater.dll",

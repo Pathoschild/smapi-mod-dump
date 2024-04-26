@@ -11,13 +11,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public enum Shirt
-    {
+    public static class KnownShirts
+    {        
+        public static Shirt
         None = -1,
         ClassicOveralls = 1000,
         MintBlouse = 1002,
@@ -215,6 +217,55 @@ namespace SkillfulClothes.Types
         IslandBikini = 1297,
         MagicSprinkleShirt = 1997,
         PrismaticShirt_DarkSleeves = 1998,
-        PrismaticShirt_WhiteSleeves = 1999
+        PrismaticShirt_WhiteSleeves = 1999;
+
+        static Dictionary<string, Shirt> lut_ids = new Dictionary<string, Shirt>();
+        static Dictionary<string, Shirt> lut_names = new Dictionary<string, Shirt>();
+
+        static KnownShirts()
+        {
+            foreach (var field in typeof(KnownShirts)
+                .GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                .Where(x => x.FieldType == typeof(Shirt)))
+            {
+                var shirt = field.GetValue(null) as Shirt;
+                shirt.ItemName = field.Name;
+                
+                lut_ids.Add(shirt.ItemId, shirt);
+                lut_names.Add(shirt.ItemName, shirt);
+            }                
+        }
+
+        public static Shirt GetById(string itemId)
+        {
+            if (itemId == null) return KnownShirts.None;
+
+            if (lut_ids.TryGetValue(itemId, out Shirt knownShirt) || lut_names.TryGetValue(itemId, out knownShirt))
+            {
+                return knownShirt;
+            }
+            else
+            {
+                return new Shirt(itemId) { ItemName = itemId };
+            }                
+        }
+    }
+
+    public class Shirt : AlphanumericItemId
+    {        
+        public Shirt(string itemId)
+            : base(itemId, ClothingItemType.Shirt)
+        {
+        }        
+
+        public static implicit operator Shirt(int value)
+        {
+            return new Shirt(value.ToString());
+        }
+
+        public static implicit operator Shirt(string value)
+        {
+            return new Shirt(value);
+        }
     }
 }

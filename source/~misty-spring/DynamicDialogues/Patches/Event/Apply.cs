@@ -45,17 +45,6 @@ internal partial class EventPatches
             original: AccessTools.Method(typeof(Event), nameof(Event.exitEvent)),
             postfix: new HarmonyMethod(typeof(EventPatches), nameof(Post_exitEvent))
             );
-
-        Log($"Applying Harmony patch \"{nameof(EventPatches)}\": prefixing SDV method \"Event.DefaultCommands.Speak\".");
-        harmony.Patch(
-            original: AccessTools.Method(typeof(Event), nameof(Event.DefaultCommands.Speak)),
-            prefix: new HarmonyMethod(typeof(EventPatches), nameof(Pre_Speak))
-        );
-        Log($"Applying Harmony patch \"{nameof(EventPatches)}\": prefixing SDV method \"Event.DefaultCommands.Message\".");
-        harmony.Patch(
-            original: AccessTools.Method(typeof(Event), nameof(Event.DefaultCommands.Message)),
-            prefix: new HarmonyMethod(typeof(EventPatches), nameof(Pre_Message))
-        );
     }
 
     private static void Post_exitEvent()

@@ -26,7 +26,7 @@ public abstract class Element
     public Action OnLeftReleased = () => { };
     public Action OnRightClicked = () => { };
 
-    public Element(string title, string description)
+    protected Element(string title, string description)
     {
         Title = title;
         Description = description;

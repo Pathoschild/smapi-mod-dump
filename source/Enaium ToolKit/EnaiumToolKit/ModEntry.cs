@@ -33,16 +33,14 @@ public class ModEntry : Mod
 
     private void OnButtonPress(object? sender, ButtonPressedEventArgs e)
     {
-        if (e.Button == SButton.RightControl)
+        if (e.Button != SButton.RightControl) return;
+        if (Game1.activeClickableMenu is TitleMenu)
         {
-            if (Game1.activeClickableMenu is TitleMenu)
-            {
-                TitleMenu.subMenu = new EnaiumToolKitScreen();
-            }
-            else
-            {
-                Game1.activeClickableMenu = new EnaiumToolKitScreen();
-            }
+            TitleMenu.subMenu = new EnaiumToolKitScreen();
+        }
+        else
+        {
+            Game1.activeClickableMenu = new EnaiumToolKitScreen();
         }
     }
 

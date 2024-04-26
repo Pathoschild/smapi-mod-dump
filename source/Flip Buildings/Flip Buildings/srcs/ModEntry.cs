@@ -57,13 +57,13 @@ namespace FlipBuildings
 				NPCPatch.Apply(harmony);
 
 				// Apply AlternativeTextures patches
-				if (CompatibilityHelper.IsAlternativeTexturesLoaded)
+				if (CompatibilityUtility.IsAlternativeTexturesLoaded)
 				{
 					Patches.AT.BuildingPatch.Apply(harmony);
 				}
 
 				// Apply SolidFoundations patches
-				// if (CompatibilityHelper.IsSolidFoundationsLoaded)
+				// if (CompatibilityUtility.IsSolidFoundationsLoaded)
 				// {
 				// 	Patches.SF.GenericBuildingPatch.Apply(harmony);
 				// }

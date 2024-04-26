@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31105.61
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyPathDestruction", "EasyPathDestruction\EasyPathDestruction.csproj", "{C32C2869-38F5-4FBC-A90A-20A7AFCD0810}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyPathDestruction", "EasyPathDestruction\EasyPathDestruction.csproj", "{D692BA8C-4D85-4925-A095-DFC1BEA8ACD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C32C2869-38F5-4FBC-A90A-20A7AFCD0810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C32C2869-38F5-4FBC-A90A-20A7AFCD0810}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C32C2869-38F5-4FBC-A90A-20A7AFCD0810}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C32C2869-38F5-4FBC-A90A-20A7AFCD0810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D692BA8C-4D85-4925-A095-DFC1BEA8ACD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D692BA8C-4D85-4925-A095-DFC1BEA8ACD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D692BA8C-4D85-4925-A095-DFC1BEA8ACD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D692BA8C-4D85-4925-A095-DFC1BEA8ACD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3455F572-FA57-4B20-B4C5-B0DADF197943}
+		SolutionGuid = {92516739-FFF9-43E3-9BFC-D196B6B45691}
 	EndGlobalSection
 EndGlobal

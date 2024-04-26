@@ -97,6 +97,12 @@ namespace DestroyableBushes
 
             Bush bush = new Bush(new Vector2(x, y), size.Value, location); //create the new bush
 
+            if (size.Value == Bush.walnutBush)
+            {
+                bush.tileSheetOffset.Value = 0; //remove walnut (note: rewrite would be needed to support spawning both ways, and if players want free walnuts, they can use debug)
+                bush.setUpSourceRect(); //update sprite
+            }
+
             Rectangle playerBox = Game1.player.GetBoundingBox();
 
             while (playerBox.Intersects(bush.getBoundingBox())) //while this bush is colliding with the player
@@ -150,6 +156,10 @@ namespace DestroyableBushes
                 case "tea":
                 case "teabush":
                     return Bush.greenTeaBush;
+                case "4":
+                case "w":
+                case "walnut":
+                    return Bush.walnutBush;
                 default:
                     return null;
             }

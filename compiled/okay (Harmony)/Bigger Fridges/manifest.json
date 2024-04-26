@@ -1,0 +1,9 @@
+{
+  "Name": "Bigger Fridges",
+  "Author": "Entoarox",
+  "Version": "1.1.0",
+  "Description": "Makes all fridges as big as a Big Chest.",
+  "UniqueID": "Entoarox.BiggerFridges",
+  "EntryDll": "BiggerFridges.dll",
+  "UpdateKeys": [ "nexus:21678" ]
+}

@@ -17,21 +17,26 @@ namespace PersonalIndoorFarm
 {
     public class ModEntry : Mod
     {
-        public static Mod Mod;
-        //public static ModConfig Config;
-        public static IMonitor _Monitor;
-        public static IModHelper _Helper;
+        public static Mod ModInstance;
+        public static ModConfig Config;
+
+        public static new IMonitor Monitor;
+        public static new IModHelper Helper;
+        public static new IManifest ModManifest;
 
         public override void Entry(IModHelper helper)
         {
-            Mod = this;
-            _Monitor = Monitor;
-            _Helper = Helper;
+            ModInstance = this;
+            Config = helper.ReadConfig<ModConfig>();
 
+            Monitor = ModInstance.Monitor;
+            Helper = ModInstance.Helper;
+            ModManifest = ModInstance.ModManifest;
+
+            API.Main.Initialize();
             Lib.Main.Initialize();
 
             Helper.ConsoleCommands.Add("pif", "", commands);
-            //Helper.Events.GameLoop.
         }
 
         private void commands(string command, string[] args)

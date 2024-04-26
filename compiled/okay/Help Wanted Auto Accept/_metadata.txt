@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22235
+IDs: Ruse82.HelpWantedAutoAccept
+update keys: Nexus:22235

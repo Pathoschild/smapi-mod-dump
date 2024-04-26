@@ -85,15 +85,25 @@ namespace LovedLabelsRedux
 
             if (configsForTheMod.IsPettingEnabled)
             {
+                int previousTime = Game1.timeOfDay;
+
                 FarmAnimal[] farmAnimals = Game1.getFarm().getAllFarmAnimals().Where(p => !p.wasPet.Value).ToArray();
 
                 if (farmAnimals.Any())
                 {
+                    if (Game1.timeOfDay >= 1900)
+                    {
+                        Game1.timeOfDay = 1800;
+                    }
+
                     foreach (FarmAnimal animal in farmAnimals)
                     {
                         //this.Monitor.Log($"Animal: {animal.Name} - {animal.displayName} - {animal.type} - {animal.age} - {animal.wasPet.Value} - {animal.fullness.Value} - {animal.friendshipTowardFarmer.Value} - {animal.daysSinceLastFed.Value}", LogLevel.Info);
-                        animal.pet(Game1.player);
+                        animal.pet(Game1.player, true);
+                        animal.pet(Game1.player, false);
                     }
+
+                    Game1.timeOfDay = previousTime;
                 }
             }
 

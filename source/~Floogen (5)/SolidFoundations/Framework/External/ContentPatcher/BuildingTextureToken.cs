@@ -38,7 +38,7 @@ namespace SolidFoundations.Framework.External.ContentPatcher
         {
             error = String.Empty;
 
-            if (String.IsNullOrEmpty(SolidFoundations.buildingManager.GetTextureAsset(input.ToLower())))
+            if (String.IsNullOrEmpty(SolidFoundations.buildingManager.GetTextureAssetPath(input.ToLower())))
             {
                 error = $"No matching building found for the given PACK.UNIQUE.ID_BuildingNameNoSpaces: {input}";
                 return false;
@@ -69,7 +69,7 @@ namespace SolidFoundations.Framework.External.ContentPatcher
                 yield break;
             }
 
-            var texturePath = SolidFoundations.buildingManager.GetTextureAsset(input.ToLower());
+            var texturePath = SolidFoundations.buildingManager.GetTextureAssetPath(input.ToLower());
             if (String.IsNullOrEmpty(texturePath))
             {
                 yield break;

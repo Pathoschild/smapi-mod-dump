@@ -19,10 +19,10 @@ using SObject = StardewValley.Object;
 
 namespace BushBloomMod.Patches.Integrations {
     internal static class Automate {
-        private static Config Config = null!;
+        private static Configuration Config = null!;
         private static IMonitor Monitor = null!;
 
-        public static void Register(IManifest manifest, IModHelper helper, IMonitor monitor, Config config) {
+        public static void Register(IManifest manifest, IModHelper helper, IMonitor monitor, Configuration config) {
             Config = config;
             Monitor = monitor;
             var harmony = new Harmony(helper.ModContent.ModID);
@@ -38,20 +38,22 @@ namespace BushBloomMod.Patches.Integrations {
         private static readonly PropertyInfo BaseMachine_Machine = AccessTools.Property("Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures.BushMachine:Machine");
         private static readonly FieldInfo TrackedItem_OnReduced = AccessTools.Field("Pathoschild.Stardew.Automate.TrackedItem:OnReduced");
 
+        private static readonly Api BbmApi = new();
+
         private static void Postfix_GetOutput(IMachine __instance, ref ITrackedStack __result) {
             try {
-                if (Config.EnableAutomateIntegration) {
+                if (Config.EnableAutomateIntegration && __instance is not null && __result is not null) {
                     var bush = BaseMachine_Machine.GetValue(__instance) as Bush;
-                    if (bush is not null) {
-                        var item = (SObject)__result.Sample;
-                        if (item.ParentSheetIndex == 410 || item.ParentSheetIndex == 296) {
+                    if (bush is not null && BbmApi is not null) {
+                        var id = BbmApi.FakeShake(bush);
+                        if (id is not null) {
                             var reduce = (Action<Item>?)TrackedItem_OnReduced.GetValue(__result);
                             if (reduce is not null) {
                                 __result = new TrackedItem(
                                     new SObject(
-                                        bush.GetShakeOffItem(),
+                                        itemId: id,
                                         initialStack: __result.Count,
-                                        quality: item.Quality
+                                        quality: (__result.Sample as SObject)?.Quality ?? 0
                                     ), onReduced: reduce
                                 );
                             }

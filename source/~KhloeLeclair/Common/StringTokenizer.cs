@@ -23,6 +23,8 @@ using StardewModdingAPI;
 
 namespace Leclair.Stardew.Common;
 
+/*
+
 public interface IStringTokenizerApi {
 
 	delegate bool HandleTokenDelegate(string input, IGameState state, out string result);
@@ -191,7 +193,7 @@ public static class StringTokenizer {
 		}
 
 		public static bool Handle_Season(string input, IGameState state, out string result) {
-			result = state.Date.Season;
+			result = state.Date.SeasonKey;
 			return true;
 		}
 
@@ -356,3 +358,5 @@ public static class StringTokenizer {
 	#endregion
 
 }
+
+*/

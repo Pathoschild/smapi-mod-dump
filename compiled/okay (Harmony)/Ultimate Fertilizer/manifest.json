@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Ultimate Fertilizer",
   "Author": "fox_white25",
-  "Version": "1.0.4",
+  "Version": "1.1.2",
   "Description": "Modify aspects of fertilizers in a configurable way",
   "UniqueID": "fox_white25.ultimate_fertilizer",
   "EntryDll": "UltimateFertilizer.dll",

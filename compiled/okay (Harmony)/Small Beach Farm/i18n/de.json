@@ -5,10 +5,9 @@
     "farm.name": "Kleine Strand Farm",
     "farm.description": "Ein kleiner fruchtbarer Pocket-Strand, an dem man sowohl Fluss- als auch Meeresfische fangen kann.",
 
-    // TODO
-    "farm.fish-areas.river": "River",
-    "farm.fish-areas.estuary": "Estuary",
-    "farm.fish-areas.ocean": "Ocean",
+    "farm.fish-areas.river": "Fluss",
+    "farm.fish-areas.estuary": "Flussmündung",
+    "farm.fish-areas.ocean": "Ozean",
 
 
     /*********

@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewDruid.Event;
-using StardewDruid.Map;
+
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -54,14 +54,17 @@ namespace StardewDruid.Monster.Boss
         {
 
         }
-        public override void BaseMode()
+
+        public override void SetMode(int mode)
         {
 
-            MaxHealth = Math.Max(4000, combatModifier * 300);
+            base.SetMode(mode);
+
+            MaxHealth = (int)(MaxHealth * 1.35);
 
             Health = MaxHealth;
 
-            DamageToFarmer = Math.Max(15, Math.Min(50, combatModifier * 2));
+            DamageToFarmer = (int)(DamageToFarmer * 1.25f);
 
         }
 
@@ -82,6 +85,17 @@ namespace StardewDruid.Monster.Boss
         {
             base.initNetFields();
             NetFields.AddField(netBreathActive,"netBreathActive");
+
+        }
+
+        public override Rectangle GetBoundingBox()
+        {
+            
+            Vector2 position = Position;
+
+            int netScale = netMode.Value > 5 ? netMode.Value - 4 : netMode.Value;
+
+            return new Rectangle((int)position.X - 24 - (netScale * 12), (int)position.Y - 64 - flightHeight - (netScale * 32), 112 + (netScale * 24), 128 + (netScale * 32));
 
         }
 
@@ -186,7 +200,7 @@ namespace StardewDruid.Monster.Boss
 
             abilities = 3;
 
-            cooldownInterval = 60;
+            cooldownInterval = 90;
 
             specialCeiling = 2;
 
@@ -281,6 +295,8 @@ namespace StardewDruid.Monster.Boss
 
             breathColour = "Red";
 
+            specialScheme = SpellHandle.schemes.fire;
+
             if (realName.Value == "BlackDragon" || realName.Value == "BlueDragon")
             {
 
@@ -291,6 +307,7 @@ namespace StardewDruid.Monster.Boss
             }
 
             breathTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", breathColour + "DragonBreath.png"));
+
 
         }
 
@@ -307,14 +324,28 @@ namespace StardewDruid.Monster.Boss
 
             int adjustDirection = netDirection.Value == 3 ? 1 : netDirection.Value;
 
-            //DrawEmote(b, localPosition, drawLayer);
+            int netScale = netMode.Value > 5 ? netMode.Value - 4 : netMode.Value;
+
+            netScale++;
+
+            Vector2 flightPosition = new Vector2(localPosition.X - 96 - (32 * netScale), localPosition.Y - 128f - flightHeight - (16 * netScale));
+            
+            Vector2 flightShadow = new Vector2(localPosition.X - 64 - (24 * netScale), localPosition.Y - (12 * netScale));
+            
+            Vector2 spritePosition = new Vector2(localPosition.X - 32 - (16 * netScale), localPosition.Y - 128f - flightHeight - (16 * netScale));
+           
+            Vector2 spriteShadow = new Vector2(localPosition.X - 32 - (16 * netScale), localPosition.Y - (8 * netScale));
+
+            float spriteScale = 2f + (0.5f * netScale);
+
+            DrawEmote(b, localPosition, drawLayer);
 
             if (netFlightActive.Value)
             {
 
-                b.Draw(flightTexture, new Vector2(localPosition.X - 128f, localPosition.Y - 192f - flightHeight), new Rectangle?(flightFrames[adjustDirection][flightFrame]), Color.White * 0.65f, 0, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(flightTexture, flightPosition, new Rectangle?(flightFrames[adjustDirection][flightFrame]), Color.White * 0.75f, 0, new Vector2(0.0f, 0.0f), spriteScale, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
 
-                b.Draw(shadowTexture, new Vector2(localPosition.X - 80f, localPosition.Y - 48f), new Rectangle?(shadowFrames[netDirection.Value + 4]), Color.White * 0.15f, 0.0f, new Vector2(0.0f, 0.0f), 5f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer - 1E-05f);
+                b.Draw(shadowTexture, flightShadow, new Rectangle?(shadowFrames[netDirection.Value + 4]), Color.White * 0.15f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale*1.5f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer - 1E-05f);
 
                 return;
 
@@ -365,9 +396,9 @@ namespace StardewDruid.Monster.Boss
 
                 bool sweepFlip = sweepingFrame > 2;
 
-                b.Draw(sweepTexture, new Vector2(localPosition.X - 128f, localPosition.Y - 192f - flightHeight), sweepFrames[0][sweepFrame], Color.White * 0.65f, 0, new Vector2(0.0f, 0.0f), 4f, sweepFlip ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(sweepTexture, flightPosition, sweepFrames[0][sweepFrame], Color.White * 0.75f, 0, new Vector2(0.0f, 0.0f), spriteScale, sweepFlip ? (SpriteEffects)1 : 0, drawLayer);
 
-                b.Draw(shadowTexture, new Vector2(localPosition.X - 80f, localPosition.Y - 48f), shadowFrames[shadowAdjust], Color.White * 0.15f, 0.0f, new Vector2(0.0f, 0.0f), 5f, sweepFlip ? (SpriteEffects)1 : 0, drawLayer - 1E-05f);
+                b.Draw(shadowTexture, flightShadow, shadowFrames[shadowAdjust], Color.White * 0.15f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale*1.5f, sweepFlip ? (SpriteEffects)1 : 0, drawLayer - 1E-05f);
 
                 return;
 
@@ -376,14 +407,14 @@ namespace StardewDruid.Monster.Boss
             if (netSpecialActive.Value)
             {
 
-                b.Draw(specialTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 192f), new Rectangle?(walkFrames[adjustDirection][walkFrame]), Color.White * 0.65f, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(specialTexture, spritePosition, new Rectangle?(walkFrames[adjustDirection][walkFrame]), Color.White * 0.75f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
 
                 if (netBreathActive.Value)
                 {
 
                     Vector2 breathVector = (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? breathVectorsFlip[netDirection.Value] : breathVectors[netDirection.Value];
 
-                    b.Draw(breathTexture, new Vector2(localPosition.X - 92f, localPosition.Y - 192f) + (breathVector * 4), breathFrames[netDirection.Value][specialFrame], Color.White * 0.75f, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer + (netDirection.Value == 2 ? 0.005f : -0.005f));
+                    b.Draw(breathTexture, spritePosition + (breathVector * spriteScale), breathFrames[netDirection.Value][specialFrame], Color.White * 0.65f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer + (netDirection.Value == 2 ? 0.005f : -0.005f));
 
                 }
 
@@ -391,17 +422,17 @@ namespace StardewDruid.Monster.Boss
             else if (netHaltActive.Value)
             {
 
-                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 192f), new Rectangle?(idleFrames[adjustDirection][0]), Color.White * 0.65f, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(characterTexture, spritePosition, new Rectangle?(idleFrames[adjustDirection][0]), Color.White * 0.75f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
 
             }
             else
             {
 
-                b.Draw(characterTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 192f), new Rectangle?(walkFrames[adjustDirection][walkFrame]), Color.White * 0.65f, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
+                b.Draw(characterTexture, spritePosition, new Rectangle?(walkFrames[adjustDirection][walkFrame]), Color.White * 0.75f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer);
 
             }
 
-            b.Draw(shadowTexture, new Vector2(localPosition.X - 96f, localPosition.Y - 40f), new Rectangle?(shadowFrames[adjustDirection]), Color.White * 0.15f, 0.0f, new Vector2(0.0f, 0.0f), 4f, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer - 1E-05f);
+            b.Draw(shadowTexture, spriteShadow, new Rectangle?(shadowFrames[adjustDirection]), Color.White * 0.15f, 0.0f, new Vector2(0.0f, 0.0f), spriteScale, (netDirection.Value % 2 == 0 && netAlternative.Value == 3) || netDirection.Value == 3 ? (SpriteEffects)1 : 0, drawLayer - 1E-05f);
 
         }
 
@@ -418,13 +449,23 @@ namespace StardewDruid.Monster.Boss
 
             List<Vector2> zero = BlastZero();
 
-            SpellHandle burn = new(currentLocation, zero[0] * 64, GetBoundingBox().Center.ToVector2(), 2, 0, DamageToFarmer * 0.2f);
+            /*SpellHandle burn = new(currentLocation, zero[0] * 64, GetBoundingBox().Center.ToVector2(), 2, 0, DamageToFarmer * 0.2f);
 
-            burn.type = SpellHandle.barrages.burn;
+            burn.type = SpellHandle.spells.burn;
 
             burn.scheme = specialScheme;
 
-            burn.monster = this;
+            burn.boss = this;
+
+            Mod.instance.spellRegister.Add(burn);*/
+
+            SpellHandle burn = new(Game1.player, zero[0] * 64, 128, DamageToFarmer);
+
+            burn.scheme = specialScheme;
+
+            burn.boss = this;
+
+            burn.added = new() { SpellHandle.effects.burn, };
 
             Mod.instance.spellRegister.Add(burn);
 

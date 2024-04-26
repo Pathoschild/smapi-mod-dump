@@ -6,11 +6,11 @@ mods:
    Unlimited Players
 
 latest commit:
-   commit f7e682e398f181b27a1033e6e9b0d2e5c695eeca
+   commit c1ffbbf2030275dbede9e1a76722a1e375aa5bf0
    Author: Jan Brodersen <janbrodersen@armitxes.net>
-   Date:   Sat Mar 30 05:04:12 2024 +0100
+   Date:   Tue Apr 16 19:14:14 2024 +0200
    
-       Merge pull request #23 from Armitxes/dev
+       Merge pull request #27 from Armitxes/development
        
-       v2024.3.30 - Compatibility with Stardew Valley v1.6
+       Release v2024.4.16
    

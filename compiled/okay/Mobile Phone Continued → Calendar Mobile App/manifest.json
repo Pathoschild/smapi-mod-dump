@@ -1,11 +1,12 @@
 ﻿{
   "Name": "Mobile Calendar Continued",
   "Author": "JoXW",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "A Calendar app for your mobile phone.",
   "UniqueID": "JoXW.MobileCalendar",
   "EntryDll": "MobileCalendar.dll",
   "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21017@Calendar" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.ModUpdater",

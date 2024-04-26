@@ -67,7 +67,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 // It'd be kinda nice if this had a heart requirement
                 topics[ConversationKeys.ScytheNotFound]
                     = topics[ConversationKeys.LoaderNotFound]
-                    = "Hey, wanna know a secret about your farm?  Down in the brambles near Marnie's house, there's Greebles.  They've made some wierd machines too.$3#$b#No...  I've never seen a Greeble, but cats can!";
+                    = "Hey, wanna know a secret about your farm?  Down in the brambles near Marnie's house, there's Greebles.  They've made some weird machines too.$3#$b#No...  I've never seen a Greeble, but cats can!";
             }
             else if (nameWithoutLocale.IsEquivalentTo("Characters/Dialogue/Jodi"))
             {

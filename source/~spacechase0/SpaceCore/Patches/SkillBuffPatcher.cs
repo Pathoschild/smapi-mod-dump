@@ -57,12 +57,13 @@ internal class SkillBuffPatcher : BasePatcher
             }
             yield break;
         }
-
         // If there is custom data, find the matching buff to wrap.
         foreach ( var buffData in data.Buffs )
         {
             if (buffData.CustomFields.Any( b => b.Key.StartsWith("spacechase.SpaceCore.SkillBuff.")))
             {
+
+                Log.Warn("Custom Skill buffs am I being read?");
                 Buff matchingBuff = null;
                 string id = buffData.BuffId;
                 if (string.IsNullOrWhiteSpace(id))
@@ -75,7 +76,21 @@ internal class SkillBuffPatcher : BasePatcher
                 }
 
                 if (matchingBuff != null)
+                {
                     yield return new Skills.SkillBuff(matchingBuff, id, buffData.CustomFields);
+                } else
+                {
+
+                    float durationMultiplier = ((__instance.Quality != 0) ? 1.5f : 1f);
+                    matchingBuff = new(
+                        id: buffData.BuffId,
+                        source: __instance.Name,
+                        displaySource: __instance.DisplayName,
+                        iconSheetIndex: buffData.IconSpriteIndex,
+                        duration: (int)((float)buffData.Duration * durationMultiplier) * Game1.realMilliSecondsPerGameMinute
+                    );
+                    yield return new Skills.SkillBuff(matchingBuff, id, buffData.CustomFields);
+                }
             }
         }
     }

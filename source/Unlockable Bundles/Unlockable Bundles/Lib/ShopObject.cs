@@ -24,6 +24,8 @@ using Netcode;
 using System.Xml.Serialization;
 using Unlockable_Bundles.Lib.Enums;
 using StardewValley.Network;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib
 {
@@ -40,15 +42,12 @@ namespace Unlockable_Bundles.Lib
                  .AddField(_wasDiscovered, "WasDiscovered");
         }
 
-        public readonly NetRef<Unlockable> _unlockable = new NetRef<Unlockable>();
-        public readonly NetMutex Mutex = new NetMutex();
+        public readonly NetRef<Unlockable> _unlockable = new();
+        public readonly NetMutex Mutex = new();
         public Unlockable Unlockable { get => _unlockable.Value; }
         public ShopType ShopType { get => _unlockable.Value.ShopType; }
-        private NetRef<SpeechBubble> _speechBubble = new NetRef<SpeechBubble>();
+        private NetRef<SpeechBubble> _speechBubble = new();
         public SpeechBubble SpeechBubble { get => _speechBubble.Value; set => _speechBubble.Value = value; }
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
 
         public AnimatedTexture ShopTexture;
         public AnimatedTexture OverviewTexture;
@@ -61,10 +60,6 @@ namespace Unlockable_Bundles.Lib
         private bool TexturesWereSet = false; //Relevant for multiplayer where Unlockable isn't set when creating the object
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             BundleDiscoveredAnimation = Helper.ModContent.Load<Texture2D>("assets/BundleDiscoveredAnimation.png");
             Helper.Events.Display.Rendered += drawTemporaryAnimatedSprites;
         }
@@ -172,11 +167,11 @@ namespace Unlockable_Bundles.Lib
         {
             Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (float)(shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), y * 64 - 64));
 
-            if(!TexturesWereSet)
+            if (!TexturesWereSet)
                 setTextures();
 
             if (ShopTexture is not null)
-                b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Color.White, 0f, new Vector2(), 64f / Unlockable.ShopTextureWidth, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
+                b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Unlockable.ShopColor, 0f, new Vector2(), 64f / Unlockable.ShopTextureWidth, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
 
             if (SpeechBubble != null)
                 SpeechBubble.draw(b);
@@ -189,12 +184,14 @@ namespace Unlockable_Bundles.Lib
         {
             Rectangle sourceRectangle;
             Texture2D texture;
+            var color = Color.White;
 
-            if(OverviewTexture is not null) {
+            if (OverviewTexture is not null) {
                 texture = OverviewTexture.Texture;
                 sourceRectangle = OverviewTexture.getOffsetRectangle();
                 OverviewTexture.update(Game1.currentGameTime);
                 scale *= 32 / Unlockable.OverviewTextureWidth;
+                color = Unlockable.OverviewColor;
 
             } else if (ShopType == ShopType.ParrotPerch) {
                 texture = SpeechBubble.ParrotPerch.texture;
@@ -211,12 +208,13 @@ namespace Unlockable_Bundles.Lib
                 sourceRectangle = ShopTexture.getOffsetRectangle();
                 ShopTexture.update(Game1.currentGameTime);
                 scale *= 32 / Unlockable.ShopTextureWidth;
+                color = Unlockable.ShopColor;
             }
 
             if (texture is null)
                 return;
 
-            b.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(), scale, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
+            b.Draw(texture, position, sourceRectangle, color, 0f, new Vector2(), scale, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
         }
 
         public void drawQuestionMark(SpriteBatch b, Vector2 position)
@@ -295,8 +293,11 @@ namespace Unlockable_Bundles.Lib
         private void dayEnding(object sender, StardewModdingAPI.Events.DayEndingEventArgs e) => unsubscribeFromAllEvents();
         private void returnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e) => unsubscribeFromAllEvents();
 
-        private void unsubscribeFromAllEvents()
+        public void unsubscribeFromAllEvents()
         {
+            //Splitscreen players leaving the game triggers ReturnedToTitle
+            if (Context.ScreenId > 0)
+                return;
             _wasDiscovered.fieldChangeEvent -= _wasDiscovered_fieldChangeEvent;
 
             Helper.Events.GameLoop.ReturnedToTitle -= returnedToTitle;
@@ -306,14 +307,17 @@ namespace Unlockable_Bundles.Lib
 
         private void _wasDiscovered_fieldChangeEvent(NetBool field, bool oldValue, bool newValue)
         {
-            if (oldValue == newValue)
+            if (!Multiplayer.IsScreenReady.Value)
                 return;
 
+            if (oldValue == newValue)
+                return;
 
             ModData.setDiscovered(Unlockable.ID, Unlockable.LocationUnique, newValue);
 
             if (newValue && ShopPlacement.HasDayStarted) {
-                Game1.playSound("ub_pageflip");
+                if (Context.ScreenId == 0)
+                    Game1.playSound("ub_pageflip");
 
                 var ts = Game1.game1.GraphicsDevice.Viewport.TitleSafeArea;
                 TemporaryAnimatedSprites.Add(

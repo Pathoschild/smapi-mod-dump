@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Resource Storage",
+  "Author": "aedenthorn and FlyingTNT",
+  "Version": "1.0.5",
+  "Description": "Allows you to store infinite amounts of common resources.",
+  "UniqueID": "FlyingTNT.ResourceStorage",
+  "EntryDll": "ResourceStorage.dll",
+  "MinimumApiVersion": "4.0.4",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "FlyingTNT",
+    "Directory": "_releases",
+    "ModFolder": "ResourceStorage"
+  },
+  "UpdateKeys": [ "Nexus:22539" ]
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11881
+IDs: jibb.minecarts.C
+update keys: Nexus:11881, GitHub:Jibblestein/StardewMods

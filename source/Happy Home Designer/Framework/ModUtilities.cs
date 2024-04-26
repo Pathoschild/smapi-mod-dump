@@ -39,21 +39,15 @@ namespace HappyHomeDesigner.Framework
 
 		public static bool CanDelete(this Item item, ICollection<string> knownIDs)
 		{
-			return knownIDs is not null && item is not null && knownIDs.Contains(item.QualifiedItemId);
+			return
+				item is not null && item is not Tool && item.canBeTrashed() && 
+				knownIDs is not null && knownIDs.Contains(item.QualifiedItemId);
 		}
 
 		public static bool TryFindAssembly(string name, [NotNullWhen(true)] out Assembly assembly)
 		{
-			foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				if (asm.GetName().Name == name)
-				{
-					assembly = asm;
-					return true;
-				}
-			}
-			assembly = null;
-			return false;
+			assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name == name).FirstOrDefault();
+			return assembly is not null;
 		}
 
 		public static void Suppress(this MouseWheelScrolledEventArgs e)
@@ -70,14 +64,17 @@ namespace HappyHomeDesigner.Framework
 			generic = null;
 			if (!type.IsGenericType)
 				return false;
+
 			var generics = type.GetGenericArguments();
 			if (generics.Length <= index)
 				return false;
+
 			generic = generics[index];
 			return true;
 		}
 
-		public static void DrawFrame(this SpriteBatch b, Texture2D texture, Rectangle dest, Rectangle source, int padding, int scale, Color color, int top = 0)
+		public static void DrawFrame(this SpriteBatch b, Texture2D texture, Rectangle dest, Rectangle source, 
+			int padding, int scale, Color color, int top = 0)
 		{
 			int destPad = padding * scale;
 			int dTop = top * scale + destPad;
@@ -214,6 +211,9 @@ namespace HappyHomeDesigner.Framework
 			IEnumerable<ISalable> output = Array.Empty<ISalable>();
 			var shopData = DataLoader.Shops(Game1.content);
 
+			if (ModEntry.config.EarlyDeluxe && catalog.HasFlag(CatalogType.Furniture) && catalog.HasFlag(CatalogType.Wallpaper))
+				catalog |= CatalogType.Collector;
+
 			if (catalog.HasFlag(CatalogType.Furniture) && shopData.TryGetValue("Furniture Catalogue", out var data))
 				output = output.Concat(ShopBuilder.GetShopStock("Furniture Catalogue", data).Keys);
 
@@ -221,16 +221,12 @@ namespace HappyHomeDesigner.Framework
 				output = output.Concat(ShopBuilder.GetShopStock("Catalogue", data).Keys);
 
 			if (catalog.HasFlag(CatalogType.Collector))
-			{
 				foreach ((var id, var sdata) in shopData)
-				{
-					if (sdata.CustomFields is Dictionary<string, string> fields && 
-						fields.ContainsKey("HappyHomeDesigner/Catalogue"))
-					{
+					if (
+						sdata.CustomFields is Dictionary<string, string> fields && 
+						fields.ContainsKey("HappyHomeDesigner/Catalogue")
+					)
 						output = output.Concat(ShopBuilder.GetShopStock(id, sdata).Keys);
-					}
-				}
-			}
 
 			return output;
 		}

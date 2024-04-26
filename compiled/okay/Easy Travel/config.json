@@ -8,5 +8,6 @@
     62
   ],
   "TravelLocations": [],
+  "TravelLocationsToggleKey": "LeftControl + LeftAlt + L",
   "TravelListPageSize": 9
 }

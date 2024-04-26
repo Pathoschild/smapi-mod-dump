@@ -41,6 +41,7 @@ namespace SkillfulClothes.Configuration
         }
 
         private static void HandleCustomEffectDefinitions<TItem>(string filename, Dictionary<TItem, ExtItemInfo> target)
+             where TItem : AlphanumericItemId
         {
             string filepath = Path.Combine(EffectHelper.ModHelper.DirectoryPath, filename);
 
@@ -59,6 +60,7 @@ namespace SkillfulClothes.Configuration
         }
 
         private static void ReadItemDefinitions<TItem>(string filepath, Dictionary<TItem, ExtItemInfo> target)
+            where TItem: AlphanumericItemId
         {
             List<CustomEffectItemDefinition> definitions;
 
@@ -77,18 +79,24 @@ namespace SkillfulClothes.Configuration
 
             foreach (var def in definitions)
             {
-                TItem itemId = (TItem)Enum.Parse(typeof(TItem), def.ItemIdentifier);
-
+                TItem itemId = ItemDefinitions.GetKnownItemById<TItem>(def.ItemIdentifier);
                 target.Add(itemId, ExtendItem.With.Effect(def.Effect));
             }
         }
 
         private static void WriteItemDefinitions<TItem>(string filepath, Dictionary<TItem, ExtItemInfo> source)
+            where TItem: AlphanumericItemId
         {
             Dictionary<string, IEffect> exportData = new Dictionary<string, IEffect>();
             foreach(var itemDef in source)
             {
-                exportData.Add(itemDef.Key.ToString(), itemDef.Value.Effect);
+                string itemId = itemDef.Key.ItemId;
+                if (!String.IsNullOrEmpty(itemDef.Key.ItemName))
+                {
+                    itemId = itemDef.Key.ItemName;
+                }
+
+                exportData.Add(itemId, itemDef.Value.Effect);
             }
 
             JsonSerializer jsonSerializer = new JsonSerializer();

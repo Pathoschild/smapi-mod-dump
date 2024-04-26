@@ -1,8 +1,14 @@
 {
   "CalendarKeyBinding": "B",
   "QuestBoardKeyBinding": "H",
-  "CalendarOffsetFromMenu": "-100, 0",
-  "QuestOffsetFromMenu": "-200, 0",
+  "SpecialOrderKeyBinding": "N",
+  "QiBoardKeyBinding": "J",
+  "CalendarOffsetFromMenu": "-100, 100",
+  "QuestOffsetFromMenu": "-200, 100",
+  "SpecialOrderOffsetFromMenu": "-200, 200",
+  "QiOffsetFromMenu": "-100, 200",
   "EnableInventoryCalendarButton": true,
-  "EnableInventoryQuestButton": true
+  "EnableInventoryQuestButton": true,
+  "EnableSpecialOrdersButton": true,
+  "EnableQiBoardButton": true
 }

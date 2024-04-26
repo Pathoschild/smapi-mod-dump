@@ -113,6 +113,19 @@ namespace FarmTypeManager
                         location.objects.Add(tile, bc);
                         return true;
                     }
+                    else if (forageItem is Fence fence)
+                    {
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable
+                            fence.Fragility = StardewValley.Object.fragility_Indestructable;
+                            fence.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
+                        Monitor.VerboseLog($"Spawning fence. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        location.objects.Add(tile, fence);
+                        return true;
+                    }
                     else if (forageItem is Furniture furniture)
                     {
                         if (forage.ConfigItem?.CanBePickedUp == false)

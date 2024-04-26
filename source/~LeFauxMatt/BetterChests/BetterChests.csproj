@@ -2,14 +2,21 @@
   <PropertyGroup>
     <Name>Better Chests</Name>
     <Description>Framework that adds new features to chests.</Description>
-    <Version>2.9.2</Version>
+    <Version>2.16.3</Version>
     <EnableHarmony>true</EnableHarmony>
     <RootNamespace>StardewMods.BetterChests</RootNamespace>
     <UniqueId>furyx639.BetterChests</UniqueId>
-    <UpdateKeys>Nexus:9791</UpdateKeys>
+    <UpdateKeys>Nexus:9791@SMAPI</UpdateKeys>
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+    <IgnoreModFilePatterns>
+      ^JetBrains,
+      ^NetEscapades,
+      ^SimpleInjector
+    </IgnoreModFilePatterns>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1"/>
+    <PackageReference Include="Pidgin" Version="3.2.3"/>
     <PackageReference Include="SimpleInjector">
       <HintPath>$(GameModsPath)\FauxCore\SimpleInjector.dll</HintPath>
       <Version>5.4.2</Version>
@@ -21,8 +28,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <SMAPIDependency Include="furyx639.FauxCore" Version="1.0.0" required="true"/>
+    <SMAPIDependency Include="furyx639.FauxCore" Version="1.1.1" required="true"/>
     <SMAPIDependency Include="furyx639.ToolbarIcons" required="false"/>
+    <SMAPIDependency Include="leclair.bettercrafting" Version="2.1.0" required="false"/>
     <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Version="1.8.2" required="false"/>
     <SMAPIDependency Include="Pathoschild.Automate" required="false"/>
   </ItemGroup>

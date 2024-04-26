@@ -30,18 +30,21 @@ namespace Fishnets.Automate
 
     public class FishNetMachine : IMachine
     {
-        private readonly Fishnet fishNet;
+        private readonly Object fishNet;
 
         public GameLocation Location { get; }
+
+        public Vector2 TileLocation { get; }
 
         public Rectangle TileArea { get; }
 
         public string MachineTypeID => $"MindMeltMax.Fishnets/FishNet";
 
-        public FishNetMachine(Fishnet entity, GameLocation location, in Vector2 tile)
+        public FishNetMachine(Object entity, GameLocation location, in Vector2 tile)
         {
             fishNet = entity;
             Location = location;
+            TileLocation = tile;
             TileArea = new Rectangle((int)tile.X, (int)tile.Y, 1, 1);
         }
 
@@ -53,7 +56,9 @@ namespace Fishnets.Automate
             else
                 state = fishNet.readyForHarvest.Value ? MachineState.Done : MachineState.Processing;
 
-            if (state == MachineState.Empty && (fishNet.bait.Value is not null || Game1.getFarmer(fishNet.owner.Value).professions.Contains(11)))
+            var modData = Statics.GetModDataAt(Location, TileLocation);
+            
+            if (state == MachineState.Empty && (!string.IsNullOrWhiteSpace(modData?.BaitId) || Game1.getFarmer(fishNet.owner.Value).professions.Contains(11)))
                 state = MachineState.Processing;
 
             return state;
@@ -66,14 +71,17 @@ namespace Fishnets.Automate
             owner.caughtFish(i.ItemId, -1);
             fishNet.heldObject.Value = null;
             fishNet.readyForHarvest.Value = false;
-            fishNet.bait.Value = null;
+            Statics.SetModDataAt(Location, TileLocation, Statics.GetModDataAt(Location, TileLocation) with { BaitId = "", BaitQuality = 0 });
+            Statics.ClearTileIndexData(fishNet);
         });
 
         public bool SetInput(IStorage input)
         {
-            if (input.TryGetIngredient(x => x.Sample.Category == Object.baitCategory, 1, out IConsumable? bait))
+            if (input.TryGetIngredient(x => x.Sample.Category == Object.baitCategory, 1, out IConsumable bait))
             {
-                fishNet.bait.Value = (Object)bait.Take();
+                Item baitObj = bait.Take();
+                Statics.SetModDataAt(Location, TileLocation, Statics.GetModDataAt(Location, TileLocation) with { BaitId = baitObj.ItemId, BaitQuality = baitObj.Quality });
+                Statics.SetTileIndexData(fishNet, true, 3, 0);
                 return true;
             }
             return false;
@@ -85,7 +93,7 @@ namespace Fishnets.Automate
         public IAutomatable GetFor(Object obj, GameLocation location, in Vector2 tile)
         {
             if (obj.ItemId == ModEntry.FishnetId)
-                return new FishNetMachine((Fishnet)obj, location, tile);
+                return new FishNetMachine(obj, location, tile);
             return null;
         }
 

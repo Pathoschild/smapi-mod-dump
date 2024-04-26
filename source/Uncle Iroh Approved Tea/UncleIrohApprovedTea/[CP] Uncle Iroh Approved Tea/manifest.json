@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Name": "[CP] Uncle Iroh Approved Tea",
+    "Author": "slimerrain",
+    "Description": "Content patches relating to tea.",
+    "Version": "1.1.5",
+    "MinimumApiVersion": "3.0.0",
+    "UniqueID": "slimerrain.uncleirohapprovedteacp",
+    "ContentPackFor": { "UniqueID": "Pathoschild.ContentPatcher" },
+    "Dependencies": [
+        { "UniqueID": "furyx639.CustomBush",    "IsRequired": true  },
+        { "UniqueID": "spacechase0.SpaceCore",  "IsRequired": true  },
+        { "UniqueID": "Cornucopia.MoreCrops",   "IsRequired": false },
+        { "UniqueID": "Cornucopia.MoreFlowers", "IsRequired": false },
+        { "UniqueID": "wildflour.ateliercrops", "IsRequired": false },
+        { "UniqueID": "PC.CP.QL.FlowerGarden2", "IsRequired": false }
+    ],
+    "UpdateKeys": [ "Nexus:22376" ]
+}

@@ -1,0 +1,48 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+	"DynamicTokens": [
+		{
+			"Name": "KentFriendship",
+			"Value": "{{Round: {{Query: (({{Hearts:Jodi}} + {{Hearts:Sam}} + {{Hearts:Vincent}}) * 250) / 4}} }}",
+			"When": {
+				"Day": "1",
+				"Season": "spring",
+				"Year": "2"
+			}
+		},
+		{
+			"Name": "SandyFriendship",
+			"Value": "{{Round: {{Query: ({{Hearts:Emily}} * 250) / 1.5}} }}",
+			"When": {
+				"HasSeenEvent |contains=67": "false",
+				"HasFlag": "ccVault "
+			}
+		}
+	],
+    "Changes": [
+		{
+			"Action": "EditData",
+            "Target": "Data/Events/Farm",
+            "Entries": {
+                "63/y 2/t 600 1800/H": "continue/64 15/farmer 64 16 2 Kent 64 18 0/broadcastEvent/skippable/pause 1500/speak Kent \"Um, hello there. My name's Kent. I just got back last night... from overseas. My wife and kids told me that a new farmer had moved in while I was gone.\"/pause 500/speak Kent \"Well, I just wanted to introduce myself... I'll see you around.\"/pause 100/friendship Kent {{KentFriendship}}/pause 200/end",
+			}
+		},
+		{
+			"Action": "EditData",
+            "Target": "Data/Events/SandyHouse",
+            "Entries": {
+                "67/m 10": "none/4 5/farmer 4 9 0 Sandy 2 5 2/skippable/move farmer 0 -2 0/emote Sandy 8/speak Sandy \"A... customer?\"/speed Sandy 4/move Sandy 2 0 2/speed Sandy 4/move Sandy 0 1 2/emote Sandy 16/speak Sandy \"Hi! Welcome to 'Sandy's Oasis'!#$b#Hey, you look just like the new farmer that Emily wrote to me about!#$b#Then... the bus line to Stardew Valley is back in service!$h#$b#Oh, I'm so happy!$h\"/emote Sandy 32/move Sandy 0 -1 0/move Sandy -2 0 2/friendship Sandy {{SandyFriendship}}/emote Sandy 32/end dialogue Sandy \"Please visit again soon, I get so bored out here.\""
+			}
+		}
+	]
+}

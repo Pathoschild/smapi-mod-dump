@@ -48,10 +48,10 @@ public class CropState : BaseState {
 
 public class CropPage : BasePage<CropState>, ICalendarPage, ITab {
 
-	private readonly static Tuple<int, double>[] FERTILIZERS = new Tuple<int, double>[] {
-		new(465, 0.10),
-		new(466, 0.25),
-		new(918, 0.33)
+	private readonly static Tuple<string, double>[] FERTILIZERS = new Tuple<string, double>[] {
+		new("465", 0.10),
+		new("466", 0.25),
+		new("918", 0.33)
 	};
 
 	private List<CropInfo>[]? LastDays;
@@ -233,9 +233,9 @@ public class CropPage : BasePage<CropState>, ICalendarPage, ITab {
 		FertComponents = new(FERTILIZERS.Length);
 
 		for (int i = 0; i < FERTILIZERS.Length; i++) {
-			int id = FERTILIZERS[i].Item1;
+			string id = FERTILIZERS[i].Item1;
 
-			SObject? obj = id == -1 ? null : new(FERTILIZERS[i].Item1, 1);
+			SObject? obj = id == "" ? null : new(FERTILIZERS[i].Item1, 1);
 			Item? item = obj?.getOne();
 			SpriteInfo? sprite = item == null ? null : SpriteHelper.GetSprite(item);
 
@@ -428,7 +428,10 @@ public class CropPage : BasePage<CropState>, ICalendarPage, ITab {
 				break;
 			case SeedFilter.Owned:
 				items = new List<Item>();
-				Utility.iterateAllItems(item => items.Add(item));
+				Utility.ForEachItem(item => {
+					items.Add(item);
+					return true;
+				});
 				break;
 			case SeedFilter.Disabled:
 			default:
@@ -526,10 +529,10 @@ public class CropPage : BasePage<CropState>, ICalendarPage, ITab {
 
 			builder
 				.Add(node)
-				.Text($" {crop.Name}", font: Game1.dialogueFont, align: Alignment.Middle, onHover: OnHover, noComponent: true);
+				.Text($" {crop.Name}", font: Game1.dialogueFont, align: Alignment.VCenter, onHover: OnHover, noComponent: true);
 
 			if (Mod.Config.DebugMode)
-				builder.Text($" (#{crop.Id})", align: Alignment.Middle);
+				builder.Text($" (#{crop.Id})", align: Alignment.VCenter);
 
 			builder
 				.Text("\n")

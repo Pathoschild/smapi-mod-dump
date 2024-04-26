@@ -8,7 +8,243 @@ for queries and analysis.**
 
 # Better Chests Change Log
 
-## 2.9.2 (Unreleased)
+## 2.16.3 (April 19, 2024)
+
+### Changed
+
+* Backpack Storage options will not inherit from the global storage options.
+* Temporarily hiding backpack config behind the console
+  command `bc_player_config` until it is fully implemented.
+
+### Fixed
+
+* Fixed backpack config button showing up in other game menus.
+* Fixed backpack items not being placeable in any slot.
+
+## 2.16.2 (April 19, 2024)
+
+### Added
+
+* Added lock indicator to backpack inventory menu.
+* Added experimental support for resizing the backpack as a storage.
+
+### Changed
+
+* Adjusted the Access Chest overlay so that the dropdown does not go over the
+  arrows.
+* When doing a reverse transfer, allow any items to go into the backpack.
+* Improved the the precision of logging storage activity and their location.
+
+### Fixed
+
+* Search bar is not selected by default when opening chests.
+* Prevent suppressing modifier keys while the search bar is selected.
+
+## 2.16.1 (April 18, 2024)
+
+### Fixed
+
+* Hotfix for search bar losing focus.
+
+## 2.16.0 (April 18, 2024)
+
+### Added
+
+* Overhauled searching and categorizing items.
+* Added config option to adjust the overburdened speed debuff.
+* Added config option to enable or disable the access chest arrows.
+* Added controls for transferring items up and down.
+* Added icon for saving search as the categorization.
+* Added icon for toggling existing stacks.
+* Added icon for toggling rejecting uncategorized items.
+* When searching, all categorized items will display in the menu.
+* Added storage options for allowing existing items to be stashed.
+* Added storage options for blocking items not belonging to the category.
+* Added cache table for saving search expressions.
+* Added events for items being displayed and items being highlighted.
+* Farmer and Farmhands can now inherit options from the FarmHouse and Cabin
+  respectively.
+* Added config option to choose whether the color picker is on the left or right
+  side.
+
+### Changed
+
+* Inventory Tabs have been removed.
+* Customize icons for the HSL color picker.
+* Moved Access Chest arrows and dropdown to the top of the screen.
+* Moved Access Chest arrows and index to below the label.
+* Moved input events to be handled by the inventory menu manager.
+* Allow transfer logic to replicate transfer existing stacks by default.
+
+### Fixed
+
+* Fixed config options for inventory tab method and search items method.
+* Fixed grabbing items from chests leaving empty slots until organized.
+* Fixed held containers having all of their features disabled.
+* Fixed shipping bin leaving empty slots.
+* Fixed shipping bin as a chest menu unable to be disabled.
+
+## 2.15.2 (April 16, 2024)
+
+### Fixed
+
+* Prevent trying to stash into the backpack.
+
+## 2.15.1 (April 16, 2024)
+
+### Changed
+
+* Shipping bins accessed through the dropdown will be loaded in the chest menu.
+* Improved the method for detecting storages.
+
+### Fixed
+
+* Fixed all Automate items were being rejected.
+* Fixed last chest in the Access Menu dropdown was not being shown.
+* Prevent crashing when an item does not have a name.
+* Prevent loading non playerChests as containers.
+
+## 2.15.0 (April 15, 2024)
+
+### Added
+
+* Adjust the position of Chests Anywhere UI to not overlap with Better Chests
+  UI.
+* Added feature to remotely access chests.
+* Added feature to include chests when cooking.
+
+### Changed
+
+* Indicate the parent value in config options.
+* Craft from Workbench settings is now configurable under Workbench as the
+  storage type.
+* Relocated the HSL Color Picker to the right side of the menu.
+* Improved controller support for the menu components.
+* Chest types in the config options menu are sorted by name.
+* Simplified stash priority options in the config menu.
+
+### Fixed
+
+* GMCM was not loading if the config.json file was incompatible.
+* AutoOrganize skipped any chest that was full even if additional items could be
+  stacked.
+* Added null-safe access for inventory tabs.
+
+## 2.14.0 (April 12, 2024)
+
+### Added
+
+* Added support for configuring chest types in the config menu.
+
+### Changed
+
+* Ensure the minimum capacity is at least the same as the menu size.
+* Display capacity in GMCM as increments of menu size.
+* Play lid animation when hovering a chest in the color picker.
+
+### Fixed
+
+* Chests can now inherit capacity from parent options.
+
+## 2.13.1 (April 12, 2024)
+
+### Fixed
+
+* Fixed crash when generating a new tab.json file.
+
+## 2.13.0 (April 12, 2024)
+
+### Added
+
+* Allow chest menu to be resized independently of capacity.
+* Added ShopFromChest options to generic mod config menu.
+* Added ResizeChestCapacity options to generic mod config menu.
+
+### Changed
+
+* Initialize BetterChests DI container on Entry.
+* Update transpilers to use CodeMatchers.
+
+### Fixed
+
+* Fixed carried Junimo Chests losing their inventory.
+
+## 2.12.0 (April 10, 2024)
+
+### Added
+
+* Added controller support for the HSL Color Picker.
+
+### Changed
+
+### Fixed
+
+* Fixed color picker forgetting colors.
+* Fixed shipping bin not showing last item.
+
+## 2.11.0 (April 9, 2024)
+
+### Added
+
+* Added support for Shipping Bins.
+
+### Changed
+
+* Added more logging of configuration changes.
+* When configuring chests, it will show the chest being configured.
+* Updated for FauxCore api changes.
+
+### Fixed
+
+* Config options will now be reflected without restarting the game.
+* Disabled config options will show on the main menu.
+* Workbenches were not using the Workbench range.
+* Prevent swapping chest with carried chests.
+* Fixed Satchels not opening after exiting from menu.
+
+## 2.10.1 (April 6, 2024)
+
+### Changed
+
+* If categorize is disabled, stash to existing stacks only.
+
+### Fixed
+
+* Categorize menu should work correctly for all zoom levels.
+* Updated to support Better Crafting 2.2.0 Api changes.
+
+## 2.10.0 (April 4, 2024)
+
+### Added
+
+* Added back categorize menu to remove categories.
+
+### Changed
+
+* Crafting from chests now requires Better Crafting.
+
+### Fixed
+
+* Locked items can now be toggled again, and they won't stash into inventories.
+* Only categorized items will be stashed.
+
+## 2.9.3 (April 2, 2024)
+
+### Added
+
+* Added ShopFromChest feature.
+
+### Changed
+
+* Apply stashing rules more strictly to prevent unwanted stashing.
+* Suppress playing chest sound when returning to the chest from the config menu.
+
+### Fixed
+
+* Full chests can be stashed into for existing items.
+* If location does not have CustomFields, use empty dictionary instead.
+
+## 2.9.2 (March 25, 2024)
 
 ### Changed
 
@@ -19,7 +255,7 @@ for queries and analysis.**
 * Crafting now works for chests outside of the current location.
 * Stashing is now able to find eligible chests.
 * Backpack items are no longer double counted towards crafting materials.
-* Prevent chest being lost when added to a carried chest. 
+* Prevent chest being lost when added to a carried chest.
 * Chest menu background is no longer black.
 * Cursor should be drawn above the color picker.
 * Chest color is no longer lost when clicking in the chest menu.

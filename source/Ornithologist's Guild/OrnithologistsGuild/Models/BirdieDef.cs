@@ -92,18 +92,18 @@ namespace OrnithologistsGuild.Content
         public float PerchPreference = 0.5f;
         public float WaterPreference = 0f;
 
-        public float GetContextualWeight(bool updateContext = true, FeederDef feederDef = null, FoodDef foodDef = null)
+        public float GetContextualWeight(bool updateContext = true, FeederFields feederFields = null, FoodDef foodDef = null)
         {
             float weight = this.BaseWt;
 
-            if (feederDef != null)
+            if (feederFields != null)
             {
-                if (this.CanPerchAt(feederDef))
+                if (this.CanPerchAt(feederFields))
                 {
-                    weight += this.FeederBaseWts[feederDef.Type];
+                    weight += this.FeederBaseWts[feederFields.Type];
                 } else
                 {
-                    ModEntry.Instance.Monitor.Log($@"GetContextualWeight 0 {this.ID} (feederDef)");
+                    ModEntry.Instance.Monitor.Log($@"GetContextualWeight 0 {this.ID} (feederFields)");
                     return 0; // Bird does not eat at feeder
                 }
             }
@@ -149,14 +149,14 @@ namespace OrnithologistsGuild.Content
             return this.Cautiousness + modifier;
         }
 
-        public bool CanPerchAt(FeederDef feederDef)
+        public bool CanPerchAt(FeederFields feederFields)
         {
-            return FeederBaseWts.ContainsKey(feederDef.Type);
+            return FeederBaseWts.ContainsKey(feederFields.Type);
         }
 
         public bool CanPerchAt(Perch perch)
         {
-            if (perch.Type == PerchType.Feeder) return CanPerchAt(FeederDef.FromFeeder(perch.Feeder));
+            if (perch.Type == PerchType.Feeder) return CanPerchAt(perch.Feeder.GetFeederFields());
             else if (perch.Type == PerchType.Bath) return CanUseBaths;
 
             return PerchPreference > 0;

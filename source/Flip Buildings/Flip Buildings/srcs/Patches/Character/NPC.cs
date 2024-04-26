@@ -31,7 +31,7 @@ namespace FlipBuildings.Patches
 
 		private static IEnumerable<CodeInstruction> UpdateConstructionAnimationTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator)
 		{
-			PatchHelper.CodeReplacement[] codeReplacements = new PatchHelper.CodeReplacement[]
+			PatchUtility.CodeReplacement[] codeReplacements = new PatchUtility.CodeReplacement[]
 			{
 				new(
 					instanceType: typeof(Building),
@@ -49,7 +49,7 @@ namespace FlipBuildings.Patches
 					}
 				)
 			};
-			return PatchHelper.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, typeof(NPC), "updateConstructionAnimation");
+			return PatchUtility.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, typeof(NPC), "updateConstructionAnimation");
 		}
 	}
 }

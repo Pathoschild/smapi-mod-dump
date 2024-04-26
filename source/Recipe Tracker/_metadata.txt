@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/NoxChimaera/StardewValleyTODO
+   Git: https://github.com/NoxChimaera/StardewValleyTODO.git
+
+mods:
+   Recipe Tracker
+
+latest commit:
+   commit 12c24cf6acf137a01b46c7527b068cb98097564a
+   Author: Nox Kimaera <maximillianmor@gmail.com>
+   Date:   Sat Apr 20 20:44:46 2024 +0400
+   
+       Bumps version (1.0.4)
+   

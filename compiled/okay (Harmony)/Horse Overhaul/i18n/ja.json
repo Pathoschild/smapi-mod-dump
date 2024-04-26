@@ -1,4 +1,4 @@
-﻿{
+{
   /*
 		Don't change the names inside {{placeHolder}}, they will get replaced with values.
     You can change the position of the {{placeHolder}} where they need to be in the sentence.
@@ -8,8 +8,28 @@
   "GotPetted": "なでなで：{{value}}",
   "GotWater": "飲みもの：{{value}}",
   "GotFood": "食べもの：{{value}}",
-  "Friendship": "なつき度：{{value}}",
+  "Friendship": "友好度：{{value}}",
+  "HorseWarning": "馬に乗りながら、そんなことはできない！",
   "AteEnough": "{{name}}はもうお腹いっぱい！",
   "AteFood": "{{name}}は{{foodName}}を食べた。",
-  "HorseWarning": "You cannot do that while riding a horse!"
+  "AteFoodLove": "これは大好物だ。", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "これは好物だ。", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "これはあまりにありふれたもので、不満なようだ。", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "ヒーター：{{value}}",
+  "DontFeedChocolate": "チョコレート？本気で言ってるの？",
+  "LactoseIntolerantPets": "乳糖不耐症だから与えてはいけない。",
+  "LactoseIntolerantHorses": "馬は乳糖不耐症だから与えてはいけない。",
+  "HorseHerbivore": "馬は正真正銘の草食動物で、肉を食べることはできない。",
+  "HorseNoBread": "馬はパンのような加工食品を食べてはいけない。",
+  "HorseEatShouldnt": "馬はそんなものを食べない。",
+  "HorseEatHay": "馬小屋に十分な干し草があるので、いらないようだ。",
+  "HorseEatFiber": "どこでも食べられる草は食べたくないようだ。",
+  "HorseEatCoffee": "馬はコーヒーやカフェインを摂取してはいけない。",
+  "HorseEatCabbage": "馬はキャベツなどのアブラナ科の植物を食べてはいけない。",
+  "HorseEatOnion": "馬はタマネギなどのネギ類を食べてはいけない。",
+  "HorseEatNightshade": "馬はジャガイモ、トマト、ピーマン、ナスなどのナス科の植物を食べてはいけない。",
+  "HorseEatHorseRadish": "ノワサビは場所によってはホースラディッシュといわれているが、馬は食べることができない。", // if 'horseradish' in your native language does not include the word 'horse', please don't add the 'Despite the name' part into your translation
+  "HorseEatDislike": "馬はそれを食べたがらない。",
+  "Owner": "飼い主：{{ownerName}}",
+  "UnknownName": "不明"
 }

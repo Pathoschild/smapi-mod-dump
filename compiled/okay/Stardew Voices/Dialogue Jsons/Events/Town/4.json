@@ -1,0 +1,23 @@
+{
+    "I guess you're wondering why I'm in the graveyard at this hour...": "Town_4_sunny_Abigail_event1",
+    "Well, I'm here because it's the best place in town to find some privacy.": "Town_4_sunny_Abigail_event2",
+    "And I'm all sweaty because I've been practicing my swordsmanship.": "Town_4_sunny_Abigail_event3",
+    "Hey! What... you think I'm too weak to swing a blade?": "Town_4_sunny_Abigail_event4",
+    "Sorry, I guess I'm getting a little defensive.": "Town_4_sunny_Abigail_event5",
+    "You see, I want to explore the mountain caves... But I know it's too dangerous to go there unarmed.": "Town_4_sunny_Abigail_event5_sv1",
+    "You've used a sword before, haven't you?": "Town_4_sunny_Abigail_event6",
+    "Abigail?!": "Town_4_sunny_Pierre_event1",
+    "Dad?": "Town_4_sunny_Abigail_event7",
+    "I've been looking all over for you! Your mother wants you to come home and help with dinner!": "Town_4_sunny_Pierre_event2",
+    "What are you doing in the graveyard, anyway? This is no place for a young lady!": "Town_4_sunny_Pierre_event3",
+    "Mind your own business! You think I should be at home cooking dinner because I'm a girl, don't you?!": "Town_4_sunny_Abigail_event8",
+    "You're really stuck in the past, Dad...": "Town_4_sunny_Abigail_event9",
+    "...!": "Town_4_sunny_Pierre_textAboveHeadEvent4",
+    "Let's get out of here, @.": "Town_4_sunny_Abigail_event10",
+    "Well, are you coming or not?": "Town_4_sunny_Abigail_event11",
+    "Come back!": "Town_4_sunny_Pierre_textAboveHeadEvent5",
+    "*sigh*... Can you believe my parents were ever young? They don't understand my perspective at all.": "Town_4_sunny_Abigail_event12",
+    "I know, I know... they grew up in a different era, with different values. It still ticks me off sometimes, okay?": "Town_4_sunny_Abigail_event12_sv1",
+    "Well, thanks for hearing me out @.": "Town_4_sunny_Abigail_event13",
+    "Um, now could you help untangle my hair from this bush?": "Town_4_sunny_Abigail_event13_sv1"
+}

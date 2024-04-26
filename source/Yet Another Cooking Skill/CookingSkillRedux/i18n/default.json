@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Cooking",
+    "skill.perk": "+{{bonus}}% edibility in home-cooked foods.",
+    "skill.perk_bonus": "+{{bonus}}% edibility in home-cooked foods",
+
+
+    "config.ExperienceFromCooking": "Base cooking EXP",
+    "config.ExperienceFromCooking.tooltip": "The Base amount of exp you will get for cooking an item (set low to encourage cooking different items).",
+
+    "config.ExperienceFromEdibility": "Edibility bonus",
+    "config.ExperienceFromEdibility.tooltip": "The Bonus Exp earned based on the item's edibility.",
+
+    "config.BonusExpLimit": "Bonus Limit",
+    "config.BonusExpLimit.tooltip": "How many times you can cook an item to get the bonus exp before diminishing returns kicks in.",
+
+    "moonslime.Cooking.no_more_bonus_exp": "You have mastered cooking this dish and won't gain as much knowledge from it.",
+
+    "cooking5a.name": "Cook",
+    "cooking5a.desc": "Cooked meals are increased in quality.",
+    "cooking5b.name": "Glutton",
+    "cooking5b.desc": "Extra buff duration from food based on level.",
+    "cooking10a1.name": "Culinarian",
+    "cooking10a1.desc": "When Cooking, Have a chance at double the recipe\nproduction amount based on cooking level.",
+    "cooking10a2.name": "Chef",
+    "cooking10a2.desc": "Cooked Foods sell for more based on cooking level.",
+    "cooking10b1.name": "Gourmand",
+    "cooking10b1.desc": "Food buffs are one level stronger once eaten\n(+16 for energy or magnetism).",
+    "cooking10b2.name": "Gastronomist",
+    "cooking10b2.desc": "Eating or Drinking gives a random bonus buff.",
+
+    "moonslime.Cooking.Profession10b2.buff": "Refined Taste",
+
+    "moonslime.Cooking.skill_book.levelup": "You have gained some knowledge in Cooking!"
+
+
+}

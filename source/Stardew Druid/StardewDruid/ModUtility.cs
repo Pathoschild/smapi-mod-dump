@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -15,141 +16,47 @@ using Netcode;
 using StardewDruid.Cast;
 using StardewDruid.Cast.Weald;
 using StardewDruid.Character;
-using StardewDruid.Map;
+using StardewDruid.Data;
+using StardewDruid.Monster;
+using StardewDruid.Monster.Boss;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Buffs;
 using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.Enchantments;
+using StardewValley.GameData.Crops;
 using StardewValley.GameData.FarmAnimals;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Monsters;
 using StardewValley.Objects;
+using StardewValley.SpecialOrders;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Xml.Linq;
+using xTile;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.ObjectModel;
 using xTile.Tiles;
+using static StardewDruid.Event.SpellHandle;
+using static StardewValley.Minigames.TargetGame;
+
 
 namespace StardewDruid
 {
     static class ModUtility
     {
 
-        //======================== Animations
-
-        public static List<TemporaryAnimatedSprite> AnimateDecoration(GameLocation location, Vector2 origin, string name = "weald", float size = 1f, float interval = 1000f, float depth = 0.0001f)
-        {
-
-            List<TemporaryAnimatedSprite> animations = new();
-
-            Vector2 originOffset = origin + new Vector2(32, 32) - (new Vector2(32, 32) * (3f * size));
-
-            Microsoft.Xna.Framework.Rectangle rect = new(0, 0, 64, 64);
-
-            Texture2D decorationTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Decorations.png"));
-
-            switch (name)
-            {
-
-                case "mists":
-
-                    rect.X += 64;
-
-                    break;
-
-                case "stars":
-
-                    rect.X += 128;
-
-                    break;
-
-                case "fates":
-
-                    rect.X += 192;
-
-                    break;
-
-                case "ether":
-
-                    rect.Y += 64;
-
-                    break;
-
-            }
-
-            TemporaryAnimatedSprite radiusAnimation = new(0, interval, 1, 1, originOffset, false, false)
-            {
-
-                sourceRect = rect,
-
-                sourceRectStartingPos = new Vector2(rect.X, rect.Y),
-
-                texture = decorationTexture,
-
-                scale = 3f * size,
-
-                timeBasedMotion = true,
-
-                layerDepth = depth,
-
-                rotationChange = (float)(Math.PI / 120),
-
-                Parent = location,
-
-                alpha = 0.65f,
-
-            };
-
-            location.temporarySprites.Add(radiusAnimation);
-
-            animations.Add(radiusAnimation);
-
-            /*if(name != "Ether")
-            {
-
-                TemporaryAnimatedSprite glyphAnimation = new(0, interval, 1, 1, originOffset, false, false)
-                {
-
-                    sourceRect = new Microsoft.Xna.Framework.Rectangle(0, 64, 64, 64),
-
-                    sourceRectStartingPos = new Vector2(0, 64),
-
-                    texture = decorationTexture,
-
-                    scale = 3f * size,
-
-                    timeBasedMotion = true,
-
-                    layerDepth = depth + 0.0001f,
-
-                    rotationChange = 0 - (float)(Math.PI / 60),
-
-                    Parent = location,
-
-                    alpha = 0.45f,
-
-                };
-
-                location.temporarySprites.Add(glyphAnimation);
-
-                animations.Add(glyphAnimation);
-
-            }*/
-
-            return animations;
-
-        }
+        // ======================== Animations
 
         public static void AnimateQuickWarp(GameLocation location, Vector2 origin, bool reverse = false)
         {
@@ -180,151 +87,7 @@ namespace StardewDruid
 
         }
 
-        public static TemporaryAnimatedSprite AnimateCursor(GameLocation location, Vector2 origin, string cursor = "weald", float interval = 1200f, float scale = 3f)
-        {
-
-            Vector2 originOffset = origin + new Vector2(32,32) - new Vector2(16*scale, 16*scale);
-
-            Microsoft.Xna.Framework.Rectangle rect = new(0, 0, 32, 32);
-
-            switch (cursor)
-            {
-
-                case "mists":
-
-                    rect.X += 32;
-
-                    break;
-
-                case "stars":
-
-                    rect.X += 64;
-
-                    break;
-
-                case "fates":
-
-                    rect.X += 96;
-
-                    break;
-
-                case "comet":
-
-                    rect.Y += 32;
-
-                    break;
-
-                case "target":
-
-                    rect.X += 64;
-
-                    rect.Y += 32;
-
-                    break;
-
-                case "death":
-
-                    rect.X += 96;
-
-                    rect.Y += 32;
-
-                    break;
-
-            }
-
-            TemporaryAnimatedSprite cursorAnimation = new(0, interval, 1, 1, originOffset, false, false)
-            {
-
-                sourceRect = rect,
-
-                sourceRectStartingPos = new Vector2(rect.X, rect.Y),
-
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Cursors.png")),
-
-                scale = scale,
-
-                layerDepth = 0.001f,
-
-                timeBasedMotion = true,
-
-                rotationChange = (float)(Math.PI / 60),
-
-                alpha = 0.65f,
-
-            };
-
-            location.temporarySprites.Add(cursorAnimation);
-
-            return cursorAnimation;
-
-        }
-
-        public static TemporaryAnimatedSprite AnimateCharge(GameLocation location, Vector2 origin, string cursor = "weald")
-        {
-            
-            Vector2 originOffset = origin - new Vector2(24,24);
-
-            Microsoft.Xna.Framework.Rectangle rect = new(0, 64, 32, 32);
-
-            switch (cursor)
-            {
-
-                case "chaos":
-
-                    rect.Y += 32;
-
-                    break;
-
-                case "mists":
-
-                    rect.X += 32;
-
-                    break;
-
-                case "stars":
-
-                    rect.X += 64;
-
-                    break;
-
-                case "fates":
-
-                    rect.X += 96;
-
-                    break;
-
-            }
-
-            TemporaryAnimatedSprite cursorAnimation = new(0, 2000, 1, 30, originOffset, false, false)
-            {
-
-                sourceRect = rect,
-
-                sourceRectStartingPos = new Vector2(rect.X, rect.Y),
-
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Cursors.png")),
-
-                scale = 3.5f,
-
-                layerDepth = 0.001f,
-
-                timeBasedMotion = true,
-
-                rotationChange = (float)(Math.PI / 120),
-
-                Parent = location,
-
-                alpha = 0.65f,
-
-            };
-
-            location.temporarySprites.Add(cursorAnimation);
-
-            return cursorAnimation;
-
-        }
-
-        public static void AnimateGlare(GameLocation location, Vector2 origin)
+        public static void AnimateGlare(GameLocation location, Vector2 origin, Color color)
         {
 
             Vector2 originOffset = origin + new Vector2(16, 16);
@@ -350,6 +113,8 @@ namespace StardewDruid
 
                 alphaFade = 0.0005f,
 
+                color = color,
+
             };
 
             location.temporarySprites.Add(glareAnimation);
@@ -359,7 +124,14 @@ namespace StardewDruid
         public static void AnimateHands(Farmer player, int direction, int timeFrame)
         {
 
-            if (Mod.instance.DisableHands())
+            if (Mod.instance.Config.disableHands)
+            {
+
+                return;
+
+            }
+
+            if (Mod.instance.Helper.ModRegistry.IsLoaded("PeacefulEnd.FashionSense"))
             {
 
                 return;
@@ -434,10 +206,21 @@ namespace StardewDruid
 
         }
 
-        public static void AnimateImpact(GameLocation targetLocation, Vector2 origin, int size, int frame = 0, string image = "Impact")
+        public static void AnimateImpact(GameLocation targetLocation, Vector2 origin, float size, int frame = 0, string image = "Impact", float interval = 100f)
         {
 
-            TemporaryAnimatedSprite bomb = new(0, 100f, 8-frame, 1, new(origin.X - 32 - (32 * size), origin.Y - 48 - (32 * size)), false, false)
+            if(image == "Death")
+            {
+
+                ModUtility.AnimateDeathSpray(targetLocation, origin, Color.Gray * 0.5f);
+
+                return;
+
+            }
+
+            size = Math.Min(4, size);
+
+            TemporaryAnimatedSprite bomb = new(0, interval, 8-frame, 1, new(origin.X - 32 - (32 * size), origin.Y - 48 - (32 * size)), false, false)
             {
                 sourceRect = new(64*frame, 0, 64, 64),
                 sourceRectStartingPos = new Vector2(64 * frame, 0.0f),
@@ -493,12 +276,12 @@ namespace StardewDruid
 
         }
 
-        public static void AnimateBolt(GameLocation location, Vector2 origin, int playSound = 800)
+        public static void AnimateBolt(GameLocation location, Vector2 origin)
         {
 
-            Vector2 originOffset = new(origin.X - 64, origin.Y - 304);
+            Vector2 originOffset = new(origin.X - 64, origin.Y - 320);
 
-            TemporaryAnimatedSprite boltAnimation = new(0, 120, 5, 1, originOffset, false, (Game1.random.NextDouble() < 0.5) ? true : false)
+            TemporaryAnimatedSprite boltAnimation = new(0, 75, 6, 1, originOffset, false, (Game1.random.NextDouble() < 0.5) ? true : false)
             {
 
                 sourceRect = new(0, 0, 64, 128),
@@ -532,12 +315,7 @@ namespace StardewDruid
 
             location.temporarySprites.Add(lightAnimation);
 
-            if (playSound >= 500)
-            {
-
-                Game1.currentLocation.playSound("flameSpellHit", originOffset, 800);
-
-            }
+            location.playSound("flameSpellHit");
 
             return;
 
@@ -891,8 +669,6 @@ namespace StardewDruid
                 });
             }
 
-            location.localSound("shadowDie");
-
         }
 
         public static void AnimateFate(GameLocation targetLocation, Vector2 playerVector, Vector2 targetVector, int fuelSource = 768, bool fadeAway = false, bool usePosition = false)
@@ -997,18 +773,28 @@ namespace StardewDruid
 
             targetLocation.temporarySprites.Add(tingleAnimationThree);
 
-            //targetLocation.playSoundPitched("yoba",700);
-
         }
 
-        //======================== Gameworld Interactions
+        // ======================== Gameworld Interactions
 
         public static bool RandomTree(GameLocation targetLocation, Vector2 targetVector)
         {
 
-            int treeIndex = Map.SpawnData.RandomTree(targetLocation);
+            if (targetLocation.terrainFeatures.ContainsKey(targetVector))
+            {
+                return false;
+
+            }
+
+            int treeIndex = SpawnData.RandomTree(targetLocation);
 
             StardewValley.TerrainFeatures.Tree newTree = new(treeIndex.ToString(), 1);
+
+            if(newTree == null)
+            {
+                return false;
+
+            }
 
             targetLocation.terrainFeatures.Add(targetVector, newTree);
 
@@ -1094,11 +880,18 @@ namespace StardewDruid
             foreach (string NPCName in NPCIndex)
             {
 
+                if (!player.friendshipData.ContainsKey(NPCName))
+                {
+
+                    continue;
+
+                }
+
                 NPC characterFromName = Game1.getCharacterFromName(NPCName);
 
                 characterFromName ??= Game1.getCharacterFromName<Child>(NPCName, mustBeVillager: false);
 
-                if (characterFromName != null && player.friendshipData.ContainsKey(NPCName))
+                if (characterFromName != null)
                 {
 
                     player.changeFriendship(375, characterFromName);
@@ -1189,7 +982,130 @@ namespace StardewDruid
 
         }
 
-        //======================== Tile Interactions
+        public static List<StardewValley.Object> ExtractCrop(HoeDirt soil, StardewValley.Crop crop, Vector2 tileVector)
+        {
+
+            Random randomIndex = new();
+
+            List<StardewValley.Object> extracts = new();
+
+            int qualityMax = 0;
+
+            int quantityMax = 0;
+
+            CropData data = crop.GetData();
+
+            if (data != null)
+            {
+
+                if (data.ExtraHarvestChance > 0)
+                {
+                    quantityMax++;
+                }
+
+                if (data.HarvestMaxIncreasePerFarmingLevel > 0f)
+                {
+                    quantityMax++;
+                }
+
+                if (data.HarvestMaxStack > 1)
+                {
+                    quantityMax++;
+                }
+
+            }
+
+            if (Game1.player.FarmingLevel >= 10)
+            {
+                quantityMax++;
+            }
+
+            if (soil.HasFertilizer())
+            {
+                qualityMax++;
+            }
+
+            if (Game1.player.FarmingLevel >= 5)
+            {
+                qualityMax++;
+            }
+
+            Game1.player.currentLocation.playSound("harvest");
+
+            int quantity = randomIndex.Next(1, 2 + quantityMax);
+
+            for (int i = 0; i < quantity; i++)
+            {
+
+                int quality = randomIndex.Next(0, 2 + qualityMax);
+
+                if (quality >= 3) { quality = 4; }
+
+                if (crop.indexOfHarvest.Value.Contains("771") || crop.indexOfHarvest.Value.Contains("889"))
+                {
+
+                    quality = 0;
+
+                }
+
+                StardewValley.Object extract = crop.programColored.Value ? new ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value)
+                {
+
+                    Quality = quality
+
+                } : new StardewValley.Object(crop.indexOfHarvest.Value, 1, isRecipe: false, -1, quality);
+
+                if (extract.Category == -80) // abort if flower
+                {
+
+                    return new();
+
+                }
+
+                int num6 = extract.Price;
+
+                float num7 = (float)(16.0 * Math.Log(0.018 * num6 + 1.0, Math.E));
+
+                Game1.player.gainExperience(0, (int)Math.Round(num7));
+
+                extracts.Add(extract);
+
+            }
+
+            int num8 = data?.RegrowDays ?? (-1);
+
+            if (num8 <= 0)
+            {
+                soil.destroyCrop(true);
+
+                return extracts;
+            }
+
+            crop.fullyGrown.Value = true;
+
+            if (crop.dayOfCurrentPhase.Value == num8)
+            {
+
+                crop.updateDrawMath(tileVector * 64);
+
+            }
+
+            crop.dayOfCurrentPhase.Value = num8;
+
+            return extracts;
+
+        }
+
+        // ======================== Tile Interactions
+
+        public static Vector2 PositionToTile(Vector2 position)
+        {
+
+            Vector2 tiled = new((int)((position.X - (position.X % 64)) / 64), (int)((position.Y - (position.Y % 64)) / 64));
+
+            return tiled;
+
+        }
 
         public static bool WaterCheck(GameLocation targetLocation, Vector2 targetVector, int radius = 4)
         {
@@ -1228,7 +1144,7 @@ namespace StardewDruid
 
         }
 
-        public static string GroundCheck(GameLocation targetLocation, Vector2 neighbour, bool npc = false)
+        public static string GroundCheck(GameLocation targetLocation, Vector2 neighbour, bool barrierCheck = false)
         {
 
             Layer backLayer = targetLocation.Map.GetLayer("Back");
@@ -1242,6 +1158,8 @@ namespace StardewDruid
             int targetX = (int)neighbour.X;
 
             int targetY = (int)neighbour.Y;
+
+            string assumption = "unknown";
 
             if (targetX < 0 || targetX >= mapWidth || targetY < 0 || targetY >= mapHeight)
             {
@@ -1285,6 +1203,20 @@ namespace StardewDruid
             {
 
                 return "water";
+
+            }
+
+            if (barrierCheck)
+            {
+
+                if (BarrierCheck(targetLocation, neighbour))
+                {
+
+                    return "barrier";
+
+                }
+
+                assumption = "ground";
 
             }
 
@@ -1332,64 +1264,149 @@ namespace StardewDruid
 
             }
 
-            if (npc)
+            return assumption;
+
+        }
+
+        public static bool BarrierCheck(GameLocation targetLocation, Vector2 tileVector)
+        {
+            
+            Layer backLayer = targetLocation.Map.GetLayer("Back");
+
+            Layer buildingLayer = targetLocation.Map.GetLayer("Buildings");
+
+            List<Vector2> checks = new()
             {
+
+                tileVector,
+                tileVector+ new Vector2(0,-1),
+                tileVector+ new Vector2(1,0),
+                tileVector+ new Vector2(0,1),
+                tileVector+ new Vector2(-1,0),
+
+            };
+
+            Dictionary<int, bool> found = new();
+
+            for(int i = 0; i <= 5; i++)
+            {
+
+                found[i] = false;
+
+                int targetX = (int)checks[0].X;
+
+                int targetY = (int)checks[0].Y;
+
+                if(targetLocation is FarmCave)
+                {
+
+                    if (targetX <= 3 || targetX >= (backLayer.LayerWidth - 3))
+                    {
+                        
+                        if (i == 0) { return true; }
+                        
+                        found[i] = true;
+                       
+                        break;
+
+                    }
+
+                    if (targetY <= 3 || targetY >= (backLayer.LayerHeight - 3))
+                    {
+                        if (i == 0) { return true; }
+
+                        found[i] = true;
+
+                        break;
+
+                    }
+
+
+                }
+
+
+                Tile backTile = backLayer.Tiles[targetX, targetY];
+
+                Tile buildingTile = buildingLayer.Tiles[targetX, targetY];
 
                 PropertyValue barrier = null;
 
                 backTile.Properties.TryGetValue("NPCBarrier", out barrier);
 
-                if (barrier != null) { return "barrier"; }
+                if (barrier != null) { if (i == 0) { return true; } found[i] = true; break; }
 
                 backTile.Properties.TryGetValue("TemporaryBarrier", out barrier);
 
-                if (barrier != null) { return "barrier"; }
+                if (barrier != null) { if (i == 0) { return true; } found[i] = true; break; }
 
                 backTile.TileIndexProperties.TryGetValue("Passable", out barrier);
 
-                if (barrier != null) { return "barrier"; }
-
-                Layer buildingLayer = targetLocation.Map.GetLayer("Buildings");
+                if (barrier != null) { if (i == 0) { return true; } found[i] = true; break; }
 
                 if (buildingLayer != null)
                 {
-
-                    Tile buildingTile = buildingLayer.Tiles[targetX, targetY];
 
                     if (buildingTile != null)
                     {
 
                         buildingTile.TileIndexProperties.TryGetValue("Shadow", out barrier);
 
-                        if (barrier != null) { return "barrier"; }
+                        if (barrier != null) { if (i == 0) { return true; } found[i] = true; break; }
 
                         buildingTile.TileIndexProperties.TryGetValue("Passable", out barrier);
 
-                        if (barrier != null) { return "ground"; }
+                        if (barrier != null) { break; }
 
                         buildingTile.TileIndexProperties.TryGetValue("NPCPassable", out barrier);
 
-                        if (barrier != null) { return "ground"; }
+                        if (barrier != null) { break; }
 
                         buildingTile.Properties.TryGetValue("Passable", out barrier);
 
-                        if (barrier != null) { return "ground"; }
+                        if (barrier != null) { break; }
 
                         buildingTile.Properties.TryGetValue("NPCPassable", out barrier);
 
-                        if (barrier != null) { return "ground"; }
+                        if (barrier != null) { break; }
 
-                        return "barrier";
+                        if (i == 0) { return true; }
+
+                        found[i] = true; break;
 
                     }
 
                 }
 
-                return "ground";
+            }
+
+            if (found[1] && found[2])
+            {
+                //Mod.instance.Monitor.Log("corner " + checks[0].ToString() + " " + checks[1].ToString() + " " + checks[2].ToString(), LogLevel.Debug);
+                return true;
+
+            }
+            
+            if (found[2] && found[3]) {
+                //Mod.instance.Monitor.Log("corner " + checks[0].ToString() + " " + checks[2].ToString() + " " + checks[3].ToString(), LogLevel.Debug);
+                return true; 
+            
+            }
+
+            if (found[3] && found[4])
+            {
+                //Mod.instance.Monitor.Log("corner " + checks[0].ToString() + " " + checks[3].ToString() + " " + checks[4].ToString(), LogLevel.Debug);
+                return true;
 
             }
 
-            return "unknown";
+            if (found[4] && found[1])
+            {
+                //Mod.instance.Monitor.Log("corner " + checks[0].ToString() + " " + checks[4].ToString() + " " + checks[1].ToString(), LogLevel.Debug);
+                return true;
+
+            }
+
+            return false;
 
         }
 
@@ -1510,13 +1527,23 @@ namespace StardewDruid
             foreach (Building building in targetLocation.buildings)
             {
 
-                for (int i = 0; i < building.tilesWide.Value; i++)
+                int radius = building.GetAdditionalTilePropertyRadius();
+
+                int cornerX = building.tileX.Value - radius;
+
+                int cornerY = building.tileY.Value - radius;
+
+                int width = building.tilesWide.Value + (radius * 2);
+
+                int height = building.tilesHigh.Value + (radius * 2);
+
+                for (int i = 0; i < width; i++)
                 {
 
-                    for (int j = 0; j < building.tilesHigh.Value; j++)
+                    for (int j = 0; j < height; j++)
                     {
 
-                        targetCasts[new Vector2(building.tileX.Value + i, building.tileY.Value + j)] = "Building";
+                        targetCasts[new Vector2(cornerX + i, cornerY + j)] = "Building";
 
                     }
 
@@ -1528,144 +1555,116 @@ namespace StardewDruid
 
         }
 
-        public static Dictionary<string, List<Vector2>> NeighbourCheck(GameLocation targetLocation, Vector2 targetVector, int targetRadius = 1)
+        public static Dictionary<string, List<Vector2>> NeighbourCheck(GameLocation targetLocation, Vector2 targetVector, int targetRadius = 1, int startRadius = 0)
         {
 
             Dictionary<string, List<Vector2>> neighbourList = new();
 
-            List<Vector2> neighbourVectors = GetTilesWithinRadius(targetLocation, targetVector, targetRadius);
-
-            Layer buildingLayer = targetLocation.Map.GetLayer("Buildings");
-
-            Layer pathsLayer = targetLocation.Map.GetLayer("Paths");
-
-            if (!Mod.instance.targetCasts.ContainsKey(targetLocation.Name))
+            for(int i = startRadius; i < targetRadius +1; i++)
             {
 
-                Mod.instance.targetCasts[targetLocation.Name] = LocationTargets(targetLocation);
+                List<Vector2> neighbourVectors = GetTilesWithinRadius(targetLocation, targetVector, targetRadius);
 
-            }
+                Layer buildingLayer = targetLocation.Map.GetLayer("Buildings");
 
-            foreach (Vector2 neighbourVector in neighbourVectors)
-            {
+                Layer pathsLayer = targetLocation.Map.GetLayer("Paths");
 
-                if (Mod.instance.targetCasts[targetLocation.Name].ContainsKey(neighbourVector))
+                if (!Mod.instance.targetCasts.ContainsKey(targetLocation.Name))
                 {
 
-                    string targetType = Mod.instance.targetCasts[targetLocation.Name][neighbourVector];
-
-                    if (!neighbourList.ContainsKey(targetType))
-                    {
-
-                        neighbourList[targetType] = new();
-
-                    }
-
-                    neighbourList[targetType].Add(neighbourVector);
-
-                    continue;
+                    Mod.instance.targetCasts[targetLocation.Name] = LocationTargets(targetLocation);
 
                 }
 
-                Tile buildingTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
-
-                if (buildingTile != null)
+                foreach (Vector2 neighbourVector in neighbourVectors)
                 {
 
-                    if (buildingTile.TileIndexProperties.TryGetValue("Passable", out _) == false)
+                    if (Mod.instance.targetCasts[targetLocation.Name].ContainsKey(neighbourVector))
                     {
 
-                        if (!neighbourList.ContainsKey("Wall"))
+                        string targetType = Mod.instance.targetCasts[targetLocation.Name][neighbourVector];
+
+                        if (!neighbourList.ContainsKey(targetType))
                         {
 
-                            neighbourList["Wall"] = new();
+                            neighbourList[targetType] = new();
 
                         }
 
-                        neighbourList["Wall"].Add(neighbourVector);
+                        neighbourList[targetType].Add(neighbourVector);
 
                         continue;
 
                     }
 
-                    if (targetLocation is Beach)
-                    {
-                        
-                        List<int> tidalList = new() { 60, 61, 62, 63, 77, 78, 79, 80, 94, 95, 96, 97, 104, 287, 288, 304, 305, 321, 362, 363 };
+                    Tile buildingTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
 
-                        if (tidalList.Contains(buildingTile.TileIndex))
+                    if (buildingTile != null)
+                    {
+
+                        if (buildingTile.TileIndexProperties.TryGetValue("Passable", out _) == false)
                         {
 
-                            neighbourList["Pool"].Add(neighbourVector);
+                            if (!neighbourList.ContainsKey("Wall"))
+                            {
+
+                                neighbourList["Wall"] = new();
+
+                            }
+
+                            neighbourList["Wall"].Add(neighbourVector);
 
                             continue;
 
                         }
 
-                    }
-
-                }
-
-                if (pathsLayer != null)
-                {
-
-                    Tile pathsTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
-
-                    if (pathsTile != null)
-                    {
-
-                        if (!neighbourList.ContainsKey("Path"))
+                        if (targetLocation is Beach)
                         {
+                        
+                            List<int> tidalList = new() { 60, 61, 62, 63, 77, 78, 79, 80, 94, 95, 96, 97, 104, 287, 288, 304, 305, 321, 362, 363 };
 
-                            neighbourList["Path"] = new();
+                            if (tidalList.Contains(buildingTile.TileIndex))
+                            {
+
+                                neighbourList["Pool"].Add(neighbourVector);
+
+                                continue;
+
+                            }
 
                         }
 
-                        neighbourList["Path"].Add(neighbourVector);
+                    }
+
+                    if (pathsLayer != null)
+                    {
+
+                        Tile pathsTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
+
+                        if (pathsTile != null)
+                        {
+
+                            if (!neighbourList.ContainsKey("Path"))
+                            {
+
+                                neighbourList["Path"] = new();
+
+                            }
+
+                            neighbourList["Path"].Add(neighbourVector);
+
+                        }
 
                     }
 
-                }
-
-                if (targetLocation.terrainFeatures.ContainsKey(neighbourVector))
-                {
-                    var terrainFeature = targetLocation.terrainFeatures[neighbourVector];
-
-                    switch (terrainFeature.GetType().Name.ToString())
+                    if (targetLocation.terrainFeatures.ContainsKey(neighbourVector))
                     {
+                        var terrainFeature = targetLocation.terrainFeatures[neighbourVector];
 
-                        case "FruitTree":
+                        switch (terrainFeature.GetType().Name.ToString())
+                        {
 
-                            if (!neighbourList.ContainsKey("Sapling"))
-                            {
-
-                                neighbourList["Sapling"] = new();
-
-                            }
-
-                            neighbourList["Sapling"].Add(neighbourVector);
-
-                            break;
-
-                        case "Tree":
-
-                            StardewValley.TerrainFeatures.Tree treeCheck = terrainFeature as StardewValley.TerrainFeatures.Tree;
-
-                            if (treeCheck.growthStage.Value >= 5)
-                            {
-
-                                if (!neighbourList.ContainsKey("Tree"))
-                                {
-
-                                    neighbourList["Tree"] = new();
-
-                                }
-
-                                neighbourList["Tree"].Add(neighbourVector);
-
-                            }
-                            else
-                            {
+                            case "FruitTree":
 
                                 if (!neighbourList.ContainsKey("Sapling"))
                                 {
@@ -1676,81 +1675,114 @@ namespace StardewDruid
 
                                 neighbourList["Sapling"].Add(neighbourVector);
 
-                            }
+                                break;
 
-                            break;
+                            case "Tree":
 
-                        case "HoeDirt":
+                                StardewValley.TerrainFeatures.Tree treeCheck = terrainFeature as StardewValley.TerrainFeatures.Tree;
 
-                            StardewValley.TerrainFeatures.HoeDirt hoedCheck = terrainFeature as StardewValley.TerrainFeatures.HoeDirt;
-
-                            if (hoedCheck.crop != null)
-                            {
-
-                                if (!neighbourList.ContainsKey("Crop"))
+                                if (treeCheck.growthStage.Value >= 5)
                                 {
 
-                                    neighbourList["Crop"] = new();
+                                    if (!neighbourList.ContainsKey("Tree"))
+                                    {
+
+                                        neighbourList["Tree"] = new();
+
+                                    }
+
+                                    neighbourList["Tree"].Add(neighbourVector);
+
+                                }
+                                else
+                                {
+
+                                    if (!neighbourList.ContainsKey("Sapling"))
+                                    {
+
+                                        neighbourList["Sapling"] = new();
+
+                                    }
+
+                                    neighbourList["Sapling"].Add(neighbourVector);
 
                                 }
 
-                                neighbourList["Crop"].Add(neighbourVector);
+                                break;
 
-                            }
+                            case "HoeDirt":
 
-                            if (!neighbourList.ContainsKey("HoeDirt"))
-                            {
+                                StardewValley.TerrainFeatures.HoeDirt hoedCheck = terrainFeature as StardewValley.TerrainFeatures.HoeDirt;
 
-                                neighbourList["HoeDirt"] = new();
+                                if (hoedCheck.crop != null)
+                                {
 
-                            }
+                                    if (!neighbourList.ContainsKey("Crop"))
+                                    {
 
-                            neighbourList["HoeDirt"].Add(neighbourVector);
+                                        neighbourList["Crop"] = new();
 
-                            break;
+                                    }
 
-                        default:
+                                    neighbourList["Crop"].Add(neighbourVector);
 
-                            if (!neighbourList.ContainsKey("Feature"))
-                            {
+                                }
 
-                                neighbourList["Feature"] = new();
+                                if (!neighbourList.ContainsKey("HoeDirt"))
+                                {
 
-                            }
+                                    neighbourList["HoeDirt"] = new();
 
-                            neighbourList["Feature"].Add(neighbourVector);
+                                }
 
-                            break;
+                                neighbourList["HoeDirt"].Add(neighbourVector);
 
-                    }
+                                break;
 
-                    continue;
+                            default:
 
-                }
+                                if (!neighbourList.ContainsKey("Feature"))
+                                {
 
-                if (targetLocation.objects.ContainsKey(neighbourVector))
-                {
+                                    neighbourList["Feature"] = new();
 
-                    if (!neighbourList.ContainsKey("Object"))
-                    {
+                                }
 
-                        neighbourList["Object"] = new();
+                                neighbourList["Feature"].Add(neighbourVector);
 
-                    }
-
-                    neighbourList["Object"].Add(neighbourVector);
-
-                    if (targetLocation.objects[neighbourVector] is StardewValley.Fence || targetLocation.objects[neighbourVector] is StardewValley.Objects.BreakableContainer || targetLocation.objects[neighbourVector].bigCraftable.Value)
-                    {
-
-                        if (!neighbourList.ContainsKey("BigObject"))
-                        {
-
-                            neighbourList["BigObject"] = new();
+                                break;
 
                         }
 
-                        neighbourList["BigObject"].Add(neighbourVector);
+                        continue;
+
+                    }
+
+                    if (targetLocation.objects.ContainsKey(neighbourVector))
+                    {
+
+                        if (!neighbourList.ContainsKey("Object"))
+                        {
+
+                            neighbourList["Object"] = new();
+
+                        }
+
+                        neighbourList["Object"].Add(neighbourVector);
+
+                        if (targetLocation.objects[neighbourVector] is StardewValley.Fence || targetLocation.objects[neighbourVector] is StardewValley.Objects.BreakableContainer || targetLocation.objects[neighbourVector].bigCraftable.Value)
+                        {
+
+                            if (!neighbourList.ContainsKey("BigObject"))
+                            {
+
+                                neighbourList["BigObject"] = new();
+
+                            }
+
+                            neighbourList["BigObject"].Add(neighbourVector);
+
+                        }
 
                     }
 
@@ -1764,6 +1796,7 @@ namespace StardewDruid
 
         static List<Vector2> TilesWithinOne(Vector2 center)
         {
+            
             List<Vector2> result = new() {
 
                 center + new Vector2(0, -1),    // N
@@ -2107,7 +2140,7 @@ namespace StardewDruid
 
         }
 
-        public static List<Vector2> GetTilesWithinRadius(GameLocation playerLocation, Vector2 center, int level, bool mapCheck = true, int segment = -1)
+        public static List<Vector2> GetTilesWithinRadius(GameLocation location, Vector2 center, int level, bool onmap = true, int segment = -1)
         {
 
             List<Vector2> templateList;
@@ -2149,22 +2182,37 @@ namespace StardewDruid
 
                 List<Vector2> segmentList = new();
 
-                int segmentLength = templateList.Count / 4;
+                int total = templateList.Count;
 
-                int segmentModulus = templateList.Count % 4;
+                float segmentLength = total / 8;
 
-                int segmentAdjust = 0;
+                int segmentGrab = (int)Math.Ceiling((double)(total / 3)) -1;
 
-                if (segmentModulus > 0) { segmentAdjust = 1; }
+                int segmentStart = (int)(segmentLength * segment);
 
-                int segmentPortion = (segment * segmentLength) - (segmentLength / 2);
+                segmentList.Add(templateList[segmentStart]);
 
-                for (int i = 0; i < segmentLength + segmentAdjust; i++)
+                int segmentIndex;
+
+                int j = 1;
+
+                for (int i = 0; i < segmentGrab; i++)
                 {
 
-                    int segmentIndex = segmentPortion + i;
+                    if(i % 2 == 0)
+                    {
 
-                    if (segmentIndex < 0) { segmentIndex = templateList.Count + segmentIndex; }
+                        segmentIndex = (segmentStart + j + total) % total;
+
+                    }
+                    else
+                    {
+
+                        segmentIndex = (segmentStart + j + total) % total;
+
+                        j++;
+
+                    }
 
                     segmentList.Add(templateList[segmentIndex]);
 
@@ -2174,12 +2222,7 @@ namespace StardewDruid
 
             }
 
-
-            float mapWidth = (playerLocation.Map.DisplayWidth / 16);
-
-            float mapHeight = (playerLocation.Map.DisplayHeight / 16);
-
-            if (!mapCheck)
+            if (!onmap)
             {
 
                 return templateList;
@@ -2192,13 +2235,9 @@ namespace StardewDruid
             foreach (Vector2 testVector in templateList)
             {
 
-                if (testVector.X < 0 || testVector.X > mapWidth || testVector.Y < 0 || testVector.Y > mapHeight)
+                if (location.isTileOnMap(testVector))
                 {
-
-                }
-                else
-                {
-
+                    
                     vectorList.Add(testVector);
 
                 }
@@ -2209,14 +2248,21 @@ namespace StardewDruid
 
         }
 
-        public static List<Vector2> GetTilesBetweenVectors(GameLocation location, Vector2 distant, Vector2 near)
+        public static List<Vector2> GetTilesBetweenPositions(GameLocation location, Vector2 distant, Vector2 near, float limit = -1)
         {
             
             List<Vector2> vectorList = new();
 
-            float increment = (int)(Vector2.Distance(distant, near) / 32);
+            float increment = limit * 2;
 
-            Vector2 factor = (distant - near) / increment;
+            if(limit == -1)
+            {
+
+                increment = Vector2.Distance(distant,near) / 32;
+
+            }
+            
+            Vector2 factor = PathFactor(near,distant) * 32;
 
             Vector2 check = near + factor;
 
@@ -2227,7 +2273,7 @@ namespace StardewDruid
 
                 Vector2 tile = new((int)(check.X / 64), (int)check.Y / 64);
 
-                if (!vectorList.Contains(tile) && tile != near)
+                if (!vectorList.Contains(tile) && tile != near && tile != distant)
                 {
                     vectorList.Add(tile);
                 }
@@ -2238,7 +2284,601 @@ namespace StardewDruid
 
         }
 
-        public static float CalculateCritical(float damage, float critChance = 0.1f, float critModifier = 2f)
+        public static List<Vector2> GetOccupiableTilesNearby(GameLocation location, Vector2 target, int direction = 0, int proximity = 0, int margin = 0)
+        {
+
+            List<Vector2> occupiable = new();
+
+            for(int i = 0; i < margin + 1; i++)
+            {
+
+                List<Vector2> leads = GetTilesWithinRadius(location, target, i + proximity, true, direction);
+
+                foreach(Vector2 lead in leads)
+                {
+
+                    if(TileAccessibility(location,lead) == 0)
+                    {
+
+                        occupiable.Add(lead);
+
+                    }
+
+                }
+
+
+            }
+
+            return occupiable;
+        
+        }
+
+        public static List<Vector2> GetOccupiedTilesWithinRadius(GameLocation location, Vector2 center, int level)
+        {
+
+            List<Vector2> occupied = new();
+
+            for (int i = 0; i < level; i++)
+            {
+
+                List<Vector2> leads = GetTilesWithinRadius(location, center, i + 1, true);
+
+                foreach (Vector2 lead in leads)
+                {
+
+                    if (TileAccessibility(location, lead) != 0)
+                    {
+
+                        occupied.Add(lead);
+
+                    }
+
+                }
+
+            }
+
+            return occupied;
+
+        }
+
+        public static List<int> DirectionToCenter(GameLocation location, Vector2 position)
+        {
+
+            int layerWidth = location.map.Layers[0].LayerWidth;
+
+            int layerHeight = location.map.Layers[0].LayerHeight;
+
+            int midWidth = (layerWidth / 2) * 64;
+
+            int midHeight = (layerHeight / 2) * 64;
+
+            Vector2 centerPosition = new(midWidth, midHeight);
+
+            List<int> directions = DirectionToTarget(position, centerPosition);
+
+            return directions;
+
+        }
+
+        public static List<int> DirectionToTarget(Vector2 origin, Vector2 target)
+        {
+
+            List<int> directions = new();
+
+            int moveDirection;
+
+            int altDirection;
+
+            int diagonal;
+
+            Vector2 difference = new(target.X - origin.X, target.Y - origin.Y);
+
+            float absoluteX = Math.Abs(difference.X);
+
+            float absoluteY = Math.Abs(difference.Y);
+
+            int signX = difference.X < 0.001f ? -1 : 1;
+
+            int signY = difference.Y < 0.001f ? -1 : 1;
+
+            double radian = Math.Abs(Math.Atan2(difference.Y, difference.X));
+
+            double pie = Math.PI / 8;
+
+            if (signY == 1)
+            {
+
+                if (radian < pie)
+                {
+                    moveDirection = 1;
+                    altDirection = 1;
+                    diagonal = 2;
+
+                }
+                else if (radian < pie * 2)
+                {
+                    moveDirection = 1;
+                    altDirection = 1;
+                    diagonal = 3;
+
+                }
+                else if (radian < pie * 3)
+                {
+                    moveDirection = 2;
+                    altDirection = 1;
+                    diagonal = 3;
+
+                }
+                else if (radian < pie * 4)
+                {
+                    moveDirection = 2;
+                    altDirection = 1;
+                    diagonal = 4;
+
+                }
+                else if (radian < pie * 5)
+                {
+                    moveDirection = 2;
+                    altDirection = 3;
+                    diagonal = 4;
+
+                }
+                else if (radian < pie * 6)
+                {
+                    moveDirection = 2;
+                    altDirection = 3;
+                    diagonal = 5;
+
+                }
+                else if (radian < pie * 7)
+                {
+                    moveDirection = 3;
+                    altDirection = 3;
+                    diagonal = 5;
+
+                }
+                else
+                {
+                    moveDirection = 3;
+                    altDirection = 3;
+                    diagonal = 6;
+
+                }
+
+            }
+            else
+            {
+
+                if (radian < pie)
+                {
+                    
+                    moveDirection = 1;
+                    altDirection = 1;
+                    diagonal = 2;
+
+                }
+                else if (radian < pie * 2)
+                {
+                    
+                    moveDirection = 1;
+                    altDirection = 1;
+                    diagonal = 1;
+
+                }
+                else if (radian < pie * 3)
+                {
+                    
+                    moveDirection = 0;
+                    altDirection = 1;
+                    diagonal = 1;
+
+                }
+                else if (radian < pie * 4)
+                {
+                    
+                    moveDirection = 0;
+                    altDirection = 1;
+                    diagonal = 0;
+
+                }
+                else if (radian < pie * 5)
+                {
+                    
+                    moveDirection = 0;
+                    altDirection = 3;
+                    diagonal = 0;
+
+                }
+                else if (radian < pie * 6)
+                {
+                    
+                    moveDirection = 0;
+                    altDirection = 3;
+                    diagonal = 7;
+
+                }
+                else if (radian < pie * 7)
+                {
+                    
+                    moveDirection = 3;
+                    altDirection = 3;
+                    diagonal = 7;
+
+                }
+                else
+                {
+
+                    moveDirection = 3;
+                    altDirection = 3;
+                    diagonal = 6;
+
+                }
+
+            }
+
+            //Mod.instance.Monitor.Log(origin.ToString() + " " + target.ToString() + " " + moveDirection.ToString() + " " + altDirection.ToString() + " " + radian.ToString() + " " + diagonal.ToString(), LogLevel.Debug);
+            directions.Add(moveDirection);
+
+            directions.Add(altDirection);
+
+            directions.Add(diagonal);
+
+            return directions;
+
+        }
+
+        public static Vector2 DirectionAsVector(int direction)
+        {
+
+            Vector2 move = new(0, -1);
+
+            switch (direction)
+            {
+
+                case 1: move = new(1, -1);  break;
+
+                case 2: move = new(1, 0); break;
+
+                case 3: move = new(1, 1); break;
+                
+                case 4: move = new(0, 1); break;
+                
+                case 5: move = new(-1, 1); break;
+                
+                case 6: move = new(-1, 0); break;
+                
+                case 7: move = new(-1, -1); break;
+
+            }
+
+            return move;
+
+        }
+
+        public static Vector2 PathMovement(Vector2 origin, Vector2 destination, float speed)
+        {
+
+            if (Vector2.Distance(destination, origin) < (speed * 1.5))
+            {
+
+                return destination;
+
+            }
+
+            Vector2 factor = PathFactor(origin, destination);
+
+            return origin + (factor * speed);
+
+        }
+
+        public static Vector2 PathFactor(Vector2 origin, Vector2 destination)
+        {
+
+            Vector2 difference = destination - origin;
+
+            float absX = Math.Abs(difference.X); // x position
+
+            float absY = Math.Abs(difference.Y); // y position
+
+            float moveX = difference.X > 0f ? 1 : -1; // x sign
+
+            float moveY = difference.Y > 0f ? 1 : -1; // y sign
+
+            if (destination.X == origin.X)
+            {
+
+                moveX = 0;
+
+            }
+            else if (destination.Y == origin.Y)
+            {
+
+                moveY = 0;
+
+            }
+            else if (absY > absX)
+            {
+
+                moveX *= (absX / absY);
+
+            }
+            else
+            {
+                moveY *= (absY / absX);
+
+            }
+
+            Vector2 factor = new(moveX, moveY);
+
+            return factor;
+
+        }
+
+        public static Dictionary<Vector2,int> TraversalToTarget(GameLocation location, Vector2 occupied, Vector2 target, int ability, int proximity, int direction = -1)
+        {
+
+            if (direction == -1)
+            {
+
+                // direction from target to origin, will search tiles in between
+
+                direction = DirectionToTarget(target*64, occupied * 64)[2];
+
+            }
+
+            // get possible leads for target
+
+            List<Vector2> open = GetOccupiableTilesNearby(location, target, direction, proximity, 1);
+
+            Dictionary<Vector2, int> access = new();
+
+            if (open.Count == 0)
+            {
+
+                return new();
+
+            }
+
+            foreach (Vector2 lead in open)
+            {
+
+                // between paths exclude occupied tile and lead
+
+                List<Vector2> paths = GetTilesBetweenPositions(location, lead * 64, occupied * 64);
+
+                // add lead as termination point
+
+                paths.Add(lead);
+
+                // update registry of accessed tiles
+
+                access = PathsToAccess(location, paths, access);
+
+                // get valid tile based traversal path to target, with warp and jump sections
+
+                Dictionary<Vector2, int> points = PathsToTraversal(location, paths, access, ability);
+
+                if(points.Count > 0)
+                {
+
+                    return points;
+
+                }
+
+            }
+
+            return new();
+
+        }
+
+        public static Dictionary<Vector2, int> PathsToAccess(GameLocation location, List<Vector2> paths, Dictionary<Vector2, int> access)
+        {
+
+            foreach (Vector2 point in paths)
+            {
+
+                if (!access.ContainsKey(point))
+                {
+
+                    access[point] = TileAccessibility(location, point);
+
+                }
+
+            }
+            
+            return access;
+
+        }
+
+        public static Dictionary<Vector2, int> PathsToTraversal(GameLocation location, List<Vector2> paths, Dictionary<Vector2, int> access, int ability)
+        {
+
+            Dictionary<Vector2, int> points = new();
+
+            bool warp = false;
+
+            bool jump = false;
+
+            int span = 0;
+
+            int accessibility;
+
+            foreach (Vector2 point in paths)
+            {
+
+                if (!access.ContainsKey(point))
+                {
+
+                    accessibility = TileAccessibility(location, point);
+
+                    access[point] = accessibility;
+
+                }
+                else
+                {
+
+                    accessibility = access[point];
+
+                }
+
+                if (accessibility == 2)
+                {
+
+                    if (ability == 2)
+                    {
+
+                        warp = true;
+
+                        continue;
+
+                    }
+
+                    return new();
+
+                }
+
+                if (accessibility == 1)
+                {
+
+                    if (ability >= 1 && span <= 6)
+                    {
+
+                        jump = true;
+
+                        span++;
+
+                        continue;
+
+                    }
+
+                    return new();
+
+                }
+
+                points[point] = 0;
+
+                if (warp)
+                {
+
+                    points[point] = 2;
+
+                    span = 0;
+
+                }
+                else if (jump)
+                {
+
+                    if (points.Count >= 2)
+                    {
+
+                        KeyValuePair<Vector2, int> previous = points.ElementAt(points.Count - 1);
+
+                        if (previous.Value == 0)
+                        {
+
+                            points.Remove(previous.Key);
+
+                        }
+
+                    }
+
+                    points[point] = 1;
+
+                    span = 0;
+
+                }
+
+                jump = false;
+
+                warp = false;
+
+            }
+
+            return points;
+
+        }
+
+        /*public static void HighlightTile(GameLocation location, Vector2 tile, Color colour)
+        {
+            
+            if (!Mod.instance.highlights.ContainsKey(location.Name))
+            {
+
+                Mod.instance.highlights[location.Name] = new();
+
+            }
+            
+            if (Mod.instance.highlights[location.Name].ContainsKey(tile)) { 
+                
+                return; 
+            
+            }
+
+            TemporaryAnimatedSprite radiusAnimation = new(0, 99999, 1, 1, tile*64, false, false)
+            {
+
+                sourceRect = new(0,0,32,32),
+
+                sourceRectStartingPos = new Vector2(0, 0),
+
+                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Target.png")),
+
+                scale = 2f,
+
+                layerDepth = 999f,
+
+                color = colour,
+
+            };
+
+            location.temporarySprites.Add(radiusAnimation);
+
+            Mod.instance.highlights[location.Name][tile] = Game1.currentGameTime.TotalGameTime.TotalMinutes;
+
+        }*/
+
+        public static int TileAccessibility(GameLocation location, Vector2 check)
+        {
+
+            Dictionary<string, List<Vector2>> ObjectCheck = NeighbourCheck(location, check, 0, 0);
+
+            if (ObjectCheck.ContainsKey("Building") || ObjectCheck.ContainsKey("Wall"))
+            {
+                //HighlightTile(location, check, Color.Red);
+                return 2;
+
+            }
+
+            if (ObjectCheck.ContainsKey("BigObject") || ObjectCheck.ContainsKey("Fence"))
+            {
+                //HighlightTile(location, check, Color.Blue);
+                return 1;
+      
+            }
+
+            string groundCheck = GroundCheck(location, check, true);
+
+            if (groundCheck == "ground")
+            {
+                //HighlightTile(location, check, Color.Green);
+                return 0;
+
+            }
+
+            if (groundCheck == "water")
+            {
+                //HighlightTile(location, check, Color.Blue);
+                return 1; 
+
+            }
+
+            return 2;
+
+        }
+
+        // ======================== GAME WORLD INTERACTIONS
+
+        public static float CalculateCritical(float damage, float critChance = 0.1f, float critModifier = 1f)
         {
 
             Random random = new();
@@ -2250,31 +2890,47 @@ namespace StardewDruid
 
             }
 
-            if((float)random.NextDouble() > critChance)
+            if (Game1.player.hasBuff("statue_of_blessings_5"))
+            {
+                critChance += 0.1f;
+            }
+
+            if ((float)random.NextDouble() > critChance)
             {
 
                 return -1;
 
             }
 
+            if (Game1.player.hasTrinketWithID("IridiumSpur"))
+            {
+                
+                BuffEffects buffEffects = new BuffEffects();
+
+                buffEffects.Speed.Value = 1f;
+
+                Game1.player.applyBuff(new Buff("iridiumspur", null, Game1.content.LoadString("Strings\\1_6_Strings:IridiumSpur_Name"), Game1.player.getFirstTrinketWithID("IridiumSpur").GetEffect().general_stat_1 * 1000, Game1.objectSpriteSheet_2, 76, buffEffects, false));
+            
+            }
+
             if (Game1.player.professions.Contains(29))
             {
-                critModifier += 1;
+                critModifier += 0.5f;
 
             }
 
-            damage *= critModifier;
+            damage *= (1 + critModifier);
 
             return damage;
 
         }
 
-        public static List<int> CalculatePush(GameLocation location, StardewValley.Monsters.Monster monster, Vector2 from, int range = 128)
+        public static List<int> CalculatePush(StardewValley.Monsters.Monster monster, Vector2 from, int range = 128)
         {
 
             List<int> pushList = new() {  0, 0 };
 
-            if (!monster.isGlider.Value && !MonsterData.BossMonster(monster) && monster.Slipperiness != -1)
+            if (!monster.isGlider.Value && !MonsterHandle.BossMonster(monster) && monster.Slipperiness != -1)
             {
                 float num1 = monster.Position.X - from.X;
 
@@ -2321,7 +2977,7 @@ namespace StardewDruid
 
                 pushList[1] = diffY;
 
-                monster.stunTime.Set(Math.Max(monster.stunTime.Value,range));
+                monster.stunTime.Set(Math.Max(monster.stunTime.Value,range*5));
 
             }
 
@@ -2329,18 +2985,35 @@ namespace StardewDruid
 
         }
 
-        public static List<Farmer> FarmerProximity(GameLocation targetLocation, Vector2 targetPosition, int radius, bool checkInvincible = false)
+        public static List<Farmer> GetFarmersInLocation(GameLocation location)
         {
 
             List<Farmer> farmers = new();
 
-            int impact = radius * 64;
-
-            impact += 32;
-
-            impact = Math.Max(64, impact);
-
             foreach (Farmer farmer in Game1.getAllFarmers())
+            {
+
+                if (farmer.currentLocation.Name == location.Name)
+                {
+
+                    farmers.Add(farmer);
+
+                }
+
+            }
+
+            return farmers;
+
+        }
+
+        public static List<Farmer> FarmerProximity(GameLocation targetLocation, List<Vector2> targetPosition, float threshold, bool checkInvincible = false)
+        {
+
+            Dictionary<Farmer, float> farmerList = new();
+
+            threshold = Math.Max(64, threshold);
+
+            foreach (Farmer farmer in GetFarmersInLocation(targetLocation))
             {
 
                 if(checkInvincible && farmer.temporarilyInvincible)
@@ -2350,25 +3023,31 @@ namespace StardewDruid
 
                 }
 
-                if (farmer.currentLocation.Name == targetLocation.Name)
+                float distance = Proximation(farmer.Position, targetPosition, threshold);
+
+                if (distance != -1)
                 {
 
-                    if (Vector2.Distance(targetPosition, farmer.Position) <= impact)
-                    {
-
-                        farmers.Add(farmer);
-
-                    }
+                    farmerList.Add(farmer,distance);
 
                 }
 
             }
 
-            return farmers;
-        
+            List<Farmer> ordered = new();
+
+            foreach(KeyValuePair<Farmer,float> kvp in farmerList.OrderBy(key => key.Value))
+            {
+
+                ordered.Add(kvp.Key);
+
+            }
+
+            return ordered;
+
         }
 
-        public static void DamageFarmers(GameLocation targetLocation, List<Farmer> farmers, int damage, StardewValley.Monsters.Monster monster, bool parry = false)
+        public static void DamageFarmers(List<Farmer> farmers, int damage, StardewValley.Monsters.Monster monster, bool parry = false)
         {
 
             if(farmers.Count == 0)
@@ -2394,59 +3073,112 @@ namespace StardewDruid
 
         }
 
-        public static List<StardewValley.Monsters.Monster> MonsterProximity(GameLocation targetLocation, List<Vector2> targetPosition, int radius, bool checkInvincible = false)
+        public static List<StardewValley.Monsters.Monster> GetMonstersInLocation(GameLocation location, bool includeBosses = true)
         {
 
-            List<StardewValley.Monsters.Monster> monsterList = new();
+            List<StardewValley.Monsters.Monster> monsters = new();
 
-            float threshold = 32 + (64 * radius);
-
-            foreach (NPC nonPlayableCharacter in targetLocation.characters)
+            foreach (NPC nPC in location.characters)
             {
 
-                if (nonPlayableCharacter is StardewValley.Monsters.Monster monster)
+                if (nPC is not StardewValley.Monsters.Monster monster)
                 {
 
-                    if (monster.IsInvisible|| monster.Health <= 0)
-                    {
+                    continue;
 
+                }
+
+                if (!MonsterVitals(monster, location))
+                {
+
+                    continue;
+
+                }
+
+                if (!includeBosses)
+                {
+
+                    if(monster is StardewDruid.Monster.Boss.Boss && (monster as Boss).netMode.Value > 1)
+                    {
+                        
                         continue;
-
-                    }
-
-                    if(checkInvincible && monster.isInvincible())
-                    {
-                        continue;
-                    }
-
-                    float monsterThreshold = threshold;
-
-                    if (monster.Sprite.SpriteWidth > 16)
-                    {
-                        monsterThreshold += 32f;
-                    }
-
-                    if (monster.Sprite.SpriteWidth > 32)
-                    {
-                        monsterThreshold += 32f;
-                    }
-
-                    if (Proximation(monster.Position, targetPosition, monsterThreshold))
-                    {
-
-                        monsterList.Add(monster);
 
                     }
 
                 }
 
+                monsters.Add(monster);
+
             }
 
-            return monsterList;
+            return monsters;
 
         }
 
-        public static bool Proximation(Vector2 position, List<Vector2> positions, float threshold)
+        public static List<StardewValley.Monsters.Monster> MonsterProximity(GameLocation targetLocation, List<Vector2> targetPositions, float threshold, bool checkInvincible = false)
+        {
+
+            if(targetLocation is SlimeHutch)
+            {
+
+                return new();
+
+            }
+
+            Dictionary<StardewValley.Monsters.Monster, float> monsterList = new();
+
+            foreach (StardewValley.Monsters.Monster monster in GetMonstersInLocation(targetLocation,true))
+            {
+
+                if (monster.IsInvisible|| monster.Health <= 0)
+                {
+
+                    continue;
+
+                }
+
+                if(checkInvincible && monster.isInvincible())
+                {
+                    continue;
+                }
+
+                float monsterThreshold = threshold;
+
+                if (monster.Sprite.SpriteWidth > 16)
+                {
+                    monsterThreshold += 32f;
+                }
+
+                if (monster.Sprite.SpriteWidth > 32)
+                {
+                    monsterThreshold += 32f;
+                }
+
+                float difference = Proximation(monster.Position, targetPositions, monsterThreshold);
+                    
+                if(difference > 0)
+                {
+
+                    monsterList.Add(monster,difference);
+
+                }
+
+            }
+
+            List<StardewValley.Monsters.Monster> ordered = new();
+
+            foreach (KeyValuePair<StardewValley.Monsters.Monster, float> kvp in monsterList.OrderBy(key => key.Value))
+            {
+
+                ordered.Add(kvp.Key);
+
+            }
+
+            return ordered;
+
+        }
+
+        public static float Proximation(Vector2 position, List<Vector2> positions, float threshold)
         {
 
             foreach (Vector2 attempt in positions)
@@ -2457,13 +3189,13 @@ namespace StardewDruid
                 if (difference < threshold)
                 {
 
-                    return true;
+                    return difference;
 
                 }
 
             }
 
-            return false;
+            return -1f;
 
         }
 
@@ -2507,7 +3239,7 @@ namespace StardewDruid
 
         }
 
-        public static void DamageMonsters(GameLocation targetLocation, List<StardewValley.Monsters.Monster> monsterList, Farmer targetPlayer, int damage, bool push = false)
+        public static void DamageMonsters(GameLocation targetLocation, List<StardewValley.Monsters.Monster> monsterList, Farmer targetPlayer, int damage, float critChance = 0.1f, float critModifier = 1, bool push = false)
         {
 
             if(monsterList.Count == 0)
@@ -2520,7 +3252,7 @@ namespace StardewDruid
 
                 bool critApplied = false;
 
-                float critDamage = CalculateCritical(damage);
+                float critDamage = CalculateCritical(damage,critChance,critModifier);
 
                 if (critDamage > 0)
                 {
@@ -2536,11 +3268,9 @@ namespace StardewDruid
                 if (push)
                 {
 
-                    CalculatePush(targetLocation, monster, targetPlayer.Position, 64);
+                    CalculatePush(monster, targetPlayer.Position, 64);
 
                 }
-
-                Vector2 monsterPosition = monster.Position;
 
                 HitMonster(targetLocation, targetPlayer, monster, damage, critApplied, diffX: diff[0], diffY: diff[1]);
 
@@ -2620,7 +3350,7 @@ namespace StardewDruid
                 damageDealt = targetMonster.takeDamage(damage, diffX, diffY, false, 999f, targetPlayer);
 
             }
-
+            
             foreach (StardewValley.Enchantments.BaseEnchantment enchantment in targetPlayer.enchantments)
             {
                 enchantment.OnCalculateDamage(targetMonster, targetLocation, targetPlayer, ref damageDealt);
@@ -2648,9 +3378,84 @@ namespace StardewDruid
                 enchantment2.OnDealDamage(targetMonster, targetLocation, targetPlayer, ref damageDealt);
             }
 
+            foreach (Trinket trinketItem in targetPlayer.trinketItems)
+            {
+                trinketItem?.OnDamageMonster(targetPlayer, targetMonster, damageDealt);
+            }
+
             if (targetMonster.Health <= 0)
             {
 
+                Farmer who = targetPlayer;
+
+                StardewValley.Monsters.Monster monster = targetMonster;
+
+                Microsoft.Xna.Framework.Rectangle monsterBox = monster.GetBoundingBox();
+
+                if (!targetLocation.IsFarm)
+                {
+                    who.checkForQuestComplete(null, 1, 1, null, monster.Name, 4);
+                    if (new List<SpecialOrder>(Game1.player.team.specialOrders) != null)
+                    {
+                        foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders)
+                        {
+                            specialOrder.onMonsterSlain?.Invoke(Game1.player, monster);
+                        }
+                    }
+                }
+
+                if (who != null)
+                {
+                    foreach (BaseEnchantment enchantment in who.enchantments)
+                    {
+                        enchantment.OnMonsterSlay(monster, targetLocation, who);
+                    }
+                }
+
+                who?.leftRing.Value?.onMonsterSlay(monster, targetLocation, who);
+
+                who?.rightRing.Value?.onMonsterSlay(monster, targetLocation, who);
+
+                if (who != null && !(targetLocation is SlimeHutch) && (!(monster is GreenSlime greenSlime) || (bool)greenSlime.firstGeneration.Value))
+                {
+                    if (who.IsLocalPlayer)
+                    {
+                        Game1.stats.monsterKilled(monster.Name);
+                    }
+                    else if (Game1.IsMasterGame)
+                    {
+                        who.queueMessage(25, Game1.player, monster.Name);
+                    }
+                }
+
+                targetLocation.monsterDrop(monster, monsterBox.Center.X, monsterBox.Center.Y, who);
+
+                if (who != null && !(targetLocation is SlimeHutch))
+                {
+                    who.gainExperience(4, targetLocation.IsFarm ? Math.Max(1, monster.ExperienceGained / 3) : monster.ExperienceGained);
+                }
+
+                if ((bool)monster.isHardModeMonster.Value)
+                {
+                    Game1.stats.Increment("hardModeMonstersKilled");
+                }
+
+                if (monster.ShouldMonsterBeRemoved())
+                {
+                    targetLocation.characters.Remove(monster);
+                }
+
+                Game1.stats.MonstersKilled++;
+
+                targetLocation.removeTemporarySpritesWithID((int)(monster.position.X * 777f + monster.position.Y * 77777f));
+
+                if (who != null && who.CurrentTool != null && who.CurrentTool is MeleeWeapon meleeWeapon && (meleeWeapon.QualifiedItemId == "(W)65" || (meleeWeapon.appearance.Value != null && meleeWeapon.appearance.Value.Equals("(W)65"))))
+                {
+                    
+                    Utility.addRainbowStarExplosion(targetLocation, new Vector2(monsterBox.Center.X - 32, monsterBox.Center.Y - 32), Game1.random.Next(6, 9));
+                
+                }
+                /*
                 targetPlayer.checkForQuestComplete(null, 1, 1, null, targetMonster.Name, 4);
 
                 if (Game1.player.team.specialOrders is not null)
@@ -2702,7 +3507,7 @@ namespace StardewDruid
 
                 //targetLocation.characters.Remove(targetMonster);
 
-                Game1.stats.MonstersKilled++;
+                Game1.stats.MonstersKilled++;*/
 
             }
 
@@ -2734,13 +3539,17 @@ namespace StardewDruid
                         
                         switch (resourceClump.parentSheetIndex.Value)
                         {
-                            case 600:
-                            case 602:
-                                DestroyStump(targetLocation, targetPlayer, resourceClump, targetVector1, "Farm");
+                            case ResourceClump.stumpIndex:
+                            case ResourceClump.hollowLogIndex:
+
+                                DestroyStump(targetLocation, targetPlayer, resourceClump, targetVector1);
                                 break;
+
                             default:
-                                DestroyBoulder(targetLocation, targetPlayer, resourceClump, targetVector1, 2);
+
+                                DestroyBoulder(targetLocation, targetPlayer, resourceClump, targetVector1);
                                 break;
+
                         }
                     
                     }
@@ -2849,7 +3658,7 @@ namespace StardewDruid
 
                             targetLocation.objects.Remove(tileVector);
 
-                            targetLocation.playSound("barrelBreak", tileVector*64);
+                            targetLocation.playSound("barrelBreak");
 
                             destroyVector = true;
 
@@ -3005,7 +3814,7 @@ namespace StardewDruid
 
                     }
 
-                    if (GroundCheck(targetLocation, tileVector) == "ground" && NeighbourCheck(targetLocation, tileVector, 0).Count == 0)
+                    if (GroundCheck(targetLocation, tileVector) == "ground" && NeighbourCheck(targetLocation, tileVector, 0, 0).Count == 0)
                     {
 
                         int tilex = (int)tileVector.X;
@@ -3080,63 +3889,50 @@ namespace StardewDruid
 
         }
 
-        public static void DestroyBoulder(GameLocation targetLocation,Farmer targetPlayer,ResourceClump resourceClump,Vector2 targetVector,int debrisMax)
+        public static void DestroyBoulder(GameLocation targetLocation,Farmer targetPlayer,ResourceClump resourceClump,Vector2 targetVector)
         {
             Random random = new Random();
-            int upgradeLevel = Mod.instance.virtualPick.UpgradeLevel;
+
             resourceClump.health.Set(1f);
-            if (upgradeLevel < 3)
-            {
-                Pickaxe pickaxe1 = new Pickaxe();
-                pickaxe1.UpgradeLevel = 3;
-                targetPlayer.Stamina += Math.Min(2f, targetPlayer.MaxStamina - targetPlayer.Stamina);
-                pickaxe1.DoFunction(targetLocation, 0, 0, 1, targetPlayer);
-                resourceClump.performToolAction(pickaxe1, 1, targetVector);
-            }
-            else
-            {
-                //targetPlayer.Stamina += Math.Min(2f, targetPlayer.MaxStamina - targetPlayer.Stamina);
-                //Mod.instance.virtualPick.DoFunction(targetLocation, 0, 0, 1, targetPlayer);
-                resourceClump.performToolAction(Mod.instance.virtualPick, 1, targetVector);
-            }
+
+            resourceClump.performToolAction(Mod.instance.virtualPick, 1, targetVector);
+
             resourceClump.NeedsUpdate = false;
+
             targetLocation._activeTerrainFeatures.Remove(resourceClump);
+
             targetLocation.resourceClumps.Remove(resourceClump);
+
+            int debris = 2;
+
+            if (targetPlayer.professions.Contains(22))
+            {
+                debris = 4;
+            }
 
             Throw throwObject;
 
-            if (upgradeLevel >= 3)
-            {
-                //Game1.createObjectDebris(709, (int)targetVector.X, (int)targetVector.Y, -1, 0, 1f, null);
-                //Game1.createObjectDebris(709, (int)targetVector.X + 1, (int)targetVector.Y, -1, 0, 1f, null);
-
-                throwObject = new(targetPlayer, targetVector * 64, 709);
-
-                throwObject.ThrowObject();
-                throwObject.ThrowObject();
-
-            }
-
-            for (int index = 0; index < random.Next(1, debrisMax); ++index)
+            for (int index = 0; index < random.Next(1, debris); ++index)
             {
                 switch (resourceClump.parentSheetIndex.Value)
                 {
                     case 756:
                     case 758:
-                        //Game1.createObjectDebris(536, (int)targetVector.X, (int)targetVector.Y, -1, 0, 1f, null);
 
                         throwObject = new(targetPlayer, targetVector * 64, 536);
 
                         throwObject.ThrowObject();
 
                         break;
+
                     default:
+
                         if (targetLocation is MineShaft)
                         {
                             MineShaft mineShaft = (MineShaft)targetLocation;
+
                             if (mineShaft.mineLevel >= 80)
                             {
-                               // Game1.createObjectDebris(537, (int)targetVector.X, (int)targetVector.Y, -1, 0, 1f, null);
 
                                 throwObject = new(targetPlayer, targetVector * 64, 537);
 
@@ -3146,7 +3942,6 @@ namespace StardewDruid
                             }
                             if (mineShaft.mineLevel >= 121)
                             {
-                                //Game1.createObjectDebris(749, (int)targetVector.X, (int)targetVector.Y, -1, 0, 1f, null);
 
                                 throwObject = new(targetPlayer, targetVector * 64, 749);
 
@@ -3155,7 +3950,6 @@ namespace StardewDruid
                                 break;
                             }
                         }
-                        //Game1.createObjectDebris(535, (int)targetVector.X, (int)targetVector.Y, -1, 0, 1f, null);
 
                         throwObject = new(targetPlayer, targetVector * 64, 535);
 
@@ -3166,65 +3960,93 @@ namespace StardewDruid
             }
         }
 
-        public static void DestroyStump(GameLocation targetLocation,Farmer targetPlayer,ResourceClump resourceClump,Vector2 targetVector,string resourceType)
+        public static void DestroyStump(GameLocation targetLocation,Farmer targetPlayer,ResourceClump resourceClump,Vector2 targetVector)
         {
-            int upgradeLevel = Mod.instance.virtualAxe.UpgradeLevel;
             resourceClump.health.Set(1f);
-            if (upgradeLevel < 3)
-            {
-                Axe axe = new Axe();
-                axe.UpgradeLevel = 3;
-                axe.DoFunction(targetLocation, 0, 0, 1, targetPlayer);
-                resourceClump.performToolAction(axe, 1, targetVector);
-            }
-            else
-            {
-                //targetPlayer.Stamina += Math.Min(2f, targetPlayer.MaxStamina - targetPlayer.Stamina);
-                //(Mod.instance.virtualAxe).DoFunction(targetLocation, 0, 0, 1, targetPlayer);
-                resourceClump.performToolAction(Mod.instance.virtualAxe, 1, targetVector);
-            }
+
+            resourceClump.performToolAction(Mod.instance.virtualAxe, 1, targetVector);
+
             resourceClump.NeedsUpdate = false;
 
-            Throw throwObject;
+            Throw throwObject = new(targetPlayer, targetVector * 64, 709);
 
-            if (upgradeLevel >= 3)
+            throwObject.ThrowObject();
+
+            throwObject.ThrowObject();
+
+            if (targetLocation._activeTerrainFeatures.Contains(resourceClump))
             {
-                //Game1.createObjectDebris(709, (int)targetVector.X, (int)targetVector.Y, -1, 0, 1f, null);
-                //Game1.createObjectDebris(709, (int)targetVector.X + 1, (int)targetVector.Y, -1, 0, 1f, null);
+                
+                targetLocation._activeTerrainFeatures.Remove(resourceClump);
 
-                throwObject = new(targetPlayer, targetVector * 64, 709);
-
-                throwObject.ThrowObject();
-                throwObject.ThrowObject();
             }
-            switch (resourceType)
+
+            if (targetLocation.resourceClumps.Contains(resourceClump))
             {
-                /*case "Woods":
-                    Woods woods = targetLocation as Woods;
-                    if (!woods.stumps.Contains(resourceClump))
-                        break;
-                    woods.stumps.Remove(resourceClump);
-                    break;
-                case "Log":
-                    (targetLocation as Forest).log = null;
-                    break;*/
-                default:
-                    if (targetLocation._activeTerrainFeatures.Contains(resourceClump))
-                    {
-                        targetLocation._activeTerrainFeatures.Remove(resourceClump);
 
-                    }
-
-                    if (!targetLocation.resourceClumps.Contains(resourceClump))
-                    {
-
-                        break;
-                    }
-
-                    targetLocation.resourceClumps.Remove(resourceClump);
-
-                    break;
+                targetLocation.resourceClumps.Remove(resourceClump);
+            
             }
+
+        }
+
+        public static void LogStrings(List<string> strings)
+        {
+            
+            string log = "";
+
+            foreach (string s in strings)
+            {
+
+                log += s + ", ";
+
+            }
+
+            Mod.instance.Monitor.Log(log, LogLevel.Debug);
+
+        }
+
+        public static void LogIntegers(List<int> integers)
+        {
+            string log = "";
+
+            foreach (int i in integers)
+            {
+
+                log += i.ToString() + ", ";
+
+            }
+
+            Mod.instance.Monitor.Log(log, LogLevel.Debug);
+        }
+
+        public static void LogVectors(List<Vector2> vectors)
+        {
+            string log = "";
+
+            foreach (Vector2 v in vectors)
+            {
+
+                log += v.ToString() + ", ";
+
+            }
+
+            Mod.instance.Monitor.Log(log, LogLevel.Debug);
+        }
+
+        public static void LogMonsters(List<StardewValley.Monsters.Monster> monsters)
+        {
+            string log;
+
+            foreach (StardewValley.Monsters.Monster m in monsters)
+            {
+
+                log = m.Name.ToString() + ", " + m.Position.ToString() + ", " + m.currentLocation.Name.ToString() + ", " + m.Health.ToString();
+
+                Mod.instance.Monitor.Log(log, LogLevel.Debug);
+            
+            }
+
         }
 
     }

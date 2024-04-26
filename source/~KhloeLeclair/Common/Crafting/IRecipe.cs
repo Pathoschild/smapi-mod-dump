@@ -14,16 +14,59 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.Menus;
 
 namespace Leclair.Stardew.Common.Crafting;
 
 // Remember to update IBetterCrafting whenever this changes!
+
+public interface IRealRecipe1 : IRecipeWithCaching, IPostCraftEventRecipe, IDynamicDrawingRecipe { }
+
+public interface IRealRecipe2 : IRecipeWithCaching, IDynamicDrawingRecipe { }
+
+public interface IRealRecipe3 : IPostCraftEventRecipe, IDynamicDrawingRecipe { }
+
+public interface IRealRecipe4 : IRecipeWithCaching, IPostCraftEventRecipe, IRecipe { }
+
+public interface IRealRecipe5 : IRecipeWithCaching, IRecipe { }
+
+public interface IRealRecipe6 : IPostCraftEventRecipe, IRecipe { }
+
+
 
 public interface IRecipeWithCaching {
 
 	public void ClearCache();
 
 }
+
+/// <summary>
+/// An <c>IRecipe</c> that should be drawn in a unique way in the menu.
+/// This allows you to change the texture dynamically.
+/// </summary>
+public interface IDynamicDrawingRecipe : IRecipe {
+
+	/// <summary>
+	/// Whether or not the icon for this recipe should be drawn dynamically.
+	/// </summary>
+	bool ShouldDoDynamicDrawing { get; }
+
+	/// <summary>
+	/// Called to draw a recipe. The recipe must be drawn within the provided
+	/// bounds. The provided color can be ignored if you handle ghosted/canCraft
+	/// a different way.
+	/// </summary>
+	/// <param name="b">The SpriteBatch to draw with.</param>
+	/// <param name="bounds">The bounds to draw in</param>
+	/// <param name="color">The color to draw with to indicated ghosted/canCraft</param>
+	/// <param name="ghosted">Whether or not the recipe is unlearned and hidden</param>
+	/// <param name="canCraft">Whether or not the recipe is craftable</param>
+	/// <param name="layerDepth">The depth to draw at</param>
+	/// <param name="cmp">The clickable texture component that would be rendered otherwise, if one exists.</param>
+	void Draw(SpriteBatch b, Rectangle bounds, Color color, bool ghosted, bool canCraft, float layerDepth, ClickableTextureComponent? cmp);
+
+}
+
 
 /// <summary>
 /// An <c>IRecipe</c> represents a single crafting recipe, though it need not
@@ -36,10 +79,10 @@ public interface IRecipe {
 	#region Identity
 
 	/// <summary>
-	/// An addditional sorting value to apply to recipes in the Better Crafting
+	/// An additional sorting value to apply to recipes in the Better Crafting
 	/// menu. Applied before other forms of sorting.
 	/// </summary>
-	int SortValue { get; }
+	string SortValue { get; }
 
 	/// <summary>
 	/// The internal name of the recipe. For standard recipes, this matches the
@@ -56,9 +99,14 @@ public interface IRecipe {
 	string DisplayName { get; }
 
 	/// <summary>
-	/// An optional description of the recipe displayed on its tooltip.
+	/// An optional description of the recipe displayed on its tool-tip.
 	/// </summary>
 	string? Description { get; }
+
+	/// <summary>
+	/// Whether or not this recipe can be reversed with recycling.
+	/// </summary>
+	bool AllowRecycling { get; }
 
 	/// <summary>
 	/// Whether or not the player knows this recipe.
@@ -69,7 +117,7 @@ public interface IRecipe {
 	/// <summary>
 	/// How many times the player has crafted this recipe. If advanced crafting
 	/// information is enabled, and this value is non-zero, it will be
-	/// displayed on recipe tooltips.
+	/// displayed on recipe tool-tips.
 	/// </summary>
 	/// <param name="who">The player we're asking about.</param>
 	int GetTimesCrafted(Farmer who);
@@ -139,7 +187,7 @@ public interface IRecipe {
 	bool CanCraft(Farmer who);
 
 	/// <summary>
-	/// An optional, extra string to appear on item tooltips. This can be used
+	/// An optional, extra string to appear on item tool-tips. This can be used
 	/// for displaying error messages to the user, or anything else that would
 	/// be relevant. For example, the add-on for crafting buildings uses this
 	/// to display error messages telling users why they are unable to craft
@@ -168,4 +216,23 @@ public interface IRecipe {
 	}
 
 	#endregion
+}
+
+
+/// <summary>
+/// An optional interface for IRecipes that adds an event to the recipe
+/// to be called after performing a craft, but before the item is added
+/// to the player's inventory.
+/// </summary>
+public interface IPostCraftEventRecipe {
+
+	/// <summary>
+	/// This method is called after a craft has been performed, and can
+	/// be used to modify the output of a craft based on the ingredients
+	/// consumed by the crafting process.
+	/// </summary>
+	/// <param name="evt">Details about the event, including a reference
+	/// to any produced item, and a list of all consumed items.</param>
+	void PostCraft(IPostCraftEvent evt);
+
 }

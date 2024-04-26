@@ -55,8 +55,8 @@ namespace ContentPatcher.Framework.Migrations
             /// <summary>The backing cache for <see cref="ParseEffectiveSeasons"/>.</summary>
             private readonly Dictionary<string, IReadOnlySet<Season>?> ParseSeasonsCache = new();
 
-            /// <summary>The 'create on load' data for each location loaded from the asset directly without applying mod edits.</summary>
-            private Dictionary<string, CreateLocationData>? OriginalCreateLocationData;
+            /// <summary>The vanilla data without mod edits applied, used as the base when a pre-1.6 content pack loads the asset.</summary>
+            private readonly VanillaAssetFactory<Dictionary<string, LocationData>> OriginalData = new(DataLoader.Locations);
 
 
             /*********
@@ -77,10 +77,13 @@ namespace ContentPatcher.Framework.Migrations
             /// <inheritdoc />
             public bool TryApplyLoadPatch<T>(LoadPatch patch, IAssetName assetName, [NotNullWhen(true)] ref T? asset, out string? error)
             {
-                Dictionary<string, string> tempData = patch.Load<Dictionary<string, string>>(assetName);
-                Dictionary<string, LocationData> newData = new();
-                this.MergeIntoNewFormat(newData, tempData, null, null, patch.ContentPack.Manifest.UniqueID);
-                asset = (T)(object)newData;
+                var data = this.OriginalData.GetFreshCopy();
+                var dataBackup = this.GetOldFormat(data, out HashSet<string> skippedDueToNoData);
+
+                var legacyLoad = patch.Load<Dictionary<string, string>>(assetName);
+                this.MergeIntoNewFormat(data, legacyLoad, dataBackup, skippedDueToNoData, patch.ContentPack.Manifest.UniqueID);
+
+                asset = (T)(object)data;
 
                 error = null;
                 return true;
@@ -192,7 +195,10 @@ namespace ContentPatcher.Framework.Migrations
                         isNew = true;
                         targetLocationEntry = new LocationData
                         {
-                            CreateOnLoad = this.GetDefaultCreateOnLoad(locationName)
+                            CreateOnLoad = new()
+                            {
+                                MapPath = $"Maps\\{locationName}"
+                            }
                         };
                     }
 
@@ -223,36 +229,6 @@ namespace ContentPatcher.Framework.Migrations
             private bool IsReservedLocationName(string locationName)
             {
                 return locationName is "Default" || locationName?.StartsWith("Farm_") is true;
-            }
-
-            /// <summary>Get the default 'create on load' data for a location.</summary>
-            /// <param name="locationName">The location name.</param>
-            private CreateLocationData GetDefaultCreateOnLoad(string locationName)
-            {
-                // use vanilla CreateOnLoad if applicable
-                if (!locationName.StartsWith("Custom_"))
-                {
-                    if (this.OriginalCreateLocationData is null)
-                    {
-                        using var content = new LocalizedContentManager(Game1.content.ServiceProvider, Game1.content.RootDirectory);
-                        this.OriginalCreateLocationData = DataLoader.Locations(content).ToDictionary(p => p.Key, p => p.Value.CreateOnLoad);
-                    }
-                    if (this.OriginalCreateLocationData.TryGetValue(locationName, out CreateLocationData? data))
-                    {
-                        return new CreateLocationData
-                        {
-                            MapPath = data.MapPath,
-                            Type = data.Type,
-                            AlwaysActive = data.AlwaysActive
-                        };
-                    }
-                }
-
-                // else use conventional pre-1.6 value
-                return new()
-                {
-                    MapPath = $"Maps\\{locationName}"
-                };
             }
 
             /// <summary>Merge pre-1.6 forage data into the new asset.</summary>

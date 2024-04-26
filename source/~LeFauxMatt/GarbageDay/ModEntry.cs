@@ -11,14 +11,12 @@
 namespace StardewMods.GarbageDay;
 
 using SimpleInjector;
-using StardewModdingAPI.Events;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.ContentPatcher;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.Common.Services.Integrations.ToolbarIcons;
 using StardewMods.GarbageDay.Framework.Interfaces;
-using StardewMods.GarbageDay.Framework.Models;
 using StardewMods.GarbageDay.Framework.Services;
 
 /// <inheritdoc />
@@ -31,16 +29,6 @@ public sealed class ModEntry : Mod
     {
         // Init
         I18n.Init(this.Helper.Translation);
-
-        // Events
-        this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-    }
-
-    private static void GarbageHat(string command, string[] args) => GarbageCan.GarbageHat = true;
-
-    private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-    {
-        // Init
         this.container = new Container();
 
         // Configuration
@@ -58,7 +46,6 @@ public sealed class ModEntry : Mod
         this.container.RegisterSingleton<AssetHandler>();
         this.container.RegisterSingleton<IModConfig, ConfigManager>();
         this.container.RegisterSingleton<ContentPatcherIntegration>();
-        this.container.RegisterSingleton<Definitions>();
         this.container.RegisterSingleton<IEventManager, EventManager>();
         this.container.RegisterSingleton<IEventPublisher, EventManager>();
         this.container.RegisterSingleton<IEventSubscriber, EventManager>();

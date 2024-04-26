@@ -1,10 +1,10 @@
 {
   "Name": "GodMode16",
   "Author": "Sean M Garcia",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Simple mod to make you invincible",
   "UniqueID": "seanmgarcia.godmode16",
   "EntryDll": "godmode16.dll",
   "MinimumApiVersion": "4.0.2",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:21208" ]
 }

@@ -18,6 +18,7 @@ using CustomCrystalariumMod.integrations;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.GameData.Objects;
 using ModConfig = CustomCrystalariumMod.ModConfig;
 
 namespace CustomCrystalariumMod
@@ -27,11 +28,14 @@ namespace CustomCrystalariumMod
         public static IModHelper Helper;
         public static ITranslationHelper I18N;
         public static ModConfig ModConfig;
-        internal static Dictionary<int,int> CrystalariumDataId = new Dictionary<int, int>();
+        internal static Dictionary<string,int> CrystalariumDataId = new Dictionary<string, int>();
         internal static Dictionary<object,int> CrystalariumData = new Dictionary<object, int>();
+
 
         public const string ClonersDataJson = "ClonersData.json";
         public const string CrystalariumDataJson = "data/CrystalariumData.json";
+        public const string VanillaClonerName = "Crystalarium";
+        public const string VanillaClonerQualifiedItemId = "(BC)21";
         public static Dictionary<object, int> DefaultCystalariumData = new Dictionary<object, int>() { { 74, 20160 } };
 
         public DataLoader(IModHelper helper, IManifest manifest)
@@ -40,17 +44,8 @@ namespace CustomCrystalariumMod
             I18N = helper.Translation;
             ModConfig = helper.ReadConfig<ModConfig>();
 
-            CrystalariumData = Helper.Data.ReadJsonFile<Dictionary<object, int>>(CrystalariumDataJson) ?? DefaultCystalariumData;
-            Helper.Data.WriteJsonFile(CrystalariumDataJson, CrystalariumData);
-
-            Dictionary<int, string> objects = Helper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
-            CrystalariumData.ToList().ForEach(d =>
-            {
-                int? id = GetId(d.Key, objects);
-                if (id.HasValue && !CrystalariumDataId.ContainsKey(id.Value)) CrystalariumDataId[id.Value] = d.Value;                
-            });
-
-            DataLoader.LoadContentPacksCommand();
+            CrystalariumData = DataLoader.Helper.Data.ReadJsonFile<Dictionary<object, int>>(CrystalariumDataJson) ?? DefaultCystalariumData;
+            DataLoader.Helper.Data.WriteJsonFile(CrystalariumDataJson, CrystalariumData);
 
             IMailFrameworkModApi mailFrameworkModApi = helper.ModRegistry.GetApi<IMailFrameworkModApi>("DIGUS.MailFrameworkMod");
             mailFrameworkModApi?.RegisterLetter(
@@ -70,8 +65,6 @@ namespace CustomCrystalariumMod
 
         public static void LoadContentPacksCommand(string command = null, string[] args = null)
         {
-            Dictionary<int, string> objects = Helper.GameContent.Load<Dictionary<int, string>>("Data\\ObjectInformation");
-
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
                 if (File.Exists(Path.Combine(contentPack.DirectoryPath, ClonersDataJson)))
@@ -84,15 +77,16 @@ namespace CustomCrystalariumMod
                         {
                             CustomCrystalariumModEntry.ModMonitor.Log($"The cloner name property can't be null or empty. This cloner will be ignored.", LogLevel.Warn);
                         }
-                        if (cloner.Name == "Crystalarium")
+                        if (cloner.Name == VanillaClonerName || cloner.QualifiedItemId == VanillaClonerQualifiedItemId)
                         {
                             cloner.CloningData.ToList().ForEach(d =>
                             {
-                                int? id = GetId(d.Key, objects);
-                                if (id.HasValue && !CrystalariumDataId.ContainsKey(id.Value))
+                                var (key, value) = d;
+                                var id = GetId(key);
+                                if (id != null && !CrystalariumDataId.ContainsKey(id))
                                 {
-                                    CrystalariumData[d.Key] = d.Value;
-                                    CrystalariumDataId[id.Value] = d.Value;
+                                    CrystalariumData[key] = value;
+                                    CrystalariumDataId[id] = value;
                                     CustomCrystalariumModEntry.ModMonitor.Log($"Adding crystalarium data for item '{d.Key}' from mod '{contentPack.Manifest.UniqueID}'.", LogLevel.Trace);
                                 }
                             });
@@ -100,18 +94,36 @@ namespace CustomCrystalariumMod
                         else
                         {
                             cloner.ModUniqueID = contentPack.Manifest.UniqueID;
-                            if (ClonerController.GetCloner(cloner.Name) is CustomCloner currentCloner)
+                            if (cloner.QualifiedItemId == null)
+                            {
+                                var foundCloner = Game1.bigCraftableData.Where(b => b.Value.Name.Equals(cloner.Name));
+                                if (!foundCloner.Any())
+                                {
+                                    CustomCrystalariumModEntry.ModMonitor.Log($"There is no cloner with the name '{cloner.Name}'. This data will be ignored.", LogLevel.Warn);
+                                    continue;
+                                }
+                                else
+                                {
+                                    cloner.QualifiedItemId = ItemRegistry.type_bigCraftable + foundCloner.First().Key;
+                                    if (foundCloner.Count() > 1)
+                                    {
+                                        CustomCrystalariumModEntry.ModMonitor.Log($"There is more than one big craftable with the name '{cloner.Name}'. Cloner of qualified item id '{cloner.QualifiedItemId}' will be used.", LogLevel.Warn);
+                                    }
+                                }
+                            }
+                            if (ClonerController.GetCloner(cloner.QualifiedItemId) is { } currentCloner)
                             {
                                 if (currentCloner.ModUniqueID != cloner.ModUniqueID)
                                 {
-                                    CustomCrystalariumModEntry.ModMonitor.Log($"Both mods '{currentCloner.ModUniqueID}' and '{cloner.ModUniqueID}' have data for  '{cloner.Name}'. You should report the problem to these mod's authors. Data from mod '{currentCloner.ModUniqueID}' will be used.", LogLevel.Warn);
+                                    CustomCrystalariumModEntry.ModMonitor.Log($"Both mods '{currentCloner.ModUniqueID}' and '{cloner.ModUniqueID}' have data for  '{cloner.Name??cloner.QualifiedItemId}'. You should report the problem to these mod's authors. Data from mod '{currentCloner.ModUniqueID}' will be used.", LogLevel.Warn);
                                     continue;
                                 }
                             }
                             cloner.CloningData.ToList().ForEach(d => 
                             {
-                                int? id = GetId(d.Key, objects);
-                                if (id.HasValue) cloner.CloningDataId[id.Value] = d.Value;
+                                var (key, value) = d;
+                                var id = GetId(key);
+                                if (id != null) cloner.CloningDataId[id] = value;
                             });
                             ClonerController.SetCloner(cloner);
                         }
@@ -119,23 +131,40 @@ namespace CustomCrystalariumMod
                 }
                 else
                 {
-                    CustomCrystalariumModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an CaskData.json file.", LogLevel.Warn);
+                    CustomCrystalariumModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ClonersDataJson} file.", LogLevel.Warn);
                 }
             }
         }
 
-        private static int? GetId(object identifier, Dictionary<int, string> objects)
+        internal static void LoadCrystalariumDataIds()
         {
+            CrystalariumData.ToList().ForEach(d =>
+            {
+                var (key, value) = d;
+                var id = GetId(key);
+                if (id != null)
+                {
+                    CrystalariumDataId[id] = value;
+                }
+            });
+        }
+
+        private static string GetId(object identifier)
+        {
+            if (ItemRegistry.IsQualifiedItemId(identifier.ToString()))
+            {
+                return identifier.ToString();
+            }
             if (Int32.TryParse(identifier.ToString(), out int id))
             {
-                return id;
+                return id >= 0 ? ItemRegistry.QualifyItemId(id.ToString()) : identifier.ToString();
             }
             else
             {
-                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(identifier + "/"));
+                var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
                 if (pair.Value != null)
                 {
-                    return pair.Key;
+                    return ItemRegistry.QualifyItemId(pair.Key);
                 }
             }
             return null;
@@ -146,7 +175,7 @@ namespace CustomCrystalariumMod
             GenericModConfigMenuApi api = Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (api != null)
             {
-                api.RegisterModConfig(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
+                api.Register(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
 
                 api.RegisterSimpleOption(manifest, "Disable Letter", "You won't receive the letter about how the Crystalarium can clone Prismatic Shards and can be tuned to clone more stuff. Needs to restart.", () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val);
 
@@ -155,6 +184,8 @@ namespace CustomCrystalariumMod
                 api.RegisterSimpleOption(manifest, "Default Cloning Time", "Cloning time in minutes that will be used for non declared objects.", () => DataLoader.ModConfig.DefaultCloningTime, (int val) => DataLoader.ModConfig.DefaultCloningTime = val);
 
                 api.RegisterSimpleOption(manifest, "Override Cloner Config", "If checked the mod will use the below properties instead of the ones defined for each cloner.", () => DataLoader.ModConfig.OverrideContentPackGetObjectProperties, (bool val) => DataLoader.ModConfig.OverrideContentPackGetObjectProperties = val);
+
+                api.RegisterSimpleOption(manifest, "Keep Quality", "If checked the mod will keep the quality of items placed in the crystalarium.", () => DataLoader.ModConfig.KeepQuality, (bool val) => DataLoader.ModConfig.KeepQuality = val);
 
                 api.RegisterSimpleOption(manifest, "Block Change", "You won't be able to change the object inside. You will need to remove the cloner from the ground.", () => DataLoader.ModConfig.BlockChange, (bool val) => DataLoader.ModConfig.BlockChange = val);
 

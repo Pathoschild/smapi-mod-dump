@@ -36,17 +36,22 @@ namespace HoverLabels
 
         public SButton ShowDetailsButton { get; set; }
         public SButton AlternativeSortButton { get; set; }
-
         public Dictionary<string, Dictionary<string, bool>> EnabledLabels { get; set; }
+
+        public bool CompactLabels { get; set; }
+
+        public bool SmallItemIconLabel { get; set; }
 
         public ModConfig()
         {
             // Initialise variables here
             LabelPopupDelayTicks = 30;
-            LabelListMaxSize = 5;
+            LabelListMaxSize = 6;
             ShowDetailsButton = SButton.LeftControl;
             AlternativeSortButton = SButton.LeftShift;
             EnabledLabels = new();
+            CompactLabels = false;
+            SmallItemIconLabel = false;
         }
 
         /// <summary>
@@ -92,6 +97,22 @@ namespace HoverLabels
                 min: LabelPopupDelayMsRange.min,
                 max: LabelPopupDelayMsRange.max,
                 interval: LabelPopupDelayMsRange.interval
+            );
+
+            configMenu.AddBoolOption(
+                mod: ModEntry.Instance.ModManifest,
+                name: I18n.CfgCompactLabel_Name,
+                tooltip: I18n.CfgCompactLabel_Desc,
+                getValue: () => this.CompactLabels,
+                setValue: (val) => this.CompactLabels = val
+            );
+
+            configMenu.AddBoolOption(
+                mod: ModEntry.Instance.ModManifest,
+                name: I18n.CfgSmallItemIconLabel_Name,
+                tooltip: I18n.CfgSmallItemIconLabel_Desc,
+                getValue: () => this.SmallItemIconLabel,
+                setValue: (val) => this.SmallItemIconLabel = val
             );
 
             configMenu.AddKeybind(

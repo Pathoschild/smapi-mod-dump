@@ -41,5 +41,17 @@
     "config.machine-settings-enabled.Name": "เปิดใช้งาน",
     "config.machine-settings-enabled.desc": "เปิดใช้งานเพื่อให้ {{machineName}} เป็นระบบอัตโนมัติ",
     "config.machine-settings-priority.name": "ลำดับความสำคัญ",
-    "config.machine-settings-priority.desc": "ลำดับความสำคัญในการประมวลผลเครื่องจักร {{machineName}} เมื่อเทียบกับเครื่องจักรอื่นๆ โดยทั่วไปเครื่องจักรจะมีค่าความสำคัญเริ่มต้นที่ 0 โดยมีค่าที่สูงกว่าจะได้รับการประมวลผลก่อน."
+    "config.machine-settings-priority.desc": "ลำดับความสำคัญในการประมวลผลเครื่องจักร {{machineName}} เมื่อเทียบกับเครื่องจักรอื่นๆ โดยทั่วไปเครื่องจักรจะมีค่าความสำคัญเริ่มต้นที่ 0 โดยมีค่าที่สูงกว่าจะได้รับการประมวลผลก่อน.",
+
+    // machine names
+    // TODO
+    "config.machines.bush": "Bush",
+    "config.machines.fruit-tree": "Tree (Fruit Tree)",
+    "config.machines.trash-can": "Trash Can",
+    "config.machines.wild-tree": "Tree (Wild Tree)",
+
+    // special settings for individual machines
+    // TODO
+    "config.machines.wild-tree.collect-moss.name": "Collect Moss",
+    "config.machines.wild-tree.collect-moss.desc": "Whether to collect moss on trees. For example, keeping moss on trees will boost the quality of mushrooms from nearby mushroom logs."
 }

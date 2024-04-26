@@ -1,0 +1,6 @@
+{
+    "ArtisanProductsCopyQuality.start": "Teaching your machines a few new tricks.",
+    "ArtisanProductsCopyQuality.patch": "Enabled CopyQuality property on all of {{Key}}'s OutputItems.",
+    "ArtisanProductsCopyQuality.config.TargetedMachines.name": "Machines to Target",
+    "ArtisanProductsCopyQuality.config.TargetedMachines.description": "Semi-Colon delimited list of BigCraftable QualifiedItemIDs"
+}

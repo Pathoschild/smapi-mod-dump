@@ -221,7 +221,10 @@ namespace ichortower_HatMouseLacey
         {
             for (int i = Game1.player.questLog.Count - 1; i >= 0; --i) {
                 var quest = Game1.player.questLog[i];
-                if (OldQuestMap.ContainsKey(quest.id.Value)) {
+                // delivery quests don't have an id. HasId/isValidId are
+                // protected, so null-check it directly (for now?)
+                // (ContainsKey barfs if arg is null)
+                if (quest.id.Value != null && OldQuestMap.ContainsKey(quest.id.Value)) {
                     string newId = OldQuestMap[quest.id.Value];
                     Log.Trace($"Migrating quest '{quest.id.Value}' -> '{newId}'");
                     Game1.player.questLog.RemoveAt(i);

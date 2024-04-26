@@ -19,6 +19,7 @@ using AnimalHusbandryMod.common;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using DataLoader = AnimalHusbandryMod.common.DataLoader;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace AnimalHusbandryMod.farmer
 {

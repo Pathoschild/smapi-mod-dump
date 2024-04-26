@@ -11,6 +11,7 @@
 using EnaiumToolKit.Framework.Screen;
 using EnaiumToolKit.Framework.Screen.Elements;
 using EnaiumToolKit.Framework.Utils;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
 namespace EnaiumToolKit.Framework.Gui;
@@ -47,6 +48,12 @@ internal class ElementScreen : ScreenGui
             OnLeftClicked = () => { OpenScreenGui(new Colors()); }
         });
         AddElement(new SliderBar("Slider", "Slider", 0, 100));
+        var colorPicker = new ColorPicker("Color Picker", "Color Picker", Color.White);
+        colorPicker.OnColorChanged = () =>
+        {
+            ModEntry.GetInstance().Monitor.Log(colorPicker.Color.ToString(), LogLevel.Debug);
+        };
+        AddElement(colorPicker);
     }
 
     private class Colors : ScreenGui

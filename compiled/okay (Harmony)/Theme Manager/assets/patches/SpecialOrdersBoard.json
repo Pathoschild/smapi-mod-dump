@@ -1,0 +1,15 @@
+{
+	"ID": "SpecialOrdersBoard",
+
+	"ColorVariables": {
+		"$SpecialOrdersHover": "$ButtonHover"
+	},
+
+	"Patches": {
+		"#SpecialOrdersBoard:draw(SpriteBatch)": {
+			"Colors": {
+				"LightPink": { "*": "$SpecialOrdersHover" }
+			}
+		}
+	}
+}

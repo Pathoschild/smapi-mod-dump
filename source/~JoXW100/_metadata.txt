@@ -10,9 +10,9 @@ mods:
    Mobile Phone Continued → Television Mobile App
 
 latest commit:
-   commit 568ff849868341478643ddff1e6638d0c47e25b7
+   commit aa3d65a70ef9bf054bd8d29450288ad5676fd979
    Author: JoXW100 <joxw100@gmail.com>
-   Date:   Thu Mar 28 22:30:13 2024 +0100
+   Date:   Fri Apr 5 22:35:55 2024 +0200
    
-       Updated MobilePhone manifest version
+       Fixed always being able to kiss/hug
    

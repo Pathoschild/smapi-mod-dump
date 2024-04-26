@@ -37,6 +37,7 @@
     "generic.price": "{{price}}po",
     "generic.price-for-quality": "{{price}}po ({{quality}})",
     "generic.price-for-stack": "{{price}}po le lot de {{count}}",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Bâtiment",
@@ -114,13 +115,14 @@
     "location.bugLand": "repaire des insectes mutants",
     "location.busStop": "arrêt de bus",
     "location.desert": "désert",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "ferme",
     "location.farmCave": "grotte de la ferme",
     "location.farmHouse": "maison de ferme",
     "location.forest": "forêt",
-    "location.forest.fish-area-0": "rivère de la forêt",
-    "location.forest.fish-area-1": "étang de la forêt",
     "location.forest.island-tip": "rivière de la forêt (pointe sud de la grande île)",
+    "location.forest.lake": "étang de la forêt",
+    "location.forest.river": "rivère de la forêt",
     "location.mountain": "montagne",
     "location.railroad": "chemin de fer",
     "location.sewer": "égout",
@@ -140,8 +142,8 @@
     "location.islandSouthEast": "Île Gingembre - Sud Ouest",
     "location.islandSouthEastCave": "Île Gingembre - Sud Ouest - Cave",
     "location.islandWest": "Île Gingembre - Ouest",
-    "location.islandWest.fish-area-1": "Île Gingembre - Est (océan)",
-    "location.islandWest.fish-area-2": "Île Gingembre - Est (étang)",
+    "location.islandWest.freshwater": "Île Gingembre - Est (étang)",
+    "location.islandWest.ocean": "Île Gingembre - Est (océan)",
 
     "location.unknown-fish-area": "{{locationName}} (secteur de pêche {{id}})",
 
@@ -627,6 +629,8 @@
     "tree.name.oak": "Chêne",
     "tree.name.palm": "Palmier",
     "tree.name.pine": "Pin",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "Arbre inconnu",
     "tree.stage.done": "Taille adulte",
     "tree.stage.partial": "{{stageName}} ({{step}} sur {{max}})",
@@ -674,6 +678,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Mettre en évidence les goûts des cadeaux non révélés",
     "config.highlight-unrevealed-gift-tastes.desc": "Si vous souhaitez mettre en évidence les goûts en matière de cadeaux qui n'ont pas été révélés dans le profil du PNJ. Lorsque cette option est activée, les goûts des cadeaux qui n'ont pas été révélés seront en gras.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Options avancées",

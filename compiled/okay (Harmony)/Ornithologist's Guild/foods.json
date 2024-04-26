@@ -1,0 +1,36 @@
+[
+    {
+        "Type": "Corn",
+        "FeedersTypes": [
+            "Hopper",
+            "Platform"
+        ],
+        "QualifiedItemId": "(O)270"
+    },
+    {
+        "Type": "Fruit",
+        "FeedersTypes": [
+            "Hopper",
+            "Platform"
+        ],
+        "CategoryId": -79
+    },
+    {
+        "Type": "MixedSeeds",
+        "FeedersTypes": [
+            "Hopper",
+            "Platform",
+            "Tube"
+        ],
+        "QualifiedItemId": "(O)770"
+    },
+    {
+        "Type": "SunflowerSeeds",
+        "FeedersTypes": [
+            "Hopper",
+            "Platform",
+            "Tube"
+        ],
+        "QualifiedItemId": "(O)Ivy_OrnithologistsGuild_HulledSunflowerSeeds"
+    }
+]

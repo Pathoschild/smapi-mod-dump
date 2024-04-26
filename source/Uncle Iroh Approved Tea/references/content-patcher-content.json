@@ -1,0 +1,68 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Format": "1.30.0",
+    "Changes": [
+        // add item
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_Pufferchick": {
+                    "Name": "{{ModId}}_Pufferchick", // best practice to match the ID, since it's sometimes used as an alternate ID (e.g. in Data/CraftingRecipes)
+                    "Displayname": "Pufferchick",
+                    "Description": "An example object.",
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Price": 1200,
+
+                    "Texture": "Mods/{{ModId}}/Objects",
+                    "SpriteIndex": 0
+            }
+        },
+
+        // add gift tastes
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "TextOperations": [
+                {
+                    "Operation": "Append",
+                    "Target": ["Entries", "Universal_Love"],
+                    "Value": "{{ModId}}_Pufferchick",
+                    "Delimiter": " " // if there are already values, add a space between them and the new one
+                }
+            ]
+        },
+
+        // add crop (Pufferchick is both seed and produce, like coffee beans)
+        {
+            "Action": "EditData",
+            "Target": "Data/Crops",
+            "Entries": {
+                "{{ModId}}_Pufferchick": {
+                    "Seasons": [ "spring", "summer", "fall" ],
+                    "DaysInPhase": [ 1, 1, 1, 1, 1 ],
+                    "HarvestItemId": "{{ModId}}_Pufferchick",
+
+                    "Texture": "Mods/{{ModId}}/Crops",
+                    "SpriteIndex": 0
+            }
+        },
+
+        // add item + crop images
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/Crops, Mods/{{ModId}}/Objects",
+            "FromFile": "assets/{{TargetWithoutPath}}.png" // assets/Crops.png, assets/Objects.png
+        },
+    ]
+}

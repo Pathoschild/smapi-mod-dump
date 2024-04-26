@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using stardew_access.Patches;
 using stardew_access.Translation;
 using stardew_access.Utils;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
@@ -20,28 +19,9 @@ using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Commands;
 
-public class TileMarkingCommands : ICustomCommand
+public class TileMarkingCommands
 {
-    private IModHelper? _modHelper;
-
-    public void Add(IModHelper modHelper)
-    {
-        _modHelper = modHelper;
-
-        _modHelper.ConsoleCommands.Add("mark",
-            "Marks the player's position for use in building construction in Carpenter Menu.", MarkPosition);
-
-        _modHelper.ConsoleCommands.Add("marklist", "List all marked positions.", ListMarked);
-
-        _modHelper.ConsoleCommands.Add("buildlist",
-            "List all buildings for selection for upgrading/demolishing/painting",
-            (_, _) => { BuildList(); });
-
-        _modHelper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint",
-            SelectBuilding);
-    }
-
-    internal static void BuildList()
+    public static void BuildList(string[] args, bool fromChatBox = false)
     {
         Farm farm = (Farm)Game1.getLocationFromName("Farm");
         Netcode.NetCollection<Building> buildings = farm.buildings;
@@ -61,62 +41,71 @@ public class TileMarkingCommands : ICustomCommand
             ++buildingIndex;
         }
         var toPrint = string.Join("\n", buildingInfos);
+        string text;
 
         if (string.IsNullOrWhiteSpace(toPrint))
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-build_list-no_building", translationCategory: TranslationCategory.CustomCommands));
+            text = Translator.Instance.Translate("commands-tile_marking-build_list-no_building", translationCategory: TranslationCategory.CustomCommands);
         }
         else
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-build_list-buildings_list", new
+            text = Translator.Instance.Translate("commands-tile_marking-build_list-buildings_list", new
             {
                 building_infos = toPrint
-            }, translationCategory: TranslationCategory.CustomCommands));
+            }, translationCategory: TranslationCategory.CustomCommands);
         }
+
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 
-    private void MarkPosition(string command, string[] args)
+    public static void MarkPosition_mark(string[] args, bool fromChatBox = false)
     {
+        string text;
         if (Game1.currentLocation is not Farm)
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-mark-not_in_farm",
-                translationCategory: TranslationCategory.CustomCommands));
-            return;
+            text = Translator.Instance.Translate("commands-tile_marking-mark-not_in_farm",
+                translationCategory: TranslationCategory.CustomCommands);
+            goto PrintText;
         }
 
         string? indexInString = args.ElementAtOrDefault(0);
         if (indexInString == null)
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-mark-index_not_entered",
-                translationCategory: TranslationCategory.CustomCommands));
-            return;
+            text = Translator.Instance.Translate("commands-tile_marking-mark-index_not_entered",
+                translationCategory: TranslationCategory.CustomCommands);
+            goto PrintText;
         }
 
         bool isParsable = int.TryParse(indexInString, out int index);
 
         if (!isParsable || !(index is >= 0 and <= 9))
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-mark-wrong_index",
-                translationCategory: TranslationCategory.CustomCommands));
-            return;
+            text = Translator.Instance.Translate("commands-tile_marking-mark-wrong_index",
+                translationCategory: TranslationCategory.CustomCommands);
+            goto PrintText;
         }
 
         BuildingOperations.marked[index] = new Vector2(Game1.player.Tile.X, Game1.player.Tile.Y);
-        Log.Info(Translator.Instance.Translate("commands-tile_marking-mark-location_marked", new
+        text = Translator.Instance.Translate("commands-tile_marking-mark-location_marked", new
         {
             x_position = Game1.player.Tile.X,
             y_position = Game1.player.Tile.Y,
             index
-        }, translationCategory: TranslationCategory.CustomCommands));
+        }, translationCategory: TranslationCategory.CustomCommands);
+
+    PrintText:
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 
-    private void ListMarked(string command, string[] args)
+    public static void ListMarked_marklist(string[] args, bool fromChatBox = false)
     {
         List<string> markInfos = [];
         for (int i = 0; i < BuildingOperations.marked.Length; i++)
         {
             if (BuildingOperations.marked[i] == Vector2.Zero) continue;
-            
+
             markInfos.Add(Translator.Instance.Translate("commands-tile_marking-mark_list-mark_info", new
             {
                 index = i,
@@ -125,47 +114,53 @@ public class TileMarkingCommands : ICustomCommand
             }, translationCategory: TranslationCategory.CustomCommands));
         }
         var toPrint = string.Join("\n", markInfos);
+        string text;
 
         if (string.IsNullOrWhiteSpace(toPrint))
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-mark_list-not_marked", translationCategory: TranslationCategory.CustomCommands));
+            text = Translator.Instance.Translate("commands-tile_marking-mark_list-not_marked", translationCategory: TranslationCategory.CustomCommands);
         }
         else
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-mark_list-marks_list", new
+            text = Translator.Instance.Translate("commands-tile_marking-mark_list-marks_list", new
             {
                 mark_infos = toPrint
-            }, translationCategory: TranslationCategory.CustomCommands));
+            }, translationCategory: TranslationCategory.CustomCommands);
         }
+
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 
-    private void SelectBuilding(string command, string[] args)
+    public static void SelectBuilding_buildsel(string[] args, bool fromChatBox = false)
     {
+        string text = "";
+
         if ((Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu &&
              Game1.activeClickableMenu is not AnimalQueryMenu) || (!CarpenterMenuPatch.isOnFarm &&
                                                                    !PurchaseAnimalsMenuPatch.isOnFarm &&
                                                                    !AnimalQueryMenuPatch.isOnFarm))
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-cannot_select",
-                translationCategory: TranslationCategory.CustomCommands));
-            return;
+            text = Translator.Instance.Translate("commands-tile_marking-build_sel-cannot_select",
+                translationCategory: TranslationCategory.CustomCommands);
+            goto PrintText;
         }
 
         string? indexInString = args.ElementAtOrDefault(0);
         if (indexInString == null)
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-building_index_not_entered",
-                translationCategory: TranslationCategory.CustomCommands));
-            return;
+            text = Translator.Instance.Translate("commands-tile_marking-build_sel-building_index_not_entered",
+                translationCategory: TranslationCategory.CustomCommands);
+            goto PrintText;
         }
 
         bool isParsable = int.TryParse(indexInString, out int index);
 
         if (!isParsable)
         {
-            Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-wrong_index",
-                translationCategory: TranslationCategory.CustomCommands));
-            return;
+            text = Translator.Instance.Translate("commands-tile_marking-build_sel-wrong_index",
+                translationCategory: TranslationCategory.CustomCommands);
+            goto PrintText;
         }
 
         string? positionIndexInString = args.ElementAtOrDefault(1);
@@ -177,25 +172,25 @@ public class TileMarkingCommands : ICustomCommand
             {
                 if (BuildingOperations.availableBuildings[index] == null)
                 {
-                    Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-no_building_found",
-                        new { index }, translationCategory: TranslationCategory.CustomCommands));
-                    return;
+                    text = Translator.Instance.Translate("commands-tile_marking-build_sel-no_building_found",
+                        new { index }, translationCategory: TranslationCategory.CustomCommands);
+                    goto PrintText;
                 }
 
                 if (positionIndexInString == null)
                 {
-                    Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-marked_index_not_entered",
-                        translationCategory: TranslationCategory.CustomCommands));
-                    return;
+                    text = Translator.Instance.Translate("commands-tile_marking-build_sel-marked_index_not_entered",
+                        translationCategory: TranslationCategory.CustomCommands);
+                    goto PrintText;
                 }
 
                 isParsable = int.TryParse(positionIndexInString, out positionIndex);
 
                 if (!isParsable)
                 {
-                    Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-wrong_index",
-                        translationCategory: TranslationCategory.CustomCommands));
-                    return;
+                    text = Translator.Instance.Translate("commands-tile_marking-build_sel-wrong_index",
+                        translationCategory: TranslationCategory.CustomCommands);
+                    goto PrintText;
                 }
             }
         }
@@ -203,18 +198,18 @@ public class TileMarkingCommands : ICustomCommand
         {
             if (BuildingOperations.marked[index] == Vector2.Zero)
             {
-                Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-no_marked_position_found",
-                    new { index }, translationCategory: TranslationCategory.CustomCommands));
-                return;
+                text = Translator.Instance.Translate("commands-tile_marking-build_sel-no_marked_position_found",
+                    new { index }, translationCategory: TranslationCategory.CustomCommands);
+                goto PrintText;
             }
         }
         else
         {
             if (BuildingOperations.availableBuildings[index] == null)
             {
-                Log.Info(Translator.Instance.Translate("commands-tile_marking-build_sel-no_building_found",
-                    new { index }, translationCategory: TranslationCategory.CustomCommands));
-                return;
+                text = Translator.Instance.Translate("commands-tile_marking-build_sel-no_building_found",
+                    new { index }, translationCategory: TranslationCategory.CustomCommands);
+                goto PrintText;
             }
         }
 
@@ -255,7 +250,12 @@ public class TileMarkingCommands : ICustomCommand
 
         if (response != null)
         {
-            Log.Info(response);
+            text = response;
         }
+
+    PrintText:
+        if (string.IsNullOrWhiteSpace(text)) return;
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 }

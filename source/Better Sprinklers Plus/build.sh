@@ -14,4 +14,4 @@ echo "Building"
 dotnet build
 
 echo "Copying plugin to root"
-cp -f BetterSprinklersPlus/bin/Debug/net5.0/*.zip ./
+cp -f BetterSprinklersPlus/bin/Debug/net6.0/*.zip ./

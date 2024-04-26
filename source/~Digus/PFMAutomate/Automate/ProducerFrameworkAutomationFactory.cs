@@ -23,7 +23,7 @@ namespace PFMAutomate.Automate
     {
         public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile)
         {
-            if (ProducerController.HasProducerRule(obj.Name))
+            if (ProducerController.HasProducerRule(obj.QualifiedItemId))
             {
                 return new CustomProducerMachine(obj,location,tile);
             }
@@ -36,7 +36,7 @@ namespace PFMAutomate.Automate
             return null;
         }
 
-        public IAutomatable GetFor(Building building, BuildableGameLocation location, in Vector2 tile)
+        public IAutomatable GetFor(Building building, GameLocation location, in Vector2 tile)
         {
             return null;
         }

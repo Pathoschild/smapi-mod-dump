@@ -32,7 +32,7 @@ public class AllRecipesRuleHandler : IDynamicRuleHandler {
 
 	public Texture2D Texture => Game1.objectSpriteSheet;
 
-	public Rectangle Source => new Rectangle(0, 0, 16, 16);
+	public Rectangle Source => new(0, 0, 16, 16);
 
 	public bool AllowMultiple => false;
 

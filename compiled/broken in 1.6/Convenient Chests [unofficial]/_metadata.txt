@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2196
-IDs: aEnigma.ConvenientChests
-update keys: Nexus:2196, GitHub:aEnigmatic/StardewValley

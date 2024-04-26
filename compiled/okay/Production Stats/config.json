@@ -1,0 +1,14 @@
+{
+  "Controls": {
+    "ToggleMenu": "F5",
+    "Sort": "S",
+    "ScrollUp": "Up",
+    "ScrollDown": "Down",
+    "PageUp": "PageUp",
+    "PageDown": "PageDown",
+    "FocusSearch": "F",
+    "ToggleProductionMenu": "LeftShift + F5",
+    "NextMetric": "Right",
+    "PreviousMetric": "Left"
+  }
+}

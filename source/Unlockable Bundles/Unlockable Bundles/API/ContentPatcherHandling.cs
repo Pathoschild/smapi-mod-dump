@@ -17,23 +17,16 @@ using ContentPatcher;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Unlockable_Bundles.Lib;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.API
 {
     public class ContentPatcherHandling
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         internal static DaysSincePurchaseToken DaysSincePurchaseToken = new DaysSincePurchaseToken();
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             if (Helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher"))
                 Helper.Events.GameLoop.GameLaunched += gameLaunched;
         }
@@ -41,9 +34,9 @@ namespace Unlockable_Bundles.API
         private static void gameLaunched(object sender, GameLaunchedEventArgs e)
         {
             var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
-            api.RegisterToken(Mod.ModManifest, "Purchased", getPurchasedUnlockables);
-            api.RegisterToken(Mod.ModManifest, "DaysSincePurchase", DaysSincePurchaseToken);
-            api.RegisterToken(Mod.ModManifest, "Discovered", getDiscoveredUnlockables);
+            api.RegisterToken(ModManifest, "Purchased", getPurchasedUnlockables);
+            api.RegisterToken(ModManifest, "DaysSincePurchase", DaysSincePurchaseToken);
+            api.RegisterToken(ModManifest, "Discovered", getDiscoveredUnlockables);
         }
 
         public static IEnumerable<string> getPurchasedUnlockables() => UnlockableBundlesAPI.getPurchasedUnlockables();

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18120
-IDs: aedenthorn.CropMarkers
-update keys: Nexus:18120, GitHub:aedenthorn/StardewValleyMods

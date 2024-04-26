@@ -388,7 +388,11 @@ namespace FashionSense.Framework.UI
             {
                 case HAIR_FILTER_BUTTON:
                     colorPicker.SetColor(Game1.player.hairstyleColor.Value);
-                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player, maskLayerIndex: currentColorMaskLayerIndex));
+                    var hairModel = GetActiveModel();
+                    if (hairModel is not null && hairModel is HairModel)
+                    {
+                        colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(hairModel, Game1.player, maskLayerIndex: currentColorMaskLayerIndex));
+                    }
                     break;
                 case ACCESSORY_FILTER_BUTTON:
                     colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex(), maskLayerIndex: currentColorMaskLayerIndex));
@@ -1392,6 +1396,27 @@ namespace FashionSense.Framework.UI
         {
             colorPicker.Scroll(direction);
             HandleColorPicker();
+        }
+
+        public override void receiveKeyPress(Keys key)
+        {
+            if (key is Keys.Left)
+            {
+                colorPicker.Scroll(-1);
+                HandleColorPicker();
+            }
+            else if (key is Keys.Right)
+            {
+                colorPicker.Scroll(1);
+                HandleColorPicker();
+            }
+            else
+            {
+                colorPicker.KeyPress(key);
+                HandleColorPicker();
+            }
+
+            base.receiveKeyPress(key);
         }
 
         public override void gamePadButtonHeld(Buttons b)

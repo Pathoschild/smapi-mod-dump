@@ -1,5 +1,6 @@
 {
   "MarinerNameOverwrite": "",
   "MarinerSpeechType": 0,
-  "ChangePendantPriceToPearl": false
+  "ChangePendantPriceToPearl": false,
+  "CanBuyPendantWithoutHeartsAndHouseUpgrade": false
 }

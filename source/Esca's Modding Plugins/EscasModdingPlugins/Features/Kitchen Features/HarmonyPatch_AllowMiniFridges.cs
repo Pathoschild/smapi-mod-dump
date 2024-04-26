@@ -66,31 +66,31 @@ namespace EscasModdingPlugins
             {
                 Vector2 placementTile = new Vector2(x / 64, y / 64);
 
-				if (__instance.QualifiedItemId == "(BC)216") //if this object is a Mini-Fridge
+                if (__instance.QualifiedItemId == "(BC)216") //if this object is a Mini-Fridge
 
-				{
-					if (!location.objects.ContainsKey(placementTile) && ShouldAllowMiniFridgesHere(location)) //if this tile is unobstructed (original check) AND this patch should allow placement 
-					{
-						//apply changes normally made at the start of the original method
-						__instance.setHealth(10);
-						if (who != null)
-							__instance.owner.Value = who.UniqueMultiplayerID;
-						else
-							__instance.owner.Value = Game1.player.UniqueMultiplayerID;
+                {
+                    if (!location.objects.ContainsKey(placementTile) && ShouldAllowMiniFridgesHere(location)) //if this tile is unobstructed (original check) AND this patch should allow placement 
+                    {
+                        //apply changes normally made at the start of the original method
+                        __instance.setHealth(10);
+                        if (who != null)
+                            __instance.owner.Value = who.UniqueMultiplayerID;
+                        else
+                            __instance.owner.Value = Game1.player.UniqueMultiplayerID;
 
-						//imitate the original method's code for successful placement
-						Chest fridge = new Chest("216", placementTile, 217, 2)
-						{
-							shakeTimer = 50
-						};
-						fridge.fridge.Value = true;
-						location.objects.Add(placementTile, fridge);
-						location.playSound("hammer");
-						
-						__result = true; //return true
-						return false; //skip the original method
-					}					
-				}
+                        //imitate the original method's code for successful placement
+                        Chest fridge = new Chest("216", placementTile, 217, 2)
+                        {
+                            shakeTimer = 50
+                        };
+                        fridge.fridge.Value = true;
+                        location.objects.Add(placementTile, fridge);
+                        location.playSound("hammer");
+
+                        __result = true; //return true
+                        return false; //skip the original method
+                    }
+                }
 
                 return true; //default result: run the original method
             }

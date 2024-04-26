@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "버섯 나무",
   "custom-tree.mahogany": "마호가니 나무",
   "custom-tree.palm": "야자수",
+  "custom-tree.green-rain-wild": "야생 녹색 비 나무",
+  "custom-tree.green-rain-lush": "무성한 녹색 비 나무",
+  "custom-tree.fiddlehead-fern": "피들헤드 고사리 나무",
+  "custom-tree.mystic": "미스틱 나무",
 
   // growth info translation
   "growth-info.fully-grown": "완전한 성장",

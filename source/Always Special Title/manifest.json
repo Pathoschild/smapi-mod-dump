@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DespairScent/AlwaysSpecialTitle
+**
+*************************************************/
+
+{
+  "Name": "AlwaysSpecialTitle",
+  "Author": "DespairScent",
+  "Version": "1.0.0",
+  "Description": "Ensures that you encounter the special title screen when clicking at game startup",
+  "UniqueID": "DespairScent.AlwaysSpecialTitle",
+  "EntryDll": "AlwaysSpecialTitle.dll",
+  "MinimumApiVersion": "4.0.0",
+  "MinimumGameVersion": "1.6.0",
+  "UpdateKeys": [ "Nexus:22150" ]
+}

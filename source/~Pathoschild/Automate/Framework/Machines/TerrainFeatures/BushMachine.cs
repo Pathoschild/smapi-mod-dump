@@ -35,7 +35,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /// <param name="bush">The underlying bush.</param>
         /// <param name="location">The machine's in-game location.</param>
         public BushMachine(Bush bush, GameLocation location)
-            : this(bush, location, GetTileAreaFor(bush)) { }
+            : this(bush, location, BaseMachine.GetTileAreaFor(bush)) { }
 
         /// <summary>Construct an instance.</summary>
         /// <param name="indoorPot">The indoor pot containing the bush.</param>
@@ -63,12 +63,13 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /// <summary>Get the output item.</summary>
         public override ITrackedStack GetOutput()
         {
+            string itemId = this.Machine.GetShakeOffItem();
+
             // tea bush
             if (this.Machine.size.Value == Bush.greenTeaBush)
-                return new TrackedItem(ItemRegistry.Create("(O)815"), onReduced: this.OnOutputReduced);
+                return new TrackedItem(ItemRegistry.Create(itemId), onReduced: this.OnOutputReduced);
 
             // berry bush
-            string itemId = Game1.GetSeasonForLocation(this.Machine.Location) == Season.Fall ? "(O)410"/*blackberry*/ : "(O)296"/*salmonberry*/;
             int quality = Game1.player.professions.Contains(Farmer.botanist) ? SObject.bestQuality : SObject.lowQuality;
             int count = 1 + Game1.player.ForagingLevel / 4;
             return new TrackedItem(ItemRegistry.Create(itemId, count, quality), onReduced: this.OnOutputReduced);
@@ -115,19 +116,6 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         {
             this.Machine.tileSheetOffset.Value = 0;
             this.Machine.setUpSourceRect();
-        }
-
-        /// <summary>Get the tile area covered by a bush.</summary>
-        /// <param name="bush">The bush whose area to get.</param>
-        private static Rectangle GetTileAreaFor(Bush bush)
-        {
-            var box = bush.getBoundingBox();
-            return new Rectangle(
-                x: box.X / Game1.tileSize,
-                y: box.Y / Game1.tileSize,
-                width: box.Width / Game1.tileSize,
-                height: box.Height / Game1.tileSize
-            );
         }
 
         /// <summary>Get whether the bush is currently in-season to produce berries or tea leaves.</summary>

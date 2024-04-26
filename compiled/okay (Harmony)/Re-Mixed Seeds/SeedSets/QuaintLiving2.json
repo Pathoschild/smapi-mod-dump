@@ -1,0 +1,256 @@
+{      
+    "Spring": [  
+        {
+            "cropName" : "Dahlia",
+            "seedID" : "QL_DahliaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },       
+        {
+            "cropName" : "Freesia",
+            "seedID" : "QL_FreesiaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Pansy",
+            "seedID" : "QL_PansySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Fritillaria",
+            "seedID" : "QL_FritillariaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Iris",
+            "seedID" : "QL_IrisSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Jasmine",
+            "seedID" : "QL_JasmineSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Pansy",
+            "seedID" : "QL_PansySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Peony",
+            "seedID" : "QL_PeonySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Rose",
+            "seedID" : "QL_RoseSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Striped Squill",
+            "seedID" : "QL_StripedSquillSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }  
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "Calla Lily",
+            "seedID" : "QL_CallaLilySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Carnation",
+            "seedID" : "QL_CarnationSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Delphinium",
+            "seedID" : "QL_DelphiniumSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Iris",
+            "seedID" : "QL_IrisSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Jasmine",
+            "seedID" : "QL_JasmineSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Lily",
+            "seedID" : "QL_LilySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Rose",
+            "seedID" : "QL_RoseSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Zinnia",
+            "seedID" : "QL_ZinniaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+           
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "Carnation",
+            "seedID" : "QL_CarnationSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Dahlia",
+            "seedID" : "QL_DahliaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Iris",
+            "seedID" : "QL_IrisSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Lavender",
+            "seedID" : "QL_LavenderSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Lily",
+            "seedID" : "QL_LilySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Rose",
+            "seedID" : "QL_RoseSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Snapdragon",
+            "seedID" : "QL_SnapdragonSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Zinnia",
+            "seedID" : "QL_ZinniaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+            
+      ],
+      
+      "Winter" : [
+        {
+            "cropName" : "Amaryllis",
+            "seedID" : "QL_AmaryllisSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Pansy",
+            "seedID" : "QL_PansySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Snapdragon",
+            "seedID" : "QL_SnapdragonSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Striped Squill",
+            "seedID" : "QL_StripedSquillSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }  
+      ]
+      
+}

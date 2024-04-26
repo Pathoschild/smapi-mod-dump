@@ -37,6 +37,7 @@
     "generic.price": "{{price}}з.",
     "generic.price-for-quality": "{{price}}з. ({{quality}})",
     "generic.price-for-stack": "{{price}}з. за набор из {{count}} шт.",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Постройка",
@@ -113,13 +114,14 @@
     "location.bugLand": "логово жуков-мутантов",
     "location.busStop": "автобусная остановка",
     "location.desert": "пустыня",
+    "location.desert.topPond": "пустыня (северный пруд)",
     "location.farm": "ферма",
     "location.farmCave": "пещера на ферме",
     "location.farmHouse": "дом на ферме",
     "location.forest": "лес",
-    "location.forest.fish-area-0": "лесная река",
-    "location.forest.fish-area-1": "лесное озеро",
     "location.forest.island-tip": "лесная река (южная часть большого острова)",
+    "location.forest.lake": "лесное озеро",
+    "location.forest.river": "лесная река",
     "location.mountain": "горы",
     "location.railroad": "железная дорога",
     "location.sewer": "канализация",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Имбирный остров - Юго-Восток",
     "location.islandSouthEastCave": "Имбирный остров - Юго-Восточная Пещера",
     "location.islandWest": "Имбирный остров - Запад",
-    "location.islandWest.fish-area-1": "Имбирный остров - Запад (океан)",
-    "location.islandWest.fish-area-2": "Имбирный остров - Запад (пруд)",
+    "location.islandWest.freshwater": "Имбирный остров - Запад (пруд)",
+    "location.islandWest.ocean": "Имбирный остров - Запад (океан)",
 
     "location.unknown-fish-area": "{{locationName}} (рыболовный район {{id}})",
 
@@ -192,7 +194,7 @@
     "building.output-processing": "В очереди",
     "building.output-ready": "Готово",
     "building.slimes.summary": "{{count}} из {{max}} слизней",
-    "building.stored-hay.summary": "{{hayCount}} of {{maxHayInLocation}} hay in this location (max capacity in this building: {{maxHayInBuilding}})", // TODO
+    "building.stored-hay.summary": "{{hayCount}} из {{maxHayInLocation}} сена в этом месте (макс. вместимость в этом здании: {{maxHayInBuilding}})",
     "building.upgrades.barn.0": "до 4-ёх животных, разблокируется: коровы.",
     "building.upgrades.barn.1": "до 8-ми животных; разблокируются: козлы и беременность животных.",
     "building.upgrades.barn.2": "до 12-ти животных; разблокируются: система подачи корма, свиньи и овцы.",
@@ -292,7 +294,7 @@
     ** Item > generic lookups
     *********/
     // labels
-    "item.custom-item": "Custom item", // TODO
+    "item.custom-item": "Пользовательский предмет",
     "item.contents": "Содержит",
     "item.loves-this": "Любят",
     "item.likes-this": "Нравится",
@@ -311,7 +313,7 @@
     "item.produces-dye": "Производит краситель",
 
     // values
-    "item.custom-item.summary": "added by {{modName}}", // TODO
+    "item.custom-item.summary": "добавлен модом {{modName}}",
     "item.contents.placed": "содержит {{name}}",
     "item.contents.ready": "{{name}} готов",
     "item.contents.partial": "{{name}} через {{time}}",
@@ -389,15 +391,14 @@
     ** Item > melee weapon lookups
     *********/
     // labels
-    // TODO
-    "item.melee-weapon.accuracy": "Accuracy",
-    "item.melee-weapon.critical-chance": "Critical chance",
-    "item.melee-weapon.critical-damage": "Critical damage",
-    "item.melee-weapon.damage": "Damage",
-    "item.melee-weapon.defense": "Defense",
-    "item.melee-weapon.knockback": "Knockback",
-    "item.melee-weapon.reach": "Reach",
-    "item.melee-weapon.speed": "Attack speed",
+    "item.melee-weapon.accuracy": "Точность",
+    "item.melee-weapon.critical-chance": "Шанс крит. удара",
+    "item.melee-weapon.critical-damage": "Сила крит. удара",
+    "item.melee-weapon.damage": "Урон",
+    "item.melee-weapon.defense": "Защита",
+    "item.melee-weapon.knockback": "Вес (отдача)",
+    "item.melee-weapon.reach": "Радиус действия",
+    "item.melee-weapon.speed": "Скорость атаки",
 
     // values
     // TODO
@@ -628,6 +629,8 @@
     "tree.name.oak": "Дуб",
     "tree.name.palm": "Пальма",
     "tree.name.pine": "Сосна",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "Неизвестное дерево",
     "tree.stage.done": "полностью выросло",
     "tree.stage.partial": "{{stageName}} ({{step}} из {{max}})",
@@ -651,32 +654,41 @@
     ** Generic Mod Config Menu UI
     *********/
     // main options
-    // TODO
-    "config.title.main-options": "Main options",
-    "config.progression-mode.name": "Progression mode",
-    "config.progression-mode.desc": "Whether to hide some content (e.g. gift tastes and puzzle solutions) until you've discovered it in-game.",
-    "config.force-full-screen.name": "Force full screen",
-    "config.force-full-screen.desc": "Whether the menu should always be full-screen, instead of centered in the window. This is mainly useful when viewing data mining fields.",
+    "config.title.main-options": "Основные настройки",
+    "config.progression-mode.name": "Режим прохождения без спойлеров",
+    "config.progression-mode.desc": "Следует ли скрывать какой-либо контент (например предпочтения подарков для персонажей и решения головоломок), до тех пор, пока вы не обнаружите его в игре.",
+    "config.force-full-screen.name": "Принудительный полный экран",
+    "config.force-full-screen.desc": "Всегда ли меню должно быть полноэкранным, а не размещаться по центру окна. В основном это полезно при просмотре полей с большим колличеством данных.",
 
     // gift tastes
+    "config.title.gift-tastes": "Подарки для персонажей",
+    "config.show-gift-tastes.loved.name": "Показывать любимые подарки",
+    "config.show-gift-tastes.loved.desc": "Показывать ли любимые подарки при поиске персонажа и предметов.",
+    "config.show-gift-tastes.liked.name": "Показывать нравящиеся подарки",
+    "config.show-gift-tastes.liked.desc": "Показывать ли нравящиеся подарки при поиске персонажа и предметов.",
+    "config.show-gift-tastes.neutral.name": "Показывать нейтральные подарки",
+    "config.show-gift-tastes.neutral.desc": "Показывать ли подарки, к которым персонажи равнодушны, при поиске персонажа и предметов.",
+    "config.show-gift-tastes.disliked.name": "Показывать нелюбимые подарки",
+    "config.show-gift-tastes.disliked.desc": "Показывать ли нелюбимые подарки при поиске персонажа и предметов.",
+    "config.show-gift-tastes.hated.name": "Показывать ненавистные подарки",
+    "config.show-gift-tastes.hated.desc": "Показывать ли ненавистные подарки при поиске персонажа и предметов.",
+
+    "config.show-unowned-gifts.name": "Показывать подарки, которыми вы не владеете",
+    "config.show-unowned-gifts.desc": "Показывать ли подарики для персонажей, которых у игрока нет где-то в мире",
+
+    "config.highlight-unrevealed-gift-tastes.name": "Подсвечивать ещё не известные подарки",
+    "config.highlight-unrevealed-gift-tastes.desc": "Следует ли выделять подарки, которые не указаны в профиле персонажа. Если эта функция включена, то нераскрытые предпочтения подарков будут выделены жирным шрифтом.",
+
+    // collapse fields
     // TODO
-    "config.title.gift-tastes": "Gift tastes",
-    "config.show-gift-tastes.loved.name": "Show loved gifts",
-    "config.show-gift-tastes.loved.desc": "Whether to show loved gifts in NPC and item lookups.",
-    "config.show-gift-tastes.liked.name": "Show liked gifts",
-    "config.show-gift-tastes.liked.desc": "Whether to show liked gifts in NPC and item lookups.",
-    "config.show-gift-tastes.neutral.name": "Show neutral gifts",
-    "config.show-gift-tastes.neutral.desc": "Whether to show neutral gifts in NPC and item lookups.",
-    "config.show-gift-tastes.disliked.name": "Show disliked gifts",
-    "config.show-gift-tastes.disliked.desc": "Whether to show disliked gifts in NPC and item lookups.",
-    "config.show-gift-tastes.hated.name": "Show hated gifts",
-    "config.show-gift-tastes.hated.desc": "Whether to show hated gifts in NPC and item lookups.",
+    "config.title.collapse-fields": "Collapse large fields",
 
-    "config.show-unowned-gifts.name": "Show unowned gift tastes",
-    "config.show-unowned-gifts.desc": "Whether to show gift tastes for items that the player doesn't own somewhere in the world.",
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
-    "config.highlight-unrevealed-gift-tastes.name": "Highlight unrevealed gift tastes",
-    "config.highlight-unrevealed-gift-tastes.desc": "Whether to highlight item gift tastes which haven't been revealed in the NPC profile. When enabled, unrevealed gift tastes will be bold.",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     // TODO

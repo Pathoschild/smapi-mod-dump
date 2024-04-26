@@ -1,0 +1,182 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/weizinai/StardewValleyMods
+**
+*************************************************/
+
+{
+    // Config
+    // Farming
+    "Config.FarmingPage.Name": "Farming",
+    "Config.AutoTillDirt.Name": "Auto Till Dirt",
+    "Config.AutoTillDirt.Tooltip":"This feature only works when you are holding a hoe.", // 1.0.1 Add
+    "Config.AutoTillDirtRange.Name": "Auto Till Dirt Range",
+    "Config.StopAutoTillDirtStamina.Name": "Stop Auto Till Dirt Stamina",
+    "Config.AutoClearTilledDirt.Name": "Auto Clear Tilled Dirt",
+    "Config.AutoClearTilledDirt.Tooltip":"This feature only works when you are holding a pickaxe.", // 1.0.1 Add
+    "Config.AutoClearTilledDirtRange.Name": "Auto Clear Tilled Dirt Range",
+    "Config.StopAutoClearTilledDirtStamina.Name": "Stop Auto Clear Tilled Dirt Stamina",
+    "Config.AutoWaterDirt.Name": "Auto Water Dirt",
+    "Config.AutoWaterDirt.Tooltip":"This feature only works when you hold the watering can.", // 1.0.1 Add
+    "Config.AutoWaterDirtRange.Name": "Auto Water Dirt Range",
+    "Config.StopAutoWaterDirtStamina.Name": "Stop Auto Water Dirt Stamina",
+    "Config.AutoRefillWateringCan.Name": "Auto Refill Watering Can",
+    "Config.AutoRefillWateringCan.Tooltip":"This feature only works when you hold the watering can.", // 1.0.1 Add
+    "Config.AutoRefillWateringCanRange.Name": "Auto Refill Watering Can Range",
+    "Config.StopAutoRefillWateringCanRange.Name": "Stop Auto Refill Watering Can Stamina",
+    "Config.FindWateringCanFromInventory.Name": "Find Watering Can From Inventory",
+    "Config.FindWateringCanFromInventory.Tooltip":"When this option is enabled, only a watering can is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoSeed.Name": "Auto Seed",
+    "Config.AutoSeed.Tooltip":"This feature only works when you hold the seeds.", // 1.0.1 Add
+    "Config.AutoSeedRange.Name": "Auto Seed Range",
+    "Config.AutoFertilize.Name": "Auto Fertilize",
+    "Config.AutoFertilize.Tooltip":"This feature only works when you hold the fertilizer.", // 1.0.1 Add
+    "Config.AutoFertilizeRange.Name": "Auto Fertilize Range",
+    "Config.AutoHarvestCrop.Name": "Auto Harvest Crop",
+    "Config.AutoHarvestCropRange.Name": "Auto Harvest Crop Range",
+    "Config.AutoHarvestFlower.Name": "Auto Harvest Flower",
+    "Config.AutoShakeFruitTree.Name": "Auto Shake Fruit Tree",
+    "Config.AutoShakeFruitTreeRange.Name": "Auto Shake Fruit Tree Range",
+    "Config.AutoClearDeadCrop.Name": "Auto Clear Dead Crop",
+    "Config.AutoClearDeadCropRange.Name": "Auto Clear Dead Crop Range",
+    
+    // Animal
+    "Config.AnimalPage.Name": "Animal",
+    "Config.AutoPetAnimal.Name": "Auto Pet Animal",
+    "Config.AutoPetAnimalRange.Name": "Auto Pet Animal Range",
+    "Config.AutoMilkAnimal.Name": "Auto Milk Animal",
+    "Config.AutoMilkAnimal.Tooltip":"This feature only works when you hold the milk pail.", // 1.0.1 Add
+    "Config.AutoMilkAnimalRange.Name": "Auto Milk Animal Range",
+    "Config.StopAutoMilkAnimalStamina.Name": "Stop Auto Milk Animal Stamina", // 1.0.2 Add
+    "Config.FindMilkPailFromInventory.Name": "Find Milk Pail From Inventory",
+    "Config.FindMilkPailFromInventory.Tooltip":"When this option is enabled, only a milk pail is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoShearsAnimal.Name": "Auto Shears",
+    "Config.AutoShearsAnimal.Tooltip":"This feature only works when you hold the shears.", // 1.0.1 Add
+    "Config.AutoShearsAnimalRange.Name": "Auto Shears Range",
+    "Config.StopAutoShearsAnimalStamina.Name": "Stop Auto Shears Stamina", // 1.0.2 Add
+    "Config.FindShearsFromInventory.Name": "Find Shears From Inventory",
+    "Config.FindShearsFromInventory.Tooltip": "When this option is enabled, only a shears is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoOpenAnimalDoor.Name": "Auto Open Animal Door",
+    "Config.AutoOpenAnimalDoor.Tooltip":"When this option is enabled, if the weather is not rainy or the season is not winter, the animal door will be automatically opened for you at the beginning of each day and closed for you at the end of each day.", // 1.0.1 Add
+    "Config.AutoOpenFenceGate.Name": "Auto Open Fence Gate",
+    "Config.AutoOpenFenceGateRange.Name": "Auto Open Fence Gate Range",
+    "Config.AutoPetPet.Name": "Auto Pet Pet",
+    "Config.AutoPetPetRange.Name": "Auto Pet Pet Range",
+    
+    // Mining
+    "Config.MiningPage.Name": "Mining",
+    "Config.AutoCollectCoal.Name": "Auto Collect Coal",
+    "Config.AutoCollectCoal.Tooltip": "When this option is enabled, coal from backpack and mine cart will be automatically collected for you.", // 1.0.1 Add
+    "Config.AutoCollectCoalRange.Name": "Auto Collect Coal Range",
+    "Config.AutoBreakContainer.Name": "Auto Break Container",
+    "Config.AutoBreakContainer.Tooltip": "This feature only works when you hold the melee weapon.", // 1.0.1 Add
+    "Config.AutoBreakContainerRange.Name": "Auto Break Container Range",
+    "Config.FindWeaponFromInventory.Name": "Find Weapon From Inventory",
+    "Config.FindWeaponFromInventory.Tooltip": "When this option is enabled, only a melee weapon (scythe) is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoOpenTreasure.Name": "Auto Open Treasure",
+    "Config.AutoOpenTreasureRange.Name": "Auto Open Treasure Range",
+    "Config.AutoClearCrystal.Name": "Auto Clear Crystal",
+    "Config.AutoClearCrystalRange.Name": "Auto Clear Crystal Range",
+    "Config.ShowMineShaftInfo.Name": "Show Mine Shaft Info",
+    "Config.ShowLadderInfo.Name": "Show Ladder Info",
+    "Config.ShowShaftInfo.Name": "Show Shaft Info",
+    "Config.ShowMonsterInfo.Name": "Show Monster Info",
+    "Config.ShowMineralInfo.Name":"Show Mineral Info",
+    
+    // Foraging
+    "Config.ForagingPage.Name": "Foraging",
+    "Config.AutoForage.Name":"Auto Forage",
+    "Config.AutoForageRange.Name":"Auto Forage Range",
+    "Config.AutoShakeTree.Name":"Auto Shake Tree",
+    "Config.AutoShakeTreeRange.Name":"Auto Shake Tree Range",
+    "Config.AutoHarvestMoss.Name":"Auto Harvest Moss",
+    "Config.AutoHarvestMoss.Tooltip":"This feature only works when you hold the scythe(melee weapon).", // 1.0.1 Add
+    "Config.AutoHarvestMossRange.Name":"Auto Harvest Moss Range",
+    "Config.FindScytheFromInventory.Name":"Find Scythe From Inventory",
+    "Config.FindScytheFromInventory.Tooltip":"When this option is enabled, only a scythe (melee weapon) is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoUseVinegarOnTree.Name":"Auto Use Vinegar On Tree", // 1.0.1 Add
+    "Config.AutoUseVinegarOnTree.Tooltip":"This feature only works when you hold the vinegar.", // 1.0.1 Add
+    "Config.AutoUseVinegarOnTreeRange.Name":"Auto Use Vinegar On Tree Range", // 1.0.1 Add
+    "Config.AutoClearTwig.Name":"Auto Clear Twig",
+    "Config.AutoClearTwig.Tooltip":"This feature only works when you hold the axe.", // 1.0.1 Add
+    "Config.AutoClearTwigRange.Name":"Auto Clear Twig Range",
+    "Config.StopAutoClearTwigStamina.Name":"Stop Auto Clear Twig Stamina",
+    "Config.FindAxeFromInventory.Name":"Find Axe From Inventory",
+    "Config.FindAxeFromInventory.Tooltip":"When this option is enabled, only an axe is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoClearTreeSeed.Name":"Auto Clear Tree Seed",
+    "Config.AutoClearTreeSeed.Tooltip":"This feature only works when you hold the axe.", // 1.0.1 Add
+    "Config.AutoClearTreeSeedRange.Name":"Auto Clear Tree Seed Range",
+    "Config.StopAutoClearTreeSeedStamina.Name":"Stop Auto Clear Tree Seed Stamina",
+    
+    // Food
+    "Config.FoodPage.Name": "Food",
+    "Config.AutoEatFoodForStamina.Name": "Auto Eat Food For Stamina",
+    "Config.AutoEatFoodStaminaRate.Name": "Auto Eat Food Stamina Rate",
+    "Config.IntelligentFoodSelectionForStamina.Name": "Intelligent Food Selection For Stamina",
+    "Config.IntelligentFoodSelectionForStamina.Tooltip": "When this option is enabled, the most cost-effective food in the backpack is automatically selected.", // 1.0.1 Add
+    "Config.AutoEatFoodForHealth.Name": "Auto Eat Food For Health",
+    "Config.AutoEatFoodHealthRate.Name": "Auto Eat Food Health Rate",
+    "Config.IntelligentFoodSelectionForHealth.Name": "Intelligent Food Selection For Health",
+    "Config.IntelligentFoodSelectionForHealth.Tooltip": "When this option is enabled, the most cost-effective food in the backpack is automatically selected.", // 1.0.1 Add
+    "Config.AutoEatBuffFood.Name": "Auto Eat Buff Food",
+    "Config.AutoEatBuffFood.Tooltip": "When this option is enabled, if the player does not have a buff from food, they will automatically eat food with the speed buff in their inventory.(e.g. spinner)", // 1.0.1 Add
+    "Config.FoodBuffMaintain1.Name": "Food Buff Maintain 1", // 1.0.2 Add
+    "Config.FoodBuffMaintain2.Name": "Food Buff Maintain 2", // 1.0.2 Add
+    "Config.FoodBuffMaintain.Tooltip": "The food buff that you want to maintain.When both are set to non-None, it will prioritize finding food with both buffs in the inventory, and if not, it will look for food with buff 1, if it still doesn't, it will look for food with buff 2, and when only one item is None, it will look for food with another buff.(For example, if you have both Spinner and Crab Cake in your backpack, if the two options are set to Speed and Luck respectively, the Spinner will be preferred.When one option is set to Speed and the other is set to None, the items further in the backpack are selected.)", // 1.0.2 Add
+    "Config.AutoDrinkBuffDrink.Name": "Auto Drink Buff Drink",
+    "Config.AutoDrinkBuffDrink.Tooltip": "When this option is enabled, if the player does not have a buff from a drink, they will automatically drink the drink with the speed buff in their inventory. (e.g. coffee)", // 1.0.1 Add
+    "Config.DrinkBuffMaintain1.Name": "Drink Buff Maintain 1", // 1.0.2 Add
+    "Config.DrinkBuffMaintain2.Name": "Drink Buff Maintain 2", // 1.0.2 Add
+    "Config.DrinkBuffMaintain.ToolTip": "The drink buff that you want to maintain.When both are set to non-None, it will prioritize finding drink with both buffs in the inventory, and if not, it will look for drink with buff 1, if it still doesn't, it will look for drink with buff 2, and when only one item is None, it will look for drink with another buff.", // 1.0.2 Add
+    
+    // Other
+    "Config.OtherPage.Name": "Other",
+    "Config.MagneticRadiusIncrease.Name": "Magnetic Radius Increase", // 1.0.2 Add
+    "Config.AutoClearStone.Name": "Auto Clear Stone",
+    "Config.AutoClearStone.Tooltip": "This feature only works when you hold the pickaxe.", // 1.0.1 Add
+    "Config.AutoClearStoneRange.Name": "Auto Clear Stone Range",
+    "Config.StopAutoClearStoneStamina.Name": "Stop Auto Clear Stone Stamina",
+    "Config.FindPickaxeFromInventory.Name": "Find Pickaxe From Inventory",
+    "Config.FindPickaxeFromInventory.Tooltip": "When this option is enabled, only a pickaxe is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.OnlyClearStoneFromFarm.Name": "Only Clear Stone From Farm", // 1.0.1 Add
+    "Config.OnlyClearStoneFromFarm.Tooltip": "When this option is enabled, only stone types that spawn on farms will be cleared.When this option is disabled, all types of stone (including ores) will be cleared.Regardless of whether this option is enabled or not, it will not work in mine shaft and volcano dungeon.", // 1.0.1 Add
+    "Config.AutoClearWeeds.Name": "Auto Clear Weeds",
+    "Config.AutoClearWeeds.Tooltip": "This feature only works when you hold the scythe(melee weapon).", // 1.0.1 Add
+    "Config.AutoClearWeedsRange.Name": "Auto Clear Weeds Range",
+    "Config.FindToolFromInventory.Name": "Find Tool From Inventory",
+    "Config.FindToolFromInventory.Tooltip": "When this option is enabled, only a scythe (melee weapon) is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoDigArtifactSpots.Name": "Auto Dig Artifact Spots",
+    "Config.AutoDigArtifactSpots.Tooltip": "This feature only works when you hold the hoe.Artifact spots and seed spots will be mined.", // 1.0.1 Add
+    "Config.AutoDigArtifactSpotsRange.Name": "Auto Dig Artifact Spots Range",
+    "Config.StopAutoDigArtifactSpotsStamina.Name": "Stop Auto Dig Artifact Spots Stamina",
+    "Config.FindHoeFromInventory.Name": "Find Hoe From Inventory",
+    "Config.FindHoeFromInventory.Tooltip": "When this option is enabled, only a hoe is required in the backpack for the feature to work.", // 1.0.1 Add
+    "Config.AutoHarvestMachine.Name": "Auto Harvest Machine",
+    "Config.AutoHarvestMachineRange.Name": "Auto Harvest Machine Range",
+    "Config.AutoTriggerMachine.Name": "Auto Trigger Machine",
+    "Config.AutoTriggerMachineRange.Name": "Auto Trigger Machine Range",
+    "Config.AutoGarbageCan.Name":"Auto Garbage Can",
+    "Config.AutoGarbageCanRange.Name":"Auto Garbage Can Range",
+    "Config.StopAutoGarbageCanNearVillager.Name":"Stop Auto Garbage Can Near Villager",
+    
+    // Buff Type
+    "BuffType.Combat.Name": "Combat", // 1.0.2 Add
+    "BuffType.Farming.Name": "Farming", // 1.0.2 Add
+    "BuffType.Fishing.Name": "Fishing", // 1.0.2 Add
+    "BuffType.Mining.Name": "Mining", // 1.0.2 Add
+    "BuffType.Luck.Name": "Luck", // 1.0.2 Add
+    "BuffType.Foraging.Name": "Foraging", // 1.0.2 Add
+    "BuffType.MaxStamina.Name": "Max Stamina", // 1.0.2 Add
+    "BuffType.MagneticRadius.Name": "Magnetic Radius", // 1.0.2 Add
+    "BuffType.Speed.Name": "Speed", // 1.0.2 Add
+    "BuffType.Defense.Name": "Defense", // 1.0.2 Add
+    "BuffType.Attack.Name": "Attack", // 1.0.2 Add
+    "BuffType.None.Name": "None", // 1.0.2 Add
+    
+    // Message
+    "Message_Stamina": "You don't have the stamina anymore."
+}

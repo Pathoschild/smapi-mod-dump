@@ -1,11 +1,12 @@
 ﻿{
-  "Name": "Mobile Catalogues",
+  "Name": "Mobile Catalogues Continued",
   "Author": "JoXW, aedenthorn",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Online shopping for your mobile phone.",
   "UniqueID": "JoXW.MobileCatalogues",
   "EntryDll": "MobileCatalogues.dll",
   "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21017@Catalogues" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.ModUpdater",

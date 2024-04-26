@@ -18,6 +18,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData;
 using Unlockable_Bundles.Lib.Enums;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -49,6 +50,7 @@ namespace Unlockable_Bundles.Lib
         public string ShopEvent = null;
         public ShopType ShopType = ShopType.Dialogue;
         public bool? InstantShopRemoval = null;
+        public string ShopColor = "";
 
         public bool DrawQuestionMark;
         public Vector2 QuestionMarkOffset;
@@ -67,6 +69,7 @@ namespace Unlockable_Bundles.Lib
         public string OverviewAnimation = null;
         public int OverviewTextureWidth = 32;
         public string OverviewDescription = null;
+        public string OverviewColor = "";
 
         public int RandomPriceEntries = 0;
         public int RandomRewardEntries = 0;
@@ -104,6 +107,7 @@ namespace Unlockable_Bundles.Lib
                 ShopEvent = v.ShopEvent,
                 ShopType = v.ShopType,
                 InstantShopRemoval = v.InstantShopRemoval,
+                ShopColor = v.ShopColor.asHexString(),
 
                 DrawQuestionMark = v.DrawQuestionMark,
                 QuestionMarkOffset = v.QuestionMarkOffset,
@@ -122,6 +126,7 @@ namespace Unlockable_Bundles.Lib
                 OverviewAnimation = v.OverviewAnimation,
                 OverviewTextureWidth = v.OverviewTextureWidth,
                 OverviewDescription = v.OverviewDescription,
+                OverviewColor = v.OverviewColor.asHexString(),
 
                 RandomPriceEntries = v.RandomPriceEntries,
                 RandomRewardEntries = v.RandomRewardEntries,
@@ -163,8 +168,8 @@ namespace Unlockable_Bundles.Lib
                 return BundleDescription;
 
             return ShopType switch {
-                ShopType.ParrotPerch => ModEntry._Helper.Translation.Get("ub_parrot_ask"),
-                ShopType.SpeechBubble => ModEntry._Helper.Translation.Get("ub_speech_ask"),
+                ShopType.ParrotPerch => Helper.Translation.Get("ub_parrot_ask"),
+                ShopType.SpeechBubble => Helper.Translation.Get("ub_speech_ask"),
                 _ => ""
             };
         }
@@ -297,6 +302,50 @@ namespace Unlockable_Bundles.Lib
                 ShopType.CCBundle or ShopType.AltCCBundle or ShopType.ParrotPerch => "none",
                 _ => "carpentry"
             };
+        }
+
+        public Color parseColor()
+            => parseColor(ID, ShopColor);
+
+        public Color parseOverviewColor()
+            => parseColor(ID, OverviewColor);
+
+        public static Color parseColor(string ID, string shopColor)
+        {
+            try {
+                shopColor = shopColor.Trim();
+                if (shopColor == "")
+                    return Color.White;
+
+                System.Drawing.Color color;
+                if (shopColor.StartsWith("#")) {
+                    color = System.Drawing.ColorTranslator.FromHtml(shopColor);
+
+                    if (color != System.Drawing.Color.Empty)
+                        return new Color(color.R, color.G, color.B, color.A);
+                }
+
+                if (shopColor.StartsWith("rgb(")) {
+                    var rgb = shopColor.Substring(4, shopColor.Length - 5);
+                    var split = rgb.Split(",");
+                    return new Color(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]));
+                }
+
+                if (shopColor.StartsWith("rgba(")) {
+                    var rgb = shopColor.Substring(5, shopColor.Length - 6);
+                    var split = rgb.Split(",");
+                    return new Color(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]), int.Parse(split[3]));
+                }
+
+                color = System.Drawing.Color.FromName(shopColor);
+                if (color.IsKnownColor)
+                    return new Color(color.R, color.G, color.B, color.A);
+            } catch (Exception ex) {
+                Monitor.LogOnce(ex.Message);
+            }
+
+            Monitor.LogOnce($"Could not parse '{shopColor}' to a Color: {ID}", LogLevel.Warn);
+            return Color.White;
         }
     }
 }

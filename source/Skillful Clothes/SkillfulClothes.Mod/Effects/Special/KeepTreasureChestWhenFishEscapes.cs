@@ -57,7 +57,8 @@ namespace SkillfulClothes.Effects.Special
                 // fish escaped but treasure was caught                
                 if (distanceFromCatching.GetValue() < 0.1 && treasureCaught.GetValue())
                 {
-                    fishingRod.openChestEndFunction(0);
+                    fishingRod.treasureCaught = true;
+                    fishingRod.openTreasureMenuEndFunction(0);
                 }                                                            
             }
         }

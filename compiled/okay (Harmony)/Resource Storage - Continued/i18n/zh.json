@@ -1,0 +1,19 @@
+{
+  "GMCM_Option_ModEnabled_Name": "启用模组",
+  "GMCM_Option_AutoUse_Name": "允许消耗",
+  "GMCM_Option_ShowMessage_Name": "显示消息",
+  "GMCM_Option_ResourcesKey_Name": "资源按键",
+  "GMCM_Option_ModKey1_Name": "取出按键 1",
+  "GMCM_Option_ModKey2_Name": "取出按键 2",
+  "GMCM_Option_ModKey3_Name": "取出按键 3",
+  "GMCM_Option_ModKey1Amount_Name": "按键 1 数量",
+  "GMCM_Option_ModKey2Amount_Name": "按键 2 数量",
+  "GMCM_Option_ModKey3Amount_Name": "按键 3 数量",
+  "GMCM_Option_IconOffsetX_Name": "图标偏移 X 坐标",
+  "GMCM_Option_IconOffsetY_Name": "图标偏移 Y 坐标",
+  "auto": "自动储存",
+  "take": "取出",
+  "added-x-y": "已将 {0} 个{1}添加至仓库",
+  "removed-x-y": "已从仓库取出 {0} 个{1}",
+  "resources": "资源"
+}

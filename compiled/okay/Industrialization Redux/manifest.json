@@ -1,0 +1,19 @@
+{
+  "Name": "Industrialization Redux DLL Component",
+  "Author": "GaLaxY256",
+  "Version": "1.0.1",
+  "Description": "Updated version of Industrialization",
+  "UniqueID": "G256.IR.Code",
+  "UpdateKeys": [], // when you release the mod, see https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Update_checks
+  "EntryDll": "IndustrializationRedux.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": false
+    }
+  ]
+}

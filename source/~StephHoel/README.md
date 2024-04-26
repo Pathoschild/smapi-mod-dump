@@ -8,11 +8,17 @@ for queries and analysis.**
 
 # My Stardew Valley Mods
 
-This repository contains my mods for [Stardew Valley](http://stardewvalley.net/):
+This repository contains my mods for [Stardew Valley for PC](http://stardewvalley.net/):
 
 * [AddMoney](AddMoney) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/21016))
-* [AutoWater](AutoWater) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/21022))
-* [ConfigureMachineSpeed](Configure Machine Speed) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/21005))
+* [AutoWater SDV1.6](AutoWater) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/21022))
+* [Configure Machine Speed SDV1.6](ConfigureMachineSpeed) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/21005))
+
+This codes are based on:
+
+* AddMoney by [Pempi](https://www.nexusmods.com/stardewvalley/mods/20111)
+* AutoWater SDV1.6 by [KochiPiccle](https://www.nexusmods.com/stardewvalley/mods/1666)
+* Configure Machine Speed SDV1.6 by [BayesianBandit](https://www.nexusmods.com/stardewvalley/mods/3519)
 
 ## Translating the mods
 <!--
@@ -31,7 +37,7 @@ on the wiki for help contributing translations.
 
 &nbsp;     | Add Money                  | Configure Machine Speed
 :--------- | :------------------------- | :--------------------------------------
-Chinese    | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
+Chinese    | [❑](AddMoney/i18n)         | [✓](ConfigureMachineSpeed/i18n/zh.json)
 French     | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
 German     | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
 Hungarian  | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
@@ -42,3 +48,13 @@ Portuguese | [✓](AddMoney/i18n/pt.json) | [✓](ConfigureMachineSpeed/i18n/pt.
 Russian    | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
 Spanish    | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
 Turkish    | [❑](AddMoney/i18n)         | [❑](ConfigureMachineSpeed/i18n)
+
+<!-- End translations -->
+
+## Dev
+
+* [Steph Hoel](https://github.com/stephhoel)
+
+## Thanks
+
+Thanks for Pathoschild to help me.

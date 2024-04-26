@@ -7,6 +7,6 @@
     "Price": 50,
     "Texture": "Fishnets/Fishnet",
     "SpriteIndex": 0
-  },//"Fish Net/50/-300/Crafting/{0}/{1}",
+  },
   "Recipe": "335 3 771 30/Field/{0}/false/Fishing 6/{1}"
 }

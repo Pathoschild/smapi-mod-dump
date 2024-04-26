@@ -1,0 +1,10 @@
+{
+  "Name": "Skinny Animals",
+  "Author": "tem696969696969",
+  "Version": "1.0.0",
+  "Description": "Skinny animals won't block your way!",
+  "UniqueID": "tem696969696969.SkinnyAnimals",
+  "EntryDll": "SkinnyAnimals.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21826" ]
+}

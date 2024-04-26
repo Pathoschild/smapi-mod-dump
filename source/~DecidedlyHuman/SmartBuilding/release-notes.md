@@ -7,6 +7,31 @@ for queries and analysis.**
 ----
 
 # Smart Building release notes
+## 1.8.8
+#### Fixes
+* Potentially fixed an issue with modded crops.
+## 1.8.7
+#### Additions
+* Added a toggle to the time freezing setting. When enabled, time will only freeze while on the farm.
+## 1.8.6
+#### Fixes
+* Fixed inserting items into machines taking too many items.
+* Applied fixed Chinese translation, thanks to Aurelionyang on Nexus!
+## 1.8.5
+#### Additions
+* Added a beta cheaty feature. With it enabled, time will freeze when in build mode.
+## 1.8.4
+#### Fixes
+* Made more lax object placement work again. Oops!
+## 1.8.3
+#### Fixes
+* Refactored some placement detection logic for better sapling support.
+## 1.8.2
+#### Fixes
+* Fixed Toolbar Icon integration.
+## 1.8.1
+#### Fixes
+* Potentially fixed the problem people are having with cask placement.
 ## 1.8.0
 #### Fixes
 * 1.6 compatibility.

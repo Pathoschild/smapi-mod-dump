@@ -9,24 +9,25 @@
 *************************************************/
 
 {
-    "Name": "Mobile Phone App for Get Glam",
-    "Author": "JoXW, aedenthorn",
-    "Version": "0.1.1",
-    "Description": "Adds an app that triggers the default key for Get Glam.",
-    "UniqueID": "JoXW.MobileGetGlam",
-    "MinimumApiVersion": "4.0.0",
-    "ContentPackFor": {
-        "UniqueID": "JoXW.MobilePhone",
-        "MinimumVersion": "1.0.0"
+  "Name": "Mobile Phone App for Get Glam",
+  "Author": "JoXW, aedenthorn",
+  "Version": "0.1.2",
+  "Description": "Adds an app that triggers the default key for Get Glam.",
+  "UniqueID": "JoXW.MobileGetGlam",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21017@GetGlam" ],
+  "ContentPackFor": {
+    "UniqueID": "JoXW.MobilePhone",
+    "MinimumVersion": "1.0.0"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "MartyrPher.GetGlam",
+      "IsRequired": true
     },
-    "Dependencies": [
-        {
-            "UniqueID": "MartyrPher.GetGlam",
-            "IsRequired": true
-        },
-        {
-            "UniqueID": "JoXW.MobilePhone",
-            "IsRequired": true
-        }
-    ]
+    {
+      "UniqueID": "JoXW.MobilePhone",
+      "IsRequired": true
+    }
+  ]
 }

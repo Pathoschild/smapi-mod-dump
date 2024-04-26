@@ -28,10 +28,10 @@ namespace FashionSense.Framework.Patches.Menus
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Constructor(_menu, new[] { typeof(LoadGameMenu), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(SaveFileSlotPostfix)));
+            harmony.Patch(AccessTools.Constructor(_menu, new[] { typeof(LoadGameMenu), typeof(Farmer), typeof(int?) }), postfix: new HarmonyMethod(GetType(), nameof(SaveFileSlotPostfix)));
         }
 
-        private static void SaveFileSlotPostfix(SaveFileSlot __instance, LoadGameMenu menu, Farmer farmer)
+        private static void SaveFileSlotPostfix(SaveFileSlot __instance, LoadGameMenu menu, Farmer farmer, int? slotNumber)
         {
             // Handle the loading cached accessories
             FashionSense.LoadCachedAccessories(farmer);

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/TheMightyAmondee/Pravoloxinone
+   Git: https://github.com/TheMightyAmondee/Pravoloxinone.git
+
+mods:
+   Pravoloxinone
+
+latest commit:
+   commit 804f8b0b9eb4f80ae94a4bff1d1a6abfcab80cbe
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Thu Apr 25 19:56:47 2024 +1000
+   
+       ready for release
+   

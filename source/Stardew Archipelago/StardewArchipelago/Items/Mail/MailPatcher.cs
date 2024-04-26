@@ -149,7 +149,7 @@ namespace StardewArchipelago.Items.Mail
 
         private static void CleanMailboxUntilNonEmptyLetter()
         {
-            if (!ModEntry.Instance.State.HideEmptyArchipelagoLetters)
+            if (!ModEntry.Instance.Config.HideEmptyArchipelagoLetters)
             {
                 return;
             }

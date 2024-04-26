@@ -1,53 +1,53 @@
 {
   // GUI - Game Menu
-  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
+  "OptionsTabTooltip": "UI Info Suite 2 选项",
   //GUI - Billboard
   "Billboard": "布告栏",
   "Calendar": "日历",
   //GUI - Seed shop
-  "HarvestPrice": "收获价",
+  "HarvestPrice": "收获价格",
   //Production
   "Days": "天",
-  "Hours": "小时",
-  "Minutes": "分钟",
+  "Hours": "时",
+  "Minutes": "分",
   //Harvest
   "DaysToMature": "天后成熟",
   "ReadyToHarvest": "可以收获！",
   //Display icons - General
   "TodaysRecipe": "今日食谱：",
   "TravelingMerchantIsInTown": "旅行商人在镇上！",
-  "RainNextDay": "明日有雨",
-  "ThunderstormNextDay": "明日雷雨",
-  "SnowNextDay": "明日有雪",
-  "IslandRainNextDay": "明日有雨",
-  "IslandThunderstormNextDay": "明日雷雨",
-  "DaysUntilToolIsUpgraded": "{1}还有{0}天完成！",
+  "RainNextDay": "明天有雨",
+  "ThunderstormNextDay": "明天雷雨",
+  "SnowNextDay": "明天有雪",
+  "IslandRainNextDay": "明天岛屿有雨",
+  "IslandThunderstormNextDay": "明天岛屿雷雨",
+  "DaysUntilToolIsUpgraded": "{1}还有 {0} 天完成！",
   "ToolIsFinishedBeingUpgraded": "{0}完成了！",
   "NpcBirthday": "{0}的生日",
-  "RobinBuildingStatus": "罗宾将在{0}天内完成您的新建筑",
-  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
+  "RobinBuildingStatus": "罗宾将在 {0} 天内完成你的新建筑",
+  "RobinHouseUpgradeStatus": "罗宾将在 {0} 天内完成升级你的房子", 
   // Display icons - Foragables
   "CanFindSalmonberry": "今天可以找到美洲大树莓",
   "CanFindBlackberry": "今天可以找到黑莓",
   "CanFindHazelnut": "今天可以在树上找到榛子",
   //Display icons - Luck
-  "DailyLuckValue": "你今日的幸运值为{0}",
+  "DailyLuckValue": "你的今日幸运值为 {0}",
   "FeelingLucky": "你感到今天很幸运！！",
   "LuckyButNotTooLucky": "你感到很幸运……但不是太幸运",
   "NotFeelingLuckyAtAll": "你今天一点都不幸运……",
-  "MaybeStayHome": "也许你今天应该呆在家里……",
+  "MaybeStayHome": "也许你今天应该待在家里……",
   "LuckStatus1": "你感到今天很幸运",
   "LuckStatus2": "你感到今天有点幸运",
   "LuckStatus3": "今天掌握在你的手中",
   "LuckStatus4": "今天精灵们十分冷漠",
   "LuckStatus5": "今天运气不会站在你这边",
-  "LuckStatus6": "也许你今天应该呆在家里……",
+  "LuckStatus6": "也许你今天应该待在家里……",
   //Settings - General
   "ShowLevelUpAnimation": "显示升级动画",
   "ShowExperienceBar": "显示经验条",
   "AllowExperienceBarToFadeOut": "允许经验条淡出",
   "ShowExperienceGain": "显示获得的经验值",
-  "ShowLocationOfTownsPeople": "在地图上显示NPC",
+  "ShowLocationOfTownsPeople": "在地图上显示 NPC",
   "ShowAnimalsNeedPets": "显示动物需要关爱的图标",
   "HideAnimalPetOnMaxFriendship": "在动物达到最大心情时隐藏",
   "ShowCropAndBarrelTooltip": "显示作物与桶的剩余时间",
@@ -59,7 +59,7 @@
   "ShowHeartFills": "显示关系的爱心填充",
   "ShowTodaysGifts": "显示今天赠送的礼物",
   //Settings - Show icons
-  "ShowBirthdayIcon": "显示NPC生日图标",
+  "ShowBirthdayIcon": "显示生日图标",
   "HideBirthdayIfFullFriendShip": "满好感度时隐藏生日图标",
   "ShowTravelingMerchant": "显示旅行商人",
   "HideMerchantWhenVisited": "在访问后隐藏",

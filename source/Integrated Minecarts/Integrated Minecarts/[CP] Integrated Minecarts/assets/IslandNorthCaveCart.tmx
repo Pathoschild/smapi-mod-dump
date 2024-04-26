@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="2" height="3" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="1">
+ <properties>
+  <property name="ForceSpawnForageables" value="T"/>
+  <property name="LocationContext" value="Island"/>
+  <property name="SeasonOverride" value="summer"/>
+  <property name="TreatAsOutdoors" value="T"/>
+  <property name="Warp" value="6 12 IslandNorth 21 47"/>
+ </properties>
+ <tileset firstgid="1" name="p" tilewidth="16" tileheight="16" tilecount="64" columns="4">
+  <image source=".paths.png" width="64" height="256"/>
+ </tileset>
+ <tileset firstgid="65" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="72" columns="6">
+  <image source=".cave.png" width="96" height="192"/>
+  <tile id="13">
+   <properties>
+    <property name="Spawnable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="48">
+   <animation>
+    <frame tileid="48" duration="100"/>
+    <frame tileid="50" duration="100"/>
+    <frame tileid="52" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="49">
+   <animation>
+    <frame tileid="49" duration="120"/>
+    <frame tileid="51" duration="120"/>
+    <frame tileid="53" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="54">
+   <animation>
+    <frame tileid="54" duration="100"/>
+    <frame tileid="56" duration="100"/>
+    <frame tileid="58" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="55">
+   <animation>
+    <frame tileid="55" duration="100"/>
+    <frame tileid="57" duration="100"/>
+    <frame tileid="59" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="60">
+   <animation>
+    <frame tileid="60" duration="100"/>
+    <frame tileid="62" duration="100"/>
+    <frame tileid="64" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="61">
+   <animation>
+    <frame tileid="61" duration="100"/>
+    <frame tileid="63" duration="100"/>
+    <frame tileid="65" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="66">
+   <animation>
+    <frame tileid="66" duration="100"/>
+    <frame tileid="68" duration="100"/>
+    <frame tileid="70" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="67">
+   <animation>
+    <frame tileid="67" duration="100"/>
+    <frame tileid="69" duration="100"/>
+    <frame tileid="71" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="137" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="288" columns="16">
+  <image source="Mines/.mine.png" width="256" height="288"/>
+ </tileset>
+ <layer id="1" name="Back" width="2" height="3">
+  <data encoding="csv">
+78,78,
+78,78,
+78,78
+</data>
+ </layer>
+ <layer id="2" name="Buildings" width="2" height="3">
+  <data encoding="csv">
+99,88,
+0,345,
+332,361
+</data>
+ </layer>
+ <layer id="3" name="Front" width="2" height="3">
+  <data encoding="csv">
+0,93,
+316,1610612828,
+93,65
+</data>
+ </layer>
+ <layer id="9" name="AlwaysFront" width="2" height="3">
+  <data encoding="csv">
+0,0,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer id="4" name="Paths" width="2" height="3">
+  <data encoding="csv">
+0,0,
+0,0,
+0,0
+</data>
+ </layer>
+ <objectgroup id="5" name="Back"/>
+ <objectgroup id="6" name="Buildings"/>
+ <objectgroup id="7" name="Front"/>
+ <objectgroup id="8" name="Paths"/>
+</map>

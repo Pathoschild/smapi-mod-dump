@@ -1,0 +1,97 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+	"ConfigSchema": {
+		"WildAndFineGrapesPriceChange": {
+			"AllowValues": "false, true",
+			"Default": "true",
+			"Section": "Price Changes"},
+		"CommonFiddleheadFernPriceChange": {
+			"AllowValues": "false, true",
+			"Default": "true",
+			"Section": "Price Changes"},
+		"ForageSurvivalBurgerPriceChange": {
+			"AllowValues": "false, true",
+			"Default": "true",
+			"Section": "Price Changes"},
+		"TapperDaysNeededPriceChange": {
+			"AllowValues": "false, true",
+			"Default": "true",
+			"Section": "Price Changes"},
+	},
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "398", "CustomFields" ], //Grape
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.WildGrapePrice": "80", // default: 80
+				"Goldenrevolver.ForageFantasy.FineGrapePrice": "110", // default: 110
+            },
+			"When": {"WildAndFineGrapesPriceChange": true}
+        },
+		{
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "259", "CustomFields" ], //Fiddlehead Fern
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.CommonFiddleheadFernPrice": "90", // default: 90
+            },
+			"When": {"CommonFiddleheadFernPriceChange": true}
+        },
+		{
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "241", "CustomFields" ], //Survival Burger
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.ForageSurvivalBurgerPrice": "180", // default: 180
+            },
+			"When": {"ForageSurvivalBurgerPriceChange": true}
+        },
+		{
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "724", "CustomFields" ], //Maple Syrup
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.MapleSyrupPriceBasedOn9Days": "200", // default: 200
+            },
+			"When": {"TapperDaysNeededPriceChange": true}
+        },
+		{
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "725", "CustomFields" ], //Oak Resin
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.OakResinPriceBasedOn7Days": "150", // default: 150
+            },
+			"When": {"TapperDaysNeededPriceChange": true}
+        },
+		{
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "726", "CustomFields" ], //Pine Tar
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.PineTarPriceBasedOn5Days": "100", // default: 100
+            },
+			"When": {"TapperDaysNeededPriceChange": true}
+        },
+		{
+            "Action": "EditData",
+            "Target": "Data/Objects",
+			"TargetField": [ "MysticSyrup", "CustomFields" ], //Mystic Syrup
+            "Entries": {
+                "Goldenrevolver.ForageFantasy.MysticSyrupPriceBasedOn7Days": "1000", // default: 1000
+            },
+			"When": {"TapperDaysNeededPriceChange": true}
+        },
+    ]
+}

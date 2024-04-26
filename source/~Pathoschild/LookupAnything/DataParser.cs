@@ -191,6 +191,8 @@ namespace Pathoschild.Stardew.LookupAnything
                             curLocations.Add(new FishSpawnLocationData(locationName, fish.FishAreaId, seasons.ToArray()));
                         }
                     }
+                    else
+                        curLocations.Add(new FishSpawnLocationData(locationName, fish.FishAreaId, new[] { "spring", "summer", "fall", "winter" }));
                 }
 
                 // combine seasons for same area

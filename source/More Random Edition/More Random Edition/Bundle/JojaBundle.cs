@@ -21,21 +21,25 @@ namespace Randomizer
 		/// </summary>
 		protected override void Populate()
 		{
-			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
+			RNG rng = BundleRandomizer.Rng;
+
+			BundleType = rng.GetAndRemoveRandomValueFromList(RoomBundleTypes);
 
 			switch (BundleType)
 			{
 				case BundleTypes.JojaMissing:
 					SetBundleName("bundle-joja-missing");
 
-					RequiredItems = new List<RequiredItem>
+					RequiredItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.EndgameItem)),
-						new RequiredItem(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.RareItem)),
-						new RequiredItem(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.LargeTimeRequirements)),
-						new RequiredItem(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements)),
-						new RequiredItem(
-							Globals.RNGGetRandomValueFromList(ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.Impossible, new List<int> { (int)ObjectIndexes.AnyFish }))
+						new(ItemList.GetRandomItemAtDifficulty(rng, ObtainingDifficulties.EndgameItem)),
+						new(ItemList.GetRandomItemAtDifficulty(rng, ObtainingDifficulties.RareItem)),
+						new(ItemList.GetRandomItemAtDifficulty(rng, ObtainingDifficulties.LargeTimeRequirements)),
+						new(ItemList.GetRandomItemAtDifficulty(rng, ObtainingDifficulties.MediumTimeRequirements)),
+						new(
+							rng.GetRandomValueFromList(
+								ItemList.GetItemsBelowDifficulty(
+									ObtainingDifficulties.Impossible))
 						)
 					};
 					MinimumRequiredItems = 5;

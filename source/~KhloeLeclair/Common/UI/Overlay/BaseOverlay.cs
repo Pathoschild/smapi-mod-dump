@@ -36,7 +36,7 @@ public class BaseOverlay<T> : IOverlay, IDisposable where T : IClickableMenu {
 
 	private bool hasOtherKeys;
 	private readonly int ScreenID;
-	private Rectangle LastViewport;
+	private xTile.Dimensions.Rectangle LastViewport;
 
 	#region Lifecycle
 
@@ -46,7 +46,7 @@ public class BaseOverlay<T> : IOverlay, IDisposable where T : IClickableMenu {
 		AssumeUIMode = assumeUI;
 
 		ScreenID = Context.ScreenId;
-		LastViewport = Game1.uiViewport.ToXna();
+		LastViewport = Game1.uiViewport;
 
 		RegisterEvents();
 	}
@@ -98,7 +98,7 @@ public class BaseOverlay<T> : IOverlay, IDisposable where T : IClickableMenu {
 
 	protected virtual bool ReceiveButtonPressed(object? sender, ButtonPressedEventArgs e) { return false; }
 
-	protected virtual void ReceiveGameWindowResized(Rectangle NewViewport) { }
+	protected virtual void ReceiveGameWindowResized(xTile.Dimensions.Rectangle NewViewport) { }
 
 	#endregion
 
@@ -153,9 +153,8 @@ public class BaseOverlay<T> : IOverlay, IDisposable where T : IClickableMenu {
 
 			var view = Game1.uiViewport;
 			if (view.Width != LastViewport.Width || view.Height != LastViewport.Height) {
-				Rectangle rect = view.ToXna();
-				ReceiveGameWindowResized(rect);
-				LastViewport = rect;
+				ReceiveGameWindowResized(view);
+				LastViewport = view;
 			}
 
 			HandleUpdateTicked();

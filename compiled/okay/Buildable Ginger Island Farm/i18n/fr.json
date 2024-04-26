@@ -1,4 +1,9 @@
 ﻿{
+	// Menu
+	"Menu.GingerIslandFarm.DisplayName": "Ferme de l'île Gingembre",
+	"Menu.CarpenterMenu.ChooseLocation": "Où voulez-vous gérer les bâtiments ?",
+	"Menu.PurchaseAnimalsMenu.ChooseLocation": "Où voulez-vous gérer les animaux ?",
+
 	// GMCM
 	"GMCM.AllowBuildingInSlimeArea.Title": "Autoriser la construction dans la zone des slimes",
 	"GMCM.AllowBuildingInSlimeArea.Tooltip": "Définit s'il faut autoriser ou non la construction dans la zone des slimes."

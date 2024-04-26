@@ -1,0 +1,190 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
+            "Entries": {
+                "{{ModId}}_Goji_Berry_Seeds": {
+                    "Condition": "SEASON spring summer",
+                    "ItemId": "{{ModId}}_Goji_Berry_Seeds",
+                    "Price": 80
+                },
+                "{{ModId}}_Osmanthus_Sapling": {
+                    "ItemId": "{{ModId}}_Osmanthus_Sapling",
+                    "Price": 1200
+                }
+            },
+            "MoveEntries": [
+                {
+                    "ID": "{{ModId}}_Goji_Berry_Seeds",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON spring summer"
+                },
+                {
+                    "ID": "{{ModId}}_Osmanthus_Sapling",
+                    "BeforeId": "(O)628"
+                }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
+            "When": {
+                "KeepQLFG2Dupes": true,
+                "KeepCFEDupes": true,
+                "KeepWFCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Lavender_Seeds": {
+                    "Condition": "SEASON spring",
+                    "ItemId": "{{ModId}}_Lavender_Seeds",
+                    "Price": 120
+                },
+                "{{ModId}}_Jasmine_Sapling": {
+                    "ItemId": "{{ModId}}_Jasmine_Sapling",
+                    "Price": 1250
+                }
+            },
+            "MoveEntries": [
+                {
+                    "ID": "{{ModId}}_Lavender_Seeds",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON spring"
+                },
+                {
+                    "ID": "{{ModId}}_Jasmine_Sapling",
+                    "BeforeId": "(O)628"
+                }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
+            "When": {
+                "KeepQLFG2Dupes": true,
+                "KeepCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Lily_Bulb":{
+                    "Condition": "SEASON spring",
+                    "ItemId": "{{ModId}}_Lily_Bulb",
+                    "Price": 120
+                }
+            },
+            "MoveEntries": [
+                {
+                    "ID": "{{ModId}}_Lily_Bulb",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON spring"
+                }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
+            "When": {
+                "KeepCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Chrysanthemum_Seeds": {
+                    "Condition": "SEASON spring summer fall",
+                    "ItemId": "{{ModId}}_Chrysanthemum_Seeds",
+                    "Price": 65
+                },
+                "{{ModId}}_Lotus_Seeds": {
+                    "Condition": "SEASON spring summer fall",
+                    "ItemId": "{{ModId}}_Lotus_Seeds",
+                    "Price": 90
+                }
+            },
+            "MoveEntries": [
+                {
+                    "ID": "{{ModId}}_Chrysanthemum_Seeds",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON spring summer fall"
+                },
+                {
+                    "ID": "{{ModId}}_Lotus_Seeds",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON spring summer fall"
+                }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
+            "When": {
+                "KeepCCDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Sugarcane_Seeds": {
+                    "Condition": "SEASON fall",
+                    "ItemId": "{{ModId}}_Sugarcane_Seeds",
+                    "Price": 175
+                }
+            },
+            "MoveEntries": [
+                {
+                    "ID": "{{ModId}}_Sugarcane_Seeds",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON fall"
+                }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
+            "When": {
+                "KeepWFCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Chamomile_Seeds": {
+                    "Condition": "SEASON spring summer",
+                    "ItemId": "{{ModId}}_Chamomile_Seeds",
+                    "Price": 50
+                }
+            },
+            "MoveEntries": [
+                {
+                    "ID": "{{ModId}}_Chamomile_Seeds",
+                    "BeforeId": "GrassStarter",
+                    "Condition": "SEASON spring summer"
+                }
+            ]
+        }
+    ]
+}

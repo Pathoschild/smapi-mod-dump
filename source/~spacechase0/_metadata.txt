@@ -78,11 +78,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 1bdc009adaa21da62633806acdbfecb507f503ee
-   Author: Casey W <spacechase0@users.noreply.github.com>
-   Date:   Sun Mar 31 21:59:38 2024 -0500
+   commit 3d24e0d6918f30c5d3905e6b2a596e794e2c084b
+   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Sun Apr 21 22:51:32 2024 -0500
    
-       Merge pull request #430 from elizabethcd/fixterrain
-       
-       Fix crops, shipped items, recipes known
+       JA and SpaceCore update versions and minor fixes
    

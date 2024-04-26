@@ -108,8 +108,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
 
             var season = Game1.currentSeason;
-            var year = (int)((Game1.stats.DaysPlayed / 112) % 2); // 0 is year1, 1 is year2
-            var week = (int)((Game1.stats.DaysPlayed - 1) % 28 / 7); // 0-3
+            GetCurrentDateComponents((int)Game1.stats.DaysPlayed, out var year, out var week);
+
             var dayShortName = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
             var isRerunDay = dayShortName.Equals(RERUN_DAY);
             if (isRerunDay)
@@ -134,6 +134,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
             _recipeChoiceCache.Add(Game1.stats.DaysPlayed, recipeWeek);
             return recipeWeek;
+        }
+
+        public static void GetCurrentDateComponents(int daysPlayed, out int year, out int week)
+        {
+            year = (int)(((daysPlayed - 1) / 112) % 2); // 0 is year1, 1 is year2
+            week = (int)((daysPlayed - 1) % 28 / 7); // 0-3
         }
 
         private static string[] GetQueenOfSauceTvText(string recipeName, string recipeDetails, string[] recipeInfo)

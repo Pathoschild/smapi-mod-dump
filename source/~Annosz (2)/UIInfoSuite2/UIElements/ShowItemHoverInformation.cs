@@ -287,7 +287,8 @@ internal class ShowItemHoverInformation : IDisposable
       bool notShippedYet = hoveredObject != null &&
                            hoveredObject.countsForShippedCollection() &&
                            !Game1.player.basicShipped.ContainsKey(hoveredObject.ItemId) &&
-                           hoveredObject.Type != "Fish";
+                           hoveredObject.Type != "Fish" &&
+                           hoveredObject.Category != Object.skillBooksCategory;
       if (notShippedYet &&
           hoveredObject != null &&
           ModEntry.DGA.IsCustomObject(hoveredObject, out DynamicGameAssetsHelper? dgaHelper))

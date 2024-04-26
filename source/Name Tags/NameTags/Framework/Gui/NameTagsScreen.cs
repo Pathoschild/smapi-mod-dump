@@ -10,7 +10,6 @@
 
 using EnaiumToolKit.Framework.Screen;
 using EnaiumToolKit.Framework.Screen.Elements;
-using StardewValley;
 
 namespace NameTags.Framework.Gui;
 
@@ -83,11 +82,24 @@ public class NameTagsScreen : ScreenGui
             ModEntry.Config.RenderJunimo = renderJunimo.Toggled;
             ModEntry.ConfigReload();
         };
-        AddElementRange(renderMonster, renderPet, renderHorse, renderChild, renderVillager, renderJunimo,
-            new Button(Get("nameTags.button.nameTagColor"), Get("nameTags.button.nameTagColor.description"))
-            {
-                OnLeftClicked = () => { Game1.activeClickableMenu = new SettingColorScreen(); }
-            });
+        var targetLine = new ToggleButton(Get("nameTags.toggle.targetLine"),
+            Get("nameTags.toggle.targetLine.description"))
+        {
+            Toggled = ModEntry.Config.TargetLine
+        };
+        targetLine.OnLeftClicked = () =>
+        {
+            ModEntry.Config.TargetLine = targetLine.Toggled;
+            ModEntry.ConfigReload();
+        };
+        var textColor = new ColorPicker(Get("nameTags.button.nameTagColor"),
+            Get("nameTags.button.nameTagColor.description"), ModEntry.Config.Color);
+        textColor.OnColorChanged = () => { ModEntry.Config.Color = textColor.Color; };
+        var textBackgroundColor = new ColorPicker(Get("nameTags.button.nameTagBackgroundColor"),
+            Get("nameTags.button.nameTagBackgroundColor.description"), ModEntry.Config.BackgroundColor);
+        textBackgroundColor.OnColorChanged = () => { ModEntry.Config.BackgroundColor = textBackgroundColor.Color; };
+        AddElementRange(renderMonster, renderPet, renderHorse, renderChild, renderVillager, renderJunimo, targetLine,
+            textColor, textBackgroundColor);
     }
 
     public string Get(string key)

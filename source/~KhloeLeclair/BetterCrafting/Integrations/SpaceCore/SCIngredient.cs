@@ -20,52 +20,31 @@ using StardewModdingAPI;
 using StardewValley.Objects;
 using StardewValley;
 using Leclair.Stardew.Common.Inventory;
+using StardewValley.Inventories;
 
 namespace Leclair.Stardew.BetterCrafting.Integrations.SpaceCore;
 
 public class SCIngredient : IIngredient {
 
-	public readonly object Ingredient;
-	private readonly ModEntry Mod;
+	public readonly IIngredientMatcher Ingredient;
 
-	private readonly IReflectedProperty<string> DisplayNameProp;
-	private readonly IReflectedProperty<Texture2D> TextureProp;
-	private readonly IReflectedProperty<Rectangle?> SourceProp;
-	private readonly IReflectedProperty<int> QuantityProp;
-	private readonly IReflectedMethod GetAmountInListMethod;
-	private readonly IReflectedMethod ConsumeMethod;
-
-	public SCIngredient(object ingredient, ModEntry mod) {
+	public SCIngredient(IIngredientMatcher ingredient) {
 		Ingredient = ingredient;
-		Mod = mod;
-
-		DisplayNameProp = Mod.Helper.Reflection.GetProperty<string>(Ingredient, "DispayName");
-		TextureProp = Mod.Helper.Reflection.GetProperty<Texture2D>(Ingredient, "IconTexture");
-		SourceProp = Mod.Helper.Reflection.GetProperty<Rectangle?>(Ingredient, "IconSubrect");
-		QuantityProp = Mod.Helper.Reflection.GetProperty<int>(Ingredient, "Quantity");
-		GetAmountInListMethod = Mod.Helper.Reflection.GetMethod(Ingredient, "GetAmountInList");
-		ConsumeMethod = Mod.Helper.Reflection.GetMethod(Ingredient, "Consume");
-
-		// Ensure we can do stuff.
-		DisplayNameProp.GetValue();
-		TextureProp.GetValue();
-		SourceProp.GetValue();
-		QuantityProp.GetValue();
 	}
 
 	#region IIngredient
 
 	public bool SupportsQuality => false;
 
-	public string DisplayName => DisplayNameProp.GetValue();
+	public string DisplayName => Ingredient.DispayName;
 
-	public Texture2D Texture => TextureProp.GetValue();
+	public Texture2D Texture => Ingredient.IconTexture;
 
-	public Rectangle SourceRectangle => SourceProp.GetValue() ?? Texture.Bounds;
+	public Rectangle SourceRectangle => Ingredient.IconSubrect ?? Texture.Bounds;
 
-	public int Quantity => QuantityProp.GetValue();
+	public int Quantity => Ingredient.Quantity;
 
-	public int GetAvailableQuantity(Farmer who, IList<Item?>? _, IList<IInventory>? inventories, int max_quality) {
+	public int GetAvailableQuantity(Farmer who, IList<Item?>? _, IList<IBCInventory>? inventories, int max_quality) {
 		if (who != Game1.player)
 			return 0;
 
@@ -79,26 +58,26 @@ public class SCIngredient : IIngredient {
 		if (inventories != null)
 			foreach (var inv in inventories) {
 				if (inv.Object is Chest chest)
-					items.AddRange(chest.items);
+					items.AddRange(chest.Items);
 			}
 
-		return GetAmountInListMethod.Invoke<int>(items);
+		return Ingredient.GetAmountInList(items);
 	}
 
-	public void Consume(Farmer who, IList<IInventory>? inventories, int max_quality, bool lower_quality_first) {
+	public void Consume(Farmer who, IList<IBCInventory>? inventories, int max_quality, bool lower_quality_first) {
 		// Unfortunately, we're always going to need chests for this
 		// due to how SpaceCore is implemented.
 		if (who == Game1.player)
-			ConsumeMethod.Invoke(GetChests(inventories));
+			Ingredient.Consume(GetInventories(inventories));
 	}
 
-	private static List<Chest> GetChests(IList<IInventory>? inventories) {
+	private static List<IInventory> GetInventories(IList<IBCInventory>? inventories) {
 		if (inventories is null)
-			return new List<Chest>();
+			return new List<IInventory>();
 
 		return inventories
-			.Where(val => val.Object is Chest)
-			.Select(val => (Chest) val.Object)
+			.Where(val => val.Inventory is not null)
+			.Select(val => val.Inventory!)
 			.ToList();
 	}
 

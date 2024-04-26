@@ -16,5 +16,6 @@ public enum MineType
     Normal,
     Qi,
     General,
+    Frenzy,
     All
 }

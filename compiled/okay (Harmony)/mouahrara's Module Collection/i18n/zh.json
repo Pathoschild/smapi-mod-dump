@@ -70,9 +70,6 @@
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.Description": "此模块允许您自动快速处理多个晶洞.",
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.SpeedMultiplier.Title": "处理速度倍增器",
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.SpeedMultiplier.Tooltip": "用于调节处理速度的乘法器.",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Title": "同时服务",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Tooltip": "即使在升级工具时,也要对晶洞进行加工和处理.",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Description": "此模块允许您购买和处理晶洞,即使在升级工具时也是如此..",
 
 	// GMCM - TweaksAndFeatures - User Interface - Modules
 	"GMCM.TweaksAndFeatures.UserInterface.FastScrolling.Title": "快速滚动",

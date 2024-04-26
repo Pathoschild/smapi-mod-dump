@@ -46,7 +46,8 @@ namespace FishingMinigames
             MinigamesStart.minigameTextures = new Texture2D[] {
                 Game1.content.Load<Texture2D>("LooseSprites\\boardGameBorder"),
                 Game1.content.Load<Texture2D>("LooseSprites\\CraneGame"),
-                Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles") };
+                Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles"),
+                Helper.Content.Load<Texture2D>("assets/Textures.png", ContentSource.ModFolder)};
 
 
             helper.Events.Display.Rendered += Display_Rendered;

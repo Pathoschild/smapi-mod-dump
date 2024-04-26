@@ -27,6 +27,7 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 
 namespace Shockah.XPDisplay
@@ -64,7 +65,7 @@ namespace Shockah.XPDisplay
 			o => o is Pickaxe ? (Farmer.miningSkill, null) : null,
 			o => o is Axe ? (Farmer.foragingSkill, null) : null,
 			o => o is FishingRod ? (Farmer.fishingSkill, null) : null,
-			o => o is Sword or Slingshot || (o is MeleeWeapon && !o.Name.Contains("Scythe")) ? (Farmer.combatSkill, null) : null,
+			o => o is MeleeWeapon /*DLX: Was a is Sword check before */ or Slingshot || (o is MeleeWeapon && !o.Name.Contains("Scythe")) ? (Farmer.combatSkill, null) : null,
 		};
 
 		private readonly PerScreen<ISkill?> ToolbarCurrentPermanentSkill = new(() => null);
@@ -107,13 +108,8 @@ namespace Shockah.XPDisplay
 			IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions");
 			IsMargoInstalled = Helper.ModRegistry.IsLoaded("DaLion.Overhaul");
 			var harmony = new Harmony(ModManifest.UniqueID);
+			//Harmony.DEBUG = true;
 
-			harmony.TryPatch(
-				monitor: Monitor,
-				original: () => AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.draw), new Type[] { typeof(SpriteBatch) }),
-				postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Postfix)),
-				transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Transpiler))
-			);
 			harmony.TryPatch(
 				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience)),
@@ -125,14 +121,22 @@ namespace Shockah.XPDisplay
 				prefix: new HarmonyMethod(typeof(XPDisplay), nameof(Farmer_performFireTool_Prefix))
 			);
 
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.draw), [typeof(SpriteBatch)]),
+				postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Postfix)),
+				transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Transpiler))
+			);
+
 			if (Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
 			{
 				harmony.TryPatch(
 					monitor: Monitor,
-					original: () => AccessTools.Method(AccessTools.TypeByName(SpaceCoreNewSkillsPageQualifiedName), "draw", new Type[] { typeof(SpriteBatch) }),
+					original: () => AccessTools.Method(AccessTools.TypeByName(SpaceCoreNewSkillsPageQualifiedName), "draw", [typeof(SpriteBatch)]),
 					postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Postfix)),
 					transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Transpiler))
 				);
+
 				harmony.TryPatch(
 					monitor: Monitor,
 					original: () => AccessTools.Method(AccessTools.TypeByName(SpaceCoreSkillsQualifiedName), "AddExperience"),
@@ -403,7 +407,9 @@ namespace Shockah.XPDisplay
 
 		private void DrawSkillBar(ISkill skill, SpriteBatch b, UIAnchorSide anchorSide, Vector2 position, float scale, float alpha)
 		{
-			int buffedLevel = skill.GetBuffedLevel(Game1.player);
+			int buffedLevel = skill is SpaceCoreSkill
+				? getBuffedLevelForSpaceCore(Game1.player, skill)
+				: skill.GetBuffedLevel(Game1.player);
 			int currentLevel = skill.GetBaseLevel(Game1.player);
 			int nextLevelXP = skill.GetLevelXP(currentLevel + 1);
 			int currentLevelXP = skill.GetLevelXP(currentLevel);
@@ -619,8 +625,11 @@ namespace Shockah.XPDisplay
 								new CodeInstruction(OpCodes.Add),
 
 								new CodeInstruction(OpCodes.Ldloc_1), // this *should* be the `y` local
-								new CodeInstruction(OpCodes.Ldloc_3), // this *should* be the `i` local - the currently drawn level index (0-9)
-								new CodeInstruction(OpCodes.Ldloc, 4), // this *should* be the `j` local - the skill index
+								new CodeInstruction(OpCodes.Ldloc, 10), // this *should* be the `i` local - the currently drawn level index (0-9)
+								new CodeInstruction(OpCodes.Ldloc, 11), // this *should* be the `j` local - the skill index
+
+								new CodeInstruction(OpCodes.Ldloc, 3), // this *should* be the `verticalSpacing` local
+
 								new CodeInstruction(OpCodes.Ldnull), // no skill name, it's a built-in one
 								new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_QueueDelegate)))
 							);
@@ -628,22 +637,25 @@ namespace Shockah.XPDisplay
 					.Do(matcher =>
 					{
 						var skillsPageSkillBarsField = AccessTools.Field(typeof(SkillsPage), nameof(SkillsPage.skillBars));
+						//We draw our partial skill bars between skillBar.draw and the skillBar hovertext draw
 						return matcher
-							.Repeat(2, matcher =>
-							{
+							.Find(
+								ILMatches.Ldarg(0),
+								ILMatches.Ldfld(skillsPageSkillBarsField),
+								ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
+							).Find(
+								ILMatches.Ldarg(0),
+								ILMatches.Ldfld(skillsPageSkillBarsField),
+								ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
+							).Do(matcher => {
 								return matcher
-									.Find(
-										ILMatches.Ldarg(0),
-										ILMatches.Ldfld(skillsPageSkillBarsField),
-										ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
-									);
-							})
-							.PointerMatcher(SequenceMatcherRelativeElement.First)
-							.ExtractLabels(out var labels)
-							.Insert(
-								SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
-								new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates))).WithLabels(labels)
-							);
+									.PointerMatcher(SequenceMatcherRelativeElement.First)
+									.ExtractLabels(out var labels)
+									.Insert(
+										SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
+										new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates))).WithLabels(labels)
+								);
+							});
 					})
 					.AllElements();
 			}
@@ -687,8 +699,11 @@ namespace Shockah.XPDisplay
 										new CodeInstruction(OpCodes.Add),
 
 										new CodeInstruction(OpCodes.Ldloc_1), // this *should* be the `y` local
-										new CodeInstruction(OpCodes.Ldloc, 8), // this *should* be the `levelIndex` local
-										new CodeInstruction(OpCodes.Ldloc, 9), // this *should* be the `skillIndex` local
+										new CodeInstruction(OpCodes.Ldloc, 14), // this *should* be the `levelIndex` local
+										new CodeInstruction(OpCodes.Ldloc, 15), // this *should* be the `skillIndex` local
+
+										new CodeInstruction(OpCodes.Ldc_I4_S, 56), //1.6 added a variable `verticalSpacing` 68, but SpaceCore still uses a constant 56
+
 										new CodeInstruction(OpCodes.Ldnull), // no skill name, it's a built-in one
 										new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_QueueDelegate)))
 									);
@@ -713,9 +728,12 @@ namespace Shockah.XPDisplay
 										new CodeInstruction(OpCodes.Add),
 
 										new CodeInstruction(OpCodes.Ldloc_1), // this *should* be the `y` local
-										new CodeInstruction(OpCodes.Ldloc, 19), // this *should* be the `levelIndex` local
+										new CodeInstruction(OpCodes.Ldloc, 25), // this *should* be the second `levelIndex` local
 										new CodeInstruction(OpCodes.Ldloc_2), // this *should* be the `indexWithLuckSkill` local
-										new CodeInstruction(OpCodes.Ldloc, 17), // this *should* be the `skillName` local
+
+										new CodeInstruction(OpCodes.Ldc_I4_S, 56), //1.6 added a variable `verticalSpacing` 68, but SpaceCore still uses a constant 56
+
+										new CodeInstruction(OpCodes.Ldloc, 23), // this *should* be the `skillName` local
 										new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_QueueDelegate)))
 									);
 							});
@@ -723,22 +741,29 @@ namespace Shockah.XPDisplay
 					.Do(matcher =>
 					{
 						var skillsPageSkillBarsField = AccessTools.Field(AccessTools.TypeByName(SpaceCoreNewSkillsPageQualifiedName), "skillBars");
+						//We draw our partial skill bars between skillBar.draw and the skillBar hovertext draw
 						return matcher
-							.Repeat(2, matcher =>
-							{
+							.Find(
+								ILMatches.Ldarg(0),
+								ILMatches.Ldfld(skillsPageSkillBarsField),
+								ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
+							).Find(
+								ILMatches.Ldarg(0),
+								ILMatches.Ldfld(skillsPageSkillBarsField),
+								ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
+							).Find(
+								ILMatches.Ldarg(0),
+								ILMatches.Ldfld(skillsPageSkillBarsField),
+								ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
+							).Do(matcher => {
 								return matcher
-									.Find(
-										ILMatches.Ldarg(0),
-										ILMatches.Ldfld(skillsPageSkillBarsField),
-										ILMatches.Call(AccessTools.Method(skillsPageSkillBarsField.FieldType, "GetEnumerator"))
-									);
-							})
-							.PointerMatcher(SequenceMatcherRelativeElement.First)
-							.ExtractLabels(out var labels)
-							.Insert(
-								SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
-								new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates))).WithLabels(labels)
-							);
+									.PointerMatcher(SequenceMatcherRelativeElement.First)
+									.ExtractLabels(out var labels)
+									.Insert(
+										SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
+										new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates))).WithLabels(labels)
+								);
+							});
 					})
 					.AllElements();
 			}
@@ -749,7 +774,7 @@ namespace Shockah.XPDisplay
 			}
 		}
 
-		public static void SkillsPage_draw_QueueDelegate(SpriteBatch b, int x, int y, int levelIndex, int uiSkillIndex, string? spaceCoreSkillName)
+		public static void SkillsPage_draw_QueueDelegate(SpriteBatch b, int x, int y, int levelIndex, int uiSkillIndex, int verticalSpacing, string? spaceCoreSkillName)
 		{
 			int skillIndex = OrderedSkillIndexes.Length > uiSkillIndex ? OrderedSkillIndexes[uiSkillIndex] : uiSkillIndex;
 			ISkill skill = SkillExt.GetSkill(skillIndex, spaceCoreSkillName);
@@ -759,11 +784,13 @@ namespace Shockah.XPDisplay
 			Rectangle barTextureRectangle = isBigLevel ? BigObtainedLevelCursorsRectangle : SmallObtainedLevelCursorsRectangle;
 			float scale = 4f;
 
-			Vector2 topLeft = new(x + levelIndex * 36, y - 4 + uiSkillIndex * 56);
+			Vector2 topLeft = new(x + levelIndex * 36, y - 4 + uiSkillIndex * verticalSpacing);
 			Vector2 bottomRight = topLeft + new Vector2(barTextureRectangle.Width, barTextureRectangle.Height) * scale;
 
 			int currentLevel = skill.GetBaseLevel(Game1.player);
-			int buffedLevel = skill.GetBuffedLevel(Game1.player);
+			int buffedLevel = skill is SpaceCoreSkill
+				? getBuffedLevelForSpaceCore(Game1.player, skill)
+				: skill.GetBuffedLevel(Game1.player);
 			int nextLevelXP = skill.GetLevelXP(currentLevel + 1);
 			if (levelIndex is 4 or 9 && buffedLevel >= levelIndex)
 				SkillBarHoverExclusions.Add((topLeft, bottomRight));
@@ -822,6 +849,20 @@ namespace Shockah.XPDisplay
 					throw new ArgumentException($"{nameof(Orientation)} has an invalid value.");
 			}
 			SkillsPageDrawQueuedDelegates.Add(() => b.Draw(barTexture, barPosition, barTextureRectangle, Color.White * Instance.Config.Alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.87f));
+		}
+
+		//SpaceCore added skill buffs through eg food
+		//This is a crutch since I don't have editorial rights for Kokoro
+		private static Func<Farmer, object /* Skill */, int> GetBuffedSkillLevelDelegate = null!;
+		public static int getBuffedLevelForSpaceCore(Farmer farmer, ISkill skill)
+		{
+			if (GetBuffedSkillLevelDelegate is null) {
+				string SpaceCoreSkillExtensionsQualifiedName = "SpaceCore.SkillExtensions, SpaceCore";
+				Type skillExtensionsType = AccessTools.TypeByName(SpaceCoreSkillExtensionsQualifiedName);
+				MethodInfo getCustomBuffedSkillLevelMethod = AccessTools.Method(skillExtensionsType, "GetCustomBuffedSkillLevel", [typeof(Farmer), typeof(string)]);
+				GetBuffedSkillLevelDelegate = (farmer, skill) => (int)getCustomBuffedSkillLevelMethod.Invoke(null, [farmer, skill])!;
+			}
+			return GetBuffedSkillLevelDelegate(farmer, skill.UniqueID);
 		}
 
 		public static void SkillsPage_draw_CallQueuedDelegates()

@@ -245,24 +245,22 @@ namespace BetterJunimos.Utils {
                     ItemsInHuts.Add(id, new Dictionary<string, bool>());
                 }
 
-                if (itemId != "0") {
-                    ItemsInHuts[id][itemId] = chest.Items.Any(item =>
-                        item != null && item.ItemId.ToString() == itemId &&
-                        !(BetterJunimos.Config.JunimoImprovements.AvoidPlantingCoffee &&
-                          item.ParentSheetIndex == Util.CoffeeId)
-                    );
-                }
-                else {
+                // item categories start with a -
+                if (itemId.StartsWith("-"))
                     UpdateHutContainsItemCategory(id, chest, itemId);
-                }
+                else
+                    UpdateHutContainsItemId(id, chest, itemId);
             }
         }
 
-        private static void UpdateHutContainsItemCategory(Guid id, Chest chest, string itemCategory) {
-            if (!ItemsInHuts.ContainsKey(id)) {
-                ItemsInHuts.Add(id, new Dictionary<string, bool>());
-            }
+        private static void UpdateHutContainsItemId(Guid id, Chest chest, string itemId) {
+            ItemsInHuts[id][itemId] = chest.Items.Any(item =>
+                item != null && item.ItemId == itemId &&
+                !(BetterJunimos.Config.JunimoImprovements.AvoidPlantingCoffee && item.ParentSheetIndex == Util.CoffeeId)
+            );
+        }
 
+        private static void UpdateHutContainsItemCategory(Guid id, Chest chest, string itemCategory) {
             ItemsInHuts[id][itemCategory] = chest.Items.Any(item =>
                 item != null && item.Category.ToString() == itemCategory &&
                 !(BetterJunimos.Config.JunimoImprovements.AvoidPlantingCoffee && item.ParentSheetIndex == Util.CoffeeId)

@@ -22,9 +22,9 @@ for queries and analysis.**
                 * [For GOG Galaxy](#for-gog-galaxy)
         * [For Linux](#for-linux)
         * [For MacOS](#for-macos)
-    * [Installing Project Fluent](#installing-project-fluent)
-* [Mod Installation](#mod-installation)
-* [Updating The Mod](#updating-the-mod)
+    * [Installing Kokoro and Project Fluent](#installing-kokoro-and-project-fluent)
+* [Stardew Access Installation](#stardew-access-installation)
+* [Updating Stardew Access](#updating-stardew-access)
 * [Other Mods](#other-mods)
     * [Essentials](#essentials)
     * [Recommended](#recommended)
@@ -35,7 +35,8 @@ for queries and analysis.**
 ## Requirements
 
 1. [SMAPI](#smapi-setup)
-2. [Project Fluent](#installing-project-fluent)
+2. [Kokoro](#installing-kokoro-and-project-fluent)
+3. [Project Fluent](#installing-kokoro-and-project-fluent)
 
 ### SMAPI setup
 
@@ -120,8 +121,8 @@ _(Note that this gets automatically taken care of for the xbox version while ins
 4. If you installed Steam through Flatpak, see these instructions:
 5. instructions for Flatpak
 6. Run the `install on Linux.sh` file, and follow the on-screen instructions.
-    - (If the installer asks for your game install path, see how to find your game
-      folder - [here](https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Find_your_game_folder).)
+    - (If the installer asks for your game install path, see how to
+       [find your game folder here](https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Find_your_game_folder).)
 
 #### For MacOS
 
@@ -129,15 +130,16 @@ _(Note that this gets automatically taken care of for the xbox version while ins
 2. Extract the .zip file somewhere (Your downloads folder is fine).
 3. Double-click `install on Mac.command`, and follow the on-screen instructions.
 
-### Installing Project Fluent
+### Installing Kokoro and Project Fluent
 
-As of v1.5.0, the [Project Fluent mod](https://www.nexusmods.com/stardewvalley/mods/12638) is now a dependency for
+As of v1.5.0, [Kokoro](https://www.nexusmods.com/stardewvalley/mods/15682) and [Project Fluent ](https://www.nexusmods.com/stardewvalley/mods/12638) are now dependencies for
 stardew access and as such, the mod won't run without
-it.
+them.
 Project Fluent is mainly used for providing a way to have translation mods for stardew access and also the ability to
 use [Mozilla's project fluent](https://projectfluent.org/) instead of regular json for translation files.
+Kokoro is a core mod for many of [Shockah's](https://www.nexusmods.com/stardewvalley/users/133612513) mods and is required for Project Fluent to work.
 
-Installation of Project Fluent is essentially the same as installing any other mod, here are the steps:
+Installation of Project Fluent and Kokoro is essentially the same as installing any other mod, here are the steps:
 
 1. Download the v1.1.0 of Project Fluent
    from [this Nexus direct link](https://www.nexusmods.com/stardewvalley/mods/12638?tab=files&file_id=56519) ([login](https://users.nexusmods.com/auth/sign_in)
@@ -145,9 +147,11 @@ Installation of Project Fluent is essentially the same as installing any other m
    from [Github](https://github.com/Shockah/Stardew-Valley-Mods/releases/download/release%2Fproject-fluent%2F1.1.0/ProjectFluent.1.1.0.zip).
     - Do note that the Github link is only temporary and might get removed in future as the owner only publishes mod
       updates to Nexus.
-2. Extract the zip file and move it into the `Mods` folder in your game's folder.
+2. Download the v3.0.0 of Kokoro from
+   [this Nexus direct link](https://www.nexusmods.com/stardewvalley/mods/15682?tab=files&file_id=82817)
+3. Extract both zip files and move the contents of each into the `Mods` folder in your game's folder.
 
-## Mod Installation
+## Stardew Access Installation
 
 1. Download the latest version from [Github](https://github.com/khanshoaib3/stardew-access/releases/latest) or
    from [Nexus](https://www.nexusmods.com/stardewvalley/mods/16205/?tab=files).
@@ -158,7 +162,7 @@ Installation of Project Fluent is essentially the same as installing any other m
 _In case you are experiencing any kinds of bugs, it is recommended that you install the debug zip.
 It will generate more stuff in the log helpful for debugging._
 
-## Updating The Mod
+## Updating Stardew Access
 
 To update you just need to delete or move the mod folder from the `Mods` folder to somewhere else and repeat the
 installation instruction from the previous section.
@@ -191,4 +195,4 @@ this [issue page](https://github.com/khanshoaib3/stardew-access/issues/181).
 - [Keybindings](keybindings.md)
 - [Commands](commands.md)
 - [Configs](config.md)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Guides](guides.md)

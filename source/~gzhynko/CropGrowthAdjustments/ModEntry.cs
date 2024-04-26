@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using CropGrowthAdjustments.Patching;
 using CropGrowthAdjustments.Types;
@@ -28,7 +27,9 @@ namespace CropGrowthAdjustments
     /// <summary> The mod entry class loaded by SMAPI. </summary>
     public class ModEntry : Mod
     {
-        public static ContentPackManager ContentPackManager = new ContentPackManager();
+        public const string DefaultCropSpritesheetName = "TileSheets\\crops";
+        
+        public static ContentPackManager ContentPackManager = new ();
         public static IMonitor ModMonitor;
         public static IModHelper ModHelper;
         
@@ -55,6 +56,10 @@ namespace CropGrowthAdjustments
             {
                 e.Edit(EditCropData, AssetEditPriority.Late);
             }
+            else if (Utility.GetListOfSpecialTextures().Any(t => t.Name == e.NameWithoutLocale.BaseName))
+            {
+                e.LoadFrom(() => ContentPackManager.TexturesToLoad[e.NameWithoutLocale.BaseName], AssetLoadPriority.Medium);
+            }
         }
         
         private void EditCropTilesheet(IAssetData asset)
@@ -62,9 +67,7 @@ namespace CropGrowthAdjustments
             var editor = asset.AsImage();
 
             if (Game1.currentLocation == null)
-            {
                 return;
-            }
             
             foreach (var adjustments in ContentPackManager.ContentPacks)
             {
@@ -79,23 +82,19 @@ namespace CropGrowthAdjustments
                         if (specialSprite.GetSeason() != Game1.season) continue;
                         
                         Texture2D sourceImage = specialSprite.SpritesTexture;
-                        // load the image if it hasn't been loaded yet
-                        if (sourceImage == null) {
-                            try
-                            {
-                                sourceImage = adjustments.ContentPack.ModContent.Load<Texture2D>(specialSprite.Sprites);
-                            }
-                            catch (Exception e)
-                            {
-                                Monitor.Log($"{adjustments.ContentPack.Manifest.Name} - Could not load special sprites for {cropAdjustment.CropProduceName} (season: {specialSprite.Season}), the plant might be invisible: {e}.", LogLevel.Error);
-                                continue;
-                            }
-                            specialSprite.SpritesTexture = sourceImage;
+                        if (sourceImage == null)
+                        {
+                            Monitor.Log($"{adjustments.ContentPack.Manifest.Name} - Special sprite source image is null, skipping replacement.", LogLevel.Warn);
+                            continue;
                         }
-                        
-                        int x = cropAdjustment.RowInCropSpriteSheet % 2 == 0 ? 0 : 128;
-                        int y = (int) (Math.Floor(cropAdjustment.RowInCropSpriteSheet / 2f) * 32);
-                        editor.PatchImage(sourceImage, targetArea: new Rectangle(x, y, 128, 32));
+
+                        if (cropAdjustment.RowInCropSpriteSheet != 0 &&
+                            cropAdjustment.InitialTexture == DefaultCropSpritesheetName)
+                        {
+                            int x = cropAdjustment.RowInCropSpriteSheet % 2 == 0 ? 0 : 128;
+                            int y = (int)(Math.Floor(cropAdjustment.RowInCropSpriteSheet / 2f) * 32);
+                            editor.PatchImage(sourceImage, targetArea: new Rectangle(x, y, 128, 32));
+                        }
                     }
                 }
             }
@@ -113,8 +112,21 @@ namespace CropGrowthAdjustments
                             
                     foreach (var itemId in cropData.Data.Keys)
                     {
-                        if(cropData.Data[itemId].HarvestItemId != cropProduceItemId.ToString()) continue;
-                                
+                        // for some reason QualifyItemId results in NRE at game startup
+                        string qualifiedHarvestItemId;
+                        string qualifiedProduceId;
+                        try
+                        {
+                            qualifiedHarvestItemId = ItemRegistry.QualifyItemId(cropData.Data[itemId].HarvestItemId);
+                            qualifiedProduceId = ItemRegistry.QualifyItemId(cropProduceItemId);
+                        }
+                        catch (Exception)
+                        {
+                            break;
+                        }
+                        
+                        if(qualifiedHarvestItemId != qualifiedProduceId) continue;
+                        
                         cropData.Data[itemId].Seasons = cropAdjustment.GetSeasonsToGrowIn();
                                 
                         break;
@@ -130,6 +142,11 @@ namespace CropGrowthAdjustments
             harmony.Patch(
                 AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.dayUpdate)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.HoeDirtDayUpdate))
+            );
+            
+            harmony.Patch(
+                AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.plant)),
+                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.HoeDirtPlant))
             );
             
             harmony.Patch(
@@ -158,19 +175,19 @@ namespace CropGrowthAdjustments
             var jsonAssetsApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
             if (jsonAssetsApi != null)
             {
-                jsonAssetsApi.IdsAssigned += (_, _) => OnJsonAssetsIdsAssigned(jsonAssetsApi);
+                jsonAssetsApi.ItemsRegistered += (_, _) => OnJsonAssetsIdsAssigned();
             }
             else
             {
-                ContentPackManager.AssignCropProduceItemIds(Helper, null);
+                ContentPackManager.AssignCropProduceItemIds(Helper);
                 ContentPackManager.AssignCropRowsInSpritesheet(Helper);
                 Helper.GameContent.InvalidateCache("Data/Crops");
             }
         }
 
-        private void OnJsonAssetsIdsAssigned(IJsonAssetsApi jsonAssetsApi)
+        private void OnJsonAssetsIdsAssigned()
         {
-            ContentPackManager.AssignCropProduceItemIds(Helper, jsonAssetsApi);
+            ContentPackManager.AssignCropProduceItemIds(Helper);
             Helper.GameContent.InvalidateCache("Data/Crops");
             
             ContentPackManager.AssignCropRowsInSpritesheet(Helper);

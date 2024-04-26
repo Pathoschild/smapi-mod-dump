@@ -165,18 +165,8 @@ namespace ScheduleViewer
                 return FilterNPCSchedules(onlyShowSocializableNPCs, onlyShowMetNPCs);
             }
             ModEntry.Console.Log($"Calculating the NPCs' schedule for {Game1.Date}.", LogLevel.Debug);
-            List<NPC> npcs = new();
-            Utility.ForEachVillager(npc =>
-            {
-                if (!npc.followSchedule || (npc.Schedule != null && npc.Schedule.Any()))
-                {
-                    npcs.Add(npc);
-                }
-                return true;
-            });
-
             NpcsWithSchedule = new();
-            foreach (var npc in npcs)
+            Utility.ForEachVillager(npc =>
             {
                 string name = npc.getName();
                 List<ScheduleEntry> scheduleEntries = null;
@@ -210,7 +200,8 @@ namespace ScheduleViewer
                     }
                     NpcsWithSchedule.Add($"{name} ({count})", new NPCSchedule(npc, scheduleEntries));
                 }
-            }
+                return true;
+            });
 
             Date = Game1.Date;
             return FilterNPCSchedules(onlyShowSocializableNPCs, onlyShowMetNPCs);

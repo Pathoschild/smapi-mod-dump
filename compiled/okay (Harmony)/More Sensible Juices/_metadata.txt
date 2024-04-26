@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23146
+IDs: NCarigon.MoreSensibleJuices
+update keys: Nexus:23146

@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/seferoni/FoodPoisoning
+**
+*************************************************/
+
+{
+
+	"Title": "Parameters",
+
+	"BasePoisoningChance": "Food Poisoning Chance",
+	"BasePoisoningChance.Tooltip": "The base chance for food poisoning to occur upon consumption of an item that is not a fruit, a cooked food item or an artisan good.",
+
+	"BaseDuration": "Nauseated Duration",
+	"BaseDuration.Tooltip": "The base duration for the length of the Nauseated effect applied upon food poisoning, in seconds.",
+
+	"HarmfulThreshold": "Harmful Edibility Threshold",
+	"HarmfulThreshold.Tooltip": "Denotes the maximum edibility below which food items are considered Harmful.",
+
+	"HarmfulChanceOffset": "Harmful Food Chance Offset",
+	"HarmfulChanceOffset.Tooltip": "The additional chance for food poisoning to occur upon consuming a Harmful food item.",
+
+	"HarmfulDurationOffset": "Harmful Food Duration Offset",
+	"HarmfulDurationOffset.Tooltip": "The additional duration, in seconds, added to the Nauseated debuff when applied by consumption of a Harmful food item."
+
+}

@@ -11,7 +11,7 @@
 {
   "Name": "Maritime Secrets",
   "Author": "Goldenrevolver",
-  "Version": "1.2.1",
+  "Version": "1.2.2",
   "Description": "The ocean talks, you just have to listen.",
   "UniqueID": "Goldenrevolver.MaritimeSecrets",
   "EntryDll": "MaritimeSecrets.dll",

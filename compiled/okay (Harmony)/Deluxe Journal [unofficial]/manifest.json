@@ -1,0 +1,12 @@
+﻿{
+	"Name": "Deluxe Journal",
+	"Author": "MolsonCAD",
+	"Version": "1.1.1-unofficial.1-lily927",
+	"Description": "Upgrades the journal with new features.",
+	"UniqueID": "MolsonCAD.DeluxeJournal",
+	"EntryDll": "DeluxeJournal.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [
+		"Nexus:11436"
+	]
+}

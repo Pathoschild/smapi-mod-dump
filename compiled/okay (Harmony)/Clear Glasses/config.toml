@@ -1,5 +1,5 @@
 [Config]
-ConfigVersion = "0.1.3"
+ConfigVersion = "0.2.3"
 # Should Clear Glasses be enabled? Unsetting this will disable _all_ Clear Glasses functionality.
 Enabled = true
 # Button to toggle Clear Glasses
@@ -220,7 +220,6 @@ DataStoreOverride = ""
 		"TerrainFeatures\\Stalagmite_Frost", 
 		"TerrainFeatures\\Stalagmite_Lava", 
 		"TileSheets\\Fireball", 
-		"TileSheets\\rain", 
 		"TileSheets\\animations"
 	]
 	# What spritesheets will absolutely not be resampled or processed?
@@ -255,8 +254,10 @@ DataStoreOverride = ""
 		MaximumGradientOpaqueProportion = 0.95
 		# Minimum proportion of opaque texels for a sprite to be premultiplied?
 		MinimumPremultipliedOpaqueProportion = 0.05
-		# Additional effects after scaling sprites
+
 		[Config.Resample.Filters]
+		# Enable colour filters applied to all resampled textures
+		Enabled = true
 		Saturation = -20
 		Brightness = 0
 		Temperature = 0
@@ -286,7 +287,6 @@ DataStoreOverride = ""
 		MinimumSizeTexels = 4
 		# Should unknown (unnamed) sprites be ignored by the padding system?
 		IgnoreUnknown = false
-		# Should solid edges be padded?
 		PadSolidEdges = false
 		# What spritesheets should not be padded?
 		BlackList = [
@@ -382,7 +382,7 @@ DataStoreOverride = ""
 	[Config.TextureFileCache]
 	# Should the texture memory cache be enabled?
 	Enabled = true
-	# What is the maximum size of the resident cache?
+	# What is the maximum size of the texture file cache?
 	MaxSize = 2147483648
 	# Should all texture files in the Mods directory attempt to be pre-cached?
 	Precache = false
@@ -396,7 +396,7 @@ DataStoreOverride = ""
 	[Config.SMAPI]
 	# Should the ApplyPatch method be patched?
 	ApplyPatchEnabled = true
-	# Should 'GetData' be patched to use SM caches?
+	# Should 'GetData' be patched to use caches?
 	ApplyGetDataPatch = true
 
 	[Config.Extras]
@@ -406,10 +406,6 @@ DataStoreOverride = ""
 	SmoothLines = true
 	# Should shadowed text be stroked instead?
 	StrokeShadowedText = false
-	# Should the game's 'parseMasterSchedule' method be fixed and optimized?
-	FixMasterSchedule = true
-	# Should the game's 'getSchedule' method be fixed and optimized?
-	FixGetSchedule = true
 	# Should the default batch sort be replaced with a stable sort?
 	StableSort = true
 	# Should the game be prevented from going 'unresponsive' during loads?
@@ -434,7 +430,7 @@ DataStoreOverride = ""
 		OptimizeTexture2DSetData = true
 		# Should Texture2D.GetData be optimized?
 		OptimizeTexture2DGetData = true
-		# Should glCopyTexture by used?
+		# Should glCopyTexture be used?
 		UseCopyTexture = true
 		# Should glTexStorage be used?
 		UseTexStorage = true
@@ -458,7 +454,6 @@ DataStoreOverride = ""
 		MaximumRotationSpeed = 0.01666666753590107
 		# Maximum Snow Scale
 		MaximumScale = 3
-		# Puffersnow Chance
 		PuffersnowChance = 0
 
 		[Config.Extras.ModPatches]
@@ -469,7 +464,7 @@ DataStoreOverride = ""
 
 	[Config.FileCache]
 	# Should the file cache be enabled?
-	Enabled = true
+	Enabled = false
 	# What compression algorithm should be used?
 	# Legal Values: [
 	#	None, Compress, Deflate, Zstd/Best

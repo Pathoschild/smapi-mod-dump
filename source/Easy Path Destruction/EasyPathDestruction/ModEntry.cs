@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
@@ -21,15 +22,23 @@ namespace EasyPathDestruction
 {
     public class ModEntry : Mod
     {
-        private ModConfig config;
+        private ModConfig? config;
 
+        // Config vars
         bool userNeedsToBeNextToTile;
+        KeybindList? toggleKey;
+        KeybindList? activateKey;
+
         bool destructionModeActive;
-        GameLocation location;
+        GameLocation? location;
+
         public override void Entry(IModHelper helper)
         {
             config = Helper.ReadConfig<ModConfig>();
             userNeedsToBeNextToTile = config.RequireUserToBeNextToTile;
+            toggleKey = config.TogglePathDestructionModeHotKey;
+            activateKey = config.DestroyPathHotKey;
+
             destructionModeActive = false;
 
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
@@ -37,37 +46,42 @@ namespace EasyPathDestruction
             helper.Events.Player.Warped += OnPlayerWarped;
         }
 
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
             location = Game1.currentLocation;
         }
 
-        private void OnPlayerWarped(object sender, WarpedEventArgs e)
+        private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
             location = e.NewLocation;
         }
 
-        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
-            if (!Context.IsWorldReady) return;
-            if (e.Pressed.Contains(SButton.J))
+            if (!Context.IsWorldReady)
+            {
+                return;
+            }
+
+            if (toggleKey != null && toggleKey.JustPressed())
             {
                 destructionModeActive = !destructionModeActive;
                 if (destructionModeActive)
                 {
-                    Game1.chatBox.addMessage("Destruction Mode Enabled", Color.White);
+                    Game1.addHUDMessage(new HUDMessage($"Destruction Mode Enabled! ({toggleKey} to disable)"));
                 }
                 else
                 {
-                    Game1.chatBox.addMessage("Destruction Mode Disabled", Color.White);
+                    Game1.addHUDMessage(new HUDMessage($"Destruction Mode Disabled. ({toggleKey} to enable)"));
                 }
-            } 
-            if (destructionModeActive && e.Held.Contains(SButton.MouseLeft))
+            }
+
+            if (destructionModeActive && activateKey != null && activateKey.IsDown())
             {
-                Vector2 tile = e.Cursor.GrabTile;
+                Vector2 tile = e.Cursor.Tile;
                 Pickaxe pickaxe = new Pickaxe();
                 float stamina = Game1.player.stamina;
-                if (location.terrainFeatures.TryGetValue(tile, out TerrainFeature feature) && feature is Flooring)
+                if (location != null && location.terrainFeatures.TryGetValue(tile, out TerrainFeature feature) && feature is Flooring)
                 {
                     if (userNeedsToBeNextToTile)
                     {
@@ -79,7 +93,7 @@ namespace EasyPathDestruction
                     }
                     else
                     {
-                        pickaxe.DoFunction(location, (int)tile.X, (int)tile.Y, 1, Game1.player);
+                        pickaxe.DoFunction(location, (int)(tile.X * Game1.tileSize), (int)(tile.Y * Game1.tileSize), 1, Game1.player);
                         Game1.player.stamina = stamina;
                     }
                 }
@@ -88,7 +102,7 @@ namespace EasyPathDestruction
 
         private bool PlayerIsNextToTile(Vector2 tile)
         {
-            Vector2 playerTile = Game1.player.getTileLocation();
+            Vector2 playerTile = Game1.player.Tile;
             float xDistance = Math.Abs(tile.X - playerTile.X);
             float yDistance = Math.Abs(tile.Y - playerTile.Y);
             return xDistance <= 1 && yDistance <= 1;
@@ -97,6 +111,8 @@ namespace EasyPathDestruction
 
     class ModConfig
     {
+        public KeybindList TogglePathDestructionModeHotKey { get; set; } = KeybindList.Parse("B");
+        public KeybindList DestroyPathHotKey { get; set; } = KeybindList.Parse("MouseLeft");
         public bool RequireUserToBeNextToTile { get; set; } = true;
     }
 }

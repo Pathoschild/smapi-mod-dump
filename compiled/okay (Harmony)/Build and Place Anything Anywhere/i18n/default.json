@@ -1,47 +1,61 @@
 {
-  "Message.ConfigReloaded": "Configuration file reloaded.",
-
   // Furniture Configs
-
-  "Config.AnythingAnywhere.Furniture.Title": "Furniture",
-  "Config.AnythingAnywhere.EnableFurniture.Name": "Enable Furniture",
-  "Config.AnythingAnywhere.EnableFurniture.Description": "Enables placing furniture at any location.",
-  "Config.AnythingAnywhere.EnableRugTweaks.Name": "Enable Rug Tweaks",
-  "Config.AnythingAnywhere.EnableRugTweaks.Description": "Enables picking up rugs with furniture on top of them and placing rugs under anything (including walls for now).",
+  "Config.AnythingAnywhere.Placing.Title": "Placing",
+  "Config.AnythingAnywhere.EnablePlacing.Name": "Enable Placing",
+  "Config.AnythingAnywhere.EnablePlacing.Description": "Enables placing objects(furniture, chests, ect) at any location",
+  "Config.AnythingAnywhere.EnableRugRemovalBypass.Name": "Rug Removal Bypass",
+  "Config.AnythingAnywhere.EnableRugRemovalBypass.Description": "Enables picking up rugs with furniture on top of them",
   "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Name": "Wall Furniture Indoors",
-  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Description": "Enables placing wall furniture at any location inside decoratable locations.",
-  "Config.AnythingAnywhere.EnableFreePlace.Name": "Enable Free Place",
-  "Config.AnythingAnywhere.EnableFreePlace.Description": "Enables placing furniture at any location, even in walls.",
+  "Config.AnythingAnywhere.EnableWallFurnitureIndoors.Description": "Enables placing wall furniture at any location inside decoratable locations",
+  "Config.AnythingAnywhere.EnableFreePlace.Name": "Place Anywhere",
+  "Config.AnythingAnywhere.EnableFreePlace.Description": "Enables placing furniture at any location, even in walls",
 
   // Building Configs
-
-  "Config.AnythingAnywhere.Building.Title": "Buildings",
+  "Config.AnythingAnywhere.Building.Title": "Building",
   "Config.AnythingAnywhere.EnableBuilding.Name": "Enable Building",
-  "Config.AnythingAnywhere.EnableBuilding.Description": "Enables the building features of this mod.",
+  "Config.AnythingAnywhere.EnableBuilding.Description": "Enables the building features of this mod",
   "Config.AnythingAnywhere.BuildMenu.Name": "Build Anywhere Menu",
-  "Config.AnythingAnywhere.BuildMenu.Description": "Opens up the carpenter menu anywhere.",
+  "Config.AnythingAnywhere.BuildMenu.Description": "Opens up the carpenter menu anywhere",
   "Config.AnythingAnywhere.WizardBuildMenu.Name": "Wizard Build Menu",
-  "Config.AnythingAnywhere.WizardBuildMenu.Description": "Opens up the Wizards build menu anywhere.",
-  "Config.AnythingAnywhere.EnableFreeBuild.Name": "Enable Free Build",
-  "Config.AnythingAnywhere.EnableFreeBuild.Description": "Enables building at any location, even in walls.",
+  "Config.AnythingAnywhere.WizardBuildMenu.Description": "Opens up the Wizards build menu anywhere",
+  "Config.AnythingAnywhere.AnimalRelocate.Name": "Animal Relocation",
+  "Config.AnythingAnywhere.AnimalRelocate.Description": "Enables relocating animals from location to location",
+  "Config.AnythingAnywhere.EnableBuildingIndoors.Name": "Build Indoors",
+  "Config.AnythingAnywhere.EnableBuildingIndoors.Description": "Enables building while inside",
+  "Config.AnythingAnywhere.EnableInstantBuild.Name": "Build Free & Instantly",
+  "Config.AnythingAnywhere.EnableInstantBuild.Description": "Enables insatnt building, and sets building costs to free",
+  "Config.AnythingAnywhere.EnableBuildAnywhere.Name": "Build Anywhere",
+  "Config.AnythingAnywhere.EnableBuildAnywhere.Description": "Enables building at any location, even in walls",
+
+  // Farming Config
+  "Config.AnythingAnywhere.Farming.Title": "Farming",
+  "Config.AnythingAnywhere.EnablePlanting.Name": "Enable Farming",
+  "Config.AnythingAnywhere.EnablePlanting.Description": "Enables farming at any location",
+  "Config.AnythingAnywhere.EnableDiggingAll.Name": "Hoe Anything",
+  "Config.AnythingAnywhere.EnableDiggingAll.Description": "Enables hoeing any tile",
+  "Config.AnythingAnywhere.EnableFruitTreeTweaks.Name": "Fruit Tree Tweaks",
+  "Config.AnythingAnywhere.EnableFruitTreeTweaks.Description": "Removes growth restrictions on fruit trees",
+  "Config.AnythingAnywhere.EnableWildTreeTweaks.Name": "Wild Tree Tweaks",
+  "Config.AnythingAnywhere.EnableWildTreeTweaks.Description": "Removes growth restrictions on wild trees. This will quickly grow out of control",
 
   // Other Config
-
-  "Config.AnythingAnywhere.Other.Title": "Other",
-  "Config.AnythingAnywhere.TableTweakKeybind.Name": "Table Tweak Bind",
-  "Config.AnythingAnywhere.TableTweakKeybind.Description": "If enabled, you have to press this button/button combo to pick up or place items on tables. (placing furniture onto tables will delete the furniture)",
-  "Config.AnythingAnywhere.EnableTableTweak.Name": "Enable Table Tweak",
-  "Config.AnythingAnywhere.EnableTableTweak.Description": "Enables needing to hold down the table tweak bind to pick up or place items onto tables.",
-  "Config.AnythingAnywhere.EnableMiniObilisk.Name": "Mini-Obilisk",
-  "Config.AnythingAnywhere.EnableMiniObilisk.Description": "Enables placing 2 mini-obilisks per location.",
-  "Config.AnythingAnywhere.UseJukeboxAnywhere.Name": "Jukebox Functionality",
-  "Config.AnythingAnywhere.UseJukeboxAnywhere.Description": "Enables jukebox functionality anywhere. (except in the rain)",
+  "Config.AnythingAnywhere.Other.Title": "Misc",
+  "Config.AnythingAnywhere.BypassMagicInk.Name": "Magic Ink Bypass",
+  "Config.AnythingAnywhere.BypassMagicInk.Description": "Skips the check for magic ink.",
+  "Config.AnythingAnywhere.EnableCaskFunctionality.Name": "Cask Functionality",
+  "Config.AnythingAnywhere.EnableCaskFunctionality.Description": "Enables cask functionality anywhere",
+  "Config.AnythingAnywhere.UseJukeboxFunctionality.Name": "Jukebox Functionality",
+  "Config.AnythingAnywhere.UseJukeboxFunctionality.Description": "Enables jukebox functionality anywhere. (except in the rain)",
+  "Config.AnythingAnywhere.EnableCabinsAnywhere.Name": "House/Cabin Bypass",
+  "Config.AnythingAnywhere.EnableCabinsAnywhere.Description": "THIS WILL CAUSE ERRORS! Disables the Cabins and Farm House checks",
+  "Config.AnythingAnywhere.EnableMiniObilisk.Name": "Multiple Mini-Obilisk",
+  "Config.AnythingAnywhere.EnableMiniObilisk.Description": "Enables placing more than 2 mini-obilisks per location",
 
   // Player Messages
-  "Message.AnythingAnywhere.TableRemoval": "Hold down {{keybind}} to remove object from table.",
-  "Message.AnythingAnywhere.TableAddition": "Hold down {{keybind}} to add object to table.",
-  "Message.AnythingAnywhere.NoMagicInk": "You need Magic Ink to open the Wizard's Build Menu"
+  "Message.AnythingAnywhere.NoBuildingIndoors": "Building indoors is disabled",
+  "Message.AnythingAnywhere.NoMovingBuildingLocation": "{{buildingName}} Cannot be moved to another map",
+  "Message.AnythingAnywhere.NoMagicInk": "You need Magic Ink to open the Wizard's Build Menu",
+  "Message.AnythingAnywhere.MultiplayerRelocate": "You cannot move buildings to other locations while in multiplayer",
+  "Message.AnythingAnywhere.ChooseBuildingLocation": "Where do you want to relocate the building?",
+  "Message.AnythingAnywhere.ChooseAnimalLocation": "Where do you want to relocate the animal?"
 }
-
-
-

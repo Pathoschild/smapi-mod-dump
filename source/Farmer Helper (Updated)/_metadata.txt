@@ -6,9 +6,9 @@ mods:
    Farmer Helper (Updated)
 
 latest commit:
-   commit 94551e9c3fe29bc1a8e3f2b72d9025de716cd5f5
+   commit 87338b4e78bed9d62e9a11be6b9def424af9a851
    Author: Nic Taylor <ntaylor1993@live.co.uk>
-   Date:   Mon Mar 25 16:56:13 2024 +0000
+   Date:   Mon Apr 22 00:46:50 2024 +0100
    
-       Add support for ginger island crops
+       Increment version
    

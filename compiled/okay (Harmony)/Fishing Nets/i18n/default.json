@@ -1,4 +1,13 @@
 ﻿{
   "Name": "Fish Net",
-  "Description": "Works just like a crab pot, but catches fish instead of critters"
+  "Description": "Works just like a crab pot, but catches fish instead of critters",
+
+  "Config.TextureVariant.Name": "Texture Variant",
+  "Config.TextureVariant.Description": "Which of the default texture variants to use",
+  "Config.LessTrash.Name": "Less Trash",
+  "Config.LessTrash.Description": "Toggle to decrease the chance of catching trash (when possible)",
+  "Config.LessWeeds.Name": "Less Weeds",
+  "Config.LessWeeds.Description": "Toggle to decrease the chance of catching sea weed or algae",
+  "Config.LessJelly.Name": "Less Jelly",
+  "Config.LessJelly.Description": "Toggle to decrease the chance of catching any jellies"
 }

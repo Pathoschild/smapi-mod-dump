@@ -82,9 +82,6 @@ public abstract class LanguageHelperBase : ILanguageHelper
         IReadOnlyDictionary<string, IFluentFunctionValue> namedArguments
     )
     {
-        #if DEBUG
-        Log.Verbose("In LanguageHelperBase.Pluralize");
-        #endif
         if (FluentApi is null) throw new InvalidOperationException($"{MethodBase.GetCurrentMethod()!.Name} cannot be called before FluentApi has been initialized.");
 
         // Check if the locale matches with the loaded language helper
@@ -120,7 +117,7 @@ public abstract class LanguageHelperBase : ILanguageHelper
 
         var translation = FluentApi.CreateStringValue(pluralizedWord);
         #if DEBUG
-        Log.Verbose($"LanguageHelperBase.Pluralize returning \"{translation}\"");
+        Log.Verbose($"LanguageHelperBase.Pluralize returning \"{translation}\"", true);
         #endif
         return translation;
     }

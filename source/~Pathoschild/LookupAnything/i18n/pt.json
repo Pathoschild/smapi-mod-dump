@@ -37,6 +37,7 @@
     "generic.price": "{{price}} ouros",
     "generic.price-for-quality": "{{price}} ouros ({{quality}})",
     "generic.price-for-stack": "{{price}} ouros por uma pilha de {{count}}",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Construção",
@@ -82,7 +83,7 @@
     "shop.marnie": "Marnie",
     "shop.pierre": "Pierre",
     "shop.robin": "Robin",
-    "shop.volcano": "Shop do Vulcão",
+    "shop.volcano": "Loja do Vulcão",
     "shop.willy": "Willy",
 
     // recipe types
@@ -91,8 +92,8 @@
     "recipe-type.tailoring": "Alfaiataria",
 
     // NPC descriptions
-    "data.npc.pet.description": "Seu animal de estimação leal.",
-    "data.npc.horse.description": "Seu cavalo leal.",
+    "data.npc.pet.description": "Seu leal animal de estimação.",
+    "data.npc.horse.description": "Seu leal cavalo.",
     "data.npc.junimo.description": "Um espírito da floresta do mundo espiritual. Sabe-se muito pouco sobre eles.",
     "data.npc.trash-bear.description": "Um espírito amigável que limpa o lixo.",
 
@@ -102,24 +103,25 @@
     // override item text
     "data.item.egg-incubator.description": "Chocam ovos que depois viram pintinhos ou patinhos.",
     "data.item.barrel.name": "Barril",
-    "data.item.barrel.description": "Quebre pra receber bens diversos.",
+    "data.item.barrel.description": "Quebre pra receber itens diversos.",
     "data.item.box.name": "Caixa",
-    "data.item.box.description": "Quebre para receber bens diversos.",
+    "data.item.box.description": "Quebre para receber itens diversos.",
 
     // location names
     "location.backwoods": "Bosque",
     "location.beach": "Praia",
-    "location.beach.east-pier": "“praia (cais oriental)",
+    "location.beach.east-pier": "Praia (cais mais ao leste)",
     "location.bugLand": "Covil dos Insetos Mutantes",
     "location.busStop": "Parada de ônibus",
     "location.desert": "Deserto",
-    "location.farm": "fazenda",
+    "location.desert.topPond": "Deserto (lagoa do norte)",
+    "location.farm": "Fazenda",
     "location.farmCave": "Caverna",
     "location.farmHouse": "Casa da Fazenda",
     "location.forest": "Floresta Cinzaseiva",
-    "location.forest.fish-area-0": "Rio da Floresta Cinzaseiva",
-    "location.forest.fish-area-1": "Lagoa da Floresta Cinzaseiva",
     "location.forest.island-tip": "Rio da Floresta Cinzaseiva (ponta sul da ilha grande)",
+    "location.forest.lake": "Lagoa da Floresta Cinzaseiva",
+    "location.forest.river": "Rio da Floresta Cinzaseiva",
     "location.mountain": "Montanha",
     "location.railroad": "Ferrovia",
     "location.sewer": "Esgotos",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Ilha Gengibre Sudeste",
     "location.islandSouthEastCave": "Ilha Gengibre Caverna Sudeste",
     "location.islandWest": "Ilha Gengibre Oeste",
-    "location.islandWest.fish-area-1": "Ilha Gengibre Ocean Oeste",
-    "location.islandWest.fish-area-2": "Ilha Gengibre Lagoa Oeste",
+    "location.islandWest.freshwater": "Ilha Gengibre Lagoa Oeste",
+    "location.islandWest.ocean": "Ilha Gengibre Oceano Oeste",
 
     "location.unknown-fish-area": "{{locationName}} (área de pesca {{id}})",
 
@@ -172,7 +174,7 @@
     // labels
     "building.animals": "Animais",
     "building.construction": "Construção",
-    "building.feed-trough": "Calha de Alimentação",
+    "building.feed-trough": "Cocho de Alimentação",
     "building.horse": "Cavalo",
     "building.horse-location": "Localização do Cavalo",
     "building.owner": "Proprietário",
@@ -185,14 +187,14 @@
     "building.animals.summary": "{{count}} de no máximo {{max}} animais",
     "building.construction.summary": "Pronto em {{date}}",
     "building.feed-trough.automated": "Automatizado",
-    "building.feed-trough.summary": "{{filled}} de {{max}} calhas de alimentação preenchidas",
+    "building.feed-trough.summary": "{{filled}} de {{max}} cochos de alimentação preenchidos",
     "building.horse-location.summary": "{{location}} ({{x}}, {{y}})",
     "building.junimo-harvesting-enabled": "Colheita habilitada",
-    "building.owner.none": "nenhum proprietário",
+    "building.owner.none": "Nenhum proprietário",
     "building.output-processing": "Processamento de saída",
     "building.output-ready": "Processamento pronto",
     "building.slimes.summary": "{{count}} de no máximo {{max}} slimes",
-    "building.stored-hay.summary": "{{hayCount}} of {{maxHayInLocation}} hay in this location (max capacity in this building: {{maxHayInBuilding}})", // TODO
+    "building.stored-hay.summary": "{{hayCount}} de {{maxHayInLocation}} feno nesse local (capacidade máxima nessa construção: {{maxHayInBuilding}})",
     "building.upgrades.barn.0": "até 4 animais, adiciona vacas",
     "building.upgrades.barn.1": "até 8 animais, adiciona gravidez e bodes",
     "building.upgrades.barn.2": "até 12 animais, adiciona auto alimentação, porcos e ovelhas",
@@ -202,7 +204,7 @@
     "building.upgrades.coop.0": "até 4 animais; adiciona galinhas",
     "building.upgrades.coop.1": "até 8 animais; adiciona incubadora, dinossauros e patos",
     "building.upgrades.coop.2": "até 12 animais; adiciona auto alimentação e coelhos",
-    "building.water-trough.summary": "{{filled}} de {{max}} cochas de água preenchidas",
+    "building.water-trough.summary": "{{filled}} de {{max}} cochos de água preenchidos",
 
 
     /*********
@@ -210,13 +212,13 @@
     *********/
     // labels
     "building.fish-pond.population": "População",
-    "building.fish-pond.drops": "Possíveis itens derrubados",
+    "building.fish-pond.drops": "Produção",
     "building.fish-pond.quests": "Missões",
 
     // values
     "building.fish-pond.population.empty": "Adicionar um peixe à este lago",
     "building.fish-pond.population.next-spawn": "Novo peixe aparece {{relativeDate}}",
-    "building.fish-pond.drops.preface": "{{chance}}% de chance todos os dias de produzir o primeiro item correspondente:",
+    "building.fish-pond.drops.preface": "{{chance}}% de chance de produzir o primeiro item todos os dias:",
     "building.fish-pond.drops.min-fish": "Com {{count}} peixes:",
     "building.fish-pond.quests.done": "{{count}} peixes",
     "building.fish-pond.quests.incomplete-one": "{{count}} peixes: vai precisar {{itemName}}",
@@ -239,7 +241,7 @@
     "bush.next-harvest": "Próxima colheita",
 
     // values
-    "bush.growth.summary": "fica madura em {{date}}",
+    "bush.growth.summary": "Fica madura em {{date}}",
     "bush.schedule.berry": "20% de chance de dar: amora-silvestre, na primavera, entre os dias 15 e 18; amoras no outono, entre os dias 8 a 11.",
     "bush.schedule.tea": "Cresce folhas de chá a partir do dia 22 de cada estação (com exceção do inverno se não estiver na estufa).",
 
@@ -259,7 +261,7 @@
     "fruit-tree.complaints.adjacent-objects": "Não pode crescer pois há objetos ao lado",
     "fruit-tree.growth.summary": "Fica madura em {{date}}",
     "fruit-tree.next-fruit.max-fruit": "Não irá dar nenhuma fruta até você colher as que já estão ali.",
-    "fruit-tree.next-fruit.out-of-season": "fora da estação",
+    "fruit-tree.next-fruit.out-of-season": "Fora da estação",
     "fruit-tree.next-fruit.struck-by-lightning": "Atingida por um raio! Irá se recuperar em {{count}} dias.",
     "fruit-tree.next-fruit.too-young": "Muito nova pra produzir frutos",
     "fruit-tree.quality.now": "{{quality}} agora",
@@ -282,7 +284,7 @@
     "crop.summary.drops-X": "Derruba {{count}} unidades",
     "crop.summary.drops-X-to-Y": "Solta de {{min}} pra no máximo {{max}} unidades({{percent}}% chance de colher unidades a mais)",
     "crop.summary.harvest-once": "Colher após {{daysToFirstHarvest}} dias",
-    "crop.summary.harvest-multi": "Colhe depois de  {{daysToFirstHarvest}} dias, depois a cada {{daysToNextHarvests}} dias",
+    "crop.summary.harvest-multi": "Colhe depois de {{daysToFirstHarvest}} dias, depois a cada {{daysToNextHarvests}} dias",
     "crop.summary.seasons": "Cresce no(a) {{seasons}}",
     "crop.summary.sells-for": "Vende por {{price}}",
     "crop.harvest.too-late": "Muito tarde para colher nessa estação (deveria ser no {{date}})",
@@ -292,7 +294,7 @@
     ** Item > generic lookups
     *********/
     // labels
-    "item.custom-item": "Custom item", // TODO
+    "item.custom-item": "Item personalizado",
     "item.contents": "Conteúdo",
     "item.loves-this": "Ama isso",
     "item.likes-this": "Gosta disso",
@@ -311,7 +313,7 @@
     "item.produces-dye": "Produz corante",
 
     // values
-    "item.custom-item.summary": "added by {{modName}}", // TODO
+    "item.custom-item.summary": "Adicionado por {{modName}}",
     "item.contents.placed": "{{name}} colocado",
     "item.contents.ready": "{{name}} pronto",
     "item.contents.partial": "{{name}} em {{time}}",
@@ -389,24 +391,22 @@
     ** Item > melee weapon lookups
     *********/
     // labels
-    // TODO
-    "item.melee-weapon.accuracy": "Accuracy",
-    "item.melee-weapon.critical-chance": "Critical chance",
-    "item.melee-weapon.critical-damage": "Critical damage",
-    "item.melee-weapon.damage": "Damage",
-    "item.melee-weapon.defense": "Defense",
-    "item.melee-weapon.knockback": "Knockback",
-    "item.melee-weapon.reach": "Reach",
-    "item.melee-weapon.speed": "Attack speed",
+    "item.melee-weapon.accuracy": "Precisão",
+    "item.melee-weapon.critical-chance": "Chance Crítica",
+    "item.melee-weapon.critical-damage": "Dano Crítico",
+    "item.melee-weapon.damage": "Dano",
+    "item.melee-weapon.defense": "Defesa",
+    "item.melee-weapon.knockback": "Repulsão",
+    "item.melee-weapon.reach": "Alcance",
+    "item.melee-weapon.speed": "Velocidade de Ataque",
 
     // values
-    // TODO
-    "item.melee-weapon.critical-damage.label": "{{multiplier}} times normal damage (before player bonuses)",
-    "item.melee-weapon.defense.label": "{{amount}} while equipped",
-    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}} times normal distance)",
+    "item.melee-weapon.critical-damage.label": "{{multiplier}} vezes dano normal (antes dos bônus do jogador)",
+    "item.melee-weapon.defense.label": "{{amount}} quando equipado",
+    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}} vezes distância normal)",
     "item.melee-weapon.reach.label": "{{amount}} pixels",
-    "item.melee-weapon.speed.shown-vs-actual": "shown: {{shownSpeed}}{{lineBreak}}actual: {{actualSpeed}}",
-    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} milliseconds per swing frame, before player speed bonuses)",
+    "item.melee-weapon.speed.shown-vs-actual": "mostrado: {{shownSpeed}}{{lineBreak}}atual: {{actualSpeed}}",
+    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} milissegundos por quadro de animação, antes dos bônus de velocidade do jogador)",
 
 
     /*********
@@ -418,7 +418,7 @@
     "item.movie-ticket.loves-movie": "Ama o filme",
     "item.movie-ticket.likes-movie": "Gosta do filme",
     "item.movie-ticket.dislikes-movie": "Não gosta do filme",
-    "item.movie-ticket.rejects-movie": "Won't watch movie", // TODO
+    "item.movie-ticket.rejects-movie": "Não vai assistir o filme",
 
     // values
     "item.movie-snack-preference.love": "{{name}} ama isso",
@@ -477,7 +477,7 @@
     "npc.friendship.need-bouquet": "Precisa de um buquê pra prosseguir",
     "npc.friendship.need-points": "Precisa de {{count}} pontos para prosseguir",
     "npc.undiscovered-gift-taste": "{{count}} itens não revelados",
-    "npc.unowned-gift-taste": "{{count}} unowned items", // TODO
+    "npc.unowned-gift-taste": "{{count}} itens não possuídos",
 
 
     /*********
@@ -491,7 +491,7 @@
     "npc.child.age.description-grown": "{{label}}",
     "npc.child.age.newborn": "Recém nascido",
     "npc.child.age.baby": "Bebê",
-    "npc.child.age.crawler": "Bebê que está aprendendo a andar",
+    "npc.child.age.crawler": "Engatinhando",
     "npc.child.age.toddler": "Criancinha",
 
 
@@ -536,7 +536,7 @@
     "player.gender.male": "Masculino",
     "player.gender.female": "Feminino",
     "player.luck.summary": "{{percent}}% muitas verificações aleatórias",
-    "player.skill.progress": "nível {{level}} ({{expNeeded}} XP para upar)",
+    "player.skill.progress": "nível {{level}} ({{expNeeded}} XP para subir)",
     "player.skill.progress-last": "nível {{level}}",
 
 
@@ -568,7 +568,7 @@
     ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // label
-    "puzzle.island-mermaid.title": "Puzzle da Sereia",
+    "puzzle.island-mermaid.title": "Quebra-cabeça da Sereia",
     "puzzle.island-mermaid.solution.intro": "Use blocos de flauta para tocar a música da Sereia.",
 
 
@@ -579,7 +579,7 @@
     "puzzle.island-shrine.title": "Pássaro-Gema",
 
     // values
-    "puzzle.island-shrine.solution": "Para cada pedestal, bote os itens dropados pelos pássaros-gema em seu correspondente local da ilha quando chove. Os itens são randômicos.",
+    "puzzle.island-shrine.solution": "Para cada pedestal, bote os itens derrubados pelos pássaros-gema em seu local correspondente da ilha quando chove. Os itens são aleatórios para cada save.",
     "puzzle.island-shrine.solution.east": "Leste: {{item}}",
     "puzzle.island-shrine.solution.north": "Norte: {{item}}",
     "puzzle.island-shrine.solution.south": "Sul: {{item}}",
@@ -590,11 +590,11 @@
     ** Tile lookups
     *********/
     // labels
-    "tile.description": "Um bloque posicionado no mapa. Isto está aparecendo pois você habilitou nas configurações.",
+    "tile.description": "A posição de um bloco no mapa. Isso é exibido porque você ativou as pesquisas de blocos na configuração",
     "tile.game-location": "Localização",
     "tile.map-name": "Nome do mapa",
     "tile.tile": "Bloco",
-    "tile.tile-index": "{{layerName}}: Indice do bloco",
+    "tile.tile-index": "{{layerName}}: Índice do bloco",
     "tile.tilesheet": "{{layerName}}: Planilha",
     "tile.blend-mode": "{{layerName}}: Modo de mistura",
     "tile.index-property": "{{layerName}}: Índice da propriedade: {{propertyName}}",
@@ -628,15 +628,17 @@
     "tree.name.oak": "Carvalho",
     "tree.name.palm": "Palmeira",
     "tree.name.pine": "Pinheiro",
+    "tree.name.mossy": "Árvore Musgosa",
+    "tree.name.mystic": "Árvore Mística",
     "tree.name.unknown": "Árvore desconhecida",
     "tree.stage.done": "Totalmente crescido",
     "tree.stage.partial": "{{stageName}} ({{step}} de {{max}})",
     "tree.next-growth.winter": "Não pode crescer no inverno fora da estufa, a menos que seja fertilizado",
     "tree.next-growth.adjacent-trees": "Não pode crescer pois as outras árvores estão muito perto",
     "tree.next-growth.chance": "{{chance}}% Chance de crescer {{stage}} amanhã",
-    "tree.seed.not-ready": "Not ready", // TODO
-    "tree.seed.probability-daily": "{{chance}}% chance of {{itemName}} each day.", // TODO
-    "tree.seed.probability-on-chop": "{{chance}}% chance of dropping {{itemName}} when chopped down.", // TODO
+    "tree.seed.not-ready": "Não está pronta",
+    "tree.seed.probability-daily": "{{chance}}% chance de {{itemName}} cada dia.",
+    "tree.seed.probability-on-chop": "{{chance}}% chance de derrubar {{itemName}} quando cortada.",
 
     // growth stages
     "tree.stages.seed": "Semente",
@@ -651,62 +653,69 @@
     ** Generic Mod Config Menu UI
     *********/
     // main options
-    // TODO
-    "config.title.main-options": "Main options",
-    "config.progression-mode.name": "Progression mode",
-    "config.progression-mode.desc": "Whether to hide some content (e.g. gift tastes and puzzle solutions) until you've discovered it in-game.",
-    "config.force-full-screen.name": "Force full screen",
-    "config.force-full-screen.desc": "Whether the menu should always be full-screen, instead of centered in the window. This is mainly useful when viewing data mining fields.",
+    "config.title.main-options": "Opções principais",
+    "config.progression-mode.name": "Modo de progressão",
+    "config.progression-mode.desc": "Se deve ocultar algum conteúdo (ex. presentes amados e soluções de quebra-cabeças) até que você tenha descoberto dentro do jogo.",
+    "config.force-full-screen.name": "Forçar tela cheia",
+    "config.force-full-screen.desc": "Se o menu deve estar sempre em tela cheia, em vez de centralizado na janela. Isso é útil principalmente ao visualizar campos de mineração de dados.",
 
     // gift tastes
+    "config.title.gift-tastes": "Preferências de presentes",
+    "config.show-gift-tastes.loved.name": "Mostrar presentes amados",
+    "config.show-gift-tastes.loved.desc": "Se deve mostrar presentes amados em NPCs e pesquisas de itens.",
+    "config.show-gift-tastes.liked.name": "Mostrar presentes gostados",
+    "config.show-gift-tastes.liked.desc": "Se deve mostrar presentes gostados em NPCs e pesquisas de itens.",
+    "config.show-gift-tastes.neutral.name": "Mostrar presentes neutos",
+    "config.show-gift-tastes.neutral.desc": "Se deve mostrar presentes neutros em NPCs e pesquisas de itens.",
+    "config.show-gift-tastes.disliked.name": "Mostrar presentes não gostados",
+    "config.show-gift-tastes.disliked.desc": "Se deve mostrar presentes não gostados em NPCs e pesquisas de itens.",
+    "config.show-gift-tastes.hated.name": "Mostrar presentes odiados",
+    "config.show-gift-tastes.hated.desc": "Se deve mostrar presentes odiados em NPCs e pesquisas de itens.",
+
+    "config.show-unowned-gifts.name": "Mostrar preferências de presentes não possuídos",
+    "config.show-unowned-gifts.desc": "Se deve mostrar preferências de presentes para itens que o jogador não possui em algum lugar do mundo.",
+
+    "config.highlight-unrevealed-gift-tastes.name": "Destacar preferências de presentes não revelados",
+    "config.highlight-unrevealed-gift-tastes.desc": "Se deve destacar preferências de presentes que não foram revelados no perfil do NPC. Quando ativado, as preferências de presentes não reveladas estarão em negrito.",
+
+    // collapse fields
     // TODO
-    "config.title.gift-tastes": "Gift tastes",
-    "config.show-gift-tastes.loved.name": "Show loved gifts",
-    "config.show-gift-tastes.loved.desc": "Whether to show loved gifts in NPC and item lookups.",
-    "config.show-gift-tastes.liked.name": "Show liked gifts",
-    "config.show-gift-tastes.liked.desc": "Whether to show liked gifts in NPC and item lookups.",
-    "config.show-gift-tastes.neutral.name": "Show neutral gifts",
-    "config.show-gift-tastes.neutral.desc": "Whether to show neutral gifts in NPC and item lookups.",
-    "config.show-gift-tastes.disliked.name": "Show disliked gifts",
-    "config.show-gift-tastes.disliked.desc": "Whether to show disliked gifts in NPC and item lookups.",
-    "config.show-gift-tastes.hated.name": "Show hated gifts",
-    "config.show-gift-tastes.hated.desc": "Whether to show hated gifts in NPC and item lookups.",
+    "config.title.collapse-fields": "Collapse large fields",
 
-    "config.show-unowned-gifts.name": "Show unowned gift tastes",
-    "config.show-unowned-gifts.desc": "Whether to show gift tastes for items that the player doesn't own somewhere in the world.",
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
-    "config.highlight-unrevealed-gift-tastes.name": "Highlight unrevealed gift tastes",
-    "config.highlight-unrevealed-gift-tastes.desc": "Whether to highlight item gift tastes which haven't been revealed in the NPC profile. When enabled, unrevealed gift tastes will be bold.",
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
-    // TODO
-    "config.title.advanced-options": "Advanced options",
-    "config.tile-lookups.name": "Tile lookups",
-    "config.tile-lookups.desc": "Whether to include map tiles as lookup targets.",
-    "config.data-mining-fields.name": "Show data mining fields",
-    "config.data-mining-fields.desc": "Whether to show raw data useful for data miners (as separate fields at the bottom of lookup results). This is an advanced feature not intended for most players.",
-    "config.target-redirection.name": "Target redirection",
-    "config.target-redirection.desc": "In some cases the game spawns a temporary entity to represent another one. For example, Abigail in the mines is actually a temporary NPC with the name 'AbigailMine', so looking her up there won't show Abigail's real info. With this option enabled, Lookup Anything will look up the original Abigail instead.",
-    "config.scroll-amount.name": "Scroll amount",
-    "config.scroll-amount.desc": "The number of pixels to shift content on each up/down scroll.",
+    "config.title.advanced-options": "Opções avançadas",
+    "config.tile-lookups.name": "Pesquisa por blocos",
+    "config.tile-lookups.desc": "Se deve incluir blocos de mapa como alvos de pesquisa.",
+    "config.data-mining-fields.name": "Mostrar campos de mineração de dados",
+    "config.data-mining-fields.desc": "Se devem ser mostrados dados brutos úteis para mineradores de dados (como campos separados na parte inferior dos resultados da pesquisa). Esse é um recurso avançado não destinado à maioria dos jogadores.",
+    "config.target-redirection.name": "Redirecionamento de alvo",
+    "config.target-redirection.desc": "Em alguns casos, o jogo gera uma entidade temporária para representar outra. Por exemplo, Abigail nas minas é na verdade um NPC temporário com o nome 'AbigailMine', então procurá-la lá em cima não mostrará as informações reais de Abigail. Com esta opção habilitada, Lookup Anything irá procurar a Abigail original.",
+    "config.scroll-amount.name": "Quantidade de rolagem",
+    "config.scroll-amount.desc": "O número de pixels para deslocar o conteúdo em cada rolagem para cima/para baixo.",
 
     // controls section
-    // TODO
-    "config.title.controls": "Controls",
-    "config.hide-on-key-up.name": "Hide on key up",
-    "config.hide-on-key-up.desc": "Whether to hide the lookup UI when you release the lookup key.",
-    "config.toggle-lookup.name": "Toggle lookup",
-    "config.toggle-lookup.desc": "The keys which toggle the lookup UI for something under the cursor.",
-    "config.toggle-search.name": "Toggle search",
-    "config.toggle-search.desc": "The keys which toggle the search UI.",
-    "config.scroll-up.name": "Scroll up",
-    "config.scroll-up.desc": "The keys which scroll up long content by a few lines.",
-    "config.scroll-down.name": "Scroll down",
-    "config.scroll-down.desc": "The keys which scroll down long content by a few lines.",
-    "config.page-up.name": "Page up",
-    "config.page-up.desc": "The keys which scroll up long content by a full page.",
-    "config.page-down.name": "Page down",
-    "config.page-down.desc": "The keys which scroll down long content by a full page.",
-    "config.toggle-debug.name": "Toggle debug",
-    "config.toggle-debug.desc": "The keys which toggle the display of debug information."
+    "config.title.controls": "Controles",
+    "config.hide-on-key-up.name": "Ocultar ao soltar a tecla",
+    "config.hide-on-key-up.desc": "Se deve ocultar a interface de busca ao soltar a tecla de busca.",
+    "config.toggle-lookup.name": "Alternar busca",
+    "config.toggle-lookup.desc": "As teclas que alternam a interface de busca para algo sob o cursor.",
+    "config.toggle-search.name": "Alternar pesquisa",
+    "config.toggle-search.desc": "As teclas que alternam a interface de pesquisa.",
+    "config.scroll-up.name": "Rolar para cima",
+    "config.scroll-up.desc": "As teclas que rolam para cima o conteúdo longo por algumas linhas.",
+    "config.scroll-down.name": "Rolar para baixo",
+    "config.scroll-down.desc": "As teclas que rolam para baixo o conteúdo longo por algumas linhas.",
+    "config.page-up.name": "Página acima",
+    "config.page-up.desc": "As teclas que rolam para cima o conteúdo longo por uma página inteira.",
+    "config.page-down.name": "Página abaixo",
+    "config.page-down.desc": "As teclas que rolam para baixo o conteúdo longo por uma página inteira.",
+    "config.toggle-debug.name": "Alternar depuração",
+    "config.toggle-debug.desc": "As teclas que alternam a exibição de informações de depuração."
 }

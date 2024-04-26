@@ -144,7 +144,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                             sortY /= 10000f;
                             Rectangle sourceRect = drawLayer.GetSourceRect((int)Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
                             sourceRect = building.ApplySourceRectOffsets(sourceRect);
-                            Texture2D layerTexture = building.texture.Value;
+                            Texture2D layerTexture = texture;
                             if (drawLayer.Texture != null)
                             {
                                 layerTexture = Game1.content.Load<Texture2D>(drawLayer.Texture);

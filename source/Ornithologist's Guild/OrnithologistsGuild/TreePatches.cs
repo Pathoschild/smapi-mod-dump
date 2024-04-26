@@ -9,10 +9,10 @@
 *************************************************/
 
 using System;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using OrnithologistsGuild.Game;
 using StardewModdingAPI;
-using StardewValley;
 
 namespace OrnithologistsGuild
 {
@@ -20,27 +20,29 @@ namespace OrnithologistsGuild
     {
         private static IMonitor Monitor;
 
-        public static void Initialize(IMonitor monitor)
+        public static void Initialize(IMonitor monitor, Harmony harmony)
         {
             Monitor = monitor;
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Tree), nameof(StardewValley.TerrainFeatures.Tree.performUseAction)),
+                postfix: new HarmonyMethod(typeof(TreePatches), nameof(performUseAction_Postfix))
+            );
         }
 
-        public static bool performUseAction_Prefix(StardewValley.TerrainFeatures.Tree __instance, Vector2 tileLocation, GameLocation location)
+        public static void performUseAction_Postfix(StardewValley.TerrainFeatures.Tree __instance, Vector2 tileLocation)
         {
             try
             {
-                var birdie = new Perch(__instance).GetOccupant(location);
+                var birdie = new Perch(__instance).GetOccupant(__instance.Location);
                 if (birdie != null)
                 {
                     birdie.Frighten();
                 }
-
-                return true; // run original logic
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(performUseAction_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
+                Monitor.Log($"Failed in {nameof(performUseAction_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
     }

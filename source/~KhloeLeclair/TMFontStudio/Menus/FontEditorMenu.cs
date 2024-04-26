@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -143,6 +144,19 @@ public class FontEditorMenu : IClickableMenu {
 						} catch(Exception ex) {
 							Mod.Log($"Could not create updated font: {ex}", StardewModdingAPI.LogLevel.Warn);
 						}
+
+						Mod.Log($"Font: {font.FamilyName} - {font.SubfamilyName}", StardewModdingAPI.LogLevel.Info);
+						int lcid = CultureInfo.CurrentUICulture.LCID;
+						if (font.Names is null)
+							font.Names = FontUtilities.ReadFontNames(font);
+
+						if (font.Names is not null && font.Names.Count > 0) {
+							foreach (var name in font.Names) {
+								//if (name.PlatformId == PlatformId.Microsoft && name.LanguageId == lcid)
+									Mod.Log($"- {name.NameId}: {name.Value}", StardewModdingAPI.LogLevel.Debug);
+							}
+						} else
+							Mod.Log($"- no names", StardewModdingAPI.LogLevel.Info);
 
 						string path = Path.Join(Mod.Helper.DirectoryPath, "Fonts", $"{font.FamilyName} ({font.SubfamilyName}) 25.png");
 						string datapath = Path.Join(Mod.Helper.DirectoryPath, "Fonts", $"{font.FamilyName} ({font.SubfamilyName}) 25.json");

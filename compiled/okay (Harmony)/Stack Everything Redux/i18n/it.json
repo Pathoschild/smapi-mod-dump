@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Numero Massimo di Impilamento",
+    "config.MaxStackingNumber.tooltip": "Il numero massimo di impilamento, il valore predefinito è 999.",
+    "config.DefaultCraftingAmount.name": "Quantità Predefinita per Cottura/Creazione",
+    "config.DefaultCraftingAmount.tooltip": "La quantità predefinita quando si utilizza Shift+Clic Destro nel menu Cottura/Creazione.",
+    "config.DefaultShopAmount.name": "Quantità Predefinita per Acquisto",
+    "config.DefaultShopAmount.tooltip": "La quantità predefinita quando si utilizza Shift+Clic Destro in un menu di acquisto.",
+    "config.EnableStackSplitRedux.name": "Abilita Split Redux",
+    "config.EnableStackSplitRedux.tooltip": "Abilita le funzionalità di Split Redux. Deseleziona questa casella se riscontri problemi.",
+    "ui.stacksplitmenu.title": "Seleziona Quantità"
+}

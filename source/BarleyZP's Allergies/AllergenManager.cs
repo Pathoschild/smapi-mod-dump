@@ -11,20 +11,12 @@
 using StardewValley.GameData.Objects;
 using StardewModdingAPI;
 using System.Text.RegularExpressions;
+using StardewValley;
 
 namespace BZP_Allergies
 {
     internal class AllergenManager : Initializable
     {
-        public enum Allergens {
-            EGG,
-            WHEAT,
-            FISH,
-            SHELLFISH,
-            TREE_NUTS,
-            DAIRY
-        }
-
         public static readonly string ALLERIC_REACTION_DEBUFF = string.Format("{0}_allergic_reaction", ModEntry.MOD_ID);
         public static readonly string LACTASE_PILLS_BUFF = string.Format("{0}_buff_2", ModEntry.MOD_ID);
         public static readonly string REACTION_EVENT = string.Format("{0}_had_allergic_reaction", ModEntry.MOD_ID);
@@ -34,184 +26,217 @@ namespace BZP_Allergies
 
         public static readonly string REACTION_DIALOGUE_KEY = string.Format("{0}_farmer_allergic_reaction", ModEntry.MOD_ID);
 
-        private static readonly Dictionary<Allergens, ISet<string>> ENUM_TO_ALLERGEN_OBJECTS = new()
-        {
-            { Allergens.EGG, new HashSet<string>{
-                "194", "195", "201", "203", "211", "213", "220", "221", "223", "234", "240", "648",
-                "732"
-            }},
-            { Allergens.WHEAT, new HashSet<string>{
-                "198", "201", "202", "203", "206", "211", "214", "216", "220", "221", "222", "223",
-                "224", "234", "239", "241", "604", "608", "611", "618", "651", "731", "732", "246",
-                "262"
-            }},
-            { Allergens.FISH, new HashSet<string>{
-                "198", "202", "204", "212", "213", "214", "219", "225", "226", "227", "228", "242",
-                "265", "447", "445", "812", "SmokedFish"
-            }},
-            { Allergens.SHELLFISH, new HashSet<string>{
-                "203", "218", "227", "228", "727", "728", "729", "730", "732", "733", "447", "812",
-                "SmokedFish", "715", "372", "717", "718", "719", "720", "723", "716", "721", "722"
-            }},
-            { Allergens.TREE_NUTS, new HashSet<string>{
-                "239", "607", "408"
-            }},
-            { Allergens.DAIRY, new HashSet<string>{
-                "195", "197", "199", "201", "206", "215", "232", "233", "236", "240", "243", "605",
-                "608", "727", "730", "904", "424", "426"
-            }}
-        };
+        public static Dictionary<string, ISet<string>> ALLERGEN_OBJECTS;
 
-        private static readonly Dictionary<Allergens, string> ENUM_TO_CONTEXT_TAG = new()
-        {
-            { Allergens.EGG, string.Format("{0}_egg", ModEntry.MOD_ID) },
-            { Allergens.WHEAT, string.Format("{0}_wheat", ModEntry.MOD_ID) },
-            { Allergens.FISH, string.Format("{0}_fish", ModEntry.MOD_ID) },
-            { Allergens.SHELLFISH, string.Format("{0}_shellfish", ModEntry.MOD_ID) },
-            { Allergens.TREE_NUTS, string.Format("{0}_treenuts", ModEntry.MOD_ID) },
-            { Allergens.DAIRY, string.Format("{0}_dairy", ModEntry.MOD_ID) }
-        };
+        public static Dictionary<string, string> ALLERGEN_TO_DISPLAY_NAME;
 
-        private static readonly Dictionary<Allergens, string> ENUM_TO_STRING = new()
-        {
-            { Allergens.EGG, "Eggs" },
-            { Allergens.WHEAT, "Wheat" },
-            { Allergens.FISH, "Fish" },
-            { Allergens.SHELLFISH, "Shellfish" },
-            { Allergens.TREE_NUTS, "Tree Nuts" },
-            { Allergens.DAIRY, "Dairy" }
-        };
+        public static Dictionary<string, ISet<string>> ALLERGEN_CONTEXT_TAGS;
 
-        public static string GetAllergenContextTag(Allergens allergen)
+        public static Dictionary<string, ISet<string>> ALLERGEN_CONTENT_PACK;
+
+        public static void InitDefaultDicts()
         {
-            string result = ENUM_TO_CONTEXT_TAG.GetValueOrDefault(allergen, "");
-            if (result.Equals(""))
+            ALLERGEN_OBJECTS = new()
             {
-                throw new Exception("No context tags were defined for the allergen " + allergen.ToString());
-            }
-            return result;
+                { "egg", new HashSet<string>{
+                    "194", "195", "201", "203", "211", "213", "220", "221", "223", "234", "240", "648",
+                    "732"
+                }},
+                { "wheat", new HashSet<string>{
+                    "198", "201", "202", "203", "206", "211", "214", "216", "220", "221", "222", "223",
+                    "224", "234", "239", "241", "604", "608", "611", "618", "651", "731", "732", "246",
+                    "262", "346"
+                }},
+                { "fish", new HashSet<string>{
+                    "198", "202", "204", "212", "213", "214", "219", "225", "226", "227", "228", "242",
+                    "265", "445"
+                }},
+                { "shellfish", new HashSet<string>{
+                    "203", "218", "227", "228", "727", "728", "729", "730", "732", "733", "715", "372",
+                    "717", "718", "719", "720", "723", "716", "721", "722"
+                }},
+                { "treenuts", new HashSet<string>{
+                    "239", "607", "408"
+                }},
+                { "dairy", new HashSet<string>{
+                    "195", "197", "199", "201", "206", "215", "232", "233", "236", "240", "243", "605",
+                    "608", "727", "730", "904", "424", "426"
+                }},
+                { "mushroom", new HashSet<string>
+                {
+                    "404", "205", "606", "218", "420", "422", "281", "257", "773", "851"
+                }}
+            };
+
+            ALLERGEN_TO_DISPLAY_NAME = new()
+            {
+                { "egg", "Eggs" },
+                { "wheat", "Wheat" },
+                { "fish", "Fish" },
+                { "shellfish", "Shellfish" },
+                { "treenuts", "Tree Nuts" },
+                { "dairy", "Dairy" },
+                { "mushroom", "Mushrooms" }
+            };
+
+            ALLERGEN_CONTEXT_TAGS = new()
+            {
+                { "egg", new HashSet<string>{ "egg_item", "mayo_item", "large_egg_item" } },
+                { "wheat", new HashSet<string>() },
+                { "fish", new HashSet<string>() },
+                { "shellfish", new HashSet<string>() },
+                { "treenuts", new HashSet<string>() },
+                { "dairy", new HashSet<string>{ "milk_item", "large_milk_item", "cow_milk_item", "goat_milk_item" } },
+                { "mushroom", new HashSet<string>() }
+            };
+
+            ALLERGEN_CONTENT_PACK = new();
         }
 
-        public static string GetAllergenReadableString(Allergens allergen)
+        public static void ThrowIfAllergenDoesntExist(string allergen)
         {
-            string result = ENUM_TO_STRING.GetValueOrDefault(allergen, "");
-            if (result.Equals(""))
+            if (!ALLERGEN_TO_DISPLAY_NAME.ContainsKey(allergen))
             {
-                throw new Exception("No readable string was defined for the allergen " + allergen.ToString());
+                throw new Exception("No allergen found named " + allergen.ToString());
             }
-            return result;
         }
 
-        public static ISet<string> GetObjectsWithAllergen(Allergens allergen, IAssetDataForDictionary<string, ObjectData> data)
+        public static string GetAllergenContextTag(string allergen)
         {
+            ThrowIfAllergenDoesntExist(allergen);
+            return ModEntry.MOD_ID + "_allergen_" + allergen.ToLower();
+        }
+
+        public static string GetMadeWithContextTag(string allergen)
+        {
+            ThrowIfAllergenDoesntExist(allergen);
+            return ModEntry.MOD_ID + "_made_with_id_" + allergen.ToLower();
+        }
+
+        public static string GetAllergenDisplayName(string allergen)
+        {
+            ThrowIfAllergenDoesntExist(allergen);
+            return ALLERGEN_TO_DISPLAY_NAME[allergen];
+        }
+
+        public static ISet<string> GetObjectsWithAllergen(string allergen, IAssetDataForDictionary<string, ObjectData> data)
+        {
+            ThrowIfAllergenDoesntExist(allergen);
+
             // labeled items
-            ISet<string> result = ENUM_TO_ALLERGEN_OBJECTS.GetValueOrDefault(allergen, new HashSet<string>());
+            ISet<string> result = ALLERGEN_OBJECTS.GetValueOrDefault(allergen, new HashSet<string>());
 
-            // category items
-            if (allergen == Allergens.EGG)
-            {
-                ISet<string> rawEggItems = GetItemsWithContextTags(new List<string> { "egg_item", "mayo_item", "large_egg_item" }, data);
-                result.UnionWith(rawEggItems);
-            }
-            else if (allergen == Allergens.FISH)
+            // fish special case
+            if (allergen == "fish")
             {
                 ISet<string> fishItems = GetFishItems(data);
                 result.UnionWith(fishItems);
             }
-            else if (allergen == Allergens.DAIRY)
-            {
-                ISet<string> dairyItems = GetItemsWithContextTags(new List<string> { "milk_item", "large_milk_item", "cow_milk_item", "goat_milk_item" }, data);
-                result.UnionWith(dairyItems);
-            }
 
-            if (result.Count == 0)
-            {
-                throw new Exception("No objects have been assigned the allergen " + allergen.ToString());
-            }
+            ISet<string> items = GetItemsWithContextTags(ALLERGEN_CONTEXT_TAGS.GetValueOrDefault(allergen, new HashSet<string>()), data);
+            result.UnionWith(items);
+
             return result;
-
-            
         }
-        public static bool FarmerIsAllergic(Allergens allergen)
+
+        public static bool FarmerIsAllergic(string allergen)
         {
-            switch (allergen)
-            {
-                case Allergens.EGG:
-                    return ModEntry.Config.Farmer.EggAllergy;
-                case Allergens.WHEAT:
-                    return ModEntry.Config.Farmer.WheatAllergy;
-                case Allergens.FISH:
-                    return ModEntry.Config.Farmer.FishAllergy;
-                case Allergens.SHELLFISH:
-                    return ModEntry.Config.Farmer.ShellfishAllergy;
-                case Allergens.TREE_NUTS:
-                    return ModEntry.Config.Farmer.TreenutAllergy;
-                case Allergens.DAIRY:
-                    return ModEntry.Config.Farmer.DairyAllergy;
-                default:
-                    return false;
-            }
+            ThrowIfAllergenDoesntExist(allergen);
+            return ModEntry.Config.Farmer.Allergies.GetValueOrDefault(allergen, false);
         }
 
         public static bool FarmerIsAllergic (StardewValley.Object @object)
         {
-            // special case: roe, aged roe, or smoked fish
-            // need to differentiate fish vs shellfish ingredient
-            List<string> fishShellfishDifferentiation = new() { "(O)447", "(O)812", "(O)SmokedFish" };
-            if (fishShellfishDifferentiation.Contains(@object.QualifiedItemId))
+            ISet<string> containsAllergens = GetAllergensInObject(@object);
+
+            foreach (string a in containsAllergens)
             {
-                try
-                {
-                    // get context tags
-                    ISet<string> tags = @object.GetContextTags();
-
-                    // find the "preserve_sheet_index_{id}" tag
-                    Regex rx = new(@"^preserve_sheet_index_\d+$");
-                    List<string> filtered_tags = tags.Where(t => rx.IsMatch(t)).ToList();
-                    string preserve_sheet_tag = filtered_tags[0];
-
-                    // get the id of the object it was made from
-                    Match m = Regex.Match(preserve_sheet_tag, @"\d+");
-                    if (!m.Success)
-                    {
-                        throw new Exception("No regex match for item id in preserve_sheet_index context tag");
-                    }
-
-                    string madeFromId = m.Value;
-                    // load Data/Objects for context tags
-                    IDictionary<string, ObjectData> objData = GameContent.Load<Dictionary<string, ObjectData>>("Data/Objects");
-
-                    // !isShellfish = isFish since these can only be made from one of the two
-                    bool isShellfish = objData[madeFromId].ContextTags.Contains(GetAllergenContextTag(Allergens.SHELLFISH));
-
-                    if (isShellfish && FarmerIsAllergic(Allergens.SHELLFISH))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return !isShellfish && FarmerIsAllergic(Allergens.FISH);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Monitor.Log($"Failed in {nameof(FarmerIsAllergic)}:\n{ex}", LogLevel.Error);
-                    Monitor.Log("Unable to determine whether eaten Object was fish or shellfish");
-                    // we failed to determine, so let's just fall through and
-                    // return whether the farmer is allergic to fish or shellfish
-                }
-            }
-
-            // check each of the allergens
-            foreach (Allergens a in Enum.GetValues<Allergens>())
-            {
-                if (@object.HasContextTag(GetAllergenContextTag(a)) && FarmerIsAllergic(a))
+                if (FarmerIsAllergic(a))
                 {
                     return true;
                 }
             }
-
             return false;
+        }
+
+        public static ISet<string> GetAllergensInObject(StardewValley.Object? @object)
+        {
+            ISet<string> result = new HashSet<string>();
+            if (@object == null)
+            {
+                return result;
+            }
+
+            // special case: preserves item
+            List<StardewValley.Object> madeFrom = TryGetMadeFromObjects(@object);
+
+            if (madeFrom.Count > 0)
+            {
+                foreach (StardewValley.Object madeFromObj in madeFrom)
+                {
+                    foreach (var tag in madeFromObj.GetContextTags())
+                    {
+                        if (tag.StartsWith(ModEntry.MOD_ID + "_allergen_"))
+                        {
+                            result.Add(tag.Split("_").Last());
+                        }
+                    }
+                }
+            }
+            // special case: cooked item
+            else if (@object.modData.TryGetValue("BarleyZP.BzpAllergies_CookedWith", out string cookedWith))
+            {
+                // try looking in the modData field for what the thing was crafted with
+                foreach (string allergen in cookedWith.Split(","))
+                {
+                    result.Add(allergen);
+                }
+            }
+            // else: boring normal item
+            else
+            {
+                foreach (var tag in @object.GetContextTags())
+                {
+                    if (tag.StartsWith(ModEntry.MOD_ID + "_allergen_"))
+                    {
+                        result.Add(tag.Split("_").Last());
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static List<StardewValley.Object> TryGetMadeFromObjects(StardewValley.Object @object)
+        {
+            List<StardewValley.Object> result = new();
+
+            // get context tags
+            ISet<string> tags = @object.GetContextTags();
+
+            // find the "preserve_sheet_index_{id}" tag
+            Regex rx = new(@"^preserve_sheet_index_\d+$");
+            List<string> filteredTags = tags.Where(t => rx.IsMatch(t)).ToList();
+
+            if (filteredTags.Count == 0)  // no preserves index
+            {
+                return result;
+            }
+
+            foreach (string tag in filteredTags)
+            {
+                // get the id of the object it was made from
+                Match m = Regex.Match(tag, @"\d+");
+                if (m.Success)
+                {
+                    string madeFromId = m.Value;
+                    if (ItemRegistry.Create(madeFromId) is StardewValley.Object casted)
+                    {
+                        result.Add(casted);
+                    }
+                }
+            }
+            return result;
         }
 
         private static ISet<string> GetFishItems (IAssetDataForDictionary<string, ObjectData> data)
@@ -228,12 +253,12 @@ namespace BZP_Allergies
             }
 
             // remove shellfish
-            ISet<string> shellfish = ENUM_TO_ALLERGEN_OBJECTS.GetValueOrDefault(Allergens.SHELLFISH, new HashSet<string>());
+            ISet<string> shellfish = ALLERGEN_OBJECTS.GetValueOrDefault("shellfish", new HashSet<string>());
             
             foreach (var item in data.Data)
             {
                 List<string> tags = item.Value.ContextTags ?? new();
-                if (shellfish.Contains(item.Key) || tags.Contains(GetAllergenContextTag(Allergens.SHELLFISH)))
+                if (shellfish.Contains(item.Key) || tags.Contains(GetAllergenContextTag("shellfish")))
                 {
                     result.Remove(item.Key);
                 }
@@ -242,7 +267,7 @@ namespace BZP_Allergies
             return result;
         }
 
-        private static ISet<string> GetItemsWithContextTags (List<string> tags, IAssetDataForDictionary<string, ObjectData> data)
+        private static ISet<string> GetItemsWithContextTags (ISet<string> tags, IAssetDataForDictionary<string, ObjectData> data)
         {
             ISet<string> result = new HashSet<string>();
 

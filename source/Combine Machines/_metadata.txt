@@ -6,9 +6,9 @@ mods:
    Combine Machines
 
 latest commit:
-   commit 31c979b79014b0c2432da2a115ef1f4195879d1d
+   commit 5b9dffe2bb602297188f78eb85a00940f9323d23
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sat Mar 23 01:10:23 2024 -0400
+   Date:   Sun Apr 21 01:25:39 2024 -0400
    
-       Add Generic Mod Config Menu support.
+       Add null check in UpdateTapperProduct patch because tapped mushroom trees in winter may not have a heldObject.
    

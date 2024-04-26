@@ -11,19 +11,20 @@
 {
   "Name": "Anything Anywhere",
   "Author": "Espy",
-  "Version": "1.5.1",
+  "Version": "1.6.9",
   "Description": "Build and place anything anywhere.",
   "UniqueID": "Espy.AnythingAnywhere",
   "EntryDll": "AnythingAnywhere.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [
-    "GitHub:Smoked-Fish/AnythingAnywhere",
-    "Nexus:21233"
-  ],
+  "UpdateKeys": [ "Nexus:21233" ],
   "Dependencies": [
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
       "MinimumVersion": "1.12.0",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "furyx639.CustomBush",
       "IsRequired": false
     }
   ]

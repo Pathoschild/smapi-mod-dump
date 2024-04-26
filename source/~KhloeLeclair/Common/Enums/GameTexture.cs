@@ -36,13 +36,6 @@ public enum GameTexture {
 	BigCraftable,
 	Rain,
 	Buffs,
-	Greenhouse,
-	Barn,
-	Coop,
-	House,
-	Mailbox,
-	TVStation,
-	Cloud,
 	Tool,
 
 	// Farmer
@@ -51,10 +44,6 @@ public enum GameTexture {
 	Pants,
 	Hats,
 	Accessories,
-
-	// Furniture
-	Furniture,
-	FurnitureFront,
 
 	// Misc
 	Chair, // Chair

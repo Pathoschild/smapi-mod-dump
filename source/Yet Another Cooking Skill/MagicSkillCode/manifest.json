@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Name": "Wizardry",
+    "Author": "moonslime",
+    "Version": "2.7.0",
+    "Description": "Magic Revisited.",
+    "UniqueID": "moonslime.MagicSkill",
+    "EntryDll": "MagicSkillCode.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "Nexus:-1"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "moonslime.ManaBarApi",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "drbirbdev.BirbCore"
+        },
+        {
+            "UniqueID": "Pathoschild.ContentPatcher"
+        },
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.21.0"
+        }
+    ]
+}

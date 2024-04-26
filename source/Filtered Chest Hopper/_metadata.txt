@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Shivion/StardewValleyMods
+   Git: https://github.com/Shivion/StardewValleyMods.git
+
+mods:
+   Filtered Chest Hopper
+
+latest commit:
+   commit bb3d88749d1c12f6f50e4eecb5ef72ae57f2576b
+   Author: Alex Apperley <AlexApperley@gmail.com>
+   Date:   Thu Apr 11 20:34:00 2024 -0500
+   
+       Add update key to manifest and rework pipline logic to just store hoppers instead of location
+   

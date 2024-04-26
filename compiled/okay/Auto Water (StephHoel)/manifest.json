@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AutoWater",
   "Author": "Steph Hoel",
-  "Version": "1.1.4",
+  "Version": "1.1.5",
   "MinimumApiVersion": "3.0.0",
   "description": "Automatically water your plants at the start of each day.",
   "UniqueID": "StephHoel.AutoWater",

@@ -1,10 +1,10 @@
 {
-  "Name": "Better Balance",
+  "Name": "Better Balance C#",
   "Author": "Xen0nex",
-  "Version": "1.2.6",
+  "Version": "1.3.7",
   "Description": "Rebalances some hard-coded item prices in shops",
   "UniqueID": "Xen0nex.BetterBalance",
   "EntryDll": "BetterBalance.dll",
-  "MinimumAPIVersion": "4.0.0-alpha",
-  "UpdateKeys": []
+  "MinimumAPIVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:Ignore This" ]
 }

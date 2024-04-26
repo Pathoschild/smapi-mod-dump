@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using HarmonyLib;
 using StardewModdingAPI;
 
 namespace OrnithologistsGuild
@@ -17,9 +18,14 @@ namespace OrnithologistsGuild
     {
         private static IMonitor Monitor;
 
-        public static void Initialize(IMonitor monitor)
+        public static void Initialize(IMonitor monitor, Harmony harmony)
         {
             Monitor = monitor;
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(StardewValley.GameLocation), nameof(StardewValley.GameLocation.addBirdies)),
+               prefix: new HarmonyMethod(typeof(GameLocationPatches), nameof(addBirdies_Prefix))
+            );
         }
 
         public static bool addBirdies_Prefix(StardewValley.GameLocation __instance, double chance, bool onlyIfOnScreen = false)

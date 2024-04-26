@@ -11,7 +11,7 @@
 {
     "Name": "Bush Bloom Mod",
     "Author": "NCarigon",
-    "Version": "1.1.3",
+    "Version": "1.2.4",
     "MinimumApiVersion": "4.0.0",
     "Description": "Allows creating custom bush blooming schedules.",
     "UniqueID": "NCarigon.BushBloomMod",

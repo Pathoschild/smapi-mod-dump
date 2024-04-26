@@ -15,15 +15,14 @@ using StardewValley;
 
 namespace EnaiumToolKit.Framework.Screen.Elements;
 
-public class SliderBar : Element
+public class SliderBar : BaseButton
 {
     public int Current;
 
     private int _min;
     private int _max;
 
-    private int _sliderOffset;
-    private bool _dragging;
+    public bool Dragging;
 
     public SliderBar(string title, string description, int min, int max) : base(title, description)
     {
@@ -33,35 +32,37 @@ public class SliderBar : Element
 
     public override void Render(SpriteBatch b, int x, int y)
     {
-        Hovered = Render2DUtils.IsHovered(Game1.getMouseX(), Game1.getMouseY(), x, y, Width, Height);
+        var blockSize = 20;
 
         if (Hovered)
         {
-            if (_dragging)
+            if (Dragging)
             {
-                _sliderOffset = MathHelper.Clamp(Game1.getMouseX() - x, 0, Width - 20);
-                Current = (int)(_min + MathHelper.Clamp((Game1.getMouseX() - x) / (float)Width, 0, 1) * (_max - _min));
+                Current = (int)(_min + MathHelper.Clamp((Game1.getMouseX() - x) / (float)(Width - blockSize), 0, 1) *
+                    (_max - _min));
             }
         }
         else
         {
-            _dragging = false;
+            Dragging = false;
         }
 
-        Render2DUtils.DrawButton(b, x + _sliderOffset, y, 20, Height, Color.Wheat);
+        var sliderOffset = (Width - blockSize) * (Current - _min) / (_max - _min);
+        Render2DUtils.DrawButton(b, x + sliderOffset, y, blockSize, Height, Color.Wheat);
 
-        FontUtils.DrawHvCentered(b, $"{Title}:{Current}", x + Width / 2, y + Height / 2);
+        FontUtils.DrawHvCentered(b, $"{Title}:{Current}", x, y, Width, Height);
+        base.Render(b, x, y);
     }
 
     public override void MouseLeftClicked(int x, int y)
     {
-        _dragging = true;
+        Dragging = true;
         base.MouseLeftClicked(x, y);
     }
 
     public override void MouseLeftReleased(int x, int y)
     {
-        _dragging = false;
+        Dragging = false;
         base.MouseLeftReleased(x, y);
     }
 }

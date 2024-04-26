@@ -1,0 +1,16 @@
+{
+  "Name": "Crafting Collections Page",
+  "Author": "Gurm0",
+  "Version": "1.3.0",
+  "Description": "Track your crafted items in the collections page!",
+  "UniqueID": "Gurm0.CraftingCollection",
+  "EntryDll": "CraftingCollection.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21620" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.12.0"
+    }
+  ]
+}

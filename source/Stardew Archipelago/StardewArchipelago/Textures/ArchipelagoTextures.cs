@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
@@ -23,21 +24,61 @@ namespace StardewArchipelago.Textures
         public const string BLACK = "black";
         public const string RED = "red";
         public const string PLEADING = "pleading";
+        public const string PROGRESSION = "progression";
+
+        public const string ICON_SET_CUSTOM = "Custom";
+        public const string ICON_SET_ORIGINAL = "Original";
 
         public static readonly string[] ValidLogos = { COLOR, WHITE, BLUE, BLACK, RED, PLEADING };
 
-        public static Texture2D GetColoredLogo(IModHelper modHelper, int size, string color)
+        public static Texture2D GetArchipelagoLogo(IMonitor monitor, IModHelper modHelper, int size, string color, string preferredIconSet = null)
         {
             var archipelagoFolder = "Archipelago";
+            preferredIconSet = GetChosenIconSet(preferredIconSet);
             var fileName = $"{size}x{size} {color} icon.png";
-            var relativePathToTexture = Path.Combine(archipelagoFolder, fileName);
-            var texture = TexturesLoader.GetTexture(modHelper, relativePathToTexture);
+            var relativePathToTexture = Path.Combine(archipelagoFolder, preferredIconSet, fileName);
+            var texture = TexturesLoader.GetTexture(monitor, modHelper, relativePathToTexture);
             if (texture == null)
             {
-                throw new InvalidOperationException($"Could not find texture {fileName}");
+                // Let's try to get the icon from the other set
+                preferredIconSet = GetOtherIconSet(preferredIconSet);
+                fileName = $"{size}x{size} {color} icon.png";
+                relativePathToTexture = Path.Combine(archipelagoFolder, preferredIconSet, fileName);
+                texture = TexturesLoader.GetTexture(monitor, modHelper, relativePathToTexture);
+                if (texture == null)
+                {
+                    throw new InvalidOperationException($"Could not find texture {fileName}");
+                }
             }
 
             return texture;
+        }
+
+        private static string GetPreferredIconSet()
+        {
+            return ModEntry.Instance.Config.UseCustomArchipelagoIcons? ICON_SET_CUSTOM : ICON_SET_ORIGINAL;
+        }
+
+        private static string GetChosenIconSet(string iconSet)
+        {
+            if (iconSet == ICON_SET_ORIGINAL || iconSet == ICON_SET_CUSTOM)
+            {
+                return iconSet;
+            }
+            return GetPreferredIconSet();
+        }
+
+        private static string GetOtherIconSet(string iconSet)
+        {
+            if (iconSet == ICON_SET_CUSTOM)
+            {
+                return ICON_SET_ORIGINAL;
+            }
+            if (iconSet == ICON_SET_ORIGINAL)
+            {
+                return ICON_SET_CUSTOM;
+            }
+            return GetPreferredIconSet();
         }
     }
 }

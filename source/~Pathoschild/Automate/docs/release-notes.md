@@ -9,6 +9,42 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed support for custom trash cans outside the town map.
+* Fixed trash can tracking for pre-1.6 town map mods.
+
+## 2.0.7
+Released 15 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed Ginger Island shipping bin being automated before it's unlocked.
+* Fixed Automate getting the wrong item from custom bushes (thanks to LeFauxMatt!).
+* Improved translations. Thanks to Jualko (updated German), Kaian-Campos (updated Portuguese), and MakinDay (updated Italian)!
+
+## 2.0.6
+Released 08 April 2024 for SMAPI 4.0.0 or later.
+
+* Added support for multiple machines per tile. For example, Automate can now simultaneously collect moss/seeds and run a tapper on the same tree.
+* Set minimum game version to 1.6.3 to avoid confusing 'no longer compatible' message.
+* Fixed buildings sometimes not automated if there's flooring under them.
+* Fixed machine names not translated in Generic Mod Config Menu UI.
+* Fixed typo in `automate help` output.
+* Improved translations. Thanks to mc-kaishixiaxue (updated Chinese)!
+
+## 2.0.5
+Released 07 April 2024 for SMAPI 4.0.0 or later.
+
+* Automate now ignores raisins in Junimo huts.
+* Added config option to toggle whether Automate collects moss from trees.
+* Fixed some machines missing in Generic Mod Config Menu UI.
+* Fixed errors when an automated bush is destroyed.
+* Fixed tree machines not always updated correctly if moss is collected manually before the machine does it.
+
+## 2.0.4
+Released 04 April 2024 for SMAPI 4.0.0 or later.
+
+* Chests now collect moss from connected trees (thanks to skoliosaurus!).
+* Improved translations. Thanks to EngurRuzgar (updated Turkish), JhonatanMedeiros (updated Portuguese), Jualko (updated German), and MakinDay (updated Italian)!
+
 ## 2.0.3
 Released 21 March 2024 for SMAPI 4.0.0 or later.
 

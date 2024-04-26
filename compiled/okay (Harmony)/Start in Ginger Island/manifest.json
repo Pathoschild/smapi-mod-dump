@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Start in Ginger Island",
   "Author": "mistyspring",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Makes you start in ginger island.",
   "UniqueID": "mistyspring.GingerIslandStart",
   "EntryDll": "GingerIslandStart.dll",

@@ -1,0 +1,303 @@
+{
+	"Cooking": [
+		{
+			"Id": "farming",
+			"Name": "Farming and Foraging",
+			"I18nKey": "category.food.farming",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 10,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffFarming"
+				},
+				{
+					"Id": "BuffForaging"
+				}
+			]
+		},
+		{
+			"Id": "mining",
+			"Name": "Mining and Magnetism",
+			"I18nKey": "category.food.mining",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 30,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffMining"
+				},
+				{
+					"Id": "BuffMagnetism"
+				}
+			]
+		},
+		{
+			"Id": "fishing",
+			"Name": "Fishing",
+			"I18nKey": "category.food.fishing",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 20,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffFishing"
+				}
+			]
+		},
+		{
+			"Id": "combat",
+			"Name": "Combat",
+			"I18nKey": "category.food.combat",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 120,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffAttack"
+				},
+				{
+					"Id": "BuffDefense"
+				},
+				{
+					"Id": "BuffGarlic"
+				},
+				{
+					"Id": "BuffLife"
+				},
+				{
+					"Id": "BuffMuscle"
+				},
+				{
+					"Id": "BuffSquidInk"
+				},
+				{
+					"Id": "BuffMonsterMusk"
+				}
+			]
+		},
+		{
+			"Id": "other",
+			"Name": "Luck, Speed, and Others",
+			"I18nKey": "category.food.other",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 50,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffLuck"
+				},
+				{
+					"Id": "BuffSpeed"
+				},
+				{
+					"Id": "BuffMaxEnergy"
+				}
+			]
+		}
+	],
+	"Crafting": [
+		{
+			"Id": "decoration",
+			"Name": "Decoration",
+			"I18nKey": "category.decoration",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Wood Fence"
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "Floors"
+				},
+				{
+					"Id": "Fences"
+				},
+				{
+					"Id": "Furniture"
+				},
+				{
+					"Id": "Light"
+				},
+				{
+					"Id": "ContextTag",
+					"Input": "sign_item"
+				}
+			],
+			"Recipes": [
+				"Tub o' Flowers",
+				"Wicked Statue",
+				"Flute Block",
+				"Drum Block",
+				"Text Sign",
+				"Garden Pot",
+				"Scarecrow",
+				"Deluxe Scarecrow",
+				"Statue Of Blessings",
+				"Statue Of The Dwarf King",
+				"Mini-Jukebox"
+			]
+		},
+		{
+			"Id": "fertilizer_seeds",
+			"Name": "Fertilizer and Seeds",
+			"I18nKey": "category.fertilizer_seeds",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Basic Fertilizer"
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "Category",
+					"Input": "-74"
+				},
+				{
+					"Id": "Category",
+					"Input": "-19"
+				}
+			],
+			"Recipes": [
+				"Grass Starter",
+				"Blue Grass Starter"
+			]
+		},
+		{
+			"Id": "consumables",
+			"Name": "Consumables",
+			"I18nKey": "category.consumables",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Field Snack"
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "Edible"
+				},
+				{
+					"Id": "ContextTag",
+					"Input": "totem_item"
+				}
+			],
+			"Recipes": [
+				"Monster Musk",
+				"Fairy Dust",
+				"Cookout Kit",
+				"Tent Kit"
+			]
+		},
+		{
+			"Id": "fishing",
+			"Name": "Fishing",
+			"I18nKey": "category.fishing",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Barbed Hook"
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "Category",
+					"Input": "-21"
+				},
+				{
+					"Id": "Category",
+					"Input": "-22"
+				}
+			],
+			"Recipes": [
+				"Crab Pot"
+			]
+		},
+		{
+			"Id": "machinery",
+			"Name": "Machinery",
+			"I18nKey": "category.machinery",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Chest"
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "Machine"
+				},
+				{
+					"Id": "Sprinkler"
+				},
+				{
+					"Id": "Storage"
+				}
+			]
+		},
+		{
+			"Id": "combat_rings",
+			"Name": "Combat and Rings",
+			"I18nKey": "category.combat_rings",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Sturdy Ring"
+			},
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "ContextTag",
+					"Input": "bomb_item"
+				},
+				{
+					"Id": "Category",
+					"Input": "-96"
+				},
+				{
+					"Id": "Category",
+					"Input": "-29"
+				}
+			],
+			"Recipes": [
+				"Staircase",
+				"Explosive Ammo"
+			]
+		}
+	]
+}

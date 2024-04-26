@@ -42,6 +42,6 @@ namespace SkillfulClothes.Effects.Attributes
 
         protected override int GetMaxValue(Farmer farmer) => farmer.MaxStamina;
 
-        protected override void SetMaxValue(Farmer farmer, int newValue) => farmer.MaxStamina = newValue;
+        protected override void SetMaxValue(Farmer farmer, int newValue) => farmer.maxStamina.Value = newValue;
     }
 }

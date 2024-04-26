@@ -58,7 +58,7 @@ namespace SkillfulClothes.Effects.Special
 
         private int GetUniqueId(GameLocation location)
         {
-            int id = (int)Game1.player.UniqueMultiplayerID + Game1.year + Game1.dayOfMonth + Game1.timeOfDay + Game1.player.getTileX() + (int)Game1.stats.MonstersKilled + (int)Game1.stats.itemsCrafted;
+            int id = (int)Game1.player.UniqueMultiplayerID + Game1.year + Game1.dayOfMonth + Game1.timeOfDay + (int)Game1.player.Tile.X + (int)Game1.stats.MonstersKilled + (int)Game1.stats.ItemsCrafted;
 
             while (Game1.currentLocation.sharedLights.ContainsKey(id))
             {
@@ -90,7 +90,7 @@ namespace SkillfulClothes.Effects.Special
                 Vector2 offset = Vector2.Zero;
                 if (who.shouldShadowBeOffset)
                 {
-                    offset += who.drawOffset.Value;
+                    offset += who.drawOffset;
                 }                
                 environment.repositionLightSource(lightSourceID.Value, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset) + offset);                
             }

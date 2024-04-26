@@ -16,9 +16,9 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public enum Hat
+    public static class KnownHats
     {
-        None = -1,
+        public static Hat None = -1,
         CowboyHat = 0,
         BowlerHat = 1,
         TopHat = 2,
@@ -112,6 +112,53 @@ namespace SkillfulClothes.Types
         ForagersHat = 90,
         TigerHat = 91,
         ThreeQuestionMarks = 92,
-        WarriorHelmet = 93
+        WarriorHelmet = 93;
+
+        static Dictionary<string, Hat> lut_ids = new Dictionary<string, Hat>();
+        static Dictionary<string, Hat> lut_names = new Dictionary<string, Hat>();
+
+        static KnownHats()
+        {
+            foreach (var field in typeof(KnownHats)
+                .GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                .Where(x => x.FieldType == typeof(Hat)))
+            {
+                var hat = field.GetValue(null) as Hat;
+                hat.ItemName = field.Name;
+
+                lut_ids.Add(hat.ItemId, hat);
+                lut_names.Add(hat.ItemName, hat);
+            }
+        }
+
+        public static Hat GetById(string itemId)
+        {
+            if (itemId == null) return KnownHats.None;
+
+            if (lut_ids.TryGetValue(itemId, out Hat knownHat) || lut_names.TryGetValue(itemId, out knownHat))
+            {
+                return knownHat;
+            }
+            else
+                return new Hat(itemId) { ItemName = itemId };
+        }
+    }
+
+    public class Hat : AlphanumericItemId
+    {
+        public Hat(string itemId)
+            : base(itemId, ClothingItemType.Hat)
+        {
+        }
+
+        public static implicit operator Hat(int value)
+        {
+            return new Hat(value.ToString());
+        }
+
+        public static implicit operator Hat(string value)
+        {
+            return new Hat(value);
+        }
     }
 }

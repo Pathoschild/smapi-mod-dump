@@ -9,939 +9,575 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewValley.Locations;
 using StardewValley;
-using StardewModdingAPI.Events;
-using xTile;
-using xTile.Tiles;
-using xTile.Layers;
+using HarmonyLib;
 using xTile.Dimensions;
-using GenericModConfigMenu;
-using StardewValley.Menus;
+using Microsoft.Xna.Framework;
+using Rectangle = xTile.Dimensions.Rectangle;
+using System.Reflection.Emit;
+using System.Reflection;
 
 namespace CustomLocksUpdated {
-    internal class ModEntry : Mod {
+    public class ModEntry : Mod {
 
-        ModConfig config = new();
-        Dictionary<string, int[]> characterDict = new Dictionary<string, int[]>();
+        public static ModConfig Config;
+        public static IMonitor monitor;
+
+        static Harmony harmony;
 
         public override void Entry(IModHelper helper) {
-            config = helper.ReadConfig<ModConfig>();
+            Config = helper.ReadConfig<ModConfig>();
+            monitor = Monitor;
 
-            helper.Events.Content.AssetRequested += OnAssetRequested;
-            helper.Events.Player.Warped += OnWarped;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
+
+            harmony = new Harmony(ModManifest.UniqueID);
+            Harmony.DEBUG = true;
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Mountain), nameof(Mountain.checkAction), [typeof(Location), typeof(Rectangle), typeof(Farmer)]),
+                //prefix: new HarmonyMethod(typeof(ModEntry), nameof(MountainCheckActionPrefix)),
+                transpiler: new HarmonyMethod(typeof(ModEntry), nameof(MountainCheckAction_Transpiler))
+            );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performTouchAction), [typeof(string[]), typeof(Vector2)]),
+               //prefix: new HarmonyMethod(typeof(ModEntry), nameof(GameLocationPerformTouchActionPrefix)),
+               transpiler: new HarmonyMethod(typeof(ModEntry), nameof(GameLocationPerformTouchAction_Transpiler))
+            );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performAction), [typeof(string[]), typeof(Farmer), typeof(Location)]),
+               //prefix: new HarmonyMethod(typeof(ModEntry), nameof(GameLocationPerformActionPrefix)),
+               transpiler: new HarmonyMethod(typeof(ModEntry), nameof(GameLocationPerformAction_Transpiler))
+            );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.lockedDoorWarp)),
+               //prefix: new HarmonyMethod(typeof(ModEntry), nameof(GameLocationLockedDoorWarp)),
+               transpiler: new HarmonyMethod(typeof(ModEntry), nameof(GameLocationLockedDoorWarp_Transpiler))
+            );
         }
 
-        private void OnTimeChanged(object? sender, TimeChangedEventArgs e) {
-            Map map = Game1.currentLocation.Map;
-            string locationName = Game1.currentLocation.Name;
-
-            if (locationName == "Forest") {
-                OnTimeChangedForest(map);
-            }
-            if (locationName == "Mountain") {
-                OnTimeChangedMountain(map);
-            }
-            if (locationName == "Beach") {
-                OnTimeChangedBeach(map);
-            }
-            if (locationName == "Town") {
-                OnTimeChangedTown(map);
-            }
-            if (locationName == "Desert") {
-                OnTimeChangedDesert(map);
-            }
-            if (Game1.activeClickableMenu is BobberBar bar) {
-                int newFishID = Helper.Reflection.GetField<int>(bar, "whichFish").GetValue();
-            }
+        static bool GetAllowRoomEntry() {
+            bool allow = Config.Enabled ? Config.AllowStrangerRoomEntry : false;
+            return allow;
         }
 
-        void OnTimeChangedForest(Map map) {
-            string[] actionProperties = new string[3];
-            Tile[] tiles = new Tile[3];
-
-            tiles[0] = GetTile(map, "Buildings", 90, 15);
-            tiles[1] = GetTile(map, "Buildings", 104, 32);
-            tiles[2] = GetTile(map, "Buildings", 5, 26);
-
-            if (config.OutsideNormalHours) {
-                actionProperties[0] = "Warp 13 19 AnimalShop";
-                actionProperties[2] = "Warp 8 24 WizardHouse";
-                if (config.StrangerRoomEntry) {
-                    actionProperties[1] = "Warp 7 9 LeahHouse";
-                }
-            } else {
-                actionProperties[0] = "LockedDoorWarp 13 19 AnimalShop 900 1800";
-                if (config.StrangerRoomEntry) {
-                    actionProperties[1] = "LockedDoorWarp 7 9 LeahHouse 1000 1800";
-                } else {
-                    actionProperties[1] = "LockedDoorWarp 7 9 LeahHouse 1000 1800 Leah 500";
-                }
-                actionProperties[2] = "LockedDoorWarp 8 24 WizardHouse 600 2300";
-            }
-
-            for (int i = 0; i < tiles.Length; i++) {
-                if (tiles[i] == null) continue;
-                tiles[i].Properties["Action"] = actionProperties[i];
-            }
+        static bool GetAllowHomeEntry() {
+            bool allow = Config.Enabled ? Config.AllowStrangerHomeEntry : false;
+            return allow;
         }
 
-        void OnTimeChangedMountain(Map map) {
-            if (map == null) return;
-            string[] actionProperties = new string[3];
-            Tile[] tiles = new Tile[3];
-            
-            tiles[0] = GetTile(map, "Buildings", 12, 25);
-            tiles[1] = GetTile(map, "Buildings", 8, 20);
-            tiles[2] = GetTile(map, "Buildings", 76, 8);
-
-            if (config.OutsideNormalHours) {
-                actionProperties[0] = "Warp 6 24 ScienceHouse";
-                actionProperties[2] = "Warp 6 19 AdventureGuild";
-                if (config.StrangerRoomEntry) {
-                    actionProperties[1] = "Warp 3 8 ScienceHouse";
-                }
-            } else {
-                actionProperties[0] = "LockedDoorWarp 6 24 ScienceHouse 900 2000";
-                if (config.StrangerRoomEntry) {
-                    actionProperties[1] = "LockedDoorWarp 3 8 ScienceHouse 900 2000";
-                } else {
-                    actionProperties[1] = "LockedDoorWarp 3 8 ScienceHouse 900 2000 Maru 500";
-                }
-                actionProperties[2] = "LockedDoorWarp 6 19 AdventureGuild 1400 2600";
-            }
-
-            for (int i = 0; i < tiles.Length; i++) {
-                if (tiles[i] == null) continue;
-                tiles[i].Properties["Action"] = actionProperties[i];
-            }
-
-            bool playerIsGuildMember = Game1.player.mailReceived.Contains("guildMember");
-            Tile tile = GetTile(map, "Back", 76, 9);
-
-            if (config.OutsideNormalHours && config.EarlyAdventureGuild && !playerIsGuildMember) {
-                tile.Properties["TouchAction"] = "Warp AdventureGuild 6 19";
-            } else if (!config.OutsideNormalHours && config.EarlyAdventureGuild && !playerIsGuildMember) {
-                if (Game1.timeOfDay > 1400 && Game1.timeOfDay < 2600) {
-                    tile.Properties["TouchAction"] = "Warp AdventureGuild 6 19";
-                }
-            } else {
-                tile.Properties.Remove("TouchAction");
-            }
+        static bool GetAllowEarlyGuild() {
+            bool allow = Config.Enabled ? Config.AllowAdventureGuildEntry : false;
+            return allow;
         }
 
-        void OnTimeChangedBeach(Map map) {
-            string[] actionProperties = new string[2];
-            Tile[] tiles = new Tile[2];
-
-            tiles[0] = GetTile(map, "Buildings", 30, 33);
-            tiles[1] = GetTile(map, "Buildings", 49, 10);
-
-            if (config.OutsideNormalHours) {
-                actionProperties[0] = "Warp 5 9 FishShop";
-                if (config.StrangerRoomEntry) {
-                    actionProperties[1] = "Warp 3 9 ElliottHouse";
-                }
-            } else {
-                actionProperties[0] = "LockedDoorWarp 5 9 FishShop 900 1700";
-                if (config.StrangerRoomEntry) {
-                    actionProperties[1] = "LockedDoorWarp 3 9 ElliottHouse 1000 1800";
-                } else {
-                    actionProperties[1] = "LockedDoorWarp 3 9 ElliottHouse 1000 1800 Elliott 500";
-                }
-            }
-
-            for (int i = 0; i < tiles.Length; i++) {
-                if (tiles[i] == null) continue;
-                tiles[i].Properties["Action"] = actionProperties[i];
-            }
+        static bool GetAllowOutsideTime() {
+            bool allow = Config.Enabled ? Config.AllowOutsideTime : false;
+            return allow;
         }
 
-        void OnTimeChangedTown(Map map) {
-            string[] actionProperties = new string[14];
-            Tile[] tiles = new Tile[14];
-
-            tiles[0] = GetTile(map, "Buildings", 36, 55);
-            tiles[1] = GetTile(map, "Buildings", 43, 56);
-            tiles[2] = GetTile(map, "Buildings", 44, 56);
-            tiles[3] = GetTile(map, "Buildings", 57, 63);
-            tiles[4] = GetTile(map, "Buildings", 45, 70);
-            tiles[5] = GetTile(map, "Buildings", 72, 68);
-            tiles[6] = GetTile(map, "Buildings", 58, 85);
-            tiles[7] = GetTile(map, "Buildings", 59, 85);
-            tiles[8] = GetTile(map, "Buildings", 10, 85);
-            tiles[9] = GetTile(map, "Buildings", 20, 88);
-            tiles[10] = GetTile(map, "Buildings", 101, 89);
-            tiles[11] = GetTile(map, "Buildings", 94, 81);
-            tiles[12] = GetTile(map, "Buildings", 95, 50);
-            tiles[13] = GetTile(map, "Buildings", 96, 50);
-
-            if (config.OutsideNormalHours) {
-                actionProperties[0] = "Warp 10 19 Hospital";
-                actionProperties[1] = "Warp 6 29 SeedShop";
-                actionProperties[2] = "Warp 6 29 SeedShop";
-                actionProperties[3] = "Warp 9 24 JoshHouse";
-                actionProperties[4] = "Warp 14 24 Saloon";
-                actionProperties[5] = "Warp 12 9 Trailer";
-                actionProperties[6] = "Warp 4 11 ManorHouse";
-                actionProperties[7] = "Warp 5 11 ManorHouse";
-                actionProperties[8] = "Warp 4 23 SamHouse";
-                actionProperties[9] = "Warp 2 24 HaleyHouse";
-                actionProperties[10] = "Warp 3 14 ArchaeologyHouse";
-                actionProperties[11] = "Warp 5 19 Blacksmith";
-                actionProperties[12] = "Warp 13 29 JojaMart";
-                actionProperties[13] = "Warp 14 29 JojaMart";
-            } else {
-                actionProperties[0] = "LockedDoorWarp 10 19 Hospital 900 1500";
-                actionProperties[1] = "LockedDoorWarp 6 29 SeedShop 900 2100";
-                actionProperties[2] = "LockedDoorWarp 6 29 SeedShop 900 2100";
-                actionProperties[3] = "LockedDoorWarp 9 24 JoshHouse 800 2000";
-                actionProperties[4] = "LockedDoorWarp 14 24 Saloon 1200 2400";
-                actionProperties[5] = "LockedDoorWarp 12 9 Trailer 900 2000";
-                actionProperties[6] = "LockedDoorWarp 4 11 ManorHouse 830 2200";
-                actionProperties[7] = "LockedDoorWarp 5 11 ManorHouse 830 2200";
-                actionProperties[8] = "LockedDoorWarp 4 23 SamHouse 900 2000";
-                actionProperties[9] = "LockedDoorWarp 2 24 HaleyHouse 900 2000";
-                actionProperties[10] = "LockedDoorWarp 3 14 ArchaeologyHouse 800 1800";
-                actionProperties[11] = "LockedDoorWarp 5 19 Blacksmith 900 1600";
-                actionProperties[12] = "LockedDoorWarp 13 29 JojaMart 900 2300";
-                actionProperties[13] = "LockedDoorWarp 14 29 JojaMart 900 2300";
-            }
-
-            for (int i = 0; i < tiles.Length; i++) {
-                if (tiles[i] == null) continue;
-                tiles[i].Properties["Action"] = actionProperties[i];
-            }
+        static bool GetAllowSeedShopWed() {
+            bool allow = Config.Enabled ? Config.AllowSeedShopWed : false;
+            return allow;
         }
 
-        void OnTimeChangedDesert(Map map) {
-            string actionProperty;
-            Tile tile = GetTile(map, "Buildings", 6, 51);
-
-            if (config.OutsideNormalHours) {
-                actionProperty = "Warp 4 9 SandyHouse";
-            } else {
-                actionProperty = "LockedDoorWarp 4 9 SandyHouse 900 2350";
-            }
-
-            if (tile == null) return;
-            tile.Properties["Action"] = actionProperty;
+        static bool GetIgnoreEvents() {
+            bool allow = Config.Enabled ? Config.IgnoreEvents : false;
+            return allow;
         }
 
-        private void OnWarped(object? sender, WarpedEventArgs e) {
-            string name = e.NewLocation.Name;
-            Map map = e.NewLocation.Map;
+        static IEnumerable<CodeInstruction> MountainCheckAction_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+            var method = AccessTools.Method(typeof(ModEntry), nameof(GetAllowEarlyGuild));
 
-            if (e.NewLocation.IsActiveLocation()) {
-                if (name == "Forest") {
-                    OnTimeChangedForest(map);
+            var matcher = new CodeMatcher(instructions, generator);
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldloc_0),
+                new CodeMatch(OpCodes.Ldc_I4, 1136),
+                new CodeMatch(OpCodes.Bne_Un_S)
+            ).ThrowIfNotMatch("Couldn't find match for guild tile index");
+
+            var switchBreakLabel = (Label)matcher.Instruction.operand;
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldsfld),
+                new CodeMatch(OpCodes.Ldstr, "Strings\\Locations:Mountain_AdventurersGuildNote"),
+                new CodeMatch(i => i.opcode == OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Ldc_I4_S)
+            ).ThrowIfNotMatch("Couldn't find match for guild note");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, method),
+                new CodeInstruction(OpCodes.Brtrue, switchBreakLabel)
+            );
+
+            return matcher.InstructionEnumeration();
+        }
+
+        public static bool MountainCheckActionPrefix(Mountain __instance, Location tileLocation, Farmer who) {
+            if (!Config.Enabled) return true;
+
+            try {
+                if (__instance.getTileIndexAt(tileLocation, "Buildings") == 1136) {
+                    if (!Config.AllowAdventureGuildEntry) {
+                        return true;
+                    } else {
+                        if (!Config.AllowOutsideTime) {
+                            return true;
+                        } else {
+                            Rumble.rumble(0.15f, 200f);
+                            Game1.player.completelyStopAnimatingOrDoingAction();
+                            __instance.playSound("doorClose", Game1.player.Tile);
+                            Game1.warpFarmer("AdventureGuild", 6, 19, false);
+                            return false;
+                        }
+                    }
                 }
-                if (name == "Beach") {
-                    OnTimeChangedBeach(map);
+
+                return true;
+            }
+            catch (Exception ex) {
+                monitor.Log($"Failed in {nameof(MountainCheckActionPrefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
+        }
+
+        static IEnumerable<CodeInstruction> GameLocationPerformAction_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+            var timeMethod = AccessTools.Method(typeof(ModEntry), nameof(GetAllowOutsideTime));
+            var roomMethod = AccessTools.Method(typeof(ModEntry), nameof(GetAllowRoomEntry));
+            var festivalMethod = AccessTools.Method(typeof(ModEntry), nameof(GetIgnoreEvents));
+
+            var matcher = new CodeMatcher(instructions, generator);
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldarg_0),
+                new CodeMatch(OpCodes.Ldstr, "doorClose"),
+                new CodeMatch(OpCodes.Ldloc_0),
+                new CodeMatch(OpCodes.Ldflda)
+            ).ThrowIfNotMatch("Couldn't find match for sunroom warp");
+
+            matcher.CreateLabel(out Label sunroomLabel);
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldsfld),
+                new CodeMatch(OpCodes.Ldstr, "Strings\\Locations:Caroline_Sunroom_Door"),
+                new CodeMatch(OpCodes.Callvirt)
+            ).ThrowIfNotMatch("Couldn't find match for sunroom door friends only");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, roomMethod).MoveLabelsFrom(matcher.Instruction),
+                new CodeInstruction(OpCodes.Brtrue, sunroomLabel)
+            );
+
+            return matcher.InstructionEnumeration();
+        }
+
+        public static bool GameLocationPerformActionPrefix(ref GameLocation __instance, string[] action, Farmer who, Location tileLocation) {
+            if (!Config.Enabled) return true;
+
+            try {
+                if (!ArgUtility.TryGet(action, 0, out var actionType, out var error)) {
+                    return true;
                 }
-                if (name == "Mountain") {
-                    OnTimeChangedMountain(map);
+
+                switch (actionType) {
+                    case "WizardHatch":
+                        if ((!who.friendshipData.ContainsKey("Wizard") ||
+                            who.friendshipData["Wizard"].Points < 1000) && Config.AllowStrangerRoomEntry) {
+                            __instance.playSound("doorClose", new Vector2(tileLocation.X, tileLocation.Y));
+                            Game1.warpFarmer("WizardHouseBasement", 4, 4, true);
+                            return false;
+                        }
+
+                        return true;
+                    case "Door":
+                        if (action.Length > 1) {
+                            if (Game1.eventUp && !Config.IgnoreEvents) {
+                                return true;
+                            } else {
+                                bool unlocked = false;
+                                for (int i = 1; i < action.Length; i++) {
+                                    if (who.getFriendshipHeartLevelForNPC(action[i]) >= 2 ||
+                                        Game1.player.mailReceived.Contains("doorUnlock" + action[i])) {
+                                        unlocked = true;
+                                    }
+                                }
+
+                                if (!unlocked) {
+                                    if (!Config.AllowStrangerRoomEntry) {
+                                        return true;
+                                    } else {
+                                        Rumble.rumble(0.1f, 100f);
+                                        __instance.openDoor(tileLocation, true);
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                        return true;
+                    case "Warp_Sunroom_Door":
+                        if (who.getFriendshipHeartLevelForNPC("Caroline") >= 2) {
+                            return true;
+                        } else if (Config.AllowStrangerRoomEntry) {
+                            __instance.playSound("doorClose", new Vector2(tileLocation.X, tileLocation.Y));
+                            Game1.warpFarmer("Sunroom", 5, 13, flip: false);
+                            return false;
+                        }
+
+                        return true;
+                    case "Theater_Entrance":
+                        if (!Game1.MasterPlayer.hasOrWillReceiveMail("ccMovieTheater")) {
+                            return true;
+                        }
+                        if (Game1.player.team.movieMutex.IsLocked()) {
+                            return true;
+                        }
+                        if (Game1.isFestival()) {
+                            return true;
+                        }
+                        if (Game1.timeOfDay > 2100 || Game1.timeOfDay < 900) {
+                            if (!Config.AllowOutsideTime) return true;
+                        }
+                        if (Game1.player.lastSeenMovieWeek.Value >= Game1.Date.TotalWeeks) {
+                            Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Characters:MovieTheater_AlreadySeen"));
+                            return false;
+                        }
+                        NPC invited_npc = null;
+                        foreach (MovieInvitation invitation in Game1.player.team.movieInvitations) {
+                            if (invitation.farmer == Game1.player && !invitation.fulfilled && MovieTheater.GetFirstInvitedPlayer(invitation.invitedNPC) == Game1.player) {
+                                invited_npc = invitation.invitedNPC;
+                                break;
+                            }
+                        }
+                        if (Game1.player.Items.ContainsId("(O)809")) {
+                            string question = ((invited_npc != null) ?
+                                Game1.content.LoadString("Strings\\Characters:MovieTheater_WatchWithFriendPrompt", invited_npc.displayName) :
+                                Game1.content.LoadString("Strings\\Characters:MovieTheater_WatchAlonePrompt"));
+                            Game1.currentLocation.createQuestionDialogue(question, Game1.currentLocation.createYesNoResponses(), "EnterTheaterSpendTicket");
+                        } else {
+                            Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Characters:MovieTheater_NoTicket")));
+                            return false;
+                        }
+
+                        return false;
                 }
-                if (name == "Town") {
-                    OnTimeChangedTown(map);
-                }
-                if (name == "Desert") {
-                    OnTimeChangedDesert(map);
-                }
-                if (name == "AnimalShop") {
-                    OnWarpInterior(name, "Jas", "Marnie", "Shane");
-                }
-                if (name == "ScienceHouse") {
-                    OnWarpInterior(name, "Maru", "Robin", "Demetrius", true);
-                }
-                if (name == "SebastianRoom") {
-                    OnWarpInterior(name, "Sebastian");
-                }
-                if (name == "Hospital") {
-                    OnWarpHospital(name);
-                }
-                if (name == "SeedShop") {
-                    OnWarpInterior(name, "Abigail", "Pierre", "Caroline", true);
-                }
-                if (name == "JoshHouse") {
-                    OnWarpInterior(name, "Alex", "Evelyn", "George", true);
-                }
-                if (name == "Saloon") {
-                    OnWarpInterior(name, "Gus");
-                }
-                if (name == "Trailer") {
-                    OnWarpInterior(name, "Penny");
-                }
-                if (name == "Trailer_big") {
-                    OnWarpInterior(name, "PennyBig", "Pam");
-                }
-                if (name == "ManorHouse") {
-                    OnWarpInterior(name, "Lewis");
-                }
-                if (name == "SamHouse") {
-                    OnWarpInterior(name, "Sam", "Vincent", "Jodi", "Kent");
-                }
-                if (name == "HaleyHouse") {
-                    OnWarpInterior(name, "Haley", "Emily");
-                }
-                if (name == "Blacksmith") {
-                    OnWarpInterior(name, "Clint");
-                }
+
+                return true;
+            }
+            catch (Exception ex) {
+                monitor.Log($"Failed in {nameof(GameLocationPerformActionPrefix)}:\n{ex}", LogLevel.Error);
+                return true;
             }
         }
 
-        void OnWarpHospital(string name) {
-            GameLocation location = Game1.getLocationFromName(name);
-            string characterActionProperty;
+        static IEnumerable<CodeInstruction> GameLocationPerformTouchAction_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+            var roomMethod = AccessTools.Method(typeof(ModEntry), nameof(GetAllowRoomEntry));
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= 2 || config.StrangerRoomEntry) {
-                characterActionProperty = "Door";
-                location.removeTileProperty(9, 5, "Back", "TouchAction");
-                location.removeTileProperty(10, 5, "Back", "TouchAction");
-            } else {
-                characterActionProperty = "Door Harvey";
-                location.setTileProperty(9, 5, "Back", "TouchAction", characterActionProperty);
-                location.setTileProperty(10, 5, "Back", "TouchAction", characterActionProperty);
-            }
+            var matcher = new CodeMatcher(instructions, generator);
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldloc_1),
+                new CodeMatch(OpCodes.Ldstr, "Door"),
+                new CodeMatch(i => i.opcode == OpCodes.Call),
+                new CodeMatch(i => i.opcode == OpCodes.Brtrue)
+            ).ThrowIfNotMatch("Couldn't find match for door check.");
+            // Cursor is now at the brtrue instruction, save its jump point to find the entry to the for loop.
+            var forLoopStart = (Label)matcher.Instruction.operand;
+            // Advance to br label and steal the label to escape the switch if we need it
+            matcher.MatchStartForward(new CodeMatch(i => i.opcode == OpCodes.Br))
+                .ThrowIfNotMatch("Couldn't find switch break");
+            var escapeLabel = (Label)matcher.Instruction.operand;
 
-            location.setTileProperty(9, 5, "Buildings", "Action", characterActionProperty);
-            location.setTileProperty(10, 5, "Buildings", "Action", characterActionProperty);
+            matcher.MatchStartForward(new CodeMatch(i => i.labels.Contains(forLoopStart)))
+                .ThrowIfNotMatch("Couldn't find start of for loop");
+
+            // Insert before that instruction, taking its labels so our code gets jumped to first
+            matcher.InsertAndAdvance(
+                // Steal labels from instruction, since we're the new start, before the for loop
+                new CodeInstruction(OpCodes.Call, roomMethod).MoveLabelsFrom(matcher.Instruction),
+                // If we aren't allowing entry, break out of the switch
+                new CodeInstruction(OpCodes.Brtrue, escapeLabel)
+            );
+
+            return matcher.InstructionEnumeration();
         }
 
-        void OnWarpInterior(string name, string characterKey) {
-            GameLocation location = Game1.getLocationFromName(name);
-            string characterActionProperty;
+        public static bool GameLocationPerformTouchActionPrefix(GameLocation __instance, string[] action, Vector2 playerStandingPosition) {
+            if (!Config.Enabled) return true;
 
-            if (Game1.player.getFriendshipHeartLevelForNPC(characterKey) >= 2 || config.StrangerRoomEntry) {
-                characterActionProperty = "Door";
-                location.removeTileProperty(characterDict[characterKey][0], characterDict[characterKey][1], "Back", "TouchAction");
-            } else {
-                characterActionProperty = "Door " + characterKey;
-                location.setTileProperty(characterDict[characterKey][0], characterDict[characterKey][1],
-                                     "Back", "TouchAction", characterActionProperty);
-            }
+            try {
+                if (Game1.eventUp && !Config.IgnoreEvents) return true;
 
-            location.setTileProperty(characterDict[characterKey][0], characterDict[characterKey][1],
-                                     "Buildings", "Action", characterActionProperty);
-        }
+                if (action[0] == "Door" && Config.AllowStrangerRoomEntry) {
+                    int i = 1;
+                    while (i < action.Length) {
+                        if (Game1.player.getFriendshipHeartLevelForNPC(action[i]) >= 2) {
+                            return true;
+                        }
+                        i++;
+                    }
 
-        void OnWarpInterior(string name, string firstCharacterKey, string secondCharacterKey) {
-            GameLocation location = Game1.getLocationFromName(name);
-            string firstCharacterActionProperty, secondCharacterActionProperty;
-            bool firstAllowEntry, secondAllowEntry;
-
-            if (Game1.player.getFriendshipHeartLevelForNPC(firstCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                firstCharacterActionProperty = "Door";
-                firstAllowEntry = true;
-            } else {
-                firstCharacterActionProperty = "Door " + firstCharacterKey;
-                firstAllowEntry = false;
-            }
-            if (Game1.player.getFriendshipHeartLevelForNPC(secondCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                secondCharacterActionProperty = "Door";
-                secondAllowEntry = true;
-            } else {
-                secondCharacterActionProperty = "Door " + secondCharacterKey;
-                secondAllowEntry = false;
-            }
-
-            location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Buildings", "Action", firstCharacterActionProperty);
-            location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Buildings", "Action", secondCharacterActionProperty);
-
-            if (firstAllowEntry) {
-                location.removeTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction", firstCharacterActionProperty);
-            }
-            if (secondAllowEntry) {
-                location.removeTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction", secondCharacterActionProperty);
-            }
-        }
-
-        void OnWarpInterior(string name, string firstCharacterKey, string secondCharacterKey, string thirdCharacterKey) {
-            GameLocation location = Game1.getLocationFromName(name);
-            string firstCharacterActionProperty, secondCharacterActionProperty, thirdCharacterActionProperty;
-            bool firstAllowEntry, secondAllowEntry, thirdAllowEntry;
-
-            if (Game1.player.getFriendshipHeartLevelForNPC(firstCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                firstCharacterActionProperty = "Door";
-                firstAllowEntry = true;
-            } else {
-                firstCharacterActionProperty = "Door " + firstCharacterKey;
-                firstAllowEntry = false;
-            }
-            if (Game1.player.getFriendshipHeartLevelForNPC(secondCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                secondCharacterActionProperty = "Door";
-                secondAllowEntry = true;
-            } else {
-                secondCharacterActionProperty = "Door " + secondCharacterKey;
-                secondAllowEntry = false;
-            }
-            if (Game1.player.getFriendshipHeartLevelForNPC(thirdCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                thirdCharacterActionProperty = "Door";
-                thirdAllowEntry = true;
-            } else {
-                thirdCharacterActionProperty = "Door " + thirdCharacterKey;
-                thirdAllowEntry = false;
-            }
-
-            location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Buildings", "Action", firstCharacterActionProperty);
-            location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Buildings", "Action", secondCharacterActionProperty);
-            location.setTileProperty(characterDict[thirdCharacterKey][0], characterDict[thirdCharacterKey][1],
-                                     "Buildings", "Action", thirdCharacterActionProperty);
-
-            if (firstAllowEntry) {
-                location.removeTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction", firstCharacterActionProperty);
-            }
-            if (secondAllowEntry) {
-                location.removeTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction", secondCharacterActionProperty);
-            }
-            if (thirdAllowEntry) {
-                location.removeTileProperty(characterDict[thirdCharacterKey][0], characterDict[thirdCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[thirdCharacterKey][0], characterDict[thirdCharacterKey][1],
-                                     "Back", "TouchAction", thirdCharacterActionProperty);
-            }
-        }
-
-        void OnWarpInterior(string name, string firstCharacterKey, string secondCharacterKey, string thirdCharacterKey,
-                            bool secondAndThirdTogether) {
-            GameLocation location = Game1.getLocationFromName(name);
-            string firstCharacterActionProperty, secondCharacterActionProperty;
-            bool firstAllowEntry, secondAllowEntry;
-
-            if (Game1.player.getFriendshipHeartLevelForNPC(firstCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                firstCharacterActionProperty = "Door";
-                firstAllowEntry = true;
-            } else {
-                firstCharacterActionProperty = "Door " + firstCharacterKey;
-                firstAllowEntry = false;
-            }
-            if (Game1.player.getFriendshipHeartLevelForNPC(secondCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                secondCharacterActionProperty = "Door";
-                secondAllowEntry = true;
-            } else {
-                secondCharacterActionProperty = "Door " + secondCharacterKey + " " + thirdCharacterKey;
-                secondAllowEntry = false;
-            }
-
-            location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Buildings", "Action", firstCharacterActionProperty);
-            location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Buildings", "Action", secondCharacterActionProperty);
-
-            if (firstAllowEntry) {
-                location.removeTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction", firstCharacterActionProperty);
-            }
-            if (secondAllowEntry) {
-                location.removeTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction", secondCharacterActionProperty);
-            }
-        }
-
-        void OnWarpInterior(string name, string firstCharacterKey, string secondCharacterKey,
-                            string thirdCharacterKey, string fourthCharacterKey) {
-            GameLocation location = Game1.getLocationFromName(name);
-            string firstCharacterActionProperty, secondCharacterActionProperty, thirdCharacterActionProperty;
-            bool firstAllowEntry, secondAllowEntry, thirdAllowEntry;
-
-            if (Game1.player.getFriendshipHeartLevelForNPC(firstCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                firstCharacterActionProperty = "Door";
-                firstAllowEntry = true;
-            } else {
-                firstCharacterActionProperty = "Door " + firstCharacterKey;
-                firstAllowEntry = false;
-            }
-            if (Game1.player.getFriendshipHeartLevelForNPC(secondCharacterKey) >= 2 || config.StrangerRoomEntry) {
-                secondCharacterActionProperty = "Door";
-                secondAllowEntry = true;
-            } else {
-                secondCharacterActionProperty = "Door " + secondCharacterKey;
-                secondAllowEntry = false;
-            }
-            if ((Game1.player.getFriendshipHeartLevelForNPC(thirdCharacterKey) >= 2
-                || Game1.player.getFriendshipHeartLevelForNPC(fourthCharacterKey) >= 2)
-                || config.StrangerRoomEntry) {
-                thirdCharacterActionProperty = "Door";
-                thirdAllowEntry = true;
-            } else {
-                thirdCharacterActionProperty = "Door " + thirdCharacterKey + " " + fourthCharacterKey;
-                thirdAllowEntry = false;
-            }
-
-            location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Buildings", "Action", firstCharacterActionProperty);
-            location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Buildings", "Action", secondCharacterActionProperty);
-            location.setTileProperty(characterDict[thirdCharacterKey][0], characterDict[thirdCharacterKey][1],
-                                     "Buildings", "Action", thirdCharacterActionProperty);
-
-            if (firstAllowEntry) {
-                location.removeTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[firstCharacterKey][0], characterDict[firstCharacterKey][1],
-                                     "Back", "TouchAction", firstCharacterActionProperty);
-            }
-            if (secondAllowEntry) {
-                location.removeTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[secondCharacterKey][0], characterDict[secondCharacterKey][1],
-                                     "Back", "TouchAction", secondCharacterActionProperty);
-            }
-            if (thirdAllowEntry) {
-                location.removeTileProperty(characterDict[thirdCharacterKey][0], characterDict[thirdCharacterKey][1],
-                                     "Back", "TouchAction");
-            } else {
-                location.setTileProperty(characterDict[thirdCharacterKey][0], characterDict[thirdCharacterKey][1],
-                                     "Back", "TouchAction", thirdCharacterActionProperty);
-            }
-        }
-
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
-            SetUpGMCM();
-            SetUpCharacterDict();
-        }
-
-        private void SetUpCharacterDict() {
-            characterDict.Add("Jas", new int[] { 6, 12 });
-            characterDict.Add("Marnie", new int[] { 15, 12 });
-            characterDict.Add("Shane", new int[] { 21, 13 });
-            characterDict.Add("Maru", new int[] { 7, 10 });
-            characterDict.Add("Robin", new int[] { 13, 10 });
-            characterDict.Add("Demetrius", new int[] { 13, 10 });
-            characterDict.Add("Sebastian", new int[] { 1, 3 });
-            characterDict.Add("Abigail", new int[] { 13, 11 });
-            characterDict.Add("Pierre", new int[] { 20, 11 });
-            characterDict.Add("Caroline", new int[] { 20, 11 });
-            characterDict.Add("Alex", new int[] { 5, 9 });
-            characterDict.Add("Evelyn", new int[] { 10, 9 });
-            characterDict.Add("George", new int[] { 10, 9 });
-            characterDict.Add("Penny", new int[] { 6, 7 });
-            characterDict.Add("PennyBig", new int[] { 4, 18 });
-            characterDict.Add("Pam", new int[] { 20, 21 });
-            characterDict.Add("Gus", new int[] { 20, 9 });
-            characterDict.Add("Lewis", new int[] { 16, 9 });
-            characterDict.Add("Jodi", new int[] { 17, 6 });
-            characterDict.Add("Kent", new int[] { 17, 6 });
-            characterDict.Add("Sam", new int[] { 12, 14 });
-            characterDict.Add("Vincent", new int[] { 11, 18 });
-            characterDict.Add("Haley", new int[] { 5, 13 });
-            characterDict.Add("Emily", new int[] { 16, 12 });
-            characterDict.Add("Clint", new int[] { 4, 9 });
-        }
-
-        private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
-            ForestChanges(e);
-            MountainChanges(e);
-            TownChanges(e);
-            OtherLocationChanges(e);
-        }
-
-        void ForestChanges(AssetRequestedEventArgs e) {
-            if (e.Name.IsEquivalentTo("Maps/Forest")) {
-                AnimalShop(e);
-                LeahHouse(e);
-                WizardHouse(e);
-            }
-        }
-
-        void MountainChanges(AssetRequestedEventArgs e) {
-            if (e.Name.IsEquivalentTo("Maps/Mountain")) {
-                ScienceHouse(e);
-                AdventureGuild(e);
-            }
-        }
-
-        void TownChanges(AssetRequestedEventArgs e) {
-            if (e.Name.IsEquivalentTo("Maps/Town")) {
-                Hospital(e);
-                SeedShop(e);
-                JoshHouse(e);
-                Saloon(e);
-                Trailer(e);
-                ManorHouse(e);
-                SamHouse(e);
-                HaleyHouse(e);
-                ArchaeologyHouse(e);
-                Blacksmith(e);
-                JojaMart(e);
-            }
-        }
-
-        void OtherLocationChanges(AssetRequestedEventArgs e) {
-            if (e.Name.IsEquivalentTo("Maps/Beach")) {
-                FishShop(e);
-                ElliotHouse(e);
-            }
-            if (e.Name.IsEquivalentTo("Maps/Desert")) {
-                SandyHouse(e);
-            }
-        }
-
-        void AnimalShop(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-                string actionProperty;
-
-                Tile tile = GetTile(map, "Buildings", 90, 15); // Animal shop
-                if (tile == null) return;
-
-                if (config.OutsideNormalHours) {
-                    actionProperty = "Warp 13 19 AnimalShop";
-                } else {
-                    actionProperty = "LockedDoorWarp 13 19 AnimalShop 900 1800";
+                    return false;
                 }
-
-                tile.Properties["Action"] = actionProperty;
-            });
+            }
+            catch (Exception ex) {
+                monitor.Log($"Failed in {nameof(GameLocationPerformTouchActionPrefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
         }
 
-        void LeahHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
+        static IEnumerable<CodeInstruction> GameLocationLockedDoorWarp_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+            var timeMethod = AccessTools.Method(typeof(ModEntry), nameof(GetAllowOutsideTime));
+            var homeMethod = AccessTools.Method(typeof(ModEntry), nameof(GetAllowHomeEntry));
+            var festivalMethod = AccessTools.Method(typeof(ModEntry), nameof(GetIgnoreEvents));
+            var wedMethod = AccessTools.Method(typeof(ModEntry), nameof(GetAllowSeedShopWed));
 
-                Tile tile = GetTile(map, "Buildings", 104, 32); // Leah's house
-                if (tile == null) return;
+            var matcher = new CodeMatcher(instructions, generator);
 
-                // conditionals: ignore events, outside normal hours, stranger room entry
-                tile.Properties["Action"] = "Warp 7 9 LeahHouse";
-            });
+            matcher.MatchEndForward(
+                new CodeMatch(i => i.opcode == OpCodes.Call),
+                new CodeMatch(i => i.opcode == OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Stloc_0),
+                new CodeMatch(i => i.opcode == OpCodes.Call),
+                new CodeMatch(OpCodes.Brfalse_S)
+            ).ThrowIfNotMatch("Couldn't find festival check");
+
+            var ignoreFestivalLabel = (Label)matcher.Instruction.operand;
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldsfld),
+                new CodeMatch(OpCodes.Ldstr, "Strings\\Locations:FestivalDay_DoorLocked"),
+                new CodeMatch(i => i.opcode == OpCodes.Callvirt),
+                new CodeMatch(i => i.opcode == OpCodes.Call)
+            ).ThrowIfNotMatch("Couldn't find closed for festival sequence");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, festivalMethod),
+                new CodeInstruction(OpCodes.Brtrue, ignoreFestivalLabel)
+            );
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldarg_2),
+                new CodeMatch(OpCodes.Ldstr, "SeedShop"),
+                new CodeMatch(i => i.opcode == OpCodes.Call),
+                new CodeMatch(OpCodes.Brfalse_S)
+            ).ThrowIfNotMatch("Couldn't find seed shop check");
+
+            var allowWedLabel = (Label)matcher.Instruction.operand;
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldsfld),
+                new CodeMatch(OpCodes.Ldstr, "Strings\\Locations:SeedShop_LockedWed"),
+                new CodeMatch(i => i.opcode == OpCodes.Callvirt),
+                new CodeMatch(i => i.opcode == OpCodes.Call)
+            ).ThrowIfNotMatch("Couldn't find closed on wednesday sequence");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, wedMethod),
+                new CodeInstruction(OpCodes.Brtrue, allowWedLabel)
+            );
+
+            matcher.MatchEndForward(
+                new CodeMatch(OpCodes.Ldarg_2),
+                new CodeMatch(OpCodes.Ldstr, "AdventureGuild"),
+                new CodeMatch(i => i.opcode == OpCodes.Callvirt),
+                new CodeMatch(OpCodes.Brtrue_S)
+            ).ThrowIfNotMatch("Couldn't find can open door check");
+
+            var openDoorLabel = (Label)matcher.Instruction.operand;
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldarg_3),
+                new CodeMatch(i => i.opcode == OpCodes.Call),
+                new CodeMatch(OpCodes.Ldstr, " ")
+            ).ThrowIfNotMatch("Couldn't find shop hours sequence");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, timeMethod),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Stloc_1),
+                new CodeInstruction(OpCodes.Brtrue, openDoorLabel)
+            );
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldsfld),
+                new CodeMatch(OpCodes.Ldstr, "Strings\\Locations:LockedDoor"),
+                new CodeMatch(i => i.opcode == OpCodes.Callvirt)
+            ).ThrowIfNotMatch("Couldn't find locked door sequence");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, timeMethod).MoveLabelsFrom(matcher.Instruction),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Stloc_1),
+                new CodeInstruction(OpCodes.Brtrue, openDoorLabel)
+            );
+
+            matcher.MatchStartForward(
+                new CodeMatch(OpCodes.Ldarg_S),
+                new CodeMatch(OpCodes.Ldc_I4_1),
+                new CodeMatch(OpCodes.Ldc_I4_0),
+                new CodeMatch(OpCodes.Call),
+                new CodeMatch(OpCodes.Stloc_S),
+                new CodeMatch(OpCodes.Ldsfld),
+                new CodeMatch(OpCodes.Ldstr, "Strings\\Locations:LockedDoor_FriendsOnly")
+            ).ThrowIfNotMatch("Couldn't find friends only locked door sequence");
+
+            matcher.InsertAndAdvance(
+                new CodeInstruction(OpCodes.Call, homeMethod).MoveLabelsFrom(matcher.Instruction),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Stloc_1),
+                new CodeInstruction(OpCodes.Brtrue, openDoorLabel)
+            );
+
+            return matcher.InstructionEnumeration();
         }
 
-        void WizardHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
+        public static bool GameLocationLockedDoorWarp(GameLocation __instance, Point tile, string locationName, int openTime, int closeTime,
+            string npcName, int minFriendship) {
+            if (!Config.Enabled) return true;
 
-                Tile tile = GetTile(map, "Buildings", 5, 26); // Wizard's tower
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 8 24 WizardHouse";
-            });
-        }
-
-        void FishShop(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 30, 33); // Fish shop
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 5 9 FishShop";
-            });
-        }
-
-        void ElliotHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 49, 10); // Elliot's house
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours, stranger room entry
-                tile.Properties["Action"] = "Warp 3 9 ElliottHouse";
-            });
-        }
-
-        void ScienceHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 12, 25); // Science house front door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 6 24 ScienceHouse";
-
-                tile = GetTile(map, "Buildings", 8, 20); // Maru's exterior bedroom door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours, stranger room entry
-                tile.Properties["Action"] = "Warp 3 8 ScienceHouse";
-            });
-        }
-
-        void AdventureGuild(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-                string actionProperty;
-
-                Tile tile = GetTile(map, "Buildings", 76, 8); // Adventurer's guild
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours, early access
-                if (config.OutsideNormalHours) {
-                    actionProperty = "Warp 6 19 AdventureGuild";
-                } else {
-                    actionProperty = "LockedDoorWarp 6 19 AdventureGuild 1400 2600";
+            try {
+                bool town_key_applies = Game1.player.HasTownKey;
+                if (GameLocation.AreStoresClosedForFestival() && __instance.InValleyContext()) {
+                    if (!Config.IgnoreEvents) {
+                        return true;
+                    }
                 }
-
-                tile.Properties["Action"] = actionProperty;
-
-                bool playerIsGuildMember = Game1.player.mailReceived.Contains("guildMember");
-                tile = GetTile(map, "Back", 76, 9);
-
-                if (config.OutsideNormalHours && config.EarlyAdventureGuild && !playerIsGuildMember) {
-                    tile.Properties["TouchAction"] = "Warp AdventureGuild 6 19";
-                } else if (!config.OutsideNormalHours && config.EarlyAdventureGuild && !playerIsGuildMember) {
-                    if (Game1.timeOfDay > 1400 && Game1.timeOfDay < 2600) {
-                        tile.Properties["TouchAction"] = "Warp AdventureGuild 6 19";
+                if (locationName == "SeedShop" &&
+                    Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Wed") &&
+                    !Utility.HasAnyPlayerSeenEvent("191393") && !town_key_applies) {
+                    if (!Config.AllowSeedShopWed) {
+                        return true;
+                    }
+                }
+                if (locationName == "FishShop" && Game1.player.mailReceived.Contains("willyHours")) {
+                    if (!Config.AllowOutsideTime) {
+                        return true;
+                    }
+                }
+                if (town_key_applies) {
+                    if (town_key_applies && !__instance.InValleyContext()) {
+                        town_key_applies = false;
+                    }
+                    if (town_key_applies && __instance is BeachNightMarket && locationName != "FishShop") {
+                        town_key_applies = false;
+                    }
+                }
+                Friendship friendship;
+                bool canOpenDoor = (town_key_applies || (Game1.timeOfDay >= openTime && Game1.timeOfDay < closeTime) || Config.AllowOutsideTime) &&
+                    (minFriendship <= 0 || __instance.IsWinterHere() || Config.AllowStrangerHomeEntry ||
+                    (Game1.player.friendshipData.TryGetValue(npcName, out friendship) &&
+                    friendship.Points >= minFriendship));
+                if (__instance.IsGreenRainingHere() && Game1.year == 1 && !(__instance is Beach) &&
+                    !(__instance is Forest) && !locationName.Equals("AdventureGuild")) {
+                    canOpenDoor = true;
+                }
+                if (canOpenDoor) {
+                    DoWarp(locationName, __instance, tile);
+                    return false;
+                } else if (minFriendship <= 0) {
+                    if (!Config.AllowOutsideTime) {
+                        string openTimeString = Game1.getTimeOfDayString(openTime).Replace(" ", "");
+                        if (locationName == "FishShop" && Game1.player.mailReceived.Contains("willyHours")) {
+                            openTimeString = Game1.getTimeOfDayString(800).Replace(" ", "");
+                        }
+                        string closeTimeString = Game1.getTimeOfDayString(closeTime).Replace(" ", "");
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:LockedDoor_OpenRange", openTimeString, closeTimeString));
+                        return false;
+                    } else {
+                        DoWarp(locationName, __instance, tile);
+                        return false;
+                    }
+                } else if (Game1.timeOfDay < openTime || Game1.timeOfDay >= closeTime) {
+                    if (!Config.AllowOutsideTime) {
+                        return true;
                     }
                 } else {
-                    tile.Properties.Remove("TouchAction");
+                    if (!Config.AllowStrangerHomeEntry) {
+                        NPC character = Game1.getCharacterFromName(npcName);
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:LockedDoor_FriendsOnly", character.displayName));
+                        return false;
+                    } else {
+                        DoWarp(locationName, __instance, tile);
+                        return false;
+                    }
                 }
-            });
+                return true;
+            }
+            catch (Exception ex) {
+                monitor.Log($"Failed in {nameof(GameLocationLockedDoorWarp)}:\n{ex}", LogLevel.Error);
+                return true;
+            }
         }
 
-        void Hospital(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 36, 55); // Hospital
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 10 19 Hospital";
-            });
+        internal static void DoWarp(string locationName, GameLocation instance, Point tile) {
+            Rumble.rumble(0.15f, 200f);
+            Game1.player.completelyStopAnimatingOrDoingAction();
+            instance.playSound("doorClose", Game1.player.Tile);
+            Game1.warpFarmer(locationName, tile.X, tile.Y, false);
         }
 
-        void SeedShop(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 43, 56); // Seed shop left door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours, open on wednesday
-                tile.Properties["Action"] = "Warp 6 29 SeedShop";
-
-                tile = GetTile(map, "Buildings", 44, 56); // Seed shop right door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours, open on wednesday
-                tile.Properties["Action"] = "Warp 6 29 SeedShop";
-            });
-        }
-
-        void JoshHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 57, 63); // Alex/Evelyn/George's house
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 9 24 JoshHouse";
-            });
-        }
-
-        void Saloon(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 45, 70); // Saloon
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 14 24 Saloon";
-            });
-        }
-
-        void Trailer(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 72, 68); // Trailer
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 12 9 Trailer";
-            });
-        }
-
-        void ManorHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 58, 85); // Mayor's manor left door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 4 11 ManorHouse";
-
-                tile = GetTile(map, "Buildings", 59, 85); // Mayor's manor right door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 5 11 ManorHouse";
-            });
-        }
-
-        void SamHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 10, 85); // Sam/Vincent/Jodi/Kent's house
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 4 23 SamHouse";
-            });
-        }
-
-        void HaleyHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 20, 88); // Haley/Emily's house
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 2 24 HaleyHouse";
-            });
-        }
-
-        void ArchaeologyHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 101, 89); // Museum
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 3 14 ArchaeologyHouse";
-            });
-        }
-
-        void Blacksmith(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 94, 81); // Blacksmith
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 5 19 Blacksmith";
-            });
-        }
-
-        void JojaMart(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 95, 50); // Joja Mart left door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 13 29 JojaMart";
-
-                tile = GetTile(map, "Buildings", 96, 50); // Joja Mart right door
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 14 29 JojaMart";
-            });
-        }
-
-        void SandyHouse(AssetRequestedEventArgs e) {
-            e.Edit(asset => {
-                IAssetDataForMap editor = asset.AsMap();
-                Map map = editor.Data;
-
-                Tile tile = GetTile(map, "Buildings", 6, 51); // Oasis shop
-                if (tile == null) return;
-
-                // conditionals: ignore events, outside normal hours
-                tile.Properties["Action"] = "Warp 4 9 SandyHouse";
-            });
-        }
-
-        Tile GetTile(Map map, string layerName, int tileX, int tileY) {
-            Layer layer = map.GetLayer(layerName);
-            Location pixelPosition = new Location(tileX * Game1.tileSize, tileY * Game1.tileSize);
-
-            return layer.PickTile(pixelPosition, Game1.viewport.Size);
-        }
-
-        void SetUpGMCM() {
+        private void OnGameLaunched(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e) {
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null) return;
+            if (configMenu is null)
+                return;
 
             // register mod
             configMenu.Register(
                 mod: ModManifest,
-                reset: () => config = new ModConfig(),
-                save: () => Helper.WriteConfig(config)
+                reset: () => Config = new ModConfig(),
+                save: () => Helper.WriteConfig(Config)
             );
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
+                name: () => Helper.Translation.Get("overall-enabled.label"),
+                tooltip: () => Helper.Translation.Get("overall-enabled.tooltip"),
+                getValue: () => Config.Enabled,
+                setValue: value => Config.Enabled = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("general-store-wed.label"),
+                tooltip: () => Helper.Translation.Get("general-store-wed.tooltip"),
+                getValue: () => Config.AllowSeedShopWed,
+                setValue: value => Config.AllowSeedShopWed = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
                 name: () => Helper.Translation.Get("outside-hours.label"),
                 tooltip: () => Helper.Translation.Get("outside-hours.tooltip"),
-                getValue: () => config.OutsideNormalHours,
-                setValue: value => config.OutsideNormalHours = value
+                getValue: () => Config.AllowOutsideTime,
+                setValue: value => Config.AllowOutsideTime = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("stranger-entry.label"),
-                tooltip: () => Helper.Translation.Get("stranger-entry.tooltip"),
-                getValue: () => config.StrangerRoomEntry,
-                setValue: value => config.StrangerRoomEntry = value
+                name: () => Helper.Translation.Get("stranger-home-entry.label"),
+                tooltip: () => Helper.Translation.Get("stranger-home-entry.tooltip"),
+                getValue: () => Config.AllowStrangerHomeEntry,
+                setValue: value => Config.AllowStrangerHomeEntry = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("early-guild.label"),
-                tooltip: () => Helper.Translation.Get("early-guild.tooltip"),
-                getValue: () => config.EarlyAdventureGuild,
-                setValue: value => config.EarlyAdventureGuild = value
+                name: () => Helper.Translation.Get("stranger-room-entry.label"),
+                tooltip: () => Helper.Translation.Get("stranger-room-entry.tooltip"),
+                getValue: () => Config.AllowStrangerRoomEntry,
+                setValue: value => Config.AllowStrangerRoomEntry = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("adventure-guild.label"),
+                tooltip: () => Helper.Translation.Get("adventure-guild.tooltip"),
+                getValue: () => Config.AllowAdventureGuildEntry,
+                setValue: value => Config.AllowAdventureGuildEntry = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("ignore-events.label"),
+                tooltip: () => Helper.Translation.Get("ignore-events.tooltip"),
+                getValue: () => Config.IgnoreEvents,
+                setValue: value => Config.IgnoreEvents = value
             );
         }
 

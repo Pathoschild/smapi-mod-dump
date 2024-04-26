@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
@@ -42,6 +41,114 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "smapi-internal", "smapi-int
 		ref\smapi-internal\SMAPI.Toolkit.CoreInterfaces.xml = ref\smapi-internal\SMAPI.Toolkit.CoreInterfaces.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Packs", "Content Packs", "{B959C490-8B99-45C5-84A9-E51067D2D25A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cornucopia", "Cornucopia", "{E179C223-A891-4CAB-B4B6-8FBD90D65054}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forage of Ferngill", "Forage of Ferngill", "{74156DC2-8E4F-47D5-81D2-7ACD00002366}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lumisteria", "Lumisteria", "{A59F6289-18E4-464E-A3C4-2070AF8AF980}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rafseazz", "Rafseazz", "{6385528A-44CC-47E4-969B-2F8CF2870AC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stardew Valley Expanded", "Stardew Valley Expanded", "{25E98636-2E17-46A1-8F87-6DC3FF359483}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Stardew Valley Expanded Forage", "[AF] Stardew Valley Expanded Forage", "{E9004CAA-F9DD-4924-AF9C-E5C72A9532E6}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Stardew Valley Expanded\[AF] Stardew Valley Expanded Forage\content.json = Content Packs\Stardew Valley Expanded\[AF] Stardew Valley Expanded Forage\content.json
+		Content Packs\Stardew Valley Expanded\[AF] Stardew Valley Expanded Forage\manifest.json = Content Packs\Stardew Valley Expanded\[AF] Stardew Valley Expanded Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[Af] Ridgeside Village Forage", "[Af] Ridgeside Village Forage", "{3A9B74D5-F0B6-4EE8-A9A7-509868055B4A}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Rafseazz\[AF] Ridgeside Village Forage\content.json = Content Packs\Rafseazz\[AF] Ridgeside Village Forage\content.json
+		Content Packs\Rafseazz\[AF] Ridgeside Village Forage\manifest.json = Content Packs\Rafseazz\[AF] Ridgeside Village Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Coastal Forage of Ferngill Forage", "[AF] Coastal Forage of Ferngill Forage", "{23A97F11-5140-42A8-9042-A9718CE78274}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Forage of Ferngill\[AF] Coastal Forage of Ferngill Forage\content.json = Content Packs\Forage of Ferngill\[AF] Coastal Forage of Ferngill Forage\content.json
+		Content Packs\Forage of Ferngill\[AF] Coastal Forage of Ferngill Forage\manifest.json = Content Packs\Forage of Ferngill\[AF] Coastal Forage of Ferngill Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Fruits and Nuts of Ferngill Forage", "[AF] Fruits and Nuts of Ferngill Forage", "{3DB75D6A-3117-4A4B-A228-0C03FA4D21F6}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Forage of Ferngill\[AF] Fruits and Nuts of Ferngill Forage\content.json = Content Packs\Forage of Ferngill\[AF] Fruits and Nuts of Ferngill Forage\content.json
+		Content Packs\Forage of Ferngill\[AF] Fruits and Nuts of Ferngill Forage\manifest.json = Content Packs\Forage of Ferngill\[AF] Fruits and Nuts of Ferngill Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Mushrooms of Ferngill Forage", "[AF] Mushrooms of Ferngill Forage", "{12D0575A-CBA0-4E7D-8ED8-31AF50B36DAA}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Forage of Ferngill\[AF] Mushrooms of Ferngill Forage\content.json = Content Packs\Forage of Ferngill\[AF] Mushrooms of Ferngill Forage\content.json
+		Content Packs\Forage of Ferngill\[AF] Mushrooms of Ferngill Forage\manifest.json = Content Packs\Forage of Ferngill\[AF] Mushrooms of Ferngill Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Roots of Ferngill Forage", "[AF] Roots of Ferngill Forage", "{423F3744-AE19-4061-947D-33D1E28F200B}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Forage of Ferngill\[AF] Roots of Ferngill Forage\content.json = Content Packs\Forage of Ferngill\[AF] Roots of Ferngill Forage\content.json
+		Content Packs\Forage of Ferngill\[AF] Roots of Ferngill Forage\manifest.json = Content Packs\Forage of Ferngill\[AF] Roots of Ferngill Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Cornucopia - More Crops Forage", "[AF] Cornucopia - More Crops Forage", "{A61F8970-D7C3-4CB1-A54C-830FB5A8C34D}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Cornucopia\[AF] Cornucopia - More Crops Forage\content.json = Content Packs\Cornucopia\[AF] Cornucopia - More Crops Forage\content.json
+		Content Packs\Cornucopia\[AF] Cornucopia - More Crops Forage\manifest.json = Content Packs\Cornucopia\[AF] Cornucopia - More Crops Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Cornucopia - More Flowers Forage", "[AF] Cornucopia - More Flowers Forage", "{883B28C6-CA76-4E2C-9AEB-D0975004CAC4}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Cornucopia\[AF] Cornucopia - More Flowers Forage\content.json = Content Packs\Cornucopia\[AF] Cornucopia - More Flowers Forage\content.json
+		Content Packs\Cornucopia\[AF] Cornucopia - More Flowers Forage\manifest.json = Content Packs\Cornucopia\[AF] Cornucopia - More Flowers Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lumisteria - Serene Meadow Forage", "[AF] Lumisteria - Serene Meadow Forage", "{F6C7652A-2FEE-446A-9B31-9BC1FB8C5D79}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\content.json = Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\content.json
+		Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\manifest.json = Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lumisteria - Visit Mount Vapius Forage", "[AF] Lumisteria - Visit Mount Vapius Forage", "{182E1E65-A6D6-4DE8-B17A-B201C9F8B81C}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\content.json = Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\content.json
+		Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\manifest.json = Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wildflour", "Wildflour", "{A3B7354D-B517-4F6F-B823-3EB4B29DDCE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Atelier Wildflour Crops and Forage", "[AF] Atelier Wildflour Crops and Forage", "{1B0905E8-F4B8-4CE1-927A-7EE6FC1B6F2C}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\content.json = Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\content.json
+		Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\manifest.json = Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Kombucha of Ferngill Forage", "[AF] Kombucha of Ferngill Forage", "{D8E8B421-3B87-4DBB-A82D-E588EE714949}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Forage of Ferngill\[AF] Kombucha of Ferngill Forage\content.json = Content Packs\Forage of Ferngill\[AF] Kombucha of Ferngill Forage\content.json
+		Content Packs\Forage of Ferngill\[AF] Kombucha of Ferngill Forage\manifest.json = Content Packs\Forage of Ferngill\[AF] Kombucha of Ferngill Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Wild Flowers of Ferngill Forage", "[AF] Wild Flowers of Ferngill Forage", "{CC1F6EEF-13C5-4A67-86E7-31CADF6EB8E3}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Forage of Ferngill\[AF] Wild Flowers of Ferngill Forage\content.json = Content Packs\Forage of Ferngill\[AF] Wild Flowers of Ferngill Forage\content.json
+		Content Packs\Forage of Ferngill\[AF] Wild Flowers of Ferngill Forage\manifest.json = Content Packs\Forage of Ferngill\[AF] Wild Flowers of Ferngill Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lunna - Astray in SDV Forage", "[AF] Lunna - Astray in SDV Forage", "{392ADCD8-FF12-4095-AA02-C5203C51664F}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Rafseazz\[AF] Lunna - Astray in SDV Forage\content.json = Content Packs\Rafseazz\[AF] Lunna - Astray in SDV Forage\content.json
+		Content Packs\Rafseazz\[AF] Lunna - Astray in SDV Forage\manifest.json = Content Packs\Rafseazz\[AF] Lunna - Astray in SDV Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullFishingBar", "FullFishingBar\FullFishingBar.csproj", "{711D9D67-8FA2-4A27-9387-CA6E279074EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stranded Fish", "Stranded Fish", "{6B1BD09E-AD1D-46F9-B485-2017F27D9A12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Stranded Fish Forage", "[AF] Stranded Fish Forage", "{14178271-63C6-4E30-BE2E-A06A8D7B7334}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Stranded Fish\[AF] Stranded Fish Forage\content.json = Content Packs\Stranded Fish\[AF] Stranded Fish Forage\content.json
+		Content Packs\Stranded Fish\[AF] Stranded Fish Forage\manifest.json = Content Packs\Stranded Fish\[AF] Stranded Fish Forage\manifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +163,10 @@ Global
 		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711D9D67-8FA2-4A27-9387-CA6E279074EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711D9D67-8FA2-4A27-9387-CA6E279074EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711D9D67-8FA2-4A27-9387-CA6E279074EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711D9D67-8FA2-4A27-9387-CA6E279074EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +174,28 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2CDDDF85-892B-4679-9FBF-5D8B269F6895} = {9AE7A420-CF76-4D17-B83A-D667B1BA5B83}
 		{48A1A977-A1D7-4572-BF55-20102CC2E3F4} = {EDBF30AC-26CB-405A-8B9F-9AD4163C3F21}
+		{E179C223-A891-4CAB-B4B6-8FBD90D65054} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{74156DC2-8E4F-47D5-81D2-7ACD00002366} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{A59F6289-18E4-464E-A3C4-2070AF8AF980} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{6385528A-44CC-47E4-969B-2F8CF2870AC1} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{25E98636-2E17-46A1-8F87-6DC3FF359483} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{E9004CAA-F9DD-4924-AF9C-E5C72A9532E6} = {25E98636-2E17-46A1-8F87-6DC3FF359483}
+		{3A9B74D5-F0B6-4EE8-A9A7-509868055B4A} = {6385528A-44CC-47E4-969B-2F8CF2870AC1}
+		{23A97F11-5140-42A8-9042-A9718CE78274} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
+		{3DB75D6A-3117-4A4B-A228-0C03FA4D21F6} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
+		{12D0575A-CBA0-4E7D-8ED8-31AF50B36DAA} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
+		{423F3744-AE19-4061-947D-33D1E28F200B} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
+		{A61F8970-D7C3-4CB1-A54C-830FB5A8C34D} = {E179C223-A891-4CAB-B4B6-8FBD90D65054}
+		{883B28C6-CA76-4E2C-9AEB-D0975004CAC4} = {E179C223-A891-4CAB-B4B6-8FBD90D65054}
+		{F6C7652A-2FEE-446A-9B31-9BC1FB8C5D79} = {A59F6289-18E4-464E-A3C4-2070AF8AF980}
+		{182E1E65-A6D6-4DE8-B17A-B201C9F8B81C} = {A59F6289-18E4-464E-A3C4-2070AF8AF980}
+		{A3B7354D-B517-4F6F-B823-3EB4B29DDCE7} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{1B0905E8-F4B8-4CE1-927A-7EE6FC1B6F2C} = {A3B7354D-B517-4F6F-B823-3EB4B29DDCE7}
+		{D8E8B421-3B87-4DBB-A82D-E588EE714949} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
+		{CC1F6EEF-13C5-4A67-86E7-31CADF6EB8E3} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
+		{392ADCD8-FF12-4095-AA02-C5203C51664F} = {6385528A-44CC-47E4-969B-2F8CF2870AC1}
+		{6B1BD09E-AD1D-46F9-B485-2017F27D9A12} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{14178271-63C6-4E30-BE2E-A06A8D7B7334} = {6B1BD09E-AD1D-46F9-B485-2017F27D9A12}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}

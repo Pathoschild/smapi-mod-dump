@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using FashionSense.Framework.Patches.Renderer;
 using FashionSense.Framework.Utilities;
 using HarmonyLib;
 using StardewModdingAPI;

@@ -29,6 +29,7 @@ internal class IClickableMenuPatch : IPatch
         typeof(Billboard),
         typeof(CarpenterMenu),
         typeof(CharacterCustomization),
+        typeof(ChooseFromIconsMenu),
         typeof(ConfirmationDialog),
         typeof(CoopMenu),
         typeof(FarmhandMenu),
@@ -178,7 +179,7 @@ internal class IClickableMenuPatch : IPatch
     {
         try
         {
-            Log.Debug($"Closed {__instance.GetType()} menu, performing cleanup...");
+            Log.Verbose($"IClickableMenuPatch.ExitThisMenuPatch: Closed {__instance.GetType()} menu, performing cleanup...");
             Cleanup(__instance);
         }
         catch (Exception e)

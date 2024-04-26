@@ -22,6 +22,8 @@ namespace SkillfulClothes.Effects
     {            
         public List<EffectDescriptionLine> EffectDescription => new List<EffectDescriptionLine>() { new EffectDescriptionLine(EffectIcon.None, "Does nothing") };
 
+        public string EffectId => EffectHelper.GetEffectId(this);
+
         public void Apply(Item sourceItem, EffectChangeReason reason)
         {
             // --

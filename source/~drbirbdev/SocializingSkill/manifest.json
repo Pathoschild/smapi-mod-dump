@@ -13,7 +13,7 @@
   "UniqueID": "drbirbdev.SocializingSkill",
   "Name": "SocializingSkill",
   "Author": "drbirbdev",
-  "Version": "2.0.5",
+  "Version": "2.0.6",
   "Description": "Adds a skill related to befriending villagers.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "SocializingSkill.dll",

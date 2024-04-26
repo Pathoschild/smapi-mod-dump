@@ -1,0 +1,9 @@
+{
+  "ApplyGathererProfession": true,
+  "WhoseGathererProfessionToUse": "Owner",
+  "ApplyBotanistProfession": true,
+  "WhoseBotanistProfessionToUse": "Owner",
+  "GainExperience": true,
+  "WhoGainsExperience": "Owner",
+  "UpdateGameStats": true
+}

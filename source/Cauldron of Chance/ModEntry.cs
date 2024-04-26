@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -18,9 +19,10 @@ using System.Linq;
 
 namespace CauldronOfChance
 {
-    public class ModEntry : StardewModdingAPI.Mod, IAssetEditor
+    public class ModEntry : StardewModdingAPI.Mod
     {
-        public const int eventId = 10975001;
+        public const string eventId = "10975001";
+        public const string UniqueId = "Expl0.CauldronOfChance";
 
         public static List<long> userIds { get; set; }
 
@@ -88,6 +90,73 @@ namespace CauldronOfChance
             userIds = new List<long>();
         }
 
+        /// <inheritdoc cref="IContentEvents.AssetRequested"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/WizardHouse"))
+            {
+                e.Edit(asset =>
+                {
+                    var editor = asset.AsDictionary<string, string>();
+                    editor.Data[eventId + "/f Wizard 500/p Wizard"] = String.Join("/", new string[]
+                    {
+                        "WizardSong",
+                        "-1000 -1000",
+                        "farmer 8 24 0 Wizard 3 19 2",
+                        "skippable",
+                        "showFrame Wizard 20",
+                        "viewport 8 18 true",
+                        "playSound doorClose",
+                        "move farmer 0 -2 0",
+                        "playSound bubbles",
+                        "emote Wizard 56",
+                        "pause 1000",
+                        "animate Wizard false false 100 20 21 22 0",
+                        "move Wizard 0 0 2 false",
+                        "pause 500",
+                        "stopAnimation Wizard",
+                        "emote Wizard 8",
+                        "pause 1000",
+                        "speak Wizard \"Young @...\"",
+                        "speak Wizard \"Come in...\"",
+                        "move Wizard 3 0 2 false",
+                        "move Wizard 0 1 2 false",
+                        "pause 1000",
+                        "speak Wizard \"I was just brewing something in my Cauldron.\"",
+                        "pause 1000",
+                        "emote Wizard 40",
+                        "pause 1500",
+                        "speak Wizard \"Say, have you ever considered dabbling in the mystical arts?\"",
+                        "pause 500",
+                        "emote farmer 28",
+                        "pause 500",
+                        "speak Wizard \"Its really simple, on a basic level.\"",
+                        "speak Wizard \"Just throw a few ingredients into the cauldron and see what happens.\"",
+                        "pause 500",
+                        "speak Wizard \"Experimenting is the key...\"",
+                        "pause 500",
+                        "quickQuestion #\"I'll try it out!\"#\"I don't think this kinda stuff is for me...\""
+                        + "(break)emote Wizard 56\\pause 500\\emote farmer 56\\pause 500\\move Wizard 0 -1 0\\move Wizard -3 0 2\\speak Wizard \"I'm curious to see what you will discover...\""
+                        //Add days-after conversation topic (What arcane discoveries did you make?)
+                        + "(break)emote Wizard 28\\pause 500\\speak Wizard \"Well, if you ever change your mind...\"\\move Wizard 0 -1 0\\move Wizard -3 0 2",
+                        //Add days-after conversation topic (So did you come around to try out the magic of the cauldron?)
+                        "playSound bubbles",
+                        "globalFade .008",
+                        "viewport -1000 -1000",
+                        "playMusic none",
+                        "pause 2000",
+                        "playSound reward",
+                        "pause 300",
+                        "message \"You can now use the wizards cauldron.\"",
+                        "end dialogue Wizard \"Feel free to use my cauldron whenever you like.\"",
+                    });
+                });
+            }
+        }
+
+        /*
         /// <summary>Get whether this instance can edit the given asset.</summary>
         /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanEdit<T>(IAssetInfo asset)
@@ -162,5 +231,6 @@ namespace CauldronOfChance
                 });
             }
         }
+        */
     }
 }

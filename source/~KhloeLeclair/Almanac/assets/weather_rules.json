@@ -12,7 +12,8 @@
 	{
 		"Id": "spring_can",
 		"Contexts": [
-			"Default"
+			"Default",
+			"Desert"
 		],
 		"Priority": 10,
 		"Period": "Year",
@@ -51,7 +52,7 @@
 		],
 		"Period": "Week",
 		"Pattern": [
-			[ "Rain" ]
+			["Rain"]
 		]
 	},
 	{

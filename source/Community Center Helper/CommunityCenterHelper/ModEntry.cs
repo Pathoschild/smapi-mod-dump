@@ -31,7 +31,9 @@ namespace CommunityCenterHelper
         public static bool debugClearCompletedBundles = false;
         public static bool debugUnlockMissingBundle = false;
         public static bool debugUnlockCooking = false;
+        public static bool debugTreatRecipesAsKnown = false;
         public static bool debugShowUnknownIDs = false;
+        public static bool debugAddBundleTestCommand = false;
         
         /***************************
          ** Mod Injection Methods **
@@ -49,6 +51,9 @@ namespace CommunityCenterHelper
                 ItemHints.str = helper.Translation;
                 ItemHints.modRegistry = helper.ModRegistry;
                 ItemHints.Config = helper.ReadConfig<ModConfig>();
+                
+                if (debugAddBundleTestCommand)
+                    helper.ConsoleCommands.Add("testbundlehints", "Tests item hints on a list of JSON Community Center bundle definitions, outputting results.", this.debugTestBundleHints);
                 
                 Harmony harmonyInstance = new Harmony(this.ModManifest.UniqueID);
                 
@@ -137,6 +142,14 @@ namespace CommunityCenterHelper
                             ingredientHoverTitle[i] = __instance.ingredientList[i].hoverText;
                             ingredientHoverText[i] = hintText;
                             __instance.ingredientList[i].hoverText = "";
+                            
+                            // Override item name for generic Dried and Smoked items.
+                            if (ingredient.id == ItemID.IT_DriedFruit)
+                                ingredientHoverTitle[i] = Game1.content.LoadString("Strings\\Objects:DriedFruit_CollectionsTabName");
+                            else if (ingredient.id == ItemID.IT_DriedMushrooms)
+                                ingredientHoverTitle[i] = Game1.content.LoadString("Strings\\Objects:DriedMushrooms_CollectionsTabName");
+                            else if (ingredient.id == ItemID.IT_SmokedFish)
+                                ingredientHoverTitle[i] = Game1.content.LoadString("Strings\\Objects:SmokedFish_CollectionsTabName");
                         }
                         else
                         {
@@ -225,6 +238,84 @@ namespace CommunityCenterHelper
         {
             if (!Game1.MasterPlayer.mailReceived.Contains("abandonedJojaMartAccessible"))
                 Game1.MasterPlayer.mailReceived.Add("abandonedJojaMartAccessible");
+        }
+        
+        /// <summary>Debug method to test item hint function on a list of JSON bundle definitions from clipboard.</summary>
+        /// <param name="command">The name of the command invoked.</param>
+        /// <param name="args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        private void debugTestBundleHints(string command, string[] args)
+        {
+            bool listItemsInEachBundle = false; // Additional debug to print bundle contents as readable item names
+            
+            string clipboardText = "";
+            if (DesktopClipboard.GetText(ref clipboardText))
+            {
+                bool oldUnknownIDs = debugShowUnknownIDs;
+                debugShowUnknownIDs = false; // Let function return blank string if no hint found
+                
+                System.IO.StringWriter str = new System.IO.StringWriter(new System.Text.StringBuilder());
+                System.Collections.Generic.List<string> printedItemIDs = new System.Collections.Generic.List<string>();
+                
+                foreach (string line in clipboardText.Split("\n"))
+                {
+                    if (line.StartsWith("//"))
+                    {
+                        str.WriteLine(line + "\n");
+                        continue;
+                    }
+                    
+                    System.Text.RegularExpressions.Regex bundleDefinition = new System.Text.RegularExpressions.Regex("\"[^\"]*\":[ ]*\"([^\"]*)\"");
+                    System.Text.RegularExpressions.Match match = bundleDefinition.Match(line);
+                    if (match.Success)
+                    {
+                        str.WriteLine("<" + line.Replace("\r", "") + ">\n");
+                        
+                        System.IO.StringWriter allItemsInBundle = null;
+                        if (listItemsInEachBundle)
+                            allItemsInBundle = new System.IO.StringWriter(new System.Text.StringBuilder());
+                        
+                        string definitionText = match.Groups[1].Value;
+                        if (definitionText.Contains("{{")) // Simplify JSON asset references to just {{}}
+                            definitionText = System.Text.RegularExpressions.Regex.Replace(definitionText, "\\{\\{[^\\}]*\\}\\}", "{{}}");
+                        
+                        string[] definitionSplit = definitionText.Split('/');
+                        string ingredientText = definitionSplit.Length > 2? definitionSplit[2] : "";
+                        string[] ingredientList = ingredientText.Split(' ');
+                        
+                        for (int i = 0; i < ingredientList.Length; i += 3)
+                        {
+                            string itemID = ingredientList[i];
+                            if (itemID.Equals("{{}}")) // Skip over old JSON asset references
+                                continue;
+                            
+                            string itemName = ItemHints.getItemName(itemID);
+                            if (listItemsInEachBundle)
+                                allItemsInBundle.Write((i > 0? ", " : "") + itemName);
+                            
+                            int itemQuality = 0;
+                            if (i + 2 < ingredientList.Length)
+                                int.TryParse(ingredientList[i + 2], out itemQuality);
+                            
+                            if (printedItemIDs.Contains(itemID)) // Already printed hint for this item
+                                continue;
+                            printedItemIDs.Add(itemID);
+                            
+                            string hintText = ItemHints.getHintText(itemID, itemQuality, itemID.StartsWith("-")? int.Parse(itemID) : 0);
+                            if (hintText != "")
+                                str.WriteLine(itemName + " [" + itemID + "]\n" + hintText + "\n");
+                            else
+                                str.WriteLine("ERROR: No hint for " + itemName + " [" + itemID + "]\n"
+                                            + definitionText + "\n");
+                        }
+                        
+                        if (listItemsInEachBundle)
+                            str.WriteLine("<Items in Bundle>\n" + line + "\n" + allItemsInBundle.ToString() + "\n");
+                    }
+                }
+                
+                Log(str.ToString());
+                debugShowUnknownIDs = oldUnknownIDs;
+            }
         }
         
         /// <summary>Prints a message to the SMAPI console.</summary>

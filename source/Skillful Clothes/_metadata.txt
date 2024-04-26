@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 2574b2ed5207006d9e19b2983501afd8fb36ab5f
-   Author: LunaticShade <82759433+LunaticShade@users.noreply.github.com>
-   Date:   Wed Dec 13 09:00:44 2023 +0100
+   commit 684f09632138231a340d56f9aa18e600a682590b
+   Author: LunaticShade <lunaticshade@googlemail.com>
+   Date:   Wed Apr 10 22:59:09 2024 +0200
    
-       Create LICENSE
+       fix: KeepTreasureChestWhenFishEscapes effect
    

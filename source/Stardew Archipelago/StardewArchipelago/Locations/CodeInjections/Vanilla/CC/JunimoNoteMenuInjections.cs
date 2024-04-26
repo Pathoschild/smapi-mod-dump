@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
@@ -90,7 +91,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                 var remixedBundlesTexture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\BundleSprites");
                 foreach (var bundle in __instance.bundles)
                 {
-                    var textureOverride = BundleIcons.GetBundleIcon(_modHelper, bundle.name);
+                    var textureOverride = BundleIcons.GetBundleIcon(_monitor, _modHelper, bundle.name, LogLevel.Trace);
                     if (textureOverride == null)
                     {
                         if (bundle.bundleIndex < REMIXED_BUNDLE_INDEX_THRESHOLD)
@@ -112,13 +113,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                         {
                             if (TryGetBundleName(bundleIndexString, out var moneyBundleName))
                             {
-                                bundle.bundleTextureOverride = BundleIcons.GetBundleIcon(_modHelper, moneyBundleName);
+                                var texture = BundleIcons.GetBundleIcon(_monitor, _modHelper, moneyBundleName, LogLevel.Error);
+                                bundle.bundleTextureOverride = texture;
                                 bundle.bundleTextureIndexOverride = 0;
+                                if (texture == null)
+                                {
+                                    _monitor.Log($"Could not find a proper icon for money bundle '{moneyBundleName}', using default Archipelago Icon", LogLevel.Warn);
+                                }
                                 continue;
                             }
                         }
 
-                        textureOverride = ArchipelagoTextures.GetColoredLogo(_modHelper, 32, ArchipelagoTextures.COLOR);
+                        _monitor.Log($"Could not find a proper icon for bundle '{bundle.name}', using default Archipelago Icon", LogLevel.Warn);
+                        textureOverride = ArchipelagoTextures.GetArchipelagoLogo(_monitor, _modHelper, 32, ArchipelagoTextures.COLOR);
                     }
 
                     bundle.bundleTextureOverride = textureOverride;

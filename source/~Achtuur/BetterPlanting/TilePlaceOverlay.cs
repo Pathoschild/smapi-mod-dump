@@ -50,7 +50,7 @@ internal class TilePlaceOverlay : Overlay
         if (!ModEntry.PlayerIsHoldingPlantableObject() || ModEntry.Instance.TileFiller.FillMode == FillMode.Disabled)
             return;
 
-        Vector2 farmerTilePosition = Game1.player.getTileLocation();
+        Vector2 farmerTilePosition = Game1.player.Tile;
         Vector2 cursorTilePosition = Game1.currentCursorTile;
         IEnumerable<Vector2> visibleTiles = Tiles.GetVisibleTiles(expand: 1);
         IEnumerable<FillTile> tiles = ModEntry.Instance.TileFiller.GetFillTiles(farmerTilePosition, cursorTilePosition)

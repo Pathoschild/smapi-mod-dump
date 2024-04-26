@@ -33,20 +33,15 @@ namespace Coop_Cursor
         private ButtonState xButton1 = ButtonState.Released;
         private ButtonState xButton2 = ButtonState.Released;
 
-        public void Initialize()
-        {
-            ModEntry._Helper.Events.GameLoop.UpdateTicking += updateState;
-        }
-
-        private void updateState(object sender, UpdateTickingEventArgs e)
+        public void updateState()
         {
             xnaState = Mouse.GetState();
 
-            leftButton = GetKeyState((int)VK.LBUTTON) == 0 ? ButtonState.Released : ButtonState.Pressed;
-            middleButton = GetKeyState((int)VK.MBUTTON) == 0 ? ButtonState.Released : ButtonState.Pressed;
-            rightButton = GetKeyState((int)VK.RBUTTON) == 0 ? ButtonState.Released : ButtonState.Pressed;
-            xButton1 = GetKeyState((int)VK.XBUTTON1) == 0 ? ButtonState.Released : ButtonState.Pressed;
-            xButton2 = GetKeyState((int)VK.XBUTTON2) == 0 ? ButtonState.Released : ButtonState.Pressed;
+            leftButton = GetAsyncKeyState((int)VK.LBUTTON) == 0 ? ButtonState.Released : ButtonState.Pressed;
+            middleButton = GetAsyncKeyState((int)VK.MBUTTON) == 0 ? ButtonState.Released : ButtonState.Pressed;
+            rightButton = GetAsyncKeyState((int)VK.RBUTTON) == 0 ? ButtonState.Released : ButtonState.Pressed;
+            xButton1 = GetAsyncKeyState((int)VK.XBUTTON1) == 0 ? ButtonState.Released : ButtonState.Pressed;
+            xButton2 = GetAsyncKeyState((int)VK.XBUTTON2) == 0 ? ButtonState.Released : ButtonState.Pressed;
 
         }
 

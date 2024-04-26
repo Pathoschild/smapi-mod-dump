@@ -9,109 +9,343 @@
 *************************************************/
 
 using Fishnets.Data;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.GameData.Locations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using StardewValley.ItemTypeDefinitions;
 
 namespace Fishnets
 {
-    internal static class Statics
+    public static class Statics
     {
-        internal static List<string> ExcludedFish;
+        internal static List<string> ExcludedFish = [];
 
-        internal static Object GetRandomFishForLocation(string bait, Farmer who, string locationName) //Actually going to try to explain this code, to make sure I still understand later
+        private static readonly int[] Qualities = [Object.lowQuality, Object.medQuality, Object.highQuality, Object.bestQuality];
+
+        private static readonly Texture2D fishNetTexture = ModEntry.IHelper.ModContent.Load<Texture2D>("assets/FishNet.png");
+
+        private static readonly Rectangle fishNetSourceRect = new(0, 0, 16, 16);
+
+        private static readonly Dictionary<string, Dictionary<Vector2, ModData>> locationMap = [];
+
+        internal static readonly List<string> WeedsIds = ["(O)152", "(O)153", "(O)157"];
+
+        internal static readonly List<string> JellyIds = ["(O)RiverJelly", "(O)SeaJelly", "(O)CaveJelly"];
+
+        internal static bool TryGetRandomFishForLocation(string bait, Farmer who, string locationName, out Object fish)
         {
-            Dictionary<string, LocationData> locationData = ModEntry.IHelper.GameContent.Load<Dictionary<string, LocationData>>("Data\\Locations");
+            fish = null;
+            Dictionary<string, string> fishData = ModEntry.IHelper.GameContent.Load<Dictionary<string, string>>("Data\\Fish"); //Load fish data
 
-            string itemId = ""; //QualifiedItemId of the fish to return
-            bool flag2 = bait == "908"; //If magic bait, run magic code
+            string itemId = "";
+            bool flag2 = bait == "908";
             string locationKey = locationName;
-            if (locationKey == "BeachNightMarket") //BeachNightMarket == Beach as far as locationData is concerned
-                locationKey = "Beach";
+            GameLocation location = Game1.getLocationFromName(locationKey);
 
-            if (locationData.ContainsKey(locationKey))
+            if (location.GetData() is not LocationData data)
+                return false;
+            List<string> keys = [.. data.Fish.SelectMany(x => x.Id.Split('|'))]; //Unpack fish item ids into list
+            Utility.Shuffle(Game1.random, keys); //Shuffle ids
+            for (int i = 0; i < keys.Count; i++)
             {
-                GameLocation location = Game1.getLocationFromName(locationKey);
+                string key = keys[i];
+                if (!CanCatchThisFish(key, location, who, flag2) || !fishData.TryGetValue(UnQualifyItemId(key), out string? fishStr)) //Validate the fish can be caught and it's included in Data\\Fish
+                    continue;
+                string[] fishStrSplit = fishStr.Split('/');
 
-                List<string> keys = new(locationData[locationKey].Fish.SelectMany(x => x.Id.Split('|')));
-                Dictionary<string, string> fishData = ModEntry.IHelper.GameContent.Load<Dictionary<string, string>>("Data\\Fish");
-                Utility.Shuffle(Game1.random, keys); //Randomize the fish ids
-                for (int i = 0; i < keys.Count; ++i)
+                double chance = Convert.ToDouble(fishStrSplit[10]); //Generate random chance based on internal fish catch chance and farmer fishing level
+                chance += (who.FishingLevel / 50);
+                chance = Math.Min(chance, 0.899999976158142);
+                if (Game1.random.NextDouble() <= chance)
                 {
-                    bool flag3 = false; //If weather matches, allow catch
-                    if (ItemRegistry.GetTypeDefinition($"{keys[i].Split(')')[0]})") != ItemRegistry.GetObjectTypeDefinition()) //Filter out non-object keys
-                        continue;
-                    if (!fishData.TryGetValue(UnQualifyItemId(keys[i]), out string fishStr))
-                    {
-                        ModEntry.IMonitor.Log($"Tried to catch fish with id {keys[i]}, but it could not be found in the fish data");
-                        continue;
-                    }
-                    string cond = locationData[locationKey].Fish.First(x => x.Id.Contains(keys[i])).Condition;
-                    if (!string.IsNullOrWhiteSpace(cond) && !GameStateQuery.CheckConditions(cond, location, who))
-                    {
-                        ModEntry.IMonitor.Log($"Conditions for catching fish with id {keys[i]} failed");
-                        continue;
-                    }
-                    string[] fish = fishStr.Split('/');
-                    if (ExcludedFish.Contains(fish[0])) //If the fish's name appears in the list of excluded fish, move on
-                        continue; 
-                    if (fish[7] != "both") //If fish can't be caught during both rain and sunshine...
-                    {
-                        if (fish[7] == "rainy" && !Game1.IsRainingHere(location)) //If it can be caught during rain and it's not raining, don't allow catch
-                            flag3 = true;
-                        else if (fish[7] == "sunny" && Game1.IsRainingHere(location)) //If it can be caught while it's clear and it's raining, don't allow catch
-                            flag3 = true;
-                    }
-                    if (flag2) //If using magic bait, ignore weather
-                        flag3 = false;
-                    if (who.FishingLevel < Convert.ToInt32(fish[12])) //If the player's fishing level is below the fishes minimum catch level, don't allow catch, regardless of bait
-                        flag3 = true;
-
-                    if (!flag3) //If catch is allowed
-                    {
-                        double chance1 = Convert.ToDouble(fish[10]); //Get fish catch chance
-                        double chance2 = chance1 + who.FishingLevel / 50.0d; //Add chance increase for player's fishing level
-                        double chance3 = Math.Min(chance2, 0.899999976158142); //Get chance below 0.9
-                        if (Game1.random.NextDouble() <= chance3) //If success catch fish at current index
-                        {
-                            itemId = keys[i];
-                            break;
-                        }
-                    }
+                    itemId = key;
+                    break;
                 }
             }
-            int stackSize = bait == "774" && Game1.random.NextDouble() <= .15 ? 2 : 1; //If using wild bait, get small chance for double catch
-            if (string.IsNullOrWhiteSpace(itemId)) //If no catch made, catch trash
+
+            int stackSize = getStackSizeFromBait(bait); //bait == "774" && Game1.random.NextDouble() <= .15 ? 2 : 1; //Try set stacksize for Wild bait \\Replaced by getStackSizeFromBait
+            if (string.IsNullOrWhiteSpace(itemId))
             {
                 itemId = $"(O){Game1.random.Next(167, 173)}";
                 stackSize = 1;
             }
-            if (Game1.random.NextDouble() <= .15 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS")) //If has qi crop challenge active, get small chance to get qi beans instead
+            if (Game1.random.NextDouble() <= .15 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS"))
                 itemId = "(O)890";
-            Object obj = (Object)ItemRegistry.Create(itemId, stackSize); //Create fish from id and return
-            return obj;
+            fish = ItemRegistry.Create<Object>(itemId, stackSize);
+            return true;
         }
 
-        internal static bool CanCatchThisFish(string itemId, string locationName)
+        internal static bool CanCatchThisFish(string itemId, GameLocation location, Farmer? who = null, bool isMagicBait = false)
         {
-            Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
+            Dictionary<string, string> fishData = ModEntry.IHelper.GameContent.Load<Dictionary<string, string>>("Data\\Fish");
 
-            string locationKey = locationName;
-            if (locationKey == "BeachNightMarket")
-                locationKey = "Beach";
-            if (!locationData.TryGetValue(locationKey, out LocationData data))
+            if (location.GetData() is not LocationData data || !fishData.TryGetValue(UnQualifyItemId(itemId), out string? fishStr))
                 return false;
 
             foreach (var fish in data.Fish)
-                if (fish.ItemId == itemId)
-                    return true;
+            {
+                if (fish.Id.Contains(itemId))
+                {
+                    if (fishStr.Contains("trap"))
+                        return false;
+                    string[] fishStrSplit = fishStr.Split('/');
+                    bool flag1 = fish.Season is null || fish.Season == Game1.season; //Do seasons match?
+                    bool flag2 = ItemRegistry.Create(itemId).TypeDefinitionId == "(O)"; //Is Object type?
+                    bool flag3 = string.IsNullOrWhiteSpace(fish.Condition) || GameStateQuery.CheckConditions(fish.Condition, location, who, ignoreQueryKeys: isMagicBait ? GameStateQuery.MagicBaitIgnoreQueryKeys : null); //Do GSQ conditions exist and if they do, do they match current conditions?
+                    bool flag4 = !ExcludedFish.Contains(fishStrSplit[0]); //Is the fish not excluded from possible catches?
+                    bool flag5 = true; //Do weather conditions match?
+                    bool flag6 = (fish.RequireMagicBait && isMagicBait) || !fish.RequireMagicBait; //Does the fish not require magic bait, or does it and is magic bait used
+                    bool flag7 = (who ?? Game1.player).FishingLevel >= Convert.ToInt32(fishStrSplit[12]); //Is the fishing level higher than or equal to the minimum catch level?
+                    if (fishStrSplit[7] != "both")
+                    {
+                        if (fishStrSplit[7] == "rainy" && !Game1.IsRainingHere(location))
+                            flag5 = false;
+                        else if (fishStrSplit[7] == "sunny" && Game1.IsRainingHere(location))
+                            flag5 = false;
+                    }
+
+                    return flag2 && flag3 && flag4 && flag6 && flag7 && (isMagicBait || (flag1 && flag5));
+                }
+            }
             return false;
         }
+
+        internal static void OnPlace(GameLocation location, Vector2 tile)
+        {
+            if (!locationMap.ContainsKey(location.Name))
+                locationMap[location.Name] = [];
+            locationMap[location.Name][tile] = new(SetDirectionOffset(location, tile));
+            setModData(location);
+            AddOverlayTiles(location, tile, locationMap[location.Name][tile].Offset);
+        }
+
+        internal static void OnRemove(GameLocation location, Vector2 tile)
+        {
+            if (!locationMap.ContainsKey(location.Name) || !locationMap[location.Name].ContainsKey(tile))
+                return;
+            var directionOffset = locationMap[location.Name][tile].Offset;
+            locationMap[location.Name].Remove(tile);
+            setModData(location);
+            RemoveOverlayTiles(location, tile, directionOffset);
+        }
+
+        internal static void UpdateMap(GameLocation location)
+        {
+            if (!location.modData.ContainsKey(ModEntry.IHelper.ModRegistry.ModID))
+                return;
+            locationMap.Remove(location.Name);
+            locationMap[location.Name] = JsonConvert.DeserializeObject<Dictionary<Vector2, ModData>>(location.modData[ModEntry.IHelper.ModRegistry.ModID])!;
+            foreach (var key in locationMap[location.Name].Keys)
+                AddOverlayTiles(location, key, locationMap[location.Name][key].Offset);
+        }
+
+        internal static Vector2 SetDirectionOffset(GameLocation location, Vector2 tileLocation)
+        {
+            Vector2 zero = Vector2.Zero;
+            if (checkLocation(location, tileLocation.X - 1f, tileLocation.Y))
+                zero += new Vector2(32f, 0f);
+            if (checkLocation(location, tileLocation.X + 1f, tileLocation.Y))
+                zero += new Vector2(-32f, 0f);
+            if (zero.X != 0.0f && checkLocation(location, tileLocation.X + Math.Sign(zero.X), tileLocation.Y + 1f))
+                zero += new Vector2(0.0f, -42f);
+            if (checkLocation(location, tileLocation.X, tileLocation.Y - 1f))
+                zero += new Vector2(0.0f, 32f);
+            if (checkLocation(location, tileLocation.X, tileLocation.Y + 1f))
+                zero += new Vector2(0.0f, -42f);
+            return zero;
+        }
+
+        internal static void Draw(Object fishNet, SpriteBatch b, int x, int y, float alpha)
+        {
+            int tileIndex = 0;
+            Vector2 directionOffset = Vector2.Zero;
+            Vector2 tile = fishNet.TileLocation;
+            if (fishNet.Location is not null)
+            {
+                string locationName = fishNet.Location.Name;
+                if (!locationMap.ContainsKey(locationName) || !locationMap[locationName].ContainsKey(tile))
+                    UpdateMap(fishNet.Location);
+                directionOffset = locationMap[locationName][tile].Offset;
+                if (TryGetTileIndexData(fishNet, out var tileIndexData))
+                    tileIndex = tileIndexData.tileIndex == 7 ? 5 : tileIndexData.tileIndex; //Forced intermediate frame, might remove, needs testing \\Looks alright, I'm keeping it until I get complaints
+            }
+            if (fishNet.heldObject.Value is not null)
+                tileIndex = 4;
+            float yBob = (float)Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 500.0f + (x * 64f)) * 8.0f + 8.0f;
+            if (fishNet.Location is null)
+                yBob = 0;
+
+            if (ModEntry.HasAlternativeTextures)
+            {
+                Rectangle sourceRect = Rectangle.Empty;
+                Texture2D? texture = ModEntry.IAlternativeTexturesApi?.GetTextureForObject(fishNet, out sourceRect);
+                if (texture is not null && sourceRect != Rectangle.Empty)
+                    b.Draw(texture, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f, y * 64f + yBob)), sourceRect, Color.White * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((y * 64f) + directionOffset.Y + (x % 4)) / 10000.0f);
+                else
+                    b.Draw(fishNetTexture, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f, y * 64f + yBob)), GetSourceRectAtTileIndex(tileIndex), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((y * 64f) + directionOffset.Y + (x % 4)) / 10000.0f);
+            }
+            else
+                b.Draw(fishNetTexture, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f, y * 64f + yBob)), GetSourceRectAtTileIndex(tileIndex), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((y * 64f) + directionOffset.Y + (x % 4)) / 10000.0f);
+            if (fishNet.Location?.waterTiles != null && x < fishNet.Location.waterTiles.waterTiles.GetLength(0) && y < fishNet.Location.waterTiles.waterTiles.GetLength(1) && fishNet.Location.waterTiles.waterTiles[x, y].isWater && tileIndex <= 4)
+            {
+                if (fishNet.Location.waterTiles.waterTiles[x, y].isVisible)
+                    b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2((x * 64 + 4), y * 64 + 48)), new(fishNet.Location.waterAnimationIndex * 64, 2112 + ((x + y) % 2 == 0 ? (fishNet.Location.waterTileFlip ? 128 : 0) : (fishNet.Location.waterTileFlip ? 0 : 128)), 56, 16 + (int)yBob), fishNet.Location.waterColor.Value, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, ((y * 64) + directionOffset.Y + (x % 4)) / 9999);
+                else
+                {
+                    Color color = Utility.MultiplyColor(new Color(135, 135, 135, 215), fishNet.Location.waterColor.Value);
+                    b.Draw(Game1.staminaRect, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64 + 4, y * 64 + 48)), new(), color, 0.0f, Vector2.Zero, new Vector2(56f, 16 + yBob), SpriteEffects.None, ((y * 64) + directionOffset.Y + x % 4) / 9999);
+                }
+            }
+            if (!fishNet.readyForHarvest.Value || fishNet.heldObject.Value is null)
+                return;
+            float num = 4.0f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2);
+            b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f - 8, y * 64f - 112 + num)), new Rectangle(141, 465, 20, 24), Color.White * .75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999997475243E-07 + (fishNet.TileLocation.X) / 10000.0f));
+            //b.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f + 32, y * 64f - 72 + num)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, fishNet.heldObject.Value.ParentSheetIndex, 16, 16), Color.White * .75f, 0.0f, new Vector2(8f, 8f), 4f, SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + fishNet.TileLocation.X / 10000.0f)); <- Doesn't like modded objects in 1.6
+            drawHeldObject(b, fishNet, x, y, num, directionOffset);
+
+            if (fishNet.heldObject.Value.Stack > 1)
+                NumberSprite.draw(fishNet.heldObject.Value.Stack, b, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f + 32 + 20, y * 64f - 72 + num + 20)), Color.White, .5f, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + fishNet.TileLocation.X / 10000.0f) + 0.001f, 1f, 0);
+            if (fishNet.heldObject.Value.Quality > 0)
+            {
+                float num2 = fishNet.heldObject.Value.Quality < 4 ? 0.0f : (float)((Math.Cos(Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f + 32 - 20, y * 64f - 72 + num + 20)), getSourceRectForQuality(fishNet.heldObject.Value.Quality), Color.White, 0.0f, new(4f), (float)(2.0 * 1.0 * (1.0 + num2)), SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + fishNet.TileLocation.X / 10000.0f) + 0.001f);
+            }
+        }
+
+        internal static void DoDayUpdate(Object fishNet)
+        {
+            try
+            {
+                GameLocation location = fishNet.Location;
+                Vector2 tile = fishNet.TileLocation;
+                Farmer owner = Game1.getFarmerMaybeOffline(fishNet.owner.Value);
+                if (!locationMap.ContainsKey(location.Name) || !locationMap[location.Name].ContainsKey(tile))
+                    UpdateMap(fishNet.Location);
+                if (!locationMap[location.Name].ContainsKey(tile)) //Backup fail-safe, don't understand why it's needed, but I've seen enough red for today
+                    OnPlace(location, tile);
+                ModData modData = locationMap[location.Name][tile];
+                Object? bait = ItemRegistry.Create<Object>(modData.BaitId, quality: modData.BaitQuality, allowNull: true);
+
+                if (fishNet.owner.Value <= 0)
+                    fishNet.owner.Value = Game1.player.UniqueMultiplayerID;
+                bool flag1 = owner != null && owner.professions.Contains(11);
+                bool flag2 = owner != null && owner.professions.Contains(10);
+                if (owner is null && Game1.player.professions.Contains(11))
+                    flag2 = true;
+                owner ??= Game1.player;
+                if ((bait is null && !flag1) || fishNet.heldObject.Value is not null)
+                    return;
+                fishNet.readyForHarvest.Value = true;
+                Random r = new();
+                Dictionary<string, string> fishData = ModEntry.IHelper.GameContent.Load<Dictionary<string, string>>("Data\\Fish");
+                List<string> ids = [];
+                if (!location.TryGetFishAreaForTile(tile, out _, out var data))
+                    data = null;
+                double chance = (flag2 || ModEntry.IConfig.LessTrash) ? 0 : (data?.CrabPotJunkChance ?? .2);
+                if (!r.NextBool(chance))
+                {
+                    foreach (var item in fishData)
+                    {
+                        if (item.Value.Contains("trap"))
+                            continue;
+                        if (CanCatchThisFish(item.Key, location, owner, isMagicBait: modData.BaitId == "908"))
+                            ids.Add(item.Key);
+                        if (r.NextDouble() > .15 || !TryGetRandomFishForLocation(modData.BaitId, owner, location.Name, out var o) || (o.Category == Object.junkCategory && ModEntry.IConfig.LessTrash))
+                            continue;
+                        AddBaitEffects(o, bait!, flag1, r);
+                        fishNet.heldObject.Value = o;
+                        break;
+                    }
+                }
+                if (fishNet.heldObject.Value is not null && !ShouldReRoll(fishNet.heldObject.Value))
+                    return;
+                if ((flag2 || ShouldReRoll(fishNet.heldObject.Value)) && ids.Count > 0)
+                {
+                    Object o = new(ids[r.Next(ids.Count)], 1);
+                    AddBaitEffects(o, bait!, flag1, r);
+                    o.Stack = getStackSizeFromBait(modData.BaitId);
+                    fishNet.heldObject.Value = o;
+                }
+                else
+                    fishNet.heldObject.Value = new(r.Next(168, 173).ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                ModEntry.IMonitor.Log($"Failed trying to perform Object.DayUpdate patch", LogLevel.Error);
+                ModEntry.IMonitor.Log($"{ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+
+        internal static void AddOverlayTiles(GameLocation location, Vector2 tile, Vector2 directionOffset)
+        {
+            if (location != Game1.currentLocation)
+                return;
+            foreach (Vector2 overlayTile in getOverlayTiles(location, tile, directionOffset))
+            {
+                if (!Game1.crabPotOverlayTiles.ContainsKey(overlayTile))
+                    Game1.crabPotOverlayTiles[overlayTile] = 0;
+                Game1.crabPotOverlayTiles[overlayTile]++;
+            }
+        }
+
+        internal static void RemoveOverlayTiles(GameLocation location, Vector2 tile, Vector2 directionOffset)
+        {
+            if (location != Game1.currentLocation)
+                return;
+            foreach (Vector2 overlayTile in getOverlayTiles(location, tile, directionOffset))
+            {
+                if (Game1.crabPotOverlayTiles.ContainsKey(overlayTile))
+                {
+                    Game1.crabPotOverlayTiles[overlayTile]--;
+                    if (Game1.crabPotOverlayTiles[overlayTile] <= 0)
+                        Game1.crabPotOverlayTiles.Remove(overlayTile);
+                }
+            }
+        }
+
+        public static ModData? GetModDataAt(GameLocation location, Vector2 tile)
+        {
+            if (!locationMap.ContainsKey(location.Name))
+                locationMap[location.Name] = [];
+            if (!locationMap[location.Name].TryGetValue(tile, out ModData? value))
+            {
+                locationMap[location.Name][tile] = new(SetDirectionOffset(location, tile));
+                setModData(location);
+                return null;
+            }
+            return value;
+        }
+
+        public static void SetModDataAt(GameLocation location, Vector2 tile, ModData data)
+        {
+            if (!locationMap.ContainsKey(location.Name))
+                locationMap[location.Name] = [];
+            locationMap[location.Name][tile] = data;
+            setModData(location);
+        }
+
+        public static bool TryGetTileIndexData(Object fishNet, out (bool complete, int tileIndex, int timer) data)
+        {
+            data = (false, 0, 60);
+            if (!fishNet.modData.TryGetValue(ModEntry.ModDataTileIndexKey, out string tileIndexData))
+                return false;
+            string[] opts = tileIndexData.Split(',');
+            data = (opts[0] == "1", int.Parse(opts[1]), int.Parse(opts[2]));
+            return true;
+        }
+
+        public static void SetTileIndexData(Object fishNet, bool complete, int tileIndex, int timer)
+        {
+            fishNet.modData[ModEntry.ModDataTileIndexKey] = $"{(complete ? 1 : 0)},{tileIndex},{timer}";
+        }
+
+        public static void ClearTileIndexData(Object fishNet) => fishNet.modData.Remove(ModEntry.ModDataTileIndexKey);
+
+        internal static int GetSpriteIndexFromConfig() => 0 + (8 * ModEntry.IConfig.TextureVariant);
 
         internal static Object? GetObjectFromSerializable(FishNetSerializable serializable)
         {
@@ -125,19 +359,87 @@ namespace Fishnets
             }
             else if (serializable.IsDGAObject)
             {
-                object spawned = ModEntry.IDynamicGameAssetsApi.SpawnDGAItem(serializable.ObjectName);
-                if (spawned is Object dgaObject)
-                {
-                    o = dgaObject;
-                    o.Stack = serializable.ObjectStack;
-                    o.Quality = serializable.ObjectQuality;
-                }
-                return o;
+                ModEntry.IMonitor.Log($"DGA object found! As of Stardew 1.6 DGA is seen as deprecated, as of Fishnets 2.0.0+ all DGA support has been dropped", LogLevel.Warn);
+                return null;
             }
             o = (Object?)ItemRegistry.Create(id, serializable.ObjectStack, serializable.ObjectQuality, true);
             return o;
         }
 
         private static string UnQualifyItemId(string id) => ItemRegistry.IsQualifiedItemId(id) ? id.Split(')')[1] : id;
+
+        private static int getStackSizeFromBait(string baitId)
+        {
+            return baitId switch
+            {
+                "774" => Game1.random.NextDouble() <= .15 ? 2 : 1,
+                "ChallengeBait" => Game1.random.NextDouble() <= .05 ? 3 : (Game1.random.NextDouble() <= .15 ? 2 : 1),
+                _ => 1
+            };
+        }
+
+        private static void AddBaitEffects(Object heldObject, Object bait, bool flag1, Random r)
+        {
+            if (bait?.ItemId == "DeluxeBait")
+                heldObject.Quality = r.NextDouble() <= .15 ? Object.medQuality : Object.lowQuality;
+            if (ModEntry.HasQualityBait)
+                heldObject.Quality = ModEntry.IQualityBaitApi.GetQuality(heldObject.Quality, bait?.Quality ?? (flag1 ? Qualities[Game1.random.Next(4)] : Object.lowQuality));
+        }
+
+        private static bool checkLocation(GameLocation location, float x, float y) => location.doesTileHaveProperty((int)x, (int)y, "Water", "Back") == null || location.doesTileHaveProperty((int)x, (int)y, "Passable", "Buildings") != null;
+
+        private static List<Vector2> getOverlayTiles(GameLocation location, Vector2 tileLocation, Vector2 directionOffset)
+        {
+            List<Vector2> tiles = [];
+            if (directionOffset.Y < 0f)
+                addOverlayTilesIfNecessary(location, (int)tileLocation.X, (int)tileLocation.Y, tiles);
+            addOverlayTilesIfNecessary(location, (int)tileLocation.X, (int)tileLocation.Y + 1, tiles);
+            if (directionOffset.X < 0f)
+                addOverlayTilesIfNecessary(location, (int)tileLocation.X - 1, (int)tileLocation.Y + 1, tiles);
+            if (directionOffset.X > 0f)
+                addOverlayTilesIfNecessary(location, (int)tileLocation.X + 1, (int)tileLocation.Y + 1, tiles);
+            return tiles;
+        }
+
+        private static void addOverlayTilesIfNecessary(GameLocation location, int x, int y, List<Vector2> tiles)
+        {
+            if (location != Game1.currentLocation || location.getTileIndexAt(x, y, "Buildings") < 0 || location.doesTileHaveProperty(x, y + 1, "Back", "Water") != null)
+                return;
+            tiles.Add(new(x, y));
+        }
+
+        private static Rectangle getSourceRectForQuality(int quality)
+        {
+            return quality switch
+            {
+                Object.medQuality => new(338, 400, 8, 8),
+                Object.highQuality => new(346, 400, 8, 8),
+                Object.bestQuality => new(346, 392, 8, 8),
+                _ => new(338, 392, 8, 8)
+            };
+        }
+
+        private static void setModData(GameLocation location) => location.modData[ModEntry.IHelper.ModRegistry.ModID] = JsonConvert.SerializeObject(locationMap[location.Name]);
+
+        internal static Rectangle GetSourceRectAtTileIndex(int tileIndex) => new(fishNetSourceRect.X + (fishNetSourceRect.Width * (tileIndex + 1)), fishNetSourceRect.Y + (fishNetSourceRect.Height * ModEntry.IConfig.TextureVariant), fishNetSourceRect.Width, fishNetSourceRect.Height);
+
+        private static void drawHeldObject(SpriteBatch b, Object fishNet, int x, int y, float yOffset, Vector2 directionOffset)
+        {
+            ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(fishNet.heldObject.Value.QualifiedItemId);
+            b.Draw(dataOrErrorItem.GetTexture(), Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f + 32f, y * 64f - 72f + yOffset)), dataOrErrorItem.GetSourceRect(0, dataOrErrorItem.SpriteIndex), Color.White * .75f, 0f, new(8f), 4f, SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + fishNet.TileLocation.X / 10000.0f));
+        }
+
+        private static bool ShouldReRoll(Object? current)
+        {
+            if (current is null)
+                return true;
+            if (ModEntry.IConfig.LessTrash && current.Category == Object.junkCategory)
+                return true;
+            if (ModEntry.IConfig.LessWeeds && WeedsIds.Contains(current.QualifiedItemId))
+                return true;
+            if (ModEntry.IConfig.LessJelly && JellyIds.Contains(current.QualifiedItemId))
+                return true;
+            return false;
+        }
     }
 }

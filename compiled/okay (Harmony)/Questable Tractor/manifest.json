@@ -2,7 +2,7 @@
     "$schema": "https://smapi.io/schemas/manifest.json",
     "Name": "Questable Tractor Mod",
     "Author": "NermNermNerm",
-    "Version": "1.1.1",
+    "Version": "1.1.5",
     "MinimumApiVersion": "3.14.0",
     "UniqueID": "NermNermNerm.QuestableTractor",
     "Description": "Lets you get the tractor early, but only after some quests are done",

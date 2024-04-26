@@ -1,0 +1,11 @@
+{
+	"Name": "The Fish Dimension",
+	"Author": "ichortower",
+	"Description": "All random daily bulletin board quests are about fish.",
+	"Version": "1.0.0",
+	"UniqueID": "ichortower.TheFishDimension",
+	"EntryDll": "TheFishDimension.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": ["Nexus:22335", "GitHub:ichortower/TheFishDimension"],
+	"Dependencies": []
+}

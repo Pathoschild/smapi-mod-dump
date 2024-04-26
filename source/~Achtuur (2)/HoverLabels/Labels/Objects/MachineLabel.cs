@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
+using HoverLabels.Drawing;
 
 namespace HoverLabels.Labels.Objects;
 internal class MachineLabel : ObjectLabel
@@ -54,19 +55,22 @@ internal class MachineLabel : ObjectLabel
         if (hoverObject.readyForHarvest.Value)
         {
             //display either "yx" (where y is number of items > 2) or ""
-            if (processingItem.Stack == 1)
-                Description.Add(I18n.LabelMachineSingleItemReady(processingItem.DisplayName));
-            else
-                Description.Add(I18n.LabelMachineMultipleItemsReady(processingItem.DisplayName, processingItem.Stack));
+            ItemLabelText itemlabel = new ItemLabelText(processingItem, "Ready");
+            AddBorder(itemlabel);
+            //if (processingItem.Stack == 1)
+            //    Description.Add(I18n.LabelMachineSingleItemReady(processingItem.DisplayName));
+            //else
+            //    Description.Add(I18n.LabelMachineMultipleItemsReady(processingItem.DisplayName, processingItem.Stack));
 
-            string quality_string = GetQualityString(processingItem.Quality);
-            Description.Add(I18n.LabelMachineQuality(quality_string));
+            //string quality_string = GetQualityString(processingItem.Quality);
+            //Description.Add(I18n.LabelMachineQuality(quality_string));
         }
         else
         {
             string duration = GetTimeString(hoverObject.MinutesUntilReady);
-            Description.Add(I18n.LabelMachineCrafting(processingItem.DisplayName));
-            Description.Add(I18n.LabelMachineReadyIn(duration));
+            ItemLabelText itemlabel = new ItemLabelText(processingItem, I18n.LabelMachineReadyIn(duration));
+            //Description.Add(I18n.LabelMachineCrafting(processingItem.DisplayName));
+            //Description.Add(I18n.LabelMachineReadyIn(duration));
         }
     }
 

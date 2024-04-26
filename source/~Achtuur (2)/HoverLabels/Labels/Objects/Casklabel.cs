@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -38,6 +39,12 @@ internal class Casklabel : ObjectLabel
     {
         base.GenerateLabel();
 
+        SObject helditem = hoverCask.heldObject.Value;
+        if (helditem is null)
+            return;
+        ItemLabelText itemlabel = new ItemLabelText(helditem, helditem.DisplayName);
+        AddBorder(itemlabel);
+
         if (hoverCask.readyForHarvest.Value)
             GenerateReadyLabel();
         else if (hoverCask.heldObject.Value is not null)
@@ -47,7 +54,9 @@ internal class Casklabel : ObjectLabel
     private void GenerateReadyLabel()
     {
         SObject heldItem = hoverCask.heldObject.Value;
-        this.Description.Add(I18n.LabelMachineSingleItemReady(heldItem.DisplayName));
+        ItemLabelText itemlabel = new(heldItem.QualifiedItemId, I18n.Ready());
+        AddBorder(itemlabel);
+        //this.Description.Add(I18n.LabelMachineSingleItemReady(heldItem.DisplayName));
     }
 
     private void GenerateProcessingLabel()
@@ -61,7 +70,7 @@ internal class Casklabel : ObjectLabel
         // Add time to next quality to description
         string nextQualityReadyDate = ModEntry.GetDateAfterDays(days_to_next_quality);
         string nextQualityString = MachineLabel.GetQualityString(nextQuality);
-        this.Description.Add(I18n.LabelCaskProcessing(days_to_next_quality, nextQualityString, nextQualityReadyDate));
+        AddBorder(I18n.LabelCaskProcessing(days_to_next_quality, nextQualityString, nextQualityReadyDate));
 
         // Add time until iridium quality to description
         if (nextQuality != 4)
@@ -69,7 +78,7 @@ internal class Casklabel : ObjectLabel
             int days_to_iridium = (int)Math.Ceiling(hoverCask.daysToMature.Value / aging_rate);
             string iridiumReadyDate = ModEntry.GetDateAfterDays(days_to_iridium);
             string iridiumQualityString = I18n.IridiumQuality();
-            this.Description.Add(I18n.LabelCaskProcessing(days_to_iridium, iridiumQualityString, iridiumReadyDate));
+            AppendLabelToBorder(I18n.LabelCaskProcessing(days_to_iridium, iridiumQualityString, iridiumReadyDate));
         }
     }
 }

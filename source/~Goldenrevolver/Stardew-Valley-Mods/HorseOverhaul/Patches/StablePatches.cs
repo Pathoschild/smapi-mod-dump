@@ -155,14 +155,24 @@ namespace HorseOverhaul.Patches
             {
                 if (building is Stable stable && !stable.IsTractorGarage())
                 {
-                    bool doesXHit = stable.tileX.Value + 1 == tileX || stable.tileX.Value + 2 == tileX;
-
-                    if (doesXHit && stable.tileY.Value == tileY)
+                    if (IsAllowedWateringSquare(stable, tileX, tileY))
                     {
                         mod.Horses.Where(h => h?.Stable?.HorseId == stable.HorseId).Do(h => h.JustGotWater());
                     }
                 }
             }
+        }
+
+        private static bool IsAllowedWateringSquare(Stable stable, int tileX, int tileY)
+        {
+            // bucket position for 'Cute Valley - Pink', and generally not a bad place to check
+            if (stable.tileY.Value == tileY - 1 && tileX == stable.tileX.Value + 3)
+            {
+                return true;
+            }
+
+            // the entire back row of tiles
+            return stable.tileY.Value == tileY && (stable.tileX.Value <= tileX && tileX <= stable.tileX.Value + 3);
         }
 
         public static void SaveItemsFromDemolition(Stable __instance)

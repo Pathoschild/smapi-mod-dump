@@ -39,7 +39,7 @@ namespace ItemBags
         internal static LogLevel InfoLogLevel = LogLevel.Trace;
 #endif
 
-        public static Version CurrentVersion = new Version(2, 0, 3); // Last updated 12/4/2021 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(3, 0, 5); // Last updated 4/1/2024 (Don't forget to update manifest.json)
         public const string ModUniqueId = "SlayerDharok.Item_Bags";
         public const string JAUniqueId = "spacechase0.JsonAssets";
         public const string SpaceCoreUniqueId = "spacechase0.SpaceCore";
@@ -62,10 +62,10 @@ namespace ItemBags
                 return Result;
         }
 
-        public const string BagConfigDataKey = "bagconfig"; //  Note that SMAPI saves the global data to AppData\Roaming\StardewValley\.smapi\mod-data\SlayerDharok.Item_Bags
+        public const string BagConfigDataKey = "bagconfig";
         public static BagConfig BagConfig { get; private set; }
-        private const string UserConfigFilename = "config.json";
-        public static UserConfig UserConfig { get; private set; }
+        internal const string UserConfigFilename = "config.json";
+        public static UserConfig UserConfig { get; internal set; }
         private const string ModdedItemsFilename = "modded_items.json";
         public static ModdedItems ModdedItems { get; private set; }
 
@@ -89,6 +89,8 @@ namespace ItemBags
             LoadModdedItems();
             LoadModdedBags();
             BagConfig.AfterLoaded();
+
+            GMCM.Entry(helper);
 
             helper.Events.Display.MenuChanged += Display_MenuChanged;
             helper.Events.Display.WindowResized += Display_WindowResized;
@@ -214,7 +216,7 @@ namespace ItemBags
 
         private static void LoadGlobalConfig()
         {
-            BagConfig GlobalBagConfig = ModInstance.Helper.Data.ReadGlobalData<BagConfig>(BagConfigDataKey);
+            BagConfig GlobalBagConfig = ModInstance.Helper.Data.ReadJsonFile<BagConfig>($"{BagConfigDataKey}.json");
 #if DEBUG
             //GlobalBagConfig = null; // force full re-creation of types for testing
 #endif
@@ -222,6 +224,7 @@ namespace ItemBags
             {
                 bool RewriteConfig = false;
 
+#if LEGACY_CODE
                 //  Update the config with new Bag Types that were added in later versions
                 if (GlobalBagConfig.CreatedByVersion == null)
                 {
@@ -270,6 +273,14 @@ namespace ItemBags
                     ModInstance.Helper.Data.WriteGlobalData(BagConfigDataKey + "-backup_before_v1.5.2_update", GlobalBagConfig);
                     GlobalBagConfig = new BagConfig() { CreatedByVersion = CurrentVersion };
                 }
+#endif
+
+                if (GlobalBagConfig.CreatedByVersion == null || GlobalBagConfig.CreatedByVersion < new Version(3, 0, 5))
+                {
+                    //  Added new items from Stardew Valley 1.6 to existing bag types
+                    RewriteConfig = true;
+                    GlobalBagConfig = new BagConfig() { CreatedByVersion = CurrentVersion };
+                }
 
                 //  Suppose you just added a new BagType "Scarecrow Bag" to version 1.0.12
                 //  Then keep the BagConfig up-to-date by doing:
@@ -285,13 +296,13 @@ namespace ItemBags
                 if (RewriteConfig)
                 {
                     GlobalBagConfig.CreatedByVersion = CurrentVersion;
-                    ModInstance.Helper.Data.WriteGlobalData(BagConfigDataKey, GlobalBagConfig);
+                    ModInstance.Helper.Data.WriteJsonFile($"{BagConfigDataKey}.json", GlobalBagConfig);
                 }
             }
             else
             {
                 GlobalBagConfig = new BagConfig() { CreatedByVersion = CurrentVersion };
-                ModInstance.Helper.Data.WriteGlobalData(BagConfigDataKey, GlobalBagConfig);
+                ModInstance.Helper.Data.WriteJsonFile($"{BagConfigDataKey}.json", GlobalBagConfig);
             }
             BagConfig = GlobalBagConfig;
         }

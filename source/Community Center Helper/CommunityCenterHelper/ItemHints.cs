@@ -39,7 +39,119 @@ namespace CommunityCenterHelper
                 
                 switch (id)
                 {
-                    /********** Crafts Room **********/
+                    /********** [Base Game Bundles] Pantry **********/
+                    
+                    // Spring Crops Bundle
+                    
+                    case ItemID.IT_Parsnip:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.IT_GreenBean:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.IT_Cauliflower:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.IT_Potato:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    // Summer Crops Bundle
+                    
+                    case ItemID.IT_Tomato:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.IT_HotPepper:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.IT_Blueberry:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.IT_Melon:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    // Fall Crops Bundle
+                    
+                    case ItemID.IT_Corn:
+                        return strSeasonalCrop(seasonList: new string[] { "summer", "fall" }, quality: quality);
+                    
+                    case ItemID.IT_Eggplant:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.IT_Pumpkin:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.IT_Yam:
+                        return strSeasonalCrop("fall", quality)
+                             + (quality == 0? "\n" + strDroppedByMonster("Duggy") : ""); // Base quality only
+                    
+                    // Animal Bundle
+                    
+                    case ItemID.IT_LargeMilk:
+                        return strAnimalProduct("animalCow", true);
+                    
+                    case ItemID.IT_LargeEggBrown:
+                        return strAnimalProduct("animalChicken", true);
+                    
+                    case ItemID.IT_LargeEgg:
+                        return strAnimalProduct("animalChicken", true);
+                    
+                    case ItemID.IT_LargeGoatMilk:
+                        return strAnimalProduct("animalGoat", true);
+                    
+                    case ItemID.IT_Wool:
+                        return strAnimalProduct("animalSheep") + "\n"
+                             + strAnimalProduct("animalRabbit");
+                    
+                    case ItemID.IT_DuckEgg:
+                        return strAnimalProduct("animalDuck");
+                    
+                    // Artisan Bundle
+                    
+                    case ItemID.IT_TruffleOil:
+                        return strPutItemInMachine(ItemID.IT_Truffle, ItemID.BC_OilMaker);
+                    
+                    case ItemID.IT_Cloth:
+                        return strPutItemInMachine(ItemID.IT_Wool, ItemID.BC_Loom) + "\n"
+                             + strPutItemInMachine(ItemID.IT_SoggyNewspaper, ItemID.BC_RecyclingMachine);
+                    
+                    case ItemID.IT_GoatCheese:
+                        return strMachineOrCaskForQuality(ItemID.IT_GoatMilk, ItemID.BC_CheesePress, ItemID.IT_GoatCheese, quality);
+                    
+                    case ItemID.IT_Cheese:
+                        return strMachineOrCaskForQuality(ItemID.IT_Milk, ItemID.BC_CheesePress, ItemID.IT_Cheese, quality);
+                    
+                    case ItemID.IT_Honey:
+                        return strNoItemMachine(ItemID.BC_BeeHouse) + "\n"
+                             + strBuyFromOasisWeekday("friday");
+                    
+                    case ItemID.IT_Jelly:
+                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), ItemID.BC_PreservesJar);
+                    
+                    case ItemID.IT_Apple:
+                        return strFruitTreeDuringSeason("treeApple", "fall")
+                             + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Apricot:
+                        return strFruitTreeDuringSeason("treeApricot", "spring")
+                             + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Orange:
+                        return strFruitTreeDuringSeason("treeOrange", "summer")
+                             + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Peach:
+                        return strFruitTreeDuringSeason("treePeach", "summer")
+                             + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Pomegranate:
+                        return strFruitTreeDuringSeason("treePomegranate", "fall")
+                             + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Cherry:
+                        return strFruitTreeDuringSeason("treeCherry", "spring")
+                             + possibleSourceFruitBatCave();
+                    
+                    /********** [Base Game Bundles] Crafts Room **********/
                     
                     // Spring Foraging Bundle
                     
@@ -59,13 +171,13 @@ namespace CommunityCenterHelper
                     
                     // Summer Foraging Bundle
                     
-                    case ItemID.IT_Grape:
-                        return strSeasonalForage("summer") + "\n"
-                             + strSeasonalCrop("fall", quality);
-                    
                     case ItemID.IT_SpiceBerry:
                         return strSeasonalForage("summer")
                              + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Grape:
+                        return strSeasonalForage("summer") + "\n"
+                             + strSeasonalCrop("fall", quality);
                     
                     case ItemID.IT_SweetPea:
                         return strSeasonalForage("summer");
@@ -157,119 +269,7 @@ namespace CommunityCenterHelper
                              + possibleSourceMushroomCave()
                              + possibleSourceSpecialFarmSeasonal("forest", "spring");
                     
-                    /********** Pantry **********/
-                    
-                    // Spring Crops Bundle
-                    
-                    case ItemID.IT_Parsnip:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    case ItemID.IT_GreenBean:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    case ItemID.IT_Cauliflower:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    case ItemID.IT_Potato:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    // Summer Crops Bundle
-                    
-                    case ItemID.IT_Tomato:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case ItemID.IT_Blueberry:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case ItemID.IT_HotPepper:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case ItemID.IT_Melon:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    // Fall Crops Bundle
-                    
-                    case ItemID.IT_Corn:
-                        return strSeasonalCrop(seasonList: new string[] { "summer", "fall" }, quality: quality);
-                    
-                    case ItemID.IT_Eggplant:
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case ItemID.IT_Pumpkin: // Also in Quality Crops Bundle
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case ItemID.IT_Yam:
-                        return strSeasonalCrop("fall", quality)
-                             + (quality == 0? "\n" + strDroppedByMonster("Duggy") : ""); // Base quality only
-                    
-                    // Animal Bundle
-                    
-                    case ItemID.IT_LargeMilk:
-                        return strAnimalProduct("animalCow", true);
-                    
-                    case ItemID.IT_LargeEggBrown:
-                        return strAnimalProduct("animalChicken", true);
-                    
-                    case ItemID.IT_LargeEgg:
-                        return strAnimalProduct("animalChicken", true);
-                    
-                    case ItemID.IT_LargeGoatMilk:
-                        return strAnimalProduct("animalGoat", true);
-                    
-                    case ItemID.IT_Wool:
-                        return strAnimalProduct("animalSheep") + "\n"
-                             + strAnimalProduct("animalRabbit");
-                    
-                    case ItemID.IT_DuckEgg:
-                        return strAnimalProduct("animalDuck");
-                    
-                    // Artisan Bundle
-                    
-                    case ItemID.IT_TruffleOil:
-                        return strPutItemInMachine(ItemID.IT_Truffle, ItemID.BC_OilMaker);
-                    
-                    case ItemID.IT_Cloth:
-                        return strPutItemInMachine(ItemID.IT_Wool, ItemID.BC_Loom) + "\n"
-                             + strPutItemInMachine(ItemID.IT_SoggyNewspaper, ItemID.BC_RecyclingMachine);
-                    
-                    case ItemID.IT_GoatCheese:
-                        return strMachineOrCaskForQuality(ItemID.IT_GoatMilk, ItemID.BC_CheesePress, ItemID.IT_GoatCheese, quality);
-                    
-                    case ItemID.IT_Cheese:
-                        return strMachineOrCaskForQuality(ItemID.IT_Milk, ItemID.BC_CheesePress, ItemID.IT_Cheese, quality);
-                    
-                    case ItemID.IT_Honey:
-                        return strNoItemMachine(ItemID.BC_BeeHouse) + "\n"
-                             + strBuyFromOasisWeekday("friday");
-                    
-                    case ItemID.IT_Jelly:
-                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), ItemID.BC_PreservesJar);
-                    
-                    case ItemID.IT_Apple:
-                        return strFruitTreeDuringSeason("treeApple", "fall")
-                             + possibleSourceFruitBatCave();
-                    
-                    case ItemID.IT_Apricot:
-                        return strFruitTreeDuringSeason("treeApricot", "spring")
-                             + possibleSourceFruitBatCave();
-                    
-                    case ItemID.IT_Orange:
-                        return strFruitTreeDuringSeason("treeOrange", "summer")
-                             + possibleSourceFruitBatCave();
-                    
-                    case ItemID.IT_Peach:
-                        return strFruitTreeDuringSeason("treePeach", "summer")
-                             + possibleSourceFruitBatCave();
-                    
-                    case ItemID.IT_Pomegranate:
-                        return strFruitTreeDuringSeason("treePomegranate", "fall")
-                             + possibleSourceFruitBatCave();
-                    
-                    case ItemID.IT_Cherry:
-                        return strFruitTreeDuringSeason("treeCherry", "spring")
-                             + possibleSourceFruitBatCave();
-                    
-                    /********** Fish Tank **********/
+                    /********** [Base Game Bundles] Fish Tank **********/
                     
                     // River Fish Bundle
                     
@@ -395,7 +395,7 @@ namespace CommunityCenterHelper
                         return strFishBase(waterList: new string[] { "waterWoods",
                                                                      haveSpecialFarmType("forest")? "waterSpecialFarm" : "" });
                     
-                    /********** Boiler Room **********/
+                    /********** [Base Game Bundles] Boiler Room **********/
                     
                     // Blacksmith's Bundle
                     
@@ -454,7 +454,7 @@ namespace CommunityCenterHelper
                              + (isSkullCavernKnown()? "\n" + strDroppedByMonster("Serpent") : "") + "\n"
                              + strFishPond(ItemID.IT_VoidSalmon, 9);
                     
-                    /********** Bulletin Board **********/
+                    /********** [Base Game Bundles] Bulletin Board **********/
                     
                     // Chef's Bundle
                     
@@ -531,7 +531,7 @@ namespace CommunityCenterHelper
                         return strAnimalProduct("animalRabbit", true) + "\n"
                              + strDroppedByMonster("Serpent");
                     
-                    /********** The Missing Bundle **********/
+                    /********** [Base Game Bundles] The Missing Bundle **********/
                     
                     case ItemID.IT_DinosaurMayonnaise:
                         return strPutItemInMachine(ItemID.IT_DinosaurEgg, ItemID.BC_MayonnaiseMachine);
@@ -553,55 +553,230 @@ namespace CommunityCenterHelper
                         return strPutItemInMachine(ItemID.IT_Roe, itemLiteral: getFishRoeName(ItemID.IT_Sturgeon),
                                                    machineID: ItemID.BC_PreservesJar);
                     
-                    /********** Crafts Room (Remix) **********/
+                    /********** [Base Game Remixed Bundles] Pantry **********/
                     
-                    // Forest Bundle
-                    case ItemID.IT_Moss:
-                        return str.Get("treeMoss");
+                    // [Remixed] Spring Crops Bundle
                     
-                    /********** Pantry (Remix) **********/
+                    case ItemID.IT_Kale:
+                        return strSeasonalCrop("spring", quality);
                     
-                    // Spring Crops Bundle
                     case ItemID.IT_Carrot:
                         return strGrowSeeds(ItemID.IT_CarrotSeeds, parenthesize(strSeasonalForage("spring")), quality);
                     
-                    // Summer Crops Bundle
+                    // [Remixed] Summer Crops Bundle
+                    
                     case ItemID.IT_SummerSquash:
                         return strGrowSeeds(ItemID.IT_SummerSquashSeeds, parenthesize(strSeasonalForage("summer")), quality);
                     
-                    // Fall Crops Bundle
+                    // [Remixed] Fall Crops Bundle
+                    
                     case ItemID.IT_Broccoli:
                         return strGrowSeeds(ItemID.IT_BroccoliSeeds, parenthesize(strSeasonalForage("fall")), quality);
+                        
+                    // [Remixed] Rare Crops Bundle
                     
-                    // Fish Farmer's Bundle
+                    case ItemID.IT_SweetGemBerry:
+                        return strGrowSeeds(ItemID.IT_RareSeed, parenthesize(str.Get("shopTravelingCartSeason",
+                                                                             new { season = multiSeason("spring", "summer") })),
+                                            quality);
+                    
+                    // [Remixed] Fish Farmer's Bundle
                     
                     case ItemID.IT_Roe:
                         return str.Get("fishPondAny");
                     
-                    /********** Boiler Room (Remix) **********/
+                    case ItemID.IT_AgedRoe:
+                        return strPutItemInMachine(ItemID.IT_Roe, ItemID.BC_PreservesJar);
                     
-                    // Adventurer's Bundle
+                    case ItemID.IT_SquidInk:
+                        return strDroppedByMonster("Squid Kid") + "\n"
+                             + strFishPond(ItemID.IT_Squid, 1) + "\n"
+                             + strFishPond(ItemID.IT_MidnightSquid, 1);
+                    
+                    // [Remixed] Garden Bundle
+                    
+                    case ItemID.IT_Tulip:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.IT_BlueJazz:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.IT_SummerSpangle:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.IT_FairyRose:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    // [Remixed] Brewer's Bundle
+                    
+                    case ItemID.IT_Mead:
+                        return strMachineOrCaskForQuality(ItemID.IT_Honey, ItemID.BC_Keg, ItemID.IT_Mead, quality);
+                    
+                    case ItemID.IT_Juice:
+                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), ItemID.BC_Keg);
+                    
+                    case ItemID.IT_PaleAle:
+                        return strMachineOrCaskForQuality(ItemID.IT_Hops, ItemID.BC_Keg, ItemID.IT_PaleAle, quality);
+                    
+                    case ItemID.IT_GreenTea:
+                        return strPutItemInMachine(ItemID.IT_TeaLeaves, ItemID.BC_Keg);
+                    
+                    /********** [Base Game Remixed Bundles] Crafts Room  **********/
+                    
+                    // [Remixed] Spring Foraging Bundle
+                    
+                    case ItemID.IT_SpringOnion:
+                        return strSeasonalLocationalForage("spring", "locationForest");
+                    
+                    // [Remixed] Winter Foraging Bundle
+                    
+                    case ItemID.IT_Holly:
+                        return strSeasonalForage("winter");
+                    
+                    // [Remixed] Sticky Bundle
+                    
+                    case ItemID.IT_Sap:
+                        return strChopTrees() + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterGeneralSlime");
+                    
+                    // [Remixed] Forest Bundle
+                    
+                    case ItemID.IT_Moss:
+                        return str.Get("treeMoss");
+                        
+                    case ItemID.IT_Fiber:
+                        return str.Get("clearWeeds");
+                    
+                    case ItemID.IT_Acorn:
+                        return str.Get("seedFromTree", new { tree = str.Get("treeOak") });
+                    
+                    case ItemID.IT_MapleSeed:
+                        return str.Get("seedFromTree", new { tree = str.Get("treeMaple") });
+                    
+                    // [Remixed] Wild Medicine Bundle
+                    
+                    case ItemID.IT_WhiteAlgae:
+                        return strFishBase(waterList: new string[] { isSewerKnown()? "waterSewer" : "",
+                                                                     isWitchSwampKnown()? "waterSwamp" : "",
+                                                                     "waterMines" });
+                    
+                    case ItemID.IT_Hops:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    /********** [Base Game Remixed Bundles] Fish Tank **********/
+                    
+                    // [Remixed] Master Fisher's Bundle
+                    
+                    case ItemID.IT_LavaEel:
+                        return strFishBase("waterMines100", fishingLevel: 7);
+                    
+                    case ItemID.IT_ScorpionCarp:
+                        return strFishBase(isDesertKnown()? "waterDesert" : "waterUnknown", "6am", "8pm");
+                    
+                    case ItemID.IT_Octopus:
+                        return strFishBase("waterOcean", "6am", "1pm", "summer") + "\n"
+                             + (isIslandKnown()? strFishBase("waterIslandOceanWest", "6am", "1pm") + "\n" : "")
+                             + str.Get("fishSubmarine");
+                    
+                    case ItemID.IT_Blobfish:
+                        return str.Get("fishSubmarine");
+                    
+                    /********** [Base Game Remixed Bundles] Boiler Room **********/
+                    
+                    // [Remixed] Adventurer's Bundle
                     
                     case ItemID.IT_BoneFragment:
                         return strDroppedByMonster("Skeleton") + "\n"
                              + strDroppedByMonster("Lava Lurk");
                     
-                    /********** Bulletin Board (Remix) **********/
+                    // [Remixed] Treasure Hunter's Bundle
                     
-                    // Children's Bundle
+                    case ItemID.IT_Amethyst:
+                        return str.Get("gemAmethyst") + "\n"
+                             + strFishingChest(2) + "\n"
+                             + strPanning();
+                    
+                    case ItemID.IT_Topaz:
+                        return str.Get("gemTopaz") + "\n"
+                             + strFishingChest(2) + "\n"
+                             + strPanning();
+                    
+                    case ItemID.IT_Emerald:
+                        return str.Get("gemEmerald") + "\n"
+                             + strFishingChest(2) + "\n"
+                             + strPanning();
+                    
+                    case ItemID.IT_Diamond:
+                        return str.Get("gemDiamond") + "\n"
+                             + strPanning();
+                    
+                    case ItemID.IT_Ruby:
+                        return str.Get("gemRuby") + "\n"
+                             + strFishingChest(2) + "\n"
+                             + strPanning();
+                    
+                    // [Remixed] Engineer's Bundle
+                    
+                    case ItemID.IT_IridiumOre:
+                        return str.Get("mineIridiumOre") + "\n"
+                             + strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode) + "\n"
+                             + strFishingChest() + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterPurpleSlime") + "\n"
+                             + strDroppedByMonster("Iridium Crab") + "\n"
+                             + strDroppedByMonster("Iridium Bat") + "\n"
+                             + strFishPond(ItemID.IT_SuperCucumber, 9) + "\n"
+                             + (Config.ShowSpoilers || Game1.year >= 3? strNoItemMachine(ItemID.BC_StatueOfPerfection)
+                                                                      : str.Get("unknownSource")) + "\n"
+                             + strPanning();
+                    
+                    case ItemID.IT_BatteryPack:
+                        return strNoItemMachine(ItemID.BC_LightningRod);
+                    
+                    case ItemID.IT_RefinedQuartz:
+                        return strPutItemInMachine(ItemID.IT_BrokenCD, ItemID.BC_RecyclingMachine) + "\n"
+                             + strPutItemInMachine(ItemID.IT_BrokenGlasses, ItemID.BC_RecyclingMachine) + "\n"
+                             + strPutItemInMachine(ItemID.IT_Quartz, ItemID.BC_Furnace) + "\n"
+                             + strPutItemInMachine(ItemID.IT_FireQuartz, ItemID.BC_Furnace);
+                    
+                    /********** [Base Game Remixed Bundles] Bulletin Board **********/
+                    
+                    // [Remixed] Dye Bundle
+                    
+                    case ItemID.IT_Beet:
+                        return strSeasonalCrop("fall", quality, isDesertKnown()? "shopOasis" : "shopUnknown");
+                    
+                    case ItemID.IT_Amaranth:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.IT_Starfruit:
+                        return strSeasonalCrop("summer", quality, isDesertKnown()? "shopOasis" : "shopUnknown");
+                    
+                    case ItemID.IT_IridiumBar:
+                        return strPutItemInMachine(ItemID.IT_IridiumOre, ItemID.BC_Furnace);
+                    
+                    // [Remixed] Children's Bundle
+                    
+                    case ItemID.IT_Salmonberry:
+                        return str.Get("salmonberryForage")
+                             + possibleSourceFruitBatCave();
+                    
+                    case ItemID.IT_Cookies:
+                        return strCookRecipe("Cookies");
+                    
+                    case ItemID.IT_AncientDoll:
+                        return str.Get("artifactDigging") + "\n"
+                             + strFishingChest(2);
                     
                     case ItemID.IT_IceCream:
                         return strCookRecipe("Ice Cream");
-                        
-                    case ItemID.IT_Cookie:
-                        return strCookRecipe("Cookies");
                     
-                    // Home Cook's Bundle
+                    // [Remixed] Home Cook's Bundle
                     
                     case ItemID.IT_WheatFlour:
                         return strBuyFrom(shopLiteral: getSeedShopsString());
                     
-                    // Helper's Bundle
+                    // [Remixed] Helper's Bundle
+                    
                     case ItemID.IT_PrizeTicket:
                         return str.Get("prizeTicket");
                     
@@ -618,424 +793,66 @@ namespace CommunityCenterHelper
                                 return str.Get("unknownSource");
                         }
                     
-                    // Winter Star Bundle
-                    case ItemID.IT_Powdermelon:
-                        return strGrowSeeds(ItemID.IT_PowdermelonSeeds, parenthesize(strSeasonalForage("winter")), quality);
-                    
-                    /********** [EasierBundles] Crafts Room **********/
-                    
-                    // [EasierBundles] Construction Bundle
-                    
-                    case ItemID.IT_Clay:
-                        return str.Get("generalTilling") + "\n"
-                             + str.Get("openAnyGeode");
-                    
-                    case ItemID.IT_Fiber:
-                        return str.Get("clearWeeds");
-                    
-                    /********** [EasierBundles] Pantry **********/
-                    
-                    // [EasierBundles] Animal Bundle
-                    
-                    case ItemID.IT_VoidEgg:
-                        return strBuyFromKrobus() + "\n"
-                             + str.Get("voidEggEvent") + (getCoopLevel() < 1? parenthesize(str.Get("animalReqCoopLv2")) : "") + "\n"
-                             + strAnimalProduct("animalVoidChicken") + "\n"
-                             + strFishPond(ItemID.IT_VoidSalmon, 9);
-                    
-                    case ItemID.IT_BugMeat:
-                        return strDroppedByMonster(monsterKey: "monsterGeneralBug");
-                    
-                    // [EasierBundles] Artisan Bundle
-                    
-                    case ItemID.IT_Pickles:
-                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), ItemID.BC_PreservesJar);
-                    
-                    /********** [EasierBundles] Fish Tank **********/
-                    
-                    // [EasierBundles] River Fish Bundle
-                    
-                    case ItemID.IT_Opal:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Esperite:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Calcite:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Orpiment:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    // [EasierBundles] Lake Fish Bundle
-                    
-                    case ItemID.IT_Sandstone:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Granite:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Limestone:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Mudstone:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    // [EasierBundles] Ocean Fish Bundle
-                    
-                    case ItemID.IT_RainbowShell:
-                        return strSeasonalLocationalForage("summer", "locationBeach");
-                    
-                    case ItemID.IT_Celestine:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Slate:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    // [EasierBundles] Night Fishing Bundle
-                    
-                    case ItemID.IT_Torch:
-                        return strCraftRecipe("Torch") + "\n"
-                             + strPutItemInMachine(ItemID.IT_SoggyNewspaper, ItemID.BC_RecyclingMachine);
-                    
-                    case ItemID.IT_BatteryPack:
-                        return strNoItemMachine(ItemID.BC_LightningRod);
+                    // [Remixed] Spirit's Eve Bundle
                     
                     case ItemID.IT_JackOLantern:
                         return strBuyFrom("shopSpiritsEve");
                     
-                    // [EasierBundles] Crab Pot Bundle
-                    
-                    case ItemID.IT_Coral:
-                        if (fixedBridgeToEastBeach())
-                            return strLocationalForage("locationBeachEast");
-                        else
-                            return strLocationalForage(locationLiteral: str.Get("locationBeachEastInaccessible",
-                                                                                new { wood = getItemName(ItemID.IT_Wood) }));
-                    
-                    // [EasierBundles] Specialty Bundle
-                    
-                    case ItemID.IT_Emerald:
-                        return str.Get("gemEmerald") + "\n"
-                             + strFishingChest(2) + "\n"
-                             + strPanning();
-                    
-                    case ItemID.IT_Ruby:
-                        return str.Get("gemRuby") + "\n"
-                             + strFishingChest(2) + "\n"
-                             + strPanning();
-                    
-                    case ItemID.IT_Topaz:
-                        return str.Get("gemTopaz") + "\n"
-                             + strFishingChest(2) + "\n"
-                             + strPanning();
-                    
-                    case ItemID.IT_Jade:
-                        return str.Get("gemJade") + "\n"
-                             + strFishingChest(2);
-                    
-                    /********** [EasierBundles] Bulletin Board **********/
-                    
-                    // [EasierBundles] Chef's Bundle
-                    
-                    case ItemID.IT_SalmonDinner:
-                        return strCookRecipe("Salmon Dinner");
-                    
-                    case ItemID.IT_Beer:
-                        return (quality == 0? (strBuyFrom("shopSaloon") + "\n") : "") // Include Saloon for base quality only
-                             + strMachineOrCaskForQuality(ItemID.IT_Wheat, ItemID.BC_Keg, ItemID.IT_Beer, quality);
-                    
-                    case ItemID.IT_Juice:
-                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), ItemID.BC_Keg);
-                    
-                    // [EasierBundles] Field Research Bundle
-                    
-                    case ItemID.IT_Chanterelle:
-                        return strSeasonalLocationalForage("fall", "locationWoods")
-                             + possibleSourceMushroomCave();
-                    
-                    case ItemID.IT_PineCone:
-                        return str.Get("seedFromTree", new { tree = str.Get("treePine") });
-                    
-                    // [EasierBundles] Fodder Bundle
-                    
-                    case ItemID.IT_Amaranth:
-                        return strSeasonalCrop("fall", quality);
-                    
-                    // [EasierBundles] Enchanter's Bundle
-                    
-                    case ItemID.IT_Holly:
-                        return strSeasonalForage("winter");
-                    
-                    case ItemID.IT_Mead:
-                        return strMachineOrCaskForQuality(ItemID.IT_Honey, ItemID.BC_Keg, ItemID.IT_Mead, quality);
-                    
-                    /********** [Vegan Bundles] Pantry **********/
-                    
-                    // [Vegan Bundles] Cleaning Bundle
-                    
-                    case ItemID.IT_Trash:
-                        return str.Get("trash");
-                    
-                    case ItemID.IT_SoggyNewspaper:
-                        return str.Get("trash");
-                    
-                    case ItemID.IT_BrokenCD:
-                        return str.Get("trash");
-                    
-                    case ItemID.IT_BrokenGlasses:
-                        return str.Get("trash");
-                    
-                    // [Vegan Bundles] Artisan Bundle
-                   
-                    case ItemID.IT_Oil:
-                        return strPutItemInMachine(itemLiteral: multiItem(ItemID.IT_Corn, ItemID.IT_SunflowerSeeds, ItemID.IT_Sunflower),
-                                                   machineID: ItemID.BC_OilMaker);
-                    
-                    case ItemID.IT_BokChoy:
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case ItemID.IT_Garlic:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    case ItemID.IT_Hops:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    /********** [Vegan Bundles] Fish Tank **********/
-                    
-                    // [Vegan Bundles] Snacks Bundle
-                    
-                    case ItemID.IT_FriedMushroom:
-                        return strCookRecipe("Fried Mushroom");
-                    
-                    case ItemID.IT_Hashbrowns:
-                        return strCookRecipe("Hashbrowns");
-                    
-                    case ItemID.IT_Tortilla:
-                        return strCookRecipe("Tortilla");
-                    
-                    case ItemID.IT_RoastedHazelnuts:
-                        return strCookRecipe("Roasted Hazelnuts");
-                    
-                    // [Vegan Bundles] Beverages Bundle
-                    
-                    case ItemID.IT_Coffee:
-                        return strPutItemInMachine(ItemID.IT_CoffeeBean, ItemID.BC_Keg, itemQuantity: 5);
-                    
-                    case ItemID.IT_GreenTea:
-                        return strPutItemInMachine(ItemID.IT_TeaLeaves, ItemID.BC_Keg);
-                    
-                    // [Vegan Bundles] Flowers Bundle
-                   
-                    case ItemID.IT_Tulip:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    case ItemID.IT_SummerSpangle:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case ItemID.IT_FairyRose:
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case ItemID.IT_BlueJazz:
-                        return strSeasonalCrop("spring", quality);
-                    
-                    // [Vegan Bundles] Underrated Bundle
-                    
-                    case ItemID.IT_SpringOnion:
-                        return strSeasonalLocationalForage("spring", "locationForest");
-                    
-                    // [Vegan Bundles] Dessert Bundle
-                    
-                    case ItemID.IT_MapleBar:
-                        return strCookRecipe("Maple Bar");
-                    
-                    case ItemID.IT_PoppyseedMuffin:
-                        return strCookRecipe("Poppyseed Muffin");
-                    
-                    case ItemID.IT_BlackberryCobbler:
-                        return strCookRecipe("Blackberry Cobbler");
+                    // [Remixed] Winter Star Bundle
                     
                     case ItemID.IT_PlumPudding:
                         return strCookRecipe("Plum Pudding");
                     
-                    case ItemID.IT_CranberrySauce:
-                        return strCookRecipe("Cran. Sauce");
+                    case ItemID.IT_Stuffing:
+                        return strCookRecipe("Stuffing");
                     
-                    // [Vegan Bundles] Sparkly Bundle
+                    case ItemID.IT_Powdermelon:
+                        return strGrowSeeds(ItemID.IT_PowdermelonSeeds, parenthesize(strSeasonalForage("winter")), quality);
                     
-                    case ItemID.IT_Alamite:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
+                    /********** [Challenging CC Bundles Vanilla] Pantry **********/
                     
-                    case ItemID.IT_Aerinite:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    // [Challenging Vanilla] Spring Crops Bundle
                     
-                    case ItemID.IT_Geminite:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_OceanStone:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    /********** [Vegan Bundles] Boiler Room **********/
-                    
-                    // [Vegan Bundles] Explorer's Bundle
-                    
-                    case ItemID.IT_AncientDoll:
-                        return str.Get("artifactDigging") + "\n"
-                             + strFishingChest(2);
-                    
-                    case ItemID.IT_RustyCog:
-                        return str.Get("artifactDigging") + "\n"
-                             + strFishingChest(2);
-                    
-                    case ItemID.IT_ChickenStatue:
-                        return str.Get("artifactDigging") + "\n"
-                             + strFishingChest(2);
-                    
-                    case ItemID.IT_GlassShards:
-                        return str.Get("artifactDigging") + "\n"
-                             + strFishingChest(2);
-                    
-                    /********** [Vegan Bundles] Bulletin Board **********/
-                    
-                    // [Vegan Bundles] Chef's Bundle
-                    
-                    case ItemID.IT_Rice:
-                        return strBuyFrom(shopLiteral: getSeedShopsString()) + "\n"
-                             + str.Get("putItemInMill", new { rawItem = getItemName(ItemID.IT_UnmilledRice) });
-                    
-                    case ItemID.IT_Salad:
-                        return strCookRecipe("Salad");
-                    
-                    // [Vegan Bundles] Dye Bundle
-                    
-                    case ItemID.IT_TeaLeaves:
-                        if (!Game1.player.knowsRecipe("Tea Sapling"))
-                            recipeUnlockTip = parenthesize(getCraftingRecipeSources("Tea Sapling"));
-                        return strGrowSeeds(ItemID.IT_TeaSapling, recipeUnlockTip, quality);
-                    
-                    // [Vegan Bundles] Scythe Bundle
-                   
-                    case ItemID.IT_Kale:
+                    case ItemID.IT_Garlic:
                         return strSeasonalCrop("spring", quality);
                     
-                    // [Vegan Bundles] Enchanter's Bundle
+                    case ItemID.IT_Rhubarb:
+                        return strSeasonalCrop("spring", quality, isDesertKnown()? "shopOasis" : "shopUnknown");
                     
-                    case ItemID.IT_Diamond:
-                        return str.Get("gemDiamond") + "\n"
-                             + strPanning();
+                    case ItemID.IT_UnmilledRice:
+                        return strSeasonalCrop("spring", quality, startingYear: 2);
                     
-                    /********** [Vegan Bundles] The Missing Bundle **********/
+                    case ItemID.IT_Strawberry:
+                        return strSeasonalCrop("spring", quality, "shopEggFestival");
                     
-                    case ItemID.IT_PaleAle:
-                        return strMachineOrCaskForQuality(ItemID.IT_Hops, ItemID.BC_Keg, ItemID.IT_PaleAle, quality);
+                    // [Challenging Vanilla] Summer Crops Bundle
                     
-                    case ItemID.IT_IridiumOre:
-                        return str.Get("mineIridiumOre") + "\n"
-                             + strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode) + "\n"
-                             + strFishingChest() + "\n"
-                             + strDroppedByMonster(monsterKey: "monsterPurpleSlime") + "\n"
-                             + strDroppedByMonster("Iridium Crab") + "\n"
-                             + strDroppedByMonster("Iridium Bat") + "\n"
-                             + strFishPond(ItemID.IT_SuperCucumber, 9) + "\n"
-                             + (Config.ShowSpoilers || Game1.year >= 3? strNoItemMachine(ItemID.BC_StatueOfPerfection)
-                                                                      : str.Get("unknownSource")) + "\n"
-                             + strPanning();
+                    case ItemID.IT_Radish:
+                        return strSeasonalCrop("summer", quality);
                     
-                    case ItemID.IT_SuperMeal:
-                        return strCookRecipe("Super Meal");
+                    // [Challenging Vanilla] Fall Crops Bundle
                     
-                    /********** [Difficulty Options] Crafts Room **********/
+                    case ItemID.IT_BokChoy:
+                        return strSeasonalCrop("fall", quality);
                     
-                    // [Difficulty Options] Spring Foraging Bundle
+                    case ItemID.IT_Cranberries:
+                        return strSeasonalCrop("fall", quality);
                     
-                    case ItemID.IT_Salmonberry:
-                        return str.Get("salmonberryForage")
-                             + possibleSourceFruitBatCave();
+                    // [Challenging Vanilla] Quality Crops Bundle
                     
-                    /********** [Difficulty Options] Pantry **********/
-                    
-                    // [Difficulty Options] Spring Crops Bundle
+                    case ItemID.IT_Artichoke:
+                        return strSeasonalCrop("fall", quality, startingYear: 2);
                     
                     case ItemID.IT_CoffeeBean:
                         return strSeasonalCrop(seasonList: new string[] { "spring", "summer" }, quality: quality,
                                                shopKey: "shopTravelingCartRandom");
                     
-                    case ItemID.IT_Rhubarb:
-                        return strSeasonalCrop("spring", quality, isDesertKnown()? "shopOasis" : "shopUnknown");
+                    // [Challenging Vanilla] Animal Bundle
                     
-                    case ItemID.IT_Strawberry:
-                        return strSeasonalCrop("spring", quality, "shopEggFestival");
+                    case ItemID.IT_Mayonnaise:
+                        return strPutItemInMachine(ItemID.IT_Egg, ItemID.BC_MayonnaiseMachine);
                     
-                    // [Difficulty Options] Summer Crops Bundle
-                    
-                    case ItemID.IT_Radish:
-                        return strSeasonalCrop("summer", quality);
-                    
-                    // [Difficulty Options] Fall Crops Bundle
-                    
-                    case ItemID.IT_Artichoke:
-                        return strSeasonalCrop("fall", quality, startingYear: 2);
-                    
-                    case ItemID.IT_Beet:
-                        return strSeasonalCrop("fall", quality, isDesertKnown()? "shopOasis" : "shopUnknown");
-                    
-                    case ItemID.IT_Cranberries:
-                        return strSeasonalCrop("fall", quality);
-                    
-                    // [Difficulty Options] Quality Crops Bundle
-                    
-                    case ItemID.IT_Starfruit:
-                        return strSeasonalCrop("summer", quality, isDesertKnown()? "shopOasis" : "shopUnknown");
-                    
-                    /********** [Difficulty Options] Fish Tank **********/
-                    
-                    // [Difficulty Options] Specialty Fish Bundle
-                    
-                    case ItemID.IT_Angler:
-                        return strFishBase("waterAnglerSpot", seasonKey: "fall", fishingLevel: 3, extraLinebreak: true);
-                    
-                    case ItemID.IT_Crimsonfish:
-                        return strFishBase("waterCrimsonfishSpot", seasonKey: "summer", fishingLevel: 5, extraLinebreak: true);
-                    
-                    case ItemID.IT_Glacierfish:
-                        return strFishBase("waterGlacierfishSpot", seasonKey: "winter", fishingLevel: 6, extraLinebreak: true);
-                    
-                    case ItemID.IT_Legend:
-                        return strFishBase("waterLegendSpot", seasonKey: "spring", fishingLevel: 10, extraLinebreak: true);
-                    
-                    case ItemID.IT_MutantCarp:
-                        return strFishBase(isSewerKnown()? "waterSewer" : "waterUnknown");
-                    
-                    /********** [Difficulty Options] Boiler Room **********/
-                    
-                    // [Difficulty Options] Blacksmith's Bundle
-                    
-                    case ItemID.IT_IridiumBar:
-                        return strPutItemInMachine(ItemID.IT_IridiumOre, ItemID.BC_Furnace);
-                    
-                    /********** [Difficulty Options] Bulletin Board **********/
-                    
-                    // [Difficulty Options] Chef's Bundle
-                    
-                    case ItemID.IT_FishTaco:
-                        return strCookRecipe("Fish Taco");
-                    
-                    // [Difficulty Options] Field Research Bundle
-                    
-                    case ItemID.IT_Geode:
-                        return strHitRocks("locationMinesArea1") + "\n"
-                             + strDroppedByMonster("Duggy") + "\n"
-                             + strFishingChest();
-                    
-                    /********** [Difficulty Options] The Missing Bundle **********/
-                    
-                    case ItemID.IT_SpicyEel:
-                        return strCookRecipe("Spicy Eel") + "\n"
-                             + strDroppedByMonster("Serpent") + "\n"
-                             + strFishPond(ItemID.IT_LavaEel, 9);
-                    
-                    case ItemID.IT_Blobfish:
-                        return str.Get("fishSubmarine");
+                    // [Challenging Vanilla] Fish Farmer's Bundle
                     
                     case ItemID.IT_Pearl:
                         bool gotPearl = Game1.player.mailReceived.Contains("gotPearl");
@@ -1045,40 +862,104 @@ namespace CommunityCenterHelper
                              + str.Get("fishSubmarine") + "\n"
                              + strFishPond(ItemID.IT_Blobfish, 9);
                     
-                    case ItemID.IT_DinosaurEgg:
-                        return strLocationalArtifact(locationList: new string[] { "locationMountains", "locationQuarry" }) + "\n"
-                             + strFishingChest(2) + "\n"
-                             + strDroppedByMonster("Pepper Rex") + "\n"
-                             + strLocationalForage(isDesertKnown()? "locationSkullPrehistoric" : "locationUnknown") + "\n"
-                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
+                    case ItemID.IT_Coral:
+                        if (fixedBridgeToEastBeach())
+                            return strLocationalForage("locationBeachEast");
+                        else
+                            return strLocationalForage(locationLiteral: str.Get("locationBeachEastInaccessible",
+                                                                                new { wood = getItemName(ItemID.IT_Wood) }));
                     
-                    case ItemID.IT_MegaBomb:
-                        return strCraftRecipe("Mega Bomb") + "\n"
-                             + strDroppedByMonster("Squid Kid") + "\n"
-                             + strDroppedByMonster("Iridium Bat") + "\n"
+                    case ItemID.IT_SoggyNewspaper:
+                        return str.Get("trash");
+                    
+                    // [Challenging Vanilla] Artisan Bundle
+                    
+                    case ItemID.IT_Pickles:
+                        return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), ItemID.BC_PreservesJar);
+                    
+                    // [Challenging Vanilla] Brewer's Bundle
+                    
+                    case ItemID.IT_Beer:
+                        return (quality == 0? (strBuyFrom("shopSaloon") + "\n") : "") // Include Saloon for base quality only
+                             + strMachineOrCaskForQuality(ItemID.IT_Wheat, ItemID.BC_Keg, ItemID.IT_Beer, quality);
+                    
+                    case ItemID.IT_Coffee:
+                        return strPutItemInMachine(ItemID.IT_CoffeeBean, ItemID.BC_Keg, itemQuantity: 5);
+                    
+                    /********** [Challenging CC Bundles Vanilla] Crafts Room **********/
+                    
+                    // [Challenging Vanilla] Fall Foraging Bundle
+                    
+                    case ItemID.IT_Chanterelle:
+                        return strSeasonalLocationalForage("fall", "locationWoods")
+                             + possibleSourceMushroomCave();
+                    
+                    // [Challenging Vanilla] Winter Foraging Bundle
+                    
+                    case ItemID.IT_PineCone:
+                        return str.Get("seedFromTree", new { tree = str.Get("treePine") });
+                    
+                    // [Challenging Vanilla] Construction Bundle
+                    
+                    case ItemID.IT_WoodFence:
+                        return strCraftRecipe("Wood Fence");
+                    
+                    case ItemID.IT_Clay:
+                        return str.Get("generalTilling") + "\n"
+                             + str.Get("openAnyGeode");
+                    
+                    // [Challenging Vanilla] Sticky Bundle
+                    
+                    case ItemID.IT_MinersTreat:
+                        return strCookRecipe("Miner's Treat") + "\n"
                              + strBuyFromDwarf() + "\n"
-                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
+                             + strBuyFromKrobusWeekday("saturday") + "\n"
+                             + strDroppedByMonster("Mummy");
                     
-                    case ItemID.IT_SweetGemBerry:
-                        return strGrowSeeds(ItemID.IT_RareSeed, parenthesize(str.Get("shopTravelingCartSeason",
-                                                                             new { season = multiSeason("spring", "summer") })),
-                                            quality);
+                    // [Challenging Vanilla] Forest Bundle
                     
-                    /********** [AlternateBundles] Pantry **********/
+                    case ItemID.IT_TreeFertilizer:
+                        return strCraftRecipe("Tree Fertilizer");
                     
-                    // [AlternateBundles] Spring Crops Bundle
+                    case ItemID.IT_GrassStarter:
+                        return strBuyFrom("shopPierre") + "\n"
+                             + strCraftRecipe("Grass Starter");
                     
-                    case ItemID.IT_UnmilledRice:
-                        return strSeasonalCrop("spring", quality, startingYear: 2);
+                    case ItemID.IT_RiverJelly:
+                        return strFishBase(waterList: new string[] { "waterRivers", "waterMountain", "waterForestPond", "waterWoods" }, extraLinebreak: true) + "\n"
+                             + strFishPond(ItemID.IT_MidnightCarp, 7);
                     
-                    // [AlternateBundles] Artisan Bundle
+                    // [Challenging Vanilla] Exotic Foraging Bundle
                     
-                    case ItemID.IT_AgedRoe:
-                        return strPutItemInMachine(ItemID.IT_Roe, ItemID.BC_PreservesJar);
+                    case ItemID.IT_Torch:
+                        return strCraftRecipe("Torch") + "\n"
+                             + strPutItemInMachine(ItemID.IT_SoggyNewspaper, ItemID.BC_RecyclingMachine);
                     
-                    /********** [AlternateBundles] Fish Tank **********/
+                    case ItemID.IT_MixedSeeds:
+                        return str.Get("clearWeeds") + "\n"
+                             + str.Get("generalTilling")
+                             + (Game1.player.FishingLevel < 2? "\n" + strFishingChest() : "") + "\n"
+                             + strBuyFromKrobusWeekday("thursday");
                     
-                    // [AlternateBundles] River Fish Bundle
+                    // [Challenging Vanilla] Wild Medicine Bundle
+                    
+                    case ItemID.IT_TeaLeaves:
+                        if (!Game1.player.knowsRecipe("Tea Sapling"))
+                            recipeUnlockTip = parenthesize(getCraftingRecipeSources("Tea Sapling"));
+                        return strGrowSeeds(ItemID.IT_TeaSapling, recipeUnlockTip, quality);
+                    
+                    case ItemID.IT_Salad:
+                        return strCookRecipe("Salad");
+                    
+                    case ItemID.IT_AlgaeSoup:
+                        return strCookRecipe("Algae Soup");
+                    
+                    /********** [Challenging CC Bundles Vanilla] Fish Tank **********/
+                    
+                    // [Challenging Vanilla] River Fish Bundle
+                    
+                    case ItemID.IT_Dorado:
+                        return strFishBase("waterForestRiver", "6am", "7pm", "summer");
                     
                     case ItemID.IT_SmallmouthBass:
                         return strFishBase(waterList: new string[] { "waterTown", "waterForestPond" },
@@ -1087,46 +968,47 @@ namespace CommunityCenterHelper
                     case ItemID.IT_Salmon:
                         return strFishBase("waterRivers", "6am", "7pm", "fall");
                     
-                    case ItemID.IT_Perch:
-                        return strFishBase(waterList: new string[] { "waterRivers", "waterMountain", "waterForestPond" },
-                                           seasonKey: "winter");
-                    
                     case ItemID.IT_Pike:
                         return strFishBase(waterList: new string[] { "waterRivers", "waterForestPond" },
                                            seasonList: new string[] { "summer", "winter" });
                     
-                    // [AlternateBundles] Lake Fish Bundle
+                    case ItemID.IT_Lingcod:
+                        return strFishBase(waterList: new string[] { "waterRivers", "waterMountain" }, seasonKey: "winter");
+                    
+                    // [Challenging Vanilla] Lake Fish Bundle
+                    
+                    case ItemID.IT_Perch:
+                        return strFishBase(waterList: new string[] { "waterRivers", "waterMountain", "waterForestPond" },
+                                           seasonKey: "winter");
                     
                     case ItemID.IT_RainbowTrout:
                         return strFishBase(waterList: new string[] { "waterRivers", "waterMountain" },
                                            start: "6am", end: "7pm", seasonKey: "summer");
                     
-                    case ItemID.IT_Lingcod:
-                        return strFishBase(waterList: new string[] { "waterRivers", "waterMountain" }, seasonKey: "winter");
-                    
-                    // [AlternateBundles] Ocean Fish Bundle
+                    // [Challenging Vanilla] Ocean Fish Bundle
                     
                     case ItemID.IT_Anchovy:
                         return strFishBase("waterOcean", seasonList: new string[] { "spring", "fall" });
                     
+                    case ItemID.IT_RedMullet:
+                        return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "summer", "winter" });
+                    
                     case ItemID.IT_Herring:
                         return strFishBase("waterOcean", seasonList: new string[] { "spring", "winter" });
+                    
+                    case ItemID.IT_SeaCucumber:
+                        return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "fall", "winter" }) + "\n"
+                             + str.Get("fishSubmarine");
                     
                     case ItemID.IT_Flounder:
                         return strFishBase("waterOcean", "6am", "8pm", seasonList: new string[] { "spring", "summer" })
                              + (isIslandKnown()? "\n" + strFishBase(waterList: new string[] { "waterIslandOcean", "waterIslandCove" },
                                                                     start: "6am", end: "8pm") : "");
                     
-                    case ItemID.IT_Halibut:
-                        return strFishBase("waterOcean", "6am", "11am", start2: "7pm", end2: "2am",
-                                           seasonList: new string[] { "spring", "summer", "winter" });
+                    // [Challenging Vanilla] Night Fishing Bundle
                     
-                    // [AlternateBundles] Night Fishing Bundle
-                    
-                    case ItemID.IT_MidnightCarp:
-                        return strFishBase(waterList: new string[] { "waterMountain", "waterForestPond" },
-                                           start: "10pm", end: "2am", seasonList: new string[] { "fall", "winter" })
-                             + (isIslandKnown()? "\n" + strFishBase("waterIslandRiver", "10pm", "2am") : "");
+                    case ItemID.IT_Squid:
+                        return strFishBase("waterOcean", "6pm", "2am", "winter");
                     
                     case ItemID.IT_SuperCucumber:
                         return strFishBase("waterOcean", "6pm", "2am", seasonList: new string[] { "summer", "fall" }) + "\n"
@@ -1134,23 +1016,38 @@ namespace CommunityCenterHelper
                                                              start: "6pm", end: "2am") + "\n" : "")
                              + str.Get("fishSubmarine");
                     
-                    case ItemID.IT_Squid:
-                        return strFishBase("waterOcean", "6pm", "2am", "winter");
+                    case ItemID.IT_Albacore:
+                        return strFishBase("waterOcean", "6am", "11am", start2: "6pm", end2: "2am",
+                                           seasonList: new string[] { "fall", "winter" });
                     
-                    // [AlternateBundles] Specialty Fish Bundle
+                    case ItemID.IT_Halibut:
+                        return strFishBase("waterOcean", "6am", "11am", start2: "7pm", end2: "2am",
+                                           seasonList: new string[] { "spring", "summer", "winter" });
+                    
+                    case ItemID.IT_MidnightCarp:
+                        return strFishBase(waterList: new string[] { "waterMountain", "waterForestPond" },
+                                           start: "10pm", end: "2am", seasonList: new string[] { "fall", "winter" })
+                             + (isIslandKnown()? "\n" + strFishBase("waterIslandRiver", "10pm", "2am") : "");
+                    
+                    // [Challenging Vanilla] Crab Pot Bundle
+                    
+                    case ItemID.IT_Driftwood:
+                        return str.Get("trash");
+                    
+                    // [Challenging Vanilla] Specialty Fish Bundle
+                    
+                    case ItemID.IT_Stonefish:
+                        return strFishBase("waterMines20", fishingLevel: 3);
                     
                     case ItemID.IT_IcePip:
                         return strFishBase("waterMines60", fishingLevel: 5);
                     
-                    case ItemID.IT_ScorpionCarp:
-                        return strFishBase("waterDesert", "6am", "8pm");
+                    case ItemID.IT_SpookFish:
+                        return str.Get("fishSubmarine");
                     
-                    case ItemID.IT_Dorado:
-                        return strFishBase("waterForestRiver", "6am", "7pm", "summer");
+                    /********** [Challenging CC Bundles Vanilla] Boiler Room **********/
                     
-                    /********** [AlternateBundles] Boiler Room **********/
-                    
-                    // [AlternateBundles] Blacksmith's Bundle
+                    // [Challenging Vanilla] Blacksmith's Bundle
                     
                     case ItemID.IT_Coal:
                         return strHitRocks() + "\n"
@@ -1160,330 +1057,733 @@ namespace CommunityCenterHelper
                              + strFishingChest() + "\n"
                              + strPanning();
                     
-                    case ItemID.IT_RefinedQuartz:
-                        return strPutItemInMachine(ItemID.IT_BrokenCD, ItemID.BC_RecyclingMachine) + "\n"
-                             + strPutItemInMachine(ItemID.IT_BrokenGlasses, ItemID.BC_RecyclingMachine) + "\n"
-                             + strPutItemInMachine(ItemID.IT_Quartz, ItemID.BC_Furnace) + "\n"
-                             + strPutItemInMachine(ItemID.IT_FireQuartz, ItemID.BC_Furnace);
+                    // [Challenging Vanilla] Geologist's Bundle
                     
-                    /********** [AlternateBundles] Bulletin Board **********/
+                    case ItemID.IT_Mudstone:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
                     
-                    // [AlternateBundles] Chef's Bundle
+                    case ItemID.IT_Geode:
+                        return strHitRocks("locationMinesArea1") + "\n"
+                             + strDroppedByMonster("Duggy") + "\n"
+                             + strFishingChest();
                     
-                    case ItemID.IT_Omelet:
-                        return strCookRecipe("Omelet");
+                    case ItemID.IT_Celestine:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
                     
-                    case ItemID.IT_Bread:
-                        return strCookRecipe("Bread") + "\n"
-                             + strBuyFrom("shopSaloon");
+                    case ItemID.IT_PetrifiedSlime:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
                     
-                    // [AlternateBundles] Dye Bundle
+                    // [Challenging Vanilla] Adventurer's Bundle
                     
-                    case ItemID.IT_Amethyst:
-                        return str.Get("gemAmethyst") + "\n"
-                             + strFishingChest(2) + "\n"
-                             + strPanning();
+                    case ItemID.IT_MonsterMusk:
+                        return strCraftRecipe("Monster Musk");
                     
-                    // [AlternateBundles] Field Research Bundle
+                    case ItemID.IT_AncientSword:
+                        return strLocationalArtifact(locationList: new string[] { "locationForest", "locationMountains" }) + "\n"
+                             + strFishingChest(2);
                     
-                    case ItemID.IT_Sap:
-                        return strChopTrees() + "\n"
-                             + strDroppedByMonster(monsterKey: "monsterGeneralSlime");
+                    // [Challenging Vanilla] Treasure Hunter's Bundle
                     
-                    // [AlternateBundles] Enchanter's Bundle
+                    case ItemID.IT_Jade:
+                        return str.Get("gemJade") + "\n"
+                             + strFishingChest(2);
                     
-                    case ItemID.IT_OilOfGarlic:
-                        return strCraftRecipe("Oil Of Garlic") + "\n"
+                    // [Challenging Vanilla] Engineers's Bundle
+                    
+                    case ItemID.IT_CherryBomb:
+                        return strCraftRecipe("Cherry Bomb") + "\n"
+                             + strBuyFromDwarf() + "\n"
+                             + strDroppedByMonster("Rock Crab") + "\n"
+                             + strDroppedByMonster("Duggy");
+                    
+                    case ItemID.IT_Bomb:
+                        return strCraftRecipe("Bomb") + "\n"
                              + strBuyFromDwarf();
                     
-                    case ItemID.IT_SquidInk:
-                        return strDroppedByMonster("Squid Kid") + "\n"
-                             + strFishPond(ItemID.IT_Squid, 1) + "\n"
-                             + strFishPond(ItemID.IT_MidnightSquid, 1);
+                    case ItemID.IT_MegaBomb:
+                        return strCraftRecipe("Mega Bomb") + "\n"
+                             + strDroppedByMonster("Squid Kid") + "\n"
+                             + strDroppedByMonster("Iridium Bat") + "\n"
+                             + strBuyFromDwarf() + "\n"
+                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
                     
-                    /********** [The Impossible Bundle] Pantry **********/
+                    case ItemID.IT_RustyCog:
+                        return str.Get("artifactDigging") + "\n"
+                             + strFishingChest(2);
                     
-                    // [The Impossible Bundle] Trash Bundle
-                    
-                    case ItemID.IT_Driftwood:
+                    case ItemID.IT_BrokenCD:
                         return str.Get("trash");
                     
-                    // [The Impossible Bundle] Dwarf Bundle
+                    case ItemID.IT_ExplosiveAmmo:
+                        return strCraftRecipe("Explosive Ammo")
+                             + (Game1.player.knowsRecipe("Explosive Ammo")? "\n" + strBuyFrom("shopGuild") : "");
+                    
+                    /********** [Challenging CC Bundles Vanilla] Bulletin Board **********/
+                    
+                    // [Challenging Vanilla] Chef's Bundle
+                    
+                    case ItemID.IT_PumpkinPie:
+                        return strCookRecipe("Pumpkin Pie");
+                    
+                    case ItemID.IT_LobsterBisque:
+                        return strCookRecipe("Lobster Bisque");
+                    
+                    case ItemID.IT_ArtichokeDip:
+                        return strCookRecipe("Artichoke Dip");
+                    
+                    case ItemID.IT_TripleShotEspresso:
+                        return strCookRecipe("Triple Shot Espresso");
+                    
+                    case ItemID.IT_SurvivalBurger:
+                        return strCookRecipe("Survival Burger");
+                    
+                    case ItemID.IT_Escargot:
+                        return strCookRecipe("Escargot");
+                   
+                    case ItemID.IT_ShrimpCocktail:
+                        return strCookRecipe("Shrimp Cocktail");
+                    
+                    // [Challenging Vanilla] Dye Bundle
+                    
+                    case ItemID.IT_Sandstone:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_RedSlimeEgg:
+                        return strPutItemInMachine(ItemID.IT_Slime, ItemID.BC_SlimeEggPress, itemQuantity: 100) + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterRedSlime");
+                    
+                    case ItemID.IT_BlueSlimeEgg:
+                        return strPutItemInMachine(ItemID.IT_Slime, ItemID.BC_SlimeEggPress, itemQuantity: 100) + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterBlueSlime");
+                    
+                    // [Challenging Vanilla] Field Research Bundle
+                    
+                    case ItemID.IT_RedPlate:
+                        return strCookRecipe("Red Plate");
+                    
+                    case ItemID.IT_AncientSeeds:
+                        return strCraftRecipe("Ancient Seeds");
+                    
+                    case ItemID.IT_AmphibianFossil:
+                        return strLocationalArtifact(locationList: new string[] { "locationForest", "locationMountains" }) + "\n"
+                             + strFishingChest(2);
+                    
+                    case ItemID.IT_FieldSnack:
+                        return strCraftRecipe("Field Snack");
+                    
+                    // [Challenging Vanilla] Fodder Bundle
+                    
+                    case ItemID.IT_Seaweed:
+                        return strFishBase("waterOcean") + "\n"
+                             + (fixedBridgeToEastBeach()? strLocationalForage("locationBeachEast")
+                                                        : strLocationalForage(locationLiteral: str.Get("locationBeachEastInaccessible",
+                                                                              new { wood = getItemName(ItemID.IT_Wood) }))) + "\n"
+                             + str.Get("trashCan");
+                    
+                    case ItemID.IT_GreenAlgae:
+                        return strFishBase("waterRivers") + "\n"
+                             + str.Get("trashCan");
+                    
+                    case ItemID.IT_Bait:
+                        return strBuyFrom("shopFish") + "\n"
+                             + strCraftRecipe("Bait") + "\n"
+                             + strFishingChest() + "\n"
+                             + strNoItemMachine(ItemID.BC_WormBin);
+                    
+                    // [Challenging Vanilla] Enchanter's Bundle
+                    
+                    case ItemID.IT_RainbowShell:
+                        return strSeasonalLocationalForage("summer", "locationBeach");
                     
                     case ItemID.IT_DwarfScroll1:
                         return strLocationalForage("locationMines") + "\n"
                              + strDroppedByMonster("Bat") + "\n"
                              + strDroppedByMonster("Bug") + "\n"
-                             + strDroppedByMonster("Cave Fly") + "\n"
+                             + strDroppedByMonster("Fly") + "\n"
                              + strDroppedByMonster("Duggy") + "\n"
                              + strDroppedByMonster("Green Slime") + "\n"
                              + strDroppedByMonster("Grub") + "\n"
                              + strDroppedByMonster("Rock Crab") + "\n"
                              + strDroppedByMonster("Stone Golem");
                     
-                    case ItemID.IT_DwarfScroll2:
-                        return strLocationalForage("locationMinesArea1") + "\n"
-                             + strDroppedByMonster(monsterKey: "monsterBlueSlime") + "\n"
-                             + strDroppedByMonster("Dust Spirit") + "\n"
-                             + strDroppedByMonster("Frost Bat") + "\n"
-                             + strDroppedByMonster("Ghost");
+                    case ItemID.IT_SeafoamPudding:
+                        return strCookRecipe("Seafoam Pudding");
                     
-                    case ItemID.IT_DwarfScroll3:
-                        return strDroppedByMonster(monsterKey: "monsterBRPCISlime") + "\n"
-                             + strDroppedByMonster("Lava Bat") + "\n"
-                             + strDroppedByMonster("Lava Crab") + "\n"
-                             + strDroppedByMonster("Squid Kid") + "\n"
-                             + strDroppedByMonster("Shadow Brute") + "\n"
-                             + strDroppedByMonster("Shadow Shaman") + "\n"
-                             + strDroppedByMonster("Metal Head");
+                    case ItemID.IT_GoldenMask:
+                        return strLocationalArtifact("locationDesert");
                     
-                    case ItemID.IT_DwarfScroll4:
-                        return strLocationalForage("locationMinesArea3") + "\n"
-                             + strDroppedByMonster(monsterKey: "monsterGeneralAnyInMines");
-                    
-                    // [The Impossible Bundle] Tree Bundle
-                    
-                    case ItemID.IT_Acorn:
-                        return str.Get("seedFromTree", new { tree = str.Get("treeOak") });
-                    
-                    case ItemID.IT_MapleSeed:
-                        return str.Get("seedFromTree", new { tree = str.Get("treeMaple") });
-                    
-                    // [The Impossible Bundle] Chicken Bundle
-                    
-                    case ItemID.IT_Egg:
-                        return strAnimalProduct("animalChicken");
-                    
-                    case ItemID.IT_BrownEgg:
-                        return strAnimalProduct("animalChicken");
-                    
-                    case ItemID.IT_Mayonnaise:
-                        return strPutItemInMachine(ItemID.IT_Egg, ItemID.BC_MayonnaiseMachine);
-                    
-                    case ItemID.IT_VoidMayonnaise:
-                        return strPutItemInMachine(ItemID.IT_VoidEgg, ItemID.BC_MayonnaiseMachine);
-                    
-                    // [The Impossible Bundle] Geode Bundle
-                    
-                    case ItemID.IT_MagmaGeode:
-                        return strHitRocks("locationMinesArea3") + "\n"
-                             + strFishingChest() + "\n"
-                             + strFishPond(ItemID.IT_LavaEel, 9);
-                    
-                    case ItemID.IT_OmniGeode:
-                        return strHitRocks("locationMines21Plus") + "\n"
-                            + strFishPond(ItemID.IT_Octopus, 9) + "\n"
-                            + strDroppedByMonster("Carbon Ghost") + "\n"
-                            + strBuyFromOasisWeekday("wednesday") + "\n"
-                            + strBuyFromKrobusWeekday("tuesday") + "\n"
-                            + strPanning() + "\n"
-                            + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
-                    
-                    /********** [The Impossible Bundle] The Edited Bundle **********/
-                    
-                    case ItemID.IT_BasicFertilizer:
-                        return strCraftRecipe("Basic Fertilizer") + "\n"
-                             + strBuyFrom("shopPierre");
-                    
-                    /********** [Bundle Overhaul] Crafts Room **********/
-                    
-                    // [Bundle Overhaul] D.I.Y. Bundle
-                    
-                    case ItemID.IT_MixedSeeds:
-                        return str.Get("clearWeeds") + "\n"
-                             + str.Get("generalTilling")
-                             + (Game1.player.FishingLevel < 2? "\n" + strFishingChest() : "") + "\n"
-                             + strBuyFromKrobusWeekday("thursday");
-                    
-                    // [Bundle Overhaul] Reduce, Reuse, Recycle Bundle
-                    
-                    case ItemID.IT_JojaCola:
-                        return str.Get("trash") + "\n"
-                             + (isJojaOpen()? strBuyFrom("shopJoja") + "\n" : "")
-                             + strBuyFrom("shopSaloon");
-                    
-                    /********** [Bundle Overhaul] Pantry **********/
-                    
-                    // [Bundle Overhaul] Artisan Products Bundle
-                    
-                    case ItemID.IT_DuckMayonnaise:
-                        return strPutItemInMachine(ItemID.IT_DuckEgg, ItemID.BC_MayonnaiseMachine);
-                    
-                    /********** [Bundle Overhaul] Fish Tank **********/
-                    
-                    // [Bundle Overhaul] Beginner Fish Bundle
-                    
-                    case ItemID.IT_SeaCucumber:
-                        return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "fall", "winter" }) + "\n"
-                             + str.Get("fishSubmarine");
-                    
-                    // [Bundle Overhaul] Advanced Fish Bundle
-                    
-                    case ItemID.IT_RedMullet:
-                        return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "summer", "winter" });
-                    
-                    // [Bundle Overhaul] Expert Fish Bundle
-                    
-                    case ItemID.IT_Albacore:
-                        return strFishBase("waterOcean", "6am", "11am", start2: "6pm", end2: "2am",
-                                           seasonList: new string[] { "fall", "winter" });
-                    
-                    case ItemID.IT_Octopus:
-                        return strFishBase("waterOcean", "6am", "1pm", "summer") + "\n"
-                             + (isIslandKnown()? strFishBase("waterIslandOceanWest", "6am", "1pm") + "\n" : "")
-                             + str.Get("fishSubmarine");
-                    
-                    // [Bundle Overhaul] Specialty Fish Bundle
-                    
-                    case ItemID.IT_Stonefish:
-                        return strFishBase("waterMines20", fishingLevel: 3);
-                    
-                    case ItemID.IT_LavaEel:
-                        return strFishBase("waterMines100", fishingLevel: 7);
-                    
-                    /********** [Bundle Overhaul] Boiler Room **********/
-                    
-                    // [Bundle Overhaul] Geology Bundle
-                    
-                    case ItemID.IT_PetrifiedSlime:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Jamborite:
-                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Fluorapatite:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_FairyStone:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Kyanite:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_FireOpal:
-                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Neptunite:
-                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_Helvite:
-                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
-                    
-                    case ItemID.IT_StarShards:
-                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
-                    
-                    /********** [Bundle Overhaul] Bulletin Board **********/
-                    
-                    // [Bundle Overhaul] Cooking Class Bundle
-                    
-                    case ItemID.IT_CompleteBreakfast:
-                        return strCookRecipe("Complete Breakfast");
-                    
-                    case ItemID.IT_CrabCakes:
-                        return strCookRecipe("Crab Cakes") + "\n"
-                             + strDroppedByMonster("Iridium Crab");
-                    
-                    case ItemID.IT_SurvivalBurger:
-                        return strCookRecipe("Survival Burger");
-                    
-                    case ItemID.IT_PinkCake:
-                        return strCookRecipe("Pink Cake");
-                    
-                    case ItemID.IT_CheeseCauliflower:
-                        return strCookRecipe("Cheese Cauli.");
-                    
-                    case ItemID.IT_RootsPlatter:
-                        return strCookRecipe("Roots Platter");
-                    
-                    case ItemID.IT_Sashimi:
-                        return strCookRecipe("Sashimi");
-                    
-                    case ItemID.IT_PepperPoppers:
-                        return strCookRecipe("Pepper Poppers");
-                    
-                    // [Bundle Overhaul] BYO Night Bundle
-                    
-                    case ItemID.IT_CranberryCandy:
-                        return strCookRecipe("Cranberry Candy");
+                    case ItemID.IT_DriedMushrooms:
+                        return strPutItemInMachine(itemLiteral: str.Get("itemCategoryMushroom"), machineID: ItemID.BC_Dehydrator);
                     
                     case ItemID.IT_LifeElixir:
                         return strCraftRecipe("Life Elixir") + "\n"
                              + strDroppedByMonster("Iridium Bat");
                     
-                    case ItemID.IT_GoatMilk:
-                        return strAnimalProduct("animalGoat");
+                    case ItemID.IT_GoldenPumpkin:
+                        return str.Get("goldenPumpkin");
                     
-                    case ItemID.IT_Milk:
-                        return strAnimalProduct("animalCow");
+                    case ItemID.IT_WarpTotemFarm:
+                        return strCraftRecipe("Warp Totem: Farm") + "\n"
+                             + strFishPond(ItemID.IT_Blobfish, 9) + "\n"
+                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
                     
-                    /********** [Very Hard Version] Crafts Room **********/
+                    // [Challenging Vanilla] Children's Bundle
                     
-                    // [Very Hard Version] Summer Foraging Bundle
+                    case ItemID.IT_BlueberryTart:
+                        return strCookRecipe("Blueberry Tart") + "\n"
+                             + strBuyFromKrobusWeekday("saturday") + "\n"
+                             + strBuyFrom("shopSaloon");
                     
-                    case ItemID.IT_FieldSnack:
-                        return strCraftRecipe("Field Snack");
+                    case ItemID.IT_CranberryCandy:
+                        return strCookRecipe("Cranberry Candy");
                     
-                    /********** [Very Hard Version] Bulletin Board **********/
+                    case ItemID.IT_PoppyseedMuffin:
+                        return strCookRecipe("Poppyseed Muffin");
                     
-                    // [Very Hard Version (Basic)] Cooking Bundle
+                    case ItemID.IT_PinkCake:
+                        return strCookRecipe("Pink Cake");
+                    
+                    case ItemID.IT_TentKit:
+                        return strCraftRecipe("Tent Kit");
+                    
+                    // [Challenging Vanilla] Forager's Bundle
+                    
+                    case ItemID.IT_MahoganySeed:
+                        return str.Get("seedFromTree", new { tree = str.Get("treeMahogany") });
+                    
+                    case ItemID.IT_SpringSeeds:
+                        return strCraftRecipe("Wild Seeds (Sp)");
+                    
+                    case ItemID.IT_SummerSeeds:
+                        return strCraftRecipe("Wild Seeds (Su)");
+                        
+                    case ItemID.IT_FallSeeds:
+                        return strCraftRecipe("Wild Seeds (Fa)");
+                    
+                    case ItemID.IT_WinterSeeds:
+                        return strCraftRecipe("Wild Seeds (Wi)");
+                    
+                    // [Challenging Vanilla] Home Cook's Bundle
                     
                     case ItemID.IT_VegetableMedley:
                         return strCookRecipe("Vegetable Stew");
                     
-                    case ItemID.IT_EggplantParmesan:
-                        return strCookRecipe("Eggplant Parm.");
+                    case ItemID.IT_Tortilla:
+                        return strCookRecipe("Tortilla");
                     
-                    case ItemID.IT_RicePudding:
-                        return strCookRecipe("Rice Pudding");
+                    case ItemID.IT_FruitSalad:
+                        return strCookRecipe("Fruit Salad");
                     
-                    case ItemID.IT_AutumnsBounty:
-                        return strCookRecipe("Autumn's Bounty");
+                    case ItemID.IT_SalmonDinner:
+                        return strCookRecipe("Salmon Dinner");
                     
-                    case ItemID.IT_PumpkinSoup:
-                        return strCookRecipe("Pumpkin Soup");
+                    case ItemID.IT_CompleteBreakfast:
+                        return strCookRecipe("Complete Breakfast");
                     
-                    case ItemID.IT_Stuffing:
-                        return strCookRecipe("Stuffing");
+                    case ItemID.IT_Pizza:
+                        return strCookRecipe("Pizza") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
                     
-                    case ItemID.IT_FishStew:
-                        return strCookRecipe("Fish Stew");
+                    case ItemID.IT_Spaghetti:
+                        return strCookRecipe("Spaghetti") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
                     
-                    case ItemID.IT_TomKhaSoup:
-                        return strCookRecipe("Tom Kha Soup");
-                    
-                    // [Very Hard Version (Version C)] Cooking Bundle
-                    
-                    case ItemID.IT_BakedFish:
-                        return strCookRecipe("Baked Fish");
-                    
-                    case ItemID.IT_GlazedYams:
-                        return strCookRecipe("Glazed Yams");
+                    case ItemID.IT_Bruschetta:
+                        return strCookRecipe("Bruschetta");
                     
                     case ItemID.IT_Pancakes:
                         return strCookRecipe("Pancakes");
                     
-                    case ItemID.IT_TroutSoup:
-                        return strCookRecipe("Trout Soup");
+                    // [Challenging Vanilla] Helper's Bundle
                     
-                    case ItemID.IT_StirFry:
-                        return strCookRecipe("Stir Fry");
+                    case ItemID.IT_DeluxeBait:
+                        return strBuyFrom("shopFish") + (Game1.player.FishingLevel < 4? levelRequirementString("fishing", 4) : "") + "\n"
+                             + strCraftRecipe("Deluxe Bait") + "\n"
+                             + strFishingChest(6) + "\n"
+                             + strNoItemMachine(ItemID.BC_DeluxeWormBin);
+                        
+                    case ItemID.IT_SmokedFish:
+                        return strPutItemInMachine(StardewValley.Object.FishCategory.ToString(), ItemID.BC_FishSmoker);
+                        
+                    case ItemID.IT_MossSoup:
+                        return strCookRecipe("Moss Soup");
                     
-                    case ItemID.IT_RadishSalad:
-                        return strCookRecipe("Radish Salad");
+                    case ItemID.IT_Trash:
+                        return str.Get("trash");
                     
-                    /********** [Minerva's Harder CC] Fish Tank **********/
+                    case ItemID.IT_CaveJelly:
+                        return strFishBase(waterList: new string[] { "waterMines20", "waterMines60", "waterMines100" }, extraLinebreak: true) + "\n"
+                             + strFishPond(ItemID.IT_LavaEel, 8);
                     
-                    // [Minerva's Harder CC] Winter Fish Bundle
+                    case ItemID.IT_ChewingStick:
+                        return strLocationalArtifact(locationList: new string[] { "locationMountains", "locationForest" }) + "\n"
+                             + strFishingChest();
+                    
+                    case ItemID.IT_PaleBroth:
+                        return strCookRecipe("Pale Broth") + "\n"
+                             + strFishPond(ItemID.IT_Ghostfish, 9);
+                    
+                    // [Challenging Vanilla] Spirit's Eve Bundle
+                    
+                    case ItemID.IT_PumpkinSoup:
+                        return strCookRecipe("Pumpkin Soup");
+                    
+                    case ItemID.IT_SquidInkRavioli:
+                        return strCookRecipe("Squid Ink Ravioli");
                     
                     case ItemID.IT_MidnightSquid:
                         return str.Get("fishSubmarine");
                     
-                    case ItemID.IT_SpookFish:
-                        return str.Get("fishSubmarine");
+                    case ItemID.IT_OilOfGarlic:
+                        return strCraftRecipe("Oil Of Garlic") + "\n"
+                             + strBuyFromDwarf();
                     
-                    /********** [Minerva's Harder CC] Boiler Room **********/
+                    case ItemID.IT_BugSteak:
+                        return strCraftRecipe("Bug Steak");
                     
-                    // [Minerva's Harder CC] Blacksmith's Bundle
+                    case ItemID.IT_BoneFlute:
+                        return strLocationalArtifact(locationList: new string[] { "locationMountains", "locationForest" }) + "\n"
+                             + strFishingChest();
+                    
+                    case ItemID.IT_GhostCrystal:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    
+                    // [Challenging Vanilla] Winter Star Bundle
+                    
+                    case ItemID.IT_CranberrySauce:
+                        return strCookRecipe("Cran. Sauce");
+                    
+                    case ItemID.IT_RoastedHazelnuts:
+                        return strCookRecipe("Roasted Hazelnuts");
+                    
+                    case ItemID.IT_CrystalPath:
+                        return strCraftRecipe("Crystal Path");
+                    
+                    case ItemID.IT_Raisins:
+                        return strPutItemInMachine(ItemID.IT_Grape, ItemID.BC_Dehydrator, itemQuantity: 5);
+                    
+                    case ItemID.IT_DriedFruit:
+                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), ItemID.BC_Dehydrator);
+                    
+                    case ItemID.IT_FluteBlock:
+                        return strCraftRecipe("Flute Block");
+                    
+                    /********** [Challenging CC Bundles Vanilla] The Missing Bundle **********/
+                    
+                    case ItemID.IT_MagicRockCandy:
+                        return strBuyFrom("shopDesertTrader") + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterHauntedSkull");
+                    
+                    case ItemID.IT_VoidMayonnaise:
+                        return strPutItemInMachine(ItemID.IT_VoidEgg, ItemID.BC_MayonnaiseMachine);
+                    
+                    case ItemID.IT_Slimejack:
+                        return strFishBase("waterBugLand");
+                    
+                    case ItemID.IT_SuperMeal:
+                        return strCookRecipe("Super Meal");
+                    
+                    case ItemID.IT_FishTaco:
+                        return strCookRecipe("Fish Taco");
+                    
+                    case ItemID.IT_StarShards:
+                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_PepperPoppers:
+                        return strCookRecipe("Pepper Poppers");
+                    
+                    case ItemID.IT_DwarfGadget:
+                        return strLocationalTilling("locationMinesArea2") + "\n"
+                             + strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
+                    
+                    /********** [Challenging CC Bundles Cornucopia_RSV_SVE] Pantry **********/
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Spring Crops Bundle
+                    
+                    case ItemID.SVE_SalalBerry:
+                        return strGrowSeeds(ItemID.SVE_ShrubSeed, parenthesize(strLocationalForage("locationWoods")), quality);
+                    
+                    case ItemID.CNC_Onion:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.CNC_Vanilla:
+                        return strSeasonalCrop("spring", quality, startingYear: 2);
+                    
+                    case ItemID.CNC_Basil:
+                        return strSeasonalCrop("spring", quality)
+                             + (modRegistry.IsLoaded("alja.FTMCCCB")? // Challenging CC Bundles bundle forage pack
+                                "\n" + strSeasonalForage("spring") : "");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Summer Crops Bundle
+                    
+                    case ItemID.CNC_Kiwifruit:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.CNC_BellPepper:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.SVE_AncientFiber:
+                        return strGrowSeeds(ItemID.SVE_AncientFernSeed, parenthesize(strLocationalForage("locationWoods")), quality);
+                    
+                    case ItemID.CNC_Lotus:
+                        return strSeasonalCrop("summer", quality, "shopOasis");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Fall Crops Bundle
+                    
+                    case ItemID.CNC_Olive:
+                        return strSeasonalCrop("fall", quality);;
+                    
+                    case ItemID.CNC_Peanut:
+                        return strSeasonalCrop("fall", quality, startingYear: 2);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Quality Crops Bundle
+                    
+                    case ItemID.CNC_Rose:
+                        return strSeasonalCrop(seasonList: new string[] { "spring", "summer", "fall" }, quality: quality);
+                    
+                    case ItemID.CNC_Cucumber:
+                        return strSeasonalCrop("summer", quality, startingYear: 2);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Garden Bundle
+                    
+                    case ItemID.CNC_Pansy:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.CNC_MorningGlory:
+                        return strSeasonalCrop("spring", quality);
+                    
+                    case ItemID.CNC_Iris:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.CNC_Lily:
+                        return strSeasonalCrop("summer", quality, startingYear: 2);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Artisan Products Bundle
+                    
+                    case ItemID.CNC_CocoaPod:
+                        return strFruitTreeDuringSeason("treeCocoaPod", "spring", startingYear: 2);
+                    
+                    case ItemID.RSV_TropiUgliFruit:
+                        return strFruitTreeDuringSeason("treeTropiUgliFruit", "summer", "shopNightingaleOrchard");
+                    
+                    case ItemID.CNC_Pear:
+                        return strFruitTreeDuringSeason("treePear", "winter", startingYear: 2);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Brewer's Bundle
+                    
+                    case ItemID.SVE_BlueMoonWine:
+                        return strBuyFrom("shopSophiaLedger");
+                    
+                    /********** [Challenging CC Bundles Cornucopia_RSV_SVE] Crafts Room **********/
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Spring Foraging Bundle
+                    
+                    case ItemID.RSV_RidgeAzoreanFlower:
+                        return strSeasonalForage("spring");
+                    
+                    case ItemID.RSV_RidgeCherry:
+                        return strSeasonalForage("spring");
+                    
+                    case ItemID.SVE_Conch:
+                        return strLocationalForage("locationBeach");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Summer Foraging Bundle
+                    
+                    case ItemID.RSV_ForestAmancay:
+                        return strSeasonalForage("summer");
+                    
+                    case ItemID.SVE_SandDollar:
+                        return strSeasonalLocationalForage(seasonList: new string[] { "summer", "fall" },
+                                                           locationKey: "locationBeach");
+                    
+                    case ItemID.CNC_Peppercorn:
+                        return strSeasonalForage("spring");
+                    
+                    case ItemID.RSV_MountainChico:
+                        return strSeasonalForage("summer");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Fall Foraging Bundle
+                    
+                    case ItemID.RSV_SummitSnowbell:
+                        return strSeasonalForage("fall");
+                    
+                    case ItemID.SVE_MushroomColony:
+                        return strSeasonalForage("fall");
+                    
+                    case ItemID.RSV_AutumnDropBerry:
+                        return strSeasonalForage("fall");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Winter Foraging Bundle
+                    
+                    case ItemID.RSV_FrostClumpBerry:
+                        return strSeasonalForage("winter");
+                    
+                    case ItemID.SVE_Bearberry:
+                        return strSeasonalLocationalForage("winter", "locationWoods");
+                    
+                    case ItemID.RSV_SierraWintergreen:
+                        return strSeasonalForage("winter");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Construction Bundle
+                    
+                    case ItemID.CNC_OliveOil:
+                        return strPutItemInMachine(ItemID.CNC_Olive, ItemID.BC_OilMaker);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Exotic Foraging Bundle
+                    
+                    case ItemID.RSV_LavaLily:
+                        return strSeasonalForage("fall");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Wild Medicine Bundle
+                    
+                    case ItemID.SVE_Rafflesia:
+                        return strSeasonalLocationalForage(seasonList: new string[] { "spring", "summer", "fall" }, locationKey: "locationWoods");
+                    
+                    case ItemID.RSV_MountainMistbloom:
+                        return strLocationalForage("locationRidgeForest");
+                    
+                    /********** [Challenging CC Bundles Cornucopia_RSV_SVE] Fish Tank **********/
+                    
+                    // [Challenging Cornucopia_RSV_SVE] River Fish Bundle
+                    
+                    case ItemID.RSV_MountainRedbellyDace:
+                        return strFishBase(waterList: new string[] { "waterRidgesideRiver", "waterRidge", "waterRidgeForest", "waterRidgeFalls" },
+                            start: "6am", end: "7pm", extraLinebreak: true);
+                    
+                    case ItemID.SVE_Butterfish:
+                        return strFishBase("waterShearwaterBridge",
+                                           seasonList: new string[] { "spring", "summer", "fall" }, weatherKey: "weatherSun");
+                    
+                    case ItemID.RSV_HarvesterTrout:
+                        return strFishBase("waterRidgesideRiver", "8am", "4pm", seasonList: new string[] { "spring", "fall", "winter" });
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Lake Fish Bundle
+                    
+                    case ItemID.SVE_Minnow:
+                        return strFishBase(waterList: new string[] { "waterBlueMoonVineyard", "waterShearwaterBridge", "waterAdventurerSummit" },
+                                           start: "6am", end: "6pm");
+                    
+                    case ItemID.RSV_CrimsonSpikedClam:
+                        return strFishBase("waterRidgeForest", "10am", "4pm", seasonList: new string[] { "spring", "summer", "winter" });
+                    
+                    case ItemID.RSV_PebbleBackCrab:
+                        return strFishBase("waterRidgeForest", "3pm", "10pm", seasonList: new string[] { "spring", "summer", "winter" });
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Ocean Fish Bundle
+                    
+                    case ItemID.SVE_Starfish:
+                        return strFishBase(waterList: new string[] { "waterOcean", "waterBlueMoonVineyard" },
+                                           seasonList: new string[] { "spring", "summer", "fall" }, start: "6am", end: "10pm")
+                             + (isIslandKnown()? "\n" + strFishBase("waterIsland", "6am", "10pm") : "");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Night Fishing Bundle
+                    
+                    case ItemID.RSV_LullabyCarp:
+                        return strFishBase("waterRidgeFalls", "3pm", "2am", seasonList: new string[] { "spring", "summer", "winter" });
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Specialty Fish Bundle
+                    
+                    case ItemID.SVE_Puppyfish:
+                        return strFishBase("waterShearwaterBridge", seasonList: new string[] { "spring", "summer", "fall" }) + "\n"
+                             + strFishBase("waterForestWest", seasonKey: "summer");
+                    
+                    case ItemID.RSV_FairytaleLionfish:
+                        return strFishBase("waterRidgeFalls", "11am", "8pm", seasonList: new string[] { "spring", "summer", "fall" });
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Quality Fish Bundle
+                    
+                    case ItemID.SVE_GrassCarp:
+                        return strFishBase("waterWoods", seasonList: new string[] { "spring", "summer" });
+                    
+                    case ItemID.RSV_RidgesideBass:
+                        return strFishBase(waterList: new string[] { "waterRidgesideRiver", "waterRidge", "waterRidgeForest", "waterRidgeFalls" },
+                            start: "6am", end: "2am", extraLinebreak: true);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Master Fisher's Bundle
+                    
+                    case ItemID.SVE_RadioactiveBass:
+                        return strFishBase("waterSewer", fishingLevel: 10);
+                    
+                    case ItemID.RSV_GoldenRoseFin:
+                        return strFishBase("waterRidgeFalls", "7am", "7pm", seasonList: new string[] { "spring", "fall", "winter" });
+                    
+                    /********** [Challenging CC Bundles Cornucopia_RSV_SVE] Boiler Room **********/
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Adventurer's Bundle
+                    
+                    case ItemID.RSV_SpiritualEssence:
+                        return strDroppedByMonster(monsterKey: "monsterRidgeForest");
+                    
+                    /********** [Challenging CC Bundles Cornucopia_RSV_SVE] Bulletin Board **********/
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Chef's Bundle
+                    
+                    case ItemID.RSV_ClementineCake:
+                        return strCookRecipe("Clementine Cake");
+                    
+                    case ItemID.SVE_GlazedButterfish:
+                        return strCookRecipe("Glazed Butterfish") + "\n"
+                             + strFishPond(fishItemName: "Butterfish", numRequired: 10);
+                    
+                    case ItemID.SVE_BigBarkBurger:
+                        return strCookRecipe("Big Bark Burger");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Dye Bundle
+                    
+                    case ItemID.CNC_Chrysanthemum:
+                        return strSeasonalCrop("fall", quality, startingYear: 2);
+                    
+                    case ItemID.CNC_CottonBoll:
+                        return strSeasonalCrop(seasonList: new string[] { "summer", "fall" }, quality: quality);
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Field Research Bundle
+                    
+                    case ItemID.SVE_MushroomBerryRice:
+                        return strCookRecipe("Mushroom Berry Rice");
+                    
+                    case ItemID.RSV_PillowsoftCheezySandwich:
+                        return strCookRecipe("Pillowsoft Cheezy Sandwich");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Fodder Bundle
+                    
+                    case ItemID.RSV_RidgeWildApple:
+                        return strSeasonalForage("summer");
+                    
+                    case ItemID.CNC_Soybeans:
+                        return strBuyFrom("shopTravelingCartRandom");
+                    
+                    case ItemID.CNC_Turnip:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.SVE_DulseSeaweed:
+                        return strFishBase("waterOcean");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Enchanter's Bundle
+                    
+                    case ItemID.SVE_Frog:
+                        return strFishBase("waterMountain", "6pm", "2am",
+                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherRain");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Children's Bundle
+                    
+                    case ItemID.RSV_HighlandIceCream:
+                        return strCookRecipe("Highland Ice Cream");
+                    
+                    case ItemID.RSV_HighlandBlueberryPie:
+                        return strCookRecipe("Highland Blueberry Pie");
+                    
+                    case ItemID.SVE_MixedBerryPie:
+                        return strCookRecipe("Mixed Berry Pie");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Home Cook's Bundle
+                    
+                    case ItemID.SVE_BakedBerryOatmeal:
+                        return strCookRecipe("Baked Berry Oatmeal");
+                    
+                    case ItemID.RSV_FluffyAppleCrumble:
+                        return strCookRecipe("Fluffy Apple Crumble");
+                    
+                    // [Challenging Cornucopia_RSV_SVE] Winter Star Bundle
+                    
+                    case ItemID.RSV_SweetCranberryCheesecake:
+                        return strCookRecipe("Sweet Cranberry Cheesecake");
+                    
+                    /********** [Challenging CC Bundles Cornucopia_RSV_SVE] The Missing Bundle **********/
+                    
+                    case ItemID.RSV_Foxbloom:
+                        return str.Get("foxbloom");
+                    
+                    case ItemID.SVE_VoidPebble:
+                        return strFishPond(fishItemName: "Void Eel", numRequired: 8) + "\n"
+                             + strDroppedByMonster("Mummy") + "\n"
+                             + strDroppedByMonster("Serpent") + "\n"
+                             + strDroppedByMonster("Carbon Ghost");
+                    
+                    case ItemID.RSV_MatchaLatte:
+                        return strCookRecipe("Matcha Latte");
+                    
+                    case ItemID.SVE_VoidDelight:
+                        return strCookRecipe("Void Delight");
+                    
+                    /********** [Challenging CC Bundles Cornucopia_SVE] Crafts Room **********/
+                    
+                    // [Challenging Cornucopia_SVE] Summer Foraging Bundle
+                    
+                    case ItemID.CNC_Raspberry:
+                        return strSeasonalCrop("summer", quality, startingYear: 2) +
+                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
+                                "\n" + strSeasonalForage("summer") : "");
+                    
+                    /********** [Challenging CC Bundles RSV_SVE] Pantry **********/
+                    
+                    // [Challenging RSV_SVE] Artisan Bundle
+                    
+                    case ItemID.RSV_EmberBloodLime:
+                        return strFruitTreeDuringSeason("treeEmberBloomLime", "fall", "shopNightingaleOrchard");
+                    
+                    /********** [Custom CC Bundles Cornucopia_RSV_SVE] Pantry **********/
+                    
+                    // [Custom Cornucopia_RSV_SVE] Garden Bundle
+                    
+                    case ItemID.CNC_BlueMist:
+                        return strSeasonalCrop("summer", quality)
+                             + (modRegistry.IsLoaded("alja.FTMCCCB")? // Challenging CC Bundles bundle forage pack
+                                "\n" + strSeasonalForage("summer") : "");
+                    
+                    // [Custom Cornucopia_RSV_SVE] Artisan Bundle
+                    
+                    case ItemID.RSV_CherryPluot:
+                        return strFruitTreeDuringSeason("treeCherryPluot", "spring", "shopNightingaleOrchard");
+                    
+                    case ItemID.RSV_MountainPlumcot:
+                        return strFruitTreeDuringSeason("treeMountainPlumcot", "spring", "shopNightingaleOrchard");
+                    
+                    case ItemID.RSV_DesertTangelo:
+                        return strFruitTreeDuringSeason("treeDesertTangelo", "summer", "shopNightingaleOrchard", 2);
+                    
+                    case ItemID.RSV_ParadiseRangpur:
+                        return strFruitTreeDuringSeason("treeParadiseRangpur", "summer", "shopNightingaleOrchard");
+                    
+                    case ItemID.CNC_Avocado:
+                        return strFruitTreeDuringSeason("treeAvocado", "fall");
+                    
+                    // [Custom Cornucopia_RSV_SVE] Brewer's Bundle
+                    
+                    case ItemID.SVE_AgedBlueMoonWine:
+                        return strBuyFrom("shopSophiaLedger");
+                    
+                    /********** [Custom CC Bundles Cornucopia_RSV_SVE] Bulletin Board **********/
+                    
+                    // [Custom Cornucopia_RSV_SVE] Home Cook's Bundle
+                    
+                    case ItemID.CNC_Tofu:
+                        return strPutItemInMachine(ItemID.CNC_Soybeans, ItemID.BC_CheesePress, itemQuantity: 2);
+                    
+                    /********** [Custom CC Bundles Cornucopia_RSV_SVE] The Missing Bundle **********/
+                    
+                    case ItemID.CNC_Watermelon:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    /********** [Minerva's Harder CC (Easy)] Pantry **********/
+                    
+                    // [Minerva's Easy] Animal Products Bundle
+                    
+                    case ItemID.IT_VoidEgg:
+                        return strBuyFromKrobus() + "\n"
+                             + str.Get("voidEggEvent") + (getCoopLevel() < 1? parenthesize(str.Get("animalReqCoopLv2")) : "") + "\n"
+                             + strAnimalProduct("animalVoidChicken") + "\n"
+                             + strFishPond(ItemID.IT_VoidSalmon, 9);
+                    
+                    // [Minerva's Easy] Artisan Products Bundle
+                    
+                    case ItemID.IT_DuckMayonnaise:
+                        return strPutItemInMachine(ItemID.IT_DuckEgg, ItemID.BC_MayonnaiseMachine);
+                    
+                    /********** [Minerva's Harder CC (Easy)] Boiler Room **********/
+                    
+                    // [Minerva's Easy] Blacksmith's Bundle
                     
                     case ItemID.IT_CopperOre:
                         return str.Get("mineCopperOre") + "\n"
@@ -1510,24 +1810,65 @@ namespace CommunityCenterHelper
                              + strDroppedByMonster("Ghost") + "\n"
                              + strPanning();
                     
-                    /********** [Minerva's Harder CC] Bulletin Board **********/
+                    // [Minerva's Easy] Adventurer's Bundle
                     
-                    // [Minerva's Harder CC] Saloon Menu Bundle
+                    case ItemID.IT_BugMeat:
+                        return strDroppedByMonster(monsterKey: "monsterGeneralBug");
                     
-                    case ItemID.IT_PumpkinPie:
-                        return strCookRecipe("Pumpkin Pie");
+                    /********** [Minerva's Harder CC (Easy)] Bulletin Board **********/
+                    
+                    // [Minerva's Easy] Saloon Menu Bundle
                     
                     case ItemID.IT_Chowder:
                         return strCookRecipe("Chowder");
                     
+                    case ItemID.IT_CheeseCauliflower:
+                        return strCookRecipe("Cheese Cauli.");
+                    
+                    case ItemID.IT_EggplantParmesan:
+                        return strCookRecipe("Eggplant Parm.");
+                    
+                    // [Minerva's Easy] Field Research Bundle
+                    
+                    case ItemID.IT_MagmaGeode:
+                        return strHitRocks("locationMinesArea3") + "\n"
+                             + strFishingChest() + "\n"
+                             + strFishPond(ItemID.IT_LavaEel, 9);
+                    
+                    /********** [Minerva's Harder CC (Regular)] Pantry **********/
+                    
+                    // [Minerva's Regular] Animal Products Bundle
+                    
+                    case ItemID.IT_Milk:
+                        return strAnimalProduct("animalCow");
+                    
+                    case ItemID.IT_GoatMilk:
+                        return strAnimalProduct("animalGoat");
+                    
+                    /********** [Minerva's Harder CC (Regular)] Bulletin Board **********/
+                    
+                    // [Minerva's Regular] Saloon Menu Bundle
+                    
+                    case ItemID.IT_TroutSoup:
+                        return strCookRecipe("Trout Soup");
+                    
                     case ItemID.IT_CrispyBass:
                         return strCookRecipe("Crispy Bass");
                     
-                    case ItemID.IT_FruitSalad:
-                        return strCookRecipe("Fruit Salad");
+                    // [Minerva's Regular] Field Research Bundle
                     
-                    case ItemID.IT_ArtichokeDip:
-                        return strCookRecipe("Artichoke Dip");
+                    case ItemID.IT_OmniGeode:
+                        return strHitRocks("locationMines21Plus") + "\n"
+                             + strFishPond(ItemID.IT_Octopus, 9) + "\n"
+                             + strDroppedByMonster("Carbon Ghost") + "\n"
+                             + strBuyFromOasisWeekday("wednesday") + "\n"
+                             + strBuyFromKrobusWeekday("tuesday") + "\n"
+                             + strPanning() + "\n"
+                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
+                    
+                    /********** [Minerva's Harder CC (Hard)] Bulletin Board **********/
+                    
+                    // [Minerva's Hard] Saloon Menu Bundle
                     
                     case ItemID.IT_ParsnipSoup:
                         return strCookRecipe("Parsnip Soup");
@@ -1535,14 +1876,27 @@ namespace CommunityCenterHelper
                     case ItemID.IT_Coleslaw:
                         return strCookRecipe("Coleslaw");
                     
-                    // [Minerva's Harder CC] Enchanter's Bundle
+                    case ItemID.IT_FriedMushroom:
+                        return strCookRecipe("Fried Mushroom");
                     
-                    case ItemID.IT_GhostCrystal:
-                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    /********** [Minerva's Harder CC (OJRebalance)] Bulletin Board **********/
+                    
+                    // [Minerva's OJRebalance] Saloon Menu Bundle
+                    
+                    case ItemID.IT_BakedFish:
+                        return strCookRecipe("Baked Fish");
+                    
+                    case ItemID.IT_GlazedYams:
+                        return strCookRecipe("Glazed Yams");
+                    
+                    case ItemID.IT_FriedCalamari:
+                        return strCookRecipe("Fried Calamari") + "\n"
+                             + strBuyFrom("shopSaloon") + "\n"
+                             + strBuyFromKrobusWeekday("saturday");
                     
                     /********** [Minerva's Harder CC (PPJA)] Crafts Room **********/
                     
-                    // [Minerva's Harder CC (PPJA)] Spring Foraging Bundle
+                    // [Minerva's PPJA] Spring Foraging Bundle
                     
                     case ItemID.IT_RiceShoot:
                         return strBuyFrom(shopLiteral: str.Get("shopPierreSeason",
@@ -1550,497 +1904,581 @@ namespace CommunityCenterHelper
                              + strFishingChest() + "\n"
                              + strDroppedByMonster("Grub");
                     
-                    // [Minerva's Harder CC (PPJA)] Crafting Bundle
+                    // [Minerva's PPJA] Crafting Bundle
                     
                     case ItemID.IT_WiltedBouquet:
                         return strPutItemInMachine(ItemID.IT_Bouquet, ItemID.BC_Furnace);
                     
-                    // [Minerva's Harder CC (PPJA)] Specialty Foraging Bundle
-                    
-                    case ItemID.MFM_Starfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strLocationalForage("locationBeach");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_CrownOfThornsStarfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strLocationalForage("locationBeach");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_HolyGrenadeStarfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strLocationalForage("locationBeach");
-                        else
-                            return "";
-                    
-                    /********** [Minerva's Harder CC (PPJA)] Fish Tank **********/
-                    
-                    // [Minerva's Harder CC (PPJA)] Spring Fish Bundle
-                    
-                    case ItemID.MFM_Lionhead:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterForestPond", "8am", "4pm", "spring", "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Pacu:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterRivers", "waterMountain" },
-                                               seasonList: new string[] { "spring", "summer", "fall" });
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_GreenTerror:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterTown", "6am", "6pm",
-                                               seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Ladyfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "6am", "7pm",
-                                               seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Barracuda:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "10am", "7pm", "spring", "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_ZebraTilapia:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterMountain", "8am", "4pm",
-                                               seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_ClownLoach:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               seasonList: new string[] { "spring", "summer" });
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Elephantfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               start: "8am", end: "8pm", seasonList: new string[] { "spring", "summer" },
-                                               weatherKey: "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_YamabukiKoi:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterWoods", "6am", "12am", "spring", "weatherRain");
-                        else
-                            return "";
-                    
-                    // [Minerva's Harder CC (PPJA)] Summer Fish Bundle
-                    
-                    case ItemID.MFM_Pangasius:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               seasonList: new string[] { "spring", "summer", "fall" });
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_KohakuKoi:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterWoods", seasonKey: "spring");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Comet:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterForestPond", "8am", "4pm", "summer");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Tucunare:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterForestRiver", "6am", "4pm", "summer", "weatherRain");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_FreshwaterPufferfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterRivers", seasonKey: "summer", weatherKey: "weatherRain");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Anochoviella:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "6am", "4pm",
-                                               seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherRain");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_RibbonEel:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "8pm", "2am", "summer", "weatherSun");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_SmallMantaRay:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "8am", "2pm", "summer");
-                        else
-                            return "";
-                    
-                    // [Minerva's Harder CC (PPJA)] Fall Fish Bundle
-                    
-                    case ItemID.MFM_SmallSwordfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "12pm", "6pm", "fall");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_BlueRingedOctopus:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "6am", "12pm", "fall");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_GhostEel:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "8pm", "2am", "fall");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_ClownKnifefish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterMountain", "12pm", "12am", "fall");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_RedtailShark:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               start: "10am", end: "8pm", seasonKey: "fall");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_GhostKoi:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterWoods", "6am", "12am", "fall", "weatherRain");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Telescope:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterForestPond", "6am", "6pm", "fall", "weatherRain");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Trahira:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterTown", "waterMountain" },
-                                               seasonList: new string[] { "spring", "summer", "fall" }) + "\n"
-                                 + strFishBase("waterForestRiver", seasonList: new string[] { "spring", "summer" }) + "\n"
-                                 + strFishBase(isSewerKnown()? "waterSewer" : "waterUnknown");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_CommonPleco:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterTown" },
-                                               start: "6pm", end: "2am", seasonList: new string[] { "summer", "fall" },
-                                               weatherKey: "weatherRain") + "\n"
-                                 + strFishBase("waterMountain", "6pm", "2am", "fall", "weatherRain");
-                        else
-                            return "";
-                    
-                    // [Minerva's Harder CC (PPJA)] Winter Fish Bundle
-                    
-                    case ItemID.MFM_SnowballPleco:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterTown", "waterMountain" },
-                                               start: "6pm", end: "2am", seasonKey: "winter");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_ArcticChar:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterForestRiver", "8am", "6pm", "winter");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Ide:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               start: "6am", end: "6pm", seasonKey: "winter");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_ShiroUtsuriKoi:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterWoods", seasonKey: "winter");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Sauger:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               start: "8am", end: "6pm", seasonKey: "winter");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Tench:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
-                                               start: "6am", end: "4pm", seasonList: new string[] { "fall", "winter" });
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Haddock:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "10am", "8pm", seasonList: new string[] { "fall", "winter" });
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Hagfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "8am", "6pm", "winter");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_KingCrab:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterOcean", "8am", "10pm", "winter");
-                        else
-                            return "";
-                    
-                    // [Minerva's Harder CC (PPJA)] Crab Pot Bundle
-                    
-                    case ItemID.MFM_FreshwaterCrab:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeFresh");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_FreshwaterShrimp:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeFresh");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Jellyfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_SwimmerCrab:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Prawn:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Nautilus:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_BriefSquid:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_SandDollar:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_BlueDragonSlug:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strCrabPot("waterTypeOcean");
-                        else
-                            return "";
-                    
-                    // [Minerva's Harder CC (PPJA)] Specialty Fish Bundle
-                    
-                    case ItemID.MFM_TigerFish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterDesert", "8am", "2am");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_ElectricCatfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterDesert");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Blinky:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterSewer");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Glassfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterMines");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Coelacanth:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterMines", "6am", "2am");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Barreleye:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterMines", "8pm", "2am");
-                        else
-                            return "";
-                    
-                    case ItemID.MFM_Lungfish:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterDesert", "8am", "2am");
-                        else
-                            return "";
-                    
                     /********** [Minerva's Harder CC (PPJA)] Boiler Room **********/
                     
-                    // [Minerva's Harder CC (PPJA)] Geologist's Bundle
+                    // [Minerva's PPJA] Geologist's Bundle
+                    
+                    case ItemID.IT_Aerinite:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Kyanite:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Opal:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Slate:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
                     
                     case ItemID.IT_Soapstone:
                         return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
                     
-                    /********** [Minerva's Harder CC (PPJA)] The Missing Bundle **********/
+                    /********** [Community Center Bundle Overhaul] Pantry **********/
                     
-                    case ItemID.MFM_TrappedSoul:
-                        if (modRegistry.IsLoaded("MoreFish"))
-                            return strFishBase("waterSwamp");
-                        else
-                            return "";
+                    // [Bundle Overhaul] Animal Produce Bundle
                     
-                    /********** [Challenging Bundles Vanilla] Crafts Room **********/
+                    case ItemID.IT_BrownEgg:
+                        return strAnimalProduct("animalChicken");
                     
-                    // [Challenging Vanilla] Construction Bundle
+                    case ItemID.IT_Egg:
+                        return strAnimalProduct("animalChicken");
                     
-                    case ItemID.IT_WoodFence:
-                        return strCraftRecipe("Wood Fence");
+                    // [Bundle Overhaul] Reduce, Reuse, Recycle Bundle
                     
-                    /********** [Challenging Bundles Vanilla] Bulletin Board **********/
+                    case ItemID.IT_BrokenGlasses:
+                        return str.Get("trash");
                     
-                    // [Challenging Vanilla] Chef's Bundle
+                    case ItemID.IT_JojaCola:
+                        return str.Get("trash") + "\n"
+                             + (isJojaOpen()? strBuyFrom("shopJoja") + "\n" : "")
+                             + strBuyFrom("shopSaloon");
                     
-                    case ItemID.IT_TripleShotEspresso:
-                        return strCookRecipe("Triple Shot Espresso");
+                    /********** [Community Center Bundle Overhaul] Fish Tank **********/
                     
-                    case ItemID.IT_Escargot:
-                        return strCookRecipe("Escargot");
-                   
-                    case ItemID.IT_ShrimpCocktail:
-                        return strCookRecipe("Shrimp Cocktail");
+                    // [Bundle Overhaul] Legendary Fish Bundle
                     
-                    // [Challenging Vanilla] Fodder Bundle
+                    case ItemID.IT_MutantCarp:
+                        return strFishBase(isSewerKnown()? "waterSewer" : "waterUnknown");
                     
-                    case ItemID.IT_Seaweed:
-                        return strFishBase("waterOcean") + "\n"
-                             + (fixedBridgeToEastBeach()? strLocationalForage("locationBeachEast")
-                                                        : strLocationalForage(locationLiteral: str.Get("locationBeachEastInaccessible",
-                                                                              new { wood = getItemName(ItemID.IT_Wood) }))) + "\n"
-                             + str.Get("trashCan");
+                    case ItemID.IT_Angler:
+                        return strFishBase("waterAnglerSpot", seasonKey: "fall", fishingLevel: 3, extraLinebreak: true);
                     
-                    case ItemID.IT_GreenAlgae:
-                        return strFishBase("waterRivers") + "\n"
-                             + str.Get("trashCan");
+                    case ItemID.IT_Crimsonfish:
+                        return strFishBase("waterCrimsonfishSpot", seasonKey: "summer", fishingLevel: 5, extraLinebreak: true);
                     
-                    case ItemID.IT_WildBait:
-                        return strCraftRecipe("Wild Bait");
+                    case ItemID.IT_Glacierfish:
+                        return strFishBase("waterGlacierfishSpot", seasonKey: "winter", fishingLevel: 6, extraLinebreak: true);
                     
-                    // [Challenging Vanilla] Field Research Bundle
+                    case ItemID.IT_Legend:
+                        return strFishBase("waterLegendSpot", seasonKey: "spring", fishingLevel: 10, extraLinebreak: true);
                     
-                    case ItemID.IT_RedPlate:
-                        return strCookRecipe("Red Plate");
+                    /********** [Community Center Bundle Overhaul] Boiler Room **********/
                     
-                    /********** [Challenging Bundles Vanilla] The Missing Bundle **********/
+                    // [Bundle Overhaul] Geology Bundle
                     
-                    case ItemID.IT_MagicRockCandy:
-                        return strBuyFrom("shopDesertTrader") + "\n"
-                             + strDroppedByMonster("Haunted Skull");
+                    case ItemID.IT_Jamborite:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
                     
-                    case ItemID.IT_Slimejack:
-                        return strFishBase("waterBugLand");
+                    case ItemID.IT_Alamite:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
                     
-                    /********** [Challenging Bundles PPJA] Boiler Room **********/
+                    case ItemID.IT_Fluorapatite:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
                     
-                    // [Challenging PPJA] Adventurer's Bundle
+                    case ItemID.IT_OceanStone:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
                     
-                    case ItemID.IT_WhiteAlgae:
-                        return strFishBase(waterList: new string[] { isSewerKnown()? "waterSewer" : "",
-                                                                     isWitchSwampKnown()? "waterSwamp" : "",
-                                                                     "waterMines" });
+                    case ItemID.IT_FairyStone:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
                     
-                    case ItemID.IT_Bomb:
-                        return strCraftRecipe("Bomb") + "\n"
-                             + strBuyFromDwarf();
+                    case ItemID.IT_FireOpal:
+                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
                     
-                    case ItemID.IT_AncientSword:
-                        return strLocationalArtifact(locationList: new string[] { "locationForest", "locationMountains" }) + "\n"
+                    case ItemID.IT_Neptunite:
+                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Helvite:
+                        return strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
+                    
+                    /********** [Community Center Bundle Overhaul] Bulletin Board **********/
+                    
+                    // [Bundle Overhaul] Cooking Class Bundle
+                    
+                    case ItemID.IT_BlackberryCobbler:
+                        return strCookRecipe("Blackberry Cobbler");
+                    
+                    case ItemID.IT_CrabCakes:
+                        return strCookRecipe("Crab Cakes") + "\n"
+                             + strDroppedByMonster("Iridium Crab");
+                    
+                    case ItemID.IT_RootsPlatter:
+                        return strCookRecipe("Roots Platter");
+                    
+                    case ItemID.IT_MapleBar:
+                        return strCookRecipe("Maple Bar");
+                    
+                    case ItemID.IT_Sashimi:
+                        return strCookRecipe("Sashimi");
+                    
+                    /********** [Alternate Bundles] Bulletin Board **********/
+                    
+                    // [Alternate Bundles] Chef's Bundle
+                    
+                    case ItemID.IT_Omelet:
+                        return strCookRecipe("Omelet");
+                    
+                    case ItemID.IT_Hashbrowns:
+                        return strCookRecipe("Hashbrowns");
+                    
+                    case ItemID.IT_Bread:
+                        return strCookRecipe("Bread") + "\n"
+                             + strBuyFrom("shopSaloon");
+                    
+                    case ItemID.IT_Oil:
+                        return strPutItemInMachine(itemLiteral: multiItem(ItemID.IT_Corn, ItemID.IT_SunflowerSeeds, ItemID.IT_Sunflower),
+                                                   machineID: ItemID.BC_OilMaker);
+                    
+                    /********** [Easier Bundles] Fish Tank **********/
+                    
+                    // [Easier Bundles] River Fish Bundle
+                    
+                    case ItemID.IT_Esperite:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Calcite:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Orpiment:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
+                    
+                    // [Easier Bundles] Lake Fish Bundle
+                    
+                    case ItemID.IT_Granite:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
+                    
+                    case ItemID.IT_Limestone:
+                        return strOpenGeode(ItemID.IT_Geode, ItemID.IT_OmniGeode);
+                    
+                    /********** [Vegan Bundles] Fish Tank **********/
+                    
+                    // [Vegan Bundles] Sparkly Bundle
+                    
+                    case ItemID.IT_Geminite:
+                        return strOpenGeode(ItemID.IT_FrozenGeode, ItemID.IT_OmniGeode);
+                    
+                    /********** [Vegan Bundles] Boiler Room **********/
+                    
+                    // [Vegan Bundles] Explorer's Bundle
+                    
+                    case ItemID.IT_ChickenStatue:
+                        return str.Get("artifactDigging") + "\n"
                              + strFishingChest(2);
                     
-                    /********** [Challenging Bundles PPJA] Bulletin Board **********/
+                    case ItemID.IT_GlassShards:
+                        return str.Get("artifactDigging") + "\n"
+                             + strFishingChest(2);
                     
-                    // [Challenging PPJA] Dye Bundle
+                    /********** [Vegan Bundles] Bulletin Board **********/
+                    
+                    // [Vegan Bundles] Chef's Bundle
+                    
+                    case ItemID.IT_Rice:
+                        return strBuyFrom(shopLiteral: getSeedShopsString()) + "\n"
+                             + str.Get("putItemInMill", new { rawItem = getItemName(ItemID.IT_UnmilledRice) });
+                    
+                    /********** [Difficulty Option for Bundles (Very Hard)] The Missing Bundle **********/
+                    
+                    case ItemID.IT_SpicyEel:
+                        return strCookRecipe("Spicy Eel") + "\n"
+                             + strDroppedByMonster("Serpent") + "\n"
+                             + strFishPond(ItemID.IT_LavaEel, 9);
+                    
+                    case ItemID.IT_DinosaurEgg:
+                        return strLocationalArtifact(locationList: new string[] { "locationMountains", "locationQuarry" }) + "\n"
+                             + strFishingChest(2) + "\n"
+                             + strDroppedByMonster("Pepper Rex") + "\n"
+                             + strLocationalForage(isDesertKnown()? "locationSkullPrehistoric" : "locationUnknown") + "\n"
+                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
+                    
+                    /********** [The Impossible Bundle] Pantry **********/
+                    
+                    // [The Impossible Bundle] Dwarf Bundle
+                    
+                    case ItemID.IT_DwarfScroll2:
+                        return strLocationalForage("locationMinesArea1") + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterBlueSlime") + "\n"
+                             + strDroppedByMonster("Dust Spirit") + "\n"
+                             + strDroppedByMonster("Frost Bat") + "\n"
+                             + strDroppedByMonster("Ghost");
+                    
+                    case ItemID.IT_DwarfScroll3:
+                        return strDroppedByMonster(monsterKey: "monsterBRPCISlime") + "\n"
+                             + strDroppedByMonster("Lava Bat") + "\n"
+                             + strDroppedByMonster("Lava Crab") + "\n"
+                             + strDroppedByMonster("Squid Kid") + "\n"
+                             + strDroppedByMonster("Shadow Brute") + "\n"
+                             + strDroppedByMonster("Shadow Shaman") + "\n"
+                             + strDroppedByMonster("Metal Head");
+                    
+                    case ItemID.IT_DwarfScroll4:
+                        return strLocationalForage("locationMinesArea3") + "\n"
+                             + strDroppedByMonster(monsterKey: "monsterGeneralAnyInMines");
+                    
+                    /********** [The Impossible Bundle] The Edited Bundle **********/
+                    
+                    case ItemID.IT_BasicFertilizer:
+                        return strCraftRecipe("Basic Fertilizer") + "\n"
+                             + strBuyFrom("shopPierre");
+                    
+                    /********** [Very Hard for 1 Year Challenge 1.02] Bulletin Board **********/
+                    
+                    // [Very Hard 1YC 1.02] Cooking Bundle
+                    
+                    case ItemID.IT_RicePudding:
+                        return strCookRecipe("Rice Pudding");
+                    
+                    case ItemID.IT_AutumnsBounty:
+                        return strCookRecipe("Autumn's Bounty");
+                    
+                    case ItemID.IT_FishStew:
+                        return strCookRecipe("Fish Stew");
+                    
+                    case ItemID.IT_TomKhaSoup:
+                        return strCookRecipe("Tom Kha Soup");
+                    
+                    /********** [Very Hard for 1 Year Challenge 1.02C] Bulletin Board **********/
+                    
+                    // [Very Hard 1YC 1.02C] Cooking Bundle
+                    
+                    case ItemID.IT_StirFry:
+                        return strCookRecipe("Stir Fry");
+                    
+                    case ItemID.IT_RadishSalad:
+                        return strCookRecipe("Radish Salad");
+                    
+                    /********** Additional/Orphaned Base Game Item Hints **********/
                     
                     case ItemID.IT_LuckyPurpleShorts:
                         return str.Get("luckyShorts")
                             + (modRegistry.IsLoaded("ppja.artisanvalleyPFM")? // Artisan Valley machine rules
                                "\n" + strPutItemInMachine(ItemID.IT_Amethyst, ItemID.BC_Loom) : "");
                     
-                    // [Challenging PPJA] Field Research Bundle
+                    case ItemID.IT_WildBait:
+                        return strCraftRecipe("Wild Bait");
                     
-                    case ItemID.IT_AmphibianFossil:
-                        return strLocationalArtifact(locationList: new string[] { "locationForest", "locationMountains" }) + "\n"
-                             + strFishingChest(2);
+                    /********** Orphaned Cornucopia Item Hints (from JSON asset references in Minerva's PPJA) **********/
                     
-                    // [Challenging PPJA] Enchanter's Bundle
+                    case ItemID.CNC_Honeysuckle:
+                        return strSeasonalCrop(seasonList: new string[] { "spring", "summer" }, quality: quality, shopKey: "shopMarnie");
                     
-                    case ItemID.IT_SeafoamPudding:
-                        return strCookRecipe("Seafoam Pudding");
+                    case ItemID.CNC_Spinach:
+                        return strSeasonalCrop(seasonList: new string[] { "spring", "fall" }, quality: quality);
                     
-                    case ItemID.IT_RedSlimeEgg:
-                        return strPutItemInMachine(ItemID.IT_Slime, ItemID.BC_SlimeEggPress, itemQuantity: 100) + "\n"
-                             + strDroppedByMonster(monsterKey: "monsterRedSlime");
+                    case ItemID.CNC_PassionFruit:
+                        return strSeasonalCrop("spring", quality);
                     
-                    case ItemID.IT_WarpTotemFarm:
-                        return strCraftRecipe("Warp Totem: Farm") + "\n"
-                             + strFishPond(ItemID.IT_Blobfish, 9) + "\n"
-                             + str.Get(isTheatherKnown()? "winCraneGame" : "unknownSource");
+                    case ItemID.CNC_Chives:
+                        return strSeasonalCrop("summer", quality);
                     
-                    case ItemID.IT_GoldenPumpkin:
-                        return str.Get("goldenPumpkin");
+                    case ItemID.CNC_ClarySage:
+                        return strSeasonalCrop("summer", quality);
                     
-                    case ItemID.IT_DwarfGadget:
-                        return strLocationalTilling("locationMinesArea2") + "\n"
-                             + strOpenGeode(ItemID.IT_MagmaGeode, ItemID.IT_OmniGeode);
+                    case ItemID.CNC_Oregano:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.CNC_Sugarcane:
+                        return strSeasonalCrop("summer", quality, shopKey: isDesertKnown()? "shopOasis" : "shopUnknown");
+                    
+                    case ItemID.CNC_SweetPotato:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.CNC_Jasmine:
+                        return strSeasonalCrop("fall", quality);
+                    
+                    case ItemID.CNC_Mint:
+                        return strSeasonalCrop("winter", quality);
+                    
+                    case ItemID.CNC_WasabiRoot:
+                        return strSeasonalCrop("summer", quality);
+                    
+                    case ItemID.CNC_Lime:
+                        return strFruitTreeDuringSeason("treeLime", "spring");
+                    
+                    case ItemID.CNC_Papaya:
+                        return strFruitTreeDuringSeason("treePapaya", "summer", isDesertKnown()? "shopOasis" : "shopUnknown");
+                    
+                    case ItemID.CNC_Walnut:
+                        return strFruitTreeDuringSeason("treeWalnut", "fall");
+                    
+                    case ItemID.CNC_Persimmon:
+                        return strFruitTreeDuringSeason("treePersimmon", "winter");
+                    
+                    case ItemID.CNC_Shiitake:
+                        return strSeasonalCrop(seasonList: new string[] { "spring", "fall" }, quality: quality, startingYear: 4)
+                             + (modRegistry.IsLoaded("alja.FTMCCCB")? // Challenging CC Bundles bundle forage pack
+                                "\n" + strSeasonalForage("fall") : "");
+                    
+                    case ItemID.CNC_EucalyptusLeaves:
+                        return strFruitTreeDuringSeason("treeEucalyptus", "spring", "shopClinic", startingYear: 2);
+                    
+                    /********** Orphaned SVE Item Hints (from older versions of Challenging CC Bundles) **********/
+                    
+                    case ItemID.SVE_Clownfish:
+                        return strFishBase(waterList: new string[] { "waterOcean", "waterBlueMoonVineyard" },
+                                           start: "10am", end: "5pm", weatherKey: "weatherSun")
+                             + (isIslandKnown()? "\n" + strFishBase("waterIsland", "10am", "5pm", weatherKey: "weatherSun") : "");
+                    
+                    case ItemID.SVE_KingSalmon:
+                        return strFishBase("waterForestWest", "6am", "10pm", seasonList: new string[] { "spring", "summer" });
+                    
+                    case ItemID.SVE_VoidSalmonSushi:
+                        return strCookRecipe("Void Salmon Sushi");
+                    
+                    /********** Orphaned More Fish Mod Item Hints (from Minerva's PPJA using old numerical IDs) **********/
+                    
+                    case ItemID.MFM_Starfish:
+                    case ItemID.MNF_Starfish:
+                        return strLocationalForage("locationBeach");
+                    
+                    case ItemID.MFM_CrownOfThornsStarfish:
+                    case ItemID.MNF_CrownOfThornsStarfish:
+                        return strLocationalForage("locationBeach");
+                    
+                    case ItemID.MFM_HolyGrenadeStarfish:
+                    case ItemID.MNF_HolyGrenadeStarfish:
+                        return strLocationalForage("locationBeach");
+                    
+                    case ItemID.MFM_Lionhead:
+                    case ItemID.MNF_Lionhead:
+                        return strFishBase("waterForestPond", "8am", "4pm", "spring", "weatherSun");
+                    
+                    case ItemID.MFM_Pacu:
+                    case ItemID.MNF_Pacu:
+                        return strFishBase(waterList: new string[] { "waterRivers", "waterMountain" },
+                                           seasonList: new string[] { "spring", "summer", "fall" });
+                    
+                    case ItemID.MFM_GreenTerror:
+                    case ItemID.MNF_GreenTerror:
+                        return strFishBase("waterTown", "6am", "6pm",
+                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherSun");
+                    
+                    case ItemID.MFM_Ladyfish:
+                    case ItemID.MNF_Ladyfish:
+                        return strFishBase("waterOcean", "6am", "7pm",
+                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherSun");
+                    
+                    case ItemID.MFM_Barracuda:
+                    case ItemID.MNF_Barracuda:
+                        return strFishBase("waterOcean", "10am", "7pm", "spring", "weatherSun");
+                    
+                    case ItemID.MFM_ZebraTilapia:
+                    case ItemID.MNF_ZebraTilapia:
+                        return strFishBase("waterMountain", "8am", "4pm",
+                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherSun");
+                    
+                    case ItemID.MFM_ClownLoach:
+                    case ItemID.MNF_ClownLoach:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           seasonList: new string[] { "spring", "summer" });
+                    
+                    case ItemID.MFM_Elephantfish:
+                    case ItemID.MNF_Elephantfish:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           start: "8am", end: "8pm", seasonList: new string[] { "spring", "summer" },
+                                           weatherKey: "weatherSun");
+                    
+                    case ItemID.MFM_YamabukiKoi:
+                    case ItemID.MNF_YamabukiKoi:
+                        return strFishBase("waterWoods", "6am", "12am", "spring", "weatherRain");
+                    
+                    case ItemID.MFM_Pangasius:
+                    case ItemID.MNF_Pangasius:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           seasonList: new string[] { "spring", "summer", "fall" });
+                    
+                    case ItemID.MFM_KohakuKoi:
+                    case ItemID.MNF_KohakuKoi:
+                        return strFishBase("waterWoods", seasonKey: "spring");
+                    
+                    case ItemID.MFM_Comet:
+                    case ItemID.MNF_Comet:
+                        return strFishBase("waterForestPond", "8am", "4pm", "summer");
+                    
+                    case ItemID.MFM_Tucunare:
+                    case ItemID.MNF_Tucunare:
+                        return strFishBase("waterForestRiver", "6am", "4pm", "summer", "weatherRain");
+                    
+                    case ItemID.MFM_FreshwaterPufferfish:
+                    case ItemID.MNF_FreshwaterPufferfish:
+                        return strFishBase("waterRivers", seasonKey: "summer", weatherKey: "weatherRain");
+                    
+                    case ItemID.MFM_Anochoviella:
+                    case ItemID.MNF_Anochoviella:
+                        return strFishBase("waterOcean", "6am", "4pm",
+                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherRain");
+                    
+                    case ItemID.MFM_RibbonEel:
+                    case ItemID.MNF_RibbonEel:
+                        return strFishBase("waterOcean", "8pm", "2am", "summer", "weatherSun");
+                    
+                    case ItemID.MFM_SmallMantaRay:
+                    case ItemID.MNF_SmallMantaRay:
+                        return strFishBase("waterOcean", "8am", "2pm", "summer");
+                    
+                    case ItemID.MFM_SmallSwordfish:
+                    case ItemID.MNF_SmallSwordfish:
+                        return strFishBase("waterOcean", "12pm", "6pm", "fall");
+                    
+                    case ItemID.MFM_BlueRingedOctopus:
+                    case ItemID.MNF_BlueRingedOctopus:
+                        return strFishBase("waterOcean", "6am", "12pm", "fall");
+                    
+                    case ItemID.MFM_GhostEel:
+                    case ItemID.MNF_GhostEel:
+                        return strFishBase("waterOcean", "8pm", "2am", "fall");
+                    
+                    case ItemID.MFM_ClownKnifefish:
+                    case ItemID.MNF_ClownKnifefish:
+                        return strFishBase("waterMountain", "12pm", "12am", "fall");
+                    
+                    case ItemID.MFM_RedtailShark:
+                    case ItemID.MNF_RedtailShark:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           start: "10am", end: "8pm", seasonKey: "fall");
+                    
+                    case ItemID.MFM_GhostKoi:
+                    case ItemID.MNF_GhostKoi:
+                        return strFishBase("waterWoods", "6am", "12am", "fall", "weatherRain");
+                    
+                    case ItemID.MFM_Telescope:
+                    case ItemID.MNF_Telescope:
+                        return strFishBase("waterForestPond", "6am", "6pm", "fall", "weatherRain");
+                    
+                    case ItemID.MFM_Trahira:
+                    case ItemID.MNF_Trahira:
+                        return strFishBase(waterList: new string[] { "waterTown", "waterMountain" },
+                                           seasonList: new string[] { "spring", "summer", "fall" }) + "\n"
+                             + strFishBase("waterForestRiver", seasonList: new string[] { "spring", "summer" }) + "\n"
+                             + strFishBase(isSewerKnown()? "waterSewer" : "waterUnknown");
+                    
+                    case ItemID.MFM_CommonPleco:
+                    case ItemID.MNF_CommonPleco:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterTown" },
+                                           start: "6pm", end: "2am", seasonList: new string[] { "summer", "fall" },
+                                           weatherKey: "weatherRain") + "\n"
+                             + strFishBase("waterMountain", "6pm", "2am", "fall", "weatherRain");
+                    
+                    case ItemID.MFM_SnowballPleco:
+                    case ItemID.MNF_SnowballPleco:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterTown", "waterMountain" },
+                                           start: "6pm", end: "2am", seasonKey: "winter");
+                    
+                    case ItemID.MFM_ArcticChar:
+                    case ItemID.MNF_ArcticChar:
+                        return strFishBase("waterForestRiver", "8am", "6pm", "winter");
+                    
+                    case ItemID.MFM_Ide:
+                    case ItemID.MNF_Ide:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           start: "6am", end: "6pm", seasonKey: "winter");
+                    
+                    case ItemID.MFM_ShiroUtsuriKoi:
+                    case ItemID.MNF_ShiroUtsuriKoi:
+                        return strFishBase("waterWoods", seasonKey: "winter");
+                    
+                    case ItemID.MFM_Sauger:
+                    case ItemID.MNF_Sauger:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           start: "8am", end: "6pm", seasonKey: "winter");
+                    
+                    case ItemID.MFM_Tench:
+                    case ItemID.MNF_Tench:
+                        return strFishBase(waterList: new string[] { "waterForestPond", "waterMountain" },
+                                           start: "6am", end: "4pm", seasonList: new string[] { "fall", "winter" });
+                    
+                    case ItemID.MFM_Haddock:
+                    case ItemID.MNF_Haddock:
+                        return strFishBase("waterOcean", "10am", "8pm", seasonList: new string[] { "fall", "winter" });
+                    
+                    case ItemID.MFM_Hagfish:
+                    case ItemID.MNF_Hagfish:
+                        return strFishBase("waterOcean", "8am", "6pm", "winter");
+                    
+                    case ItemID.MFM_KingCrab:
+                    case ItemID.MNF_KingCrab:
+                        return strFishBase("waterOcean", "8am", "10pm", "winter");
+                    
+                    case ItemID.MFM_FreshwaterCrab:
+                    case ItemID.MNF_FreshwaterCrab:
+                        return strCrabPot("waterTypeFresh");
+                    
+                    case ItemID.MFM_FreshwaterShrimp:
+                    case ItemID.MNF_FreshwaterShrimp:
+                        return strCrabPot("waterTypeFresh");
+                    
+                    case ItemID.MFM_Jellyfish:
+                    case ItemID.MNF_Jellyfish:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_SwimmerCrab:
+                    case ItemID.MNF_SwimmerCrab:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_Prawn:
+                    case ItemID.MNF_Prawn:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_Nautilus:
+                    case ItemID.MNF_Nautilus:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_BriefSquid:
+                    case ItemID.MNF_BriefSquid:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_SandDollar:
+                    case ItemID.MNF_SandDollar:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_BlueDragonSlug:
+                    case ItemID.MNF_BlueDragonSlug:
+                        return strCrabPot("waterTypeOcean");
+                    
+                    case ItemID.MFM_TigerFish:
+                    case ItemID.MNF_TigerFish:
+                        return strFishBase(isDesertKnown()? "waterDesert" : "waterUnknown", "8am", "2am");
+                    
+                    case ItemID.MFM_ElectricCatfish:
+                    case ItemID.MNF_ElectricCatfish:
+                        return strFishBase(isDesertKnown()? "waterDesert" : "waterUnknown");
+                    
+                    case ItemID.MFM_Blinky:
+                    case ItemID.MNF_Blinky:
+                        return strFishBase("waterSewer");
+                    
+                    case ItemID.MFM_Glassfish:
+                    case ItemID.MNF_Glassfish:
+                        return strFishBase("waterMines");
+                    
+                    case ItemID.MFM_Coelacanth:
+                    case ItemID.MNF_Coelacanth:
+                        return strFishBase("waterMines", "6am", "2am");
+                    
+                    case ItemID.MFM_Barreleye:
+                    case ItemID.MNF_Barreleye:
+                        return strFishBase("waterMines", "8pm", "2am");
+                    
+                    case ItemID.MFM_Lungfish:
+                    case ItemID.MNF_Lungfish:
+                        return strFishBase(isDesertKnown()? "waterDesert" : "waterUnknown", "8am", "2am");
+                    
+                    case ItemID.MFM_TrappedSoul:
+                    case ItemID.MNF_TrappedSoul:
+                        return strFishBase("waterSwamp");
                 }
                 
                 // If item ID was not matched and category is specified, look for category match.
                 
                 switch (category)
                 {
-                    /********** Bulletin Board (Remix) **********/
+                    /********** [Base Game Remixed Bundles] Bulletin Board **********/
                     
-                    // Home Cook's Bundle
+                    // [Remixed] Home Cook's Bundle
                     
                     case StardewValley.Object.EggCategory:
                         return strAnimalProduct("animalChicken") + "\n"
@@ -2052,406 +2490,206 @@ namespace CommunityCenterHelper
                              + strAnimalProduct("animalGoat");
                 }
                 
-                // If neither the item ID nor category was covered above (usually because it's a mod-added item), search by name.
+                // If neither the item ID nor category was covered above, search by name.
+                // This should only be for items from mods that have not yet been updated to give them the new string IDs.
                 
                 switch (getItemName(id, true))
                 {
                     /********** [Minerva's Harder CC (PPJA)] Crafts Room **********/
                     
-                    // [Minerva's Harder CC (PPJA)] Summer Foraging Bundle
+                    // [Minerva's PPJA] Crafting Bundle
                     
-                    case "Asparagus":
-                        return strSeasonalCrop("summer", quality, startingYear: 4) +
-                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
-                                "\n" + strSeasonalForage("summer") : "");
-                    
-                    case "Raspberry":
-                        return strSeasonalCrop("summer", quality, startingYear: 2) +
-                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
-                                "\n" + strSeasonalForage("summer") : "");
-                    
-                    case "Summer Rose":
-                        return strSeasonalCrop("summer", quality) +
-                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
-                                "\n" + strSeasonalForage("summer") : "");
-                    
-                    // [Minerva's Harder CC (PPJA)] Fall Foraging Bundle
-                    
-                    case "Thyme":
-                        return strSeasonalCrop("fall", quality) +
-                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
-                                "\n" + strSeasonalForage("fall") : "");
-                    
-                    case "Barley":
-                        return strSeasonalCrop("fall", quality, startingYear: 2) +
-                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
-                                "\n" + strSeasonalForage("fall") : "");
-                    
-                    case "Fennel":
-                        return strSeasonalCrop("fall", quality, startingYear: 2) +
-                               (modRegistry.IsLoaded("minervamaga.FTM.PPJAForage")? // Forage pack included with bundle mod
-                                "\n" + strSeasonalForage("fall") : "");
-                    
-                    // [Minerva's Harder CC (PPJA)] Crafting Bundle
-                    
-                    case "Beeswax":
+                    case "Beeswax": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Honey, machineName: "Extruder");
                     
-                    case "Thread":
+                    case "Thread": // Artisan Valley
                         return strPutItemInMachine(itemName: "Cotton Boll", machineID: ItemID.BC_Loom);
                     
-                    case "Twine":
+                    case "Twine": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Hay, ItemID.BC_Loom);
                     
                     /********** [Minerva's Harder CC (PPJA)] Boiler Room **********/
                     
-                    // [Minerva's Harder CC (PPJA)] Adventurer's Bundle
+                    // [Minerva's PPJA] Adventurer's Bundle
                     
-                    case "Prismatic Popsicle":
+                    case "Prismatic Popsicle": // Even More Recipes
                         return strCookRecipe("Prismatic Popsicle");
                     
-                    case "Berry Fusion Tea":
+                    case "Berry Fusion Tea": // More Recipes
                         return strCookRecipe("Berry Fusion Tea");
                     
-                    case "Black Tea":
+                    case "Black Tea": // More Recipes
                         return strCookRecipe("Black Tea");
                     
-                    case "Cranberry Pomegranate Tea":
+                    case "Cranberry Pomegranate Tea": // More Recipes
                         return strCookRecipe("Cranberry Pomegranate Tea");
                     
-                    case "Southern Sweet Tea":
+                    case "Southern Sweet Tea": // More Recipes
                         return strCookRecipe("Southern Sweet Tea");
                     
-                    case "Surimi":
+                    case "Surimi": // Even More Recipes
                         return strCookRecipe("Surimi");
                     
-                    case "PB&J Sandwich":
+                    case "PB&J Sandwich": // More Recipes
                         return strCookRecipe("PB&J Sandwich");
                     
                     /********** [Minerva's Harder CC (PPJA)] The Missing Bundle **********/
                     
-                    case "Cactus Flower":
+                    case "Cactus Flower": // Fruits and Veggies
                         return strSeasonalCrop(seasonList: new string[] { "spring", "summer", "fall" }, quality: quality,
                                                shopKey: "shopOasis", startingYear: 3);
                     
-                    case "Grilled Zucchini":
+                    case "Grilled Zucchini": // Even More Recipes
                         return strCookRecipe("Grilled Zucchini");
                     
-                    case "Habanero Extract":
+                    case "Habanero Extract": // Artisan Valley
                         return strPutItemInMachine(itemName: "Habanero", machineName: "Pepper Blender");
                     
-                    case "Chocolate Mouse Bread":
+                    case "Chocolate Mouse Bread": // Even More Recipes
                         return strCookRecipe("Chocolate Mouse Bread");
                     
-                    /********** [Challenging PPJA] Crafts Room **********/
-                    
-                    // [Challenging PPJA] Spring Foraging Bundle
-                    
-                    case "Basil":
-                        return strSeasonalCrop("spring", quality)
-                             + (modRegistry.IsLoaded("alja.FTMCCCB")? // Challenging PPJA bundle forage pack
-                                "\n" + strSeasonalForage("spring") : "");
-                    
-                    // [Challenging PPJA] Summer Foraging Bundle
-                    
-                    case "Blue Mist":
-                        return strSeasonalCrop("summer", quality)
-                             + (modRegistry.IsLoaded("alja.FTMCCCB")? // Challenging PPJA bundle forage pack
-                                "\n" + strSeasonalForage("summer") : "");
-                    
-                    // [Challenging PPJA] Fall Foraging Bundle
-                    
-                    case "Shiitake Mushroom":
-                        return strSeasonalCrop(seasonList: new string[] { "spring", "fall" }, quality: quality, startingYear: 4)
-                             + (modRegistry.IsLoaded("alja.FTMCCCB")? // Challenging PPJA bundle forage pack
-                                "\n" + strSeasonalForage("fall") : "");
-                    
-                    /********** [Challenging PPJA] Pantry **********/
-                    
-                    // [Challenging PPJA] Spring Crops Bundle
-                    
-                    case "Honeysuckle":
-                        return strSeasonalCrop(seasonList: new string[] { "spring", "summer" }, quality: quality, shopKey: "shopMarnie");
-                    
-                    case "Spinach":
-                        return strSeasonalCrop(seasonList: new string[] { "spring", "fall" }, quality: quality);
-                    
-                    case "Passion Fruit":
-                        return strSeasonalCrop("spring", quality);
-                    
-                    // [Challenging PPJA] Summer Crops Bundle
-                    
-                    case "Chives":
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case "Clary Sage":
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case "Kiwi":
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case "Oregano":
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case "Sugar Cane":
-                        return strSeasonalCrop("summer", quality, shopKey: isDesertKnown()? "shopOasis" : "shopUnknown");
+                    /********** [Challenging CC Bundles (PPJA)] Pantry **********/
                     
                     // [Challenging PPJA] Fall Crops Bundle
                     
-                    case "Sweet Potato":
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case "Bell Pepper":
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case "Watermelon":
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case "Sweet Jasmine":
-                        return strSeasonalCrop("fall", quality);
-                    
-                    case "Ginger":
+                    case "Ginger": // Fruits and Veggies
                         return strSeasonalCrop("fall", quality, shopKey: isDesertKnown()? "shopOasis" : "shopUnknown");
-                    
-                    // [Challenging PPJA] Quality Crops Bundle
-                    
-                    case "Mint":
-                        return strSeasonalCrop("winter", quality);
-                    
-                    case "Rose":
-                        return strSeasonalCrop(seasonList: new string[] { "spring", "summer", "fall" }, quality: quality);
-                    
-                    case "Wasabi Root":
-                        return strSeasonalCrop("summer", quality);
-                    
-                    case "Cotton Boll":
-                        return strSeasonalCrop(seasonList: new string[] { "summer", "fall" }, quality: quality);
                     
                     // [Challenging PPJA] Animal Products Bundle
                     
-                    case "Butter":
+                    case "Butter": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Milk, machineName: "Butter Churn");
                     
                     // [Challenging PPJA] Artisan Products Bundle
                     
-                    case "Fruit Juice":
+                    case "Fruit Juice": // Artisan Valley
                         return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), machineName: "Juicer");
                     
-                    case "Apple Cider":
+                    case "Apple Cider": // Artisan Valley
                         return strPutItemInMachine(itemName: "Wine Yeast", machineID: ItemID.BC_Keg);
                     
-                    case "Essential Oil":
+                    case "Essential Oil": // Artisan Valley
                         return strPutItemInMachine(itemName: "Dried Flower", machineName: "Drying Rack");
                     
-                    case "Lime":
-                        return strFruitTreeDuringSeason("treeLime", "spring");
-                    
-                    case "Papaya":
-                        return strFruitTreeDuringSeason("treePapaya", "summer", isDesertKnown()? "shopOasis" : "shopUnknown");
-                    
-                    case "Walnut":
-                        return strFruitTreeDuringSeason("treeWalnut", "fall");
-                    
-                    case "Persimmon":
-                        return strFruitTreeDuringSeason("treePersimmon", "winter");
-                    
-                    /********** [Challenging PPJA] Bulletin Board **********/
+                    /********** [Challenging CC Bundles (PPJA)] Bulletin Board **********/
                     
                     // [Challenging PPJA] Chef's Bundle
                     
-                    case "Poached Pear":
+                    case "Poached Pear": // More Recipes
                         return strCookRecipe("Poached Pear");
                     
-                    case "Avocado Eel Roll":
+                    case "Avocado Eel Roll": // More Recipes
                         return strCookRecipe("Avocado Eel Roll");
                     
-                    case "Rich Tiramisu":
+                    case "Rich Tiramisu": // Even More Recipes
                         return strCookRecipe("Rich Tiramisu");
                     
-                    case "Mushroom and Pepper Crepe":
+                    case "Mushroom and Pepper Crepe": // Even More Recipes
                         return strCookRecipe("Mushroom and Pepper Crepe");
                     
-                    case "Halloumi Burger":
+                    case "Halloumi Burger": // Even More Recipes
                         return strCookRecipe("Halloumi Burger");
                     
-                    case "Sparkling Wine":
+                    case "Sparkling Wine": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Wine, ItemID.BC_Keg);
                     
-                    case "Gin":
+                    case "Gin": // Artisan Valley
                         return strPutItemInMachine(itemName: "Juniper Berry", machineName: "Still");
                     
-                    case "Brandy":
+                    case "Brandy": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Wine, machineName: "Still");
                     
-                    case "Affogato":
+                    case "Affogato": // Artisan Valley
                         return strPutItemInMachine(itemName: "Vanilla Ice Cream", machineName: "Espresso Machine");
                     
                     // [Challenging PPJA] Dye Bundle
                     
-                    case "Gold Thread":
+                    case "Gold Thread": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_GoldBar, ItemID.BC_Loom);
                     
-                    case "Yarn":
+                    case "Yarn": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Fiber, ItemID.BC_Loom);
                     
-                    case "Berry Fusion Kombucha":
+                    case "Berry Fusion Kombucha": // Artisan Valley
                         return strPutItemInMachine(itemName: "Berry Fusion Tea", machineName: "Glass Jar");
                     
-                    case "Dried Flower":
+                    case "Dried Flower": // Artisan Valley
                         return strPutItemInMachine(StardewValley.Object.flowersCategory.ToString(), machineName: "Drying Rack");
                     
-                    case "Herbal Lavender":
+                    case "Herbal Lavender": // Mizu's Flowers
                         return strSeasonalCrop("summer", quality);
                     
                     // [Challenging PPJA] Field Research Bundle
                     
-                    case "Handmade Soap":
+                    case "Handmade Soap": // Artisan Valley
                         return strPutItemInMachine(StardewValley.Object.flowersCategory.ToString(), machineName: "Soap Press") + "\n"
                              + strPutItemInMachine(itemLiteral: str.Get("itemCategoryNut"), machineName: "Soap Press");
                     
-                    case "Aloe":
+                    case "Aloe": // Fruits and Veggies
                         return strSeasonalCrop("summer", quality, "shopClinic", startingYear: 2);
                     
-                    case "Ground Vegetable":
+                    case "Ground Vegetable": // Artisan Valley
                         return strPutItemInMachine(StardewValley.Object.VegetableCategory.ToString(), machineName: "Grinder");
                     
-                    case "Breakfast Tea":
+                    case "Breakfast Tea": // More Recipes
                         return strCookRecipe("Breakfast Tea");
-                    
-                    case "Dried Fruit":
-                        return strPutItemInMachine(StardewValley.Object.FruitsCategory.ToString(), machineName: "Dehydrator");
                     
                     // [Challenging PPJA] Fodder Bundle
                     
-                    case "Soybean":
+                    case "Soybean": // Fruits and Veggies
                         return strSeasonalCrop("fall", quality, startingYear: 2);
                     
-                    case "Cabbage":
+                    case "Cabbage": // Fruits and Veggies
                         return strSeasonalCrop(seasonList: new string[] { "spring", "fall" }, quality: quality);
                     
-                    case "Carrot":
+                    case "Carrot": // Fruits and Veggies
                         return strSeasonalCrop("fall", quality);
                     
-                    case "Apple Rind":
+                    case "Apple Rind": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Apple, machineName: "Grinder");
                     
-                    case "Granny Smith Apple":
+                    case "Granny Smith Apple": // PPJA More Trees
                         return strFruitTreeDuringSeason("treeGranny", "fall");
-                    
-                    case "Eucalyptus Leaves":
-                        return strFruitTreeDuringSeason("treeEucalyptus", "spring", "shopClinic", startingYear: 2);
                     
                     // [Challenging PPJA] Enchanter's Bundle
                     
-                    case "Candle":
+                    case "Candle": // Artisan Valley
                         return strPutItemInMachine(StardewValley.Object.flowersCategory.ToString(), machineName: "Wax Barrel");
                     
-                    case "Sun Tea":
+                    case "Sun Tea": // More Recipes
                         return strCookRecipe("Sun Tea");
                     
-                    case "Dried Mushroom":
-                        return strPutItemInMachine(itemLiteral: str.Get("itemCategoryMushroom"), machineName: "Drying Rack");
-                    
-                    case "Moonshine":
+                    case "Moonshine": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_Corn, machineName: "Still");
                     
-                    /********** [Challenging PPJA] The Missing Bundle **********/
+                    /********** [Challenging CC Bundles (PPJA)] The Missing Bundle **********/
                     
-                    case "Prismatic Ice Cream":
+                    case "Prismatic Ice Cream": // Artisan Valley
                         return strPutItemInMachine(ItemID.IT_PrismaticShard, machineName: "Ice Cream Machine");
                     
-                    case "Jalapeno Extract":
+                    case "Jalapeno Extract": // Artisan Valley
                         return strPutItemInMachine(itemName: "Jalapeno", machineName: "Pepper Blender");
                     
-                    case "Popcorn":
+                    case "Popcorn": // Even More Recipes
                         return strCookRecipe("Popcorn");
                     
-                    case "Wasabi Peas":
+                    case "Wasabi Peas": // Even More Recipes
                         return strCookRecipe("Wasabi Peas");
                     
-                    case "Seaweed Chips":
+                    case "Seaweed Chips": // Even More Recipes
                         return strCookRecipe("Seaweed Chips");
                     
-                    case "Hot Irish Coffee":
+                    case "Hot Irish Coffee": // Artisan Valley
                         return strPutItemInMachine(itemName: "Whiskey", machineName: "Espresso Machine");
                     
-                    case "Dark Ale":
+                    case "Dark Ale": // Artisan Valley
                         return strPutItemInMachine(itemName: "Durum", machineID: ItemID.BC_Keg);
                     
-                    case "Strawberry Lemonade":
+                    case "Strawberry Lemonade": // Even More Recipes
                         return strCookRecipe("Strawberry Lemonade");
                     
-                    case "Ice Cream Brownie":
+                    case "Ice Cream Brownie": // Even More Recipes
                         return strCookRecipe("Ice Cream Brownie");
-                    
-                    /********** [Challenging Bundles Vanilla_SVE] Fish Tank **********/
-                    
-                    // [Challenging Vanilla_SVE] River Fish Bundle
-                    
-                    case "Butterfish":
-                        return strFishBase("waterShearwaterBridge",
-                                           seasonList: new string[] { "spring", "summer", "fall" }, weatherKey: "weatherSun");
-                    
-                    // [Challenging Vanilla_SVE] Lake Fish Bundle
-                    
-                    case "Minnow":
-                        return strFishBase(waterList: new string[] { "waterBlueMoonVineyard", "waterShearwaterBridge", "waterAdventurerSummit" },
-                                           start: "6am", end: "6pm");
-                    
-                    // [Challenging Vanilla_SVE] Ocean Fish Bundle
-                    
-                    case "Clownfish":
-                        return strFishBase(waterList: new string[] { "waterBeach", "waterBlueMoonVineyard" },
-                                           start: "10am", end: "5pm", weatherKey: "weatherSun")
-                             + (isIslandKnown()? "\n" + strFishBase("waterIsland", "10am", "5pm", weatherKey: "weatherSun") : "");
-                    
-                    case "Starfish":
-                        return strFishBase(waterList: new string[] { "waterBeach", "waterBlueMoonVineyard" },
-                                           seasonList: new string[] { "spring", "summer", "fall" }, start: "6am", end: "10pm")
-                             + (isIslandKnown()? "\n" + strFishBase("waterIsland", "6am", "10pm") : "");
-                    
-                    // [Challenging Vanilla_SVE] Specialty Fish Bundle
-                    
-                    case "Puppyfish":
-                        return strFishBase("waterShearwaterBridge", seasonList: new string[] { "spring", "summer", "fall" }) + "\n"
-                             + strFishBase("waterForestWest", seasonKey: "summer");
-                    
-                    /********** [Challenging Bundles Vanilla_SVE] Bulletin Board **********/
-                    
-                    // [Challenging Vanilla_SVE] Chef's Bundle
-                    
-                    case "Big Bark Burger":
-                        return strCookRecipe("Big Bark Burger");
-                        // (cooking recipe from saloon if you have 5 hearts with gus)
-                    
-                    case "Glazed Butterfish":
-                        return strCookRecipe("Glazed Butterfish") + "\n"
-                             + strFishPond(fishItemName: "Butterfish", numRequired: 10);
-                    
-                    // [Challenging Vanilla_SVE] Field Research Bundle
-                    
-                    case "King Salmon":
-                        return strFishBase("waterForestWest", "6am", "10pm", seasonList: new string[] { "spring", "summer" });
-                    
-                    // [Challenging Vanilla_SVE] Enchanter's Bundle
-                    
-                    case "Frog":
-                        return strFishBase("waterMountain", "6pm", "2am",
-                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherRain");
-                    
-                    /********** [Challenging Bundles Vanilla_SVE] The Missing Bundle **********/
-                    
-                    case "Void Pebble":
-                        return strFishPond(fishItemName: "Void Eel", numRequired: 8) + "\n"
-                             + strDroppedByMonster("Mummy") + "\n"
-                             + strDroppedByMonster("Serpent") + "\n"
-                             + strDroppedByMonster("Carbon Ghost");
-                    
-                    case "Void Salmon Sushi":
-                        return strCookRecipe("Void Salmon Sushi");
-                    
-                    case "Void Delight":
-                        return strCookRecipe("Void Delight");
                 }
                 
                 return ModEntry.debugShowUnknownIDs? "??? (ID: " + id + ")" : "";
@@ -2594,7 +2832,7 @@ namespace CommunityCenterHelper
                 return "";
             }
         }
-       
+        
         /*******************************
          ** Suggestion String Methods **
          *******************************/
@@ -2882,10 +3120,17 @@ namespace CommunityCenterHelper
             if (machineID == ItemID.BC_StatueOfPerfection
              && !Utility.doesItemExistAnywhere("(BC)" + ItemID.BC_StatueOfPerfection))
             {
-                if (Game1.getFarm().grandpaScore.Value < 4) // Haven't had evaluation, or didn't get four candles
+                try
+                {
+                    if (Game1.getFarm().grandpaScore.Value < 4) // Haven't had evaluation, or didn't get four candles
+                        machineUnlockTip = parenthesize(str.Get("statueOfPerfectionTip"));
+                    else // Got four candles, so it's waiting to be collected at shrine
+                        machineUnlockTip = parenthesize(str.Get("statueOfPerfectionAvailable"));
+                }
+                catch // Error in getFarm
+                {
                     machineUnlockTip = parenthesize(str.Get("statueOfPerfectionTip"));
-                else // Got four candles, so it's waiting to be collected at shrine
-                    machineUnlockTip = parenthesize(str.Get("statueOfPerfectionAvailable"));
+                }
             }
             else
             {
@@ -2956,7 +3201,7 @@ namespace CommunityCenterHelper
                         locationKey = "monsterAreaMinesAll";
                         break;
                     case "Bug":
-                    case "Cave Fly":
+                    case "Fly":
                     case "Rock Crab":
                     case "Blue Squid":
                         startFloor = 1;
@@ -3117,12 +3362,16 @@ namespace CommunityCenterHelper
         /// <param name="recipeName">Internal string name of the recipe.</param>
         private static string strCraftRecipe(string recipeName)
         {
-            string[] recipeData = DataLoader.CraftingRecipes(Game1.content)[recipeName].Split('/');
+            System.Collections.Generic.Dictionary<string, string> recipes = DataLoader.CraftingRecipes(Game1.content);
+            if (!recipes.ContainsKey(recipeName))
+                return str.Get("unknownSource");
+            
+            string[] recipeData = recipes[recipeName].Split('/');
             string ingredientDefinition = recipeData[0];
             
             string recipeDesc = "";
             
-            if (Game1.player.knowsRecipe(recipeName)) // Have recipe, so list ingredients
+            if (ModEntry.debugTreatRecipesAsKnown || Game1.player.knowsRecipe(recipeName)) // Have recipe, so list ingredients
                 recipeDesc = getRecipeIngredientsString(ingredientDefinition);
             else // Describe where to get recipe
             {
@@ -3137,6 +3386,10 @@ namespace CommunityCenterHelper
             {
                 case "Transmute (Fe)":
                 case "Transmute (Au)":
+                case "Wild Seeds (Sp)":
+                case "Wild Seeds (Su)":
+                case "Wild Seeds (Fa)":
+                case "Wild Seeds (Wi)":
                     includeRecipeName = true;
                     break;
             }
@@ -3150,7 +3403,11 @@ namespace CommunityCenterHelper
         /// <param name="recipeName">Internal string name of the recipe.</param>
         private static string strCookRecipe(string recipeName)
         {
-            string[] recipeData = DataLoader.CookingRecipes(Game1.content)[recipeName].Split('/');
+            System.Collections.Generic.Dictionary<string, string> recipes = DataLoader.CookingRecipes(Game1.content);
+            if (!recipes.ContainsKey(recipeName))
+                return str.Get("unknownSource");
+            
+            string[] recipeData = recipes[recipeName].Split('/');
             string ingredientDefinition = recipeData[0];
             
             string recipeDesc = "";
@@ -3160,7 +3417,7 @@ namespace CommunityCenterHelper
             
             if (Game1.player.HouseUpgradeLevel <= 0) // Don't have house upgrade to cook anything yet
                 recipeDesc = parenthesize(str.Get("recipeTipHouseUpgrade"));
-            else if (Game1.player.knowsRecipe(recipeName)) // Have recipe, so list ingredients
+            else if (ModEntry.debugTreatRecipesAsKnown || Game1.player.knowsRecipe(recipeName)) // Have recipe, so list ingredients
                 recipeDesc = getRecipeIngredientsString(ingredientDefinition);
             else // Describe where to get recipe
             {
@@ -3304,7 +3561,7 @@ namespace CommunityCenterHelper
         /// <summary>Returns item name for the current language (or internal name), or category for negative category IDs.</summary>
         /// <param name="id">The item ID or negative category ID.</param>
         /// <param name="internalName">Whether to return the internal name instead of the display name.</param>
-        private static string getItemName(string id, bool internalName = false)
+        public static string getItemName(string id, bool internalName = false)
         {
             int intID;
             if (int.TryParse(id, out intID))
@@ -3382,10 +3639,7 @@ namespace CommunityCenterHelper
             if (recipeData.Length > 3) // Long enough to contain "is big craftable" bool
                 bool.TryParse(recipeData[3], out bigCraftable);
             
-            if (!bigCraftable)
-                return TokenParser.ParseText(Game1.objectData[recipeData[2]].DisplayName);
-            else
-                return TokenParser.ParseText(Game1.bigCraftableData[recipeData[2]].DisplayName);
+            return TokenParser.ParseText(recipeData[5]);
         }
         
         /// <summary>Returns display name of roe for a specific fish.</summary>
@@ -3530,9 +3784,16 @@ namespace CommunityCenterHelper
                     break;
             }
             
-            // Manual mail unlocks (often with multiple factors) for mod-added recipes.
+            // Manual mail unlocks, often with multiple factors.
             switch (recipeName)
             {
+                // Base game recipes
+                case "Monster Musk":
+                    recipeSources = str.Get("conditionalMailSpecialOrder",
+                        new { orderName = TokenParser.ParseText("[LocalizedText Strings\\SpecialOrderStrings:Wizard2_Name]") }); // Prismatic Jelly
+                    break;
+                
+                // Mod-added recipes
                 case "Butter Churn":
                     if (modRegistry.IsLoaded("ppja.artisanvalleyforMFM")) // Artisan Valley mail
                         recipeSources = conditionalMailSource("Marnie", 4, "farming", 5);
@@ -3561,6 +3822,52 @@ namespace CommunityCenterHelper
                 case "Chocolate Mouse Bread":
                     if (modRegistry.IsLoaded("ppja.EvenMoreRecipesforMFM")) // Even More Recipes mail
                         recipeSources = conditionalMailSource("Penny", 8, year: 3);
+                    break;
+                
+                case "Mushroom Berry Rice":
+                    if (modRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP")) // Added to Adventurer's Guild shop by SVE
+                        recipeSources = str.Get("shopGuild");
+                    break;
+                
+                case "Mixed Berry Pie":
+                    if (modRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP")) // Added to Saloon shop by SVE
+                        recipeSources = str.Get("shopSaloon");
+                    break;
+                
+                case "Baked Berry Oatmeal":
+                    if (modRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP")) // SVE bear shop
+                        recipeSources = str.Get("shopWestForestBear");
+                    break;
+                
+                case "Pillowsoft Cheezy Sandwich":
+                    if (modRegistry.IsLoaded("Rafseazz.RSVCP")) // Ridgeside Village hotel pastry shop
+                        recipeSources = str.Get("shopHotelPastry");
+                    break;
+                
+                case "Matcha Latte":
+                    if (modRegistry.IsLoaded("Rafseazz.RSVCP")) // Ridgeside Village mail
+                        recipeSources = str.Get("conditionalMailSpecialOrder",
+                            new { orderName = TokenParser.ParseText("[LocalizedText Strings\\SpecialOrderStrings:RSV.SpecialOrder.MorningDrinks_Name]") });
+                    break;
+                
+                case "Clementine Cake":
+                    if (modRegistry.IsLoaded("Rafseazz.RSVCP")) // Ridgeside Village mail
+                        recipeSources = conditionalMailSource("Shanice", 8);
+                    break;
+                
+                case "Highland Blueberry Pie":
+                    if (modRegistry.IsLoaded("Rafseazz.RSVCP")) // Ridgeside Village mail
+                        recipeSources = conditionalMailSource("Malaya", 8);
+                    break;
+                
+                case "Fluffy Apple Crumble":
+                    if (modRegistry.IsLoaded("Rafseazz.RSVCP")) // Ridgeside Village mail
+                        recipeSources = conditionalMailSource("Blair", 8);
+                    break;
+                
+                case "Sweet Cranberry Cheesecake":
+                    if (modRegistry.IsLoaded("Rafseazz.RSVCP")) // Ridgeside Village mail
+                        recipeSources = conditionalMailSource("Faye", 8);
                     break;
             }
             
@@ -3629,7 +3936,12 @@ namespace CommunityCenterHelper
                     break;
                 
                 case "Grass Starter":
+                case "Dehydrator":
                     recipeSources += separator + str.Get("shopPierre");
+                    break;
+                    
+                case "Fish Smoker":
+                    recipeSources += separator + str.Get("shopFish");
                     break;
                 
                 case "Weathered Floor":
@@ -3807,6 +4119,12 @@ namespace CommunityCenterHelper
                         recipeSources += separator + str.Get("shopKrobus")
                                        + parenthesize(str.Get("recipeSourceFriendship",
                                                               new { person = getPersonName("Krobus"), hearts = 10 }));
+                    break;
+                
+                // RSV Cooking Recipes
+                
+                case "Highland Ice Cream":
+                    recipeSources += separator + str.Get("shopPikaRestaurant");
                     break;
             }
             
@@ -4018,20 +4336,40 @@ namespace CommunityCenterHelper
         /// <returns>-1: No coop built; 0: Coop; 1: Big Coop; 2: Deluxe Coop</returns>
         private static int getCoopLevel()
         {
-            return Game1.getFarm().isBuildingConstructed("Deluxe Coop")? 2
-                 : Game1.getFarm().isBuildingConstructed("Big Coop")? 1
-                 : Game1.getFarm().isBuildingConstructed("Coop")? 0
-                                                                : -1;
+            Farm farm;
+            try
+            {
+                farm = Game1.getFarm();
+            }
+            catch // Failed to get farm, possibly because no game is loaded
+            {
+                return -1;
+            }
+            
+            return farm.isBuildingConstructed("Deluxe Coop")? 2
+                 : farm.isBuildingConstructed("Big Coop")? 1
+                 : farm.isBuildingConstructed("Coop")? 0
+                                                     : -1;
         }
         
         /// <summary>Returns a number representing the highest-level barn on the farm.</summary>
         /// <returns>-1: No barn built; 0: Barn; 1: Big Barn; 2: Deluxe Barn</returns>
         private static int getBarnLevel()
         {
-            return Game1.getFarm().isBuildingConstructed("Deluxe Barn")? 2
-                 : Game1.getFarm().isBuildingConstructed("Big Barn")? 1
-                 : Game1.getFarm().isBuildingConstructed("Barn")? 0
-                                                                : -1;
+            Farm farm;
+            try
+            {
+                farm = Game1.getFarm();
+            }
+            catch // Failed to get farm, possibly because no game is loaded
+            {
+                return -1;
+            }
+            
+            return farm.isBuildingConstructed("Deluxe Barn")? 2
+                 : farm.isBuildingConstructed("Big Barn")? 1
+                 : farm.isBuildingConstructed("Barn")? 0
+                                                     : -1;
         }
         
         /// <summary>Returns whether the bridge on the beach has been fixed, allowing access to the east side.</summary>

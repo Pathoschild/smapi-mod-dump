@@ -104,6 +104,15 @@ namespace CustomTracker
                 api.AddBoolOption
                 (
                     mod: ModManifest,
+                    name: () => Helper.Translation.Get("EnableTrackingIndoors.Name"),
+                    tooltip: () => Helper.Translation.Get("EnableTrackingIndoors.Desc"),
+                    getValue: () => Config.EnableTrackingIndoors,
+                    setValue: value => Config.EnableTrackingIndoors = value
+                );
+
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
                     name: () => Helper.Translation.Get("TrackDefaultForage.Name"),
                     tooltip: () => Helper.Translation.Get("TrackDefaultForage.Desc"),
                     getValue: () => Config.TrackDefaultForage,

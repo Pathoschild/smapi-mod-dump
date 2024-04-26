@@ -11,11 +11,11 @@
 {
 	"Name": "Regular Quality",
 	"Author": "desto",
-	"Version": "1.0.1",
+	"Version": "1.0.2",
 	"Description": "Drop the quality level of all items to be regular quality.",
 	"UniqueID": "desto.RegularQuality",
 	"EntryDll": "RegularQuality.dll",
-	"MinimumApiVersion": "2.10.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "Nexus:5090" ],
 	"Dependencies": [
 		{"UniqueID": "minervamaga.CP.HarderCCBundles", "IsRequired": false}

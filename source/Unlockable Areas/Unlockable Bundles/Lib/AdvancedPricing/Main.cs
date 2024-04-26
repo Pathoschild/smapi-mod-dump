@@ -14,20 +14,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib.AdvancedPricing
 {
     public class Main
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             AdvancedPricingItem.Initialize();
         }
     }

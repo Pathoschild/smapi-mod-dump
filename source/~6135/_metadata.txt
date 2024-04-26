@@ -7,9 +7,9 @@ mods:
    Profit Calculator → DGA Support
 
 latest commit:
-   commit 93f92e4bba08f92714db6b80da7ca95da6f45901
+   commit 41f7b87082e5be2f7b1d027f39070c0439a5eb62
    Author: Gui Costa <guibscosta@hotmail.com>
-   Date:   Mon Apr 1 00:51:50 2024 +0100
+   Date:   Wed Apr 3 18:43:37 2024 +0100
    
-       Changed mod ID
+       Update README.md
    

@@ -430,6 +430,8 @@ internal class ModConfig
     /// </summary>
     public KeybindList TimeNSeasonKey { get; set; } = KeybindList.Parse("Q");
 
+    public KeybindList RepeatLastTextKey { get; set; } = KeybindList.Parse("LeftAlt + Space, RightAlt + Space");
+
     /// <summary>
     /// Whether to speak 'X:' and 'Y:' along with co-ordinates or not.
     /// </summary>
@@ -466,11 +468,37 @@ internal class ModConfig
     public Boolean DisableBushVerbosity { get; set; } = false;
 
     /// <summary>
+    /// If enabled, does not speak debris descriptions.
+    /// </summary>
+    public Boolean DisableDescriptiveDebris { get; set; } = false;
+
+    /// <summary>
+    /// If enabled, doesn't speak colors for slimes and big slimes.
+    /// </summary>
+    public Boolean DisableColorfulSlime { get; set; } = false;
+
+    /// <summary>
+    /// If enabled, uses expanded color set for matching.
+    /// </summary>
+    public Boolean ExtraColors { get; set; } = false;
+
+    /// <summary>
     /// If enabled, does not pluralize inventory with fluent
     /// </summary>
     public Boolean DisableInventoryFluentPluralization { get; set; } = false;
 
     /// <summary>
+    /// <summary>
+    /// If disabled, speaks "You've got mail!" with tts instead of playing the sound.
+    /// </summary>
+    public Boolean YouveGotMailSound { get; set; } = true;
+
+    /// <summary>
+    /// <summary>
+    /// If enabled, toggles on in-game cheats / debug commands.
+    /// </summary>
+    public Boolean EnableCheats { get; set; } = false;
+
     /// Sets speech rate for the Mac TTS.
     /// </summary>
     public Single MacSpeechRate { get; set; } = 220;

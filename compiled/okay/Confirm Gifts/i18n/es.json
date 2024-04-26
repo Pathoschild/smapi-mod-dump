@@ -1,0 +1,13 @@
+﻿{
+	// Generic Mod Config Menu
+	"config.show-likes.label": "Mostrar Preferencias",
+	"config.show-likes.desc": "Actívelo para mostrar cuánto le gustará el regalo al NPC en el diálogo de confirmación.",
+
+	// In-Game Text
+	"dialogue.confirmation": "¿Darle {{itemName}} {{likesText}}a {{nPCName}}?",
+	"likes.loved": "amado",
+	"likes.liked": "le gusta",
+	"likes.neutral": "neutral",
+	"likes.disliked": "no le gusta",
+	"likes.hated": "odiado"
+}

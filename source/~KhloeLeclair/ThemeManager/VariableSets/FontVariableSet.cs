@@ -124,10 +124,6 @@ public class FontVariableSet : BaseVariableSet<IManagedAsset<SpriteFont>> {
 					if (!ModEntry.Instance.TryGetManagedAsset(SpriteFontManager.TINY_FONT_ASSET, out main))
 						throw new Exception($"Could not load managed asset for: {path}");
 
-				} else if (path.Equals("tinyFontBorder", StringComparison.OrdinalIgnoreCase)) {
-					if (!ModEntry.Instance.TryGetManagedAsset(SpriteFontManager.TINY_FONT_BORDER_ASSET, out main))
-						throw new Exception($"Could not load managed asset for: {path}");
-
 				} else
 					throw new Exception($"invalid default font: {path}");
 			} else

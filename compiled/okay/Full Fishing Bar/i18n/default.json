@@ -1,0 +1,13 @@
+{
+  "Option.BarSizePercentage.Name": "Bobber Bar Size",
+  "Option.BarSizePercentage.Tooltip": "What percentage of the playspace do you want the Bobber Bar to take up?",
+  "Option.Enabled.Name": "Enabled?",
+  "Option.Enabled.Tooltip": "Whether or not to resize the fishing bobber bar.",
+  "Option.ExceptBossFish.Name": "Disable for Boss Fish?",
+  "Option.ExceptBossFish.Tooltip": "Whether or not to have the resized fishing bobber bar for boss fish.",
+  "Option.OnlyCorkBobber.Name": "Only work with Cork Bobber?",
+  "Option.OnlyCorkBobber.Tooltip": "Whether or not the Bobber Bar resizing only works when a Cork Bobber is equipped on the current fishing rod.",
+
+  "Section.Customizations": "Customizations",
+  "Section.General": "General"
+}

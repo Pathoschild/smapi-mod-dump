@@ -1,0 +1,92 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Name": "Barley Tea",
+    "Description": "Steep for at least 10 minutes, then pour over ice.",
+    "Category": "ArtisanGoods",
+    "Edibility": 75, 
+    "EdibleIsDrink": true,
+    "EdibleBuffs":
+    {
+        "Farming": 0,
+        "Fishing": 1,
+        "Mining": 0,
+        "Luck": 0,
+        "Foraging": 0,
+        "MaxStamina": 20,
+        "MagnetRadius": 0,
+        "Speed": 0,
+        "Defense": 0,
+        "Attack": 0,
+        "Duration": 180
+    },
+    "Price": 7, 
+    "IsColored": false, 
+
+    "CanPurchase": true, 
+    "PurchaseFrom": "SandyHouse",
+    "PurchasePrice": 200,
+    "PurchaseRequirements": null,
+	"ContextTags": ["color_yellow, tea_item"],
+
+    "Recipe": 
+    {
+        "ResultCount": 3, 
+        "Ingredients": [
+            {
+                "Object": "Barley", 
+                "Count": 1
+            }
+        ],
+        "CanPurchase": true, 
+        "PurchaseFrom": "SandyHouse",
+        "PurchasePrice": 800, 
+        "PurchaseRequirements": null
+    },
+
+    "GiftTastes": 
+    {
+        "Love":[ "Emily", "Evelyn", "Sandy", "Leah"],
+        "Like": ["Leo", "Penny", "Harvey"],
+        "Neutral": null, 
+        "Dislike": ["Kent", "Clint", "Vincent", "Jas"],
+        "Hate": ["Shane"]
+    },
+
+    "NameLocalization":
+    {
+        "es": "Te de cebada",
+        "ko": "보리차",
+        "de": "Gerstentee",
+        "fr": "Thé d'orge",
+        "hu": "Árpa tea",
+        "it": "Tè d'orzo",
+        "ja": "麦茶",
+        "pt": "Chá de cevada",
+        "ru": "Ячменный чай",
+        "tr": "Arpa çayı",
+        "zh": "大麦茶"
+    },
+    "DescriptionLocalization":
+    {
+        "es": "Deje reposar durante al menos 10 minutos y luego vierta sobre hielo.",
+        "ko": "최소 10분 동안 우려낸 다음 얼음 위에 붓습니다.",
+        "de": "Mindestens 10 Minuten ziehen lassen, dann auf Eis gießen.",
+        "fr": "Laissez infuser au moins 10 minutes, puis versez sur de la glace.",
+        "hu": "Áztasd legalább 10 percig, majd öntsd jégre.",
+        "it": "Lasciare in infusione per almeno 10 minuti, quindi versare sul ghiaccio.",
+        "ja": "少なくとも10分間浸してから、氷の上に注ぎます。",
+        "pt": "Настаивайте не менее 10 минут, затем залейте льдом.",
+        "ru": "Настаивайте не менее 10 минут, затем залейте льдом.",
+        "tr": "En az 10 dakika demlendikten sonra üzerine buz dökün.",
+        "zh": "浸泡至少 10 分钟，然后倒在冰上。"
+    }
+}

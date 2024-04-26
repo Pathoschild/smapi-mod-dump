@@ -1,0 +1,15 @@
+﻿{
+	"Name": "RecipesInMail",
+	"Author": "Freaksaus",
+	"Version": "1.0.0",
+	"Description": "Receive new recipes through your mailbox so you'll never miss one!",
+	"UniqueID": "freaksaus.recipesinmail",
+	"EntryDll": "RecipesInMail.dll",
+	"MinimumApiVersion": "4.0.0",
+	"Dependencies": [
+		{
+			"UniqueID": "DIGUS.MailFrameworkMod",
+			"MinimumVersion": "1.1.16"
+		}
+	]
+}

@@ -1,0 +1,13 @@
+{
+	"Name": "Example Dark",
+	"For": [
+		"ThisMod.Does.Not.Exist"
+	],
+
+	"CustomMouse": false,
+	"CustomScroll": true,
+	"CustomTooltip": true,
+	
+	"TextColor": "#B8DCF5",
+	"TextShadowColor": "#1F1B4A"
+}

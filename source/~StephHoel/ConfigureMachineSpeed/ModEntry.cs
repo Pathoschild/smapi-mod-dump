@@ -14,8 +14,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
-using Utils;
-using Utils.Config;
 using Object = StardewValley.Object;
 
 namespace ConfigureMachineSpeed;
@@ -33,6 +31,18 @@ public class ModEntry : Mod
         RemoveObsoleteFiles(helper, ["Utils.pdb"]);
 
         _config = helper.ReadConfig<ModConfig>();
+
+        // Check if there are new machines that are not in the config file
+        var newMachines = Machines.GetNewMachines();
+        if (_config.Machines.Length != newMachines.Length)
+        {
+            var machinesExcept = newMachines.Except(_config.Machines, new MachinesComparer());
+
+            var mac = _config.Machines.Concat(machinesExcept).ToArray();
+            _config.Machines = mac;
+
+            helper.WriteConfig(_config);
+        }
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -144,6 +154,7 @@ public class ModEntry : Mod
                         "Heavy Tapper" => I18n.HeavyTapper(),
                         "Bone Mill" => I18n.BoneMill(),
                         "Geode Crusher" => I18n.GeodeCrusher(),
+                        "Mushroom Log" => I18n.MushroomLog(),
                         _ => string.Empty,
                     };
                 }
@@ -188,12 +199,19 @@ public class ModEntry : Mod
 
     private void configureAllMachines()
     {
-        var locations = Locations.GetLocations();
+        var locations = Game1.locations.Concat(
+                            from location in Game1.locations
+                            from building in location.buildings
+                            where building.indoors.Value != null
+                            select building.indoors.Value
+                        );
 
-        foreach (MachineConfig cfg in _config.Machines)
+        foreach (GameLocation item in locations)
         {
-            foreach (GameLocation item in locations)
+            foreach (MachineConfig cfg in _config.Machines)
             {
+                //Monitor.Log($"Machine {cfg.Name} in {item.Name}", LogLevel.Debug);
+
                 bool func(KeyValuePair<Vector2, StardewValley.Object> p) => p.Value.name == cfg.Name;
                 var pairs = item.objects.Pairs;
                 var enumerator2 = pairs.GetEnumerator();

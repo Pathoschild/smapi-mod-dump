@@ -11,9 +11,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.Powers;
 using StardewValley.GameData.Shops;
+using StardewValley.GameData.Tools;
 using System.Collections.Generic;
 
 namespace HappyHomeDesigner.Framework
@@ -28,6 +30,8 @@ namespace HappyHomeDesigner.Framework
 		public const string CARD_ID = MOD_ID + "_MembershipCard";
 		public const string CARD_MAIL = MOD_ID + "_CardMail";
 		public const string CARD_FLAG = MOD_ID + "_IsCollectorMember";
+		public const string PORTABLE_ID = MOD_ID + "_HandCatalogue";
+		public const string FAIRY_MAIL = MOD_ID + "_FairyMail";
 
 		public const string TEXTURE_PATH = "Mods/" + MOD_ID + "/Catalogue";
 		public const string UI_PATH = "Mods/" + MOD_ID + "/UI";
@@ -62,26 +66,55 @@ namespace HappyHomeDesigner.Framework
 			if (name.IsEquivalentTo(UI_PATH))
 				e.LoadFromModFile<Texture2D>($"assets/{whichUI}.png", AssetLoadPriority.Low);
 
-			else if (name.IsEquivalentTo("Data/Furniture"))
-				e.Edit(AddCatalogues, AssetEditPriority.Early);
-
 			else if (name.IsEquivalentTo(TEXTURE_PATH))
 				e.LoadFromModFile<Texture2D>("assets/catalog.png", AssetLoadPriority.Low);
+
+			else if (name.IsEquivalentTo(MAIL_BG))
+				e.LoadFromModFile<Texture2D>("assets/mail.png", AssetLoadPriority.Low);
 
 			else if (name.IsEquivalentTo("Data/Shops"))
 				e.Edit(TagShops, AssetEditPriority.Default);
 
-			else if (name.IsEquivalentTo("Data/Powers"))
-				e.Edit(AddCardPower, AssetEditPriority.Early);
+			else if (!ModEntry.config.ClientMode)
+			{
+				if (name.IsEquivalentTo("Data/Furniture"))
+					e.Edit(AddCatalogues, AssetEditPriority.Early);
 
-			else if (name.IsEquivalentTo("Data/Mail"))
-				e.Edit(AddMail, AssetEditPriority.Early);
+				else if (name.IsEquivalentTo("Data/Powers"))
+					e.Edit(AddCardPower, AssetEditPriority.Early);
 
-			else if (name.IsEquivalentTo("Data/Objects"))
-				e.Edit(AddCardItem, AssetEditPriority.Early);
+				else if (name.IsEquivalentTo("Data/Mail"))
+					e.Edit(AddMail, AssetEditPriority.Early);
 
-			else if (name.IsEquivalentTo(MAIL_BG))
-				e.LoadFromModFile<Texture2D>("assets/mail.png", AssetLoadPriority.Low);
+				else if (name.IsEquivalentTo("Data/Objects"))
+					e.Edit(AddCardItem, AssetEditPriority.Early);
+
+				else if (name.IsEquivalentTo("Data/Tools"))
+					e.Edit(AddHandCatalogue, AssetEditPriority.Early);
+			}
+		}
+
+		private static void AddHandCatalogue(IAssetData asset)
+		{
+			if (asset.Data is Dictionary<string, ToolData> data)
+			{
+				data.TryAdd(
+					PORTABLE_ID,
+					new()
+					{
+						Name = "Magic Catalogue",
+						DisplayName = i18n.Get("item.portable.name"),
+						Description = i18n.Get("item.portable.desc"),
+						Texture = TEXTURE_PATH,
+						SpriteIndex = 11,
+						ClassName = "GenericTool",
+						SetProperties = new()
+						{
+							{nameof(Tool.InstantUse), "True"}
+						}
+					}
+				);
+			}
 		}
 
 		private static void AddCardItem(IAssetData asset)
@@ -96,7 +129,7 @@ namespace HappyHomeDesigner.Framework
 						DisplayName = i18n.Get("item.card.name"),
 						Texture = TEXTURE_PATH,
 						SpriteIndex = 8,
-						Category = StardewValley.Object.trinketCategory,
+						Category = Object.trinketCategory,
 						ExcludeFromFishingCollection = true,
 						ExcludeFromRandomSale = true,
 						ExcludeFromShippingCollection = true
@@ -109,9 +142,13 @@ namespace HappyHomeDesigner.Framework
 		{
 			if (asset.Data is Dictionary<string, string> data)
 			{
-				const string key = "mail.collectorAcceptance.";
-				data.TryAdd( CARD_MAIL,
-					$"[letterbg {MAIL_BG} 0]^{i18n.Get(key + "text")} ^ ^\t\t-Esme Blackbriar%item id (O){CARD_ID} 1 %%[#]{i18n.Get(key + "name")}"
+				data.TryAdd(CARD_MAIL,
+					$"[letterbg {MAIL_BG} 0]^{i18n.Get("mail.collectorAcceptance.text")}" + 
+					$" ^ ^\t\t-Esme Blackbriar%item id (O){CARD_ID} 1 %%[#]{i18n.Get("mail.collectorAcceptance.name")}"
+				);
+
+				data.TryAdd(FAIRY_MAIL,
+					$"[letterbg 2]{i18n.Get("mail.fairyDust.text")}[#]{i18n.Get("mail.fairyDust.name")}"
 				);
 			}
 		}

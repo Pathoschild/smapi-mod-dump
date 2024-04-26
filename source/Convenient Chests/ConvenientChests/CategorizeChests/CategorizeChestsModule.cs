@@ -28,13 +28,12 @@ namespace ConvenientChests.CategorizeChests {
 
         protected string SavePath => Path.Combine("savedata", $"{Constants.SaveFolderName}.json");
         protected string AbsoluteSavePath => Path.Combine(ModEntry.Helper.DirectoryPath, SavePath);
+
         private SaveManager SaveManager { get; set; }
-
-
         private WidgetHost WidgetHost { get; set; }
 
         internal bool ChestAcceptsItem(Chest chest, Item item) => ChestAcceptsItem(chest, item.ToBase().ToItemKey());
-        private bool ChestAcceptsItem(Chest chest, ItemKey itemKey) 
+        private bool ChestAcceptsItem(Chest chest, ItemKey itemKey)
             => !ItemBlacklist.Includes(itemKey) && ChestDataManager.GetChestData(chest).Accepts(itemKey);
 
         public CategorizeChestsModule(ModEntry modEntry) : base(modEntry) {
@@ -55,7 +54,7 @@ namespace ConvenientChests.CategorizeChests {
 
             // Save Events
             SaveManager = new SaveManager(ModEntry.ModManifest.Version, this);
-            this.Events.GameLoop.Saving += OnSaving;
+            Events.GameLoop.Saving += OnSaving;
             OnGameLoaded();
         }
 

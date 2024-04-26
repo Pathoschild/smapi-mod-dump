@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Pravoloxinone",
+  "Author": "TheMightyAmondee",
+  "Version": "1.0.0",
+  "Description": "Adds pravoloxinone to the game, side effects may occur!",
+  "UniqueID": "TheMightyAmondee.Pravoloxinone",
+  "EntryDll": "Pravoloxinone.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:23008"]
+}

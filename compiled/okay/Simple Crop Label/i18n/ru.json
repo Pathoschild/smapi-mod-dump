@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Грибное Дерево",
   "custom-tree.mahogany": "Красное дерево",
   "custom-tree.palm": "Пальма",
+  "custom-tree.green-rain-wild": "Дикое зеленое дождевое дерево",
+  "custom-tree.green-rain-lush": "Пышное зеленое дождевое дерево",
+  "custom-tree.fiddlehead-fern": "Папоротник Фиддлхед",
+  "custom-tree.mystic": "мистика дерево",
 
   // growth info translation
   "growth-info.fully-grown": "развившийся",

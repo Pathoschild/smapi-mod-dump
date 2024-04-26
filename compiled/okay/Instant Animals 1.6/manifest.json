@@ -1,0 +1,12 @@
+﻿{
+  "Name": "Instant Animals 1.6",
+  "Author": "pinocchio1231/Siweipancc",
+  "Version": "2.0.0",
+  "Description": "Instantly add animals from farm , 1.6 fix",
+  "UniqueID": "Siweipancc.Instantanimals",
+  "EntryDll": "InstantAnimals.dll",
+  "MinimumApiVersion": "4.0.4",
+  "UpdateKeys": [
+    "Nexus:21798"
+  ]
+}

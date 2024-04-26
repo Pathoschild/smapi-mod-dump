@@ -80,7 +80,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
 
             int skips = this.GetSkipsThisTick();
             foreach (TerrainFeature tree in this.GetFallingTrees())
-                this.ApplySkips(skips, () => tree.tickUpdate(gameTime));
+                this.ApplySkips(skips, () => tree.tickUpdate(gameTime), until: () => tree.Location is null);
         }
 
 
@@ -102,7 +102,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
                         _ => false
                     };
 
-                    if (isFalling)
+                    if (isFalling && pair.Value.Location != null)
                         yield return pair.Value;
                 }
             }

@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Número máximo de apilamiento",
+    "config.MaxStackingNumber.tooltip": "El número máximo de apilamiento, el valor predeterminado es 999.",
+    "config.DefaultCraftingAmount.name": "Cantidad estándar al Cocinar/Elaborar",
+    "config.DefaultCraftingAmount.tooltip": "Cantidad estándar cuando haces Shift + Clic derecho en el menú Cocinar/Elaborar.",
+    "config.DefaultShopAmount.name": "Cantidad estándar de compra",
+    "config.DefaultShopAmount.tooltip": "Cantidad estándar cuando haces Shift + Clic derecho en una compra de las tiendas.",
+    "config.EnableStackSplitRedux.name": "Habilitar Split Redux",
+    "config.EnableStackSplitRedux.tooltip": "Habilite las funcionalidades de Split Redux. Desmarca esta casilla si tienes algún problema.",
+    "ui.stacksplitmenu.title": "Seleccionar cantidad"
+}

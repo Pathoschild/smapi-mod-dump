@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-using Magic;
+using System;
 using SkillPrestige.Professions;
-using StardewValley;
 
 namespace SkillPrestige.Magic.Framework
 {
@@ -21,29 +20,34 @@ namespace SkillPrestige.Magic.Framework
         ** Fields
         *********/
         /// <summary>The spell points to add.</summary>
-        public readonly int Amount;
+        private readonly int Amount;
+
+        /// <summary>Reduce the player's spell points by the given amount (or add spell points if the number is negative).</summary>
+        private readonly Action<int> UseSpellPoints;
 
 
         /*********
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
-        /// <param name="amount">The mana points to add.</param>
-        public UpgradePointSpecialHandling(int amount)
+        /// <param name="amount">The spell points to add.</param>
+        /// <param name="useSpellPoints">Reduce the player's spell points by the given amount (or add spell points if the number is negative).</param>
+        public UpgradePointSpecialHandling(int amount, Action<int> useSpellPoints)
         {
             this.Amount = amount;
+            this.UseSpellPoints = useSpellPoints;
         }
 
         /// <summary>Apply effects for the profession.</summary>
         public void ApplyEffect()
         {
-            Game1.player.useSpellPoints(-this.Amount, true);
+            this.UseSpellPoints(-this.Amount);
         }
 
         /// <summary>Remove effects for the profession.</summary>
         public void RemoveEffect()
         {
-            Game1.player.useSpellPoints(this.Amount, true);
+            this.UseSpellPoints(this.Amount);
         }
     }
 }

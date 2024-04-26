@@ -6,5 +6,6 @@ for queries and analysis.**
 
 ----
 
-# SDV_WikiLinker
-links to the wikis for sdv NPCs
+# Stardew Wiki Linker
+
+This is a small mod that adds a custom menu that links to each NPC's page on the official SDV Wiki.

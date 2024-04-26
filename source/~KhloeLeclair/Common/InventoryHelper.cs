@@ -14,7 +14,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 using Microsoft.Xna.Framework;
 
@@ -24,13 +23,14 @@ using Leclair.Stardew.Common.Types;
 
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.Tools;
-using StardewValley.Locations;
 using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 
 using StardewModdingAPI;
 using Leclair.Stardew.Common.Integrations.StackQuality;
+using StardewValley.Buildings;
+using Netcode;
+using StardewValley.Inventories;
 
 namespace Leclair.Stardew.Common;
 
@@ -44,138 +44,6 @@ public static class InventoryHelper {
 		intSQ ??= new SQIntegration(mod);
 	}
 
-
-	#region Item Creation
-
-	public static readonly Regex ITEM_REGEX = new(@"^\(([^)]+)\)(.+)$");
-
-	public static string GetItemQualifiedId(Item item) {
-		if (item is Boots boots)
-			return $"(B){boots.indexInTileSheet.Value}";
-
-		if (item is Ring ring)
-			return $"(R){ring.indexInTileSheet.Value}";
-
-		if (item is Furniture furniture)
-			return $"(F){furniture.ParentSheetIndex}";
-
-		if (item is Hat hat)
-			return $"(H){hat.which.Value}";
-
-		if (item is Clothing clothing) {
-			string type;
-			switch (clothing.clothesType.Value) {
-				case 0: // Shirt
-					type = "S";
-					break;
-				case 1: // Pants
-					type = "P";
-					break;
-				case 2: // Accessories
-					type = "A";
-					break;
-				default:
-					throw new ArgumentException($"unknown clothing type \"{clothing.clothesType.Value}\"", nameof(item));
-			}
-
-			return $"({type}){clothing.ParentSheetIndex}";
-		}
-
-		if (item is MeleeWeapon weapon)
-			return $"(W){weapon.InitialParentTileIndex}";
-
-		if (item is SObject sobj) {
-			string type = "O";
-			if (sobj.bigCraftable.Value)
-				type = "BC";
-
-			return $"({type}){sobj.ParentSheetIndex}";
-		}
-
-		throw new ArgumentException($"unknown item type", nameof(item));
-	}
-
-	[return: MaybeNull]
-	public static Item CreateObjectOrRing(int id) {
-		if (!Game1.objectInformation.TryGetValue(id, out string? data) || string.IsNullOrWhiteSpace(data) || id < 0)
-			return null;
-
-		string[] parts = data.Split('/');
-		if (parts.Length > 3 && parts[3] == "Ring")
-			return new Ring(id);
-
-		return new SObject(id, 1);
-	}
-
-	[return: MaybeNull]
-	public static Item CreateItemById(string id, int amount, int quality = 0, bool allow_null = false) {
-		var match = ITEM_REGEX.Match(id);
-		string type;
-		int nid;
-
-		if (match.Success) {
-			type = match.Groups[1].Value;
-			if (!int.TryParse(match.Groups[2].Value, out nid))
-				throw new ArgumentException("invalid item id", nameof(id));
-
-		} else {
-			type = "O";
-			if (!int.TryParse(id, out nid))
-				throw new ArgumentException("invalid item id", nameof(id));
-		}
-
-		Item? result;
-
-		switch(type) {
-			case "BC":
-				result = new SObject(Vector2.Zero, nid);
-				break;
-			case "B":
-				result = new Boots(nid);
-				break;
-			case "F":
-				result = Furniture.GetFurnitureInstance(nid, Vector2.Zero);
-				break;
-			case "H":
-				result = new Hat(nid);
-				break;
-			case "O":
-				result = new SObject(nid, 1);
-				break;
-			case "P":
-			case "S":
-				result = new Clothing(nid);
-				break;
-			case "R":
-				result = new Ring(nid);
-				break;
-			case "W":
-				result = new MeleeWeapon(nid);
-				break;
-			default:
-				result = null;
-				break;
-		}
-
-		if (result is SObject sobj)
-			sobj.Quality = quality;
-
-		if (result is Item item)
-			item.Stack = amount;
-
-		if (result is null && !allow_null)
-			result = new SObject(0, 1);
-
-		return result;
-	}
-
-	#endregion
-
-	#region Item Iteration
-
-
-	#endregion
-
 	#region Discovery
 
 	public static List<LocatedInventory> DiscoverInventories(
@@ -188,7 +56,8 @@ public static class InventoryHelper {
 		int scanLimit = 100,
 		int targetLimit = 20,
 		bool includeSource = true,
-		bool includeDiagonal = true
+		bool includeDiagonal = true,
+		bool includeBuildings = false
 	) {
 		return DiscoverInventories(
 			new AbsolutePosition(location, source),
@@ -199,7 +68,8 @@ public static class InventoryHelper {
 			scanLimit,
 			targetLimit,
 			includeSource,
-			includeDiagonal
+			includeDiagonal,
+			includeBuildings
 		);
 	}
 
@@ -214,9 +84,10 @@ public static class InventoryHelper {
 		int targetLimit = 20,
 		bool includeSource = true,
 		bool includeDiagonal = true,
+		bool includeBuildings = false,
 		int expandSource = 0
 	) {
-		List<AbsolutePosition> positions = new();
+		List<AbsolutePosition> positions = [];
 
 		for (int x = -expandSource; x < source.Width + expandSource; x++) {
 			for (int y = -expandSource; y < source.Height + expandSource; y++) {
@@ -239,7 +110,8 @@ public static class InventoryHelper {
 			scanLimit,
 			targetLimit,
 			includeSource,
-			includeDiagonal
+			includeDiagonal,
+			includeBuildings
 		);
 	}
 
@@ -253,22 +125,24 @@ public static class InventoryHelper {
 		int targetLimit = 20,
 		bool includeSource = true,
 		bool includeDiagonal = true,
+		bool includeBuildings = false,
 		int expandSource = 0
 	) {
-		List<AbsolutePosition> potentials = new();
+		List<AbsolutePosition> potentials = [];
 
 		if (expandSource == 0)
 			potentials.Add(source);
 		else {
-			for(int x = -expandSource; x < expandSource; x++) {
-				for(int y = -expandSource; y < expandSource; y++) {
+			for (int x = -expandSource; x < expandSource; x++) {
+				for (int y = -expandSource; y < expandSource; y++) {
 					potentials.Add(new(source.Location, new Vector2(source.Position.X + x, source.Position.Y + y)));
 				}
 			}
 		}
 
-		Dictionary<AbsolutePosition, Vector2> origins = new();
-		origins[source] = source.Position;
+		Dictionary<AbsolutePosition, Vector2> origins = new() {
+			[source] = source.Position
+		};
 
 		AddPotentials(source.Position, source.Position, source.Location, potentials, origins, distanceLimit, includeDiagonal);
 
@@ -283,20 +157,230 @@ public static class InventoryHelper {
 			scanLimit,
 			targetLimit,
 			includeDiagonal,
+			includeBuildings,
 			null
 		);
 	}
 
-	public static void DeduplicateInventories(ref IList<LocatedInventory> inventories) {
-		HashSet<object> objects = new();
-		for(int i = 0; i < inventories.Count; i++) {
-			LocatedInventory inv = inventories[i];
-			if (objects.Contains(inv.Source)) {
-				inventories.RemoveAt(i);
-				i--;
-			} else
-				objects.Add(inv.Source);
+	public static List<LocatedInventory> DiscoverArea(
+		GameLocation location,
+		Vector2 position,
+		int radius,
+		Farmer? who,
+		Func<object, IInventoryProvider?> getProvider,
+		bool discover_buildings = false,
+		int targetLimit = 20
+	) {
+		// What's the most efficient way to handle this?
+		int area = (int) (Math.PI * radius * radius);
+		int total = 1 + location.Objects.Length + location.furniture.Count;
+
+		if (area >= total)
+			return DiscoverArea_CheckAll(location, position, radius, who, getProvider, discover_buildings, targetLimit);
+
+		return DiscoverArea_IterArea(location, position, radius, who, getProvider, discover_buildings, targetLimit);
+	}
+
+	private static List<LocatedInventory> DiscoverArea_CheckAll(
+		GameLocation location,
+		Vector2 position,
+		int radius,
+		Farmer? who,
+		Func<object, IInventoryProvider?> getProvider,
+		bool discover_buildings = false,
+		int targetLimit = 20
+	) {
+		List<LocatedInventory> result = [];
+		IInventoryProvider? provider;
+
+		int radiusSquared = radius * radius;
+
+		Chest? fridge = location.GetFridge(false);
+		Vector2? fridgePos = location.GetFridgePosition()?.ToVector2();
+
+		foreach(object thing in GetAllThingsInLocation(location, buildings: discover_buildings)) {
+			provider = getProvider(thing);
+			if (provider != null && provider.IsValid(thing, location, who)) {
+				Vector2? pos = thing == fridge ? fridgePos : thing switch {
+					Building bld => bld.GetBoundingBox().GetNearestPoint(position),
+					Furniture furn => furn.GetBoundingBox().GetNearestPoint(position),
+					SObject obj => obj.TileLocation,
+					_ => null
+				};
+
+				if (pos.HasValue && Vector2.DistanceSquared(position, pos.Value) < radiusSquared) {
+					result.Add(new(thing, location));
+					if (result.Count >= targetLimit)
+						return result;
+				}
+			}
+
+			if (discover_buildings && thing is Building building && building.GetIndoors() is GameLocation loc)
+				WalkIntoMap(result, loc, who, getProvider, 1000, targetLimit);
 		}
+
+		return result;
+	}
+
+	private static List<LocatedInventory> DiscoverArea_IterArea(
+		GameLocation location,
+		Vector2 position,
+		int radius,
+		Farmer? who,
+		Func<object, IInventoryProvider?> getProvider,
+		bool discover_buildings = false,
+		int targetLimit = 20
+	) {
+		List<LocatedInventory> result = [];
+		IInventoryProvider? provider;
+
+		// Check the fridge.
+		var fpos = location.GetFridgePosition();
+		if (fpos != null && position.Distance(fpos.Value.X, fpos.Value.Y) <= radius) {
+			var fridge = location.GetFridge(false);
+			provider = getProvider(fridge);
+			if (provider != null && provider.IsValid(fridge, location, who))
+				result.Add(new(fridge, location));
+		}
+
+		foreach (var pos in position.IterArea(radius, false)) {
+			int count = result.Count;
+			if (TileHelper.GetObjectAtPosition(location, pos, out SObject? obj)) {
+				provider = getProvider(obj);
+				if (provider != null && provider.IsValid(obj, location, who))
+					result.Add(new(obj, location));
+			}
+
+			if (discover_buildings && location.getBuildingAt(pos) is Building bld) {
+				provider = getProvider(bld);
+				if (provider != null && provider.IsValid(bld, location, who))
+					result.Add(new(bld, location));
+
+				if (discover_buildings && bld.GetIndoors() is GameLocation loc)
+					WalkIntoMap(result, loc, who, getProvider, 1000, targetLimit);
+			}
+
+			/*if (location.terrainFeatures.TryGetValue(pos, out TerrainFeature? feature)) {
+				provider = getProvider(feature);
+				if (provider != null && provider.IsValid(feature, location, who))
+					result.Add(new(feature, location));
+			}*/
+
+			if (location.GetFurnitureAt(pos) is SObject furn) {
+				provider = getProvider(furn);
+				if (provider != null && provider.IsValid(furn, location, who))
+					result.Add(new(furn, location));
+			}
+
+			if (result.Count >= targetLimit)
+				break;
+		}
+
+		return result;
+	}
+
+	public static List<LocatedInventory> DiscoverAllLocations(
+		Farmer? who,
+		Func<object, IInventoryProvider?> getProvider,
+		int scanLimit = 100,
+		int targetLimit = 20,
+		bool discover_buildings = false
+	) {
+		// We don't use the normal walker for this.
+		List<LocatedInventory> result = [];
+
+		int i = 0;
+		IInventoryProvider? provider;
+
+		IEnumerable<GameLocation> locations;
+		if (Game1.IsMasterGame)
+			locations = Game1.locations;
+		else
+			locations = Game1.Multiplayer.activeLocations();
+
+		foreach (var location in locations) {
+			foreach(object obj in GetAllThingsInLocation(location, buildings: discover_buildings)) { 
+				provider = getProvider(obj);
+				if (provider != null && provider.IsValid(obj, location, who))
+					result.Add(new(obj, location));
+
+				i++;
+				if (result.Count >= targetLimit)
+					return result;
+			}
+		}
+
+		return result;
+	}
+
+	private static IEnumerable<object> GetAllThingsInLocation(GameLocation location, bool objects = true, bool buildings = false, bool furniture = true, bool features = false) {
+		if (location is null)
+			yield break;
+
+		if (objects && location.GetFridge(false) is Chest chest)
+			yield return chest;
+
+		if (objects)
+			foreach (var obj in location.Objects.Values) {
+				if (obj is not null)
+					yield return obj;
+			}
+
+		if (buildings)
+			foreach(var obj in location.buildings) {
+				if (obj is not null)
+					yield return obj;
+			}
+
+		if (furniture)
+			foreach(var obj in location.furniture) {
+				if (obj is not null)
+					yield return obj;
+			}
+
+		if (features)
+			foreach(var obj in location.terrainFeatures.Values) {
+				if (obj is not null)
+					yield return obj;
+			}
+	}
+
+	public static List<LocatedInventory> DiscoverLocation(
+		GameLocation location,
+		Farmer? who,
+		Func<object, IInventoryProvider?> getProvider,
+		int scanLimit = 100,
+		int targetLimit = 20,
+		bool discover_buildings = false,
+		bool enter_buildings = false
+	) {
+		// We don't use the normal walker for this.
+		List<LocatedInventory> result = [];
+
+		int i = 0;
+
+		foreach(object obj in GetAllThingsInLocation(location, buildings: discover_buildings)) {
+			IInventoryProvider? provider = getProvider(obj);
+			if (provider != null && provider.IsValid(obj, location, who))
+				result.Add(new(obj, location));
+
+			i++;
+			if (i >= scanLimit || result.Count >= targetLimit)
+				return result;
+		}
+
+		// TODO: Better handling of the scanLimit.
+		if (enter_buildings)
+			foreach(var building in location.buildings) {
+				if (building is not null && building.GetIndoors() is GameLocation loc) {
+					var output = DiscoverLocation(loc, who, getProvider, scanLimit - i, targetLimit - result.Count, discover_buildings, false);
+					result.AddRange(output);
+					if (result.Count >= targetLimit)
+						break;
+				}
+			}
+
+		return result;
 	}
 
 	public static List<LocatedInventory> DiscoverInventories(
@@ -311,9 +395,10 @@ public static class InventoryHelper {
 		int targetLimit = 20,
 		bool includeSource = true,
 		bool includeDiagonal = true,
+		bool includeBuildings = false,
 		int expandSource = 0
 	) {
-		List<AbsolutePosition> positions = new();
+		List<AbsolutePosition> positions = [];
 
 		for (int x = -expandSource; x < source.Width + expandSource; x++) {
 			for (int y = -expandSource; y < source.Height + expandSource; y++) {
@@ -337,6 +422,7 @@ public static class InventoryHelper {
 			targetLimit: targetLimit,
 			includeDiagonal: includeDiagonal,
 			includeSource: includeSource,
+			includeBuildings: includeBuildings,
 			extra: positions
 		);
 	}
@@ -351,10 +437,11 @@ public static class InventoryHelper {
 		int targetLimit = 20,
 		bool includeSource = true,
 		bool includeDiagonal = true,
+		bool includeBuildings = false,
 		IEnumerable<AbsolutePosition>? extra = null
 	) {
-		List<AbsolutePosition> potentials = new();
-		Dictionary<AbsolutePosition, Vector2> origins = new();
+		List<AbsolutePosition> potentials = [];
+		Dictionary<AbsolutePosition, Vector2> origins = [];
 
 		if (extra != null) {
 			foreach (var entry in extra) {
@@ -363,7 +450,7 @@ public static class InventoryHelper {
 			}
 		}
 
-		List<LocatedInventory> extra_located = new();
+		List<LocatedInventory> extra_located = [];
 
 		if (sources != null)
 			foreach (LocatedInventory source in sources) {
@@ -424,6 +511,7 @@ public static class InventoryHelper {
 			scanLimit,
 			targetLimit,
 			includeDiagonal,
+			includeBuildings,
 			extra_located
 		);
 	}
@@ -437,10 +525,11 @@ public static class InventoryHelper {
 		int scanLimit = 100,
 		int targetLimit = 20,
 		bool includeSource = true,
-		bool includeDiagonal = true
+		bool includeDiagonal = true,
+		bool includeBuildings = false
 	) {
 		List<AbsolutePosition> potentials = new(sources);
-		Dictionary<AbsolutePosition, Vector2> origins = new();
+		Dictionary<AbsolutePosition, Vector2> origins = [];
 
 		foreach (AbsolutePosition source in potentials)
 			origins[source] = source.Position;
@@ -471,6 +560,7 @@ public static class InventoryHelper {
 			scanLimit,
 			targetLimit,
 			includeDiagonal,
+			includeBuildings,
 			null
 		);
 	}
@@ -484,8 +574,8 @@ public static class InventoryHelper {
 		int distanceLimit,
 		bool includeDiagonal
 	) {
-		for(int x = -1; x < 2; x++) {
-			for(int y = -1; y < 2; y++) {
+		for (int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++) {
 				if (x == 0 && y == 0)
 					continue;
 
@@ -507,6 +597,67 @@ public static class InventoryHelper {
 		}
 	}
 
+	private static int WalkIntoMap(
+		List<LocatedInventory> result,
+		GameLocation indoors,
+		Farmer? who,
+		Func<object, IInventoryProvider?> getProvider,
+		int scanLimit,
+		int targetLimit
+	) {
+		// Inside maps only.
+		if (indoors.IsOutdoors)
+			return 0;
+
+		int i = 0;
+		IInventoryProvider? provider;
+
+		// Iterate over all our objects.
+		foreach(object obj in GetAllThingsInLocation(indoors)) { 
+			provider = getProvider(obj);
+			if (provider != null && provider.IsValid(obj, indoors, who))
+				result.Add(new(obj, indoors));
+
+			if (result.Count >= targetLimit)
+				return i;
+
+			i++;
+			if (i >= scanLimit)
+				return i;
+		}
+
+		// Iterate over terrain features.
+		/*foreach (var obj in indoors.terrainFeatures.Values) {
+			if (obj is not null) {
+				provider = getProvider(obj);
+				if (provider != null && provider.IsValid(obj, indoors, who))
+					result.Add(new(obj, indoors));
+
+				if (result.Count >= targetLimit)
+					return i;
+			}
+
+			i++;
+			if (i >= scanLimit)
+				return i;
+		}*/
+
+		return i;
+	}
+
+	private static IEnumerable<SObject> GetMapObjects(GameLocation location) {
+		if (location.GetFridge() is SObject sobj)
+			yield return sobj;
+
+		foreach (var obj in location.Objects.Values)
+			if (obj is not null)
+				yield return obj;
+
+		foreach (var obj in location.furniture)
+			if (obj is not null)
+				yield return obj;
+	}
+
 	private static List<LocatedInventory> WalkPotentials(
 		List<AbsolutePosition> potentials,
 		Dictionary<AbsolutePosition, Vector2> origins,
@@ -518,32 +669,62 @@ public static class InventoryHelper {
 		int scanLimit,
 		int targetLimit,
 		bool includeDiagonal,
+		bool includeBuildings,
 		List<LocatedInventory>? extra
 	) {
-		List<LocatedInventory> result = new();
+		List<LocatedInventory> result = [];
+		HashSet<GameLocation> visited_buildings = [];
 
 		if (extra is not null)
 			result.AddRange(extra);
 
 		int i = start;
 
-		while(i < potentials.Count && i < scanLimit) {
+		if (includeBuildings) {
+			foreach (var location in origins.Keys.Select(key => key.Location).Distinct()) {
+				if (location is not null && !location.IsOutdoors && visited_buildings.Add(location))
+					scanLimit -= WalkIntoMap(result, location, who, getProvider, scanLimit - i, targetLimit);
+
+				if (result.Count >= targetLimit)
+					return result;
+			}
+		}
+
+		while (i < potentials.Count && i < scanLimit) {
 			AbsolutePosition abs = potentials[i++];
 			SObject? obj;
 			SObject? furn;
 			TerrainFeature? feature;
+			Building? building;
+
 			if (abs.Location != null) {
 				TileHelper.GetObjectAtPosition(abs.Location, abs.Position, out obj);
 				abs.Location.terrainFeatures.TryGetValue(abs.Position, out feature);
 				furn = abs.Location.GetFurnitureAt(abs.Position);
+				building = abs.Location.getBuildingAt(abs.Position);
 			} else {
 				feature = null;
 				obj = null;
 				furn = null;
+				building = null;
 			}
 
 			bool want_neighbors = false;
 			IInventoryProvider? provider;
+
+			if (building != null) {
+				// First off, we want to check if there are any providers to handle the
+				// building directly.
+				provider = getProvider(building);
+				if (provider != null && provider.IsValid(building, abs.Location, who)) {
+					result.Add(new(building, abs.Location));
+					// We don't do connections from buildings, so no setting want_neighbors.
+				}
+
+				// Next, walk into the building if we want to do so.
+				if (includeBuildings && building.HasIndoors() && building.GetIndoors() is GameLocation indoors && visited_buildings.Add(indoors))
+					scanLimit -= WalkIntoMap(result, indoors, who, getProvider, scanLimit - i, targetLimit);
+			}
 
 			if (obj != null) {
 				provider = getProvider(obj);
@@ -582,13 +763,84 @@ public static class InventoryHelper {
 		return result;
 	}
 
+	public static void DeduplicateInventories(ref IList<LocatedInventory> inventories, Func<object, IInventoryProvider?> getProvider) {
+		HashSet<object> objects = [];
+		HashSet<IInventory> seenInventories = new() { Game1.player.Items };
+
+		for (int i = 0; i < inventories.Count; i++) {
+			LocatedInventory inv = inventories[i];
+			if (objects.Contains(inv.Source)) {
+				inventories.RemoveAt(i);
+				i--;
+				continue;
+
+			} else
+				objects.Add(inv.Source);
+
+			if (getProvider(inv.Source) is IInventoryProvider prov && prov.GetInventory(inv.Source, inv.Location, Game1.player) is IInventory iinv) {
+				if (seenInventories.Contains(iinv)) {
+					inventories.RemoveAt(i);
+					i--;
+				} else
+					seenInventories.Add(iinv);
+			}
+		}
+	}
+
+	public static HashSet<INetRoot> GetActiveRoots() {
+		HashSet<INetRoot> roots = new() {
+			Game1.netWorldState,
+			Game1.player.teamRoot
+		};
+
+		foreach (var root in Game1.Multiplayer.farmerRoots())
+			roots.Add(root);
+
+		if (Game1.IsClient) {
+			foreach (var loc in Game1.Multiplayer.activeLocations())
+				if (loc.Root is not null)
+					roots.Add(loc.Root);
+		} else {
+			Utility.ForEachLocation(loc => {
+				if (loc.Root is not null)
+					roots.Add(loc.Root);
+
+				return true;
+			}, includeInteriors: false, includeGenerated: true);
+		}
+
+		return roots;
+	}
+
+	public static void RemoveInactiveInventories(ref IList<LocatedInventory> inventories, Func<object, IInventoryProvider?> getProvider) {
+		var roots = GetActiveRoots();
+		var places = Context.IsMainPlayer ? null : Game1.Multiplayer.activeLocations().ToHashSet();
+
+		for (int i = 0; i < inventories.Count; i++) {
+			LocatedInventory inv = inventories[i];
+			if (places != null && inv.Location is GameLocation loc && !places.Contains(loc)) {
+				inventories.RemoveAt(i);
+				i--;
+				continue;
+			}
+
+			var provider = getProvider(inv.Source);
+			var mutex = provider?.GetMutex(inv.Source, inv.Location, Game1.player);
+			if (mutex?.NetFields?.Root != null && !roots.Contains(mutex.NetFields.Root)) {
+				inventories.RemoveAt(i);
+				i--;
+			}
+		}
+	}
+
 	public static bool DoesLocationContain(GameLocation? location, object? obj) {
-		if (location == null)
+		if (location == null || obj == null)
 			return false;
 
-		if (location is FarmHouse farmHouse && farmHouse.fridge.Value == obj)
+		if (location.GetFridge(false) == obj)
 			return true;
-		if (location is IslandFarmHouse islandHouse && islandHouse.fridge.Value == obj)
+
+		if (obj is Building bld && location.buildings.Contains(bld))
 			return true;
 
 		if (obj is Furniture furn && location.furniture.Contains(furn))
@@ -607,7 +859,7 @@ public static class InventoryHelper {
 		GameLocation? first,
 		bool nullLocationValid = false
 	) {
-		List<LocatedInventory> result = new();
+		List<LocatedInventory> result = [];
 
 		foreach (object obj in inventories) {
 			IInventoryProvider? provider = getProvider(obj);
@@ -619,7 +871,7 @@ public static class InventoryHelper {
 			if (first != null && DoesLocationContain(first, obj))
 				loc = first;
 			else {
-				foreach(GameLocation location in locations) {
+				foreach (GameLocation location in locations) {
 					if (location != first && DoesLocationContain(location, obj)) {
 						loc = location;
 						break;
@@ -638,14 +890,14 @@ public static class InventoryHelper {
 
 	#region Unsafe Access
 
-	public static List<IInventory> GetUnsafeInventories(
+	public static List<IBCInventory> GetUnsafeInventories(
 		IEnumerable<object> inventories,
 		Func<object, IInventoryProvider?> getProvider,
 		GameLocation? location,
 		Farmer? who,
 		bool nullLocationValid = false
 	) {
-		List<LocatedInventory> located = new();
+		List<LocatedInventory> located = [];
 		foreach (object obj in inventories) {
 			if (obj is LocatedInventory inv)
 				located.Add(inv);
@@ -656,13 +908,13 @@ public static class InventoryHelper {
 		return GetUnsafeInventories(located, getProvider, who, nullLocationValid);
 	}
 
-	public static List<IInventory> GetUnsafeInventories(
+	public static List<IBCInventory> GetUnsafeInventories(
 		IEnumerable<LocatedInventory> inventories,
 		Func<object, IInventoryProvider?> getProvider,
 		Farmer? who,
 		bool nullLocationValid = false
 	) {
-		List<IInventory> result = new();
+		List<IBCInventory> result = [];
 
 		foreach (LocatedInventory loc in inventories) {
 			if (loc.Location == null && !nullLocationValid)
@@ -697,7 +949,7 @@ public static class InventoryHelper {
 		IEnumerable<LocatedInventory>? inventories,
 		Func<object, IInventoryProvider?> getProvider,
 		Farmer? who,
-		Action<IList<IInventory>> withLocks,
+		Action<IList<IBCInventory>> withLocks,
 		bool nullLocationValid = false
 	) {
 		WithInventories(inventories, getProvider, who, (locked, onDone) => {
@@ -717,14 +969,14 @@ public static class InventoryHelper {
 		Func<object, IInventoryProvider?> getProvider,
 		GameLocation location,
 		Farmer? who,
-		Action<IList<IInventory>> withLocks,
+		Action<IList<IBCInventory>> withLocks,
 		bool nullLocationValid = false
 	) {
 		List<LocatedInventory>? located;
 		if (inventories == null)
 			located = null;
 		else {
-			located = new();
+			located = [];
 			foreach (object obj in inventories) {
 				if (obj is LocatedInventory inv)
 					located.Add(inv);
@@ -749,12 +1001,12 @@ public static class InventoryHelper {
 		IEnumerable<LocatedInventory>? inventories,
 		Func<object, IInventoryProvider?> getProvider,
 		Farmer? who,
-		Action<IList<IInventory>, Action> withLocks,
+		Action<IList<IBCInventory>, Action> withLocks,
 		bool nullLocationValid = false,
 		IModHelper? helper = null
 	) {
-		List<IInventory> locked = new();
-		List<IInventory> lockable = new();
+		List<IBCInventory> locked = [];
+		List<IBCInventory> lockable = [];
 
 		if (inventories != null)
 			foreach (LocatedInventory loc in inventories) {
@@ -794,6 +1046,7 @@ public static class InventoryHelper {
 		}
 
 		List<NetMutex> mutexes = lockable.Where(entry => entry.Mutex != null).Select(entry => entry.Mutex!).Distinct().ToList();
+
 		AdvancedMultipleMutexRequest? mmr = null;
 		mmr = new AdvancedMultipleMutexRequest(
 			mutexes,
@@ -815,24 +1068,6 @@ public static class InventoryHelper {
 	#region Recipes and Crafting
 
 	/// <summary>
-	/// Check if an item matches the provided ID, using the same logic
-	/// as the crafting system.
-	/// </summary>
-	/// <param name="id">the ID to check</param>
-	/// <param name="item">the Item to check</param>
-	/// <returns></returns>
-	public static bool DoesItemMatchID(int id, Item? item) {
-		if (item is SObject sobj) {
-			return
-				!sobj.bigCraftable.Value && sobj.ParentSheetIndex == id
-				|| item.Category == id
-				|| CraftingRecipe.isThereSpecialIngredientRule(sobj, id);
-		}
-
-		return false;
-	}
-
-	/// <summary>
 	/// Consume an item from a list of items.
 	/// </summary>
 	/// <param name="matcher">A method matching the item to consume.</param>
@@ -843,19 +1078,30 @@ public static class InventoryHelper {
 	/// <param name="passed_quality">Whether or not any matching slots were passed
 	/// up because they exceeded the <see cref="max_quality"/></param>
 	/// <param name="max_quality">The maximum quality of item to consume.</param>
+	/// <param name="consumedItems">An optional list to store consumed Item stacks in.</param>
 	/// <returns>The number of items remaining to consume.</returns>
-	public static int ConsumeItem(Func<Item, bool> matcher, int amount, IList<Item?> items, out bool nullified, out bool passed_quality, int max_quality = int.MaxValue) {
+	public static int ConsumeItem(Func<Item, bool> matcher, int amount, IList<Item?> items, out bool nullified, out bool passed_quality, int max_quality = int.MaxValue, IList<Item>? consumedItems = null) {
+
 		nullified = false;
 		passed_quality = false;
 
 		for (int idx = items.Count - 1; idx >= 0; --idx) {
 			Item? item = items[idx];
-			if (item == null || ! matcher(item))
+			if (item == null || !matcher(item))
 				continue;
 
 			// Special logic for Stack Quality
 			if (intSQ is not null && intSQ.IsLoaded && item is SObject sobj) {
+				int consumed = amount;
 				amount = intSQ.ConsumeItem(sobj, amount, out bool set_null, out bool set_quality, max_quality);
+				consumed -= amount;
+
+				if (consumedItems != null && consumed >= 0) {
+					var other = sobj.getOne();
+					other.Stack = consumed;
+					consumedItems.Add(other);
+				}
+
 				if (set_null) {
 					items[idx] = null;
 					nullified = true;
@@ -879,6 +1125,12 @@ public static class InventoryHelper {
 
 			int count = Math.Min(amount, item.Stack);
 			amount -= count;
+
+			if (consumedItems != null && count >= 0) {
+				var other = item.getOne();
+				other.Stack = count;
+				consumedItems.Add(other);
+			}
 
 			if (item.Stack <= count) {
 				items[idx] = null;
@@ -919,7 +1171,7 @@ public static class InventoryHelper {
 		passed_quality = false;
 		int amount = 0;
 
-		foreach(Item? item in items) { 
+		foreach (Item? item in items) {
 			if (item == null || !matcher(item))
 				continue;
 
@@ -952,46 +1204,47 @@ public static class InventoryHelper {
 
 	/// <summary>
 	/// Consume matching items from a player, and also from a set of
-	/// <see cref="IInventory"/> instances.
+	/// <see cref="IBCInventory"/> instances.
 	/// </summary>
 	/// <param name="items">An enumeration of <see cref="KeyValuePair{int,int}"/>
 	/// instances where the first integer is the item ID to match and the
 	/// second integer is the quantity to consume.
 	/// <param name="who">The player to consume items from, if any.</param>
-	/// <param name="inventories">An enumeration of <see cref="IInventory"/>
+	/// <param name="inventories">An enumeration of <see cref="IBCInventory"/>
 	/// instances to consume items from.</param>
 	/// <param name="max_quality">The maximum quality of item to consume.</param>
 	/// <param name="low_quality_first">Whether or not to consume low quality
 	/// items first.</param>
-	public static void ConsumeItems(IEnumerable<KeyValuePair<int, int>> items, Farmer? who, IEnumerable<IInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false) {
+	public static void ConsumeItems(IEnumerable<KeyValuePair<string, int>> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false, IList<Item>? consumedItems = null) {
 		if (items is null)
 			return;
 
 		ConsumeItems(
-			items.Select<KeyValuePair<int, int>, (Func<Item, bool>, int)>(x => (item => DoesItemMatchID(x.Key, item), x.Value)),
+			items.Select<KeyValuePair<string, int>, (Func<Item, bool>, int)>(x => (item => CraftingRecipe.ItemMatchesForCrafting(item, x.Key), x.Value)),
 			who,
 			inventories,
 			max_quality,
-			low_quality_first
+			low_quality_first,
+			consumedItems
 		);
 	}
 
 	/// <summary>
 	/// Consume matching items from a player, and also from a set of
-	/// <see cref="IInventory"/> instances.
+	/// <see cref="IBCInventory"/> instances.
 	/// </summary>
 	/// <param name="items">An enumeration of tuples where the function
 	/// matches items, and the integer is the quantity to consume.</param>
 	/// <param name="who">The player to consume items from, if any.</param>
-	/// <param name="inventories">An enumeration of <see cref="IInventory"/>
+	/// <param name="inventories">An enumeration of <see cref="IBCInventory"/>
 	/// instances to consume items from.</param>
 	/// <param name="max_quality">The maximum quality of item to consume.</param>
 	/// <param name="low_quality_first">Whether or not to consume low quality
 	/// items first.</param>
-	public static void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false) {
-		IList<IInventory>? working = (inventories as IList<IInventory>) ?? inventories?.ToList();
+	public static void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int max_quality = int.MaxValue, bool low_quality_first = false, IList<Item>? consumedItems = null) {
+		IList<IBCInventory>? working = (inventories as IList<IBCInventory>) ?? inventories?.ToList();
 		bool[]? modified = working == null ? null : new bool[working.Count];
-		IList<Item?>?[] invs = working?.Select(val => val.CanExtractItems() ? val.GetItems() : null).ToArray() ?? Array.Empty<IList<Item?>?>();
+		IList<Item?>?[] invs = working?.Select(val => val.CanExtractItems() ? val.GetItems() : null).ToArray() ?? [];
 
 		foreach ((Func<Item, bool>, int) pair in items) {
 			Func<Item, bool> matcher = pair.Item1;
@@ -1004,7 +1257,7 @@ public static class InventoryHelper {
 			for (int q = mq; q <= max_quality; q++) {
 				bool passed;
 				if (who != null)
-					remaining = ConsumeItem(matcher, remaining, who.Items, out bool m, out passed, q);
+					remaining = ConsumeItem(matcher, remaining, who.Items, out bool m, out passed, q, consumedItems);
 				else
 					passed = false;
 
@@ -1017,7 +1270,7 @@ public static class InventoryHelper {
 						if (inv == null || inv.Count == 0)
 							continue;
 
-						remaining = ConsumeItem(matcher, remaining, inv, out bool modded, out bool p, q);
+						remaining = ConsumeItem(matcher, remaining, inv, out bool modded, out bool p, q, consumedItems);
 						if (modded)
 							modified![iidx] = true;
 
@@ -1044,13 +1297,13 @@ public static class InventoryHelper {
 
 	#region Transfer Items
 
-	public static bool AddToInventories(IList<Item?> items, IEnumerable<IInventory> inventories, TransferBehavior behavior, Action<Item, int>? onTransfer = null) {
+	public static bool AddToInventories(IList<Item?> items, IEnumerable<IBCInventory> inventories, TransferBehavior behavior, Action<Item, int>? onTransfer = null) {
 		if (behavior.Mode == TransferMode.None)
 			return false;
 
 		int[] transfered = new int[items.Count];
 
-		foreach (IInventory inv in inventories) {
+		foreach (IBCInventory inv in inventories) {
 			if (!inv.CanInsertItems())
 				continue;
 
@@ -1061,10 +1314,10 @@ public static class InventoryHelper {
 		return false;
 	}
 
-	private static bool FillInventory(IList<Item?> items, IInventory inventory, TransferBehavior behavior, int[] transfered, Action<Item, int>? onTransfer = null) {
+	private static bool FillInventory(IList<Item?> items, IBCInventory inventory, TransferBehavior behavior, int[] transfered, Action<Item, int>? onTransfer = null) {
 		bool empty = true;
 
-		for(int idx = 0; idx < items.Count; idx++) {
+		for (int idx = 0; idx < items.Count; idx++) {
 			Item? item = items[idx];
 			if (item != null && item.maximumStackSize() > 1 && inventory.IsItemValid(item)) {
 				// How many can we transfer?
@@ -1107,15 +1360,16 @@ public static class InventoryHelper {
 						empty = false;
 				}
 
-				if (count != final && ! had_transfered)
+				if (count != final && !had_transfered)
 					onTransfer?.Invoke(item, idx);
-			}
+			} else
+				empty = false;
 		}
 
 		return empty;
 	}
 
-	public static Item? AddItemToInventory(Item item, int quantity, IInventory inventory) {
+	public static Item? AddItemToInventory(Item item, int quantity, IBCInventory inventory) {
 		int initial = item.Stack;
 		if (quantity > initial)
 			quantity = initial;
@@ -1129,7 +1383,7 @@ public static class InventoryHelper {
 		if (items is null)
 			return item;
 
-		foreach(Item? oitem in items) {
+		foreach (Item? oitem in items) {
 			if (oitem is not null && oitem.canStackWith(item)) {
 				present = true;
 				if (oitem.getRemainingStackSpace() > 0) {
@@ -1146,7 +1400,7 @@ public static class InventoryHelper {
 		if (!present)
 			return item;
 
-		for(int idx = items.Count - 1; idx >= 0; idx--) {
+		for (int idx = items.Count - 1; idx >= 0; idx--) {
 			if (items[idx] == null) {
 				if (quantity > item.maximumStackSize()) {
 					Item obj = items[idx] = item.getOne();
@@ -1167,7 +1421,7 @@ public static class InventoryHelper {
 					return null;
 				}
 			}
-		}
+		} 
 
 		int capacity = inventory.GetActualCapacity();
 		while (capacity > 0 && items.Count < capacity) {

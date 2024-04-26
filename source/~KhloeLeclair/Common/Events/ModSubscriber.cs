@@ -32,10 +32,19 @@ public abstract class ModSubscriber : Mod {
 		Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 	}
 
-	public virtual void Log(string message, LogLevel level = LogLevel.Debug, Exception? ex = null, LogLevel? exLevel = null) {
-		Monitor.Log(message, level: level);
-		if (ex != null)
-			Monitor.Log($"Details:\n{ex}", level: exLevel ?? level);
+	public virtual void Log(string message, LogLevel level = LogLevel.Debug, Exception? ex = null, LogLevel? exLevel = null, bool once = false) {
+		if (once)
+			Monitor.LogOnce(message, level: level);
+		else
+			Monitor.Log(message, level: level);
+
+		if (ex != null) {
+			string errMessage = $"Details:\n{ex}";
+			if (once)
+				Monitor.LogOnce(errMessage, level: exLevel ?? level);
+			else
+				Monitor.Log(errMessage, level: exLevel ?? level);
+		}
 	}
 
 	public virtual void LogTable(StringBuilder sb, string[]? headers, IEnumerable<string[]> entries, LogLevel level = LogLevel.Debug, string separator = "  ") {

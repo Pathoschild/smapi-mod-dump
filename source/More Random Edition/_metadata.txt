@@ -6,9 +6,9 @@ mods:
    More Random Edition
 
 latest commit:
-   commit 97b1ceb3e8e0a5743bc605b9da68b9a25abc9947
-   Author: chikakoo <lionel.crafts@gmail.com>
-   Date:   Wed Mar 27 14:02:12 2024 -0500
+   commit c6353fa77817af83899a224d967338d8f58d8c4f
+   Author: Chikakoo <lionel.crafts@gmail.com>
+   Date:   Sat Apr 13 17:24:30 2024 -0500
    
-       Update README.md
+       Fix weapons being assigned damage values where min > max, which results in errors
    

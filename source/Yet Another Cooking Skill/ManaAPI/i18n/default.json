@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "main-setting": "Main Settings",
+    "render-setting": "Render mana bar?",
+    "render-setting-des": "If sets true, game will render mana bar.",
+
+    "position-settings": "Position Settings",
+    "bar-x-position": "X Offset",
+    "bar-x-position-des": "Sets 'X' Axis offset.\nIf value is too big, bar can render baggily.",
+    "bar-y-position": "Y Offset",
+    "bar-y-position-des": "Sets 'Y' Axis offset.\nIf value is too big, bar can render baggily.",
+
+    "bar-moving": "Y Offset",
+    "bar-moving-des": "Sets 'Y' Axis offset.\nIf value is too big, bar can render baggily.",
+
+    "additional-settings": "Additional Settings",
+    "size-multiplier": "Bar Size Multiplier",
+    "size-multiplier-des": "Sets bar size multiplier, that applies when you extend maximum level of mana. Default value: 15.",
+    "overcharge-max-value": "Overcharge Max Value",
+    "overcharge-max-value-des": "Defines, how many times mana bar can increase from its based size, depending on your current mana capacity. For example, base bar size is 20. Your mana capacity is 200 (X2 from original value). Further, your final size will be 40 (20 * 2). This setting can set the max value for this multiplier (setting '1' will disable bar growing). Default value: 13."
+}

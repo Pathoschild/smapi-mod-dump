@@ -10,7 +10,6 @@
 
 using StardewValley;
 using System.Collections.Generic;
-using PyTK.Extensions;
 using static StardewValley.FarmerSprite;
 
 namespace HarpOfYobaRedux

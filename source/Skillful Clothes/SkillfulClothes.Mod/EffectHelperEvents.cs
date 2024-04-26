@@ -29,17 +29,10 @@ namespace SkillfulClothes
     {
         GameLocation lastLocation;
 
-        int? lastPlayerAddedSpeed = 0;
-
         /// <summary>
         /// Raised when the current game location changed
         /// </summary>
         public event EventHandler<ValueChangeEventArgs<GameLocation>> LocationChanged;
-
-        /// <summary>
-        /// Raised when the game resetted the player's addedSpeed value to 0
-        /// </summary>
-        public event EventHandler PlayerSpeedWasReset;
 
         /// <summary>
         /// Raised when the palyer defeated a monster
@@ -50,12 +43,6 @@ namespace SkillfulClothes
         /// Raised when the player interacted with an NPC
         /// </summary>
         public event EventHandler<InteractedWithNPCEventArgs> InteractedWithNPC;
-
-        protected void RaisePlayerSpeedWasReset()
-        {
-            Logger.Debug("RaisePlayerSpeedWasReset");
-            PlayerSpeedWasReset?.Invoke(this, EventArgs.Empty);
-        }
 
         protected void RaiseLocationChanged(GameLocation oldLocation, GameLocation newLocation)
         {
@@ -82,17 +69,6 @@ namespace SkillfulClothes
 
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
-            // speed
-            if (lastPlayerAddedSpeed.HasValue)
-            {
-                if (lastPlayerAddedSpeed > 0 && Game1.player.addedSpeed == 0)
-                {
-                    RaisePlayerSpeedWasReset();
-                }
-            }
-
-            lastPlayerAddedSpeed = Game1.player.addedSpeed;
-
             // location
             if (Game1.currentLocation != null && Game1.currentLocation.Name != "none") // avoid two events for old location -> none and none -> new location
             {

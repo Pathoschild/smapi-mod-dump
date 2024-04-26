@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using StardewModdingAPI;
@@ -28,58 +29,6 @@ internal static class NpcPatches
             original: AccessTools.Method(typeof(NPC), nameof(NPC.tryToReceiveActiveObject)),
             prefix: new HarmonyMethod(typeof(NpcPatches), nameof(Pre_tryToReceiveActiveObject))
             );
-        /*
-        Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.warpToPathControllerDestination()\".");
-        harmony.Patch(
-            original: AccessTools.Method(typeof(NPC), nameof(NPC.warpToPathControllerDestination)),
-            prefix: new HarmonyMethod(typeof(NpcPatches), nameof(Post_warpToPathControllerDestination))
-        );*/
-    }
-
-    private static void Post_warpToPathControllerDestination(NPC __instance)
-    {
-        if(!ModEntry.IslandToday)
-            return;
-        
-        //if not in invited list
-        if(ModEntry.ValidSpouses.Contains(__instance.Name) == false)
-            return;
-        
-        if (__instance.currentLocation.Name.Equals(__instance.queuedSchedulePaths[^1].targetLocationName))
-        {
-            return;
-        }
-#if DEBUG
-        ModEntry.Mon.Log($"NPC current location is {__instance.currentLocation.Name}, but the end destination is {__instance.queuedSchedulePaths[^1].targetLocationName}. Skipping", LogLevel.Debug);
-#endif
-        Game1.delayedActions.Add(new DelayedAction(500, IncludeSpeed));
-        return;
-
-        void IncludeSpeed()
-        {
-            __instance.addedSpeed += 0.3f;
-        }
-    }
-
-    /// <summary>
-    /// Tries to get our specific mod data.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private static bool TryGetModData(Object obj)
-    {
-        if (obj == null)
-            return false;
-
-        var noData = obj.modData is not { Length: > 0 };
-        
-        if (noData)
-            return false;
-
-        //if (!obj.modData.TryGetValue($"{ModEntry.Id}_IslandTicket", out _))
-        //    return false;
-
-        return obj.modData.TryGetValue($"{ModEntry.Id}_Days", out _);
     }
 
     /// <summary>
@@ -90,7 +39,7 @@ internal static class NpcPatches
     /// <param name="__result">OG result.</param>
     /// <param name="probe">If just checking for an action.</param>
     /// <returns>Whether the OG method should be run.</returns>
-    private static bool Pre_tryToReceiveActiveObject(NPC __instance, Farmer who, bool __result, bool probe = false)
+    private static bool Pre_tryToReceiveActiveObject(NPC __instance, Farmer who, ref bool __result, bool probe = false)
     {
         var obj = who.ActiveObject;
         if (obj == null)
@@ -98,14 +47,14 @@ internal static class NpcPatches
             return true;
         }
 
-        if (!TryGetModData(obj))
+        if (!TryGetCustomFields(obj, out var days))
             return true;
 
         //if just checking for an action
         if (probe)
         {
             __result = true;
-            return false;
+            return true;
         }
 
         who.Halt();
@@ -120,14 +69,14 @@ internal static class NpcPatches
         //if festival tomorrow
         else if (Utility.isFestivalDay(Game1.dayOfMonth + 1, Game1.season))
         {
-            //tell player theres festival tmrw
-            var festivalnotice = Game1.parseText(Translate("FestivalTomorrow"));
-            Game1.drawDialogueBox(festivalnotice);
+            //tell player there's a festival tomorrow
+            var notice = Game1.parseText(Translate("FestivalTomorrow"));
+            Game1.drawDialogueBox(notice);
         }
-        //if not, call method that handles NPC's reaction (+etc).
+        //if not, call method that handles NPC's reaction (+etc.)
         else
         {
-            TriggerTicket(__instance, who, obj.Name.Contains("Day"));
+            TriggerTicket(__instance, who, days);
         }
 
         __result = true;
@@ -140,7 +89,7 @@ internal static class NpcPatches
     /// <param name="receiver"></param>
     /// <param name="giver"></param>
     /// <param name="isDayTicket"></param>
-    private static void TriggerTicket(NPC receiver, Farmer giver, bool isDayTicket)
+    private static void TriggerTicket(NPC receiver, Farmer giver, int days)
     {
         var npcdata = giver.friendshipData[receiver.Name];
 
@@ -150,7 +99,7 @@ internal static class NpcPatches
             //var scheduledDay = !isDayTicket && giver.mailReceived.Contains("VisitTicket_day");
 
             //if already invited
-            if (ModEntry.Status.Any() && ModEntry.Status.ContainsKey(receiver.Name))
+            if (ModEntry.Status is not null && ModEntry.Status.Any() && ModEntry.Status.ContainsKey(receiver.Name))
             {
                 //tell player about it
                 var alreadyinvited = string.Format(Translate("AlreadyInvited"), receiver.displayName);
@@ -158,14 +107,12 @@ internal static class NpcPatches
             }
             else
             {
-                giver.ActiveObject.modData.TryGetValue($"{ModEntry.Id}_Days", out var daysRaw);
-                var days = int.Parse(daysRaw);
-                
                 Draw(receiver, GetInviteDialogue(receiver));
 
                 //user will always have data in Status (created during SaveLoadedBasicInfo).
                 //so there's no worry about possible nulls
-                ModEntry.Status.Add(receiver.Name, (days, days == 1));
+                ModEntry.Status ??= new Dictionary<string, (int, bool)>();
+                ModEntry.Status?.Add(receiver.Name, (days, days == 1));
                 giver.mailReceived.Add(days == 1 ? "VisitTicket_day" : "VisitTicket_week");
                 giver.reduceActiveItemByOne();
             }
@@ -189,7 +136,37 @@ internal static class NpcPatches
         }
     }
 
-    internal static void HandleIslandEvent(Farmer who, string whichAnswer)
+    /// <summary>
+    /// Tries to get our specific mod data.
+    /// </summary>
+    /// <param name="obj">The object.</param>
+    /// <param name="days">How many days the visit lasts.</param>
+    /// <returns>Whether the item is an island ticket.</returns>
+    private static bool TryGetCustomFields(Object obj, out int days)
+    {
+        if (obj == null)
+        {
+            days = -1;
+            return false;
+        }
+
+        if (Game1.objectData.TryGetValue(obj.ItemId, out var data) == false || data.CustomFields is null ||
+            data.CustomFields.Any() == false)
+        {
+            days = -1;
+            return false;
+        }
+
+        if(data.CustomFields.TryGetValue($"{ModEntry.Id}_Days", out var howMany) == false)
+        {
+            days = -1;
+            return false;
+        }
+        
+        return int.TryParse(howMany, out days);
+    }
+
+    private static void HandleIslandEvent(Farmer who, string whichAnswer)
     {
         if (whichAnswer == "No")
         {

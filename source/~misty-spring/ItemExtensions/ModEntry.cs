@@ -13,6 +13,7 @@ using ItemExtensions.Additions;
 using ItemExtensions.Events;
 using ItemExtensions.Models;
 using ItemExtensions.Models.Contained;
+using ItemExtensions.Models.Items;
 using ItemExtensions.Patches;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -54,11 +55,18 @@ public sealed class ModEntry : Mod
         ItemPatches.Apply(harmony);
         MineShaftPatches.Apply(harmony);
         ObjectPatches.Apply(harmony);
+        PanPatches.Apply(harmony);
         ResourceClumpPatches.Apply(harmony);
         ShopMenuPatches.Apply(harmony);
         
-        if(helper.ModRegistry.Get("mistyspring.dynamicdialogues") is null)
+        if(helper.ModRegistry.Get("Esca.FarmTypeManager") is not null)
+            FarmTypeManagerPatches.Apply(harmony);
+        
+        if(helper.ModRegistry.Get("mistyspring.dynamicdialogues") is not null)
             NpcPatches.Apply(harmony);
+        
+        if(helper.ModRegistry.Get("Pathoschild.TractorMod") is not null)
+            TractorModPatches.Apply(harmony);
         
         //GSQ
         GameStateQuery.Register($"{Id}_ToolUpgrade", Queries.ToolUpgrade);
@@ -89,7 +97,7 @@ public sealed class ModEntry : Mod
 
     private static void OnLaunch(object sender, GameLaunchedEventArgs e)
     {
-        Mon.Log("Getting resources for the first time...", Level);
+        Mon.Log("Getting resources for the first time...");
         var oreData = Help.GameContent.Load<Dictionary<string, ResourceData>>($"Mods/{Id}/Resources");
         Parser.Resources(oreData, true);
 #if DEBUG
@@ -107,34 +115,41 @@ public sealed class ModEntry : Mod
         //get obj data
         var objData = Help.GameContent.Load<Dictionary<string, ItemData>>($"Mods/{Id}/Data");
         Parser.ObjectData(objData);
-        var dc = Data?.Count ?? 0;
-        Monitor.Log($"Loaded {dc} item data.", LogLevel.Debug);
+        Monitor.Log($"Loaded {Data?.Count ?? 0} item data.", LogLevel.Debug);
         
         //get custom animations
         var animations = Help.GameContent.Load<Dictionary<string, FarmerAnimation>>($"Mods/{Id}/EatingAnimations");
         Parser.EatingAnimations(animations);
-        var ac = EatingAnimations?.Count ?? 0;
-        Monitor.Log($"Loaded {ac} eating animations.", LogLevel.Debug);
+        Monitor.Log($"Loaded {EatingAnimations?.Count ?? 0} eating animations.", LogLevel.Debug);
         
         //get item actions
         var menuActions = Help.GameContent.Load<Dictionary<string, List<MenuBehavior>>>($"Mods/{Id}/MenuActions");
         Parser.ItemActions(menuActions);
-        var ic = MenuActions?.Count ?? 0;
-        Monitor.Log($"Loaded {ic} menu actions.", LogLevel.Debug);
+        Monitor.Log($"Loaded {MenuActions?.Count ?? 0} menu actions.", LogLevel.Debug);
+        
+        //get item actions
+        var trees = Help.GameContent.Load<Dictionary<string, TreeSpawnData>>($"Mods/{Id}/MineTrees");
+        Parser.Trees(trees);
+        Monitor.Log($"Loaded {MenuActions?.Count ?? 0} trees to spawn in mines.", LogLevel.Debug);
         
         //get mixed seeds
         var seedData = Help.GameContent.Load<Dictionary<string, List<MixedSeedData>>>($"Mods/{Id}/MixedSeeds");
         Parser.MixedSeeds(seedData);
-        var msc = Seeds?.Count ?? 0;
-        Monitor.Log($"Loaded {msc} mixed seeds data.", LogLevel.Debug);
+        Monitor.Log($"Loaded {Seeds?.Count ?? 0} mixed seeds data.", LogLevel.Debug);
         
+        //get panning
+        var panData = Help.GameContent.Load<Dictionary<string, PanningData>>($"Mods/{Id}/Panning");
+        Parser.Panning(panData);
+        Monitor.Log($"Loaded {Panning?.Count ?? 0} mixed seeds data.", LogLevel.Debug);
+        
+        //ACTION BUTTON LIST
         var temp = new List<SButton>();
         foreach (var b in Game1.options.actionButton)
         {
             temp.Add(b.ToSButton());
             Monitor.Log("Button: " + b);
         }
-        Monitor.Log($"Total {Game1.options.actionButton.Length}");
+        Monitor.Log($"Total {Game1.options.actionButton?.Length ?? 0}");
 
         ActionButtons = temp;
     }
@@ -168,6 +183,8 @@ public sealed class ModEntry : Mod
     public static Dictionary<string, ItemData> Data { get; internal set; } = new();
     internal static Dictionary<string, FarmerAnimation> EatingAnimations { get; set; } = new();
     internal static Dictionary<string, List<MenuBehavior>> MenuActions { get; set; } = new();
+    internal static Dictionary<string, TreeSpawnData> MineTrees { get; set; } = new();
     public static Dictionary<string, ResourceData> Ores { get; internal set; } = new();
+    public static List<PanningData> Panning { get; internal set; } = new();
     internal static Dictionary<string, List<MixedSeedData>> Seeds { get; set; } = new();
 }

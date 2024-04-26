@@ -1,0 +1,129 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Load textures",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Butter, Mods/{{ModId}}/Churn",
+      "FromFile": "assets/sprites/{{TargetWithoutPath}}.png"
+    },
+    {
+      "LogName": "Add butter object",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_Butter": {
+          "Name": "{{ModId}}_Butter",
+          "Displayname": "Butter",
+          "Description": "Creamy butter made from cow's milk.",
+          "Type": "Basic",
+          "Category": -26,
+          "Price": 200,
+          "Texture": "Mods/{{ModId}}/Butter",
+          "Edibility": 50,
+          "ContextTags": [
+            "color_yellow"
+          ]
+        }
+      }
+    },
+    {
+      "LogName": "Add churn to big craftable",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "{{ModId}}_Churn": {
+          "Name": "Churn",
+          "DisplayName": "Churn",
+          "Description": "An old fashioned churn. Put in milk to get butter!",
+          "Texture": "Mods/{{ModId}}/Churn"
+        }
+      }
+    },
+    {
+      "LogName": "Add churn crafting recipe",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}_Churn": "388 20 390 20 80 2 334 1/Home/{{ModId}}_Churn/true/null"
+      }
+    },
+    {
+      "LogName": "Add churn recipe to Robins shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": [ "Carpenter", "Items" ],
+      "Entries": {
+        "{{ModId}}_Churn": {
+          "Id": "{{ModId}}_Churn",
+          "ItemId": "{{ModId}}_Churn",
+          "IsRecipe": true,
+          "ObjectInternalName": "{{ModId}}_Churn",
+          "Price": 1000
+        }
+      },
+      "MoveEntries": [
+        {
+          "ID": "{{ModId}}_Churn",
+          "ToPosition": "Top"
+        }
+      ]
+    },
+    {
+      "LogName": "Add churn to machines",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC){{ModId}}_Churn": {
+          "OutputRules": [
+            {
+              "Id": "Milk",
+              "Triggers": [
+                {
+                  "Id": "MilkPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)184"
+                }
+              ],
+              "OutputItem": [
+                {
+                  "Id": "{{ModId}}_Butter",
+                  "ItemId": "{{ModId}}_Butter"
+                }
+              ],
+              "MinutesUntilReady": 30
+            },
+            {
+              "Id": "LargeMilk",
+              "Triggers": [
+                {
+                  "Id": "LargeMilkPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)186"
+                }
+              ],
+              "OutputItem": [
+                {
+                  "Id": "{{ModId}}_Butter",
+                  "ItemId": "{{ModId}}_Butter",
+                  "Quality": 2
+                }
+              ],
+              "MinutesUntilReady": 30
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

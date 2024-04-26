@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Champignon arbre",
   "custom-tree.mahogany": "Acajou",
   "custom-tree.palm": "Palmier",
+  "custom-tree.green-rain-wild": "Arbre de Pluie Vert Sauvage",
+  "custom-tree.green-rain-lush": "Arbre de Pluie Vert Luxuriant",
+  "custom-tree.fiddlehead-fern": "Fougère Arbre",
+  "custom-tree.mystic": "Arbre Mystique",
 
   // growth info translation
   "growth-info.fully-grown": "complètement mature",

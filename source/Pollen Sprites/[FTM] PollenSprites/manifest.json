@@ -11,10 +11,10 @@
 {
    "Name": "[FTM] Pollen Sprites",
    "Author": "Esca",
-   "Version": "1.1.0",
-   "Description": "Spawns Pollen Sprites in various locations on windy days in spring.",
+   "Version": "2.0.0",
+   "Description": "Spawns Pollen Sprites in various locations on windy days.",
    "UniqueID": "Esca.PollenSpritesFTM",
-   "MinimumApiVersion": "3.0.0",
+   "MinimumApiVersion": "4.0.0",
    "UpdateKeys": ["Nexus:6149", "GitHub:Esca-MMC/PollenSprites", "ModDrop:790268"],
    "ContentPackFor": {
       "UniqueID": "Esca.FarmTypeManager",

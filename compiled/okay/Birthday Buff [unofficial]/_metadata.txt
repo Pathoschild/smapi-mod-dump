@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17747
+IDs: aedenthorn.BirthdayBuff
+update keys: Nexus:17747, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@BirthdayBuff, GitHub:aedenthorn/StardewValleyMods

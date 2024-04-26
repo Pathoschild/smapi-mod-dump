@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22140
+IDs: leroymilo.ModularZenGarden
+update keys: Nexus:22140, GitHub:Leroymilo/MZG

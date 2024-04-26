@@ -8,158 +8,151 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using System.Collections.Generic;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Randomizes the music in the game
-	/// </summary>
-	public class MusicRandomizer
+    /// <summary>
+    /// Randomizes the music in the game
+    /// </summary>
+    public class MusicRandomizer
 	{
 		/// <summary>
 		/// The dictionary of music replacements
 		/// </summary>
-		public static Dictionary<string, string> MusicReplacements { get; set; } = new Dictionary<string, string>();
+		private static Dictionary<string, string> MusicReplacements { get; set; } = new();
 
 		/// <summary>
 		/// The list of songs
 		/// </summary>
-		public static List<string> MusicList = new List<string>
-			{
-				"50s",
-				"AbigailFlute",
-				"AbigailFluteDuet",
-				"aerobics",
-				"breezy",
-				"bugLevelLoop",
-				"Cavern",
-				"christmasTheme",
-				"Cloth",
-				"CloudCountry",
-				"clubloop",
-				"communityCenter",
-				"cowboy_boss",
-				"cowboy_outlawsong",
-				"Cowboy_OVERWORLD",
-				"Cowboy_singing",
-				"Cowboy_undead",
-				"crane_game",
-				"crane_game_fast",
-				"Crystal Bells",
-				"desolate",
-				"distantBanjo",
-				"echos",
-				"elliottPiano",
-				"EmilyDance",
-				"EmilyDream",
-				"EmilyTheme",
-				"event1",
-				"event2",
-				"fall_day_ambient",
-				"fall1",
-				"fall2",
-				"fall3",
-				"fallFest",
-				"FlowerDance",
-				"Frost_Ambient",
-				"grandpas_theme",
-				"gusviolin",
-				"harveys_theme_jazz",
-				"heavy",
-				"honkytonky",
-				"Hospital_Ambient",
-				"Icicles",
-				"jaunty",
-				"jojaOfficeSoundscape",
-				"junimoKart",
-				"junimoKart_ghostMusic",
-				"junimoKart_mushroomMusic",
-				"junimoKart_slimeMusic",
-				"junimoKart_whaleMusic",
-				"junimoStarSong",
-				"kindadumbautumn",
-				"libraryTheme",
-				"MainTheme",
-				"MarlonsTheme",
-				"marnieShop",
-				"mermaidSong",
-				"moonlightJellies",
-				"movie_classic",
-				"movie_nature",
-				"movie_wumbus",
-				"movieTheater",
-				"movieTheaterAfter",
-				"musicboxsong",
-				"Near The Planet Core",
-				"night_market",
-				"Of Dwarves",
-				"Overcast",
-				"playful",
-				"poppy",
-				"ragtime",
-				"sadpiano",
-				"Saloon1",
-				"sam_acoustic1",
-				"sam_acoustic2",
-				"sampractice",
-				"Secret Gnomes",
-				"SettlingIn",
-				"shaneTheme",
-				"shimmeringbastion",
-				"spaceMusic",
-				"spirits_eve",
-				"spring_day_ambient",
-				"spring_night_ambient",
-				"spring1",
-				"spring2",
-				"spring3",
-				"springtown",
-				"starshoot",
-				"submarine_song",
-				"summer_day_ambient",
-				"summer1",
-				"summer2",
-				"summer3",
-				"SunRoom",
-				"sweet",
-				"tickTock",
-				"tinymusicbox",
-				"title_night",
-				"tribal",
-				"Upper_Ambient",
-				"wavy",
-				"wedding",
-				"winter_day_ambient",
-				"winter1",
-				"winter2",
-				"winter3",
-				"WizardSong",
-				"woodsTheme",
-				"XOR",
-				"tropical_island_day_ambient",
-				"VolcanoMines"
-			};
-
-		/// <summary>
-		/// The last song that played/is playing
-		/// </summary>
-		private static string _lastCurrentSong { get; set; }
+		private readonly static List<string> MusicList = new()
+		{
+            "50s",
+            "AbigailFlute",
+            "AbigailFluteDuet",
+            "aerobics",
+            "breezy",
+            "bugLevelLoop",
+            "Cavern",
+            "christmasTheme",
+            "Cloth",
+            "CloudCountry",
+            "clubloop",
+            "communityCenter",
+            "cowboy_boss",
+            "cowboy_outlawsong",
+            "Cowboy_OVERWORLD",
+            "Cowboy_singing",
+            "Cowboy_undead",
+            "crane_game",
+            "crane_game_fast",
+            "Crystal Bells",
+            "desolate",
+            "distantBanjo",
+            "echos",
+            "elliottPiano",
+            "EmilyDance",
+            "EmilyDream",
+            "EmilyTheme",
+            "event1",
+            "event2",
+            "fall1",
+            "fall2",
+            "fall3",
+            "fallFest",
+            "FlowerDance",
+            "grandpas_theme",
+            "gusviolin",
+            "harveys_theme_jazz",
+            "heavy",
+            "honkytonky",
+            "Hospital_Ambient",
+            "Icicles",
+            "jaunty",
+            "junimoKart",
+            "junimoKart_ghostMusic",
+            "junimoKart_mushroomMusic",
+            "junimoKart_slimeMusic",
+            "junimoKart_whaleMusic",
+            "junimoStarSong",
+            "kindadumbautumn",
+            "libraryTheme",
+            "MainTheme",
+            "MarlonsTheme",
+            "marnieShop",
+            "mermaidSong",
+            "moonlightJellies",
+            "movie_classic",
+            "movie_nature",
+            "movie_wumbus",
+            "movieTheater",
+            "movieTheaterAfter",
+            "musicboxsong",
+            "Near The Planet Core",
+            "night_market",
+            "Of Dwarves",
+            "Overcast",
+            "playful",
+            "poppy",
+            "ragtime",
+            "sadpiano",
+            "Saloon1",
+            "sam_acoustic1",
+            "sam_acoustic2",
+            "sampractice",
+            "Secret Gnomes",
+            "SettlingIn",
+            "shaneTheme",
+            "shimmeringbastion",
+            "spaceMusic",
+            "spirits_eve",
+            "spring1",
+            "spring2",
+            "spring3",
+            "springtown",
+            "starshoot",
+            "submarine_song",
+            "summer1",
+            "summer2",
+            "summer3",
+            "SunRoom",
+            "sweet",
+            "tickTock",
+            "tinymusicbox",
+            "title_night",
+            "tribal",
+            "wavy",
+            "wedding",
+            "winter1",
+            "winter2",
+            "winter3",
+            "WizardSong",
+            "woodsTheme",
+            "XOR",
+            "VolcanoMines"
+        };
 
 		/// <summary>
 		/// Randomizes all the music to another song
 		/// </summary>
 		/// <returns>A dictionary of song names to their alternatives</returns>
 		public static void Randomize()
-		{
-			List<string> musicReplacementPool = new List<string>(MusicList);
+        {
+            if (!Globals.Config.Music.Randomize ||
+                Globals.Config.Music.RandomSongEachChange) 
+            { 
+                return; 
+            }
+
+            RNG rng = RNG.GetFarmRNG(nameof(MusicRandomizer));
+			List<string> musicReplacementPool = new(MusicList);
 			MusicReplacements = new Dictionary<string, string>();
-			_lastCurrentSong = "";
 
 			foreach (string song in MusicList)
 			{
-				string replacementSong = Globals.RNGGetAndRemoveRandomValueFromList(musicReplacementPool);
+				string replacementSong = rng.GetAndRemoveRandomValueFromList(musicReplacementPool);
 				MusicReplacements.Add(song, replacementSong);
 			}
 
@@ -167,31 +160,47 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Attempts to replace the current song with a different one
-		/// If the song was barely replaced, it doesn't do anything
+		/// Intercepts Game1.changeMusicTrack so that we can call it with our remapped song
+        /// This instance of harmony is pretty safe, as were just changing the input parameter
 		/// </summary>
-		public static void TryReplaceSong()
+		public static void PatchChangeMusicTrack()
 		{
-			string currentSong = Game1.currentSong?.Name;
-			if (_lastCurrentSong == currentSong) { return; }
+            var harmony = new Harmony(Globals.ModRef.ModManifest.UniqueID);
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Game1), nameof(Game1.changeMusicTrack)),
+               prefix: new HarmonyMethod(typeof(MusicRandomizer), nameof(PatchChangeMusicTrack_Prefix))
+            );
+        }
 
-			string newSongToPlay = Globals.Config.Music.RandomSongEachTransition ? GetRandomSong() : GetMappedSong(currentSong);
-			if (!string.IsNullOrWhiteSpace(newSongToPlay))
-			{
-				_lastCurrentSong = newSongToPlay;
-				Game1.changeMusicTrack(newSongToPlay);
+        /// <summary>
+        /// Grabs the mapped song, and changes the input parameter if a match is found
+        /// </summary>
+        /// <param name="newTrackName">The input parameter - MUST have this name!</param>
+        /// <returns>True always - as we always want to call the original Game1.changeMusicTrack</returns>
+        [HarmonyPatch(typeof(Game1))]
+        internal static bool PatchChangeMusicTrack_Prefix(ref string newTrackName)
+        {
+            var mappedSong = GetMappedSong(newTrackName);
+            if (Globals.Config.Music.Randomize && !string.IsNullOrEmpty(mappedSong))
+            {
+                newTrackName = mappedSong;
+            }
 
-				//Game1.addHUDMessage(new HUDMessage($"Song: {currentSong} | Replaced with: {newSongToPlay}"));
-			}
-		}
+            return true;
+        }
 
-		/// <summary>
-		/// Gets the song that's mapped to the given song
-		/// </summary>
-		/// <param name="currentSong">The song to look up</param>
-		/// <returns />
-		private static string GetMappedSong(string currentSong)
+        /// <summary>
+        /// Gets the song that's mapped to the given song
+        /// </summary>
+        /// <param name="currentSong">The song to look up</param>
+        /// <returns />
+        private static string GetMappedSong(string currentSong)
 		{
+            if (Globals.Config.Music.RandomSongEachChange)
+            {
+                return GetRandomSong();
+            }
+
 			if (MusicReplacements.TryGetValue(currentSong ?? "", out string value))
 			{
 				return value;
@@ -200,23 +209,21 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets a random song
+		/// Gets a random song seeded by Stardew's RNG
 		/// </summary>
 		/// <returns />
 		private static string GetRandomSong()
 		{
-			return Globals.RNGGetRandomValueFromList(MusicList, Game1.random);
+            return RNG.GetRandomValueFromListUsingRNG(MusicList, Game1.random);
 		}
 
-		/// <summary>
-		/// Writes the music info to the spoiler log
-		/// </summary>
-		/// <param name="musicList">The music replacement list</param>
-		private static void WriteToSpoilerLog()
+        /// <summary>
+        /// Writes the music info to the spoiler log
+        /// </summary>
+        /// <param name="musicList">The music replacement list</param>
+        private static void WriteToSpoilerLog()
 		{
-			if (!Globals.Config.Music.Randomize || Globals.Config.Music.RandomSongEachTransition) { return; }
-
-			Globals.SpoilerWrite("==== MUSIC ====");
+            Globals.SpoilerWrite("==== MUSIC ====");
 			foreach (string song in MusicReplacements.Keys)
 			{
 				Globals.SpoilerWrite($"{song} is now {MusicReplacements[song]}");

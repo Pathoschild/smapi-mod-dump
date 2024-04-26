@@ -117,7 +117,10 @@ namespace Gaphodil.BetterJukebox
 
                 // create default list of songs to play
                 // 1.6: list to hashset - shallow should be fine here?
-                HashSet<string> heardCopy = new(Game1.player.songsHeard);
+
+                // also 1.6 but a later alpha: jukeboxes now use Utility.GetJukeboxTracks
+                // which is BACK TO BEING A LIST AUGH
+                HashSet<string> heardCopy = [.. Utility.GetJukeboxTracks(Game1.player, Game1.player.currentLocation)];
 
                 // add unheard tracks
                 if (Config.ShowUnheardTracks && !Config.PermanentUnheard)
@@ -134,7 +137,7 @@ namespace Gaphodil.BetterJukebox
                 }
 
                 // convert to list here instead
-                List<string> list = heardCopy.ToList();
+                List<string> list = [.. heardCopy];
 
                 // remove specific tracks
                 BetterJukeboxHelper.FilterTracksFromList(list, Config.AmbientTracks, Config.Blacklist, Config.Whitelist);

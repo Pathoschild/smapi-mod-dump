@@ -113,6 +113,7 @@
 	"winCraneGame": "Ganhe no jogo no Cinema",
 	"voidEggEvent": "Evento da bruxa aleatório",
 	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
+	"foxbloom": "Appears in Ridge Forest on random Sunday each season\n(Weather must be sunny and Relic Fox Mask equipped)", // RSV // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "Os Esgotos",
 	"locationDesert": "Deserto do Cálico",
 	"locationSkullPrehistoric": "Caverna da Caveira nos andares pré-históricos",
+	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "na ???",
 	
 	// Water Locations (for fishing suggestions)
@@ -189,6 +191,10 @@
 	"waterShearwaterBridge": "na Shearwater Bridge", // SVE (no existing translation)
 	"waterForestWest": "na Floresta Cinzaseiva (Oeste)", // SVE
 	"waterAdventurerSummit": "na Adventurer Summit", // SVE (no existing translation)
+	"waterRidgesideRiver": "in Ridgeside Village river", // RSV // TODO
+	"waterRidge": "on the Ridge", // RSV // TODO
+	"waterRidgeForest": "in Ridge Forest", // RSV // TODO
+	"waterRidgeFalls": "at Ridge Falls", // RSV // TODO
 	"waterUnknown": "na ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "Ferreiro",
 	"shopSaloon": "Saloon",
 	"shopClinic": "Clínica",
+	"shopFish": "Fish Shop", // TODO
+	"shopGuild": "Adventurer's Guild", // TODO
 	"shopDwarf": "Anão",
 	"shopKrobus": "Krobus",
 	"shopKrobusWeekday": "Krobus ({{day}})",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "Pierre durante o Festival do Ovo (Primavera 13)",
 	"shopFlowerDance": "Pierre durante a Dança das Flores (Primavera 24)",
 	"shopSpiritsEve": "Pierre durante o dia da Véspera dos Espíritos (Outono 27)",
+	"shopSophiaLedger": "Sophia's ledger", // SVE // TODO
+	"shopWestForestBear": "Forest West bear", // SVE // TODO
+	"shopNightingaleOrchard": "Nightingale Orchard", // RSV // TODO
+	"shopHotelPastry": "Hotel Pastry Shop", // RSV // TODO
+	"shopPikaRestaurant": "Pika's Restaurant", // RSV // TODO
 	"shopUnknown": "???",
 	"randomlyAvailable": "aleatório", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "envie pelo correio o(a) {{item}}", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "Árvore de Pêssego",
 	"treePomegranate": "Romãzeira",
 	"treeCherry": "Cerejeira",
-	"treeLime": "Árvore limão", // PPJA
-	"treePapaya": "Árvore Mamão", // PPJA
-	"treeWalnut": "Árvore de Noz", // PPJA
-	"treePersimmon": "Árvore de Caqui", // PPJA
-	"treeGranny": "Árvore de Maçã-verde", // PPJA
-	"treeEucalyptus": "Árvore de Eucalipto", // PPJA
+	"treeMahogany": "Mahogany Tree", // TODO
+	"treeLime": "Árvore limão", // Cornucopia
+	"treePapaya": "Árvore Mamão", // Cornucopia
+	"treeWalnut": "Árvore de Noz", // Cornucopia
+	"treePersimmon": "Árvore de Caqui", // Cornucopia
+	"treeEucalyptus": "Árvore de Eucalipto", // Cornucopia
+	"treeGranny": "Árvore de Maçã-verde", // PPJA More Trees
+	"treeAvocado": "Avocado Tree", // Cornucopia // TODO
+	"treeCocoaPod": "Cocoa Pod Tree", // Cornucopia // TODO
+	"treePear": "Pear Tree", // Cornucopia // TODO
+	"treeCherryPluot": "Cherry Pluot Tree", // RSV // TODO
+	"treeMountainPlumcot": "Mountain Plumcot Tree", // RSV // TODO
+	"treeDesertTangelo": "Desert Tangelo Tree", // RSV // TODO
+	"treeTropiUgliFruit": "Tropi Ugli Fruit Tree", // RSV // TODO
+	"treeParadiseRangpur": "Paradise Rangpur Tree", // RSV // TODO
+	"treeEmberBloomLime": "Ember Blood Lime Tree", // RSV // TODO
 	"treeMaple": "Árvore de Ácer",
 	"treeOak": "Árvore de Carvalho",
 	"treePine": "Pinheiro",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "slime Vermelho",
 	"monsterPurpleSlime": "slime Roxo",
 	"monsterBRPCISlime": "slime Azul/Vermelho/Roxo/Cobre/Ferro",
+	"monsterHauntedSkull": "Haunted Skull", // TODO
+	"monsterRidgeForest": "Ridge Forest monsters", // RSV // TODO
 	"monsterUnknown": "???",
 	
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "correio depois {{time}} com {{friendReq}}",
 	"conditionalMailTimeSkill": "correio depois {{time}} com {{skillReq}}",
 	"conditionalMailFriendSkill": "correio quando {{friendReq}} & {{skillReq}}",
+	"conditionalMailSpecialOrder": "mail after special order {{orderName}}", // TODO
 	"mailConditionFriendship": "{{hearts}} corações com {{person}}",
 	
 	// Times (for fishing)

@@ -22,7 +22,7 @@ If you are a mod developer and want to integrate your mod with stardew access th
 - [Keybindings](keybindings.md)
 - [Commands](commands.md)
 - [Configs](config.md)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Guides](guides.md)
 
 ## Useful Links
 
@@ -54,7 +54,7 @@ Made with [contrib.rocks](https://contrib.rocks).
 ## Translations
 
 As of v1.5.0, the mod has been fully internationalised.
-Follow [this](https://github.com/khanshoaib3/stardew-access/issues/182) issue page to track the progress of
+Follow [this issue page](https://github.com/khanshoaib3/stardew-access/issues/182) to track the progress of
 translations currently in the works and/or if you want to provide translation for your language.
 
 ## Contact Us

@@ -6,6 +6,10 @@ for queries and analysis.**
 
 ----
 
+## 1.1.1
+
+- Fix: Update to Stardew Valley 1.6
+
 ## 1.1.0
 
 - Feature: Add config to adjust special order rewards (board in front of Lewis' house)

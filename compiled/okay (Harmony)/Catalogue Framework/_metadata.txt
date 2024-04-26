@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22364
+IDs: leroymilo.CatalogueFramework
+update keys: Nexus:22364, GitHub:Leroymilo/Catalogue-Framework

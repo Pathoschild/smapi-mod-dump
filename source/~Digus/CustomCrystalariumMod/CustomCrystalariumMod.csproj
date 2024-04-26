@@ -5,7 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CustomCrystalariumMod</RootNamespace>
     <AssemblyName>CustomCrystalariumMod</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>

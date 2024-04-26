@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley/personal-indoor-farm
+**
+*************************************************/
+
+{
+	"Door1.Name": "Дверь Измерений – Эфир",
+	"Door2.Name": "Дверь Измерений – Эребус",
+	"Door3.Name": "Дверь Измерений – Хаос",
+	"DoorAttic.Name": "Дверь Измерений – Чердак",
+	"DoorLoft.Name": "Дверь Измерений – Лофт",
+	"DoorCellar.Name": "Дверь Измерений – Погреб",
+	"Door.Empty": "За этой дверью ничего нет.",
+	"Door.Offline": "Не стоит шнырять вокруг, когда твой друг отсутствует!",
+	"Painting.Name": "Картина сезона",
+	"Synchronizer.Name": "Синхронизатор даты и времени",
+	"Synchronizer.Description": "Синхронизирует ваше личное измерение с датой городов Пеликана",
+	"Synchronizer.Buff.Name": "Пространственно-временное искажение",
+	"Synchronizer.Buff.Description": "Тогда - это сейчас, Но где же я?",
+	"VoidSeal.Name": "Жидкость печати Пустоты",
+	"VoidSeal.Description": "Устраняет личное измерение",
+	"VoidSeal.Buff.Name": "Внутренняя пустота",
+	"VoidSeal.Buff.Description": "Я чувствую себя такой... пустой.",
+	"NoContentPacks": "У вас есть дверь, но нет набора контента для комнаты, чтобы сопровождать её.",
+}

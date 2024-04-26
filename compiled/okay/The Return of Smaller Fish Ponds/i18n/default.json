@@ -1,0 +1,6 @@
+{
+  // GMCM
+  "GMCM_OptionModEnabled_Name": "Mod Enabled?",
+  "GMCM_OptionInstantConstruction_Name": "Instant Construction",
+  "GMCM_OptionInstantConstruction_Description": "Enable instant construction of Fish Ponds."
+}

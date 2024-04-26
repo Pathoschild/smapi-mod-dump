@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<GamePath>C:\Games\Stardew Valley</GamePath>
+	<AssemblyName>AutomateToolSwap</AssemblyName>
+  </PropertyGroup>
+  <Target Name="AfterBuild" AfterTargets="Build">
+    <Exec Command="C:\Games\Stardew Valley\StardewModdingAPI.exe" />
+  </Target>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+  
+</Project>

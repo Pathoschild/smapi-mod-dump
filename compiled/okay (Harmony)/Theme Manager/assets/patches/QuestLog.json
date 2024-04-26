@@ -1,0 +1,25 @@
+{
+	"ID": "QuestLog",
+
+	"ColorVariables": {
+		"$QuestLogText": "$Text",
+		"$QuestLogHover": "$Hover"
+	},
+
+	"Patches": {
+		"#QuestLog:draw(SpriteBatch)": {
+			"Colors": {
+				"Wheat": { "*": "$QuestLogHover" },
+				"DarkBlue": { "*": "$QuestObjectiveText" },
+				"Red": { "*": "$QuestBarIncomplete" },
+				"DarkRed": { "*": "$QuestBarIncompleteDark" },
+				"LimeGreen": { "*": "$QuestBarComplete" },
+				"Green": { "*": "$QuestBarCompleteDark" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$QuestLogText" }
+			}
+		}
+	}
+}

@@ -36,6 +36,8 @@ namespace MaritimeSecrets
 
         public bool ChangePendantPriceToPearl { get; set; } = false;
 
+        public bool CanBuyPendantWithoutHeartsAndHouseUpgrade { get; set; } = false;
+
         private static string[] SpeechChoices { get; set; } = new string[] { "Dynamic", "Modern", "Sailor" };
 
         public static void VerifyConfigValues(MaritimeSecretsConfig config, MaritimeSecrets mod)
@@ -70,6 +72,7 @@ namespace MaritimeSecrets
             api.AddTextOption(manifest, () => config.MarinerNameOverwrite, (string val) => config.MarinerNameOverwrite = val, () => mod.Helper.Translation.Get("ConfigMarinerNameOverwrite"), () => mod.Helper.Translation.Get("ConfigMarinerNameOverwriteDescription"));
             api.AddTextOption(manifest, () => GetElementFromConfig(SpeechChoices, config.MarinerSpeechType), (string val) => config.MarinerSpeechType = GetIndexFromArrayElement(SpeechChoices, val), () => mod.Helper.Translation.Get("ConfigMarinerSpeechType"), null, SpeechChoices, (s) => TranslateSpeechChoice(s, mod));
             api.AddBoolOption(manifest, () => config.ChangePendantPriceToPearl, (bool val) => config.ChangePendantPriceToPearl = val, () => mod.Helper.Translation.Get("ConfigChangePendantPriceToPearl"));
+            api.AddBoolOption(manifest, () => config.CanBuyPendantWithoutHeartsAndHouseUpgrade, (bool val) => config.CanBuyPendantWithoutHeartsAndHouseUpgrade = val, () => mod.Helper.Translation.Get("ConfigCanBuyPendantWithoutHeartsAndHouseUpgrade"));
         }
 
         private static string TranslateSpeechChoice(string englishValue, MaritimeSecrets mod)

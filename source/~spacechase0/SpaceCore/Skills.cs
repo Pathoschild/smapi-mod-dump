@@ -86,15 +86,11 @@ namespace SpaceCore
 
             public Color ExperienceBarColor { get; set; }
 
-            public virtual IDictionary<int, IList<string>> GetSkillLevelUpCraftingRecipes(int level)
-            {
-                return new Dictionary<int, IList<string>>();
-            }
-
-            public virtual IDictionary<int, IList<string>> GetSkillLevelUpCookingRecipes(int level)
-            {
-                return new Dictionary<int, IList<string>>();
-            }
+            /// 
+            /// Got Rid of the level up Dictionaries.
+            /// Now when the player levels up, custom skills will search all the recipes for recipes with thier ID and level
+            /// So now it's easier for people to add new recipies to skills through like content patcher
+            /// 
 
 
             public virtual List<string> GetExtraLevelUpInfo(int level)
@@ -272,6 +268,16 @@ namespace SpaceCore
             return forFarmer;
         }
 
+        public static Texture2D GetSkillPageIcon(string skillName)
+        {
+            return Skills.GetSkill(skillName).SkillsPageIcon;
+        }
+
+        public static Texture2D GetSkillIcon(string skillName)
+        {
+            return Skills.GetSkill(skillName).Icon;
+        }
+
         public static int GetExperienceFor(Farmer farmer, string skillName)
         {
             if (!Skills.SkillsByName.ContainsKey(skillName))
@@ -332,6 +338,25 @@ namespace SpaceCore
             Skills.ValidateSkill(farmer, skillName);
 
             int prevLevel = Skills.GetSkillLevel(farmer, skillName);
+
+            ///Taken From Vanilla
+            ///Mastery Exp is added before exp to the skill is added
+            ///First, we check to see if the skill we are gaining exp in is >=10.
+            ///If they are not 10 or greater than 10 (if a mod has a prestige system), then don't add mastery exp
+            ///Next, we check to see of the Core skills (vanilla skills) of the farmer equal 25. If so that means they are maxed out on them.
+            int level = (farmer.farmingLevel.Value + farmer.fishingLevel.Value + farmer.foragingLevel.Value + farmer.combatLevel.Value + farmer.miningLevel.Value) / 2;
+            if (prevLevel >= 10 && level >= 25)
+            {
+                ///All thise here is just how vanilla does thier mastery exp system. So it's just copy past with the amount. 
+                int currentMasteryLevel = MasteryTrackerMenu.getCurrentMasteryLevel();
+                Game1.stats.Increment("MasteryExp", Math.Max(1, amt / 2));
+                if (MasteryTrackerMenu.getCurrentMasteryLevel() > currentMasteryLevel)
+                {
+                    Game1.showGlobalMessage(Game1.content.LoadString("Strings\\1_6_Strings:Mastery_newlevel"));
+                    Game1.playSound("newArtifact");
+                }
+            }
+
             Skills.Exp[farmer.UniqueMultiplayerID][skillName] += amt;
             if (farmer == Game1.player && prevLevel != Skills.GetSkillLevel(farmer, skillName))
                 for (int i = prevLevel + 1; i <= Skills.GetSkillLevel(farmer, skillName); ++i)

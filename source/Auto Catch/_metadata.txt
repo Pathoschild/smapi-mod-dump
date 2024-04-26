@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/MercuryVN/AutoCatch
+   Git: https://github.com/MercuryVN/AutoCatch.git
+
+mods:
+   Auto Catch
+
+latest commit:
+   commit 53e25fcf09d613060b0f6fd282df67efe7c53d85
+   Author: MercuryVN <121730147+MercuryVN@users.noreply.github.com>
+   Date:   Fri Apr 19 20:13:23 2024 +0700
+   
+       Code cleanup
+   

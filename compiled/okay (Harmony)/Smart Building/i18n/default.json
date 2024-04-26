@@ -63,6 +63,10 @@
     "smart-building.settings.cheaty-options.enable-inserting-items-into-machines": "Enable placing items into machines",
     "smart-building.settings.cheaty-options.creative-mode": "Creative mode",
     "smart-building.settings.cheaty-options.creative-mode.tooltip": "Don't remove items from the inventory when placing with Smart Building.",
+    "smart-building.settings.cheaty-options.freeze-time-in-build-mode": "[BETA] Freeze time in build mode",
+    "smart-building.settings.cheaty-options.freeze-time-in-build-mode.tooltip": "Freeze time while in build mode, so you can build at the speed you prefer.",
+    "smart-building.settings.cheaty-options.only-freeze-time-on-farm": "Only freeze time on the farm",
+    "smart-building.settings.cheaty-options.only-freeze-time-on-farm.tooltip": "If the time freezing setting is enabled, only freeze time on the farm.",
     "smart-building.settings.debug.title": "Debug Settings",
     "smart-building.settings.debug.enable-debug-command": "Enable debug command",
     "smart-building.settings.debug.enable-debug-keybinds": "Enable debug keybinds",
@@ -99,6 +103,7 @@
     "smart-building.error.refunding.generic-refund-message": "R-01: Something went wrong.",
     "smart-building.error.refunding.refunding-item-to-player-inventory": "R-02: Refunding item to player inventory: ",
     "smart-building.warning.gmcm-not-installed": "GMCM-01: The user doesn't have GMCM installed. This is not an error.",
+    "smart-building.warning.there-might-be-a-tree-here": "It looks like there might be tilled dirt, or a tree sapling planted on this tile. You can't place this here.",
     // Messages
     "smart-building.message.item-name": "Item name",
     "smart-building.message.item-parent-sheet-index": "ParentSheetIndex",

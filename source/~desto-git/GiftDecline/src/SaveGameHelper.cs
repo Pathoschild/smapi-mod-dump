@@ -82,7 +82,7 @@ namespace GiftDecline
 		public static void HandleReceivedGift(NPC npc, Item item)
 		{
 			string npcName = npc.Name;
-			string itemId = item.ParentSheetIndex.ToString();
+			string itemId = item.ItemId;
 
 			bool didBufferExceed = BumpGiftAmount(npcName, item);
 			if (didBufferExceed)
@@ -118,7 +118,7 @@ namespace GiftDecline
 				// .ToList because the save state is potentially "repaired" in this block
 				foreach (string itemId in SaveState.GiftTasteOverwrites[npcName].Keys.ToList())
 				{
-					Item item = new Object(int.Parse(itemId), 1);
+					Item item = ItemRegistry.Create(itemId);
 					if (item == null)
 					{
 						Logger.Trace("Skipping unknown item \"" + itemId + "\" for NPC \"" + npcName + "\".");
@@ -162,7 +162,7 @@ namespace GiftDecline
 		/// <returns>Wether or not the gift exceeded the declining threshold.</returns>
 		private static bool BumpGiftAmount(string npcName, Item item)
 		{
-			string itemId = item.ParentSheetIndex.ToString();
+			string itemId = item.itemId.ToString();
 
 			if (!SaveState.GiftTasteDeclineBuffer.ContainsKey(npcName))
 			{

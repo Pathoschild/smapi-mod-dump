@@ -1,0 +1,129 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Overwrite Preserves Jar rules for Grains",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)15",
+                "OutputRules"
+            ],
+            "When": {
+                "Oats": true
+            },
+            "Entries": {
+                "Default_Pickled": {
+                  "Id": "Default_Pickled",
+                  "Triggers": [
+                    {
+                      "Id": "ItemPlacedInMachine_Vegetable",
+                      "Trigger": "ItemPlacedInMachine",
+                      "RequiredItemId": null,
+                      "RequiredTags": [
+                        "category_vegetable"
+                      ],
+                      "RequiredCount": 1,
+                      "Condition": "!ANY \"ITEM_CONTEXT_TAG Input oat\" \"ITEM_ID Target (O){{ModId}}_Oat\""
+                    },
+                    {
+                      "Id": "ItemPlacedInMachine_Forage",
+                      "Trigger": "ItemPlacedInMachine",
+                      "RequiredItemId": null,
+                      "RequiredTags": [
+                        "category_greens"
+                      ],
+                      "RequiredCount": 1,
+                      "Condition": "ITEM_EDIBILITY Input 1"
+                    },
+                    {
+                      "Id": "ItemPlacedInMachine_Pickle",
+                      "Trigger": "ItemPlacedInMachine",
+                      "RequiredItemId": null,
+                      "RequiredTags": [
+                        "preserves_pickle"
+                      ],
+                      "RequiredCount": 1,
+                      "Condition": null
+                    }
+                  ],
+                  "UseFirstValidOutput": false,
+                  "OutputItem": [
+                    {
+                      "CustomData": null,
+                      "OutputMethod": null,
+                      "CopyColor": false,
+                      "CopyPrice": false,
+                      "CopyQuality": false,
+                      "PreserveType": null,
+                      "PreserveId": null,
+                      "IncrementMachineParentSheetIndex": 0,
+                      "PriceModifiers": null,
+                      "PriceModifierMode": "Stack",
+                      "Condition": null,
+                      "Id": "Default",
+                      "ItemId": "FLAVORED_ITEM Pickle DROP_IN_ID",
+                      "RandomItemId": null,
+                      "MaxItems": null,
+                      "MinStack": -1,
+                      "MaxStack": -1,
+                      "Quality": -1,
+                      "ObjectInternalName": null,
+                      "ObjectDisplayName": null,
+                      "ToolUpgradeLevel": -1,
+                      "IsRecipe": false,
+                      "StackModifiers": null,
+                      "StackModifierMode": "Stack",
+                      "QualityModifiers": null,
+                      "QualityModifierMode": "Stack",
+                      "ModData": null,
+                      "PerItemCondition": null
+                    }
+                  ],
+                  "MinutesUntilReady": 1600,
+                  "DaysUntilReady": -1,
+                  "InvalidCountMessage": null,
+                  "RecalculateOnCollect": false
+                },
+                "{{ModId}}_Overnight_Oats": {
+                    "Id": "{{ModId}}_Overnight_Oats",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine_Oats",
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": null,
+                            "RequiredTags": null,
+                            "RequiredCount": 1,
+                            "Condition": "ANY \"ITEM_CONTEXT_TAG Input oat\" \"ITEM_ID Target (O){{ModId}}_Oat\""
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Overnight_Oats",
+                            "ItemId": "(O){{ModId}}_Overnight_Oats",
+                            "MinStack": 1,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 1600
+                }
+            }
+        }
+    ]
+}

@@ -32,7 +32,7 @@
 	"fish-mountain-location": "山脉",
 	"fish-beach-location": "海洋",
 	"fish-undergroundmine-location": "矿井",
-	"fish-nightmarket-location": "海底",
+	"fish-submarine-location": "海底",
 	"fish-bugland-location": "虫之地",
 	"fish-witchswamp-location": "女巫沼泽",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "需要{{daysToGrow}}天才能长大，但此后可持续不断的生产。",
 	"crop-tooltip-growth-time": "需要{{daysToGrow}}天才能成熟。",
 	"crop-tooltip-seasons": "种植期间: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "只能在室内种植。",
-	"crop-tooltip-rice-shoot": "种在水辺，会长得更快",
+	"crop-tooltip-indoor-crop": "只能在室内种植。",
+	"crop-tooltip-paddy-crop": "种在水辺，会长得更快",
 
 	"bundle-random-all": "随机",
 	"bundle-random-letter": "英文字母 \"{{letter}}\"",

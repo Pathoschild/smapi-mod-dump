@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "PolyamoryKiss",
+  "Name": "PolyamorySweet Kiss",
   "Author": "ApryllForever",
-  "Version": "1.0.10",
+  "Version": "1.1.6",
   "Description": "Polyamory Affection! Hugs and kisses!",
-  "UniqueID": "ApryllForever.PolyamoryKiss",
-  "EntryDll": "PolyamoryKiss.dll",
+  "UniqueID": "ApryllForever.PolyamorySweetKiss",
+  "EntryDll": "PolyamorySweetKiss.dll",
   "MinimumApiVersion": "3.15.0",
 
   "UpdateKeys": [ "Nexus: 20599" ],

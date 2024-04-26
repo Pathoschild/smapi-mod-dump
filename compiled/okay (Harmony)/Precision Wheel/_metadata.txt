@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22222
+IDs: DespairScent.PrecisionWheel
+update keys: Nexus:22222, GitHub:DespairScent/PrecisionWheel

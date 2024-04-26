@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21526
+IDs: Spiderbuttons.ButtonsExtraBooksCore
+update keys: Nexus:21526

@@ -42,7 +42,7 @@ namespace stardew_access.Utils
             }
 
             // Check if there are any unreplaced keys
-            if (result.ToString().Contains("{") || result.ToString().Contains("}"))
+            if (result.ToString().Contains('{') || result.ToString().Contains('}'))
             {
                 throw new FormatException("One or more keys in the format string do not have corresponding entries in the dictionary.");
             }

@@ -8,13 +8,17 @@
   "custom-tree.mushroom": "蘑菇树",
   "custom-tree.mahogany": "桃花心木树",
   "custom-tree.palm": "棕榈树",
+  "custom-tree.green-rain-wild": "野生绿色雨树",
+  "custom-tree.green-rain-lush": "郁郁葱葱的绿色雨树",
+  "custom-tree.fiddlehead-fern": "蕨菜蕨树",
+  "custom-tree.mystic": "神秘树",
 
   // growth info translation
   "growth-info.fully-grown": "完全长大",
   "growth-info.stage": "阶段",
   "growth-info.of": "的",
-  "growth-info.days-left": "天左边",
-  "growth-info.day-left": "日左边",
+  "growth-info.days-left": "天剩余",
+  "growth-info.day-left": "日剩余",
 
   // for Generic Config Menu Mod
   "config.mouse-hover.name": "鼠标悬停",

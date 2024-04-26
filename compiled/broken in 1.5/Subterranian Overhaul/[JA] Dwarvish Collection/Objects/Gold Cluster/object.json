@@ -1,9 +1,0 @@
-{
-  "Name": "Gold Cluster",
-  "Description": "A cluster of very pure gold ore.",
-  "Category": "Metal",
-  "Edibility": -300,  
-  "Price": 125,
-  "IsColored": false,
-  "Recipe": null
-}

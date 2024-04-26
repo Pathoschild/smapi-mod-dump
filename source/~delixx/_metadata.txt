@@ -7,9 +7,9 @@ mods:
    Easy Farm Switcher
 
 latest commit:
-   commit 3cbe5467b06d87e6b736bd629960c92ea415348f
+   commit 5a8f8e957b11cbfeac67ed105701c08efa7aba55
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri Mar 22 18:38:52 2024 +0100
+   Date:   Wed Apr 24 18:49:48 2024 +0000
    
-       added hotfix for world map base game bug
+       Update README.md
    

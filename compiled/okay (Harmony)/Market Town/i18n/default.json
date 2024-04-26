@@ -406,7 +406,7 @@
   
   "foodstore.responselist.invite":                    "Invite for a visit",
   
-  "foodstore.responselist.foodtaste":                 "How was the food?",
+  "foodstore.responselist.foodtaste":                 "Have you tried any food yet?",
   
   "foodstore.responselist.dailydish":                 "Dish of the Day",
   
@@ -418,7 +418,7 @@
   "foodstore.kidask":                                 "{{kidName}}: Pwease, can I play on your farm today? Pretty pwease with sprinkles on top!!",
   "foodstore.groupkidask":                            "Heyyy, can we all pretty-pretty-please play on your super-duper farm today? Cross my heart, we won't even touch the flowers!",
   
-  "foodstore.kidresponselist.yes":                    "Absolutely! And guess what? I've got some special candy, just for you!!",
+  "foodstore.kidresponselist.yes":                    "Absolutely! My cat is waiting for you to pet his belly!!",
   
   "foodstore.kidresponselist.no":                     "Oh! I think you've got some super important school stuff today, don'tcha?",
   
@@ -817,16 +817,26 @@
   "foodstore.config.museumpricemarkup":               "Museum Ticket price multiplier",
   "foodstore.config.museumpricemarkupText":           "Museum Ticket price based on number of artifacts, minerals and monster loots displayed inside. Higher this value mean higher price ticket, but it will also lower chance of visitors!!!",
 
-  "foodstore.todaymuseumvisitor":                     "  Yesterday museum visitors: {{todayMMuseumVisitor}}^^",
+  "foodstore.todaymuseumvisitor":                     "  Yesterday museum visitors: {{todayMMuseumVisitor}}, earning {{todayMuseumEarning}}^^",
 
   "foodstore.letter.receivemuseumlicense":            "   Dear @.^^   Congrat on obtaining your Museum License. Let me walk you through how to set it up^   You can use any Farm Building as a Museum. The only requirement is to have a Sign displaying the License, and then visitors will start arriving tomorrow.^   Museum visitors do not purchase items on display, but they will pay a ticket price upon entrance. The price is determined by the number of artifacts, rare gems, as well as exotic fish or statues. You can decide on your ticket markup; however, keep in mind that the higher the markup, the fewer visitors you may attract.^^   I will visit your Museum once it is ready.^     -Lewis",
   "foodstore.letter.receiverestaurantlicense":        "   Dear @.^^   I have noticed that you have obtained the Restaurant License. This License will allow you to use any Farm Building as a Restaurant. Simply display the License on a Sign, and visitors will start arriving tomorrow.^   Restaurant visitors will browse around and purchase food that appeals to them. Sometimes, they will request a special dish, which you can sell to them directly for a higher price.^^   I am really looking forward to trying your food.^     -Lewis",
   "foodstore.letter.receivemarkettownlicense":        "   Dear @.^^   Finally, you have obtained the Market Town License. From now on, you can own from a small convenient store to even a supermarket. This License allows you to sell any goods you want, including foods, harvests, materials, and more.^^   Thank you so much for creating a convenient hub for all the folks in our village.^     -Lewis",
 
   "foodstore.config.multiplayermode":                 "Enable Sale money for multiplayer?",
-  "foodstore.config.multiplayermodeText":             "WARNING BUG. Default false. Enable this will split the sale money between connected player. WARNING: Sometimes the other players dont receive the money."
+  "foodstore.config.multiplayermodeText":             "WARNING BUG. Default false. Enable this will split the sale money between connected player. WARNING: Sometimes the other players dont receive the money.",
 
+  "foodstore.config.easylicense":                     "Skip Requirement for License?",
+  "foodstore.config.textchat":                        "Disable typing chat with NPC?",
 
+  "foodstore.island.building":                        "Flames are dancing and visitors are coming. Building on Paradise Island is halted",
+
+  "foodstore.islandtravel.sun":                       "It was quite a distance on the boat. You feel a little tired!",
+  "foodstore.islandtravel.rain":                      "The rain made the journey more difficult. You feel exhausted.",
+  "foodstore.islandtravel.wind":                      "The wind sometimes pushes you forward, but other times it goes against your direction.",
+  "foodstore.islandtravel.storm":                     "The stormy weather was relentless. You feel drained from the journey.",
+  "foodstore.islandtravel.greenrain":                 "The unusual green rain was disorienting. You feel weakened.",
+  "foodstore.islandtravel.snow":                      "Trudging through the snow was exhausting. You feel your energy draining away."
 
 
 }

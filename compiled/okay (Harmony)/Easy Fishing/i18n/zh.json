@@ -1,0 +1,9 @@
+{
+  "config.name.AutoHookEnchantment": "给鱼竿附魔自动上钩",
+  "config.tips.AutoHookEnchantment": "给当前使用的鱼竿附魔自动上钩",
+  "config.name.DirectFishingSuccessful": "跳过钓鱼拉钩小游戏",
+  "config.name.DirectSuccessfulTreasureChance": "跳过小游戏后获得宝箱概率",
+  "config.tips.DirectSuccessfulTreasureChance": "范围：0~1，值越大表示出现概率越大",
+  "config.name.AutoFishing": "自动钓鱼(实验功能)",
+  "config.tips.AutoFishing": "甩勾后开始自动钓鱼，按任意移动键停止，会开启自动上钩附魔及跳过拉钩游戏"
+}

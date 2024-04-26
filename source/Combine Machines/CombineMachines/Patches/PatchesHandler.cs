@@ -51,28 +51,6 @@ namespace CombineMachines.Patches
                 prefix: new HarmonyMethod(typeof(PerformRemoveActionPatch), nameof(PerformRemoveActionPatch.Prefix))
             );
 
-            //  Patch StardewValley.Object.performObjectDropInAction to detect when the player inserts items into a machine, and make the game take additional inputs to process
-            //  if they inserted the inputs into a combined machine
-            Harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.performObjectDropInAction)),
-                prefix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.Prefix)),
-                postfix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.Postfix))
-            );
-            //  Also patch the overridden performObjectDropInAction methods of some Object sub-types like Wood Chippers
-            Harmony.Patch(
-                original: AccessTools.Method(typeof(WoodChipper), nameof(WoodChipper.performObjectDropInAction)),
-                prefix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.WoodChipper_Prefix)),
-                postfix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.WoodChipper_Postfix))
-            );
-
-            //  Patch StardewValley.Object.minutesElapsed to detect when a machines output is ready for collecting, and when that happens, increase the output quantity
-            //  to account for how many machines were combined
-            Harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.minutesElapsed)),
-                prefix: new HarmonyMethod(typeof(MinutesElapsedPatch), nameof(MinutesElapsedPatch.Prefix)),
-                postfix: new HarmonyMethod(typeof(MinutesElapsedPatch), nameof(MinutesElapsedPatch.Postfix))
-            );
-
             //  Patch StardewValley.Object.draw and StardewValley.Object.drawInMenu to also draw a number in the bottom-right corner of the tile the machine is being drawn to.
             //  The number indicates how many copies of the machine are combined into one.
             Harmony.Patch(
@@ -97,6 +75,16 @@ namespace CombineMachines.Patches
             Harmony.Patch(
                 original: AccessTools.Method(typeof(InventoryMenu), nameof(InventoryMenu.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(int) }),
                 postfix: new HarmonyMethod(typeof(InventoryMenuDrawPatch), nameof(InventoryMenuDrawPatch.Postfix))
+            );
+
+            ProcessingPatches.Entry(helper, Harmony);
+
+            //  Patch StardewValley.Object.minutesElapsed to detect when a machines output is ready for collecting, and when that happens, increase the output quantity
+            //  to account for how many machines were combined
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.minutesElapsed)),
+                prefix: new HarmonyMethod(typeof(MinutesElapsedPatch), nameof(MinutesElapsedPatch.Prefix)),
+                postfix: new HarmonyMethod(typeof(MinutesElapsedPatch), nameof(MinutesElapsedPatch.Postfix))
             );
 
             //  Patch StardewValley.Object.initNetFields to detect when StardewValley.Object.MinutesUntilReady/StardewValley.Object.Cask.agingRate changes (by subscribing to NetIntDelta.fieldChangeEvent), 

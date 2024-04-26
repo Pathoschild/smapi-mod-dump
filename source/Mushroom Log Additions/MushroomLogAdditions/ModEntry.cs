@@ -37,7 +37,7 @@ namespace MushroomLogAdditions
             instance = this;
             config = helper.ReadConfig<Config>();
             helper.Events.GameLoop.SaveLoaded += CollectOutputs;
-            Helper.Events.Content.AssetRequested += AssetRequested;
+            helper.Events.Content.AssetRequested += AssetRequested;
         }
 
         // Thanks Wren
@@ -55,8 +55,9 @@ namespace MushroomLogAdditions
                 var output = machine.OutputRules.Where(r => r.Id == "Default").FirstOrDefault();
                 if (output is null) // not found
                     return;
+                // yes, "???" is the actual ID of the output item rule lol
                 var item = output.OutputItem.Where(i => i.Id == "???").FirstOrDefault();
-                if (item is not null)
+                if (item is not null) // the OutputMethod is a method signature: "Classpath, Namespace: MethodName"
                     item.OutputMethod = "MushroomLogAdditions.ModEntry, MushroomLogAdditions: OutputMushroomLog";
             }
         }
@@ -71,13 +72,13 @@ namespace MushroomLogAdditions
             IContentPack internalContentPack = Helper.ContentPacks.CreateTemporary(
                 directoryPath: Path.Combine(Helper.DirectoryPath, "internal"),
                 id: "JAS.MushroomLogAdditions.Internal",
-                name: "Mushroom Log Additions Internal Pack",
-                description: "Adds mushroom trees->mushroom seeds to the Mushroom Log results.",
+                name: i18n.Get("MushroomLogAdditions.internal.name"),
+                description: i18n.Get("MushroomLogAdditions.internal.description"),
                 author: instance.ModManifest.Author,
                 version: instance.ModManifest.Version
             );
             // initialize the default vanilla behavior or die trying
-            treeToOutputDict = internalContentPack.ReadJsonFile<MushroomLogData>("VanillaMushroomLogData.json") ?? throw(new NullReferenceException("Vanilla Mushroom Log Data returned Null value."));
+            treeToOutputDict = internalContentPack.ReadJsonFile<MushroomLogData>("VanillaMushroomLogData.json") ?? throw(new NullReferenceException(i18n.Get("MushroomLogAdditions.vanilla.null")));
 
             MushroomLogData? data;
             // true by default
@@ -89,14 +90,14 @@ namespace MushroomLogAdditions
                 {
                     // this should never fail the check
                     data.ToList().ForEach(x => { treeToOutputDict[x.Key] = x.Value; });
-                    Monitor.Log("Loaded internal content pack.");
+                    Monitor.Log(i18n.Get("MushroomLogAdditions.internal.loaded"), config.loggingLevel);
                 }
-                else Monitor.Log("Internal content pack failed to load.", LogLevel.Error); // *cough*
+                else Monitor.Log(i18n.Get("MushroomLogAdditions.internal.null"), LogLevel.Error); // *cough*
             }
 
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
-                Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}", LogLevel.Trace);
+                Monitor.Log(i18n.Get("MushroomLogAdditions.packs.loading", new { contentPack.Manifest.Name, contentPack.Manifest.Version, contentPack.DirectoryPath }), LogLevel.Trace);
                 if (contentPack.HasFile("MushroomLogData.json"))
                 {
                     data = contentPack.ReadJsonFile<MushroomLogData>("MushroomLogData.json");
@@ -104,18 +105,18 @@ namespace MushroomLogAdditions
                     {
                         // merge the two dictionaries, overwriting values
                         // TODO merge the List value too
-                        Monitor.Log($"Content pack loaded: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}", LogLevel.Trace);
                         var overlap = data.Keys.Intersect(treeToOutputDict.Keys);
                         if (overlap.Any())
                         {
-                            Monitor.Log($"Detected duplicate TreeTypes when loading {contentPack.Manifest.Name} : {JsonConvert.SerializeObject(overlap)}. Overwriting old outputs with new values.", LogLevel.Info);
+                            Monitor.Log(i18n.Get("MushroomLogAdditions.packs.duplicates", new { contentPack.Manifest.Name, overlap = JsonConvert.SerializeObject(overlap) }), LogLevel.Info);
                         }
                         data.ToList().ForEach(x => {treeToOutputDict[x.Key] = x.Value;});
+                        Monitor.Log(i18n.Get("MushroomLogAdditions.packs.loaded"), LogLevel.Trace);
                     }
                 }
             }
 
-            instance.Monitor.Log("Content packs loaded, current additions:", LogLevel.Trace);
+            instance.Monitor.Log(i18n.Get("MushroomLogAdditions.packs.complete"), LogLevel.Trace);
             instance.Monitor.Log(JsonConvert.SerializeObject(treeToOutputDict), LogLevel.Trace);
         }
 
@@ -125,61 +126,84 @@ namespace MushroomLogAdditions
 
             // we have to clone the vanilla code since we can't access any of the original method's local variables
             // otherwise this would've been a simple postfix...
-            List<Tree> nearbyTrees = new();
+            List<TerrainFeature> nearbyTrees = new();
             int scanRadius = instance.config.scanRadius;
             for (int x = (int)machine.TileLocation.X - scanRadius; x < (int)machine.TileLocation.X + scanRadius + 1; x++)
             {
                 for (int y = (int)machine.TileLocation.Y - scanRadius; y < (int)machine.TileLocation.Y + scanRadius + 1; y++)
                 {
                     Vector2 v = new(x, y);
-                    if (machine.Location.terrainFeatures.ContainsKey(v) && machine.Location.terrainFeatures[v] is Tree tree)
+                    if (machine.Location.terrainFeatures.ContainsKey(v))
                     {
-                        nearbyTrees.Add(tree);
+                        if (machine.Location.terrainFeatures[v] is Tree tree)
+                        {
+                            nearbyTrees.Add(tree);
+                        }
+                        else if (machine.Location.terrainFeatures[v] is FruitTree fruitTree)
+                        {
+                            nearbyTrees.Add(fruitTree);
+                        }
                     }
-                    // TODO else if (machine.Location.terrainFeatures.ContainsKey(v) && machine.Location.terrainFeatures[v] is FruitTree fruitTree)
-                    // nearbyTrees would have to be swapped to a List<TerrainFeature>
                 }
             }
             int treeCount = nearbyTrees.Count;
             List<string> mushroomPossibilities = new();
             int mossyCount = 0;
-            foreach (Tree tree in nearbyTrees)
+            foreach (TerrainFeature feature in nearbyTrees)
             {
-                if (tree.growthStage.Value >= 5)
+                // Default result from any tree
+                string mushroomType = (Game1.random.NextBool(0.05) ? "(O)422" : (Game1.random.NextBool(0.15) ? "(O)420" : "(O)404"));
+                string treeType;
+                if (feature is Tree tree)
                 {
-                    string treeType = tree.treeType.Value;
-                    // Default result from any tree
-                    string mushroomType = (Game1.random.NextBool(0.05) ? "(O)422" : (Game1.random.NextBool(0.15) ? "(O)420" : "(O)404"));
-                    // check to see if the scanned tree is registered as having an output
-                    if (treeToOutputDict.TryGetValue(treeType, out List<OutputWithChance>? mushroomTypes))
+                    if (tree.growthStage.Value < Tree.treeStage)
                     {
-                        // if there's something registered and there's no chicanery with the list
-                        if (mushroomTypes != null && mushroomTypes.Any())
-                        {
-                            // iterate through list
-                            foreach (OutputWithChance output in mushroomTypes)
-                            {
-                                // Roll to select entry in the list and move on so that tree's output can be added to the pool
-                                // grabs the first item in the list that it can
-                                // mushroomType doesn't get reassigned from the default if none of the outputs are selected
-                                if (Game1.random.NextBool(output.Item2))
-                                {
-                                    mushroomType = output.Item1;
-                                    break;
-                                }
-                            }
-                        }
+                        continue;
                     }
-                    // if none were registered, the originally assigned output is used
-                    mushroomPossibilities.Add(mushroomType);
+                    treeType = tree.treeType.Value;
                     // Vanilla function uses moss below as a factor in the quality level
                     if (tree.hasMoss.Value)
                     {
                         mossyCount++;
                     }
                 }
+                else if (feature is FruitTree fruitTree)
+                {
+                    if (fruitTree.growthStage.Value < FruitTree.treeStage)
+                    {
+                        continue;
+                    }
+                    treeType = fruitTree.treeId.Value;
+                }
+                else
+                {
+                    continue;
+                }
+                
+                // check to see if the scanned tree is registered as having an output
+                if (treeToOutputDict.TryGetValue(treeType, out List<OutputWithChance>? mushroomTypes))
+                {
+                    // if there's something registered and there's no chicanery with the list
+                    if (mushroomTypes != null && mushroomTypes.Any())
+                    {
+                        // iterate through list
+                        foreach (OutputWithChance output in mushroomTypes)
+                        {
+                            // Roll to select entry in the list and move on so that tree's output can be added to the pool
+                            // grabs the first item in the list that it can
+                            // mushroomType doesn't get reassigned from the default if none of the outputs are selected
+                            if (Game1.random.NextBool(output.Item2))
+                            {
+                                mushroomType = output.Item1;
+                                break;
+                            }
+                        }
+                    }
+                }
+                // if none were registered, the originally assigned output is used
+                mushroomPossibilities.Add(mushroomType);
             }
-
+            // randomly add one of three mushrooms, weighted, to the pool of choices as a default
             for (int i = 0; i < Math.Max(1, (int)(nearbyTrees.Count * 0.75f)); i++)
             {
                 mushroomPossibilities.Add(Game1.random.NextBool(0.05) ? "(O)422" : (Game1.random.NextBool(0.15) ? "(O)420" : "(O)404"));

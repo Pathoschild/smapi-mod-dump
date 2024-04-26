@@ -11,7 +11,7 @@
 {
     "Name": "Passable Crops",
     "Author": "NCarigon",
-    "Version": "1.1.3",
+    "Version": "1.1.9",
     "Description": "Allows farmers to pass through all crops and related objects.",
     "UniqueID": "NCarigon.PassableCrops",
     "EntryDll": "PassableCrops.dll",

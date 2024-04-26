@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23008
+IDs: TheMightyAmondee.Pravoloxinone
+update keys: Nexus:23008, GitHub:TheMightyAmondee/Pravoloxinone

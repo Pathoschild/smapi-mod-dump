@@ -43,7 +43,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _locationChecker = locationChecker;
 
             var desiredTextureName = ArchipelagoTextures.COLOR;
-            _miniArchipelagoIcon = ArchipelagoTextures.GetColoredLogo(modHelper, 12, desiredTextureName);
+            _miniArchipelagoIcon = ArchipelagoTextures.GetArchipelagoLogo(monitor, modHelper, 12, desiredTextureName);
         }
 
         public static bool CheckForAction_MineshaftChest_Prefix(Chest __instance, Farmer who, bool justCheckingForActivity, ref bool __result)

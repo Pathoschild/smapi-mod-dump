@@ -8,13 +8,11 @@
 **
 *************************************************/
 
-using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using OrnithologistsGuild.Content;
 using OrnithologistsGuild.Game;
 using OrnithologistsGuild.Game.Critters;
-using OrnithologistsGuild.Game.Items;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -42,43 +40,43 @@ namespace OrnithologistsGuild
             {
                 if (args.Length > 0)
                 {
-                    if (args[0].Equals("food", StringComparison.OrdinalIgnoreCase))
+                    if (args[0].Equals("food", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(270, 32)); // Corn
-                        Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(770, 32)); // Mixed Seeds
-                        Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(431, 32)); // Sunflower Seeds
-                        Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(832, 32)); // Pineapple
-                        Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("SeedHuller").ToItem());
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)270", 32)); // Corn
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)770", 32)); // Mixed Seed
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)431", 32)); // Sunflower Seeds
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)832", 32)); // Pineapple
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(BC)Ivy_OrnithologistsGuild_SeedHuller", 1));
                         return;
                     }
-                    else if (args[0].Equals("feeder", StringComparison.OrdinalIgnoreCase))
+                    else if (args[0].Equals("feeder", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("WoodenHopper").ToItem());
-                        Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("WoodenPlatform").ToItem());
-                        Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("PlasticTube").ToItem());
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(BC)Ivy_OrnithologistsGuild_WoodenHopper", 1));
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(BC)Ivy_OrnithologistsGuild_WoodenPlatform", 1));
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(BC)Ivy_OrnithologistsGuild_PlasticTube", 1));
                         return;
                     }
-                    else if (args[0].Equals("bath", StringComparison.OrdinalIgnoreCase))
+                    else if (args[0].Equals("bath", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("StoneBath").ToItem());
-                        Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("HeatedStoneBath").ToItem());
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(BC)Ivy_OrnithologistsGuild_StoneBath", 1));
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(BC)Ivy_OrnithologistsGuild_HeatedStoneBath", 1));
                         return;
                     }
-                    else if (args[0].Equals("binoculars", StringComparison.OrdinalIgnoreCase))
+                    else if (args[0].Equals("tools", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        Game1.player.addItemByMenuIfNecessary((Item)new LifeList());
-                        Game1.player.addItemByMenuIfNecessary((Item)new JojaBinoculars());
-                        Game1.player.addItemByMenuIfNecessary((Item)new AntiqueBinoculars());
-                        Game1.player.addItemByMenuIfNecessary((Item)new ProBinoculars());
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)Ivy_OrnithologistsGuild_LifeList", 1));
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)Ivy_OrnithologistsGuild_JojaBinoculars", 1));
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)Ivy_OrnithologistsGuild_AntiqueBinoculars", 1));
+                        Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create("(O)Ivy_OrnithologistsGuild_ProBinoculars", 1));
                         return;
                     }
                 }
 
-                Monitor.Log("`ogd`: must specify either `food`, `feeder`, `bath`, or `binoculars`", LogLevel.Warn);
+                Monitor.Log("`ogd`: must specify either `food`, `feeder`, `bath`, or `tools`", LogLevel.Warn);
             }
             else if (cmd.Equals("ogs"))
             {
-                BirdieDef birdieDef = ContentPackManager.BirdieDefs.Values.FirstOrDefault(birdieDef => birdieDef.ID.Equals(args.Length == 0 ? "HouseSparrow" : args[0], StringComparison.OrdinalIgnoreCase));
+                BirdieDef birdieDef = ContentPackManager.BirdieDefs.Values.FirstOrDefault(birdieDef => birdieDef.ID.Equals(args.Length == 0 ? "HouseSparrow" : args[0], System.StringComparison.OrdinalIgnoreCase));
                 if (birdieDef != null)
                 {
                     Monitor.Log($"`ogs` enabled: only spawning {birdieDef.ID}", LogLevel.Info);
@@ -93,7 +91,7 @@ namespace OrnithologistsGuild
             {
                 if (args.Length > 0)
                 {
-                    debug_PerchType = (PerchType)Enum.Parse(typeof(PerchType), args[0]);
+                    debug_PerchType = (PerchType)System.Enum.Parse(typeof(PerchType), args[0]);
                     Monitor.Log($"`ogp` enabled: only relocating to {debug_PerchType} perches", LogLevel.Info);
                 } else
                 {

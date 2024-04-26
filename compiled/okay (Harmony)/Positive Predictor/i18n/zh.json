@@ -1,0 +1,22 @@
+{
+  "config.name.ShowLuckOfTomorrow": "睡觉前显示明日运势",
+  "config.name.LookForPrismaticButterfly": "帮助寻找五彩蝴蝶",
+  "config.name.PreviewGeodeContent": "铁匠台显示晶球及迷盒的内容",
+  "config.name.DisplayLadderIconOfMine": "矿井中显示梯子图标",
+  "config.name.DisplayIslandBirdGem": "姜岛神殿显示所需宝石",
+  "config.name.DisplayWeatherOnCalendar": "日历中展示天气情况",
+  "config.name.DisplayFishingBubblesAtBegin": "开局前几天显示钓鱼气泡位置",
+  "config.name.DisplayFishingBubblesLimitDays": "显示气泡截止天数",
+
+  "config.name.MovieTheaterOpenCraneGame": "电影院一直可用抓娃娃机",
+  "config.name.SeedMakerBumperHarvest": "远古果必定造出3种子",
+  "config.name.JourneyOfThePrairieKingEasier": "草原王者大冒险更简单",
+  "config.name.JourneyOfThePrairieKingEffect": "草原王者大冒险特效",
+
+  "mod.text.Bubble": "水泡",
+  "mod.text.Butterfly": "五彩蝴蝶",
+  "mod.text.Player": "玩家",
+  "mod.text.Weather": "天气",
+  "mod.text.LuckOfTomorrow": "明日运势",
+  "mod.text.Range": "范围"
+}

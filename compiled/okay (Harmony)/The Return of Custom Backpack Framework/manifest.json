@@ -1,0 +1,10 @@
+﻿{
+  "Name": "The Return of Custom Backpack Framework",
+  "Author": "platinummyr",
+  "Version": "1.0.1",
+  "Description": "Custom Backpack Framework (originally by aedenthorn) made compatible with Stardew Valley 1.6",
+  "UniqueID": "platinummyr.CustomBackpackFramework",
+  "EntryDll": "CustomBackpackFramework.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21588" ]
+}

@@ -1,13 +1,14 @@
 {
   "Name": "Yet Another Fishing Mod",
   "Author": "NeverToxic",
-  "Version": "1.0.2",
+  "Version": "1.1.2",
   "Description": "Automatically catch fish and treasure.",
   "UniqueID": "NeverToxic.YetAnotherFishingMod",
   "EntryDll": "YetAnotherFishingMod.dll",
   "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [
-    "Nexus:20391"
+    "Nexus:20391",
+    "CurseForge:996759"
   ],
   "Dependencies": [
     {

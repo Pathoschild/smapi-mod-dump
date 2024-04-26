@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/SymaLoernn/Stardew_HatsOnPetsPlus
+   Git: https://github.com/SymaLoernn/Stardew_HatsOnPetsPlus.git
+
+mods:
+   Hats on Pets Plus
+
+latest commit:
+   commit 72832d583ec6a9609930d758029d0e5074aa4507
+   Author: Syma <48735156+SymaLoernn@users.noreply.github.com>
+   Date:   Sun Apr 21 11:12:10 2024 +0200
+   
+       Update README.md
+       
+       Updated the "flipped" part of the doc thanks to the additional data provided by elizabethcd.
+       Also fixed a few typos and rewrote a few sentences to clarify them
+   

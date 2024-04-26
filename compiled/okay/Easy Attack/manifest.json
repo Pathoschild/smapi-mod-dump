@@ -1,8 +1,8 @@
 ﻿{
   "Name": "EasyAttack",
   "Author": "season",
-  "Version": "0.0.3",
-  "Description": "Easy Attack. wield weapon.",
+  "Version": "0.0.4",
+  "Description": "Wield weapon can damage monsters far away.",
   "UniqueID": "season.EasyAttack",
   "EntryDll": "EasyAttack.dll",
   "MinimumApiVersion": "4.0.0-alpha",

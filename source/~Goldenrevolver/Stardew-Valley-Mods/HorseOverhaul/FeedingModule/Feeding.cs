@@ -10,96 +10,49 @@
 
 namespace HorseOverhaul
 {
-    using StardewModdingAPI;
     using StardewValley;
     using StardewValley.Characters;
     using System;
-    using System.Linq;
 
     internal class Feeding
     {
-        public static bool CheckHorseInteraction(HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
+        public const int eatingEmote = Character.happyEmote;
+
+        public static bool CheckHorseFeeding(HorseOverhaul mod, Farmer who, HorseWrapper horseW, Item currentItem)
         {
-            if (who.currentLocation == null)
+            if (currentItem == null)
             {
                 return false;
             }
 
-            foreach (Horse horse in who.currentLocation.characters.OfType<Horse>())
+            if (mod.Config.NewFoodSystem)
             {
-                if (horse == null || horse.IsTractor())
+                var potentialhorseFood = HorseFoodData.ClassifyHorseFood(currentItem);
+
+                if (potentialhorseFood.IsHorseFood)
                 {
-                    continue;
+                    int friendship = potentialhorseFood.FriendshipOnFeed;
+
+                    Feeding.FeedHorse(mod, who, horseW, currentItem, friendship);
+
+                    return true;
+                }
+                else if (potentialhorseFood.ReplyOnFeed != null)
+                {
+                    Game1.drawObjectDialogue(mod.Helper.Translation.Get(potentialhorseFood.ReplyOnFeed));
+
+                    return false;
                 }
 
-                // check if the interaction was a mouse click on a horse or a button press near a horse
-                if (!Utility.withinRadiusOfPlayer((int)horse.Position.X, (int)horse.Position.Y, 1, who)
-                    || !horse.MouseOrPlayerIsInRange(who, mouseX, mouseY, ignoreMousePosition))
-                {
-                    continue;
-                }
+                // don't return here so we can fall into the saddle bag case
+            }
+            else if (FoodData.IsGenericEdible(currentItem))
+            {
+                int friendship = FoodData.CalculateGenericFriendshipGain(currentItem, horseW.Friendship);
 
-                var horseW = mod.Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).FirstOrDefault();
+                Feeding.FeedHorse(mod, who, horseW, currentItem, friendship);
 
-                if (horseW == null)
-                {
-                    continue;
-                }
-
-                if (who.CurrentItem != null && mod.Config.Feeding)
-                {
-                    Item currentItem = who.CurrentItem;
-
-                    if (currentItem.QualifiedItemId == "(O)Carrot")
-                    {
-                        // don't combine the if statements, so we can fall into the saddle bag case
-
-                        // prevent feeding, use for speed boost instead
-                        if (!horse.ateCarrotToday)
-                        {
-                            return horse.checkAction(who, who.currentLocation);
-                        }
-                    }
-                    else if (mod.Config.NewFoodSystem)
-                    {
-                        var potentialhorseFood = HorseFoodData.ClassifyHorseFood(currentItem);
-
-                        if (potentialhorseFood.IsHorseFood)
-                        {
-                            int friendship = potentialhorseFood.FriendshipOnFeed;
-
-                            FeedHorse(mod, who, horseW, currentItem, friendship);
-
-                            return true;
-                        }
-                        else if (potentialhorseFood.ReplyOnFeed != null)
-                        {
-                            Game1.drawObjectDialogue(mod.Helper.Translation.Get(potentialhorseFood.ReplyOnFeed));
-
-                            return false;
-                        }
-
-                        // don't return here so we can fall into the saddle bag case
-                    }
-                    else if (FoodData.IsGenericEdible(currentItem))
-                    {
-                        int friendship = FoodData.CalculateGenericFriendshipGain(currentItem, horseW.Friendship);
-
-                        FeedHorse(mod, who, horseW, currentItem, friendship);
-
-                        return true;
-                    }
-                }
-
-                if (Context.IsWorldReady && Context.CanPlayerMove && Context.IsPlayerFree && mod.Config.SaddleBag)
-                {
-                    if (horseW.SaddleBag != null)
-                    {
-                        horseW.SaddleBag.ShowMenu();
-
-                        return true;
-                    }
-                }
+                return true;
             }
 
             return false;
@@ -136,47 +89,12 @@ namespace HorseOverhaul
 
                 Game1.drawObjectDialogue(translation);
 
-                if (mod.Config.ThinHorse)
-                {
-                    horseW.Horse.doEmote(Character.happyEmote);
-                }
+                horseW.Horse.doEmote(eatingEmote);
 
                 who.reduceActiveItemByOne();
 
                 horseW.JustGotFood(friendship);
             }
-        }
-
-        public static bool CheckPetInteraction(HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
-        {
-            if (!mod.Config.PetFeeding)
-            {
-                return false;
-            }
-
-            if (who.currentLocation == null)
-            {
-                return false;
-            }
-
-            foreach (NPC npc in who.currentLocation.characters)
-            {
-                if (npc is not Pet pet)
-                {
-                    continue;
-                }
-
-                // check if the interaction was a mouse click on a pet or a button press near a pet
-                if (!Utility.withinRadiusOfPlayer((int)pet.Position.X, (int)pet.Position.Y, 1, who)
-                    || !pet.MouseOrPlayerIsInRange(who, mouseX, mouseY, ignoreMousePosition))
-                {
-                    continue;
-                }
-
-                return CheckPetFeeding(mod, who, pet, who.CurrentItem);
-            }
-
-            return false;
         }
 
         public static bool CheckPetFeeding(HorseOverhaul mod, Farmer who, Pet pet, Item currentItem)
@@ -233,7 +151,7 @@ namespace HorseOverhaul
 
                 Game1.drawObjectDialogue(mod.Helper.Translation.Get("AteFood", new { name = pet.GetNPCNameForDisplay(mod), foodName = currentItem.DisplayName }));
 
-                pet.doEmote(Character.happyEmote);
+                pet.doEmote(eatingEmote);
 
                 who.reduceActiveItemByOne();
 

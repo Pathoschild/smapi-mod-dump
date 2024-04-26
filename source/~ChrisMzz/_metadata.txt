@@ -7,9 +7,9 @@ mods:
    Slime Minerals
 
 latest commit:
-   commit a4d5efa87549c68b0a899ae8552a3dd8a768f16a
+   commit 45353e9712b33cd6e89e8d1f28c48603538cd622
    Author: Christopher MAZZERBO <christopher.mazzerbo@gmail.com>
-   Date:   Fri Mar 29 15:56:15 2024 +0100
+   Date:   Tue Apr 2 14:17:59 2024 +0200
    
-       Added RandomSlimes mod
+       ModConfig was set to impossible value
    

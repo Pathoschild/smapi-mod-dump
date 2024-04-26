@@ -1,0 +1,80 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Dried Objects",
+            "Action": "Include",
+            "FromFile": "data/Objects/DriedGoods.json"
+        },
+        {
+            "LogName": "Consumable Objects",
+            "Action": "Include",
+            "FromFile": "data/Objects/Consumables.json"
+        },
+        {
+            "LogName": "Drink Objects",
+            "Action": "Include",
+            "FromFile": "data/Objects/Drinks.json"
+        },
+        {
+            "LogName": "Harvestable Objects",
+            "Action": "Include",
+            "FromFile": "data/Objects/Harvestables.json"
+        },
+
+        
+        {
+            "LogName": "Crops Seeds",
+            "Action": "Include",
+            "FromFile": "data/Crops/Seeds.json"
+        },
+        {
+            "LogName": "Crops",
+            "Action": "Include",
+            "FromFile": "data/Crops/Crops.json"
+        },
+        {
+            "LogName": "Crops",
+            "Action": "Include",
+            "FromFile": "data/Crops/MultiYield.json"
+        },
+        {
+            "LogName": "Fruit Tree Crops",
+            "Action": "Include",
+            "FromFile": "data/Crops/FruitTrees.json"
+        },
+        {
+            "LogName": "Tea Bush Crops",
+            "Action": "Include",
+            "FromFile": "data/Crops/TeaBushes.json"
+        },
+
+        
+        {
+            "LogName": "Big Craftables",
+            "Action": "Include",
+            "FromFile": "data/BigCraftables/BigCraftables.json"
+        },
+        {
+            "LogName": "Teapot Machine",
+            "Action": "Include",
+            "FromFile": "data/BigCraftables/Teapot.json",
+            "When": {"TeaBrewing": true }
+        },
+        {
+            "LogName": "Dehydrator Machine",
+            "Action": "Include",
+            "FromFile": "data/BigCraftables/Dehydrator.json",
+            "When": {"CustomDehydratorRules": true }
+        }
+    ]
+}

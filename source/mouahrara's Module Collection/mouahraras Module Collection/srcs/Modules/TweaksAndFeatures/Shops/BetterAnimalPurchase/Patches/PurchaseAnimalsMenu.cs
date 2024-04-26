@@ -67,6 +67,9 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 			if (!ModEntry.Config.ShopsBetterAnimalPurchase)
 				return true;
 
+			Game1.addHUDMessage(new HUDMessage(__instance.animalBeingPurchased.isMale() ? Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11311", __instance.animalBeingPurchased.displayName) : Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11314", __instance.animalBeingPurchased.displayName), HUDMessage.achievement_type));
+			Game1.playSound("purchaseClick");
+			Game1.playSound("objectiveComplete");
 			__instance.namingAnimal = false;
 			__instance.textBox.Selected = false;
 			__instance.textBox.OnEnterPressed -= __instance.textBoxEvent;
@@ -132,6 +135,8 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 
 		private static void ReceiveKeyPressPostfix(PurchaseAnimalsMenu __instance)
 		{
+			if (!ModEntry.Config.ShopsBetterAnimalPurchase)
+				return;
 			if (Game1.IsFading() || __instance.freeze)
 				return;
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22681
+IDs: moonslime.CookingSkill
+update keys: Nexus:22681, GitHub:Pet-Slime/StardewValley

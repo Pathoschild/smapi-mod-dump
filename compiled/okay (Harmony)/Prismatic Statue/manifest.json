@@ -1,0 +1,42 @@
+{
+    "Name": "Prismatic Statue",
+    "Author": "Achtuur",
+    "Version": "1.5.1",
+    "Description": "Adds the Prismatic Statue to the game, which can speed up nearby machines",
+    "UniqueID": "Achtuur.PrismaticStatue",
+    "EntryDll": "PrismaticStatue.dll",
+    "MinimumApiVersion": "4.0.0",
+    "dependencies": [
+        {
+            "UniqueID": "Achtuur.AchtuurCore",
+            "MinimumVersion": "1.2.2",
+            "isRequired": true
+        },
+        {
+            "UniqueID": "Pathoschild.Automate",
+            "MinimumVersion": "2.0.6",
+            "isRequired": true
+        },
+        {
+            "UniqueID": "spacechase0.JsonAssets",
+            "MinimumVersion": "1.11.6",
+            "isRequired": true
+        },
+        {
+            "UniqueID": "DIGUS.MailFrameworkMod",
+            "MinimumVersion": "1.16.0",
+            "isRequired": true
+        },
+        {
+            "UniqueID": "Digus.ProducerFrameworkMod",
+            "MinimumVersion": "1.7.4",
+            "isRequired": false
+        },
+        {
+            "UniqueID": "Digus.PFMAutomate",
+            "MinimumVersion": "1.4.2",
+            "isRequired": false
+        }
+    ],
+    "UpdateKeys": [ "Nexus:17013" ]
+}

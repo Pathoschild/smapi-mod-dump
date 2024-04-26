@@ -1,0 +1,12 @@
+{
+  "Name": "Egg Festival Custom Egg Amount",
+  "Author": "onlythechosen",
+  "Version": "1.0.0",
+  "Description": "Customize the number of eggs needed to win the egg festival.",
+  "UniqueID": "otc.eggfestivalcustomeggamount",
+  "EntryDll": "EggFestivalCustomEggAmount.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22380" ],
+  "Dependencies": [
+  ]
+}

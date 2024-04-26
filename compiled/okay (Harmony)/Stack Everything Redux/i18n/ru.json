@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Максимальное количество стопок",
+    "config.MaxStackingNumber.tooltip": "Максимальное количество стопок, по умолчанию 999.",
+    "config.DefaultCraftingAmount.name": "Стандартное количество для готовки/изготовления",
+    "config.DefaultCraftingAmount.tooltip": "Стандартное количество при использовании Shift+Правый клик в меню Готовка/Изготовление.",
+    "config.DefaultShopAmount.name": "Стандартное количество для покупки",
+    "config.DefaultShopAmount.tooltip": "Стандартное количество при использовании Shift+Правый клик в меню магазина.",
+    "config.EnableStackSplitRedux.name": "Включить Split Redux",
+    "config.EnableStackSplitRedux.tooltip": "Включить функции Split Redux. Снимите эту галочку, если у вас возникают проблемы.",
+    "ui.stacksplitmenu.title": "Выберите количество"
+}

@@ -692,11 +692,24 @@
 "foodstore.config.museumpricemarkup": "Multiplicador de precio de entrada al museo",
 "foodstore.config.museumpricemarkupText": "Precio de entrada al museo basado en el número de artefactos, minerales y botines de monstruos mostrados adentro. ¡Un valor más alto significa un precio de entrada más alto, pero también reducirá la probabilidad de visitantes!!!",
 
-"foodstore.todaymuseumvisitor": " Visitantes del museo de ayer: {{todayMMuseumVisitor}}.^^",
+"foodstore.todaymuseumvisitor": " Visitantes del museo de ayer: {{todayMMuseumVisitor}}, {{todayMuseumEarning}}G.^^",
 "foodstore.letter.receivemuseumlicense": "Estimado/a @.^^ ¡Felicidades por obtener tu Licencia de Museo! Permíteme explicarte cómo configurarlo. Puedes usar cualquier Edificio Agrícola como un Museo. El único requisito es tener un letrero que muestre la Licencia, y luego los visitantes comenzarán a llegar mañana. Los visitantes del Museo no compran artículos en exhibición, pero pagarán un precio de entrada al entrar. El precio se determina por el número de artefactos, gemas raras, así como peces exóticos o estatuas. Puedes decidir el margen de tu boleto; sin embargo, ten en cuenta que cuanto más alto sea el margen, menos visitantes podrías atraer.^^ Visitaré tu Museo una vez que esté listo. -Lewis",
   "foodstore.letter.receiverestaurantlicense": "Estimado/a @.^^ He notado que has obtenido la Licencia de Restaurante. Esta Licencia te permitirá usar cualquier Edificio Agrícola como un Restaurante. Simplemente muestra la Licencia en un letrero, y los visitantes comenzarán a llegar mañana. Los visitantes del Restaurante buscarán y comprarán alimentos que les llamen la atención. A veces, solicitarán un plato especial, que puedes venderles directamente a un precio más alto.^^ Estoy realmente deseando probar tu comida. -Lewis",
   "foodstore.letter.receivemarkettownlicense": "Estimado/a @.^^ Finalmente, has obtenido la Licencia del Pueblo Mercado. A partir de ahora, puedes tener desde una pequeña tienda de conveniencia hasta incluso un supermercado. Esta Licencia te permite vender cualquier mercancía que desees, incluyendo alimentos, cosechas, materiales y más.^^ Muchas gracias por crear un centro conveniente para todas las personas en nuestro pueblo. -Lewis",
   "foodstore.config.multiplayermode": "¿Activar la división del dinero de venta para el modo multijugador?",
-  "foodstore.config.multiplayermodeText": "ADVERTENCIA: BUG. Por defecto es falso. Activar esto dividirá el dinero de venta entre los jugadores conectados. ADVERTENCIA: A veces los otros jugadores no reciben el dinero."
+  "foodstore.config.multiplayermodeText": "ADVERTENCIA: BUG. Por defecto es falso. Activar esto dividirá el dinero de venta entre los jugadores conectados. ADVERTENCIA: A veces los otros jugadores no reciben el dinero.",
+
+  
+"foodstore.config.easylicense": "¿Omitir requisito de licencia?",
+"foodstore.config.textchat": "¿Desactivar chat de escritura con NPC?",
+
+"foodstore.island.building": "Las llamas bailan y los visitantes llegan. La construcción en la Isla Paraíso está detenida",
+
+"foodstore.islandtravel.sun": "Fue una distancia considerable en el bote. ¡Te sientes un poco cansado!",
+"foodstore.islandtravel.rain": "La lluvia hizo que el viaje fuera más difícil. Te sientes agotado.",
+"foodstore.islandtravel.wind": "El viento a veces te empuja hacia adelante, pero otras veces va en contra de tu dirección.",
+"foodstore.islandtravel.storm": "El clima tormentoso fue implacable. Te sientes agotado por el viaje.",
+"foodstore.islandtravel.greenrain": "La inusual lluvia verde fue desconcertante. Te sientes debilitado.",
+"foodstore.islandtravel.snow": "Avanzar por la nieve fue agotador. Sientes que tu energía se está agotando."
 
 }

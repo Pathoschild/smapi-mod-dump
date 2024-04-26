@@ -43,7 +43,7 @@ namespace SkillfulClothes.Patches
             {
                 if (shimTrimmedLuckPurpleShorts == null)
                 {
-                    shimTrimmedLuckPurpleShorts = new Clothing((int)Pants.TrimmedLuckyPurpleShorts);
+                    shimTrimmedLuckPurpleShorts = new Clothing(KnownPants.TrimmedLuckyPurpleShorts.ItemId);
                 }
                 return shimTrimmedLuckPurpleShorts;
             }
@@ -71,27 +71,6 @@ namespace SkillfulClothes.Patches
                   original: AccessTools.Method(typeof(Farmer), nameof(Farmer.isWearingRing)),
                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.isWearingRing))
                );
-
-            // Patches for ICustomBuff
-            harmony.Patch(
-                  original: AccessTools.Method(typeof(Buff), nameof(Buff.addBuff)),
-                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.addBuff))
-               );
-
-            harmony.Patch(
-                  original: AccessTools.Method(typeof(Buff), nameof(Buff.removeBuff)),
-                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.removeBuff))
-               );
-
-            harmony.Patch(
-                  original: AccessTools.Method(typeof(Buff), nameof(Buff.getClickableComponents)),
-                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.buff_getClickableComponents))
-               );
-
-            harmony.Patch(
-                  original: AccessTools.Method(typeof(BuffsDisplay), nameof(BuffsDisplay.clearAllBuffs)),
-                  prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.clearAllBuffs))
-                );
 
             // Patches for tailoring
             if (!EffectHelper.Config.AllItemsCanBeTailored)
@@ -165,54 +144,9 @@ namespace SkillfulClothes.Patches
             return __result;
         }
 
-        static void addBuff(Buff __instance)
+        static bool isWearingRing(bool __result, string itemId)
         {
-            if (__instance is ICustomBuff cb)
-            {
-                cb.ApplyCustomEffect();
-            }
-        }
-
-        static void removeBuff(Buff __instance)
-        {
-            if (__instance is ICustomBuff cb)
-            {
-                cb.RemoveCustomEffect(false);
-            }
-        }
-
-        static List<ClickableTextureComponent> buff_getClickableComponents(List<ClickableTextureComponent> __result, Buff __instance)
-        {
-            if (__instance is ICustomBuff cb)
-            {
-                if (__result == null)
-                {
-                    __result = new List<ClickableTextureComponent>();
-                }
-
-                var addittonalIcons = cb.GetCustomBuffIcons();
-                if (addittonalIcons != null)
-                {
-                    __result.AddRange(addittonalIcons);
-                }                
-            }
-
-            return __result;
-        }
-
-        static void clearAllBuffs(BuffsDisplay __instance)
-        {
-            // call the removeEffect method of custom buffs, because the
-            // base game doe snot call removeBuff of applied 'other buffs'
-            foreach(var buff in __instance.otherBuffs.OfType<ICustomBuff>())
-            {
-                buff.RemoveCustomEffect(true);
-            }
-        }
-
-        static bool isWearingRing(bool __result, int ringIndex)
-        {
-            return __result || EffectHelper.ClothingObserver.HasRingEffect(ringIndex);
+            return __result || EffectHelper.ClothingObserver.HasRingEffect(itemId);
         }
 
         static void prefix_damageMonster(GameLocation __instance, Farmer who, out List<Monster> __state)
@@ -258,7 +192,7 @@ namespace SkillfulClothes.Patches
                     craftDisplayedDescriptionFieldInfo.SetValue(__instance, Game1.content.LoadString("Strings\\UI:Tailor_InvalidRecipe"));                    
 
                     // delete the recipe, so that the player cannot craft the item
-                    __instance._tailoringRecipes.RemoveAll(x => x.CraftedItemID == itemId);
+                    __instance._tailoringRecipes.RemoveAll(x => x.CraftedItemId == itemId.ToString());
                 }
             }
         }

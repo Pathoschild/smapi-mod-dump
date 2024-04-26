@@ -41,6 +41,11 @@ namespace ChangeFarmCaves
                     new Event().answerDialogue(data.Split(',')[0], Convert.ToInt32(data.Split(',')[1]));
                     FarmCave.modData.Remove("ChangeFarmCaves.ShouldChange");
                 }
+                if (Game1.MasterPlayer.caveChoice.Value == 2 && !FarmCave.modData.ContainsKey("ChangeFarmCaves.HasGottenDehydrator"))
+                {
+                    FarmCave.modData.Add("ChangeFarmCaves.HasGottenDehydrator", "true");
+                    Patches.Transpile();
+                }
             };
         }
     }

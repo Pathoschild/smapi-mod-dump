@@ -6,6 +6,7 @@
   "ConfigMarinerNameOverwrite": "Mariner Name Overwrite",
   "ConfigMarinerNameOverwriteDescription": "Change the mariner name in dialogue in case the automatic name detection fails (does not affect base game mariner dialogue). Leave empty for automatic detection.",
   "ConfigChangePendantPriceToPearl": "Change Pendant Price To Pearl",
+  "ConfigCanBuyPendantWithoutHeartsAndHouseUpgrade": "Can Buy Pendant Without\nHearts And House Upgrade",
   "ConfigMarinerSpeechType": "Mariner Speech Type",
   "ConfigSpeechTypeModern": "Modern",
   "ConfigSpeechTypeSailor": "Sailor",

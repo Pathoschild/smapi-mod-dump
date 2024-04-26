@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "最大堆叠数量",
+    "config.MaxStackingNumber.tooltip": "最大堆叠数量，默认为999。",
+    "config.DefaultCraftingAmount.name": "默认烹饪/制作数量",
+    "config.DefaultCraftingAmount.tooltip": "在烹饪/制作菜单中使用Shift+右键时的默认数量。",
+    "config.DefaultShopAmount.name": "默认购买数量",
+    "config.DefaultShopAmount.tooltip": "在商店菜单中使用Shift+右键时的默认数量。",
+    "config.EnableStackSplitRedux.name": "启用分割Redux",
+    "config.EnableStackSplitRedux.tooltip": "启用分割Redux功能。如果遇到问题，请取消选中此框。",
+    "ui.stacksplitmenu.title": "选择数量"
+}

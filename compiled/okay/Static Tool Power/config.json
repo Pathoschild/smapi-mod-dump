@@ -1,5 +1,9 @@
 {
-  "enable": true,
-  "hoePower": 0,
-  "wateringCanPower": 0
+  "Mode": "manual",
+  "maxPowerWateringCan": false,
+  "maxPowerHoe": false,
+  "saveHoePower": 0,
+  "saveWateringCanPower": 0,
+  "StaticHoePower": 0,
+  "StaticWateringCanPower": 0
 }

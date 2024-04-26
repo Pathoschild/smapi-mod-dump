@@ -5,9 +5,10 @@
   "SmashButtonXOffset_Chest": 0,
   "SmashButtonXOffset_Inventory": 0,
   "EnableEggColorSmashing": true,
-  "EnableSingleItemSmashKeybinds": false,
+  "EnableSingleItemSmashKeybinds": true,
   "ColorSmashKeybind": "C",
   "QualitySmashKeybind": "Q",
+  "AutoSmashKeybind": "F5",
   "EnableSingleSmashToBaseQuality": true,
   "ItemIDReference": "Item ID reference: https://stardewids.com",
   "IgnoreIridiumDescription": [
@@ -18,22 +19,20 @@
   "IgnoreIridiumItemExceptionsDescription": [
     "Items IDs listed here will still be",
     "converted to lowest present quality even if",
-    "IgnoreIridium is set to true.",
-    "Defaults:",
-    "   296: Salmonberry"
+    "IgnoreIridium is set to true."
   ],
-  "IgnoreIridiumItemExceptions": [
-    296
-  ],
+  "IgnoreIridiumItemExceptions": [],
   "IgnoreIridiumCategoryExceptionsDescription": [
     "Items IDs listed here will still be",
     "converted to lowest present quality even if",
     "IgnoreIridium is set to true.",
     "Defaults:",
-    "   -4: Fish"
+    "   -5: Egg",
+    "   -6: Milk"
   ],
   "IgnoreIridiumCategoryExceptions": [
-    -4
+    -5,
+    -6
   ],
   "IgnoreGoldDescription": [
     "If true, gold quality items will",
@@ -54,10 +53,7 @@
     "",
     "Flowers not used in recipes"
   ],
-  "IgnoreItemsColor": [
-    591,
-    593
-  ],
+  "IgnoreItemsColor": [],
   "IgnoreItemsQualityDescription": [
     "A list of item IDs which will not",
     "be affected by 'Smash Quality'",
@@ -67,7 +63,8 @@
     "    303 = Pale Ale",
     "    346 = Beer",
     "    424 = Cheese",
-    "    426 = Goat Cheese"
+    "    426 = Goat Cheese",
+    "    289 = Ostrich Egg"
   ],
   "IgnoreItemsQuality": [
     348,
@@ -75,7 +72,8 @@
     303,
     346,
     424,
-    426
+    426,
+    289
   ],
   "IgnoreItemsCategoryDescription": [
     "A list of item categories which will not",

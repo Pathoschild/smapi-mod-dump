@@ -12,6 +12,7 @@ This is the mono repository containing all of my Stardew Valley mods. Documentat
 
 - [Dutch Localisation](/DutchLocalisation)
 - [Little Helpers](/LittleHelpers/)
+- [Self Serve](/SelfServe/)
 - [Yet Another Fishing Mod](/YetAnotherFishingMod)
 - [Yet Another Time Mod](/YetAnotherTimeMod/)
 

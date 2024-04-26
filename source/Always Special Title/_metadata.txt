@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DespairScent/AlwaysSpecialTitle
+   Git: https://github.com/DespairScent/AlwaysSpecialTitle.git
+
+mods:
+   Always Special Title
+
+latest commit:
+   commit fff1e03e798011d335de1cb6c0851d6fc09fe1f2
+   Author: DespairScent <74109497+DespairScent@users.noreply.github.com>
+   Date:   Tue Apr 9 10:35:30 2024 +0300
+   
+       Create LICENSE
+   

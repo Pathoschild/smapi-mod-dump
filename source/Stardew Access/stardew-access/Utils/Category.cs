@@ -72,6 +72,7 @@ namespace stardew_access.Utils
             {"interactables", new CATEGORY("interactables")},
             {"machines", new CATEGORY("machines")},
             {"mine_items", new CATEGORY("mine_items")},
+            {"monsters", new CATEGORY("monsters")},
             {"npcs", new CATEGORY("npcs")},
             {"other", new CATEGORY("other")},
             {"pending", new CATEGORY("pending")},
@@ -140,9 +141,9 @@ namespace stardew_access.Utils
         public static readonly CATEGORY Buildings = FromString("buildings");
         public static readonly CATEGORY Bundles = FromString("bundles");
         public static readonly CATEGORY Bushes = FromString("bushes");
+        public static readonly CATEGORY Containers = FromString("containers");
         public static readonly CATEGORY Crops = FromString("crops");
         public static readonly CATEGORY Debris = FromString("debris");
-        public static readonly CATEGORY Containers = FromString("containers");
         public static readonly CATEGORY Decor = FromString("decor");
         public static readonly CATEGORY Doors = FromString("doors");
         public static readonly CATEGORY DroppedItems = FromString("dropped_items");
@@ -154,6 +155,7 @@ namespace stardew_access.Utils
         public static readonly CATEGORY Interactables = FromString("interactables");
         public static readonly CATEGORY Machines = FromString("machines");
         public static readonly CATEGORY MineItems = FromString("mine_items");
+        public static readonly CATEGORY Monsters = FromString("monsters");
         public static readonly CATEGORY NPCs = FromString("npcs");
         public static readonly CATEGORY Other = FromString("other");
         public static readonly CATEGORY Pending = FromString("pending");

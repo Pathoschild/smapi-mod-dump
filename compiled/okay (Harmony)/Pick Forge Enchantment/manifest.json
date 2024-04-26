@@ -1,0 +1,10 @@
+{
+  "Name": "Pick Forge Enchantment",
+  "Author": "Dragoon23",
+  "Version": "1.0.1",
+  "Description": "Pick Forge Enchantment.",
+  "UniqueID": "Dragoon23.ForgeEnchantment",
+  "EntryDll": "ForgeEnchantment.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22707" ]
+}

@@ -85,11 +85,15 @@ namespace HorseOverhaul
 
         public bool AllowMultipleFeedingsADay { get; set; } = false;
 
+        public bool ShowHorseInfoInAnimalsMenu { get; set; } = true;
+
         public KeybindList HorseMenuKey { get; set; } = HorseMenuKeyDefault;
 
         public KeybindList PetMenuKey { get; set; } = PetMenuKeyDefault;
 
         public KeybindList AlternateSaddleBagAndFeedKey { get; set; } = AlternateSaddleBagAndFeedKeyDefault;
+
+        public int MaximumSaddleBagAndFeedRange { get; set; } = 78;
 
         public bool DisableMainSaddleBagAndFeedKey { get; set; } = false;
 
@@ -104,6 +108,12 @@ namespace HorseOverhaul
             if (config.MaxMovementSpeedBonus < 0f)
             {
                 config.MaxMovementSpeedBonus = 0f;
+                invalidConfig = true;
+            }
+
+            if (config.MaximumSaddleBagAndFeedRange < 0)
+            {
+                config.MaximumSaddleBagAndFeedRange = 0;
                 invalidConfig = true;
             }
 
@@ -158,6 +168,7 @@ namespace HorseOverhaul
                         config.PetMenuKey = PetMenuKeyDefault;
                         config.AlternateSaddleBagAndFeedKey = AlternateSaddleBagAndFeedKeyDefault;
                         config.DisableMainSaddleBagAndFeedKey = false;
+                        config.MaximumSaddleBagAndFeedRange = 78;
                     }
                     else
                     {
@@ -193,6 +204,8 @@ namespace HorseOverhaul
                 () => "Preferred Water Container", () => "If the current stable sprite has both a trough and a bucket, which container to fill. If it has only one, this option is ignored", Enum.GetNames(typeof(WaterOption)), (s) => s.Replace('_', ' '));
             api.AddBoolOption(manifest, () => config.DisableStableSpriteChanges, (bool val) => config.DisableStableSpriteChanges = val,
                 () => "Disable Stable Sprite Changes", null);
+            api.AddBoolOption(manifest, () => config.ShowHorseInfoInAnimalsMenu, (bool val) => config.ShowHorseInfoInAnimalsMenu = val,
+                () => "Show Horse Info In Animals Menu", null);
 
             api.AddSectionTitle(manifest, () => "Interact While Riding", null);
 
@@ -226,8 +239,9 @@ namespace HorseOverhaul
 
             api.AddKeybindList(manifest, () => config.HorseMenuKey, (KeybindList keybindList) => config.HorseMenuKey = keybindList, () => "Horse Menu Key");
             api.AddKeybindList(manifest, () => config.PetMenuKey, (KeybindList keybindList) => config.PetMenuKey = keybindList, () => "Pet Menu Key");
-            api.AddKeybindList(manifest, () => config.AlternateSaddleBagAndFeedKey, (KeybindList keybindList) => config.AlternateSaddleBagAndFeedKey = keybindList, () => "Alternate Saddle Bag\nAnd Feed Key");
-            api.AddBoolOption(manifest, () => config.DisableMainSaddleBagAndFeedKey, (bool val) => config.DisableMainSaddleBagAndFeedKey = val, () => "Disable Main Saddle Bag\nAnd Feed Key", null);
+            api.AddKeybindList(manifest, () => config.AlternateSaddleBagAndFeedKey, (KeybindList keybindList) => config.AlternateSaddleBagAndFeedKey = keybindList, () => "Alternate Saddle Bag\nAnd Feed Key", () => "You can use this key instead of the tool use key (left click, X) to interact with your horse (except riding).");
+            api.AddBoolOption(manifest, () => config.DisableMainSaddleBagAndFeedKey, (bool val) => config.DisableMainSaddleBagAndFeedKey = val, () => "Disable Main Saddle Bag\nAnd Feed Key", () => "Disables interacting with your horse (except riding) by using the tool use key (left click, X).");
+            api.AddNumberOption(manifest, () => config.MaximumSaddleBagAndFeedRange, (int val) => config.MaximumSaddleBagAndFeedRange = val, () => "Maximum Saddle Bag\nAnd Feed Range", () => "You can decrease this if you want to be closer before you can interact with your horse (except riding). Increasing it may not do that much, since there are also other internal range conditions.");
 
             // if the world is ready, then we are not in the main menu
             api.AddParagraph(manifest, () => Context.IsWorldReady ? "(All other settings are available in the main menu GMCM)" : string.Empty);

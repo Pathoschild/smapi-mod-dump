@@ -11,7 +11,7 @@
 {
   "Name": "Pause in Multiplayer Revived",
   "Author": "mishmaash",
-  "Version": "1.8.0",
+  "Version": "1.8.1",
   "Description": "Pauses time in multiplayer when all connected players should have their time paused. Originally created by jorgamun.",
   "UniqueID": "mishmaash.PauseInMultiplayer",
   "EntryDll": "PauseInMultiplayer.dll",

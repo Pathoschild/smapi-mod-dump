@@ -11,11 +11,11 @@
 {
 	"Name": "Billboard Profit Margin",
 	"Author": "desto",
-	"Version": "1.1.0",
+	"Version": "1.1.1",
 	"Description": "Profit margin for daily quest rewards.",
 	"UniqueID": "desto.BillboardProfitMargin",
 	"EntryDll": "BillboardProfitMargin.dll",
-	"MinimumApiVersion": "2.10.0",
+	"MinimumApiVersion": "4.0.0",
 	"UpdateKeys": [ "Nexus:6948" ],
 	"Dependencies": [
 		{"UniqueID": "Cherry.ProfitMargins", "IsRequired": false},

@@ -37,6 +37,7 @@
     "generic.price": "{{price}}金",
     "generic.price-for-quality": "{{price}}金（{{quality}}）",
     "generic.price-for-stack": "{{count}}个，总共价值{{price}}金",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "建筑",
@@ -113,19 +114,20 @@
     "location.bugLand": "突变虫穴",
     "location.busStop": "巴士站",
     "location.desert": "沙漠",
+    "location.desert.topPond": "沙漠池塘",
     "location.farm": "农场",
     "location.farmCave": "农场洞穴",
     "location.farmHouse": "农舍",
-    "location.forest": "森林",
-    "location.forest.fish-area-0": "煤矿森林河流",
-    "location.forest.fish-area-1": "煤矿森林湖泊",
-    "location.forest.island-tip": "煤矿森林河流（大岛南端）",
-    "location.mountain": "山区",
+    "location.forest": "煤矿森林",
+    "location.forest.island-tip": "煤矿森林（河流小岛南端）",
+    "location.forest.lake": "煤矿森林（湖泊）",
+    "location.forest.river": "煤矿森林（河流）",
+    "location.mountain": "深山",
     "location.railroad": "铁路",
     "location.sewer": "下水道",
     "location.submarine": "夜市潜艇",
-    "location.town": "城镇",
-    "location.town.northmost-bridge": "城镇（北部桥区）",
+    "location.town": "鹈鹕镇",
+    "location.town.northmost-bridge": "鹈鹕镇（北部桥区）",
     "location.tunnel": "巴士隧道",
     "location.undergroundMine": "矿井",
     "location.undergroundMine.level": "矿井层数：{{level}}",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "姜岛东南部",
     "location.islandSouthEastCave": "姜岛东南部洞穴",
     "location.islandWest": "姜岛西部",
-    "location.islandWest.fish-area-1": "姜岛西部（海洋）",
-    "location.islandWest.fish-area-2": "姜岛西部（池塘）",
+    "location.islandWest.freshwater": "姜岛西部（淡水）",
+    "location.islandWest.ocean": "姜岛西部（海洋）",
 
     "location.unknown-fish-area": "{{locationName}}（钓鱼区 {{id}}）",
 
@@ -627,6 +629,8 @@
     "tree.name.oak": "橡树",
     "tree.name.palm": "棕榈树",
     "tree.name.pine": "松树",
+    "tree.name.mossy": "长满苔藓的树",
+    "tree.name.mystic": "神秘树",
     "tree.name.unknown": "未知",
     "tree.stage.done": "完全长成",
     "tree.stage.partial": "{{stageName}}（总共{{max}}个阶段中的第{{step}}阶段）",
@@ -674,6 +678,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "加粗显示未揭露的礼物",
     "config.highlight-unrevealed-gift-tastes.desc": "是否加粗显示未揭露的礼物品位",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "高级",

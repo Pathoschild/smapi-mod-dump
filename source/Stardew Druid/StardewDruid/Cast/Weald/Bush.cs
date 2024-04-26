@@ -9,7 +9,8 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Map;
+using StardewDruid.Data;
+using StardewDruid.Journal;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using System;
@@ -27,14 +28,7 @@ namespace StardewDruid.Cast.Weald
         {
 
 
-            castCost = 6;
-
-            if (Game1.player.ForagingLevel >= 8)
-            {
-
-                castCost = 4;
-
-            }
+            castCost = Math.Max(2, 6 - (Game1.player.ForagingLevel/ 2));
 
             bushFeature = bush;
 
@@ -49,11 +43,12 @@ namespace StardewDruid.Cast.Weald
                 return;
          
             }
-         
-            if (!Mod.instance.rite.castTask.ContainsKey("masterCreature"))
+
+
+            if (!Mod.instance.questHandle.IsComplete(QuestHandle.bushLesson))
             {
 
-                Mod.instance.UpdateTask("lessonCreature", 1);
+                Mod.instance.questHandle.UpdateTask(QuestHandle.bushLesson, 1);
 
             }
 

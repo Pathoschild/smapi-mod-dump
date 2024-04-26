@@ -46,9 +46,9 @@ public class LocalFontSource : IFontSource {
 		return LoadFont(uniqueId, data, index, null);
 	}
 
-	public async Task<IFontData?> LoadFont(IFontData data) {
+	public Task<IFontData?> LoadFont(IFontData data) {
 		// Our fonts should always be loaded. Ignore this weirdness.
-		return null;
+		return Task.FromResult<IFontData?>(null);
 	}
 
 	private LocalFontData? LoadFont(string uniqueId, byte[] data, int index, int? offset = null) {

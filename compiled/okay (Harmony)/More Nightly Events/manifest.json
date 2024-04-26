@@ -1,0 +1,21 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "leclair.morenightlyevents",
+  "Name": "More Nightly Events",
+  "Author": "Khloe Leclair",
+  "Version": "0.2.0",
+  "Description": "A framework mod for adding new random night time events to the game via content packs!",
+  "MinimumApiVersion": "4.0",
+  "MinimumGameVersion": "1.6",
+  "EntryDll": "MoreNightlyEvents.dll",
+  "UpdateKeys": [
+    "Nexus:22612"
+  ]
+}

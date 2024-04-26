@@ -17,21 +17,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     internal class _GameLocation
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
-            var harmony = new Harmony(Mod.ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
             harmony.Patch(
                 original: AccessTools.DeclaredMethod(typeof(GameLocation), nameof(GameLocation.DayUpdate), new[] { typeof(int) }),
@@ -68,7 +62,7 @@ namespace PersonalIndoorFarm.Lib
                 sendData.PifLocations.Add(locationKey);
             }
 
-            Helper.Multiplayer.SendMessage(sendData, "removeFarmHand", new[] { Mod.ModManifest.UniqueID });
+            Helper.Multiplayer.SendMessage(sendData, "removeFarmHand", new[] { ModManifest.UniqueID });
         }
 
         public static bool DayUpdate_Prefix(GameLocation __instance)

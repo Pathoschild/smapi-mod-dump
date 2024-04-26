@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using BetterSprinklersPlus.Framework;
 using BetterSprinklersPlus.Framework.Helpers;
 using Microsoft.Xna.Framework;
@@ -30,6 +31,11 @@ namespace BetterSprinklersPlus
     /// Is F3 mode on?
     /// </summary>
     private bool _showInfoOverlay;
+
+    /// <summary>
+    /// Stores recency of sprinkler activation.
+    /// </summary>
+    private Dictionary<string, Tuple<SObject, DateTime>> _sprinklerActivations = new();
 
     /// <summary>
     /// The mod entry point, called after the mod is first loaded.
@@ -139,6 +145,29 @@ namespace BetterSprinklersPlus
       // if it is, water and deduct cost appropriately
       if (!SprinklerHelper.SprinklerObjectIds.Contains(obj.ParentSheetIndex)) return;
 
+      // Save sprinkler activation to dict using location + type as key.
+      var key = obj.TileLocation.ToString() + "_" + obj.QualifiedItemId;
+
+      // Check if sprinkler was activated in last 'SprinklerCooldown' seconds, if so, don't activate again.
+      if (_sprinklerActivations.ContainsKey(key))
+      {
+        var dictObj = _sprinklerActivations[key].Item1;
+        var dictDateTime = _sprinklerActivations[key].Item2;
+        if (DateTime.Now <= dictDateTime.AddSeconds(BetterSprinklersPlusConfig.Active.SprinklerCooldown) && dictObj == obj)
+        {
+          Game1.addHUDMessage(new HUDMessage("Can't run sprinkler, on cooldown", 3));
+          return;
+        }
+        else
+        {
+          _sprinklerActivations[key] = Tuple.Create(obj, DateTime.Now);
+        }
+      }
+      else
+      {
+        _sprinklerActivations.Add(key, Tuple.Create(obj, DateTime.Now));
+      }
+
       // Suppress the default action if we are handling it
       Helper.Input.Suppress(button);
 
@@ -146,7 +175,7 @@ namespace BetterSprinklersPlus
       {
         Logger.Verbose($"Sprinkler at {tile.X}x{tile.Y} activated");
         ActivateSprinkler(Game1.currentLocation, tile, obj);
-        Game1.addHUDMessage(new HUDMessage($"Sprinkler Activated", Color.Green, 5000f));
+        Game1.addHUDMessage(new HUDMessage("Sprinkler Activated", 2));
         return;
       }
 
@@ -157,14 +186,14 @@ namespace BetterSprinklersPlus
       if (BetterSprinklersPlusConfig.Active.CannotAfford == (int)BetterSprinklersPlusConfig.CannotAffordOptions.DoNotWater && Game1.player.Money < cost)
       {
         Logger.Warn($"Player tried to activate sprinkler but it was too expensive ({cost}G) > {Game1.player.Money}");
-        Game1.addHUDMessage(new HUDMessage($"Can't run sprinkler, it will cost too much ({cost}G)", Color.Green, 5000f));
+        Game1.addHUDMessage(new HUDMessage($"Can't run sprinkler, it will cost too much ({cost}G)", 3));
         return;
       }
 
       Logger.Verbose($"Sprinkler at {tile.X}x{tile.Y} activated ({cost}G)");
       ActivateSprinkler(Game1.currentLocation, tile, obj);
       DeductCost(cost);
-      Game1.addHUDMessage(new HUDMessage($"Sprinkler Activated ({cost}G)", Color.Green, 5000f));
+      Game1.addHUDMessage(new HUDMessage($"Sprinkler Activated ({cost}G)", 2));
     }
 
     /// <summary>
@@ -196,7 +225,7 @@ namespace BetterSprinklersPlus
         Logger.Verbose("Balanced mode is off, just water");
         if (BetterSprinklersPlusConfig.Active.BalancedModeCostMessage)
         {
-          Game1.addHUDMessage(new HUDMessage("Your sprinklers have run.", Color.Green, 5000f));
+          Game1.addHUDMessage(new HUDMessage("Your sprinklers have run.", 2));
         }
 
         WaterAll();
@@ -213,8 +242,7 @@ namespace BetterSprinklersPlus
         Logger.Verbose("Do not water is set, unwatering.");
         if (BetterSprinklersPlusConfig.Active.BalancedModeCostMessage || BetterSprinklersPlusConfig.Active.BalancedModeCannotAffordWarning)
         {
-          Game1.addHUDMessage(new HUDMessage($"You could not to run your sprinklers today ({cost}G).",
-            Color.Green, 5000f));
+          Game1.addHUDMessage(new HUDMessage($"You could not afford to run your sprinklers today ({cost}G).", 3));
         }
 
         return;
@@ -226,7 +254,7 @@ namespace BetterSprinklersPlus
       Logger.Verbose($"Sprinklers have run ({cost}G).");
       if (BetterSprinklersPlusConfig.Active.BalancedModeCostMessage && cost > 0)
       {
-        Game1.addHUDMessage(new HUDMessage($"Your sprinklers have run ({cost}G).", Color.Green, 5000f));
+        Game1.addHUDMessage(new HUDMessage($"Your sprinklers have run ({cost}G).", 2));
       }
     }
 
@@ -246,6 +274,16 @@ namespace BetterSprinklersPlus
         foreach (var (tile, sprinkler) in location.AllSprinklers())
         {
           ActivateSprinkler(location, tile, sprinkler);
+          // Save sprinkler activation to dict using location + type as key.
+          var key = sprinkler.TileLocation.ToString() + "_" + sprinkler.QualifiedItemId;
+          if (_sprinklerActivations.ContainsKey(key))
+          {
+            _sprinklerActivations[key] = Tuple.Create(sprinkler, DateTime.Now);
+          }
+          else
+          {
+            _sprinklerActivations.Add(key, Tuple.Create(sprinkler, DateTime.Now));
+          }
         }
       }
     }
@@ -256,7 +294,7 @@ namespace BetterSprinklersPlus
       BetterSprinklersPlusConfig.Active.SprinklerShapes.TryGetValue(type, out var grid);
       if (grid == null) return;
 
-      sprinkler.ApplySprinklerAnimation(location);
+      sprinkler.ApplySprinklerAnimation();
 
       sprinkler.ForAllTiles(tile, t =>
       {

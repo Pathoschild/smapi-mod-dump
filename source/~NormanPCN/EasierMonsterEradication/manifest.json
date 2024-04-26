@@ -11,7 +11,7 @@
 {
   "Name": "Easier Monster Eradication",
   "Author": "NormanPCN",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Adjust the amount of monsters slayed for monster eradication goals.",
   "UniqueID": "NormanPCN.EasierMonsterEradication",
   "EntryDll": "EasierMonsterEradication.dll",

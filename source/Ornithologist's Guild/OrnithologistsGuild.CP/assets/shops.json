@@ -1,0 +1,130 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Ornithologist's Guild
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "Entries": {
+                "Ivy_OrnithologistsGuild_Shop": {
+                    "Items": [
+                        {
+                            "ItemId": "(BC)Ivy_OrnithologistsGuild_SeedHuller",
+                            "Price": 2500,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(O)Ivy_OrnithologistsGuild_AntiqueBinoculars",
+                            "Price": 5000,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(O)Ivy_OrnithologistsGuild_ProBinoculars",
+                            "Price": 25000,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(BC)Ivy_OrnithologistsGuild_WoodenHopper",
+                            "Price": 25000,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(BC)Ivy_OrnithologistsGuild_PlasticTube",
+                            "Price": 12500,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(BC)Ivy_OrnithologistsGuild_WoodenPlatform",
+                            "Price": 50000,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(BC)Ivy_OrnithologistsGuild_StoneBath",
+                            "Price": 25000,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(BC)Ivy_OrnithologistsGuild_HeatedStoneBath",
+                            "Price": 50000,
+                            "AvailableStock": 1
+                        },
+                        {
+                            "ItemId": "(O)Ivy_OrnithologistsGuild_LifeList",
+                            "Price": 25,
+                            "AvailableStock": 10
+                        }
+                    ],
+                    "SalableItemTags": ["Ivy_OrnithologistsGuild", "category_fruits", "category_seeds", "category_junk"],
+                    "Owners": [
+                        {
+                            "Name": "AnyOrNone",
+                            "Id": "Deafult",
+                            "Portrait": "OrinothlogistsGuild_Kyle",
+                            "Condition": "TIME 800 1300",
+                            "Dialogues": [
+                                {
+                                    "Id": "Default",
+                                    "Dialogue": "{{i18n:npc.Kyle.dialogue.happy}}",
+                                    // "Condition": "!PLAYER_HAS_MAIL Current Ivy_OrinothlogistsGuild_PowerUp Any"
+                                }
+                            ]
+                        },
+                        {
+                            "Name": "AnyOrNone",
+                            "Condition": "!TIME 800 1300",
+                            "ClosedMessage": "{{i18n:shop.Shop.closedMessage}}"
+                        },
+                    ]
+                }
+            }
+        },
+        // Existing shops
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "Traveler",
+                "Items"
+            ],
+            "Entries": {
+                "Ivy_OrnithologistsGuild_AntiqueBinoculars": {
+                    "Id": "Ivy_OrnithologistsGuild_AntiqueBinoculars",
+                    "ItemId": "(O)Ivy_OrnithologistsGuild_AntiqueBinoculars",
+                    "Price": 500,
+                    "AvailableStock": 1,
+                    "Condition": "RANDOM 0.25 @addDailyLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "Joja",
+                "Items"
+            ],
+            "Entries": {
+                "Ivy_OrnithologistsGuild_JojaBinoculars": {
+                    "Id": "Ivy_OrnithologistsGuild_JojaBinoculars",
+                    "ItemId": "(O)Ivy_OrnithologistsGuild_JojaBinoculars",
+                    "Price": 1500
+                }
+            },
+            "MoveEntries": [
+                {
+                    "Id": "Ivy_OrnithologistsGuild_JojaBinoculars",
+                    "BeforeId": "(F)1609"
+                }
+            ]
+        }
+    ]
+}

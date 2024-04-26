@@ -37,7 +37,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         public void TractorGarageBuildingCostChanged()
         {
             this.mod.Helper.GameContent.InvalidateCache("Data/Buildings");
-            this.mod.LogTrace("Invalidating Data/Buildings");
+            this.mod.LogTrace("Invalidating asset 'Data/Buildings'.");
         }
 
         public void SetConfig(bool isHoeUnlocked, bool isLoaderUnlocked, bool isHarvesterUnlocked, bool isWatererUnlocked, bool isSpreaderUnlocked)
@@ -86,7 +86,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         internal void OnDayStarted()
         {
             // TractorMod creates a tractor on day start.  We remove it if it's not configured.  Otherwise, doing nothing is the right thing.
-            if (!this.mod.RestoreTractorQuestController.IsComplete)
+            if (Game1.IsMasterGame && !this.mod.RestoreTractorQuestController.IsCompletedByMasterPlayer)
             {
                 Farm farm = Game1.getFarm();
                 var tractorIds = farm.buildings.OfType<Stable>().Where(s => s.buildingType.Value == GarageBuildingId).Select(s => s.HorseId).ToHashSet();
@@ -100,7 +100,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         internal void EditBuildings(IDictionary<string, BuildingData> buildingData)
         {
-            if (Game1.MasterPlayer is null || !Context.IsMainPlayer)
+            if (Game1.MasterPlayer is null)
             {
                 this.mod.LogTrace("Skipping building updates -- we were asked for it before the game was loaded or we're multiplayer.");
                 // Leave it alone if we're being called before on game start.
@@ -113,13 +113,13 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 return;
             }
 
-            if (!this.mod.RestoreTractorQuestController.IsStarted
-                || (!this.mod.RestoreTractorQuestController.IsComplete && this.mod.RestoreTractorQuestController.State < RestorationState.BuildTractorGarage))
+            if (!this.mod.RestoreTractorQuestController.IsStartedByMasterPlayer
+                || (!this.mod.RestoreTractorQuestController.IsCompletedByMasterPlayer && this.mod.RestoreTractorQuestController.GetState(Game1.MasterPlayer) < RestorationState.BuildTractorGarage))
             {
                 this.mod.LogTrace("Disabled the ability to buy a tractor garage at Robin's.");
                 value.Builder = null;
             }
-            else if (!this.mod.RestoreTractorQuestController.IsComplete && this.mod.RestoreTractorQuestController.State < RestorationState.WaitingForSebastianDay1)
+            else if (!this.mod.RestoreTractorQuestController.IsCompletedByMasterPlayer && this.mod.RestoreTractorQuestController.GetState(Game1.MasterPlayer) < RestorationState.WaitingForSebastianDay1)
             {
                 this.mod.LogTrace("Discounted garage price at Robin's.");
                 value.BuildCost = 350;

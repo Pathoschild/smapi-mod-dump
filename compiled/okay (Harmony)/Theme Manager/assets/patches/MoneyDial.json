@@ -1,0 +1,12 @@
+{
+	"ID": "MoneyDial",
+
+	"Patches": {
+		"StardewValley.BellsAndWhistles.MoneyDial:draw": {
+			"Colors": {
+				"Gold": { "*": "$MoneyDialSparkle" },
+				"Maroon": { "*": "$MoneyDialText" }
+			}
+		}
+	}
+}

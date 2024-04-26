@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
@@ -19,7 +20,40 @@ namespace NermNermNerm.Stardew.QuestableTractor
     public class RestoreTractorQuestController
         : BaseQuestController<RestorationState>
     {
-        public RestoreTractorQuestController(ModEntry mod) : base(mod) { }
+#pragma warning disable IDE0052 // Remove unread private members -- This is here to ensure it lives as long as the surrounding class.  If this class wasn't permanent, we'd dispose it.
+        private readonly MasterPlayerModDataMonitor monitor;
+#pragma warning restore IDE0052 // Remove unread private members
+
+        public RestoreTractorQuestController(ModEntry mod) : base(mod)
+        {
+            this.monitor = new MasterPlayerModDataMonitor(mod.Helper, ModDataKeys.MainQuestStatus, () => mod.TractorModConfig.TractorGarageBuildingCostChanged());
+
+            this.Mod.PetFindsThings.AddObjectFinder(this.PetTargetFinder);
+        }
+
+        private IEnumerable<(Point tileLocation, double chance)> PetTargetFinder()
+        {
+            if (this.OverallQuestState == OverallQuestState.NotStarted)
+            {
+                foreach (var tf in Game1.currentLocation.terrainFeatures.Values.OfType<DerelictTractorTerrainFeature>())
+                {
+                    yield return new() { tileLocation = tf.Tile.ToPoint(), chance = .03 };
+                    break;
+                }
+            }
+        }
+
+        public override void Fix()
+        {
+            this.EnsureInventory(ObjectIds.BustedEngine, this.OverallQuestState == OverallQuestState.InProgress && (this.State == RestorationState.TalkToWizard || this.State == RestorationState.BringStuffToForest));
+            this.EnsureInventory(ObjectIds.WorkingEngine, this.OverallQuestState == OverallQuestState.InProgress && (this.State == RestorationState.BringEngineToMaru || this.State == RestorationState.BringEngineToSebastian));
+
+            if (this.OverallQuestState == OverallQuestState.NotStarted)
+            {
+                // Assume the tractor is unreachable - start the quest.
+                this.CreateQuestNew(Game1.player);
+            }
+        }
 
         public record EngineRequirement(string itemId, string displayName, int quantity);
         public static readonly IReadOnlyCollection<EngineRequirement> engineRequirements = new EngineRequirement[]
@@ -90,8 +124,6 @@ namespace NermNermNerm.Stardew.QuestableTractor
             switch (this.State)
             {
                 case RestorationState.BuildTractorGarage:
-                    this.Mod.TractorModConfig.TractorGarageBuildingCostChanged();
-                    break;
                 case RestorationState.WaitingForSebastianDay1:
                     this.Mod.TractorModConfig.TractorGarageBuildingCostChanged();
                     break;
@@ -99,7 +131,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
         }
 
-        protected override BaseQuest CreateQuest() => new RestoreTractorQuest(this);
+        protected override BaseQuest CreateQuest() => new RestoreTractorQuest();
 
         protected override void OnDayStartedQuestNotStarted()
         {
@@ -133,7 +165,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         private static bool CheckForest()
         {
             var magicChest = Game1.getLocationFromName("Woods").objects.Values.OfType<Chest>()
-                .FirstOrDefault(chest => engineRequirements.All(er => chest.Items.Any(i => i.ItemId == er.itemId && i.Stack >= er.quantity)));
+                .FirstOrDefault(chest => engineRequirements.All(er => chest.Items.Any(i => i is not null && i.ItemId == er.itemId && i.Stack >= er.quantity)));
 
             if (magicChest == null)
             {
@@ -142,7 +174,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
             foreach (var requirement in engineRequirements)
             {
-                var item = magicChest.Items.First(i => i.ItemId == requirement.itemId && i.Stack >= requirement.quantity);
+                var item = magicChest.Items.First(i => i is not null && i.ItemId == requirement.itemId && i.Stack >= requirement.quantity);
                 if (item.Stack > requirement.quantity)
                 {
                     item.Stack -= requirement.quantity;
@@ -152,10 +184,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
                     magicChest.Items.Remove(item);
                 }
             }
-            magicChest.Items.Add(new StardewValley.Object(ObjectIds.WorkingEngine, 1));
+
+            var workingEngine = ItemRegistry.Create<StardewValley.Object>(ObjectIds.WorkingEngine, 1);
+            workingEngine.questItem.Value = true;
+            magicChest.Items.Add(workingEngine);
 
             return true;
         }
-
     }
 }

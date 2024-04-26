@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<RootNamespace>ichortower.HatMouseLacey.Core</RootNamespace>
-		<Version>1.2.0</Version>
+		<Version>1.2.1</Version>
 		<TargetFramework>net6.0</TargetFramework>
 		<Configuration>Release</Configuration>
-		<!-- FIXME remove this when 1.6 releases -->
-		<GamePath>$(HOME)/.local/share/Steam/steamapps/common/Stardew Valley</GamePath>
 
 		<ModFolderName>HatMouseLacey_Core</ModFolderName>
 		<EnableHarmony>true</EnableHarmony>

@@ -1,0 +1,97 @@
+{
+  "Action.Shake.Future": "Agite",
+  "Action.Dig.Future": "Desenterrar", // Google Translate - Feel free to update
+
+  "Category.Beach": "Praia", // Google Translate - Feel free to update
+  "Category.BushBlooms": "Flores de Arbustos", // Google Translate - Feel free to update
+  "Category.CustomBushes": "Arbustos Personalizados", // Google Translate - Feel free to update
+  "Category.Desert": "Deserto", // Google Translate - Feel free to update
+  "Category.Fall": "Outono", // Google Translate - Feel free to update
+  "Category.Mushrooms": "Cogumelos", // Google Translate - Feel free to update
+  "Category.Other": "Outros", // Google Translate - Feel free to update
+  "Category.Special": "Especial", // Google Translate - Feel free to update
+  "Category.Spring": "Primavera", // Google Translate - Feel free to update
+  "Category.Summer": "Verão", // Google Translate - Feel free to update
+  "Category.Unknown": "Desconhecido", // Google Translate - Feel free to update
+  "Category.Vanilla": "Básico", // Google Translate - Feel free to update
+  "Category.Winter": "Inerno", // Google Translate - Feel free to update
+
+  "Key.Bushes": "Arbustos", // Google Translate - Feel free to update
+  "Key.Forageables": "Forragem",
+  "Key.FruitTrees": "Árvores frutíferas",
+  "Key.WildTrees": "Árvores Selvagens",
+
+  "Link.Bushes.Text": "Alternadores de Arbusto >",
+  "Link.Forageables.Text": "Alternadores forrageáveis >",
+  "Link.FruitTrees.Text": "Alternadores de árvores frutíferas >",
+  "Link.WildTrees.Text": "Alternadores de árvore selvagem >",
+
+  "Log.ContentPack.LoadError": "Não foi possível carregar o pacote de conteúdo: {{packPath}}. Verifique se há erros de sintaxe nesse arquivo.", // Google Translate - Feel free to update
+  "Log.DisabledConfig": "{{Subjects}} não estão sendo interagidos porque a configuração [{{configName}}] está atualmente desativada.",
+  "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
+  "Log.Eod.TotalStat": "[{{amount}}]Forragem Total",
+  "Log.FruitNotReady": "As árvores frutíferas não serão abaladas até que tenham {{quantidade}} de frutas disponíveis. Isso pode ser definido com a configuração {{configName}}.",
+  "Log.MissingHoe": "{{Subject}} não será forrageado porque nenhuma enxada foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
+  "Log.MissingToolMoss": "Musgo não será forrageado porque nenhuma Ferramenta foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
+  "Log.Wrapper.ManifestError": "Não foi possível recuperar o manifesto de {{name}} para verificar a versão instalada. Continuando sem funcionalidades de {{name}}.", // Google Translate - Feel free to update
+  "Log.Wrapper.ModFound": "{{name}} encontrado - Carregando {{subject}}", // Google Translate - Feel free to update
+  "Log.Wrapper.OldVersion": "{{name}} é a versão {{currentVersion}}. A versão mínima {{minimumVersion}} é necessária para os recursos do {{name}}, considere atualizar.", // Google Translate - Feel free to update
+
+  "Message.AutoForagerToggled": "AutoForagem tem sido {{state}}",
+  "Message.MissingHoe": "Falta uma enxada. Você não pode forragear {{assunto}} sem um.",
+  "Message.MissingToolMoss": "Faltando uma ferramenta ou arma branca. Você não pode coletar Moss sem uma ferramenta ou arma branca em seu inventário.", // Google Translate - Feel free to update
+
+  "Note.ShakeWalnutBushes": "Essas nozes devem ser conteúdo de fim de jogo e difíceis de encontrar. Ativar essa opção banaliza esse conteúdo até certo ponto.",
+
+  "Option.FruitsReadyToShake.Name": "Frutas Mínimas Prontas para Agitar",
+  "Option.FruitsReadyToShake.Tooltip": "Quantidade mínima de frutas que uma árvore frutífera deve ter pronta antes que o AutoForager agite a árvore.",
+  "Option.IsForagerActive.Name": "Forager Está Ativo?",
+  "Option.IsForagerActive.Tooltip": "Se o Auto Forager vai ou não sacudir árvores e arbustos e forragear objetos.",
+  "Option.RequireHoe.Name": "Exigir enxada para raízes de gengibre,{{whitespace}}Inhames de neve e raízes de inverno?",
+  "Option.RequireHoe.Tooltip": "Se um jogador é obrigado ou não a ter uma enxada em seu inventário para procurar raízes de gengibre, pontos de artefatos e pontos de sementes.", // Google Translate - Feel free to update
+  "Option.RequireToolMoss.Name": "Precisa de alguma ferramenta ou arma branca{{whitespace}}para colher musgo nas árvores?", // Google Translate - Feel free to update
+  "Option.RequireToolMoss.Tooltip": "Se um jogador é obrigado ou não a ter qualquer ferramenta ou arma branca em seu inventário para procurar musgo nas árvores.", // Google Translate - Feel free to update
+  "Option.ShakeDistance.Name": "Distância de agitação",
+  "Option.ShakeDistance.Tooltip": "Distância para sacudir arbustos quando '{{playerMagnetismName}}' está desativado.",
+  "Option.ToggleAction.Name": "Forragem qualquer {{subject}}?",
+  "Option.ToggleAction.Description.Reward": "Se deve ou não {{action}} {{subject}} para {{reward}}.",
+  "Option.ToggleAction.Description.Reward.Note": "Se deve ou não {{action}} {{subject}} para {{reward}}. NOTA: {{nota}}.",
+  "Option.ToggleForager.Name": "Alternar Tecla de Forager",
+  "Option.ToggleForager.Tooltip": "Teclas para ligar e desligar o AutoForager.",
+  "Option.UsePlayerMagnetism.Name": "Use a Distância do Magnetismo do Jogador?",
+  "Option.UsePlayerMagnetism.Tooltip": "Se deve ou não usar a distância atual do magnetismo do jogador ao procurar coisas para sacudir ou forragear. Nota: Substitui '{{shakeDistanceName}}'",
+
+  "Page.Bushes.Title": "Arbustos",
+  "Page.Bushes.Description": "Se deve ou não sacudir os seguintes itens dos arbustos:",
+  "Page.Forageables.Title": "Forrageaveis",
+  "Page.Forageables.Description": "Se os seguintes itens devem ou não ser forrageados para:",
+  "Page.FruitTrees.Title": "Árvores frutíferas",
+  "Page.FruitTrees.Description": "Se os seguintes itens devem ou não ser sacudidos das árvores frutíferas:",
+  "Page.WildTrees.Title": "Árvores Selvagens",
+  "Page.WildTrees.Description": "Se os seguintes itens devem ou não ser sacudidos das Árvores Selvagens:",
+
+  "Reward.Blackberries": "Amoras",
+  "Reward.Buried.Items": "Itens Enterrados", // Google Translate - Feel free to update
+  "Reward.Buried.Seeds": "Sementes Enterradas", // Google Translate - Feel free to update
+  "Reward.GoldenWalnuts": "GWalnuts antigos",
+  "Reward.Salmonberries": "Salmonberries",
+  "Reward.TeaLeaves": "Folhas de Chá",
+
+  "Section.Bushes.Text": "Alterrâncias de Bush",
+  "Section.FruitTrees.Text": "Alternâncias de árvores frutíferas",
+  "Section.General.Text": "Opções Gerais",
+  "Section.WildTree.Text": "Alternâncias de Árvore Selvagem",
+
+  "State.Activated": "ATIVADO",
+  "State.Deactivated": "DESATIVADO",
+
+  "Subject.ArtifactSpot": "Localização do artefato", // Google Translate - Feel free to update
+  "Subject.BlackberryBushes": "Arbustos de amora",
+  "Subject.Bushes": "arbustos", // Google Translate - Feel free to update
+  "Subject.BushBloomSchedules": "horários de floração do mato", // Google Translate - Feel free to update
+  "Subject.GingerRoots": "Raízes de gengibre",
+  "Subject.SalmonberryBushes": "Arbustos de salmão",
+  "Subject.SeedSpot": "Localização da semente", // Google Translate - Feel free to update
+  "Subject.TeaBushes": "Arbustos de chá",
+  "Subject.WalnutBushes": "Arbustos de nozes"
+}

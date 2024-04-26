@@ -39,7 +39,7 @@ public class PatchGroupData {
 	public Dictionary<string, PatchData>? Patches { get; set; }
 
 	[JsonIgnore]
-	public Dictionary<string, MethodInfo[]>? Methods { get; set; }
+	public Dictionary<string, MethodBase[]>? Methods { get; set; }
 
 }
 

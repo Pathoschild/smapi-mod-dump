@@ -18,9 +18,11 @@ namespace Randomizer
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The id of the item</param>
+		/// <param name="index">The index of the item</param>
 		/// <param name="difficultyToObtain">The difficulty to obtain this artifact - defaults to UncommonItem</param>
-		public ArtifactItem(int id, ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.UncommonItem) : base(id)
+		public ArtifactItem(ObjectIndexes index,
+			ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.UncommonItem) 
+			: base(index)
 		{
 			DifficultyToObtain = difficultyToObtain;
 			IsArtifact = true;

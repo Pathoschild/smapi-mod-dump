@@ -128,7 +128,7 @@ namespace EscasModdingPlugins
             if (location.Map.Properties.TryGetValue(MapPropertyName, out var mapPropertyObject)) //if the location has a non-null map property
             {
                 string mapProperty = mapPropertyObject.ToString() ?? ""; //get the map property as a string
-                string[] args = mapProperty.Trim().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries); //split the property value along spaces and remove any blank args
+                string[] args = mapProperty.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); //split the property value along spaces and remove any blank args
 
                 Color? colorToUse = null;
 

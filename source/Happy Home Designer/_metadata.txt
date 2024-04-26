@@ -6,9 +6,10 @@ mods:
    Happy Home Designer
 
 latest commit:
-   commit d0c339d42c935ddc6f859c2297d21cac107bbb7e
+   commit 991a07a3fec9ea2c60f61939e1c813762fd17b44
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Mon Apr 1 00:36:55 2024 -0400
+   Date:   Tue Apr 23 19:42:43 2024 -0400
    
-       switch to reference-based index tracking in search
+       added config options
+       large variants, client mode, early deluxe
    

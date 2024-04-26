@@ -84,7 +84,7 @@ public class TextNode : ISimpleNode {
 		}
 
 		if (Style.IsFancy() || Style.IsJunimo())
-			RenderHelper.DrawSpriteText(
+			SpriteText.drawString(
 				batch,
 				Text,
 				(int) position.X, (int) position.Y,

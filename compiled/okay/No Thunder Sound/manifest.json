@@ -1,7 +1,7 @@
 {
     "Name": "NoThunderSound",
     "Author": "Sto13",
-    "Version": "1.0.1",
+    "Version": "1.0.2",
     "Description": "remove the sound of lightning for those sensible",
     "UniqueID": "Sto13.NoThunderSound",
     "EntryDll": "NoThunderSound.dll",

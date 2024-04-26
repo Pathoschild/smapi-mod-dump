@@ -6,9 +6,11 @@ mods:
    Pause Time in Multiplayer Revived
 
 latest commit:
-   commit aad86a6888f962856f6dc3a39bdbbaf0178774ae
+   commit b5e2001de2f2e284fb6508b44e887dd0eb1f1cf0
    Author: Misha Hawthorn <misha@mishaprasolov.com>
-   Date:   Fri Mar 29 13:38:21 2024 -0500
+   Date:   Tue Apr 16 20:25:52 2024 -0500
    
-       Adjustments for re-release on NexusMods
+       Merge pull request #11 from xeru98/uifix
+       
+       Fixed X Position when UI is scaled
    

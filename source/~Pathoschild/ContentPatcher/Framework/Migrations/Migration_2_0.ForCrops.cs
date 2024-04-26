@@ -30,8 +30,11 @@ namespace ContentPatcher.Framework.Migrations
             /*********
             ** Fields
             *********/
-            /// <summary>The pre-1.6 asset name.</summary>
+            /// <summary>The asset name.</summary>
             private const string AssetName = "Data/Crops";
+
+            /// <summary>The vanilla data without mod edits applied, used as the base when a pre-1.6 content pack loads the asset.</summary>
+            private readonly VanillaAssetFactory<Dictionary<string, CropData>> OriginalData = new(DataLoader.Crops);
 
 
             /*********
@@ -52,10 +55,13 @@ namespace ContentPatcher.Framework.Migrations
             /// <inheritdoc />
             public bool TryApplyLoadPatch<T>(LoadPatch patch, IAssetName assetName, [NotNullWhen(true)] ref T? asset, out string? error)
             {
-                Dictionary<string, string> tempData = patch.Load<Dictionary<string, string>>(assetName);
-                Dictionary<string, CropData> newData = new();
-                this.MergeIntoNewFormat(newData, tempData, null);
-                asset = (T)(object)newData;
+                var data = this.OriginalData.GetFreshCopy();
+                var dataBackup = this.GetOldFormat(data);
+
+                var legacyLoad = patch.Load<Dictionary<string, string>>(assetName);
+                this.MergeIntoNewFormat(data, legacyLoad, dataBackup);
+
+                asset = (T)(object)data;
 
                 error = null;
                 return true;

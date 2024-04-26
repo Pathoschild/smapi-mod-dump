@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21539
+IDs: TheMightyAmondee.WeatherTotems
+update keys: Nexus:21539, GitHub:TheMightyAmondee/WeatherTotems

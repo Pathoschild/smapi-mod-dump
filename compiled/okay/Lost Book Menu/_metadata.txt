@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20301
+IDs: bungus.LostBookMenu
+update keys: Nexus:20301, GitHub:BussinBungus/BungusSDVMods

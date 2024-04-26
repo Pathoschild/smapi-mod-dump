@@ -33,9 +33,9 @@ public record struct TimeOfDay(
 
 [Flags]
 public enum WaterType {
-	None       = 0,
-	Freshwater = 1,
-	Ocean      = 2
+	None,
+	Freshwater,
+	Ocean
 };
 
 public enum FishWeather {

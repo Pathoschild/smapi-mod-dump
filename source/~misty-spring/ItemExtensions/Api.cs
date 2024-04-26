@@ -10,7 +10,7 @@
 
 using ItemExtensions.Additions.Clumps;
 using ItemExtensions.Models;
-using ItemExtensions.Models.Contained;
+using ItemExtensions.Models.Enums;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
@@ -18,6 +18,13 @@ namespace ItemExtensions;
 
 public interface IApi
 {
+    /// <summary>
+    /// Checks for resource data with the Stone type.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    bool IsStone(string id);
+    
     /// <summary>
     /// Checks for resource data in the mod.
     /// </summary>
@@ -47,11 +54,28 @@ public interface IApi
 //remove all of this ↓ when copying to your mod
 public class Api : IApi
 {
+    public bool IsStone(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            return false;
+        
+        if (!ModEntry.Ores.TryGetValue(id, out var resource))
+            return false;
+
+        if (resource is null || resource == new ResourceData())
+            return false;
+
+        return resource.Type == CustomResourceType.Stone;
+    }
+
     public bool IsResource(string id, out int? health, out string itemDropped)
     {
         health = null;
         itemDropped = null;
         
+        if (string.IsNullOrWhiteSpace(id))
+            return false;
+
         if (!ModEntry.Ores.TryGetValue(id, out var resource))
             return false;
 
@@ -60,25 +84,6 @@ public class Api : IApi
         
         health = resource.Health;
         itemDropped = resource.ItemDropped;
-        return true;
-    }
-
-    public bool HasLight(string id, out Color? light)
-    {
-        light = null;
-        
-        if (!ModEntry.Data.TryGetValue(id, out var data))
-            return false;
-
-        if (data.Light is null || data.Light == new LightData())
-            return false;
-
-        var l = data.Light;
-        
-        //prioritize hex- if null, use RGB
-        light = !string.IsNullOrWhiteSpace(l.Hex) ? Utility.StringToColor(l.Hex) : new Color(l.R, l.G, l.B);
-        light *= l.Transparency;
-        
         return true;
     }
 
@@ -101,7 +106,13 @@ public class Api : IApi
     public bool TrySpawnClump(string itemId, Vector2 position, GameLocation location, out string error, bool avoidOverlap = true)
     {
         error = null;
-        
+
+        if (string.IsNullOrWhiteSpace(itemId))
+        {
+            error = "Id can't be null.";
+            return false;
+        }
+
         if(ModEntry.BigClumps.TryGetValue(itemId, out var data) == false)
         {
             error = "Couldn't find the given ID.";
@@ -146,6 +157,11 @@ public class Api : IApi
 
     public List<string> GetCustomSeeds(string itemId, bool includeSource, bool parseConditions = true)
     {
+        if (string.IsNullOrWhiteSpace(itemId))
+        {
+            return null;
+        }
+        
         //if no seed data
         if (ModEntry.Seeds.TryGetValue(itemId, out var seeds) == false)
             return null;

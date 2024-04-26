@@ -6,5 +6,6 @@
   "BlinkPointers": true,
   "NumFramesArrowsOn": 50,
   "NumFramesArrowsOff": 20,
-  "ShowArtifactSpots": true
+  "ShowArtifactSpots": true,
+  "ShowSeedSpots": true
 }

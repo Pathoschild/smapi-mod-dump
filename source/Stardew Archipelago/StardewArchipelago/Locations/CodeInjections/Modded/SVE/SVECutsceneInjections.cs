@@ -33,11 +33,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
         private const int IRIDIUM_BOMB_ID = 8050109;
         private const string LANCE_CHEST_LOCATION = "Monster Crops";
         private const string MONSTER_ERADICATION_AP_PREFIX = "Monster Eradication: ";
-        private static readonly Dictionary<BundlePrice, string> VineyardPrices = new(){
-            { BundlePrice.Minimum, "ApplesZygote" }, { BundlePrice.VeryCheap, "ApplesBaby" },
-            { BundlePrice.Cheap, "ApplesOomfie" }, { BundlePrice.Normal, "Apples" }, { BundlePrice.Expensive, "ApplesAdult" },
-            { BundlePrice.VeryExpensive, "ApplesBoomer" }, { BundlePrice.Maximum, "ApplesEldritchHorror" },
-        };
         private const string APPLES_NAME = "Apples";
         private static readonly List<string> voidSpirits = new(){
             MonsterName.SHADOW_BRUTE, MonsterName.SHADOW_SHAMAN, MonsterName.SHADOW_SNIPER, MonsterCategory.VOID_SPIRITS,
@@ -116,10 +111,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
                 }
                 //Change the key so it doesn't get deleted
                 var eventsKey = sveEventSpecialOrders[__instance.id];
-                if (eventsKey == APPLES_NAME) // Changes apples quest with one relevant to bundle price
-                {
-                    eventsKey = GetAuroraVineyardPricedEventKey();
-                }
                 var specialOrder = SpecialOrder.GetSpecialOrder(eventsKey, null);
                 Game1.player.team.specialOrders.Add(specialOrder);
 
@@ -175,13 +166,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
                 _monitor.Log($"Failed in {nameof(FixMonsterSlayerQuest_IncludeReleaseofGoals_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
-        }
-
-        public static string GetAuroraVineyardPricedEventKey()
-        {
-            
-            var bundlesPrice = _archipelago.SlotData.BundlePrice;
-            return VineyardPrices[bundlesPrice];
         }
     }
 }

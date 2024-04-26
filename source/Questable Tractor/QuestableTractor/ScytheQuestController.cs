@@ -9,14 +9,30 @@
 *************************************************/
 
 using System;
+using System.Linq;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.TerrainFeatures;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
     public class ScytheQuestController : TractorPartQuestController<ScytheQuestState>
     {
-        public ScytheQuestController(ModEntry mod) : base(mod) { }
+        public ScytheQuestController(ModEntry mod) : base(mod)
+        {
+            this.AddPetFinder();
+        }
+
+        public override void Fix()
+        {
+            // Assume that the player can't get the part because it's somewhere crazy
+            this.PickUpBrokenAttachmentPart();
+            this.EnsureInventory(ObjectIds.WorkingScythe, this.OverallQuestState == OverallQuestState.InProgress && this.State.Progress == ScytheQuestStateProgress.InstallPart);
+            this.EnsureInventory(ObjectIds.BustedScythe, this.OverallQuestState == OverallQuestState.NotStarted
+                || (this.OverallQuestState == OverallQuestState.InProgress && this.State.Progress < ScytheQuestStateProgress.InstallPart));
+            this.EnsureInventory(ObjectIds.ScythePart1, this.OverallQuestState == OverallQuestState.InProgress && this.State.Progress < ScytheQuestStateProgress.InstallPart && this.State.VincentPartGot);
+            this.EnsureInventory(ObjectIds.ScythePart2, this.OverallQuestState == OverallQuestState.InProgress && this.State.Progress < ScytheQuestStateProgress.InstallPart && this.State.JasPartGot);
+        }
 
         protected override ScytheQuest CreatePartQuest() => new ScytheQuest(this);
 

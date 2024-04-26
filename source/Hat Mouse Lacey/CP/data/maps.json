@@ -141,6 +141,19 @@
       "PatchMode": "Overlay"
     },
     {
+      "LogName": "Stardew Valley Fair hat stall (even years)",
+      "Target": "Maps/Town-Fair2",
+      "Action": "EditMap",
+      "FromFile": "assets/maps/FairStall.tmx",
+      "ToArea": {
+        "X": "{{festival_fall16_stallX_y2}}",
+        "Y": "{{festival_fall16_stallY_y2}}",
+        "Width": 3,
+        "Height": 4
+      },
+      "PatchMode": "Overlay"
+    },
+    {
       "LogName": "Fair hat stall tilesheet",
       "Target": "Maps/hatmouselaceyStall",
       "Action": "Load",

@@ -10,10 +10,10 @@ for queries and analysis.**
 
 The mod can be configured by a `config.json` file that can be found in the mod's folder (if you can't find it than try
 running game once).
-The file is a json type so you can edit it using any text editor on your computer or you can use onlne json editors
+The file is a .json type so you can edit it using any text editor on your computer or you can use online json editors
 like [Json Editor Online](https://jsoneditoronline.org/).
 For the list of button codes
-visit [this page](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
+visit [Player Guide/Key Bindings](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
 
 ## Table Of Contents
 
@@ -265,9 +265,9 @@ This is the default value of the `config.json` file as per `v1.5.0`:
 
 ## Other Pages
 
-- [Readme](README.html)
-- [Setup](setup.html)
-- [Features](features.html)
-- [Keybindings](keybindings.html)
-- [Commands](commands.html)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Readme](README.md)
+- [Setup](setup.md)
+- [Features](features.md)
+- [Keybindings](keybindings.md)
+- [Commands](commands.md)
+- [Guides](guides.md)

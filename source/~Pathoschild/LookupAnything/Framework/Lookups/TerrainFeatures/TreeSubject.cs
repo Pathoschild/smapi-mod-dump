@@ -14,7 +14,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
-using Pathoschild.Stardew.Common.Enums;
 using Pathoschild.Stardew.LookupAnything.Framework.DebugFields;
 using Pathoschild.Stardew.LookupAnything.Framework.Fields;
 using StardewValley;
@@ -81,7 +80,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
                 else if (stage == WildTreeGrowthStage.Tree - 1 && this.HasAdjacentTrees(this.Tile))
                     yield return new GenericField(label, I18n.Tree_NextGrowth_AdjacentTrees());
                 else
-                    yield return new GenericField(label, I18n.Tree_NextGrowth_Chance(stage: I18n.For(stage + 1), chance: (isFertilized ? data.FertilizedGrowthChance : data.GrowthChance) * 100));
+                {
+                    double chance = Math.Round((isFertilized ? data.FertilizedGrowthChance : data.GrowthChance) * 100, 2);
+                    yield return new GenericField(label, I18n.Tree_NextGrowth_Chance(stage: I18n.For(stage + 1), chance: chance));
+                }
             }
 
             // get fertilizer
@@ -154,22 +156,21 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
         {
             string type = tree.treeType.Value;
 
-            if (type == TreeType.BigMushroom)
-                I18n.Tree_Name_BigMushroom();
-            if (type == TreeType.Mahogany)
-                return I18n.Tree_Name_Mahogany();
-            if (type == TreeType.Maple)
-                return I18n.Tree_Name_Maple();
-            if (type == TreeType.Oak)
-                return I18n.Tree_Name_Oak();
-            if (type == TreeType.Palm)
-                return I18n.Tree_Name_Palm();
-            if (type == TreeType.Palm2)
-                return I18n.Tree_Name_Palm();
-            if (type == TreeType.Pine)
-                return I18n.Tree_Name_Pine();
-
-            return I18n.Tree_Name_Unknown();
+            return type switch
+            {
+                Tree.mushroomTree => I18n.Tree_Name_BigMushroom(),
+                Tree.mahoganyTree => I18n.Tree_Name_Mahogany(),
+                Tree.leafyTree => I18n.Tree_Name_Maple(),
+                Tree.bushyTree => I18n.Tree_Name_Oak(),
+                Tree.palmTree => I18n.Tree_Name_Palm(),
+                Tree.palmTree2 => I18n.Tree_Name_Palm(),
+                Tree.pineTree => I18n.Tree_Name_Pine(),
+                Tree.greenRainTreeBushy => I18n.Tree_Name_Mossy(),
+                Tree.greenRainTreeLeafy => I18n.Tree_Name_Mossy(),
+                Tree.greenRainTreeFern => I18n.Tree_Name_Mossy(),
+                Tree.mysticTree => I18n.Tree_Name_Mystic(),
+                _ => I18n.Tree_Name_Unknown()
+            };
         }
 
         /// <summary>Whether there are adjacent trees that prevent growth.</summary>

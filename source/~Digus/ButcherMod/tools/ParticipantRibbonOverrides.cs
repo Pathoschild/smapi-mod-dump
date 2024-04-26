@@ -141,7 +141,7 @@ namespace AnimalHusbandryMod.tools
                 {
                     dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.IsAlreadyParticipant", new { animalName = animal.displayName });
                 }
-                else if (AnimalContestController.GetNextContestParticipant() is Character participant)
+                else if (AnimalContestController.GetNextContestParticipant() is { } participant)
                 {
                     string participantName = participant.displayName;
                     dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.AnotherParticipantAlready", new { participantName });

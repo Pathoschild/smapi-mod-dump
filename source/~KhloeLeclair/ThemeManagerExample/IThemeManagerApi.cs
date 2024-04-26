@@ -8,13 +8,19 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Intrinsics.X86;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+
+using Newtonsoft.Json;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -69,7 +75,7 @@ public interface IManagedAsset {
 	/// <summary>
 	/// An event that's fired when the managed asset is marked as stale.
 	/// </summary>
-	event EventHandler? MarkedStale;
+	event Action? MarkedStale;
 
 	/// <summary>
 	/// The raw value of a managed asset. You will likely always want to use
@@ -136,7 +142,7 @@ public class FallbackManagedAsset<TValue> : IManagedAsset<TValue> where TValue :
 		}
 	}
 
-	public event EventHandler? MarkedStale;
+	public event Action? MarkedStale;
 
 	#endregion
 
@@ -158,7 +164,7 @@ public class FallbackManagedAsset<TValue> : IManagedAsset<TValue> where TValue :
 
 	public void MarkStale() {
 		IsStale = true;
-		MarkedStale?.Invoke(this, EventArgs.Empty);
+		MarkedStale?.Invoke();
 	}
 
 	#endregion
@@ -168,11 +174,24 @@ public class FallbackManagedAsset<TValue> : IManagedAsset<TValue> where TValue :
 
 /// <summary>
 /// A variable set is a dictionary of variables. Variables support inheritance
-/// from fall back themes, can reference other variables, can use color
-/// formulas, can use variables from game themes, and in general just make
-/// using colors a lot more flexible.
+/// from fall back themes, can reference other variables, and can reference
+/// variables from game themes.
+///
+/// You are almost always going to be dealing with <see cref="IVariableSet{TValue}"/>
+/// rather than this untyped interface.
 /// </summary>
 public interface IVariableSet {
+
+	/// <summary>
+	/// This method is called by Theme Manager when populating a theme data
+	/// class with variable sets, and is used internally by variable sets to
+	/// allow fall back theme support to work.
+	/// </summary>
+	/// <param name="manager">The manager controlling the theme this
+	/// variable set is a part of.</param>
+	/// <param name="manifest">The manifest for the theme this
+	/// variable set is a part of.</param>
+	void SetReferences(IThemeManager? manager, IThemeManifest? manifest);
 
 	/// <summary>
 	/// The raw values represent the raw strings that were read from the
@@ -199,39 +218,190 @@ public interface IVariableSet {
 }
 
 /// <summary>
-/// 
+/// A variable set is a dictionary of variables. Variables support inheritance
+/// from fall back themes, can reference other variables, and can reference
+/// variables from game themes.
 /// </summary>
-/// <typeparam name="TValue"></typeparam>
+/// <typeparam name="TValue">The type of variable.</typeparam>
 public interface IVariableSet<TValue> : IVariableSet, IReadOnlyDictionary<string, TValue> {
+
+	/// <summary>
+	/// The calculated, final variables
+	/// </summary>
+	IReadOnlyDictionary<string, TValue> CalculatedValues { get; }
 
 }
 
+/// <summary>
+/// The VariableSetConverter is a <see cref="JsonConverter"/> instance that can
+/// be used as a proxy for Theme Manager's <see cref="IVariableSet"/> converter,
+/// allowing you to use it with the <see cref="JsonConverterAttribute"/>
+/// attribute without needing a direct dependency.
+///
+/// To use this, simply use the <see cref="JsonConverterAttribute"/> as you
+/// would normally, using this type. Then, in your code, once you've acquired
+/// the Theme Manager API call <see cref="SetConverter(JsonConverter?)"/> with
+/// the <see cref="JsonConverter"/> instance exposed by Theme Manager's API.
+///
+/// In the event that Theme Manager is not installed and does not load, this
+/// will simply read and write a null value.
+/// </summary>
+public class VariableSetConverter : JsonConverter {
+
+	private static JsonConverter? MainConverter;
+
+	public static void SetConverter(JsonConverter? mainConverter) {
+		MainConverter = mainConverter;
+	}
+
+	public override bool CanConvert(Type objectType) {
+		return MainConverter?.CanConvert(objectType) ?? false;
+	}
+
+	public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
+		if (MainConverter is null)
+			return null;
+		return MainConverter.ReadJson(reader, objectType, existingValue, serializer);
+	}
+
+	public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
+		if (MainConverter is null)
+			writer.WriteNull();
+		else
+			MainConverter.WriteJson(writer, value, serializer);
+	}
+}
+
+
+/// <summary>
+/// This interface represents the necessary information to render a BmFont.
+/// BmFonts are used primarily by <see cref="SpriteText"/> for drawing text.
+///
+/// They're loaded from <c>.fnt</c> files.
+/// </summary>
+public interface IBmFontData {
+
+	/// <summary>
+	/// The raw font file. This is a <see cref="BmFont.FontFile"/> but
+	/// we use the type `object` so consumers won't need to
+	/// reference BmFont.
+	/// </summary>
+	object File { get; }
+
+	/// <summary>
+	/// A map of characters. This is a <c>Dictionary<char, BmFont.FontChar></c>
+	/// but we use the type `object` so consumers won't need to
+	/// reference BmFont.
+	/// </summary>
+	object CharacterMap { get; }
+
+	/// <summary>
+	/// A list of loaded textures for each <see cref="FontPage" />
+	/// </summary>
+	List<Texture2D> FontPages { get; }
+
+	/// <summary>
+	/// The initial pixel zoom that should be used for this font.
+	/// </summary>
+	float PixelZoom { get; }
+}
 
 /// <summary>
 /// This theme data represents basic colors being used by the game.
 /// </summary>
 public interface IGameTheme {
 
+	#region Variable Lookup
+
 	/// <summary>
 	/// Try to get a color variable, or return <c>null</c> if there is no
 	/// variable with the provided name.
 	/// </summary>
 	/// <param name="key">The variable to get.</param>
-	Color? GetVariable(string key);
+	Color? GetColorVariable(string key);
+
+	/// <summary>
+	/// Try to get a BmFont variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IBmFontData? GetBmFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a BmFont variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IManagedAsset<IBmFontData>? GetManagedBmFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a font variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	SpriteFont? GetFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a font variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IManagedAsset<SpriteFont>? GetManagedFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a texture variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	Texture2D? GetTextureVariable(string key);
+
+	/// <summary>
+	/// Try to get a texture variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IManagedAsset<Texture2D>? GetManagedTextureVariable(string key);
+
+	#endregion
 
 	/// <summary>
 	/// A dictionary of all valid colors used by the theme. Keys are
 	/// not case-sensitive.
 	/// </summary>
 	IVariableSet<Color> ColorVariables { get; }
-	//Dictionary<string, Color> Variables { get; }
 
 	/// <summary>
-	/// A dictionary of all sprite text colors that are set by the theme.
-	/// You can just use <see cref="SpriteText.getColorFromIndex(int)"/>
+	/// A dictionary of all valid BmFonts used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	IVariableSet<IManagedAsset<IBmFontData>> BmFontVariables { get; }
+
+	/// <summary>
+	/// A dictionary of all valid sprite fonts used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	IVariableSet<IManagedAsset<SpriteFont>> FontVariables { get; }
+
+	/// <summary>
+	/// A dictionary of all valid textures used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	IVariableSet<IManagedAsset<Texture2D>> TextureVariables { get; }
+
+	/// <summary>
+	/// A dictionary of all index-based sprite text colors that are set by
+	/// the theme. You can just use <see cref="SpriteText.getColorFromIndex(int)"/>
 	/// rather than checking this list if using the active theme.
 	/// </summary>
-	Dictionary<int, Color> SpriteTextColors { get; }
+	Dictionary<int, Color> IndexedSpriteTextColors { get; }
+
+	/// <summary>
+	/// A dictionary of dictionaries of sprite text color replacements that
+	/// are set by the theme. The key of the inner dictionary is the
+	/// <see cref="Color.PackedValue"/> as a long so we can store the
+	/// <c>null</c> value as <c>-1</c>.
+	/// </summary>
+	Dictionary<string, Dictionary<long, Color?>> SpriteTextColorSets { get; }
 
 }
 
@@ -273,10 +443,23 @@ public interface IThemeChangedEvent<DataT> {
 	DataT NewData { get; }
 }
 
+/// <summary>
+/// This event is emitted by <see cref="IThemeManager{DataT}"/> whenever
+/// themes are discovered. This can happen during the initial load, when
+/// themes are manually reloaded, when the theme data asset is invalidated,
+/// or when <see cref="IThemeManager.Discover(bool, bool, bool)"/> is
+/// called manually.
+/// </summary>
 public interface IThemesDiscoveredEvent<DataT> {
 
+	/// <summary>
+	/// A read-only dictionary of all theme manifests.
+	/// </summary>
 	IReadOnlyDictionary<string, IThemeManifest> Manifests { get; }
 
+	/// <summary>
+	/// A read-only dictionary of all theme data.
+	/// </summary>
 	IReadOnlyDictionary<string, DataT> Data { get; }
 
 }
@@ -494,6 +677,21 @@ public interface IThemeManager {
 	/// has no manifest. Only the <c>default</c> theme has no manifest.</param>
 	bool TryGetManifest(string themeId, [NotNullWhen(true)] out IThemeManifest? manifest);
 
+	/// <summary>
+	/// Get the <see cref="IThemeManifest"/> instance of a specific theme,
+	/// if it's loaded.
+	/// 
+	/// An alternative version of <see cref="TryGetManifest(string, out IThemeManifest?)"/>
+	/// that doesn't use "out", as that can cause issues with Pintail, the API
+	/// proxy service.
+	/// </summary>
+	/// <param name = "themeId" > The < see cref="IThemeManifest.UniqueID"/> of the
+	/// theme we want the manifest for.</param>
+	/// <returns>The <see cref="IThemeManifest"/> instance for
+	/// the requested theme, or <c>null</c> if the theme is not loaded or
+	/// has no manifest. Only the <c>default</c> theme has no manifest.</returns>
+	IThemeManifest? GetManifest(string themeId);
+
 	#endregion
 
 	#region Theme Discovery
@@ -687,6 +885,23 @@ public interface IThemeManager<DataT> : IThemeManager where DataT : new() {
 	/// the requested theme, or <c>null</c> if the theme is not loaded.</param>
 	bool TryGetTheme(string themeId, [NotNullWhen(true)] out DataT? theme);
 
+	/// <summary>
+	/// Get the <typeparamref name="DataT"/> instance for a specific
+	/// theme, if it's loaded.
+	///
+	/// As this method uses a dictionary lookup internally, you should cache
+	/// the result if you use it frequently for best performance. If you do
+	/// cache the result, make sure to update your cache whenever the
+	/// <see cref="ThemeChanged"/> event is emitted.
+	///
+	/// This is an alternate method that does not use out, because Pintail.
+	/// </summary>
+	/// <param name="themeId">The <see cref="IThemeManifest.UniqueID"/> of the
+	/// theme we want the data instance for.</param>
+	/// <returns>The <typeparamref name="DataT"/> instance for
+	/// the requested theme, or <c>null</c> if the theme is not loaded.</returns>
+	DataT? GetTheme(string themeId);
+
 	#endregion
 
 	#region Default / Active Theme Access
@@ -717,25 +932,93 @@ public interface IThemeManager<DataT> : IThemeManager where DataT : new() {
 	/// can happen either when themes are reloaded or when the user changes
 	/// their selected theme.
 	/// </summary>
-	event EventHandler<IThemeChangedEvent<DataT>>? ThemeChanged;
+	event Action<IThemeChangedEvent<DataT>>? ThemeChanged;
 
 	/// <summary>
 	/// This event is fired whenever themes are discovered and theme data has
 	/// been loaded, but before theme selection runs. This can be used to
 	/// perform any extra processing of theme data.
 	/// </summary>
-	event EventHandler<IThemesDiscoveredEvent<DataT>>? ThemesDiscovered;
+	event Action<IThemesDiscoveredEvent<DataT>>? ThemesDiscovered;
 
 	#endregion
 }
 
-public interface IThemeManagerApi {
+public partial interface IThemeManagerApi {
 
 	#region Game Themes
 
 	IGameTheme GameTheme { get; }
 
-	event EventHandler<IThemeChangedEvent<IGameTheme>>? GameThemeChanged;
+	event Action<IThemeChangedEvent<IGameTheme>>? GameThemeChanged;
+
+	#endregion
+
+	#region Variable Sets
+
+	/// <summary>
+	/// This <see cref="JsonConverter"/> instance handles <see cref="IVariableSet{TValue}"/>
+	/// instances, both reading and writing them. You should store this value
+	/// using <see cref="VariableSetConverter.SetConverter(JsonConverter?)"/>
+	/// if you're using variable sets in your theme.
+	/// </summary>
+	JsonConverter VariableSetConverter { get; }
+
+	/// <summary>
+	/// Parse a value of <typeparamref name="TValue"/> from a string.
+	/// </summary>
+	/// <typeparam name="TValue">The desired type</typeparam>
+	/// <param name="input">The input to parse</param>
+	/// <param name="manager">The Theme Manager instance this variable set
+	/// belongs to, if one is known.</param>
+	/// <param name="manifest">The theme manifest of the theme this variable set
+	/// belongs to, if one is known.</param>
+	/// <param name="result">The resulting value</param>
+	/// <returns>Whether or not a value was parsed successfully.</returns>
+	delegate bool TryParseVariableSetValue<TValue>(string input, IThemeManager? manager, IThemeManifest? manifest, [NotNullWhen(true)] out TValue? result);
+
+	/// <summary>
+	/// Register a new type that can be stored within a <see cref="IVariableSet{TValue}"/>.
+	/// </summary>
+	/// <typeparam name="TValue">The type to be supported.</typeparam>
+	/// <param name="parseDelegate">A method for parsing values from strings.</param>
+	/// <returns>Whether or not the parser was registered successfully. If
+	/// false, another parser for the type was already registered.</returns>
+	bool RegisterVariableSetType<TValue>(TryParseVariableSetValue<TValue> parseDelegate);
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{TValue}"/> instance using the
+	/// main implementation of variable sets. This should be used in conjunction
+	/// with <see cref="RegisterVariableSetType{TValue}(TryParseVariableSetValue{TValue})"/>.
+	/// If you want to create a variable set for <see cref="IBmFontData"/>,
+	/// <see cref="Texture2D"/>, or <see cref="SpriteFont"/> you should use
+	/// the specific methods for those.
+	/// </summary>
+	/// <exception cref="ArgumentException">Throws an exception when attempting
+	/// to create a variable set with an unsupported type. The default supported
+	/// types are: <see cref="Color"/>.</exception>
+	IVariableSet<TValue> CreateVariableSet<TValue>();
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{IManagedAsset{IBmFontData}}"/>
+	/// instance for <see cref="IBmFontData"/> using the main
+	/// implementation of variable sets.
+	/// </summary>
+	IVariableSet<IManagedAsset<IBmFontData>> CreateBmFontVariableSet();
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{IManagedAsset{Texture2D}}"/>
+	/// instance for managed textures using the main implementation
+	/// of variable sets.
+	/// </summary>
+	IVariableSet<IManagedAsset<Texture2D>> CreateTextureVariableSet();
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{IManagedAsset{SpriteFont}}"/>
+	/// instance for managed sprite fonts using the main implementation
+	/// of variable sets.
+	/// </summary>
+	IVariableSet<IManagedAsset<SpriteFont>> CreateFontVariableSet();
 
 	#endregion
 
@@ -753,7 +1036,9 @@ public interface IThemeManagerApi {
 	/// instance, if one exists.</param>
 	/// <param name="forMod">An optional manifest to get the theme manager
 	/// for a specific mod.</param>
-	bool TryGetManager<DataT>([NotNullWhen(true)] out IThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new();
+	bool TryGetTypedManager<DataT>([NotNullWhen(true)] out IThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new();
+
+	IThemeManager<DataT>? GetTypedManager<DataT>(IManifest? forMod = null) where DataT : class, new();
 
 	/// <summary>
 	/// Try to get an existing <see cref="IThemeManager"/> instance for a mod.
@@ -764,6 +1049,8 @@ public interface IThemeManagerApi {
 	/// <param name="forMod">An optional manifest to get the theme manager
 	/// for a specific mod.</param>
 	bool TryGetManager([NotNullWhen(true)] out IThemeManager? themeManager, IManifest? forMod = null);
+
+	IThemeManager? GetManager(IManifest? forMod = null);
 
 	/// <summary>
 	/// Get an <see cref="IThemeManager{DataT}"/> for a mod. If there is no
@@ -790,6 +1077,10 @@ public interface IThemeManagerApi {
 	/// the default behavior of <see cref="IThemeManager.UsingAssetRedirection"/>.</param>
 	/// <param name="forceThemeRedirection">If set to a value, override
 	/// the default behavior of <see cref="IThemeManager.UsingThemeRedirection"/></param>
+	/// <param name="onThemeChanged">An event handler to call whenever the
+	/// theme changes. This is provided as an alternative to registering an
+	/// event handler after the API call returns, as theme discovery will
+	/// have happened by then and there will not be an initial event dispatch.</param>
 	/// <exception cref="InvalidCastException">Thrown when attempting to get a
 	/// manager with a different <typeparamref name="DataT"/> than it was
 	/// created with.</exception>
@@ -800,7 +1091,8 @@ public interface IThemeManagerApi {
 		string? assetLoaderPrefix = null,
 		string? themeLoaderPath = null,
 		bool? forceAssetRedirection = null,
-		bool? forceThemeRedirection = null
+		bool? forceThemeRedirection = null,
+		Action<IThemeChangedEvent<DataT>>? onThemeChanged = null
 	) where DataT : class, new();
 
 	#endregion
@@ -820,20 +1112,20 @@ public interface IThemeManagerApi {
 
 	#endregion
 
-	#region Colored SpriteText
+	#region Font-ed SpriteTextT
 
 	/// <summary>
-	/// Draw arbitrarily-colored strings of
-	/// <see cref="StardewValley.BellsAndWhistles.SpriteText"/>.
+	/// Draw strings of <see cref="SpriteText"/> with arbitrary fonts.
 	/// </summary>
 	/// <param name="batch">The SpriteBatch to draw with</param>
+	/// <param name="font">The font to draw with</param>
 	/// <param name="text">The text to draw</param>
 	/// <param name="x">the x coordinate</param>
 	/// <param name="y">the y coordinate</param>
 	/// <param name="color">the color to draw with, or <c>null</c> for the
 	/// default color</param>
 	/// <param name="alpha">The transparency to draw with</param>
-	void DrawSpriteText(SpriteBatch batch, string text, int x, int y, Color? color, float alpha = 1f);
+	void DrawSpriteText(SpriteBatch batch, IBmFontData? font, string text, int x, int y, Color? color, float alpha = 1f);
 
 	#endregion
 }

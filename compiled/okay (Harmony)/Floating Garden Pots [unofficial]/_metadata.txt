@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17582
+IDs: aedenthorn.FloatingGardenPots
+update keys: Nexus:17582, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@FloatingGardenPots, GitHub:aedenthorn/StardewValleyMods

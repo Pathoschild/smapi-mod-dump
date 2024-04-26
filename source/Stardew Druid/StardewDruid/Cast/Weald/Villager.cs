@@ -9,8 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Dialogue;
+using StardewDruid.Data;
+using StardewDruid.Journal;
 using StardewValley;
+using System.Xml.Linq;
 
 namespace StardewDruid.Cast.Weald
 {
@@ -32,23 +34,16 @@ namespace StardewDruid.Cast.Weald
 
             int friendship = 0;
 
-            if (Mod.instance.rite.castTask.ContainsKey("masterVillager"))
+            if (Mod.instance.questHandle.IsComplete(QuestHandle.clearLesson))
             {
-
+                
                 friendship = 25;
 
             }
 
-            bool greetVillager = ModUtility.GreetVillager(Mod.instance.rite.caster, riteWitness, friendship);
+            ModUtility.GreetVillager(targetPlayer, riteWitness, friendship);
 
-            if (!Mod.instance.rite.castTask.ContainsKey("masterVillager") && greetVillager)
-            {
-
-                Mod.instance.UpdateTask("lessonVillager", 1);
-
-            }
-
-            Reaction.ReactTo(riteWitness, "Weald", friendship);
+            ReactionData.ReactTo(riteWitness, "Weald", friendship);
 
         }
 

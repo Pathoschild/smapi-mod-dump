@@ -1,0 +1,10 @@
+{
+  "Name": "NightLight",
+  "Author": "kankurogb.nightlight",
+  "Version": "1.0.2",
+  "Description": "Makes night time in Stardew Valley less dark, enabling you to see the area around you better.",
+  "UniqueID": "kankurogb.nightlight",
+  "EntryDll": "nightlight.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:21629"]
+}

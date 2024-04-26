@@ -11,10 +11,19 @@
 {
   "Name": "Convenient Chests",
   "Author": "aEnigma",
-  "Version": "1.6.3",
+  "Version": "1.6.6",
   "Description": "Makes your life easier: Allows crafting from and auto-stashing to chests.",
   "UniqueID": "aEnigma.ConvenientChests",
   "MinimumApiVersion": "4.0.0",
   "EntryDll": "ConvenientChests.dll",
-  "UpdateKeys": [ "Nexus:2196" ]
+  "UpdateKeys": [
+    "Nexus:2196",
+    "GitHub:aEnigmatic/ConvenientChests"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
 }

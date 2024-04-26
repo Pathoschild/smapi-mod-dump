@@ -202,13 +202,37 @@ Monster Difficulty "monsterDifficulty" (combatDifficulty in 1.6)
 Various modes to make mod-spawned monsters harder or easier to handle
 
 -----------------------------------------
+Meteor Behaviour "meteorBehaviour"
+Adjust the risk/reward setting that governs meteor behaviour, including targetting, damage and coverage.
+
+1. Prioritises Monsters, Stone Nodes and utilises a regular spatial pattern for optimal coverage. Normal damage. (default)
+2. Monsters, Pattern, 1.1x damage
+3. Stone Nodes, Pattern, 1.1x damage
+4. Pattern only, 1.25x damage, 33% chance for large meteor
+5. Completely random, 1.6x damage, 50% chance for large meteor
+
+-----------------------------------------
 Adjust rewards (Percentage) "adjustRewards"
 Adjust monetary rewards that are provided on quest completion.
 
 -----------------------------------------
 Maximum Damage "maximumDamage"
-Some spell effects have damage modifiers that consider player combat level, highest upgrade on Pickaxe, Axe, and applied enchantments.
-Enable to apply max damage everytime
+Some spell effects have damage modifiers that consider player skill levels, druid level (mod progress) and applied enchantments.
+Enable to apply max damage everytime. Damage equates roughly to the power of one Stars: Meteor hit.
+
+Enabled Max Damage: 250
+
+Calculated damage:
++ 5 * Combat Level    ~ 50 at end game
++ 2 * Mining Level    ~ 20 at end game
++ 2 * Foraging Level  ~ 20 at end game
++ Farming Level   ~ 10 at end game
++ Fishing Level   ~ 10 at end game
++ 3 * SD Druid Progress level ~ 120 at end
++ 25 if selected tool is enchanted
++ 25 for Fighter Profession
++ 25 for Brute Profession
+= ~250-300 at end game, with more or less depending on Levels and SD Druid Progress
 
 -----------------------------------------
 Colour Preference "colourPreference"
@@ -243,6 +267,9 @@ Disables the Map-based cast restrictions so that any rite effect can be cast any
 Reverse Journal "reverseJournal"
 Reverse the order in which Stardew Druid journal entries are displayed. Default: oldest to newest. Enabled: newest to oldest.
 
+Active Journal "activeJournal"
+Show active quests on the front pages of the Stardew Druid journal. Default: active entries on front page. Disabled: no change in order.
+
 -----------------------------------------
 Ostentatious Hats "partyHats"
 Enable to put cute hats on some mod-spawned monsters. Cosmetic effect only.
@@ -260,7 +287,7 @@ STAMINA COSTS
 
 Weald
 -----------------------------------------
-Explode Weed        1
+Explode Weed/Twig   1
 Shake Fruit Tree    Free
 Extract Grass       Free
 Extract Tree        1
@@ -275,13 +302,15 @@ Impress Villager	Free
 Mists
 -----------------------------------------
 Artifact Spot       8
-Boulder Sunder      Maximum of: 8, 32 - (MiningLevel * 3)
+Sunder: Boulder     Maximum of: 8, 32 - (MiningLevel * 3)
+Sunder: Stump       Maximum of: 8, 32 - (ForagingLevel * 3)
+Sunder: Log			Stump * 1.5
 Campfire            24
 Lava                Free
 Lightning Rod       Free
-Scarecrow           Maximum of: 12, 32 - (FarmingLevel * 3)﻿﻿Range: 2 + ( ModProgress / 5) tiles
+Scarecrow           Maximum of: 12, 32 - (FarmingLevel * 3)
 Smite               Maximum of: 6, 12 - (CombatLevel / 2)
-Stump Sunder        Maximum of: 8, 32 - (ForagingLevel * 3)
+
 Torch (Summon)      Free
 Shrine (Totem)      Free
 Tree Trunk          1
@@ -307,6 +336,28 @@ Fly					Free
 Sweep Attack		﻿﻿12
 Fire Breath			5 (per tick)
 
+
+=========================================
+DRUID LEVELLING
+=========================================
+Many of the Weald and Mists effects scale with mod progress so they remain viable and balanced at all stages of the playthrough
+Druid Level = Quest Level / 5
+
+Weald
+-----------------------------------------
+Explode Weed		Radius: 3 + DruidLevel (max 8)
+Tree				Debris (Timber): 1 + RNG based on DruidLevel + professions
+Rockfall			Debris (Stone): 1 + RNG based on DruidLevel + professions
+Spawn Forage/Flower	Radius: 2 + Druid Level (max 6), which inherently increases chance to spanw
+Spawn Artifact		Chance: 200 - Quest Level
+Charge:Sap Energy	Drain: 2 + (DruidLevel * 3)
+
+Mists
+-----------------------------------------
+Scarecrow			﻿﻿Radius (Watering): 2 + DruidLevel (max 8)
+Lightning Rod		Uses per day = DruidLevel (min 2)
+Lava				Radius: DruidLevel (max 4)
+Smite				Target Limit per Burst: DruidLevel / 2
 
 -----------------------------------------
 MULTIPLAYER

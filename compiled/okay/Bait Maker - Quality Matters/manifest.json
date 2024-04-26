@@ -1,0 +1,16 @@
+{
+  "Name": "Bait Maker - Quality Matters",
+  "Description": "Applies input quality to the bait maker",
+  "Author": "Speshkitty",
+  "EntryDLL": "BaitMakerQuality.dll",
+  "MinimumApiVersion": "4.0.0",
+  "Version": "1.0.0",
+  "UpdateKeys": [ "Nexus:22768" ],
+  "UniqueID": "speshkitty.BaitMakerQuality",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Map
+        {
+            "Action": "Load",
+            "Target": "Maps/Custom_Ivy_OrnithologistsGuild",
+            "FromFile": "assets/map/OrnithologistsGuild.tmx"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Locations",
+            "Entries": {
+                "Custom_Ivy_OrnithologistsGuild": {
+                    "DisplayName": "{{i18n:map.OrnithologistsGuild.name}}",
+                    "Music": [
+                        {
+                            "ID": "Default",
+                            "Track": "harveys_theme_jazz"
+                        }
+                    ],
+                    "DefaultArrivalTile": {
+                        "X": 12,
+                        "Y": 25
+                    },
+                    "CreateOnLoad": {
+                        "MapPath": "Maps/Custom_Ivy_OrnithologistsGuild"
+                    }
+                }
+            }
+        },
+        // Strings
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromMaps",
+            "Entries": {
+                "Ivy_OrnithologistsGuild.1": "{{i18n:map.OrnithologistsGuild.strings.1}}",
+                "Ivy_OrnithologistsGuild.2": "{{i18n:map.OrnithologistsGuild.strings.2}}",
+                "Ivy_OrnithologistsGuild.3": "{{i18n:map.OrnithologistsGuild.strings.3}}",
+                "Ivy_OrnithologistsGuild.4": "{{i18n:map.OrnithologistsGuild.strings.4}}",
+                "Ivy_OrnithologistsGuild.5": "{{i18n:map.OrnithologistsGuild.strings.5}}",
+                "Ivy_OrnithologistsGuild.6": "{{i18n:map.OrnithologistsGuild.strings.6}}",
+                "Ivy_OrnithologistsGuild.7": "{{i18n:map.OrnithologistsGuild.strings.7}}",
+                "Ivy_OrnithologistsGuild.8": "{{i18n:map.OrnithologistsGuild.strings.8}}",
+                "Ivy_OrnithologistsGuild.9": "{{i18n:map.OrnithologistsGuild.strings.9}}",
+                "Ivy_OrnithologistsGuild.10": "{{i18n:map.OrnithologistsGuild.strings.10}}",
+                "Ivy_OrnithologistsGuild.11": "{{i18n:map.OrnithologistsGuild.strings.11}}",
+                "Ivy_OrnithologistsGuild.12": "{{i18n:map.OrnithologistsGuild.strings.12}}",
+                "Ivy_OrnithologistsGuild.13": "{{i18n:map.OrnithologistsGuild.strings.13}}",
+                "Ivy_OrnithologistsGuild.14": "{{i18n:map.OrnithologistsGuild.strings.14}}",
+                "Ivy_OrnithologistsGuild.15": "{{i18n:map.OrnithologistsGuild.strings.15}}",
+                "Ivy_OrnithologistsGuild.16": "{{i18n:map.OrnithologistsGuild.strings.16}}",
+                "Ivy_OrnithologistsGuild.17": "{{i18n:map.OrnithologistsGuild.strings.17}}",
+                "Ivy_OrnithologistsGuild.18": "{{i18n:map.OrnithologistsGuild.strings.18}}",
+                "Ivy_OrnithologistsGuild.19": "{{i18n:map.OrnithologistsGuild.strings.19}}",
+                "Ivy_OrnithologistsGuild.20": "{{i18n:map.OrnithologistsGuild.strings.20}}",
+                "Ivy_OrnithologistsGuild.21": "{{i18n:map.OrnithologistsGuild.strings.21}}",
+                "Ivy_OrnithologistsGuild.22": "{{i18n:map.OrnithologistsGuild.strings.22}}",
+                "Ivy_OrnithologistsGuild.23": "{{i18n:map.OrnithologistsGuild.strings.23}}",
+                "Ivy_OrnithologistsGuild.24": "{{i18n:map.OrnithologistsGuild.strings.24}}",
+                "Ivy_OrnithologistsGuild.25": "{{i18n:map.OrnithologistsGuild.strings.25}}",
+                "Ivy_OrnithologistsGuild.26": "{{i18n:map.OrnithologistsGuild.strings.26}}",
+                "Ivy_OrnithologistsGuild.27": "{{i18n:map.OrnithologistsGuild.strings.27}}"
+            }
+        },
+        // Events
+        {
+            "Action": "Load",
+            "Target": "Data/Events/Custom_Ivy_OrnithologistsGuild",
+            "FromFile": "assets/blank.json"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Custom_Ivy_OrnithologistsGuild",
+            "Entries": {
+                "OrnithologistsGuild_Kyle_SpellNSpeak/t 600 800/n doorUnlockOrinothlogistsGuild_Kyle": "
+                    continue/
+                    15 14/
+                    OrinothlogistsGuild_Kyle 15 14 1/
+                    addObject 16 14 892 2/                  -- Add working Spell'n'Speak/
+                    pause 2500/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 800/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 200/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 400/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    speak OrinothlogistsGuild_Kyle \"{{i18n:event.OrnithologistsGuild_Kyle_SpellNSpeak.1}}\"/
+                    pause 800/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 800/
+                    emote OrinothlogistsGuild_Kyle 56/
+                    pause 800/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 400/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 200/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 200/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 800/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    speak OrinothlogistsGuild_Kyle \"{{i18n:event.OrnithologistsGuild_Kyle_SpellNSpeak.2}}\"/
+                    pause 800/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 400/
+                    playSound mouseClick/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 400/
+                    addObject 16 14 893 2/
+                    stopMusic/
+                    playSound Cowboy_monsterDie/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 400/
+                    emote OrinothlogistsGuild_Kyle 8/
+                    pause 2500/
+                    playSound Cowboy_monsterDie/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 400/
+                    speak OrinothlogistsGuild_Kyle \"{{i18n:event.OrnithologistsGuild_Kyle_SpellNSpeak.3}}\"/
+                    addObject 16 14 894 3/
+                    pause 800/
+                    emote OrinothlogistsGuild_Kyle 40/
+                    pause 400/
+                    playSound thudStep/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 800/
+                    playSound thudStep/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 200/
+                    playSound thudStep/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 200/
+                    playSound thudStep/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 800/
+                    playSound thudStep/
+                    shake OrinothlogistsGuild_Kyle 75/
+                    pause 1500/
+                    speak OrinothlogistsGuild_Kyle \"{{i18n:npc.Kyle.dialogue.giftTaste.neutral}}$11\"/
+                    pause 2500/
+                    addObject 16 15 787 2/
+                    playSound throwDownITem/
+                    addQuest OrnithologistsGuild_Kyle_PowerUp/
+                    pause 2500/
+                    faceDirection OrinothlogistsGuild_Kyle 3 true/
+                    emote OrinothlogistsGuild_Kyle 28/
+                    pause 2500/
+                    end"
+            }
+        },
+        // Event image edits
+        {
+            "Action": "EditImage",
+            "Target": "Maps/springobjects",
+            "FromFile": "assets/map/SpellNSpeak.png",
+            "ToArea": {
+                "X": 64,
+                "Y": 592,
+                "Width": 48,
+                "Height": 16
+            },
+            "When": {
+                "LocationName": "Custom_Ivy_OrnithologistsGuild"
+            },
+            "Update": "OnLocationChange"
+        },
+        // PowerUp map edits
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_Ivy_OrnithologistsGuild",
+            "MapTiles": [
+                {
+                    "Position": {
+                        "X": 16,
+                        "Y": 14
+                    },
+                    "Layer": "Buildings",
+                    "Remove": true
+                },
+                {
+                    "Position": {
+                        "X": 13,
+                        "Y": 22
+                    },
+                    "Layer": "Front",
+                    "SetTilesheet": "Z_SpellNSpeak",
+                    "SetIndex": 0
+                },
+                {
+                    "Position": {
+                        "X": 13,
+                        "Y": 22
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "Message Ivy_OrnithologistsGuild.26"
+                    }
+                },
+                {
+                    "Position": {
+                        "X": 13,
+                        "Y": 23
+                    },
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "Message Ivy_OrnithologistsGuild.26"
+                    }
+                }
+            ],
+            "When": {
+                "HasFlag": "Ivy_OrinothlogistsGuild_PowerUp"
+            },
+            "Update": "OnLocationChange"
+        }
+    ]
+}

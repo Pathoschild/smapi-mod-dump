@@ -6,9 +6,9 @@ mods:
    Chest Feature Set
 
 latest commit:
-   commit a1fab2af4118686f18f7a3e75aa7c13da80b20e6
+   commit f5d35329183f57a06a6b6c05419f350ebb091f5f
    Author: zack20136 <zacklu90@gmail.com>
-   Date:   Sun Mar 31 13:15:51 2024 +0800
+   Date:   Tue Apr 16 23:10:17 2024 +0800
    
-       fix bugs with BigChest
+       fix stash bug
    

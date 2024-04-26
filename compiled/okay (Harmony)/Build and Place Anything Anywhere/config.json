@@ -1,17 +1,22 @@
 {
-  "Keys": {
-    "ReloadConfig": "None"
-  },
-  "EnableFurniture": true,
-  "EnableRugTweaks": true,
+  "EnablePlacing": true,
   "EnableWallFurnitureIndoors": false,
+  "EnableRugRemovalBypass": false,
   "EnableFreePlace": false,
   "EnableBuilding": true,
+  "EnableBuildingIndoors": false,
   "BuildMenu": "OemComma",
   "WizardBuildMenu": "OemPeriod",
-  "EnableFreeBuild": false,
-  "TableTweakBind": "LeftShift",
-  "EnableTableTweak": true,
-  "AllowMiniObelisksAnywhere": true,
-  "EnableJukeboxFunctionality": true
+  "EnableAnimalRelocate": true,
+  "EnableInstantBuild": false,
+  "EnableBuildAnywhere": false,
+  "EnablePlanting": true,
+  "EnableDiggingAll": false,
+  "EnableFruitTreeTweaks": false,
+  "EnableWildTreeTweaks": false,
+  "BypassMagicInk": false,
+  "EnableCaskFunctionality": false,
+  "EnableJukeboxFunctionality": true,
+  "EnableCabinsAnywhere": false,
+  "MultipleMiniObelisks": false
 }

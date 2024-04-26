@@ -52,45 +52,57 @@ public class ModEntry : Mod
             foreach (var variable in GetCharacters())
             {
                 var tag = $"{variable.displayName}";
-                if (variable is Monster monster)
+                switch (variable)
                 {
-                    if (monster.MaxHealth < monster.Health)
+                    case Monster monster:
                     {
-                        monster.MaxHealth = monster.Health;
-                    }
+                        if (monster.MaxHealth < monster.Health)
+                        {
+                            monster.MaxHealth = monster.Health;
+                        }
 
-                    tag +=
-                        $" {Helper.Translation.Get("nameTags.hp")}:{monster.Health}/{monster.MaxHealth} {Helper.Translation.Get("nameTags.damage")}:{monster.damageToFarmer}";
-                }
-                else if (variable is Pet pet)
-                {
-                    tag += $" {Helper.Translation.Get("nameTags.friendship")}:{pet.friendshipTowardFarmer / 200}";
-                }
-                else if (variable is Horse)
-                {
-                }
-                else if (variable is Child child)
-                {
-                    tag += $" {Helper.Translation.Get("nameTags.daysOld")}:{child.daysOld}";
-                }
-                else if (variable is Junimo junimo)
-                {
-                    tag += $" {Helper.Translation.Get("nameTags.friendly")}:{junimo.friendly}";
-                }
-                else
-                {
-                    if (Game1.player.friendshipData.TryGetValue(variable.name, out var friendship))
-                    {
                         tag +=
-                            $" {Helper.Translation.Get("nameTags.friendship")}:{(friendship?.Points ?? 0) / NPC.friendshipPointsPerHeartLevel}";
+                            $" {Helper.Translation.Get("nameTags.hp")}:{monster.Health}/{monster.MaxHealth} {Helper.Translation.Get("nameTags.damage")}:{monster.DamageToFarmer}";
+                        break;
+                    }
+                    case Pet pet:
+                        tag +=
+                            $" {Helper.Translation.Get("nameTags.friendship")}:{pet.friendshipTowardFarmer.Get() / 200}";
+                        break;
+                    case Horse:
+                        break;
+                    case Child child:
+                        tag += $" {Helper.Translation.Get("nameTags.daysOld")}:{child.daysOld}";
+                        break;
+                    case Junimo junimo:
+                        tag += $" {Helper.Translation.Get("nameTags.friendly")}:{junimo.friendly}";
+                        break;
+                    default:
+                    {
+                        if (Game1.player.friendshipData.TryGetValue(variable.Name, out var friendship))
+                        {
+                            tag +=
+                                $" {Helper.Translation.Get("nameTags.friendship")}:{(friendship?.Points ?? 0) / NPC.friendshipPointsPerHeartLevel}";
+                        }
+
+                        break;
                     }
                 }
 
-                var screenLoc = variable.Position - new Vector2(Game1.viewport.X, Game1.viewport.Y) -
-                                new Vector2(variable.Sprite.SpriteWidth, variable.Sprite.SpriteHeight);
-                Utility.drawTextWithShadow(e.SpriteBatch, tag, Game1.dialogueFont,
-                    new Vector2((int)screenLoc.X, (int)screenLoc.Y), ColorUtils.Instance.Get(Config.TextColor),
-                    1f, -1f, -1, -1, 0.0f);
+                var position = variable.Position - new Vector2(Game1.viewport.X, Game1.viewport.Y) -
+                               new Vector2(variable.Sprite.SpriteWidth, variable.Sprite.SpriteHeight);
+                var v = Game1.dialogueFont.MeasureString(tag);
+                var x = (int)position.X;
+                var y = (int)position.Y - variable.Sprite.SpriteHeight * 2;
+                e.SpriteBatch.Draw(Game1.staminaRect, new Rectangle(x, y, (int)v.X, (int)v.Y), Config.BackgroundColor);
+                e.SpriteBatch.DrawString(Game1.dialogueFont, tag, new Vector2(x, y), Config.Color);
+                if (Config.TargetLine)
+                {
+                    var playerPosition = Game1.player.Position - new Vector2(Game1.viewport.X, Game1.viewport.Y);
+                    var targetPosition = variable.Position - new Vector2(Game1.viewport.X, Game1.viewport.Y);
+                    Utility.drawLineWithScreenCoordinates((int)playerPosition.X, (int)playerPosition.Y, (int)targetPosition.X,
+                        (int)targetPosition.Y, e.SpriteBatch, Config.Color, 0.1f);
+                }
             }
         }
         catch (Exception exception)

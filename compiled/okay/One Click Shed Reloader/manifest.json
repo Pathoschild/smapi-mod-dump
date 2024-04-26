@@ -1,7 +1,7 @@
 ﻿{
    "Name": "One Click Shed Reloader",
    "Author": "Bitwise Jon",
-   "Version": "4.0.0",
+   "Version": "4.0.1",
    "Description": "Harvests/reloads all containers in shed, barn, coop, cellar, cave, or greenhouse with one click.",
    "UniqueID": "BitwiseJonMods.OneClickShedReloader",
    "EntryDll": "BitwiseJonMods.OneClickShedReloader.dll",

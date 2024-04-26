@@ -11,12 +11,22 @@
 {
   "Name": "Schedule Viewer",
   "Author": "BinaryLip",
-  "Version": "2.1.0",
+  "Version": "2.3.0",
   "Description": "Shows NPCs' schedule for the current day.",
   "UniqueID": "BinaryLip.ScheduleViewer",
   "EntryDll": "ScheduleViewer.dll",
-  "MinimumApiVersion": "4.0.0",
+  "MinimumApiVersion": "4.0.4",
   "UpdateKeys": [
     "Nexus:19305"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "JoXW.MobilePhone",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "furyx639.ToolbarIcons",
+      "IsRequired": false
+    }
   ]
 }

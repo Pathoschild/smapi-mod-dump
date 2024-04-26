@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Pilzbaum",
   "custom-tree.mahogany": "Mahagonibäume",
   "custom-tree.palm": "Palme",
+  "custom-tree.green-rain-wild": "Wilder Grüner Regenbaum",
+  "custom-tree.green-rain-lush": "Üppiger Grüner Regenbaum",
+  "custom-tree.fiddlehead-fern": "Geigenkopffarnbaum",
+  "custom-tree.mystic": "Mystikerin Baum",
 
   // growth info translation
   "growth-info.fully-grown": "ausgewachsen",

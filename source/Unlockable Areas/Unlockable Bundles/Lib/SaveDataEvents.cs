@@ -16,23 +16,17 @@ using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib
 {
     public class SaveDataEvents
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         const string SaveKey = "main";
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Helper.Events.GameLoop.DayEnding += DayEnding;
         }
 
@@ -44,7 +38,7 @@ namespace Unlockable_Bundles.Lib
 
         //Solid Foundations has [EventPriority(EventPriority.High + 1)], but we want to run before it
         [EventPriority(EventPriority.High + 2)]
-        private static void DayEnding(object sender, DayEndingEventArgs e)
+        public static void DayEnding(object sender, DayEndingEventArgs e)
         {
             if (!Context.IsMainPlayer)
                 return;
@@ -65,8 +59,11 @@ namespace Unlockable_Bundles.Lib
 
 
             foreach (var loc in ShopPlacement.ModifiedLocations)
-                foreach (var obj in loc.Objects.Values.Where(el => el is ShopObject))
+                foreach (ShopObject obj in loc.Objects.Values.Where(el => el is ShopObject)) {
+                    Monitor.Log($"Removing Bundle for '{obj.Unlockable.ID}' at '{loc.NameOrUniqueName}':'{obj.TileLocation}'", DebugLogLevel);
                     loc.removeObject(obj.TileLocation, false);
+                }
+                    
 
         }
     }

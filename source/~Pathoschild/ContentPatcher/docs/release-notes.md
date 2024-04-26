@@ -17,8 +17,26 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 
 -->
-## Upcoming release
-* Added support for migrating Json Assets items to Content Patcher using the [`MigrateIds` trigger action](author-guide/trigger-actions.md#migrateids) (even if the Json Assets content pack which added them is no longer installed).
+## 2.0.6
+Released 15 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed various issues caused by pre-1.6 content packs replacing data assets which changed format in 1.6.
+* Fixed runtime migrations for pre-1.6 content packs letting them remove 1.6 content.
+
+## 2.0.5
+Released 07 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed furniture from pre-Stardew-Valley-1.6 content packs shown in-game as "Unnamed Item".
+
+## 2.0.4
+Released 05 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed `MigrateIds` setting incorrect sprite for former Json Assets items when Json Assets is still installed.
+
+## 2.0.3
+Released 04 April 2024 for SMAPI 4.0.0 or later.
+
+* Content packs can now migrate Json Assets items to Content Patcher using the [`MigrateIds` trigger action](author-guide/trigger-actions.md#migrateids). This works even if the Json Assets content pack is no longer installed.
 
 ## 2.0.2
 Released 26 March 2024 for SMAPI 4.0.0 or later.

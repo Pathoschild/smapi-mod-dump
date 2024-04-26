@@ -26,19 +26,19 @@
 		<None Update="Assets\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="[CP] Market License\**\*">
+		<None Update="[CP] MarketTown\[CP] Market License\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="[CP] CloneNPC_Vanilla\**\*">
+		<None Update="[CP] MarketTown\[CP] CloneNPC_Vanilla\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="[CP] CloneNPC_SVE\**\*">
+		<None Update="[CP] MarketTown\[CP] CloneNPC_SVE\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="[CP] CloneNPC_RSV\**\*">
+		<None Update="[CP] MarketTown\[CP] CloneNPC_RSV\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="[MFM] MarketTown\**\*">
+		<None Update="[CP] MarketTown\[CP] Market Map\**\*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="[] MarketTown\**\*">

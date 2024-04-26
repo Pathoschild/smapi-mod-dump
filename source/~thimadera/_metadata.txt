@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/thimadera/StardewMods
+   Git: https://github.com/thimadera/StardewMods.git
+
+mods:
+   Real Clock
+   Stack Everything Redux
+
+latest commit:
+   commit 653ebbb6425ea17f830ce4c3b28568bf150fe0dd
+   Author: Thiago Evangelista Madeira <48682091+thimadera@users.noreply.github.com>
+   Date:   Sat Apr 20 10:23:33 2024 -0300
+   
+       mods updates
+   

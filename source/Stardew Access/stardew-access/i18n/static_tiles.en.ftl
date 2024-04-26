@@ -12,6 +12,7 @@ static_tile-common-dark_pool = Dark Pool
 static_tile-common-pond = Pond
 static_tile-common-lake = Lake
 static_tile-common-river = River
+static_tile-common-waterfall = Waterfall
 
 # NPCs
 
@@ -92,11 +93,6 @@ static_tile-archaeology_house-childrens_book = Children's Book
 
 # Bathouse
 
-## Men/Women locker room
-
-static_tile-bathhouse_locker-entry_room_door = Entry Room
-static_tile-bathhouse_locker-pool_entrance = Pool Entrance
-
 ## Pool
 
 static_tile-bathhouse_pool-womens_locker_room_door = Women's Locker Room
@@ -171,6 +167,12 @@ static_tile-farm-lumber_pile = Lumber Pile
 
 static_tile-farmhouse-cellar_door = cellar
 
+# FishShop
+
+static_tile-fishshop-bobber_machine = Bobber Machine
+static_tile-fishshop-miniature_frigate = Miniature Frigate
+static_tile-fishshop-tackle_box = Tackle Box
+
 # Forest
 
 static_tile-forest-bridge_1 = Bridge 1
@@ -227,7 +229,8 @@ static_tile-island_field_office-island_survey = Island Survey
 
 static_tile-island_north-dig_site_parrot_express = Dig Site Parrot Express
 static_tile-island_north-volcano_parrot_express = Volcano Parrot Express
-static_tile-island_north-volcano_entrance = Volcano Entrance
+static_tile-island_north-volcano_entrance_east = Volcano Entrance (East)
+static_tile-island_north-volcano_entrance_west = Volcano Entrance (West)
 
 ## Island Shrine
 
@@ -546,7 +549,10 @@ static_tile-town-1_willow_lane_trash = 1 Willow Lane Trash
 static_tile-town-manor_trash = Manor Trash
 static_tile-town-2_willow_lane_trash = 2 Willow Lane Trash
 static_tile-town-museum_trash = Museum Trash
+static_tile-town-wooden_bridge = Wooden Bridge
 static_tile-town-joja_bridge = Joja Bridge
+static_tile-town-joja_billboard = Joja Billboard with text "Joja Cola: Fuel Your Life"
+static_tile-town-museum_bridge = Museum Bridge
 static_tile-town-beach_bridge = Beach Bridge
 static_tile-town-smelter = Smelter
 static_tile-town-fountain = Fountain

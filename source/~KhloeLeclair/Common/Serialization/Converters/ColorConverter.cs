@@ -21,22 +21,32 @@ namespace Leclair.Stardew.Common.Serialization.Converters;
 
 public class ColorConverter : JsonConverter {
 	public override bool CanConvert(Type objectType) {
-		// This will get easier in 1.6. For now we only care about SObjects.
-		return typeof(Color?).IsAssignableFrom(objectType);
+		return
+			typeof(Color?).IsAssignableFrom(objectType) ||
+			typeof(Color).IsAssignableFrom(objectType);
 	}
 
 	public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
 		string path = reader.Path;
+		Color? result;
 		switch (reader.TokenType) {
 			case JsonToken.Null:
-				return null;
+				result = null;
+				break;
 			case JsonToken.String:
-				return ReadString(JToken.Load(reader).Value<string>());
+				result = ReadString(JToken.Load(reader).Value<string>());
+				break;
 			case JsonToken.StartObject:
-				return ReadObject(JObject.Load(reader), path);
+				result = ReadObject(JObject.Load(reader), path);
+				break;
 			default:
 				throw new JsonReaderException($"Can't parse Color? from {reader.TokenType} node (path: {reader.Path}).");
 		}
+
+		if (typeof(Color?).IsAssignableFrom(objectType))
+			return result;
+
+		return result ?? Color.Transparent;
 	}
 
 	public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {

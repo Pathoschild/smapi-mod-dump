@@ -1,7 +1,7 @@
 {
   "Name": "Agenda",
   "Author": "OFTS_CQM",
-  "Version": "1.2.0-alpha.1",
+  "Version": "2.0.0-beta.2",
   "Description": "An Agenda allowed you to record your schedule",
   "UniqueID": "ofts.agenda",
   "EntryDll": "agenda.dll",

@@ -35,6 +35,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /// <summary>Which gift taste levels to show in NPC and item lookups.</summary>
         public ModGiftTasteConfig ShowGiftTastes { get; set; } = new();
 
+        /// <summary>The minimum field values needed before they're auto-collapsed.</summary>
+        public ModCollapseLargeFieldsConfig CollapseLargeFields { get; set; } = new();
+
         /// <summary>Whether to show gift tastes that the player doesn't own somewhere in the world.</summary>
         public bool ShowUnownedGifts { get; set; } = true;
 
@@ -73,6 +76,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         {
             this.Controls ??= new ModConfigKeys();
             this.ShowGiftTastes ??= new ModGiftTasteConfig();
+            this.CollapseLargeFields ??= new ModCollapseLargeFieldsConfig();
         }
     }
 }

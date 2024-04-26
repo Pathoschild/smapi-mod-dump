@@ -48,7 +48,7 @@ namespace StardewDruid.Cast.Weald
 
             ModUtility.AnimateSparkles(targetLocation, targetVector, Color.White);
 
-            Game1.playSound("yoba");
+            Game1.currentLocation.playSound("yoba");
 
             castFire = true;
 

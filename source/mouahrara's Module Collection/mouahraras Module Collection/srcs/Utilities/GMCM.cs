@@ -22,7 +22,6 @@ namespace mouahrarasModuleCollection.Utilities
 		public bool	ShopsBetterAnimalPurchase = true;
 		public SButton ShopsBetterAnimalPurchasePreviousKey = SButton.LeftShoulder;
 		public SButton ShopsBetterAnimalPurchaseNextKey = SButton.RightShoulder;
-		public bool	ShopsSimultaneousServices = true;
 		public bool	ShopsGeodesAutoProcess = true;
 		public int ShopsGeodesAutoProcessSpeedMultiplier = 2;
 		public bool MachinesSafeReplacement = true;
@@ -273,12 +272,6 @@ namespace mouahrarasModuleCollection.Utilities
 				text: () => "> " + ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.Title"),
 				tooltip: () => ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.Tooltip")
 			);
-			gmcm.AddPageLink(
-				mod: ModEntry.ModManifest,
-				pageId: "Shops - Simultaneous services",
-				text: () => "> " + ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Title"),
-				tooltip: () => ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Tooltip")
-			);
 			// Shops - Better animal purchase
 			gmcm.AddPage(
 				mod: ModEntry.ModManifest,
@@ -346,28 +339,6 @@ namespace mouahrarasModuleCollection.Utilities
 				min: 1,
 				max: 20,
 				interval: 1
-			);
-			// Shops - Simultaneous services
-			gmcm.AddPage(
-				mod: ModEntry.ModManifest,
-				pageId: "Shops - Simultaneous services",
-				pageTitle: () => ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Title")
-			);
-			gmcm.AddPageLink(
-				mod: ModEntry.ModManifest,
-				pageId: "Shops",
-				text: () => "@ " + ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.BackTo")
-			);
-			gmcm.AddParagraph(
-				mod: ModEntry.ModManifest,
-				text: () => ModEntry.Helper.Translation.Get("GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Description")
-			);
-			gmcm.AddBoolOption(
-				mod: ModEntry.ModManifest,
-				name: () => ModEntry.Helper.Translation.Get("GMCM.Modules.Enabled.Title"),
-				tooltip: () => ModEntry.Helper.Translation.Get("GMCM.Modules.Enabled.Tooltip"),
-				getValue: () => ModEntry.Config.ShopsSimultaneousServices,
-				setValue: value => ModEntry.Config.ShopsSimultaneousServices = value
 			);
 
 			// Machines

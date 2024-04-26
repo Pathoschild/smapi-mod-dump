@@ -41,8 +41,16 @@ public class ColorVariableSet : BaseVariableSet<Color> {
 
 	public override bool TryBackupVariable(string key, [NotNullWhen(true)] out Color result) {
 		bool tryBase = Manager != null && Manager != ModEntry.Instance.GameThemeManager;
+		bool premultiply = !string.IsNullOrEmpty(key) && key.StartsWith("premultiply:");
+		if (premultiply)
+			key = key[12..];
+
 		if (tryBase && ModEntry.Instance.GameTheme?.GetColorVariable(key) is Color cval) {
-			result = cval;
+			if (premultiply)
+				result = CommonHelper.PremultiplyAlpha(cval);
+			else
+				result = cval;
+
 			return true;
 		}
 

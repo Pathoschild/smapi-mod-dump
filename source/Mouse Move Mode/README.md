@@ -36,9 +36,9 @@ Thank you for your the kind words
 ### Windows
 
 Preparing environment
-- Install NET 5.0 (Need manual download from https://dotnet.microsoft.com/en-us/download/dotnet/5.0 , as this no logner support version)
-- Install Visual Studio 2019 (or VS2019) as your IDE as this is the only Version that support NET 5.0 (It seem that VS2022 can still build from this source, but you can't create a new NET5.0 solution)
-- Get source code (it can be done using `git clone` or you can just download it), still you don't know about `git` then it quite hard to make contributing.
+- Install NET 6.0
+- Install Visual Studio 2019 (or VS2022) as your IDE
+- Get source code (it can be done using `git clone` or you can just download it)
 - Open the project `MouseMoveMode.sln` file from VS2019
 
 Extra: install Nuget package (the project file already come with it, this should be automated if you using Visual Studio IDE)
@@ -60,9 +60,9 @@ If you are using VS2019, the Debug and Build step is pretty straight forward. I 
 It quite impossible even for me to get the debug working, so we can skip it and try relying on `log` that provided by SMAPI. If you know how to then let me know.
 
 Preparing environment
-- Download Net 5.0 CLI, you can use scripted install and get the version name from https://dotnet.microsoft.com/en-us/download/dotnet/5.0 , here is a example
+- Download Net 6.0 CLI, you can use scripted install and get the version name from https://dotnet.microsoft.com/en-us/download/dotnet/6.0 , here is a example
   ```
-  ./dotnet-install.sh --version 5.0.408 
+  ./dotnet-install.sh --version 6.0.420 
   ```
 - Update your PATH to have the `dotnet` executable avaiable
 - (Optional) Install Nuget pakage manually using `dotnet` CLI

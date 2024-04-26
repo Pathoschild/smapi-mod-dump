@@ -21,6 +21,9 @@ using AchtuurCore.Extensions;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
+using StardewValley.GameData.FruitTrees;
+using HoverLabels.Drawing;
+using System.Security.Cryptography;
 
 namespace HoverLabels.Labels.Buildings;
 internal class GreenhouseLabel : BuildingLabel
@@ -55,7 +58,7 @@ internal class GreenhouseLabel : BuildingLabel
         {
             GenerateReadyCropsLabel(cropInfo);
             GenerateGrowingCropsLabel(cropInfo);
-            Description.Add(I18n.LabelGreenhouseShowtree(ModEntry.GetAlternativeSortButtonName()));
+            AddBorder(I18n.LabelGreenhouseShowtree(ModEntry.GetAlternativeSortButtonName()));
         }
         else
         {
@@ -78,41 +81,48 @@ internal class GreenhouseLabel : BuildingLabel
             labelListSize = fullyGrownFruitTrees.Count();
 
         // Sort tree by number of fruit -> name
-        fullyGrownFruitTrees = fullyGrownFruitTrees
-            .OrderByDescending(tree => tree.fruitsOnTree.Value)
-            .ThenBy(tree => ModEntry.GetObjectWithId(tree.indexOfFruit.Value).DisplayName);
 
-        Description.Add("Fruit Trees:");
+        fullyGrownFruitTrees = fullyGrownFruitTrees.
+            OrderByDescending(tree => tree.GetData().Fruit.Count())
+            .ThenBy(tree => tree.GetData().DisplayName);
+
+        AddBorder("Fruit Trees:");
         foreach (FruitTree fruitTree in fullyGrownFruitTrees.Take(labelListSize))
         {
-            SObject fruitObj = ModEntry.GetObjectWithId(fruitTree.indexOfFruit.Value);
-            Description.Add(I18n.LabelGreenhouseFruittrees(fruitObj.DisplayName, fruitTree.fruitsOnTree.Value));
+            FruitTreeData fruitTreeData = fruitTree.GetData();
+            string itemName = ModEntry.GetObjectWithId(fruitTreeData.Fruit.First().ItemId).DisplayName;
+            AppendLabelToBorder(I18n.LabelGreenhouseFruittrees(itemName, fruitTree.fruit.Count));
         }
 
         // show more text
         if (fullyGrownFruitTrees.Count() > labelListSize && !ModEntry.IsShowDetailButtonPressed())
-            Description.Add(I18n.LabelPressShowmore(ModEntry.GetShowDetailButtonName(), fullyGrownFruitTrees.Count() - labelListSize));
+            AddBorder(I18n.LabelPressShowmore(ModEntry.GetShowDetailButtonName(), fullyGrownFruitTrees.Count() - labelListSize));
     }
 
     private void GenerateReadyCropsLabel(List<CropInfo> greenhouseCrops)
     {
         int labelListSize = ModEntry.Instance.Config.LabelListMaxSize;
         // Generate label for crops that are ready
-        IEnumerable<CropInfo> readyCrops = greenhouseCrops.Where(c => c.fullyGrown)
-            .OrderBy(c => c.name);
+        IEnumerable<CropInfo> readyCrops = greenhouseCrops.Where(c => c.fullyGrown);
 
-        if (readyCrops.Count() > 0)
-        {
-            Dictionary<CropInfo, int> readyCropAmount = GetCropAmountDictionary(readyCrops);
-            Description.Add(I18n.LabelGreenhouseHarvestableCrops());
-            foreach ((CropInfo crop, int amount) in readyCropAmount.Select(x => (x.Key, x.Value)).Take(labelListSize))
-            {
-                Description.Add($"> {crop.name}: {amount}");
-            }
-
-            if (readyCropAmount.Count() > labelListSize)
-                Description.Add(I18n.LabelAndmore(readyCropAmount.Count() - labelListSize));
+        // key is qid, value is amount
+        Dictionary<string, int> UniqueCrops = new();
+        foreach (CropInfo crop in readyCrops)
+        {            
+            UniqueCrops[crop.qualified_id] = UniqueCrops.GetValueOrDefault(crop.qualified_id) + 1;
         }
+
+        if (UniqueCrops.Count() <= 0)
+            return;
+
+        var orderedCrops = UniqueCrops.Select(x => ItemRegistry.Create(x.Key, amount: x.Value))
+            .OrderBy(item => item.Category)
+            .ThenBy(Item => Item.Name)
+            .Take(labelListSize);
+        
+        AddBorder(I18n.LabelGreenhouseHarvestableCrops());
+        AppendLabelToBorder(new InventoryLabelText(orderedCrops));
+
     }
 
     private void GenerateGrowingCropsLabel(List<CropInfo> greenhouseCrops)
@@ -126,16 +136,18 @@ internal class GreenhouseLabel : BuildingLabel
         {
             int labelListSize = ModEntry.Instance.Config.LabelListMaxSize;
             Dictionary<CropInfo, int> growingCropAmount = GetCropAmountDictionary(growingCrops);
-            Description.Add(I18n.LabelGreenhouseCropsReadyIn());
+            AddBorder(I18n.LabelGreenhouseCropsReadyIn());
             foreach ((CropInfo crop, int amount) in growingCropAmount.Take(labelListSize))
             {
                 string cropReadyDate = ModEntry.GetDateAfterDays(crop.days_to_grow);
-                Description.Add(I18n.LabelGreenhouseCropGrowTime(amount, crop.name, crop.days_to_grow, cropReadyDate));
+                string cropGrowText = I18n.LabelGreenhouseCropGrowTime(crop.days_to_grow, cropReadyDate);
+                Item crop_item = ItemRegistry.Create(crop.qualified_id, amount: amount);
+                AppendLabelToBorder(new ItemLabelText(crop_item, cropGrowText));
             }
 
             // show 'and more...' text
             if (growingCropAmount.Count() > labelListSize)
-                Description.Add(I18n.LabelAndmore(growingCropAmount.Count() - labelListSize));
+                AppendLabelToBorder(I18n.LabelAndmore(growingCropAmount.Count() - labelListSize));
 
         }
     }
@@ -163,9 +175,8 @@ internal class GreenhouseLabel : BuildingLabel
         // Crops on hoeDirt
         foreach (HoeDirt hoeDirt in GetGreenhouseTerrainFeature<HoeDirt>())
         {
-
-            // Should have crop in greenhouse
-            if (!hoeDirt.isGreenhouseDirt.Value || hoeDirt.crop is null || hoeDirt.crop.dead.Value)
+            // if no crop -> ignore
+            if (hoeDirt.crop is null || hoeDirt.crop.dead.Value)
                 continue;
 
             yield return CropInfo.from_crop(hoeDirt.crop);
@@ -195,7 +206,7 @@ internal class GreenhouseLabel : BuildingLabel
         return Game1.locations.Where(loc => loc.IsGreenhouse).First().Objects.Values;
     }
 
-    private record struct CropInfo(string name, int days_to_grow, bool fullyGrown)
+    private record struct CropInfo(string qualified_id, string name, int days_to_grow, bool fullyGrown)
     {
         /// <summary>
         /// Returns a <see cref="CropInfo"/> from a <see cref="Crop"/>.
@@ -203,6 +214,7 @@ internal class GreenhouseLabel : BuildingLabel
         /// <param name="crop"></param>
         /// <returns></returns>
         public static CropInfo from_crop(Crop crop) => new CropInfo(
+            qualified_id: CropLabel.GetCropAsObject(crop).QualifiedItemId,
             name: CropLabel.GetCropAsObject(crop).DisplayName,
             days_to_grow: CropLabel.GetDaysUntilFullyGrown(crop),
             fullyGrown: CropLabel.IsCropFullyGrown(crop)

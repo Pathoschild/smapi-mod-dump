@@ -25,10 +25,12 @@ namespace SprinklerActivation
 {
     public class SprinklerActivation : Mod
     {
-        private ModConfig Config;
-        private object BetterSprinklersApi, PrismaticToolsApi, SimpleSprinklerApi;
+        private ModConfig? Config = null;
+        private object? BetterSprinklersApi = null;
+        private object? PrismaticToolsApi = null;
+        private object? SimpleSprinklerApi = null;
         private bool LineSprinklersIsLoaded;
-        private Multiplayer mp;
+        private Multiplayer? mp = null;
 
         enum animSize
         {
@@ -93,14 +95,12 @@ namespace SprinklerActivation
             if (e.Button.IsActionButton())
             {
                 var tile = e.Cursor.GrabTile;
-                if (tile == null) return;
-
                 var obj = Game1.currentLocation.getObjectAtTile((int)tile.X, (int)tile.Y);
                 if (obj == null) return;
 
                 var currentItem = Game1.player.CurrentItem;
 
-                if(currentItem != null && currentItem.parentSheetIndex == 915 && (obj.heldObject.Value == null || obj.heldObject.Value.parentSheetIndex != 915)) //currently holding pressurized nozzle and sprinkler has no nozzle
+                if(currentItem != null && currentItem.ParentSheetIndex == 915 && (obj.heldObject.Value == null || obj.heldObject.Value.ParentSheetIndex != 915)) //currently holding pressurized nozzle and sprinkler has no nozzle
                 {
                     return;
                 }
@@ -284,11 +284,11 @@ namespace SprinklerActivation
 
             loc.terrainFeatures.TryGetValue(tile, out terrainFeature);
             if(terrainFeature != null)
-                terrainFeature.performToolAction(can, 0, tile, (GameLocation)null);
+                terrainFeature.performToolAction(can, 0, tile);
 
             loc.Objects.TryGetValue(tile, out obj);
             if(obj != null)
-                obj.performToolAction(can, (GameLocation)null);
+                obj.performToolAction(can);
 
             //Watercan animation (only for sline sprinklers, because default animation don't make any sense here
             if (mp != null && useWatercanAnimation)
@@ -309,8 +309,8 @@ namespace SprinklerActivation
                 return;
 
             int animDelay = Game1.random.Next(500);
-            float animId = (float)((double)sprinklerTile.X * 4000.0 + (double)sprinklerTile.Y);
-            Vector2 pos = sprinklerTile * (float)Game1.tileSize;
+            float animId = (float)(sprinklerTile.X * 4000.0 + sprinklerTile.Y);
+            Vector2 pos = sprinklerTile * Game1.tileSize;
             int numberOfLoops = 50;
 
             switch (size)
@@ -321,25 +321,25 @@ namespace SprinklerActivation
                         new TemporaryAnimatedSprite(29, pos + new Vector2(0.0f, (float)(-Game1.tileSize * 3 / 4)), Color.White * 0.5f, 4, false, 60f, numberOfLoops, -1, -1f, -1, 0)
                         {
                             delayBeforeAnimationStart = animDelay,
-                            id = animId
+                            id = (int)animId
                         },
                         new TemporaryAnimatedSprite(29, pos + new Vector2((float)(Game1.tileSize * 3 / 4), 0.0f), Color.White * 0.5f, 4, false, 60f, numberOfLoops, -1, -1f, -1, 0)
                         {
                             rotation = 1.570796f,
                             delayBeforeAnimationStart = animDelay,
-                            id = animId
+                            id = (int)animId
                         },
                         new TemporaryAnimatedSprite(29, pos + new Vector2(0.0f, (float)(Game1.tileSize * 3 / 4)), Color.White * 0.5f, 4, false, 60f, numberOfLoops, -1, -1f, -1, 0)
                         {
                             rotation = 3.141593f,
                             delayBeforeAnimationStart = animDelay,
-                            id = animId
+                            id = (int)animId
                         },
                         new TemporaryAnimatedSprite(29, pos + new Vector2((float)(-Game1.tileSize * 3 / 4), 0.0f), Color.White * 0.5f, 4, false, 60f, numberOfLoops, -1, -1f, -1, 0)
                         {
                             rotation = 4.712389f,
                             delayBeforeAnimationStart = animDelay,
-                            id = animId
+                            id = (int)animId
                         }
                     });
                     break;
@@ -351,7 +351,7 @@ namespace SprinklerActivation
                         {
                             color = Color.White * 0.4f,
                             delayBeforeAnimationStart = animDelay,
-                            id = animId
+                            id = (int)animId
                         }
                     });
                     break;
@@ -363,7 +363,7 @@ namespace SprinklerActivation
                         {
                             color = Color.White * 0.4f,
                             delayBeforeAnimationStart = animDelay,
-                            id = animId
+                            id = (int)animId
                         }
                     });
                     break;

@@ -7,6 +7,7 @@
 		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
 		"AlternateFrameWhenReady": true, //If the producer should use the alternate frame and ready for harvest.
 		"DisableBouncingAnimationWhileWorking": false, // If the producer bouncing animation while working should be disabled.
+		"AllowFairyDust": false, // If the producer should allow fairy dust use to speed up the producer. Default is true. Will work even if no producer configuration is defined. To disable fairy dust you need a producer config setting this property to false. This is to keep legacy behavior.
 		"NoInputStartMode": "Placement", // [Placement|DayUpdate] //If the machine has a value for this property, it can only have one ProducerRule without a InputIdentifier. If Placement, the machine will start on placement, and will restart every time the produced object is taken out. If DayUpdate, the machine will start at the begin of the day. Default is null.
 		"IncrementStatsOnOutput": { //Pairs of "stats:object" that identify what should be incremented.
 			"GoatCheeseMade": "Goat Cheese", //First value is the stats to be incremented, second value is which output should be produced for the stat to be incremented. The identifier can be the index, name, category or context tag of the output. Will increment the stats by the amount of the stack.

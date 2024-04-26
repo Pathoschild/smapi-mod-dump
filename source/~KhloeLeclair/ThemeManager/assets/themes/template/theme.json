@@ -21,7 +21,22 @@
 		"UnselectedOption": "#646464"
 	},
 
-	"SpriteTextColors": {
+	"SpriteTextColorSets": {
+		"*": {
+			"default": null,
+			"skyblue": "skyblue",
+			"red": "red",
+			"#6E2BFF": "#6E2BFF",
+			"white": "white",
+			"orangered": "orangered",
+			"limegreen": "limegreen",
+			"cyan": "cyan",
+			"#3c3c3c": "#3c3c3c",
+			"jojablue": "jojablue"
+		}
+	},
+
+	"IndexedSpriteTextColors": {
 		"1": "skyblue",
 		"2": "red",
 		"3": "#6E2BFF",
@@ -29,18 +44,22 @@
 		"5": "orangered",
 		"6": "limegreen",
 		"7": "cyan",
-		"8": "#3c3c3c"
+		"8": "#3c3c3c",
+		"9": "jojablue"
 	},
 
 	"Patches": [
+		"AboutMenu",
+		"AnimalPage",
+		"AnimalQueryMenu",
 		"Billboard",
 		"BobberBar",
+		"BuildingPaintMenu",
 		"CarpenterMenu",
 		"CharacterCustomization",
 		"CoopMenu",
 		"DayTimeMoneyBox",
 		"DrawHud",
-		"DrawTextWithShadow",
 		"ExitPage",
 		"ForgeMenu",
 		"ItemTooltips",
@@ -50,6 +69,7 @@
 		"MineElevatorMenu",
 		"MoneyDial",
 		"OptionsDropDown",
+		"PrairieKing",
 		"QuestLog",
 		"ShopMenu",
 		"SkillsPage",

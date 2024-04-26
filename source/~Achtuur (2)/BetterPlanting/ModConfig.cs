@@ -11,6 +11,7 @@
 using AchtuurCore.Integrations;
 using AchtuurCore.Utility;
 using StardewModdingAPI;
+using System;
 
 namespace BetterPlanting;
 
@@ -23,6 +24,8 @@ internal class ModConfig
     public bool CanPlaceDiagonally { get; set; }
 
     public int TileFillLimit { get; set; }
+
+    public FillMode DefaultFillMode { get; set; }
 
     public ModConfig()
     {
@@ -77,6 +80,15 @@ internal class ModConfig
             setValue: (key) => this.DecrementModeKey = key
         );
 
+        configMenu.AddTextOption(
+            mod: ModEntry.Instance.ModManifest,
+            name: I18n.CfgDefaultFillMode_Name,
+            tooltip: I18n.CfgDefaultFillMode_Desc,
+            getValue: () => GetFillModeString(this.DefaultFillMode),
+            setValue: val => this.DefaultFillMode = SetFillModeFromString(val),
+            allowedValues: new string[] {"Vanilla", "Row (3)", "Row (5)", "Square (3x3)", "Square (5x5)", "Square (7x7)", "Fill" }
+        );
+
         configMenu.AddBoolOption(
             mod: ModEntry.Instance.ModManifest,
             name: I18n.CfgPlaceDiagonally_Name,
@@ -96,6 +108,51 @@ internal class ModConfig
             interval: (int)TileFillLimitSlider.interval
         );
 
+    }
+
+    private FillMode SetFillModeFromString(string mode)
+    {
+        switch (mode)
+        {
+            case "Vanilla": 
+                return FillMode.Disabled;
+            case "Row (3)": 
+                return FillMode.ThreeInARow;
+            case "Row (5)": 
+                return FillMode.FiveInARow;
+            case "Square (3x3)": 
+                return FillMode.ThreeSquare;
+            case "Square (5x5)": 
+                return FillMode.FiveSquare;
+            case "Square (7x7)": 
+                return FillMode.SevenSquare;
+            case "Fill": 
+                return FillMode.All;
+        }
+        return FillMode.Disabled;
+    }
+
+    private string GetFillModeString(FillMode mode)
+    {
+        switch (mode)
+        {
+            case FillMode.Disabled:
+                return "Vanilla";
+            case FillMode.ThreeInARow:
+                return "Row (3)";
+            case FillMode.FiveInARow:
+                return "Row (5)";
+            case FillMode.ThreeSquare:
+                return "Square (3x3)";
+            case FillMode.FiveSquare:
+                return "Square (5x5)";
+            case FillMode.SevenSquare:
+                return "Square (7x7)";
+            case FillMode.All:
+                return "Fill";
+                
+        }
+        return "";
     }
 }
 

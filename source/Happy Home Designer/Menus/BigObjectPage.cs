@@ -26,9 +26,7 @@ namespace HappyHomeDesigner.Menus
 		}
 
 		public override IReadOnlyList<IGridItem> ApplyFilter()
-		{
-			return current_filter is 0 ? entries : Favorites;
-		}
+			=> current_filter is 0 ? entries : Favorites;
 
 		public override IEnumerable<BigObjectEntry> GetItemsFrom(IEnumerable<ISalable> source, ICollection<string> favorites)
 		{
@@ -41,9 +39,7 @@ namespace HappyHomeDesigner.Menus
 		}
 
 		public override ClickableTextureComponent GetTab()
-		{
-			return new(new(0, 0, 64, 64), Catalog.MenuTexture, new(48, 48, 16, 16), 4f);
-		}
+			=> new(new(0, 0, 64, 64), Catalog.MenuTexture, new(48, 48, 16, 16), 4f);
 
 		public override void Init() { }
 	}

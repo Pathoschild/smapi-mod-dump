@@ -7,9 +7,9 @@ mods:
    Multiplayer Mod
 
 latest commit:
-   commit fcb1a28fd73e30229b176f4a5d4295f62f92cae0
+   commit 3c9ea542f472bf917bc283312d7f8e9c825e2465
    Author: Tráº§n Minh ThÃ´ng <98743684+TMThong@users.noreply.github.com>
-   Date:   Fri Mar 15 16:23:45 2024 +0700
+   Date:   Thu Apr 4 19:53:55 2024 +0700
    
-       add
+       -Bug fixes when completing community package
    

@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
+using System;
+using System.Linq;
+
 namespace Randomizer
 {
     public enum HatIndexes
@@ -106,5 +110,62 @@ namespace Randomizer
         TigerHat = 91,
         QuestionMark = 92,
         WarriorHelmet = 93,
+    }
+
+    public class HatFunctions
+    {
+        public const string HatIdPrefix = "(H)";
+
+        /// <summary>
+        /// Gets the hat id in the form that Stardew references them
+        /// </summary>
+        /// <param name="hat">The hat index</param>
+        /// <returns>The integer hat id, as a string</returns>
+        public static string GetHatId(HatIndexes hat)
+        {
+            return ((int)hat).ToString();
+        }
+
+        /// <summary>
+        /// Gets the qualified id for the given hat index
+        /// </summary>
+        /// <param name="index">The index of the hat</param>
+        public static string GetQualifiedId(HatIndexes index)
+        {
+            return $"{HatIdPrefix}{(int)index}";
+        }
+
+        /// <summary>
+        /// Gets a random hat's qualified id
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomHatQualifiedId(RNG rng, List<string> idsToExclude = null)
+        {
+            return GetRandomHatQualifiedIds(rng, numberToGet: 1, idsToExclude)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of random hat qualified ids
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="numberToGet">The number of ids to get</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static List<string> GetRandomHatQualifiedIds(
+            RNG rng,
+            int numberToGet,
+            List<string> idsToExclude = null)
+        {
+            var allHatIds = Enum.GetValues(typeof(HatIndexes))
+                .Cast<HatIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
+                .ToList();
+
+            return rng.GetRandomValuesFromList(allHatIds, numberToGet);
+        }
     }
 }

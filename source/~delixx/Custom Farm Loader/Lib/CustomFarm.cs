@@ -62,10 +62,11 @@ namespace Custom_Farm_Loader.Lib
         public List<KeyValuePair<string, Point>> Warps = new List<KeyValuePair<string, Point>>();
         public List<KeyValuePair<string, Point>> Locations = new List<KeyValuePair<string, Point>>();
 
-        public List<Furniture> StartFurniture = new List<Furniture>();
-        public List<DailyUpdate> DailyUpdates = new List<DailyUpdate>();
-        public List<FishingRule> FishingRules = new List<FishingRule>();
-        public FarmProperties Properties = new FarmProperties();
+        public List<Furniture> StartFurniture = new();
+        public List<StartBuilding> StartBuildings = new();
+        public List<DailyUpdate> DailyUpdates = new();
+        public List<FishingRule> FishingRules = new();
+        public FarmProperties Properties = new();
 
 
         public string ContentPackDirectory = ""; // The mod directory of the map we're loading
@@ -171,7 +172,7 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "preview":
                             if (value != "")
-                                customFarm.Preview = $"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}\\{value}";
+                                customFarm.Preview = $"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}{Path.DirectorySeparatorChar}{value}";
                             break;
                         case "worldmapoverlay":
                             customFarm.WorldMapOverlayValue = value;
@@ -185,6 +186,9 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "startfurniture":
                             customFarm.StartFurniture = Furniture.parseFurnitureJsonArray(n);
+                            break;
+                        case "startbuildings":
+                            customFarm.StartBuildings = StartBuilding.parseJsonArray(n);
                             break;
                         case "dailyupdates":
                             customFarm.DailyUpdates = DailyUpdate.parseDailyUpdateJsonArray(n, manifest);
@@ -344,11 +348,11 @@ namespace Custom_Farm_Loader.Lib
             }
 
             try {
-                var icon = Helper.ModContent.Load<Texture2D>($"{path}\\{IconValue}");
+                var icon = Helper.ModContent.Load<Texture2D>($"{path}{Path.DirectorySeparatorChar}{IconValue}");
                 return CustomFarmSelection.cropIcon(icon);
 
             } catch (Exception ex) {
-                Monitor.LogOnce($"Unable to load the map icon in:\n{path}\\{IconValue}", LogLevel.Warn);
+                Monitor.LogOnce($"Unable to load the map icon in:\n{path}{Path.DirectorySeparatorChar}{IconValue}", LogLevel.Warn);
             }
             return MissingMapIcon;
         }
@@ -391,21 +395,21 @@ namespace Custom_Farm_Loader.Lib
             }
 
             try {
-                return Helper.ModContent.Load<Texture2D>($"{path}\\{getSeasunSuffixedFile(worldMapFile)}");
+                return Helper.ModContent.Load<Texture2D>($"{path}{Path.DirectorySeparatorChar}{getSeasonSuffixedFile(worldMapFile)}");
             } catch (Exception ex) { }
 
             try {
-                return Helper.ModContent.Load<Texture2D>($"{path}\\{worldMapFile}");
+                return Helper.ModContent.Load<Texture2D>($"{path}{Path.DirectorySeparatorChar}{worldMapFile}");
 
             } catch (Exception ex) {
-                Monitor.LogOnce($"Unable to load the world map texture in:\n{path}\\{worldMapFile}", LogLevel.Warn);
+                Monitor.LogOnce($"Unable to load the world map texture in:\n{path}{Path.DirectorySeparatorChar}{worldMapFile}", LogLevel.Warn);
             }
 
             WorldMapOverlayValue = "";
             return null;
         }
 
-        public static string getSeasunSuffixedFile(string file)
+        public static string getSeasonSuffixedFile(string file)
         {
             var seasonSuffix = Game1.season switch {
                 Season.Summer => "_summer",
@@ -457,7 +461,7 @@ namespace Custom_Farm_Loader.Lib
                 Monitor.Log($"Please make sure Custom Farm IDs are unique", LogLevel.Error);
 
                 foreach (CustomFarm map in maps) {
-                    Monitor.Log($"{map.ContentPackDirectory}\\{map.RelativeMapDirectoryPath}", LogLevel.Warn);
+                    Monitor.Log($"{map.ContentPackDirectory}{Path.DirectorySeparatorChar}{map.RelativeMapDirectoryPath}", LogLevel.Warn);
                 }
             } else if (maps.Count() == 1)
                 return maps.First();

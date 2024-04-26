@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,10 +17,10 @@ using System.Text.RegularExpressions;
 
 namespace Randomizer
 {
-    /// <summary>
-    /// Represents a bundle
-    /// </summary>
-    public abstract class Bundle
+	/// <summary>
+	/// Represents a bundle
+	/// </summary>
+	public abstract class Bundle
 	{
 		public CommunityCenterRooms Room { get; set; }
 		public int Id { get; set; }
@@ -40,22 +41,14 @@ namespace Randomizer
 		/// </summary>
 		public string DisplayName { get; private set; }
 
-        /// <summary>
-        /// The english name - this is the one we will use as the English display name,
-        /// as well as to save the data (so other locales don't crash)
-        /// It is important for this to NEVER be set outside of SetBundleName
-        /// </summary>
-        private string EnglishName { get; set; }
-
 		/// <summary>
-		/// Sets the bundle display and english names by looking up the translation
+		/// Sets the bundle display name by looking up the translation
 		/// </summary>
 		/// <param name="translationKey">The key that's in the i18n files</param>
-		/// <param name="obj">The  anonymouse oobject used in the translation</param>
+		/// <param name="obj">The anonymous object used in the translation</param>
 		public void SetBundleName(string translationKey, dynamic obj = null)
 		{
             DisplayName = Globals.GetTranslation(translationKey, obj);
-            EnglishName = Globals.GetEnglishTranslation(translationKey, obj);
         }
 
 		/// <summary>
@@ -70,15 +63,10 @@ namespace Randomizer
             string bundleNameFlavorLocalized = Globals.GetTranslation($"{BundleType}-{bundleFlavorId}");
             string moneyStringLocalized = Globals.GetTranslation(moneyFormatKey, new { moneyString = moneyAmountStringLocalized });
             DisplayName = $"{moneyStringLocalized}: {bundleNameFlavorLocalized}";
-
-            string moneyAmountStringEnglish = moneyAmount.ToString("N0", new CultureInfo("en-US"));
-            string bundleNameFlavorEnglish = Globals.GetEnglishTranslation($"{BundleType}-{bundleFlavorId}");
-            string moneyStringEnglish = Globals.GetTranslation(moneyFormatKey, new { moneyString = moneyAmountStringEnglish });
-            EnglishName = $"{moneyStringEnglish}: {bundleNameFlavorEnglish}";
         }
 
-		public RequiredItem Reward { get; set; }
-		public List<RequiredItem> RequiredItems { get; set; }
+		public RequiredBundleItem Reward { get; set; }
+		public List<RequiredBundleItem> RequiredItems { get; set; }
 		public BundleColors Color { get; set; }
 		public int? MinimumRequiredItems { get; set; }
 		public BundleTypes BundleType { get; set; } = BundleTypes.None;
@@ -196,23 +184,34 @@ namespace Randomizer
 			if (Room != CommunityCenterRooms.Joja) // Joja doesn't actually have an item reward
 			{
 				string rewardStringPrefix = GetRewardStringPrefix();
-				int itemId = Reward.Item.Id;
+				string itemId = Reward.Item.Id;
 				rewardString = $"{rewardStringPrefix} {itemId} {Reward.NumberOfItems}";
 			}
 
 			string minRequiredItemsString = "";
 			if (Room != CommunityCenterRooms.Vault && MinimumRequiredItems != null && MinimumRequiredItems > 0)
 			{
-				minRequiredItemsString = $"/{MinimumRequiredItems}";
+				minRequiredItemsString = MinimumRequiredItems.ToString();
 			}
 
-            return $"{EnglishName}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}";
+			string[] originalBundleData = DataLoader.Bundles(Game1.content)[Key].Split("/");
+			originalBundleData[(int)BundleIndexes.Reward] = rewardString;
+			originalBundleData[(int)BundleIndexes.RequiredItems] = GetRequiredItemString();
+			originalBundleData[(int)BundleIndexes.ColorIndex] = $"{Color:D}";
+			originalBundleData[(int)BundleIndexes.MinimumRequiredItems] = minRequiredItemsString;
+			originalBundleData[(int)BundleIndexes.OldDisplayName] = "";
+            originalBundleData[(int)BundleIndexes.DisplayName] = DisplayName;
+
+			return string.Join("/", originalBundleData);
 		}
 
 		/// <summary>
 		/// Gets the prefix used before the reward string
 		/// </summary>
-		/// <returns>R if a ring; BO if a BigCraftableObject; O otherwise</returns>
+		/// <returns>
+		/// R if a ring; BO if a BigCraftableObject; O otherwise
+		/// Yes, even after the 1.6 rework, these are the correct prefixes
+		/// </returns>
 		private string GetRewardStringPrefix()
 		{
 			if (Reward?.Item == null)
@@ -235,10 +234,10 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets the reward string for all the required items
+		/// Gets the string for all the required items
 		/// </summary>
 		/// <returns>The reward string</returns>
-		private string GetRewardStringForRequiredItems()
+		private string GetRequiredItemString()
 		{
 			if (RequiredItems.Count == 0)
 			{
@@ -251,12 +250,19 @@ namespace Randomizer
 				return RequiredItems.First().GetStringForBundles(true);
 			}
 
-			string output = "";
-			foreach (RequiredItem item in RequiredItems)
+			else
 			{
-				output += $"{item.GetStringForBundles(false)} ";
+				for (int i = 0; i < RequiredItems.Count; i++)
+				{
+					Item item = RequiredItems[i]?.Item ?? null;
+					if (item == null)
+					{
+						Globals.ConsoleError($"Null item found during bundle creation. Bundle: {DisplayName}; Index: {i}");
+					}
+				}
+
+				return string.Join(" ", RequiredItems.Select(item => item.GetStringForBundles(false)));
 			}
-			return output.Trim();
 		}
 
 		/// <summary>
@@ -265,7 +271,9 @@ namespace Randomizer
 		/// <returns>True if successful, false otherwise</returns>
 		protected bool TryGenerateRandomBundle()
 		{
-			if (Room != CommunityCenterRooms.Vault && Room != CommunityCenterRooms.Joja && Globals.RNGGetNextBoolean(10))
+			if (Room != CommunityCenterRooms.Vault &&
+				Room != CommunityCenterRooms.Joja && 
+				BundleRandomizer.Rng.NextBoolean(10))
 			{
 				PopulateRandomBundle();
 				return true;
@@ -280,7 +288,7 @@ namespace Randomizer
 		/// /// <returns>True if successful, false otherwise</returns>
 		protected bool TryGenerateRandomReward()
 		{
-			if (Room != CommunityCenterRooms.Joja && Globals.RNGGetNextBoolean(10))
+			if (Room != CommunityCenterRooms.Joja && BundleRandomizer.Rng.NextBoolean(10))
 			{
 				GenerateRandomReward();
 				return true;
@@ -304,17 +312,18 @@ namespace Randomizer
 		/// </summary>
 		protected void PopulateRandomBundle()
 		{
-			BundleType = Globals.RNGGetRandomValueFromList(_randomBundleTypes);
-			List<RequiredItem> potentialItems = new List<RequiredItem>();
+			RNG rng = BundleRandomizer.Rng;
+
+            BundleType = rng.GetRandomValueFromList(_randomBundleTypes);
+			List<RequiredBundleItem> potentialItems = new List<RequiredBundleItem>();
 			switch (BundleType)
 			{
 				case BundleTypes.AllRandom:
 					SetBundleName("bundle-random-all");
-					potentialItems = RequiredItem.CreateList(ItemList.Items.Values.Where(x =>
-						x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
-						x.Id > -4)
+					potentialItems = RequiredBundleItem.CreateList(ItemList.Items.Values.Where(x =>
+						x.DifficultyToObtain < ObtainingDifficulties.Impossible)
 					.ToList());
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 4;
 					break;
 				case BundleTypes.AllLetter:
@@ -322,9 +331,9 @@ namespace Randomizer
 					string randomLetter;
 					do
 					{
-						randomLetter = letters[Range.GetRandomValue(0, letters.Length - 1)].ToString();
+						randomLetter = letters[rng.NextIntWithinRange(0, letters.Length - 1)].ToString();
                         letters = letters.Replace(randomLetter, "");
-						potentialItems = RequiredItem.CreateList(
+						potentialItems = RequiredBundleItem.CreateList(
 							ItemList.Items.Values.Where(x =>
 								ShouldIncludeInLetterBundle(x) &&
                                 // Prioritiy is: OverrideName > EnglishName
@@ -336,12 +345,12 @@ namespace Randomizer
 
                     SetBundleName("bundle-random-letter", new { letter = randomLetter });
 					ImageNameSuffix = randomLetter;
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
 					break;
 			}
 
-			Color = Globals.RNGGetRandomValueFromList(
+			Color = rng.GetRandomValueFromList(
 				Enum.GetValues(typeof(BundleColors)).Cast<BundleColors>().ToList());
 		}
 
@@ -364,7 +373,6 @@ namespace Randomizer
 			// - Are impossible to get
 			// - Are legendary fish
 			if (item.DifficultyToObtain >= ObtainingDifficulties.Impossible ||
-                item.Id < 0 || // The "Any Fish" category
                 !string.IsNullOrWhiteSpace(item.OverrideDisplayName) ||
 				(item is FishItem fishItem && fishItem.IsLegendaryFish))
 			{
@@ -383,18 +391,19 @@ namespace Randomizer
         /// </summary>
         protected void GenerateRandomReward()
 		{
-			Item reward = Globals.RNGGetRandomValueFromList(
+			RNG rng = BundleRandomizer.Rng;
+
+            Item reward = rng.GetRandomValueFromList(
 				ItemList.Items.Values
-					.Where(x => x.Id != (int)ObjectIndexes.AnyFish)
 					.Concat(ItemList.BigCraftableItems.Values)
 					.ToList()
 			);
-			int numberToGive = Range.GetRandomValue(1, 25);
+			int numberToGive = rng.NextIntWithinRange(1, 25);
 			if (!reward.CanStack) { numberToGive = 1; }
 
 			Reward = reward.IsBigCraftable
-				? new RequiredItem((BigCraftableIndexes)reward.Id, numberToGive)
-				: new RequiredItem((ObjectIndexes)reward.Id, numberToGive);
+				? new RequiredBundleItem(reward.BigCraftableIndex, numberToGive)
+				: new RequiredBundleItem(reward.ObjectIndex, numberToGive);
         }
 	}
 }

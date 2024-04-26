@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Input;
 using SpaceShared;
 using StardewValley;
 using StardewValley.Menus;
+using static SpaceCore.Skills;
 
 namespace SpaceCore.Interface
 {
@@ -177,12 +178,9 @@ namespace SpaceCore.Interface
             this.height = num + 256 + this.extraInfoForLevel.Count * 64 * 3 / 4;
             */
 
-            List<CraftingRecipe> levelUpCraftingRecipes =
-                GetCraftingRecipesForLevel(this.currentSkill, this.currentLevel)
-                .ToList()
-                .ConvertAll(name => new CraftingRecipe(name))
-                .Where(recipe => !Game1.player.knowsRecipe(recipe.name))
-                .ToList();
+            //Get Crafting Recipes learned at this level
+            List<CraftingRecipe> levelUpCraftingRecipes = GetCraftingRecipesForLevel(this.currentSkill, this.currentLevel);
+
             if (levelUpCraftingRecipes is not null && levelUpCraftingRecipes.Count > 0)
             {
                 foreach (CraftingRecipe recipe in levelUpCraftingRecipes.Where(r => !Game1.player.craftingRecipes.ContainsKey(r.name)))
@@ -191,12 +189,9 @@ namespace SpaceCore.Interface
                 }
             }
 
-            List<CraftingRecipe> levelUpCookingRecipes =
-                GetCookingRecipesForLevel(this.currentSkill, this.currentLevel)
-                .ToList()
-                .ConvertAll(name => new CraftingRecipe(name))
-                .Where(recipe => !Game1.player.knowsRecipe(recipe.name))
-                .ToList();
+            //Get Cooking Recipes learned at this level
+            List<CraftingRecipe> levelUpCookingRecipes = GetCookingRecipesForLevel(this.currentSkill, this.currentLevel);
+
             if (levelUpCookingRecipes is not null && levelUpCookingRecipes.Count > 0)
             {
                 foreach (CraftingRecipe recipe in levelUpCookingRecipes.Where(r => !Game1.player.cookingRecipes.ContainsKey(r.name)))
@@ -233,6 +228,8 @@ namespace SpaceCore.Interface
             }
             this.populateClickableComponentList();
             this.RepositionOkButton();
+
+
         }
         public override bool overrideSnappyMenuCursorMovementBan()
         {
@@ -330,37 +327,57 @@ namespace SpaceCore.Interface
             */
         }
 
-        public static IReadOnlyList<string> GetCraftingRecipesForLevel(string whichSkill, int level)
+        public static List<CraftingRecipe> GetCraftingRecipesForLevel(string whichSkill, int level)
         {
             // Level used for professions, no new recipes added
+            List<CraftingRecipe> newRecipes = [];
             if (level % 5 == 0)
             {
-                return new List<string>();
+                return newRecipes;
             }
-            var levelUpRecipes = Skills.SkillsByName[whichSkill].GetSkillLevelUpCraftingRecipes(level);
-            // Level undefined
-            if (!levelUpRecipes.ContainsKey(level))
+
+            foreach (KeyValuePair<string, string> recipePair in CraftingRecipe.craftingRecipes)
             {
-                return new List<string>();
+                string conditions = ArgUtility.Get(recipePair.Value.Split('/'), 4, "");
+                if (!conditions.Contains(whichSkill) || !conditions.Contains(level.ToString()))
+                {
+                    continue;
+                }
+
+                CraftingRecipe recipe = new(recipePair.Key, isCookingRecipe: false);
+                newRecipes.Add(recipe);
+                Game1.player.craftingRecipes.TryAdd(recipePair.Key, 0);
             }
-            return (IReadOnlyList<string>)levelUpRecipes[level];
+            return newRecipes;
         }
 
-        public static IReadOnlyList<string> GetCookingRecipesForLevel(string whichSkill, int level)
+        public static List<CraftingRecipe> GetCookingRecipesForLevel(string whichSkill, int level)
         {
             // Level used for professions, no new recipes added
+            List<CraftingRecipe> newRecipes = [];
             if (level % 5 == 0)
             {
-                return new List<string>();
+                return newRecipes;
             }
-            var levelUpRecipes = Skills.SkillsByName[whichSkill].GetSkillLevelUpCookingRecipes(level);
-            // Level undefined
-            if (!levelUpRecipes.ContainsKey(level))
+            foreach (KeyValuePair<string, string> recipePair in CraftingRecipe.cookingRecipes)
             {
-                return new List<string>();
+                string conditions = ArgUtility.Get(recipePair.Value.Split('/'), 3, "");
+                if (!conditions.Contains(whichSkill) || !conditions.Contains(level.ToString()))
+                {
+                    continue;
+                }
+
+                CraftingRecipe recipe = new(recipePair.Key, isCookingRecipe: true);
+                newRecipes.Add(recipe);
+                if (Game1.player.cookingRecipes.TryAdd(recipePair.Key, 0) &&
+                    !Game1.player.hasOrWillReceiveMail("robinKitchenLetter"))
+                {
+                    Game1.mailbox.Add("robinKitchenLetter");
+                }
+
             }
 
-            return (IReadOnlyList<string>)levelUpRecipes[level];
+            return newRecipes;
         }
 
         private static void addProfessionDescriptions(List<string> descriptions, string professionName)
@@ -515,6 +532,13 @@ namespace SpaceCore.Interface
             else
                 Game1.player.maxHealth += 15;
             */
+
+            //This was missing when compared to vanilla perks. When ever you level up in a skill,
+            // you always gained maxd stamina and health, even if you exhaust yourself.
+
+
+            Game1.player.health = Game1.player.maxHealth;
+            Game1.player.stamina = Game1.player.MaxStamina;
         }
 
         public override void update(GameTime time)

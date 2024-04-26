@@ -37,6 +37,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{price}}g for stack of {{count}}",
+    "generic.show-x-results": "show {{count}} results",
 
     // types
     "type.building": "Building",
@@ -113,13 +114,14 @@
     "location.bugLand": "mutant bug lair",
     "location.busStop": "bus stop",
     "location.desert": "desert",
+    "location.desert.topPond": "desert (north pond)",
     "location.farm": "farm",
     "location.farmCave": "farm cave",
     "location.farmHouse": "farmhouse",
     "location.forest": "forest",
-    "location.forest.fish-area-0": "forest river",
-    "location.forest.fish-area-1": "forest pond",
     "location.forest.island-tip": "forest river (south tip of large island)",
+    "location.forest.lake": "forest pond",
+    "location.forest.river": "forest river",
     "location.mountain": "mountain",
     "location.railroad": "railroad",
     "location.sewer": "sewers",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Ginger Island southeast",
     "location.islandSouthEastCave": "Ginger Island southeast cave",
     "location.islandWest": "Ginger Island west",
-    "location.islandWest.fish-area-1": "Ginger Island west (ocean)",
-    "location.islandWest.fish-area-2": "Ginger Island west (pond)",
+    "location.islandWest.freshwater": "Ginger Island west (pond)",
+    "location.islandWest.ocean": "Ginger Island west (ocean)",
 
     "location.unknown-fish-area": "{{locationName}} (fishing area {{id}})",
 
@@ -626,6 +628,8 @@
     "tree.name.oak": "Oak Tree",
     "tree.name.palm": "Palm Tree",
     "tree.name.pine": "Pine Tree",
+    "tree.name.mossy": "Mossy Tree",
+    "tree.name.mystic": "Mystic Tree",
     "tree.name.unknown": "Unknown Tree",
     "tree.stage.done": "Fully grown",
     "tree.stage.partial": "{{stageName}} ({{step}} of {{max}})",
@@ -673,6 +677,16 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Highlight unrevealed gifts",
     "config.highlight-unrevealed-gift-tastes.desc": "Whether to highlight item gift tastes which haven't been revealed in the NPC profile. When enabled, unrevealed gift tastes will be bold.",
+
+    // collapse fields
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Advanced options",

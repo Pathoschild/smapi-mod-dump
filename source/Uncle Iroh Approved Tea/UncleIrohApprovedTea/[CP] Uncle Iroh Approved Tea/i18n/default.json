@@ -1,0 +1,144 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+
+    // ========== BYPRODUCTS ==========
+    "Byproduct.Fruit.Orange.name": "Orange Peel",
+    "Byproduct.Fruit.Orange.description": "The peel from an orange.",
+    
+    // ========== BUSHES ==========
+    "Bush.Jasmine.name": "Jasmine",
+    "Bush.Jasmine.description": "A small white flower with a delightful floral scent.",
+    "Bush.Sapling.Jasmine.name": "Jasmine Sapling",
+    "Bush.Sapling.Jasmine.description": "Takes 18 days to produce a tea bush with jasmine flowers in summer and fall.",
+    
+    "Bush.Osmanthus.name": "Osmanthus",
+    "Bush.Osmanthus.description": "A tiny bright yellow flower with an overpowering floral scent.",
+    "Bush.Sapling.Osmanthus.name": "Osmanthus Sapling",
+    "Bush.Sapling.Osmanthus.description": "Takes 18 days to produce a tea bush with osmanthus flowers in spring and summer.",
+    
+    // ========== DISHES ==========
+    "Dishes.Mooncake.name": "Mooncake",
+    "Dishes.Mooncake.description": "A traditional Chinese pastry with an intricate design pressed into it.",
+
+    "Dishes.CandiedOrangePeel.name": "Candied Orange Peel",
+    "Dishes.CandiedOrangePeel.description": "It's bursting with flavor!",
+
+    "Dishes.RicePorridge.name": "Rice Porridge",
+    "Dishes.RicePorridge.description": "Savory with bonus flavors from the toppings.",
+
+    "Dishes.TeaEggs.name": "Tea Eggs",
+    "Dishes.TeaEggs.description": "The sauce gave them a cool marbling effect.",
+
+    // ========== DRIED ITEMS ==========
+    "Dried.Seeds.Cassia.name": "Cassia Seeds",
+    "Dried.Seeds.Cassia.description": "The hard and dark seeds of a Cassia Flower, typically used for brewing tea",
+
+    "Dried.Fruit.Goji.name": "Dried Goji Berries",
+    "Dried.Fruit.Goji.description": "Crunchy pieces of dehydrated goji berries.",
+
+    "Dried.Seeds.Lotus.name": "Dried Lotus Seeds",
+    "Dried.Seeds.Lotus.description": "Seeds from a lotus seed pod. Typically used in pastes and soups.",
+
+    "Dried.Seeds.Lily.name": "Lily Bulb",
+    "Dried.Seeds.Lily.description": "Dried out bulb of a lily flower. Can be added to soup to help with coughs.",
+
+    "Dried.Fruit.Peel.Orange.name": "Dried Orange Peel",
+    "Dried.Fruit.Peel.Orange.description": "A versatile ingredient for making food or drinks.",
+
+    "Dried.Fruit.Strawberry.name": "Dried Strawberries",
+    "Dried.Fruit.Strawberry.description": "Crunchy pieces of dehydrated strawberries.",
+    
+    "Dried.Vegetables.Sugarcane.name": "Rock Sugar",
+    "Dried.Vegetables.Sugarcane.description": "Mmmmm, crunchy.",
+
+    // ========== CROPS ==========
+    "Crops.Chamomile.name": "Chamomile",
+    "Crops.Chamomile.description": "A small white flower with a big yellow center. Used for brewing tea.",
+    "Seeds.Chamomile.name": "Chamomile Seeds",
+    "Seeds.Chamomile.description": "Plant these in the spring or summer. Takes 7 days to produce a chamomile flowers.",
+    
+    "Crops.Chrysanthemum.name": "Chrysanthemum",
+    "Crops.Chrysanthemum.description": "A yellow flower with many small petals sticking out. Used for brewing tea.",
+    "Seeds.Chrysanthemum.name": "Chrysanthemum Seeds",
+    "Seeds.Chrysanthemum.description": "Plant these in the spring, summer, or fall. Takes 8 days to produce chrysanthemums.",
+    
+    "Crops.GojiBerry.name": "Goji Berry",
+    "Crops.GojiBerry.description": "A small pink berry that can be dehydrated and used for various dishes and put into teas.",
+    "Seeds.GojiBerry.name": "Goji Berry Seeds",
+    "Seeds.GojiBerry.description": "Plant these in the spring or summer. Takes 11 days to mature, and continues to produce goji berries after first harvest.",
+    
+    "Crops.Lavender.name": "Lavender",
+    "Crops.Lavender.description": "A large stem of pungent tiny purple flowers.",
+    "Seeds.Lavender.name": "Lavender Seeds",
+    "Seeds.Lavender.description": "Plant these in the spring. Takes 5 days to produce lavender flowers.",
+    
+    "Crops.Lily.name": "Lily",
+    "Crops.Lily.description": "A tall flower with bright petals.",
+    "Seeds.Lily.name": "Lily Bulb",
+    "Seeds.Lily.description": "Plant these in the spring. Takes 7 days to produce lily flowers.",
+    
+    "Crops.Lotus.name": "Lotus",
+    "Crops.Lotus.description": "An ornamental water-based flower with many spreading petals.",
+    "Seeds.Lotus.name": "Lotus Seeds",
+    "Seeds.Lotus.description": "Plant these in spring, summer, or fall. Takes 6 days to mature. Grows faster if planted near a body of water.",
+    
+    "Crops.Sugarcane.name": "Sugarcane",
+    "Crops.Sugarcane.description": "A tall and fibrous stalk of sugar.",
+    "Seeds.Sugarcane.name": "Sugarcane Seeds",
+    "Seeds.Sugarcane.description": "Plant these in the fall. Takes 8 days to mature. Grows faster if planted near a body of water. Regrows. Harvest with the scythe.",
+
+    // ========== TEA ==========
+    "Tea.Barley.name": "Barley Tea",
+    "Tea.Barley.description": "An energizing earthy tea made from Barley poured over ice.",
+
+    "Tea.BrownRice.name": "Brown Rice Tea",
+    "Tea.BrownRice.description": "An earthy roasted rice tea with a deep flavor.",
+    
+    "Tea.Cassia.name": "Cassia Tea",
+    "Tea.Cassia.description": "A bittersweet tea made from steeping the salty seeds of a cassia flower.",
+
+    "Tea.Chamomile.name": "Chamomile Tea",
+    "Tea.Chamomile.description": "A relaxing tea made from chamomile flowers.",
+
+    "Tea.Chrysanthemum.name": "Chrysanthemum Tea",
+    "Tea.Chrysanthemum.description": "A sweet and floral tea made from chrysanthemum flowers that warms you right up.",
+    
+    "Tea.HealthBlend.name": "Health Blend Tea",
+    "Tea.HealthBlend.description": "A delicious blend of chrysanthemum tea and cassia tea with some dried goji berries added in.",
+    
+    "Tea.Lavender.name": "Lavender Tea",
+    "Tea.Lavender.description": "A piney floral tea made from lavender flowers.",
+    
+    "Tea.Jasmine.name": "Jasmine Tea",
+    "Tea.Jasmine.description": "A classic tea with a light floral aroma.",
+    
+    "Tea.Osmanthus.name": "Osmanthus Tea",
+    "Tea.Osmanthus.description": "A classic eastern tea with a recognizable floral aroma.",
+
+    "Teapot.name": "Teapot",
+    "Teapot.description": "A cute little pot for brewing tea.",
+
+    // ========== TREES ==========
+    "Tree.Cassia.name": "Cassia Tree",
+    "Tree.Cassia.description": "A hanging flower with many small seeds growing in it.",
+    "Tree.Cassia.Harvest.name": "Cassia Flower",
+    "Tree.Cassia.Sapling.name": "Cassia Sapling",
+    "Tree.Cassia.Sapling.description": "Takes 28 days to produce a mature Cassia tree. Bears flowers in the summer. Only grows if the 8 surrounding \"tiles\" are empty.",
+
+    // ========== CONFIG ==========
+    "Config.TeaRecipes.description": "If you want all teas to be cookable in the kitchen.",
+    "Config.TeaBrewing.description": "If you want all teas to be brewable in the Teapot.",
+    "Config.CustomDehydratorRules.description": "If you're okay with modifications to existing vanilla dehydrator rules based on the mod's dried items. (Strawberries)",
+    "Config.QuaintLivingFlowerGarden2Compatability.description": "If you want to enable removing any duplicate crops that my mod adds.",
+    "Config.CornucopiaCompatability.description": "If you want to enable removing any duplicate crops that my mod adds.",
+    "Config.WildFlourCompatability.description": "If you want to enable removing any duplicate crops that my mod adds."
+}

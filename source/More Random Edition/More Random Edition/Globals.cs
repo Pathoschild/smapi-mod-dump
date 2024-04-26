@@ -10,12 +10,7 @@
 
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Randomizer
 {
@@ -26,7 +21,6 @@ namespace Randomizer
 	{
 		public static ModEntry ModRef { get; set; }
 		public static ModConfig Config { get; set; }
-		public static SaveLoadRNG RNG { get; set; }
 		public static SpoilerLogger SpoilerLog { get; set; }
 
 		/// <summary>
@@ -133,179 +127,6 @@ namespace Randomizer
 			return Path.Combine(ModRef.Helper.DirectoryPath, pathFromModFolder);
 		}
 
-		/// <summary>
-		/// Gets a random boolean value
-		/// </summary>
-		/// <returns />
-		public static bool RNGGetNextBoolean()
-		{
-			return RNG.Next(0, 2) == 0;
-		}
-
-		/// <summary>
-		/// Gets a random boolean value
-		/// </summary>
-		/// <param name="percentage">The percentage of the boolean being true - 10 would be 10%, etc.</param>
-		/// <param name="rng">The Random object to use - defaults to the global one</param>
-		/// <returns />
-		public static bool RNGGetNextBoolean(int percentage, Random rng = null)
-		{
-			var rngToUse = rng ?? RNG;
-			if (percentage < 0 || percentage > 100) ConsoleWarn("Percentage is invalid (less than 0 or greater than 100)");
-			return rngToUse.Next(0, 100) < percentage;
-		}
-
-        /// <summary>
-        /// Gets a random integer value + or - the given percentage (rounds up)
-        /// ex) value of 10 with percentage of 50 returns a value between 5 and 15
-        /// </summary>
-        /// <param name="value">The base value</param>
-        /// <param name="percentage">The percentage of the base value to use</param>
-        /// <param name="rng">The Random object to use - defaults to the global one</param>
-        /// <returns>The random value retrieved</returns>
-        public static int RNGGetIntWithinPercentage(int value, int percentage, Random rng = null)
-		{
-            var rngToUse = rng ?? RNG;
-            var difference = (int)Math.Ceiling(value * ((double)percentage / 100));
-			return new Range(value - difference, value + difference).GetRandomValue(rngToUse);
-		}
-
-        /// <summary>
-        /// Gets a random value out of the given list
-        /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="rng">The Random object to use - defaults to the global one</param>
-        /// <returns />
-        public static T RNGGetRandomValueFromList<T>(List<T> list, Random rng = null)
-		{
-            var rngToUse = rng ?? RNG;
-
-            if (list == null || list.Count == 0)
-			{
-				ConsoleError("Attempted to get a random value out of an empty list!");
-				return default;
-			}
-
-			return list[rngToUse.Next(list.Count)];
-		}
-
-        /// <summary>
-        /// Gets a random value out of the given list and removes it
-        /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="rng">The Random object to use - defaults to the global one</param>
-        /// <returns />
-        public static T RNGGetAndRemoveRandomValueFromList<T>(List<T> list, Random rng = null)
-		{
-            var rngToUse = rng ?? RNG;
-
-            if (list == null || list.Count == 0)
-			{
-				ConsoleError("Attempted to get a random value out of an empty list!");
-				return default;
-			}
-			int selectedIndex = rngToUse.Next(list.Count);
-			T selectedValue = list[selectedIndex];
-			list.RemoveAt(selectedIndex);
-			return selectedValue;
-		}
-
-        /// <summary>
-        /// Gets a random set of values form a list
-        /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="inputList">The list</param>
-        /// <param name="numberOfvalues">The number of values to return</param>
-        /// <param name="rng">The Random object to use - defaults to the global one</param>
-		/// <param name="forceNumberOfValuesRNGCalls">
-		/// Forces this to advance the RNG even if number of values is less than the list length
-		/// This is for situations where different settings result in different lengths of lists
-		/// </param>
-        /// <returns>
-        /// The randomly chosen values - might be less than the number of values if the list doesn't contain that many
-        /// </returns>
-        public static List<T> RNGGetRandomValuesFromList<T>(
-			List<T> inputList, 
-			int numberOfvalues, 
-			Random rng = null,
-			bool forceNumberOfValuesRNGCalls = false)
-		{
-            var rngToUse = rng ?? RNG;
-
-            List<T> listToChooseFrom = new(inputList); // Don't modify the original list
-			List<T> randomValues = new();
-			if (listToChooseFrom == null || listToChooseFrom.Count == 0)
-			{
-				ConsoleError("Attempted to get random values out of an empty list!");
-				return randomValues;
-			}
-
-			int numberOfIterations = Math.Min(numberOfvalues, listToChooseFrom.Count);
-			int i;
-			for (i = 0; i < numberOfIterations; i++)
-			{
-				randomValues.Add(RNGGetAndRemoveRandomValueFromList(listToChooseFrom, rngToUse));
-			}
-
-			// If we're forcing RNG to advance, we must call it for each item that's left
-			if (forceNumberOfValuesRNGCalls)
-			{
-                for (; i < inputList.Count - 1; i++)
-                {
-                    rngToUse.Next();
-                }
-            }
-
-			return randomValues;
-		}
-
-        /// <summary>
-        /// Gets an RNG value based on the seed and the ingame day
-		/// Essentially, this is a seed that changes once a week (every Monday)
-		/// Seeded on the given string, the farm name, and the days played
-        /// </summary>
-		/// <param name="seed">The seed to use</param>
-        /// <returns>The Random object</returns>
-        public static Random GetWeeklyRNG(string seed)
-        {
-			int time = Game1.Date.TotalDays / 7;
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
-            int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
-
-            return new Random(fullSeed);
-        }
-
-        /// <summary>
-        /// Gets an RNG value based on the seed and the ingame day
-        /// Essentially, this is a seed that changes once every day
-        /// Seeded on the given string, the farm name, and the days played
-        /// <param name="seed">The seed to use</param>
-        /// </summary>
-        /// <returns>The Random object</returns>
-        public static Random GetDailyRNG(string seed)
-        {
-			int time = Game1.Date.TotalDays;
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
-            int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
-
-            return new Random(fullSeed);
-        }
-
-        /// <summary>
-        /// Gets an RNG value based on the farm namd and the given seed
-        /// </summary>
-        /// <param name="seed">The seed to use</param>
-        /// <returns>The Random object</returns>
-        public static Random GetFarmRNG(string seed)
-		{
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
-            int fullSeed = BitConverter.ToInt32(seedvar, 0);
-
-            return new Random(fullSeed);
-        }
-
         /// <summary>
         /// Returns "a" or "an" based on if word begins with vowel
         /// </summary>
@@ -317,7 +138,11 @@ namespace Randomizer
 			}
 
 			word = word.ToLower();
-			if (word.StartsWith("a") || word.StartsWith("e") || word.StartsWith("i") || word.StartsWith("o") || word.StartsWith("u"))
+			if (word.StartsWith("a") || 
+				word.StartsWith("e") || 
+				word.StartsWith("i") || 
+				word.StartsWith("o") || 
+				word.StartsWith("u"))
 				return "an";
 			else
 				return "a";
@@ -332,37 +157,6 @@ namespace Randomizer
 		public static string GetStringStart(string input, int length)
 		{
 			return input.Length < length ? input : input[..length];
-		}
-
-		/// <summary>
-		/// Replace one method with another
-		/// Credit goes here: https://stackoverflow.com/questions/7299097/dynamically-replace-the-contents-of-a-c-sharp-method
-		/// NOTE: THIS CODE IS UNSAFE, USE WITH CAUTION
-		/// </summary>
-		/// <param name="methodToReplace">The method to replace</param>
-		/// <param name="methodToInject">The method to replace it with</param>
-		public static void RepointMethod(MethodInfo methodToReplace, MethodInfo methodToInject)
-		{
-			if (methodToReplace == null || methodToInject == null)
-			{
-				return;
-			}
-
-			unsafe
-			{
-				if (IntPtr.Size == 4) // Checks whether we're running on a 32-bit or 64-bit architecture
-				{
-					int* addressToUse = (int*)methodToInject.MethodHandle.Value.ToPointer() + 2;
-					int* addressToReplace = (int*)methodToReplace.MethodHandle.Value.ToPointer() + 2;
-					*addressToReplace = *addressToUse;
-				}
-				else
-				{
-					long* addressTouse = (long*)methodToInject.MethodHandle.Value.ToPointer() + 1;
-					long* addressToReplace = (long*)methodToReplace.MethodHandle.Value.ToPointer() + 1;
-					*addressToReplace = *addressTouse;
-				}
-			}
 		}
 	}
 }

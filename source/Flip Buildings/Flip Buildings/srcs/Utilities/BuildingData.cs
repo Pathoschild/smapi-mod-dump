@@ -19,7 +19,7 @@ using StardewValley.GameData.Buildings;
 
 namespace FlipBuildings.Utilities
 {
-	internal class BuildingDataHelper
+	internal class BuildingDataUtility
 	{
 		/// <summary>The cached data for flipped buildings from <c>Data/Buildings</c>.</summary>
 		public static IDictionary<string, BuildingData> flippedBuildingData;

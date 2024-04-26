@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "name": "Passable Descents",
+  "author": "Rokugin",
+  "version": "2.0.0",
+  "description": "Makes ladders and shafts passable.",
+  "uniqueID": "Rokugin.PassableDescents",
+  "entryDLL": "PassableDescents.dll",
+  "minimumapiversion": "4.0.0",
+  "updatekeys": [ "Nexus:22592" ]
+}

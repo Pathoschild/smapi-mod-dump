@@ -1,10 +1,13 @@
 {
   "Farmer": {
-    "EggAllergy": false,
-    "WheatAllergy": false,
-    "FishAllergy": false,
-    "ShellfishAllergy": false,
-    "TreenutAllergy": false,
-    "DairyAllergy": false
+    "Allergies": {
+      "egg": false,
+      "wheat": false,
+      "fish": false,
+      "shellfish": false,
+      "treenuts": false,
+      "dairy": false,
+      "mushroom": false
+    }
   }
 }

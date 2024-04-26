@@ -1,0 +1,10 @@
+{
+  "Name": "Brighter Building Paint",
+  "Author": "tem696969696969",
+  "Version": "1.0.0",
+  "Description": "Robin finally bought some brighter paint.",
+  "UniqueID": "tem696969696969.BrighterBuildingPaint",
+  "EntryDll": "BrighterBuildingPaint.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22807" ]
+}

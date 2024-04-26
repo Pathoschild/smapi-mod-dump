@@ -110,24 +110,26 @@ namespace SkillfulClothes.Types
         }
 
         public static Shop GetShop(this ShopMenu shopMenu)
-        {
-            if (Game1.currentLocation.Name.ToLower() == "jojamart") // todo
+        { 
+            switch (shopMenu.ShopId.ToLower())
             {
-                return Shop.JojaMarket;
+                case "seedshop": return Shop.Pierre;                        
+                case "joja": return Shop.JojaMarket;
+                case "adventureshop": return Shop.AdventureGuild;
+                case "carpenter": return Shop.Robin;
+                case "animalshop": return Shop.Marnie;
+                case "blacksmith":
+                case "clintupgrade":
+                    return Shop.Clint;
+                case "dwarf": return Shop.Dwarf;
+                case "fishshop": return Shop.Willy;
+                    // hatmouse
+                    // qigemshop
+                    // saloon
+                    // sandy
+                    // bookseller
+                    // shadowshop
             }
-
-            if (Game1.currentLocation.Name.ToLower() == "adventureguild")
-            {
-                return Shop.AdventureGuild;
-            }
-
-            // resolve shop by NPC
-            
-            if (Enum.TryParse(shopMenu.portraitPerson?.Name ?? "", true, out Shop shop))
-            {
-                return shop;
-            }
-
             return Shop.None;
         }
 

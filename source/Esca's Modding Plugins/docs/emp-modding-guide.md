@@ -70,7 +70,7 @@ Note that if the location and tile both have this property, the tile property wi
 ![Esca.EMP/DestroyableBushes: true](images/DestroyableBushes_MapProperty.png)
 
 ## Fish Locations
-This feature allows players to catch different groups of fish at a single in-game location (a.k.a. map). It gives mods more control over which fish are used from the [Data/Locations](https://stardewvalleywiki.com/Modding:Location_data) asset. It can also control whether crab pots catch "ocean" or "freshwater" animals from the [Data/Fish](https://stardewvalleywiki.com/Modding:Fish_data) asset.
+This feature allows players to catch different groups of fish at a single in-game location (a.k.a. map). It gives mods a simple way to control which fish are used from the [Data/Locations](https://stardewvalleywiki.com/Modding:Location_data) asset. It can also control what crab pots will catch from the [Data/Fish](https://stardewvalleywiki.com/Modding:Fish_data) asset (e.g. ocean, freshwater, or custom types).
 
 Mods can use this feature with two different methods: editing a data asset or using tile properties. See each section below for more information.
 
@@ -79,15 +79,15 @@ The asset has higher priority, so if both the asset and tile property are used f
 ### Using tile properties
 Fish locations can be controlled with this `Back`-layer tile property: `Esca.EMP/FishLocations`
 
-The property's value uses this format: `<UseZone> [UseLocation] [UseOceanCrabPots]`
+The property's value uses this format: `<UseLocation> [UseTile] [UseCrabPotTypes]`
 
 Field | Value | Example | Required? | Description
 ------|-------|---------|-----------|------------
-UseZone | Any integer | `-1` | Required | Only fish with this "zone" ID in Data/Locations can be caught here. Note: Fish with `-1` can be caught in any zone.
-UseLocation | A location name | `Mountain` | Optional | Fish caught here will come from this location's data. Refer to the keys (location names) in Data/Locations.
-UseOceanCrabPots | true or false | `false` | Optional | Crab pots here will catch "ocean" results if this is true, or "freshwater" results if this is false.
+UseLocation | A location name or "null" | `Mountain` | Required | Fish caught here will come from this location's data. If the word "null" is used, the location won't be changed. Refer to the keys (location names) in Data/Locations, but note that every farm type uses the name "Farm" in-game.
+UseTile | X and Y integers | `50 20` | Optional | Fish caught here will come from this tile's data instead. In some cases, this can be used to control which fish area is used in Data/Locations.
+UseCrabPotTypes | "freshwater", "ocean", or custom crab types | `ocean` | Optional | **These names are case-sensitive.** Crab pots at this tile will catch any "trap" results with these type names in Data/Fish. Stardew's official types are "freshwater" and "ocean". Multiple types can be used, separated by spaces.
 
-Below is an example tile property where fish will be caught from the Forest's river and pots will catch "freshwater" results: `-1 Forest false`
+Below is an example tile property where fish will be caught from the Forest's pond, and pots will catch "freshwater" results: `Forest 30 30 freshwater`
 
 ![Esca.EMP/FishLocations: -1 Forest false](images/FishLocations_TileProperty.png)
 
@@ -96,24 +96,24 @@ EMP adds this data asset to Stardew: `"Mods/Esca.EMP/FishLocations"`
 
 The asset can be edited with Content Patcher's "EditData" action like any other data asset. SMAPI (C#) mods can also edit the asset with "IAssetEditor" methods.
 
-Below is an example content.json file for a Content Patcher mod. This example changes some areas of the Farm to catch fish from the Forest's river, and crab pots there will catch "freshwater" results.
+Below is an example content.json file for a Content Patcher mod. This example changes some areas of the Farm to catch fish from the Forest's pond, and crab pots there will catch "freshwater" results.
 ```js
 {
-  "Format": "1.23.0",
+  "Format": "2.0.0",
   "Changes": [
     {
       "Action": "EditData",
       "Target": "Mods/Esca.EMP/FishLocations",
       "Entries": {
         "YourName.ExampleMod 1": {  /* give the entry a unique key */
-        "Locations": [ "Farm" ],    /* this entry affects the farm */
+          "Locations": [ "Farm" ],    /* this entry affects the farm */
           "TileAreas": [
             {"X":0, "Y":0, "Width": 50, "Height": 50}, /* this entry affects tiles 0,0 - 49,49 */
             {"X":80, "Y":90, "Width": 2, "Height": 4}  /* this entry affects tiles 80,90 - 81,93 */
           ],
           "UseLocation": "Forest",  /* use fish from the "Forest" data in Data/Locations */
-          "UseZone": 0,             /* use fish set to zone 0 (river) or -1 (everywhere) in Data/Locations */
-          "UseOceanCrabPots": false /* use "freshwater" crab pot results from Data/Fish */
+          "UseTile": {"X": 30, "Y": 30}, /* use fish from this tile, which is in the forest's lake */
+          "UseCrabPotTypes": ["freshwater"], /* use crabs from the freshwater category in Data/Fish */
         }
       }
     }
@@ -126,11 +126,11 @@ Each entry in this asset can include the following fields:
 Field | Value | Example | Required? | Description
 ------|-------|---------|-----------|------------
 (entry key) | Any unique string | `"YourName.ExampleMod 1"` | Required | A unique key for this entry. Including your mod's [UniqueID](https://www.stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest) is recommended.
-Locations | A list of location names | `["Farm", "BusStop"]` | Required | A list of locations (maps) this entry will affect.
+Locations | A list of location names | `["Farm", "BusStop"]` | Required | A list of locations (maps) this entry will affect. Refer to the keys (location names) in Data/Locations, but note that every farm type uses the name "Farm" in-game.
 TileAreas | A list of tile areas | `[ {"X":0, "Y":0, "Width":999, "Height":999} ]` | Required | A list of tile areas this entry will affect. The earlier example will affect the entire map.
-UseZone | Any integer | `-1` | Optional | Only fish with this "zone" ID in Data/Locations can be caught here. Note: Fish with `-1` can be caught in any zone.
 UseLocation | A location name | `"Mountain"` | Optional | Fish caught here will come from this location's data. Refer to the keys (location names) in Data/Locations.
-UseOceanCrabPots | true or false | `false` | Optional | Crab pots here will catch "ocean" results if this is true, or "freshwater" results if this is false.
+UseTile | X and Y integers | `{"X": 50, "Y": 20}` | Optional | Fish caught here will come from this tile's data instead. In some cases, this can be used to control which fish area is used in Data/Locations.
+UseCrabPotTypes | A list of crab type names | `ocean` | Optional | **These names are case-sensitive.** Crab pots at this tile will catch any "trap" results with these type names in Data/Fish. Stardew's official types are "freshwater" and "ocean".
 Priority | Any integer | `0` | Optional | If a tile is affected by more than one entry, the entry will the highest priority will be used. 0 if not provided.
 
 ## Kitchen Features

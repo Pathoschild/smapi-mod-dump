@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-using StardewValley.GameData;
+using StardewValley.GameData.Objects;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace Randomizer
@@ -49,42 +48,65 @@ namespace Randomizer
             "fish_secret_pond", // secret pond
             "fish_swamp", // swamp
             "fish_mines", // mines
-            "fish_desert" // desert
+            "fish_desert", // desert
+            "fish_night_market", // submarine
+            "fish_sewers" // sewers
         };
 
         /// <summary>
-        /// Gets the adjustsmemts to object tags - currently just fish
+        /// Adjusts the context tags of all relevant objects
+        /// Currently, this only adjusts fish context tags, 
+        /// as they're needed for the Biome Balance special order
         /// </summary>
-        /// <returns>The dictionary of replacements</returns>
-        public static Dictionary<string, string> GetObjectContextTagAdjustments()
+        /// <returns>The object data replacements, containing the ContextTag info</returns>
+        public static void AdjustContextTags(Dictionary<string, ObjectData> objectDataReplacements)
         {
-            Dictionary<string, string> adjustments = new();
             if (!Globals.Config.Fish.Randomize)
             {
-                return adjustments;
+                return;
             }
-
-            Dictionary<string, string> contextTagData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, string>>("Data/ObjectContextTags");
 
             FishItem.GetListAsFishItem(includeLegendaries: true).ForEach(fishItem =>
             {
-                string fishKey = fishItem.EnglishName;
-                adjustments[fishKey] = AdjustFishItemTags(fishItem, contextTagData[fishKey]);
-            });
+                ObjectData objectDataToEdit = GetAndSetObjectDataToEdit(
+                    objectDataReplacements,
+                    fishItem.Id.ToString());
 
-            return adjustments;
+                AdjustFishItemTags(fishItem, objectDataToEdit);
+            });
+        }
+
+        /// <summary>
+        /// Gets the object data to edit, and sets it to our object data replacements
+        /// if it's not in there already
+        /// </summary>
+        /// <param name="objectDataReplacements">The replacement dictionary - grabs from here if present</param>
+        /// <param name="id">The fish id</param>
+        /// <returns>The data to edit, either from the dictionar if found, or from the default info</returns>
+        private static ObjectData GetAndSetObjectDataToEdit(
+            Dictionary<string, ObjectData> objectDataReplacements,
+            string id)
+        {
+            if (objectDataReplacements.ContainsKey(id))
+            {
+                return objectDataReplacements[id];
+            }
+
+            ObjectData dataToEdit = EditedObjects.DefaultObjectInformation[id];
+            objectDataReplacements[id] = dataToEdit;
+            return dataToEdit;
         }
 
         /// <summary>
         /// Adjusts the given fish's tags
+        /// - First, removes the tags that we're modifying
+        /// - Then adds the tags back on (season and habitat)
         /// </summary>
         /// <param name="fishItem">The fish item</param>
-        /// <param name="tagList">The fish's current tag list</param>
-        /// <returns>The new tag list</returns>
-        private static string AdjustFishItemTags(FishItem fishItem, string tagList)
+        /// <param name="objectData">The object to adjust</param>
+        private static void AdjustFishItemTags(FishItem fishItem, ObjectData objectData)
         {
-            List<string> tags = tagList.Split(",").Select(x => x.Trim()).ToList();
+            var tags = objectData.ContextTags;
             List<string> tagsWithoutFishInfo = tags
                 .Except(SeasonTags.Concat(FishHabitatTags))
                 .ToList();
@@ -92,7 +114,10 @@ namespace Randomizer
             List<string> seasonTags = GetSeasonTags(fishItem);
             List<string> habitatTags = GetHabitatTags(fishItem);
 
-            return string.Join(", ", tags.Concat(seasonTags).Concat(habitatTags));
+            objectData.ContextTags = tagsWithoutFishInfo
+                .Concat(seasonTags)
+                .Concat(habitatTags)
+                .ToList();
         }
 
         /// <summary>
@@ -147,6 +172,12 @@ namespace Randomizer
                         break;
                     case Locations.Desert:
                         habitatTags.Add("fish_desert");
+                        break;
+                    case Locations.Submarine:
+                        habitatTags.Add("fish_night_market");
+                        break;
+                    case Locations.Sewer:
+                        habitatTags.Add("fish_sewers");
                         break;
                 }
             });

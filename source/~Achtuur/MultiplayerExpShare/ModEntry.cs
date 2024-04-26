@@ -141,8 +141,8 @@ internal class ModEntry : Mod
     public static bool IsInRange(Farmer other_farmer)
     {
 
-        int dx = Game1.player.getTileX() - other_farmer.getTileX();
-        int dy = Game1.player.getTileY() - other_farmer.getTileY();
+        int dx = (int) (Game1.player.Tile.X - other_farmer.Tile.X);
+        int dy = (int) (Game1.player.Tile.Y - other_farmer.Tile.Y);
 
         return dx * dx + dy * dy <= Instance.Config.NearbyPlayerTileRange * Instance.Config.NearbyPlayerTileRange;
     }
@@ -382,13 +382,11 @@ internal class ModEntry : Mod
         if (e.FromModID == this.ModManifest.UniqueID && (e.Type == "SharedExpGained" || e.Type == "SharedExpGainedSpaceCore"))
         {
             ExpGainData msg_expdata = e.ReadAs<ExpGainData>();
-
             // if the source is self or self was not nearby, don't add exp
             if (msg_expdata.actor_multiplayerid == Game1.player.UniqueMultiplayerID || !msg_expdata.nearby_farmer_ids.Contains(Game1.player.UniqueMultiplayerID))
                 return;
 
             Farmer nearby_actor = GetFarmerFromMultiplayerID(msg_expdata.actor_multiplayerid);
-
             SpawnParticles(nearby_actor, Game1.player, msg_expdata.skill_id, msg_expdata.amount);
 
             AchtuurCore.Logger.DebugLog(Instance.Monitor, $"Received {msg_expdata.amount} exp in {msg_expdata.skill_id} from ({nearby_actor.Name})!");

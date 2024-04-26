@@ -55,7 +55,7 @@ namespace SkillfulClothes.Configuration
     public class CustomEffectItemDefinition
     {
         /// <summary>
-        /// Numerical id of the item or a well-known name
+        /// Id of the item or a well-known name
         /// </summary>        
         public string ItemIdentifier { get; }
         public IEffect Effect { get; }

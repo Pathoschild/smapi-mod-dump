@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EverlastingBaitsAndUnbreaka
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterRetainingFieldMod", "WaterRetainingFieldMod\WaterRetainingFieldMod.csproj", "{FCAFBC46-6562-4BD5-9DCC-3B5A2689EABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCrystalariumMod", "CustomCrystalariumMod\CustomCrystalariumMod.csproj", "{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCrystalariumMod", "CustomCrystalariumMod\CustomCrystalariumMod.csproj", "{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CropTransplantMod", "CropTransplantMod\CropTransplantMod.csproj", "{0BD2ED3E-EB53-4003-93E7-C46B9E95AC9F}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "[PFM]CustomProducerMod", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPJAProducerConverter", "PPJAProducerConverter\PPJAProducerConverter.csproj", "{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFMAutomate", "PFMAutomate\PFMAutomate.csproj", "{811039FD-5162-4CE3-B13E-972AC5EC9A17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PFMAutomate", "PFMAutomate\PFMAutomate.csproj", "{811039FD-5162-4CE3-B13E-972AC5EC9A17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailServicesMod", "MailServicesMod\MailServicesMod.csproj", "{E5E82134-CB84-4E97-AA3F-E067B0C697B2}"
 EndProject
@@ -49,8 +49,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Debug|x86.ActiveCfg = Debug|x86
-		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Debug|x86.Build.0 = Debug|x86
+		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Debug|x86.Build.0 = Debug|Any CPU
 		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Release|x86.ActiveCfg = Release|x86
@@ -164,7 +164,8 @@ Global
 		{E3288291-E574-4CDA-86AE-475439D855E4}.Release|Any CPU.ActiveCfg = Release|x86
 		{E3288291-E574-4CDA-86AE-475439D855E4}.Release|x86.ActiveCfg = Release|x86
 		{E3288291-E574-4CDA-86AE-475439D855E4}.Release|x86.Build.0 = Release|x86
-		{482DA12A-F70B-4353-8BDC-421116063C96}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{482DA12A-F70B-4353-8BDC-421116063C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{482DA12A-F70B-4353-8BDC-421116063C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{482DA12A-F70B-4353-8BDC-421116063C96}.Debug|x86.ActiveCfg = Debug|x86
 		{482DA12A-F70B-4353-8BDC-421116063C96}.Debug|x86.Build.0 = Debug|x86
 		{482DA12A-F70B-4353-8BDC-421116063C96}.Release|Any CPU.ActiveCfg = Release|x86
@@ -176,7 +177,7 @@ Global
 		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Release|Any CPU.ActiveCfg = Release|x86
 		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Release|x86.ActiveCfg = Release|x86
 		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Release|x86.Build.0 = Release|x86
-		{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}.Debug|x86.ActiveCfg = Debug|x86
 		{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}.Debug|x86.Build.0 = Debug|x86
 		{D23D5ED0-109B-4F84-8BAF-26278CC7F7E9}.Release|Any CPU.ActiveCfg = Release|x86

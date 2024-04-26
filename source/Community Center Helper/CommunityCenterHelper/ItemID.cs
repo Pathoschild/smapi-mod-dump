@@ -13,7 +13,7 @@ namespace CommunityCenterHelper
     /// <summary>Constants for item IDs and Big Craftable IDs..</summary>
     public class ItemID
     {
-        // Item IDs
+        // Base Game Item IDs
         public const string IT_WildHorseradish = "16";
         public const string IT_Daffodil = "18";
         public const string IT_Leek = "20";
@@ -42,13 +42,16 @@ namespace CommunityCenterHelper
         public const string IT_DwarfScroll4 = "99";
         
         public const string IT_AncientDoll = "103";
+        public const string IT_ChewingStick = "105";
         public const string IT_DinosaurEgg = "107";
         public const string IT_AncientSword = "109";
         public const string IT_RustyCog = "112";
         public const string IT_ChickenStatue = "113";
         public const string IT_AncientSeedArtifact = "114";
         public const string IT_GlassShards = "118";
+        public const string IT_BoneFlute = "119";
         public const string IT_DwarfGadget = "122";
+        public const string IT_GoldenMask = "124";
         public const string IT_Pufferfish = "128";
         public const string IT_Anchovy = "129";
         public const string IT_Tuna = "130";
@@ -109,7 +112,9 @@ namespace CommunityCenterHelper
         
         public const string IT_VegetableMedley = "200";
         public const string IT_CompleteBreakfast = "201";
+        public const string IT_FriedCalamari = "202";
         public const string IT_FriedMushroom = "205";
+        public const string IT_Pizza = "206";
         public const string IT_GlazedYams = "208";
         public const string IT_Hashbrowns = "210";
         public const string IT_Pancakes = "211";
@@ -121,7 +126,8 @@ namespace CommunityCenterHelper
         public const string IT_TomKhaSoup = "218";
         public const string IT_TroutSoup = "219";
         public const string IT_PinkCake = "221";
-        public const string IT_Cookie = "223";
+        public const string IT_Cookies = "223";
+        public const string IT_Spaghetti = "224";
         public const string IT_SpicyEel = "226";
         public const string IT_Sashimi = "227";
         public const string IT_MakiRoll = "228";
@@ -130,12 +136,14 @@ namespace CommunityCenterHelper
         public const string IT_EggplantParmesan = "231";
         public const string IT_RicePudding = "232";
         public const string IT_IceCream = "233";
+        public const string IT_BlueberryTart = "234";
         public const string IT_AutumnsBounty = "235";
         public const string IT_PumpkinSoup = "236";
         public const string IT_SuperMeal = "237";
         public const string IT_CranberrySauce = "238";
         public const string IT_Stuffing = "239";
         public const string IT_SurvivalBurger = "241";
+        public const string IT_MinersTreat = "243";
         public const string IT_RootsPlatter = "244";
         public const string IT_WheatFlour = "246";
         public const string IT_Oil = "247";
@@ -171,9 +179,12 @@ namespace CommunityCenterHelper
         public const string IT_Cranberries = "282";
         public const string IT_Holly = "283";
         public const string IT_Beet = "284";
+        public const string IT_CherryBomb = "286";
         public const string IT_Bomb = "287";
         public const string IT_MegaBomb = "288";
+        public const string IT_MahoganySeed = "292";
         public const string IT_Salmonberry = "296";
+        public const string IT_GrassStarter = "297";
         
         public const string IT_Amaranth = "300";
         public const string IT_PaleAle = "303";
@@ -225,8 +236,10 @@ namespace CommunityCenterHelper
         public const string IT_CommonMushroom = "404";
         public const string IT_WildPlum = "406";
         public const string IT_Hazelnut = "408";
+        public const string IT_CrystalPath = "409";
         public const string IT_Blackberry = "410";
         public const string IT_WinterRoot = "412";
+        public const string IT_BlueSlimeEgg = "413";
         public const string IT_CrystalFruit = "414";
         public const string IT_SnowYam = "416";
         public const string IT_SweetGemBerry = "417";
@@ -246,14 +259,22 @@ namespace CommunityCenterHelper
         public const string IT_RedSlimeEgg = "437";
         public const string IT_LargeGoatMilk = "438";
         public const string IT_Wool = "440";
+        public const string IT_ExplosiveAmmo = "441";
         public const string IT_DuckEgg = "442";
         public const string IT_DuckFeather = "444";
         public const string IT_Caviar = "445";
         public const string IT_RabbitsFoot = "446";
         public const string IT_AgedRoe = "447";
         public const string IT_AncientFruit = "454";
+        public const string IT_AlgaeSoup = "456";
+        public const string IT_PaleBroth = "457";
         public const string IT_Bouquet = "458";
         public const string IT_Mead = "459";
+        public const string IT_FluteBlock = "464";
+        public const string IT_SpringSeeds = "495";
+        public const string IT_SummerSeeds = "496";
+        public const string IT_FallSeeds = "497";
+        public const string IT_WinterSeeds = "498";
         public const string IT_AncientSeeds = "499";
         
         public const string IT_Geode = "535";
@@ -301,6 +322,7 @@ namespace CommunityCenterHelper
         public const string IT_CranberryCandy = "612";
         public const string IT_Apple = "613";
         public const string IT_GreenTea = "614";
+        public const string IT_Bruschetta = "618";
         public const string IT_Apricot = "634";
         public const string IT_Orange = "635";
         public const string IT_Peach = "636";
@@ -310,6 +332,7 @@ namespace CommunityCenterHelper
         public const string IT_PoppyseedMuffin = "651";
         public const string IT_MutantCarp = "682";
         public const string IT_BugMeat = "684";
+        public const string IT_Bait = "685";
         public const string IT_WarpTotemFarm = "688";
         public const string IT_Sturgeon = "698";
         public const string IT_TigerTrout = "699";
@@ -339,6 +362,7 @@ namespace CommunityCenterHelper
         public const string IT_Chowder = "727";
         public const string IT_FishStew = "728";
         public const string IT_Escargot = "729";
+        public const string IT_LobsterBisque = "730";
         public const string IT_MapleBar = "731";
         public const string IT_CrabCakes = "732";
         public const string IT_ShrimpCocktail = "733";
@@ -364,25 +388,38 @@ namespace CommunityCenterHelper
         public const string IT_SpookFish = "799";
         
         public const string IT_Blobfish = "800";
+        public const string IT_TreeFertilizer = "805";
         public const string IT_DinosaurMayonnaise = "807";
         public const string IT_Roe = "812";
         public const string IT_SquidInk = "814";
         public const string IT_TeaLeaves = "815";
+        public const string IT_BugSteak = "874";
+        public const string IT_MonsterMusk = "879";
         public const string IT_BoneFragment = "881";
+        public const string IT_SquidInkRavioli = "921";
 
+        public const string IT_Broccoli = "Broccoli";
+        public const string IT_BroccoliSeeds = "BroccoliSeeds";
+        public const string IT_Carrot = "Carrot";
+        public const string IT_CarrotSeeds = "CarrotSeeds";
+        public const string IT_CaveJelly = "CaveJelly";
+        public const string IT_DeluxeBait = "DeluxeBait";
+        public const string IT_DriedFruit = "DriedFruit";
+        public const string IT_DriedMushrooms = "DriedMushrooms";
         public const string IT_MysteryBox = "MysteryBox";
         public const string IT_Moss = "Moss";
+        public const string IT_MossSoup = "MossSoup";
+        public const string IT_Powdermelon = "Powdermelon";
+        public const string IT_PowdermelonSeeds = "PowdermelonSeeds";
         public const string IT_PrizeTicket = "PrizeTicket";
-        public const string IT_CarrotSeeds = "CarrotSeeds";
-        public const string IT_Carrot = "Carrot";
+        public const string IT_Raisins = "Raisins";
+        public const string IT_RiverJelly = "RiverJelly";
+        public const string IT_SmokedFish = "SmokedFish";
         public const string IT_SummerSquashSeeds = "SummerSquashSeeds";
         public const string IT_SummerSquash = "SummerSquash";
-        public const string IT_BroccoliSeeds = "BroccoliSeeds";
-        public const string IT_Broccoli = "Broccoli";
-        public const string IT_PowdermelonSeeds = "PowdermelonSeeds";
-        public const string IT_Powdermelon = "Powdermelon";
-       
-        // More Fish Mod Item IDs (check that "MoreFish" is loaded before use)
+        public const string IT_TentKit = "TentKit";
+        
+        // Old More Fish Mod Item IDs
         public const string MFM_ClownKnifefish = "1056";
         public const string MFM_BlueRingedOctopus = "1059";
         public const string MFM_Barreleye = "1062";
@@ -440,6 +477,183 @@ namespace CommunityCenterHelper
         public const string MFM_TigerFish = "1154";
         public const string MFM_Coelacanth = "1184";
         
+        // More New Fish (new version of More Fish Mod) Item IDs
+        public const string MNF_ClownKnifefish = "MNF.MoreNewFish_clown_knifefish";
+        public const string MNF_BlueRingedOctopus = "MNF.MoreNewFish_blue_ringed_octopus";
+        public const string MNF_Barreleye = "MNF.MoreNewFish_barreleye";
+        public const string MNF_FreshwaterPufferfish = "MNF.MoreNewFish_freshwater_pufferfish";
+        public const string MNF_TrappedSoul = "MNF.MoreNewFish_trapped_soul";
+        public const string MNF_RibbonEel = "MNF.MoreNewFish_ribbon_eel";
+        public const string MNF_GhostEel = "MNF.MoreNewFish_ghost_eel";
+        public const string MNF_Anochoviella = "MNF.MoreNewFish_anchoviella";
+        public const string MNF_Hagfish = "MNF.MoreNewFish_hagfish";
+        public const string MNF_GreenTerror = "MNF.MoreNewFish_green_terror";
+        public const string MNF_ClownLoach = "MNF.MoreNewFish_clown_loach";
+        public const string MNF_YamabukiKoi = "MNF.MoreNewFish_yamabuki_koi";
+        public const string MNF_GhostKoi = "MNF.MoreNewFish_ghost_koi";
+        public const string MNF_ShiroUtsuriKoi = "MNF.MoreNewFish_shiro_utsuri_koi";
+        public const string MNF_RedtailShark = "MNF.MoreNewFish_redtail_shark";
+        public const string MNF_Elephantfish = "MNF.MoreNewFish_elephantfish";
+        public const string MNF_Sauger = "MNF.MoreNewFish_sauger";
+        public const string MNF_Pacu = "MNF.MoreNewFish_pacu";
+        public const string MNF_CommonPleco = "MNF.MoreNewFish_common_pleco";
+        public const string MNF_SnowballPleco = "MNF.MoreNewFish_snowball_pleco";
+        public const string MNF_Ide = "MNF.MoreNewFish_ide";
+        public const string MNF_Pangasius = "MNF.MoreNewFish_pangasius";
+        public const string MNF_Trahira = "MNF.MoreNewFish_trahira";
+        public const string MNF_BlueDragonSlug = "MNF.MoreNewFish_blue_dragon_slug";
+        public const string MNF_Nautilus = "MNF.MoreNewFish_nautilus";
+        public const string MNF_Starfish = "MNF.MoreNewFish_starfish";
+        public const string MNF_CrownOfThornsStarfish = "MNF.MoreNewFish_crown_of_thorns_starfish";
+        
+        public const string MNF_HolyGrenadeStarfish = "MNF.MoreNewFish_holy_grenade_starfish";
+        public const string MNF_FreshwaterShrimp = "MNF.MoreNewFish_freshwater_shrimp";
+        public const string MNF_BriefSquid = "MNF.MoreNewFish_brief_squid";
+        public const string MNF_Prawn = "MNF.MoreNewFish_prawn";
+        public const string MNF_SandDollar = "MNF.MoreNewFish_sand_dollar";
+        public const string MNF_KingCrab = "MNF.MoreNewFish_king_crab";
+        public const string MNF_FreshwaterCrab = "MNF.MoreNewFish_freshwater_crab";
+        public const string MNF_Ladyfish = "MNF.MoreNewFish_ladyfish";
+        public const string MNF_KohakuKoi = "MNF.MoreNewFish_kohaku_koi";
+        public const string MNF_ZebraTilapia = "MNF.MoreNewFish_zebra_tilapia";
+        public const string MNF_Tucunare = "MNF.MoreNewFish_tucunare";
+        public const string MNF_SmallMantaRay = "MNF.MoreNewFish_small_manta_ray";
+        public const string MNF_Blinky = "MNF.MoreNewFish_blinky";
+        public const string MNF_ArcticChar = "MNF.MoreNewFish_arctic_char";
+        public const string MNF_Tench = "MNF.MoreNewFish_tench";
+        public const string MNF_Haddock = "MNF.MoreNewFish_haddock";
+        public const string MNF_SmallSwordfish = "MNF.MoreNewFish_small_swordfish";
+        public const string MNF_Barracuda = "MNF.MoreNewFish_barracuda";
+        public const string MNF_ElectricCatfish = "MNF.MoreNewFish_electric_catfish";
+        public const string MNF_SwimmerCrab = "MNF.MoreNewFish_swimmer_crab";
+        public const string MNF_Glassfish = "MNF.MoreNewFish_glassfish";
+        public const string MNF_Lionhead = "MNF.MoreNewFish_lionhead";
+        public const string MNF_Comet = "MNF.MoreNewFish_comet";
+        public const string MNF_Telescope = "MNF.MoreNewFish_telescope";
+        public const string MNF_Jellyfish = "MNF.MoreNewFish_jellyfish";
+        public const string MNF_Lungfish = "MNF.MoreNewFish_lungfish";
+        public const string MNF_TigerFish = "MNF.MoreNewFish_tigerfish";
+        public const string MNF_Coelacanth = "MNF.MoreNewFish_coelacanth";
+        
+        // Cornucopia Item IDs
+        public const string CNC_Asparagus = "Cornucopia_Asparagus";
+        public const string CNC_Avocado = "Cornucopia_Avocado";
+        public const string CNC_AvocadoSapling = "Cornucopia_AvocadoSapling";
+        public const string CNC_Barley = "Cornucopia_Barley";
+        public const string CNC_Basil = "Cornucopia_Basil";
+        public const string CNC_BellPepper = "Cornucopia_BellPepper";
+        public const string CNC_BlueMist = "Cornucopia_BlueMist";
+        public const string CNC_Chives = "Cornucopia_Chives";
+        public const string CNC_Chrysanthemum = "Cornucopia_Chrysanthemum";
+        public const string CNC_ClarySage = "Cornucopia_ClarySage";
+        public const string CNC_CocoaPod = "Cornucopia_CocoaPod";
+        public const string CNC_CottonBoll = "Cornucopia_CottonBoll";
+        public const string CNC_Cucumber = "Cornucopia_Cucumber";
+        public const string CNC_EucalyptusLeaves = "Cornucopia_EucalyptusLeaves";
+        public const string CNC_Fennel = "Cornucopia_Fennel";
+        public const string CNC_Honeysuckle = "Cornucopia_Honeysuckle";
+        public const string CNC_Iris = "Cornucopia_Iris";
+        public const string CNC_Jasmine = "Cornucopia_Jasmine";
+        public const string CNC_Kiwifruit = "Cornucopia_Kiwi";
+        public const string CNC_Lily = "Cornucopia_Lily";
+        public const string CNC_Lime = "Cornucopia_Lime";
+        public const string CNC_Lotus = "Cornucopia_Lotus";
+        public const string CNC_Mint = "Cornucopia_Mint";
+        public const string CNC_MorningGlory = "Cornucopia_MorningGlory";
+        public const string CNC_Olive = "Cornucopia_Olive";
+        public const string CNC_OliveOil = "Cornucopia_OliveOil";
+        public const string CNC_Onion = "Cornucopia_Onion";
+        public const string CNC_Oregano = "Cornucopia_Oregano";
+        public const string CNC_Pansy = "Cornucopia_Pansy";
+        public const string CNC_Papaya = "Cornucopia_Papaya";
+        public const string CNC_PassionFruit = "Cornucopia_PassionFruit";
+        public const string CNC_Peanut = "Cornucopia_Peanut";
+        public const string CNC_Pear = "Cornucopia_Pear";
+        public const string CNC_Peppercorn = "Cornucopia_Peppercorn";
+        public const string CNC_Persimmon = "Cornucopia_Persimmon";
+        public const string CNC_Raspberry = "Cornucopia_Raspberry";
+        public const string CNC_Rose = "Cornucopia_Rose";
+        public const string CNC_Shiitake = "Cornucopia_Shiitake";
+        public const string CNC_Soybeans = "Cornucopia_Soybeans";
+        public const string CNC_Spinach = "Cornucopia_Spinach";
+        public const string CNC_Sugarcane = "Cornucopia_Sugarcane";
+        public const string CNC_SummerRose = "Cornucopia_RoseSummer";
+        public const string CNC_SweetPotato = "Cornucopia_SweetPotato";
+        public const string CNC_Thyme = "Cornucopia_Thyme";
+        public const string CNC_Tofu = "Cornucopia_Tofu";
+        public const string CNC_Turnip = "Cornucopia_Turnip";
+        public const string CNC_Vanilla = "Cornucopia_Vanilla";
+        public const string CNC_Walnut = "Cornucopia_Walnut";
+        public const string CNC_WasabiRoot = "Cornucopia_WasabiRoot";
+        public const string CNC_Watermelon = "Cornucopia_Watermelon";
+        
+        // Stardew Valley Expanded Item IDs
+        public const string SVE_AgedBlueMoonWine = "FlashShifter.StardewValleyExpandedCP_Aged_Blue_Moon_Wine";
+        public const string SVE_AncientFernSeed = "FlashShifter.StardewValleyExpandedCP_Ancient_Ferns_Seed";
+        public const string SVE_AncientFiber = "FlashShifter.StardewValleyExpandedCP_Ancient_Fiber";
+        public const string SVE_BakedBerryOatmeal = "FlashShifter.StardewValleyExpandedCP_Baked_Berry_Oatmeal";
+        public const string SVE_Bearberry = "FlashShifter.StardewValleyExpandedCP_Bearberrys";
+        public const string SVE_BigBarkBurger = "FlashShifter.StardewValleyExpandedCP_Big_Bark_Burger";
+        public const string SVE_BlueMoonWine = "FlashShifter.StardewValleyExpandedCP_Blue_Moon_Wine";
+        public const string SVE_Butterfish = "FlashShifter.StardewValleyExpandedCP_Butterfish";
+        public const string SVE_Clownfish = "FlashShifter.StardewValleyExpandedCP_Clownfish";
+        public const string SVE_Conch = "FlashShifter.StardewValleyExpandedCP_Big_Conch";
+        public const string SVE_DulseSeaweed = "FlashShifter.StardewValleyExpandedCP_Dulse_Seaweed";
+        public const string SVE_Frog = "FlashShifter.StardewValleyExpandedCP_Frog";
+        public const string SVE_GlazedButterfish = "FlashShifter.StardewValleyExpandedCP_Glazed_Butterfish";
+        public const string SVE_GrassCarp = "FlashShifter.StardewValleyExpandedCP_Grass_Carp";
+        public const string SVE_KingSalmon = "FlashShifter.StardewValleyExpandedCP_King_Salmon";
+        public const string SVE_Minnow = "FlashShifter.StardewValleyExpandedCP_Minnow";
+        public const string SVE_MixedBerryPie = "FlashShifter.StardewValleyExpandedCP_Mixed_Berry_Pie";
+        public const string SVE_MushroomBerryRice = "FlashShifter.StardewValleyExpandedCP_Mushroom_Berry_Rice";
+        public const string SVE_MushroomColony = "FlashShifter.StardewValleyExpandedCP_Mushroom_Colony";
+        public const string SVE_Puppyfish = "FlashShifter.StardewValleyExpandedCP_Puppyfish";
+        public const string SVE_RadioactiveBass = "FlashShifter.StardewValleyExpandedCP_Radioactive_Bass";
+        public const string SVE_SalalBerry = "FlashShifter.StardewValleyExpandedCP_Salal_Berry";
+        public const string SVE_SandDollar = "FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar";
+        public const string SVE_ShrubSeed = "FlashShifter.StardewValleyExpandedCP_Shrub_Seed";
+        public const string SVE_Rafflesia = "FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia";
+        public const string SVE_Starfish = "FlashShifter.StardewValleyExpandedCP_Starfish";
+        public const string SVE_VoidDelight = "FlashShifter.StardewValleyExpandedCP_Void_Delight";
+        public const string SVE_VoidPebble = "FlashShifter.StardewValleyExpandedCP_Void_Pebble";
+        public const string SVE_VoidSalmonSushi = "FlashShifter.StardewValleyExpandedCP_Void_Salmon_Sushi";
+        
+        // Ridgeside Village Item IDs
+        public const string RSV_AutumnDropBerry = "Rafseazz.RSVCP_Autumn_Drop_Berry";
+        public const string RSV_CherryPluot = "Rafseazz.RSVCP_Cherry_Pluot";
+        public const string RSV_ClementineCake = "Rafseazz.RSVCP_Clementine_Cake";
+        public const string RSV_CrimsonSpikedClam = "Rafseazz.RSVCP_Crimson_Spiked_Clam";
+        public const string RSV_DesertTangelo = "Rafseazz.RSVCP_Desert_Tangelo";
+        public const string RSV_EmberBloodLime = "Rafseazz.RSVCP_Ember_Blood_Lime";
+        public const string RSV_FairytaleLionfish = "Rafseazz.RSVCP_Fairytale_Lionfish";
+        public const string RSV_FluffyAppleCrumble = "Rafseazz.RSVCP_Fluffy_Apple_Crumble";
+        public const string RSV_ForestAmancay = "Rafseazz.RSVCP_Forest_Amancay";
+        public const string RSV_Foxbloom = "Rafseazz.RSVCP_Foxbloom";
+        public const string RSV_FrostClumpBerry = "Rafseazz.RSVCP_Frost_Clump_Berry";
+        public const string RSV_GoldenRoseFin = "Rafseazz.RSVCP_Golden_Rose_Fin";
+        public const string RSV_HarvesterTrout = "Rafseazz.RSVCP_Harvester_Trout";
+        public const string RSV_HighlandBlueberryPie = "Rafseazz.RSVCP_Highland_Blueberry_Pie";
+        public const string RSV_HighlandIceCream = "Rafseazz.RSVCP_Highland_Ice_Cream";
+        public const string RSV_LavaLily = "Rafseazz.RSVCP_Lava_Lily";
+        public const string RSV_LullabyCarp = "Rafseazz.RSVCP_Lullaby_Carp";
+        public const string RSV_MatchaLatte = "Rafseazz.RSVCP_Matcha_Latte";
+        public const string RSV_MountainChico = "Rafseazz.RSVCP_Mountain_Chico";
+        public const string RSV_MountainMistbloom = "Rafseazz.RSVCP_Mountain_Mistbloom";
+        public const string RSV_MountainPlumcot = "Rafseazz.RSVCP_Mountain_Plumcot";
+        public const string RSV_MountainRedbellyDace = "Rafseazz.RSVCP_Mountain_Redbelly_Dace";
+        public const string RSV_ParadiseRangpur = "Rafseazz.RSVCP_Paradise_Rangpur";
+        public const string RSV_PebbleBackCrab = "Rafseazz.RSVCP_Pebble_Back_Crab";
+        public const string RSV_PillowsoftCheezySandwich = "Rafseazz.RSVCP_Pillowsoft_Cheezy_Sandwich";
+        public const string RSV_RidgeAzoreanFlower = "Rafseazz.RSVCP_Ridge_Azorean_Flower";
+        public const string RSV_RidgeCherry = "Rafseazz.RSVCP_Ridge_Cherry";
+        public const string RSV_RidgesideBass = "Rafseazz.RSVCP_Ridgeside_Bass";
+        public const string RSV_RidgeWildApple = "Rafseazz.RSVCP_Ridge_Wild_Apple";
+        public const string RSV_SierraWintergreen = "Rafseazz.RSVCP_Sierra_Wintergreen";
+        public const string RSV_SpiritualEssence = "Rafseazz.RSVCP_Spiritual_Essence";
+        public const string RSV_SummitSnowbell = "Rafseazz.RSVCP_Summit_Snowbell";
+        public const string RSV_SweetCranberryCheesecake = "Rafseazz.RSVCP_Sweet_Cranberry_Cheesecake";
+        public const string RSV_TropiUgliFruit = "Rafseazz.RSVCP_Tropi_Ugli_Fruit";
+        
         // Big Craftable IDs
         public const string BC_LightningRod = "9";
         public const string BC_BeeHouse = "10";
@@ -453,8 +667,13 @@ namespace CommunityCenterHelper
         public const string BC_MayonnaiseMachine = "24";
         public const string BC_Tapper = "105";
         public const string BC_CharcoalKiln = "114";
+        public const string BC_WormBin = "154";
         public const string BC_SlimeEggPress = "158";
         public const string BC_StatueOfPerfection = "160";
         public const string BC_Cask = "163";
+        
+        public const string BC_Dehydrator = "Dehydrator";
+        public const string BC_DeluxeWormBin = "DeluxeWormBin";
+        public const string BC_FishSmoker = "FishSmoker";
     }
 }

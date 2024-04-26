@@ -8,6 +8,7 @@
   "ImmunityIncreaseAmount": 3,
   "EnableHealth": true,
   "HealthIncreaseAmount": 15,
+  "ResetMaxHealth": false,
   "EnableStamina": true,
   "StaminaIncreaseAmount": 6,
   "EnableCombatLevel": false,

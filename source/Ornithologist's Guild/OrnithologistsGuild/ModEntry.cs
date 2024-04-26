@@ -8,13 +8,8 @@
 **
 *************************************************/
 
-using System.IO;
-using System.Linq;
-using DynamicGameAssets.PackData;
 using HarmonyLib;
 using OrnithologistsGuild.Content;
-using OrnithologistsGuild.Game.Items;
-using SpaceShared.APIs;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -24,9 +19,6 @@ namespace OrnithologistsGuild
     public partial class ModEntry : Mod
     {
         internal static ContentPatcher.IContentPatcherAPI CP;
-
-        internal static DynamicGameAssets.IDynamicGameAssetsApi DGA;
-        internal static ContentPack DGAContentPack;
 
         public static Mod Instance;
 
@@ -41,6 +33,8 @@ namespace OrnithologistsGuild
             // this.Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
 
             this.Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+
+            SaveDataManager.Initialize();
         }
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -103,32 +97,11 @@ namespace OrnithologistsGuild
             if (ConfigManager.Config.LoadBuiltInPack) ContentPackManager.LoadBuiltIn();
             ContentPackManager.LoadExternal();
 
-            // Dynamic Game Assets content pack
-            DGA = Helper.ModRegistry.GetApi<DynamicGameAssets.IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
-            DGA.AddEmbeddedPack(this.ModManifest, Path.Combine(Helper.DirectoryPath, "assets", "dga"));
-            DGAContentPack = DynamicGameAssets.Mod.GetPacks().First(cp => cp.GetManifest().UniqueID == ModManifest.UniqueID);
-
-            // Save serializer
-            var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
-            sc.RegisterSerializerType(typeof(JojaBinoculars));
-            sc.RegisterSerializerType(typeof(AntiqueBinoculars));
-            sc.RegisterSerializerType(typeof(ProBinoculars));
-            sc.RegisterSerializerType(typeof(LifeList));
-
             // Harmony patches
             var harmony = new Harmony(this.ModManifest.UniqueID);
-
-            GameLocationPatches.Initialize(this.Monitor);
-            harmony.Patch(
-               original: AccessTools.Method(typeof(StardewValley.GameLocation), nameof(StardewValley.GameLocation.addBirdies)),
-               prefix: new HarmonyMethod(typeof(GameLocationPatches), nameof(GameLocationPatches.addBirdies_Prefix))
-            );
-
-            TreePatches.Initialize(this.Monitor);
-            harmony.Patch(
-               original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Tree), nameof(StardewValley.TerrainFeatures.Tree.performUseAction)),
-               prefix: new HarmonyMethod(typeof(TreePatches), nameof(TreePatches.performUseAction_Prefix))
-            );
+            GameLocationPatches.Initialize(this.Monitor, harmony);
+            TreePatches.Initialize(this.Monitor, harmony);
+            ObjectPatches.Initialize(this.Monitor, harmony);
 
             RegisterDebugCommands();
         }

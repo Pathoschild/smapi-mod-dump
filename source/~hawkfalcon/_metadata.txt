@@ -8,9 +8,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 5efcba433c0a484d372a82c9ebedac3e5e590ce2
-   Author: hawkfalcon <hello@tristenmiller.me>
-   Date:   Sun Mar 24 15:53:04 2024 -0700
+   commit 65e9e2a6b7cfb1ad4810f8b414290dff85d58769
+   Author: hawkfalcon <contact@hawkfalcon.com>
+   Date:   Thu Apr 18 09:44:24 2024 -0700
    
-       Bump version, fix runtime harmony issue
+       Update README.md to clarify current state
    

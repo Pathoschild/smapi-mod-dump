@@ -1,0 +1,10 @@
+{
+  "ModEnabled": true,
+  "RequireKeyPress": false,
+  "OnlyWhenWatering": false,
+  "IncludeGiantable": false,
+  "RepeatInterval": 0,
+  "OpacityPercent": 75,
+  "SizePercent": 75,
+  "PressKeys": "V"
+}

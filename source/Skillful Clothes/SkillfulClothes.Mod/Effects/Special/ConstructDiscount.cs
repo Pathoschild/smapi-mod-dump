@@ -19,6 +19,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewValley.Tools;
+using static StardewValley.Menus.CarpenterMenu;
+using Force.DeepCloner;
+using StardewValley.GameData.Buildings;
 
 namespace SkillfulClothes.Effects.Special
 {
@@ -44,42 +47,48 @@ namespace SkillfulClothes.Effects.Special
             EffectHelper.ModHelper.Events.Display.MenuChanged += Display_MenuChanged;
         }        
         
-        void applyDiscount(ref int field)
+        int applyDiscount(int value)
         {
-            field = (int)Math.Max(0, field * (1 - Parameters.Discount));
+            return (int)Math.Max(0, value * (1 - Parameters.Discount));
         }
 
         private void Display_MenuChanged(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
         {
             if (Game1.currentLocation?.NameOrUniqueName == "ScienceHouse" && e.NewMenu is CarpenterMenu carpenterMenu)
-            {
-                var blueprints = EffectHelper.ModHelper.Reflection.GetField<List<BluePrint>>(e.NewMenu, "blueprints").GetValue();
-                foreach(var blueprint in blueprints)
+            {                
+                foreach(var blueprint in carpenterMenu.Blueprints)
                 {
-                    applyDiscount(ref blueprint.moneyRequired);
-                    applyDiscount(ref blueprint.woodRequired);
+                    // apply the discount as a skin, otherwise we alter the game's base data directly
+                    BuildingSkin discountedSkin;
 
-                    applyDiscount(ref blueprint.stoneRequired);
-                    applyDiscount(ref blueprint.copperRequired);
-                    applyDiscount(ref blueprint.IronRequired);
-                    applyDiscount(ref blueprint.GoldRequired);
-                    applyDiscount(ref blueprint.IridiumRequired);
-
-                    var items = blueprint.itemsRequired.ToList();
-                    blueprint.itemsRequired.Clear();
-                    foreach (var item in items)
+                    if (blueprint.Skin == null)
                     {
-                        int amount = item.Value;
-                        applyDiscount(ref amount);
+                        discountedSkin = new BuildingSkin();
+                        discountedSkin.BuildCost = applyDiscount(blueprint.Data.BuildCost);
 
-                        if (amount > 0)
+                        if (blueprint.Data.BuildMaterials != null)
                         {
-                            blueprint.itemsRequired.Add(item.Key, amount);
-                        }
-                    }                    
-                }
+                            discountedSkin.BuildMaterials = blueprint.Data.BuildMaterials.Select(x => x.DeepClone()).ToList();
+                        }                        
+                    } else
+                    {
+                        discountedSkin = blueprint.Skin.DeepClone<BuildingSkin>();
+                        discountedSkin.BuildCost = applyDiscount(blueprint.Skin.BuildCost.Value);
+                        
+                    }
 
-                carpenterMenu.setNewActiveBlueprint();
+                    if (discountedSkin.BuildMaterials != null)
+                    {
+                        foreach (var material in discountedSkin.BuildMaterials)
+                        {
+                            material.Amount = applyDiscount(material.Amount);
+                        }
+                    }
+
+                    var skinProp = EffectHelper.ModHelper.Reflection.GetProperty<BuildingSkin>(blueprint, nameof(BlueprintEntry.Skin));
+                    skinProp.SetValue(discountedSkin);                    
+                }
+                carpenterMenu.SetNewActiveBlueprint(0);
 
                 EffectHelper.Overlays.AddSparklingText(new SparklingText(Game1.dialogueFont, $"You received a discount ({Parameters.Discount * 100:0}%)", Color.LimeGreen, Color.Azure), new Vector2(64f, Game1.uiViewport.Height - 64));
             }

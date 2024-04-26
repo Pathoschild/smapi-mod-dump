@@ -17,7 +17,12 @@ namespace BZP_Allergies.Config
     {
         public static void SetupMenuUI(IGenericModConfigMenuApi configMenu, IManifest modManifest)
         {
-            
+            // add a link to config
+            configMenu.AddPageLink(modManifest, "BarleyZP.BzpAllergies_Farmer", () => "Farmer Allergies");
+
+            // switch to page
+            configMenu.AddPage(modManifest, "BarleyZP.BzpAllergies_Farmer", () => "Farmer Allergies");
+
             // add some config options
             configMenu.AddSectionTitle(
                 mod: modManifest,
@@ -25,51 +30,65 @@ namespace BZP_Allergies.Config
             );
             configMenu.AddParagraph(
                 mod: modManifest,
-                text: () => "Eating a food containing an allergen results in a loss of energy and debuffs. Both raw ingredients and cooked foods may cause reactions."
+                text: () => "Eating a food containing an allergen results in a loss of energy and debuffs. Both raw ingredients and derived items may cause reactions."
             );
 
-            configMenu.AddBoolOption(
+
+            List<string> mainAllergies = new()
+            {
+                "egg", "wheat", "fish", "shellfish", "treenuts", "dairy", "mushroom"
+            };
+            mainAllergies.Sort();
+
+            foreach (string id in mainAllergies)
+            {
+                string displayName = AllergenManager.GetAllergenDisplayName(id);
+                configMenu.AddBoolOption(
+                    mod: modManifest,
+                    name: () => displayName,
+                    tooltip: () => "Your farmer will be allergic to any foods containing " + displayName.ToLower() + ".",
+                    getValue: () => ModEntry.Config.Farmer.Allergies.GetValueOrDefault(id, false),
+                    setValue: value => ModEntry.Config.Farmer.Allergies[id] = value
+                );
+            }
+        }
+
+        public static void SetupContentPackConfig(IGenericModConfigMenuApi configMenu, IManifest modManifest, IContentPack pack)
+        {
+            // switch to farmer allergies page
+            configMenu.AddPage(modManifest, "BarleyZP.BzpAllergies_Farmer", () => "Farmer Allergies");
+
+            // add a link to config
+            configMenu.AddPageLink(modManifest, pack.Manifest.UniqueID, () => pack.Manifest.Name);
+
+            // switch to page
+            configMenu.AddPage(modManifest, pack.Manifest.UniqueID, () => "Farmer Allergies");
+
+            // add a link back
+            configMenu.AddPageLink(modManifest, "BarleyZP.BzpAllergies_Farmer", () => "Back");
+
+            // title
+            configMenu.AddSectionTitle(
                 mod: modManifest,
-                name: () => "Eggs",
-                tooltip: () => "Your farmer will be allergic to any foods containing eggs.",
-                getValue: () => ModEntry.Config.Farmer.EggAllergy,
-                setValue: value => ModEntry.Config.Farmer.EggAllergy = value
+                text: () => pack.Manifest.Name
             );
-            configMenu.AddBoolOption(
-                mod: modManifest,
-                name: () => "Wheat",
-                tooltip: () => "Your farmer will be allergic to any foods containing wheat.",
-                getValue: () => ModEntry.Config.Farmer.WheatAllergy,
-                setValue: value => ModEntry.Config.Farmer.WheatAllergy = value
-            );
-            configMenu.AddBoolOption(
-                mod: modManifest,
-                name: () => "Fish",
-                tooltip: () => "Your farmer will be allergic to any foods containing fish.",
-                getValue: () => ModEntry.Config.Farmer.FishAllergy,
-                setValue: value => ModEntry.Config.Farmer.FishAllergy = value
-            );
-            configMenu.AddBoolOption(
-                mod: modManifest,
-                name: () => "Shellfish",
-                tooltip: () => "Your farmer will be allergic to any foods containing shellfish.",
-                getValue: () => ModEntry.Config.Farmer.ShellfishAllergy,
-                setValue: value => ModEntry.Config.Farmer.ShellfishAllergy = value
-            );
-            configMenu.AddBoolOption(
-                mod: modManifest,
-                name: () => "Tree Nuts",
-                tooltip: () => "Your farmer will be allergic to any foods containing tree nuts.",
-                getValue: () => ModEntry.Config.Farmer.TreenutAllergy,
-                setValue: value => ModEntry.Config.Farmer.TreenutAllergy = value
-            );
-            configMenu.AddBoolOption(
-                mod: modManifest,
-                name: () => "Dairy",
-                tooltip: () => "Your farmer will be allergic to any foods containing dairy.",
-                getValue: () => ModEntry.Config.Farmer.DairyAllergy,
-                setValue: value => ModEntry.Config.Farmer.DairyAllergy = value
-            );
+
+            // register options
+            GenericAllergenConfig farmerConfig = ModEntry.Config.Farmer;
+            List<string> sortedAllergens = AllergenManager.ALLERGEN_CONTENT_PACK[pack.Manifest.UniqueID].ToList();
+            sortedAllergens.Sort();
+
+            foreach (var allergen in sortedAllergens)
+            {
+                string displayName = AllergenManager.GetAllergenDisplayName(allergen);
+                configMenu.AddBoolOption(
+                    mod: modManifest,
+                    name: () => displayName,
+                    tooltip: () => "Your farmer will be allergic to any foods containing " + displayName.ToLower() + ".",
+                    getValue: () => ModEntry.Config.Farmer.Allergies.GetValueOrDefault(allergen, false),
+                    setValue: value => ModEntry.Config.Farmer.Allergies[allergen] = value
+                );
+            }
         }
     }
 }

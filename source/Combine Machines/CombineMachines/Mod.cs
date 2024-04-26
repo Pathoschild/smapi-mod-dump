@@ -29,7 +29,7 @@ namespace CombineMachines
 {
     public class ModEntry : Mod
     {
-        public static Version CurrentVersion = new Version(1, 0, 8); // Last updated 3/6/2021 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(1, 10, 1); // Last updated 4/3/2024 (Don't forget to update manifest.json)
 
         private static UserConfig _UserConfig;
         public static UserConfig UserConfig
@@ -66,7 +66,6 @@ namespace CombineMachines
         }
 
         public const string ModDataQuantityKey = "SlayerDharok.CombineMachines.CombinedQuantity";
-        public const string ModDataOutputModifiedKey = "SlayerDharok.CombineMachines.HasModifiedOutputStack";
         public static ModEntry ModInstance { get; private set; }
         public static IMonitor Logger { get { return ModInstance?.Monitor; } }
 
@@ -80,8 +79,7 @@ namespace CombineMachines
 
         internal static void LogTrace(int CombinedQuantity, SObject Machine, Vector2 Position, string PropertyName, double PreviousValue, double NewValueBeforeRounding, double NewValue, double Modifier)
         {
-            ModInstance.Monitor.Log(string.Format("{0}: ({1}) - Modified {2} at ({3},{4}) - Changed {5} from {6} to {7} ({8}% / Desired Value = {9})",
-                nameof(CombineMachines), CombinedQuantity, Machine.DisplayName, Position.X, Position.Y, PropertyName, PreviousValue, NewValue, (Modifier * 100.0).ToString("0.##"), NewValueBeforeRounding), InfoLogLevel);
+            ModInstance.Monitor.Log($"{nameof(CombineMachines)}: ({CombinedQuantity}) - Modified {Machine.DisplayName} at ({Position.X},{Position.Y}) - Changed {PropertyName} from {PreviousValue} to {NewValue} ({(Modifier * 100.0).ToString("0.##")}% / Desired Value = {NewValueBeforeRounding})", InfoLogLevel);
         }
 
         public override void Entry(IModHelper helper)
@@ -104,7 +102,7 @@ namespace CombineMachines
             LoadUserConfig();
 
             DelayHelpers.Entry(helper);
-            ModDataPersistenceHelper.Entry(helper, ModDataQuantityKey, ModDataOutputModifiedKey);
+            ModDataPersistenceHelper.Entry(helper, ModDataQuantityKey);
             PatchesHandler.Entry(helper);
 
             helper.Events.GameLoop.GameLaunched += (sender, e) => TryRegisterGMCM();
@@ -277,7 +275,7 @@ namespace CombineMachines
                             }
                             if (ShowQuantityInfo)
                             {
-                                if (HasHeldObject && HoveredObject.HasModifiedOutput())
+                                if (HasHeldObject && HoveredObject.heldObject.Value.Stack > 1)
                                     RowHeaders.Add(Helper.Translation.Get("ToolTipProducedQuantityLabel"));
                             }
                             if (IsScarecrow)
@@ -312,7 +310,7 @@ namespace CombineMachines
                             }
                             if (ShowQuantityInfo)
                             {
-                                if (HasHeldObject && HoveredObject.HasModifiedOutput())
+                                if (HasHeldObject && HoveredObject.heldObject.Value.Stack > 1)
                                     RowValues.Add(HoveredObject.heldObject.Value.Stack.ToString());
                             }
                             if (IsScarecrow)

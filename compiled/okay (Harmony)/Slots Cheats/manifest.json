@@ -1,0 +1,10 @@
+{
+  "Name": "SlotsCheats",
+  "Author": "Fischkop2",
+  "Version": "1.0.0",
+  "Description": "Change values of the slot machine",
+  "UniqueID": "Fischkop2.SlotsCheats",
+  "EntryDll": "SlotsCheats.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:22574"]
+}

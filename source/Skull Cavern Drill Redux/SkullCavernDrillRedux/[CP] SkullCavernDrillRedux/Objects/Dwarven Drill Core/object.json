@@ -20,15 +20,15 @@
     "ResultCount": 10,
     "Ingredients": [
       {
-        "Object": "Battery Pack",
+        "Object": "787",
         "Count": 2
       },
       {
-        "Object": "Quartz",
+        "Object": "80",
         "Count": 2
       },
       {
-        "Object": "Stone",
+        "Object": "390",
         "Count": 10
       }
     ],

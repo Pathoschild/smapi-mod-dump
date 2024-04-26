@@ -80,8 +80,7 @@ public abstract class Overlay
         // Check if overlay can be drawn
         if (!this.Enabled
             || !Context.IsWorldReady
-            || Game1.menuUp
-            || Game1.player.eventActor
+            || Game1.player.EventActor
             )
             return;
 

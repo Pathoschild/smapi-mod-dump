@@ -1,0 +1,331 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+[
+	{
+		/////////////////////
+		// General Fields
+		/////////////////////
+		
+		// IDs must be unique among events.
+		"Id": "sample_fish_rain",
+		// Type can be Placement or Script, for now. More to come.
+		"Type": "Placement",
+		// Conditions is a list of game state queries and chances.
+		// For every condition that passes, there is a chance %
+		// chance that the event can be selected. Only one condition
+		// needs to pass for the event to be selected.
+		// The weight of the first condition to pass is used to improve
+		// the chances of this event being chosen if more than one event
+		// can appear in the same night. Alternatively, set "IsExclusive"
+		// to true to guarantee the event passes, if it's the first
+		// exclusive event.
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01, "Weight": 1, "IsExclusive": false } ],
+		// Events with higher priorities are sorted first.
+		"Priority": 10,
+		// Where the event should take place. Can be anywhere.
+		"TargetMap": "Farm",
+
+		/////////////////////
+		// Placement Fields
+		/////////////////////
+
+		// A sound that should play while the event happens. Can
+		// be null. Default is null.
+		"SoundName": "slimedead",
+		// A message to show to the player when the event happens. Can
+		// be null. Default is null. Supports tokens.
+		"Message": "[LocalizedText WeatherFishy]",
+		// How long to delay before showing the message.
+		"MessageDelay": 1500,
+		// A placement event can have more than one possible output,
+		// but only the first one to match will be used.
+		"Output": [
+			{
+				// What type of thing should it place? Can be Item,
+				// WildTree, FruitTree, GiantCrop, or ResourceClump.
+				// Default is Item.
+				"Type": "Item",
+
+				// You can optionally include a game state query, but
+				// you don't need to.
+				"Condition": "TRUE",
+				
+				// Item supports the usual item spawn data fields added
+				// to the game in 1.6. In this case, we're selecting
+				// random object items with a category of Fish (-4).
+				"ItemId": "RANDOM_ITEMS (O)",
+				"PerItemCondition": "ITEM_CATEGORY Target -4",
+
+				// For this purpose, MinStack and MaxStack define the
+				// number of the thing that should be placed. In this
+				// case, we're always placing 50, since MaxStack will
+				// default to MinStack.
+				"MinStack": 50
+			}
+		],
+
+		/////////////////////
+		// Side Effects
+		/////////////////////
+		
+		// Events can run triggers as a side effect, allowing you
+		// to set flags, or do anything triggers can do.
+		"SideEffects": [
+			{
+				// Optional condition. This side effect will only run
+				// if this condition passes.
+				"Condition": "TRUE",
+
+				// If this is set to true, the trigger will only run
+				// for the host player and not for farmhands.
+				"HostOnly": true,
+
+				// A list of trigger actions.
+				"Actions": [
+					"AddMoney 5000"
+				]
+			}
+		]
+	},
+
+	{
+		"Id": "sample_treesplosion",
+		"Type": "Placement",
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01 } ],
+		"TargetMap": "Farm",
+
+		"SoundName": "thunder_small",
+		"Message": "[LocalizedText TreeSplode [FarmName]]",
+		"MessageDelay": 2000,
+
+		"Output": [ {
+			"Type": "FruitTree",
+			// When spawning trees, it wants the IDs of
+			// the trees, be they wild or fruit.
+			"RandomItemId": [
+				"628", "629", "630", "631",
+				"632", "633", "69", "835"
+			],
+
+			// When spawning trees or crops, you can set their
+			// growth stage. Use -1 for fully grown.
+			"GrowthStage": -1,
+
+			// With fruit trees, you can set them to have
+			// fruit immediately. This can be anything
+			// from 0 to 3.
+			"InitialFruit": 3,
+			
+			// Trees can only produce fruit when they're in
+			// season, unless you use this. Set it to
+			// DuringSpawn to let them produce fruit during
+			// this event, or Always to let them always
+			// function out of season.
+			"IgnoreSeasons": "DuringSpawn",
+
+			"MinStack": 25
+		} ]
+	},
+	
+	{
+		"Id": "sample_cauliflowering",
+		"Type": "Placement",
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01 } ],
+		"TargetMap": "Forest",
+
+		"SoundName": "crow",
+		"Message": "[LocalizedText Cauliflowering [LocationName Forest]]",
+		"MessageDelay": 3000,
+
+		"Output": [ {
+			"Type": "Crop",
+			// When spawning a crop, the 'ItemId' it wants
+			// is the Id of the crop in Data/Crops, rather
+			// than the harvest item.
+			"ItemId": "474",
+
+			"GrowthStage": -1,
+			// Crops also support IgnoreSeasons.
+			"IgnoreSeasons": "Always",
+
+			"MinStack": 50
+		} ]
+	},
+	
+	{
+		"Id": "sample_cooped_up",
+		"Type": "Placement",
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01 } ],
+		"TargetMap": "Farm",
+
+		"SoundName": "cacklingWitch",
+		"Message": "[LocalizedText CoopedUp [FarmName]]",
+		"MessageDelay": 3000,
+
+		"Output": [ {
+			"Type": "Building",
+			// When spawning a building, the 'ItemId' is
+			// the building's Id in Data/Buildings.
+			"ItemId": "Big Coop",
+
+			// You can use RandomSkinId or SkinId to supply a skin
+			// that should be applied to the new building.
+			"SkinId": null,
+
+			// MinStack, as usual, is how many should be spawned.
+			"MinStack": 1,
+
+			// For buildings, you can spawn them with animals
+			// already present.
+			"Animals": [
+				{
+					"AnimalId": "White Chicken",
+					// You can include random animal Ids.
+					"RandomAnimalId": null,
+					// You can also include skins for animals.
+					"SkinId": null,
+					"RandomSkinId": null,
+					// You can include random names.
+					"RandomName": null,
+					"Name": "[LocalizedText RangerWhite]",
+					"MinFriendship": 800,
+					"MaxFriendship": 1000,
+					"MinHappiness": 128,
+					"MaxHappiness": 255
+				},
+				{
+					"AnimalId": "Brown Chicken",
+					"Name": "[LocalizedText RangerBrown]",
+					"MinFriendship": 600,
+					"MaxFriendship": 800,
+					"MinHappiness": 128,
+					"MaxHappiness": 255
+				},
+				{
+					"AnimalId": "Blue Chicken",
+					"Name": "[LocalizedText RangerBlue]",
+					"MinFriendship": 400,
+					"MaxFriendship": 600,
+					"MinHappiness": 128,
+					"MaxHappiness": 255
+				},
+				{
+					"AnimalId": "Void Chicken",
+					"Name": "[LocalizedText RangerBlack]",
+					"MinFriendship": 0,
+					"MaxFriendship": 200,
+					"MinHappiness": 128,
+					"MaxHappiness": 255
+				},
+				{
+					"AnimalId": "Golden Chicken",
+					"Name": "[LocalizedText RangerGold]",
+					"MinFriendship": 200,
+					"MaxFriendship": 400,
+					"MinHappiness": 128,
+					"MaxHappiness": 255
+				}
+			]
+		} ]
+	},
+
+	{
+		"Id": "sample_chest",
+		"Type": "Placement",
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01 } ],
+		"TargetMap": "Farm",
+
+		"SoundName": "yoba",
+
+		"Output": [ {
+			"Type": "Item",
+			// You can spawn big craftables and furniture as well
+			// and they *should* be placed correctly. This may not
+			// work for modded big craftables.
+			"ItemId": "(BC)StoneChest",
+
+			// When spawning chests or storagefurniture, you can
+			// provide contents that will go into the chest.
+			// This uses item spawn fields, of course, and every
+			// single entry will be evaluated, letting you put a
+			// lot of items into a spawned chest, potentially.
+			"Contents": [
+				{
+					"ItemId": "(O)334",
+					"MinStack": 5,
+					"MaxStack": 20
+				},
+				{
+					"ItemId": "(O)335",
+					"Condition": "RANDOM 0.75",
+					"MinStack": 1,
+					"MaxStack": 15
+				},
+				{
+					"ItemId": "(O)336",
+					"Condition": "RANDOM 0.5",
+					"MinStack": 1,
+					"MaxStack": 10
+				},
+				{
+					"ItemId": "(O)337",
+					"Condition": "RANDOM 0.25",
+					"MinStack": 1,
+					"MaxStack": 5
+				},
+				{
+					"ItemId": "(O)910",
+					"Condition": "RANDOM 0.05",
+					"MaxStack": 2
+				}
+			]
+		} ]
+	},
+
+	{
+		"Id": "sample_crops",
+		"Type": "Placement",
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01 } ],
+		// Just mixing things up a little, to demonstrate that
+		// you can absolutely place things in other maps.
+		"TargetMap": "Town",
+		"SoundName": "yoba",
+		"Output": [ {
+			// GiantCrop is pretty boring, you just give it
+			// the giant crop Ids in the RandomItemId / ItemId
+			// fields, and it picks and spawns them.
+			"Type": "GiantCrop",
+			"RandomItemId": [
+				"Cauliflower",
+				"Melon",
+				"Pumpkin",
+				"Powdermelon"
+			],
+			"MinStack": 50
+		} ]
+	},
+
+	{
+		"Id": "sample_script",
+		// Finally, what you've all been waiting for!
+		"Type": "Script",
+		"Conditions": [ { "Condition": "TRUE", "Chance": 0.01 } ],
+
+		"TargetMap": "Town",
+		// When doing a script, you can override the location's weather
+		// with anything you want. Assuming it's valid weather, of course.
+		"OverrideWeather": "Storm",
+		// You can also set the time of day.
+		"TimeOfDay": "2200",
+
+		"Script": "nightTime/-4442 39/Junimo 47 87 0/skippable/addLantern 735 46 86 1/viewport 47 87 true/pause 1000/positionOffset Junimo 0 32/animate Junimo true true 50 16 17 18 19 20 21 22 23/pause 3000/playSound junimoMeep1/animate Junimo true true 50 0 1 2 3 4 5 6 7/pause 3000/playSound junimoMeep1/animate Junimo true true 50 16 17 18 19 20 21 22 23/pause 3000/end"
+	}
+]

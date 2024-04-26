@@ -12,8 +12,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Spawn_Monsters.Monsters;
 using Spawn_Monsters.MonsterSpawning;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using System;
+using System.Threading;
+using xTile.Tiles;
 
 namespace Spawn_Monsters
 {
@@ -22,6 +26,8 @@ namespace Spawn_Monsters
     /// </summary>
     internal class MonsterPlaceMenu : IClickableMenu
     {
+        private readonly IModHelper modHelper;
+
         private readonly ClickableTextureComponent ok;
         private readonly Texture2D placementTile;
         private readonly MonsterData.Monster monster;
@@ -29,8 +35,10 @@ namespace Spawn_Monsters
 
         private readonly AnimatedSprite monsterTexture;
 
-        public MonsterPlaceMenu(MonsterData.Monster monster, AnimatedSprite texture)
+        public MonsterPlaceMenu(IModHelper modHelper, MonsterData.Monster monster, AnimatedSprite texture)
             : base(0, 0, Game1.viewport.Width, Game1.viewport.Height) {
+
+            this.modHelper = modHelper;
 
             if (monster != MonsterData.Monster.CursedDoll) {
                 monsterTexture = texture;
@@ -60,41 +68,42 @@ namespace Spawn_Monsters
                 Game1.playSound("bigDeSelect");
                 return;
             }
-            if (Spawner.GetInstance().SpawnMonster(monster, WhereToPlace())) {
+
+            var cursorPosition = modHelper.Input.GetCursorPosition();
+            Vector2 spawningLocation = cursorPosition.AbsolutePixels;
+
+            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
+                spawningLocation = cursorPosition.Tile;
+            }
+
+            if (Spawner.GetInstance().SpawnMonster(monster, spawningLocation)) {
                 Game1.playSound("axe");
             }
             base.receiveLeftClick(x, y, playSound);
         }
 
-
-        private Vector2 WhereToPlace() {
-            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
-                return Game1.currentCursorTile;
-            } else {
-                return new Vector2(Game1.getMouseX() + Game1.viewport.X - monsterData.Texturewidth, Game1.getMouseY() + Game1.viewport.Y - monsterData.Textureheight);
-            }
-        }
-
-
-        private Vector2 WhereToDraw() {
-            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
-                return new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y - Game1.tileSize / 2);
-            } else {
-                return new Vector2(Game1.getMouseX() - monsterData.Texturewidth, Game1.getMouseY() - monsterData.Textureheight * 2.2f);
-            }
-        }
-
         public override void draw(SpriteBatch b) {
-            if (Spawner.IsOkToPlace(monster, Game1.currentCursorTile)) {
-                b.Draw(placementTile, new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y), new Rectangle(0, 0, 64, 64), Color.White);
-            } else {
-                b.Draw(placementTile, new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y), new Rectangle(64, 0, 64, 64), Color.White);
+
+            var mousePosition = Utility.PointToVector2(Game1.getMousePosition());
+
+            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
+                mousePosition = Utility.clampToTile(mousePosition);
             }
+
+            var canPlaceHere = Spawner.IsOkToPlace(monster, Game1.currentCursorTile);
+
+
+            //var placementTileSourceRect =  ? new Rectangle(0, 0, 64, 64) : new Rectangle(64, 0, 64, 64);
+
+            if(monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
+                b.Draw(Game1.mouseCursors, mousePosition, new Rectangle(canPlaceHere ? 194 : 210, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.01f);
+            }
+
+            //b.Draw(placementTile, mousePosition, placementTileSourceRect, Color.White);
             if (monster == MonsterData.Monster.CursedDoll) {
-                Vector2 vector2 = WhereToDraw();
-                b.Draw(Game1.objectSpriteSheet, new Rectangle((int)vector2.X, (int)vector2.Y, 16 * 4, 16 * 4), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, 103, 16, 16)), new Color(255, 50, 50));
+                b.Draw(Game1.objectSpriteSheet, new Rectangle((int)mousePosition.X, (int)mousePosition.Y, 16 * 4, 16 * 4), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, 103, 16, 16)), new Color(255, 50, 50));
             } else {
-                monsterTexture.draw(b, WhereToDraw(), 1, 0, 0, (monsterData.TextureColor == default ? Color.White : monsterData.TextureColor) * 0.7f, false, 4);
+                monsterTexture.draw(b, mousePosition + new Vector2(monsterData.Texturewidth / 16f, -monsterData.Textureheight * 2), 1, 0, 0, (monsterData.TextureColor == default ? Color.White : monsterData.TextureColor) * 0.7f, false, 4);
             }
 
             ok.draw(b);

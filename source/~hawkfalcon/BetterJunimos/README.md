@@ -15,8 +15,9 @@ for queries and analysis.**
 ## Changelog
 * 3.0 RELEASE
   * Update for SDV 1.6 / SMAPI 4.0
-* 3.1.2
+* 2.1.2
   * Missing from this repo
+  * Note: 3.0 does not include any changes between 2.0.8 and 2.1.2 as that souce is missing.
 * 2.0.8 RELEASE
   * Redo asset loaders for new SMAPI
   * How bout we actually bundle the CP mod into the bundle this time

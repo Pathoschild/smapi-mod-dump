@@ -55,6 +55,12 @@ internal sealed class ProxyChestFactory : BaseService<ProxyChestFactory>
             postfix: new HarmonyMethod(typeof(ProxyChestFactory), nameof(ProxyChestFactory.Item_canStackWith_postfix)));
 
         harmony.Patch(
+            AccessTools.DeclaredMethod(typeof(Item), nameof(Item.GetContextTags)),
+            postfix: new HarmonyMethod(
+                typeof(ProxyChestFactory),
+                nameof(ProxyChestFactory.Item_GetContextTags_postfix)));
+
+        harmony.Patch(
             AccessTools.DeclaredMethod(typeof(SObject), nameof(SObject.drawInMenu)),
             postfix: new HarmonyMethod(typeof(ProxyChestFactory), nameof(ProxyChestFactory.Object_drawInMenu_postfix)));
 
@@ -82,8 +88,7 @@ internal sealed class ProxyChestFactory : BaseService<ProxyChestFactory>
     public bool TryCreateRequest(Chest chest, [NotNullWhen(true)] out ProxyChestRequest? request)
     {
         if (chest.GlobalInventoryId != null
-            && (!Game1.player.team.globalInventories.ContainsKey(chest.GlobalInventoryId)
-                || !chest.GlobalInventoryId.StartsWith(this.Prefix, StringComparison.OrdinalIgnoreCase)))
+            && !Game1.player.team.globalInventories.ContainsKey(chest.GlobalInventoryId))
         {
             request = null;
             return false;
@@ -125,7 +130,7 @@ internal sealed class ProxyChestFactory : BaseService<ProxyChestFactory>
         // Move Items to global inventory
         void Confirm()
         {
-            globalInventory.OverwriteWith(chest.Items);
+            globalInventory.OverwriteWith(chest.GetItemsForPlayer());
             this.proxyChests[id].GlobalInventoryId = id;
             this.proxyChests[id].Items.Clear();
         }
@@ -263,6 +268,16 @@ internal sealed class ProxyChestFactory : BaseService<ProxyChestFactory>
         }
 
         __result = !ProxyChestFactory.instance.IsProxy(__instance) && !ProxyChestFactory.instance.IsProxy(other);
+    }
+
+    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
+    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
+    private static void Item_GetContextTags_postfix(Item __instance, ref HashSet<string> __result)
+    {
+        if (ProxyChestFactory.instance.TryGetProxy(__instance, out var chest) && chest.GetItemsForPlayer().Any())
+        {
+            __result.Remove("swappable_chest");
+        }
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]

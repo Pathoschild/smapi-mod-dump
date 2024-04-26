@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley/personal-indoor-farm
+**
+*************************************************/
+
+{
+	"Door1.Name": "Porta dimensionale - Etere",
+	"Door2.Name": "Porta dimensionale - Erebo",
+	"Door3.Name": "Porta dimensionale - Caos",
+	"DoorAttic.Name": "Porta dimensionale - Soffitta",
+	"DoorLoft.Name": "Porta dimensionale - Soppalco",
+	"DoorCellar.Name": "Porta dimensionale - Cantina",
+	"Door.Empty": "Non c'è niente dietro questa porta.",
+	"Door.Offline": "Non dovresti curiosare quando il tuo amico non c'è!",
+	"Painting.Name": "Dipinto Stagionale",
+	"Synchronizer.Name": "Sincronizzatore spazio-temporale",
+	"Synchronizer.Description": "Sincronizza la tua dimensione personale con la data di Pelican Towns",
+	"Synchronizer.Buff.Name": "Distorsione di Spazio-Tempo",
+	"Synchronizer.Buff.Description": "Allora è ora, ma dove sono?",
+	"VoidSeal.Name": "Sigillo del vuoto Liquido",
+	"VoidSeal.Description": "Sigilla via una dimensione personale",
+	"VoidSeal.Buff.Name": "Vuoto interiore",
+	"VoidSeal.Buff.Description": "Mi sento così... vuoto",
+	"NoContentPacks": "Hai la porta, ma nessun pacchetto di contenuti per questa stanza."
+}

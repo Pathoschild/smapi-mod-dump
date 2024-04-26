@@ -26,7 +26,9 @@ namespace SkillfulClothes.Effects
 
         public IEffect[] Effects { get; }        
 
-        List<EffectDescriptionLine> IEffect.EffectDescription => Effects.SelectMany(x => x.EffectDescription).ToList();        
+        List<EffectDescriptionLine> IEffect.EffectDescription => Effects.SelectMany(x => x.EffectDescription).ToList();
+
+        public string EffectId => EffectHelper.GetEffectId(this);
 
         private EffectSet(params IEffect[] effects)
         {

@@ -13,5 +13,9 @@
   "OpenCraftingPageKey": "K",
   "MoveChests": true,
   "MoveChestsDebuff": true,
-  "MoveChestKey": "LeftShift"
+  "MoveChestKey": "LeftShift",
+  "CustomArea": [
+    "Custom_GrandpasShed",
+    "Custom_GrandpasShedGreenhouse"
+  ]
 }

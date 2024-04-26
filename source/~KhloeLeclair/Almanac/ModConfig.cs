@@ -128,6 +128,7 @@ public class ModConfig {
 	public bool NoticesShowFestivals { get; set; } = true;
 	public bool NoticesShowGathering { get; set; } = true;
 	public MerchantMode NoticesShowMerchant { get; set; } = MerchantMode.Visit;
+	public MerchantMode NoticesShowBookseller { get; set; } = MerchantMode.Visit;
 	public bool NoticesShowTrains { get; set; } = false;
 }
 

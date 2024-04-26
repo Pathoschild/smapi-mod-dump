@@ -9,6 +9,16 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.23.3
+Released 15 April 2024 for SMAPI 4.0.0 or later.
+
+* Reduced chest dropdown UI overlap over big chest inventory (thanks to LeFauxMatt!).
+
+## 1.23.2
+Released 08 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed chest options not updating Automate machines immediately when the chest is inside a farm building.
+
 ## 1.23.1
 Released 21 March 2024 for SMAPI 4.0.0 or later.
 

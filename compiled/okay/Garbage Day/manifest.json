@@ -9,7 +9,7 @@
   "UniqueID": "furyx639.GarbageDay",
   "Name": "Garbage Day",
   "Author": "LeFauxMatt",
-  "Version": "3.1.2",
+  "Version": "3.1.8",
   "Description": "Turns the town trash cans into chests.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "GarbageDay.dll",
@@ -19,7 +19,7 @@
     },
     {
       "UniqueID": "furyx639.FauxCore",
-      "MinimumVersion": "1.0.0"
+      "MinimumVersion": "1.1.1"
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",

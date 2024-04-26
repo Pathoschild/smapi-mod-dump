@@ -70,7 +70,6 @@ namespace OrnithologistsGuild
 
             configMenu.AddSectionTitle(mod: manifest, text: () => I18n.Config_AboutKyle_Title());
             configMenu.AddParagraph(mod: manifest, text: () => I18n.Config_AboutKyle_Content());
-            configMenu.AddParagraph(mod: manifest, text: () => "https://the-raptors.com");
         }
     }
 }

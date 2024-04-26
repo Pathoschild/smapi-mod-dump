@@ -46,6 +46,9 @@ This mod features some custom tokens for content pack creators that can tell you
 
 # Changelog
 
+## 1.3.0
+* Updated to Stardew Valley 1.6.3
+
 ## 1.2.1
 * New/Changed
   * Added Russian translation, thanks to 8Efreet8

@@ -1,0 +1,16 @@
+{
+  "Name": "[SMAPI] Game Tables And Arcade Machines",
+  "Author": "CyanFire",
+  "Version": "1.0.1",
+  "Description": "Code for Game Tables And Arcade Machines",
+  "UniqueID": "CF.SMAPI.GameTables",
+  "EntryDll": "GameTables.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:12859" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    }
+  ]
+}

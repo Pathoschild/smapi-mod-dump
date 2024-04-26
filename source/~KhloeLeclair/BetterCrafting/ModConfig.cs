@@ -64,14 +64,24 @@ public enum TTWhen {
 	Always
 };
 
+public enum NewRecipeMode {
+	Disabled,
+	Uncrafted,
+	Unseen
+};
+
 public class ModConfig {
 
 	public string Theme { get; set; } = "automatic";
+
+	public bool UseFullHeight { get; set; } = false;
 
 	public bool ReplaceCooking { get; set; } = true;
 	public bool ReplaceCrafting { get; set; } = true;
 
 	public bool UseCategories { get; set; } = true;
+
+	public bool ShowEditButton { get; set; } = true;
 
 	public bool ShowSettingsButton { get; set; } = true;
 
@@ -80,6 +90,9 @@ public class ModConfig {
 	public GiftMode ShowTastes { get; set; } = GiftMode.Shift;
 	public bool ShowAllTastes { get; set; } = false;
 	public GiftStyle TasteStyle { get; set; } = GiftStyle.Heads;
+
+	public NewRecipeMode NewRecipes { get; set; } = NewRecipeMode.Disabled;
+	public bool NewRecipesPrismatic { get; set; } = false;
 
 	// Quality
 	public MaxQuality MaxQuality { get; set; } = MaxQuality.Iridium;
@@ -122,10 +135,13 @@ public class ModConfig {
 
 	// Better Workbench
 	public bool UseDiscovery { get; set; } = true;
-	public int MaxInventories { get; set; } = 32;
+	public int MaxInventories { get; set; } = 50;
 	public int MaxDistance { get; set; } = 20;
 	public int MaxCheckedTiles { get; set; } = 500;
 	public int MaxWorkbenchGap { get; set; } = 0;
+
+	// Nearby Chests
+	public int NearbyRadius { get; set; } = 0;
 
 	public bool UseDiagonalConnections { get; set; } = true;
 

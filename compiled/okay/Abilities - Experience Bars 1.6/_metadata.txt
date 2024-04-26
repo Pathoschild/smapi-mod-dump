@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22751
+IDs: Sandman53.AbilitiesExperienceBars
+update keys: Nexus:22751, GitHub:Sandman534/Abilities-Experience-Bars

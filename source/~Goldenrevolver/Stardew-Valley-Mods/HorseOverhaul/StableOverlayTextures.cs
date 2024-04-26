@@ -49,11 +49,16 @@ namespace HorseOverhaul
                 return oldTexture;
             }
 
-            int count = oldTexture.Width * oldTexture.Height;
+            if (oldTexture.Width != overlay.Width)
+            {
+                return oldTexture;
+            }
+
+            int pixelCount = oldTexture.Width * oldTexture.Height;
             var newData = overlay.Data;
 
-            var origData = ArrayPool<Color>.Shared.Rent(count);
-            oldTexture.GetData(origData, 0, count);
+            var origData = ArrayPool<Color>.Shared.Rent(pixelCount);
+            oldTexture.GetData(origData, 0, pixelCount);
 
             if (newData == null || origData == null)
             {
@@ -61,16 +66,35 @@ namespace HorseOverhaul
                 return oldTexture;
             }
 
-            for (int i = 0; i < count; i++)
+            int pixelOffset = 0;
+
+            // if some mod has a stable texture that is larger in height than the default stable texture, then we ignore the top rows
+            if (pixelCount != newData.Length)
             {
-                ref Color newValue = ref newData[i];
-                if (newValue.A != 0)
+                int heightOffset = oldTexture.Height - overlay.Height;
+
+                if (heightOffset >= 0)
                 {
-                    origData[i] = newValue;
+                    pixelOffset = heightOffset * oldTexture.Width;
+                }
+                else
+                {
+                    ArrayPool<Color>.Shared.Return(origData);
+                    return oldTexture;
                 }
             }
 
-            oldTexture.SetData(origData, 0, count);
+            for (int i = 0; i < newData.Length; i++)
+            {
+                ref Color newValue = ref newData[i];
+
+                if (newValue.A != 0)
+                {
+                    origData[i + pixelOffset] = newValue;
+                }
+            }
+
+            oldTexture.SetData(origData, 0, pixelCount);
 
             ArrayPool<Color>.Shared.Return(origData);
             return oldTexture;
@@ -81,6 +105,7 @@ namespace HorseOverhaul
             if (mod.Config.SaddleBag && mod.Config.VisibleSaddleBags != SaddleBagOption.Disabled.ToString())
             {
                 mod.SaddleBagOverlay = mod.Helper.ModContent.Load<Texture2D>($"assets/saddlebags_{mod.Config.VisibleSaddleBags.ToLower()}.png");
+                mod.IsUsingHorsemanship = mod.Helper.ModRegistry.IsLoaded("red.horsemanship");
             }
 
             // do not check for UsingIncompatibleTextures here
@@ -101,10 +126,27 @@ namespace HorseOverhaul
             if (mod.Helper.ModRegistry.IsLoaded("sonreirblah.JBuildings"))
             {
                 // seasonal overlays are assigned in LateDayStarted
-                mod.EmptyTroughOverlay = null;
-
                 mod.SeasonalVersion = SeasonalVersion.Sonr;
                 return;
+            }
+
+            if (mod.Helper.ModRegistry.IsLoaded("leroymilo.USJB"))
+            {
+                var data = mod.Helper.ModRegistry.Get("leroymilo.USJB");
+
+                var path = data.GetType().GetProperty("DirectoryPath");
+
+                if (path != null && path.GetValue(data) != null)
+                {
+                    var dict = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "Buildings", "Stable" }, data.Manifest.Name, false);
+
+                    if (dict["Buildings"].ToLower() == "true" && dict["Stable"].ToLower() == "true")
+                    {
+                        // seasonal overlays are assigned in LateDayStarted
+                        mod.SeasonalVersion = SeasonalVersion.Sonr;
+                        return;
+                    }
+                }
             }
 
             if (mod.Helper.ModRegistry.IsLoaded("Oklinq.CleanStable"))
@@ -124,11 +166,11 @@ namespace HorseOverhaul
 
                 if (path != null && path.GetValue(data) != null)
                 {
-                    var list = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "color palette", "stable" }, data.Manifest.Name, false);
+                    var dict = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "color palette", "stable" }, data.Manifest.Name, false);
 
-                    if (list["stable"].ToLower() != "false")
+                    if (dict["stable"].ToLower() != "false")
                     {
-                        mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/elle/overlay_empty_{list["color palette"]}.png");
+                        mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/elle/overlay_empty_{dict["color palette"]}.png");
 
                         return;
                     }
@@ -143,9 +185,9 @@ namespace HorseOverhaul
 
                 if (path != null && path.GetValue(data) != null)
                 {
-                    var list = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stable" }, data.Manifest.Name, false);
+                    var dict = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stable" }, data.Manifest.Name, false);
 
-                    if (list["stable"].ToLower() == "true")
+                    if (dict["stable"].ToLower() == "true")
                     {
                         mod.FilledTroughOverlay = GetPreferredFilledTroughOverlay(mod, "assets/overlay_tone_empty_{option}.png");
                         mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/overlay_tone_empty_both.png");
@@ -220,6 +262,26 @@ namespace HorseOverhaul
                 }
             }
 
+            if (mod.Helper.ModRegistry.IsLoaded("Rosalie.CuteValley"))
+            {
+                var data = mod.Helper.ModRegistry.Get("Rosalie.CuteValley");
+
+                var path = data.GetType().GetProperty("DirectoryPath");
+
+                if (path != null && path.GetValue(data) != null)
+                {
+                    var dict = mod.ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "Stable" }, data.Manifest.Name, false);
+
+                    // check for 'cute valley - blue' and 'disabled' option
+                    if (dict.ContainsKey("Stable") && (dict["Stable"].ToLower() == "enabled" || dict["Stable"].ToLower() == "maleha's stable"))
+                    {
+                        SetupRosieaTextures(mod, dict);
+
+                        return;
+                    }
+                }
+            }
+
             // no compatible texture mod found, so we will use mine
             mod.UsingMyStableTextures = true;
 
@@ -257,6 +319,18 @@ namespace HorseOverhaul
                 // TODO for when I get permission to activate them
                 //mod.FilledTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/lily/overlay_garage_bucket_filled.png");
                 //mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/lily/overlay_garage_bucket_empty.png");
+            }
+        }
+
+        private static void SetupRosieaTextures(HorseOverhaul mod, Dictionary<string, string> dict)
+        {
+            if (dict["Stable"].ToLower() == "enabled")
+            {
+                mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/rosiea/overlay_empty_bucket.png");
+            }
+            else if (dict["Stable"].ToLower() == "maleha's stable")
+            {
+                mod.EmptyTroughOverlay = mod.Helper.ModContent.Load<IRawTextureData>($"assets/rosiea/overlay_maleha_empty_bucket.png");
             }
         }
 

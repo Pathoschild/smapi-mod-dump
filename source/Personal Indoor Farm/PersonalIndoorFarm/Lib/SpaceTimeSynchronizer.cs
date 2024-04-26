@@ -17,24 +17,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     internal class SpaceTimeSynchronizer
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public const string ItemId = "DLX.PIF_Synchronizer";
         public const string QualifiedItemId = "(O)" + ItemId;
         public const string BuffId = "DLX.PIF_SpaceTimeBuff";
         public const string BuffTriggerAction = BuffId + "Trigger";
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
             TriggerActionManager.RegisterAction(BuffTriggerAction, ProcessAction);
         }
 

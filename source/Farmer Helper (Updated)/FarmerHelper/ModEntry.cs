@@ -122,6 +122,12 @@ namespace FarmerHelper
                 name: () => "Warn animals unharvested?",
                 getValue: () => Config.WarnAboutAnimalsUnharvestedBeforeSleep,
                 setValue: value => Config.WarnAboutAnimalsUnharvestedBeforeSleep = value
+            ); 
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Warn animals not pet?",
+                getValue: () => Config.WarnAboutAnimalsNotPetBeforeSleep,
+                setValue: value => Config.WarnAboutAnimalsNotPetBeforeSleep = value
             );
             configMenu.AddNumberOption(
                 mod: ModManifest,

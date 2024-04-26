@@ -12,10 +12,9 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.Extensions;
-using StardewValley.GameData.Objects;
-using StardewValley.Internal;
+using StardewValley.Locations;
 using StardewValley.Menus;
+using System.Diagnostics;
 using Object = StardewValley.Object;
 
 namespace GeodePreview
@@ -23,7 +22,8 @@ namespace GeodePreview
     internal static class Patches
     {
         private static readonly Item goldenCoconut = ItemRegistry.Create("(O)73");
-        private static bool preview = false;
+        private static readonly Rectangle guntherSourceRect = new(27, 117, 9, 9);
+        private static readonly Texture2D emojis = Game1.content.Load<Texture2D>("LooseSprites\\emojis");
 
         internal static void Patch(string id)
         {
@@ -44,9 +44,7 @@ namespace GeodePreview
         {
             if (!Utility.IsGeode(__instance) || __instance.QualifiedItemId.Contains("MysteryBox") || !shouldShow())
                 return;
-            preview = true; //I don't like this, but I'm not re-writing getTreasureFromGeode just for a preview
-            Item? treasure = Utility.getTreasureFromGeode(__instance);
-            preview = false; //It will work -famous last words
+            Item? treasure = Utility.getTreasureFromGeode(__instance); //It didn't work... Attempt #2
             if (treasure == null) 
                 return;
             if (__instance.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
@@ -54,18 +52,40 @@ namespace GeodePreview
             treasure.drawInMenu(spriteBatch, location + new Vector2(24, -24), .5f, 1f, layerDepth + .1f, StackDrawType.Hide, Color.White, false);
             if (ModEntry.Config.ShowStack)
                 Utility.drawTinyDigits(treasure.Stack, spriteBatch, location + new Vector2(56, 8), 2f, layerDepth + .15f, Color.White);
+            if (!hasDonatedToMuseum(treasure) && ModEntry.Config.ShowMuseumHint)
+                spriteBatch.Draw(emojis, location + new Vector2(56, 0), guntherSourceRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, layerDepth + .15f);
         }
 
         private static bool shouldShow() => ModEntry.Config.ShowAlways || Game1.activeClickableMenu is GeodeMenu;
 
         internal static bool Utility_CreateRandom_Prefix(double seedA, double seedB, ref Random __result)
         {
-            if (preview)
+            //If you find a better way to check the call stack at runtime, please tell me
+            bool flag = false;
+            foreach (var frame in new StackTrace().GetFrames())
             {
-                __result = new Random(Utility.CreateRandomSeed(seedA + 1, seedB));
+                if (frame.GetMethod().Name == nameof(Object_DrawInMenu_Postfix))
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                __result = new Random(Utility.CreateRandomSeed(seedA + ModEntry.Config.Offset, seedB));
                 return false;
             }
             return true;
+        }
+
+        private static bool hasDonatedToMuseum(Item o)
+        {
+            if (!LibraryMuseum.IsItemSuitableForDonation(o.ItemId))
+                return true;
+            foreach (var item in Game1.netWorldState.Value.MuseumPieces.Values)
+                if (item == o.ItemId)
+                    return true;
+            return false;
         }
     }
 }

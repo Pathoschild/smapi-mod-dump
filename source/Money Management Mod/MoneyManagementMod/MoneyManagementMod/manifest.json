@@ -11,10 +11,10 @@
 {
     "Name": "Money Management Mod",
     "Author": "Tbonetomtom",
-    "Version": "1.0.3",
+    "Version": "1.0.4",
     "Description": "a simple mod that combines shared and seperate money",
     "UniqueID": "Tbonetomtom.MoneyManagementMod",
     "EntryDll": "MoneyManagementMod.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:17045" ]
 }

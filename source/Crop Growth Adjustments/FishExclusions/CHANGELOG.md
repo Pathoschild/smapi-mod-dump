@@ -8,6 +8,16 @@ for queries and analysis.**
 
 # Version history for FishExclusions
 
+## 1.3.1
+Released April 5, 2024.
+- Fixed potential problems with weather exclusions.
+
+## 1.3.0
+Released April 5, 2024.
+- Fixed issues related to JsonAssets and removed dependency on it.
+- Added a console command to reload the mod config: `fex_reload`.
+- Renamed "FishToExclude" in conditional exclusions to "Exclusions".
+
 ## 1.2.0
 Released March 23, 2024.
 - Updated for SMAPI 4.0 and Stardew Valley 1.6

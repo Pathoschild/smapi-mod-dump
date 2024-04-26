@@ -157,6 +157,15 @@ public struct TextNode : IFlowNode {
 				}
 			}
 
+			// This should not be the case?
+			if (snippet.Length <= 1)
+				continue;
+
+			// This word doesn't fit at all. We need to break it up.
+			var slice = TryPartial(font, length, start, remaining, spaceSize);
+			if (slice is not null)
+				return slice;
+
 			// Still doesn't fit. Just give up and return this bit.
 			if (snippet.Length > 1)
 				return new TextSlice(this, snippet, start, end, size.X, Math.Max(spaceSize.Y, size.Y), had_new ? WrapMode.ForceAfter : WrapMode.None);
@@ -177,8 +186,41 @@ public struct TextNode : IFlowNode {
 		if (finalSize.X > remaining && pending != null)
 			return new TextSlice(this, pending, start, pendingEnd, pendingSize.X + (pendingSpace ? spaceSize.X : 0), Math.Max(spaceSize.Y, pendingSize.Y), had_new ? WrapMode.ForceAfter : WrapMode.None);
 
+		// If we're dealing with a no-separators-at-all situation, attempt to slice the word.
+		var sliced = ! had_new && start == 0 ? TryPartial(font, final.Length, start, remaining, spaceSize) : null;
+		if (sliced is not null)
+			return sliced;
+
 		// Just give up and send it.
 		return new TextSlice(this, final, start, start + final.Length + offset, finalSize.X, Math.Max(finalSize.Y, spaceSize.Y), had_new ? WrapMode.ForceAfter : WrapMode.None);
+	}
+
+	private TextSlice? TryPartial(SpriteFont font, int length, int start, float remaining, Vector2 spaceSize, WrapMode mode = WrapMode.None) {
+		// This word doesn't fit at all. We need to break it up.
+		int snipLength = 0;
+		Vector2 snipSize = Vector2.Zero;
+
+		while (snipLength <= length) {
+			snipLength++;
+			if (Text.Length < (start + snipLength)) {
+				snipLength--;
+				break;
+			}
+
+			var newSize = font.MeasureString(Text.Substring(start, snipLength));
+			if (newSize.X <= remaining)
+				snipSize = newSize;
+			else {
+				snipLength--;
+				break;
+			}
+		}
+
+		// Did we get some?
+		if (snipLength > 0)
+			return new TextSlice(this, Text.Substring(start, snipLength), start, start + snipLength, snipSize.X, Math.Max(spaceSize.Y, snipSize.Y), mode);
+
+		return null;
 	}
 
 	public void Draw(IFlowNodeSlice slice, SpriteBatch batch, Vector2 position, float scale, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor, CachedFlowLine line, CachedFlow flow) {
@@ -212,7 +254,7 @@ public struct TextNode : IFlowNode {
 		}
 
 		if (Style.IsJunimo() || Style.IsFancy())
-			RenderHelper.DrawSpriteText(
+			SpriteText.drawString(
 				batch,
 				text,
 				(int) position.X, (int) position.Y,

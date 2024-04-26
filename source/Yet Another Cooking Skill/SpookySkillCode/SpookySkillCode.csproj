@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\common.targets" />
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="0Harmony">
+	    <HintPath>S:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\smapi-internal\0Harmony.dll</HintPath>
+	  </Reference>
+	  <Reference Include="BirbCore">
+	    <HintPath>S:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\BirbCore\BirbCore.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Stardew Valley">
+	    <HintPath>S:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Stardew Valley.dll</HintPath>
+	  </Reference>
+	  <Reference Include="StardewModdingAPI">
+	    <HintPath>S:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	</ItemGroup>
+
+
+</Project>

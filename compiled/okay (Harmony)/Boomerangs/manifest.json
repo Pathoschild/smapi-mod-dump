@@ -1,0 +1,10 @@
+{
+    "Name": "Boomerangs",
+    "Author": "Arannya",
+    "Version": "1.12", // fixed locally
+    "UniqueID": "Arannya.Weapons.Boomerangs",
+    "UpdateKeys": ["Nexus:22724"],
+    "EntryDll": "Boomerang.dll",
+    "MinimumGameVersion": "1.6",
+    "MinimumApiVersion": "4.0.0"
+}

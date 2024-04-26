@@ -282,7 +282,8 @@ namespace Custom_Farm_Loader.Lib
                         location.furniture.Last().heldObject.Value = HeldObject.objectFactory(Position);
                     break;
 
-                case FurnitureType.Purple_Giftbox or FurnitureType.Giftbox or FurnitureType.Chest or FurnitureType.Dungeon_Chest:
+                case FurnitureType.Chest or FurnitureType.Dungeon_Chest
+                        or FurnitureType.Giftbox or FurnitureType.Purple_Giftbox or FurnitureType.Blue_Giftbox or FurnitureType.Trashcan_Giftbox or FurnitureType.Brown_Giftbox:
                     Chest chest = null;
                     var items = new List<Item>();
                     Items.ForEach(item => {
@@ -292,8 +293,15 @@ namespace Custom_Farm_Loader.Lib
                         : new StardewValley.Object(item.Id, item.Amount, quality: item.Quality) { HasBeenInInventory = false });
                     });
 
-                    if (Type == FurnitureType.Giftbox || Type == FurnitureType.Purple_Giftbox) {
-                        int giftboxIndex = Type == FurnitureType.Purple_Giftbox ? 1 : 0;
+                    if (Type == FurnitureType.Giftbox || Type == FurnitureType.Purple_Giftbox || Type == FurnitureType.Blue_Giftbox
+                        || Type == FurnitureType.Brown_Giftbox || Type == FurnitureType.Trashcan_Giftbox) {
+                        int giftboxIndex = Type switch {
+                            FurnitureType.Brown_Giftbox => 4,
+                            FurnitureType.Trashcan_Giftbox => 3,
+                            FurnitureType.Blue_Giftbox => 2,
+                            FurnitureType.Purple_Giftbox => 1,
+                            FurnitureType.Giftbox or _ => 0
+                        };
                         chest = new Chest(items, Position, true, giftboxIndex: giftboxIndex);
 
                     } else if (Type == FurnitureType.Dungeon_Chest) {

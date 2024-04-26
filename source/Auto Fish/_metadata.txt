@@ -6,11 +6,11 @@ mods:
    Auto Fish
 
 latest commit:
-   commit 50a84394896bca7d91742b1b52708d2420460789
-   Author: AlerHugu3s <55569332+AlerHugu3s@users.noreply.github.com>
-   Date:   Thu Mar 28 11:34:37 2024 +0800
+   commit 0447221c0ab3eb6a10abc9ac3ce80f3d52ac76bf
+   Author: SeWZC <36623158+SeWZC@users.noreply.github.com>
+   Date:   Sat Apr 20 14:51:51 2024 +0800
    
-       Merge pull request #13 from egor-muindor/master
+       Merge pull request #16 from ruanimal/master
        
-       Add Russian localization
+       auto disable continus fishing when new day or low stamina.
    

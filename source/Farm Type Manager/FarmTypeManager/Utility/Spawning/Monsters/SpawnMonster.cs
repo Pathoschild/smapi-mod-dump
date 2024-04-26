@@ -446,7 +446,22 @@ namespace FarmTypeManager
                         break;
                     case "wildernessgolem":
                     case "wilderness golem":
-                        monster = new RockGolemFTM(tile, Game1.player.CombatLevel);
+                        for (int x = 0; x < 10; x++) //try 10 times
+                        {
+                            monster = new RockGolemFTM(tile, Game1.player.CombatLevel); //try to generate a wilderness golem
+                            if (monster.Name?.Equals("Wilderness Golem", StringComparison.Ordinal) == true) //if it generated the correct golem type
+                                break;
+
+                            //if an iridium golem was generated due to the conditional/random constructor, loop and try again
+                        }
+                        if (monster.Name?.Equals("Wilderness Golem", StringComparison.Ordinal) != true) //if this is still NOT a wilderness golem
+                        {
+                            monster = new RockGolemFTM(tile, 8); //generate a wilderness golem with combat level 8 (the highest value that disallows iridium golems, as of SDV v1.6)
+                        }
+                        break;
+                    case "iridiumgolem":
+                    case "iridium golem":
+                        monster = new RockGolemFTM(tile, Game1.player.CombatLevel, true);
                         break;
                     case "serpent":
                         monster = new SerpentFTM(tile);

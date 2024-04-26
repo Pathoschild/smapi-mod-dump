@@ -1,0 +1,19 @@
+{
+  "ShoppingShow.DisplayName": "Shopping Show",
+  "ShoppingShow.Welcome_Messages": "Ladies and gentlemen, we're delighted to welcome you back to the Stardew Shopping Show.",
+  "ShoppingShow.Item_Listing": "Right now, you can seize an exclusive deal on {{currentItem}} for only {{currentItemPrice}} Gold! Don't miss out; be the first to claim this valuable treasure!",
+  "ShoppingShow.BuyQuestion": "Buy {{currentItemName}} for {{currentItemPrice}} Gold?",
+  "ShoppingShow.Successful_Purchase": "Thank you for choosing Stardew Shopping Show. Your item will be delivered by tomorrow.",
+  "ShoppingShow.Successful_Purchase_ExpressService": "Thank you for selecting the Stardew Shopping Show. Your item will be delivered promptly, courtesy of our express service.",
+  "ShoppingShow.Mail": "Thank you for choosing Stardew Shopping Show. ^Your item is listed below. ^^Best Regards^Stardew Shopping Team",
+  "ShoppingShow.NotEnoughMoney": "You don't have enough money.",
+  "ShoppingShow.Buy": "Buy",
+  "ShoppingSHow.Cancel": "Cancel",
+
+  //CONFIG
+  "ShoppingShowConfig.InsantDelivery": "Instant Delivery",
+  "ShoppingShowConfig.IntantDelivery_Description": "Immediately adds the purchased item to the mailbox",
+
+  "ShoppingShowConfig.ResetShow": "Hours until next show",
+  "ShoppingShowConfig.ResetShow_Description": "After x hours, there will be a new show with a different item"
+}

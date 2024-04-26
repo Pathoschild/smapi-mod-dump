@@ -61,9 +61,6 @@ namespace Coop_Cursor
                 );
             }
 
-            if (Config.keyboardPlayer)
-                Hook.Initialize();
-
             harmony.Patch(
                original: AccessTools.Method(typeof(InputState), nameof(InputState.UpdateStates)),
                prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.UpdateStates_Prefix))
@@ -108,6 +105,7 @@ namespace Coop_Cursor
             if (Config.keyboardPlayer) {
                 _currentGamepadState.SetValue(__instance, default(GamePadState));
                 _currentKeyboardState.SetValue(__instance, Keyboard.GetState());
+                Hook.updateState();
                 _currentMouseState.SetValue(__instance, Hook.getState());
             } else {
                 _currentGamepadState.SetValue(__instance, GamePad.GetState(Game1.playerOneIndex));

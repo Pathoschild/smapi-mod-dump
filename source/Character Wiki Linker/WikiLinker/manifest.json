@@ -11,10 +11,10 @@
 {
   "Name": "WikiLinker",
   "Author": "StultusV",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "A new window that links to NPC wiki pages",
   "UniqueID": "StultusV.WikiLinker",
   "EntryDll": "WikiLinker.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:12999" ]
 }

@@ -9,7 +9,8 @@
 				"Type": "Object", // [Object|BigCraftable|Tool|Ring|Furniture|Weapon|Boots|DGA|FullId] Required. The type of item that will be attached. If not provided the item will be ignored.
 				"Name": "Cave Carrot", // Used to find the item index. That's required if using custom objects like Json Assets ones. Should be the full DGA ID is using DGA. If not provided, the index will be used. Default is null.
 				"Index": "(0)78", // The index of an item. Should be the qualified item id as a string, but will also work as an integer for retro compatibility. If no name is provided or an item for the name is not found, the index is used. Otherwise, the attachment is ignored. Ignored if the type is DGA.
-				"Stack": 1 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
+				"Stack": 1, // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1.
+				"Quality": 2 // The quality value of the item to be delivered. Used only for Objects. 0 = none, 1 = silver, 2 = gold, 4 = iridium. Default is 0; 
 			},
 			{
 				"Type": "Tool", // When using tool, only supported ones can be attached.
@@ -19,12 +20,14 @@
 			{
 				"Type": "DGA", //DGA item
 				"Name": "spacechase0.DynamicGameAssets.Example/My Custom Item", // use the full DGA ID. Required.
-				"Stack": 10 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
+				"Stack": 10, // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1.				
+				"Quality": 2 // The quality value of the item to be delivered. Used only for Objects. 0 = none, 1 = silver, 2 = gold, 4 = iridium. Default is 0; 
 			},
 			{
 				"Type": "QualifiedItemId", //Any supported item
 				"Index": "(0)78", // The Qualified Item Id of an item.
-				"Stack": 10 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
+				"Stack": 10, // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
+				"Quality": 2 // The quality value of the item to be delivered. Used only for Objects. 0 = none, 1 = silver, 2 = gold, 4 = iridium. Default is 0; 
 			}
 		],
 		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail. For DGA recipes only use the ID part (leave away the ModID)

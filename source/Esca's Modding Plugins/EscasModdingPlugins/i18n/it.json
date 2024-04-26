@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/EscasModdingPlugins
+**
+*************************************************/
+
+{
+	"Config.PlaceBedsAnywhere.Name": "Posiziona i letti ovunque",
+	"Config.PlaceBedsAnywhere.Description": "Se abilitato, puoi posizionare i letti in qualsiasi posizione.",
+	"Config.PlaceMiniFridgesAnywhere.Name": "Posiziona i mini-frigo ovunque",
+	"Config.PlaceMiniFridgesAnywhere.Description": "Se abilitato, puoi posizionare i mini-frigo in qualsiasi luogo.",
+	"Config.PassOutSafelyEverywhere.Name": "Svenire in modo sicuro ovunque",
+	"Config.PassOutSafelyEverywhere.Description": "Se abilitato, non perderai denaro se svieni restando sveglio troppo tardi (2:00 AM). NOTA: questo non cambia quello che succede se esaurisci la salute."
+}

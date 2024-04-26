@@ -1,7 +1,7 @@
 {
   "Name": "Static toolpower",
   "Author": "Omek97",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "switch to your tool power manually",
   "UniqueID": "omek97.static_toolpower",
   "EntryDll": "StaticToolPower.dll",

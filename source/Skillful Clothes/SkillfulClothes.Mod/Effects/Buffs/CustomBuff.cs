@@ -20,20 +20,22 @@ namespace SkillfulClothes.Effects.Buffs
 {
     abstract class CustomBuff : Buff, ICustomBuff
     {
-        public CustomBuff(string description, string source, int durationMinutes)
-            : base(-1)
+        public CustomBuff(string id, string description, string source, int durationMinutes)
+            : base(id)
         {
             this.description = description;
             this.source = source;
-            this.millisecondsDuration = durationMinutes * 1000;
-            this.totalMillisecondsDuration = durationMinutes * 1000;
+            if (durationMinutes == Buff.ENDLESS)
+            {
+                this.millisecondsDuration = Buff.ENDLESS;
+                this.totalMillisecondsDuration = Buff.ENDLESS;
+            } else
+            {
+                this.millisecondsDuration = durationMinutes * 1000;
+                this.totalMillisecondsDuration = durationMinutes * 1000;
+            }         
+
             this.displaySource = source;
-        }
-
-        public abstract void ApplyCustomEffect();
-
-        public abstract List<ClickableTextureComponent> GetCustomBuffIcons();
-
-        public abstract void RemoveCustomEffect(bool clearingAllBuffs);        
+        }        
     }
 }

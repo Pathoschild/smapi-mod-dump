@@ -1,0 +1,251 @@
+{      
+    "Spring": [          
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_ChayoteSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_CloudberrySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_CranberryBeanSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_LingonberrySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_RedCurrantSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_RoseHipSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_WhiteAlpineStrawberrySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        }       
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_BenneSesameSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_BlackcurrantSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_BlueCornSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_CardamomSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_ChayoteSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_CowpeaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_MaypopSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_NasturtiumSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_PeppercornSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_PricklyPearSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_RoseHipSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_RoselleHibiscusSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_ScotchBonnetPepperSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_SunchokeSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        }        
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_BlackBeanSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_BlueCornSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_CandyRoasterSquashSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_GreenChileSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_OatSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_PeppercornSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_SalsifySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_SunchokeSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "",
+            "seedID" : "BFV.CombinedCrops_WhiteCurrantSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        }        
+      ]
+      
+}

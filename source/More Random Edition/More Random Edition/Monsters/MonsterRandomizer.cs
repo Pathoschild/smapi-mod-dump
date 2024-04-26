@@ -16,6 +16,8 @@ namespace Randomizer
 {
 	public class MonsterRandomizer
 	{
+		private static RNG Rng { get; set; }
+
 		private const int HPVariance = 25;
 		private const int DamageVariance = 25;
 		private const int ResilienceVariance = 25;
@@ -30,24 +32,25 @@ namespace Randomizer
 		/// <returns />
 		public static Dictionary<string, string> Randomize()
 		{
+			Rng = RNG.GetFarmRNG(nameof(MonsterRandomizer));
 			Dictionary<string, string> replacements = new();
 
 			List<Monster> allMonsters = MonsterData.GetAllMonsters();
-			Dictionary<int, int> monsterItemSwaps = GetMonsterDropReplacements(allMonsters);
+			Dictionary<string, string> monsterItemSwaps = GetMonsterDropReplacements(allMonsters);
 			Dictionary<string, ItemDrop> extraItemDrops = new();
 
 			foreach (Monster monster in allMonsters)
 			{
-				monster.HP = Math.Max(Globals.RNGGetIntWithinPercentage(monster.HP, HPVariance), 1);
-				monster.Damage = Math.Max(Globals.RNGGetIntWithinPercentage(monster.Damage, DamageVariance), 1);
-				monster.RandomMovementDuration = Globals.RNGGetNextBoolean(35) ? 0 : Range.GetRandomValue(1, 3000);
+				monster.HP = Math.Max(Rng.NextIntWithinPercentage(monster.HP, HPVariance), 1);
+				monster.Damage = Math.Max(Rng.NextIntWithinPercentage(monster.Damage, DamageVariance), 1);
+				monster.RandomMovementDuration = Rng.NextBoolean(35) ? 0 : Rng.NextIntWithinRange(1, 3000);
 				RandomizeMonsterDrops(monster, monsterItemSwaps, extraItemDrops);
 				RandomizeResilience(monster);
-				monster.Jitteriness = Range.GetRandomValue(0, 2) / 100d;
+				monster.Jitteriness = Rng.NextIntWithinRange(0, 2) / 100d;
 				RandomizeMoveTowardPlayerThreshold(monster);
-				monster.Speed = Range.GetRandomValue(1, 4);
-				monster.MissChance = Range.GetRandomValue(0, 5) / 100d;
-				monster.Experience = Math.Max(Globals.RNGGetIntWithinPercentage(monster.Experience, ExperienceVariance), 1);
+				monster.Speed = Rng.NextIntWithinRange(1, 4);
+				monster.MissChance = Rng.NextIntWithinRange(0, 5) / 100d;
+				monster.Experience = Math.Max(Rng.NextIntWithinPercentage(monster.Experience, ExperienceVariance), 1);
 
 				replacements.Add(monster.Name, monster.ToString());
 			}
@@ -63,9 +66,9 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="allMonsters">The monster info</param>
 		/// <returns />
-		private static Dictionary<int, int> GetMonsterDropReplacements(List<Monster> allMonsters)
+		private static Dictionary<string, string> GetMonsterDropReplacements(List<Monster> allMonsters)
 		{
-			Dictionary<int, Item> items = new();
+			Dictionary<string, Item> items = new();
 			foreach (Monster monster in allMonsters)
 			{
 				foreach (ItemDrop itemDrop in monster.ItemDrops)
@@ -84,14 +87,14 @@ namespace Randomizer
 				}
 			}
 
-			List<int> uniqueIds = items.Keys.ToList();
-			Dictionary<int, int> replacements = new();
-			foreach (int id in items.Keys.ToArray())
+			List<string> uniqueIds = items.Keys.ToList();
+			Dictionary<string, string> replacements = new();
+			foreach (string id in items.Keys.ToArray())
 			{
-				int newId = Globals.RNGGetAndRemoveRandomValueFromList(uniqueIds);
+				string newId = Rng.GetAndRemoveRandomValueFromList(uniqueIds);
 				replacements.Add(id, newId);
 
-				Item newItem = ItemList.Items[(ObjectIndexes)newId];
+				Item newItem = ItemList.Items[newId];
 				Item oldItemInfo = items[id];
 				newItem.DifficultyToObtain = oldItemInfo.DifficultyToObtain;
 				newItem.ItemsRequiredForRecipe = oldItemInfo.ItemsRequiredForRecipe;
@@ -114,43 +117,43 @@ namespace Randomizer
 		{
 			double probability = 0;
 			Item item = null;
-			if (Globals.RNGGetNextBoolean())
+			if (Rng.NextBoolean())
 			{
-				item = ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.NoRequirements);
-				probability = Range.GetRandomValue(5, 8) / 100d;
+				item = ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.NoRequirements);
+				probability = Rng.NextIntWithinRange(5, 8) / 100d;
 			}
 
-			else if (Globals.RNGGetNextBoolean())
+			else if (Rng.NextBoolean())
 			{
-				item = ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.SmallTimeRequirements);
-				probability = Range.GetRandomValue(4, 6) / 100d;
+				item = ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.SmallTimeRequirements);
+				probability = Rng.NextIntWithinRange(4, 6) / 100d;
 			}
 
-			else if (Globals.RNGGetNextBoolean())
+			else if (Rng.NextBoolean())
 			{
-				item = ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements);
-				probability = Range.GetRandomValue(3, 5) / 100d;
+				item = ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements);
+				probability = Rng.NextIntWithinRange(3, 5) / 100d;
 			}
 
-			else if (Globals.RNGGetNextBoolean())
+			else if (Rng.NextBoolean())
 			{
-				item = ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.LargeTimeRequirements);
-				probability = Range.GetRandomValue(2, 4) / 100d;
+				item = ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.LargeTimeRequirements);
+				probability = Rng.NextIntWithinRange(2, 4) / 100d;
 			}
 
-			else if (Globals.RNGGetNextBoolean())
+			else if (Rng.NextBoolean())
 			{
-				item = ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.UncommonItem);
-				probability = Range.GetRandomValue(1, 2) / 100d;
+				item = ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.UncommonItem);
+				probability = Rng.NextIntWithinRange(1, 2) / 100d;
 			}
 
 			else
 			{
-				item = ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.RareItem);
-				probability = Range.GetRandomValue(1, 5) / 1000d;
+				item = ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.RareItem);
+				probability = Rng.NextIntWithinRange(1, 5) / 1000d;
 			}
 
-			return new ItemDrop((ObjectIndexes)item.Id, probability);
+			return new ItemDrop(item.ObjectIndex, probability);
 		}
 
 		/// <summary>
@@ -158,7 +161,10 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="monster">The monster</param>
 		/// <param name="swaps">The swaps</param>
-		private static void RandomizeMonsterDrops(Monster monster, Dictionary<int, int> swaps, Dictionary<string, ItemDrop> extras)
+		private static void RandomizeMonsterDrops(
+			Monster monster, 
+			Dictionary<string, string> swaps, 
+			Dictionary<string, ItemDrop> extras)
 		{
 			SwapMonsterItemDrops(monster, swaps);
 
@@ -172,35 +178,31 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="monster">The monster</param>
 		/// <param name="swaps">The swaps</param>
-		private static void SwapMonsterItemDrops(Monster monster, Dictionary<int, int> swaps)
+		private static void SwapMonsterItemDrops(Monster monster, Dictionary<string, string> swaps)
 		{
 			if (!Globals.Config.Monsters.Randomize || !Globals.Config.Monsters.SwapUniqueDrops) { return; }
 
 			foreach (ItemDrop itemDrop in monster.ItemDrops)
 			{
-				int id = itemDrop.ItemToDrop.Id;
+				string id = itemDrop.ItemToDrop.Id;
 				if (swaps.ContainsKey(id))
 				{
-					itemDrop.ItemToDrop = ItemList.Items[(ObjectIndexes)swaps[id]];
+					itemDrop.ItemToDrop = ItemList.Items[swaps[id]];
 				}
 			}
 		}
 
 		/// <summary>
 		/// Randomizes the resilience of a monster
+		/// - If already 0, 50% chance to set to 1
+		/// - If not 0, then vary it by the variance value
 		/// </summary>
 		/// <param name="monster"></param>
 		private static void RandomizeResilience(Monster monster)
 		{
-			if (monster.Resilience == 0)
-			{
-				monster.Resilience = Globals.RNGGetNextBoolean(ResilienceVariance) ? 1 : 0;
-			}
-
-			else
-			{
-				monster.Resilience = Globals.RNGGetIntWithinPercentage(monster.Resilience, ResilienceVariance);
-			}
+			monster.Resilience = monster.Resilience == 0
+				? Rng.NextBoolean(ResilienceVariance) ? 1 : 0
+				: Rng.NextIntWithinPercentage(monster.Resilience, ResilienceVariance);
 		}
 
 		/// <summary>
@@ -210,15 +212,9 @@ namespace Randomizer
 		/// <param name="monster">The monster to set the value of</param>
 		private static void RandomizeMoveTowardPlayerThreshold(Monster monster)
 		{
-			if (Globals.RNGGetNextBoolean(5))
-			{
-				monster.MovesTowardPlayerThreshold = Range.GetRandomValue(8, 12);
-			}
-
-			else
-			{
-				monster.MovesTowardPlayerThreshold = Range.GetRandomValue(0, 4);
-			}
+			monster.MovesTowardPlayerThreshold = Rng.NextBoolean(5)
+				? Rng.NextIntWithinRange(8, 12)
+				: Rng.NextIntWithinRange(0, 4);
 		}
 
 		/// <summary>
@@ -229,7 +225,7 @@ namespace Randomizer
 		/// <param name="extraItemDrops">The map of monsters to their extra item drop</param>
 		private static void WriteToSpoilerLog(
 			List<Monster> allMonsters,
-			Dictionary<int, int> monsterItemSwaps,
+			Dictionary<string, string> monsterItemSwaps,
 			Dictionary<string, ItemDrop> extraItemDrops)
 		{
 			WriteSwapInfoToSpoilerLog(monsterItemSwaps);
@@ -240,7 +236,7 @@ namespace Randomizer
 		/// Writes the monster info to the spoiler log
 		/// </summary>
 		/// <param name="monsterItemSwaps">The item swaps performed</param>
-		private static void WriteSwapInfoToSpoilerLog(Dictionary<int, int> monsterItemSwaps)
+		private static void WriteSwapInfoToSpoilerLog(Dictionary<string, string> monsterItemSwaps)
 		{
 			if (!Globals.Config.Monsters.Randomize) { return; }
 
@@ -248,9 +244,9 @@ namespace Randomizer
 			Globals.SpoilerWrite("");
 			Globals.SpoilerWrite("> Major monster drop swaps");
 
-			foreach (int originalId in monsterItemSwaps.Keys)
+			foreach (string originalId in monsterItemSwaps.Keys)
 			{
-				Globals.SpoilerWrite($"{ItemList.Items[(ObjectIndexes)originalId].Name} -> {ItemList.Items[(ObjectIndexes)monsterItemSwaps[originalId]].Name}");
+				Globals.SpoilerWrite($"{ItemList.Items[originalId].Name} -> {ItemList.Items[monsterItemSwaps[originalId]].Name}");
 			}
 		}
 

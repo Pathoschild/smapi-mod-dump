@@ -9,7 +9,6 @@
 *************************************************/
 
 using StardewModdingAPI.Events;
-using StardewValley;
 
 namespace stardew_access.Features;
 

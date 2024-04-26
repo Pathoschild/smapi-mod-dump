@@ -21,9 +21,11 @@
   "PetFeeding": true,
   "NewFoodSystem": true,
   "AllowMultipleFeedingsADay": false,
+  "ShowHorseInfoInAnimalsMenu": true,
   "HorseMenuKey": "H, LeftStick + DPadUp",
   "PetMenuKey": "P, LeftStick + DPadDown",
   "AlternateSaddleBagAndFeedKey": "LeftStick",
+  "MaximumSaddleBagAndFeedRange": 78,
   "DisableMainSaddleBagAndFeedKey": false,
   "DisableStableSpriteChanges": false,
   "DisableHorseSounds": false

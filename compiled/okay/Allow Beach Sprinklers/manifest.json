@@ -9,9 +9,9 @@
   "UniqueID": "HedgehogTechnologies.AllowBeachSprinklers",
   "Name": "AllowBeachSprinklers",
   "Author": "Jag3Dagster",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Allow the placement and usage of sprinklers on the Beach Farm map.",
-  "MinimumApiVersion": "4.0.0-alpha.20240226+9d28f15f7eb5de257e5b95078efe814cbf5b3741",
+  "MinimumApiVersion": "4.0",
   "EntryDll": "AllowBeachSprinklers.dll",
   "UpdateKeys": [
     "Nexus:7629"

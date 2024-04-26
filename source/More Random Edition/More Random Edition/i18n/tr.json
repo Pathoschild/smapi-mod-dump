@@ -32,7 +32,7 @@
 	"fish-mountain-location": "Dağlar",
 	"fish-beach-location": "Okyanus",
 	"fish-undergroundmine-location": "Maden",
-	"fish-nightmarket-location": "Okyanus tabanı",
+	"fish-submarine-location": "Okyanus tabanı",
 	"fish-bugland-location": "Böcek Toprakları",
 	"fish-witchswamp-location": "Cadı Bataklığı",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "Büyümek için {{daysToGrow}} gün gerekiyor, ancak bundan sonra da üretime devam ediyor.",
 	"crop-tooltip-growth-time": "Olgunlaşması {{daysToGrow}} gün sürer.",
 	"crop-tooltip-seasons": "Sırasında bitki: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Sadece iç mekanlarda yetiştirilebilir.",
-	"crop-tooltip-rice-shoot": "Su yakınında daha hızlı büyür.",
+	"crop-tooltip-indoor-crop": "Sadece iç mekanlarda yetiştirilebilir.",
+	"crop-tooltip-paddy-crop": "Su yakınında daha hızlı büyür.",
 
 	"bundle-random-all": "Rasgele",
 	"bundle-random-letter": "İngilizce \"{{letter}}\"",

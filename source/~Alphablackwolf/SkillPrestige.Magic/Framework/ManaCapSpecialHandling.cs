@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-using Magic;
+using System;
 using SkillPrestige.Professions;
-using StardewValley;
 
 namespace SkillPrestige.Magic.Framework
 {
@@ -21,7 +20,10 @@ namespace SkillPrestige.Magic.Framework
         ** Fields
         *********/
         /// <summary>The mana points to add.</summary>
-        public readonly int Amount;
+        private readonly int Amount;
+
+        /// <summary>Adjust the player's max mana points by the given amount.</summary>
+        private readonly Action<int> AddMaxMana;
 
 
         /*********
@@ -29,21 +31,23 @@ namespace SkillPrestige.Magic.Framework
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="amount">The mana points to add.</param>
-        public ManaCapSpecialHandling(int amount)
+        /// <param name="addMaxMana">Adjust the player's max mana points by the given amount.</param>
+        public ManaCapSpecialHandling(int amount, Action<int> addMaxMana)
         {
             this.Amount = amount;
+            this.AddMaxMana = addMaxMana;
         }
 
         /// <summary>Apply effects for the profession.</summary>
         public void ApplyEffect()
         {
-            Game1.player.setMaxMana(Game1.player.getMaxMana() + this.Amount);
+            this.AddMaxMana(this.Amount);
         }
 
         /// <summary>Remove effects for the profession.</summary>
         public void RemoveEffect()
         {
-            Game1.player.setMaxMana(Game1.player.getMaxMana() - this.Amount);
+            this.AddMaxMana(-this.Amount);
         }
     }
 }

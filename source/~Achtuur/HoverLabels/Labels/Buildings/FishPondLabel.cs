@@ -9,6 +9,7 @@
 *************************************************/
 
 using AchtuurCore.Extensions;
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
@@ -40,20 +41,21 @@ internal class FishPondLabel : BuildingLabel
     public override void GenerateLabel()
     {
         base.GenerateLabel();
-
         // add fish name to label name
-        if (hoverPond.fishType.Value == -1)
+        if (hoverPond.fishType is null || hoverPond.fishType.Value.Length == 0)
             return;
 
-        SObject fish = ModEntry.GetObjectWithId(hoverPond.fishType.Value);
-        this.Name += $" ({fish.DisplayName})";
+        SObject fish = new(hoverPond.fishType.Value, 1);
+        //this.Name += $" ({fish.DisplayName})";
+        ResetBorders();
+        AddBorder(new ItemLabelText(fish.QualifiedItemId, "Fish Pond"));
 
-        this.Description.Add($"Occupancy: {hoverPond.currentOccupants}/{hoverPond.maxOccupants}");
+        AddBorder($"Occupancy: {hoverPond.currentOccupants}/{hoverPond.maxOccupants}");
 
         if (this.hoverPond.neededItem.Value is not null)
         {
-            this.Description.Add(I18n.LabelFishpondQuest(fish.DisplayName));
-            this.Description.Add($"> {this.hoverPond.neededItem.Value.DisplayName} (x{this.hoverPond.neededItemCount.Value})");
+            AddBorder(I18n.LabelFishpondQuest(fish.DisplayName));
+            AppendLabelToBorder($"> {this.hoverPond.neededItem.Value.DisplayName} (x{this.hoverPond.neededItemCount.Value})");
         }
         
     }

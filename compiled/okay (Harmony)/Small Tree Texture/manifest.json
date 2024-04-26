@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SmallTreeTexture",
+  "Author": "season",
+  "Version": "0.0.1",
+  "Description": "When the Tapper is placed on a big tree, this tree will display as a small tree texture.",
+  "UniqueID": "season.SmallTreeTexture",
+  "EntryDll": "SmallTreeTexture.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22285" ]
+}

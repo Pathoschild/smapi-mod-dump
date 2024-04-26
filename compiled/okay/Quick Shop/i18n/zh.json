@@ -32,7 +32,8 @@
   "quickShop.button.qiShop": "齐先生的商店",
   "quickShop.button.qiSpecialOrdersBoard": "齐先生的特殊任务板",
   "quickShop.button.sandyShop": "桑迪的商店",
-  "quickShop.button.desertShop": "沙漠商店",
+  "quickShop.button.desertTrade": "沙漠贸易",
+  "quickShop.button.desertFestival": "沙漠节",
   "quickShop.button.wizardBuilding": "魔法师建筑",
   "quickShop.button.changeAppearance": "改变外表",
   "quickShop.button.islandTrade": "岛屿贸易",
@@ -49,7 +50,7 @@
   "quickShop.button.houseUpgrade.communityUpgrade": "社区升级",
   "quickShop.button.houseUpgrade.communityUpgrade.description": "为潘姆建一间房子",
   "quickShop.button.raccoonShop": "浣熊商店",
-  "quickShop.button.booksellerTrade": "书摊老板交易",
+  "quickShop.button.booksellerTrade": "书摊老板贸易",
   "quickShop.button.concessions": "电影院小吃",
   "quickShop.button.petAdoption": "领养宠物"
 }

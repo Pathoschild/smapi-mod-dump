@@ -46,7 +46,7 @@
         },
         "ExtraConditions": {
           "Years": [],
-          "Seasons": ["Spring"],
+          "Seasons": ["Spring", "Fall"],
           "Days": [],
           "WeatherYesterday": [],
           "WeatherToday": ["Windy"],
@@ -83,7 +83,7 @@
         },
         "ExtraConditions": {
           "Years": [],
-          "Seasons": ["Spring"],
+          "Seasons": ["Spring", "Fall"],
           "Days": [],
           "WeatherYesterday": [],
           "WeatherToday": ["Windy"],
@@ -120,7 +120,7 @@
         },
         "ExtraConditions": {
           "Years": [],
-          "Seasons": ["Spring"],
+          "Seasons": ["Spring", "Fall"],
           "Days": [],
           "WeatherYesterday": [],
           "WeatherToday": ["Windy"],
@@ -157,7 +157,7 @@
         },
         "ExtraConditions": {
           "Years": [],
-          "Seasons": ["Spring"],
+          "Seasons": ["Spring", "Fall"],
           "Days": [],
           "WeatherYesterday": [],
           "WeatherToday": ["Windy"],
@@ -194,7 +194,7 @@
         },
         "ExtraConditions": {
           "Years": [],
-          "Seasons": ["Spring"],
+          "Seasons": ["Spring", "Fall"],
           "Days": [],
           "WeatherYesterday": [],
           "WeatherToday": ["Windy"],

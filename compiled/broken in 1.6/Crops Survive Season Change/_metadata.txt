@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/18030
-IDs: aedenthorn.CropsSurviveSeasonChange
-update keys: Nexus:18030, GitHub:aedenthorn/StardewValleyMods

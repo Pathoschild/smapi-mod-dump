@@ -261,7 +261,10 @@ namespace ItemBags.Helpers
 
             //  Draw the sprite
             if (SourceTexture != null)
-                b.Draw(SourceTexture, ScaledIconDestination, SourceTextureRectangle, Overlay * Transparency);
+            {
+                Color DrawColor = Overlay == Color.White && Item is ColoredObject ColoredObj ? ColoredObj.color.Value : Overlay;
+                b.Draw(SourceTexture, ScaledIconDestination, SourceTextureRectangle, DrawColor * Transparency);
+            }
 
             //  Draw Quality
             if (DrawQuality && Item is Object ItemObject && Enum.IsDefined(typeof(ObjectQuality), ItemObject.Quality))

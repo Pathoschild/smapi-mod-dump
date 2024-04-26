@@ -24,7 +24,6 @@
   "InviteComeTime": 1000.0,
   "InviteLeaveTime": 2000.0,
   "EnableVisitInside": true,
-  "DialogueTime": 1,
   "AllowRemoveNonFood": false,
   "DisableKidAsk": false,
   "EnableSaleWeapon": true,
@@ -51,5 +50,7 @@
   ],
   "NPCCheckTimer": 1,
   "MuseumPriceMarkup": 1.0,
-  "MultiplayerMode": false
+  "MultiplayerMode": false,
+  "EasyLicense": false,
+  "DisableTextChat": false
 }

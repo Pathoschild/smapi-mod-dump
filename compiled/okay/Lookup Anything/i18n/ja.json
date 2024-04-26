@@ -27,6 +27,7 @@
     "generic.price": "{{price}}G",
     "generic.price-for-quality": "{{price}}G ({{quality}})",
     "generic.price-for-stack": "{{price}}g (スタック:{{count}})",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "建物",
@@ -103,13 +104,14 @@
     "location.bugLand": "ミュータントバグのすみか",
     "location.busStop": "バス停",
     "location.desert": "カリコ砂漠",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "農場",
     "location.farmCave": "農場の洞窟",
     "location.farmHouse": "自宅",
     "location.forest": "シンダーサップの森",
-    "location.forest.fish-area-0": "森の川",
-    "location.forest.fish-area-1": "森の池",
     "location.forest.island-tip": "森の川 (南の小島の南端)",
+    "location.forest.lake": "森の池",
+    "location.forest.river": "森の川",
     "location.mountain": "山の湖",
     "location.railroad": "線路",
     "location.sewer": "下水道",
@@ -129,8 +131,8 @@
     "location.islandSouthEast": "ジンジャー島-南東部",
     "location.islandSouthEastCave": "海賊の入り江",
     "location.islandWest": "ジンジャー島-西部",
-    "location.islandWest.fish-area-1": "ジンジャー島-西部(海)",
-    "location.islandWest.fish-area-2": "ジンジャー島-西部(池)",
+    "location.islandWest.freshwater": "ジンジャー島-西部(池)",
+    "location.islandWest.ocean": "ジンジャー島-西部(海)",
 
     "location.unknown-fish-area": "{{locationName}}(エリア{{id}})",
 
@@ -618,6 +620,8 @@
     "tree.name.oak": "カシの木",
     "tree.name.palm": "ヤシの木",
     "tree.name.pine": "マツの木",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "未知の木",
     "tree.stage.done": "成長完了",
     "tree.stage.partial": "{{stageName}} ({{step}} / {{max}})",

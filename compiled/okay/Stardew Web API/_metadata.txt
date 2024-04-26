@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22540
+IDs: zunderscore.StardewWebApi
+update keys: GitHub:zunderscore/StardewWebApi, Nexus:22540

@@ -1,0 +1,8 @@
+{
+  "Config.Special_Order_Tweaks_Title": "Special Order Tweaks",
+  "Config.EnableSpecialOrderUnlockDay": "Edit Special Orders unlock day",
+  "Config.SpecialOrderUnlockDay": "Special Orders unlock at day",
+  "Config.EnableRewardsMultiplier": "Enable reward multiplier",
+  "Config.RewardsMultiplier": "Reward multiplier",
+  "Config.SpecialOrderRefreshEveryday": "Special Orders refresh everyday"
+}

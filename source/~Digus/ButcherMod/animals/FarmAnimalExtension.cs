@@ -122,7 +122,7 @@ namespace AnimalHusbandryMod.animals
 
         private static string GetKey(this Character character, string key)
         {
-            if (character.modData.TryGetValue(key, out string value))
+            if (character.modData != null && character.modData.TryGetValue(key, out string value))
                 return value;
             else
                 return null;

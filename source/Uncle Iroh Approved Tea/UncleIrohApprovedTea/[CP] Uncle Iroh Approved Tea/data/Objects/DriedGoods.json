@@ -1,0 +1,150 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Load Ingredients Tilesheet",
+            "Action": "Load",
+            "Target": "{{ModId}}/Ingredients",
+            "FromFile": "assets/Objects/Ingredients.png"
+        },
+        {
+            "LogName": "Objects Data",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_Cassia_Seeds": {
+                    "Name": "{{ModId}}_Cassia_Seeds",
+                    "DisplayName": "{{i18n:Dried.Seeds.Cassia.name}}",
+                    "Description": "{{i18n:Dried.Seeds.Cassia.description}}",
+                    "Price": 90,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "0",
+                    "Edibility": 5,
+                    "ContextTags": [
+                        "color_dark_brown",
+                        "seed_item"
+                    ]
+                },
+                "{{ModId}}_Dried_Goji_Berries": {
+                    "Name": "{{ModId}}_Dried_Goji_Berries",
+                    "DisplayName": "{{i18n:Dried.Fruit.Goji.name}}",
+                    "Description": "{{i18n:Dried.Fruit.Goji.description}}",
+                    "Price": 75,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "1",
+                    "Edibility": 55,
+                    "ContextTags": [
+                        "color_red",
+                        "dried_item",
+                        "berry_item",
+                        "fruit_item"
+                    ]
+                },
+                "{{ModId}}_Dried_Lotus_Seeds": {
+                    "Name": "{{ModId}}_Dried_Lotus_Seeds",
+                    "DisplayName": "{{i18n:Dried.Seeds.Lotus.name}}",
+                    "Description": "{{i18n:Dried.Seeds.Lotus.description}}",
+                    "Price": 150,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "2",
+                    "Edibility": 9,
+                    "ContextTags": [
+                        "color_white",
+                        "dried_item",
+                        "seed_item"
+                    ]
+                },
+                "{{ModId}}_Dried_Orange_Peel": {
+                    "Name": "{{ModId}}_Dried_Orange_Peel",
+                    "DisplayName": "{{i18n:Dried.Fruit.Peel.Orange.name}}",
+                    "Description": "{{i18n:Dried.Fruit.Peel.Orange.description}}",
+                    "Price": 75,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "3",
+                    "Edibility": 9,
+                    "ContextTags": [
+                        "color_brown",
+                        "seed_item"
+                    ]
+                },
+                "{{ModId}}_Dried_Strawberries": {
+                    "Name": "{{ModId}}_Dried_Strawberries",
+                    "DisplayName": "{{i18n:Dried.Fruit.Strawberry.name}}",
+                    "Description": "{{i18n:Dried.Fruit.Strawberry.description}}",
+                    "Price": 500,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "4",
+                    "Edibility": 100,
+                    "ContextTags": [
+                        "color_dark_red",
+                        "seed_item"
+                    ]
+                },
+                "{{ModId}}_Lily_Bulb_2": {
+                    "Name": "{{ModId}}_Lily_Bulb_2",
+                    "DisplayName": "{{i18n:Dried.Seeds.Lily.name}}",
+                    "Description": "{{i18n:Dried.Seeds.Lily.description}}",
+                    "Price": 50,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "5",
+                    "Edibility": 1,
+                    "ContextTags": [
+                        "color_white"
+                    ]
+                },
+                "{{ModId}}_Orange_Peel": {
+                    "Name": "{{ModId}}_Orange_Peel",
+                    "DisplayName": "{{i18n:Byproduct.Fruit.Orange.name}}",
+                    "Description": "{{i18n:Byproduct.Fruit.Orange.description}}",
+                    "Price": 7,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "6",
+                    "Edibility": 12,
+                    "ContextTags": [
+                        "color_orange",
+                        "peel_item"
+                    ]
+                },
+                "{{ModId}}_Rock_Sugar": {
+                    "Name": "{{ModId}}_Rock_Sugar",
+                    "DisplayName": "{{i18n:Dried.Vegetables.Sugarcane.name}}",
+                    "Description": "{{i18n:Dried.Vegetables.Sugarcane.description}}",
+                    "Price": 75,
+                    "Type": "ArtisanGoods",
+                    "Category": -26,
+                    "Texture": "{{ModId}}/Ingredients",
+                    "SpriteIndex": "7",
+                    "Edibility": 55,
+                    "ContextTags": [
+                        "color_white",
+                        "sugar_item",
+                        "sweet_food"
+                    ]
+                }
+            }
+        }
+    ]
+}

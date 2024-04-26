@@ -1,8 +1,0 @@
-{
-  "Name": "Copper Dust",
-  "Description": "Dust from ground copper ore.",
-  "Price": 5,
-  "Category": "Metal",
-  "Edibility": -300,  
-  "Recipe": null
-}

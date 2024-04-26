@@ -27,6 +27,7 @@ namespace PersonalIndoorFarm.Lib
             PersonalFarm.Initialize();
             _GameLocation.Initialize();
             DayUpdate.Initialize();
+            VoidSeal.Initialize();
             SpaceTimeSynchronizer.Initialize();
             SelectionMenu.Initialize();
         }

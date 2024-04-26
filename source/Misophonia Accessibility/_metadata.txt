@@ -6,9 +6,9 @@ mods:
    Misophonia Accessibility
 
 latest commit:
-   commit 9e0aed734391694e24ae74166e7ab15ec4929675
+   commit 6a6a128cadc0da519b686cf7b59a2404efb1ba66
    Author: James Pfluger <me@jamespfluger.com>
-   Date:   Thu Feb 1 20:02:40 2024 -0800
+   Date:   Fri Apr 19 12:45:55 2024 -0700
    
-       bugfix: add not condition to `PatchSound`
+       Update to 4.0.3 to patch sounds better
    

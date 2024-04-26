@@ -111,7 +111,7 @@ internal class BookCollectionMenu : IClickableMenu {
 			if (value == null || !value.Enable)
 				continue;
 
-			bool locked = !string.IsNullOrEmpty(value.Condition) && !GameStateQuery.CheckConditions(value.Condition);
+			bool locked = !string.IsNullOrEmpty(value.Condition) && !Common.GameStateQuery.CheckConditions(value.Condition);
 			if (value.Secret && locked)
 				continue;
 

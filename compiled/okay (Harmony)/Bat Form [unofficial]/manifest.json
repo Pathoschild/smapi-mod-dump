@@ -1,0 +1,13 @@
+﻿{
+	"Name": "Bat Form",
+	"Author": "aedenthorn",
+	"Version": "0.3.4-unofficial.2-mouahrara",
+	"Description": "Lets you transform into a bat that provides a birds eye view of the valley and a movement speed buff.",
+	"UniqueID": "aedenthorn.BatForm",
+	"EntryDll": "BatForm.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [
+		"Nexus:16825",
+		"UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@BatForm"
+	]
+}

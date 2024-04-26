@@ -17,15 +17,13 @@ using StardewValley;
 using StardewModdingAPI;
 using Unlockable_Bundles.Lib;
 using static Unlockable_Bundles.API.IUnlockableBundlesAPI;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.API
 {
     public class UnlockableBundlesAPI : IUnlockableBundlesAPI
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         private static IList<string> CachedPurchasedBundles = null;
         private static IDictionary<string, IList<string>> CachedPurchasedBundlesByLocation = null;
         private static IList<string> CachedDiscoveredBundles = null;
@@ -51,9 +49,6 @@ namespace Unlockable_Bundles.API
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
 
         public static IList<string> getPurchasedUnlockables()
@@ -210,8 +205,10 @@ namespace Unlockable_Bundles.API
         public void raiseShopPurchased(BundlePurchasedEventArgs args) => BundlePurchasedEvent?.Invoke(this, args);
         public void raiseIsReady(IsReadyEventArgs args)
         {
+            Lib.Multiplayer.IsScreenReady.Value = true;
             IsReady = true;
             IsReadyEvent?.Invoke(this, args);
+            Monitor.Log($"RaisedIsReady for {Lib.Multiplayer.getDebugName()}", DebugLogLevel);
         }
 
         public static void clearCache()

@@ -1,0 +1,13 @@
+﻿{
+    "Name": "More Sensible Juices",
+    "Author": "NCarigon",
+    "Version": "1.0.1",
+    "Description": "Reworks how juices and wines are produced.",
+    "UniqueID": "NCarigon.MoreSensibleJuices",
+    "UpdateKeys": [ "nexus:23146" ],
+    "EntryDll": "MoreSensibleJuices.dll",
+    "MinimumApiVersion": "4.0.0",
+    "Dependencies": [
+        { "UniqueID": "Pathoschild.ContentPatcher" }
+    ]
+}

@@ -41,5 +41,17 @@
     "config.machine-settings-enabled.Name": "Engedélyezve",
     "config.machine-settings-enabled.desc": "A(z) {{machineName}} automatizálásának engedélyezése.",
     "config.machine-settings-priority.name": "Prioritás",
-    "config.machine-settings-priority.desc": "Az a sorrend, amelyben a {{machineName}} gépeket más gépekhez képest kell feldolgozni. Az alapértelmezett prioritás 0, a magasabb értékek kerülnek először feldolgozásra."
+    "config.machine-settings-priority.desc": "Az a sorrend, amelyben a {{machineName}} gépeket más gépekhez képest kell feldolgozni. Az alapértelmezett prioritás 0, a magasabb értékek kerülnek először feldolgozásra.",
+
+    // machine names
+    // TODO
+    "config.machines.bush": "Bush",
+    "config.machines.fruit-tree": "Tree (Fruit Tree)",
+    "config.machines.trash-can": "Trash Can",
+    "config.machines.wild-tree": "Tree (Wild Tree)",
+
+    // special settings for individual machines
+    // TODO
+    "config.machines.wild-tree.collect-moss.name": "Collect Moss",
+    "config.machines.wild-tree.collect-moss.desc": "Whether to collect moss on trees. For example, keeping moss on trees will boost the quality of mushrooms from nearby mushroom logs."
 }

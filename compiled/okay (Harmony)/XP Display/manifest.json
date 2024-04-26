@@ -1,0 +1,17 @@
+﻿{
+	"Name": "XP Display",
+	"Author": "Shockah",
+	"Version": "2.0.1",
+	"Description": "Displays the progress to reach the next level of each skill.",
+	"UniqueID": "Shockah.XPDisplay",
+	"EntryDll": "XPDisplay.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:11089" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "3.0.0"
+		}
+	]
+}

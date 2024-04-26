@@ -29,15 +29,13 @@ namespace AnimalHusbandryMod.integrations
         /// <remarks>Each mod can only be registered once, unless it's deleted via <see cref="Unregister"/> before calling this again.</remarks>
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
-        void StartNewPage(IManifest mod, string pageName);
-        void OverridePageDisplayName(IManifest mod, string pageName, string displayName);
-
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
-        void RegisterPageLabel(IManifest mod, string labelName, string labelDesc, string newPage);
-        void RegisterParagraph(IManifest mod, string paragraph);
+        /// <summary>Add a section title at the current position in the form.</summary>
+        /// <param name="mod">The mod's manifest.</param>
+        /// <param name="text">The title text shown in the form.</param>
+        /// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
 
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet);
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<SButton> optionGet, Action<SButton> optionSet);
     }

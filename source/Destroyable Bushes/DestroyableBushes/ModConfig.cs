@@ -18,6 +18,9 @@ namespace DestroyableBushes
     /// <summary>A collection of this mod's config.json file settings.</summary>
     public class ModConfig
     {
+        /// <summary>The number of axe upgrades required to destroy non-tea bushes. 0 allows the default axe to remove bushes, 1 requires the copper axe or better, etc.</summary>
+        public int AxeUpgradesRequired { get; set; } = 0;
+
         /// <summary>The number component of <see cref="WhenBushesRegrow"/>.</summary>
         [JsonIgnore]
         public int? regrowNumber = 3;
@@ -108,6 +111,7 @@ namespace DestroyableBushes
         public bool SmallBushes { get; set; } = true;
         public bool MediumBushes { get; set; } = true;
         public bool LargeBushes { get; set; } = true;
+        public bool WalnutBushes { get; set; } = true;
     }
 
     /// <summary>A group of config.json file settings. Sets the number of wood pieces dropped by each type of bush when destroyed.</summary>
@@ -116,6 +120,7 @@ namespace DestroyableBushes
         public int SmallBushes { get; set; } = 2;
         public int MediumBushes { get; set; } = 4;
         public int LargeBushes { get; set; } = 8;
+        public int WalnutBushes { get; set; } = 4;
         public int GreenTeaBushes { get; set; } = 0;
     }
 

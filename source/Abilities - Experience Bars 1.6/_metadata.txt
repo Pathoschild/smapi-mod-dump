@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Sandman534/Abilities-Experience-Bars
+   Git: https://github.com/Sandman534/Abilities-Experience-Bars.git
+
+mods:
+   Abilities - Experience Bars 1.6
+
+latest commit:
+   commit 138f91204038b6ee79ee96016321c317df443a19
+   Author: Sandman534 <45305344+Sandman534@users.noreply.github.com>
+   Date:   Thu Apr 25 00:12:27 2024 -0700
+   
+       Big fixes for Mastery skill, added ability to hide max level skills
+   

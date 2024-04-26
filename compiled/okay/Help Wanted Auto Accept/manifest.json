@@ -1,0 +1,16 @@
+{
+  "Name": "Help Wanted Auto Accept",
+  "Author": "Ruse82",
+  "Version": "1.0.3",
+  "Description": "Automatically accept Help Wanted daily quests at the start of the day when they are available.",
+  "UniqueID": "Ruse82.HelpWantedAutoAccept",
+  "EntryDll": "HelpWantedAutoAccept.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22235" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.LuckSkill",
+      "IsRequired": false
+    }
+  ]
+}

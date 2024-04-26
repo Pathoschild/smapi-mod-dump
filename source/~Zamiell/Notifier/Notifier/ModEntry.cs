@@ -10,11 +10,15 @@
 
 using Force.DeepCloner;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Objects;
+using StardewValley.Tools;
 using System.Text.RegularExpressions;
 
 namespace Notifier
@@ -29,16 +33,25 @@ namespace Notifier
         /// From "Mineshaft.cs"
         enum TileType
         {
-            Ladder = 173,
+            Elevator = 112,
+            LadderUp = 115,
+            LadderDown = 173,
             Shaft = 174,
             CoalSackOrMineCart = 194,
         }
 
         // Variables
+        private ModConfig config = new();
+
         private int currentWateringCanWater = 0;
         public int currentBubblesX = 0;
         public int currentBubblesY = 0;
         public GameLocation currentBubblesLocation = Game1.currentLocation;
+
+        public int currentPanPointX = 0;
+        public int currentPanPointY = 0;
+        public GameLocation currentPanPointLocation = Game1.currentLocation;
+
         private Netcode.NetStringList currentBuffIDs = new Netcode.NetStringList();
         private int currentHealth = 100; // Default starting health on a new character.
         private GameLocation lastLocation = Game1.currentLocation;
@@ -50,30 +63,119 @@ namespace Notifier
 
         public override void Entry(IModHelper helper)
         {
+            config = helper.ReadConfig<ModConfig>();
+
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+        }
+
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
+        {
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+            {
+                return;
+            }
+
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(config)
+            );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.ArtifactSpots,
+                (bool val) => config.ArtifactSpots = val,
+                () => "Artifact Spots",
+                () => "Whether to notify on artifact spots."
+            );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.SeedSpots,
+                (bool val) => config.SeedSpots = val,
+                () => "Seed Spots",
+                () => "Whether to notify on seed spots."
+            );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.Bubbles,
+                (bool val) => config.Bubbles = val,
+                () => "Bubbles",
+                () => "Whether to notify on bubbles."
+            );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.PanPoints,
+                (bool val) => config.PanPoints = val,
+                () => "Panning Points",
+                () => "Whether to notify on panning points."
+            );
+
+            configMenu.AddKeybindList(
+                this.ModManifest,
+                () => config.DebugHotkey,
+                (KeybindList val) => config.DebugHotkey = val,
+                () => "Debug Hotkey",
+                () => "The hotkey to execute the debug function."
+            );
         }
 
         private void OnWarped(object? sender, WarpedEventArgs e)
         {
             CheckForArtifactSpots();
+            CheckBubblesOnWarp();
+            CheckPanPointOnWarp();
             CheckDungeonPause();
             CheckCoalNode();
+            CheckChests();
         }
 
         private void CheckForArtifactSpots()
         {
-            foreach (StardewValley.Object node in Game1.currentLocation.objects.Values)
+             foreach (StardewValley.Object obj in Game1.currentLocation.objects.Values)
             {
-                if (node.Name == "Artifact Spot")
+                if (obj.Name == "Artifact Spot" && config.ArtifactSpots)
                 {
-                    Notify($"Artifact spot detected in {Game1.currentLocation.Name} at: {node.TileLocation.X}, {node.TileLocation.Y}", "");
+                    Notify($"Artifact spot detected in {Game1.currentLocation.Name} at: (X: {obj.TileLocation.X}, Y: {obj.TileLocation.Y})", "");
                 }
+                else if (obj.Name == "Seed Spot" && config.SeedSpots)
+                {
+                    Notify($"Seed spot detected in {Game1.currentLocation.Name} at: (X: {obj.TileLocation.X}, Y: {obj.TileLocation.Y})", "");
+                }
+            }
+        }
 
-                if (node.Name == "Seed Spot")
-                {
-                    Notify($"Seed spot detected in {Game1.currentLocation.Name} at: {node.TileLocation.X}, {node.TileLocation.Y}", "");
-                }
+        private void CheckBubblesOnWarp()
+        {
+            if (Game1.currentLocation.fishSplashPoint is not NetPoint bubbles)
+            {
+                return;
+            }
+
+            bool bubblesExist = bubbles.X != 0 || bubbles.Y != 0;
+            if (bubblesExist && config.Bubbles)
+            {
+                Notify($"Bubbles detected in {Game1.currentLocation.Name} at: (X: {bubbles.X}, Y: {bubbles.Y})", "");
+            }
+        }
+
+        private void CheckPanPointOnWarp()
+        {
+            if (Game1.currentLocation.orePanPoint is not NetPoint panPoint)
+            {
+                return;
+            }
+
+            bool panPointExists = panPoint.X != 0 || panPoint.Y != 0;
+            if (panPointExists && config.PanPoints)
+            {
+                Notify($"Pan point detected in {Game1.currentLocation.Name} at: (X: {panPoint.X}, Y: {panPoint.Y})", "");
             }
         }
 
@@ -112,29 +214,50 @@ namespace Notifier
 
             var (floorNum, mines) = tuple;
 
-            var ladderPos = GetTilePosition(mineShaft, TileType.Ladder);
+            var ladderPos = GetTilePosition(mineShaft, TileType.LadderDown);
             if (ladderPos != Vector2.Zero)
             {
-                Notify($"Floor {floorNum} has an pre-existing ladder at: {ladderPos.X}, {ladderPos.Y}", "cowboy_gunload");
+                Notify($"Floor {floorNum} has an pre-existing ladder at: (X: {ladderPos.X}, Y: {ladderPos.Y})", "cowboy_gunload");
             }
 
             var shaftPos = GetTilePosition(mineShaft, TileType.Shaft);
             if (shaftPos != Vector2.Zero)
             {
-                Notify($"Floor {floorNum} has an pre-existing shaft at: {shaftPos.X}, {shaftPos.Y}", "cowboy_gunload");
+                Notify($"Floor {floorNum} has an pre-existing shaft at: (X: {shaftPos.X}, Y: {shaftPos.Y})", "cowboy_gunload");
             }
 
             var coalPos = GetTilePosition(mineShaft, TileType.CoalSackOrMineCart);
             if (coalPos != Vector2.Zero)
             {
-                Notify($"Floor {floorNum} has a coal node: {coalPos.X}, {coalPos.Y}", "cowboy_gunload");
+                Notify($"Floor {floorNum} has a coal node: (X: {coalPos.X}, Y: {coalPos.Y})", "cowboy_gunload");
             }
         }
 
-        public bool IsDungeonBattleFloor(MineShaft mineShaft)
+        public void CheckChests()
+        {
+            foreach (StardewValley.Object obj in Game1.currentLocation.objects.Values)
+            {
+                if (obj is Chest chest && !chest.playerChest.Value && !IsChestOpened(chest))
+                {
+                    Notify($"Location {Game1.currentLocation.Name} has a chest: (X: {obj.TileLocation.X}, Y: {obj.TileLocation.Y})", "cowboy_gunload");
+                }
+            }
+        }
+
+        private bool IsChestOpened(Chest chest)
+        {
+            // "currentLidFrame" is private, so we have to use reflection.
+            int currentLidFrame = this.Helper.Reflection.GetField<int>(chest, "currentLidFrame").GetValue();
+
+            // currentLidFrame is 224 on a closed chest.
+            // currentLidFrame is 226 on an opened chest.
+            return currentLidFrame != 224;
+        }
+
+        public bool IsDungeonBattleFloor(GameLocation location)
         {
             // e.g. "UndergroundMine1" is the first floor of the mines.
-            return mineShaft.Name.StartsWith("UndergroundMine") && !IsMineEmptyFloor(mineShaft);
+            return location is MineShaft mineShaft && mineShaft.Name.StartsWith("UndergroundMine") && !IsMineEmptyFloor(mineShaft);
         }
 
         private bool IsMineEmptyFloor(MineShaft mineShaft)
@@ -184,21 +307,26 @@ namespace Notifier
             {
                 for (int j = 0; j < mineShaft.Map.GetLayer("Buildings").LayerHeight; j++)
                 {
-                    int index = mineShaft.getTileIndexAt(new Point(i, j), "Buildings");
-                    Vector2 loc = new Vector2(i, j);
-                    if (mineShaft.Objects.ContainsKey(loc) || mineShaft.terrainFeatures.ContainsKey(loc))
+                    if (IsTileTypeOnTile(tileType, i, j, mineShaft))
                     {
-                        continue;
-                    }
-
-                    if (index == (int)tileType)
-                    {
-                        return loc;
+                        return new Vector2(i, j);
                     }
                 }
             }
 
             return Vector2.Zero;
+        }
+
+        private static bool IsTileTypeOnTile(TileType tileType, int i, int j, GameLocation location)
+        {
+            int index = location.getTileIndexAt(new Point(i, j), "Buildings");
+            Vector2 loc = new Vector2(i, j);
+
+            return (
+                index == (int)tileType
+                && !location.Objects.ContainsKey(loc)
+                && !location.terrainFeatures.ContainsKey(loc)
+            );
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -209,7 +337,8 @@ namespace Notifier
             }
 
             CheckWateringCan();
-            CheckBubbles();
+            CheckBubblesOnTick();
+            CheckPanPointOnTick();
             CheckBuffWornOff();
             CheckHP();
 
@@ -248,7 +377,7 @@ namespace Notifier
             }
         }
 
-        private void CheckBubbles()
+        private void CheckBubblesOnTick()
         {
             var oldBubblesX = currentBubblesX;
             var newBubblesX = Game1.currentLocation.fishSplashPoint.X;
@@ -275,7 +404,44 @@ namespace Notifier
             bool disappear = newBubblesX == 0 && newBubblesY == 0;
             string msg = disappear ? $"Bubbles disappeared in {Game1.currentLocation.Name}." : $"Bubbles appeared in {Game1.currentLocation.Name}: {newBubblesX}, {newBubblesY}";
             string soundName = disappear ? "cowboy_gunload" : "Cowboy_Secret";
-            Notify(msg, soundName);
+
+            if (config.Bubbles)
+            {
+                Notify(msg, soundName);
+            }
+        }
+
+        private void CheckPanPointOnTick()
+        {
+            var oldPanPointX = currentPanPointX;
+            var newPanPointX = Game1.currentLocation.orePanPoint.X;
+            currentPanPointX = newPanPointX;
+
+            var oldPanPointY = currentPanPointY;
+            var newPanPointY = Game1.currentLocation.orePanPoint.Y;
+            currentPanPointY = newPanPointY;
+
+            var oldPanPointLocation = currentPanPointLocation;
+            var newPanPointLocation = Game1.currentLocation;
+            currentPanPointLocation = newPanPointLocation;
+
+            if (oldPanPointLocation != newPanPointLocation)
+            {
+                return;
+            }
+
+            if (oldPanPointX == newPanPointX && oldPanPointY == newPanPointY)
+            {
+                return;
+            }
+
+            bool disappear = newPanPointX == 0 && newPanPointY == 0;
+            string msg = disappear ? $"Pan point disappeared in {Game1.currentLocation.Name}." : $"Pan point appeared in {Game1.currentLocation.Name}: {newPanPointX}, {newPanPointY}";
+
+            if (config.PanPoints)
+            {
+                Notify(msg, "cowboy_gunload");
+            }
         }
 
         private void CheckBuffWornOff()
@@ -318,7 +484,7 @@ namespace Notifier
 
         private void CheckNewLadderOrShaft(MineShaft mineShaft, bool isNewLocation)
         {
-            var ladderPos = GetTilePosition(mineShaft, TileType.Ladder);
+            var ladderPos = GetTilePosition(mineShaft, TileType.LadderDown);
             Vector2 oldLadderPos = lastLadderPos;
             Vector2 newLadderPos = ladderPos;
             lastLadderPos = ladderPos;
@@ -387,8 +553,8 @@ namespace Notifier
 
             foreach (var sprite in location.TemporarySprites)
             {
-                // The parent tile indexes are harded to match the 3 types of bombs.
-                // See: TemporaryAnimatedSprite.GetTemporaryAnimatedSprite
+                // The parent tile indexes are hard coded to match the 3 types of bombs.
+                // See: TemporaryAnimatedSprite::GetTemporaryAnimatedSprite
                 if (sprite.initialParentTileIndex == 286 || sprite.initialParentTileIndex == 287 || sprite.initialParentTileIndex == 288)
                 {
                     numBombs++;
@@ -398,10 +564,12 @@ namespace Notifier
             return numBombs;
         }
 
-        // We just check for any ammo being removed (assuming that all ammo is exploding ammo).
+        // We just check for any player ammo being removed (assuming that all ammo is exploding ammo).
         private void CheckExplodingAmmoExploded(GameLocation location, bool isNewLocation)
         {
-            int numProjectiles = location.projectiles.Count;
+            var playerProjectiles = location.projectiles.Where(projectile => projectile.damagesMonsters.Value).ToArray();
+
+            int numProjectiles = playerProjectiles.Length;
             int oldNumProjectiles = lastNumProjectiles;
             int newNumProjectiles = numProjectiles;
             lastNumProjectiles = numProjectiles;
@@ -414,6 +582,63 @@ namespace Notifier
             if (oldNumProjectiles > 0 && newNumProjectiles == 0)
             {
                 EmulatePause();
+            }
+        }
+
+        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+        {
+            if (!Context.IsWorldReady)
+            {
+                return;
+            }
+
+            if (config.DebugHotkey.IsDown())
+            {
+                DebugFunction();
+            }
+        }
+
+        private void DebugFunction()
+        {
+            DestroyItemCursorIsOver();
+        }
+
+        private void DestroyItemCursorIsOver()
+        {
+            if (Game1.activeClickableMenu is not GameMenu gameMenu)
+            {
+                return;
+            }
+
+            if (gameMenu.pages.Count == 0)
+            {
+                return;
+            }
+
+            var firstPage = gameMenu.pages[0];
+            if (firstPage is not InventoryPage inventoryPage)
+            {
+                return;
+            }
+
+            if (inventoryPage.hoveredItem is not StardewValley.Object obj)
+            {
+                return;
+            }
+
+            DecrementStack(obj);
+        }
+
+        private void DecrementStack(StardewValley.Object obj)
+        {
+            if (obj.Stack > 1)
+            {
+                obj.Stack--;
+            }
+            else
+            {
+                // Cannot use "Items.Remove" since it causes other items to slide around.
+                Game1.player.Items.RemoveButKeepEmptySlot(obj);
             }
         }
 
@@ -434,15 +659,14 @@ namespace Notifier
 
         private void EmulatePause()
         {
-            if (IsDayEnding())
-            {
-                return;
-            }
-
-            if (Game1.activeClickableMenu is null)
+            if (Game1.activeClickableMenu is null && !IsFishing() && !IsDayEnding())
             {
                 Game1.activeClickableMenu = new GameMenu();
             }
+        }
+
+        private bool IsFishing() {
+            return Game1.player.UsingTool && Game1.player.CurrentTool is FishingRod;
         }
 
         private bool IsDayEnding()

@@ -33,7 +33,7 @@ internal class Game1Patch : IPatch
         try
         {
             if (Game1.activeClickableMenu == null) return;
-            Log.Debug($"Closing {Game1.activeClickableMenu.GetType()} menu, performing cleanup...");
+            Log.Debug($"Game1Patch: Closing {Game1.activeClickableMenu.GetType()} menu, performing cleanup...");
             IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
         }
         catch (Exception e)

@@ -32,8 +32,6 @@ namespace IndoorSprinklers
         /*********
          ** Private methods
          *********/
-        
-
         /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -42,14 +40,21 @@ namespace IndoorSprinklers
             this.RunSprinklers();
             this.Monitor.Log("Ran sprinklers");
         }
-
+        
+        /// <summary>Returns all indoor locations, with the farm buildings interiors.</summary>
         private static IEnumerable<GameLocation> GetIndoorLocations()
         {
-            return Game1.locations.Where(
-                location => !location.IsOutdoors
-            );
+            IEnumerable<GameLocation> indoorLocations = Game1.locations.Where(location => !location.IsOutdoors);
+
+            IEnumerable<GameLocation> farmIndoorLocations = Game1.getFarm().buildings
+                .Where(building => building.HasIndoors())
+                .Select(building => building.GetIndoors());
+
+            return indoorLocations.Concat(farmIndoorLocations);
         }
+
         
+        /// <summary>Runs sprinklers on all indoor pots in range.</summary>
         private void RunSprinklers()
         {
             foreach (var location in GetIndoorLocations())

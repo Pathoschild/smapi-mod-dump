@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>LadderLocator</AssemblyName>
     <RootNamespace>LadderLocator</RootNamespace>
-    <Version>1.4.4</Version>
+    <Version>1.5.1</Version>
 	<TargetFramework>net6.0</TargetFramework>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>

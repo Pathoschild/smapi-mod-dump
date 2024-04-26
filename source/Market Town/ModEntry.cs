@@ -9,7 +9,6 @@
 *************************************************/
 
 using HarmonyLib;
-using MarketTown;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -57,6 +56,7 @@ using StardewValley.GameData.Buildings;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
+using MarketTown.Data;
 
 namespace MarketTown
 {
@@ -119,6 +119,7 @@ namespace MarketTown
         public static int TodayFishSold = 0;
         public static int TodayGemSold = 0;
         public static int TodayMuseumVisitor = 0;
+        public static int TodayMuseumEarning = 0;
         //
         // *************************** ENTRY ***************************
         //
@@ -205,11 +206,12 @@ namespace MarketTown
 
         private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
-            //try
-            //{
-            //    GameLocation locat = Game1.getLocationFromName("Custom_Village");
-            //    locat.isAlwaysActive.Value = true;
-            //} catch { }
+            try
+            {
+                GameLocation locat = Game1.getLocationFromName("Custom_MT_Island");
+                if ( locat != null) locat.isAlwaysActive.Value = true;
+            }
+            catch { }
 
             TodaySell = ""; 
             TodayMoney = 0;
@@ -230,17 +232,18 @@ namespace MarketTown
             TodayFishSold = 0;
             TodayGemSold = 0;
             TodayMuseumVisitor = 0;
+            TodayMuseumEarning = 0;
 
             listNPCTodayPurchaseTime.Clear();
             validBuildingObjectPairs.Clear();
 
             List<int> categoryKeys = new List<int> { 0, -2, -12, -28, -102 };
             int museumPieces = 0;
-
             foreach (Building building in Game1.getFarm().buildings)
             {
                 if ( building != null && building.GetIndoorsName() != null)
                 {
+                    bool isMuseumBuilding = false;
                     foreach (var obj in Game1.getLocationFromName(building.GetIndoorsName()).Objects.Values)
                     {
                         // Case Museum
@@ -249,23 +252,27 @@ namespace MarketTown
                             GameLocation location = Game1.getLocationFromName(building.GetIndoorsName());
                             foreach (var f in location.furniture)
                             {
-                                if ( f.heldObject.Value != null && categoryKeys.Contains(f.heldObject.Value.Category) )  museumPieces ++;
-                                if ( f is FishTankFurniture fishtank ) museumPieces += (int)(fishtank.tankFish.Count / 2);
-                                if ( f.Name.Contains("Statue") ) museumPieces += 2; 
+                                if (f.heldObject.Value != null && categoryKeys.Contains(f.heldObject.Value.Category)) { museumPieces++; }
+                                if (f is FishTankFurniture fishtank) { museumPieces += (int)(fishtank.tankFish.Count / 2); }
+                                if (f.Name.Contains("Statue")) { museumPieces += 2; }
                             }
 
                             validBuildingObjectPairs.Add(new BuildingObjectPair(building, obj, "museum", museumPieces));
                             if (!Config.RestaurantLocations.Contains(Game1.getLocationFromName(building.GetIndoorsName()).Name)) Config.RestaurantLocations.Add(Game1.getLocationFromName(building.GetIndoorsName()).Name);
-
-                            break;
+                            isMuseumBuilding = true;
                         }
+                    }
 
-                        //Case Market or Restaurant
-                        if (obj is Sign sign1 && sign1.displayItem.Value != null && (sign1.displayItem.Value.Name == "Market License" || sign1.displayItem.Value.Name == "Restaurant License"))
+                    if (!isMuseumBuilding)
+                    {
+                        foreach (var obj in Game1.getLocationFromName(building.GetIndoorsName()).Objects.Values)
                         {
-                            validBuildingObjectPairs.Add(new BuildingObjectPair(building, obj, "market", 0));
-                            if ( !Config.RestaurantLocations.Contains(Game1.getLocationFromName(building.GetIndoorsName()).Name)) Config.RestaurantLocations.Add(Game1.getLocationFromName(building.GetIndoorsName()).Name);
-                            break;
+                            //Case Market or Restaurant
+                            if (obj is Sign sign1 && sign1.displayItem.Value != null && (sign1.displayItem.Value.Name == "Market License" || sign1.displayItem.Value.Name == "Restaurant License"))
+                            {
+                                validBuildingObjectPairs.Add(new BuildingObjectPair(building, obj, "market", 0));
+                                if (!Config.RestaurantLocations.Contains(Game1.getLocationFromName(building.GetIndoorsName()).Name)) Config.RestaurantLocations.Add(Game1.getLocationFromName(building.GetIndoorsName()).Name);
+                            }
                         }
                     }
                 }
@@ -312,7 +319,7 @@ namespace MarketTown
 
                 try
                 {
-                    foreach (NPC __instance in Utility.getAllCharacters())
+                    foreach (NPC __instance in Utility.getAllVillagers())
                     {
 
                         // ******* Check NPC valid tile *******
@@ -504,7 +511,7 @@ namespace MarketTown
         {
             if (!Game1.hasLoadedGame) return;
 
-            foreach (var x in Utility.getAllCharacters())
+            foreach (var x in Utility.getAllVillagers())
             {
                 if (x.Name.Contains("MT.Guest_"))
                 {
@@ -528,6 +535,8 @@ namespace MarketTown
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
+            if (Config.DisableTextChat) { return; }
+
             if (e.IsMultipleOf(30))
             {
                 PlayerChat playerChatInstance = new PlayerChat();
@@ -582,7 +591,7 @@ namespace MarketTown
             Microsoft.Xna.Framework.Rectangle displayArea = new Microsoft.Xna.Framework.Rectangle(0, 0, newWidth, newHeight);
 
             // get Generic Mod Config Menu's API (if it's installed)
-            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            var configMenu = Helper.ModRegistry.GetApi<MarketTown.Data.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
                 return;
 
@@ -701,6 +710,13 @@ namespace MarketTown
 
             // Shed setting
             configMenu.AddPage(mod: ModManifest, "shed", () => SHelper.Translation.Get("foodstore.config.shed"));
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => SHelper.Translation.Get("foodstore.config.easylicense"),
+                getValue: () => Config.EasyLicense,
+                setValue: value => Config.EasyLicense = value
+            );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
@@ -846,6 +862,12 @@ namespace MarketTown
                 tooltip: () => SHelper.Translation.Get("foodstore.config.dialoguetimeText"),
                 getValue: () => "" + Config.DialogueTime,
                 setValue: delegate (string value) { try { Config.DialogueTime = Int32.Parse(value, CultureInfo.InvariantCulture); } catch { } }
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => SHelper.Translation.Get("foodstore.config.textchat"),
+                getValue: () => Config.DisableTextChat,
+                setValue: value => Config.DisableTextChat = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
@@ -1030,7 +1052,7 @@ namespace MarketTown
             ChairPositions.Clear();
 
             //Assign visit value
-            foreach (NPC __instance in Utility.getAllCharacters())
+            foreach (NPC __instance in Utility.getAllVillagers())
             {
                 if (__instance is not null && __instance.IsVillager)
                 {
@@ -1083,7 +1105,7 @@ namespace MarketTown
             // Wipe invitation
             try
             {
-                foreach (NPC __instance in Utility.getAllCharacters())
+                foreach (NPC __instance in Utility.getAllVillagers())
                 {
 
                     TodayCustomerInteraction += Int32.Parse(__instance.modData["hapyke.FoodStore/TotalCustomerResponse"]);
@@ -1097,12 +1119,7 @@ namespace MarketTown
 
                     if (__instance.Name.Contains("MT.Guest_"))
                     {
-                        Game1.player.friendshipData.Remove(__instance.Name);
-
-                        __instance.Halt();
-                        __instance.temporaryController = null;
-                        __instance.controller = null;
-                        Game1.warpCharacter(__instance, __instance.DefaultMap, __instance.DefaultPosition / 64);
+                        Game1.characterData.Remove(__instance.Name);
                     }
                 }
             }
@@ -1110,6 +1127,9 @@ namespace MarketTown
 
             try
             {
+                Config.RestaurantLocations.Clear();
+                validBuildingObjectPairs.Clear();
+
                 var mailHistory = MailRepository.FindLetter("MT.SellLogMail");
                 var weeklyHistory = MailRepository.FindLetter("MT.WeeklyLogMail");
 
@@ -1227,6 +1247,7 @@ namespace MarketTown
                 TodayCustomerInteraction = TodayCustomerInteraction,
 
                 TodayMuseumVisitor = TodayMuseumVisitor,
+                TodayMuseumEarning = TodayMuseumEarning,
 
                 ForageSold = TodayForageSold + weeklyForageSold,
                 FlowerSold = TodayFlowerSold + weeklyFlowerSold,
@@ -1268,7 +1289,7 @@ namespace MarketTown
 
         }
 
-        private static bool TryToEatFood(NPC __instance, PlacedFoodData food)
+        private static bool TryToEatFood(NPC __instance, DataPlacedFood food)
         {
             try
             {
@@ -1294,11 +1315,11 @@ namespace MarketTown
                             int tip = 0;
                             double decorPoint = GetDecorPoint(food.foodTile, __instance.currentLocation);
                             Random rand = new Random();
-                            String itemName = "";
+                            String itemName = (food == null || food.foodObject == null || food.foodObject.DisplayName == null)
+                                ? "Item" : food.foodObject.displayName;
 
                             if (food.foodObject.Category == -7)
                             {
-                                itemName = food.foodObject.DisplayName;
                                 // Get Reply, Sale Price, Tip for each taste
                                 if (taste == 0)         //Love
                                 {
@@ -1422,7 +1443,6 @@ namespace MarketTown
                             //}
                             else    // Non-food case
                             {
-                                itemName = food.foodObject.displayName;
                                 tip = 0;
                                 switch (food.foodObject.Quality)
                                 {
@@ -1491,8 +1511,8 @@ namespace MarketTown
                                 //Generate chat box
                                 if (Game1.IsMultiplayer)
                                 {
-                                    Game1.chatBox.addInfoMessage(SHelper.Translation.Get("foodstore.sold", new { foodObjName = itemName, locationString = __instance.currentLocation.DisplayName, saleString = salePrice }));
-                                    MyMessage messageToSend = new MyMessage(SHelper.Translation.Get("foodstore.sold", new { foodObjName = itemName, locationString = __instance.currentLocation.DisplayName, saleString = salePrice }));
+                                    Game1.chatBox.addInfoMessage(SHelper.Translation.Get("foodstore.sold", new { foodObjName = itemName, locationString = __instance.currentLocation.Name, saleString = salePrice }));
+                                    MyMessage messageToSend = new MyMessage(SHelper.Translation.Get("foodstore.sold", new { foodObjName = itemName, locationString = __instance.currentLocation.Name, saleString = salePrice }));
                                     SHelper.Multiplayer.SendMessage(messageToSend, "ExampleMessageType");
 
                                     if (!Config.DisableChat)
@@ -1513,7 +1533,7 @@ namespace MarketTown
                                 }
                                 else
                                 {
-                                    Game1.chatBox.addInfoMessage(SHelper.Translation.Get("foodstore.sold", new { foodObjName = itemName, locationString = __instance.currentLocation.DisplayName, saleString = salePrice }));
+                                    Game1.chatBox.addInfoMessage(SHelper.Translation.Get("foodstore.sold", new { foodObjName = itemName, locationString = __instance.currentLocation.Name, saleString = salePrice }));
                                     if (!Config.DisableChat)
                                     {
                                         if (tip != 0)
@@ -1529,6 +1549,50 @@ namespace MarketTown
                                 if (__instance.currentLocation is FarmHouse)
                                 {
                                     Farmer owner = (__instance.currentLocation as FarmHouse).owner;
+
+                                    try
+                                    {
+                                        if (__instance != null && __instance.Name != null && __instance.Name.Contains("Mt.Guest_"))
+                                        {
+                                            string[] parts = __instance.Name.Split('_');
+                                            string realName = "";
+                                            if (parts.Length >= 2)
+                                            {
+                                                realName = parts[1];
+                                            }
+
+                                            NPC realNPC = Game1.getCharacterFromName(realName);
+
+                                            if (owner.friendshipData.ContainsKey(realName))
+                                            {
+                                                int points = 3;
+                                                switch (taste)
+                                                {
+                                                    case 0:
+                                                        points = 8;
+                                                        break;
+                                                    case 2:
+                                                        points = 5;
+                                                        break;
+                                                    case 4:
+                                                        points = 0;
+                                                        break;
+                                                    case 6:
+                                                        points = -3;
+                                                        break;
+                                                    case 8:
+                                                        points = 3;
+                                                        break;
+                                                    default:
+                                                        __instance.doEmote(20);
+                                                        break;
+                                                }
+                                                owner.friendshipData[realName].Points += (int)points;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
                                     if (owner.friendshipData.ContainsKey(__instance.Name))
                                     {
                                         int points = 5;
@@ -1642,8 +1706,8 @@ namespace MarketTown
                                     mannequin.Boots.Value = null;
                                 }
                             }
-                            if (!Config.DisableChatAll && !Config.DisableChat) Game1.chatBox.addInfoMessage(SHelper.Translation.Get("foodstore.soldclothes", new { locationString = __instance.currentLocation.DisplayName, saleString = salePrice }));
-                            MyMessage messageToSend = new MyMessage(SHelper.Translation.Get("foodstore.soldclothes", new { locationString = __instance.currentLocation.DisplayName, saleString = salePrice }));
+                            if (!Config.DisableChatAll && !Config.DisableChat) Game1.chatBox.addInfoMessage(SHelper.Translation.Get("foodstore.soldclothes", new { locationString = __instance.currentLocation.Name, saleString = salePrice }));
+                            MyMessage messageToSend = new MyMessage(SHelper.Translation.Get("foodstore.soldclothes", new { locationString = __instance.currentLocation.Name, saleString = salePrice }));
                             SHelper.Multiplayer.SendMessage(messageToSend, "ExampleMessageType");
 
                             if (!Config.DisableChatAll) NPCShowTextAboveHead(__instance, SHelper.Translation.Get("foodstore.soldclothesText." + rand.Next(7).ToString()));
@@ -1683,11 +1747,22 @@ namespace MarketTown
             return false;
         }
 
-        private static PlacedFoodData GetClosestFood(NPC npc, GameLocation location)
+        private static DataPlacedFood GetClosestFood(NPC npc, GameLocation location)
         {
             List<int> categoryKeys = new List<int> { -81, -80, -79, -75, -74, -28, -27, -26, -23, -22, -21, -20, -19, -18, -17, -16, -15, -12, -8, -7, -6, -5, -4, -2};
 
-            List<PlacedFoodData> foodList = new List<PlacedFoodData>();
+            foreach (var pair in validBuildingObjectPairs)
+            {
+                Building building = pair.Building;
+                string buildingType = pair.buildingType;
+
+                var museumCheck = Game1.getLocationFromName(building.GetIndoorsName());
+
+                if (museumCheck == location && buildingType == "museum") return null ;
+            }
+
+            List<DataPlacedFood> foodList = new List<DataPlacedFood>();
+            foodList.Clear();
 
             bool buildingIsFarm = false;
             bool buildingIsMuseum = false;
@@ -1701,10 +1776,12 @@ namespace MarketTown
 
             if (buildingIsFarm)
             {
-                foreach (var obj in location.Objects.Values)           // Case MUSEUM return no valid food
+                foreach (var obj in location.Objects.Values)
                 {
+                    buildingIsMuseum = true;
                     if (obj != null && obj is Sign sign && sign != null && sign.displayItem != null && sign.displayItem.Value != null && sign.displayItem.Value.Name != null
-                        && sign.displayItem.Value.Name == "Museum License")  buildingIsMuseum = true;
+                        && sign.displayItem.Value.Name == "Museum License") break;
+                    else buildingIsMuseum = false;
                 }
 
                 foreach (var obj in location.Objects.Values)            // Case Market or Restaurant
@@ -1717,11 +1794,13 @@ namespace MarketTown
                 }
             }
 
+            if (buildingIsMuseum) return null;
+
             foreach (var x in location.Objects)                 // Check valid Mannequin
             {
                 foreach (var obj in x.Values)
                 {
-                    if (obj.name.Contains("nequin") && obj is MtMannequin mannequin)
+                    if (obj != null && obj.Name != null && obj.Name.Contains("nequin") && obj is MtMannequin mannequin)
                     {
                         bool hasHat = mannequin.Hat.Value != null;
                         bool hasShirt = mannequin.Shirt.Value != null;
@@ -1739,7 +1818,7 @@ namespace MarketTown
                         // Add to foodList only if there is sign within the range
                         if (hasSignInRange && Vector2.Distance(fLocation, npc.Tile) < Config.MaxDistanceToFind && (hasHat || hasPants || hasShirt || hasBoots) && buildingIsMarket && !buildingIsMuseum)
                         {
-                            foodList.Add(new PlacedFoodData( obj, fLocation, obj, -1));
+                            foodList.Add(new DataPlacedFood( obj, fLocation, obj, -1));
                         }
                     }
                 }
@@ -1765,11 +1844,11 @@ namespace MarketTown
                     // Add to foodList only if there is sign within the range
                     if (hasSignInRange && Vector2.Distance(fLocation, npc.Tile) < Config.MaxDistanceToFind && !buildingIsMuseum)
                     {
-                        foodList.Add(new PlacedFoodData(f, fLocation, f.heldObject.Value, -1));
+                        foodList.Add(new DataPlacedFood(f, fLocation, f.heldObject.Value, -1));
                     }
                 }
             }
-            if (foodList.Count == 0)
+            if (foodList.Count == 0 || buildingIsFarm && buildingIsMuseum)
             {
                 //SMonitor.Log("Got no food");
                 return null;
@@ -1780,7 +1859,7 @@ namespace MarketTown
                 foodList[i].value = 0;
             }
 
-            foodList.Sort(delegate (PlacedFoodData a, PlacedFoodData b)
+            foodList.Sort(delegate (DataPlacedFood a, DataPlacedFood b)
             {
                 var compare = b.value.CompareTo(a.value);
                 if (compare != 0)
@@ -2039,7 +2118,7 @@ namespace MarketTown
 
             if (Game1.timeOfDay > Config.InviteComeTime || Game1.timeOfDay > Config.OpenHour)
             {
-                foreach (NPC c in Utility.getAllCharacters())
+                foreach (NPC c in Utility.getAllVillagers())
                 {
                     try
                     {
@@ -2053,7 +2132,8 @@ namespace MarketTown
                             FarmOutside.WalkAround(c.Name);
                         }
 
-                        if (c.IsVillager && c.currentLocation != null && c.Name.Contains("MT.Guest_") && !c.currentLocation.Name.Contains("BusStop"))
+                        if (c.IsVillager && c.currentLocation != null && c.Name.Contains("MT.Guest_") 
+                            && c.currentLocation.Name != c.DefaultMap && !c.currentLocation.Name.Contains("BusStop"))
                         {
                             FarmOutside.WalkAround(c.Name);
                         }
@@ -2300,9 +2380,14 @@ namespace MarketTown
                             {
                                 farmer.Money += moneyToAddPerPlayer;
                             }
+                            TodayMuseumEarning += (int)(10 * ticketValue * Config.MuseumPriceMarkup);
                             onlineFarmers.Clear();
                         }
-                        else Game1.player.Money += (int)(10 * ticketValue * Config.MuseumPriceMarkup);
+                        else
+                        {
+                            TodayMuseumEarning += (int)(10 * ticketValue * Config.MuseumPriceMarkup);
+                            Game1.player.Money += (int)(10 * ticketValue * Config.MuseumPriceMarkup);
+                        }
                     }
                     visit.modData["hapyke.FoodStore/timeVisitShed"] = Game1.timeOfDay.ToString();
                 }
@@ -2372,7 +2457,7 @@ namespace MarketTown
 
                     foreach (string split in splits)
                     {
-                        float minDisplayTime = 1000f;
+                        float minDisplayTime = 1500f;
                         float maxDisplayTime = 3000f;
                         float percentOfMax = (float)split.Length / (float)60;
                         int duration = (int)(minDisplayTime + (maxDisplayTime - minDisplayTime) * percentOfMax);

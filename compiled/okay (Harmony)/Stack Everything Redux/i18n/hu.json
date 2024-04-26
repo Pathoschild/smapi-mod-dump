@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Maximális Halmozási Mennyiség",
+    "config.MaxStackingNumber.tooltip": "A maximális halmozási mennyiség, alapértelmezett értéke 999.",
+    "config.DefaultCraftingAmount.name": "Alapértelmezett főzés/készítés mennyiség",
+    "config.DefaultCraftingAmount.tooltip": "Az alapértelmezett mennyiség, amikor Shift+Jobb Kattintás a Főzés/Készítés menüben.",
+    "config.DefaultShopAmount.name": "Alapértelmezett vásárlási mennyiség",
+    "config.DefaultShopAmount.tooltip": "Az alapértelmezett mennyiség, amikor Shift+Jobb Kattintás egy bolti menüben.",
+    "config.EnableStackSplitRedux.name": "Stack Split Redux Engedélyezése",
+    "config.EnableStackSplitRedux.tooltip": "Engedélyezze a Stack Split Redux funkciókat. Jelölje ki ezt a négyzetet, ha problémákat tapasztal.",
+    "ui.stacksplitmenu.title": "Mennyiség Kiválasztása"
+}

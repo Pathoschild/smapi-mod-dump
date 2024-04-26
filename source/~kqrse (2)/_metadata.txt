@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/kqrse/StardewValleyMods-aedenthorn
+   Git: https://github.com/kqrse/StardewValleyMods-aedenthorn.git
+
+mods:
+   Crop Watering Bubbles Continued
+   Like a Duck to Water Continued
+   Mailbox Menu Continued
+
+latest commit:
+   commit 8bbbb0009cee8fdc51054ec514876e9eee8c380c
+   Author: Karson Nguyen <karsonn@sfu.ca>
+   Date:   Sat Apr 6 13:17:14 2024 -0700
+   
+       update descriptions in manifest
+   

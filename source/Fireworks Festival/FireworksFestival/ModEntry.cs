@@ -63,6 +63,15 @@ namespace FireworksFestival
         private static string purpleFireworkRecipeName = thisModID + "_PurpleFirework";
         private static string whiteFireworkRecipeName = thisModID + "_WhiteFirework";
 
+        private static string shavedIceID = thisModID + "_ShavedIce";
+        private static string redFireworkID = thisModID + "_RedFirework";
+        private static string orangeFireworkID = thisModID + "_OrangeFirework";
+        private static string yellowFireworkID = thisModID + "_YellowFirework";
+        private static string greenFireworkID = thisModID + "_GreenFirework";
+        private static string blueFireworkID = thisModID + "_BlueFirework";
+        private static string purpleFireworkID = thisModID + "_PurpleFirework";
+        private static string whiteFireworkID = thisModID + "_WhiteFirework";
+
         // Carp index
         public static string carpIndex = "142";
 
@@ -349,27 +358,27 @@ namespace FireworksFestival
             else
             {
                 Color color = Color.White;
-                if (itemID.Equals(thisModID + ".RedFirework", StringComparison.OrdinalIgnoreCase))
+                if (itemID.Equals(redFireworkID, StringComparison.OrdinalIgnoreCase))
                 {
                     color = Color.Red;
                 }
-                else if(itemID.Equals(thisModID + ".OrangeFirework", StringComparison.OrdinalIgnoreCase))
+                else if(itemID.Equals(orangeFireworkID, StringComparison.OrdinalIgnoreCase))
                 {
                     color = Color.Orange;
                 }
-                else if (itemID.Equals(thisModID + ".YellowFirework", StringComparison.OrdinalIgnoreCase))
+                else if (itemID.Equals(yellowFireworkID, StringComparison.OrdinalIgnoreCase))
                 {
                     color = Color.Yellow;
                 }
-                else if (itemID.Equals(thisModID + ".GreenFirework", StringComparison.OrdinalIgnoreCase))
+                else if (itemID.Equals(greenFireworkID, StringComparison.OrdinalIgnoreCase))
                 {
                     color = Color.Green;
                 }
-                else if (itemID.Equals(thisModID + ".BlueFirework", StringComparison.OrdinalIgnoreCase))
+                else if (itemID.Equals(blueFireworkID, StringComparison.OrdinalIgnoreCase))
                 {
                     color = Color.Blue;
                 }
-                else if (itemID.Equals(thisModID + ".PurpleFirework", StringComparison.OrdinalIgnoreCase))
+                else if (itemID.Equals(purpleFireworkID, StringComparison.OrdinalIgnoreCase))
                 {
                     color = Color.Purple;
                 }
@@ -401,7 +410,7 @@ namespace FireworksFestival
                         {
                             Game1.player.freezePause = 1000;
                             Game1.soundBank.PlayCue("snowyStep");
-                            Game1.player.addItemByMenuIfNecessaryElseHoldUp(new StardewValley.Object(thisModID + ".ShavedIce",1));
+                            Game1.player.addItemByMenuIfNecessaryElseHoldUp(new StardewValley.Object(shavedIceID,1));
                             Game1.player.modData[thisModID] = "true";
                             hasReceivedFreeGift = true;
                         } 

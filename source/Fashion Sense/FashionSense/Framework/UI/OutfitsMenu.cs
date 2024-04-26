@@ -309,9 +309,8 @@ namespace FashionSense.Framework.UI
                     else
                     {
                         // Check if the functional buttons are being clicked
-
                         var outfit = FashionSense.outfitManager.GetOutfit(Game1.player, _pages[_currentPage][i].Name, _isDisplayingPresets);
-                        if (outfit.IsGlobal is false && outfit.IsPreset is false)
+                        if (outfit.IsPreset is false)
                         {
                             if (outfit.IsBeingShared is false)
                             {
@@ -335,6 +334,7 @@ namespace FashionSense.Framework.UI
                                     return;
                                 }
                             }
+
                             if (exportButtons[i].containsPoint(x, y))
                             {
                                 // Set the author name to the player's name, if it is null / empty
@@ -350,7 +350,13 @@ namespace FashionSense.Framework.UI
                             }
                             if (shareButtons[i].containsPoint(x, y))
                             {
-                                FashionSense.outfitManager.SetOutfitShareState(Game1.player, _pages[_currentPage][i].Name, !outfit.IsBeingShared);
+                                bool invertBeingShared = !outfit.IsBeingShared;
+                                bool shouldBeGlobal = outfit.IsGlobal;
+                                if (invertBeingShared is false)
+                                {
+                                    shouldBeGlobal = false;
+                                }
+                                FashionSense.outfitManager.SetOutfitShareState(Game1.player, _pages[_currentPage][i].Name, invertBeingShared, shouldBeGlobal);
 
                                 return;
                             }
@@ -424,7 +430,7 @@ namespace FashionSense.Framework.UI
 
                     // Check if the functional buttons are being hovered
                     var outfit = FashionSense.outfitManager.GetOutfit(Game1.player, _pages[_currentPage][i].Name, _isDisplayingPresets);
-                    if (outfit.IsGlobal is false && outfit.IsPreset is false)
+                    if (outfit.IsPreset is false)
                     {
                         if (outfit.IsBeingShared is false)
                         {
@@ -443,11 +449,12 @@ namespace FashionSense.Framework.UI
                                 _hoverText = FashionSense.modHelper.Translation.Get("ui.fashion_sense.outfit_info.delete");
                                 return;
                             }
-                            if (exportButtons[i].containsPoint(x, y))
-                            {
-                                _hoverText = FashionSense.modHelper.Translation.Get("ui.fashion_sense.outfit_info.export");
-                                return;
-                            }
+                        }
+
+                        if (exportButtons[i].containsPoint(x, y))
+                        {
+                            _hoverText = FashionSense.modHelper.Translation.Get("ui.fashion_sense.outfit_info.export");
+                            return;
                         }
                         if (shareButtons[i].containsPoint(x, y))
                         {
@@ -551,7 +558,7 @@ namespace FashionSense.Framework.UI
                     {
                         SpriteText.drawString(b, FashionSense.modHelper.Translation.Get("ui.fashion_sense.outfit_info.preset"), outfitButtons[j].bounds.Width + 135, outfitButtons[j].bounds.Y + 20);
                     }
-                    else if (outfit.IsGlobal is false)
+                    else
                     {
                         if (outfit.IsBeingShared is false)
                         {
@@ -562,10 +569,11 @@ namespace FashionSense.Framework.UI
 
                         exportButtons[j].draw(b);
                         shareButtons[j].draw(b, outfit.IsBeingShared ? Color.White : new Color(55, 55, 55, 55), 1f);
-                    }
-                    else
-                    {
-                        SpriteText.drawString(b, FashionSense.modHelper.Translation.Get("ui.fashion_sense.outfit_info.shared"), outfitButtons[j].bounds.Width + 135, outfitButtons[j].bounds.Y + 20);
+
+                        if (outfit.IsGlobal)
+                        {
+                            SpriteText.drawString(b, FashionSense.modHelper.Translation.Get("ui.fashion_sense.outfit_info.shared"), outfitButtons[j].bounds.Width + 135, outfitButtons[j].bounds.Y + 20, alpha: 0.3f);
+                        }
                     }
                 }
             }

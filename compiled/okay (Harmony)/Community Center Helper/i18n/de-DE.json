@@ -113,6 +113,7 @@
 	"winCraneGame": "Preis vom Kranspiel im Kino",
 	"voidEggEvent": "zufälliges Hexenereignis",
 	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
+	"foxbloom": "Appears in Ridge Forest on random Sunday each season\n(Weather must be sunny and Relic Fox Mask equipped)", // RSV // TODO
 
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "in der Kanalisation",
 	"locationDesert": "in der Calico-Wüste",
 	"locationSkullPrehistoric": "auf prähistorischer Ebene der Schädelhöhle",
+	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "in ???",
 
 	// Water Locations (for fishing suggestions)
@@ -189,6 +191,10 @@
 	"waterShearwaterBridge": "an Sturmtaucherbrücke", // SVE
 	"waterForestWest": "im Westen des Zundersaftwaldes", // SVE
 	"waterAdventurerSummit": "bei der Abenteurergilde", // SVE
+	"waterRidgesideRiver": "in Ridgeside Village river", // RSV // TODO
+	"waterRidge": "on the Ridge", // RSV // TODO
+	"waterRidgeForest": "in Ridge Forest", // RSV // TODO
+	"waterRidgeFalls": "at Ridge Falls", // RSV // TODO
 	"waterUnknown": "in ???",
 
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "Schmied",
 	"shopSaloon": "Kneipe",
 	"shopClinic": "Harveys Klinik",
+	"shopFish": "Fish Shop", // TODO
+	"shopGuild": "Adventurer's Guild", // TODO
 	"shopDwarf": "Zwerg",
 	"shopKrobus": "Krobus",
 	"shopKrobusWeekday": "Krobus ({{day}})",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "Pierre am Egg Festival (13. im Frühling)",
 	"shopFlowerDance": "Pierre beim Blumentanz (24. im Frühling)",
 	"shopSpiritsEve": "Pierre in der Geisternacht (27. im Herbst)",
+	"shopSophiaLedger": "Sophia's ledger", // SVE // TODO
+	"shopWestForestBear": "Forest West bear", // SVE // TODO
+	"shopNightingaleOrchard": "Nightingale Orchard", // RSV // TODO
+	"shopHotelPastry": "Hotel Pastry Shop", // RSV // TODO
+	"shopPikaRestaurant": "Pika's Restaurant", // RSV // TODO
 	"shopUnknown": "???",
 	"randomlyAvailable": "zufällig", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "{{item}} liefern", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "Pfirsichbaum",
 	"treePomegranate": "Granatapfelbaum",
 	"treeCherry": "Kirschbaum",
-	"treeLime": "Limettenbaum", // PPJA
-	"treePapaya": "Papayabaum", // PPJA
-	"treeWalnut": "Walnussbaum", // PPJA
-	"treePersimmon": "Persimmonenbaum", // PPJA
-	"treeGranny": "Granny Smith-Baum", // PPJA
-	"treeEucalyptus": "Eucalyptusbaum", // PPJA
+	"treeMahogany": "Mahogany Tree", // TODO
+	"treeLime": "Limettenbaum", // Cornucopia
+	"treePapaya": "Papayabaum", // Cornucopia
+	"treeWalnut": "Walnussbaum", // Cornucopia
+	"treePersimmon": "Persimmonenbaum", // Cornucopia
+	"treeEucalyptus": "Eucalyptusbaum", // Cornucopia
+	"treeGranny": "Granny Smith-Baum", // PPJA More Trees
+	"treeAvocado": "Avocado Tree", // Cornucopia // TODO
+	"treeCocoaPod": "Cocoa Pod Tree", // Cornucopia // TODO
+	"treePear": "Pear Tree", // Cornucopia // TODO
+	"treeCherryPluot": "Cherry Pluot Tree", // RSV // TODO
+	"treeMountainPlumcot": "Mountain Plumcot Tree", // RSV // TODO
+	"treeDesertTangelo": "Desert Tangelo Tree", // RSV // TODO
+	"treeTropiUgliFruit": "Tropi Ugli Fruit Tree", // RSV // TODO
+	"treeParadiseRangpur": "Paradise Rangpur Tree", // RSV // TODO
+	"treeEmberBloomLime": "Ember Blood Lime Tree", // RSV // TODO
 	"treeMaple": "Ahornbaum",
 	"treeOak": "Eichenbaum",
 	"treePine": "Kieferbaum",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "roter Schleim",
 	"monsterPurpleSlime": "lilaner Schleim",
 	"monsterBRPCISlime": "blauer/roter/lilaner/Kupfer-/Eisenschleim",
+	"monsterHauntedSkull": "Haunted Skull", // TODO
+	"monsterRidgeForest": "Ridge Forest monsters", // RSV // TODO
 	"monsterUnknown": "???",
 
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "Brief am {{time}} mit {{friendReq}}",
 	"conditionalMailTimeSkill": "Brief am {{time}} mit {{skillReq}}",
 	"conditionalMailFriendSkill": "Brief, wenn {{friendReq}} & {{skillReq}}",
+	"conditionalMailSpecialOrder": "mail after special order {{orderName}}", // TODO
 	"mailConditionFriendship": "{{hearts}} Herzen mit {{person}}",
 
 	// Times (for fishing)

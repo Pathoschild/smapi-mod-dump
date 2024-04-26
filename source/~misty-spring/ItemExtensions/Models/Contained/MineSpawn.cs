@@ -32,6 +32,7 @@ public class MineSpawn
     internal List<string> RealFloors { get; set; } = new();
     public double SpawnFrequency { get; set; } = 0.1;
     public double AdditionalChancePerLevel { get; set; }
+    internal int LastFrenzy { get; set; } = -1;
 
     public void Parse(IEnumerable<string> floors)
     {

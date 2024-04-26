@@ -1,0 +1,77 @@
+{
+  // Tools
+  "tools.name.hand_mirror": "手鏡",
+  "tools.description.hand_mirror": "より生き生きとした外見に変えることができる。",
+
+  // Messages
+  "messages.warning.no_content_packs": "Fashion Sense packのcontent packがインストールされていない！",
+
+  // Letters
+  "letters.hand_mirror": "新しい人が谷に引っ越してくると聞いて、引っ越し祝いをしようと思ったの。^ ^この手紙には私のお気に入りの手鏡も添えてあるので、服装を考えるときに使ってみてね。^ ^もし失くしたら、ピエールの店で売っているわ。^ - ヘイリーより%item tool HandMirror %%",
+
+  // UI - Titles
+  "ui.fashion_sense.title.search": "Fashion Sense packを選ぶ",
+  "ui.fashion_sense.title.hair": "髪型",
+  "ui.fashion_sense.title.accessory": "アクセサリー",
+  "ui.fashion_sense.title.hat": "帽子",
+  "ui.fashion_sense.title.shirt": "シャツ",
+  "ui.fashion_sense.title.pants": "パンツ",
+  "ui.fashion_sense.title.sleeves": "袖",
+  "ui.fashion_sense.title.sleevesAndShoes": "袖と靴",
+  "ui.fashion_sense.title.shoes": "靴",
+  "ui.fashion_sense.title.mask_layer": "レイヤー",
+
+  // UI - Search
+  "ui.fashion_sense.search.filter.none": "なし",
+  "ui.fashion_sense.search.filter.author": "作者",
+  "ui.fashion_sense.search.filter.pack_name": "パックの名前",
+  "ui.fashion_sense.search.filter.tags": "タグ",
+  "ui.fashion_sense.search.about": "{0}\n\n作者: {1}\nパック: {2}\nタグ: {3}",
+
+  // UI - Outfits
+  "ui.fashion_sense.title.outfits": "服装セット",
+  "ui.fashion_sense.title.outfit_naming": "服装の名前",
+  "ui.fashion_sense.create_outfit_button": "服装を作る",
+  "ui.fashion_sense.create_outfit_hover": "現在の服装をベースに新しい服装セットを作る。",
+  "ui.fashion_sense.outfit_info.save": "現在の服装で上書きする。",
+  "ui.fashion_sense.outfit_info.rename": "服装の名前を変える。",
+  "ui.fashion_sense.outfit_info.delete": "この服装を削除する。",
+  "ui.fashion_sense.outfit_info.share.active": "現在、この服装は他のセーブファイルと共有されている。",
+  "ui.fashion_sense.outfit_info.share.inactive": "この服装を他のセーブファイルと共有しない。",
+  "ui.fashion_sense.outfit_info.shared": "共有",
+  "ui.fashion_sense.outfit_info.preset": "プリセット",
+  "ui.fashion_sense.outfit_info.export": "服装のJSONファイルをクリップボードに書き出す。",
+  "ui.fashion_sense.warning.name": "服装名が空白か、すでに存在している。",
+  "ui.fashion_sense.mask_layer.base": "ベース",
+  "ui.fashion_sense.outfit_info.missing_appearances": "以下の要素が欠けています:\n{0}",
+  "ui.fashion_sense.buttons.import": "インポート",
+  "ui.fashion_sense.buttons.import.description": "クリップボードから外部のFashion Senseの服装をインポートする。",
+  "ui.fashion_sense.buttons.presets": "プリセット",
+  "ui.fashion_sense.buttons.presets.description": "Fashion Sense content packsが提供するプリセットを見る。",
+  "ui.fashion_sense.exported_outfit": "服装をクリップボードにコピー。",
+  "ui.fashion_sense.preset_info": "{0}\n\n作者: {1}\nパック: {2}",
+
+  // UI - Etc
+  "ui.fashion_sense.start_with_hand_mirror": "手鏡を所持してスタート",
+  "ui.fashion_sense.start_with_hand_mirror.description": "手鏡がゲーム開始の初日に送られてくる。",
+  "ui.fashion_sense.color_override.shoes": "靴の色のオーバーライド",
+  "ui.fashion_sense.search_button": "Fashion Sense packを検索。",
+  "ui.fashion_sense.outfit_button": "服装セットにアクセス。",
+  "ui.fashion_sense.color_copy_button": "現在の色をコピーする。",
+  "ui.fashion_sense.color_paste_button": "保存した色を貼り付ける。",
+  "ui.fashion_sense.color_paste_button_empty": "保存した色（空）を貼り付ける。",
+  "ui.fashion_sense.clear_button": "選択中のアイテムをクリア。",
+  "ui.fashion_sense.random_button": "アイテムをランダムに選択する。",
+  "ui.fashion_sense.exit_button": "メニューを終了する。",
+  "ui.fashion_sense.color_active.shoes": "靴の色",
+  "ui.fashion_sense.color_active.generic": "色",
+  "ui.fashion_sense.color_disabled.generic": "(無効)",
+  "ui.fashion_sense.color_info.hair": "カラーオーバーレイはこのヘアスタイルには影響しない。",
+  "ui.fashion_sense.color_info.hat": "カラーオーバーレイはこの帽子には影響しない。",
+  "ui.fashion_sense.color_info.shirt": "カラーオーバーレイはこのシャツには影響しない。",
+  "ui.fashion_sense.color_info.pants": "カラーオーバーレイはこのパンツには影響しない。",
+  "ui.fashion_sense.color_info.accessory": "カラーオーバーレイはこのアクセサリーには影響しない。",
+  "ui.fashion_sense.color_info.sleeves": "カラーオーバーレイはこの袖には影響しない。",
+  "ui.fashion_sense.color_info.shoes": "カラーオーバーレイはこの靴には影響しない。",
+  "ui.fashion_sense.warning.hiding_player_sprite": "この外見はプレイヤーのベーススプライトを隠します。"
+}

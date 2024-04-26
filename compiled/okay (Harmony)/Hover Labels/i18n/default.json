@@ -11,6 +11,10 @@
     "cfg_button_showdetails.desc": "Button to use to show more details in certain tooltips",
     "cfg_button_alternativesort.name": "'Alternative Sort' button",
     "cfg_button_alternativesort.desc": "Button to use a different sorting method in certain tooltips",
+    "cfg_compact_label.name": "Compact labels",
+    "cfg_compact_label.desc": "Whether to make labels more compact",
+    "cfg_small_item_icon_label.name": "Small item icons",
+    "cfg_small_item_icon_label.desc": "Whether to use smaller item icons",
 
 
     /** General **/
@@ -18,6 +22,9 @@
     "silver_quality": "Silver",
     "gold_quality": "Gold",
     "iridium_quality": "Iridium",
+    "contains": "Contains:",
+    "ready": "Ready",
+    "Processing": "Processing",
 
     "season_spring": "Spring",
     "season_summer": "Summer",
@@ -28,6 +35,9 @@
     "label_showrange": "Press {{button}} to show range",
     "label_andmore": "And {{amount}} more...",
     "label_press_showmore": "Press {{button_name}} to show {{number}} more...",
+
+    /* Buildings */
+    "label_building_finished_in": "Finished in {{daysleft}} day(s) ({{date}})",
 
     /* sprinkler */
     "label_sprinkler_tiles_watered": "Currently watering {{number}} crops",
@@ -50,7 +60,7 @@
     "label_greenhouse_name": "Greenhouse",
     "label_greenhouse_harvestable_crops": "Harvestable crops:", // keep the semicolon here
     "label_greenhouse_crops_ready_in": "Crops ready in:", //keep the semicolon here
-    "label_greenhouse_crop_grow_time": "> {{amount}} {{crop_name}} in {{days_left}} days ({{ready_date}})",
+    "label_greenhouse_crop_grow_time": "in {{days_left}} days ({{ready_date}})",
     "label_greenhouse_showtree": "Press {{key}} to see fruit trees",
     "label_greenhouse_fruittrees": "{{fruit_name}} Tree: {{amount}} fruit",
 
@@ -62,7 +72,7 @@
     "label_machine_ready_in": "Ready in {{duration}}", // duration here is a string like "1d 2h 30m"
 
     /* cask */
-    "label_cask_processing":  "{{days}}d until {{quality_name}} quality ({{date}})",
+    "label_cask_processing": "{{days}}d until {{quality_name}} quality ({{date}})",
 
     /* chests/inventory */
     "label_chest_altsort": "Press {{button_name}} to sort by item count",
@@ -77,11 +87,24 @@
     "label_node_mystic_name": "Mystic Node",
     "label_node_gem_name": "Gem Node",
     "label_node_bone_name": "Bone Node",
+    "label_drop_items": "Drops: ,",
 
     /* fish pond */
-
     // note the 's' here after fish_name, this should be plural name. 
     // If this isn't possible in your language, use a singular form instead
     // (in english this would be "your fish_name wants something")
-    "label_fishpond_quest": "Your {{fish_name}}s want something:"
+    "label_fishpond_quest": "Your {{fish_name}}s want something:",
+
+    /* Animal buildings */
+    "label_pettable_animals": "{{amount}} animals left to pet",
+    "label_pet_animal": "(Pet)",
+    "label_auto_pet_animal": "(Auto-Pet)",
+
+    /* Slime hutch */
+    "label_slime_occupancy": "Slime Occupancy: {{current}}/{{max}}",
+
+    /* Silo */
+    "label_silo_max_hay":  "Max Hay: {{amount}}",
+
+
 }

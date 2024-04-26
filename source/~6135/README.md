@@ -6,6 +6,8 @@ for queries and analysis.**
 
 ----
 
+# My mods are now located [over here](https://github.com/6135/StardewValleyMods)
+
 # Profit Calculator
 
 This is a simple profit calculator that calculates the profit of a product based on the cost of buying the seed, selling price and the number of units sold and their quality.

@@ -1,8 +1,8 @@
 ﻿{
   "Name": "EasyCleaner",
   "Author": "season",
-  "Version": "0.0.5",
-  "Description": "Easy Cleaner. use tool press key combination(Shift/Ctrl/Alt + RightClick) to clean sundries.",
+  "Version": "0.0.7",
+  "Description": "use tool and press key combination(Shift + RightClick) to clean sundries.",
   "UniqueID": "season.EasyCleaner",
   "EntryDll": "EasyCleaner.dll",
   "MinimumApiVersion": "4.0.0-alpha",

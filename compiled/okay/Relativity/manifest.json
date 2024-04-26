@@ -1,7 +1,7 @@
 {
   "Name": "Relativity",
   "Author": "AdroSlice",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Slows down multiplayer time based on how many players would normally not have time pass in singleplayer.",
   "UniqueID": "AdroSlice.Relativity",
   "EntryDll": "Relativity.dll",

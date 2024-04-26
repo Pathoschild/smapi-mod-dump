@@ -10,6 +10,7 @@
 
 namespace StardewMods.Common.Services.Integrations.ExpandedStorage;
 
+/// <inheritdoc />
 internal sealed class ExpandedStorageIntegration : ModIntegration<IExpandedStorageApi>
 {
     private const string ModUniqueId = "furyx639.ExpandedStorage";

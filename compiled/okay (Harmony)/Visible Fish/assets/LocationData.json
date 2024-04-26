@@ -1,12 +1,13 @@
 {
     "Sewer": {
-        "SpawnTrash" : "Always",
-        "Spawns": {
+        "SpawnTrash": "Always", //one of "Always", "Default", "Never"
+		"Underwater": false, //whether to draw fish everywhere and in front and back layer
+        "Spawns": { //spawns
             "MutantCarp": {
-                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 682",
-                "X": 22,
-                "Y": 30,
-                "QualifiedItemId": "(O)682"
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 682", //GSQ evaluates to true -> item is spawned
+                "X": 22, // X tile position
+                "Y": 30, // Y tile position
+                "QualifiedItemId": "(O)682" //qualified item ID to spawn
             }
         }
     },
@@ -22,7 +23,8 @@
                 "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
                 "X": 58,
                 "Y": 92,
-                "QualifiedItemId": "(O)902"
+                "QualifiedItemId": "(O)902",
+				"AllowMore": true
             },
             "Iridium_Krobus": {
                 "Condition": "!PLAYER_HAS_MAIL Current caughtIridiumKrobus Received",
@@ -44,14 +46,15 @@
                 "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
                 "X": 10,
                 "Y": 100,
-                "QualifiedItemId": "(O)899"
+                "QualifiedItemId": "(O)899",
+				"AllowMore": true
             },
         }
     },
     "Mountain": {
         "Spawns": {
             "Legend": {
-                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 163, SEASON spring, !PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
+                "Condition": "!PLAYER_HAS_CAUGHT_FISH Current 163, SEASON spring, !PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY, Weather Here Rain Storm",
                 "X": 68,
                 "Y": 32,
                 "QualifiedItemId": "(O)163"
@@ -60,7 +63,8 @@
                 "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
                 "X": 68,
                 "Y": 32,
-                "QualifiedItemId": "(O)900"
+                "QualifiedItemId": "(O)900",
+				"AllowMore": true
             },
 
         }
@@ -77,7 +81,8 @@
                 "Condition": "PLAYER_SPECIAL_ORDER_RULE_ACTIVE Current LEGENDARY_FAMILY",
                 "X": 93,
                 "Y": 43,
-                "QualifiedItemId": "(O)898"
+                "QualifiedItemId": "(O)898",
+				"AllowMore": true
             },
         }
     },

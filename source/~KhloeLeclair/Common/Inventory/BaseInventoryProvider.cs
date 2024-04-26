@@ -10,11 +10,13 @@
 
 #nullable enable
 
+using System;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Network;
 
 namespace Leclair.Stardew.Common.Inventory;
@@ -109,4 +111,12 @@ public abstract class BaseInventoryProvider<T> : IInventoryProvider where T : cl
 
 	/// <inheritdoc cref="IsValid(object, GameLocation?, Farmer?)" />
 	public abstract bool IsValid(T obj, GameLocation? location, Farmer? who);
+
+	/// <inheritdoc />
+	public IInventory? GetInventory(object obj, GameLocation? location, Farmer? who) {
+		return obj is T tobj ? GetInventory(tobj, location, who) : null;
+	}
+
+	/// <inheritdoc cref="GetInventory(object, GameLocation?, Farmer?)" />
+	public abstract IInventory? GetInventory(T obj, GameLocation? location, Farmer? who);
 }

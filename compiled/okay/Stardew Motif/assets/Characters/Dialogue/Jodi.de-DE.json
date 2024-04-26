@@ -1,9 +1,22 @@
 {
   "Introduction": "Oh! Du bist nicht ganz so, wie ich es mir vorgestellt habe... Aber das ist okay! Ich bin Jodi.#$e#Das hier ist ein kleines Städtchen, also ist es immer sehr aufregend, wenn jemand Neues einzieht! Einen Bauern hier zu haben könnte einige Sachen ändern.",
+  "AcceptGift_(O)StardropTea": "Ah... Bist du sicher, dass du einen so wertvollen Gegenstand verschenken willst? Na dann, vielen Dank!",
   "Resort_Entering": "Welch ein Genuss!",
   "Resort_Leaving": "Ich glaube, ich mache heute Abend Meeresfrüchte.$h",
   "Resort": "Die Aussicht ist atemberaubend! Tiefblau, so weit das Auge reicht...",
   "Resort_Bar": "Wir alle lieben es, wenn Gus auftaucht.",
+  "dating_Sam_memory_oneday": "Ich habe von dir und Fin gehört. Hoffentlich macht er Ihnen keinen Ärger!$h",
+  "married_Sam": "Ich freue mich so für dich und Fin. Ich finde ihr passt perfekt zusammen#$e#Ich hätte nie gedacht, dass ich das mal sagen würde... aber ich werde diese schrecklichen Geräusche von Fins Gitarre vermissen...$s",
+  "GreenRain": "Alles in Ordnung? So etwas haben wir noch nie gesehen...$s#$e#Ich wünschte, mein Mann wäre hier. Er würde genau wissen, was zu tun ist.$s",
+  "GreenRain_2": "Vincent ist früh aufgestanden, um im Regen zu spielen. Ich hoffe nur, sie haben Recht, dass es völlig harmlos ist!",
+  "eventSeen_94": "Nochmals vielen Dank, dass du den Fisch mitgebracht hast! Es war einige der besten, die wir seit einer Weile hatten.",
+  "eventSeen_3910975": "*flüster* Hast du das von Shane gehört? Das ist so schrecklich... Ich hoffe, es geht ihm gut.$s",
+  "pamHouseUpgrade": "Wow... Ich habe gehört, was du für Pam getan hast... Junge, ich frage mich, was sie getan hat, um so in deine Gunst zu geraten?$s#$e#... Ich wünschte, ich hätte so viel Geld zum Herumwerfen...$s",
+  "pamHouseUpgradeAnonymous": "Hast du Pams neues Haus gesehen? Junge, Junge... Ich wünschte, ich hätte so viel Geld... Ich würde zumindest gerne die Küche umgestalten lassen...$s",
+  "eventSeen_101": "Armer Clint... man sagt, er ist Hals über Kopf in Nayami verliebt, aber ich habe gehört, sie sieht ihn nur als Freund...",
+  "eventSeen_58": "Ich mache jede Woche Aerobic mit den Damen... Neulich kam jemand Neues dazu, aber wir mussten alle schwören, dass wir seine Identität nicht preisgeben würden!",
+  "eventSeen_3102768": "Laphi ist ein süßes Mädchen. Sie ist schon seit einiger Zeit Vincents Lehrerin, und er mag sie sehr.",
+  "cc_Bus": "Sie sagen, der Bus fährt wieder. Ich bin mir sicher, dass Pam sich darüber freut...#$b#Ich habe gehört, dass sie mehr getrunken hat, nachdem sie ihren Job verloren hat... also hoffentlich hilft das.",
   "reject_864": "Was ist das? Sieht aus wie einer von Kents Kumpels aus dem Krieg. Vielleicht sollten Sie es ihm zeigen?",
   "Mon": "Den Haushalt zu schmeißen ist harte Arbeit... aber irgendjemand muss es tun.#$e#Ja?",
   "Mon6": "Es ist schön, eine Familie zu haben... Aber ich würde lügen, wenn ich behaupten würde, dass ich mich nie nach der Freiheit meiner Jugend sehne...$s",
@@ -37,5 +50,6 @@
   "winter_Thu_inlaw_Sam": "Wie geht es Fin so? Ich muss zugeben, es gibt weniger zu kochen und putzen seit er weg ist...",
   "winter_Thu8": "Wir haben etwas überstürzt geheiratet, weil Ken ein Soldat ist und so... Ich habe kaum meine Jugend und Freiheit ausnutzen können und jetzt ist es zu spät, um wieder zurückzugehen.$s#$e#Ich kann nicht glauben, dass ich dir das erzähle.$4",
   "winter_Fri": "Es wäre schön, mir hin und wieder Urlaub zu nehmen...$s",
-  "winter_Sun": "Wäre ich reich, würde ich als erstes ein Dienstmädchen und einen Koch einstellen.#$e#Oh ja, das wäre fantastisch!$h"
+  "winter_Sun": "Wäre ich reich, würde ich als erstes ein Dienstmädchen und einen Koch einstellen.#$e#Oh ja, das wäre fantastisch!$h",
+  "fall_Mon6": "Ich sollte meinen Segen öfter schätzen. Wir haben hier ein gutes Leben. Manche Menschen haben nicht genug zu essen.$s"
 }

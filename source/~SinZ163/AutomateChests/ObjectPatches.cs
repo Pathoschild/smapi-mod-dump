@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Pathoschild.Stardew.Automate;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -16,6 +17,7 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +33,29 @@ namespace AutomateChests
             Monitor = monitor;
         }
 
+        public static IEnumerable<CodeInstruction> Chest__performObjectDropInAction__Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+        {
+            var output = new List<CodeInstruction>();
+            foreach (var instruction in instructions)
+            {
+                output.Add(instruction);
+                if (instruction.opcode == OpCodes.Stloc_1)
+                {
+                    output.Add(new CodeInstruction(OpCodes.Ldarg_0));
+                    output.Add(new CodeInstruction(OpCodes.Ldloc_1));
+                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ObjectPatches).GetMethod(nameof(Chest__performObjectDropInAction__PreserveAutomateModData))));
+                }
+            }
+            return output;
+        }
+        public static void Chest__performObjectDropInAction__PreserveAutomateModData(Chest instance, Chest otherChest)
+        {
+            if (instance.modData.ContainsKey(ModEntry.ModDataExemptFlag))
+                otherChest.modData[ModEntry.ModDataExemptFlag] = instance.modData[ModEntry.ModDataExemptFlag];
+            if (instance.modData.ContainsKey(ModEntry.ModDataFlag))
+                otherChest.modData[ModEntry.ModDataFlag] = instance.modData[ModEntry.ModDataFlag];
+        }
+
         public static void Automate_AutomationFactory_GetFor_SObject__Postfix(ref IAutomatable __result)
         {
             try
@@ -39,7 +64,7 @@ namespace AutomateChests
                 {
                     var obj = container.Location.getObjectAtTile(__result.TileArea.X, __result.TileArea.Y);
                     // if it is a normal ordinary chest and isn't flagged by AutomateChests, it is no longer a valid container (but if it is flagged, don't alter it (keeping it automated)
-                    if (obj is Chest { SpecialChestType: Chest.SpecialChestTypes.None } chest && !chest.modData.ContainsKey("SinZ.AutomateChests"))
+                    if (obj is Chest { SpecialChestType: Chest.SpecialChestTypes.None or Chest.SpecialChestTypes.BigChest } chest && !chest.modData.ContainsKey("SinZ.AutomateChests"))
                     {
                         __result = null;
                     }

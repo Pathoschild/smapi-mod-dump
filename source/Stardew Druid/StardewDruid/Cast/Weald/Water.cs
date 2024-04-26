@@ -9,7 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Map;
+using StardewDruid.Data;
 using StardewValley;
 using StardewValley.Minigames;
 using StardewValley.Tools;
@@ -81,7 +81,7 @@ namespace StardewDruid.Cast.Weald
 
             ModUtility.AnimateSplash(targetLocation, targetVector, targetDirection);
             Vector2 cursorVector = targetVector * 64;
-            ModUtility.AnimateCursor(targetLocation, cursorVector);
+            Mod.instance.iconData.CursorIndicator(targetLocation, cursorVector, IconData.cursors.weald);
         }
 
 

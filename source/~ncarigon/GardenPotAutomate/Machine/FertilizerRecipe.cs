@@ -44,6 +44,8 @@ namespace GardenPotAutomate {
                 && this.Config.ApplyFertilizers
                 // is it a fertilizer?
                 && (item?.Category.Equals(SObject.fertilizerCategory) ?? false)
+                // check if fertilizer is possible
+                && (this.IndoorPot?.hoeDirt?.Value.CanApplyFertilizer(item?.QualifiedItemId) ?? false)
                 // actually try to place the item
                 && (this.IndoorPot?.performObjectDropInAction(item, false, this.TempFarmer) ?? false);
         }

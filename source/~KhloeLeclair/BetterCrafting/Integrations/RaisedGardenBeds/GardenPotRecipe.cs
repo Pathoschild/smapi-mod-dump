@@ -49,13 +49,15 @@ public class GardenPotRecipe : IRecipe {
 
 	// Identity
 
-	public int SortValue => Recipe.itemToProduce[0];
+	public string SortValue => Recipe.itemToProduce[0];
 
 	// Display
 
 	public string Name => Recipe.name;
 	public string DisplayName { get; }
 	public string Description { get; }
+
+	public bool AllowRecycling => true;
 
 	public virtual bool HasRecipe(Farmer who) {
 		return who.craftingRecipes.ContainsKey(Name);

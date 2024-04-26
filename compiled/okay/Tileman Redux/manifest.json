@@ -1,0 +1,17 @@
+﻿{
+    "Name": "Tileman Redux",
+    "Author": "Freaksaus",
+    "Version": "1.0.1",
+    "Description": "Only purchased tiles can be used.",
+    "UniqueID": "Freaksaus.TilemanRedux",
+    "EntryDll": "TilemanRedux.dll",
+    "MinimumApiVersion": "4.0.0",
+    "Dependencies": [
+        {
+            "UniqueId": "spacechase0.GenericModConfigMenu",
+            "MinimumVersion": "1.12",
+            "IsRequired": false
+        }
+    ],
+    "UpdateKeys": [ "Nexus:23023" ]
+}

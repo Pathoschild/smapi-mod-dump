@@ -30,6 +30,8 @@ internal static class SpriteText_Patches {
 	private static ModEntry? Mod;
 	private static IMonitor? Monitor;
 
+	internal static bool UpdateColor = true;
+
 	internal static void Patch(ModEntry mod) {
 		Mod = mod;
 		Monitor = mod.Monitor;
@@ -61,12 +63,11 @@ internal static class SpriteText_Patches {
 		}
 	}
 
-	static bool drawString_Prefix(bool junimoText, ref int color) {
+	static bool drawString_Prefix(bool junimoText, ref Color? color) {
 		try {
-			if (! junimoText && color == -1) {
-				var colors = Mod?.GameTheme?.SpriteTextColors;
-				if (colors is not null && colors.ContainsKey(-1))
-					color = int.MinValue;
+			if (! junimoText && UpdateColor && (Mod?.GameTheme?.SpriteTextColorSets?.TryGetValue("*", out var colors) ?? false)) { 
+				if (colors is not null && colors.TryGetValue(color.HasValue ? color.Value.PackedValue : -1, out var replaced))
+					color = replaced;
 			}
 
 		} catch(Exception ex) {
@@ -78,24 +79,7 @@ internal static class SpriteText_Patches {
 
 	static bool getColorFromIndex__Prefix(int index, ref Color __result) {
 		try {
-			if (index >= 100) {
-				__result = CommonHelper.UnpackColor(index - 100);
-				return false;
-			}
-
-			var colors = Mod?.GameTheme?.SpriteTextColors;
-
-			if (index == int.MinValue) {
-				if (colors is null || !colors.TryGetValue(-1, out __result)) {
-					if (LocalizedContentManager.CurrentLanguageLatin)
-						__result = Color.White;
-					else
-						__result = new Color(86, 22, 12);
-				}
-
-				return false;
-			}
-
+			var colors = Mod?.GameTheme?.IndexedSpriteTextColors;
 			if (colors is not null && colors.TryGetValue(index, out __result))
 				return false;
 

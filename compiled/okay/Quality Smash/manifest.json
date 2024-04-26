@@ -1,15 +1,12 @@
 {
   "Name": "Quality Smash",
-  "Author": "barfytheclown",
-  "Version": "1.4.0",
-  "Description": "Too many items? Smash 'em to reduce their quality",
+  "Author": "barfytheclown, NormanPCN",
+  "Version": "1.5.0",
+  "Description": "Too many items? Smash 'em to reduce their quality and/or color",
   "UniqueID": "NormanPCN.QualitySmash",
   "EntryDll": "QualitySmash.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [
-    "Nexus:7907",
-    "GitHub:NormanPCN/QualitySmash"
-  ],
+  "UpdateKeys": ["Nexus:7907"],
   "Dependencies": [
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",

@@ -19,10 +19,30 @@ using StardewValley;
 
 namespace Leclair.Stardew.Common.UI.SimpleLayout;
 
-public class LayoutNode : ISimpleNode {
+
+public enum LayoutDirection {
+	Vertical,
+	Horizontal
+}
+
+
+public interface ILayoutNode : ISimpleNode {
+
+	ISimpleNode[]? Children { get; set; }
+
+	Vector2 MinSize { get; set; }
+
+	int Margin { get; set; }
+
+	LayoutDirection Direction { get; }
+
+}
+
+
+public class LayoutNode : ILayoutNode {
 
 #if DEBUG
-	private static readonly Color[] DEBUG_COLORS = new Color[] {
+	private static readonly Color[] DEBUG_COLORS = [
 		Color.Pink,
 		Color.Blue,
 		Color.Red,
@@ -31,7 +51,7 @@ public class LayoutNode : ISimpleNode {
 		Color.Gold,
 		Color.Fuchsia,
 		Color.Orange
-	};
+	];
 #endif
 
 	private ISimpleNode[]? _Children;
@@ -185,24 +205,22 @@ public class LayoutNode : ISimpleNode {
 		float x = position.X;
 		float y = position.Y;
 
-		float extra;
+		float extra = Direction switch {
+			LayoutDirection.Horizontal => containerSize.X - ownSize.X,
+			_ => containerSize.Y - ownSize.Y,
+		};
 
-		// Expand our SpaceNodes.
-		switch (Direction) {
-			case LayoutDirection.Horizontal:
-				extra = containerSize.X - ownSize.X;
-				break;
-			case LayoutDirection.Vertical:
-			default:
-				extra = containerSize.Y - ownSize.Y;
-				break;
-		}
+		float perlayout = 0f;
 
 		if (extra > 0) {
 			int spaces = 0;
-			foreach (ISimpleNode node in _Children)
+			int layouts = 0;
+			foreach (ISimpleNode node in _Children) {
 				if (node is SpaceNode space && space.Expand)
 					spaces++;
+				else if (node is LayoutNode)
+					layouts++;
+			}
 
 			if (spaces > 0) {
 				float perspace = (float) Math.Floor(extra / spaces);
@@ -220,7 +238,8 @@ public class LayoutNode : ISimpleNode {
 						}
 					}
 				}
-			}
+			} else if (layouts > 0 && Direction == LayoutDirection.Horizontal)
+				perlayout = (float) Math.Floor(extra / layouts);
 		}
 
 		for (int i = 0; i < count; i++) {
@@ -229,6 +248,11 @@ public class LayoutNode : ISimpleNode {
 				continue;
 
 			Vector2 size = Sizes[i];
+			if (node is LayoutNode && perlayout > 0)
+				size = Direction switch {
+					LayoutDirection.Horizontal => new(size.X + perlayout, size.Y),
+					_ => new(size.X, size.Y + perlayout)
+				};
 
 			if (_Margin != 0)
 				switch (Direction) {
@@ -315,9 +339,4 @@ public class LayoutNode : ISimpleNode {
 			}
 		}
 	}
-}
-
-public enum LayoutDirection {
-	Vertical,
-	Horizontal
 }

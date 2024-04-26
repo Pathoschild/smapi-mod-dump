@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace Randomizer
     /// </summary>
     public class PreferenceRandomizer
 	{
-		/// <summary>
-		/// Default data for universal preferences - these can be overridden by an NPC's individual preference
-		/// DO NOT reorder this without updating NPCIndexes as well!
-		/// </summary>
-		private readonly static Dictionary<UniversalPreferencesIndexes, string> 
+        private static RNG Rng { get; set; }
+
+        /// <summary>
+        /// Default data for universal preferences - these can be overridden by an NPC's individual preference
+        /// DO NOT reorder this without updating NPCIndexes as well!
+        /// </summary>
+        private readonly static Dictionary<UniversalPreferencesIndexes, string> 
 			UniversalPreferenceIndexes = new()
 		{
 			[UniversalPreferencesIndexes.Loved] = "Universal_Love",
@@ -76,38 +79,9 @@ namespace Randomizer
         };
 
         /// <summary>
-        /// Item Category indexes - only includes categories which are giftable
-        /// https://stardewcommunitywiki.com/Modding:Object_data#Categories
-        /// </summary>
-        private readonly static Dictionary<int, string> GiftableItemCategories = new()
-		{
-			[-2] = "Gems",
-			[-4] = "Fish",
-			[-5] = "Eggs",
-			[-6] = "Milk",
-			[-7] = "Cooking",
-			[-8] = "Crafting",
-			[-12] = "Minerals",
-			[-15] = "Metals",
-			[-16] = "Resources",
-			[-20] = "Trash",
-			[-21] = "Bait",
-			[-22] = "Tackles",
-			[-24] = "Decor",
-			[-26] = "Artisan Goods",
-			[-27] = "Tree Products",
-			[-28] = "Monster Loot",
-			[-74] = "Seeds",
-			[-75] = "Vegetables",
-			[-79] = "Fruit",
-			[-80] = "Flowers",
-			[-81] = "Foragables"
-		};
-
-        /// <summary>
         /// The data from Data/NPCGiftTastes.xnb
         /// </summary>
-        public static Dictionary<string, string> GiftTasteData { get; private set; }
+        private static Dictionary<string, string> GiftTasteData { get; set; }
 
 		/// <summary>
 		/// The modified data from Data/NPCGiftTastes.xnb
@@ -145,15 +119,15 @@ namespace Randomizer
         /// Gets the item list equivalent of the given npc
         /// </summary>
         /// <param name="npc">The npc to get the list for</param>
-        /// <param name="pref">The preference type to get</param>
+        /// <param name="prefType">The preference type to get</param>
         /// <returns>The list of items</returns>
         public static List<Item> GetIndividualPreferences(GiftableNPCIndexes npc, NPCGiftTasteIndexes prefType)
 		{
 			string npcKey = GiftableNPCs[npc];
-            string npcDatastring = Globals.Config.NPCs.RandomizeUniversalPreferences
+            string npcDataString = Globals.Config.NPCs.RandomizeUniversalPreferences
                 ? NewGiftTasteData[npcKey]
                 : GiftTasteData[npcKey];
-			string itemListString = npcDatastring.Split("/")[(int)prefType];
+			string itemListString = npcDataString.Split("/")[(int)prefType];
 
             return ItemList.GetItemListFromString(itemListString);
         }
@@ -163,12 +137,18 @@ namespace Randomizer
         /// </summary>
         /// <returns>Dictionary&lt;string, string&gt; which holds the replacement prefstrings for the enabled preferences (NPC/Universal).</returns>
         public static Dictionary<string, string> Randomize()
-        {   // Initialize gift taste data here so that it's reloaded in case of a locale change
-            GiftTasteData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, string>>("Data/NPCGiftTastes");
+        {
+            // Initialize gift taste data here so that it's reloaded in case of a locale change
+            GiftTasteData = DataLoader.NpcGiftTastes(Game1.content);
 			NewGiftTasteData = new();
 
-			List<int> universalUnusedCategories = new(GiftableItemCategories.Keys);
+			if (!Globals.Config.NPCs.RandomizeUniversalPreferences)
+			{
+				return NewGiftTasteData;
+			}
+
+            Rng = RNG.GetFarmRNG(nameof(PreferenceRandomizer));
+            List<int> universalUnusedCategories = new(CategoryExtentions.GetIntValues());
 			List<Item> universalUnusedItems = ItemList.GetGiftables();
 
 			// Generate the universal preferences
@@ -182,7 +162,7 @@ namespace Randomizer
 			// Generate randomized NPC Preferences strings
 			foreach (string npcName in GiftableNPCs.Values)
 			{
-				List<int> unusedCategories = new(GiftableItemCategories.Keys);
+				List<int> unusedCategories = new(CategoryExtentions.GetIntValues());
 				List<Item> unusedItems = ItemList.GetGiftables();
 
 				string[] giftTasteData = GiftTasteData[npcName].Split('/');
@@ -207,21 +187,21 @@ namespace Randomizer
 		private static string GetUniversalPreferenceString(List<int> unusedCategories, List<Item> unusedItems)
 		{
 			// No need to vary quantities per index.May end up with lots of loved items, lots of hated items, both, neither, etc.
-			int catNum = Range.GetRandomValue(0, 10);
-			int itemNum = Range.GetRandomValue(5, 30);
+			int catNum = Rng.NextIntWithinRange(0, 10);
+			int itemNum = Rng.NextIntWithinRange(5, 30);
 
 			string catString = "";
 			string itemString = "";
 
 			while (unusedCategories.Any() && catNum > 0)
 			{
-				catString += Globals.RNGGetAndRemoveRandomValueFromList(unusedCategories) + " ";
+				catString += Rng.GetAndRemoveRandomValueFromList(unusedCategories) + " ";
 				catNum--;
 			}
 
 			while (unusedItems.Any() && itemNum > 0)
 			{
-				itemString += Globals.RNGGetAndRemoveRandomValueFromList(unusedItems).Id + " ";
+				itemString += Rng.GetAndRemoveRandomValueFromList(unusedItems).Id + " ";
 				itemNum--;
 			}
 
@@ -260,8 +240,8 @@ namespace Randomizer
 					break;
 			}
 
-			int numberOfItems = numberOfPrefs.GetRandomValue();
-			int numberOfCategories = Range.GetRandomValue(0, 2);
+			int numberOfItems = Rng.NextIntWithinRange(numberOfPrefs);
+			int numberOfCategories = Rng.NextIntWithinRange(0, 2);
 
 			string itemString = GetRandomItemString(unusedItems, numberOfItems);
 			string catString = GetRandomCategoryString(unusedCategories, numberOfCategories);
@@ -279,7 +259,7 @@ namespace Randomizer
 
 			for (int itemQuantity = quantity; itemQuantity > 0; itemQuantity--)
 			{
-				itemString += Globals.RNGGetAndRemoveRandomValueFromList(giftableItems).Id + " ";
+				itemString += Rng.GetAndRemoveRandomValueFromList(giftableItems).Id + " ";
 			}
 
 			return itemString.Trim();
@@ -295,7 +275,7 @@ namespace Randomizer
 
 			for (int catQuantity = quantity; catQuantity > 0; catQuantity--)
 			{
-				catString += Globals.RNGGetAndRemoveRandomValueFromList(unusedCategoryIDs) + " ";
+				catString += Rng.GetAndRemoveRandomValueFromList(unusedCategoryIDs) + " ";
 			}
 
 			return catString.Trim();
@@ -317,7 +297,7 @@ namespace Randomizer
 			{
 				if (UniversalPreferenceIndexes.ContainsValue(NPCPreferences.Key))
 				{
-					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIDs(NPCPreferences.Value)}");
+					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIds(NPCPreferences.Value)}");
 					Globals.SpoilerWrite("");
 				}
 				else
@@ -326,11 +306,11 @@ namespace Randomizer
 					string[] tokens = NPCPreferences.Value.Split('/');
 
 					Globals.SpoilerWrite(npcName);
-					Globals.SpoilerWrite($"\tLoves: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Loves])}");
-					Globals.SpoilerWrite($"\tLikes: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Likes])}");
-					Globals.SpoilerWrite($"\tDislikes: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Dislikes])}");
-					Globals.SpoilerWrite($"\tHates: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Hates])}");
-					Globals.SpoilerWrite($"\tNeutral: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Neutral])}");
+					Globals.SpoilerWrite($"\tLoves: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Loves])}");
+					Globals.SpoilerWrite($"\tLikes: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Likes])}");
+					Globals.SpoilerWrite($"\tDislikes: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Dislikes])}");
+					Globals.SpoilerWrite($"\tHates: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Hates])}");
+					Globals.SpoilerWrite($"\tNeutral: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Neutral])}");
 					Globals.SpoilerWrite("");
 				}
 			}
@@ -340,29 +320,32 @@ namespace Randomizer
 		/// <summary>
 		/// Returns string with names of items in a comma-separated list.
 		/// </summary>
-		/// <param name="itemIDString">the list of item IDs to parse. Expected format: ID numbers separated by spaces.</param>
+		/// <param name="itemIdString">The list of item IDs to parse. Expected format: ID numbers separated by spaces.</param>
 		/// <returns>String of item names in a comma-separated list.</returns>
-		private static string TranslateIDs(string itemIDString)
+		private static string TranslateIds(string itemIdString)
 		{
-			string[] idStringArray = itemIDString.Trim().Split(' ');
+			string[] idStringArray = itemIdString.Trim().Split(' ');
 			string outputString = "";
 
 			for (int arrayPos = 0; arrayPos < idStringArray.Length; arrayPos++)
 			{
-				bool IDParsed = int.TryParse(idStringArray[arrayPos], out int id);
-				if (!IDParsed)
-				{
-					Globals.ConsoleWarn($"Input string was not in a correct format: '{idStringArray[arrayPos]}'");
-					continue;
-				}
+				string id = idStringArray[arrayPos];
 
-				// Add the string based on whether it's a category
-				outputString += id > 0
-					? ItemList.GetItemName((ObjectIndexes)id)
-					: $"[{GiftableItemCategories[id]}]";
+				// Sets the item or category name for the spoiler log
+				// A negative number string is a category
+                if (id.StartsWith("-"))
+                {
+                    int categoryId = int.Parse(id);
+                    outputString += $"[{((ItemCategories)categoryId).GetTranslation()}]";
+                }
+                else
+                {
+                    outputString += ItemList.GetItemName(
+                        ObjectIndexesExtentions.GetObjectIndex(id));
+                }
 
-				// Not last item - put comma after
-				if (arrayPos != idStringArray.Length - 1)
+                // Not last item - put comma after
+                if (arrayPos != idStringArray.Length - 1)
 				{
 					outputString += ", ";
 				}

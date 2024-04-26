@@ -1,0 +1,16 @@
+{
+  "keybinds.title.name": "键位",
+  "keybinds.title.description": "可添加或更改键位",
+  "keybinds.ToggleUIKey.name": "标签启用组合键（可更改）",
+  "keybinds.ToggleUIKey.description": "在游戏内启用/关闭该抚摸标签的组合键",
+  "others.title.name": "其他",
+  "others.title.description": "当前可以更改的其他设置。",
+  "others.ToggleUICurrentState.name": "切换当前UI状态",
+  "others.ToggleUICurrentState.description": "勾选显示，反之隐藏。",
+  "others.ToggleIsPetting.name": "是否自动抚摸农场动物",
+  "others.ToggleIsPetting.description": "爱，摸摸，自动化。",
+  "others.AlreadyPettedMessage.name": "已经抚摸时的信息",
+  "others.AlreadyPettedMessage.description": "该动物已经被抚摸时发送的信息",
+  "others.NeedsPettingMessage.name": "需要抚摸时的信息",
+  "others.NeedsPettingMessage.description": "该动物尚未被抚摸时发送的信息"
+}

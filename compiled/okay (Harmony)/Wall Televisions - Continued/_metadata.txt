@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22372
+IDs: FlyingTNT.WallTelevision
+update keys: Nexus:22372, GitHub:FlyingTNT/StardewValleyMods

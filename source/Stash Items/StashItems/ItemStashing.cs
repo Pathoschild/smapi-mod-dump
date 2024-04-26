@@ -25,7 +25,7 @@ namespace StashItems
 			var player = Game1.player;
 			var stashedAny = false;
 
-            foreach (var chest in GetChestsAroundFarmer(player, radius))
+            foreach (var chest in GetChestsAroundCharacter(player, radius))
             {
 				// - Player items are processed in reverse order to improve placement of gaps in inventory when
 				// only able to partially transfer items.
@@ -38,7 +38,7 @@ namespace StashItems
 
                     var foundMatch = false;
 
-                    foreach (var chestItem in chest.items)
+                    foreach (var chestItem in chest.Items)
                     {
                         if (chestItem == null)
                             continue;
@@ -63,7 +63,7 @@ namespace StashItems
                     }
 
 					// Transfer remaining stack to open slot in chest
-                    if (foundMatch && chest.items.Count < chest.GetActualCapacity())
+                    if (foundMatch && chest.Items.Count < chest.GetActualCapacity())
 					{
                         chest.addItem(playerItem);
                         player.removeItemFromInventory(playerItem);
@@ -77,17 +77,15 @@ namespace StashItems
 				: Game1.soundBank.GetCue("breathout").Name);
 		}
 
-		private static IEnumerable<Chest> GetChestsAroundFarmer(Farmer farmer, int radius)
+		private static IEnumerable<Chest> GetChestsAroundCharacter(Character character, int radius)
 		{
-			var farmerLocation = farmer.getTileLocation();
-
 			// Chests
 			for (var dx = -radius; dx <= radius; dx++)
 			{
 				for (var dy = -radius; dy <= radius; dy++)
 				{
-					var checkLocation = farmerLocation + new Vector2(dx, dy);
-					var objectAtTile = farmer.currentLocation.getObjectAtTile((int)checkLocation.X, (int)checkLocation.Y);
+					var checkLocation = character.TilePoint + new Point(dx, dy);
+					var objectAtTile = character.currentLocation.getObjectAtTile(checkLocation.X, checkLocation.Y);
                     if (objectAtTile is Chest chest)
 					{
 						yield return chest;
@@ -96,10 +94,10 @@ namespace StashItems
 			}
 
 			// Fridge
-			if (farmer.currentLocation is FarmHouse farmHouse && farmHouse.upgradeLevel >= 1) //  Check upgrade level to make sure player has fridge
+			if (character.currentLocation is FarmHouse farmHouse && farmHouse.upgradeLevel >= 1) //  Check upgrade level to make sure player has fridge
             {
-                var fridgeIsWithinRange = Math.Abs(farmerLocation.X - farmHouse.fridgePosition.X) <= radius &&
-                                          Math.Abs(farmerLocation.Y - farmHouse.fridgePosition.Y) <= radius;
+                var fridgeIsWithinRange = Math.Abs(character.Tile.X - farmHouse.fridgePosition.X) <= radius &&
+                                          Math.Abs(character.Tile.Y - farmHouse.fridgePosition.Y) <= radius;
                 if (fridgeIsWithinRange && farmHouse.fridge.Value != null)
 				{
                     yield return farmHouse.fridge.Value;

@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/MZG
+**
+*************************************************/
+
+{
+    "Name": "Modular Zen Garden",
+    "Author": "leroymilo",
+    "Version": "1.2.1",
+    "MinimumApiVersion": "4.0",
+	"MinimumGameVersion": "1.6",
+    "Description": "Adds a set of new craftables: Zen Gardens",
+    "UniqueID": "leroymilo.ModularZenGarden",
+    "EntryDll": "ModularZenGarden.dll",
+    "UpdateKeys": [ "Nexus:22140" ]
+}

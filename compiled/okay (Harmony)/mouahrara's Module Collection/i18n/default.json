@@ -70,9 +70,6 @@
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.Description": "This module allows you to automatically and quickly process many geodes.",
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.SpeedMultiplier.Title": "Process speed multiplier",
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.SpeedMultiplier.Tooltip": "A multiplier to adjust the process speed.",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Title": "Simultaneous services",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Tooltip": "Shop and process geodes even while upgrading tools.",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Description": "This module allows you to shop and process geodes, even while upgrading tools.",
 
 	// GMCM - TweaksAndFeatures - User Interface - Modules
 	"GMCM.TweaksAndFeatures.UserInterface.FastScrolling.Title": "Fast scrolling",

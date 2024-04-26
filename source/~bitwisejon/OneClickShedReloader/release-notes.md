@@ -7,6 +7,12 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 4.0.1
+* Fixed double resource cost bug.
+
+## 4.0.0
+* Updated to support SMAPI 4.0 and to support Stardew Valley v1.6. Updated version numbering to match SMAPI. Added better mod support.
+
 ## 1.2.0
 * Updated to support SMAPI 3.18 in preparation for Stardew Valley v1.6
 

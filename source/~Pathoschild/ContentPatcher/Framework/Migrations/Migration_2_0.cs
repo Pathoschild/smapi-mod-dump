@@ -36,6 +36,7 @@ namespace ContentPatcher.Framework.Migrations
                 new BlueprintsMigrator(),
                 new BootsMigrator(),
                 new CropsMigrator(),
+                new FurnitureMigrator(),
                 new LocationsMigrator(),
                 new NpcDispositionsMigrator(),
                 new ObjectContextTagsMigrator(),

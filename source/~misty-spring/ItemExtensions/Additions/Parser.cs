@@ -10,6 +10,7 @@
 
 using ItemExtensions.Models;
 using ItemExtensions.Models.Contained;
+using ItemExtensions.Models.Items;
 using StardewModdingAPI;
 
 namespace ItemExtensions.Additions;
@@ -45,8 +46,12 @@ public static class Parser
                 parsed.Add(item.Key,temp);
         }
 
-        if (parsed.Count > 0)
-            ModEntry.MenuActions = parsed;
+        if (parsed.Count <= 0) 
+            return;
+        
+        Log("FOR MODDERS: Patches to /MenuActions are deprecated. To see the new model, check the template in the mod's page.", LogLevel.Warn);
+        
+        ModEntry.MenuActions = parsed;
     }
 
     internal static void ObjectData(Dictionary<string, ItemData> objData)
@@ -133,7 +138,7 @@ public static class Parser
                 ModEntry.Ores.Add(id, data);
         }
         
-        Log($"Loaded {ModEntry.Ores?.Count ?? 0} custom nodes, and {ModEntry.BigClumps?.Count ?? 0} resource clumps.", LogLevel.Debug);
+        Log($"Loaded {ModEntry.Ores?.Count ?? 0} custom nodes, and {ModEntry.BigClumps?.Count ?? 0} resource clumps.");
 
         Log("Invalidating asset 'Data/Objects'...");
         ModEntry.Help.GameContent.InvalidateCache("Data/Objects");
@@ -144,7 +149,7 @@ public static class Parser
         ModEntry.Seeds = new Dictionary<string, List<MixedSeedData>>();
         foreach(var pair in seeds)
         {
-            Log($"Checking {pair.Key} data...", LogLevel.Debug);
+            Log($"Checking {pair.Key} data...");
 
             var validSeeds = new List<MixedSeedData>();
             var hasAllSeeds = true;
@@ -173,5 +178,55 @@ public static class Parser
             else
                 ModEntry.Seeds.Add(pair.Key, validSeeds);
         }
+    }
+
+    public static void Panning(Dictionary<string, PanningData> panData)
+    {
+        ModEntry.Panning = new List<PanningData>();
+        foreach(var pair in panData)
+        {
+            Log($"Checking {pair.Key} data...");
+
+            //checks id
+            if (string.IsNullOrWhiteSpace(pair.Value.ItemId) && (pair.Value.RandomItemId is null || pair.Value.RandomItemId.Any() == false))
+            {
+                Log($"Panning item with key '{pair.Key}' doesn't have an item ID. Skipping", LogLevel.Info);
+                continue;
+            }
+            
+            ModEntry.Panning.Add(pair.Value);
+        }
+    }
+
+    /// <summary>
+    /// Checks an Id.
+    /// </summary>
+    /// <param name="id">Qualified item ID</param>
+    /// <returns>Whether the Id is a vanilla node.</returns>
+    internal static bool IsVanilla(string id)
+    {
+        if (int.TryParse(id, out var asInt))
+            return asInt < 931;
+
+        return id switch {
+                "VolcanoGoldNode" => true,
+                "VolcanoCoalNode0" => true,
+                "VolcanoCoalNode1" => true,
+                "BasicCoalNode0" => true,
+                "BasicCoalNode1" => true,
+                "GreenRainWeeds7" => true,
+                "GreenRainWeeds6" => true,
+                "GreenRainWeeds5" => true,
+                "GreenRainWeeds4" => true,
+                "GreenRainWeeds3" => true,
+                "GreenRainWeeds2" => true,
+                "GreenRainWeeds1" => true,
+                "GreenRainWeeds0" => true,
+                "CalicoEggStone_0" => true,
+                "CalicoEggStone_1" => true,
+                "CalicoEggStone_2" => true,
+                FarAwayStone => true,
+                _ => false
+        };
     }
 }

@@ -278,12 +278,14 @@ namespace HappyHomeDesigner.Patches
 
 			return il.InstructionEnumeration();
 		}
+
 		public static Vector2 AdjustBedPosition(bool placed, Vector2 DrawPosition, int x, int y, BedFurniture __instance)
 		{
 			if (placed)
 				return DrawPosition;
 			return new(x * 64, y * 64 - (__instance.sourceRect.Height * 4 - __instance.boundingBox.Height));
 		}
+
 		private static bool PreventRandomVariant(StardewValley.Object __0)
 		{
 			return __0 is not Furniture || !forcePreviewDraw;

@@ -1,0 +1,13 @@
+{
+	"Name": "Button's Extra Books",
+	"Author": "Spiderbuttons",
+	"Version": "2.4.2",
+	"Description": "Adds more books and powers that can be obtained from the bookseller and other various places.",
+	"UniqueID": "Spiderbuttons.ButtonsExtraBooksCore",
+	"EntryDll": "ButtonsExtraBooks.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [ "Nexus:21526" ],
+	"Dependencies": [
+		{ "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": true }
+	]
+}

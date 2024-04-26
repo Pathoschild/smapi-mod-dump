@@ -71,13 +71,13 @@ public class ResourceClumpPatches
 
             if (float.TryParse(sizeRaw, out var size) == false)
             {
-                Log($"Couldn't parse light size for clump Id {id} ({sizeRaw})", LogLevel.Debug);
+                Log($"Couldn't parse light size for clump Id {id} ({sizeRaw})");
                 return;
             }
 
             if (float.TryParse(transRaw, out var trans) == false)
             {
-                Log($"Couldn't parse transparency for clump Id {id} ({sizeRaw})", LogLevel.Debug);
+                Log($"Couldn't parse transparency for clump Id {id} ({sizeRaw})");
                 return;
             }
 

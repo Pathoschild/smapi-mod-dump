@@ -11,10 +11,19 @@ for queries and analysis.**
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [v1.2.0](#c120) 
+    - [v1.1.0](#v110)
     - [v1.0.0](#v100)
     - [v0.0.1](#v001)
 
 <!-- /TOC -->
+
+## v1.2.0
+* Added options for Generic Mod Config Menu
+* Seed Spots now get arrows if set in the config (default true)
+
+## v1.1.0
+* Updated for SDV 1.6
 
 ## v1.0.0
 

@@ -1,0 +1,10 @@
+{
+  "Name": "Deluxe Auto-Petter",
+  "Author": "Frostiverse",
+  "Version": "1.0.0",
+  "Description": "Adds a new quest which results with Marnie selling a lore-friendly Deluxe Auto-Petter.",
+  "UniqueID": "Frostiverse.DeluxeAutoPetter",
+  "EntryDll": "DeluxeAutoPetter.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:23226" ]
+}

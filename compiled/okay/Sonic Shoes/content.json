@@ -1,0 +1,50 @@
+{
+	"Format": "2.0.0",
+	"Changes": [
+		{ 
+			"Action": "Load",
+			"Target": "SonicShoes/Boots",
+			"FromFile": "assets/Boots.png"
+		},
+		{ 
+			"Action": "EditData",
+			"Target": "Data/Boots",
+			"Entries": {
+				"lilico.SonicShoes_Sonic_Shoes": "Sonic Shoes/{{i18n:SonicShoes.description}}/20000/0/0/0/{{i18n:SonicShoes.name}}//0/SonicShoes\\Boots",
+			}
+		},
+		
+		{
+            "Action": "EditData",
+            "Target": "aedenthorn.BuffFramework/dictionary",
+            "LogName": "Sonic Shoes Speed Buff",
+            "Entries": {
+                "lilico.SonicShoesBuff": {
+                    "which": -1,
+					"sheetIndex": 9,
+					"speed": 3,
+					"source": "lilico.SonicShoes_Sonic_Shoes",
+					"displaySource": "{{i18n:SonicShoes.name}}",
+					"description": "{{i18n:SonicShoes.buffDescription}}",
+					"buffId": 50412,
+					"boots": "Sonic Shoes",
+                },
+				
+            }
+        },
+		{ 
+			"Action": "EditData",
+			"Target": "Data/Shops",
+			"TargetField": [ "ShadowShop", "Items" ],
+			"Entries": {
+				"lilico.SonicShoes_Sonic_Shoes": {
+					"Id": "lilico.SonicShoes_Sonic_Shoes",
+					"ItemId": "(B)lilico.SonicShoes_Sonic_Shoes",
+					"Price": 20000,
+					"AvailableStock": 1,
+				}
+			}
+		}
+		
+	]
+}

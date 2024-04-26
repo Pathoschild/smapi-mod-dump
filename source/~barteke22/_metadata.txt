@@ -9,9 +9,9 @@ mods:
    Fishing Minigames
 
 latest commit:
-   commit 9fe0e11275a1049dd7b39a73f67dcd64be64b5df
+   commit 3d2aec98ebed94b89f61898ae9d1f126d83a843e
    Author: barteke22 <bartosz2008@hotmail.com>
-   Date:   Thu Nov 11 12:57:07 2021 +0100
+   Date:   Wed Apr 24 01:19:33 2024 +0200
    
-       GMCM
+       - FIO: Sonar & Scan test. Hardcoded test.
    

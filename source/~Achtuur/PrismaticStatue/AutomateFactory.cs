@@ -27,7 +27,7 @@ public class StatueFactory : IAutomationFactory
     /// <returns>Returns an instance or <c>null</c>.</returns>
     public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile)
     {
-        if (ModEntry.IsStatueID(obj.ParentSheetIndex))
+        if (obj.QualifiedItemId == SpeedupStatue.ID)
             return new SpeedupStatue(obj, location, tile);
 
         return null;
@@ -48,7 +48,7 @@ public class StatueFactory : IAutomationFactory
     /// <param name="location">The location to check.</param>
     /// <param name="tile">The tile position to check.</param>
     /// <returns>Returns an instance or <c>null</c>.</returns>
-    public IAutomatable GetFor(Building building, BuildableGameLocation location, in Vector2 tile)
+    public IAutomatable GetFor(Building building, GameLocation location, in Vector2 tile)
     {
         return null;
     }

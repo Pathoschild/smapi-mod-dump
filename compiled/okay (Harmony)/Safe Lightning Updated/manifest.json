@@ -1,0 +1,10 @@
+{
+  "name": "Safe Lightning Updated",
+  "author": "Rokugin",
+  "version": "1.0.0",
+  "description": "Stops lightning from destroying things, optionally removes strikes and sounds.",
+  "uniqueID": "Rokugin.SafeLightningUpdated",
+  "entryDLL": "SafeLightningUpdated.dll",
+  "minimumapiversion": "4.0.0",
+  "updatekeys": [ "Nexus:22783" ]
+}

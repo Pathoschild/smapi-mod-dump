@@ -1,0 +1,14 @@
+{
+  "ModEnable": true,
+  "ModEnableToggleKey": "L",
+  "RenderTreeTrunk": true,
+  "RenderLeafyShadow": true,
+  "MinishOak": true,
+  "MinishMaple": true,
+  "MinishPine": true,
+  "MinishMahogany": true,
+  "MinishGreenRainType1": true,
+  "MinishGreenRainType2": true,
+  "MinishGreenRainType3": true,
+  "MinishMystic": true
+}

@@ -23,10 +23,7 @@ namespace CustomFurniture.Overrides
     {
         internal static MethodInfo TargetMethod()
         {
-            if (Type.GetType("StardewValley.Objects.Furniture, Stardew Valley") != null)
-                return AccessTools.Method(Type.GetType("StardewValley.Objects.Furniture, Stardew Valley"), "drawAtNonTileSpot");
-            else
-                return AccessTools.Method(Type.GetType("StardewValley.Objects.Furniture, StardewValley"), "drawAtNonTileSpot");
+                return AccessTools.Method(typeof(Furniture), "drawAtNonTileSpot");
         }
 
         internal static bool Prefix(Furniture __instance, SpriteBatch spriteBatch, Vector2 location, float layerDepth, float alpha = 1f)
@@ -34,7 +31,11 @@ namespace CustomFurniture.Overrides
  
             if (__instance is CustomFurniture ho)
             {
-                CustomFurnitureMod.harmonyDraw(ho.texture, location, new Rectangle?(ho.sourceRect), Color.White * alpha, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, ho.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
+                if (ho.texture == null)
+                    ho.setTexture();
+                
+                if(ho.texture != null)
+                    CustomFurnitureMod.harmonyDraw(ho.texture, location, new Rectangle?(ho.sourceRect.Value), Color.White * alpha, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, ho.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
                 return false;
             }
 
@@ -61,6 +62,27 @@ namespace CustomFurniture.Overrides
                 return true;
 
             return false;
+        }
+    }
+
+    [HarmonyPatch]
+    public class FurnitureFix3
+    {
+        internal static MethodInfo TargetMethod()
+        {
+                return AccessTools.PropertyGetter(typeof(Furniture), "placementRestriction");
+        }
+
+        internal static bool Prefix(Furniture __instance, ref int __result)
+        {
+
+            if (__instance is CustomFurniture)
+            {
+                __result = 0;
+                return false;
+            }
+
+            return true;
         }
     }
 }

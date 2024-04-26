@@ -96,7 +96,7 @@ namespace MultiplayerPrairieKing.Entities
 				//NET Player death
 				PK_PlayerDeath message = new();
 				message.id = Game1.player.UniqueMultiplayerID;
-				gameInstance.modInstance.Helper.Multiplayer.SendMessage(message, "PK_PlayerDeath");
+				gameInstance.modInstance.SyncMessage(message);
 			}
         }
 
@@ -119,7 +119,7 @@ namespace MultiplayerPrairieKing.Entities
 						//NET EnemyKilled
 						PK_EnemyKilled mEnemyKilled = new();
 						mEnemyKilled.id = monster.id;
-						gameInstance.modInstance.Helper.Multiplayer.SendMessage(mEnemyKilled, "PK_EnemyKilled");
+						gameInstance.modInstance.SyncMessage(mEnemyKilled);
 						Game1.playSound("Cowboy_monsterDie");
 
 						gameInstance.modInstance.Monitor.Log("Monser killed by bullet: " + monster.id, StardewModdingAPI.LogLevel.Debug);
@@ -139,7 +139,7 @@ namespace MultiplayerPrairieKing.Entities
 						mBulletDespawned.id = id;
 						mBulletDespawned.monsterId = monster.id;
 						mBulletDespawned.damage = monsterhealth - monsterAfterDamageHealth;
-						gameInstance.modInstance.Helper.Multiplayer.SendMessage(mBulletDespawned, "PK_BulletDespawned");
+						gameInstance.modInstance.SyncMessage(mBulletDespawned);
 
 						queuedForDeletion = true;
 					}

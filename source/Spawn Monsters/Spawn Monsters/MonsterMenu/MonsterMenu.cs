@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace Spawn_Monsters.MonsterMenu
     /// </summary>
     internal class MonsterMenu : IClickableMenu
     {
+        private readonly IModHelper modHelper;
+
         private readonly List<TabComponent> tabComponents;
         private readonly List<IClickableMenu> tabs;
         private int current;
@@ -28,19 +31,22 @@ namespace Spawn_Monsters.MonsterMenu
         private const int menuWidth = 800;
         private const int menuHeight = 800;
 
-        public MonsterMenu()
+        public MonsterMenu(IModHelper modHelper)
             : base(
-                  Game1.viewport.Width / 2 - (menuWidth + IClickableMenu.borderWidth * 2) / 2,
-                  Game1.viewport.Height / 2 - (menuHeight + IClickableMenu.borderWidth * 2) / 2,
+                  Game1.uiViewport.Width / 2 - (menuWidth + IClickableMenu.borderWidth * 2) / 2,
+                  Game1.uiViewport.Height / 2 - (menuHeight + IClickableMenu.borderWidth * 2) / 2,
                   menuWidth + IClickableMenu.borderWidth * 2,
-                  menuHeight + IClickableMenu.borderWidth * 2, true) {
+                  menuHeight + IClickableMenu.borderWidth * 2,
+                  true) {
+
+            this.modHelper = modHelper;
 
             Game1.playSound("bigSelect");
 
             tabs = new List<IClickableMenu>();
             tabComponents = new List<TabComponent>();
 
-            tabs.Add(new MonsterSelectionTabNew(xPositionOnScreen, yPositionOnScreen, width, height));
+            tabs.Add(new MonsterSelectionTabNew(modHelper, xPositionOnScreen, yPositionOnScreen, width, height));
             //tabs.Add(new MonsterSettingsTab(xPositionOnScreen, yPositionOnScreen, width, height));
 
             tabComponents.Add(new TabComponent(new Rectangle(xPositionOnScreen + 64, yPositionOnScreen + IClickableMenu.tabYPositionRelativeToMenuY + 64, 64, 64), "Monsters"));

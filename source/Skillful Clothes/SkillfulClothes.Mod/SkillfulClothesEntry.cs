@@ -51,7 +51,14 @@ namespace SkillfulClothes
         public override void Entry(IModHelper helper)
         {
             var config = helper.ReadConfig<SkillfulClothesConfig>();
-            Logger.Init(this.Monitor, config.verboseLogging);
+
+#if DEBUG
+            bool verboseLogging = true;
+#else
+            bool verboseLogging = config.verboseLogging;
+#endif
+
+            Logger.Init(this.Monitor, verboseLogging);
             EffectHelper.Init(helper, config);
 
             if (EffectHelper.Config.LoadCustomEffectDefinitions)

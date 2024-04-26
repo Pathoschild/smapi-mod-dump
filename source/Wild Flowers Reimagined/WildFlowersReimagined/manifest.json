@@ -11,7 +11,7 @@
 {
   "Name": "Wild Flowers Reimagined",
   "Author": "jpp",
-  "Version": "1.1.0",
+  "Version": "2.1.0",
   "Description": "A newer version of WildFlowers",
   "UniqueID": "jpp.WildFlowersReimagined",
   "EntryDll": "WildFlowersReimagined.dll",

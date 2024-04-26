@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Let's Move It",
+  "Author": "Exblosis",
+  "Version": "0.5.3",
+  "Description": "Move everything with the press of a button.",
+  "UniqueID": "Exblosis.LetsMoveIt",
+  "EntryDll": "LetsMoveIt.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20943" ]
+}

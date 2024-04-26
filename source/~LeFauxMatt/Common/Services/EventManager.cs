@@ -30,12 +30,13 @@ internal sealed class EventManager : BaseEventManager
     /// <inheritdoc />
     public override void Subscribe<TEventArgs>(Action<TEventArgs> handler)
     {
-        base.Subscribe(handler);
         var eventType = typeof(TEventArgs);
-        if (this.Subscribers[eventType].Count == 1)
+        if (!this.Subscribers.ContainsKey(eventType))
         {
             this.AddSmapiEvent(eventType.Name);
         }
+
+        base.Subscribe(handler);
     }
 
     /// <inheritdoc />

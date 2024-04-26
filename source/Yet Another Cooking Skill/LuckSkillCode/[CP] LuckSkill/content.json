@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "Changes": [
+        {
+            "LogName": "Buff Luck Icon",
+            "Action": "EditImage",
+            "Target": "TileSheets/BuffsIcons",
+            "FromFile": "Assets/LuckiconA.png",
+            "ToArea": {
+                "X": 64,
+                "Y": 0,
+                "Width": 16,
+                "Height": 16
+            }
+        },
+        {
+            "LogName": "Buff Luck Icon",
+            "Action": "EditImage",
+            "Target": "TerrainFeatures/BuffsIcons",
+            "FromFile": "Assets/LuckiconB.png",
+            "ToArea": {
+                "X": 256,
+                "Y": 0,
+                "Width": 64,
+                "Height": 64
+            }
+        }
+    ]
+}

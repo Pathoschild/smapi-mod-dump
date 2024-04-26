@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Text;
-using ItemExtensions.Models;
+using ItemExtensions.Models.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -57,7 +57,7 @@ public partial class ShopMenuPatches
         if(Game1.activeClickableMenu is not ShopMenu) 
             return;
         
-        if(extraItemToShowIndex == null) 
+        if(extraItemToShowIndex == null || hoveredItem == null) 
             return;
         
         //if no salable data
@@ -65,7 +65,7 @@ public partial class ShopMenuPatches
             return;
         
         List<ExtraTrade> data;
-        if (_lastHoverItem is (null,null) || _lastHoverItem.Item1 != hoveredItem)
+        if (_lastHoverItem is (null,null) || _lastHoverItem.Item1 is null || _lastHoverItem.Item2?.Any() == false || _lastHoverItem.Item1 != hoveredItem)
         {
             if(!InDictionary(hoveredItem, out data))
                 return;

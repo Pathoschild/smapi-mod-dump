@@ -1,0 +1,22 @@
+﻿{
+  "Name": "April Fools",
+  "Author": "aedenthorn",
+  "Version": "0.1.7-unofficial.1-FlyingTNT",
+  "Description": "April Fools.",
+  "UniqueID": "aedenthorn.AprilFools",
+  "EntryDll": "AprilFools.dll",
+  "MinimumApiVersion": "4.0.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "AprilFools"
+  },
+  "UpdateKeys": [ "Nexus:" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

@@ -9,17 +9,22 @@
   "UniqueID": "furyx639.BetterChests",
   "Name": "Better Chests",
   "Author": "LeFauxMatt",
-  "Version": "2.9.2",
+  "Version": "2.16.3",
   "Description": "Framework that adds new features to chests.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "BetterChests.dll",
   "Dependencies": [
     {
       "UniqueID": "furyx639.FauxCore",
-      "MinimumVersion": "1.0.0"
+      "MinimumVersion": "1.1.1"
     },
     {
       "UniqueID": "furyx639.ToolbarIcons",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "leclair.bettercrafting",
+      "MinimumVersion": "2.1.0",
       "IsRequired": false
     },
     {
@@ -33,6 +38,6 @@
     }
   ],
   "UpdateKeys": [
-    "Nexus:9791"
+    "Nexus:9791@SMAPI"
   ]
 }

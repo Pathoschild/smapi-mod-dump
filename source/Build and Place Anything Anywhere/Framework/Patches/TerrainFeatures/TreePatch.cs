@@ -9,18 +9,9 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley.Objects;
-using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewValley.TerrainFeatures;
-using static StardewValley.Minigames.MineCart;
-using xTile.Tiles;
-using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using System;
 
 namespace AnythingAnywhere.Framework.Patches.TerrainFeatures
 {

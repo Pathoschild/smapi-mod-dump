@@ -1,10 +1,10 @@
 {
   "Name": "Trash Bear Abides",
   "Author": "John Peters (you know, the farmer?)",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Makes Trash Bear continue to appear in Cindersap Forest after cleaning up the town.",
   "UniqueID": "JohnPeters.TrashBearAbides",
   "EntryDll": "TrashBearAbides.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:???" ]
+  "UpdateKeys": [ "Nexus:11359" ]
 }

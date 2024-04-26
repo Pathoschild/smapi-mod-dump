@@ -39,8 +39,8 @@ internal class SprinklerLabel : ObjectLabel
     {
         base.GenerateLabel();
 
-        Description.Add(I18n.LabelSprinklerTilesWatered(GetWateredTileCrops().Count()));
-        Description.Add(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
+        AddBorder(I18n.LabelSprinklerTilesWatered(GetWateredTileCrops().Count()));
+        AddBorder(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
     }
 
     private IEnumerable<Vector2> GetWateredTiles()

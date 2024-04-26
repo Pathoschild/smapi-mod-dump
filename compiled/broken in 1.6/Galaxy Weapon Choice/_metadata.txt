@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14511
-IDs: aedenthorn.GalaxyWeaponChoice
-update keys: Nexus:14511, GitHub:aedenthorn/StardewValleyMods

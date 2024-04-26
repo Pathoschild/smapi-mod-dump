@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10934
-IDs: aedenthorn.AdvancedFluteBlocks
-update keys: Nexus:10934, GitHub:aedenthorn/StardewValleyMods

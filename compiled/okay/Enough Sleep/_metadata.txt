@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21536
+IDs: sodapotato.enoughsleep
+update keys: Nexus:21536

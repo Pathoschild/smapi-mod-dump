@@ -238,8 +238,10 @@ This mod adds several new "Bag" items that are capable of holding other items in
 				-HideSmallBagsFromShops, HideMediumBagsFromShops, HideLargeBagsFromShops, HideGiantBagsFromShops, HideMassiveBagsFromShops
 				-HideObsoleteBagsFromShops - If "true", shops will no longer sell bags for which you already own at least one copy of a larger size
 	-"bagconfig.json"
-		-Located in your SMAPI global mod data folders
-			- Typically this is "<AppData>\Roaming\StardewValley\.smapi\mod-data\SlayerDharok.Item_Bags\bagconfig.json
+		-Located in the ItemBags mod installation folder
+			- <StardewValleyInstallPath>\Mods\ItemBags\bagconfig.json
+			-Prior to version 3.0.5, this file was located in your SMAPI global mod data folders
+				- Typically this is "<AppData>\Roaming\StardewValley\.smapi\mod-data\SlayerDharok.Item_Bags\bagconfig.json
 		-Not recommended to edit unless you're an advanced user
 		-Defines all of the standard bags
 			-Each standard bag is composed of:

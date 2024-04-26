@@ -1,0 +1,10 @@
+{
+  "Name": "EatInBackpack",
+  "Author": "philosquare",
+  "Version": "1.0.0",
+  "Description": "you can eat food in backpack instantly",
+  "UniqueID": "philosquare.EatInBackpack",
+  "EntryDll": "EatInBackpack.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22872" ]
+}

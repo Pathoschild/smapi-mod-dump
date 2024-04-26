@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11551
+IDs: aedenthorn.LivestockChoices
+update keys: Nexus:11551, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@LivestockChoices, GitHub:aedenthorn/StardewValleyMods

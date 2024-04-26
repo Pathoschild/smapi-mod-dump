@@ -1,0 +1,10 @@
+{
+  "name": "Passable Descents",
+  "author": "Rokugin",
+  "version": "2.0.0",
+  "description": "Makes ladders and shafts passable.",
+  "uniqueID": "Rokugin.PassableDescents",
+  "entryDLL": "PassableDescents.dll",
+  "minimumapiversion": "4.0.0",
+  "updatekeys": [ "Nexus:22592" ]
+}

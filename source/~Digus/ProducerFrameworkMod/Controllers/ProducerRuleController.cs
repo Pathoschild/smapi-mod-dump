@@ -22,6 +22,7 @@ using System.Linq;
 using StardewValley.GameData.Objects;
 using Object = StardewValley.Object;
 using System.Security.AccessControl;
+using StardewValley.Inventories;
 
 namespace ProducerFrameworkMod.Controllers
 {
@@ -75,7 +76,8 @@ namespace ProducerFrameworkMod.Controllers
         {
             foreach (Tuple<string, int> fuel in producerRule.FuelList)
             {
-                if (!(who.getItemCount(fuel.Item1) >= fuel.Item2))
+                IInventory inventory = Object.autoLoadFrom ?? who.Items;
+                if (!(who.getItemCountInList(inventory,fuel.Item1) >= fuel.Item2))
                 {
                     if (!probe)
                     {
@@ -126,7 +128,7 @@ namespace ProducerFrameworkMod.Controllers
                     if (!noSoundAndAnimation)
                     {
                         SoundUtil.PlaySound(producerRule.Sounds, location);
-                        SoundUtil.PlayDelayedSound(producerRule.DelayedSounds, location);
+                        SoundUtil.PlayDelayedSound(producerRule.DelayedSounds, location, producer.TileLocation);
                     }
 
                     producer.MinutesUntilReady = outputConfig.MinutesUntilReady ?? producerRule.MinutesUntilReady;

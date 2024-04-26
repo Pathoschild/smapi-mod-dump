@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22707
+IDs: Dragoon23.ForgeEnchantment
+update keys: Nexus:22707

@@ -9,11 +9,23 @@
   "UniqueID": "HedgehogTechnologies.AutoForager",
   "Name": "Auto Forager",
   "Author": "Jag3Dagster",
-  "Version": "2.2.3",
+  "Version": "3.3.0",
   "Description": "Automatically forage items simply by moving near them.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "AutoForager.dll",
   "Dependencies": [
+    {
+      "UniqueID": "furyx639.CustomBush",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "NCarigon.BushBloomMod",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
       "IsRequired": false

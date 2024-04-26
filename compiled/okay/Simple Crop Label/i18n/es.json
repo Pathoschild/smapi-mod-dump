@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Árbol de Setas",
   "custom-tree.mahogany": "Árbol de Caoba",
   "custom-tree.palm": "Palmera",
+  "custom-tree.green-rain-wild": "Árbol de Lluvia Verde Salvaje",
+  "custom-tree.green-rain-lush": "Árbol de Lluvia Verde Exuberante",
+  "custom-tree.fiddlehead-fern": "Árbol de Helecho",
+  "custom-tree.mystic": "Árbol Místico",
 
   // growth info translation
   "growth-info.fully-grown": "completamente crecido",

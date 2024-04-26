@@ -17,6 +17,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.GameData.Locations;
 
 namespace StardewMods
 {
@@ -41,6 +42,7 @@ namespace StardewMods
             helper.Events.Display.RenderedActiveMenu += this.OnRenderMenu;
             helper.Events.Display.RenderedActiveMenu += GenericModConfigMenuIntegration;
             helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
+            helper.Events.Player.Warped += this.OnWarped;
         }
 
 
@@ -59,6 +61,12 @@ namespace StardewMods
 
                 try
                 {
+                    GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.barSonarMode"), tooltip: () => translate.Get("GenericMC.barSonarModeDesc"),
+                        getValue: () => config.BarSonarMode.ToString(),
+                        setValue: value => config.BarSonarMode = int.Parse(value),
+                        allowedValues: new string[] { "0", "1", "2", "3" },
+                        formatAllowedValue: value => value == "3" ? translate.Get($"GenericMC.Disabled") : translate.Get($"GenericMC.barSonarMode{value}"));
+
                     GenericMCPerScreen(GenericMC, 0);
                     GenericMC.AddPageLink(ModManifest, "colors", () => translate.Get("GenericMC.barColors"), () => translate.Get("GenericMC.barColors"));
 
@@ -82,7 +90,9 @@ namespace StardewMods
                     GenericMC.AddNumberOption(ModManifest, () => config.BarTextColorRGBA[3], (int val) => config.BarTextColorRGBA[3] = val, () => "A", null, 0, 255);
 
                     //dummy value validation trigger - must be the last thing, so all values are saved before validation
-                    GenericMC.AddComplexOption(ModManifest, () => "", () => "", (SpriteBatch b, Vector2 pos) => { }, () => UpdateConfig(true));
+                    GenericMC.AddComplexOption(ModManifest, () => "", (SpriteBatch b, Vector2 pos) => { }, afterSave: () => UpdateConfig(true));
+
+                    //void AddComplexOption(IManifest mod, Func<string> name, Func<string> tooltip, Action<SpriteBatch, Vector2> draw, Action saveChanges, Func<int> height = null, string fieldId = null);
                 }
                 catch (Exception)
                 {
@@ -142,7 +152,7 @@ namespace StardewMods
             if (screen == 0)//only page 0
             {
                 GenericMC.AddNumberOption(ModManifest, () => config.BarExtraCheckFrequency, (int val) => config.BarExtraCheckFrequency = val,
-                    () => translate.Get("GenericMC.barExtraCheckFrequency"), () => translate.Get("GenericMC.barExtraCheckFrequencyDesc"), 20, 220);
+                    () => translate.Get("GenericMC.barExtraCheckFrequency"), () => translate.Get("GenericMC.barExtraCheckFrequencyDesc"), 0, 22);
 
                 GenericMC.AddSectionTitle(ModManifest, () => translate.Get("GenericMC.MinigameLabel"));
                 GenericMC.AddParagraph(ModManifest, () => translate.Get("GenericMC.MinigameDescription"));
@@ -193,6 +203,10 @@ namespace StardewMods
             if (Context.IsWorldReady) overlay.Value.OnModMessageReceived(sender, e);
         }
 
+        private void OnWarped(object sender, WarpedEventArgs e)
+        {
+            overlay.Value?.OnWarped(sender, e);
+        }
 
         private void UpdateConfig(bool GMCM)
         {
@@ -204,6 +218,7 @@ namespace StardewMods
             Overlay.backgroundMode = config.BarBackgroundMode;                                                              //config: 0=Circles (dynamic), 1=Rectangle (single), 2=Off
             Overlay.barCrabEnabled = config.BarCrabPotEnabled;                                                              //config: If bait/tackle/bait preview is enabled when holding a fishing rod
             Overlay.barScale = config.BarScale;                                                                             //config: Custom scale for the location bar.
+            Overlay.sonarMode = config.BarSonarMode;                                                                        //config: Sonar requirement: 0=everything, 1=minigame, 2=shift scan, 3=not needed
             Overlay.iconMode = config.BarIconMode;                                                                          //config: 0=Horizontal Icons, 1=Vertical Icons, 2=Vertical Icons + Text, 3=Off
             Overlay.maxIcons = config.BarMaxIcons;                                                                          //config: ^Max amount of tackle + trash + fish icons
             Overlay.maxIconsPerRow = config.BarMaxIconsPerRow;                                                              //config: ^How many per row/column.
@@ -215,6 +230,7 @@ namespace StardewMods
             Overlay.sortMode = config.BarSortMode;                                                                          //config: 0= By Name (text mode only), 1= By Percentage, 2=Off
             Overlay.uncaughtDark = config.UncaughtFishAreDark;                                                              //config: Whether uncaught fish are displayed as ??? and use dark icons
 
+            if (config.BarExtraCheckFrequency > 22) config.BarExtraCheckFrequency /= 10;
             Overlay.extraCheckFrequency = config.BarExtraCheckFrequency;                                                    //config: 20-220: Bad performance dynamic check to see if there's modded/hardcoded fish
 
             Overlay.colorBg = new Color(config.BarBackgroundColorRGBA[0], config.BarBackgroundColorRGBA[1], config.BarBackgroundColorRGBA[2], config.BarBackgroundColorRGBA[3]);
@@ -222,8 +238,8 @@ namespace StardewMods
 
             if (!GMCM)
             {
-                Overlay.locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");       //gets location data (which fish are here)
-                Overlay.fishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");                   //gets fish data
+                Overlay.locationData = DataLoader.Locations(Game1.content);       //gets location data (which fish are here)
+                Overlay.fishData = DataLoader.Fish(Game1.content);                   //gets fish data
                 Overlay.background[0] = WhiteCircle(17, 30);
                 Overlay.background[1] = WhitePixel();
             }

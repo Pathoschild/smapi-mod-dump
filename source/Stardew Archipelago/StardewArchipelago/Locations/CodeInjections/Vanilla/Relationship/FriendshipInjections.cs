@@ -72,7 +72,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 _apLogos.Add(logoName, new Dictionary<int, Texture2D>());
                 for (var i = 12; i <= 48; i *= 2)
                 {
-                    _apLogos[logoName].Add(i, ArchipelagoTextures.GetColoredLogo(modHelper, i, logoName));
+                    _apLogos[logoName].Add(i, ArchipelagoTextures.GetArchipelagoLogo(monitor, modHelper, i, logoName));
                 }
             }
             _hintedFriendshipLocations = Array.Empty<string>();
@@ -449,6 +449,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
             if (farmer.hasPlayerTalkedToNPC(npcName))
             {
                 farmer.friendshipData[npcName].TalkedToToday = false;
+                return;
+            }
+
+            if (ModEntry.Instance.Config.DisableFriendshipDecay)
+            {
                 return;
             }
 

@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Log": "Cooking Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "Entries": {
+                "{{ModId}}_Mooncake": "423 1 245 1 -5 1 {{ModId}}_Dried_Lotus_Seeds 1/6 9/{{ModId}}_Mooncake 4/null/{{i18n:Dishes.Mooncake.name}}",
+                "{{ModId}}_Candied_Orange_Peel": "245 1 {{ModId}}_Orange_Peel 1/6 9/{{ModId}}_Candied_Orange_Peel 4/null/{{i18n:Dishes.CandiedOrangePeel.name}}",
+                "{{ModId}}_Tea_Eggs": "815 1 -5 2 {{ModId}}_Rock_Sugar 1 260 1/6 9/{{ModId}}_Tea_Eggs 1/null/{{i18n:Dishes.TeaEggs.name}}"
+            }
+        },
+        {
+            "Log": "Cooking Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "HasMod |contains=PC.CP.QL.FlowerGarden2": false
+            },
+            "Entries": {
+                "{{ModId}}_Rice_Porridge": "423 1 399 1 829 1 {{ModId}}_Dried_Orange_Peel 1 {{ModId}}_Lily_Bulb_2 1/6 9/{{ModId}}_Rice_Porridge 1/null/{{i18n:Dishes.RicePorridge.name}}"
+            }
+        },
+        {
+            "Log": "Cooking Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepCFDupes": false
+            },
+            "Entries": {
+                "{{ModId}}_Rice_Porridge": "423 1 399 1 829 1 {{ModId}}_Dried_Orange_Peel 1 Cornucopia_Lily 1/6 9/{{ModId}}_Rice_Porridge 1/null/{{i18n:Dishes.RicePorridge.name}}"
+            }
+        },
+        {
+            "Log": "Cooking Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepQLFG2Dupes": false,
+                "KeepCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Rice_Porridge": "423 1 399 1 829 1 {{ModId}}_Dried_Orange_Peel 1 QL_Lily 1/6 9/{{ModId}}_Rice_Porridge 1/null/{{i18n:Dishes.RicePorridge.name}}"
+            }
+        }
+    ]
+}

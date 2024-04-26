@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "divorce_complex": "� complicado...",
+  "divorce_fault_q": "De quem � a culpa o div�rcio?",
+  "divorce_fault_1": "� minha culpa.#my_#1",
+  "divorce_fault_2": "A culpa � do meu c�njugue.#their_#3",
+  "divorce_fault_3": "Tudo isso � culpa de Yoba!#yoba_#1",
+  "divorce_fault_4": "Este � um div�rcio sem culpa.#no_#0",
+  "divorce_my_reason_q": "Por que voc� sente culpa?",
+  "divorce_my_reason_1": "Eu enganei meu c�njugue.#3",
+  "divorce_my_reason_2": "Eu me apaixonei por outra pessoa.#2",
+  "divorce_my_reason_3": "Eu n�o amo meu c�njugue tanto quanto ele me ama.#0",
+  "divorce_their_reason_q": "Por que voc� � culpa?",
+  "divorce_their_reason_1": "Meu c�njugue me tra�u.#3",
+  "divorce_their_reason_2": "Eu acho que meu c�njugue esta me tra�ndo.#2",
+  "divorce_their_reason_3": "Meu c�njuge n�o me ama mais.#1",
+  "divorce_yoba_reason_q": "O que Yoba fez com voc�?",
+  "divorce_yoba_reason_1": "Yoba teve um caso com meu c�njugue.#3",
+  "divorce_yoba_reason_2": "Yoba amaldi�oou meu casamento.#0",
+  "divorce_yoba_reason_3": "Meu c�njugue ama mais o Yoba do que mim.#1",
+  "divorce_method_q": "Quem deve pagar pelo div�rcio?",
+  "divorce_method_1": "Eu vou pagar.#100#0",
+  "divorce_method_2": "Dever�amos dividir os custos 50/50.#50#2",
+  "divorce_method_3": "Quero que meu c�njugue pague pelo div�rcio.#0#4",
+  "divorce_method_4": "Yoba deveria pagar pelo div�rcio.#150#0"
+}

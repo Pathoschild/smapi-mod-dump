@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace AutomateToolSwap
 {
@@ -16,18 +16,36 @@ namespace AutomateToolSwap
     {
         public bool Enabled { get; set; } = true;
 
-        public SButton ToggleKey { get; set; } = SButton.CapsLock;
+        public KeybindList ToggleKey { get; set; } = KeybindList.Parse("CapsLock");
 
-        public SButton SwapKey { get; set; } = SButton.MouseLeft;
+        public bool UseDifferentSwapKey { get; set; } = false;
 
-        public bool Pickaxe_greater_wcan { get; set; } = false;
+        public KeybindList SwapKey { get; set; } = KeybindList.Parse("MouseLeft");
 
-        public bool Pickaxe_over_melee { get; set; } = false;
+        public KeybindList LastToolKey { get; set; } = KeybindList.Parse("MouseMiddle");
 
-        public SButton LastToolButton { get; set; } = SButton.MouseMiddle;
-        
-        public bool Hoe_in_empty_soil { get; set; } = true;
+        public string DetectionMethod { get; set; } = "Cursor";
 
-        public bool Auto_switch_last_tool { get; set; } = false;
+        public bool WeaponOnMonsters { get; set; } = true;
+
+        public bool AlternativeWeaponOnMonsters { get; set; } = false;
+
+        public int MonsterRangeDetection { get; set; } = 3;
+
+        public bool FishingRodOnWater { get; set; } = true;
+
+        public bool IgnoreGrowingTrees { get; set; } = false;
+
+        public bool AutoReturnToLastTool { get; set; } = false;
+
+        public bool HoeForEmptySoil { get; set; } = true;
+
+        public bool ScytheForGrass { get; set; } = false;
+
+        public bool PickaxeOverWateringCan { get; set; } = false;
+
+        public bool AnyToolForWeeds { get; set; } = false;
+
+        public bool DisableTractorSwap { get; set; } = false;
     }
 }

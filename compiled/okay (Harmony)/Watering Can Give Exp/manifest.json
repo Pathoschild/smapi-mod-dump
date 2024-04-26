@@ -1,7 +1,7 @@
 {
-    "Name": "WateringCanGiveExp",
+    "Name": "Watering Can Give Exp",
     "Author": "Achtuur",
-    "Version": "1.0.4",
+    "Version": "1.1.0",
     "Description": "Rebalances Farming Exp such that other farming actions also give exp.",
     "UniqueID": "Achtuur.WateringCanGiveExp",
     "EntryDll": "WateringCanGiveExp.dll",
@@ -9,7 +9,7 @@
     "dependencies": [
         {
             "UniqueID": "Achtuur.AchtuurCore",
-            "MinimumVersion": "1.0.7"
+            "MinimumVersion": "1.2.1"
         }
     ],
     "UpdateKeys": [ "Nexus:16903" ]

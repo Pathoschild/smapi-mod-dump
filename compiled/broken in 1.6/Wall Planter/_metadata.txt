@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11339
-IDs: aedenthorn.WallPlanter
-update keys: Nexus:11339, GitHub:aedenthorn/StardewValleyMods

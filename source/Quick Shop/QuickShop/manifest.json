@@ -11,7 +11,7 @@
 {
   "Name": "QuickShop",
   "Author": "Enaium",
-  "Version": "1.5.5",
+  "Version": "1.7.1",
   "Description": "Open shop quickly",
   "UniqueID": "Enaium.QuickShop",
   "EntryDll": "QuickShop.dll",

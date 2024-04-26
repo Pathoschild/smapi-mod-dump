@@ -1,0 +1,10 @@
+{
+  "Name": "Level Up Notifications",
+  "Author": "Binarynova",
+  "Version": "1.1.0",
+  "Description": "This mod notifies you for multiple levels gained during the same day.",
+  "UniqueID": "binarynova.levelupnotifications",
+  "EntryDll": "LevelUpNotifications.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21667" ]
+}

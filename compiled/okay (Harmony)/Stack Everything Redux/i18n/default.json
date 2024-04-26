@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Max Stacking Number",
+    "config.MaxStackingNumber.tooltip": "The max stacking number, the default is 999.",
+    "config.DefaultCraftingAmount.name": "Default cooking/crafting amount",
+    "config.DefaultCraftingAmount.tooltip": "The default amount when you Shift+RightClick in the Cooking / Crafting menu",
+    "config.DefaultShopAmount.name": "Default shop amount",
+    "config.DefaultShopAmount.tooltip": "The default amount when you Shift+RightClick in a Shop menu",
+    "config.EnableStackSplitRedux.name": "Enable Split Redux",
+    "config.EnableStackSplitRedux.tooltip": "Enable Split Redux functionalities. Uncheck this box if you are experiencing any issue",
+    "ui.stacksplitmenu.title": "Select Amount"
+}

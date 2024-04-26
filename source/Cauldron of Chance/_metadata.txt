@@ -6,9 +6,9 @@ mods:
    Cauldron of Chance
 
 latest commit:
-   commit 8793bb8727401543208c4e2d96126568575cb5bc
+   commit 0d30c9a5d6a4b5ede3aac21a7f0edea5da36ea96
    Author: WizardsLizards <focdom@gmail.com>
-   Date:   Thu Feb 10 23:34:10 2022 +0100
+   Date:   Tue Apr 2 15:16:18 2024 +0200
    
-       1.01
+       Mod is working, needs some work (rebalancing etc) before publishing again tho
    

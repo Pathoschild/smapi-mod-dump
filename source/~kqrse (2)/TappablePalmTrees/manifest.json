@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "Name": "Tappable Palm Trees",
+  "Author": "aedenthorn",
+  "Version": "0.1.0",
+  "Description": "Tappable Palm Trees.",
+  "UniqueID": "aedenthorn.TappablePalmTrees",
+  "EntryDll": "TappablePalmTrees.dll",
+  "MinimumApiVersion": "3.13.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "TappablePalmTrees"
+  },
+  "UpdateKeys": [ "Nexus:10661" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

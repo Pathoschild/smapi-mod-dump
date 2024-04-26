@@ -36,9 +36,13 @@ namespace StardewDruid.Cast.Weald
         public override void CastEffect()
         {
 
-            SpellHandle rockfall = new(targetLocation, targetVector * 64, Game1.player.Position, 2, 1, -1, damage/3, 1);
+            SpellHandle rockfall = new(Game1.player, targetVector * 64, 92, damage / 3);
 
-            rockfall.type = SpellHandle.barrages.rockfall;
+            rockfall.type = SpellHandle.spells.rockfall;
+
+            rockfall.display = SpellHandle.displays.Impact;
+
+            rockfall.power = 1;
 
             rockfall.terrain = 2;
 

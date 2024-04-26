@@ -15,12 +15,12 @@ using SObject = StardewValley.Object;
 
 namespace PrismaticStatue;
 
-/// <summary>A machine that turns iron bars into gold bars.</summary>
+/// <summary>Speed up statue machine.</summary>
 public class SpeedupStatue : IMachine
 {
 
     public static readonly string TypeId = "Achtuur/SpeedupStatue";
-    public static int? ID = null;
+    public static string ID = null;
 
     /*********
     ** Fields

@@ -1,0 +1,25 @@
+{
+  "PhraseLocationExists": "Location {name} already exists.",
+  "PhraseLocationCreated": "Location {name} created.",
+  "PhraseLocationDeleted": "Location {name} deleted.",
+  "PhraseFinishedTravel": "Finished Traveling.",
+  "PhraseCreateLocationPrompt": "Enter location name",
+  "PhraseMenuSelectPrompt": "{name} - Press the MenuSubmit button to travel.",
+  "PhraseMenuSelectPromptOpenPrefix": "Auto Travel Opened - ",
+  "PhraseLocationFavorited": "Favorited location {name}",
+  "PhraseLocationUnfavorited": "Unfavorited location {name}",
+  "OpenMenuButton": "V",
+  "MenuSubmit": "Enter",
+  "MenuDelete": "Back",
+  "FavoriteToggleKey": "F",
+  "CreateDestinationButton": "N",
+  "MenuUpButtons": [
+    "W",
+    "Up"
+  ],
+  "MenuDownButtons": [
+    "S",
+    "Down"
+  ],
+  "EnableMouseMenuScroll": true
+}

@@ -11,7 +11,7 @@
 {
   "Name": "MoreEvents",
   "Author": "Siweipancc",
-  "Version": "0.0.1",
+  "Version": "0.0.2",
   "Description": "MoreEvents",
   "UniqueID": "Siweipancc.MoreEvents",
   "EntryDll": "MoreEvents.dll",

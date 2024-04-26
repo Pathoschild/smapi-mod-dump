@@ -58,7 +58,7 @@ internal class BillboardPatch : IPatch
                 day = i + 1,
                 is_current = (Game1.dayOfMonth == i + 1) ? 1 : 0,
                 season = Game1.CurrentSeasonDisplayName,
-                year = Game1.year,
+                Game1.year,
                 extra_info = __instance.calendarDayData.ContainsKey(i + 1)
                     ? __instance.calendarDayData[i + 1].HoverText
                     : "null"

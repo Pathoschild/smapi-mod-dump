@@ -1,8 +1,0 @@
-{
-  "outside-hours.label": "Outside Normal Hours",
-  "outside-hours.tooltip": "Allows entry to places outside the normal entry hours.",
-  "stranger-entry.label": "Stranger Room Entry",
-  "stranger-entry.tooltip": "Allows entry to single room homes and bedrooms before having a high enough relationship.",
-  "early-guild.label": "Early Adventurer's Guild",
-  "early-guild.tooltip": "Allows entry to Adventurer's Guild before being accepted. Approach the door once to unlock it."
-}

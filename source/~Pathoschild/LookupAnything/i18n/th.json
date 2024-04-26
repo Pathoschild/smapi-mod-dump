@@ -37,6 +37,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{price}}g สำหรับปริมาณ {{count}} ชิ้น",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "สิ่งก่อสร้าง",
@@ -113,13 +114,14 @@
     "location.bugLand": "ลังแมลงกลายพันธุ์",
     "location.busStop": "ป้ายรถประจำทาง",
     "location.desert": "ทะเลทราย",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "ฟาร์ม",
     "location.farmCave": "ถ้ำในฟาร์ม",
     "location.farmHouse": "บ้านของเรา",
     "location.forest": "ป่า",
-    "location.forest.fish-area-0": "แม่น้ำในป่า",
-    "location.forest.fish-area-1": "ทะลสาบในป่า",
     "location.forest.island-tip": "แม่น้ำในป่า (ปลายทางใต้สุดของเกาะใหญ่กลางแม่น้ำ)",
+    "location.forest.lake": "ทะลสาบในป่า",
+    "location.forest.river": "แม่น้ำในป่า",
     "location.mountain": "ภูเขา",
     "location.railroad": "ทางรถไฟ",
     "location.sewer": "ท่อระบายน้ำ",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "เกาะขิงฝั่งตะวันออกเฉียงใต้",
     "location.islandSouthEastCave": "ถ้ำที่เกาะขิงฝั่งตะวันออกเฉียงใต้",
     "location.islandWest": "เกาะขิงฝั่งตะวันตก",
-    "location.islandWest.fish-area-1": "เกาะขิงฝั่งตะวันตก (ทะเล)",
-    "location.islandWest.fish-area-2": "เกาะขิงฝั่งตะวันตก (ทะเลสาบ)",
+    "location.islandWest.freshwater": "เกาะขิงฝั่งตะวันตก (ทะเลสาบ)",
+    "location.islandWest.ocean": "เกาะขิงฝั่งตะวันตก (ทะเล)",
 
     "location.unknown-fish-area": "{{locationName}} (จุดตกปลา {{id}})",
 
@@ -628,6 +630,8 @@
     "tree.name.oak": "ต้นโอ๊ก (Oak Tree)",
     "tree.name.palm": "ต้นปาล์ม (Palm Tree)",
     "tree.name.pine": "ต้นสน (Pine Tree)",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "ต้นไม้ไม่ทราบชนิด (Unknown Tree)",
     "tree.stage.done": "โตเต็มที่",
     "tree.stage.partial": "{{stageName}} ({{step}}/{{max}})",
@@ -676,6 +680,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "เหตุการณ์ที่สำคัญรสนิยมของขวัญที่ยังไม่ได้เปิดเผย",
     "config.highlight-unrevealed-gift-tastes.desc": "จะเน้นรสนิยมของขวัญของไอเท็มที่ยังไม่ได้เปิดเผยในโปรไฟล์ NPC หรือไม่ เมื่อเปิดใช้งาน รสนิยมของขวัญที่ยังไม่ได้เปิดเผยจะเป็นตัวหนา",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "ตัวเลือกขั้นสูง",

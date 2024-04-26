@@ -35,12 +35,12 @@ namespace HoverLabels
         /// </summary>
         internal const int DaysInSeason = 28;
 
-        internal static readonly List<string> Seasons = new()
+        internal static readonly List<Season> Seasons = new()
         {
-            "spring",
-            "summer",
-            "fall",
-            "winter"
+            Season.Spring,
+            Season.Summer,
+            Season.Fall,
+            Season.Winter,
         };
 
         internal static readonly List<string> SeasonsDisplayName = new()
@@ -104,9 +104,11 @@ namespace HoverLabels
             return Game1.currentLocation.IsFarm && Game1.currentLocation.IsOutdoors;
         }
 
-        internal static SObject GetObjectWithId(int id)
+        internal static Season GetNextSeason(GameLocation loc)
         {
-            return new SObject(id, 1, false, -1, 0);
+            Season current = loc.GetSeason();
+            int idx_plus_one = (ModEntry.Seasons.IndexOf(current) + 1) % ModEntry.Seasons.Count;
+            return ModEntry.Seasons[idx_plus_one];
         }
 
         internal static string GetDateAfterDays(int days)
@@ -115,7 +117,7 @@ namespace HoverLabels
             if (new_day > DaysInSeason)
             {
                 int season_diff = new_day / DaysInSeason;
-                int current_season = Seasons.IndexOf(Game1.currentSeason);
+                int current_season = ModEntry.Seasons.IndexOf(Game1.season);
                 string season_name = SeasonsDisplayName[(current_season + season_diff) % 4];
 
                 // Final result should be new_day % 28, where 28*k % 28 = 1.
@@ -124,7 +126,7 @@ namespace HoverLabels
                 return $"{season_name} {day}";
             }
 
-            string season = SeasonsDisplayName[Seasons.IndexOf(Game1.currentSeason)];
+            string season = SeasonsDisplayName[Seasons.IndexOf(Game1.season)];
             return $"{season} {new_day}";
         }
 
@@ -268,6 +270,16 @@ namespace HoverLabels
         {
             Regex r = new Regex(@"(?<=[a-z])([A-Z])(?=[a-z])");
             return r.Replace(s, @" $1");
+        }
+
+        internal static SObject GetObjectWithId(int id)
+        {
+            return ItemRegistry.Create<SObject>($"{id}");
+        }
+
+        internal static SObject GetObjectWithId(string item_id)
+        {
+            return ItemRegistry.Create<SObject>(item_id);
         }
     }
 }

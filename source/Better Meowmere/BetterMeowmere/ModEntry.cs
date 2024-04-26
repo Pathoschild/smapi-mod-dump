@@ -18,6 +18,8 @@ using StardewValley.GameData.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using xTile.Dimensions;
+using StardewValley.Projectiles;
+using StardewValley.Enchantments;
 
 namespace BetterMeowmere;
 
@@ -92,17 +94,17 @@ public class ModEntry
                 getValue: () => config.ProjectileIsSecondaryAttack,
                 setValue: value => config.ProjectileIsSecondaryAttack = value
             );
-        configMenu.AddBoolOption(
+        configMenu.AddNumberOption(
                 ModManifest,
-                name: () => "Buff Attack",
-                tooltip: () => "Increase the damage of the meowmere blade (and projectile to a lesser extent). Only change this if you're fully committed to having an overpowered sword!",
-                getValue: () => config.BuffAttack,
-                setValue: value => config.BuffAttack = value
+                name: () => "Attack Damage",
+                tooltip: () => "The base attack damage of the meowmere blade (projectiles will do about half this damage).\nDefault value is 20.",
+                getValue: () => config.AttackDamage,
+                setValue: value => config.AttackDamage = value,
+                min: 0
             );
-
     }
 
-    private void ApplyDamageChanges(bool revert)
+    private void ApplyDamageChanges()
     {
         this.Helper.GameContent.InvalidateCache("Data\\Weapons");
         var inventory = Game1.player.Items;
@@ -113,15 +115,24 @@ public class ModEntry
                 if (item is MeleeWeapon && item.Name == "Meowmere")
                 {
                     var meowmere = item as MeleeWeapon;
-                    if (meowmere != null && revert == true)
+                    if ( meowmere != null)
                     {
-                        meowmere.minDamage.Value = 20;
-                        meowmere.maxDamage.Value = 20;
-                    }
-                    else if (meowmere != null && revert == false)
-                    {
-                        meowmere.minDamage.Value = 120;
-                        meowmere.maxDamage.Value = 120;
+                        foreach (BaseEnchantment enchantment2 in meowmere.enchantments)
+                        {
+                            if (enchantment2.IsForge())
+                            {
+                                enchantment2.UnapplyTo(meowmere);
+                            }
+                        }
+                        meowmere.minDamage.Value = config.AttackDamage;
+                        meowmere.maxDamage.Value = config.AttackDamage;
+                        foreach (BaseEnchantment enchantment in meowmere.enchantments)
+                        {
+                            if (enchantment.IsForge())
+                            {
+                                enchantment.ApplyTo(meowmere);
+                            }
+                        }
                     }                    
                 }
             }
@@ -130,34 +141,27 @@ public class ModEntry
 
     private void Saving(object sender, SavingEventArgs e)
     {
-        ApplyDamageChanges(true);
+        ApplyDamageChanges();
     }
 
     private void DayStarted(object sender, DayStartedEventArgs e)
     {
-        if (config.BuffAttack == true)
-        {
-            ApplyDamageChanges(false);
-        }
-        else
-        {
-            ApplyDamageChanges(true);
-        }
+        ApplyDamageChanges();
     }
 
     private void AssetRequested(object sender, AssetRequestedEventArgs e)
     {
         if (e.NameWithoutLocale.IsEquivalentTo("Data\\Weapons"))
         {
-            if(this.config.BuffAttack == true)
+            if(this.config.AttackDamage != 20)
             {
                 e.Edit(asset =>
                 {
                     var data = asset.Data as Dictionary<string, WeaponData>;
                     if (data != null)
                     {
-                        data["65"].MinDamage = 120;
-                        data["65"].MaxDamage = 120;
+                        data["65"].MinDamage = this.config.AttackDamage;
+                        data["65"].MaxDamage = this.config.AttackDamage;
                     }
                 });
             }
@@ -192,10 +196,12 @@ public class ModEntry
         {
             bouncesound = "";
         }
+        var minprojectiledamage = Math.Max(0, this.config.AttackDamage / 2 - 10);
+        var maxprojectiledamage = Math.Max(0, this.config.AttackDamage / 2 + 10);
 
         Vector2 velocity1 = TranslateVector(new Vector2(0, 10), user.FacingDirection);
         Vector2 startPos1 = TranslateVector(new Vector2(0, 96), user.FacingDirection);
-        int damage = this.config.BuffAttack == true ? random.Next(50, 70) : random.Next(20, 40);
+        int damage = this.config.AttackDamage != 20 ? random.Next(minprojectiledamage, maxprojectiledamage) : 10;
         Game1.currentLocation.projectiles.Add(new MeowmereProjectile(damage, velocity1.X, velocity1.Y, user.Position + new Vector2(0, -64) + startPos1, bounces, 6, bouncesound, user.currentLocation, user));
     }
 
@@ -203,6 +209,13 @@ public class ModEntry
     {
         if (Context.IsWorldReady == false || Context.IsPlayerFree == false)
             return;
+        bool normal_gameplay = true
+                    && Game1.eventUp == false
+                    && Game1.isFestival() == false
+                    && Game1.fadeToBlack == false
+                    && Game1.player.swimming.Value == false
+                    && Game1.player.bathingClothes.Value == false
+                    && Game1.player.onBridge.Value == false;
 
         var user = Game1.player;
         if (user.CurrentTool?.Name != "Meowmere")
@@ -210,12 +223,12 @@ public class ModEntry
             return;
         }
 
-        if (e.Button.IsUseToolButton() == true && this.config.ProjectileIsSecondaryAttack == false)
+        if (e.Button.IsUseToolButton() == true && this.config.ProjectileIsSecondaryAttack == false && normal_gameplay == true)
         {
             ShootProjectile(user);
         }
 
-        else if (this.config.ProjectileIsSecondaryAttack == true)
+        else if (this.config.ProjectileIsSecondaryAttack == true && normal_gameplay == true)
         {
             if ((!e.Button.IsActionButton()) || (MeleeWeapon.defenseCooldown > 0))
             {

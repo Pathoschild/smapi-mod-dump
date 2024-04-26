@@ -20,7 +20,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
     /// <param name="Constants">Constant values hardcoded by the game.</param>
     /// <param name="Items">Metadata for game objects (including inventory items, terrain features, crops, trees, and other map objects).</param>
     /// <param name="Characters">Metadata for NPCs in the game.</param>
-    /// <param name="AdventureGuildQuests">Information about Adventure Guild monster-slaying quests. Derived from <see cref="StardewValley.Locations.AdventureGuild.showMonsterKillList"/>.</param>
     /// <param name="BuildingRecipes">The building recipes. Derived from <see cref="StardewValley.Buildings.Mill.dayUpdate"/>.</param>
     /// <param name="MachineRecipes">The machine recipes. Derived from <see cref="Object.performObjectDropInAction"/>.</param>
     /// <param name="Shops">The shops that buy items from the player. Derived from <see cref="StardewValley.Menus.ShopMenu"/> constructor.</param>
@@ -31,7 +30,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         ConstantData Constants,
         ItemData[] Items,
         CharacterData[] Characters,
-        AdventureGuildQuestData[] AdventureGuildQuests,
         BuildingRecipeData[] BuildingRecipes,
         MachineRecipesData[] MachineRecipes,
         ShopData[] Shops,
@@ -46,7 +44,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /// <summary>Get whether the metadata seems to be basically valid.</summary>
         public bool LooksValid()
         {
-            return new object?[] { this.Constants, this.Items, this.Characters, this.AdventureGuildQuests, this.BuildingRecipes, this.MachineRecipes, this.Shops, this.CustomFishSpawnRules, this.IgnoreFishingLocations, this.PuzzleSolutions }
+            return new object?[] { this.Constants, this.Items, this.Characters, this.BuildingRecipes, this.MachineRecipes, this.Shops, this.CustomFishSpawnRules, this.IgnoreFishingLocations, this.PuzzleSolutions }
                 .All(p => p != null);
         }
 
@@ -67,13 +65,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             return
                 this.Characters?.FirstOrDefault(p => p.ID == $"{type}::{character.Name}") // override by type + name
                 ?? this.Characters?.FirstOrDefault(p => p.ID == type.ToString()); // override by type
-        }
-
-        /// <summary>Get the adventurer guild quest for the specified monster (if any).</summary>
-        /// <param name="monster">The monster name.</param>
-        public AdventureGuildQuestData? GetAdventurerGuildQuest(string monster)
-        {
-            return this.AdventureGuildQuests.FirstOrDefault(p => p.Targets.Contains(monster));
         }
     }
 }

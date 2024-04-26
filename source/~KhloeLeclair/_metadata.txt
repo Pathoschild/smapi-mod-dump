@@ -8,16 +8,16 @@ mods:
    Better Crafting
    Better Crafting → SpaceCore Support
    Better Crafting: Buildings
+   Cloudy Skies
    Giant Crop Tweaks
+   More Nightly Events
    See Me Rollin'
    Theme Manager
 
 latest commit:
-   commit 03c5242ab4f19caca5d23ff7fa49591c9f82101d
+   commit 757838f849b8de2f7a0694742d310418faf8ce5b
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Sun Jan 15 00:54:39 2023 -0500
+   Date:   Fri Apr 26 01:15:54 2024 -0400
    
-       Merge pull request #14 from thiagomasson/main
-       
-       Portuguese translation
+       Add a bit to the author guide about `ModifyHealth` and `ModifyStamina`.
    

@@ -22,46 +22,48 @@ namespace Randomizer
 		/// </summary>
 		protected override void Populate()
 		{
-			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
-			List<RequiredItem> potentialItems = new List<RequiredItem>();
+            RNG rng = BundleRandomizer.Rng;
+
+            BundleType = rng.GetAndRemoveRandomValueFromList(RoomBundleTypes);
+			List<RequiredBundleItem> potentialItems = new List<RequiredBundleItem>();
 
 			switch (BundleType)
 			{
 				case BundleTypes.PantryAnimal:
 					SetBundleName("bundle-pantry-animal");
-					potentialItems = RequiredItem.CreateList(ItemList.GetAnimalProducts());
-					potentialItems.Add(new RequiredItem(ObjectIndexes.Hay, 25, 50));
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
-					MinimumRequiredItems = Range.GetRandomValue(RequiredItems.Count - 2, RequiredItems.Count);
+					potentialItems = RequiredBundleItem.CreateList(ItemList.GetAnimalProducts());
+					potentialItems.Add(new RequiredBundleItem(ObjectIndexes.Hay, 25, 50));
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, rng.NextIntWithinRange(6, 8));
+					MinimumRequiredItems = rng.NextIntWithinRange(RequiredItems.Count - 2, RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.PantryQualityCrops:
 					SetBundleName("bundle-pantry-quality-crops");
-					potentialItems = RequiredItem.CreateList(ItemList.GetCrops());
+					potentialItems = RequiredBundleItem.CreateList(ItemList.GetCrops());
 					potentialItems.ForEach(x => x.MinimumQuality = ItemQualities.Gold);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(4, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(4, 6);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.PantryQualityForagables:
 					SetBundleName("bundle-pantry-quality-foragables");
-					potentialItems = RequiredItem.CreateList(ItemList.GetForagables());
+					potentialItems = RequiredBundleItem.CreateList(ItemList.GetForagables());
 					potentialItems.ForEach(x => x.MinimumQuality = ItemQualities.Gold);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(4, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(4, 6);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.PantryCooked:
 					SetBundleName("bundle-pantry-cooked");
-					potentialItems = RequiredItem.CreateList(ItemList.GetCookedItems());
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
-					MinimumRequiredItems = Range.GetRandomValue(3, 4);
+					potentialItems = RequiredBundleItem.CreateList(ItemList.GetCookedItems());
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, rng.NextIntWithinRange(6, 8));
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 4);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.PantryFlower:
 					SetBundleName("bundle-pantry-flower");
-					potentialItems = RequiredItem.CreateList(ItemList.GetFlowers());
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
+					potentialItems = RequiredBundleItem.CreateList(ItemList.GetFlowers());
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, rng.NextIntWithinRange(6, 8));
 					MinimumRequiredItems = RequiredItems.Count - 2;
 					Color = BundleColors.Green;
 					break;
@@ -76,81 +78,81 @@ namespace Randomizer
 					break;
 				case BundleTypes.PantryEgg:
 					SetBundleName("bundle-pantry-egg");
-					potentialItems = RequiredItem.CreateList(
-						ItemList.Items.Values.Where(x => x.Name.Contains("Egg") && x.Id > -4).ToList());
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(RequiredItems.Count - 3, RequiredItems.Count - 2);
+					potentialItems = RequiredBundleItem.CreateList(
+						ItemList.Items.Values.Where(x => x.IsEgg).ToList());
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(RequiredItems.Count - 3, RequiredItems.Count - 2);
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.PantryRareFoods:
 					SetBundleName("bundle-pantry-rare-foods");
 
-					SeedItem starFruitSeed = (SeedItem)ItemList.Items[ObjectIndexes.StarfruitSeeds];
-					SeedItem gemBerrySeed = (SeedItem)ItemList.Items[ObjectIndexes.RareSeed];
-					RequiredItems = new List<RequiredItem>
+					SeedItem starFruitSeed = (SeedItem)ObjectIndexes.StarfruitSeeds.GetItem();
+					SeedItem gemBerrySeed = (SeedItem)ObjectIndexes.RareSeed.GetItem();
+					RequiredItems = new List<RequiredBundleItem>
 					{
 						new(ObjectIndexes.AncientFruit),
-						new((ObjectIndexes)starFruitSeed.CropGrowthInfo.CropId),
-						new((ObjectIndexes)gemBerrySeed.CropGrowthInfo.CropId),
+						new(ObjectIndexesExtentions.GetObjectIndex(starFruitSeed.CropId)),
+						new(ObjectIndexesExtentions.GetObjectIndex(gemBerrySeed.CropId)),
 					};
 					MinimumRequiredItems = 2;
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.PantryDesert:
 					SetBundleName("bundle-pantry-desert");
-					RequiredItems = new List<RequiredItem>
+					RequiredItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.IridiumOre, 5),
-						Globals.RNGGetRandomValueFromList(new List<RequiredItem>
+						new RequiredBundleItem(ObjectIndexes.IridiumOre, 5),
+						rng.GetRandomValueFromList(new List<RequiredBundleItem>
 						{
-							new RequiredItem(ObjectIndexes.GoldenMask),
-							new RequiredItem(ObjectIndexes.GoldenRelic),
+							new(ObjectIndexes.GoldenMask),
+							new(ObjectIndexes.GoldenRelic),
 						}),
-						Globals.RNGGetRandomValueFromList(RequiredItem.CreateList(FishItem.Get(Locations.Desert))),
-						Globals.RNGGetRandomValueFromList(RequiredItem.CreateList(ItemList.GetUniqueDesertForagables(), 1, 3)),
-						new RequiredItem(ObjectIndexes.StarfruitSeeds, 5)
+						rng.GetRandomValueFromList(RequiredBundleItem.CreateList(FishItem.Get(Locations.Desert))),
+						rng.GetRandomValueFromList(RequiredBundleItem.CreateList(ItemList.GetUniqueDesertForagables(), 1, 3)),
+						new(ObjectIndexes.StarfruitSeeds, 5)
 					};
 					MinimumRequiredItems = 4;
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.PantryDessert:
 					SetBundleName("bundle-pantry-dessert");
-					potentialItems = new List<RequiredItem>
+					potentialItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.CranberryCandy),
-						new RequiredItem(ObjectIndexes.PlumPudding),
-						new RequiredItem(ObjectIndexes.PinkCake),
-						new RequiredItem(ObjectIndexes.PumpkinPie),
-						new RequiredItem(ObjectIndexes.RhubarbPie),
-						new RequiredItem(ObjectIndexes.Cookie),
-						new RequiredItem(ObjectIndexes.IceCream),
-						new RequiredItem(ObjectIndexes.MinersTreat),
-						new RequiredItem(ObjectIndexes.BlueberryTart),
-						new RequiredItem(ObjectIndexes.BlackberryCobbler),
-						new RequiredItem(ObjectIndexes.MapleBar),
+						new(ObjectIndexes.CranberryCandy),
+						new(ObjectIndexes.PlumPudding),
+						new(ObjectIndexes.PinkCake),
+						new(ObjectIndexes.PumpkinPie),
+						new(ObjectIndexes.RhubarbPie),
+						new(ObjectIndexes.Cookie),
+						new(ObjectIndexes.IceCream),
+						new(ObjectIndexes.MinersTreat),
+						new(ObjectIndexes.BlueberryTart),
+						new(ObjectIndexes.BlackberryCobbler),
+						new(ObjectIndexes.MapleBar),
 					};
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 4;
 					Color = BundleColors.Cyan;
 					break;
 				case BundleTypes.PantryMexicanFood:
 					SetBundleName("bundle-pantry-mexican-food");
-					RequiredItems = new List<RequiredItem>
+					RequiredItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.Tortilla),
-						new RequiredItem(ObjectIndexes.Corn, 1, 5),
-						new RequiredItem(ObjectIndexes.Tomato, 1, 5),
-						new RequiredItem(ObjectIndexes.HotPepper, 1, 5),
-						new RequiredItem(ObjectIndexes.FishTaco),
-						new RequiredItem(ObjectIndexes.Rice),
-						new RequiredItem(ObjectIndexes.Cheese),
+						new(ObjectIndexes.Tortilla),
+						new(ObjectIndexes.Corn, 1, 5),
+						new(ObjectIndexes.Tomato, 1, 5),
+						new(ObjectIndexes.HotPepper, 1, 5),
+						new(ObjectIndexes.FishTaco),
+						new(ObjectIndexes.Rice),
+						new(ObjectIndexes.Cheese),
 					};
-					MinimumRequiredItems = Range.GetRandomValue(4, 5);
+					MinimumRequiredItems = rng.NextIntWithinRange(4, 5);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.PantryColorBrown:
 					SetBundleName("bundle-pantry-brown");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.WildHorseradish,
 						ObjectIndexes.CaveCarrot,
@@ -208,13 +210,13 @@ namespace Randomizer
 						ObjectIndexes.PineTar,
 						ObjectIndexes.MapleBar
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.PantryColorGreen:
 					SetBundleName("bundle-pantry-green");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.Emerald,
 						ObjectIndexes.Jade,
@@ -258,8 +260,8 @@ namespace Randomizer
 						ObjectIndexes.OilOfGarlic,
 						ObjectIndexes.WildBait
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Green;
 					break;
 			}
@@ -273,11 +275,11 @@ namespace Randomizer
 		private void GenerateBundleForSeasonCrops(Seasons season, BundleColors color)
 		{
 			string seasonString = Globals.GetTranslation($"seasons-{season.ToString().ToLower()}");
-			seasonString = $"{seasonString[0].ToString().ToUpper()}{seasonString.Substring(1)}";
+			seasonString = $"{seasonString[0].ToString().ToUpper()}{seasonString[1..]}";
 
 			SetBundleName("bundle-pantry-crops", new { season = seasonString });
-			List<RequiredItem> potentialItems = RequiredItem.CreateList(ItemList.GetCrops(season));
-			RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+			List<RequiredBundleItem> potentialItems = RequiredBundleItem.CreateList(ItemList.GetCrops(season));
+			RequiredItems = BundleRandomizer.Rng.GetRandomValuesFromList(potentialItems, 8);
 			MinimumRequiredItems = 6;
 			Color = color;
 		}
@@ -287,21 +289,23 @@ namespace Randomizer
 		/// </summary>
 		protected override void GenerateReward()
 		{
-			var potentialRewards = new List<RequiredItem>
+            RNG rng = BundleRandomizer.Rng;
+
+            var potentialRewards = new List<RequiredBundleItem>
 			{
-				new(Globals.RNGGetRandomValueFromList(ItemList.GetResources()), 999),
+				new(rng.GetRandomValueFromList(ItemList.GetResources()), 999),
 				new(BigCraftableIndexes.Loom),
 				new(BigCraftableIndexes.MayonnaiseMachine),
 				new(BigCraftableIndexes.Heater),
 				new(BigCraftableIndexes.AutoGrabber),
 				new(BigCraftableIndexes.SeedMaker),
-				new(Globals.RNGGetRandomValueFromList(ItemList.GetCrops(true)), 25, 50),
-				new(Globals.RNGGetRandomValueFromList(ItemList.GetCookedItems())),
-				new(Globals.RNGGetRandomValueFromList(ItemList.GetSeeds()), 50, 100),
-				new(Globals.RNGGetRandomValueFromList(ItemList.GetAnimalProducts()), 25, 50),
+				new(rng.GetRandomValueFromList(ItemList.GetCrops(true)), 25, 50),
+				new(rng.GetRandomValueFromList(ItemList.GetCookedItems())),
+				new(rng.GetRandomValueFromList(ItemList.GetSeeds()), 50, 100),
+				new(rng.GetRandomValueFromList(ItemList.GetAnimalProducts()), 25, 50),
 			};
 
-			Reward = Globals.RNGGetRandomValueFromList(potentialRewards);
+			Reward = rng.GetRandomValueFromList(potentialRewards);
 		}
 	}
 }

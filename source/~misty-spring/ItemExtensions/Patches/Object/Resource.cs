@@ -28,11 +28,17 @@ public partial class ObjectPatches
         try
         {
             if (ModEntry.Ores.TryGetValue(__instance.ItemId, out var resource) == false)
-                return;
-
-            if (resource.Tool.Equals("vanilla") && __instance.MinutesUntilReady <= 0.0)
             {
-                CheckDrops(resource, __instance.Location, __instance.TileLocation, t);
+                #if DEBUG
+                Log("Not a node.");
+                #endif
+                return;
+            }
+
+            if (__instance.MinutesUntilReady <= 0.0)
+            {
+                if(resource.Tool.Equals("vanilla"))
+                    CheckDrops(resource, __instance.Location, __instance.TileLocation, t);
                 return;
             }
 
@@ -157,6 +163,9 @@ public partial class ObjectPatches
             if (resource == null)
                 return;
 
+            if (resource.ImmuneToBombs)
+                return;
+            
             //var sheetName = ItemRegistry.GetData(data.ItemDropped).TextureName;
             var where = __instance.Location;
             var tile = __instance.TileLocation;

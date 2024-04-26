@@ -1,7 +1,7 @@
 {
   "Name": "Stardew Progress",
   "Author": "seeinggreen",
-  "Version": "2.1.1",
+  "Version": "2.2.0",
   "Description": "Shows progress of the player(s) towards perfection",
   "UniqueID": "seeinggreen.StardewProgress",
   "EntryDll": "StardewProgress.dll",

@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hedgehog-Technologies/StardewMods
+**
+*************************************************/
+
+{
+  "Category": "Mushrooms of Ferngill",
+  "Forageables": [
+    // Base
+    "FOF_Black_Mushroom",
+    "FOF_Dew_Cup_Mushroom",
+    "FOF_Muffin_Bell_Mushroom",
+    "FOF_Plump_Belly_Mushroom",
+    "FOF_Stalk_Cluster_Mushroom",
+    "FOF_White_Mushroom",
+    "FOF_Yellow_Mushroom",
+
+    // Mod Expansions
+    "FOF_Ridge_Puff_Mushroom",
+    "FOF_Spring_Cap_Mushroom",
+    "FOF_Tooting_Funnel_Mushroom",
+    "FOF_Woodland_Stool_Mushroom"
+  ]
+}

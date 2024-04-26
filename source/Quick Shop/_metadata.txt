@@ -6,9 +6,11 @@ mods:
    Quick Shop
 
 latest commit:
-   commit 87b0c7df720d1ff9b6ff8ee564094a7d11f46246
+   commit 068f72985753a1cc7b375ed4dc938166c15623c9
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Wed Mar 27 15:43:30 2024 +0800
+   Date:   Tue Apr 23 16:37:27 2024 +0800
    
-       Update README.md
+       Merge pull request #14 from Enaium-StardewValleyMods/develop
+       
+       fix animalShop
    

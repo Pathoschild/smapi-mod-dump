@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22300
+IDs: Spiderbuttons.SpecialPowerUtilities
+update keys: Nexus:22300

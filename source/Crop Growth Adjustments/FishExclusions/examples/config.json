@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/gzhynko/stardew-mods
+**
+*************************************************/
+
+{
+  "ItemsToExclude": {
+    "CommonExclusions": [
+      "167",
+      "168",
+      "169",
+      "170",
+      "171",
+      "172"
+    ],
+    "ConditionalExclusions": [
+      {
+        "Season": "summer",
+        "Exclusions": [
+          "154",
+          "152"
+        ]
+      }
+    ]
+  },
+  "ItemToCatchIfAllFishIsExcluded": "168",
+  "TimesToRetry": 20
+}

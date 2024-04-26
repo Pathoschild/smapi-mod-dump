@@ -12,7 +12,10 @@
   "Minutes": "minutes",
   //Harvest
   "DaysToMature": "days to mature",
-  "ReadyToHarvest": "Ready To Harvest!",
+  "ReadyToHarvest": "Ready to harvest!",
+  "With": "with",
+  "Fertilized": "fertilized",
+  "Tree": "Tree",
   //Display icons - General
   "TodaysRecipe": "Today's Recipe: ",
   "TravelingMerchantIsInTown": "Traveling merchant is in town!",

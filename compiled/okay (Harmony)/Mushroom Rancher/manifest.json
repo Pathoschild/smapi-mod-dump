@@ -1,7 +1,7 @@
 {
   "Name": "Mushroom Rancher",
   "Author": "Goldenrevolver",
-  "Version": "1.2",
+  "Version": "1.2.1",
   "Description": "Allows raising living mushrooms in the slime hutch.",
   "UniqueID": "Goldenrevolver.MushroomRancher",
   "EntryDll": "MushroomRancher.dll",

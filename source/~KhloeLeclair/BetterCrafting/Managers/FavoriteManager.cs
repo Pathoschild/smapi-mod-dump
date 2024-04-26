@@ -38,6 +38,7 @@ public class FavoriteManager : BaseManager {
 	#region Events
 
 	[Subscriber]
+	[EventPriority(EventPriority.Low)]
 	public void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
 		LoadFavorites();
 	}
@@ -49,9 +50,9 @@ public class FavoriteManager : BaseManager {
 	// TODO: Store favorites in the save data, which would require
 	// multiplayer packets to sync with remote clients.
 
-	public void LoadFavorites() {
+	public bool DoesHaveSaveFavorites() {
 		if (string.IsNullOrEmpty(Constants.SaveFolderName))
-			return;
+			return false;
 
 		Favorites? data;
 		string path = $"savedata/favorites/{Constants.SaveFolderName}.json";
@@ -60,16 +61,32 @@ public class FavoriteManager : BaseManager {
 			data = Mod.Helper.Data.ReadJsonFile<Favorites>(path);
 		} catch (Exception ex) {
 			Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
+			return false;
+		}
+
+		return data?.Cooking is not null && data?.Crafting is not null;
+	}
+
+	public void LoadFavorites() {
+		if (string.IsNullOrEmpty(Constants.SaveFolderName))
+			return;
+
+		Favorites? data;
+		string path = Mod.UseGlobalSave
+			? $"savedata/favorites.json"
+			: $"savedata/favorites/{Constants.SaveFolderName}.json";
+
+		try {
+			data = Mod.Helper.Data.ReadJsonFile<Favorites>(path);
+		} catch (Exception ex) {
+			Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
 			data = new();
 		}
 
-		if (data == null)
-			data = new Favorites();
+		data ??= new Favorites();
 
-		if (data.Cooking == null)
-			data.Cooking = new();
-		if (data.Crafting == null)
-			data.Crafting = new();
+		data.Cooking ??= new();
+		data.Crafting ??= new();
 
 		UserFavorites = data;
 		Modified = false;
@@ -79,7 +96,9 @@ public class FavoriteManager : BaseManager {
 		if (string.IsNullOrEmpty(Constants.SaveFolderName) || UserFavorites == null || !Modified)
 			return;
 
-		string path = $"savedata/favorites/{Constants.SaveFolderName}.json";
+		string path = Mod.UseGlobalSave
+			? $"savedata/favorites.json"
+			: $"savedata/favorites/{Constants.SaveFolderName}.json";
 
 		try {
 			Mod.Helper.Data.WriteJsonFile(path, UserFavorites);

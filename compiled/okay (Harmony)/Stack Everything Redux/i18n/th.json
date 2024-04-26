@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "จำนวนการเรียงซ้อนสูงสุด",
+    "config.MaxStackingNumber.tooltip": "จำนวนการเรียงซ้อนสูงสุด ค่าเริ่มต้นคือ 999",
+    "config.DefaultCraftingAmount.name": "จำนวนเริ่มต้นสำหรับการทำอาหาร/การสร้าง",
+    "config.DefaultCraftingAmount.tooltip": "จำนวนเริ่มต้นเมื่อใช้ Shift+คลิกขวาในเมนูการทำอาหาร/การสร้าง",
+    "config.DefaultShopAmount.name": "จำนวนเริ่มต้นสำหรับการซื้อสินค้า",
+    "config.DefaultShopAmount.tooltip": "จำนวนเริ่มต้นเมื่อใช้ Shift+คลิกขวาในเมนูร้านค้า",
+    "config.EnableStackSplitRedux.name": "เปิดใช้งานสเปลิต Redux",
+    "config.EnableStackSplitRedux.tooltip": "เปิดใช้งานความสามารถของสเปลิต Redux ยกเว้นกล่องนี้หากคุณมีปัญหา",
+    "ui.stacksplitmenu.title": "เลือกจำนวน"
+}

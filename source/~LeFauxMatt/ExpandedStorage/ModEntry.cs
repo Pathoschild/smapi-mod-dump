@@ -12,7 +12,6 @@ namespace StardewMods.ExpandedStorage;
 
 using HarmonyLib;
 using SimpleInjector;
-using StardewModdingAPI.Events;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.ContentPatcher;
@@ -32,14 +31,6 @@ public sealed class ModEntry : Mod
     {
         // Init
         I18n.Init(this.Helper.Translation);
-
-        // Events
-        this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-    }
-
-    private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-    {
-        // Init
         this.container = new Container();
 
         // Configuration
@@ -55,6 +46,7 @@ public sealed class ModEntry : Mod
         this.container.RegisterInstance(this.Helper.ModRegistry);
         this.container.RegisterInstance(this.Helper.Reflection);
         this.container.RegisterInstance(this.Helper.Translation);
+        this.container.RegisterSingleton<AssetHandler>();
         this.container.RegisterSingleton<IModConfig, ConfigManager>();
         this.container.RegisterSingleton<ContentPatcherIntegration>();
         this.container.RegisterSingleton<IEventManager, EventManager>();
@@ -62,9 +54,8 @@ public sealed class ModEntry : Mod
         this.container.RegisterSingleton<IEventSubscriber, EventManager>();
         this.container.RegisterSingleton<FauxCoreIntegration>();
         this.container.RegisterSingleton<ILog, Logger>();
-        this.container.RegisterSingleton<IPatchManager, Patcher>();
-        this.container.RegisterSingleton<StorageManager>();
         this.container.RegisterSingleton<ModPatches>();
+        this.container.RegisterSingleton<IPatchManager, Patcher>();
         this.container.RegisterSingleton<GenericModConfigMenuIntegration>();
         this.container.RegisterSingleton<ToolbarIconsIntegration>();
 

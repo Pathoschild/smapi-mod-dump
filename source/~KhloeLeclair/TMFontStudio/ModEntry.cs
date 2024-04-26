@@ -86,18 +86,6 @@ public class ModEntry : ModSubscriber {
 	private void OnThemeChanged(object? sender, IThemeChangedEvent<Theme> e) {
 		Theme = e.NewData;
 
-		var test = TMApi!.CreateTextureVariableSet();
-		test.RawValues = new Dictionary<string, string> {
-			{ "test", "Chela.png" }
-		};
-
-		test.SetReferences(ThemeManager, Theme.Manifest);
-		Log("???", LogLevel.Warn);
-		foreach(var entry in test) {
-			Log($"   -- {entry.Key}: {entry.Value}", LogLevel.Debug);
-		}
-		Log("???", LogLevel.Warn);
-
 		Log($"Theme: {Theme}", LogLevel.Error);
 		Log($"--  Manager: {Theme.Manager}", LogLevel.Info);
 		Log($"-- Manifest: {Theme.Manifest}", LogLevel.Info);
@@ -113,8 +101,8 @@ public class ModEntry : ModSubscriber {
 		if (Theme.TextureVariables is null)
 			Log($"   -- none", LogLevel.Debug);
 		else
-			foreach (var entry in Theme.TextureVariables)
-				Log($"   -- {entry.Key}: {entry.Value}", LogLevel.Debug);
+			foreach (string entry in Theme.TextureVariables.Keys)
+				Log($"   -- {entry}: {Theme.TextureVariables[entry]}", LogLevel.Debug);
 	}
 
 	[Subscriber]

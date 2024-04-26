@@ -12,6 +12,7 @@ static_tile-common-dark_pool = Dark Pool
 static_tile-common-pond = Pond
 static_tile-common-lake = Lake
 static_tile-common-river = River
+static_tile-common-waterfall = Waterfall
 
 # NPCs
 
@@ -180,6 +181,7 @@ static_tile-forest-bridge_4 = Bridge 4
 static_tile-forest-bridge_5 = Bridge 5
 static_tile-forest-abandoned_house = Abandoned House
 static_tile-forest-sewage_pipe = sewage pipe
+static_tile-forest-mastery_cave_door = Mastery Cave
 
 # Greenhouse
 
@@ -226,7 +228,8 @@ static_tile-island_field_office-island_survey = Island Survey
 
 static_tile-island_north-dig_site_parrot_express = Dig Site Parrot Express
 static_tile-island_north-volcano_parrot_express = Volcano Parrot Express
-static_tile-island_north-volcano_entrance = Volcano Entrance
+static_tile-island_north-volcano_entrance_east = Volcano Entrance (East)
+static_tile-island_north-volcano_entrance_west = Volcano Entrance (West)
 
 ## Island Shrine
 
@@ -390,6 +393,16 @@ static_tile-manor_house-lost_and_found_box = Lost and Found Box
 static_tile-manor_house-mayors_room_door = Mayor's Room
 static_tile-manor_house-mayors_oven = Mayor's Oven
 static_tile-manor_house-mayors_fridge = Mayor's Fridge
+static_tile-manor_house-prize_ticket_machine = Prize Ticket Machine
+
+# Mastery Cave
+
+static_tile-mastery_cave-mastery_pedestal = Mastery Pedestal
+static_tile-mastery_cave-wall_of_combat = Wall of Combat
+static_tile-mastery_cave-wall_of_foraging = Wall of Foraging
+static_tile-mastery_cave-wall_of_farming = Wall of Farming
+static_tile-mastery_cave-wall_of_fishing = Wall of Fishing
+static_tile-mastery_cave-wall_of_mining = Wall of Mining
 
 # Mermaid House
 
@@ -416,6 +429,7 @@ static_tile-mountain-bridge_1 = Bridge 1
 static_tile-mountain-bridge_2 = Bridge 2
 static_tile-mountain-mountain_warp_statue = Mountain Warp Statue
 static_tile-mountain-science_house_secondary_door = Science House Secondary
+static_tile-mountain-linus_campfire = Linus' Campfire
 
 # Movie Theater
 
@@ -534,10 +548,14 @@ static_tile-town-1_willow_lane_trash = 1 Willow Lane Trash
 static_tile-town-manor_trash = Manor Trash
 static_tile-town-2_willow_lane_trash = 2 Willow Lane Trash
 static_tile-town-museum_trash = Museum Trash
+static_tile-town-wooden_bridge = Wooden Bridge
 static_tile-town-joja_bridge = Joja Bridge
+static_tile-town-joja_billboard = Joja Billboard with text "Joja Cola: Fuel Your Life"
+static_tile-town-museum_bridge = Museum Bridge
 static_tile-town-beach_bridge = Beach Bridge
 static_tile-town-smelter = Smelter
 static_tile-town-fountain = Fountain
+static_tile-town-bookseller = Bookseller
 
 # Trailer (home of Pam and Penny)
 

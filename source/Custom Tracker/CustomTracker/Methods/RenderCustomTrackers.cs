@@ -28,10 +28,10 @@ namespace CustomTracker
             if (!Context.IsPlayerFree) //if the world isn't ready or the player isn't free
                 return;
 
-            if (!Config.EnableTrackersWithoutProfession && !Game1.player.professions.Contains(17)) //if the player needs to unlock the Tracker profession
+            if (!Config.EnableTrackersWithoutProfession && !Game1.player.professions.Contains(Farmer.tracker)) //if the player needs to unlock the Tracker profession
                 return;
 
-            if (!Game1.currentLocation.IsOutdoors || Game1.eventUp || Game1.farmEvent != null) //if the player is indoors or an event is happening
+            if ((!Config.EnableTrackingIndoors && !Game1.currentLocation.IsOutdoors) || Game1.eventUp || Game1.farmEvent != null) //if tracking is disabled due to the player being indoors, or because an event is active
                 return;
 
             //track each relevant StardewValley.Object at the player's current location
@@ -40,7 +40,7 @@ namespace CustomTracker
                 if
                 (
                     (Config.TrackDefaultForage && pair.Value.IsSpawnedObject) //if this is a spawned object to track
-                    || (Config.TrackArtifactSpots && pair.Value.ParentSheetIndex == 590) //or if this an artifact spot to track
+                    || (Config.TrackArtifactSpots && (pair.Value.QualifiedItemId is "(O)590" or "(O)SeedSpot")) //or if this an artifact/seed spot
                     || TrackedObjectIDs.Contains(pair.Value.ParentSheetIndex) //or if this object's ID is being tracked
                     || TrackedObjectNames.Contains(pair.Value.Name.ToLower()) //or if this object's name is being tracked
                     || TrackedObjectNames.Contains(pair.Value.DisplayName.ToLower()) //or if this object's display name is being tracked

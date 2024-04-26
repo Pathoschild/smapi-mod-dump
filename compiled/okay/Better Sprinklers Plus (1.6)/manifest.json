@@ -1,0 +1,10 @@
+{
+  "Name": "Better Sprinklers Plus",
+  "Author": "JamesCodesThings + gingajamie",
+  "Version": "2.18.1",
+  "Description": "Sprinklers, but better.",
+  "UniqueID": "com.gingajamie.BetterSprinklersPlus",
+  "EntryDll": "BetterSprinklersPlus.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:21624", "GitHub:gingajamie/smapi-better-sprinklers-plus-encore" ]
+}

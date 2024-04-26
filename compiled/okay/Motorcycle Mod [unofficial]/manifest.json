@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Motorcycle Mod",
+    "Author": "Akane",
+    "Version": "1.1.0-unofficial.2-CyanFire",
+    "MinimumApiVersion": "4.0.0",
+    "UniqueID": "Akane.MotorcycleMod",
+    "Description": "Lets you buy a motorcycle to get around the town faster",
+    "EntryDll": "MotorcycleMod.dll",
+    "UpdateKeys": [ "Nexus:10553" ]
+}

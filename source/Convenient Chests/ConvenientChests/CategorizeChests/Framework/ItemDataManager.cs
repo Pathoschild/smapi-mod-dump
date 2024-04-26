@@ -18,34 +18,36 @@ namespace ConvenientChests.CategorizeChests.Framework {
         /// <summary>
         /// A mapping of category names to the item keys belonging to that category.
         /// </summary>
-        public Dictionary<string, IList<ItemKey>> Categories { get; }
+        public Dictionary<string, IList<ItemKey>> Categories { get; } = CreateCategories();
 
-        public ItemDataManager() {
-            Categories = DiscoverItems()
-                        .Select(item => item.ToItemKey())
-                        .Where(key => !ItemBlacklist.Includes(key))
-                        .GroupBy(key => key.GetCategory())
-                        .ToDictionary(
-                                      g => g.Key,
-                                      g => (IList<ItemKey>) g.ToList()
-                                     );
-        }
+
+        private static Dictionary<string, IList<ItemKey>> CreateCategories()
+            => DiscoverItems()
+              .Select(item => item.ToItemKey())
+              .Where(key => !ItemBlacklist.Includes(key))
+              .GroupBy(key => key.GetCategory())
+              .ToDictionary(
+                            g => g.Key,
+                            g => (IList<ItemKey>) g.ToList()
+                           );
 
         /// <summary>
         /// Generate every item in the games ItemRegistry
         /// </summary>
-        private static IEnumerable<Item> DiscoverItems() {
-            foreach (var item in ItemRegistry.ItemTypes.SelectMany(ItemHelper.GetAllItems)) {
-                // handle tool groups
-                switch (item) {
-                    case GenericTool:
-                    case MeleeWeapon { ItemId: not MeleeWeapon.scytheId } m when m.isScythe():
-                    case Tool { UpgradeLevel: not 0 } and (Axe or Pickaxe or Hoe or FishingRod or WateringCan):
-                    case Tool { UpgradeLevel: > 1 }:
-                        continue;
-                }
+        private static IEnumerable<Item> DiscoverItems()
+            => ItemRegistry.ItemTypes.SelectMany(ItemHelper.GetAllItems)
+                           .Where(FilterTools);
 
-                yield return item;
+        private static bool FilterTools(Item item) {
+            switch (item) {
+                case GenericTool:
+                case MeleeWeapon { ItemId: not MeleeWeapon.scytheId } m when m.isScythe():
+                case Tool { UpgradeLevel: not 0 } and (Axe or Pickaxe or Hoe or FishingRod or WateringCan):
+                case Tool { UpgradeLevel: > 1 }:
+                    return false;
+
+                default:
+                    return true;
             }
         }
     }

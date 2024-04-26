@@ -34,13 +34,13 @@ namespace ProducerFrameworkMod.Utils
             });
         }
 
-        internal static void PlayDelayedSound(List<Dictionary<string,int>> delayedSoundList, GameLocation currentLocation)
+        internal static void PlayDelayedSound(List<Dictionary<string,int>> delayedSoundList, GameLocation currentLocation, Vector2 tileLocation)
         {
             foreach (Dictionary<string, int> dictionary in delayedSoundList)
             {
                 foreach (KeyValuePair<string, int> pair in dictionary)
                 {
-                    DelayedAction.playSoundAfterDelay(pair.Key, pair.Value, (GameLocation)null, (Vector2?) null, -1);
+                    DelayedAction.playSoundAfterDelay(pair.Key, pair.Value, (GameLocation)currentLocation, (Vector2?) tileLocation, -1);
                 }
             }
         }

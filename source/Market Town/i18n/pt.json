@@ -702,11 +702,14 @@
 "foodstore.config.museumpricemarkup": "Multiplicador do preço do bilhete do museu",
 "foodstore.config.museumpricemarkupText": "Preço do bilhete do museu baseado no número de artefatos, minerais e saques de monstros exibidos dentro. Um valor mais alto significa um preço de bilhete mais alto, mas também reduzirá a chance de visitantes!!!",
 
-"foodstore.todaymuseumvisitor": " Visitantes do museu de ontem: {{todayMMuseumVisitor}}.^^",
+"foodstore.todaymuseumvisitor": " Visitantes do museu de ontem: {{todayMMuseumVisitor}}, {{todayMuseumEarning}}G.^^",
  "foodstore.letter.receivemuseumlicense": "Caro/a @.^^ Parabéns por obter sua Licença de Museu. Deixe-me orientá-lo sobre como configurá-la. Você pode usar qualquer Edifício Agrícola como um Museu. O único requisito é ter um Sinal exibindo a Licença e então os visitantes começarão a chegar amanhã. Os visitantes do Museu não compram itens em exposição, mas pagarão um preço de entrada na entrada. O preço é determinado pelo número de artefatos, gemas raras, bem como peixes exóticos ou estátuas. Você pode decidir sobre a marcação do seu bilhete; no entanto, tenha em mente que quanto maior a marcação, menos visitantes você pode atrair.^^ Visitarei seu Museu assim que estiver pronto. -Lewis",
   "foodstore.letter.receiverestaurantlicense": "Caro/a @.^^ Notei que você obteve a Licença de Restaurante. Esta Licença permitirá que você use qualquer Edifício Agrícola como um Restaurante. Basta exibir a Licença em um Sinal e os visitantes começarão a chegar amanhã. Os visitantes do Restaurante navegarão e comprarão alimentos que lhes interessarem. Às vezes, eles solicitarão um prato especial, que você pode vender diretamente a eles por um preço mais alto.^^ Estou realmente ansioso para experimentar sua comida. -Lewis",
   "foodstore.letter.receivemarkettownlicense": "Caro/a @.^^ Finalmente, você obteve a Licença de Cidade do Mercado. A partir de agora, você pode possuir desde uma pequena loja de conveniência até mesmo um supermercado. Esta Licença permite que você venda qualquer mercadoria que desejar, incluindo alimentos, colheitas, materiais e muito mais.^^ Muito obrigado por criar um hub conveniente para todas as pessoas em nossa vila. -Lewis",
   "foodstore.config.multiplayermode": "Ativar divisão do dinheiro da venda para o modo multijogador?",
-  "foodstore.config.multiplayermodeText": "AVISO: BUG. Padrão é falso. Ativar isso dividirá o dinheiro da venda entre os jogadores conectados. AVISO: Às vezes, os outros jogadores não recebem o dinheiro."
+  "foodstore.config.multiplayermodeText": "AVISO: BUG. Padrão é falso. Ativar isso dividirá o dinheiro da venda entre os jogadores conectados. AVISO: Às vezes, os outros jogadores não recebem o dinheiro.",
+
+  "foodstore.config.easylicense": "Ignorar requisito de licença?",
+"foodstore.config.textchat": "Desativar bate-papo por digitação com NPC?"
 
 }

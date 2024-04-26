@@ -37,6 +37,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{price}}g ogni {{count}}",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Edificio",
@@ -112,13 +113,14 @@
     "location.bugLand": "tana dell'insetto mutante",
     "location.busStop": "fermata dell'autobus",
     "location.desert": "deserto",
+    "location.desert.topPond": "deserto (stagno a nord)",
     "location.farm": "fattoria",
     "location.farmCave": "grotta nella fattoria",
     "location.farmHouse": "casale",
     "location.forest": "foresta",
-    "location.forest.fish-area-0": "fiume nella foresta",
-    "location.forest.fish-area-1": "laghetto nella foresta",
     "location.forest.island-tip": "fiume nella foresta (punta Sud dell'isola maggiore)",
+    "location.forest.lake": "laghetto nella foresta",
+    "location.forest.river": "fiume nella foresta",
     "location.mountain": "montagna",
     "location.railroad": "ferrovia",
     "location.sewer": "fogne",
@@ -138,8 +140,8 @@
     "location.islandSouthEast": "Zona sud-est dell'Isola Zenzero",
     "location.islandSouthEastCave": "Caverne a sud-est dell'Isola Zenzero",
     "location.islandWest": "Zona ovest dell'Isola Zenzero",
-    "location.islandWest.fish-area-1": "Zona ovest dell'Isola Zenzero (oceano)",
-    "location.islandWest.fish-area-2": "Zona ovest dell'Isola Zenzero (stagno)",
+    "location.islandWest.freshwater": "Zona ovest dell'Isola Zenzero (stagno)",
+    "location.islandWest.ocean": "Zona ovest dell'Isola Zenzero (oceano)",
 
     "location.unknown-fish-area": "{{locationName}} (area di pesca {{id}})",
 
@@ -625,7 +627,9 @@
     "tree.name.oak": "Quercia",
     "tree.name.palm": "Palma",
     "tree.name.pine": "Pino",
-    "tree.name.unknown": "Albero Sconosciuto",
+    "tree.name.mossy": "Albero muschiato",
+    "tree.name.mystic": "Albero mistico",
+    "tree.name.unknown": "Albero sconosciuto",
     "tree.stage.done": "Completamente cresciuto",
     "tree.stage.partial": "{{stageName}} ({{step}} di {{max}})",
     "tree.next-growth.winter": "non può crescere fuori da una serra in inverno se non fertilizzata",
@@ -672,6 +676,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Evidenzia i gusti dei regali non rivelati",
     "config.highlight-unrevealed-gift-tastes.desc": "Scegli se evidenziare i gusti dei regali degli oggetti che non sono stati rivelati nel profilo del PNG. Se abilitato, i gusti dei regali non rivelati saranno in grassetto.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Opzioni avanzate",

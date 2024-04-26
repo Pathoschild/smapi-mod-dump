@@ -24,6 +24,7 @@ using AchtuurCore.Framework;
 using StardewValley.Objects;
 using HoverLabels.Labels.Objects;
 using SObject = StardewValley.Object;
+using HoverLabels.Drawing;
 
 namespace HoverLabels.Labels.Buildings;
 internal class JunimoHutLabel : BuildingLabel
@@ -33,9 +34,9 @@ internal class JunimoHutLabel : BuildingLabel
     {
     }
 
-    protected override void ResetLabel()
+    protected override void ResetBorders()
     {
-        base.ResetLabel();
+        base.ResetBorders();
         hoverHut = null;
     }
     public override bool ShouldGenerateLabel(Vector2 cursorTile)
@@ -57,25 +58,29 @@ internal class JunimoHutLabel : BuildingLabel
     public override void GenerateLabel()
     {
         base.GenerateLabel();
-
-        Chest hutInventory = hoverHut.output.Value;
-        IEnumerable<Item> items = hutInventory.items.Where(item => item.ParentSheetIndex != SObject.prismaticShardIndex);
+        Chest hutInventory = hoverHut.GetOutputChest();
+        IEnumerable<Item> items = hutInventory.Items.Where(item => item.ParentSheetIndex != SObject.prismaticShardIndex);
 
         // If difference in length, prismatic shard was filtered out
-        if (hutInventory.items.Count != items.Count())
-            this.Name += " (Prismatic)";
+        if (hutInventory.Items.Count != items.Count())
+        {
+            ResetBorders();
+            AddBorder(new TitleLabelText("Junimo Hut (Prismatic)"));
+        }
+            
 
-        IEnumerable<string> inventoryContents = ChestLabel.ListInventoryContents(items, ModEntry.IsShowDetailButtonPressed());
-        Description = inventoryContents.ToList();
+        InventoryLabelText inventoryContents = ChestLabel.ListInventoryContents(items, ModEntry.IsShowDetailButtonPressed());
+        AddBorder(inventoryContents);
 
-        string showAllMsg = ChestLabel.GetShowAllMessage(hutInventory.items);
+        Border control_border = new Border();
+        string showAllMsg = ChestLabel.GetShowAllMessage(hutInventory.Items);
         if (showAllMsg is not null)
-            Description.Add(showAllMsg);
+            control_border.AddLabelText(showAllMsg);
 
-        if (!ModEntry.IsAlternativeSortButtonPressed() && inventoryContents.Count() > 1)
-            Description.Add(I18n.LabelChestAltsort(ModEntry.GetAlternativeSortButtonName()));
+        if (!ModEntry.IsAlternativeSortButtonPressed() && inventoryContents.ItemCount > 1)
+            control_border.AddLabelText(I18n.LabelChestAltsort(ModEntry.GetAlternativeSortButtonName()));
 
-        Description.Add(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
+        control_border.AddLabelText(I18n.LabelShowrange(ModEntry.GetShowDetailButtonName()));
     }
 
     public override void DrawOnOverlay(SpriteBatch spriteBatch)

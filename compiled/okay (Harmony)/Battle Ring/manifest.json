@@ -1,0 +1,19 @@
+{
+  "Name": "BattleRing",
+  "Author": "lyl",
+  "Version": "1.0.0",
+  "Description": "战斗戒指",
+  "UniqueID": "lyl.br",
+  "EntryDll": "battlering.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    {
+      "UniqueID": "lyl.br.cp",
+      "IsRequired": false // added locally
+    }
+  ],
+  "UpdateKeys": []
+}

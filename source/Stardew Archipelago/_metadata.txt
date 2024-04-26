@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit e22637bede4030d6038e6571f4347d5d46863daf
+   commit e8360182f0d52a7d28983ccfd0ad55c9c201177d
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Mon Feb 12 12:53:57 2024 -0500
+   Date:   Thu Apr 25 18:16:17 2024 -0400
    
-       - Fixed Price multiplier for blueprints sometimes asking 0 of something
+       Merge branch '5.x.x' of https://github.com/agilbert1412/StardewArchipelago into 5.x.x
    

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Event Lookup",
+  "Author": "shekurika",
+  "Version": "0.2.9",
+  "Description": "Allows event lookup in an ingame menu or console. Also adds an ingame display of currently available heart events",
+  "UniqueID": "shekurika.EventLookup",
+  "EntryDll": "EventTable.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:8505"]
+}

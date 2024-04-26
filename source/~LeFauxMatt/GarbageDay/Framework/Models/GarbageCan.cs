@@ -11,6 +11,7 @@
 namespace StardewMods.GarbageDay.Framework.Models;
 
 using Microsoft.Xna.Framework;
+using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewValley.Inventories;
 using StardewValley.Mods;
 using StardewValley.Objects;
@@ -30,9 +31,6 @@ internal sealed class GarbageCan
     /// <param name="chest">A unique name given to the garbage can for its loot table.</param>
     public GarbageCan(Chest chest) => this.chest = chest;
 
-    /// <summary>Gets or sets a value indicating whether the next can will drop a hat.</summary>
-    public static bool GarbageHat { get; set; }
-
     /// <summary>Gets the Location where the garbage can is placed.</summary>
     public GameLocation Location => this.chest.Location;
 
@@ -44,7 +42,9 @@ internal sealed class GarbageCan
     private ModDataDictionary ModData => this.chest.modData;
 
     /// <summary>Adds an item to the garbage can determined by luck and mirroring vanilla chances.</summary>
-    public void AddLoot()
+    /// <param name="log">Dependency used for logging debug information to the console.</param>
+    /// <param name="overrideItem">Manually override the item.</param>
+    public void AddLoot(ILog log, Item? overrideItem = null)
     {
         // Reset daily state
         this.checkedToday = false;
@@ -53,6 +53,15 @@ internal sealed class GarbageCan
         this.mega = false;
         if (!this.ModData.TryGetValue("furyx639.GarbageDay/WhichCan", out var whichCan))
         {
+            return;
+        }
+
+        log.Trace("Adding loot item to garbage can {0}.", whichCan);
+
+        if (overrideItem is not null)
+        {
+            log.Trace("Special loot item selected {0}", overrideItem.Name);
+            this.specialItem = overrideItem;
             return;
         }
 
@@ -65,11 +74,13 @@ internal sealed class GarbageCan
 
         if (selected is null)
         {
+            log.Trace("No loot item selected");
             return;
         }
 
         if (selected.ItemId == "(O)890")
         {
+            log.Trace("Special loot item selected {0}", item.Name);
             this.dropQiBeans = true;
             this.specialItem = item;
             return;
@@ -79,11 +90,13 @@ internal sealed class GarbageCan
         this.mega = !this.doubleMega && selected.IsMegaSuccess;
         if (selected.AddToInventoryDirectly)
         {
+            log.Trace("Special loot item selected {0}", item.Name);
             this.specialItem = item;
             return;
         }
 
         // Add item
+        log.Trace("Regular loot item selected {0}", item.Name);
         this.chest.addItem(item);
 
         // Update color
@@ -117,7 +130,7 @@ internal sealed class GarbageCan
         }
 
         // Give Hat
-        if (this.doubleMega || GarbageCan.GarbageHat)
+        if (this.doubleMega)
         {
             this.doubleMega = false;
             this.Location.playSound("explosion");
@@ -145,11 +158,11 @@ internal sealed class GarbageCan
 
         if (this.specialItem.ItemId == "(H)66")
         {
-            GarbageCan.GarbageHat = false;
             this.chest.playerChoiceColor.Value = Color.Black; // Remove Lid
         }
 
         Game1.player.addItemByMenuIfNecessary(this.specialItem);
+        this.specialItem = null;
     }
 
     /// <summary>Empties the trash of all items.</summary>

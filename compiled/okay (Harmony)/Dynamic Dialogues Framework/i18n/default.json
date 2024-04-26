@@ -1,0 +1,10 @@
+﻿{
+	"config.change_@.name": "Change '@' in bubble text",
+	"config.change_@.description": "Swaps the '@' in bubbles for the player's name.",
+	"config.Debug.name": "Debug",
+	"config.Debug.description": "Developer options.",
+	"config.Verbose.name": "Verbose?",
+	"config.Verbose.description": "Log more information to the console.",
+	"config.QuestChance.name": "NPC quest chance",
+	"config.QuestChance.description": "Chance of NPCs asking you for something (every 20 minutes). NPC quests are added by mods."
+}

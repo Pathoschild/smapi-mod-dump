@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22380
+IDs: otc.eggfestivalcustomeggamount
+update keys: Nexus:22380

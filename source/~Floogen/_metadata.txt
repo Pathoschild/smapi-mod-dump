@@ -7,9 +7,15 @@ mods:
    Farm Tablet
 
 latest commit:
-   commit 627f970f454a628b8c195967defe8813b070b44d
-   Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Tue Mar 26 15:56:44 2024 -0500
+   commit b43de33d0676102ed6ce28417ad0ed77846d4c7e
+   Author: Tiago Padilha <padilhatiagu@gmail.com>
+   Date:   Fri Apr 19 10:25:03 2024 -0300
    
-       Added ashajin to Korean translation credits
+       Add portuguese translation (#63)
+       
+       * Update README.md
+       
+       * Update AlternativeTextures.csproj
+       
+       * Add files via upload
    

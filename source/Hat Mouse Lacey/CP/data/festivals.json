@@ -32,11 +32,11 @@
       },
       "When": {
         "Year": "1",
-        "Relationship:{{Lacey}}": "Unmet, Friendly"
+        "Relationship:{{Lacey}}": "Unmet, Friendly, Dating"
       }
     },
-    // sadly, can't use indirection to get festival coordinates from
-    // the dynamic tokens, so 8 patches it is.
+    // indirection is not supported to access the placement tokens, so each
+    // festival gets its own patch.
     {
       "Target": "Data/Festivals/spring13",
       "Action": "EditData",
@@ -49,8 +49,20 @@
         },
         {
           "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_spring13_setUp_y2}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_spring13_mainEvent}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_spring13_mainEvent_y2}}",
           "Delimiter": "/"
         }
       ]
@@ -67,12 +79,29 @@
         },
         {
           "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_spring24_setUp}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
           "Target": ["Fields", "set-up", 5],
           "Value": "/advancedMove {{Lacey}} true 3 4400 0 -1 -1 0 2 5200 1 0 0 1"
         },
         {
           "Operation": "Append",
+          "Target": ["Fields", "set-up_y2", 5],
+          "Value": "/advancedMove {{Lacey}} true 3 4400 0 -1 -1 0 2 5200 1 0 0 1"
+        },
+        {
+          "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters"],
+          "Value": "{{Lacey}} {{festival_spring24_mainEvent}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters_y2"],
           "Value": "{{Lacey}} {{festival_spring24_mainEvent}}",
           "Delimiter": "/"
         }
@@ -90,8 +119,20 @@
         },
         {
           "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_summer11_setUp_y2}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_summer11_mainEvent}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_summer11_mainEvent_y2}}",
           "Delimiter": "/"
         }
       ]
@@ -105,9 +146,28 @@
           "Target": ["Entries", "Set-Up_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_summer28_setUp}}",
           "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_summer28_setUp_y2}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters"],
+          "Value": "{{Lacey}} {{festival_summer28_mainEvent}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_summer28_mainEvent_y2}}",
+          "Delimiter": "/"
         }
       ]
     },
+    // the stall is applied in the maps patch (data/maps.json)
     {
       "Target": "Data/Festivals/fall16",
       "Action": "EditData",
@@ -116,6 +176,12 @@
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_fall16_setUp}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_fall16_setUp_y2}}",
           "Delimiter": "/"
         }
       ]
@@ -128,6 +194,12 @@
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_fall27_setUp}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_fall27_setUp_y2}}",
           "Delimiter": "/"
         }
       ]
@@ -145,8 +217,20 @@
         },
         {
           "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_winter8_setUp_y2}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
           "Target": ["Entries", "Main-Event_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_winter8_mainEvent}}",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Main-Event_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_winter8_mainEvent_y2}}",
           "Delimiter": "/"
         }
       ]
@@ -160,8 +244,22 @@
           "Target": ["Entries", "Set-Up_additionalCharacters"],
           "Value": "{{Lacey}} {{festival_winter25_setUp}}",
           "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters_y2"],
+          "Value": "{{Lacey}} {{festival_winter25_setUp_y2}}",
+          "Delimiter": "/"
         }
       ]
+    },
+    {
+      "Action": "Include",
+      "FromFile": "data/festivals_163_y2.json",
+      "When": {
+        "Query: {{Year}} % 2 = 0": true,
+        "EvenFestivalWorkaround": true
+      }
     },
     {
       "LogName": "Wedding Attendee",

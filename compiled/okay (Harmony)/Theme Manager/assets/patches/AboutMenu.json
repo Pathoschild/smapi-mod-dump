@@ -1,0 +1,59 @@
+{
+	"ID": "AboutMenu",
+
+	"FontVariables": {
+		"$Credits:Small": "$Small"
+	},
+
+	"BmFontVariables": {
+		"$Credits:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$Credits:ST:Normal": "$ST:Normal",
+		"$Credits:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"#AboutMenu:draw": {
+			"Colors": {
+				"White": { ">1": "$CreditsText" }
+			},
+
+			"FontFields": {
+				"Game1:smallFont": { "*": "$Credits:Small" }
+			}
+		},
+
+		"#TextCreditsBlock:.ctor": {
+			"Colors": {
+				"SpriteText:White": { "*": "$CreditsText" }
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$Credits:ST:Normal",
+					"$Credits:ST:Colored",
+					"$Credits:ST:Font",
+					"$Credits:Colors"
+				]
+			}
+		},
+
+		"#LinkCreditsBlock:draw": {
+			"Colors": {
+				"SpriteText:Green": { "*": "$CreditsLinkHover" },
+				"SpriteText:Cyan": { "*": "$CreditsLink" }
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$Credits:ST:Normal",
+					"$Credits:ST:Colored",
+					"$Credits:ST:Font",
+					"$Credits:Colors"
+				]
+			}
+		}
+	}
+}

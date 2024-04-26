@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/21207
 IDs: Zamiel.AlwaysOrganizeChests
-update keys: GitHub:Zamiell/AlwaysOrganizeChests, Nexus:21207
+update keys: Nexus:21207, GitHub:Zamiell/stardew-valley-mods

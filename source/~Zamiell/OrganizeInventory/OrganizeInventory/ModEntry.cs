@@ -8,18 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using StardewValley.TerrainFeatures;
-using xTile.Dimensions;
 
 namespace OrganizeInventory
 {

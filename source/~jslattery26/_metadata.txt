@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/jslattery26/stardew_mods
+   Git: https://github.com/jslattery26/stardew_mods.git
+
+mods:
+   Chest Pooling V2
+   Shared Recipes
+
+latest commit:
+   commit f6fc4d72a17cdcbfb21fae8d639817b4794c82cb
+   Author: jslattery26 <coolbub76@gmail.com>
+   Date:   Wed Apr 17 12:20:32 2024 -0400
+   
+       add sharedrecipes
+   

@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewValley;
+using StardewValley.GameData.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,34 +155,29 @@ namespace CauldronOfChance
 
         public void addForFoodBuffs(Cauldron Cauldron)
         {
-            if(item is StardewValley.Object)
+            if(item is StardewValley.Object csObject)
             {
-                StardewValley.Object csObject = item as StardewValley.Object;
-
-                string[] objectDescription = Game1.objectInformation[csObject.ParentSheetIndex].Split('/');
-
-                if (Convert.ToInt32(objectDescription[2]) > 0)
+                if ((int)csObject.Edibility > -300 && Game1.objectData.TryGetValue(csObject.ItemId, out var data))
                 {
-                    string[] whatToBuff = (string[])((objectDescription.Length > 7) ? ((object)objectDescription[7].Split(' ')) : ((object)new string[12]
+                    List<ObjectBuffData> buffs = data.Buffs;
+
+                    if(buffs != null && buffs.Count > 0)
                     {
-                        "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-                        "0", "0"
-                    }));
-
-                    csObject.ModifyItemBuffs(whatToBuff);
-
-                    //Buff buff = new Buff(Convert.ToInt32(whatToBuff[0]), Convert.ToInt32(whatToBuff[1]), Convert.ToInt32(whatToBuff[2]), Convert.ToInt32(whatToBuff[3]), Convert.ToInt32(whatToBuff[4]), Convert.ToInt32(whatToBuff[5]), Convert.ToInt32(whatToBuff[6]), Convert.ToInt32(whatToBuff[7]), Convert.ToInt32(whatToBuff[8]), Convert.ToInt32(whatToBuff[9]), Convert.ToInt32(whatToBuff[10]), (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0, duration, objectDescription[0], objectDescription[4]);
-
-                    Cauldron.addToCauldron("farming", Convert.ToInt32(whatToBuff[0]));
-                    Cauldron.addToCauldron("mining", Convert.ToInt32(whatToBuff[2]));
-                    Cauldron.addToCauldron("fishing", Convert.ToInt32(whatToBuff[1]));
-                    Cauldron.addToCauldron("foraging", Convert.ToInt32(whatToBuff[5]));
-                    Cauldron.addToCauldron("attack", (whatToBuff.Length > 11) ? Convert.ToInt32(whatToBuff[11]) : 0);
-                    Cauldron.addToCauldron("defense", Convert.ToInt32(whatToBuff[10]));
-                    Cauldron.addToCauldron("maxEnergy", Convert.ToInt32(whatToBuff[7]) / 10);
-                    Cauldron.addToCauldron("luck", Convert.ToInt32(whatToBuff[4]));
-                    Cauldron.addToCauldron("magneticRadius", Convert.ToInt32(whatToBuff[8]) / 32);
-                    Cauldron.addToCauldron("speed", Convert.ToInt32(whatToBuff[9]));
+                        float durationMultiplier = ((csObject.Quality != 0) ? 1.5f : 1f);
+                        foreach (Buff item in StardewValley.Object.TryCreateBuffsFromData(data, csObject.Name, csObject.DisplayName, durationMultiplier, csObject.ModifyItemBuffs))
+                        {
+                            Cauldron.addToCauldron("farming", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("mining", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("fishing", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("foraging", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("attack", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("defense", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("maxEnergy", item.effects.FarmingLevel.Value / 10);
+                            Cauldron.addToCauldron("luck", item.effects.FarmingLevel.Value);
+                            Cauldron.addToCauldron("magneticRadius", item.effects.FarmingLevel.Value / 32);
+                            Cauldron.addToCauldron("speed", item.effects.FarmingLevel.Value);
+                        }
+                    }
                 }
             }
         }

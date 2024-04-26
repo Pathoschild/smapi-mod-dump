@@ -17,6 +17,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
     {
         public SeederQuestController(ModEntry mod) : base(mod) { }
 
+        public override void Fix()
+        {
+            this.EnsureInventory(ObjectIds.BustedSeeder, this.OverallQuestState == OverallQuestState.InProgress && this.State < SeederQuestState.WaitForAlexDay1);
+            this.EnsureInventory(ObjectIds.WorkingSeeder, this.OverallQuestState == OverallQuestState.InProgress && this.State == SeederQuestState.InstallPart);
+        }
+
         protected override SeederQuestState AdvanceStateForDayPassing(SeederQuestState oldState)
         {
             if (oldState == SeederQuestState.WaitForAlexDay1)

@@ -19,9 +19,9 @@ namespace Leclair.Stardew.Almanac.Models;
 public struct SubLocation {
 
 	public string Key { get; }
-	public int Area { get; }
+	public string Area { get; }
 
-	public SubLocation(string key, int area) {
+	public SubLocation(string key, string area) {
 		Key = key;
 		Area = area;
 	}

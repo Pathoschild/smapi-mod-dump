@@ -26,9 +26,57 @@ namespace ForageFantasy
 
     internal class TapperAndMushroomQualityLogic
     {
-        public static int GetTapperProductValueForDaysNeeded(int daysNeeded)
+        internal const string mapleSyrupNonQID = "724";
+        internal const string oakResinNonQID = "725";
+        internal const string pineTarNonQID = "726";
+        internal const string mysticSyrupNonQID = "MysticSyrup";
+
+        private static float GetTapperProductPricePerDay(string product, float? priceOverride = null)
         {
-            return (int)Math.Round(daysNeeded * (150f / 7f), MidpointRounding.AwayFromZero);
+            float basePrice = product switch
+            {
+                mapleSyrupNonQID => 200f,
+                oakResinNonQID => 150f,
+                pineTarNonQID => 100f,
+                mysticSyrupNonQID => 1000f,
+                _ => 0,
+            };
+
+            if (priceOverride != null)
+            {
+                basePrice = priceOverride.Value;
+            }
+
+            return product switch
+            {
+                mapleSyrupNonQID => basePrice / 9f,
+                oakResinNonQID => basePrice / 7f,
+                pineTarNonQID => basePrice / 5f,
+                mysticSyrupNonQID => basePrice / 7f,
+                _ => 0,
+            };
+        }
+
+        public static int GetTapperProductValueForDaysNeededWithEqualizedPriceCheck(ForageFantasyConfig config, int daysNeeded, string product, int? priceOverride, int? mapleSyrupPriceOverride, int? oakResinPriceOverride, int? pineTarPriceOverride)
+        {
+            return config.EqualizedPricePerDayForMapleOakPineTapperProduct switch
+            {
+                1 => GetTapperProductValueForDaysNeeded(daysNeeded, mapleSyrupNonQID, mapleSyrupPriceOverride),
+                2 => GetTapperProductValueForDaysNeeded(daysNeeded, oakResinNonQID, oakResinPriceOverride),
+                3 => GetTapperProductValueForDaysNeeded(daysNeeded, pineTarNonQID, pineTarPriceOverride),
+                _ => GetTapperProductValueForDaysNeeded(daysNeeded, product, priceOverride),
+            };
+        }
+
+        public static int GetTapperProductValueForDaysNeeded(int daysNeeded, string product, int? priceOverride)
+        {
+            float baseValuePerDay = GetTapperProductPricePerDay(product, priceOverride);
+
+            int approxPrice = (int)Math.Round(daysNeeded * baseValuePerDay);
+
+            int nextDivisibleByFive = (int)Math.Round(approxPrice / 5f) * 5;
+
+            return nextDivisibleByFive;
         }
 
         public static void IncreaseTreeAges(ForageFantasy mod)

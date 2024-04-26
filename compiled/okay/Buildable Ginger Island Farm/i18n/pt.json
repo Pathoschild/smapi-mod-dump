@@ -1,0 +1,10 @@
+{
+	// Menu
+	"Menu.GingerIslandFarm.DisplayName": "Fazenda da Ilha Gengibre",
+	"Menu.CarpenterMenu.ChooseLocation": "Onde você quer gerenciar edifícios?",
+	"Menu.PurchaseAnimalsMenu.ChooseLocation": "Onde você quer gerenciar os animais?",
+
+	// GMCM
+	"GMCM.AllowBuildingInSlimeArea.Title": "Permitir a construção na área de lodo",
+	"GMCM.AllowBuildingInSlimeArea.Tooltip": "Define se deve ou não permitir a construção na área de lodo."
+}

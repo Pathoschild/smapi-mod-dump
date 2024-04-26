@@ -1,0 +1,293 @@
+{      
+    "Spring": [          
+        {
+            "cropName" : "Blue Bonnet",
+            "seedID" : "Cornucopia_BluebonnetSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Carnation",
+            "seedID" : "Cornucopia_CarnationSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Chamomile",
+            "seedID" : "Cornucopia_ChamomileSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Honeysuckle",
+            "seedID" : "Cornucopia_HoneysuckleSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Hyacinth",
+            "seedID" : "Cornucopia_HyacinthSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Larkspur",
+            "seedID" : "Cornucopia_LarkspurSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Peony",
+            "seedID" : "Cornucopia_PeonySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Rose Spring",
+            "seedID" : "Cornucopia_RoseSpringSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Rose Prismatic",
+            "seedID" : "Cornucopia_RosePrismaticSeeds",
+            "dropChance" : 0.1,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Violet",
+            "seedID" : "Cornucopia_VioletSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "Buttercup",
+            "seedID" : "Cornucopia_ButtercupSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Carnation",
+            "seedID" : "Cornucopia_CarnationSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Clary Sage",
+            "seedID" : "Cornucopia_ClarySageSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Daisy",
+            "seedID" : "Cornucopia_DaisySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Honeysuckle",
+            "seedID" : "Cornucopia_HoneysuckleSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Hydrangea",
+            "seedID" : "Cornucopia_HydrangeaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Lavender",
+            "seedID" : "Cornucopia_LavenderSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Lupine",
+            "seedID" : "Cornucopia_LupineSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Petunia",
+            "seedID" : "Cornucopia_PetuniaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Rose Summer",
+            "seedID" : "Cornucopia_RoseSummerSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Rose Prismatic",
+            "seedID" : "Cornucopia_RosePrismaticSeeds",
+            "dropChance" : 0.1,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Wolfsbane",
+            "seedID" : "Cornucopia_WolfsbaneSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+             
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "Bee Balm",
+            "seedID" : "Cornucopia_BeeBalmSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Clematis",
+            "seedID" : "Cornucopia_ClematisSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Dahlia",
+            "seedID" : "Cornucopia_DahliaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Fairy Duster",
+            "seedID" : "Cornucopia_FairyDusterSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Freesia",
+            "seedID" : "Cornucopia_FreesiaSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Geranium",
+            "seedID" : "Cornucopia_GeraniumSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        },         
+        {
+            "cropName" : "Pitcher Plant",
+            "seedID" : "Cornucopia_PitcherPlantSeeds",
+            "dropChance" : 1,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }, 
+        {
+            "cropName" : "Purple Cone Flower",
+            "seedID" : "Cornucopia_PurpleConeflowerSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Rose Fall",
+            "seedID" : "Cornucopia_RoseFallSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }, 
+        {
+            "cropName" : "Rose Prismatic",
+            "seedID" : "Cornucopia_RosePrismaticSeeds",
+            "dropChance" : 0.1,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+             
+      ],
+      
+      "Winter" : [
+        {
+            "cropName" : "Rose Winter",
+            "seedID" : "Cornucopia_RoseWinterSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        }
+            
+      ]
+      
+}

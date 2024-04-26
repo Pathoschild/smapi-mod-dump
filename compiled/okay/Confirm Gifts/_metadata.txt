@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23224
+IDs: BadScientist.ConfirmGifts
+update keys: Nexus:23224, GitHub:BadScientist/ConfirmGifts

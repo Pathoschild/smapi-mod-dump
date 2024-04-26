@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 
 using Microsoft.Xna.Framework;
 
@@ -83,8 +84,12 @@ public static class CommonHelper {
 
 	#region Color Names
 
-	private static readonly Dictionary<string, Color> CSS4Colors = new(StringComparer.OrdinalIgnoreCase) {
+	/// <summary>
+	/// CSS4 colors, and JojaBlue from the base game.
+	/// </summary>
+	private static readonly Dictionary<string, Color> ExtraColors = new(StringComparer.OrdinalIgnoreCase) {
 		{ "rebeccapurple", new Color(102, 51, 153, 255) },
+		{ "jojablue", new Color(52, 50, 122) }
 	};
 
 	/// <summary>
@@ -105,7 +110,7 @@ public static class CommonHelper {
 	}
 
 	private static Dictionary<string, Color> LoadNamedColors() {
-		Dictionary<string, Color> result = new Dictionary<string, Color>(StringComparer.OrdinalIgnoreCase);
+		Dictionary<string, Color> result = new(StringComparer.OrdinalIgnoreCase);
 
 		// Load every available color name from XNA Color.
 		foreach (PropertyInfo prop in typeof(Color).GetProperties(BindingFlags.Static | BindingFlags.Public)) {
@@ -146,7 +151,7 @@ public static class CommonHelper {
 				));
 		}
 
-		foreach (var entry in CSS4Colors) {
+		foreach (var entry in ExtraColors) {
 			AddColor(result, entry.Key, entry.Value);
 		}
 
@@ -154,6 +159,26 @@ public static class CommonHelper {
 	}
 
 	#endregion
+
+	public static Color PremultiplyAlpha(this Color input) {
+		if (input.A == 0)
+			return Color.Transparent;
+		if (input.A == 255)
+			return input;
+
+		float alpha = input.A / 255f;
+
+		return new Color(
+			input.R * alpha,
+			input.G * alpha,
+			input.B * alpha,
+			input.A
+		);
+	}
+
+	public static string ToHex(this Color input) {
+		return string.Format("#{0:X02}{1:X02}{2:X02}{3:X02}", input.R, input.G, input.B, input.A);
+	}
 
 	public static Color? ParseColor(string? input) {
 		if (TryParseColor(input, out Color? result))
@@ -163,6 +188,20 @@ public static class CommonHelper {
 	}
 
 	public static bool TryParseColor(string? input, [NotNullWhen(true)] out Color? result) {
+		bool premultiply = !string.IsNullOrEmpty(input) && input.StartsWith("premultiply:");
+		if (premultiply)
+			input = input![12..];
+
+		if (TryParseColorImpl(input, out result)) {
+			if (premultiply)
+				result = PremultiplyAlpha(result.Value);
+			return true;
+		}
+
+		return false;
+	}
+
+	private static bool TryParseColorImpl(string? input, [NotNullWhen(true)] out Color? result) {
 		if (!string.IsNullOrEmpty(input)) {
 			// Raw Format (Old)
 			if (char.IsDigit(input[0]))
@@ -488,7 +527,15 @@ public static class CommonHelper {
 
 	#region Enums
 
-	public static T Cycle<T>(T current, int direction = 1) {
+	/// <summary>
+	/// Return the next value in an enum, after the given value. Loop around
+	/// if we reach the end of the enum.
+	/// </summary>
+	/// <typeparam name="T">The enum type.</typeparam>
+	/// <param name="current">The current value</param>
+	/// <param name="direction">The number of steps to move. Can be negative.</param>
+	/// <returns>The next value.</returns>
+	public static T Cycle<T>(T current, int direction = 1, T[]? skip = null) {
 		var values = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
 
 		int idx = -1;
@@ -500,13 +547,19 @@ public static class CommonHelper {
 			}
 		}
 
+		T result;
+
 		if (idx < 0)
-			return values.Last();
+			result = values.Last();
+		else if (idx >= values.Length)
+			result = values[0];
+		else
+			result = values[idx];
 
-		if (idx >= values.Length)
-			return values[0];
+		if (skip is not null && skip.Contains(result))
+			return Cycle(result, direction, skip);
 
-		return values[idx];
+		return result;
 	}
 
 	public static IEnumerable<T> GetValues<T>() {
@@ -558,6 +611,34 @@ public static class CommonHelper {
 	}
 
 	#endregion
+
+	internal static Vector2 GetNearestPoint(this Rectangle rectangle, Vector2 position) {
+		float minX = rectangle.X;
+		float maxX = minX + rectangle.Width;
+		float minY = rectangle.Y;
+		float maxY = minY + rectangle.Height;
+
+		return new Vector2(
+			position.X < minX
+				? minX
+				: position.X > maxX
+					? maxX
+					: position.X,
+			position.Y < minY
+				? minY
+				: position.Y > maxY
+					? maxY
+					: position.Y
+		);
+	}
+
+	internal static xTile.Dimensions.Location ToLocation(this Vector2 pos) {
+		return new((int) pos.X, (int) pos.Y);
+	}
+
+	internal static Point ToPoint(this Vector2 pos) {
+		return new((int) pos.X, (int) pos.Y);
+	}
 
 	public static void YeetMenu(IClickableMenu menu) {
 		if (menu == null) return;

@@ -1,0 +1,18 @@
+{
+  "NoQualityInput": {
+    "MinAmount": 5,
+    "MaxAmount": 10
+  },
+  "SilverQualityInput": {
+    "MinAmount": 10,
+    "MaxAmount": 15
+  },
+  "GoldQualityInput": {
+    "MinAmount": 15,
+    "MaxAmount": 20
+  },
+  "IridiumQualityInput": {
+    "MinAmount": 20,
+    "MaxAmount": 30
+  }
+}

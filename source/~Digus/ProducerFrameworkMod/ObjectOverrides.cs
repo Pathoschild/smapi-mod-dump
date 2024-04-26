@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
+using StardewValley.Inventories;
 using StardewValley.ItemTypeDefinitions;
 using Object = StardewValley.Object;
 #pragma warning disable IDE1006
@@ -31,7 +32,7 @@ namespace ProducerFrameworkMod
     internal class ObjectOverrides
     {
         [HarmonyPriority(Priority.First)]
-        internal static bool PerformObjectDropInAction(Object __instance, Item dropInItem, bool probe, Farmer who, ref bool __result)
+        internal static bool PerformObjectDropInAction(Object __instance, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed, ref bool __result)
         {
             if (__instance.isTemporarilyInvisible || dropInItem is not Object input)
                 return false;
@@ -90,7 +91,7 @@ namespace ProducerFrameworkMod
                     ProducerRuleController.ValidateIfAnyFuelStackLessThanRequired(producerRule, who, probe);
 
                     OutputConfig outputConfig = ProducerRuleController.ProduceOutput(producerRule, __instance,
-                        (i, q) => who.getItemCount(i) >= q, who, location, producerConfig, input, probe);
+                        (i, q) => who.getItemCountInList(Object.autoLoadFrom ?? who.Items, i) >= q, who, location, producerConfig, input, probe);
                     if (outputConfig != null)
                     {
                         if (!probe)
@@ -105,8 +106,8 @@ namespace ProducerFrameworkMod
                                 RemoveItemsFromInventory(who, fuel.Item1, fuel.Item2);
                             }
 
-                            input.Stack -= outputConfig.RequiredInputStack ?? producerRule.InputStack;
-                            __result = input.Stack <= 0;
+                            Object.ConsumeInventoryItem(who,input, outputConfig.RequiredInputStack ?? producerRule.InputStack);
+                            __result = !returnFalseIfItemConsumed;
                         }
                         else
                         {
@@ -117,7 +118,7 @@ namespace ProducerFrameworkMod
                 catch (RestrictionException e)
                 {
                     __result = false;
-                    if (e.ShowMessage && e.Message != null && !probe && who.IsLocalPlayer)
+                    if (e.ShowMessage && e.Message != null && !probe && who.IsLocalPlayer && Object.autoLoadFrom == null)
                     {
                         Game1.showRedMessage(e.Message);
                     }
@@ -129,19 +130,20 @@ namespace ProducerFrameworkMod
 
         private static bool RemoveItemsFromInventory(Farmer farmer, string index, int stack)
         {
-            if (farmer.getItemCount(index) >= stack)
+            IInventory inventory = (Object.autoLoadFrom ?? farmer.Items);
+            if (farmer.getItemCountInList(inventory,index) >= stack)
             {
-                for (int index1 = 0; index1 < farmer.Items.Count; ++index1)
+                for (int index1 = 0; index1 < inventory.Count; ++index1)
                 {
-                    if (farmer.Items[index1] != null && farmer.Items[index1] is Object object1 && (object1.QualifiedItemId == index || (int.TryParse(index, out int c) && object1.Category == c)))
+                    if (inventory[index1] != null && inventory[index1] is Object object1 && (object1.QualifiedItemId == index || (int.TryParse(index, out int c) && object1.Category == c)))
                     {
-                        if (farmer.Items[index1].Stack > stack)
+                        if (inventory[index1].Stack > stack)
                         {
-                            farmer.Items[index1].Stack -= stack;
+                            inventory[index1].Stack -= stack;
                             return true;
                         }
-                        stack -= farmer.Items[index1].Stack;
-                        farmer.Items[index1] = (Item)null;
+                        stack -= inventory[index1].Stack;
+                        inventory[index1] = (Item)null;
                     }
                     if (stack <= 0)
                         return true;
@@ -313,7 +315,7 @@ namespace ProducerFrameworkMod
                     if (animationList.Any())
                     {
                         int frame = animationList[((Game1.ticks + GetLocationSeed(producer.TileLocation)) % (animationList.Count * producingAnimation.FrameInterval)) / producingAnimation.FrameInterval];
-                        spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
+                        spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(texture,producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
                         return;
                     }
                 }
@@ -335,7 +337,7 @@ namespace ProducerFrameworkMod
                     if (animationList.Any())
                     {
                         int frame = animationList[((Game1.ticks + GetLocationSeed(producer.TileLocation)) % (animationList.Count * readyAnimation.FrameInterval)) / readyAnimation.FrameInterval];
-                        spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
+                        spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(texture,producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
                         return;
                     }
                 }
@@ -366,7 +368,7 @@ namespace ProducerFrameworkMod
                         {
                             if (ProducerController.GetProducerItem(__instance.QualifiedItemId, null) is { } producerRule)
                             {
-                                ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.getItemCount(i) >= q, who, who.currentLocation, producerConfig);
+                                ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.getItemCountInList(Object.autoLoadFrom ?? who.Items, i) >= q, who, who.currentLocation, producerConfig);
                             }
                         }
                         return __result = false;
@@ -473,7 +475,7 @@ namespace ProducerFrameworkMod
                                     try
                                     {
                                         Farmer who = Game1.getFarmer((long)__instance.owner.Value);
-                                        ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.getItemCount(i) >= q, who, who.currentLocation, producerConfig);
+                                        ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.getItemCountInList(Object.autoLoadFrom ?? who.Items, i) >= q, who, who.currentLocation, producerConfig);
                                     }
                                     catch (RestrictionException)
                                     {
@@ -555,6 +557,30 @@ namespace ProducerFrameworkMod
                 }
             }
             return true;
+        }
+
+        internal static bool TryApplyFairyDust(Object __instance, bool probe, ref bool __result)
+        {
+            if (__instance.GetMachineData() != null && !ProducerController.HasProducerConfig(__instance.QualifiedItemId)) return true;
+            if (__instance.MinutesUntilReady > 0
+                && ProducerController.GetProducerConfig(__instance.QualifiedItemId) is not { AllowFairyDust: false }
+                && (ProducerController.HasProducerConfig(__instance.QualifiedItemId) || __instance.GetMachineData() is not { AllowFairyDust: false }))
+            {
+                if (!probe)
+                {
+                    Utility.addSprinklesToLocation(__instance.Location, (int)__instance.tileLocation.X,
+                        (int)__instance.tileLocation.Y, 1, 2, 400, 40, Color.White);
+                    Game1.playSound("yoba");
+                    __instance.MinutesUntilReady = 10;
+                    DelayedAction.functionAfterDelay(delegate { __instance.minutesElapsed(10); }, 50);
+                }
+                __result = true;
+            }
+            else
+            {
+                __result = false;
+            }
+            return false;
         }
     }
 }

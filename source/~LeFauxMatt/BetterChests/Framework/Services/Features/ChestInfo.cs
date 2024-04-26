@@ -26,12 +26,14 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
 {
     private const string AlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    private static readonly int LineHeight = (int)Game1.smallFont.MeasureString(ChestInfo.AlphaNumeric).Y;
+    private static readonly Lazy<int> LineHeight =
+        new(() => (int)Game1.smallFont.MeasureString(ChestInfo.AlphaNumeric).Y);
 
     private readonly PerScreen<List<Info>> cachedInfo = new(() => []);
     private readonly ContainerFactory containerFactory;
     private readonly IInputHelper inputHelper;
     private readonly PerScreen<bool> isActive = new();
+    private readonly MenuManager menuManager;
     private readonly PerScreen<bool> resetCache = new(() => true);
 
     /// <summary>Initializes a new instance of the <see cref="ChestInfo" /> class.</summary>
@@ -40,6 +42,7 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
     /// <param name="log">Dependency used for logging debug information to the console.</param>
     /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="menuManager">Dependency used for managing the current menu.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
     public ChestInfo(
         ContainerFactory containerFactory,
@@ -47,11 +50,13 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
         IInputHelper inputHelper,
         ILog log,
         IManifest manifest,
+        MenuManager menuManager,
         IModConfig modConfig)
         : base(eventManager, log, manifest, modConfig)
     {
         this.containerFactory = containerFactory;
         this.inputHelper = inputHelper;
+        this.menuManager = menuManager;
     }
 
     /// <inheritdoc />
@@ -86,7 +91,7 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
 
         this.inputHelper.SuppressActiveKeybinds(this.Config.Controls.ToggleInfo);
         this.isActive.Value = !this.isActive.Value;
-        this.Log.Trace("{0}: Toggled chest info to {1}", this.Id, this.isActive.Value);
+        this.Log.Info("{0}: Toggled chest info to {1}", this.Id, this.isActive.Value);
     }
 
     private void OnInventoryChanged(InventoryChangedEventArgs e) => this.resetCache.Value = true;
@@ -103,20 +108,20 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
         }
 
         // Check if active and is info
-        if (!this.isActive.Value || !this.cachedInfo.Value.Any())
+        if (this.menuManager.CurrentMenu is null || !this.isActive.Value || !this.cachedInfo.Value.Any())
         {
             return;
         }
 
-        var x = Game1.activeClickableMenu.xPositionOnScreen - (IClickableMenu.borderWidth / 2) - 384;
-        var y = Game1.activeClickableMenu.yPositionOnScreen;
+        var x = this.menuManager.CurrentMenu.xPositionOnScreen - (IClickableMenu.borderWidth / 2) - 384;
+        var y = this.menuManager.CurrentMenu.yPositionOnScreen;
 
         // Draw background
         Game1.drawDialogueBox(
             x - IClickableMenu.borderWidth,
             y - (IClickableMenu.borderWidth / 2) - IClickableMenu.spaceToClearTopBorder,
             384,
-            (ChestInfo.LineHeight * this.cachedInfo.Value.Count)
+            (ChestInfo.LineHeight.Value * this.cachedInfo.Value.Count)
             + IClickableMenu.spaceToClearTopBorder
             + (IClickableMenu.borderWidth * 2),
             false,
@@ -144,22 +149,21 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
                     new Vector2(x + info.NameWidth, y),
                     Game1.textColor);
 
-                y += ChestInfo.LineHeight;
+                y += ChestInfo.LineHeight.Value;
                 continue;
             }
 
-            y += ChestInfo.LineHeight;
+            y += ChestInfo.LineHeight.Value;
             e.SpriteBatch.DrawString(Game1.smallFont, info.Value, new Vector2(x, y), Game1.textColor);
 
-            y += ChestInfo.LineHeight;
+            y += ChestInfo.LineHeight.Value;
         }
     }
 
     private void RefreshInfo()
     {
         this.cachedInfo.Value.Clear();
-        if (!this.containerFactory.TryGetOneFromMenu(out var container)
-            || container.Options.ChestInfo != FeatureOption.Enabled)
+        if (!this.containerFactory.TryGetOne(out var container) || container.Options.ChestInfo != FeatureOption.Enabled)
         {
             return;
         }
@@ -167,17 +171,12 @@ internal sealed class ChestInfo : BaseFeature<ChestInfo>
         // Add type
         this.cachedInfo.Value.Add(new Info(I18n.ChestInfo_Type(), container.DisplayName));
 
-        if (container.Location is not null)
-        {
-            // Add location
-            this.cachedInfo.Value.Add(new Info(I18n.ChestInfo_Location(), container.Location.Name));
+        // Add location
+        this.cachedInfo.Value.Add(new Info(I18n.ChestInfo_Location(), container.Location.Name));
 
-            // Add position
-            this.cachedInfo.Value.Add(
-                new Info(
-                    I18n.ChestInfo_Position(),
-                    $"{(int)container.TileLocation.X}, {(int)container.TileLocation.Y}"));
-        }
+        // Add position
+        this.cachedInfo.Value.Add(
+            new Info(I18n.ChestInfo_Position(), $"{(int)container.TileLocation.X}, {(int)container.TileLocation.Y}"));
 
         // Add inventory
         if (container is ChildContainer

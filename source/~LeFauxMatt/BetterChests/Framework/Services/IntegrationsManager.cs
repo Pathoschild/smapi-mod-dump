@@ -11,9 +11,11 @@
 // namespace StardewMods.BetterChests.Framework.Services;
 //
 // using Microsoft.Xna.Framework;
-// using StardewMods.BetterChests.Framework.Enums;
+// using StardewMods.Common.Services;
 // using StardewMods.Common.Services.Integrations.Automate;
+// using StardewMods.Common.Services.Integrations.BetterChests.Enums;
 // using StardewMods.Common.Services.Integrations.BetterCrafting;
+// using StardewMods.Common.Services.Integrations.FauxCore;
 // using StardewMods.Common.Services.Integrations.GenericModConfigMenu;
 // using StardewMods.Common.Services.Integrations.ToolbarIcons;
 // using StardewValley.Buildings;
@@ -22,51 +24,47 @@
 // using StardewValley.Objects;
 //
 // /// <summary>Handles integrations with other mods.</summary>
-// internal sealed class IntegrationsManager
+// internal sealed class IntegrationsManager : BaseService<IntegrationsManager>
 // {
 //     private const string ExpandedFridgeId = "Uwazouri.ExpandedFridge";
 //     private const string HorseOverhaulId = "Goldenrevolver.HorseOverhaul";
 //     private const string WearMoreRingsId = "bcmpinc.WearMoreRings";
 //
-// #nullable disable
-//     private static IntegrationsManager instance;
-// #nullable enable
+//     private static IntegrationsManager instance = null!;
 //
-//     private readonly AutomateIntegration automate;
-//     private readonly BetterCraftingIntegration betterCrafting;
-//     private readonly ModConfig config;
-//     private readonly GenericModConfigMenuIntegration gmcm;
+//     private readonly AutomateIntegration automateIntegration;
+//     private readonly BetterCraftingIntegration betterCraftingIntegration;
+//     private readonly GenericModConfigMenuIntegration genericModConfigMenuIntegration;
 //     private readonly Dictionary<string, HashSet<string>> incompatibilities;
 //     private readonly IModRegistry modRegistry;
-//     private readonly StorageManager storages;
-//     private readonly ToolbarIconsIntegration toolbarIcons;
+//     private readonly ToolbarIconsIntegration toolbarIconsIntegration;
 //
 //     /// <summary>Initializes a new instance of the <see cref="IntegrationsManager" /> class.</summary>
-//     /// <param name="config">Dependency used for accessing config data.</param>
+//     /// <param name="log">Dependency used for logging debug information to the console.</param>
+//     /// <param name="manifest">Dependency for accessing mod manifest.</param>
 //     /// <param name="modContent">Dependency for loading mod assets.</param>
 //     /// <param name="modRegistry">Dependency for fetching metadata about loaded mods.</param>
-//     /// <param name="storages">Dependency for handling storages.</param>
-//     /// <param name="automate">Dependency for Automate integration.</param>
-//     /// <param name="betterCrafting">Dependency for Better Crafting integration.</param>
-//     /// <param name="gmcm">Dependency for Generic Mod Config Menu integration.</param>
-//     /// <param name="toolbarIcons">Dependency for Toolbar Icons integration.</param>
-//     public IntegrationsManager(ModConfig config,
+//     /// <param name="automateIntegration">Dependency for Automate integration.</param>
+//     /// <param name="betterCraftingIntegration">Dependency for Better Crafting integration.</param>
+//     /// <param name="genericModConfigMenuIntegration">Dependency for Generic Mod Config Menu integration.</param>
+//     /// <param name="toolbarIconsIntegration">Dependency for Toolbar Icons integration.</param>
+//     public IntegrationsManager(
+//         AutomateIntegration automateIntegration,
+//         BetterCraftingIntegration betterCraftingIntegration,
+//         GenericModConfigMenuIntegration genericModConfigMenuIntegration,
+//         ILog log,
+//         IManifest manifest,
 //         IModContentHelper modContent,
 //         IModRegistry modRegistry,
-//         StorageManager storages,
-//         AutomateIntegration automate,
-//         BetterCraftingIntegration betterCrafting,
-//         GenericModConfigMenuIntegration gmcm,
-//         ToolbarIconsIntegration toolbarIcons)
+//         ToolbarIconsIntegration toolbarIconsIntegration)
+//         : base(log, manifest)
 //     {
 //         IntegrationsManager.instance = this;
-//         this.config = config;
 //         this.modRegistry = modRegistry;
-//         this.storages = storages;
-//         this.automate = automate;
-//         this.betterCrafting = betterCrafting;
-//         this.gmcm = gmcm;
-//         this.toolbarIcons = toolbarIcons;
+//         this.automateIntegration = automateIntegration;
+//         this.betterCraftingIntegration = betterCraftingIntegration;
+//         this.genericModConfigMenuIntegration = genericModConfigMenuIntegration;
+//         this.toolbarIconsIntegration = toolbarIconsIntegration;
 //         this.incompatibilities = modContent.Load<Dictionary<string, HashSet<string>>>("assets/incompatibilities.json");
 //
 //         // Defaults
@@ -76,22 +74,7 @@
 //                 "SaddleBag",
 //                 new StorageData { CustomColorPicker = FeatureOption.Disabled });
 //         }
-//
-//         // Events
-//         this.storages.StorageTypeRequested += this.OnStorageTypeRequested;
 //     }
-//
-//     /// <summary>Gets Automate integration.</summary>
-//     public static AutomateIntegration Automate => IntegrationsManager.instance.automate;
-//
-//     /// <summary>Gets Better Craft integration.</summary>
-//     public static BetterCraftingIntegration BetterCrafting => IntegrationsManager.instance.betterCrafting;
-//
-//     /// <summary>Gets Generic Mod Config Menu integration.</summary>
-//     public static GenericModConfigMenuIntegration GMCM => IntegrationsManager.instance.gmcm;
-//
-//     /// <summary>Gets Toolbar Icons integration.</summary>
-//     public static ToolbarIconsIntegration ToolbarIcons => IntegrationsManager.instance.toolbarIcons;
 //
 //     private static Dictionary<string, HashSet<string>> Incompatibilities =>
 //         IntegrationsManager.instance.incompatibilities;
@@ -304,4 +287,6 @@
 //         }
 //     }
 // }
+//
+//
 

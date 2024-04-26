@@ -11,11 +11,12 @@ mods:
    Mapping Extensions and Extra Properties (MEEP)
    Smart Building
    Smart Cursor
+   Zoom Per Map
 
 latest commit:
-   commit 4df24623a87365b0901dd7551bbeeb6df48134db
+   commit b71f031fcbffe8facc0c93a37b0570f69433f27f
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Sun Mar 31 18:18:16 2024 +0100
+   Date:   Mon Apr 22 18:24:54 2024 +0100
    
-       MEEP: Fixed an error when an invalid farm animal is created.
+       MEEP: Oops. I was checking against the complete wrong thing here.
    

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using CropGrowthAdjustments.Types;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
 namespace CropGrowthAdjustments
@@ -18,6 +19,7 @@ namespace CropGrowthAdjustments
     public class ContentPackManager
     {
         public List<Adjustments> ContentPacks = new();
+        public Dictionary<string, Texture2D> TexturesToLoad = new();
 
         private const string ContentJsonName = "adjustments.json";
 
@@ -36,6 +38,7 @@ namespace CropGrowthAdjustments
 
                 var adjustments = new Adjustments();
                 
+                // parse adjustments.json
                 try
                 {
                     adjustments.CropAdjustments = contentPack.ReadJsonFile<List<CropAdjustment>>(ContentJsonName);
@@ -46,8 +49,24 @@ namespace CropGrowthAdjustments
                     continue;
                 }
                 
-                adjustments.ContentPack = contentPack;
+                // load special sprite textures
+                foreach (var adjustment in adjustments.CropAdjustments)
+                {
+                    foreach (var specialSprites in adjustment.SpecialSpritesForSeasons)
+                    {
+                        try
+                        {
+                            specialSprites.SpritesTexture = contentPack.ModContent.Load<Texture2D>(specialSprites.Sprites);
+                            TexturesToLoad.Add(specialSprites.Sprites, specialSprites.SpritesTexture);
+                        }
+                        catch (Exception e)
+                        {
+                            ModEntry.ModMonitor.Log($"  {contentPack.Manifest.Name} - Could not load special sprites for {adjustment.CropProduceName} (season: {specialSprites.Season}, path: {specialSprites.Sprites}), the plant might be invisible: {e}.", LogLevel.Error);
+                        }
+                    }
+                }
                 
+                adjustments.ContentPack = contentPack;
                 ContentPacks.Add(adjustments);
                 // provide info about the loaded content pack
                 monitor.Log(
@@ -60,32 +79,24 @@ namespace CropGrowthAdjustments
             }
         }
 
-        public void AssignCropProduceItemIds(IModHelper helper, IJsonAssetsApi jsonAssetsApi)
+        public void AssignCropProduceItemIds(IModHelper helper)
         {
             foreach (var contentPack in ContentPacks)
             {
                 foreach (var adjustment in contentPack.CropAdjustments)
                 {
                     // skip assigning item id from game data if it is specified by the content pack
-                    if (adjustment.CropProduceItemId != -1)
+                    if (adjustment.CropProduceItemId != "-1")
                     {
                         continue;
                     }
                     
                     // first try to get directly from game data
-                    adjustment.CropProduceItemId = int.Parse(Utility.GetItemIdByName(adjustment.CropProduceName, helper));
-
-                    // then try to get from JsonAssets API
-                    if (adjustment.CropProduceItemId == -1 && jsonAssetsApi != null)
-                    {
-                        ModEntry.ModMonitor.Log($"assigning crop produce id for {adjustment.CropProduceName} from JsonAssets");
-                        
-                        adjustment.CropProduceItemId = jsonAssetsApi.GetObjectId(adjustment.CropProduceName);
-                    }
+                    adjustment.CropProduceItemId = Utility.GetItemIdByName(adjustment.CropProduceName, helper);
                     
                     // finally, warn the player if the ID is still not assigned
                     // this means that either the crop produce name is specified incorrectly OR that the crop produce name was edited
-                    if (adjustment.CropProduceItemId == -1)
+                    if (adjustment.CropProduceItemId == "-1")
                     {
                         ModEntry.ModMonitor.Log($"{contentPack.ContentPack.Manifest.Name} - Unable to assign ID to {adjustment.CropProduceName}. " + 
                                                 $"Make sure the name you specified matches the desired crop name. Otherwise, if this crop had its produce item name" +
@@ -105,14 +116,14 @@ namespace CropGrowthAdjustments
                 foreach (var adjustment in contentPack.CropAdjustments)
                 {
                     if(adjustment.SpecialSpritesForSeasons == null || adjustment.SpecialSpritesForSeasons.Count == 0) continue;
-                    
-                    var cropData =  Utility.GetCropDataForProduceItemId(adjustment.CropProduceItemId.ToString(), helper);
+                    var cropData = Utility.GetCropDataForProduceItemId(adjustment.CropProduceItemId, helper);
                     if(cropData == null)
                     {
                         ModEntry.ModMonitor.Log($"{contentPack.ContentPack.Manifest.Name} - Unable to get the crop data for {adjustment.CropProduceName}. Special sprites won't work.", LogLevel.Error);
                         continue;
                     }
 
+                    adjustment.InitialTexture = cropData.Texture;
                     adjustment.RowInCropSpriteSheet = cropData.SpriteIndex;
                 }
             }

@@ -1,0 +1,16 @@
+{
+	"Name":"Weather Totems",
+	"Author":"TheMightyAmondee",
+	"Version":"1.0.2",
+	"Description":"Adds more weather totems",
+	"UniqueID": "TheMightyAmondee.WeatherTotems",
+	"EntryDll":"WeatherTotems.dll",
+	"MinimumApiVersion":"4.0.0",
+	"UpdateKeys": [ "Nexus:21539" ],
+	"Dependencies": [
+		{
+      "UniqueID": "TheMightyAmondee.WeatherTotemsCP",
+      "IsRequired": false // added locally
+		}
+	]
+}

@@ -20,12 +20,17 @@ namespace ChestFeatureSet.Framework
     public static class ChestExtension
     {
         /// <summary>
-        /// Search ContainsItem By ItemId
+        /// Search ContainsItem By ItemId & ItemType
         /// </summary>
         /// <param name="chest"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        public static bool ContainsItem(this Chest chest, Item i) => chest.Items.ContainsId(i.ItemId);
+        public static bool ContainsItem(this Chest chest, Item i)
+        {
+            if (i == null)
+                return false;
+            return chest.Items.Any(item => item.ItemId == i.ItemId && item.TypeDefinitionId == i.TypeDefinitionId);
+        }
 
         /// <summary>
         /// Search ContainsItem By Existing Stacks
@@ -94,7 +99,7 @@ namespace ChestFeatureSet.Framework
         /// Gets all the chests in the area with all locations
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<ChestLocationPair> GetAreaChests(string[] area)
+        public static IEnumerable<ChestLocationPair> GetAreaChests(IEnumerable<string> area)
             => GetAllChests().Where(chestPair => area.Contains(chestPair.Location.Name));
 
         /// <summary>

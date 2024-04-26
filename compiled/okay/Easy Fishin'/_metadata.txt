@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22268
+IDs: Frostiverse.EasyFishin
+update keys: Nexus:22268, GitHub:Hunter-Chambers/StardewValleyMods

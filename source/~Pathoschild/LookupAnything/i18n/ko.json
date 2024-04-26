@@ -37,6 +37,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{count}}개를 묶음 판매 시 {{price}}G",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types 유형
     "type.building": "건물",
@@ -115,13 +116,14 @@
     "location.bugLand": "버그랜드",
     "location.busStop": "버스 정류장",
     "location.desert": "사막",
+    "location.desert.topPond": "사막 (북쪽 연못)",
     "location.farm": "농장",
     "location.farmCave": "동굴",
     "location.farmHouse": "농장주 집",
     "location.forest": "숲",
-    "location.forest.fish-area-0": "숲 강",
-    "location.forest.fish-area-1": "숲 호수",
     "location.forest.island-tip": "섬 (큰 섬의 남쪽 끝)",
+    "location.forest.lake": "숲 호수",
+    "location.forest.river": "숲 강",
     "location.mountain": "산",
     "location.railroad": "철길",
     "location.sewer": "하수도",
@@ -141,8 +143,8 @@
     "location.islandSouthEast": "진저섬 남동쪽",
     "location.islandSouthEastCave": "진저섬 남동쪽 동굴",
     "location.islandWest": "진저섬 서쪽",
-    "location.islandWest.fish-area-1": "진저섬 서쪽 (바다)",
-    "location.islandWest.fish-area-2": "진저섬 서쪽 (연못)",
+    "location.islandWest.freshwater": "진저섬 서쪽 (연못)",
+    "location.islandWest.ocean": "진저섬 서쪽 (바다)",
 
     "location.unknown-fish-area": "{{locationName}} (낚시 장소 {{id}})",
 
@@ -194,7 +196,7 @@
     "building.output-processing": "처리중",
     "building.output-ready": "생산물 준비 완료",
     "building.slimes.summary": "최대 {{max}}마리까지의 슬라임 중 {{count}}마리 수용 중.",
-    "building.stored-hay.summary": "{{hayCount}} of {{maxHayInLocation}} hay in this location (max capacity in this building: {{maxHayInBuilding}})", // TODO
+    "building.stored-hay.summary": "이 위치에 있는 건초 {{maxHayInLocation}}개 중 {{hayCount}}개(이 건물의 최대 용량: {{maxHayInBuilding}})",
     "building.upgrades.barn.0": "최대 4마리의 동물 수용 가능, 소를 추가",
     "building.upgrades.barn.1": "최대 8마리의 동물 수용 가능, 임신이 가능해지며, 염소를 추가",
     "building.upgrades.barn.2": "최대 12마리의 동물 수용 가능, 먹이통 자동화가 가능해지며, 돼지와 양을 추가",
@@ -294,7 +296,7 @@
     ** Item > generic lookups
     *********/
     // labels
-    "item.custom-item": "Custom item", // TODO
+    "item.custom-item": "커스텀 아이템",
     "item.contents": "내용물",
     "item.loves-this": "사랑함",
     "item.likes-this": "좋아함",
@@ -313,7 +315,7 @@
     "item.produces-dye": "생산 염료",
 
     // values
-    "item.custom-item.summary": "added by {{modName}}", // TODO
+    "item.custom-item.summary": "{{modName}} 추가됨",
     "item.contents.placed": "{{name}}이/가 들어감",
     "item.contents.ready": "{{name}}이/가 준비됨",
     "item.contents.partial": "{{name}}이/가 준비되기까지 {{time}} 남음.",
@@ -628,15 +630,17 @@
     "tree.name.oak": "참나무",
     "tree.name.palm": "야자나무",
     "tree.name.pine": "소나무",
+    "tree.name.mossy": "이끼 나무",
+    "tree.name.mystic": "신비한 나무",
     "tree.name.unknown": "알 수 없는 나무",
     "tree.stage.done": "다 자람",
     "tree.stage.partial": "{{stageName}}, {{max}}단계 중 ({{step}}단계)",
     "tree.next-growth.winter": "겨울에 온실 밖에서 성장 불가.",
     "tree.next-growth.adjacent-trees": "다른 나무들과 너무 가까와 성장 불가.",
     "tree.next-growth.chance": "내일 {{chance}}%의 확률로 다음으로 성장: {{stage}}",
-    "tree.seed.not-ready": "Not ready", // TODO
-    "tree.seed.probability-daily": "{{chance}}% chance of {{itemName}} each day.", // TODO
-    "tree.seed.probability-on-chop": "{{chance}}% chance of dropping {{itemName}} when chopped down.", // TODO
+    "tree.seed.not-ready": "준비되지 않음",
+    "tree.seed.probability-daily": "매일 {{itemName}}이 나올 가능성이 {{chance}}%입니다.",
+    "tree.seed.probability-on-chop": "수확시 {{itemName}}을(를) 드롭할 확률이 {{chance}}%입니다.",
 
     // growth stages
     "tree.stages.seed": "씨앗",
@@ -675,6 +679,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "미공개 선물 취향 강조",
     "config.highlight-unrevealed-gift-tastes.desc": "NPC 프로필에 표시되지 않은 항목 선물 취향을 강조 표시할지 여부. 활성화하면 공개되지 않은 선물 취향이 굵게 표시됩니다.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "고급 옵션",

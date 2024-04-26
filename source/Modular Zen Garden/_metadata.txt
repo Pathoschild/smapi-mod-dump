@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Leroymilo/MZG
+   Git: https://github.com/Leroymilo/MZG.git
+
+mods:
+   Modular Zen Garden
+
+latest commit:
+   commit f1685b75b49d5638f77b6dbfd0b2307844772dbb
+   Author: leroymilo <adriaanboxmail@gmail.com>
+   Date:   Sat Apr 20 13:25:38 2024 +0900
+   
+       added 2 medium gardens
+   

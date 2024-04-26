@@ -38,9 +38,17 @@ namespace CustomCaskMod
             Helper = helper;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.UpdateTicking += OnGameLoopOnUpdateTicking;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
             Helper.ConsoleCommands.Add("config_reload_contentpacks_customcaskmod", "Reload all content packs for custom cask mod.", DataLoader.LoadContentPacksCommand);
+        }
+
+        private void OnGameLoopOnUpdateTicking(object sender, UpdateTickingEventArgs args)
+        {
+            if (args.Ticks != 120) return;
+            DataLoader.LoadContentPacksCommand();
+            Helper.Events.GameLoop.UpdateTicking -= OnGameLoopOnUpdateTicking;
         }
 
 
@@ -71,6 +79,10 @@ namespace CustomCaskMod
             harmony.Patch(
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.performToolAction)),
                 transpiler: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.performToolAction_Transpiler))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.TryApplyFairyDust)),
+                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.TryApplyFairyDust)) { priority = Priority.HigherThanNormal }
             );
         }
 

@@ -6,9 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 015876b28135233837546275707aa45c7ca1cbe8
+   commit 17ada82d1b84f4b8e9076d36cfd42e563f900287
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Thu Mar 28 23:11:01 2024 -0500
+   Date:   Tue Apr 23 17:57:55 2024 -0500
    
-       Fix "LimitedNumberOfSpawns" for Item Extensions clumps
+       Fix/tweak typo in readme
    

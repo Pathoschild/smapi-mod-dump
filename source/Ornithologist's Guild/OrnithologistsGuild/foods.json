@@ -11,63 +11,36 @@
 [
     {
         "Type": "Corn",
-        "FeederAssetIndex": 1,
         "FeedersTypes": [
             "Hopper",
             "Platform"
         ],
-        "Items": [
-            "Corn"
-        ]
+        "QualifiedItemId": "(O)270"
     },
     {
         "Type": "Fruit",
-        "FeederAssetIndex": 2,
         "FeedersTypes": [
             "Hopper",
             "Platform"
         ],
-        "Items": [
-            "Apple",
-            "Banana",
-            "Blackberry",
-            "Blueberry",
-            "Cherry",
-            "Cranberries",
-            "Grape",
-            "Mango",
-            "Melon",
-            "Orange",
-            "Peach",
-            "Pineapple",
-            "Pomegranate",
-            "Salmonberry",
-            "Strawberry",
-            "Wild Plum"
-        ]
+        "CategoryId": -79
     },
     {
         "Type": "MixedSeeds",
-        "FeederAssetIndex": 3,
         "FeedersTypes": [
             "Hopper",
             "Platform",
             "Tube"
         ],
-        "Items": [
-            "Mixed Seeds"
-        ]
+        "QualifiedItemId": "(O)770"
     },
     {
         "Type": "SunflowerSeeds",
-        "FeederAssetIndex": 4,
         "FeedersTypes": [
             "Hopper",
             "Platform",
             "Tube"
         ],
-        "Items": [
-            "DGA:Ivy.OrnithologistsGuild/HulledSunflowerSeeds"
-        ]
+        "QualifiedItemId": "(O)Ivy_OrnithologistsGuild_HulledSunflowerSeeds"
     }
 ]

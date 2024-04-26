@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+  "Name": "Uncle Iroh Approved Tea",
+  "Author": "slimerrain",
+  "Description": "Component of the tea mod that gives peels for eating oranges.",
+  "Version": "1.0.0",
+  "UniqueID": "slimerrain.byproducts",
+  "EntryDll": "Byproducts.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "slimerrain.uncleirohapprovedteacp",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": [ "" ]
+}

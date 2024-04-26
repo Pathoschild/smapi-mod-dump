@@ -193,6 +193,35 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
+        // public static Dictionary<ISalable, int[]> getIslandMerchantTradeStock(Farmer who)
+        public static void GetIslandMerchantTradeStock_ReplaceDeluxeRetainingSoilWithCraftsanityCheck_Postfix(Farmer who, ref Dictionary<ISalable, int[]> __result)
+        {
+            try
+            {
+                var myActiveHints = _archipelago.GetMyActiveHints();
+                foreach (var salable in __result.Keys.ToArray())
+                {
+                    if (salable is not Object { IsRecipe: true, ParentSheetIndex: 920 })
+                    {
+                        continue;
+                    }
+
+                    __result.Remove(salable);
+                }
+                
+                AddTradeRecipeCheckToStock(__result, "Deluxe Retaining Soil", 848, 50, myActiveHints);
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log(
+                    $"Failed in {nameof(GetIslandMerchantTradeStock_ReplaceDeluxeRetainingSoilWithCraftsanityCheck_Postfix)}:\n{ex}",
+                    LogLevel.Error);
+                return;
+            }
+        }
+
         private static void RemoveRecipesFromStock(Dictionary<ISalable, int[]> stock)
         {
             foreach (var salable in stock.Keys.ToArray())
@@ -234,7 +263,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 return;
             }
 
-            var purchasableCheck = new PurchaseableArchipelagoLocation(recipeName, apLocation, _helper, _locationChecker, _archipelago, activeHints);
+            var purchasableCheck = new PurchaseableArchipelagoLocation(recipeName, apLocation, _monitor, _helper, _locationChecker, _archipelago, activeHints);
             stock.Add(purchasableCheck, price);
         }
     }

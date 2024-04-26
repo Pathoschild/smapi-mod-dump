@@ -1,0 +1,75 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Log": "Gift Taste for NPCs Data",
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "TextOperations": 
+            [
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Alex", "1"],
+                    "Value": "{{ModId}}_Health_Blend_Tea",
+                    "Delimiter": " "
+                },
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Alex", "3"],
+                    "Value": "{{ModId}}_Dried_Strawberries",
+                    "Delimiter": " "
+                },
+
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Elliott", "1"],
+                    "Value": "{{ModId}}_Brown_Rice_Tea",
+                    "Delimiter": " "
+                },
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Elliott", "3"],
+                    "Value": "{{ModId}}_Chamomile_Tea {{ModId}}_Rock_Sugar {{ModId}}_Jasmine",
+                    "Delimiter": " "
+                },
+
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Harvey", "1"],
+                    "Value": "{{ModId}}_Health_Blend_Tea",
+                    "Delimiter": " "
+                },
+
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Harvey", "3"],
+                    "Value": "{{ModId}}_Chamomile_Tea {{ModId}}_Lavender_Tea {{ModId}}_Barley_Tea {{ModId}}__Dried_Goji_Berries",
+                    "Delimiter": " "
+                },
+
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Sam", "7"],
+                    "Value": "{{ModId}}_Barley_Tea {{ModId}}_Brown_Rice_Tea {{ModId}}_Cassia_Tea {{ModId}}_Chamomile_Tea {{ModId}}_Chrysanthemum_Tea {{ModId}}_Health_Blend_Tea {{ModId}}_Jasmine_Tea {{ModId}}_Lavender_Tea",
+                    "Delimiter": " "
+                },
+
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Sebastian", "1"],
+                    "Value": "{{ModId}}_Brown_Rice_Tea {{ModId}}_Jasmine_Tea",
+                    "Delimiter": " "
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+	"ID": "PrairieKing",
+
+	"FontVariables": {
+		"$PrairieKing:Dialogue": "$Dialogue",
+		"$PrairieKing:Small": "$Small"
+	},
+
+	"BmFontVariables": {
+		"$PrairieKing:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$PrairieKing:ST:Normal": "$ST:Normal",
+		"$PrairieKing:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"StardewValley.Minigames.AbigailGame:draw": {
+
+			"Colors": {
+				"SpriteText:Purple": {
+					"*": "$PrairieKingAbigailDialogueText"
+				}
+			},
+
+			"RawColors": {
+				"88, 29, 43": { "*": "$PrairieKingStoreItemText" },
+				"147, 177, 38": { "*": "$PrairieKingTimerGreen" },
+				"188, 51, 74": { "*": "$PrairieKingTimerRed" },
+				"255, 214, 168": { "*": "$PrairieKingScreenFlash" }
+			},
+
+			"FontFields": {
+				"StardewValley.Game1:dialogueFont": { "*": "$PrairieKing:Dialogue" },
+				"StardewValley.Game1:smallFont": { "*": "$PrairieKing:Small" }
+			},
+
+			"TextureFields": {
+				"StardewValley.Game1:staminaRect": { "*": "$PrairieKing:staminaRect" },
+				"StardewValley.Game1:mouseCursors": { "*": "$PrairieKing:mouseCursors" },
+				"StardewValley.Game1:controllerMaps": { "*": "$PrairieKing:controllerMaps" }
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$PrairieKing:ST:Normal",
+					"$PrairieKing:ST:Colored",
+					"$PrairieKing:ST:Font"
+				]
+			}
+		}
+	}
+
+}

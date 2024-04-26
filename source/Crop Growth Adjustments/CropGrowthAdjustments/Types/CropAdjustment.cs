@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -20,7 +19,7 @@ namespace CropGrowthAdjustments.Types
     public class CropAdjustment
     {
         public string CropProduceName { get; set; }
-        public int CropProduceItemId { get; set; } = -1;
+        public string CropProduceItemId { get; set; } = "-1";
         public string SeasonsToGrowIn { get; set; }
         public string SeasonsToProduceIn { get; set; }
         public string LocationsWithDefaultSeasonBehavior { get; set; }
@@ -28,6 +27,8 @@ namespace CropGrowthAdjustments.Types
         
         [JsonIgnore]
         public int RowInCropSpriteSheet { get; set; }
+        [JsonIgnore]
+        public string InitialTexture { get; set; }
         
         public List<Season> GetSeasonsToGrowIn()
         {

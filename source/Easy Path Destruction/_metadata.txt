@@ -6,9 +6,9 @@ mods:
    Easy Path Destruction
 
 latest commit:
-   commit b431e8b4874a66ec2b06e508e9406d8cc1258e9b
-   Author: Jude Vargas <judevargas22@gmail.com>
-   Date:   Fri May 21 04:05:09 2021 -0400
+   commit e4f55e40c164287b0c8ebc04156aa604b97d654c
+   Author: judev <judev@JUDE-PC>
+   Date:   Wed Apr 10 00:12:09 2024 -0400
    
-       Create README.md
+       Add project files.
    

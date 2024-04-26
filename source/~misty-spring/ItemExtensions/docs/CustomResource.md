@@ -39,6 +39,7 @@ Custom resources are very extensive, with many customizable fields:
 
 | name         | type                         | Required | description                                               |
 |--------------|------------------------------|----------|-----------------------------------------------------------|
+| Type         | `CustomResourceType`         | No       | Used for mod compat. Default Stone, can be Weeds or Wood. |
 | Texture      | `string`                     | Yes      | The resource's texture path.                              |
 | SpriteIndex  | `int`                        | Yes      | Index in texture to use.                                  |
 | Width        | `int`                        | Yes      | Resource size.                                            |
@@ -69,14 +70,15 @@ For example: copper's health is 3, cinder shards' is 12, and radioactive ores ha
 Fields for ExtraSpawns can be found [here](https://github.com/misty-spring/StardewMods/tree/main/ItemExtensions/docs/ExtraSpawns.md).
 
 ### For ore customization
-| name          | type                         | Required | description                  |
-|---------------|------------------------------|----------|------------------------------|
-| Debris        | `string`                     | No       | Debris to show on breaking.  |
-| BreakingSound | `string`                     | No       | Breaking sound.              |
-| Sound         | `string`                     | No       | Sound on hit.                |
-| Shake         | `bool`                       | No       | Whether to shake on hit.     |
-| MinToolLevel  | `int`                        | No       | Minimum level.               |
-| Light         | `LightData`                  | No       | Item light.                  |  
+| name          | type        | Required | description                               |
+|---------------|-------------|----------|-------------------------------------------|
+| Debris        | `string`    | No       | Debris to show on breaking.               |
+| BreakingSound | `string`    | No       | Breaking sound.                           |
+| Sound         | `string`    | No       | Sound on hit.                             |
+| Shake         | `bool`      | No       | Whether to shake on hit.                  |
+| MinToolLevel  | `int`       | No       | Minimum level.                            |
+| ImmuneToBombs | `bool`      | No       | If this ore shouldn't be harmed by bombs. |
+| Light         | `LightData` | No       | Item light.                               |  
 
 Fields for LightData can be found [here](https://github.com/misty-spring/StardewMods/tree/main/ItemExtensions/docs/LightData.md).
 

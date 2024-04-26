@@ -20,9 +20,10 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public abstract void GotWorkingPart(Item workingPart);
 
-        public override bool IsItemForThisQuest(Item item)
+        public override bool IsConversationPiece(Item? item)
         {
-            return item.ItemId == this.Controller.BrokenAttachmentPartId || item.ItemId == this.Controller.WorkingAttachmentPartId;
+            // The working items are never conversation pieces - they always just get dragged to the building.
+            return item?.ItemId == this.Controller.BrokenAttachmentPartId; // || item?.ItemId == this.Controller.WorkingAttachmentPartId;
         }
     }
 }

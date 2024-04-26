@@ -1,0 +1,8 @@
+{
+    "config.TimeSpeedControl.name": "Controlar velocidade do tempo",
+    "config.TimeSpeedControl.tooltip": "Desabilite isso se você tem outro mod que você quer que controle a velocidade do tempo",
+    "config.SecondsToMinutes.name": "Segundos pra minutos",
+    "config.SecondsToMinutes.tooltip": "Em quantos segundos o relógio deve mudar",
+    "config.Show24Hours.name": "Modo 24 horas",
+    "config.Show24Hours.tooltip": "Alternar entre o modo de 12 e 24 horas"
+}

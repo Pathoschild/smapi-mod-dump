@@ -22,6 +22,11 @@ namespace BuildableGingerIslandFarm.Handlers
 		{
 			// Make Ginger Island Farm always active
 			GingerIslandFarmUtility.MakeAlwaysActive(e);
+
+			// Localize menus
+			MenuUtility.LocalizeGingerIslandFarmDisplayName(e);
+			MenuUtility.LocalizeCarpenterMenuChooseLocation(e);
+			MenuUtility.LocalizePurchaseAnimalsMenuChooseLocation(e);
 		}
 	}
 }

@@ -16,8 +16,11 @@ This mod for Stardew Valley will mark the stones which will spawn a ladder or sh
 ## Compatibility
 * Works with Stardew Valley 1.6 on Linux/Mac/Windows.
 * Works in single player and multiplayer.
+* Supports [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 
 ## Settings
+
+These settings can be set in-game using the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) mod.
 
 For information on specifying keybinds for Key Combination List type settings, see [the SMAPI key bindings documentation](https://stardewcommunitywiki.com/Modding:Player_Guide/Key_Bindings#Multi-key_bindings).
 
@@ -45,4 +48,4 @@ For information on specifying keybinds for Key Combination List type settings, s
 | Sprite | Draws a duplicate over the rock sprite, making it a bit darker. Same tint rules as `Image` |
 
 ## Source Code
-[The Github](https://github.com/yuri-moens/LadderLocator)
+[Github](https://github.com/yuri-moens/LadderLocator)

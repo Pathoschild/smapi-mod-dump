@@ -25,6 +25,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
 
 using StardewValley;
+using StardewValley.GameData.LocationContexts;
 
 namespace Leclair.Stardew.Almanac.Pages;
 
@@ -32,13 +33,14 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 
 	public static readonly Rectangle WEATHER_ICON = new(384, 352, 16, 16);
 
-	private readonly ulong Seed;
-	private IFlowNode[]? Nodes;
-	private int[]? Forecast;
-	private bool[]? Festivals;
-	private bool[]? Pirates;
+		private readonly ulong Seed;
+		private IFlowNode[] Nodes;
+		private string[] Forecast;
+		private bool[] Festivals;
+		private bool[] Pirates;
 
 	readonly bool IsIsland;
+	readonly bool IsDesert;
 
 	private readonly SpriteInfo? FestivalFlag;
 
@@ -48,7 +50,7 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 		if (!mod.Config.ShowWeather || !mod.Config.EnableDeterministicWeather)
 			return null;
 
-		return new(menu, mod, false);
+		return new(menu, mod, false, false);
 	}
 
 	public static WeatherPage? GetIslandPage(AlmanacMenu menu, ModEntry mod) {
@@ -58,12 +60,23 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 		if (!mod.HasIsland(Game1.player))
 			return null;
 
-		return new(menu, mod, true);
+		return new(menu, mod, true, false);
 	}
 
-	public WeatherPage(AlmanacMenu menu, ModEntry mod, bool isIsland) : base(menu, mod) {
+	public static WeatherPage? GetDesertPage(AlmanacMenu menu, ModEntry mod) {
+		if (!mod.Config.ShowWeather || !mod.Config.EnableDeterministicWeather)
+			return null;
+
+		if (!mod.HasDesertAccess())
+			return null;
+
+		return new(menu, mod, false, true);
+	}
+
+	public WeatherPage(AlmanacMenu menu, ModEntry mod, bool isIsland, bool isDesert) : base(menu, mod) {
 		Seed = Mod.GetBaseWorldSeed();
 		IsIsland = isIsland;
+		IsDesert = isDesert;
 
 		if (!IsIsland)
 			FestivalFlag = new SpriteInfo(
@@ -85,7 +98,7 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 	public override void Update() {
 		base.Update();
 
-		Forecast = new int[ModEntry.DaysPerMonth];
+		Forecast = new string[ModEntry.DaysPerMonth];
 		Nodes = new IFlowNode[ModEntry.DaysPerMonth];
 		Festivals = IsIsland ? null : new bool[ModEntry.DaysPerMonth];
 		Pirates = IsIsland ? new bool[ModEntry.DaysPerMonth] : null;
@@ -100,13 +113,16 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 		if (!IsIsland)
 			builder.FormatText(I18n.Festival_About(Utility.getSeasonNameFromNumber(date.SeasonIndex)));
 
+		string contextID;
+		if (IsIsland) contextID = "Island";
+		else if (IsDesert) contextID = "Desert";
+		else contextID = "Default";
+		LocationContextData context = Game1.locationContextData[contextID];
+
 		for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 			date.DayOfMonth = day;
 			bool shown = forecastLength == -1 || date.TotalDays - today <= forecastLength;
-			int weather = Forecast[day - 1] = shown ?
-				Mod.Weather.GetWeatherForDate(Seed, date, IsIsland ? GameLocation.LocationContext.Island : GameLocation.LocationContext.Default)
-				: -1;
-
+			string weather = Forecast[day - 1] = shown ? Mod.Weather.GetWeatherForDate(Seed, date, context, contextID): "";
 			if (IsIsland) {
 				bool pirates = Pirates![day - 1] = shown && day % 2 == 0 && ! WeatherHelper.IsRainOrSnow(weather);
 				if (pirates)
@@ -257,7 +273,7 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 
 		int day = date.DayOfMonth - 1;
 
-		if (Forecast[day] != -1)
+		if (Forecast[day] != "")
 			Utility.drawWithShadow(
 				b,
 				Menu.background,
@@ -265,7 +281,7 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 					bounds.X + (bounds.Width - 64) / 2,
 					bounds.Y + (bounds.Height - 64) / 2
 				),
-				WeatherHelper.GetWeatherIcon(Forecast[day], date.Season),
+				WeatherHelper.GetWeatherIcon(Forecast[day]),
 				Color.White,
 				0f,
 				Vector2.Zero,
@@ -320,12 +336,9 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 		if (Forecast == null)
 			return;
 
-		int weather = Forecast[date.DayOfMonth - 1];
-		if (weather == -1)
-			return;
-
-		Menu.HoverText = WeatherHelper.LocalizeWeather(weather);
-	}
+			string weather = Forecast[date.DayOfMonth - 1];
+			Menu.HoverText = WeatherHelper.LocalizeWeather(weather);
+		}
 
 	#endregion
 

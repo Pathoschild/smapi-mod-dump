@@ -431,6 +431,7 @@ namespace GoodbyeAmericanEnglish
                             data[key] = data[key].Replace("WildColour", "WildColor");
                             data[key] = data[key].Replace("honourary", "honorary");
                             data[key] = data[key].Replace("ancell ", "ancel ");
+                            data[key] = data[key].Replace("Fibre_Seeds", "Fiber_Seeds");
                         }
                     }
 

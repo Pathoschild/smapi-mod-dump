@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "events": [
+    {
+      "name": "Marnie-event-0",
+      "location": "Farm",
+      "eventId": "1590166",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Marnie-event-1",
+      "location": "Farm",
+      "eventId": "897405",
+      "night": false,
+      "mail": null
+    },
+    {
+      "name": "Marnie-event-2",
+      "location": "Town",
+      "eventId": "639373",
+      "night": true,
+      "mail": null
+    }
+  ]
+}

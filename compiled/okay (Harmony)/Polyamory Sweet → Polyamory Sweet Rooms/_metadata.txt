@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20599
+IDs: ApryllForever.PolyamorySweetRooms
+update keys: Nexus:20599, GitHub:ApryllForever/PolyamorySweetLove

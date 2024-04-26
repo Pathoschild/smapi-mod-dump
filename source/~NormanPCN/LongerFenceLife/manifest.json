@@ -11,7 +11,7 @@
 {
   "Name": "Longer Fence Life",
   "Author": "NormanPCN",
-  "Version": "1.4.0",
+  "Version": "1.4.1",
   "Description": "Allow one to alter (increease) the life of fences and gates.",
   "UniqueID": "NormanPCN.LongerFenceLife",
   "EntryDll": "LongerFenceLife.dll",

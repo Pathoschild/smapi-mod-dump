@@ -1,6 +1,20 @@
 {
   "Introduction": "Grüße! Ich bin Demetrius, örtlicher Wissenschaftler und Vater. Danke, dass du dich vorstellst!#$e#Ich studiere momentan die hiesige Flora und Fauna von meinem Heimlabor aus.#$b#Hast du meine Tochter Maru getroffen? Sie scheint dich gern treffen zu wollen.",
+  "AcceptGift_(O)StardropTea": "Wow, das ist eine seltene Substanz. Ich muss sie ins Labor bringen für... äh... weitere Analysen.",
+  "AcceptBirthdayGift_Positive": "Ein Geschenk!... mit optimalem Timing. Heute ist der Jahrestag meiner Geburt. Vielen Dank dafür!$h",
+  "AcceptBirthdayGift_Negative": "Ein Geschenk!... mit optimalem Timing. Heute ist der Jahrestag meiner Geburt.$h#$b#Mal sehen, was es ist... $h#$b#...Oh.$s",
+  "AcceptGift_(O)107": "Wow, ein intaktes Dinosaurier-Ei! Das ist ein extrem seltenes Exemplar. Wenn es jetzt nur ausgebrütet werden könnte...",
   "Resort_Entering": "Ich habe bereits eine seltene Krabbe entdeckt. Dieser Ort ist großartig.$h",
+  "GreenRain": "Kümmere dich nicht um mich, @. Ich sammle nur ein paar Proben. Das ist vielleicht eine einmalige Gelegenheit! $7#$e#Erm... Wenn du meine Frau siehst, kannst du ihr sagen, dass es mir gut geht?$7",
+  "GreenRain_2": "Der Regen scheint harmlos zu sein, deshalb bin ich in diesem Jahr weniger vorsichtig.",
+  "firstVisit_Desert": "Ich habe gehört, dass du kürzlich die Calico-Wüste besucht hast. Wie faszinierend! Ich bin sicher, du hast auf deiner Reise viele einzigartige Lebensformen beobachtet.",
+  "questComplete_104_memory_oneday": "Wie steht es um die Melonenforschung? Ja, ich... äh... habe sie \"analysiert\", und sie hat auf jeden Fall ein optimales Makronährstoffprofil...",
+  "purchasedAnimal_Dinosaur": "Sag das noch mal!? Du hast erfolgreich ein Dinosaurier-Ei bebrütet? Das ist einmalig!$5#$e#Hier, nimm meinen Kaffee, ich bin schon ganz aufgeregt... Ich kann nicht mehr trinken. [253]",
+  "dating_Maru": "Ja, Maru hat mir die Neuigkeiten erzählt. Ich kann nicht sagen, dass ich darüber begeistert bin, aber vielleicht beweist du mir das Gegenteil.$u",
+  "married_Maru": "*seufz*... @, ich habe mich damit abgefunden, dass es für mein 'kleines Mädchen' an der Zeit ist, eine Frau zu werden. Du hast meinen Segen.$s",
+  "married_Sebastian": "Herzlichen Glückwunsch zur Hochzeit. Jinja hat seit der Hochzeit geweint. 'Freudentränen', wie sie es nennt! Ein höchst eigenartiges Konzept...#$e#Hmm, jetzt, wo der Keller frei ist, muss ich vielleicht das Labor erweitern...$u",
+  "eventSeen_65_memory_oneweek": "$y 'Wie geht es mit dem Höhlenexperiment voran? Hat es schon irgendetwas Wertvolles hervorgebracht?_Ja!_Ah! Das bedeutet, dass die Bedingungen geeigneter sein müssen, als ich ursprünglich angenommen habe... hmm..._Nein_Nun ja, sieh ab und zu mal nach. Ich bin sicher, dass diese kleinen Kerle irgendwann etwas hervorbringen werden.'",
+  "eventSeen_65_memory_twoweeks": "Vergiss nicht, in der Hof-Höhle nachzusehen! Da ist bestimmt schon etwas Nützliches drin.",
   "Resort_Leaving": "Ich werde diese Daten monatelang analysieren.",
   "Resort_Shore": "*Knirsch*... hoppla, da verschwindet eine vom Aussterben bedrohte Krebsart... $s#$b#... #$b#Oh, vergiss es. Es war nur die leere Muschel! Ich kann heute Nacht schlafen.",
   "Resort_Chair": "Hast du Spaß, @? Du musst daran denken, auch ab und zu Pausen einzulegen!",
@@ -44,5 +58,6 @@
   "winter_Fri": "Hallo.#$e#%Demetrius scheint in Gedanken verloren zu sein.",
   "winter_Sat": "Mal sehen... wenn saisonale Stickstoffwerte mit einer stückweisen Funktion modelliert werden könnten...$u#$b#Oh! Tut mir leid. Ich habe gerade ein paar Daten analysiert und dich gar nicht bemerkt.#$e#Brauchst du etwas?",
   "winter_Sun": "Sammle ruhig so viel Holz und Stein aus diesem Gebiet wie du willst.",
-  "winter_Fri4": "Danke für's Vorbeischauen. Ich muss mal über etwas anderes als Hülsenfrüchte nachdenken.#$e#Also, was hast du so in letzter Zeit gemacht?#$e#Das klingt interessant."
+  "winter_Fri4": "Danke für's Vorbeischauen. Ich muss mal über etwas anderes als Hülsenfrüchte nachdenken.#$e#Also, was hast du so in letzter Zeit gemacht?#$e#Das klingt interessant.",
+  "purchaseAnimal_Dinosaur": "Sag das noch mal!? Du hast erfolgreich ein Dinosaurier-Ei bebrütet? Das ist einmalig!$5#$e#Hier, nimm meinen Kaffee, ich bin schon ganz aufgeregt... Ich kann nicht mehr trinken. [253]"
 }

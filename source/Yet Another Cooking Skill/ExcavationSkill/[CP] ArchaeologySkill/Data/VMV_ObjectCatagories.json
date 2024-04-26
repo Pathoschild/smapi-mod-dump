@@ -1,0 +1,569 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "spacechase0.SpaceCore/ObjectExtensionData",
+            "Entries": {
+                "moonslime.Archaeology.h_fossilized_starfish": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fossilised_moth": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fossilised_fern": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fossilised_fish": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fossilised_ammonites": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_giant_tusk": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_broken_watch": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_broken_tea_cup": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_efficient_cog": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_dwarvish_device": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_rusty_chest": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_petrified_flower": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_railroad_nail": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_dahu_statuette": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_faience_plate": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_copper_fibula": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_glassb_bowl": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fragment_mask": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_old_miner_lamp": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_rusty_ring": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_stained_glass": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_blue_cameo": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_broken_sundial": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_old_shield": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fragment_of_fossil_I": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fragment_of_fossil_II": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_fragment_of_fossil_III": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_rare_stamp": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_medallion": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_cyanotype": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fossilized_starfish": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fossilised_moth": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fossilised_fern": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fossilised_fish": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fossilised_ammonites": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_giant_tusk": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_broken_watch": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_broken_tea_cup": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_efficient_cog": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_dwarvisw_device": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_rusty_chest": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_petrified_flower": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_railroad_nail": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_dahu_statuette": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_faience_plate": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_copper_fibula": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.h_strange_doll_green": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_glassb_bowl": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fragment_mask": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_old_miner_lamp": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_rusty_ring": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_stained_glass": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_blue_cameo": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_broken_sundial": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_old_shield": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fragment_of_fossil_I": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fragment_of_fossil_II": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_fragment_of_fossil_III": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_rare_stamp": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_medallion": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                },
+                "moonslime.Archaeology.w_cyanotype": {
+                    "CategoryTextOverride": "{{i18n:moonslime.Archaeology.item_catagory}}",
+                    "CategoryColorOverride": {
+                        "R": 116,
+                        "G": 25,
+                        "B": 98,
+                        "A": 255
+                    }
+                }
+            }
+        }
+    ]
+}

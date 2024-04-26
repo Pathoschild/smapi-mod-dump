@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/TheFishDimension
+**
+*************************************************/
+
+{
+	"Name": "The Fish Dimension",
+	"Author": "ichortower",
+	"Description": "All random daily bulletin board quests are about fish.",
+	"Version": "1.0.0",
+	"UniqueID": "ichortower.TheFishDimension",
+	"EntryDll": "TheFishDimension.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": ["Nexus:22335", "GitHub:ichortower/TheFishDimension"],
+	"Dependencies": []
+}

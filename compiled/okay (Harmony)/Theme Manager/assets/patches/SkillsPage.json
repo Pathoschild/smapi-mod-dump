@@ -1,0 +1,59 @@
+{
+	"ID": "SkillsPage",
+
+	"ColorVariables": {
+		"$SkillsPageText": "$Text"
+	},
+
+	"Patches": {
+		"#SkillsPage:draw(SpriteBatch)": {
+			"Colors": {
+				"LightGreen": { "*": "$SkillsPageModifiedNumber" },
+				"SandyBrown": { "*": "$SkillsPageNumber" }
+			},
+			"RawColors": {
+				"214, 143, 84": { "*": "$SkillsPageDivider" },
+				"160, 30, 235": { "*": "$SkillsPageStardropText" },
+				"60, 60, 25": { "*": "$SkillsPageMasteryProgressBorder" },
+				"173, 129, 79": { "*": "$SkillsPageMasteryProgressBackground" }
+			},
+			"ColorFields": {
+				"Game1:textColor": { "*": "$SkillsPageText" }
+			}
+		},
+
+		"#MasteryTrackerMenu:drawBar": {
+			"Colors": {
+				"White": { "*": "$SkillsPageMasteryProgressLabel" }
+			},
+
+			"RawColors": {
+				"60, 180, 80": { "*": "$SkillsPageMasteryProgressLight" },
+				"0, 113, 62": { "*": "$SkillsPageMasteryProgressMedium" },
+				"0, 80, 50": { "*": "$SkillsPageMasteryProgressMediumDark" },
+				"0, 60, 30": { "*": "$SkillsPageMasteryProgressDark" },
+				"220, 220, 220": { "*": "$SkillsPageMasteryProgressCompleteLight" },
+				"140, 140, 140": { "*": "$SkillsPageMasteryProgressCompleteMedium" },
+				"80, 80, 80": { "*": "$SkillsPageMasteryProgressCompleteMediumDark" }
+			}
+		},
+
+		"SpaceCore!SpaceCore.Interface.NewSkillsPage:draw": {
+			"WarnIfNotFound": false,
+
+			"Colors": {
+				"LightGreen": { "*": "$SkillsPageModifiedNumber" },
+				"SandyBrown": { "*": "$SkillsPageNumber" }
+			},
+			"RawColors": {
+				"214, 143, 84": { "*": "$SkillsPageDivider" },
+				"160, 30, 235": { "*": "$SkillsPageStardropText" },
+				"60, 60, 25": { "*": "$SkillsPageMasteryProgressBorder" },
+				"173, 129, 79": { "*": "$SkillsPageMasteryProgressBackground" }
+			},
+			"ColorFields": {
+				"Game1:textColor": { "*": "$SkillsPageText" }
+			}
+		}
+	}
+}

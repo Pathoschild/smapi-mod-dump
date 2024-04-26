@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/gingajamie/smapi-better-sprinklers-plus-encore
+   Git: https://github.com/gingajamie/smapi-better-sprinklers-plus-encore.git
+
+mods:
+   Better Sprinklers Plus (1.6)
+
+latest commit:
+   commit 70e5a9d79d0e09edea664941740be625719a7804
+   Author: gingajamie <33529796+gingajamie@users.noreply.github.com>
+   Date:   Tue Apr 2 22:17:51 2024 +0100
+   
+       Update README.md
+   

@@ -12,6 +12,7 @@ using AchtuurCore.Utility;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,7 +51,8 @@ internal class SpedUpMachineGroup
     /// <returns></returns>
     internal bool TilesMatchNStatues()
     {
-        int placedStatueCount = this.Tiles.Count(tile => ModEntry.GetPossibleStatueIDs().Any(id => tile.ContainsObject(id, Location)));
+        //int placedStatueCount = this.Tiles.Count(tile => ModEntry.GetPossibleStatueIDs().Any(id => tile.ContainsObject(id, Location)));
+        int placedStatueCount = this.Tiles.Count(tile => tile.ContainsObject(SpeedupStatue.ID));
         return this.Tiles is not null && placedStatueCount == n_statues;
     }
 
@@ -124,6 +126,14 @@ internal class SpedUpMachineGroup
         }
     }
 
+    internal void OnDayStarted()
+    {
+        foreach(GenericSpedUpMachineWrapper machine in this.Machines)
+        {
+            machine.OnDayStarted();
+        }
+    }
+
 
 
     /// <summary>
@@ -185,4 +195,19 @@ internal class SpedUpMachineGroup
         }
         return new SpedUpMachineWrapper(machine, this.n_statues);
     }
+
+    internal IEnumerable<Vector2> GetStatueTiles()
+    {
+        //return this.Tiles.Where(tile => ModEntry.GetPossibleStatueIDs().Any(id => tile.ContainsObject(id, Location)));
+        return this.Tiles.Where(tile => tile.ContainsObject(SpeedupStatue.ID));
+    }
+
+    internal IEnumerable<Vector2> GetMachineTiles()
+    {
+        return this.Machines.Select(m => m.GetTile())
+            .Where(t => t != null)
+            .Cast<Vector2>();
+        
+    }
+    
 }

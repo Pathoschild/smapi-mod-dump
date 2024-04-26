@@ -82,7 +82,7 @@ namespace EasierMonsterEradication
                 gmcm.Register(ModManifest,
                               reset: () => Config = new ModConfig(),
                               save: () => Helper.WriteConfig(Config),
-                              titleScreenOnly:true);
+                              titleScreenOnly:false);
 
                 //gmcm.AddBoolOption(ModManifest,
                 //                   () => Config.xxx,
@@ -176,65 +176,49 @@ namespace EasierMonsterEradication
                 {
                     var stats = Game1.player.stats;
 
-                    if (e.Button == SButton.F5) //set monsters just below threshold
+                    if (e.Button == SButton.F6) //set monsters just below threshold
                     {
                         foreach (MonsterSlayerQuestData questData in DataLoader.MonsterSlayerQuests(Game1.content).Values)
                         {
-                            int killed = 0;
-                            if (questData.Targets == null)
+                            if (questData.Targets != null)
                             {
-                                continue;
-                            }
-                            foreach (string targetType in questData.Targets)
-                            {
-                                killed = Game1.stats.getMonstersKilled(targetType);
-                                if (stats.specificMonstersKilled.TryGetValue(targetType, out int thisKill))
+                                //set the monster targets just below the threshold
+                                foreach (string targetType in questData.Targets)
                                 {
-                                    killed += thisKill;
+                                    if (!stats.specificMonstersKilled.ContainsKey(targetType))
+                                        stats.specificMonstersKilled.Add(targetType, 0);
+                                    stats.specificMonstersKilled[targetType] = (questData.Count / questData.Targets.Count) - 1;
                                 }
-                                int needed = questData.Count;
-
-                                // make sure the first monster exists
-                                if (!stats.specificMonstersKilled.ContainsKey(targetType))
-                                    stats.specificMonstersKilled.Add(targetType, 0);
-
-                                needed = needed - killed - 2;
-                                if (needed > 1)
-                                    stats.specificMonstersKilled[targetType] += needed;
                             }
-
                         }
                     }
-                    else if (e.Button == SButton.F6) //complete one monster slayer goal
+                    else if (e.Button == SButton.F7) //complete one monster slayer goal
                     {
                         foreach (MonsterSlayerQuestData questData in DataLoader.MonsterSlayerQuests(Game1.content).Values)
                         {
-                            if (questData.Targets == null)
+                            if (questData.Targets != null)
                             {
-                                continue;
-                            }
-                            int needed = questData.Count;
+                                int needed = questData.Count;
 
-                            // make sure the first monster exists
-                            if (!stats.specificMonstersKilled.ContainsKey(questData.Targets[0]))
-                                stats.specificMonstersKilled.Add(questData.Targets[0], 0);
+                                // make sure the first monster target exists
+                                if (!stats.specificMonstersKilled.ContainsKey(questData.Targets[0]))
+                                    stats.specificMonstersKilled.Add(questData.Targets[0], 0);
 
-                            int killed = 0;
-                            foreach (string targetType in questData.Targets)
-                            {
-                                killed += Game1.stats.getMonstersKilled(targetType);
-
-
-                            }
-                            if (killed < needed)
-                            {
-                                do
+                                int killed = 0;
+                                foreach (string targetType in questData.Targets)
                                 {
-                                    killed++;
-                                    stats.monsterKilled(questData.Targets[0]);
+                                    killed += Game1.stats.getMonstersKilled(targetType);
                                 }
-                                while (killed < needed);
-                                return;
+                                if (killed < needed)
+                                {
+                                    do
+                                    {
+                                        killed++;
+                                        stats.monsterKilled(questData.Targets[0]);
+                                    }
+                                    while (killed < needed);
+                                    return;
+                                }
                             }
 
                         }

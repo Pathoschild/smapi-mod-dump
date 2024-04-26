@@ -14,6 +14,9 @@ using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using BotFramework;
+using xTile.Tiles;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace WaterBot.Framework
 {
@@ -97,16 +100,19 @@ namespace WaterBot.Framework
         /// <param name="y">Y of tile.</param>
         public static bool tileNeedsWatering(int x, int y)
         {
+            TerrainFeature feature;
             Vector2 index = new Vector2(x, y);
 
-            return (Game1.currentLocation.isTileHoeDirt(index) &&
+            return Game1.currentLocation.isTileHoeDirt(index) &&
+                Game1.currentLocation.GetHoeDirtAtTile(index) != null &&
+                Game1.currentLocation.terrainFeatures.TryGetValue(index, out feature) &&
                 ((Game1.currentLocation.terrainFeatures[index] as HoeDirt).state.Value == 0) &&
                 ((Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop != null) &&
                 (!(Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.dead) &&
-                ((((Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.fullyGrown &&
+                (((Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.fullyGrown &&
                 (Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.dayOfCurrentPhase > 0) ||
-                ((Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.currentPhase < (Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.phaseDays.Count - 1)) ||
-                (Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.regrowAfterHarvest != -1));
+                ((Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.currentPhase < (Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.phaseDays.Count - 1) ||
+                (Game1.currentLocation.terrainFeatures[index] as HoeDirt).crop.RegrowsAfterHarvest());
         }
 
         /// <summary>
@@ -471,7 +477,7 @@ namespace WaterBot.Framework
                         }
                         else if (j == 0 || i == 0)
                         {
-                            Point start = new Point(Game1.player.getTileX(), Game1.player.getTileY());
+                            Point start = new Point(Game1.player.TilePoint.X, Game1.player.TilePoint.Y);
                             Point end = this.groupings[i == 0 ? j - 1 : i - 1].Centroid(this);
 
                             Tuple<List<Tile>, int> path = this.walkablePathBetweenPoints(console, start, end);
@@ -622,7 +628,7 @@ namespace WaterBot.Framework
 
             // Queue for depth first search
             List<Tile> stack = new List<Tile>();
-            stack.Add(group.findClosestTile(Game1.player.getTileX(), Game1.player.getTileY()).Item1);
+            stack.Add(group.findClosestTile(Game1.player.TilePoint.X, Game1.player.TilePoint.Y).Item1);
 
             bool keepGoing;
             do

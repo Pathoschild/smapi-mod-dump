@@ -1,6 +1,6 @@
 urls:
-   web: https://gitlab.com/hbc-mods/stardew-valley
-   Git: https://gitlab.com/hbc-mods/stardew-valley.git
+   web: https://gitlab.com/hbc-mods/stardew-valley/sv-notepad
+   Git: https://gitlab.com/hbc-mods/stardew-valley/sv-notepad.git
 
 mods:
    SV Notepad

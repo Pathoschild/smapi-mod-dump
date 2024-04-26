@@ -1,0 +1,297 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Add Keg rules for Grains",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)12",
+                "OutputRules"
+            ],
+            "Entries": {
+                "{{ModId}}_Barley": {
+                    "Id": "{{ModId}}_Barley",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine",
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": null,
+                            "RequiredTags": null,
+                            "RequiredCount": 1,
+                            "Condition": "ITEM_CONTEXT_TAG Input barley"
+                        }
+                    ],
+                    "UseFirstValidOutput": false,
+                    "OutputItem": [
+                        {
+                            "CustomData": null,
+                            "OutputMethod": null,
+                            "CopyColor": false,
+                            "CopyPrice": false,
+                            "CopyQuality": false,
+                            "PreserveType": null,
+                            "PreserveId": null,
+                            "IncrementMachineParentSheetIndex": 0,
+                            "PriceModifiers": null,
+                            "PriceModifierMode": "Stack",
+                            "Condition": null,
+                            "Id": "(O)303",
+                            "ItemId": "(O)303",
+                            "RandomItemId": null,
+                            "MaxItems": null,
+                            "MinStack": -1,
+                            "MaxStack": -1,
+                            "Quality": -1,
+                            "ObjectInternalName": "Barley Ale",
+                            "ObjectDisplayName": "Barley Ale",
+                            "ToolUpgradeLevel": -1,
+                            "IsRecipe": false,
+                            "StackModifiers": null,
+                            "StackModifierMode": "Stack",
+                            "QualityModifiers": null,
+                            "QualityModifierMode": "Stack",
+                            "ModData": null,
+                            "PerItemCondition": null
+                        }
+                    ],
+                    "MinutesUntilReady": 2250,
+                    "DaysUntilReady": -1,
+                    "InvalidCountMessage": null,
+                    "RecalculateOnCollect": false
+                },
+                "{{ModId}}_Millet": {
+                    "Id": "{{ModId}}_Millet",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine",
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": null,
+                            "RequiredTags": null,
+                            "RequiredCount": 1,
+                            "Condition": "ITEM_CONTEXT_TAG Input millet"
+                        }
+                    ],
+                    "UseFirstValidOutput": false,
+                    "OutputItem": [
+                        {
+                            "CustomData": null,
+                            "OutputMethod": null,
+                            "CopyColor": false,
+                            "CopyPrice": false,
+                            "CopyQuality": false,
+                            "PreserveType": null,
+                            "PreserveId": null,
+                            "IncrementMachineParentSheetIndex": 0,
+                            "PriceModifiers": null,
+                            "PriceModifierMode": "Stack",
+                            "Condition": null,
+                            "Id": "(O)303",
+                            "ItemId": "(O)303",
+                            "RandomItemId": null,
+                            "MaxItems": null,
+                            "MinStack": -1,
+                            "MaxStack": -1,
+                            "Quality": -1,
+                            "ObjectInternalName": "Millet Ale",
+                            "ObjectDisplayName": "Millet Ale",
+                            "ToolUpgradeLevel": -1,
+                            "IsRecipe": false,
+                            "StackModifiers": null,
+                            "StackModifierMode": "Stack",
+                            "QualityModifiers": null,
+                            "QualityModifierMode": "Stack",
+                            "ModData": null,
+                            "PerItemCondition": null
+                        }
+                    ],
+                    "MinutesUntilReady": 2250,
+                    "DaysUntilReady": -1,
+                    "InvalidCountMessage": null,
+                    "RecalculateOnCollect": false
+                },
+                "{{ModId}}_Rye": {
+                    "Id": "{{ModId}}_Rye",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine",
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": null,
+                            "RequiredTags": null,
+                            "RequiredCount": 1,
+                            "Condition": "ITEM_CONTEXT_TAG Input rye"
+                        }
+                    ],
+                    "UseFirstValidOutput": false,
+                    "OutputItem": [
+                        {
+                            "CustomData": null,
+                            "OutputMethod": null,
+                            "CopyColor": false,
+                            "CopyPrice": false,
+                            "CopyQuality": false,
+                            "PreserveType": null,
+                            "PreserveId": null,
+                            "IncrementMachineParentSheetIndex": 0,
+                            "PriceModifiers": null,
+                            "PriceModifierMode": "Stack",
+                            "Condition": null,
+                            "Id": "(O)303",
+                            "ItemId": "(O)303",
+                            "RandomItemId": null,
+                            "MaxItems": null,
+                            "MinStack": -1,
+                            "MaxStack": -1,
+                            "Quality": -1,
+                            "ObjectInternalName": "Rye Ale",
+                            "ObjectDisplayName": "Rye Ale",
+                            "ToolUpgradeLevel": -1,
+                            "IsRecipe": false,
+                            "StackModifiers": null,
+                            "StackModifierMode": "Stack",
+                            "QualityModifiers": null,
+                            "QualityModifierMode": "Stack",
+                            "ModData": null,
+                            "PerItemCondition": null
+                        }
+                    ],
+                    "MinutesUntilReady": 2250,
+                    "DaysUntilReady": -1,
+                    "InvalidCountMessage": null,
+                    "RecalculateOnCollect": false
+                },
+                "{{ModId}}_Sorghum": {
+                    "Id": "{{ModId}}_Sorghum",
+                    "Triggers": [
+                        {
+                            "Id": "ItemPlacedInMachine",
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": null,
+                            "RequiredTags": null,
+                            "RequiredCount": 1,
+                            "Condition": "ITEM_CONTEXT_TAG Input sorghum"
+                        }
+                    ],
+                    "UseFirstValidOutput": false,
+                    "OutputItem": [
+                        {
+                            "CustomData": null,
+                            "OutputMethod": null,
+                            "CopyColor": false,
+                            "CopyPrice": false,
+                            "CopyQuality": false,
+                            "PreserveType": null,
+                            "PreserveId": null,
+                            "IncrementMachineParentSheetIndex": 0,
+                            "PriceModifiers": null,
+                            "PriceModifierMode": "Stack",
+                            "Condition": null,
+                            "Id": "(O)303",
+                            "ItemId": "(O)303",
+                            "RandomItemId": null,
+                            "MaxItems": null,
+                            "MinStack": -1,
+                            "MaxStack": -1,
+                            "Quality": -1,
+                            "ObjectInternalName": "Sorghum Ale",
+                            "ObjectDisplayName": "Sorghum Ale",
+                            "ToolUpgradeLevel": -1,
+                            "IsRecipe": false,
+                            "StackModifiers": null,
+                            "StackModifierMode": "Stack",
+                            "QualityModifiers": null,
+                            "QualityModifierMode": "Stack",
+                            "ModData": null,
+                            "PerItemCondition": null
+                        }
+                    ],
+                    "MinutesUntilReady": 2250,
+                    "DaysUntilReady": -1,
+                    "InvalidCountMessage": null,
+                    "RecalculateOnCollect": false
+                },
+                "Default_Juice": {
+                  "Id": "Default_Juice",
+                  "Triggers": [
+                    {
+                      "Id": "ItemPlacedInMachine_Vegetable",
+                      "Trigger": "ItemPlacedInMachine",
+                      "RequiredItemId": null,
+                      "RequiredTags": [
+                        "category_vegetable"
+                      ],
+                      "RequiredCount": 1,
+                      "Condition": "!ITEM_CONTEXT_TAG Input barley, !ITEM_CONTEXT_TAG Input millet, !ITEM_CONTEXT_TAG Input rye, !ITEM_CONTEXT_TAG Input sorghum"
+                    },
+                    {
+                      "Id": "ItemPlacedInMachine_Forage",
+                      "Trigger": "ItemPlacedInMachine",
+                      "RequiredItemId": null,
+                      "RequiredTags": [
+                        "category_greens"
+                      ],
+                      "RequiredCount": 1,
+                      "Condition": "!ITEM_CONTEXT_TAG Input edible_mushroom, ITEM_EDIBILITY Input 1"
+                    },
+                    {
+                      "Id": "ItemPlacedInMachine_Juice",
+                      "Trigger": "ItemPlacedInMachine",
+                      "RequiredItemId": null,
+                      "RequiredTags": [
+                        "keg_juice"
+                      ],
+                      "RequiredCount": 1,
+                      "Condition": "!ITEM_CONTEXT_TAG Input barley, !ITEM_CONTEXT_TAG Input millet, !ITEM_CONTEXT_TAG Input rye, !ITEM_CONTEXT_TAG Input sorghum"
+                    }
+                  ],
+                  "UseFirstValidOutput": false,
+                  "OutputItem": [
+                    {
+                      "CustomData": null,
+                      "OutputMethod": null,
+                      "CopyColor": false,
+                      "CopyPrice": false,
+                      "CopyQuality": false,
+                      "PreserveType": null,
+                      "PreserveId": null,
+                      "IncrementMachineParentSheetIndex": 0,
+                      "PriceModifiers": null,
+                      "PriceModifierMode": "Stack",
+                      "Condition": null,
+                      "Id": "Default",
+                      "ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
+                      "RandomItemId": null,
+                      "MaxItems": null,
+                      "MinStack": -1,
+                      "MaxStack": -1,
+                      "Quality": -1,
+                      "ObjectInternalName": null,
+                      "ObjectDisplayName": null,
+                      "ToolUpgradeLevel": -1,
+                      "IsRecipe": false,
+                      "StackModifiers": null,
+                      "StackModifierMode": "Stack",
+                      "QualityModifiers": null,
+                      "QualityModifierMode": "Stack",
+                      "ModData": null,
+                      "PerItemCondition": null
+                    }
+                  ],
+                  "MinutesUntilReady": 6000,
+                  "DaysUntilReady": -1,
+                  "InvalidCountMessage": null,
+                  "RecalculateOnCollect": false
+                }
+            }
+        }
+    ]
+}

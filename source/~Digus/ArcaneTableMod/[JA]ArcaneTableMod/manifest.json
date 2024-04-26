@@ -11,10 +11,10 @@
 {
     "Name": "[JA]Arcane Table Mod",
     "Author": "Digus",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "Description": "Adds the Arcane Table craftable to the game.",
     "UniqueID": "Digus.ArcaneTableMod",
-    "MinimumApiVersion": "3.9.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:8178" ],
     "ContentPackFor": {
         "UniqueID": "spacechase0.JsonAssets"

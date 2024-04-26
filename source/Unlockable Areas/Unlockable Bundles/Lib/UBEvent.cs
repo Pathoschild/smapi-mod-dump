@@ -17,25 +17,19 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib
 {
     public class UBEvent : Event
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public Unlockable Unlockable;
 
         public const string APPLYPATCH = "ub_applyPatch";
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             RegisterCommand(APPLYPATCH, delegate { ub_applyPatch(); });
         }
         public UBEvent(Unlockable unlockable, string eventString, Farmer farmerActor = null) : base(eventString, farmerActor)
@@ -46,7 +40,7 @@ namespace Unlockable_Bundles.Lib
         public static void ub_applyPatch()
         {
             if (Game1.CurrentEvent is UBEvent ev)
-                UpdateHandler.applyUnlockable(ev.Unlockable);
+                MapPatches.applyUnlockable(ev.Unlockable);
             else
                 Monitor.Log("Event command ub_applyPatch was called outside of the context of Unlockable Bundles.", LogLevel.Warn);
 

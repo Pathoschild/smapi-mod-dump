@@ -1,0 +1,28 @@
+{
+	"ID": "AnimalQueryMenu",
+
+	"ColorVariables": {
+		"$AnimalQueryMenu:Text": "$Text",
+		"$AnimalQueryMenu:TextShadowAlt": "$TextShadowAlt"
+	},
+
+	"FontVariables": {
+		"$AnimalQueryMenu:Small": "$Small",
+		"$AnimalQueryMenu:Dialogue": "$Dialogue"
+	},
+
+	"Patches": {
+		"#AnimalQueryMenu:draw": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$AnimalQueryMenu:Text" }
+			},
+
+			"FontFields": {
+				"Game1:smallFont": { "*": "$AnimalQueryMenu:Small" },
+				"Game1:dialogueFont": { "*": "$AnimalQueryMenu:Dialogue" }
+			},
+
+			"DrawTextWithShadow": { "*": "$AnimalQueryMenu:TextShadowAlt" }
+		}
+	}
+}

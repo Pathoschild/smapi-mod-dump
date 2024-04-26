@@ -1,7 +1,7 @@
 {
   "Name": "[SMAPI] Dusty Overhaul",
   "Author": "CyanFire",
-  "Version": "2.6.1",
+  "Version": "2.6.5",
   "Description": "Code for Dusty Overhaul",
   "UniqueID": "CF.SMAPI.DustyOverhaul",
   "EntryDll": "DustyOverhaul.dll",
@@ -10,6 +10,10 @@
   "Dependencies": [
     {
       "UniqueID": "CF.FarmhouseFixes",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "PeacefulEnd.CustomCompanions",
       "IsRequired": true
     },
     {

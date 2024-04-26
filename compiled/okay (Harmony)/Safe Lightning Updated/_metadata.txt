@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22783
+IDs: Rokugin.SafeLightningUpdated
+update keys: Nexus:22783, GitHub:rokugin/StardewMods

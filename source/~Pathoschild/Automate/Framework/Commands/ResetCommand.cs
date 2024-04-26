@@ -39,7 +39,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
         public override string GetDescription()
         {
             return @"
-                automate rescan
+                automate reset
                    Usage: automate reset
                    Resets all cached data and rescans the world for machines.
             ";

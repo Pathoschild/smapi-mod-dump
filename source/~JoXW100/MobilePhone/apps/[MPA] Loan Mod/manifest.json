@@ -11,10 +11,11 @@
 {
     "Name": "Mobile Phone App for Loan Mod",
     "Author": "JoXW, aedenthorn",
-    "Version": "0.1.1",
+    "Version": "0.1.2",
     "Description": "Adds an app that triggers the default key for Doomnik's Loan Mod.",
     "UniqueID": "JoXW.MobileLoanMod",
     "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:21017@Loan" ],
     "ContentPackFor": {
         "UniqueID": "JoXW.MobilePhone",
         "MinimumVersion": "1.0.0"

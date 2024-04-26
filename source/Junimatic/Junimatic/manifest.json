@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NermNermNerm/Junimatic
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/manifest.json",
+    "Name": "Junimatic",
+    "Author": "NermNermNerm",
+    "Version": "1.0.1",
+    "MinimumApiVersion": "3.14.0",
+    "UniqueID": "NermNermNerm.Junimatic",
+    "Description": "Allows you to automate some of the repetitive tasks with a little help from the Junimos",
+    "EntryDll": "Junimatic.dll",
+    "UpdateKeys": [ "GitHub:NermNermNerm/Junimatic", "Nexus:22672" ],
+    "Dependencies": [ ]
+}

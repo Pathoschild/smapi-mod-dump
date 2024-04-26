@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Baits do their jobs",
+  "Author": "MercuryVN",
+  "Version": "0.1.0",
+  "Description": "Some baits will not be consumed if they did not catch what they are supposed to catch",
+  "UniqueID": "MercuryVN.BaitsDoTheirJobs",
+  "EntryDll": "BaitsDoTheirJobs.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "nexus:23217" ]
+}

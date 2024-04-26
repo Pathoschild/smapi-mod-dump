@@ -73,7 +73,7 @@ namespace StardewArchipelago.Items.Traps
         {
             if (location.warps == null || location.warps.Count < 1)
             {
-                return false;
+                return true;
             }
 
             if (location.isCollidingPosition(new Microsoft.Xna.Framework.Rectangle(startPoint.X * 64 + 1, startPoint.Y * 64 + 1, 62, 62),

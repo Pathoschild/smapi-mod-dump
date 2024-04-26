@@ -11,5 +11,5 @@
 {
   "monsterPercent.Label": "Monster Percent",
   "monsterPercent.tooltip": "The percentage relative to vanilla defaults. 0.5 means you need to eradicate half as many monsters.",
-  "VanillaMonsters": "Vanilla monster counts\nSlimes - 1000\nDust Sprites - 500\nSerpents - 250\nBats - 200\nVoid Spirits - 150\nMagma Sprite - 150\nCave Insects - 125\nMummies - 100\nRock Crabs - 60\nSkeletons - 50\nPepper Rex - 50\nDuggies - 30"
+  "VanillaMonsters": "Vanilla monster counts\nSlimes - 1000\nDust Sprites - 500\nSerpents - 250\nBats - 200\nVoid Spirits - 150\nMagma Sprite - 150\nCave Insects - 80\nMummies - 100\nRock Crabs - 60\nSkeletons - 50\nPepper Rex - 50\nDuggies - 30"
 }

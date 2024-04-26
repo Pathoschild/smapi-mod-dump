@@ -3,6 +3,6 @@
     "CommonExclusions": [],
     "ConditionalExclusions": []
   },
-  "ItemToCatchIfAllFishIsExcluded": 168,
+  "ItemToCatchIfAllFishIsExcluded": "168",
   "TimesToRetry": 20
 }

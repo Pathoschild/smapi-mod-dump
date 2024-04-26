@@ -22,12 +22,12 @@ using StardewValley;
 namespace Leclair.Stardew.SeeMeRollin.Patches {
 	public class FarmerPatches {
 
-		public static IMonitor Monitor => ModEntry.instance.Monitor;
+		public static IMonitor Monitor => ModEntry.Instance.Monitor;
 
 		[HarmonyPatch(typeof(Farmer), "performBeginUsingTool")]
 		public static class Buff_Begin {
 			static bool Prefix(Farmer __instance) {
-				ModEntry.instance.FixAnimation(__instance);
+				ModEntry.Instance.FixAnimation(__instance);
 				return true;
 			}
 		}

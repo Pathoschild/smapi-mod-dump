@@ -9,8 +9,8 @@
 *************************************************/
 
 using System.Linq;
-using StardewValley;
 using Microsoft.Xna.Framework;
+using StardewValley;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -27,14 +27,31 @@ namespace NermNermNerm.Stardew.QuestableTractor
     public abstract class TractorPartQuestController<TQuestState> : BaseQuestController<TQuestState>
         where TQuestState : struct
     {
-        protected TractorPartQuestController(ModEntry mod) : base(mod) { }
+#pragma warning disable IDE0052 // Remove unread private members -- This is here to ensure it lives as long as the surrounding class.  If this class wasn't permanent, we'd dispose it.
+        private readonly MasterPlayerModDataMonitor monitor;
+#pragma warning restore IDE0052 // Remove unread private members
+
+        protected TractorPartQuestController(ModEntry mod) : base(mod)
+        {
+            this.monitor = new MasterPlayerModDataMonitor(mod.Helper, this.ModDataKey, this.OnMasterPlayerQuestStatusChanged);
+        }
+
+        protected void AddPetFinder(double chance = .02)
+        {
+            this.Mod.PetFindsThings.AddObjectFinder(this.BrokenAttachmentPartId, chance);
+        }
+
+        private void OnMasterPlayerQuestStatusChanged()
+        {
+            this.Mod.UpdateTractorModConfig();
+        }
 
         public abstract string WorkingAttachmentPartId { get; }
         public abstract string BrokenAttachmentPartId { get; }
 
         protected sealed override BaseQuest CreateQuest() => this.CreatePartQuest();
 
-        public new TractorPartQuest<TQuestState>? GetQuest() => (TractorPartQuest<TQuestState>?)base.GetQuest();
+        public new TractorPartQuest<TQuestState>? GetQuest(Farmer player) => (TractorPartQuest<TQuestState>?)base.GetQuest(player);
 
         protected abstract TractorPartQuest<TQuestState> CreatePartQuest();
 
@@ -47,7 +64,11 @@ namespace NermNermNerm.Stardew.QuestableTractor
         {
             if (this.OverallQuestState == OverallQuestState.NotStarted)
             {
-                this.HideStarterItemIfNeeded();
+                if (Game1.IsMasterGame)
+                {
+                    this.HideStarterItemIfNeeded();
+                }
+
                 this.MonitorInventoryForItem(this.BrokenAttachmentPartId, this.PlayerGotBrokenPart);
                 this.StopMonitoringInventoryFor(this.WorkingAttachmentPartId);
             }
@@ -65,6 +86,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         private void PlayerGotBrokenPart(Item brokenPart)
         {
+            if (brokenPart is StardewValley.Object o) // Should be true for all the things we scan for, but just in case...
+            {
+                o.questItem.Value = true;
+            }
+
+            // This is a callback from MonitorInventoryItem so Game1.player.IsMainPlayer must be true.
             if (this.IsStarted)
             {
                 this.LogWarning($"Player found a broken attachment, {brokenPart.ItemId}, when the quest was active?!");
@@ -72,14 +99,20 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
 
             this.AnnounceGotBrokenPart(brokenPart);
-            this.CreateQuestNew();
+            this.CreateQuestNew(Game1.player);
             this.MonitorInventoryForItem(this.WorkingAttachmentPartId, this.PlayerGotWorkingPart);
             this.StopMonitoringInventoryFor(this.BrokenAttachmentPartId);
         }
 
         public void PlayerGotWorkingPart(Item workingPart)
         {
-            var quest = this.GetQuest();
+            if (workingPart is StardewValley.Object o) // Should be true for all the things we scan for, but just in case...
+            {
+                o.questItem.Value = true;
+            }
+
+            // This is a callback from MonitorInventoryItem so Game1.player.IsMainPlayer must be true.
+            var quest = this.GetQuest(Game1.player);
             if (quest is null)
             {
                 this.LogWarning($"Player found a working attachment, {workingPart.ItemId}, when the quest was not active?!");
@@ -93,27 +126,36 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         protected abstract string QuestCompleteMessage { get; }
 
-        public override bool PlayerIsInGarage(Item itemInHand)
+        public override void PlayerIsInGarage(Item itemInHand)
         {
             if (itemInHand.ItemId != this.WorkingAttachmentPartId)
             {
-                return false;
+                return;
             }
 
-            var activeQuest = this.GetQuest();
+            var activeQuest = this.GetQuest(Game1.player);
             if (activeQuest is null)
             {
                 this.LogWarning($"An active quest for {this.GetType().Name} should exist, but doesn't?!");
-                return false;
+                return;
             }
 
             activeQuest.questComplete();
             Game1.player.removeFirstOfThisItemFromInventory(this.WorkingAttachmentPartId);
             Game1.DrawDialogue(new Dialogue(null, null, this.QuestCompleteMessage));
-            return true;
-        }
+            this.Mod.UpdateTractorModConfig();        }
 
         protected virtual void HideStarterItemIfNeeded() { }
+
+        protected void PickUpBrokenAttachmentPart()
+        {
+            var bustedPart = Game1.getFarm().objects.Values.FirstOrDefault(o => o.ItemId == this.BrokenAttachmentPartId);
+            while (bustedPart is not null)
+            {
+                Game1.getFarm().objects.Remove(bustedPart.TileLocation);
+                bustedPart = Game1.getFarm().objects.Values.FirstOrDefault(o => o.ItemId == this.BrokenAttachmentPartId);
+            }
+        }
 
         protected void PlaceBrokenPartUnderClump(int preferredResourceClumpToHideUnder)
         {
@@ -130,7 +172,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             {
                 var o = ItemRegistry.Create<StardewValley.Object>(this.BrokenAttachmentPartId);
                 o.questItem.Value = true;
-                o.Location = Game1.getFarm();
+                o.Location = farm;
                 o.TileLocation = position;
                 this.LogInfoOnce($"{this.BrokenAttachmentPartId} placed at {position.X},{position.Y}");
                 o.IsSpawnedObject = true;

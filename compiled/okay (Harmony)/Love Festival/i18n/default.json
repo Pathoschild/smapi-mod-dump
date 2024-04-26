@@ -1,0 +1,103 @@
+{
+  "festival.name": "Love Festival",
+
+  //Dialogues
+  "Dialogue.Evelyn": "I still recall sending my very first love letter to George.#$b#He wasn't stunned at first.$s",
+  "Dialogue.Alex": "I might not receive many letters this year, but as soon as I become a professional, everyone wants to be mine.",
+  "Dialogue.Clint": "Do you think Emily is going to give me her love letter?$3",
+  "Dialogue.Caroline": "Unfortunately, Pierre doesn't have the time to craft love letters for me. Apparently, he's too busy with his store$2",
+  "Dialogue.Shane": "I wouldn't mind if we skipped this festival.",
+  "Dialogue.Willy": "An old captain like me will always love their ol' sea exploration machine.",
+  "Dialogue.Abigail": "I really want to hug the teddy.",
+  "Dialogue.Robin": "Whenever I dance with Demetrius, I feel like I've just fallen in love with him for the first time.$h",
+  "Dialogue.Demetrius": "Being in love feels like being on drugs. Did you know that?",
+  "Dialogue.Maru": "I wonder if it's possible to manipulate feelings using technology.",
+  "Dialogue.Sebastian": "I wouldn't be here if mom didn't force me to.",
+  "Dialogue.Pierre": "I highly recommend you to buy love letters at Pierre's.",
+  "Dialogue.Linus": "I never received a love letter.$s#$b#I wonder if they still know about my existance.$s",
+  "Dialogue.George": "Ahh... Love's in the air. This is better than any TV romance.$h",
+  "Dialogue.Lewis": "Personally, this is the best Event of the year. I always enjoy the youth exchanging their feelings.$h",
+  "Dialogue.Emily": "$y '@! Do you think you will receive a love letter?_Certainly._Well, I wish you good luck._I don't think so._Don't be sad. I'm pretty sure you will next year.'",
+  "Dialogue.Haley": "I hope the person who is going to give me a love letter is dressed nicely.",
+  "Dialogue.Penny": "Oh... hi @. I didn't expect you right now.",
+  "Dialogue.Pam": "I just came for the pralines.",
+  "Dialogue.Jodi": "Back when I was a child, I used to adore this festival.",
+  "Dialogue.Marnie": "I hope I'll receive a letter from someone special this year.",
+  "Dialogue.Leo": "I always receive love letters from parrots... They're walnut's in this case though.",
+  "Dialogue.Vincent": "Mom said I'm too young to understand this.$2",
+  "Dialogue.Jas": "I wrote Vincent a letter.$h#$b#Don't tell him though.",
+  "Dialogue.Sandy": "Oh, hi @.#$b#Are you excited for your letters? I'm pretty sure hard-working people are attractive.",
+  "Dialogue.Harvey": "Love can truly be a medicine.",
+  "Dialogue.Wizard": "Don't ask me for love spells.",
+  "Dialogue.Gus": "If you're planning to ask someone out, be sure to visit my place.$h",
+  "Dialogue.Leah": "This event always reminds me of my ex.$s",
+  "Dialogue.Sam": "Someday, I want to hold a concert during the love letter ceremony.",
+  "Dialogue.Elliott": "The Love Festival... It inspires new harmonies and a gentle touch to my mind. It's time to write a novel.",
+  "Dialogue.Kent": "I really missed this event. It feels so right to be here again.$h",
+  "Dialogue.Marlon": "Well, I thought I'd provide some company today.",
+  "Dialogue.Haley_spouse": "Guess who will receive my love letter.$h",
+  "Dialogue.Leah_spouse": "This event used to make me sad because of my past experiences, but now with you, it's different.$h",
+  "Dialogue.Abigail_spouse": "Since I can't hug the teddy bear, can I hug you instead?$h",
+  "Dialogue.Emily_spouse": "Hi honey, I'm currently crafting your love letter.$h",
+  "Dialogue.Maru_spouse": "One day, I will create a scientific letter for you",
+  "Dialogue.Penny_spouse": "Hi honey, wanna do something after this?",
+  "Dialogue.Elliott_spouse": "Love letters for you?#$b#How about I write a novel for you?",
+  "Dialogue.Alex_spouse": "Would you like to have a romantic dinner after this?",
+  "Dialogue.Sebastian_spouse": "In the past, I didn't enjoy attending this festival. Now it's the opposite.$h",
+  "Dialogue.Shane_spouse": "It feels like my depression disappeared whenever I'm here with you.$h",
+  "Dialogue.Sam_spouse": "If you want, I can play some romantic music for you.$h",
+  "Dialogue.Harvey_spouse": "Oh hi @... I almost got a healthy heart attack.$h",
+
+  //Invitation Letters
+  "Letter.NextDay": "Dear @, ^Don't forget about the Love Festival tomorrow, starting at 9AM in the town.^Make sure you will give someone your love letter. ^-Mayor Lewis",
+  "Letter.WeekBefore": "Dear @, ^In just one week, the Love Festival will be here. ^I hope you've made plenty of friends this year because you won't want to miss out on the festivities. ^It all begins at 9 AM, so mark your calendar! ^-Mayor Lewis",
+
+  //Love Letters
+  "LoveLetter.FoodMail": "Hello @... < ^I truly enjoy your company, and I had a feeling that you'd bring excitement to life in the valley. ^To express my gratitude, I've prepared a special meal just for you <",
+  "LoveLetter.VegetableMail": "Hey @... ^You may not know this, but I have a deep fondness for your farm animals, and I can see the care you give them. ^That's why I'm gifting you some fresh vegetables. Perhaps your animals will also appreciate the treat.",
+  "LoveLetter.MoneyMail": "Dear @, ^Whenever you visit, it brightens my day, and your presence always brings a smile to my face. <^If you ever need someone to talk to, I'll always be there for you.",
+  "LoveLetter.CropMail": "Hey @..., ^I'm truly impressed by your work on the farm. < ^I must admit I'm a bit envious, so I tried my hand at planting crops, but it didn't turn out very well... ^That's why I'm giving you my remaining seeds. I know they'll be in capable hands.",
+  "LoveLetter.GemMail": "Hi @... < ^I believe it's time to reward you for all the improvements you've brought to our lovely valley. ^You entertain all of us, especially me. I recently found this gem, but I'm not quite sure what to do with it. I hope you'll find it appealing.",
+
+  //Send Letter
+  "SendLetter.Message": "Yes...?",
+  "SendLetter.Yes": "Give {{name}} love letter?",
+  "SendLetter.No": "Cancel",
+
+  //Lewis Start message
+  "StartMessage.Question": "@! Are you ready to claim your love letters?",
+  "StartMessage.AnswerYes": "Yes",
+  "StartMessage.AnswerNo": "No",
+
+  //Dates
+  "LoveFestivalDates.Question": "Go on a date with {{npc}}?",
+  "LoveFestivalDates.DateRejected": "Oh I understand...$s#$b#You're too busy with the farm.$s",
+
+  //Letter Given Reactions
+  "ReceiveLetterReaction.Flattered": "No way you chose me. I'm flattered$h",
+  "ReceiveLetterReaction.notExpected": "Wow @, I would've never expected that.$h",
+  "ReceiveLetterReaction.Romantic": "Aww, how romantic @.$h",
+
+  //NPC Gift Letter Dialogue
+  "npcGiftingLetter.WroteLetterForYou": "Hello @, I've written this letter just for you. I hope you'll like it.",
+  "npcGiftingLetter.AskValentine": "Ehmmm..., @$h#$b#Would you like to get to know each other better? Look what I've made for you.$h",
+  "npcGiftingLetter.ExpressFeelings": "Hey @, I understand that you might have mixed feelings, but regardless, I wanted to express my feelings for you.$h",
+  "npcGiftingLetter.Admire": "Hey @...#$b#I've always admired you and the incredible work you do on your farm. It's truly impressive and adds so much life to the valley. #$b#That's why I'm giving you this.$h",
+  "npcGiftingLetter.AskForDate": "Hey @...#$b#I believe gifts are boring. That's why I'm asking you for a date.$h#$b#Check this out.",
+
+  //Extras
+  "MarnieReaction.Start": "Alright @, it's time to receive your love letters.",
+  "MarnieReaction.NoLoveLetters": "Well, seems like nobody wants to gift you some love letters this year.$s",
+  "JealousyDialogue.Spouse": "By the way, I truly appreciate that you didn't give me your love letter...$s",
+  "Calendar.ChooseDate": "Select a day for you date (Festivals excluded)",
+  "CupidStore.BuyArrow": "Hey you... I can shoot a love arrow at someone. It will drastically increase your friendship gain for a week. Wanna give it a shot?",
+  "CupidStore.Yes": "Yes (2500g)",
+  "CupidStore.Success": "Successfully increased your friendship gain for a week by 20% with {{name}}.",
+  "CupidStore.AlreadyBought": "You already bought a friendship multiplier.",
+  "Misc.NotEnoughMoney": "You don't have enough money.",
+  "CupidStore.Menu.UIHint": "Select your target & double click",
+
+  //Config
+  "Config.TestDateActorName": "Actor Name for Date Tests",
+  "Config.TestDateActorNameDescription": "The name of the NPC who should act as a date partner when testing dates. You can ignore it when you're not going to use it."
+}

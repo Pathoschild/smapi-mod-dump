@@ -378,7 +378,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void AddArchipelagoRecipeItem(Dictionary<ISalable, int[]> stock, string displayName, string locationName, int moneyPrice, Hint[] myActiveHints, int itemPriceId = -1, int itemPriceAmount = 0)
         {
-            var recipeApItem = new PurchaseableArchipelagoLocation(displayName, locationName, _helper, _locationChecker, _archipelago, myActiveHints);
+            var recipeApItem = new PurchaseableArchipelagoLocation(displayName, locationName, _monitor, _helper, _locationChecker, _archipelago, myActiveHints);
             var prices = (itemPriceId > -1 && itemPriceAmount > 0) ? new[] { moneyPrice, 1, itemPriceId, itemPriceAmount, } : new[] { moneyPrice, 1 };
             stock.Add(recipeApItem, prices);
         }

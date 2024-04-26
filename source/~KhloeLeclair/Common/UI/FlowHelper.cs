@@ -723,7 +723,7 @@ public static class FlowHelper {
 					itemLabel = next == 'M';
 					i = ni;
 					try {
-						item = string.IsNullOrEmpty(iname) ? null : InventoryHelper.CreateItemById(iname, 1);
+						item = string.IsNullOrEmpty(iname) ? null : ItemRegistry.Create(iname, 1);
 						break;
 					} catch (Exception) {
 						// What do?

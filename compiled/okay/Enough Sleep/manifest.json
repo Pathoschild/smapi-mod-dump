@@ -1,0 +1,10 @@
+{
+  "Name": "EnoughSleep",
+  "Author": "sodapotato",
+  "Version": "1.0.2",
+  "Description": "Gives players a certain amount of buffed max energy the next day according to how early they decide to sleep.",
+  "UniqueID": "sodapotato.enoughsleep",
+  "EntryDll": "enoughsleep.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:21536" ]
+}

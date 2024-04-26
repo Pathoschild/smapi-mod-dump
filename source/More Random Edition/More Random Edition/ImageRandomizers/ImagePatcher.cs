@@ -74,6 +74,7 @@ namespace Randomizer
         {
             if (Globals.Config.SaveRandomizedImages)
             {
+                Directory.CreateDirectory(Globals.GetFilePath(PatcherImageFolder));
                 using FileStream fileStream = File.OpenWrite(OutputFileFullPath);
                 image.SaveAsPng(fileStream, image.Width, image.Height);
             }

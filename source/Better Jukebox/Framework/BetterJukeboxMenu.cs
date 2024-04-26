@@ -29,7 +29,7 @@ namespace Gaphodil.BetterJukebox.Framework
         // ---- The parts from ShopMenu:
 
         /// <summary>The list of visible options to choose from.</summary>
-        public List<ClickableComponent> VisibleOptions = new();
+        public List<ClickableComponent> VisibleOptions = [];
 
         /// <summary>The scroll-up button.</summary>
         public ClickableTextureComponent UpArrow;
@@ -49,7 +49,7 @@ namespace Gaphodil.BetterJukebox.Framework
         // ---- The parts from ChooseFromListMenu:
 
         /// <summary>The list of songs to display.</summary>
-        private readonly List<BetterJukeboxItem> Options = new();
+        private readonly List<BetterJukeboxItem> Options = [];
 
         /// <summary>The index of the currently active selection from the Options.</summary>
         private int SelectedIndex;
@@ -82,7 +82,7 @@ namespace Gaphodil.BetterJukebox.Framework
         public ClickableTextureComponent ReverseSortButton;
 
         /// <summary>The list of tabs, used for switching sorting methods.</summary>
-        public List<ClickableTextureComponent> SortTabs = new();
+        public List<ClickableTextureComponent> SortTabs = [];
 
         /// <summary>The index of the currently selected tab.</summary>
         private int SelectedTab = 0;
@@ -887,7 +887,7 @@ namespace Gaphodil.BetterJukebox.Framework
                 PlayingIndex = -1;
                 IsRandom = true;
 
-                Monitor.Log("Random selected! Now playing: " + Game1.player.currentLocation.randomMiniJukeboxTrack.Value);
+                Monitor.Log("Random selected! Now playing: " + randomTrack.Value);
             }
 
             // Game1.playSound("select");

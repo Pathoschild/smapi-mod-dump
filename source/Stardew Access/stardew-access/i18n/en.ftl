@@ -69,6 +69,8 @@ feature-speak_position = {$verbose_coordinates ->
     [0] {$x_pos}, {$y_pos}
     *[1] X: {$x_pos}, Y: {$y_pos}
   }
+feature-speak_youve_got_mail = You've got mail!
+feature-speak_cheater = You're a dirty cheater!
 feature-warnings-health = Warning! Health is at {$value} percent!
 feature-warnings-stamina = Warning! Stamina is at {$value} percent!
 feature-warnings-time = Warning! Time is {$value}
@@ -116,14 +118,61 @@ tile-resource_clump-unknown = Unknown Resource Clump {$id}
 tile-water-name = Water
 tile-cooled_lava-name = Cooled Lava
 tile-lava-name = Lava
+tile-fertile_weed_name = Fertile weed
 tile-grass-name = {$grass_type ->
     *[1] Grass
-    [2] Cave Grass
-    [3] Frost Grass
-    [4] Lava Grass
-    [5] Cave Grass
+    [2] Cave grass
+    [3] Frost grass
+    [4] Lava grass
+    [5] Cave grass
     [6] Cobweb
-    [7] Blue Grass
+    [7] Blue grass
+  }
+tile-twig-name = {$described ->
+    [0] Twig
+    *[other] {$qualified_item_id ->
+        [O294] Forked 
+        [O295] Branching 
+        *[other] {EMPTYSTRING()}
+      }Twig
+  }
+tile-stone-name = {$described ->
+    [0] {$qualified_item_id ->
+        [O46] Mystic 
+        [O343] {EMPTYSTRING()} 
+        [O450] {EMPTYSTRING()} 
+        [O668] {EMPTYSTRING()} 
+        [O670] {EMPTYSTRING()} 
+        [O845] {EMPTYSTRING()} 
+        [O846] {EMPTYSTRING()} 
+        [O847] {EMPTYSTRING()} 
+        *[other] Colored 
+      }Stone
+    *[other] {$qualified_item_id ->
+        [O32] Dull Brown Pointed Stone
+        [O34] Mounded Gray Stone
+        [O36] Ovular Gray Stone
+        [O38] Lumpy Brown Stone
+        [O40] Smooth Warm Brown Stone
+        [O42] Segmented Rusty Brown Stone
+        [O46] Mystic Purple Stone With Blue Swirls
+        [O48] blue pointed stone
+        [O50] Smooth Blue Stone
+        [O52] Ovular Turquoise Stone
+        [O54] Lumpy Aquamarine
+        [O56] Pointed Red Stone
+        [O58] Flame-Like Red Stone
+        [O343] Small Gray Stone
+        [O450] Extrusive Gray Stone
+        [O668] Bean-Shaped Gray Stone
+        [O670] Rounded Gray Stone
+        [O760] Lumpy Dark Gray Stone
+        [O762] Smooth Dark Gray Stone
+        [O845] Bumpy Dark Purple Stone
+        [O846] Mounded Dark Blue-Gray Stone
+        [O847] Extrusive Dark Purple Stone
+        *[other] Stone
+      }
   }
 tile-sprinkler-pressure_nozzle-prefix = Pressurized {$content}
 tile-sprinkler-enricher-prefix = Enriching {$content}
@@ -171,7 +220,7 @@ tile_name-special_quest_board = Special Quest Board
 tile-museum_piece_showcase-suffix = {$content} Showcase
 tile_name-fridge = Fridge
 tile_name-mail_box = Mail Box
-tile-mail_box-unread_mail_count-prefix = {$mail_count} {$mail_count ->
+tile_name-mail_box-unread_mail_count-prefix = {$mail_count} {$mail_count ->
     [1] unread letter in
     *[0] unread letters in
   } {$content}
@@ -194,6 +243,7 @@ tile_name-pathway = Pathway
 tile_name-flooring = Flooring
 tile-volcano_dungeon-pressure_pad = Pressure Pad
 tile-volcano_dungeon-gate = Gate
+tile-forest-giant_tree_sump = Giant Tree Stump
 
 ## Entrances
 
@@ -248,6 +298,15 @@ item-crafting_recipe_info = {$name} {$is_cooking_recipe ->
     *[1] (cooking)
   } {$description}
 item-mastery_cave-grandpa_letter = Grandpa's Letter
+item-mannequin-info = {$name}{$facing_direction ->
+    [0] , Facing north
+    [1] , Facing east
+    [3] , Facing west
+    *[2] {EMPTYSTRING()}
+  }{$items_on_display ->
+    [null] {EMPTYSTRING()}
+    *[other] , {$items_on_display}
+  }
 
 building_name-shipping_bin = Shipping Bin
 building-parrot_perch-required_nuts = Parrots require {$item_count ->
@@ -258,6 +317,7 @@ building-parrot_perch-upgrade_state_idle = Empty Parrot Perch
 building-parrot_perch-upgrade_state_start_building = Parrots started building request
 building-parrot_perch-upgrade_state_building = Parrots building request
 building-parrot_perch-upgrade_state_complete = Request completed
+building-golden_parrot = Golden Parrot
 
 # NPCs
 
@@ -274,6 +334,20 @@ npc-farm_animal_info = {$name}, {$type}, {$age} {$age ->
     *[other] months
   }
 npc_name-horse_with_no_name = A horse with no name
+monster_name-armored = Armored {$monster_name}
+monster_name-big_slime = Big {$colorful ->
+    [0] {EMPTYSTRING()}
+    *[1] {$color} 
+  }Slime{$holding ->
+    [0] {EMPTYSTRING()}
+    *[1] holding {$item_name}
+  }
+monster_name-dangerous = Dangerous {$monster_name}
+monster_name-flying_purple_shorts = Flying Purple Shorts
+monster_name-mage = {$monster_name} Mage
+monster_name-mutant = Mutant {$monster_name}
+monster_name-slime = Slime
+monster_name-truffle_crab = Truffle Crab
 
 # Event Tiles
 

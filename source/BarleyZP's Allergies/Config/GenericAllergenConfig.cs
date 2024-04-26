@@ -12,11 +12,17 @@ namespace BZP_Allergies.Config
 {
     internal class GenericAllergenConfig
     {
-        public bool EggAllergy { get; set; } = false;
-        public bool WheatAllergy { get; set; } = false;
-        public bool FishAllergy { get; set; } = false;
-        public bool ShellfishAllergy { get; set; } = false;
-        public bool TreenutAllergy { get; set; } = false;
-        public bool DairyAllergy { get; set; } = false;
+        public Dictionary<string, bool> Allergies;
+
+        public GenericAllergenConfig()
+        {
+            Allergies = new();
+
+            // get content pack configurations
+            foreach (string id in AllergenManager.ALLERGEN_TO_DISPLAY_NAME.Keys)
+            {
+                Allergies.Add(id, false);
+            }
+        }
     }
 }

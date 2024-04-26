@@ -11,7 +11,7 @@
 {
   "Name": "Spouses' Island",
   "Author": "mistyspring",
-  "Version": "4.5.1",
+  "Version": "4.5.2",
   "Description": "Mod which allows spouses to visit the island.",
   "UniqueID": "mistyspring.spousesisland",
   "EntryDll": "SpousesIsland.dll",

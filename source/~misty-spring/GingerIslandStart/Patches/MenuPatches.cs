@@ -111,6 +111,9 @@ public class MenuPatches
         __instance.skipIntroButton.downNeighborID = _islandBtn.myID;
         _islandBtn.bounds = __instance.skipIntroButton.bounds;
         _islandBtn.bounds.Y += 64;
+        
+        if(ModEntry.Help.ModRegistry.IsLoaded("PeacefulEnd.FashionSense") && __instance.source != CharacterCustomization.Source.NewFarmhand)
+            _islandBtn.bounds.Y += 16;
     }
 
     internal static void Pre_optionButtonClick(CharacterCustomization __instance, string name)
@@ -123,8 +126,16 @@ public class MenuPatches
         if (__instance.source != CharacterCustomization.Source.NewFarmhand)
             return;
         
-        Additions.IslandChanges.ChangeGiftLocation();
         Game1.warpFarmer("IslandSouth", ModEntry.StartingPoint.X, ModEntry.StartingPoint.Y, false);
-        Game1.player.addQuest($"{ModEntry.Id}_StarterQuest");
+        Game1.delayedActions.Add(new DelayedAction(1000, DoMpChanges));
+    }
+
+    private static void DoMpChanges()
+    {
+        Additions.IslandChanges.ChangeGiftLocation();
+        Events.Location.WarpToIsland();
+        Events.Day.TryAddQuest();
+        
+        Game1.player.addItemToInventory(ItemRegistry.Create("(O)TentKit"));
     }
 }

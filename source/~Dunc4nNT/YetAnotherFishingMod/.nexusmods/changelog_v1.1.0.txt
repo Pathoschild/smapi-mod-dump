@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+Version 1.1.0
+
+- Fixed jellies not being able to be caught when the increase chance of catching fish option was enabled.
+- Fixed bait and tackles randomly vanishing.
+- Fixed certain bait not giving the extra fish, e.g. wild bait not catching two fish.
+- Fixed XP amount being altered when adjusting difficulty.
+- Fixed sliders having a bunch of digits after the decimal place.
+- Added an auto cast keybind.
+- Allow setting a minimum amount of fish required before the minigame gets skipped.
+- Add a chance slider for "always perfect" and "instant catch treasure" for the minigame skip, meaning you can set a 50% chance of getting perfect.
+- Adjust XP gain option, this will adjust the XP you gain when you change the difficulty, meaning you get more XP for higher difficulty.
+- Change the rate at which a fish gets caught. If you'd like to catch fish 30% quicker while it's in the green bar, you can.
+- Adjust the rate at which the fish escapes when it's not inside the green bar.
+- An option to adjust the size of the green bar.
+- Adjust the rate at which a treasure is caught when it's not inside the green bar.
+- More specific options to alter what you catch. You can now set it to catch fish, rubbish and "other" items.
+- Set the amount of fish you catch up to 100 fish.
+- Alter the behaviour of fish quality to be clearer. The tooltips in GMCM will explain exactly how they work.
+- Change how often a treasure is a golden treasure.
+- Automatically loot the fish at the end of the minigame, rather than standing there holding a fish in your hand.
+- Speed up most of the fishing animations.
+- Completely rewrite attachment logic, now allow everything vanilla allows.
+- Set an amount of bait to spawn.
+- Infinite bait and tackle now no longer constantly reset the amount on every game tick. It now simply stops the consumption of your bait or wearing of your tackle.
+- Overhaul of the GMCM menu, reorganised and reworded most settings to be more clear in meaning.

@@ -77,21 +77,21 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
 
             CategorizeButton.Position = new Point(
-                ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width +
-                delta * Game1.pixelZoom,
-                ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom
-            );
+                                                  ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width +
+                                                  delta * Game1.pixelZoom,
+                                                  ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom
+                                                 );
 
             StashButton.Position = new Point(
-                CategorizeButton.Position.X + CategorizeButton.Width - StashButton.Width,
-                CategorizeButton.Position.Y + CategorizeButton.Height - 0
-            );
+                                             CategorizeButton.Position.X + CategorizeButton.Width - StashButton.Width,
+                                             CategorizeButton.Position.Y + CategorizeButton.Height - 0
+                                            );
         }
 
         private string ChooseStashButtonLabel() {
             return Module.Config.StashKey == SButton.None
-                ? "Stash"
-                : $"Stash ({Module.Config.StashKey})";
+                       ? "Stash"
+                       : $"Stash ({Module.Config.StashKey})";
         }
 
         private void ToggleMenu() {
@@ -106,9 +106,9 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             var chestData = Module.ChestDataManager.GetChestData(Chest);
             CategoryMenu = new CategoryMenu(chestData, Module.ItemDataManager, TooltipManager, ItemGrabMenu.width - 24);
             CategoryMenu.Position = new Point(
-                ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
-                ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
-            );
+                                              ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
+                                              ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
+                                             );
 
             CategoryMenu.OnClose += CloseCategoryMenu;
             AddChild(CategoryMenu);
@@ -123,7 +123,10 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             SetItemsClickable(true);
         }
 
-        private void StashItems() => StackLogic.StashToChest(Chest, ModEntry.StashNearby.AcceptingFunction);
+        private void StashItems() {
+            ModEntry.Log("Stash to current chest");
+            StackLogic.StashToChest(Chest, ModEntry.StashNearby.AcceptingFunction);
+        }
 
         public override bool ReceiveLeftClick(Point point) {
             var hit = PropagateLeftClick(point);

@@ -20,6 +20,6 @@ namespace BetterMeowmere
     {
         public string ProjectileSound { get; set; } = "All";
         public bool ProjectileIsSecondaryAttack { get; set; } = true;
-        public bool BuffAttack { get; set; } = false;
+        public int AttackDamage { get; set; } = 20;
     }
 }

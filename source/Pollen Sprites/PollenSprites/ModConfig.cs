@@ -8,18 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Monsters;
-
 namespace PollenSprites
 {
     /// <summary>The set of options available in this mod's config.json file.</summary>
@@ -37,10 +25,10 @@ namespace PollenSprites
     public class SeedDropChances
     {
         /// <summary>The chance that <see cref="SeedManager.MixedSeeds"/> will be dropped.</summary>
-        public double MixedSeeds { get; set; } = 0.45;
+        public float MixedSeeds { get; set; } = 0.50f;
         /// <summary>The chance that a random seed from <see cref="SeedManager.FlowerSeeds"/> will be dropped.</summary>
-        public double FlowerSeeds { get; set; } = 0.10;
+        public float FlowerSeeds { get; set; } = 0.20f;
         /// <summary>The chance that a random seed from <see cref="SeedManager.AllSeeds"/> will be dropped.</summary>
-        public double AllSeeds { get; set; } = 0.0;
+        public float AllSeeds { get; set; } = 0f;
     }
 }

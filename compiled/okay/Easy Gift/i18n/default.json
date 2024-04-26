@@ -1,0 +1,8 @@
+﻿{
+  "config.name.EasyGiftKey_Assist": "Shortcut key - Assist",
+  "config.tips.EasyGiftKey_Assist": "Put gifts in opened chest and press Shortcut key to automatically send to villagers.",
+  "config.name.EasyGiftKey_Main": "Shortcut key - Main",
+  "config.tips.EasyGiftKey_Main": "Put gifts in opened chest and press Shortcut key to automatically send to villagers.",
+  "config.name.EnableNpcAllChat": "Auto chat with villagers every day",
+  "config.name.EnableAnimalAllPet": "Auto pet animals every day"
+}

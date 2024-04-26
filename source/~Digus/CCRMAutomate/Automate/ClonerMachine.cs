@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using StardewValley;
 using SObject = StardewValley.Object;
+using DataLoader = CustomCrystalariumMod.DataLoader;
+using StardewValley.GameData.Machines;
 
 namespace CCRMAutomate.Automate
 {
@@ -47,15 +49,12 @@ namespace CCRMAutomate.Automate
             SObject heldObject = machine.heldObject.Value;
             return new TrackedItem(heldObject.getOne(), item =>
             {
-                CustomCloner cloner = ClonerController.GetCloner(machine.Name);
+                CustomCloner cloner = ClonerController.GetCloner(machine.QualifiedItemId);
                 int? machineMinutesUntilReady = null;
-                if (cloner.CloningDataId.ContainsKey(item.ParentSheetIndex))
+                if (cloner.CloningDataId.TryGetValue(item.QualifiedItemId, out var value)
+                    || cloner.CloningDataId.TryGetValue(item.Category.ToString(), out value))
                 {
-                    machineMinutesUntilReady = cloner.CloningDataId[item.ParentSheetIndex];
-                }
-                else if (cloner.CloningDataId.ContainsKey(item.Category))
-                {
-                    machineMinutesUntilReady = cloner.CloningDataId[item.Category];
+                    machineMinutesUntilReady = value;
                 }
                 if (machineMinutesUntilReady.HasValue)
                 {
@@ -74,44 +73,52 @@ namespace CCRMAutomate.Automate
 
         public bool SetInput(IStorage input)
         {
-            if (CCRMAutomateModEntry.ModConfig.EnableAutomateClonerInput)
+            if (!CCRMAutomateModEntry.ModConfig.EnableAutomateClonerInput) return false;
+            SObject machine = this.Machine;
+            SObject heldObject = machine.heldObject.Value;
+            foreach (ITrackedStack trackedStack in input.GetItems())
             {
-                SObject machine = this.Machine;
-                SObject heldObject = machine.heldObject.Value;
-                foreach (ITrackedStack trackedStack in input.GetItems())
+                if (trackedStack.Sample is not SObject objectInput) continue;
+                CustomCloner cloner = ClonerController.GetCloner(machine.QualifiedItemId);
+                int? machineMinutesUntilReady = null;
+                if (cloner.CloningDataId.TryGetValue(objectInput.QualifiedItemId, out var value)
+                    || cloner.CloningDataId.TryGetValue(objectInput.Category.ToString(), out value))
                 {
-                    if (trackedStack.Sample is SObject objectInput
-                        && !objectInput.bigCraftable.Value)
+                    machineMinutesUntilReady = value;
+                }
+                if (!machineMinutesUntilReady.HasValue) continue;
+                machine.heldObject.Value = (SObject)objectInput.getOne();
+                if ((ClonerController.GetCloner(machine.QualifiedItemId) != null && !ClonerController.GetCloner(machine.QualifiedItemId).KeepQuality))
+                {
+                    machine.heldObject.Value.Quality = 0;
+                }
+                machine.readyForHarvest.Value = false;
+                if (DataLoader.ModConfig.OverrideContentPackGetObjectProperties ? DataLoader.ModConfig.GetObjectBackImmediately : cloner.GetObjectBackImmediately)
+                {
+                    machine.MinutesUntilReady = 0;
+                    machine.minutesElapsed(0);
+                }
+                else
+                {
+                    machine.MinutesUntilReady = machineMinutesUntilReady.Value;
+                }
+                machine.lastInputItem.Value = machine.heldObject.Value.getOne();
+                machine.lastInputItem.Value.Stack = 1;
+                machine.initializeLightSource(machine.TileLocation, false);
+                var machineData = machine.GetMachineData();
+                if (machineData?.LoadEffects != null)
+                {
+                    foreach (MachineEffects effect in machineData.LoadEffects)
                     {
-                        CustomCloner cloner = ClonerController.GetCloner(machine.Name);
-                        int? machineMinutesUntilReady = null;
-                        if (cloner.CloningDataId.ContainsKey(objectInput.ParentSheetIndex))
+                        if (machine.PlayMachineEffect(effect, true))
                         {
-                            machineMinutesUntilReady = cloner.CloningDataId[objectInput.ParentSheetIndex];
-                        }
-                        else if (cloner.CloningDataId.ContainsKey(objectInput.Category))
-                        {
-                            machineMinutesUntilReady = cloner.CloningDataId[objectInput.Category];
-                        }
-                        if (machineMinutesUntilReady.HasValue)
-                        {
-                            machine.heldObject.Value = (SObject)objectInput.getOne();
-                            machine.readyForHarvest.Value = false;
-                            if (DataLoader.ModConfig.OverrideContentPackGetObjectProperties ? DataLoader.ModConfig.GetObjectBackImmediately : cloner.GetObjectBackImmediately)
-                            {
-                                machine.MinutesUntilReady = 0;
-                                machine.minutesElapsed(0, Location);
-                            }
-                            else
-                            {
-                                machine.MinutesUntilReady = machineMinutesUntilReady.Value;
-                            }
-                            machine.initializeLightSource(machine.TileLocation, false);
-                            trackedStack.Reduce(1);
-                            return true;
+                            break;
                         }
                     }
                 }
+                MachineDataUtility.UpdateStats(machineData?.StatsToIncrementWhenLoaded, objectInput, 1);
+                trackedStack.Reduce(1);
+                return true;
             }
             return false;
         }

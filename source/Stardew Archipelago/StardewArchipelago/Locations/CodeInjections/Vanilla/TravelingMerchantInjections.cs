@@ -264,7 +264,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 return;
             }
             var activeHints = _archipelago.GetMyActiveHints();
-            var weddingRingRecipeCheck = new PurchaseableArchipelagoLocation(AP_WEDDING_RING_RECIPE, AP_WEDDING_RING_RECIPE, _modHelper, _locationChecker, _archipelago, activeHints);
+            var weddingRingRecipeCheck = new PurchaseableArchipelagoLocation(AP_WEDDING_RING_RECIPE, _monitor, _modHelper, _locationChecker, _archipelago, activeHints);
             stock.Add(weddingRingRecipeCheck, new int[2]
             {
                 500,
@@ -550,7 +550,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
             var scamName = _merchantApItemNames[random.Next(0, _merchantApItemNames.Length)];
             var myActiveHints = _archipelago.GetMyActiveHints();
-            var apLocation = new PurchaseableArchipelagoLocation(scamName, chosenApItem, _modHelper, _locationChecker, _archipelago, myActiveHints);
+            var apLocation = new PurchaseableArchipelagoLocation(scamName, chosenApItem, _monitor, _modHelper, _locationChecker, _archipelago, myActiveHints);
             var price = ModifyPrice(_merchantPrices[random.Next(0, _merchantPrices.Length)], priceMultiplier);
 
             currentStock.Add(apLocation, new[] { price, 1 });

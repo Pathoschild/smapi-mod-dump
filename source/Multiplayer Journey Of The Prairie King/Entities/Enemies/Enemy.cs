@@ -129,12 +129,14 @@ namespace MultiplayerPrairieKing.Entities
 						}
 						while (gameInstance.map.IsCollidingWithMap(targetPosition) && tries < 10);
 
-						if(gameInstance.isHost)
+						if(gameInstance.IsHost)
                         {
-							PK_SpikeyNewTarget message = new();
-							message.target = targetPosition;
-							message.id = id;
-							gameInstance.modInstance.Helper.Multiplayer.SendMessage(message, "PK_SpikeyNewTarget");
+                            PK_SpikeyNewTarget message = new()
+                            {
+                                target = targetPosition,
+                                id = id
+                            };
+                            gameInstance.modInstance.SyncMessage(message);
 						}
 						break;
 					}
@@ -163,7 +165,7 @@ namespace MultiplayerPrairieKing.Entities
 			}
 			
 			//NET spawn enemy
-			if (gameInstance.isHost)
+			if (gameInstance.IsHost)
 			{
 				id = gameInstance.modInstance.Helper.Multiplayer.GetNewID();
 
@@ -173,7 +175,7 @@ namespace MultiplayerPrairieKing.Entities
                     which = (int)which,
                     position = position
                 };
-                game.modInstance.Helper.Multiplayer.SendMessage(message, "PK_EnemySpawn");
+                game.modInstance.SyncMessage(message);
 			}
 		}
 
@@ -325,12 +327,14 @@ namespace MultiplayerPrairieKing.Entities
 								}
 								while (gameInstance.map.IsCollidingWithMap(targetPosition) && tries2 < 5);
 
-								if(gameInstance.isHost)
+								if(gameInstance.IsHost)
                                 {
-									PK_SpikeyNewTarget message = new();
-									message.id = id;
-									message.target = targetPosition;
-									gameInstance.modInstance.Helper.Multiplayer.SendMessage(message, "PK_SpikeyNewTarget");
+                                    PK_SpikeyNewTarget message = new()
+                                    {
+                                        id = id,
+                                        target = targetPosition
+                                    };
+                                    gameInstance.modInstance.SyncMessage(message);
 								} 
 							}
 						}
@@ -428,7 +432,7 @@ namespace MultiplayerPrairieKing.Entities
                                     {
                                         id = gameInstance.monsters[i].id
                                     };
-                                    gameInstance.modInstance.Helper.Multiplayer.SendMessage(message, "PK_EnemyKilled");
+                                    gameInstance.modInstance.SyncMessage(message);
 
 									gameInstance.AddGuts(gameInstance.monsters[i].position.Location, gameInstance.monsters[i].type);
 									Game1.playSound("Cowboy_monsterDie");
@@ -436,9 +440,11 @@ namespace MultiplayerPrairieKing.Entities
 								}
 							}
 						}
-						if (gameInstance.map.IsCollidingWithMapForMonsters(attemptedPosition) || gameInstance.map.IsCollidingWithMonster(attemptedPosition, this) || gameInstance.player.deathTimer > 0f)
+						if (gameInstance.map.IsCollidingWithMapForMonsters(attemptedPosition) || gameInstance.map.IsCollidingWithMonster(attemptedPosition, this, gameInstance) || gameInstance.player.deathTimer > 0f)
 						{
-							break;
+							gameInstance.map.IsCollidingWithMonster(attemptedPosition, this, gameInstance);
+                            break;
+
 						}
 						ticksSinceLastMovement = 0;
 						position = attemptedPosition;
@@ -459,12 +465,14 @@ namespace MultiplayerPrairieKing.Entities
 						}
 						if (type == MONSTER_TYPE.spikey && !invisible)
 						{
-							if(gameInstance.isHost)
+							if(gameInstance.IsHost)
                             {
 								SpikeyStartTransform();
-								PK_SpikeyTransform message = new();
-								message.id = id;
-								gameInstance.modInstance.Helper.Multiplayer.SendMessage(message, "PK_SpikeyTransform");
+                                PK_SpikeyTransform message = new()
+                                {
+                                    id = id
+                                };
+                                gameInstance.modInstance.SyncMessage(message);
 							}
 						}
 						break;
@@ -503,7 +511,7 @@ namespace MultiplayerPrairieKing.Entities
 						{
 							acceleration.Y -= 0.1f * accelerationMultiplyer;
 						}
-						if (!gameInstance.map.IsCollidingWithMonster(new Rectangle(position.X + (int)Math.Ceiling(acceleration.X), position.Y + (int)Math.Ceiling(acceleration.Y), TileSize, TileSize), this) && gameInstance.player.deathTimer <= 0f)
+						if (!gameInstance.map.IsCollidingWithMonster(new Rectangle(position.X + (int)Math.Ceiling(acceleration.X), position.Y + (int)Math.Ceiling(acceleration.Y), TileSize, TileSize), this, gameInstance) && gameInstance.player.deathTimer <= 0f)
 						{
 							ticksSinceLastMovement = 0;
 							position.X += (int)Math.Ceiling(acceleration.X);
@@ -535,7 +543,7 @@ namespace MultiplayerPrairieKing.Entities
 
 		public virtual void OnDeath()
 		{
-			if(gameInstance.isHost)
+			if(gameInstance.IsHost)
             {
 				//Spawn Pickup if host
 				POWERUP_TYPE loot = GetLootDrop();

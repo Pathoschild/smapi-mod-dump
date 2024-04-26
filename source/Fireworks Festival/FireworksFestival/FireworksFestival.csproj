@@ -12,8 +12,26 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
   </ItemGroup>
+
+  
+  <ItemGroup>
+    <None Update="[CP] Fireworks Festival\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup>
+      <Name>Fireworks Festival</Name>
+      <Authors>violetlizabet</Authors>
+      <Version>2.0.2</Version>
+      <Description>Adds a summer fireworks festival as well as craftable fireworks.</Description>
+      <UniqueId>violetlizabet.FireworksFestival</UniqueId>
+      <MinimumApiVersion>4.0.0</MinimumApiVersion>
+      <UpdateKeys>Nexus:15261,Github:elizabethcd/FireworksFestival</UpdateKeys>
+  </PropertyGroup>
 </Project>

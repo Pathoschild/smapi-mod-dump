@@ -1,6 +1,7 @@
 {
   "MainSettings": {
     "EnableDebugMode": false,
+    "EnableBuildingMapReplacements": true,
     "EnableHoverTip": false,
     "RefreshConfigButton": "F5"
   },

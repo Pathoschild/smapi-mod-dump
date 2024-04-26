@@ -28,6 +28,8 @@ namespace StardewArchipelago.Constants.Modded
             { ModNames.SHIKO, "Papaya's Custom NPC Mod" },
             { ModNames.WELLWICK, "[CP] Wellwick" },
             { ModNames.YOBA, "[CP] Yoba NPC" },
+            { ModNames.BOARDING_HOUSE, "CP Boarding House" },
+            { ModNames.LACEY, "Hat Mouse Lacey - Core" },
         };
     }
 }

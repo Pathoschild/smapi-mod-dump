@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="assets\" />
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <Version>1.0</Version>
+    <RunWorkingDirectory>/Applications/Stardew Valley.app/Contents/MacOS/</RunWorkingDirectory>
+    <RunCommand>/Applications/Stardew Valley.app/Contents/MacOS/StardewModdingAPI</RunCommand>
+    <RunArguments>-mode dryrun</RunArguments>
+    <TargetFramework>net6.0</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+</Project>

@@ -8,6 +8,10 @@ for queries and analysis.**
 
 # Version history for EventBlackBars
 
+## 1.1.1
+Released April 7, 2024.
+- Fixed Skip button appearing under the bars.
+
 ## 1.1.0
 Released March 23, 2024.
 - Updated for SMAPI 4.0 and Stardew Valley 1.6

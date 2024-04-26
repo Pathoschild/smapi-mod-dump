@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22922
+IDs: TheFluffyRobot.No
+update keys: Nexus:22922, GitHub:jamespfluger/Stardew-NoFriendshipDecayReborn

@@ -38,12 +38,11 @@
     "config.magnetic-radius.name": "Magnetischer Radius",
     "config.magnetic-radius.tooltip": "Der Wert für den Gegenstandsmagnetismus (höhere Werte ziehen Gegenstände weiter weg weg an). Standard {{defaultValue}}.",
 
-    // TODO
-    "config.tractor-sounds.name": "Sound Effects",
-    "config.tractor-sounds.tooltip": "Which sound effects to play while riding the tractor. Changes may not fully take effect until you reload the save. Default {{defaultValue}}.",
-    "config.tractor-sounds.value.None": "no sounds",
-    "config.tractor-sounds.value.Horse": "horse sounds",
-    "config.tractor-sounds.value.Tractor": "tractor sounds",
+    "config.tractor-sounds.name": "Sound-Effekte",
+    "config.tractor-sounds.tooltip": "Welche Soundeffekte während der Fahrt mit dem Traktor abgespielt werden sollen. Die Änderungen werden möglicherweise erst nach dem erneuten Laden des Spielstands vollständig wirksam. Standard: {{defaultValue}}.",
+    "config.tractor-sounds.value.None": "Keine Geräusche",
+    "config.tractor-sounds.value.Horse": "Pferdegeräusche",
+    "config.tractor-sounds.value.Tractor": "Traktorgeräusche",
 
     "config.build-price.name": "Baupreis",
     "config.build-price.tooltip": "Der Goldpreis für den Kauf einer Traktor-Garage. Standard {{defaultValue}}g.",
@@ -74,29 +73,29 @@
     /****
     ** Trees & bushes
     ****/
-    "config.chop-fruit-trees-seeds.name": "Obstbäume hacken (Saatgut)",
+    "config.chop-fruit-trees-seeds.name": "Obstbaumsamen entfernen",
     "config.chop-fruit-trees-seeds.tooltip": "Ob Obstbaumsamen entfernt werden sollen.",
 
-    "config.chop-fruit-trees-saplings.name": "Obstbäume hacken (Setzlinge)",
+    "config.chop-fruit-trees-saplings.name": "Obstbaumsetzlinge fällen",
     "config.chop-fruit-trees-saplings.tooltip": "Ob nicht ausgewachsene Obstbäume entfernt werden sollen.",
 
-    "config.chop-fruit-trees-grown.name": "Obstbäume hacken (ausgewachsen)",
+    "config.chop-fruit-trees-grown.name": "Obstbäume fällen (ausgewachsen)",
     "config.chop-fruit-trees-grown.tooltip": "Ob ausgewachsene Obstbäume gefällt werden sollen.",
 
-    "config.chop-trees-seeds.name": "Bäume hacken (Saatgut)",
+    "config.chop-trees-seeds.name": "Baumsamen entfernen",
     "config.chop-trees-seeds.tooltip": "Ob die Samen von Nicht-Obstbäumen entfernt werden sollen.",
 
-    "config.chop-trees-saplings.name": "Bäume hacken (Setzlinge)",
+    "config.chop-trees-saplings.name": "Baumsetzlinge fällen",
     "config.chop-trees-saplings.tooltip": "Ob nicht ausgewachsene Bäume, die keine Obstbäume sind, entfernt werden sollen.",
 
-    "config.chop-trees-grown.name": "Bäume hacken (ausgewachsen)",
+    "config.chop-trees-grown.name": "Bäume fällen (ausgewachsen)",
     "config.chop-trees-grown.tooltip": "Ob ausgewachsene Bäume, die keine Obstbäume sind, entfernt werden sollen.",
 
-    "config.chop-trees-stumps.name": "Bäume hacken (Stümpfe)",
+    "config.chop-trees-stumps.name": "Baumstümpfe entfernen",
     "config.chop-trees-stumps.tooltip": "Ob Stümpfe von Bäumen, die keine Obstbäume sind, entfernt werden sollen. (Dies gilt nicht für Riesenstümpfe, die als Schutt gelten).",
 
-    "config.chop-bushes.name": "Büsche hacken",
-    "config.chop-bushes.tooltip": "Ob Büsche geschnitten werden sollen, die gehackt werden können.",
+    "config.chop-bushes.name": "Büsche schneiden",
+    "config.chop-bushes.tooltip": "Ob Büsche geschnitten werden sollen, die abgeholzt werden können.",
 
     "config.harvest-fruit-trees.name": "Obstbäume ernten",
     "config.harvest-fruit-trees.tooltip": "Ob Obstbäume geerntet werden sollen.",

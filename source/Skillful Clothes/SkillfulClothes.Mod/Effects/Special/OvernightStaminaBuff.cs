@@ -12,6 +12,7 @@ using SkillfulClothes.Effects.Buffs;
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
+using StardewValley.Buffs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,16 +48,21 @@ namespace SkillfulClothes.Effects.Special
                 Logger.Debug("Grant MaxEnergy buff");
 
                 // create & give buff to player
-                MaxStaminaBuff staminaBuff = new MaxStaminaBuff(Parameters.Amount, 360, sourceItem?.DisplayName ?? "");                
-                Game1.buffsDisplay.addOtherBuff(staminaBuff);
-                
+                Buff staminaBuff = new Buff(EffectHelper.GetEffectId(this), null, null, 360);
+                staminaBuff.visible = false;
+                BuffEffects effects = new BuffEffects();
+                effects.MaxStamina.Value = Parameters.Amount;
+                staminaBuff.effects.Add(effects);
+
+                Game1.player.buffs.Apply(staminaBuff);
+
                 // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));
             }
         }
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            // nothing to do
+            // nothing todo
         }
     }
 }

@@ -37,6 +37,7 @@ namespace ChestFeatureSet
         public bool MoveChestsDebuff { get; set; } = true;
         public SButton MoveChestKey { get; set; } = SButton.LeftShift;
 
-        // Variable
+        // Variables
+        public string[] CustomArea { get; set; } = { "Custom_GrandpasShed", "Custom_GrandpasShedGreenhouse" };
     }
 }

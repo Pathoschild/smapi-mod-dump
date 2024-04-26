@@ -1,0 +1,485 @@
+{      
+    "Spring": [
+      {
+        "cropName" : "Bluemire Belle",
+        "seedID" : "PC.QLFlowerGarden_Bluemire_Belle_Seeds",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true
+      },
+      {
+        "cropName" : "Crown Imperial F.",
+        "seedID" : "PC.QLFlowerGarden_Crown_Imperial_F._Bulb",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true
+      },
+      {
+        "cropName" : "Fairy Iris",
+        "seedID" : "PC.QLFlowerGarden_Fairy_Iris_Bulb",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true
+      },
+      {
+        "cropName" : "Gypsy Beauty Iris",
+        "seedID" : "PC.QLFlowerGarden_Gypsy_Beauty_Bulb",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true,
+        "minYear" : 2
+      },      
+      {
+        "cropName" : "King Protea",
+        "seedID" : "PC.QLFlowerGarden_King_Protea_Seeds",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true,
+        "minYear" : 3
+      },
+      {
+        "cropName" : "Lavender Silk Iris",
+        "seedID" : "PC.QLFlowerGarden_Lavender_Silk_Bulb",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true
+      },
+      {
+        "cropName" : "Pomponella Rose",
+        "seedID" : "PC.QLFlowerGarden_Pomponella_Seeds",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : true,
+        "isFlower" : true
+      },
+      {
+        "cropName" : "Queen of Bourbons",
+        "seedID" : "PC.QLFlowerGarden_Queen_of_Bourbons_Seeds",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : true,
+        "isFlower" : true,
+        "minYear" : 3
+      },
+      {
+        "cropName" : "Rainbow Tail",
+        "seedID" : "PC.QLFlowerGarden_Rainbow_Tail_Seeds",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true,
+        "minYear" : 3
+      },
+      {
+        "cropName" : "Snowball Rose",
+        "seedID" : "PC.QLFlowerGarden_Snowball_Rose_Seeds",
+        "dropChance" : 4,
+        "enabled" : true,
+        "isTrellis" : false,
+        "isFlower" : true
+      }
+        
+        
+      ],
+      "Summer" : [
+        {
+          "cropName" : "Bora Bora",
+          "seedID" : "PC.QLFlowerGarden_Bora_Bora_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Bowl of Cream Seeds",
+          "seedID" : "PC.QLFlowerGarden_Bowl_of_Cream_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Fairy Floss Dahlia",
+          "seedID" : "PC.QLFlowerGarden_Fairy_Floss_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Gem Sea Iris",
+          "seedID" : "PC.QLFlowerGarden_Gem_Sea_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Golden Bear S.",
+          "seedID" : "PC.QLFlowerGarden_Golden_Bear_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 3
+        },
+        {
+          "cropName" : "Golden Splendor",
+          "seedID" : "PC.QLFlowerGarden_Golden_Splendor_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Gotoroan Iris Bulb",
+          "seedID" : "PC.QLFlowerGarden_Gotoroan_Iris_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Gypsy Charmer S.",
+          "seedID" : "PC.QLFlowerGarden_Gypsy_Charmer_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Little Tiger S.",
+          "seedID" : "PC.QLFlowerGarden_Little_Tiger_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Pearl Tuberose",
+          "seedID" : "PC.QLFlowerGarden_Pearl_Tuberose_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Pink Damask",
+          "seedID" : "PC.QLFlowerGarden_Pink_Damask_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Pink Parfait Iris",
+          "seedID" : "PC.QLFlowerGarden_Pink_Parfait_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 3
+        },
+        {
+          "cropName" : "Pomponella Rose",
+          "seedID" : "PC.QLFlowerGarden_Pomponella_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : true,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Queen of Bourbons",
+          "seedID" : "PC.QLFlowerGarden_Queen_of_Bourbons_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : true,
+          "isFlower" : true,
+          "minYear" : 3
+        },
+        {
+          "cropName" : "Queen Protea",
+          "seedID" : "PC.QLFlowerGarden_Queen_Protea_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Rainbow Sorbet",
+          "seedID" : "PC.QLFlowerGarden_Rainbow_Sorbet_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Rainbow Tail",
+          "seedID" : "PC.QLFlowerGarden_Rainbow_Tail_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 3
+        },
+        {
+          "cropName" : "Red Imperial Rose",
+          "seedID" : "PC.QLFlowerGarden_Red_Imperial_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : true,
+          "isFlower" : true,
+          "minYear" : 3
+        },
+        {
+          "cropName" : "Regal Lily",
+          "seedID" : "PC.QLFlowerGarden_Regal_Lily_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Rocco Dahlia",
+          "seedID" : "PC.QLFlowerGarden_Rocco_Dahlia_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Seagull Dahlia",
+          "seedID" : "PC.QLFlowerGarden_Seagull_Dahlia_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Seashell Peony",
+          "seedID" : "PC.QLFlowerGarden_Seashell_Peony_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Starburst S.",
+          "seedID" : "PC.QLFlowerGarden_Starburst_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Stargazer Lily",
+          "seedID" : "PC.QLFlowerGarden_Stargazer_Lily_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Sunrich Lime S.",
+          "seedID" : "PC.QLFlowerGarden_Sunrich_Lime_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Sweet Musette",
+          "seedID" : "PC.QLFlowerGarden_Sweet_Musette_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Teddy Bear S.",
+          "seedID" : "PC.QLFlowerGarden_Teddy_Bear_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Tiger Lily",
+          "seedID" : "PC.QLFlowerGarden_Tiger_Lily_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Tiny Bee Lily",
+          "seedID" : "PC.QLFlowerGarden_Tiny_Bee_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "White Giant Caila Lily",
+          "seedID" : "PC.QLFlowerGarden_White_Giant_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "White Jasmine",
+          "seedID" : "PC.QLFlowerGarden_White_Jasmine_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }
+
+      ],
+      "Fall" : [
+        {
+          "cropName" : "Black Ambrosia",
+          "seedID" : "PC.QLFlowerGarden_Black_Ambrosia_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Black Prince",
+          "seedID" : "PC.QLFlowerGarden_Black_Prince_S.",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Dracula's Kiss",
+          "seedID" : "PC.QLFlowerGarden_Dracula's_Kiss_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Fairy Floss Dahlia",
+          "seedID" : "PC.QLFlowerGarden_Fairy_Floss_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },
+        {
+          "cropName" : "Fairy Iris",
+          "seedID" : "PC.QLFlowerGarden_Fairy_Iris_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Green Rose",
+          "seedID" : "PC.QLFlowerGarden_Green_Rose_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Gypsy Charmer S.",
+          "seedID" : "PC.QLFlowerGarden_Gypsy_Charmer_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Little Tiger S.",
+          "seedID" : "PC.QLFlowerGarden_Little_Tiger_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Osiria Rose",
+          "seedID" : "PC.QLFlowerGarden_Osiria_Rose_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 3
+        },
+        {
+          "cropName" : "Rocco Dahlia",
+          "seedID" : "PC.QLFlowerGarden_Rocco_Dahlia_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },    
+        {
+          "cropName" : "Starburst S.",
+          "seedID" : "PC.QLFlowerGarden_Starburst_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true,
+          "minYear" : 2
+        },    
+        {
+          "cropName" : "Sunrich Lime S.",
+          "seedID" : "PC.QLFlowerGarden_Sunrich_Lime_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Teddy Bear S.",
+          "seedID" : "PC.QLFlowerGarden_Teddy_Bear_S._Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }
+
+      ],
+      "Winter" : [
+        {
+          "cropName" : "Peacock Iris",
+          "seedID" : "PC.QLFlowerGarden_Peacock_Iris_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Striped Squill",
+          "seedID" : "PC.QLFlowerGarden_Striped_Squill_Bulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }        
+
+      ]
+
+      
+}

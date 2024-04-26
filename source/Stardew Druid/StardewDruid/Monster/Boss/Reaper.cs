@@ -11,8 +11,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
+using StardewDruid.Data;
 using StardewDruid.Event;
-using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using static StardewDruid.Event.SpellHandle;
 
 namespace StardewDruid.Monster.Boss
 {
@@ -37,17 +38,6 @@ namespace StardewDruid.Monster.Boss
         public Reaper(Vector2 vector, int CombatModifier)
           : base(vector, CombatModifier, "Reaper")
         {
-
-        }
-
-        public override void BaseMode()
-        {
-
-            MaxHealth = Math.Max(5000, combatModifier * 400);
-
-            Health = MaxHealth;
-
-            DamageToFarmer = Math.Max(20, Math.Min(60, combatModifier * 3));
 
         }
 
@@ -189,15 +179,19 @@ namespace StardewDruid.Monster.Boss
 
                 Vector2 zero = BlastZero(2)[0];
 
-                SpellHandle fireball = new(currentLocation, zero * 64, GetBoundingBox().Center.ToVector2(), 2, 1, DamageToFarmer);
+                SpellHandle fireball = new(currentLocation, zero * 64, GetBoundingBox().Center.ToVector2(), 128, DamageToFarmer);
 
-                fireball.type = SpellHandle.barrages.fireball;
+                fireball.type = SpellHandle.spells.missile;
 
                 fireball.scheme = SpellHandle.schemes.death;
 
-                fireball.indicator = SpellHandle.indicators.death;
+                fireball.indicator = IconData.cursors.death;
 
-                fireball.monster = this;
+                fireball.display = displays.Death;
+
+                //fireball.sound = sounds.shadowDie;
+
+                fireball.boss = this;
 
                 Mod.instance.spellRegister.Add(fireball);
 

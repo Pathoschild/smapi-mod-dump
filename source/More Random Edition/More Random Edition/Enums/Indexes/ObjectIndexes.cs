@@ -8,11 +8,18 @@
 **
 *************************************************/
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Randomizer
 {
+    /// <summary>
+    /// All positive IDs map to the existing id key as a string
+    /// Negative ones need to be looked up in the other dictionary
+    /// </summary>
 	public enum ObjectIndexes
-	{
-        AnyFish = -4,
+    {
         WildHorseradish = 16,
         Daffodil = 18,
         Leek = 20,
@@ -173,6 +180,7 @@ namespace Randomizer
         Oil = 247,
         Garlic = 248,
         Kale = 250,
+        TeaSapling = 251,
         Rhubarb = 252,
         TripleShotEspresso = 253,
         Melon = 254,
@@ -531,7 +539,18 @@ namespace Randomizer
         CactusSeeds = 802,
         IridiumMilk = 803,
         SquidInk = 814,
+        ThornsRing = 839,
+        RusticPlankFloor = 840,
+        StoneWalkwayFloor = 841,
         CuriosityLure = 856,
+        FairyDust = 872,
+        BugSteak = 874,
+        MonsterMusk = 879,
+        FiberSeeds = 885,
+        GlowstoneRing = 888,
+        DeluxeFertilizer = 919,
+        DeluxeRetainingSoil = 920,
+        CookoutKit = 926,
 
         // New from 1.5 update (add later when these will be in the pool)
         TaroRoot = 830,
@@ -541,6 +560,103 @@ namespace Randomizer
         CinderShard = 848,
         MagmaCap = 851,
         DragonTooth = 852,
-        BoneFragment = 881
-    };
+        BoneFragment = 881,
+
+        // Objects that don't use integers will get arbitrary negative numbers
+        // DO NOT use these anywhere in the randomizer - use GetId instead
+        BlueGrassStarter = -10000,
+        ChallengeBait,
+        DeluxeBait,
+        MysticSyrup,
+        MysticTreeSeed,
+        SonarBobber,
+        TreasureTotem,
+        TentKit,
+
+        SeaJelly,
+        CaveJelly,
+        RiverJelly,
+        Moss,
+
+        CarrotSeeds,
+        Carrot,
+		SummerSquashSeeds,
+        SummerSquash,
+		BroccoliSeeds,
+        Broccoli,
+		PowdermelonSeeds,
+		Powdermelon
+	};
+
+    /// <summary>
+    /// For object indexes that we aren't, or haven't yet added to the list
+    /// of objects
+    /// </summary>
+    public enum UnusedObjectIndexes
+	{
+        FireworksRed = 893,
+		FireworksPurple = 894,
+		FireworksGreen = 895
+	}
+
+    public static class ObjectIndexesExtentions
+    {
+        public class ObjectIndexData
+        {
+            public static readonly Dictionary<ObjectIndexes, string> ObjectIndexIdMap = new();
+            public static readonly Dictionary<string, ObjectIndexes> IdObjectIndexMap = new();
+
+            public static readonly Dictionary<ObjectIndexes, string> NonIntObjectsMap = new()
+            {
+                [ObjectIndexes.BlueGrassStarter] = "BlueGrassStarter",
+                [ObjectIndexes.ChallengeBait] = "ChallengeBait",
+                [ObjectIndexes.DeluxeBait] = "DeluxeBait",
+                [ObjectIndexes.MysticTreeSeed] = "MysticTreeSeed",
+                [ObjectIndexes.MysticSyrup] = "MysticSyrup",
+                [ObjectIndexes.SonarBobber] = "SonarBobber",
+                [ObjectIndexes.TreasureTotem] = "TreasureTotem",
+                [ObjectIndexes.TentKit] = "TentKit",
+
+                [ObjectIndexes.SeaJelly] = "SeaJelly",
+                [ObjectIndexes.CaveJelly] = "CaveJelly",
+                [ObjectIndexes.RiverJelly] = "RiverJelly",
+                [ObjectIndexes.Moss] = "Moss",
+
+				[ObjectIndexes.CarrotSeeds] = "CarrotSeeds",
+				[ObjectIndexes.Carrot] = "Carrot",
+				[ObjectIndexes.SummerSquashSeeds] = "SummerSquashSeeds",
+				[ObjectIndexes.SummerSquash] = "SummerSquash",
+				[ObjectIndexes.BroccoliSeeds] = "BroccoliSeeds",
+				[ObjectIndexes.Broccoli] = "Broccoli",
+				[ObjectIndexes.PowdermelonSeeds] = "PowdermelonSeeds",
+				[ObjectIndexes.Powdermelon] = "Powdermelon"
+			};
+
+            static ObjectIndexData()
+            {
+                Enum.GetValues(typeof(ObjectIndexes))
+                    .Cast<ObjectIndexes>()
+                    .ToList()
+                    .ForEach(index =>
+                    {
+                        int indexAsInt = (int)index;
+                        string indexAsString = indexAsInt >= 0
+                            ? indexAsInt.ToString()
+                            : NonIntObjectsMap[index];
+
+                        ObjectIndexIdMap[index] = indexAsString;
+                        IdObjectIndexMap[indexAsString] = index;
+                    });
+            }
+        };
+
+        public static string GetId(this ObjectIndexes index) => 
+            ObjectIndexData.ObjectIndexIdMap[index];
+
+        public static Item GetItem(this ObjectIndexes index) =>
+            ItemList.Items[GetId(index)];
+
+        public static ObjectIndexes GetObjectIndex(string id) =>
+            ObjectIndexData.IdObjectIndexMap[id];
+    }
 }

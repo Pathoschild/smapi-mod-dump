@@ -19,15 +19,9 @@ namespace MultiplayerPrairieKing.Utility
 {
     public static class MapLoader
     {
-		static GameMultiplayerPrairieKing gameInstance;
-		public static void Init(GameMultiplayerPrairieKing instance)
-		{
-            gameInstance = instance;
-		}
-
 		public static Map GetDefaultMap()
 		{
-            Map map = new(gameInstance);
+            Map map = new();
             for (int x = 0; x < 16; x++)
             {
                 for (int y = 0; y < 16; y++)
@@ -54,7 +48,7 @@ namespace MultiplayerPrairieKing.Utility
         }
 		public static Map GetMap(int wave)
 		{
-            Map map = new(gameInstance);
+            Map map = new();
 			for (int x = 0; x < 16; x++)
 			{
 				for (int y = 0; y < 16; y++)

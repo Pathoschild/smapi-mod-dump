@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Thai Font Adjuster",
+    "Author": "'ELL and NRTnarathip",
+    "Version": "1.0.1",
+    "MinimumApiVersion": "3.18.6",
+    "Description": "Adjusts Thai fonts for better readability.",
+    "UniqueID": "ELL.ThaiFontAdjuster",
+    "EntryDll": "ThaiFontAdjuster.dll",
+    "UpdateKeys": [ "Nexus:9586" ]
+}

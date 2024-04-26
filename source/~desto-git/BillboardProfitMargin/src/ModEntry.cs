@@ -10,10 +10,14 @@
 
 namespace BillboardProfitMargin
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Text.RegularExpressions;
 	using Common;
 	using StardewModdingAPI;
 	using StardewModdingAPI.Events;
 	using StardewValley;
+	using StardewValley.GameData.SpecialOrders;
 	using StardewValley.Menus;
 	using StardewValley.Quests;
 
@@ -41,36 +45,9 @@ namespace BillboardProfitMargin
 				return;
 			}
 
+			helper.Events.Content.AssetRequested += this.OnAssetRequested;
 			helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 			helper.Events.Display.MenuChanged += this.OnMenuChanged;
-		}
-
-		// update only the quest description initially
-		// once the quest is completed, it needs to be updated again along with the reward
-		private void UpdateItemDeliveryQuest(ItemDeliveryQuest quest)
-		{
-			if (quest.deliveryItem.Value == null)
-			{
-				Logger.Trace("Can not adjust reward for daily quest that is managed by Quest Framework.");
-				return;
-			}
-
-			// item delivery quests don't have a reward property
-			// instead, the reward is calculated from the item being requested once the quest has been completed
-			// this assumes that the reward is always three times the item value
-			int originalReward = quest.deliveryItem.Value.Price * 3;
-			int adjustedReward = QuestHelper.GetAdjustedReward(originalReward, this.config);
-
-			if (QuestHelper.GetReward(quest) == adjustedReward) return;
-
-			// replace values in the quest text
-			QuestHelper.UpdateDescription(quest, originalReward, adjustedReward);
-
-			// true once the reward can be collected from the quest log
-			if (!quest.hasReward()) return;
-
-			QuestHelper.SetReward(quest, adjustedReward);
 		}
 
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -79,21 +56,25 @@ namespace BillboardProfitMargin
 			this.Helper.Events.GameLoop.UpdateTicked += this.OnDayStartedDelayed;
 		}
 
-		/// <summary>Raised after each tick.</summary>
-		/// <param name="sender">The event sender.</param>
-		/// <param name="e">The event data.</param>
-		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-		{
-			this.Helper.Content.AssetEditors.Add(new SpecialOrdersAssetEditor(this.config));
-		}
-
 		private void OnMenuChanged(object sender, MenuChangedEventArgs e)
 		{
-			if (e.NewMenu is QuestLog)
+			// The description would reset when a quest gets completed, so we set it every time it is viewed.
+			if (!(e.NewMenu is QuestLog)) return;
+
+			var enumerator = Game1.player.questLog.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				foreach (ItemDeliveryQuest quest in QuestLogHelper.GetDailyItemDeliveryQuests())
+				Quest quest = enumerator.Current;
+				if (quest.id.Value != null) continue; // Daily quests have no ID
+
+				int currentReward = QuestHelper.GetReward(quest);
+				Match match = Regex.Match(quest.questDescription, "[0-9]+g");
+
+				if (match.Value != $"{currentReward}g")
 				{
-					this.UpdateItemDeliveryQuest(quest);
+					int originalReward = int.Parse(match.Value.Substring(0, match.Length - 1));
+					QuestHelper.UpdateDescription(quest, originalReward, QuestHelper.GetReward(quest));
+					Logger.Trace($"Updated quest description for \"{quest.GetName()}\" to match the actual reward.");
 				}
 			}
 		}
@@ -105,14 +86,55 @@ namespace BillboardProfitMargin
 			Quest dailyQuest = Game1.questOfTheDay;
 			if (dailyQuest == null) return;
 
-			if (dailyQuest is ItemDeliveryQuest itemDeliveryQuest)
-			{
-				itemDeliveryQuest.loadQuestInfo();
-				this.UpdateItemDeliveryQuest(itemDeliveryQuest);
-				return;
-			}
-
+			QuestHelper.LoadQuestInfo(dailyQuest);
 			QuestHelper.AdjustRewardImmediately(dailyQuest, this.config);
+		}
+
+		private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+		{
+			if (e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders"))
+			{
+				var specialOrderMultiplier = this.config.UseProfitMarginForSpecialOrders
+				? Game1.player.difficultyModifier
+				: this.config.CustomProfitMarginForSpecialOrders;
+
+				e.Edit(assetData =>
+				{
+					// update monetary rewards for special order quests
+					IDictionary<string, SpecialOrderData> quests = assetData.AsDictionary<string, SpecialOrderData>().Data;
+
+					// https://stackoverflow.com/a/31767807
+					// .ToList is part of System.Linq
+					// Without it, the loop would error after an assignment to a dictionary element
+					foreach (KeyValuePair<string, SpecialOrderData> questData in quests)
+					{
+						SpecialOrderData quest = questData.Value;
+						foreach (SpecialOrderRewardData reward in quest.Rewards)
+						{
+							if (reward.Type != "Money") continue;
+
+							Dictionary<string, string> data = reward.Data;
+
+							if (!data.ContainsKey("Amount")) throw new Exception("Could not get 'Amount' for special order quest.");
+							string amount = data["Amount"];
+
+							// amount is dictated by the requested resource with a multiplier
+							if (amount.StartsWith("{"))
+							{
+								// There is actually nothing to do here.
+								// The base price is already taking the profit margin into account.
+							}
+
+							// reward is a fixed gold amount
+							else
+							{
+								int newAmount = (int)Math.Ceiling(int.Parse(amount) * specialOrderMultiplier);
+								data["Amount"] = newAmount.ToString();
+							}
+						}
+					}
+				});
+			}
 		}
 	}
 }

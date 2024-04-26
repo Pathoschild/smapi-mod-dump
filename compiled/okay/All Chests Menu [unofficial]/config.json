@@ -1,0 +1,12 @@
+{
+  "ModEnabled": true,
+  "ModToOpen": false,
+  "LimitToCurrentLocation": false,
+  "IncludeShippingBin": true,
+  "UnrestrictedShippingBin": false,
+  "CurrentSort": "NA",
+  "ModKey": "LeftShift",
+  "ModKey2": "LeftControl",
+  "SwitchButton": "ControllerBack",
+  "MenuKey": "F2"
+}

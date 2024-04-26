@@ -150,11 +150,11 @@ public class NoticesPage : BasePage<BaseState>, ICalendarPage {
 		builder.FormatText(
 				I18n.Page_Notices(),
 				fancy: true,
-				align: Alignment.Center
+				align: Alignment.HCenter
 			);
 
 		// Build a map of this month's birthdays.
-		DisposableList<NPC>? chars = null;
+		List<NPC>? chars = null;
 		try {
 			chars = Utility.getAllCharacters();
 		} catch(Exception ex) {
@@ -168,7 +168,7 @@ public class NoticesPage : BasePage<BaseState>, ICalendarPage {
 
 		if (chars is not null)
 			foreach (NPC npc in chars)
-				if (npc.isVillager() && date.Season.Equals(npc.Birthday_Season)) {
+				if (npc.IsVillager && date.Season.Equals(npc.Birthday_Season)) {
 					// Don't show villagers we can't socialize with.
 					if (!npc.CanSocialize && !Game1.player.friendshipData.ContainsKey(npc.Name))
 						continue;
@@ -229,7 +229,7 @@ public class NoticesPage : BasePage<BaseState>, ICalendarPage {
 				else if (has_simple)
 					db.FormatText(
 						evt.SimpleLabel!,
-						align: Alignment.Middle,
+						align: Alignment.VCenter,
 						onHover: onHover,
 						noComponent: true
 					);
@@ -250,7 +250,7 @@ public class NoticesPage : BasePage<BaseState>, ICalendarPage {
 
 					var name = new Common.UI.FlowNode.TextNode(
 						npc.displayName,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					);
 
 					db
@@ -264,11 +264,11 @@ public class NoticesPage : BasePage<BaseState>, ICalendarPage {
 									"page.notices.birthday.s"
 							),
 							new { name },
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						);
 
 					if (Mod.Config.DebugMode)
-						db.Text($" (#{npc.Name})", align: Alignment.Middle);
+						db.Text($" (#{npc.Name})", align: Alignment.VCenter);
 				}
 			}
 

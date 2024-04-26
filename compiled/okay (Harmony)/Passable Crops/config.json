@@ -10,5 +10,6 @@
   "PassableByAll": false,
   "SlowDownWhenPassing": true,
   "ShakeWhenPassing": true,
+  "PlaySoundWhenPassing": true,
   "UseCustomDrawing": true
 }

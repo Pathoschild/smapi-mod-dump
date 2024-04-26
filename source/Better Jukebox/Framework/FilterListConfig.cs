@@ -12,14 +12,9 @@ using System.Collections.Generic;
 
 namespace Gaphodil.BetterJukebox.Framework
 {
-    public class FilterListConfig
+    public class FilterListConfig(string s)
     {
-        public List<string> content;
-        
-        public FilterListConfig(string s)
-        {
-            content = ToList(s);
-        }
+        public List<string> content = ToList(s);
 
         private static List<string> ToList(string s)
         {
@@ -33,7 +28,7 @@ namespace Gaphodil.BetterJukebox.Framework
 
         public override string ToString()
         {
-            return string.Join(",", content.ToArray());
+            return string.Join(",", [.. content]);
         }
     }
 }

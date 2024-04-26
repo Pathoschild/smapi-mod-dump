@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/zombifier/My_Stardew_Mods
+   Git: https://github.com/zombifier/My_Stardew_Mods.git
+
+mods:
+   Custom Tapper Framework
+   Extra Machine Configs
+   Flavored And Generic Fuel For Artisan Recipes
+   Toggle Items Framework
+
+latest commit:
+   commit 5c092c712274f96bdffe4a0c1d69dedc47eed70b
+   Author: zombifier <zombify.25@gmail.com>
+   Date:   Thu Apr 25 18:47:37 2024 -0400
+   
+       oops
+   

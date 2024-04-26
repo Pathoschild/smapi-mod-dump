@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlyingTNT/StardewValleyMods
+**
+*************************************************/
+
+{
+  "need-fertilizer--1": "É tarde demais na estação para plantar isso hoje.",
+  "need-fertilizer-0": "Há dias suficientes restantes na estação para plantar isso hoje.",
+  "need-fertilizer-465": "Você precisará usar o Solo Foliar se plantar isso hoje.",
+  "need-fertilizer-466": "Você precisará usar o Solo Foliar Premium se plantar isso hoje.",
+  "need-fertilizer-918": "Você precisará usar o Hiper Solo Foliar se plantar isso hoje."
+}

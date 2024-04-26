@@ -691,11 +691,22 @@
 "foodstore.config.museumpricemarkup": "博物館入場券価格の乗数",
 "foodstore.config.museumpricemarkupText": "内部に展示されたアーティファクト、鉱物、モンスターの戦利品の数に基づく博物館入場券の価格。この値が高いほど入場料が高くなりますが、訪問者のチャンスも低くなります!!!",
 
-"foodstore.todaymuseumvisitor": " 昨日の博物館の訪問者: {{todayMMuseumVisitor}}.^^",
+"foodstore.todaymuseumvisitor": " 昨日の博物館の訪問者: {{todayMMuseumVisitor}}, {{todayMuseumEarning}}G.^^",
 "foodstore.letter.receivemuseumlicense": "親愛なる@.^^　ミュージアムライセンスの取得おめでとうございます。設定方法をご案内いたします。どの農業建物でもミュージアムとして利用できます。ただし、ライセンスを表示する看板が必要で、その後、明日から訪問者が到着します。ミュージアムの訪問者は展示品を購入しませんが、入場時にチケット料金を支払います。料金は、アーティファクト、希少な宝石、エキゾチックな魚や彫像の数に応じて決定されます。チケットの価格設定はあなたが決定できますが、マークアップが高いほど、吸引する訪問者が少なくなる可能性があります。^^ミュージアムの準備ができ次第、私も訪れます。 -ルイス",
   "foodstore.letter.receiverestaurantlicense": "親愛なる@.^^　レストランライセンスの取得を確認しました。このライセンスを使用して、どの農業建物でもレストランとして利用できます。ライセンスを看板に表示するだけで、明日から訪問者が到着します。レストランの訪問者はブラウズして食べたい食品を購入します。時々、特別な料理をリクエストすることがあり、それをより高い価格で直接販売することができます。^^あなたの料理を試すのを本当に楽しみにしています。 -ルイス",
   "foodstore.letter.receivemarkettownlicense": "親愛なる@.^^　ついに、マーケットタウンライセンスを取得しましたね。これで、小さなコンビニエンスストアからスーパーマーケットまで所有できます。このライセンスを使用すると、食品、収穫物、材料など、ご希望の商品を販売できます。^^私たちの村の皆さんのための便利な拠点を作っていただき、本当にありがとうございます。 -ルイス",
   "foodstore.config.multiplayermode": "マルチプレイヤーモードでの販売金の分割を有効にしますか？",
-  "foodstore.config.multiplayermodeText": "警告：バグあり。デフォルトはfalseです。これを有効にすると、販売金が接続されたプレイヤー間で分割されます。警告：他のプレイヤーがお金を受け取らない場合があります。"
+  "foodstore.config.multiplayermodeText": "警告：バグあり。デフォルトはfalseです。これを有効にすると、販売金が接続されたプレイヤー間で分割されます。警告：他のプレイヤーがお金を受け取らない場合があります。",
 
+  "foodstore.config.easylicense": "ライセンスの必要性をスキップしますか？",
+"foodstore.config.textchat": "NPCとのテキストチャットを無効にしますか？",
+
+"foodstore.island.building": "炎が舞い、訪問者がやってきています。パラダイスアイランドでの建設は停止しています",
+
+"foodstore.islandtravel.sun": "ボートでかなりの距離でした。少し疲れを感じます！",
+"foodstore.islandtravel.rain": "雨が旅をより困難にしました。疲れきっています。",
+"foodstore.islandtravel.wind": "風は時々前進させ、他の時には進行方向に逆らいます。",
+"foodstore.islandtravel.storm": "嵐の天気は容赦ありませんでした。旅から疲れきっています。",
+"foodstore.islandtravel.greenrain": "異常な緑色の雨が方向感覚を失わせました。弱体化しています。",
+"foodstore.islandtravel.snow": "雪の中を歩くのは疲れます。エネルギーが消耗していくのを感じます。"
 }

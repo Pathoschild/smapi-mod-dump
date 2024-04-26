@@ -12,6 +12,7 @@ using System;
 using AnimalHusbandryMod.animals.data;
 using System.Collections.Generic;
 using AnimalHusbandryMod.animals;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace AnimalHusbandryMod.farmer
 {

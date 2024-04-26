@@ -257,6 +257,7 @@ namespace ItemBags.Bags
             this.TypeInfo = ItemBagsMod.BagConfig.BagTypes.First();
             this.Autofill = false;
             this.ExcludedAutofillItems = new Dictionary<string, HashSet<ObjectQuality>>();
+            GMCM.OnConfigChanged += (sender, e) => { SetTypeId(this.TypeId); };
         }
 
         /// <param name="Autofill">If true, then when the player picks up an item that can be stored in this bag, it will automatically be stored if there is space for it.</param>
@@ -267,6 +268,7 @@ namespace ItemBags.Bags
             this.Autofill = Autofill;
             this.ExcludedAutofillItems = new Dictionary<string, HashSet<ObjectQuality>>();
             OnSizeChanged += BoundedBag_OnSizeChanged;
+            GMCM.OnConfigChanged += (sender, e) => { SetTypeId(this.TypeId); };
         }
 
         private void BoundedBag_OnSizeChanged(object sender, EventArgs e)

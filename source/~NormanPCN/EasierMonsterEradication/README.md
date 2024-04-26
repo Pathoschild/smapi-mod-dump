@@ -53,25 +53,6 @@ If you lower the eradication goal in the middle of a gameplay save and the new g
 
 Conversely if you raise the goal and have already received your reward then you will not receive the reward again, and again meeting the new eradication goal. You receive the reward once. If you have not yet collected the reward and raise the goal then the reward will no longer be available until you meet the eradication goal.
 
-## For Mod Authors
-
-This mod provides a simple Api that allows you to fetch the modified monster eradication goal.  
-SMAPI makes calling other mod Apis simple as well. https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Mod-provided_APIs
-
-    public interface IEasierMonsterEradicationApi
-    {
-        /// <summary>Return the modified monster eradication goal value. returns -1 if the passed monster could not be identified.
-        /// A good place to access the Api could be in the OnSaveLoaded SMAPI event. The goal values will not change during gameplay.
-        /// </summary>
-        /// <param name="nameOfMonster">You pass the generic monster name as indentified by the game code.
-        /// "Slimes", "DustSprites", "Bats", "Serpent", "VoidSpirits", "MagmaSprite", "CaveInsects", "Mummies", "RockCrabs", "Skeletons", "PepperRex", "Duggies".
-        /// You can also pass specific game monster names like "Green Slime" if that is more convenient.
-        /// </param>
-        public int GetMonsterGoal(string nameOfMonster);
-
-    }
-
-
 ## Changlog
 
 v1.0.0:  
@@ -82,3 +63,10 @@ v1.0.0:
 
  v1.1.0
  Updates for Stardew Valley 1.6 and SMAPI 4.
+
+ v1.1.1
+ Updated the vanilla quest amount for Cave insects. From 125 to 80. v1.5 to v1.6.
+
+ v.1.2.0
+ Added Japanese translation. (Thanks mitekano23)
+ The config dialog is no longer restricted to the game title screen menu. It can now be used inGame.

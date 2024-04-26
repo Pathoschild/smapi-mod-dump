@@ -37,8 +37,11 @@ namespace PassableCrops.Patches {
             Character c
         ) {
             try {
-                if ((Mod?.Config?.PassableCrops ?? false) && c is Farmer farmer) {
-                    __result |= __instance?.crop is not null;
+                if (Mod?.Config?.PassableCrops ?? false) {
+                    var farmer = c as Farmer;
+                    if (farmer is not null || (Mod?.Config?.PassableByAll ?? false)) {
+                        __result |= __instance?.crop is not null;
+                    }
                 }
             } catch { }
         }

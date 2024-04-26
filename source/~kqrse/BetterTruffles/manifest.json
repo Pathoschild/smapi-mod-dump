@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Better Truffles",
+  "Author": "tem696969696969",
+  "Version": "1.0.0",
+  "Description": "Pigs can dig for truffles in tall grass.",
+  "UniqueID": "tem696969696969.BetterTruffles",
+  "EntryDll": "BetterTruffles.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23228" ]
+}

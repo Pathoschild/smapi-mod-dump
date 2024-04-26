@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Linq;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -36,14 +37,25 @@ namespace CustomCrystalariumMod
             Manifest = ModManifest;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.UpdateTicking += OnGameLoopOnUpdateTicking;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
             helper.ConsoleCommands.Add("config_reload_contentpacks_customcrystalariummod", "Reload all content packs for custom crystalarium mod.", DataLoader.LoadContentPacksCommand);
         }
 
+        private void OnGameLoopOnUpdateTicking(object sender, UpdateTickingEventArgs args)
+        {
+            if (args.Ticks == 120)
+            {
+                DataLoader.LoadCrystalariumDataIds();
+                DataLoader.LoadContentPacksCommand();
+                Helper.Events.GameLoop.UpdateTicking -= OnGameLoopOnUpdateTicking;
+            }
+        }
+
         /*********
-        ** Private methods
-        *********/
+         ** Private methods
+         *********/
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
@@ -53,8 +65,8 @@ namespace CustomCrystalariumMod
             var harmony = new Harmony("Digus.CustomCrystalariumMod");
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), "getMinutesForCrystalarium"),
-                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.GetMinutesForCrystalarium)) { priority = Priority.HigherThanNormal }
+                original: AccessTools.Method(typeof(SObject), "OutputMachine"),
+                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.OutputMachine)) { priority = Priority.HigherThanNormal }
             );
 
             harmony.Patch(
@@ -76,6 +88,11 @@ namespace CustomCrystalariumMod
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),
                 prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.CheckForAction_prefix)) { priority = Priority.HigherThanNormal },
                 postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.CheckForAction_postfix)) { priority = Priority.HigherThanNormal }
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.TryApplyFairyDust)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.TryApplyFairyDust)) { priority = Priority.HigherThanNormal }
             );
         }
 

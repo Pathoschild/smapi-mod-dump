@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/justastranger/ArtisanProductsCopyQuality
+   Git: https://github.com/justastranger/ArtisanProductsCopyQuality.git
+
+mods:
+   Artisan Products Copy Quality
+
+latest commit:
+   commit 02556173692dc93bf587cd9fa6743aa0fff5044f
+   Author: justastranger <justastrangerlica@gmail.com>
+   Date:   Sun Mar 31 23:04:25 2024 -0500
+   
+       Add GMCM dependency
+   

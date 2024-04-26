@@ -11,6 +11,7 @@
 using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace BetterStardrops {
     internal class ModEntry : Mod {
@@ -69,6 +70,7 @@ namespace BetterStardrops {
         }
 
         private void OnDayEnding(object? sender, StardewModdingAPI.Events.DayEndingEventArgs e) {
+            if (!config.EnableHealth) return;
             if (stardropsFound < 1) return;
 
             Game1.player.maxHealth = Game1.player.maxHealth - newHealthIncreaseAmount;
@@ -80,6 +82,11 @@ namespace BetterStardrops {
         }
 
         private void OnDayStarted(object? sender, StardewModdingAPI.Events.DayStartedEventArgs e) {
+            if (config.ResetMaxHealth) {
+                LevelUpMenu.RevalidateHealth(Game1.player);
+                config.ResetMaxHealth = false;
+            }
+
             SetUpInts();
             stardropsFound = Utility.numStardropsFound(Game1.player);
 
@@ -207,6 +214,7 @@ namespace BetterStardrops {
                 save: () => Helper.WriteConfig(config)
             );
 
+            configMenu.SetTitleScreenOnlyForNextOptions(mod: this.ModManifest, true);
             configMenu.AddSectionTitle(
                 mod: ModManifest,
                 text: () => Helper.Translation.Get("attack-options.label")
@@ -285,6 +293,13 @@ namespace BetterStardrops {
                 tooltip: () => Helper.Translation.Get("health-buff.tooltip"),
                 min: 0,
                 max: null
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => config.ResetMaxHealth,
+                setValue: value => config.ResetMaxHealth = value,
+                name: () => Helper.Translation.Get("health-reset.label"),
+                tooltip: () => Helper.Translation.Get("health-reset.tooltip")
             );
 
             configMenu.AddSectionTitle(

@@ -39,7 +39,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
             _locationChecker = locationChecker;
 
             var desiredTextureName = ArchipelagoTextures.COLOR;
-            _bigArchipelagoIcon = ArchipelagoTextures.GetColoredLogo(modHelper, 48, desiredTextureName);
+            _bigArchipelagoIcon = ArchipelagoTextures.GetArchipelagoLogo(monitor, modHelper, 48, desiredTextureName);
         }
 
         // public override void draw(SpriteBatch spriteBatch)

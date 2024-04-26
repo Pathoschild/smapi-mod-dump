@@ -1,7 +1,7 @@
 ﻿{
   "Name": "EasyFairy",
   "Author": "season",
-  "Version": "0.0.3",
+  "Version": "0.0.4",
   "Description": "More Fairy and Witch, No Crows, Useful MixSeed.",
   "UniqueID": "season.EasyFairy",
   "EntryDll": "EasyFairy.dll",

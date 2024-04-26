@@ -21,7 +21,7 @@ using StardewValley.Menus;
 
 namespace stardew_access.Features;
 
-public class TileInfoMenu : DialogueBox
+public class TileInfoMenu(int tileX, int tileY) : DialogueBox("", new Response[] { MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse })
 {
     private const string MarkTileI18NKey = "menu-tile_info-mark_tile";
     private static readonly Response MarkTileResponse = new(MarkTileI18NKey,
@@ -46,16 +46,9 @@ public class TileInfoMenu : DialogueBox
     private static readonly string DataAlreadyExistMessage =
         Translator.Instance.Translate("menu-tile_info-data_exists", TranslationCategory.Menu);
 
-    private readonly int _tileX;
-    private readonly int _tileY;
+    private readonly int _tileX = tileX;
+    private readonly int _tileY = tileY;
     private AccessibleTile.JsonSerializerFormat? _tempDefaultData = null;
-
-    public TileInfoMenu(int tileX, int tileY)
-        : base("", new Response[] { MarkTileResponse, AddToUserTilesResponse, SpeakDetailedInfoResponse })
-    {
-        _tileX = tileX;
-        _tileY = tileY;
-    }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
@@ -91,7 +84,8 @@ public class TileInfoMenu : DialogueBox
                         [
                             DataAlreadyExistMessage
                         ];
-                        responseCC = new List<ClickableComponent>();
+                        List<ClickableComponent> value = [];
+                        responseCC = value;
                         int num = y - (heightForQuestions - height) + SpriteText.getHeightOfString(getCurrentString(), width) + 48;
                         for (int i = 0; i < responses.Length; i++)
                         {

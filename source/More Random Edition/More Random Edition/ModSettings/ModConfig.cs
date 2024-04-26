@@ -31,8 +31,8 @@ namespace Randomizer
 		public bool AddRandomArtifactItem { get; set; } = true;
 		public bool RandomizeBuildingCosts { get; set; } = true;
 		public bool RandomizeFruitTrees { get; set; } = true;
-		public bool RandomizeAnimalSkins { get; set; } = true;
 		public bool RandomizeMuseumRewards { get; set; } = true;
+		public bool RandomizeGarbageCans { get; set; } = true;
 		public bool RandomizeIntroStory { get; set; } = true;
 		public bool RandomizeQuests { get; set; } = true;
 		public bool RandomizeRain { get; set; } = true;
@@ -95,7 +95,7 @@ namespace Randomizer
 	public class MusicConfig
 	{
 		public bool Randomize { get; set; } = true;
-		public bool RandomSongEachTransition { get; set; } = false;
+		public bool RandomSongEachChange { get; set; } = false;
 	}
 
 	public class ShopsConfig
@@ -104,7 +104,7 @@ namespace Randomizer
         public bool AddJojaMartItemOfTheWeek { get; set; } = true;
         public bool AddClayToRobinsShop { get; set; } = true;
 		public bool AddTapperCraftItemsToRobinsShop { get; set; } = true;
-		public bool RandomizeBlackSmithShop {  get; set; } = true;
+		public bool RandomizeBlacksmithShop {  get; set; } = true;
         public bool RandomizeSaloonShop { get; set; } = true;
 		public bool AddFishingShopCatchOfTheDay {  get; set; } = true;
         public bool RandomizeOasisShop { get; set; } = true;
@@ -117,6 +117,7 @@ namespace Randomizer
 	{
 		public bool RandomizeHorses { get; set; } = true;
 		public bool RandomizePets { get; set; } = true;
+		public int CritterHueShiftMax { get; set; } = 359;
 	}
 }
 

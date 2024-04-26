@@ -8,6 +8,399 @@ for queries and analysis.**
 
 # Changelog
 
+## 2.8.2
+Released April 20th, 2024.
+
+### Changed
+* Improve cursor snapping for controller users when using
+  the crafting menu.
+
+### Fixed
+* Issue where an error would be printed to the console when
+  attempting to load certain textures.
+* Update mutexes before attempting to lock them, which should
+  improve some issues where mutexes were failing to lock when
+  attempting to craft.
+
+
+## 2.8.1
+Released April 19th, 2024.
+
+Sorry for the back to back, but there was a compatibility issue
+with other mods causing the menu to not work.
+
+### Fixed
+* The temporary menu class used to avoid immediately loading
+  the full Better Crafting menu would throw an error when
+  the user is using certain mod combinations.
+
+
+## 2.8.0
+Released April 19th, 2024.
+
+### New Features
+* You can copy, paste, and delete categories when editing them now,
+  making it easier to move a category into or out of your Per-Save
+  Data or to share them. Additionally, you can shift-click the
+  delete button to reset *all* your categories.
+* Better Crafting will attempt to automatically color its UI
+  buttons to match your current UI theme.
+
+### Changed
+* When opening the game menu, the Better Crafting menu won't
+  load until you directly access it, which should improve
+  performance somewhat.
+* Added some diagnostic logging for performance.
+
+### Fixed
+* Workbench connectors not working correctly.
+
+### Translation
+* Removed the Turkish translation file, as that is out of
+  date and there is an external mod providing it.
+
+### API
+* Added a new event to let other mods add extra icons to the
+  built-in icon picker.
+* Fixed setting item to `null` in pre-craft event causing
+  crafting to fail.
+
+
+## 2.7.0
+Released April 17th, 2024.
+
+### New Features
+* The mod now uses a global save for categories and favorite recipes.
+  This can be toggled on a per-save basis. Saves with existing
+  category / favorite customization will automatically start with
+  per-save customization enabled.
+* Added new dynamic rules for selecting recipes based on item category,
+  context tags, and edibility. With these, almost all recipes in the
+  base game are categorized using rules rather than manually.
+
+### Changes
+* The "Items from Mod" dynamic rule now only displays the count of
+  recipes within the current menu mode (cooking vs crafting) when
+  you're selecting a mod.
+* Update tool-tip rendering in our menu to be more like the base game.
+
+### Fixed
+* Unable to translate a certain string from the "Items from Mod"
+  selection dialog.
+* When using the Kitchen, always add the location's fridge to the
+  inventories to craft from, regardless of other discover settings.
+* The controls to toggle dynamic rules on, as well as include items
+  in the Misc. category, should not appear on the Misc. category itself.
+* Change to word wrapping causing some text to not appear on new
+  lines when it should.
+
+### API Changes
+* When using the trigger/map action to open the menu, there is a new
+  syntax that allows for greater flexibility in configuring how
+  inventories are discovered.
+
+
+## 2.6.2
+Released April 13th, 2024.
+
+### Changes
+* Add a quick setting to hide the Edit Categories button, since
+  someone requested it and it's easy.
+
+### Fixed
+* Issue where the Use Nearby Chests setting would not have its initial
+  value set correctly when opening the settings menu, causing it to
+  be reduced over time.
+* Issue where the Use Nearby Chests setting would be unable to include
+  all chests in its active area due to scanning limitations meant to
+  limit performance impacts.
+* Improve performance of item comparison slightly by changing how we
+  apply our harmony patch for Item.canStackWith.
+* Improve word wrapping when dealing with exceptionally long unbroken
+  character sequences, which is mainly an issue in
+  non-English languages.
+
+### Translation
+* Updated Korean language strings. Thanks, wally.
+
+
+## 2.6.1
+Released April 12th, 2024.
+
+### Changes
+* Junimo Chests are no longer blacklisted.
+
+### Fixed
+* Properly check if the optional background texture is available before
+  attempting to load it. Fixes error messages every time the menu opens.
+* Fixed an issue where the Transfer to Inventories feature would not
+  work correctly when using Better Chests.
+* Improve de-duplication logic for inventories.
+
+
+## 2.6.0
+Released April 11th, 2024.
+
+This should be the last release for a while, barring any unexpected bugs.
+I've been toying with a few ideas while mindlessly working on this, but
+I have what I want thought out for Almanac now.
+
+### New Features
+* You can now re-order your categories when editing them.
+* There is a new option to open the crafting menu with the full height
+  of your screen if opened via a workbench, kitchen, or other means
+  that does not place it within the game menu.
+
+### Changes
+* When listing the available mods to include items from a mod, we now
+  count how many items there are from each mod, and put those without
+  items at the end of the list. Further, we sort the list alphabetically
+  by mod name.
+* When crafting an item that will have attachment slots, show the
+  attachment slots in the recipe tool-tip.
+* When viewing a recipe with an absurd number of ingredients, try to
+  fit it on the screen better by using more columns.
+
+### Fixed
+* Apply theme text colors more thoroughly to the crafting menu.
+* Spaces appearing near recipes when a recipe would be included both
+  by manual selection and because it matched a rule.
+
+### API Changes
+* Added the ability for content authors to create custom dynamic rules
+  using the game's native item queries feature by modifying the
+  target path `Mods/leclair.bettercrafting/Rules`
+
+
+## 2.5.0
+Released April 10th, 2024.
+
+### New Features
+* Added the ability to label recipes as new. You can choose to either
+  label a recipe as new if you haven't crafted it yet, or if you haven't
+  hovered your mouse over it to view its tool-tip yet.
+
+### Changes
+* You can now toggle recipes on and off even if a category is using rules.
+  Please note that you can only enable extra recipes, you can't hide
+  recipes that matched a rule.
+* Added a dynamic category rule to match all of a specific mod's items.
+* Added dynamic category rules for: floors and paths, fences, furniture.
+* Added dynamic category rules for all remaining item buffs.
+* Updated how buffs are displayed in recipe tool-tips, to bring them
+  more in line with Stardew Valley 1.6.
+
+### Fixed
+* When receiving recipes from other C# mods via the API, optional
+  interfaces are now detected correctly.
+* Changed the logic for loading recipes to not use locking, in case
+  that was what's been causing some loading freezes for one user.
+
+### API Changes
+* Added the ability to track which specific Items are being consumed
+  when crafting a recipe.
+* Added a new post-craft event that can be used to modify items after
+  its ingredients are consumed, using the tracked items as
+  mentioned above.
+* Added the ability for mods to register crafting and post-crafting
+  events that apply to all recipes.
+
+## 2.4.0
+Released April 7th, 2024.
+
+### New Features
+
+* Added a setting to allow crafting from nearby chests. The request was
+  made for Convenient Chests compatibility, and it was easier to just
+  make a distinct feature for Better Crafting.
+
+### Changes
+
+* Started caching a lot more recipe state in the crafting menu, improving
+  performance by over 100% on average.
+
+### Fixed
+
+* Make sure to check that the item is actually an object before checking
+  for buff data.
+* The menu's exit code not running when closing the game menu while the
+  crafting page is not the current page.
+* Attempt to handle mutexes that aren't reported as locked but that we
+  have obtained a lock for, since apparently that's a thing.
+* Fix an issue with the Spooky Action system where locations would be
+  considered occupied even after the player closed their menu.
+
+### API Changes
+
+* Added `IDynamicDrawingRecipe` for recipes that should have dynamic
+  icons in the crafting menu, along with an API method that wraps
+  the recipes to force them to be detected properly.
+* The RecipeBuilder can set a drawing function using the same
+  format as `IDynamicDrawingRecipe`.
+* Data-driven ingredients can now have conditions to control whether
+  or not they're displayed and required.
+* Data-driven ingredients can now use item query fields to help
+  filter items.
+
+
+## 2.3.0
+Released April 6th, 2024.
+
+Yes, I know. Two in one day. Sorry, I just needed to fix a few issues
+with the new data-driven crafting recipes. I've also added a bit more
+logging for the Better Chests interaction issues.
+
+### Changes
+
+* Added support for rendering smoked fish using my custom item renderer.
+* Add extra debug logging for when we are unable to lock inventories.
+* Remove useless debug logging from the PFM integration module.
+* Vanilla crafting recipes are suppressed if there is a data-driven
+  recipe with the same Id.
+
+### Fixed
+
+* Properly check each recipe's `Condition` field.
+* Properly support learning data-driven crafting recipes using the mail
+  `%item craftingrecipe [recipe]%%` command.
+
+### API Changes
+
+* `CreateBaseIngredient()`, `CreateMatcherIngredient()`, and
+  `CreateCurrencyIngredient()` now all have a parameter to set how
+  much you get back when performing recycling.
+* The `CreateMatcherIngredient()` method now takes a delegate to
+  decide which item to return upon recycling, rather than a static
+  Item reference.
+* Data-driven recipes now have a flag for if they are known by default.
+* Data-driven ingredients can now use item spawn fields to specify
+  which item they would be recycled into.
+* Data-driven ingredients now have a recycle rate field to specify
+  how much the player should get back if they recycle it.
+
+
+## 2.2.0
+Released April 6th, 2024.
+
+### New Features
+
+* Added the ability for content pack creators to create more elaborate
+  crafting recipes.
+* Fixed a major bug.
+
+### Changes
+
+* If, for some reason, Better Crafting is unable to gain access to
+  a chest when you try crafting something, it will display a message.
+* While Better Crafting is actively processing a craft, the cursor
+  will appear as an hourglass.
+
+### Fixes
+
+* Major: The crafting menu will no longer lock up when attempting to
+  craft things using chests located in other maps. The issue has been
+  fully diagnosed through much effort of myself and the creator
+  of Better Chests.
+* When using the farmhouse kitchen, mini-fridges would not properly
+  have their contents made available.
+
+### API Changes
+
+* `IRecipe` now has a flag for marking that a recipe cannot be
+  reversed using recycling.
+* Added an entire data structure for making custom recipes through
+  Content Patcher by modifying the `Mods/leclair.bettercrafting/Recipes`
+  target. Documentation to come.
+* Added a `WithInventories()` method to let other mods take advantage
+  of Better Crafting's robust mutex handling.
+
+
+## 2.1.0
+Released April 4th, 2024.
+
+### New Features
+
+* Added first-party custom crafting stations for content pack creators.
+* Added a fancy label to the menu that appears when using a Kitchen,
+  Workbench, etc. as well as the knew custom stations.
+
+### Changes
+
+* Buildings with inventories are now supported, such as Junimo Huts.
+
+### Fixes
+
+* Better null handling when checking for big craftable actions. Stops
+  spamming warnings in the log in certain circumstances.
+
+### Mod Compatibility
+
+* Detect storage items added by Expanded Storage and categorize
+  them appropriately.
+
+### API Changes
+
+* Added a `[station]` property to the map tile action.
+* Added several properties to `IBetterCraftingMenu` to expose more of
+  the menu's state.
+* Add a flag to the `IPopulateContainersEvent` to let mods disable
+  container discovery.
+* Add a method to get recipes that should be exclusive to certain
+  crafting stations.
+* Expose the resource `Mods/leclair.bettercrafting/CraftingStations`
+  for loading data on custom crafting stations, as well as reading
+  `stations.json` files from content packs owned by Better Crafting.
+* Expose the resource `Mods/leclair.bettercrafting/Categories` for
+  customizing the default categories with content patcher. Please
+  note that editing the defaults in this way is not effective if
+  users have customized their categories.
+
+
+## 2.0.0
+Released April 3rd, 2024.
+
+Kept you waiting, huh?
+
+### New Features
+
+* Works on 1.6
+* Dynamic rules for foods that buff custom skills added through SpaceCore.
+* Separate mod that adds a Magic Workbench, which lets you craft using
+  items from within adjacent buildings.
+
+### Changes
+
+* Storage items are no longer included in the Machines dynamic rule. There
+  is now a specific Storage rule.
+
+### Fixes
+
+* Various typos, mostly in documentation.
+* Improve menu performance a bit by caching some of item tool-tips.
+* When displaying a recipe with more than 20 ingredients in the Bulk Crafting
+  menu, only show 20 ingredients at a time to support smaller displays. (Also
+  who is making recipes like this? Who hurt you?)
+* Certain currency ingredients not rendering correctly, if anyone was using
+  currency ingredients.
+
+### Removed
+
+* Dynamic Game Assets compatibility code. DGA is dead, long live 1.6.
+
+### API Changes
+
+* Added the `leclair.bettercrafting_OpenMenu [cooking] [includeBuildings]`
+  map tile action.
+* Added the ability to run map tile actions from big craftables using the
+  `leclair.bettercrafting_PerformAction` custom field.
+* Added a `leclair.bettercrafting_HAS_WORKBENCH` game state query to check if a
+  Workbench has been placed at the farm.
+* Renamed IInventory to IBCInventory to avoid collision with vanilla.
+* IInventoryProviders have a method now to return a vanilla IInventory
+  to allow for future optimizations.
+* Removed obsolete API methods.
+
+
 ## 1.5.0
 Released January 14th, 2022.
 
@@ -32,6 +425,10 @@ Released January 14th, 2022.
   may result in the loss of the item.
 * Pressing the menu close button (`E`) may cause the menu to close when it
   should not.
+
+### Translation
+
+* Added Portuguese language support.
 
 ### API Changes
 

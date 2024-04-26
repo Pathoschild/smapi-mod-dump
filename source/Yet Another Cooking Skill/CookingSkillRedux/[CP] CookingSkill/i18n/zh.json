@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+
+
+    "config.Enable_Vanilla_Food_Changes.name": "启用mod",
+    "config.Enable_Vanilla_Food_Changes.description": "修改大多数原版食物配方，例如派类食物需要馅饼皮",
+
+    "config.Enable_Cookout_Kit_Changes.name": "野炊工具修改",
+    "config.Enable_Cookout_Kit_Changes.description": "将野炊工具的配方获取从觅食3级变更为烹饪0级。",
+
+    "moonslime.Cooking.green_stew.name": "绿色炖菜",
+    "moonslime.Cooking.green_stew.description": "一道精致的炖菜，略带粘稠。",
+
+    "moonslime.Cooking.green_smoothy.name": "绿色冰沙",
+    "moonslime.Cooking.green_smoothy.description": "一份好喝又健康的饮料。",
+
+    "moonslime.Cooking.anchovy_pizza.name": "鳀鱼披萨",
+    "moonslime.Cooking.anchovy_pizza.description": "有些人喜欢有些人说臭。",
+
+    "moonslime.Cooking.wizards_brew.name": "法师精酿",
+    "moonslime.Cooking.wizards_brew.description": "充满了魔法的气息，在山顶上和一群猫头鹰一起做的。",
+
+    "moonslime.Cooking.pie_crust.name": "馅饼皮",
+    "moonslime.Cooking.pie_crust.description": "用于制作馅饼的底座。",
+
+    "moonslime.Cooking.rice.name": "蒸米饭",
+    "moonslime.Cooking.rice.description": "一碗米饭让你提起精神，简单有效。",
+
+    "moonslime.Cooking.banana_field_snack.name": "香蕉味工作小食",
+    "moonslime.Cooking.banana_field_snack.description": "一份含有香蕉的工作小食。",
+
+    "moonslime.Cooking.strawberry_pie.name": "草莓派",
+    "moonslime.Cooking.strawberry_pie.description": "一份春天的礼物。",
+
+    "moonslime.Cooking.mushroom_rice.name": "蘑菇盖浇饭",
+    "moonslime.Cooking.mushroom_rice.description": "炒蘑菇浇香喷喷的米饭上。",
+
+    "moonslime.Cooking.spring_onion_soup.name": "春葱汤",
+    "moonslime.Cooking.spring_onion_soup.description": "让你染上春天的气息。",
+
+    "moonslime.Cooking.fries.name": "炸薯条",
+    "moonslime.Cooking.fries.description": "炸薯条搭配番茄酱，建议蘸着吃。",
+
+    "moonslime.Cooking.caramel_miner_treat.name": "焦糖矿工特供",
+    "moonslime.Cooking.caramel_miner_treat.description": "多加亿点点糖不会害了你。",
+
+    "moonslime.Cooking.fishers_breakfast.name": "渔夫早餐",
+    "moonslime.Cooking.fishers_breakfast.description": "又是元气满满的一天！",
+
+    "moonslime.Cooking.cream_pie.name": "奶油派",
+    "moonslime.Cooking.cream_pie.description": "别涂在脸上。",
+
+    "moonslime.Cooking.ramen.name": "拉面",
+    "moonslime.Cooking.ramen.description": "面条就应该嗦着吃！",
+
+    "moonslime.Cooking.tomato_soup.name": "番茄汤",
+    "moonslime.Cooking.tomato_soup.description": "服装店应该买不到。",
+
+    "moonslime.Cooking.egg_burrito.name": "鸡蛋卷",
+    "moonslime.Cooking.egg_burrito.description": "拿手上边走边吃。",
+
+    "moonslime.Cooking.oeuf.name": "杯盏煮蛋",
+    "moonslime.Cooking.oeuf.description": "鸡蛋做的小底座真的是太可爱了！",
+
+    "moonslime.Cooking.egg_ramen.name": "鸡蛋拉面",
+    "moonslime.Cooking.egg_ramen.description": "往拉面里打个蛋会更美味。",
+
+    "moonslime.Cooking.fish_pie.name": "鱼饼",
+    "moonslime.Cooking.fish_pie.description": "也就比肉饼差一点。",
+
+    "moonslime.Cooking.eggnog.name": "蛋酒",
+    "moonslime.Cooking.eggnog.description": "冬季节日的常客。",
+
+    "moonslime.Cooking.apple_pie.name": "苹果派",
+    "moonslime.Cooking.apple_pie.description": "秋天最好的派之一！略逊于南瓜派",
+
+    "moonslime.Cooking.egg_sandwhich.name": "鸡蛋三明治",
+    "moonslime.Cooking.egg_sandwhich.description": "嗯，对，就是三明治。",
+
+    "moonslime.Cooking.tomatoe_cheese_omelet.name": "番茄芝士蛋卷",
+    "moonslime.Cooking.tomatoe_cheese_omelet.description": "蓬松的蛋卷夹着奶酪，上面放着切片番茄。",
+
+    "moonslime.Cooking.nigiri.name": "鳗鱼生鱼片",
+    "moonslime.Cooking.nigiri.description": "鳗鱼切片炙烤，淋上酱汁。",
+
+    "moonslime.Cooking.seafoam_icecream.name": "海泡冰淇淋",
+    "moonslime.Cooking.seafoam_icecream.description": "坐在码头上看日落真是一种享受。",
+
+    "moonslime.Cooking.wizard_casserole.name": "法师砂锅煲",
+    "moonslime.Cooking.wizard_casserole.description": "法师最喜欢的食物，为法师而生，由心怀感激的法师制作。",
+
+    "moonslime.Cooking.skill_book.name": "烹饪百科大全",
+    "moonslime.Cooking.skill_book.description": "一本关于各种烹饪技巧的厚书。"
+
+
+}

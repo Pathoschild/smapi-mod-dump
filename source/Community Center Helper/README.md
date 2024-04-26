@@ -39,18 +39,19 @@ By its nature, this mod spoils certain things about the game. However, by defaul
 ## Bundle Mod Support
 In addition to the bundles (both normal and remixed) in the base game, the following bundle-altering mods are supported.
 
+- Custom Community Center Bundles (by Alja)
+- Challenging Community Center Bundles (by Alja)
+- Minerva's Harder Community Center Bundles
+- Community Center Bundle Overhaul (by 7Yrs, SMAPI version by Chaos234)
 - EasierBundles (by Quirinea)
 - Alternative Bundles (by Quirinea)
 - Vegan Community Center Bundles (by Yuki Del Valle)
 - difficulty option for bundles (by Axisdubois)
-- Community Center Bundle Overhaul (by 7Yrs, SMAPI version by Chaos234)
 - Very Hard version of Community Center Bundles for 1 year challenge (by kners)
 - Adventurer's Bundle to Gemologist's Bundle (by LenneDalben)
 - The Impossible Bundle (by Mossy)
-- Minerva's Harder Community Center Bundles
-- Challenging Community Center Bundles (by Alja)
 
-Note that even if a bundle mod is not listed here, it's still likely to have partial, or possibly even full support - suggestions are defined on a per-item basis, and many base-game items are covered. Any items not covered will just not show any suggestions.
+Note that even if a bundle mod is not listed here, it's still likely to have partial, or possibly even full support for non-modded items - suggestions are defined on a per-item basis, and many base-game items are covered. Any items not covered will just not show any suggestions.
 
 ## Possible Mod Conflicts
 I tried to have this mod directly reference the data when possible, so some things changed by mods (like recipe unlock requirements that aren't mail-based) may be automatically supported. But for the most part, suggestions are hardcoded according to the base game, and could be inaccurate or incomplete when using mods that make major changes. (In just a few cases, there are suggestions that are only listed when specific mods are installed, but I'm absolutely not committing to covering everything like that.)

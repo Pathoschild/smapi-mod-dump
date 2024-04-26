@@ -39,18 +39,68 @@ namespace HorseOverhaul
             return stable != null && stable.buildingType.Value == "Pathoschild.TractorMod_Stable";
         }
 
-        internal static bool MouseOrPlayerIsInRange(this Character chara, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
+        public static bool IsAboutEqualTo(this float firstValue, float secondValue)
+        {
+            return firstValue >= (secondValue - 0.1f) && firstValue <= (secondValue + 0.1f);
+        }
+
+        private const int thinHorseXOffset = 12;
+
+        internal static bool WithinRangeOfPlayer(this Character chara, HorseOverhaul mod, Farmer who)
+        {
+            int charX = chara.StandingPixel.X;
+
+            if (chara is Horse && mod.Config.ThinHorse)
+            {
+                charX -= thinHorseXOffset;
+            }
+
+            if (Math.Abs(charX - who.StandingPixel.X) <= mod.Config.MaximumSaddleBagAndFeedRange)
+            {
+                return Math.Abs(chara.StandingPixel.Y - who.StandingPixel.Y) <= mod.Config.MaximumSaddleBagAndFeedRange;
+            }
+
+            return false;
+        }
+
+        internal static bool MouseOrPlayerIsInRange(this Character chara, HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
         {
             if (!ignoreMousePosition)
             {
-                return Utility.distance(mouseX, chara.Position.X, mouseY, chara.Position.Y) <= 70;
+                int mouseMargin = 44;
+                int charYOffset = 40;
+
+                var charX = chara.StandingPixel.X;
+
+                if (chara is Horse)
+                {
+                    mouseMargin = 70;
+
+                    if (mod.Config.ThinHorse)
+                    {
+                        charX -= thinHorseXOffset;
+                    }
+                }
+                else if (chara is Pet)
+                {
+                    charYOffset = 24;
+                }
+
+                return Utility.distance(mouseX, charX, mouseY, chara.StandingPixel.Y - charYOffset) <= mouseMargin;
             }
             else
             {
                 var playerPos = who.StandingPixel;
                 var charaPos = chara.StandingPixel;
 
-                int xDistance = Math.Abs(playerPos.X - charaPos.X);
+                var charX = charaPos.X;
+
+                if (chara is Horse && mod.Config.ThinHorse)
+                {
+                    charX -= thinHorseXOffset;
+                }
+
+                int xDistance = Math.Abs(playerPos.X - charX);
                 int yDistance = Math.Abs(playerPos.Y - charaPos.Y);
 
                 return who.FacingDirection switch

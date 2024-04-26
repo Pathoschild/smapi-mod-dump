@@ -52,6 +52,11 @@ namespace SmartBuilding
         Seed,
 
         /// <summary>
+        ///     Tree sapling.
+        /// </summary>
+        Sapling,
+
+        /// <summary>
         ///     Fertilizers also require special treatment.
         /// </summary>
         Fertilizer,

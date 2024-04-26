@@ -10,7 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewDruid.Map;
+using StardewDruid.Data;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
@@ -117,7 +117,7 @@ namespace StardewDruid.Monster.Template
         public void LoadOut()
         {
 
-            partyHats = Mod.instance.PartyHats();
+            partyHats = Mod.instance.Config.partyHats;
 
             hatsTexture = Game1.content.Load<Texture2D>("Characters\\Farmer\\hats");
 

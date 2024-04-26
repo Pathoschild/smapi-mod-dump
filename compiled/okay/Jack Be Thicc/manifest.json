@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Jack Be Thicc",
+  "Author": "DeadRobotDev",
+  "Version": "1.0.1",
+  "UniqueID": "DeadRobotDev.JackBeThicc",
+  "EntryDll": "JackBeThicc.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:21533"
+  ]
+}

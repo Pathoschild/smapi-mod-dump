@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hedgehog-Technologies/StardewMods
+**
+*************************************************/
+
+{
+  "Category": "Stardew Valley Expanded",
+  "Forageables": [
+    "FlashShifter.StardewValleyExpandedCP_Bearberrys",
+    "FlashShifter.StardewValleyExpandedCP_Big_Conch",
+    "FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar",
+    "FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose",
+    "FlashShifter.StardewValleyExpandedCP_Goldenrod",
+    "FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover",
+    "FlashShifter.StardewValleyExpandedCP_Mushroom_Colony",
+    "FlashShifter.StardewValleyExpandedCP_Poison_Mushroom",
+    "FlashShifter.StardewValleyExpandedCP_Red_Baneberry",
+    "FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia",
+    "FlashShifter.StardewValleyExpandedCP_Thistle",
+    "FlashShifter.StardewValleyExpandedCP_Winter_Star_Rose"
+  ]
+}

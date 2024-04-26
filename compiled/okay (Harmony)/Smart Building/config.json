@@ -16,6 +16,8 @@
   "EnableReplacingFloors": false,
   "EnableTreeTappers": false,
   "CreativeMode": false,
+  "FreezeTimeInBuildMode": false,
+  "OnlyFreezeTimeOnFarm": true,
   "EngageBuildMode": "LeftShift + B",
   "EraseTool": "None",
   "FilledRectangleTool": "None",

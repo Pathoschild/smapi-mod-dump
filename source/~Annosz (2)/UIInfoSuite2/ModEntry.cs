@@ -43,6 +43,8 @@ public class ModEntry : Mod
 #region Generic mod config menu
   private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
   {
+    SoundHelper.Instance.Initialize(Helper);
+
     // get Generic Mod Config Menu's API (if it's installed)
     ISemanticVersion? modVersion = Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu")?.Manifest?.Version;
     var minModVersion = "1.6.0";

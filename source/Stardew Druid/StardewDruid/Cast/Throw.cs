@@ -39,7 +39,7 @@ namespace StardewDruid.Cast
 
         public float throwScale;
 
-        public bool dontInventorise;
+        //public bool dontInventorise;
 
         public Throw()
         {
@@ -192,12 +192,12 @@ namespace StardewDruid.Cast
         public void InventoriseObject(int endBehaviour)
         {
 
-            if (dontInventorise)
+            /*if (dontInventorise)
             {
 
                 return;
 
-            }
+            }*/
 
             if (itemDebris && objectInstance is StardewValley.Object)
             {

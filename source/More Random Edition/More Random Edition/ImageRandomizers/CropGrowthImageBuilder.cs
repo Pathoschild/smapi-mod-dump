@@ -10,7 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace Randomizer
 {
     public class CropGrowthImageBuilder : ImageBuilder
 	{
-		private const string NormalDirectory = "NormalCrops";
+        private const string NormalDirectory = "NormalCrops";
 		private const string RegrowingDirectory = "RegrowingCrops";
 		private const string TrellisDirectory = "TrellisCrops";
 		private const string FlowersDirectory = "Flowers";
@@ -32,32 +31,33 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		public Dictionary<int, CropImageLinkingData> CropIdsToLinkingData;
+		public Dictionary<string, CropImageLinkingData> CropIdsToLinkingData;
 
 		/// <summary>
 		/// Keeps track of crop growth images to crop ids
 		/// </summary>
-		private Dictionary<Point, int> CropGrowthImagePointsToIds;
+		private Dictionary<SpriteOverlayData, string> CropGrowthImagePointsToIds;
 
         /// <summary>
         /// A reverse lookup since we have the image name when we need to find the crop id
         /// </summary>
-        private readonly Dictionary<string, int> ImageNameToCropIds;
+        private readonly Dictionary<string, string> ImageNameToCropIds;
 
         public CropGrowthImageBuilder()
 		{
-			CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
-            ImageNameToCropIds = new();
-
-            StardewAssetPath = $"TileSheets/crops";
+            Rng = RNG.GetFarmRNG(nameof(CropGrowthImageBuilder));
+			GlobalStardewAssetPath = "TileSheets/crops";
 			SubDirectory = "CropGrowth";
-			SetUpCropGrowthImagePointsToIds();
-			PositionsToOverlay = CropGrowthImagePointsToIds.Keys.ToList();
-
+			
 			ImageHeightInPx = 32;
 			ImageWidthInPx = 128;
 			OffsetHeightInPx = 32;
 			OffsetWidthInPx = 128;
+
+			CropIdsToLinkingData = new Dictionary<string, CropImageLinkingData>();
+			ImageNameToCropIds = new();
+			SetUpCropGrowthImagePointsToIds();
+			OverlayData = CropGrowthImagePointsToIds.Keys.ToList();
 
 			NormalImages = Directory.GetFiles(Path.Combine(ImageDirectory, NormalDirectory))
 				.Where(x => x.EndsWith("-4.png") || x.EndsWith("-5.png"))
@@ -90,21 +90,26 @@ namespace Randomizer
 		/// <returns />
 		private void SetUpCropGrowthImagePointsToIds()
 		{
-			const int itemsPerRow = 2;
+			int itemsPerRow = GetItemsPerRow();
 
-			CropGrowthImagePointsToIds = new Dictionary<Point, int>();
-			List<int> seedIdsToExclude = new()
+			CropGrowthImagePointsToIds = new();
+			List<string> seedIdsToExclude = new()
 			{
-				(int)ObjectIndexes.AncientSeeds
+				ObjectIndexes.AncientSeeds.GetId()
 			};
 
 			foreach (SeedItem seedItem in ItemList.GetSeeds().Where(x => !seedIdsToExclude.Contains(x.Id)).Cast<SeedItem>())
 			{
-				int sheetIndex = seedItem.CropGrowthInfo.GraphicId;
-				int cropId = seedItem.Id == (int)ObjectIndexes.CoffeeBean ?
-					seedItem.Id : seedItem.CropGrowthInfo.CropId;
+				int sheetIndex = seedItem.CropGrowthInfo.SpriteIndex;
+				string cropId = seedItem.ObjectIndex == ObjectIndexes.CoffeeBean 
+					? seedItem.Id 
+					: seedItem.CropId;
 
-				CropGrowthImagePointsToIds[new Point(sheetIndex % itemsPerRow, sheetIndex / itemsPerRow)] = cropId;
+				var overlayData = new SpriteOverlayData(
+					GlobalStardewAssetPath, 
+					x: sheetIndex % itemsPerRow, 
+					y: sheetIndex / itemsPerRow);
+				CropGrowthImagePointsToIds[overlayData] = cropId;
 			}
 		}
 
@@ -112,45 +117,45 @@ namespace Randomizer
 		/// Gets a random file name that matches the crop growth image at the given position
 		/// Will remove the name found from the list
 		/// </summary>
-		/// <param name="position">The position</param>
+		/// <param name="overlayData">The overlay data</param>
 		/// <returns>The selected file name</returns>
-		protected override string GetRandomFileName(Point position)
+		protected override string GetRandomFileName(SpriteOverlayData overlayData)
 		{
 			string fileName;
-			int cropId = CropGrowthImagePointsToIds[position];
-			Item item = ItemList.Items[(ObjectIndexes)cropId];
+			string cropId = CropGrowthImagePointsToIds[overlayData];
+			Item item = ItemList.Items[cropId];
 
-			SeedItem seedItem = item.Id == (int)ObjectIndexes.CoffeeBean ?
-				(SeedItem)item : ((CropItem)item).MatchingSeedItem;
-			CropGrowthInformation growthInfo = seedItem.CropGrowthInfo;
+			SeedItem seedItem = item.ObjectIndex == ObjectIndexes.CoffeeBean 
+				? (SeedItem)item 
+				: ((CropItem)item).MatchingSeedItem;
 
-			FixWidthValue(seedItem.CropGrowthInfo.GraphicId);
+			FixWidthValue(seedItem.CropGrowthInfo.SpriteIndex);
 
 			if (item.IsFlower)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(FlowerImages);
 
-				if (!seedItem.CropGrowthInfo.TintColorInfo.HasTint)
+				if (!seedItem.HasTint)
 				{
 					fileName = $"{fileName[..^4]}-NoHue.png";
 				}
 			}
 
-			else if (growthInfo.IsTrellisCrop)
+			else if (seedItem.IsTrellisCrop)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(TrellisImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(TrellisImages);
 			}
 
-			else if (growthInfo.RegrowsAfterHarvest)
+			else if (seedItem.RegrowsAfterHarvest)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(RegrowingImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(RegrowingImages);
 			}
 
 			else
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(NormalImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(NormalImages);
 
-				if (growthInfo.GrowthStages.Count <= 4)
+				if (seedItem.CropGrowthInfo.DaysInPhase.Count <= 4)
 				{
 					fileName += "-4.png";
 				}
@@ -163,7 +168,8 @@ namespace Randomizer
 
 			if (string.IsNullOrEmpty(fileName) || fileName == "-4.png" || fileName == "-5.png")
 			{
-				Globals.ConsoleWarn($"Using default image for crop growth - you may not have enough crop growth images: {position.X}, {position.Y}");
+				var position = overlayData.TilesheetPosition;
+				Globals.ConsoleWarn($"Using default image for crop growth - you may not have enough crop growth images: {overlayData.TilesheetName} - {position.X}, {position.Y}");
 				return null;
 			}
 
@@ -177,7 +183,7 @@ namespace Randomizer
 		}
 
         /// <summary>
-        /// Hue-shift the image to paste onto SpringObjects, if applicable
+        /// Hue-shift the image to paste onto the spritesheet, if applicable
         /// </summary>
         /// <param name="image">The image to potentially hue shift</param>
         /// <param name="fileName">The full path of the image - needed so we can check the sub-directory</param>
@@ -193,11 +199,11 @@ namespace Randomizer
 				return image;
             }
 
-            if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
+            if (ImageNameToCropIds.TryGetValue(fileName, out string cropId) &&
 				CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
             {
-                Random rng = Globals.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}{fileName}");
-                linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax, rng);
+                RNG rng = RNG.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}.{fileName}");
+                linkingData.HueShiftValue = rng.NextIntWithinRange(0, Globals.Config.Crops.HueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
             }
 
@@ -213,14 +219,9 @@ namespace Randomizer
         private void FixWidthValue(int graphicId)
 		{
 			List<int> graphicIndexesWithSmallerWidths = new() { 32, 34 };
-			if (graphicIndexesWithSmallerWidths.Contains(graphicId))
-			{
-				ImageWidthInPx = 112;
-			}
-			else
-			{
-				ImageWidthInPx = 128;
-			}
+			ImageWidthInPx = graphicIndexesWithSmallerWidths.Contains(graphicId)
+				? 112
+				: 128;
 		}
 
 		/// <summary>
@@ -278,7 +279,7 @@ namespace Randomizer
 			}
 
 			// Check that every crop growth image has a matching seed packet
-			string seedImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Seeds");
+			string seedImageDirectory = Path.Combine(CustomImagesPath, "Objects", "Seeds");
 			List<string> seedImageNames = Directory.GetFiles(seedImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -293,7 +294,7 @@ namespace Randomizer
 			}
 
 			// Check that all crop growth images exist as a crop or flower
-			string cropImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Crops");
+			string cropImageDirectory = Path.Combine(CustomImagesPath, "Objects", "Crops");
             List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -307,7 +308,7 @@ namespace Randomizer
 				}
 			}
 
-			string flowerImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Flowers");
+			string flowerImageDirectory = Path.Combine(CustomImagesPath, "Objects", "Flowers");
             List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -337,8 +338,8 @@ namespace Randomizer
 			}
 
 			// Check that there's at least one seed packet template for trellis and non-trellis seeds
-			string seedPacketDirectory = $"{CustomImagesPath}/SpringObjects/{SpringObjectsImageBuilder.SeedPacketDirectory}";
-			string tellisPacketDirectory = $"{seedPacketDirectory}/{SpringObjectsImageBuilder.TrellisPacketSubDirectory}";
+			string seedPacketDirectory = Path.Combine(CustomImagesPath, "Objects", ObjectImageBuilder.SeedPacketDirectory);
+			string tellisPacketDirectory = Path.Combine(seedPacketDirectory, ObjectImageBuilder.TrellisPacketSubDirectory);
 
 			if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any()) 
 			{

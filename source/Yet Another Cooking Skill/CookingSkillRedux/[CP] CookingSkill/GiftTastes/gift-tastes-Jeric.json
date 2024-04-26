@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "LogName": "Gift tastes: Jeric",
+      "TextOperations": [
+        /*Like*/
+        {
+          "Operation": "Append",
+          "Target": [
+            "Fields",
+            "Jeric",
+            3
+          ],
+          "Value": "moonslime.Cooking.wizard_casserole moonslime.Cooking.seafoam_icecream moonslime.Cooking.nigiri moonslime.Cooking.wizards_brew moonslime.Cooking.tomatoe_cheese_omelet moonslime.Cooking.egg_sandwhich moonslime.Cooking.apple_pie moonslime.Cooking.eggnog moonslime.Cooking.fish_pie moonslime.Cooking.egg_ramen moonslime.Cooking.ramen moonslime.Cooking.oeuf moonslime.Cooking.egg_burrito moonslime.Cooking.cream_pie moonslime.Cooking.fishers_breakfast moonslime.Cooking.caramel_miner_treat moonslime.Cooking.fries moonslime.Cooking.tomato_soup moonslime.Cooking.mushroom_rice moonslime.Cooking.strawberry_pie moonslime.Cooking.banana_field_snack moonslime.Cooking.rice",
+          "Delimiter": " "
+        }
+        /*Dislike*/,
+        {
+          "Operation": "Append",
+          "Target": [
+            "Fields",
+            "Jeric",
+            5
+          ],
+          "Value": "moonslime.Cooking.spring_onion_soup moonslime.Cooking.pie_crust",
+          "Delimiter": " "
+        }
+      ]
+    }
+  ]
+}

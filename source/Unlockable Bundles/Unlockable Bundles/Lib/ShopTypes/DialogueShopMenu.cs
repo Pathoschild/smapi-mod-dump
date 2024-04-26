@@ -22,20 +22,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using Netcode;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
     public class DialogueShopMenu : IClickableMenu
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
 
         public Unlockable Unlockable;

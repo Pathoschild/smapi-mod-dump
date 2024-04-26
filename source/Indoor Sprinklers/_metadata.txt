@@ -6,9 +6,9 @@ mods:
    Indoor Sprinklers
 
 latest commit:
-   commit 3006d521d03ba3df444d25dd22dfcf0e51bd929c
-   Author: MichaÅ‚ Pomirski <43695467+mpomirski@users.noreply.github.com>
-   Date:   Wed Mar 27 01:22:15 2024 +0100
+   commit 18d23496b39ff04242a0b019cde8c4fa194bf2de
+   Author: mpomirski <michal.pomirski01@gmail.com>
+   Date:   Mon Apr 8 22:28:23 2024 +0200
    
-       Update README.md
+       Fixed sprinklers not working in sheds (and possibly other buildings)
    

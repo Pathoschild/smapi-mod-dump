@@ -1,11 +1,11 @@
 {
     "Name": "AchtuurCore",
     "Author": "Achtuur",
-    "Version": "1.2.1",
+    "Version": "1.2.3",
     "Description": "Core mod for most of my mods.",
     "UniqueID": "Achtuur.AchtuurCore",
     "EntryDll": "AchtuurCore.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "dependencies": [
      
     ],

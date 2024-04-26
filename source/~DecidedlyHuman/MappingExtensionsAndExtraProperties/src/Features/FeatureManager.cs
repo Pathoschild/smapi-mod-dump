@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using MappingExtensionsAndExtraProperties.Models.EventArgs;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace MappingExtensionsAndExtraProperties.Features;
@@ -27,6 +28,7 @@ public static class FeatureManager
     internal static event EventHandler? EarlyDayEndingCallback;
     internal static event EventHandler? LateDayEndingCallback;
     internal static event EventHandler<OnLocationChangeEventArgs>? OnLocationChangeCallback;
+    internal static event EventHandler<RenderedStepEventArgs>? OnDisplayRenderedCallback;
     public static int FeatureCount
     {
         get => features.Count;
@@ -125,6 +127,11 @@ public static class FeatureManager
                 NewLocation = newLocation,
                 Player = player
             });
+    }
+
+    public static void OnRenderedStep(RenderedStepEventArgs args)
+    {
+        OnDisplayRenderedCallback?.Invoke(null, args);
     }
 
     private static void GroupFeatures()

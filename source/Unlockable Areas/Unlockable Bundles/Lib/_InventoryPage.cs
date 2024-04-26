@@ -19,15 +19,12 @@ using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib
 {
     public class _InventoryPage
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public static Texture2D BundleOverviewIcon;
         private static ClickableTextureComponent BundleOverviewButton;
 
@@ -37,13 +34,9 @@ namespace Unlockable_Bundles.Lib
         private const int LastInventorySlotId = 11;
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             BundleOverviewIcon = Helper.ModContent.Load<Texture2D>("assets/BundleOverviewIcon.png");
 
-            var harmony = new Harmony(Mod.ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
             harmony.Patch(
                 original: AccessTools.DeclaredConstructor(typeof(InventoryPage), new[] { typeof(int), typeof(int), typeof(int), typeof(int) }),

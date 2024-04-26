@@ -10,13 +10,12 @@
 
 namespace StardewMods.BetterChests.Framework.Services.Features;
 
-using System.Runtime.CompilerServices;
-using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Events;
-using StardewMods.BetterChests.Framework.Services.Factory;
-using StardewMods.BetterChests.Framework.Services.Transient;
 using StardewMods.Common.Interfaces;
+using StardewMods.Common.Models;
+using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.BetterChests.Enums;
 using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
 using StardewMods.Common.Services.Integrations.FauxCore;
@@ -24,32 +23,43 @@ using StardewMods.Common.Services.Integrations.FauxCore;
 /// <summary>Restricts what items can be added into a chest.</summary>
 internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
 {
-    private readonly ConditionalWeakTable<IStorageContainer, ItemMatcher> cachedItemMatchers = new();
-    private readonly ContainerFactory containerFactory;
-    private readonly ItemGrabMenuManager itemGrabMenuManager;
-    private readonly ItemMatcherFactory itemMatcherFactory;
+    private static readonly Lazy<List<Item>> AllItems = new(
+        () =>
+        {
+            return ItemRegistry
+                .ItemTypes.SelectMany(
+                    itemType => itemType
+                        .GetAllIds()
+                        .Select(localId => ItemRegistry.Create(itemType.Identifier + localId)))
+                .ToList();
+        });
+
+    private readonly PerScreen<List<Item>> cachedItems = new(() => []);
+    private readonly ICacheTable<ISearchExpression?> cachedSearches;
+    private readonly MenuManager menuManager;
+    private readonly SearchHandler searchHandler;
 
     /// <summary>Initializes a new instance of the <see cref="CategorizeChest" /> class.</summary>
-    /// <param name="containerFactory">Dependency used for accessing containers.</param>
+    /// <param name="cacheManager">Dependency used for managing cache tables.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
-    /// <param name="itemGrabMenuManager">Dependency used for managing the item grab menu.</param>
-    /// <param name="itemMatcherFactory">Dependency used for getting an ItemMatcher.</param>
+    /// <param name="menuManager">Dependency used for managing the current menu.</param>
     /// <param name="log">Dependency used for logging debug information to the console.</param>
     /// <param name="manifest">Dependency for accessing mod manifest.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
+    /// <param name="searchHandler">Dependency used for handling search.</param>
     public CategorizeChest(
-        ContainerFactory containerFactory,
+        CacheManager cacheManager,
         IEventManager eventManager,
-        ItemGrabMenuManager itemGrabMenuManager,
-        ItemMatcherFactory itemMatcherFactory,
+        MenuManager menuManager,
         ILog log,
         IManifest manifest,
-        IModConfig modConfig)
+        IModConfig modConfig,
+        SearchHandler searchHandler)
         : base(eventManager, log, manifest, modConfig)
     {
-        this.containerFactory = containerFactory;
-        this.itemGrabMenuManager = itemGrabMenuManager;
-        this.itemMatcherFactory = itemMatcherFactory;
+        this.cachedSearches = cacheManager.GetCacheTable<ISearchExpression?>();
+        this.menuManager = menuManager;
+        this.searchHandler = searchHandler;
     }
 
     /// <inheritdoc />
@@ -59,126 +69,126 @@ internal sealed class CategorizeChest : BaseFeature<CategorizeChest>
     protected override void Activate()
     {
         // Events
-        this.Events.Subscribe<ChestInventoryChangedEventArgs>(this.OnChestInventoryChanged);
-        this.Events.Subscribe<ItemGrabMenuChangedEventArgs>(this.OnItemGrabMenuChanged);
+        this.Events.Subscribe<ItemHighlightingEventArgs>(this.OnItemHighlighting);
+        this.Events.Subscribe<ItemsDisplayingEventArgs>(this.OnItemsDisplaying);
         this.Events.Subscribe<ItemTransferringEventArgs>(this.OnItemTransferring);
+        this.Events.Subscribe<SearchChangedEventArgs>(this.OnSearchChanged);
     }
 
     /// <inheritdoc />
     protected override void Deactivate()
     {
         // Events
-        this.Events.Unsubscribe<ChestInventoryChangedEventArgs>(this.OnChestInventoryChanged);
-        this.Events.Unsubscribe<ItemGrabMenuChangedEventArgs>(this.OnItemGrabMenuChanged);
+        this.Events.Unsubscribe<ItemHighlightingEventArgs>(this.OnItemHighlighting);
+        this.Events.Unsubscribe<ItemsDisplayingEventArgs>(this.OnItemsDisplaying);
         this.Events.Unsubscribe<ItemTransferringEventArgs>(this.OnItemTransferring);
+        this.Events.Unsubscribe<SearchChangedEventArgs>(this.OnSearchChanged);
     }
 
-    private static Func<IEnumerable<Item>, IEnumerable<Item>> FilterByCategory(
-        IStorageContainer container,
-        IItemFilter itemMatcher)
+    private void OnItemHighlighting(ItemHighlightingEventArgs e)
     {
-        return InternalFilterMethod;
-
-        IEnumerable<Item> InternalFilterMethod(IEnumerable<Item> items) =>
-            container.Options.CategorizeChestMethod switch
+        var top = this.menuManager.Top.Container;
+        if (e.Container == this.menuManager.Bottom.Container
+            && top?.Options is
             {
-                FilterMethod.Sorted or FilterMethod.GrayedOut => items.OrderByDescending(itemMatcher.MatchesFilter),
-                FilterMethod.Hidden => items.Where(itemMatcher.MatchesFilter),
-                _ => items,
-            };
-    }
-
-    private void OnChestInventoryChanged(ChestInventoryChangedEventArgs e)
-    {
-        if (!this.containerFactory.TryGetOneFromLocation(e.Location, e.Chest.TileLocation, out var container)
-            || container.Options.CategorizeChestAutomatically != FeatureOption.Enabled)
+                CategorizeChest: FeatureOption.Enabled,
+                CategorizeChestBlockItems: FeatureOption.Enabled,
+            })
         {
+            if (this.CanAcceptItem(top, e.Item, out var accepted) && !accepted)
+            {
+                e.UnHighlight();
+            }
+
             return;
         }
 
-        var tags = new HashSet<string>(container.Options.CategorizeChestTags);
-        foreach (var item in e.Added)
+        // Unhighlight items not actually in container
+        if (e.Container == this.menuManager.Top.Container && this.cachedItems.Value.Any())
         {
-            var tag = item
-                .GetContextTags()
-                .Where(tag => tag.StartsWith("id_", StringComparison.OrdinalIgnoreCase))
-                .MinBy(tag => tag.Contains('('));
-
-            if (tag is not null)
+            if (!e.Container.Items.Contains(e.Item))
             {
-                tags.Add(tag);
+                e.UnHighlight();
             }
-        }
-
-        if (!tags.SetEquals(container.Options.CategorizeChestTags))
-        {
-            container.Options.CategorizeChestTags = [..tags];
         }
     }
 
-    private void OnItemGrabMenuChanged(ItemGrabMenuChangedEventArgs e)
+    [Priority(int.MinValue + 1)]
+    private void OnItemsDisplaying(ItemsDisplayingEventArgs e)
     {
-        var top = this.itemGrabMenuManager.Top.Container;
-        if (top?.Options.CategorizeChest == FeatureOption.Enabled)
+        // Append searched items to the end of the list
+        if (e.Container == this.menuManager.Top.Container && this.cachedItems.Value.Any())
         {
-            var itemMatcher = this.GetOrCreateItemMatcher(top);
-            if (top.Options.CategorizeChestMethod is FilterMethod.GrayedOut)
-            {
-                this.itemGrabMenuManager.Bottom.AddHighlightMethod(itemMatcher.MatchesFilter);
-            }
-
-            this.itemGrabMenuManager.Bottom.AddOperation(CategorizeChest.FilterByCategory(top, itemMatcher));
-        }
-
-        var bottom = this.itemGrabMenuManager.Bottom.Container;
-        if (bottom?.Options.CategorizeChest == FeatureOption.Enabled)
-        {
-            var itemMatcher = this.GetOrCreateItemMatcher(bottom);
-            if (bottom.Options.CategorizeChestMethod is FilterMethod.GrayedOut)
-            {
-                this.itemGrabMenuManager.Top.AddHighlightMethod(itemMatcher.MatchesFilter);
-            }
-
-            this.itemGrabMenuManager.Top.AddOperation(CategorizeChest.FilterByCategory(bottom, itemMatcher));
+            e.Edit(items => items.Concat(this.cachedItems.Value.Except(e.Container.Items)));
         }
     }
 
+    [Priority(int.MinValue)]
     private void OnItemTransferring(ItemTransferringEventArgs e)
     {
-        // Allow forced transfer
-        if (e.Into.Options.CategorizeChest != FeatureOption.Enabled || e.IsForced)
+        // Only test if categorize is enabled
+        if (e.Into.Options.CategorizeChest != FeatureOption.Enabled
+            || !this.CanAcceptItem(e.Into, e.Item, out var accepted))
         {
             return;
         }
 
-        // Allow transfer if existing stacks are allowed and item is already in the chest
-        if (e.Into.Options.CategorizeChestAutomatically == FeatureOption.Enabled
-            && e.Into.Items.ContainsId(e.Item.ItemId))
+        if (accepted)
         {
-            return;
+            e.AllowTransfer();
         }
-
-        // Disallow transfer if item does not match category
-        var itemMatcher = this.GetOrCreateItemMatcher(e.Into);
-        if (itemMatcher.IsEmpty || !itemMatcher.MatchesFilter(e.Item))
+        else if (e.Into.Options.CategorizeChestBlockItems == FeatureOption.Enabled)
         {
             e.PreventTransfer();
         }
     }
 
-    private ItemMatcher GetOrCreateItemMatcher(IStorageContainer container)
+    private void OnSearchChanged(SearchChangedEventArgs e)
     {
-        if (!this.cachedItemMatchers.TryGetValue(container, out var itemMatcher))
+        if (e.SearchExpression is null)
         {
-            itemMatcher = this.itemMatcherFactory.GetDefault();
+            this.cachedItems.Value = [];
+            return;
         }
 
-        if (itemMatcher.IsEmpty && container.Options.CategorizeChestTags.Any())
+        this.cachedItems.Value = [..CategorizeChest.AllItems.Value.Where(e.SearchExpression.PartialMatch)];
+    }
+
+    private bool CanAcceptItem(IStorageContainer container, Item item, out bool accepted)
+    {
+        accepted = false;
+        var includeStacks = container.Options.CategorizeChestIncludeStacks == FeatureOption.Enabled;
+        var hasStacks = container.Items.ContainsId(item.QualifiedItemId);
+        if (includeStacks && hasStacks)
         {
-            itemMatcher.SearchText = string.Join(' ', container.Options.CategorizeChestTags);
+            accepted = true;
+            return true;
         }
 
-        this.cachedItemMatchers.AddOrUpdate(container, itemMatcher);
-        return itemMatcher;
+        // Cannot handle if there is no search term
+        if (string.IsNullOrWhiteSpace(container.Options.CategorizeChestSearchTerm))
+        {
+            return false;
+        }
+
+        // Retrieve search expression from cache or generate a new one
+        if (!this.cachedSearches.TryGetValue(container.Options.CategorizeChestSearchTerm, out var searchExpression))
+        {
+            this.cachedSearches.AddOrUpdate(
+                container.Options.CategorizeChestSearchTerm,
+                this.searchHandler.TryParseExpression(container.Options.CategorizeChestSearchTerm, out searchExpression)
+                    ? searchExpression
+                    : null);
+        }
+
+        // Cannot handle if search term is invalid
+        if (searchExpression is null)
+        {
+            return false;
+        }
+
+        // Check if item matches search expressions
+        accepted = searchExpression.PartialMatch(item);
+        return true;
     }
 }

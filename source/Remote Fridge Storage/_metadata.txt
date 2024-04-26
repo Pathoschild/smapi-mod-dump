@@ -6,9 +6,9 @@ mods:
    Remote Fridge Storage
 
 latest commit:
-   commit b85fccc87885b692da601e47f5a7117dd6a4cc20
+   commit d2d96d6003387d78ebb601cfa342c5ffb71ad820
    Author: ArjanSeijs <A.M.Seijs@student.tudelft.nl>
-   Date:   Thu Mar 21 14:48:11 2024 +0100
+   Date:   Wed Apr 17 22:37:03 2024 +0200
    
-       Updated to 1.6
+       Added API for other mods to retrieve selected chests
    

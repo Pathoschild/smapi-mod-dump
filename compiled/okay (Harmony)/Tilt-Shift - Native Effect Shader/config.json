@@ -1,0 +1,18 @@
+{
+  "enable": true,
+  "enableIndoors": true,
+  "enableInMines": true,
+  "enableInEvents": false,
+  "directionalFading": true,
+  "directionalFadingTime": 0.4,
+  "directionalFadingMin": 0.0,
+  "blurRadius": 4,
+  "blurOffset": 0.2,
+  "effectStregth": 1.0,
+  "passes": 1,
+  "sampleOffset": 1.0,
+  "disableOnWorkaround": false,
+  "shaderType": "Gaussian",
+  "shaderMethod": "Automatic",
+  "debug": false
+}

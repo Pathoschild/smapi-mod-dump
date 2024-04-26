@@ -22,6 +22,8 @@ namespace ConvenientChests.CategorizeChests.Framework {
         public static bool IsCraftable(this Item item) => CraftingRecipe.craftingRecipes.ContainsKey(item.Name);
         public static bool IsCraftable(this Item item, Farmer player) => player.craftingRecipes.ContainsKey(item.Name);
 
+        public static Item Copy(this Item item) => ItemRegistry.Create(item.QualifiedItemId, item.Stack, item.Quality);
+        
         public static Item ToBase(this Item item)
             => item switch {
                    MeleeWeapon m when m.isScythe() => new MeleeWeapon(MeleeWeapon.scytheId),
@@ -77,7 +79,7 @@ namespace ConvenientChests.CategorizeChests.Framework {
                        "(W)" => ItemType.Weapon,
                        "(TR)" => ItemType.Trinket,
                        "(O)" when key.ItemId == "325" => ItemType.Gate,
-                       "(O)" => key.GetOne<Object>().Category switch {
+                       "(O)" => key.GetOne().Category switch {
                                     Object.FishCategory => ItemType.Fish,
                                     Object.ringCategory => ItemType.Ring,
                                     _ => ItemType.Object,

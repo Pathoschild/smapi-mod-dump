@@ -132,8 +132,11 @@ namespace MailFrameworkMod
                     })) continue;
 
                     bool Condition(Letter l) =>
-                        (!Game1.player.mailReceived.Contains(l.Id) || mailItem.Repeatable)
-                        && (mailItem.Recipe == null || !Game1.player.cookingRecipes.ContainsKey(mailItem.Recipe))
+                        (!Game1.player.mailReceived.Contains(l.Id) || mailItem.Repeatable || (mailItem.Recipe != null && mailItem.Attachments?.Count == 0))
+                        && (mailItem.Recipe == null || !(Game1.player.cookingRecipes.ContainsKey(mailItem.Recipe) 
+                                                    || Game1.player.craftingRecipes.ContainsKey(mailItem.Recipe)
+                                                    || Game1.player.cookingRecipes.ContainsKey(CraftingRecipe.cookingRecipes.Where(r => ItemRegistry.GetData(r.Value.Split("/")[2].Split(" ")[0])?.InternalName == mailItem.Recipe).Select(r=>r.Key).FirstOrDefault()??"")
+                                                    || Game1.player.craftingRecipes.ContainsKey(CraftingRecipe.craftingRecipes.Where(r => ItemRegistry.GetData(r.Value.Split("/")[2].Split(" ")[0])?.InternalName == mailItem.Recipe).Select(r => r.Key).FirstOrDefault() ?? "")))
                         && (mailItem.Date == null || SDate.Now() >= new SDate(Convert.ToInt32(mailItem.Date.Split(' ')[0]),
                                 mailItem.Date.Split(' ')[1], Convert.ToInt32(mailItem.Date.Split(' ')[2].Replace("Y", ""))))
                         && (mailItem.Days == null || mailItem.Days.Contains(SDate.Now().Day))
@@ -239,7 +242,7 @@ namespace MailFrameworkMod
 
                                     if (i.Index != null)
                                     {
-                                        attachments.Add(new StardewValley.Object(i.Index, i.Stack ?? 1));
+                                        attachments.Add(new StardewValley.Object(i.Index, i.Stack ?? 1, quality: i.Quality));
                                     }
                                     else
                                     {
@@ -427,7 +430,7 @@ namespace MailFrameworkMod
                                     {
                                         string index = i.Index;
                                         attachments.Add(SlingshotIndexes.Contains(index)
-                                            ? (Item) new Slingshot(index)
+                                            ? (Item) new Slingshot(index.Replace("(W)",""))
                                             : (Item) new MeleeWeapon(index));
                                     }
                                     else
@@ -478,6 +481,7 @@ namespace MailFrameworkMod
                                                 if (dgaItem is StardewValley.Object)
                                                 {
                                                     dgaItem.Stack = i.Stack ?? 1;
+                                                    dgaItem.Quality = i.Quality;
                                                 }
                                                 else
                                                 {
@@ -512,7 +516,7 @@ namespace MailFrameworkMod
                                 case ItemType.QualifiedItemId:
                                     if (i.Index != null)
                                     {
-                                        Item item = ItemRegistry.Create(i.Index, i.Stack ?? 1);
+                                        Item item = ItemRegistry.Create(i.Index, i.Stack ?? 1, i.Quality);
                                         attachments.Add(item);
                                     }
                                     else

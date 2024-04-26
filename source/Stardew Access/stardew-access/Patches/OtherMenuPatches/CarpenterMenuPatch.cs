@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using stardew_access.Translation;
 using stardew_access.Utils;
 using StardewValley;
@@ -22,6 +23,29 @@ internal class CarpenterMenuPatch : IPatch
     internal static bool isSayingBlueprintInfo = false;
     internal static string prevBlueprintInfo = "";
     internal static bool isOnFarm = false, isUpgrading = false, isDemolishing = false, isPainting = false, isConstructing = false, isMoving = false, isMagicalConstruction = false;
+    private static Vector2? _mousePosition = null;
+    internal static Vector2? MousePosition
+    {
+        get { return _mousePosition; }
+        set
+        {
+            if (value.HasValue)
+            {
+                // Clamp the X value between 0 and Game1.viewport.Width
+                float clampedX = Math.Clamp(value.Value.X, 0, Game1.viewport.Width-1);
+
+                // Clamp the Y value between 0 and Game1.viewport.Height
+                float clampedY = Math.Clamp(value.Value.Y, 0, Game1.viewport.Height-1);
+
+                // Update the _mousePosition with the clamped values
+                _mousePosition = new Vector2(clampedX, clampedY);
+            }
+            else
+            {
+                _mousePosition = null; // Allow setting to null if needed
+            }
+        }
+    }
 
     public void Apply(Harmony harmony)
     {
@@ -48,6 +72,7 @@ internal class CarpenterMenuPatch : IPatch
                 isPainting = false;
                 isMoving = false;
                 isConstructing = false;
+                MousePosition = null;
 
                 CarpenterMenu.BlueprintEntry currentBlueprint = __instance.Blueprint;
                 if (currentBlueprint == null) return;
@@ -81,6 +106,12 @@ internal class CarpenterMenuPatch : IPatch
                     isMoving = true;
                 else
                     isConstructing = true;
+                if (MousePosition == null)
+                {
+                    var location = carpenterMenu.GetInitialBuildingPlacementViewport(carpenterMenu.TargetLocation);
+                    MousePosition = new(Game1.viewport.Width / 2f, Game1.viewport.Height / 2f);
+                }
+                if (MousePosition!= null && MousePosition.HasValue) Game1.setMousePosition((int)MousePosition.Value.X, (int)MousePosition.Value.Y);
             }
         }
         catch (Exception e)

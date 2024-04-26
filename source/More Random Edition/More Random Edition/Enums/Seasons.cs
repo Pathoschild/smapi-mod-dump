@@ -10,7 +10,9 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -25,7 +27,7 @@ namespace Randomizer
 		Winter
 	}
 
-	public class SeasonFunctions
+	public static class SeasonsExtensions
 	{
         /// <summary>
         /// Gets the season of the game as one of the enum values
@@ -50,8 +52,9 @@ namespace Randomizer
         /// Gets a random color that fits the given season
         /// </summary>
         /// <param name="season">The season</param>
+        /// <param name="rng">The rng to use</param>
         /// <returns>The chosen color</returns>
-        public static Color GetRandomColorForSeason(Seasons season)
+        public static Color GetRandomColorForSeason(this Seasons season, RNG rng)
         {
             Range SpringHueRange = new(100, 155);
             Range SummerHueRange = new(50, 65);
@@ -60,10 +63,10 @@ namespace Randomizer
 
             return season switch
             {
-                Seasons.Spring => ImageManipulator.GetRandomColor(SpringHueRange),
-                Seasons.Summer => ImageManipulator.GetRandomColor(SummerHueRange),
-                Seasons.Fall => ImageManipulator.GetRandomColor(FallHueRange),
-                _ => ImageManipulator.GetRandomColor(WinterHueRange)
+                Seasons.Spring => ImageManipulator.GetRandomColor(rng, SpringHueRange),
+                Seasons.Summer => ImageManipulator.GetRandomColor(rng, SummerHueRange),
+                Seasons.Fall => ImageManipulator.GetRandomColor(rng, FallHueRange),
+                _ => ImageManipulator.GetRandomColor(rng, WinterHueRange)
             };
         }
 
@@ -73,21 +76,36 @@ namespace Randomizer
         /// 2 in list: averages them out
         /// 3+ in list: uses CyanAndBlue (passes Winter over)
         /// </summary>
-        /// <param name="season">The season</param>
+        /// <param name="seasons">The seasons</param>
+        /// /// <param name="rng">The rng to use</param>
         /// <returns>The chosen color</returns>
-        public static Color GetRandomColorForSeasons(List<Seasons> seasons)
+        public static Color GetRandomColorForSeasons(List<Seasons> seasons, RNG rng)
         {
             switch (seasons.Count)
             {
                 case 1:
-                    return GetRandomColorForSeason(seasons[0]);
+                    return seasons[0].GetRandomColorForSeason(rng);
                 case 2:
-                    var color1 = GetRandomColorForSeason(seasons[0]);
-                    var color2 = GetRandomColorForSeason(seasons[1]);
+                    var color1 = seasons[0].GetRandomColorForSeason(rng);
+                    var color2 = seasons[1].GetRandomColorForSeason(rng);
                     return ImageManipulator.AverageColors(color1, color2);
                 default:
-                    return GetRandomColorForSeason(Seasons.Winter);
+                    return GetRandomColorForSeason(Seasons.Winter, rng);
             }
+        }
+
+        /// <summary>
+        /// Gets a random season from the enum
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <returns>The random season</returns>
+        public static Seasons GetRandomSeason(RNG rng)
+        {
+            var allSeasons = Enum.GetValues(typeof(Seasons))
+                .Cast<Seasons>()
+                .ToList();
+
+            return rng.GetRandomValueFromList(allSeasons);
         }
     }
 }

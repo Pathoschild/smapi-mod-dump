@@ -1,7 +1,7 @@
 ﻿{
   "Name": "EventBlackBars",
   "Author": "GZhynko",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Adds cutscene-like black bars to the top and the bottom of the screen during an event.",
   "UniqueID": "GZhynko.EventBlackBars",
   "EntryDll": "EventBlackBars.dll",

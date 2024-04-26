@@ -18,7 +18,7 @@ namespace StardewArchipelago.Textures
 {
     public class TexturesLoader
     {
-        public static Texture2D GetTexture(IModHelper modHelper, string texture)
+        public static Texture2D GetTexture(IMonitor monitor, IModHelper modHelper, string texture, LogLevel failureLogLevel = LogLevel.Error)
         {
             if (Game1.content.ServiceProvider.GetService(typeof(IGraphicsDeviceService)) is not IGraphicsDeviceService service)
             {
@@ -35,9 +35,11 @@ namespace StardewArchipelago.Textures
             var relativePathToTexture = Path.Combine(currentModFolder, texturesFolder, texture);
             if (!File.Exists(relativePathToTexture))
             {
+                monitor.Log($"Tried to load texture '{relativePathToTexture}', but it couldn't be found!", failureLogLevel);
                 return null;
             }
 
+            monitor.Log($"Loading Texture file '{relativePathToTexture}'", LogLevel.Trace);
             return Texture2D.FromFile(service.GraphicsDevice, relativePathToTexture);
         }
     }

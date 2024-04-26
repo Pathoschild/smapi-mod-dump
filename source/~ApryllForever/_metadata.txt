@@ -6,6 +6,7 @@ mods:
    Polyamory Sweet → Polyamory Kiss
    Polyamory Sweet → Polyamory Sweet Bed
    Polyamory Sweet → Polyamory Sweet Love
+   Polyamory Sweet → Polyamory Sweet Rooms
    Polyamory Sweet → Polyamory Sweet Wedding
 
 latest commit:

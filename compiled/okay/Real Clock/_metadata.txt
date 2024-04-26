@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21726
+IDs: thimadera.RealClock, thimadera.Realclock
+update keys: Nexus:21726, GitHub:thimadera/StardewMods

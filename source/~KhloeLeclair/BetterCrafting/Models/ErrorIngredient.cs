@@ -40,11 +40,11 @@ public class ErrorIngredient : IIngredient {
 
 	public int Quantity => 1;
 
-	public void Consume(Farmer who, IList<IInventory>? inventories, int max_quality, bool low_quality_first) {
+	public void Consume(Farmer who, IList<IBCInventory>? inventories, int max_quality, bool low_quality_first) {
 
 	}
 
-	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int max_quality) {
+	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int max_quality) {
 		return 0;
 	}
 }

@@ -49,7 +49,7 @@ public class MenuFishTank : FishTankFurniture {
 	private Rectangle _Inside;
 
 	public MenuFishTank(Rectangle bounds)
-	: base(2304, Vector2.Zero) {
+	: base("(F)2304", Vector2.Zero) {
 
 		_Bounds = bounds;
 		_Inside = new Rectangle(
@@ -114,7 +114,7 @@ public class MenuFishTank : FishTankFurniture {
 			return;
 
 		// Update our fish
-		updateWhenCurrentLocation(Game1.currentGameTime, Game1.currentLocation);
+		updateWhenCurrentLocation(Game1.currentGameTime);
 
 		RenderHelper.WithScissor(batch, SpriteSortMode.FrontToBack, _Inside, () => {
 

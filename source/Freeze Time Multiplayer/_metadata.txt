@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/alcmoe/FreezeTimeMultiplayer
+   Git: https://github.com/alcmoe/FreezeTimeMultiplayer.git
+
+mods:
+   Freeze Time Multiplayer
+
+latest commit:
+   commit 16dc9493f3c1246404b9c5fc144dd9ff6827c0d9
+   Author: Alcatraz <xinxu.du@qdtech.ai>
+   Date:   Mon Apr 8 18:07:28 2024 +0800
+   
+       update csproj
+   

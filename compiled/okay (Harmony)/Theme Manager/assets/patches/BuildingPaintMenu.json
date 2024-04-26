@@ -1,0 +1,33 @@
+{
+	"ID": "BuildingPaintMenu",
+
+	"FontVariables": {
+		"$BuildingPaintMenu:Dialogue": "$Dialogue"
+	},
+
+	"BmFontVariables": {
+		"$BuildingPaintMenu:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$BuildingPaintMenu:ST:Normal": "$ST:Normal",
+		"$BuildingPaintMenu:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"#BuildingPaintMenu:draw": {
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$BuildingPaintMenu:Dialogue" }
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$BuildingPaintMenu:ST:Normal",
+					"$BuildingPaintMenu:ST:Colored",
+					"$BuildingPaintMenu:ST:Font",
+					"$BuildingPaintMenu:Colors"
+				]
+			}
+		}
+	}
+}

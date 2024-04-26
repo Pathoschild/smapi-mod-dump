@@ -23,9 +23,9 @@ mods:
    XP Display
 
 latest commit:
-   commit c7333c879cdd4c043b2f6360dc910dd07a4d0fef
-   Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Wed Mar 20 22:55:52 2024 +0100
+   commit beb919ab013d997f33e633dda367ab72e03f0b22
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Mon Apr 22 01:33:16 2024 +0200
    
-       EarlyGingerIsland: Version 2.0.0
+       Added support for SpaceCore Skill buffs
    

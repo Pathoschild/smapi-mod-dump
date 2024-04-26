@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Pet-Slime/StardewValley
+   Git: https://github.com/Pet-Slime/StardewValley.git
+
+mods:
+   Yet Another Cooking Skill
+
+latest commit:
+   commit a0a7fe236020260ed4cbdc89249e89f677d79e6a
+   Author: Pet-Slime <52937167+Pet-Slime@users.noreply.github.com>
+   Date:   Thu Apr 25 08:51:19 2024 -0500
+   
+       Restoration table
+   

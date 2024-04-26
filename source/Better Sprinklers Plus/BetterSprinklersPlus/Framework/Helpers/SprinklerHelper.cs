@@ -238,7 +238,8 @@ namespace BetterSprinklersPlus.Framework.Helpers
 #pragma warning restore AvoidImplicitNetFieldCast
 
 #pragma warning disable AvoidImplicitNetFieldCast
-      return Utility.IsNormalObjectAtParentSheetIndex(sprinkler.heldObject, 915);
+      var sprinklerHeldObj = sprinkler.heldObject.Get();
+      return sprinklerHeldObj != null && sprinklerHeldObj.QualifiedItemId == "(O)915";
 #pragma warning restore AvoidImplicitNetFieldCast
     }
 

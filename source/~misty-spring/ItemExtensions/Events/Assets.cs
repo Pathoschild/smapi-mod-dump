@@ -11,9 +11,11 @@
 using ItemExtensions.Additions;
 using ItemExtensions.Models;
 using ItemExtensions.Models.Contained;
+using ItemExtensions.Models.Items;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.GameData.Objects;
 
 namespace ItemExtensions.Events;
@@ -34,12 +36,11 @@ public static class Assets
         if (!Context.IsWorldReady)
             return;
         
-        /*
-        if (e.NamesWithoutLocale.Any(a => a.Name.Equals("Data/Crops")))
+        if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Panning")))
         {
-            var objectData = Helper.GameContent.Load<Dictionary<string, ItemData>>($"Mods/{Id}/Data");
-            Parser.ObjectData(objectData);
-        }*/
+            var panData = Helper.GameContent.Load<Dictionary<string, PanningData>>($"Mods/{Id}/Panning");
+            Parser.Panning(panData);
+        }
         
         if (e.NamesWithoutLocale.Any(a => a.Name.Equals($"Mods/{Id}/Data")))
         {
@@ -71,14 +72,7 @@ public static class Assets
 
     public static void OnRequest(object sender, AssetRequestedEventArgs e)
     {
-        //resources
-        if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Resources", true))
-        {
-            e.LoadFrom(
-                () => new Dictionary<string, ResourceData>(),
-                AssetLoadPriority.Low);
-        }
-
+        //for adding hover reqs to UI stuff, in case another mod wants the string
         if (e.NameWithoutLocale.IsEquivalentTo("Strings/UI"))
         {
             e.Edit(asset =>
@@ -88,6 +82,7 @@ public static class Assets
             });
         }
         
+        //for adding node data
         if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
         {
             e.Edit(asset =>
@@ -99,7 +94,7 @@ public static class Assets
                         continue;
                     
                     //check if vanilla, skip if so
-                    if (int.TryParse(itemId, out var asInt) && asInt < 1000)
+                    if (Parser.IsVanilla(itemId))
                     {
                         continue;
                     }
@@ -138,7 +133,7 @@ public static class Assets
             });
         }
         
-        //item actions / object behavior
+        //item extensibility
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Data", true))
         {
             e.LoadFrom(
@@ -146,25 +141,48 @@ public static class Assets
                 AssetLoadPriority.Low);
         }
         
+        //animation
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/EatingAnimations", true))
         {
             e.LoadFrom(DefaultContent.GetAnimations, AssetLoadPriority.Low);
         }
         
-        //item actions / object behavior
+        //menu actions / object behavior
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/MenuActions", true))
         {
             e.LoadFrom(
-                () => new Dictionary<string, List<MenuBehavior>>(),
+                () => new Dictionary<string, List<MenuBehavior>>
+                {
+                    { "None", new() }
+                },
                 AssetLoadPriority.Low);
         }
         
+        //seeds
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/MixedSeeds", true))
         {
             e.LoadFrom(
                 () => new Dictionary<string, List<MixedSeedData>>(),
                 AssetLoadPriority.Low);
         }
+        
+        //panning
+        if(e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Panning", true))
+        {
+            e.LoadFrom(
+                () => new Dictionary<string, PanningData>(),
+                AssetLoadPriority.Low);
+        }
+        
+        //resources
+        if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Resources", true))
+        {
+            e.LoadFrom(
+                () => new Dictionary<string, ResourceData>(),
+                AssetLoadPriority.Low);
+        }
+        
+        //texture
         if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{Id}/Textures/Drink", true))
         {
             e.LoadFromModFile<Texture2D>("assets/Drink.png", AssetLoadPriority.Low);

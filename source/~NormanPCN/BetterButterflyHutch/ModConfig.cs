@@ -16,7 +16,7 @@ namespace BetterButterflyHutch
         public int MaxIndoors = 6;
         public int MinOutdoors = 16;
         public int MaxOutdoors = 24;
-        public int NumBatWings = 100;
+        public int NumBatWings = 80;
         public bool WinterButterflies = false;
         public bool IslandButterflies = false;
         public bool NightButterflies = false;

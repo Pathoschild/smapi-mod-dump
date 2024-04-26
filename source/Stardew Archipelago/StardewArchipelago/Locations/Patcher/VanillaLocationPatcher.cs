@@ -960,6 +960,11 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(typeof(Desert), nameof(Desert.getDesertMerchantTradeStock)),
                 postfix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.GetDesertMerchantTradeStock_PurchasableRecipeChecks_Postfix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(IslandNorth), nameof(IslandNorth.getIslandMerchantTradeStock)),
+                postfix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.GetIslandMerchantTradeStock_ReplaceDeluxeRetainingSoilWithCraftsanityCheck_Postfix))
+            );
         }
 
         private void PatchKrobusShop()

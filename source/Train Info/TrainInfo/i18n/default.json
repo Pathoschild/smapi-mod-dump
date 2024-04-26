@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BinaryLip/TrainInfo
+**
+*************************************************/
+
+{
+  "config.option.notification_time.name": "Train tomorrow notification time",
+  "config.option.notification_time.description": "When to display the notification that a train is coming tomorrow",
+  "list_title": "Train Contents",
+  "train_today": "A train will be passing through Stardew Valley today at {{time}}",
+  "train_tomorrow": "A train will be passing through Stardew Valley tomorrow at {{time}}",
+  "empty_train": "None"
+}

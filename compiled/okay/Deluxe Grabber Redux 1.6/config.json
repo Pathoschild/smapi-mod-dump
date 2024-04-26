@@ -1,10 +1,11 @@
 {
+  "globalGrabber": "Off",
+  "harvestCropsRangeMode": "Walk",
+  "harvestCropsRange": -1,
   "slimeHutch": true,
   "farmCaveMushrooms": true,
   "harvestCrops": false,
   "harvestCropsIndoorPots": true,
-  "harvestCropsRange": -1,
-  "harvestCropsRangeMode": "Walk",
   "artifactSpots": false,
   "orePan": false,
   "bushes": true,
@@ -15,6 +16,7 @@
   "gainExperience": true,
   "fellSecretWoodsStumps": false,
   "garbageCans": false,
-  "globalGrabber": false,
+  "seedSpots": false,
+  "harvestMoss": false,
   "globalFireButton": "B"
 }

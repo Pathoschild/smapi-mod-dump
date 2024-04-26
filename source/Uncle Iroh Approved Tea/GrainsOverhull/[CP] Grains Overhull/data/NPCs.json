@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Shops",
+            "Action": "Include",
+            "FromFile": "Data/NPCs/SeedShop.json"
+        },
+        {
+            "LogName": "Shops",
+            "Action": "Include",
+            "FromFile": "Data/NPCs/Saloon.json"
+        },
+        {
+            "LogName": "Bachelor Gift Tastes",
+            "Action": "Include",
+            "FromFile": "Data/NPCs/BachelorGiftTastes.json"
+        },
+        {
+            "LogName": "Bachelorette Gift Tastes",
+            "Action": "Include",
+            "FromFile": "Data/NPCs/BacheloretteGiftTastes.json"
+        },
+        {
+            "LogName": "NPC Gift Tastes",
+            "Action": "Include",
+            "FromFile": "Data/NPCs/NPCGiftTastes.json"
+        }
+    ]
+}

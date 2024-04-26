@@ -83,7 +83,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
                 // crop fertilizer
                 default:
                     // get unfertilized dirt
-                    if (!this.TryGetHoeDirt(tileFeature, tileObj, out HoeDirt? dirt, out bool dirtCoveredByObj, out _) || dirt.HasFertilizer())
+                    if (!this.TryGetHoeDirt(tileFeature, tileObj, out HoeDirt? dirt, out bool dirtCoveredByObj, out _) || !dirt.CanApplyFertilizer(item.QualifiedItemId))
                         return false;
 
                     // ignore if there's a giant crop, meteorite, etc covering the tile

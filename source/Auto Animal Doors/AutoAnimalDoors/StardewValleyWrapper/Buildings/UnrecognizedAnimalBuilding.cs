@@ -25,10 +25,5 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         public override AnimalBuildingType Type => AnimalBuildingType.OTHER;
 
         public override int UpgradeLevel => 1;
-
-        protected override void AnimateDoorStateChange()
-        {
-
-        }
     }
 }

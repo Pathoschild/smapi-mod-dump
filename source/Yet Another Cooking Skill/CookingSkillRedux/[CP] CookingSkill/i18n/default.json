@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+
+
+    "config.Enable_Vanilla_Food_Changes.name": "Enable this mod",
+    "config.Enable_Vanilla_Food_Changes.description": "Unchecking this will turn off most vanilla food changes. I say most because the pie recipe changes to require pie crust will remain.",
+
+    "config.Enable_Cookout_Kit_Changes.name": "Cookout kit Changes",
+    "config.Enable_Cookout_Kit_Changes.description": "Unchecking this will keep the cookout kit as a level 3 foraging recipe instead of a level 0 Cooking recipe.",
+
+    "moonslime.Cooking.green_stew.name": "Green Stew",
+    "moonslime.Cooking.green_stew.description": "A delicate stew with a hint of sulfur and potato.",
+
+    "moonslime.Cooking.green_smoothy.name": "Green Smoothy",
+    "moonslime.Cooking.green_smoothy.description": "A great and healthy drink!.",
+
+    "moonslime.Cooking.anchovy_pizza.name": "Anchovy Pizza",
+    "moonslime.Cooking.anchovy_pizza.description": "Some say tastier, some say worse.",
+
+    "moonslime.Cooking.wizards_brew.name": "Wizards Brew",
+    "moonslime.Cooking.wizards_brew.description": "Not made on a mountain top with a group of owls.",
+
+    "moonslime.Cooking.pie_crust.name": "Pie Crust",
+    "moonslime.Cooking.pie_crust.description": "A common base used for making pies.",
+
+    "moonslime.Cooking.rice.name": "Steamed Rice",
+    "moonslime.Cooking.rice.description": "A nice way to give you a boost. Easy and effective.",
+
+    "moonslime.Cooking.banana_field_snack.name": "Banana-chip Field Snack",
+    "moonslime.Cooking.banana_field_snack.description": "A field snack that also has dried bananas in it.",
+
+    "moonslime.Cooking.strawberry_pie.name": "Strawberry Pie",
+    "moonslime.Cooking.strawberry_pie.description": "A great spring time gift.",
+
+    "moonslime.Cooking.mushroom_rice.name": "Mushroom rice",
+    "moonslime.Cooking.mushroom_rice.description": "Steamed rice with fried mushrooms in it.",
+
+    "moonslime.Cooking.spring_onion_soup.name": "Spring onion soup",
+    "moonslime.Cooking.spring_onion_soup.description": "It will give a spring to your step.",
+
+    "moonslime.Cooking.fries.name": "Fries and Ketchup",
+    "moonslime.Cooking.fries.description": "Fried potatos with mashed ketchup to dip them in.",
+
+    "moonslime.Cooking.caramel_miner_treat.name": "Caramel Dipped Miner's Treat",
+    "moonslime.Cooking.caramel_miner_treat.description": "A little bit of extra sweet never hurt anyone.",
+
+    "moonslime.Cooking.fishers_breakfast.name": "Fisherman's Breakfast",
+    "moonslime.Cooking.fishers_breakfast.description": "What a way to start one's day; Fish, hash, and veggies.",
+
+    "moonslime.Cooking.cream_pie.name": "Cream Pie",
+    "moonslime.Cooking.cream_pie.description": "Do not apply to face.",
+
+    "moonslime.Cooking.ramen.name": "Ramen",
+    "moonslime.Cooking.ramen.description": "The noodles slide down good.",
+
+    "moonslime.Cooking.tomato_soup.name": "Tomato Soup",
+    "moonslime.Cooking.tomato_soup.description": "Do not try to get at a clothing store.",
+
+    "moonslime.Cooking.egg_burrito.name": "Egg Burrito",
+    "moonslime.Cooking.egg_burrito.description": "Breakfast on the go.",
+
+    "moonslime.Cooking.oeuf.name": "Oeuf a la coque",
+    "moonslime.Cooking.oeuf.description": "With some bread on the side, the tiny pedestal for the egg is so cute!",
+
+    "moonslime.Cooking.egg_ramen.name": "Egg ramen",
+    "moonslime.Cooking.egg_ramen.description": "Ramen made tastier by adding egg.",
+
+    "moonslime.Cooking.fish_pie.name": "Fish Pie",
+    "moonslime.Cooking.fish_pie.description": "Only second to the meat pie.",
+
+    "moonslime.Cooking.eggnog.name": "Eggnog",
+    "moonslime.Cooking.eggnog.description": "Mainly served during the Winter Festival.",
+
+    "moonslime.Cooking.apple_pie.name": "Apple Pie",
+    "moonslime.Cooking.apple_pie.description": "One of the best fall pies to make, only behind pumpkin pie.",
+
+    "moonslime.Cooking.egg_sandwhich.name": "Egg Sandwhich",
+    "moonslime.Cooking.egg_sandwhich.description": "Mhmmmm, Sandwhich.",
+
+    "moonslime.Cooking.tomatoe_cheese_omelet.name": "Tomatoe Omelet with Cheese",
+    "moonslime.Cooking.tomatoe_cheese_omelet.description": "A fluffy omelete folded over cheese with sliced tomatos on top.",
+
+    "moonslime.Cooking.nigiri.name": "Unagi Sashimi",
+    "moonslime.Cooking.nigiri.description": "Eel sliced and cooked, drizzled in sauce.",
+
+    "moonslime.Cooking.seafoam_icecream.name": "Seafoam Icecream",
+    "moonslime.Cooking.seafoam_icecream.description": "A great treat to have while sitting on the dock watching the sun set.",
+
+    "moonslime.Cooking.wizard_casserole.name": "Wizard's Casserole",
+    "moonslime.Cooking.wizard_casserole.description": "A food by wizards, for wizards, made by thankful wizards.",
+
+    "moonslime.Cooking.skill_book.name": "The Big Book for Cooking",
+    "moonslime.Cooking.skill_book.description": "A thick book about various Cooking technique. "
+
+
+}

@@ -1,0 +1,33 @@
+{
+	"ID": "CharacterCustomization",
+
+	"ColorVariables": {
+		"$CharacterCustomizationErrorText": "$ErrorText",
+		"$CharacterCustomization:Text": "$Text",
+		"$CharacterCustomization:TextShadowAlt": "$TextShadowAlt"
+	},
+
+	"FontVariables": {
+		"$CharacterCustomization:Dialogue": "$Dialogue",
+		"$CharacterCustomization:Small": "$Small"
+	},
+
+	"Patches": {
+		"#CharacterCustomization:draw(SpriteBatch)": {
+			"Colors": {
+				"Red": { "*": "$CharacterCustomizationErrorText" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$CharacterCustomization:Text" }
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CharacterCustomization:Dialogue" },
+				"Game1:smallFont": { "*": "$CharacterCustomization:Small" }
+			},
+
+			"DrawTextWithShadow": { "*": "$CharacterCustomization:TextShadowAlt" }
+		}
+	}
+}

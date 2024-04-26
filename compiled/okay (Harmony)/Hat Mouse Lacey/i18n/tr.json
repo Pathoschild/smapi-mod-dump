@@ -8,7 +8,7 @@
 	"gmcm.interiorpalette.tooltip": "Hangi yeniden renklendirme modunun eşleştirileceğini seçin (iç mekan varlıkları için). 'Otomatik' hangi paletin kullanılacağını tespit etmeye çalışır; yanlış sonuç alırsanız, tercihinizi buradan seçin.",
 	"gmcm.matchretexture.tooltip": "Hangi bina retexture modunun eşleştirileceğini seçin (fare evi için). 'Otomatik' hangi modun eşleştirileceğini tespit etmeye çalışır; yanlış sonuç alırsanız, tercihinizi buradan seçin.",
 
-	"gmcm.outfitssection.text": "**TODO**",
-	"gmcm.seasonaloutfits.tooltip": "**TODO**",
-	"gmcm.weddingattire.tooltip": "**TODO**"
+	"gmcm.outfitssection.text": "Kıyafetler",
+	"gmcm.seasonaloutfits.tooltip": "Eğer seçilirse, Lacey Yaz ve Sonbahar aylarında farklı kıyafetler giyecek.",
+	"gmcm.weddingattire.tooltip": "Lacey'nin düğününde ne giyeceğini seçin."
 }

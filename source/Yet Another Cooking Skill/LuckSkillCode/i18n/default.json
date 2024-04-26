@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Luck",
+    "skill.perk": "Higher chance for good events, lower chance of bad events.",
+    "skill.perk_bonus": "Higher chance for good events, lower chance of bad events.",
+
+    "Luck5a.name": "Gambler",
+    "Luck5a.desc": "Better daily luck.",
+    "Luck5b.name": "Assistant",
+    "Luck5b.desc": "Daily quests occur three times as often.",
+    "Luck10a1.name": "Lucky",
+    "Luck10a1.desc": "20% chance for max daily luck.",
+    "Luck10a2.name": "Fortune Teller",
+    "Luck10a2.desc": "Never have bad luck.",
+    "Luck10b1.name": "Shooting Star",
+    "Luck10b1.desc": "Nightly events occur twice as often.",
+    "Luck10b2.name": "Spirit Child",
+    "Luck10b2.desc": "Giving gifts makes junimos happy. They might help your farm.\n(15% chance for some form of farm advancement.)",
+
+    "junimo-rewards.animal-friendship": "The junimos made some of your animals more fond of you!",
+    "junimo-rewards.grow-crops": "The junimos advanced your crops!",
+    "junimo-rewards.grow-grass": "The junimos grew your grass and repaired your fences!",
+    "junimo-rewards.prismatic-shard": "The junimos gave you a prismatic shard!"
+}

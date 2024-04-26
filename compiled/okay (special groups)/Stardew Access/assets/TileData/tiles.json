@@ -867,6 +867,12 @@
       "X": [94],
       "Y": [103],
       "Category": "Fishing"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-forest-mastery_cave_door",
+      "X": [101],
+      "Y": [72],
+      "Category": "doors"
     }
   ],
   "GreenHouse": [
@@ -1053,7 +1059,14 @@
       "Category": "interactables"
     },
     {
-      "NameOrTranslationKey": "static_tile-island_north-volcano_entrance",
+      "NameOrTranslationKey": "static_tile-island_north-volcano_entrance_east",
+      "X": [39, 40, 41, 42],
+      "Y": [20],
+      "Suffix": "",
+      "Category": "doors"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_north-volcano_entrance_west",
       "X": [12],
       "Y": [30],
       "Suffix": "",
@@ -1990,6 +2003,50 @@
       "X": [9],
       "Y": [4],
       "Category": "decor"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-manor_house-prize_ticket_machine",
+      "X": [1],
+      "Y": [5],
+      "Category": "interactables"
+    }
+  ],
+  "MasteryCave": [
+    {
+      "NameOrTranslationKey": "static_tile-mastery_cave-mastery_pedestal",
+      "X": [7],
+      "Y": [8],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mastery_cave-wall_of_combat",
+      "X": [3],
+      "Y": [6],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mastery_cave-wall_of_foraging",
+      "X": [5],
+      "Y": [5],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mastery_cave-wall_of_farming",
+      "X": [7],
+      "Y": [5],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mastery_cave-wall_of_fishing",
+      "X": [9],
+      "Y": [5],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-mastery_cave-wall_of_mining",
+      "X": [11],
+      "Y": [6],
+      "Category": "interactables"
     }
   ],
   "MermaidHouse": [
@@ -2776,19 +2833,37 @@
     {
       "NameOrTranslationKey": "static_tile-common-river",
       "X": [94],
-      "Y": [10],
+      "Y": [12],
       "Category": "Fishing"
     },
     {
-      "NameOrTranslationKey": "static_tile-town-joja_bridge",
+      "NameOrTranslationKey": "static_tile-town-wooden_bridge",
       "X": [92,93,94,95,96],
-      "Y": [11],
+      "Y": [13],
+      "Category": "bridges"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-joja_bridge",
+      "X": [70, 71, 72, 73, 74, 75, 76, 77],
+      "Y": [53, 54],
+      "Category": "bridges"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-joja_billboard",
+      "X": [84, 85, 86, 87],
+      "Y": [48],
+      "Category": "decor"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-museum_bridge",
+      "X": [75, 76, 77, 78, 79, 80, 81, 82],
+      "Y": [94, 95],
       "Category": "bridges"
     },
     {
       "NameOrTranslationKey": "static_tile-town-beach_bridge",
-      "X": [75,76,77,78,79,80,81,82],
-      "Y": [4, 5],
+      "X": [53, 54, 55],
+      "Y": [101, 102, 103, 104, 105, 106, 107, 108, 109],
       "Category": "bridges"
     },
     {
@@ -2850,6 +2925,12 @@
       "X": [24,25,26,27,28],
       "Y": [25,26,27,28],
       "Category": "water"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-bookseller",
+      "X": [109,110],
+      "Y": [26],
+      "Category": "interactables"
     }
   ],
   "Trailer": [
@@ -2910,7 +2991,7 @@
   ],
   "UndergroundMine60": [
     {
-      "NameOrTranslationKey": "static_tiles-mine-icy_pool", 
+      "NameOrTranslationKey": "static_tile-mine-icy_pool", 
       "X": [27],
       "Y": [13],
       "Category": "Fishing"

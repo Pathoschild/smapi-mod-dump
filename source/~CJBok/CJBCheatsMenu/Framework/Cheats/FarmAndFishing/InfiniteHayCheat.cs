@@ -59,7 +59,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                 {
                     if (location.buildings.Count > 0)
                     {
-                        int addHay = location.GetHayCapacity() - location.piecesOfHay;
+                        int addHay = location.GetHayCapacity() - location.piecesOfHay.Value;
                         location.tryToAddHay(addHay);
                     }
 

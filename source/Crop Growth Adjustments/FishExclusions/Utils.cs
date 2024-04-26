@@ -8,9 +8,7 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using FishExclusions.Types;
 
@@ -18,15 +16,14 @@ namespace FishExclusions
 {
     internal class Utils
     {
-        public static int[] GetExcludedFish(ModConfig config, string seasonName, string locationName, bool raining)
+        public static string[] GetExcludedFish(ModConfig config, string seasonName, string locationName, bool raining)
         {
-            var excludedFish = new List<int>();
+            var excludedFish = new List<string>();
 
             // First add all of the common exclusions (since they are always excluded).
             foreach (var commonExclusion in config.ItemsToExclude.CommonExclusions)
             {
-                var itemId = GetIdForExcludedObject(commonExclusion);
-                if(itemId == -1) continue;
+                var itemId = commonExclusion;
                     
                 if(!excludedFish.Contains(itemId))
                     excludedFish.Add(itemId);
@@ -34,43 +31,22 @@ namespace FishExclusions
 
             foreach (var exclusion in config.ItemsToExclude.ConditionalExclusions)
             {
-                var exclusionSeason = exclusion.Season.ToLower();
                 var exclusionWeather = exclusion.Weather.ToLower();
-                var exclusionLocation = exclusion.Location.ToLower();
 
-                var exclusionWeatherBool = exclusionWeather == "rain";
-
-                if (exclusionSeason != "any" && exclusionSeason != seasonName.ToLower()) continue;
-                if (exclusionLocation != "any" && exclusionLocation != locationName.ToLower()) continue;
-                if (exclusionWeather != "any" && exclusionWeatherBool != raining) continue;
+                if (exclusion.Season.ToLower() != seasonName.ToLower()) continue;
+                if (exclusion.Location.ToLower() != locationName.ToLower()) continue;
+                if ((exclusionWeather == "sunny" && raining) || (exclusionWeather == "rain" && !raining)) continue;
                 
-                foreach (var item in exclusion.FishToExclude)
+                foreach (var item in exclusion.Exclusions)
                 {
-                    var itemId = GetIdForExcludedObject(item);
-                    if(itemId == -1) continue;
+                    var itemId = item;
                     
                     if(!excludedFish.Contains(itemId))
                         excludedFish.Add(itemId);
                 }
             }
 
-            return excludedFish.ToArray<int>();
-        }
-
-        private static int GetIdForExcludedObject(object exclusion)
-        {
-            if (IsNumber(exclusion))
-            {
-                return Convert.ToInt16(exclusion);
-            }
-            
-            if (ModEntry.JsonAssetsApi == null) return -1;
-            return ModEntry.JsonAssetsApi.GetObjectId(exclusion.ToString());
-        }
-
-        private static bool IsNumber(object o)
-        {
-            return int.TryParse(o.ToString(), NumberStyles.Any, NumberFormatInfo.InvariantInfo, out _);
+            return excludedFish.ToArray<string>();
         }
     }
 }

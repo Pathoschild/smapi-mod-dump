@@ -1,0 +1,33 @@
+{
+  "EnableMod": true,
+  "AllowIndoorSpawns": true,
+  "OnlyAllowLocations": "",
+  "DisallowLocations": "",
+  "RoundNumberOfChestsUp": false,
+  "RespawnInterval": 7,
+  "ChestDensity": 0.001,
+  "Mult": 100,
+  "MaxItems": 5,
+  "ItemsBaseMaxValue": 100,
+  "MinItemValue": 20,
+  "MaxItemValue": -1,
+  "CoinBaseMin": 20,
+  "CoinBaseMax": 100,
+  "RarityChance": 0.2,
+  "IncreaseRate": 0.3,
+  "ItemListChances": {
+    "MeleeWeapon": 100,
+    "Shirt": 0,
+    "Pants": 0,
+    "Hat": 0,
+    "Boots": 100,
+    "BigCraftable": 50,
+    "Ring": 100,
+    "Seed": 100,
+    "Mineral": 100,
+    "Relic": 100,
+    "Cooking": 0,
+    "Fish": 0,
+    "BasicObject": 0
+  }
+}

@@ -35,6 +35,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarfishMoverRecolor", "Sta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeachFarmImprovements", "BeachFarmImprovements\BeachFarmImprovements.csproj", "{1235461A-8109-4A99-9A95-B045AA0D4FEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObtainableCowboyBoots", "ObtainableCowboyBoots\ObtainableCowboyBoots.csproj", "{93FC1D00-ED5A-4E88-B9D7-E5F0FD3E0481}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnchantedAdventurersGuildRewards", "EnchantedAdventurersGuildRewards\EnchantedAdventurersGuildRewards.csproj", "{9B9E2291-008C-42F2-B710-DCD73A406C08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +78,7 @@ Global
 		{3D0B1F7F-D2BC-405C-BA2F-DB23629A9B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D0B1F7F-D2BC-405C-BA2F-DB23629A9B73}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49E93447-CF9E-4FC1-A166-BDE2FD7C83BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49E93447-CF9E-4FC1-A166-BDE2FD7C83BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E93447-CF9E-4FC1-A166-BDE2FD7C83BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E93447-CF9E-4FC1-A166-BDE2FD7C83BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B2A3A197-E632-492F-8701-05F8D5262282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -104,6 +109,14 @@ Global
 		{1235461A-8109-4A99-9A95-B045AA0D4FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1235461A-8109-4A99-9A95-B045AA0D4FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1235461A-8109-4A99-9A95-B045AA0D4FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93FC1D00-ED5A-4E88-B9D7-E5F0FD3E0481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93FC1D00-ED5A-4E88-B9D7-E5F0FD3E0481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93FC1D00-ED5A-4E88-B9D7-E5F0FD3E0481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93FC1D00-ED5A-4E88-B9D7-E5F0FD3E0481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B9E2291-008C-42F2-B710-DCD73A406C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B9E2291-008C-42F2-B710-DCD73A406C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B9E2291-008C-42F2-B710-DCD73A406C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9E2291-008C-42F2-B710-DCD73A406C08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

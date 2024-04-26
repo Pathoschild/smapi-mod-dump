@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": [
+                "ResortBar",
+                "Items"
+            ],
+            "Entries": {
+                "{{ModId}}__Candied_Orange_Peel": {
+                    "ItemId": "{{ModId}}_Candied_Orange_Peel",
+                    "Price": 8000,
+                    "isRecipe": true
+                }
+            }
+        }
+        
+    ]
+}

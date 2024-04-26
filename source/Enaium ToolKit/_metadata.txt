@@ -6,9 +6,9 @@ mods:
    Enaium ToolKit
 
 latest commit:
-   commit 105dcb1c041e6d46f8b1b4c210bb3836dc34c0a1
+   commit a731249d31532f13e48894ee5220d4f3225f9c1e
    Author: Enaium <wyy-666@hotmail.com>
-   Date:   Wed Mar 27 18:25:01 2024 +0800
+   Date:   Mon Apr 22 21:33:05 2024 +0800
    
-       remove project config
+       fix search
    

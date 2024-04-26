@@ -1,0 +1,8 @@
+{
+  "ToggleDisplay": {
+    "key": "O",
+    "mouseLeft": false,
+    "mouseRight": false
+  },
+  "DisplayProgressBars": true
+}

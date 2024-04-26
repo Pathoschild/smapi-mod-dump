@@ -18,24 +18,18 @@ using System.Threading.Tasks;
 using StardewModdingAPI.Enums;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using static PersonalIndoorFarm.ModEntry;
+
 
 namespace PersonalIndoorFarm.Lib
 {
     internal class DayUpdate
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public static List<long> WasOnlineToday = new(); //Currently not multiplayer synced!!
         public static bool CanRunDayUpdate = false;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Helper.Events.Specialized.LoadStageChanged += LoadStageChanged;
             Helper.Events.GameLoop.DayStarted += DayStarted;
             Helper.Events.GameLoop.DayEnding += DayEnding;
@@ -45,6 +39,9 @@ namespace PersonalIndoorFarm.Lib
 
         private static void ReturnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
         {
+            if (Context.ScreenId > 0)
+                return;
+
             removeAllPifLocations();
         }
 

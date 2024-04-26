@@ -15,6 +15,7 @@ using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Spawn_Monsters.MonsterSpawning
 {
@@ -61,14 +62,18 @@ namespace Spawn_Monsters.MonsterSpawning
             //spawn monster
             if (IsOkToPlace(monster, location)) {
                 MonsterData monsterData = MonsterData.GetMonsterData(monster);
-                object[] args = monsterData.ConstructorArgs;
+                
 
-                if (monster == MonsterData.Monster.BlackSlime) {
-                    args[1] = new Color(40 + random.Next(10), 40 + random.Next(10), 40 + random.Next(10));
+                IEnumerable<object> args = new object[] { location };
+                if(monsterData.SecondConstructorArg != null) {
+                    args = args.Append( monsterData.SecondConstructorArg);
                 }
 
-                args[0] = location;
-                Monster m = (Monster) Activator.CreateInstance(monsterData.Type, args);
+                if (monster == MonsterData.Monster.BlackSlime) {
+                    args = args.Append(new Color(40 + random.Next(10), 40 + random.Next(10), 40 + random.Next(10)));
+                }
+
+                Monster m = (Monster) Activator.CreateInstance(monsterData.Type, args.ToArray());
                 m.currentLocation = Game1.currentLocation;
 
                 if (monster == MonsterData.Monster.GraySlime) {
@@ -78,7 +83,7 @@ namespace Spawn_Monsters.MonsterSpawning
                         m.objectsToDrop.Add("(O)380");
                     }
                     m.Speed = 1;
-                } else if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem) {
+                } else if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.MagmaDuggy || monster == MonsterData.Monster.WildernessGolem) {
                     m.setTileLocation(location); //For Tile-Locked Monsters like Duggy
                 } else if (monster == MonsterData.Monster.StickBug) {
                     (m as RockCrab).makeStickBug();

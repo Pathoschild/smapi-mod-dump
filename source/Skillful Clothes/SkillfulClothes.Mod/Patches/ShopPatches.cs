@@ -42,7 +42,7 @@ namespace SkillfulClothes.Patches
         {
             if (e.NewMenu is ShopMenu shopMenu)
             {
-                Logger.Info($"Opened shop of {shopMenu.portraitPerson?.Name}");
+                Logger.Info($"Opened shop with ID {shopMenu.ShopId}");
 
                 var shop = shopMenu.GetShop();
                 if (shop != Shop.None)
@@ -76,30 +76,29 @@ namespace SkillfulClothes.Patches
         }
 
         private static void AddItems<T>(Shop shop, ShopMenu shopMenu, List<T> items)
+            where T: AlphanumericItemId
         {
             foreach (var item in items)
             {
                 if (ItemDefinitions.GetExtInfo(item, out ExtItemInfo extInfo) && extInfo.SellingCondition.IsFulfilled(shop)) 
                 {
-                    Item saleItem = CreateItemInstance(item);
+                    Item saleItem = CreateItemInstance<T>(item);
                     shopMenu.forSale.Add(saleItem);
-                    shopMenu.itemPriceAndStock.Add(saleItem, new int[] { extInfo.Price, 1 });
+                    shopMenu.itemPriceAndStock.Add(saleItem, new ItemStockInformation(extInfo.Price, 1));
                 }
             }
         }
 
-        protected static Item CreateItemInstance<T>(T id)
+        protected static Item CreateItemInstance<T>(AlphanumericItemId itemId)
         {
-            int index = (int)(object)id;
-
             if (typeof(T) == typeof(Shirt) || typeof(T) == typeof(Pants))
             {                
-                return new StardewValley.Objects.Clothing(index);
+                return new StardewValley.Objects.Clothing(itemId.ItemId);
             }
 
             if (typeof(T) == typeof(Hat))
             {
-                return new StardewValley.Objects.Hat(index);
+                return new StardewValley.Objects.Hat(itemId.ItemId);
             }
 
             return null;

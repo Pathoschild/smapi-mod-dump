@@ -1,5 +1,5 @@
 # Hello yes this is global config
-root: true
+root = true
 
 # Global Stuff
 [*]

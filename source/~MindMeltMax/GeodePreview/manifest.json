@@ -11,7 +11,7 @@
 {
   "Name": "Geode Preview",
   "Author": "MindMeltMax",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Allows you to preview the reward you will get from a geode",
   "UniqueID": "MindMeltMax.GeodePreview",
   "EntryDll": "GeodePreview.dll",

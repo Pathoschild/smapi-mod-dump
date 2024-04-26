@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "Name": "Sixty-Nine",
+  "Author": "aedenthorn",
+  "Version": "0.2.69",
+  "Description": "Nice.",
+  "UniqueID": "aedenthorn.SixtyNine",
+  "EntryDll": "SixtyNine.dll",
+  "MinimumApiVersion": "3.5.0",
+  "UpdateKeys": ["Nexus:6969"],
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "SixtyNine"
+  },
+  "Dependencies": [
+      {
+        "UniqueID": "Platonymous.ModUpdater",
+        "IsRequired": false
+      },
+      {
+      "UniqueID": "spacechase0.JsonAssets",
+        "IsRequired": true
+      },
+  ]
+}

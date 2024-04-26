@@ -15,6 +15,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
         NoCluesYet,
         RobinFingered,
         MaruFingered,
+        MaruFingeredByDemetrius,
         GetGoldBars,
         WaitForMaruDay1,
         WaitForMaruDay2,

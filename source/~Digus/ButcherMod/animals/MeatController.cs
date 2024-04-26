@@ -165,7 +165,7 @@ namespace AnimalHusbandryMod.animals
 
                 for (; numberOfWools > 0; --numberOfWools)
                 {
-                    Object newItem = ItemRegistry.Create<Object>(farmAnimal.currentProduce.Value, 1, ProduceQuality(random, farmAnimal));
+                    Object newItem = ItemRegistry.Create<Object>(farmAnimal.GetProduceID(random, false), 1, ProduceQuality(random, farmAnimal));
                     itemsToReturn.Add(newItem);
                 }
             }

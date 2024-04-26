@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley.GameData.Movies;
 using System.Collections.Generic;
-using PyTK.Types;
 
 namespace CustomMovies
 {

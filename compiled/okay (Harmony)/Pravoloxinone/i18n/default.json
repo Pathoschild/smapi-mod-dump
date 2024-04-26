@@ -1,0 +1,19 @@
+{
+  "TheMightyAmondee.Pravoloxinone/Pravoloxinone": "Pravoloxinone",
+  "TheMightyAmondee.Pravoloxinone/Pravoloxinone_Description": "Experimental drug. Side effects may occur.",
+  "TheMightyAmondee.Pravoloxinone/Pravoloxinone_Buff": "Pravoloxinone Buff",
+  "TheMightyAmondee.Pravoloxinone/HarveySpeak1": "...{{PlayerName}}?",
+  "TheMightyAmondee.Pravoloxinone/HarveySpeak2": "Easy, now... take it slow.",
+  "TheMightyAmondee.Pravoloxinone/HarveySpeak3": "Did you drink Pravoloxinone? I had to regrow some of your bones!#$b#Be more careful with that stuff, okay?$s",
+  "TheMightyAmondee.Pravoloxinone/HarveyMail": "@,^Thanks for coming into the clinic yesterday.^I've enclosed a recipe for a new medicine which you may find useful around the farm, just note it can have some unintended effects.^You can also pick some up at the clinic.^-Harvey",
+
+  "TheMightyAmondee.Pravoloxinone/GMCM_BuffChance": "Buff Chance",
+  "TheMightyAmondee.Pravoloxinone/GMCM_BuffChanceTooltip": "The chance of Pravoloxinone giving a positive skill effect when consumed",
+  "TheMightyAmondee.Pravoloxinone/GMCM_DebuffChance": "Debuff Chance",
+  "TheMightyAmondee.Pravoloxinone/GMCM_DebuffChanceTooltip": "The chance of Pravoloxinone giving a debuff when consumed",
+  "TheMightyAmondee.Pravoloxinone/GMCM_DamageChance": "Damage Chance",
+  "TheMightyAmondee.Pravoloxinone/GMCM_DamageChanceTooltip": "The chance of Pravoloxinone damaging you when consumed.",
+  "TheMightyAmondee.Pravoloxinone/GMCM_DeathChance": "Death Chance",
+  "TheMightyAmondee.Pravoloxinone/GMCM_DeathChanceTooltip": "The chance for Pravoloxinone to dissolve your bones when consumed!",
+  "TheMightyAmondee.Pravoloxinone/GMCM_ConfigReminder": "Make sure these values add to 1.0!"
+}

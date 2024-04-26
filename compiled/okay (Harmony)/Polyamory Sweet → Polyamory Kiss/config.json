@@ -16,7 +16,7 @@
   "AllowPlayerSpousesToKiss": true,
   "AllowNPCRelativesToHug": true,
   "AllowNPCSpousesToKiss": true,
-  "AllowRelativesToKiss": false,
+  "AllowRelativesToKiss": true,
   "AllowNonDateableNPCsToHugAndKiss": false,
   "UseNonDateableNPCsKissFrames": false
 }

@@ -113,6 +113,7 @@
 	"winCraneGame": "Win from Movie Theater crane game",
 	"voidEggEvent": "Random witch event",
 	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)",
+	"foxbloom": "Appears in Ridge Forest on random Sunday each season\n(Weather must be sunny and Relic Fox Mask equipped)", // RSV
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "in Sewer",
 	"locationDesert": "in Calico Desert",
 	"locationSkullPrehistoric": "on Skull Cavern prehistoric floors",
+	"locationRidgeForest": "in Ridge Forest", // RSV
 	"locationUnknown": "in ???",
 	
 	// Water Locations (for fishing suggestions)
@@ -185,10 +187,14 @@
 	"waterCrimsonfishSpot": "from Beach east shore/pier",
 	"waterGlacierfishSpot": "from southernmost tip of Cindersap Forest center island",
 	"waterLegendSpot": "around log in Mountain lake",
-	"waterBlueMoonVineyard": "in Blue Moon Vineyard", // SVE
+	"waterBlueMoonVineyard": "at Blue Moon Vineyard", // SVE
 	"waterShearwaterBridge": "at Shearwater Bridge", // SVE
 	"waterForestWest": "in Cindersap Forest (West)", // SVE
 	"waterAdventurerSummit": "at Adventurer Summit", // SVE
+	"waterRidgesideRiver": "in Ridgeside Village river", // RSV
+	"waterRidge": "on the Ridge", // RSV
+	"waterRidgeForest": "in Ridge Forest", // RSV
+	"waterRidgeFalls": "at Ridge Falls", // RSV
 	"waterUnknown": "in ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "Blacksmith",
 	"shopSaloon": "Saloon",
 	"shopClinic": "Clinic",
+	"shopFish": "Fish Shop",
+	"shopGuild": "Adventurer's Guild",
 	"shopDwarf": "Dwarf",
 	"shopKrobus": "Krobus",
 	"shopKrobusWeekday": "Krobus ({{day}})",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "Pierre at Egg Festival (Spring 13)",
 	"shopFlowerDance": "Pierre at Flower Dance (Spring 24)",
 	"shopSpiritsEve": "Pierre on Spirit's Eve (Fall 27)",
+	"shopSophiaLedger": "Sophia's ledger", // SVE
+	"shopWestForestBear": "Forest West bear", // SVE
+	"shopNightingaleOrchard": "Nightingale Orchard", // RSV
+	"shopHotelPastry": "Hotel Pastry Shop", // RSV
+	"shopPikaRestaurant": "Pika's Restaurant", // RSV
 	"shopUnknown": "???",
 	"randomlyAvailable": "random", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "ship {{item}}", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "Peach Tree",
 	"treePomegranate": "Pomegranate Tree",
 	"treeCherry": "Cherry Tree",
-	"treeLime": "Lime Tree", // PPJA
-	"treePapaya": "Papaya Tree", // PPJA
-	"treeWalnut": "Walnut Tree", // PPJA
-	"treePersimmon": "Persimmon Tree", // PPJA
-	"treeGranny": "Granny Smith Tree", // PPJA
-	"treeEucalyptus": "Eucalyptus Tree", // PPJA
+	"treeMahogany": "Mahogany Tree",
+	"treeLime": "Lime Tree", // Cornucopia
+	"treePapaya": "Papaya Tree", // Cornucopia
+	"treeWalnut": "Walnut Tree", // Cornucopia
+	"treePersimmon": "Persimmon Tree", // Cornucopia
+	"treeEucalyptus": "Eucalyptus Tree", // Cornucopia
+	"treeGranny": "Granny Smith Tree", // PPJA More Trees
+	"treeAvocado": "Avocado Tree", // Cornucopia
+	"treeCocoaPod": "Cocoa Pod Tree", // Cornucopia
+	"treePear": "Pear Tree", // Cornucopia
+	"treeCherryPluot": "Cherry Pluot Tree", // RSV
+	"treeMountainPlumcot": "Mountain Plumcot Tree", // RSV
+	"treeDesertTangelo": "Desert Tangelo Tree", // RSV
+	"treeTropiUgliFruit": "Tropi Ugli Fruit Tree", // RSV
+	"treeParadiseRangpur": "Paradise Rangpur Tree", // RSV
+	"treeEmberBloomLime": "Ember Blood Lime Tree", // RSV
 	"treeMaple": "Maple Tree",
 	"treeOak": "Oak Tree",
 	"treePine": "Pine Tree",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "Red Slime",
 	"monsterPurpleSlime": "Purple Slime",
 	"monsterBRPCISlime": "Blue/Red/Purple/Copper/Iron Slime",
+	"monsterHauntedSkull": "Haunted Skull",
+	"monsterRidgeForest": "Ridge Forest monsters", // RSV
 	"monsterUnknown": "???",
 	
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "mail after {{time}} at {{friendReq}}",
 	"conditionalMailTimeSkill": "mail after {{time}} w/ {{skillReq}}",
 	"conditionalMailFriendSkill": "mail when at {{friendReq}} & {{skillReq}}",
+	"conditionalMailSpecialOrder": "mail after special order {{orderName}}",
 	"mailConditionFriendship": "{{hearts}} hearts w/ {{person}}",
 	
 	// Times (for fishing)

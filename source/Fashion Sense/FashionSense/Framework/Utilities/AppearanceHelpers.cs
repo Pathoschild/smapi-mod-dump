@@ -31,6 +31,95 @@ namespace FashionSense.Framework.Utilities
 {
     public class AppearanceHelpers
     {
+        public static List<AppearanceMetadata> GetCurrentlyEquippedModels(Farmer who, int facingDirection)
+        {
+            // Set up each AppearanceModel
+            List<AppearanceMetadata> models = new List<AppearanceMetadata>();
+
+            // Pants pack
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_PANTS_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(who.modData[ModDataKeys.CUSTOM_PANTS_ID]) is PantsContentPack pPack && pPack != null)
+            {
+                var pantModel = pPack.GetPantsFromFacingDirection(facingDirection);
+                models.Add(new AppearanceMetadata(pantModel, AppearanceHelpers.GetAllAppearanceColors(who, pantModel)));
+            }
+
+            // Hair pack
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_HAIR_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<HairContentPack>(who.modData[ModDataKeys.CUSTOM_HAIR_ID]) is HairContentPack hPack && hPack != null)
+            {
+                var hairModel = hPack.GetHairFromFacingDirection(facingDirection);
+                models.Add(new AppearanceMetadata(hairModel, AppearanceHelpers.GetAllAppearanceColors(who, hairModel)));
+            }
+
+            // Accessory packs
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_ACCESSORY_COLLECTIVE_ID))
+            {
+                try
+                {
+                    foreach (int index in FashionSense.accessoryManager.GetActiveAccessoryIndices(who))
+                    {
+                        var accessoryKey = FashionSense.accessoryManager.GetAccessoryIdByIndex(who, index);
+                        if (FashionSense.textureManager.GetSpecificAppearanceModel<AccessoryContentPack>(accessoryKey) is AccessoryContentPack aPack && aPack != null)
+                        {
+                            AccessoryModel accessoryModel = aPack.GetAccessoryFromFacingDirection(facingDirection);
+                            if (accessoryModel is null)
+                            {
+                                continue;
+                            }
+
+                            var colors = new List<Color>();
+                            if (accessoryModel.ColorMaskLayers.Count > 0)
+                            {
+                                for (int x = 0; x < accessoryModel.ColorMaskLayers.Count; x++)
+                                {
+                                    colors.Add(FashionSense.accessoryManager.GetColorFromIndex(who, index, x));
+                                }
+                            }
+                            else
+                            {
+                                colors.Add(FashionSense.accessoryManager.GetColorFromIndex(who, index));
+                            }
+
+                            models.Add(new AppearanceMetadata(accessoryModel, colors));
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // TODO: Flag error here
+                }
+            }
+
+            // Hat pack
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_HAT_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<HatContentPack>(who.modData[ModDataKeys.CUSTOM_HAT_ID]) is HatContentPack tPack && tPack != null)
+            {
+                var hatModel = tPack.GetHatFromFacingDirection(facingDirection);
+                models.Add(new AppearanceMetadata(hatModel, AppearanceHelpers.GetAllAppearanceColors(who, hatModel)));
+            }
+
+            // Shirt pack
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SHIRT_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<ShirtContentPack>(who.modData[ModDataKeys.CUSTOM_SHIRT_ID]) is ShirtContentPack sPack && sPack != null)
+            {
+                var shirtModel = sPack.GetShirtFromFacingDirection(facingDirection);
+                models.Add(new AppearanceMetadata(shirtModel, AppearanceHelpers.GetAllAppearanceColors(who, shirtModel)));
+            }
+
+            // Sleeves pack
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SLEEVES_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(who.modData[ModDataKeys.CUSTOM_SLEEVES_ID]) is SleevesContentPack slPack && slPack != null)
+            {
+                var slModel = slPack.GetSleevesFromFacingDirection(facingDirection);
+                models.Add(new AppearanceMetadata(slModel, AppearanceHelpers.GetAllAppearanceColors(who, slModel)));
+            }
+
+            // Shoes pack
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SHOES_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<ShoesContentPack>(who.modData[ModDataKeys.CUSTOM_SHOES_ID]) is ShoesContentPack shPack && shPack != null)
+            {
+                var shModel = shPack.GetShoesFromFacingDirection(facingDirection);
+                models.Add(new AppearanceMetadata(shModel, AppearanceHelpers.GetAllAppearanceColors(who, shModel)));
+            }
+
+            return models.Where(m => m is not null && m.Model is not null && m.Model.Pack is not null).ToList();
+        }
+
         public static void HandleAppearanceAnimation(List<AppearanceModel> models, AppearanceModel model, Farmer who, int facingDirection, ref Dictionary<AppearanceModel, AnimationModel> appearanceTypeToAnimationModels, bool forceUpdate = false)
         {
             // Establish the source rectangle for the model
@@ -958,7 +1047,7 @@ namespace FashionSense.Framework.Utilities
             var type = model.GetPackType();
             if (type is IApi.Type.Hat)
             {
-                return new Vector2(-8 + ((!flip) ? 1 : (-1)) * FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, -16 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 4 + (int)renderer.heightOffset);
+                return new Vector2(-8 + ((!flip) ? 1 : (-1)) * AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, -16 + AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4 + 4 + (int)renderer.heightOffset);
             }
 
             if (type is IApi.Type.Shirt)
@@ -966,13 +1055,13 @@ namespace FashionSense.Framework.Utilities
                 switch (facingDirection)
                 {
                     case 0:
-                        return new Vector2(16f * scale + (float)(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4), (float)(56 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4) + (float)(int)renderer.heightOffset * scale);
+                        return new Vector2(16f * scale + (float)(AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4), (float)(56 + AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4) + (float)(int)renderer.heightOffset * scale);
                     case 1:
-                        return new Vector2(16f * scale + (float)(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4), 56f * scale + (float)(FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4) + (float)(int)renderer.heightOffset * scale);
+                        return new Vector2(16f * scale + (float)(AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4), 56f * scale + (float)(AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4) + (float)(int)renderer.heightOffset * scale);
                     case 2:
-                        return new Vector2(16 + FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, (float)(56 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4) + (float)(int)renderer.heightOffset * scale);
+                        return new Vector2(16 + AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, (float)(56 + AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4) + (float)(int)renderer.heightOffset * scale);
                     case 3:
-                        return new Vector2(16 - FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 56 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)renderer.heightOffset);
+                        return new Vector2(16 - AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, 56 + AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4 + (int)renderer.heightOffset);
                 }
             }
             else if (type is not IApi.Type.Sleeves)
@@ -980,16 +1069,16 @@ namespace FashionSense.Framework.Utilities
                 switch (facingDirection)
                 {
                     case 0:
-                        offset = new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4);
+                        offset = new Vector2(AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4);
                         break;
                     case 1:
-                        offset = new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 4 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4);
+                        offset = new Vector2(AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, 4 + AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4);
                         break;
                     case 2:
-                        offset = new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4);
+                        offset = new Vector2(AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4);
                         break;
                     case 3:
-                        offset = new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, (flip ? 4 : 0) + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4);
+                        offset = new Vector2(-AppearanceHelpers.GetFarmerRendererXFeatureOffset(currentFrame) * 4, (flip ? 4 : 0) + AppearanceHelpers.GetFarmerRendererYFeatureOffset(currentFrame) * 4);
                         break;
                 }
             }
@@ -1011,6 +1100,26 @@ namespace FashionSense.Framework.Utilities
             }
 
             return offset;
+        }
+
+        public static int GetFarmerRendererXFeatureOffset(int frame)
+        {
+            if (frame >= 0 && frame < FarmerRenderer.featureXOffsetPerFrame.Length)
+            {
+                return FarmerRenderer.featureXOffsetPerFrame[frame];
+            }
+
+            return 0;
+        }
+
+        public static int GetFarmerRendererYFeatureOffset(int frame)
+        {
+            if (frame >= 0 && frame < FarmerRenderer.featureYOffsetPerFrame.Length)
+            {
+                return FarmerRenderer.featureYOffsetPerFrame[frame];
+            }
+
+            return 0;
         }
 
         public static Vector2 GetScaledPosition(Vector2 position, AppearanceModel model, bool isDrawingForUI)

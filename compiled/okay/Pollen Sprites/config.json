@@ -1,0 +1,9 @@
+{
+  "EnableSlowDebuff": false,
+  "EnableEnergyDrain": false,
+  "SeedDropChances": {
+    "MixedSeeds": 0.5,
+    "FlowerSeeds": 0.2,
+    "AllSeeds": 0.0
+  }
+}

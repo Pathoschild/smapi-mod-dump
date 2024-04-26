@@ -299,7 +299,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     var modelType = AlternativeTextureModel.TextureType.Building;
                     if (!farm.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME) || !farm.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME].Contains(targetedBuilding.buildingType.Value))
                     {
-                        var instanceSeasonName = $"{modelType}_{targetedBuilding.buildingType}_{Game1.currentSeason}";
+                        var instanceSeasonName = $"{modelType}_{targetedBuilding.buildingType.Value}_{Game1.currentSeason}";
                         AssignDefaultModData(farm, instanceSeasonName, true);
                     }
 
@@ -315,7 +315,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     if (!targetedBuilding.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
                     {
                         var modelType = AlternativeTextureModel.TextureType.Building;
-                        var instanceSeasonName = $"{modelType}_{targetedBuilding.buildingType}_{Game1.currentSeason}";
+                        var instanceSeasonName = $"{modelType}_{targetedBuilding.buildingType.Value}_{Game1.currentSeason}";
                         AssignDefaultModData(targetedBuilding, instanceSeasonName, true);
                     }
 

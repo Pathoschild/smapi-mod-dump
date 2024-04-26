@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.1</Version>
+    <RootNamespace>Tocseoj.Stardew.MossyTreeBubble</RootNamespace>
+
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <RunWorkingDirectory>/Applications/Stardew Valley.app/Contents/MacOS/</RunWorkingDirectory>
+    <RunCommand>/Applications/Stardew Valley.app/Contents/MacOS/StardewModdingAPI</RunCommand>
+    <RunArguments>-mode dryrun</RunArguments>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+
+</Project>

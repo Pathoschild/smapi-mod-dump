@@ -37,6 +37,7 @@
     "generic.price": "{{price}}zł",
     "generic.price-for-quality": "{{price}}zł ({{quality}})",
     "generic.price-for-stack": "{{price}}zł za {{count}}",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Budowla",
@@ -113,13 +114,14 @@
     "location.bugLand": "legowisko zmutowanych robaków",
     "location.busStop": "przystanek autobusowy",
     "location.desert": "pustynia",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "farma",
     "location.farmCave": "jaskinia na farmie",
     "location.farmHouse": "dom na farmie",
     "location.forest": "las",
-    "location.forest.fish-area-0": "leśna rzeka",
-    "location.forest.fish-area-1": "leśny staw",
     "location.forest.island-tip": "leśna rzeka (południowy kraniec dużej wyspy)",
+    "location.forest.lake": "leśny staw",
+    "location.forest.river": "leśna rzeka",
     "location.mountain": "góra",
     "location.railroad": "stacja kolejowa",
     "location.sewer": "ścieki",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Imbirowa Wyspa płd. wsch.",
     "location.islandSouthEastCave": "Imbirowa Wyspa płd. wsch. (jaskinia)",
     "location.islandWest": "Imbirowa Wyspa zachód",
-    "location.islandWest.fish-area-1": "Imbirowa Wyspa zachód (ocean)",
-    "location.islandWest.fish-area-2": "Imbirowa Wyspa zachód (staw)",
+    "location.islandWest.freshwater": "Imbirowa Wyspa zachód (staw)",
+    "location.islandWest.ocean": "Imbirowa Wyspa zachód (ocean)",
 
     "location.unknown-fish-area": "{{locationName}} (obszar połowowy {{id}})",
 
@@ -628,6 +630,8 @@
     "tree.name.oak": "Dąb",
     "tree.name.palm": "Palma",
     "tree.name.pine": "Sosna",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "Nieznane Drzewo",
     "tree.stage.done": "w pełni wyrośnięte",
     "tree.stage.partial": "{{stageName}} ({{step}} z {{max}})",
@@ -676,6 +680,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Wyróżnij nieodkryte upodobania",
     "config.highlight-unrevealed-gift-tastes.desc": "Czy wyróżniać przedmioty w upodobaniach prezentowych, które nie zostały odkryte w profilu NPC. Gdy ta opcja jest włączona, nieodkryte upodobania prezentowe będą pogrubione.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Opcje zaawansowane",

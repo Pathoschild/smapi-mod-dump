@@ -2,7 +2,7 @@
 	"Name": "Hat Mouse Lacey - Core",
 	"Author": "ichortower",
 	"Description": "Code mods for Hat Mouse Lacey.",
-	"Version": "1.2.0",
+	"Version": "1.2.1",
 	"UniqueID": "ichortower.HatMouseLacey.Core",
 	"EntryDll": "HatMouseLacey.dll",
 	"MinimumApiVersion": "4.0.0",

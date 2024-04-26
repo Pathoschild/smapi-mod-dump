@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TerrariaAccessories Code",
+  "Author": "jeWel",
+  "Version": "1.0.2", // fixed locally
+  "Description": "Code for TerrariaAccessories mod.",
+  "UniqueID": "jeWel.TerrariaAccessoriesCode",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "EntryDll": "TerrariaAccessories.dll"
+}

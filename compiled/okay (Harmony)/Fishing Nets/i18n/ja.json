@@ -1,0 +1,13 @@
+{
+  "Name": "漁網",
+  "Description": "カニかごのように使える、魚を捕まえるどうぐ。",
+
+  "Config.TextureVariant.Name": "漁網の見た目",
+  "Config.TextureVariant.Description": "0から2の数字を入力し、漁網の見た目を選択する。",
+  "Config.LessTrash.Name": "ゴミの捕獲率減少",
+  "Config.LessTrash.Description": "ゴミを可能な限り捕まえないようにする。",
+  "Config.LessWeeds.Name": "海草や藻の捕獲確率減少",
+  "Config.LessWeeds.Description": "海草や藻をを捕まえる確率を下げる",
+  "Config.LessJelly.Name": "クラゲの捕獲確率減少",
+  "Config.LessJelly.Description": "クラゲを捕まえる確率を下げる。"
+}

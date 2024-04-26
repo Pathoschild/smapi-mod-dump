@@ -7,7 +7,7 @@ for queries and analysis.**
 ----
 
 # Destroyable Bushes
-A mod for the game Stardew Valley, allowing players to destroy every type of bush with an upgraded axe. Destroyed bushes drop small amounts of wood and respawn after 3 days. These features can be customized in the config.json file.
+A mod for the game Stardew Valley, allowing players to destroy every type of bush with an axe. Destroyed bushes drop small amounts of wood and respawn after 3 days by default. These features can be customized in the config.json file.
 
 ## Contents
 * [Installation](#installation)
@@ -41,16 +41,19 @@ The available settings are:
 
 Name | Valid settings | Description
 -----|----------------|------------
+AxeUpgradesRequired | A positive integer (default **0**) | The number of axe upgrades required to destroy bushes. 0 allows any axe to remove bushes, 1 requires a copper axe or better, and so on.
 WhenBushesRegrow | A number and a unit of time, e.g. **"3 days"** (or *null* to never regrow bushes) | If the unit is "days", bushes will respawn after that number of days. "Seasons" (or "months") will respawn bushes after that many seasons (on the first day of the season). "Years" will respawn bushes after that many years (on the first day of Spring).
 DestroyableBushLocations | A list of location names, e.g. `["farm", "forest", "woods"]` | A list of locations where bushes will be destroyable. If the list is blank, bushes will be destroyable at all locations. Names should be in quotation marks and separated by commas. To find a location's name, you may need to use another mod such as [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679/).
 DestroyableBushTypes | N/A | The settings below control which types of bush will be destroyable.
-SmallBushes | **true** or false | If true, small bushes will be destoyable.
-MediumBushes | **true** or false | If true, medium bushes will be destoyable. These are the type that can produce berries.
-LargeBushes | **true** or false | If true, large bushes will be destoyable.
+SmallBushes | **true** or false | If true, small bushes will be destroyable.
+MediumBushes | **true** or false | If true, medium bushes will be destroyable. These are the type that can produce berries.
+LargeBushes | **true** or false | If true, large bushes will be destroyable.
+WalnutBushes | **true** or false | If true, walnut bushes will be destroyable.
 AmountOfWoodDropped | N/A | The settings below control how many pieces of wood are dropped by each bush type when destroyed. Players with the Forester profession will receive 25% more wood.
 SmallBushes | A positive integer (default **2**) | The number of wood pieces dropped by small bushes when destroyed.
 MediumBushes | A positive integer (default **4**) | The number of wood pieces dropped by medium bushes when destroyed.
 LargeBushes | A positive integer (default **8**) | The number of wood pieces dropped by large bushes when destroyed.
+WalnutBushes | A positive integer (default **4**) | The number of wood pieces dropped by walnut bushes when destroyed.
 GreenTeaBushes | A positive integer (default **0**) | The number of wood pieces dropped by green tea bushes when destroyed.
 
 ## Commands
@@ -60,7 +63,7 @@ This mod adds the following commands to SMAPI's console. They require the Consol
 The `add_bush` command creates a bush of the specified size. Bushes added by this command will regrow if that setting is enabled.
 
 **Usage:** `add_bush <size> [x y] [location]`
-* **size**: The bush's size, as a name or number. 0 = "small", 1 = "medium", 2 = "large", 3 = "tea".
+* **size**: The bush's size, as a name or number. 0 = "small", 1 = "medium", 2 = "large", 3 = "tea", 4 = "walnut".
 * **x y** (optional): The bush's tile coordinates. If not provided, the bush will appear in front of the player.
 * **location** (optional): The name of the bush's map, e.g. \"Farm\". If not provided, the player's current map will be used.
 

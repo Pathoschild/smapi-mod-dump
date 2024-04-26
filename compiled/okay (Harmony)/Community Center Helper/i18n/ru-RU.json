@@ -113,6 +113,7 @@
 	"winCraneGame": "Выиграйте из Игрового автомата Кинотеатра",
 	"voidEggEvent": "Случайное событие с ведьмой",
 	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
+	"foxbloom": "Appears in Ridge Forest on random Sunday each season\n(Weather must be sunny and Relic Fox Mask equipped)", // RSV // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "в Канализации",
 	"locationDesert": "в пустыне Калико",
 	"locationSkullPrehistoric": "в Пещере Черепа, доисторические уровни",
+	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "в ???",
 	
 	// Water Locations (for fishing suggestions)
@@ -189,6 +191,10 @@
 	"waterShearwaterBridge": "на мосте Буревестника", // SVE
 	"waterForestWest": "в лесу Синдерсэпа (Западная часть)", // SVE
 	"waterAdventurerSummit": "на Вершине", // SVE
+	"waterRidgesideRiver": "in Ridgeside Village river", // RSV // TODO
+	"waterRidge": "on the Ridge", // RSV // TODO
+	"waterRidgeForest": "in Ridge Forest", // RSV // TODO
+	"waterRidgeFalls": "at Ridge Falls", // RSV // TODO
 	"waterUnknown": "в ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "у Кузнеца",
 	"shopSaloon": "в Салуне",
 	"shopClinic": "в Клинике",
+	"shopFish": "Fish Shop", // TODO
+	"shopGuild": "Adventurer's Guild", // TODO
 	"shopDwarf": "у Дварфа",
 	"shopKrobus": "у Кробуса",
 	"shopKrobusWeekday": "у Кробуса ({{day}})",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "у Пьера на Яичном фестивале (Весна 13)",
 	"shopFlowerDance": "у Пьера на Цветочных танцах (Лето 24)",
 	"shopSpiritsEve": "у Пьера на День всех духов (Осень 27)",
+	"shopSophiaLedger": "Sophia's ledger", // SVE // TODO
+	"shopWestForestBear": "Forest West bear", // SVE // TODO
+	"shopNightingaleOrchard": "Nightingale Orchard", // RSV // TODO
+	"shopHotelPastry": "Hotel Pastry Shop", // RSV // TODO
+	"shopPikaRestaurant": "Pika's Restaurant", // RSV // TODO
 	"shopUnknown": "???",
 	"randomlyAvailable": "случайно", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "отправить {{item}}", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "Персиковое дерево",
 	"treePomegranate": "Гранатовое Дерево",
 	"treeCherry": "Вишневое Дерево",
-	"treeLime": "Лаймовое дерево", // PPJA
-	"treePapaya": "Дерево папайи", // PPJA
-	"treeWalnut": "Ореховое дерево", // PPJA
-	"treePersimmon": "Дерево хурмы", // PPJA
-	"treeGranny": "Дерево Грэнни Смит", // PPJA
-	"treeEucalyptus": "Эвкалиптовое дерево", // PPJA
+	"treeMahogany": "Mahogany Tree", // TODO
+	"treeLime": "Лаймовое дерево", // Cornucopia
+	"treePapaya": "Дерево папайи", // Cornucopia
+	"treeWalnut": "Ореховое дерево", // Cornucopia
+	"treePersimmon": "Дерево хурмы", // Cornucopia
+	"treeEucalyptus": "Эвкалиптовое дерево", // Cornucopia
+	"treeGranny": "Дерево Грэнни Смит", // PPJA More Trees
+	"treeAvocado": "Avocado Tree", // Cornucopia // TODO
+	"treeCocoaPod": "Cocoa Pod Tree", // Cornucopia // TODO
+	"treePear": "Pear Tree", // Cornucopia // TODO
+	"treeCherryPluot": "Cherry Pluot Tree", // RSV // TODO
+	"treeMountainPlumcot": "Mountain Plumcot Tree", // RSV // TODO
+	"treeDesertTangelo": "Desert Tangelo Tree", // RSV // TODO
+	"treeTropiUgliFruit": "Tropi Ugli Fruit Tree", // RSV // TODO
+	"treeParadiseRangpur": "Paradise Rangpur Tree", // RSV // TODO
+	"treeEmberBloomLime": "Ember Blood Lime Tree", // RSV // TODO
 	"treeMaple": "Клён",
 	"treeOak": "Дуб",
 	"treePine": "Сосна",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "Красные слаймы",
 	"monsterPurpleSlime": "Фиолетовые слаймы",
 	"monsterBRPCISlime": "Синие/Красные/Фиолетовые/Медные/Железные слаймы",
+	"monsterHauntedSkull": "Haunted Skull", // TODO
+	"monsterRidgeForest": "Ridge Forest monsters", // RSV // TODO
 	"monsterUnknown": "???",
 	
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "после после {{time}} с {{friendReq}}",
 	"conditionalMailTimeSkill": "после после {{time}}, требуется {{skillReq}}",
 	"conditionalMailFriendSkill": "почта, когда с {{friendReq}} & {{skillReq}}",
+	"conditionalMailSpecialOrder": "mail after special order {{orderName}}", // TODO
 	"mailConditionFriendship": "{{hearts}} сердец с {{person}}",
 	
 	// Times (for fishing)

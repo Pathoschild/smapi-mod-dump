@@ -48,7 +48,7 @@ namespace BuildableGingerIslandFarm.Utilities
 				name: () => ModEntry.Helper.Translation.Get("GMCM.AllowBuildingInSlimeArea.Title"),
 				tooltip: () => ModEntry.Helper.Translation.Get("GMCM.AllowBuildingInSlimeArea.Tooltip"),
 				getValue: () => ModEntry.Config.AllowBuildingInSlimeArea,
-				setValue: (value) => 
+				setValue: (value) =>
 				{
 					ModEntry.Config.AllowBuildingInSlimeArea = value;
 					GingerIslandFarmUtility.UpdateSlimeArea();

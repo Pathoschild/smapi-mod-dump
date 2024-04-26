@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Максимальна кількість у стопці",
+    "config.MaxStackingNumber.tooltip": "Максимальна кількість у стопці, за замовчуванням - 999.",
+    "config.DefaultCraftingAmount.name": "Кількість за замовчуванням для приготування/виготовлення",
+    "config.DefaultCraftingAmount.tooltip": "Кількість за замовчуванням при використанні Shift+Правий клік у меню Приготування/Виготовлення.",
+    "config.DefaultShopAmount.name": "Кількість за замовчуванням для покупки",
+    "config.DefaultShopAmount.tooltip": "Кількість за замовчуванням при використанні Shift+Правий клік у меню Магазину.",
+    "config.EnableStackSplitRedux.name": "Увімкнути розділення Redux",
+    "config.EnableStackSplitRedux.tooltip": "Увімкніть функції розділення Redux. Зніміть позначку з цієї клітинки, якщо виникають проблеми.",
+    "ui.stacksplitmenu.title": "Вибрати кількість"
+}

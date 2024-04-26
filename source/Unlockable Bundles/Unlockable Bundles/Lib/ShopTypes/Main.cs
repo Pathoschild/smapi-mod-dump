@@ -20,15 +20,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 {
     public class Main
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Inventory.Initialize();
             BundleMenu.Initialize();
             DialogueShopMenu.Initialize();

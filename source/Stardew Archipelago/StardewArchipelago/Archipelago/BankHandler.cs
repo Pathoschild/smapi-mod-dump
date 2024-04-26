@@ -202,14 +202,14 @@ namespace StardewArchipelago.Archipelago
         private bool AddToBank(int amountToAdd)
         {
             var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
-            var amountToAddJoules = (long)MoneyToJoules(amountToAdd);
+            var amountToAddJoules = MoneyToJoules(amountToAdd);
             return _archipelago.AddBigIntegerDataStorage(Scope.Global, bankingKey, amountToAddJoules);
         }
 
         private bool RemoveFromBank(BigInteger amountToRemove)
         {
             var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
-            var amountToRemoveJoules = (long)MoneyToJoules(amountToRemove);
+            var amountToRemoveJoules = MoneyToJoules(amountToRemove);
             return _archipelago.SubtractBigIntegerDataStorage(Scope.Global, bankingKey, amountToRemoveJoules, true);
         }
 

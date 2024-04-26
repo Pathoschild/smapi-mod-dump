@@ -70,9 +70,6 @@
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.Description": "Ce module vous permet d'ouvrir automatiquement et rapidement de nombreuses géodes.",
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.SpeedMultiplier.Title": "Multiplicateur de vitesse d'ouverture",
 	"GMCM.TweaksAndFeatures.Shops.GeodesAutoProcess.SpeedMultiplier.Tooltip": "Un multiplicateur pour ajuster la vitesse d'ouverture.",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Title": "Services simultanés",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Tooltip": "Achetez et ouvrez des géodes même pendant l'amélioration d'outils.",
-	"GMCM.TweaksAndFeatures.Shops.SimultaneousServices.Description": "Ce module vous permet d'acheter et d'ouvrir des géodes, même pendant l'amélioration d'outils.",
 
 	// GMCM - TweaksAndFeatures - User Interface - Modules
 	"GMCM.TweaksAndFeatures.UserInterface.FastScrolling.Title": "Défilement rapide",

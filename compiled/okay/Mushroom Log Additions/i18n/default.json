@@ -1,3 +1,12 @@
 ﻿{
-    "MushroomLogAdditions.start": "Teaching fungal stumps new tricks."
+    "MushroomLogAdditions.start": "Teaching fungal stumps new tricks.",
+    "MushroomLogAdditions.internal.name": "Mushroom Log Additions Internal Pack",
+    "MushroomLogAdditions.internal.description": "Adds mushroom trees->mushroom seeds to the Mushroom Log results.",
+    "MushroomLogAdditions.vanilla.null": "Vanilla Mushroom Log Data returned Null value.",
+    "MushroomLogAdditions.internal.null": "Internal content pack failed to load.",
+    "MushroomLogAdditions.internal.loaded": "Loaded internal content pack.",
+    "MushroomLogAdditions.packs.loading": "Reading content pack: {{Name}} {{Version}} from {{DirectoryPath}}",
+    "MushroomLogAdditions.packs.duplicates": "Detected duplicate TreeTypes when loading {{Name}} : {{overlap}}. Overwriting old outputs with new values.",
+    "MushroomLogAdditions.packs.loaded": "Content pack loaded successfully.",
+    "MushroomLogAdditions.packs.complete": "Content packs loaded, current additions:"
 }

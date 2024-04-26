@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ObjectProgressBars",
+  "Author": "Andrés del Moral",
+  "Version": "1.0.0",
+  "Description": "Show progress bar on machines and such. Based in Adeel Tariq ObjectProgressBars",
+  "UniqueID": "Moral.ObjectProgressbarsContinued",
+  "EntryDll": "ObjectProgressBars.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:22005" ]
+}

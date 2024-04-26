@@ -21,9 +21,9 @@ mods:
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit 7ec44cc0c1a58aab94ee341d829e42e65a8fa424
+   commit 1319aaae1cdf8c99c8aa6f1671541d0751360341
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Sun Mar 31 13:45:34 2024 +0200
+   Date:   Thu Apr 25 04:48:31 2024 +0200
    
-       Crab Pot Quality: Fixed default case for double loot being 100% instead of 0%
+       Maritime Secrets: Option to buy pendant without meeting hearts and house upgrade requirements, updated mermaid mod list
    

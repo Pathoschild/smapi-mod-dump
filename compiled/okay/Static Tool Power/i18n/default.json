@@ -1,0 +1,19 @@
+{
+  // Config settings
+  "config.option.mode.name": "Power mode",
+  "config.option.mode.description": "Changing power of the tool by scrolling the mousewheel (manual) or use the power level set below (static). Attention: if set to 'manual', all settings below will be ignored.",
+  "config.option.mode.value.manual": "Manual",
+  "config.option.mode.value.static": "Static",
+
+  "config.option.max_power_level_hoe.name": "Use Hoe max power level",
+  "config.option.max_power_level_hoe.description": "Always use the tools max power level.",
+
+  "config.option.max_power_level_wateringcan.name": "Use Watering can max power level",
+  "config.option.max_power_level_wateringcan.description": "Always use the tools max power level.",
+
+  "config.option.static_hoe_power.name": "Hoe power level",
+  "config.option.static_hoe_power.description": "Set the hoe power level.",
+
+  "config.option.static_wateringcan_power.name": "Watering can power level",
+  "config.option.static_wateringcan_power.description": "Set the watering can power level."
+}

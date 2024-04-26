@@ -6,9 +6,9 @@ mods:
    Mushroom Log Additions
 
 latest commit:
-   commit 87b1b88ef0a53d29906a147f427c1ffff6e86be0
+   commit eac233f20ab2677a374f8dbe7f9e39b6067b91e6
    Author: justastranger <justastrangerlica@gmail.com>
-   Date:   Sat Mar 30 21:50:14 2024 -0500
+   Date:   Fri Apr 19 08:05:20 2024 -0500
    
-       Forgot to copy vanilla mushroom log data
+       Bump version number
    

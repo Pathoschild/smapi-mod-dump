@@ -8,11 +8,11 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
-using StardewValley;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace AnythingAnywhere.Framework.Interfaces

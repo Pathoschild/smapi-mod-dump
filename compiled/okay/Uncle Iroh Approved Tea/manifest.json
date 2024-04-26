@@ -1,0 +1,19 @@
+{
+  "Name": "Uncle Iroh Approved Tea",
+  "Author": "slimerrain",
+  "Description": "Component of the tea mod that gives peels for eating oranges.",
+  "Version": "1.1.5", // fixed locally
+  "UniqueID": "slimerrain.byproducts",
+  "EntryDll": "Byproducts.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "slimerrain.uncleirohapprovedteacp",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": [ "" ]
+}

@@ -35,14 +35,13 @@ Quality     | * | Multiplier | = | Result
 
 ## Existing save
 
-You can use it on an existing save. However, the quality will not be dropped right away.
-The quality will be removed once you add items to your inventory.
-If you remove the mod, new items will have quality again. But already changed items will not be restored.
+- Community Center bundles are only adjusted for new saves. So you can't complete bundles with quality requirements in an existing save.
+- The quality will not be dropped right away. The quality will be removed once you add items to your inventory.
+- If you remove the mod, new items will have quality again. But already changed items will not be restored.
 
 ## Limitations:
 
-Some changes would require [Harmony](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Harmony),
-which I don't intent to use at the moment.
+Some changes would require [Harmony](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Harmony), which I don't intent to use at the moment.
 
 - Item quality is adjusted only AFTER it has been added to the inventory.
 	Because of this, you should always keep an inventory slot open to be able to pick up items.

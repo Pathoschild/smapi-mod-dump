@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Fungo Albero",
   "custom-tree.mahogany": "Albero di mogano",
   "custom-tree.palm": "Palma da Cocco",
+  "custom-tree.green-rain-wild": "Albero della Pioggia Verde Selvaggio",
+  "custom-tree.green-rain-lush": "Lussureggiante Albero di Pioggia Verde",
+  "custom-tree.fiddlehead-fern": "Albero di Felce",
+  "custom-tree.mystic": "Albero Mistico",
 
   // growth info translation
   "growth-info.fully-grown": "completamente cresciuto",

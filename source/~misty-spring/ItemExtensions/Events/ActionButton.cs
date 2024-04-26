@@ -29,10 +29,6 @@ public static class ActionButton
         
         if(!ModEntry.ActionButtons.Contains(e.Button))
             return;
-        
-        //#if DEBUG
-        //Log("Button is valid!",LogLevel.Debug);
-        //#endif
 
         if (Game1.player.ActiveObject == null)
             return;
@@ -127,25 +123,5 @@ public static class ActionButton
     {
         var menu = new LetterWithImage(note);
         Game1.activeClickableMenu = menu;
-    }
-
-    private static IClickableMenu GetMenuType(string which)
-    {
-        var split = which.Split(' ');
-        var menu = split[0].ToLower();
-        
-        IClickableMenu result = menu switch
-        {
-            "forge" => new ForgeMenu(),
-            "geode" => new GeodeMenu(),
-            "billboard" => new Billboard(),
-            "farmhand" => new FarmhandMenu(),
-            "animal" or "animals" => new PurchaseAnimalsMenu(Utility.getPurchaseAnimalStock(Game1.currentLocation), Game1.currentLocation),
-            "end" => new ShippingMenu(Game1.player.displayedShippedItems),
-            "tailor" or "sew" or "sewing" => new TailoringMenu(),
-            _ => null
-        };
-
-        return result;
     }
 }

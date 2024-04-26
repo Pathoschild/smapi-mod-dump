@@ -8,57 +8,18 @@
 **
 *************************************************/
 
+using System.Linq;
 using StardewValley;
+using StardewValley.Network;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
     internal class SeederQuest
         : TractorPartQuest<SeederQuestState>
     {
-        private bool pesteredGeorgeToday = false; // Ensure the player doesn't zero out their hearts with George banging on this quest.
-
         public const int GeorgeSendsBrokenPartHeartLevel = 3;
         private const int evelynWillingToHelpLevel = 3;
         private const int alexWillingToHelpLevel = 2;
-
-        // Story:
-        //   Before George's accident, Grandpa gave it to George to repair, and George had given him a parts list,
-        //   but Grandpa had left it for a long time, then George had the accident and Grandpa didn't ask for it
-        //   and then Grandpa died, and here we are.
-        //
-        //   After getting 4 hearts with George, he sends you the seeder and says it's all good except for the
-        //   iron bars which Grandpa never came up with.
-        //
-        //   If you bring it back to George, he gets all grumpy and says he mailed it to you on-purpose and he's
-        //   too old and broke down to fix it.  Quest directs you to talk to his "old friends", and everybody
-        //   points you to Lewis.
-        //
-        //   Lewis says something like "Evelyn can be a big help if you earn her trust.  Talking to Evelyn gives
-        //   you a grumpy response until you get a few hearts with her and then she confides that his hands are
-        //   too shaky to do fine work anymore.
-        //
-        //   If you talk to Alex with less than 3 hearts, he blows you off with a "these hands were made for
-        //   gridball, not farm work."
-        //
-        //   After talking to Alex once, talking to Granny and anybody else about it will say that Alex has a
-        //   hard time trusting people and you should build up some friendship with him.
-        //
-        //   After Alex gets to 3 hearts, he'll confide that he just doesn't feel confident and he'll just screw
-        //   up and make his grandpa mad.
-        //
-        //   If you talk to Lewis, Emily or Penny, they'll tell you to talk to Haley.
-        //
-        //   Haley will (regardless of your heart level with her), declare that confident men are more attractive
-        //   and that she knows for sure his hands are plenty nimble enough to do the job and tells you she'll
-        //   fix it for you.  A couple days later, you get a mail from her saying that she thinks she's got
-        //   him on-side.
-        //
-        //   After that, you ask Alex and he says he'll do it.  Give him the item and the iron and he asserts
-        //   that they'll take care of it.  After a couple days, you get a mail from him saying that the job's
-        //   done and tells you to pick it up from George.
-        //
-        //   When you pick it up from George, you get a friendship heart for him, Alex, Evelyn and half a heart
-        //   for Lewis.
 
         private const int ironBarCount = 10;
 
@@ -76,56 +37,59 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public override void CheckIfComplete(NPC n, Item? item)
         {
-            if (n.Name == "George" && this.State == SeederQuestState.GotPart && !this.pesteredGeorgeToday)
+            bool isHoldingSeeder = item?.ItemId == ObjectIds.BustedSeeder;
+            if (n.Name == "George" && isHoldingSeeder && this.State == SeederQuestState.GotPart)
             {
                 this.Spout(n, "Young people just don't listen.  I told you, I'm too old to repair your equipment.$a");
                 Game1.player.changeFriendship(-120, n);
                 n.doEmote(12); // Grumpiness emote
-                this.pesteredGeorgeToday = true;
+                this.State = SeederQuestState.GeorgePestered;
             }
-            else if (n.Name == "Maru" && item?.ItemId == ObjectIds.BustedSeeder && this.State == SeederQuestState.GotPart)
+            if (new string[] { "Clint", "Pierre", "Gus", "Caroline", "Jodi", "Penny" }.Contains(n.Name) && isHoldingSeeder && this.State < SeederQuestState.GetEvelynOnSide)
             {
-                this.Spout(n, "I'm honored that you're asking me to look at this, but given what you've said, and what I know about George, it'd really be better if George did the work...#$b#But I know it won't be easy for him.$s#$b#But if he actually did it, well, it'd do him a lot of good.#$b#You should talk to Lewis.  He and George go back a long way.  He'll know what to do.#$b#But if it all goes wrong, come back to me and I'll try to fix it.");
+                this.Spout(n, "Hm.  George said that did he...  Hm.  This *is* a thorny problem.  I think you need to consult a politician.  Try Lewis.");
             }
-            else if (n.Name == "Lewis" && this.State == SeederQuestState.GotPart)
+            else if (n.Name == "Maru" && isHoldingSeeder && this.State <= SeederQuestState.GeorgePestered)
+            {
+                this.Spout(n, "I'm honored that you're asking me to look at this, but it'd really be better if George did the work...#$b#I know it won't be easy for him...  Maybe he'll need help.$s#$b#But if he actually did it, well, it'd do him a lot of good.#$b#You should talk to Lewis.  He and George go back a long way.  He'll know what to do.#$b#If it all goes wrong, come back to me and I'll try to fix it.");
+            }
+            else if (n.Name == "Maru" && isHoldingSeeder && this.State == SeederQuestState.GetHaleyOnSide)
+            {
+                this.Spout(n, "I'm flattered that Alex thinks I can fix it...  Maybe I can, but we should stick to Evelyn's plan.  Alex and I don't exactly click, but I'm sure there's somebody who knows Alex well enough to help convince him to do it.");
+            }
+            else if (n.Name == "Lewis" && this.State <= SeederQuestState.GeorgePestered)
             {
                 this.Spout(n, "Oh dear oh dear oh dear...$2#$b#Hm...$2#$b#George isn't wrong -- physically, he's just not in good shape.  Mentally, though, he's still as sharp as ever.  Alas, not like your Grandpa, towards the end.$s#$b#But if he can somehow do this, or at least help in doing it, it'll do him so much good.#$b#We need some help here...  We need Evelyn, and YOU have to get her to cajole George into trying this.  I can't be seen to be involved for, err...  reasons.#$b#You need to build some trust with her before you broach the topic, however.  Tread carefully.");
                 this.State = SeederQuestState.GetEvelynOnSide;
             }
-            else if (n.Name == "Evelyn" && this.State == SeederQuestState.GetEvelynOnSide)
+            else if (n.Name == "Evelyn" && this.State == SeederQuestState.GetEvelynOnSide && Game1.player.getFriendshipHeartLevelForNPC("Evelyn") >= evelynWillingToHelpLevel)
             {
-                if (Game1.player.getFriendshipHeartLevelForNPC("Evelyn") >= evelynWillingToHelpLevel)
-                {
-                    this.Spout(n, "Ohhh...  I know George *could* repair that thing...  But he could also fail miserably, you see, it's not just his legs that have let him down.  Have you seen his hands, how they shake?  It's not so bad, but it really frustrates him.#$b#Oh deary, I'm old too...  I need time to think about this.");
-                    Game1.player.mailForTomorrow.Add(MailKeys.EvelynPointsToAlex);
-                    this.State = SeederQuestState.WaitForEvelyn;
-                }
-                else
-                {
-                    this.Spout(n, "Sorry, what did you say?  I didn't quite hear...");
-                }
+                this.Spout(n, "Ohhh...  I know George *could* repair that thing...  But he could also fail miserably, you see, it's not just his legs that have let him down.  Have you seen his hands, how they shake?  It's not so bad, but it really frustrates him.#$b#Oh deary, I'm old too...  I need time to think about this.");
+                Game1.player.mailForTomorrow.Add(MailKeys.EvelynPointsToAlex);
+                this.State = SeederQuestState.WaitForEvelyn;
             }
-            else if (n.Name == "Alex" && this.State == SeederQuestState.TalkToAlex1)
+            else if (n.Name == "Evelyn" && isHoldingSeeder && this.State == SeederQuestState.GetEvelynOnSide && Game1.player.getFriendshipHeartLevelForNPC("Evelyn") < evelynWillingToHelpLevel)
             {
-                if (Game1.player.getFriendshipHeartLevelForNPC("Alex") < alexWillingToHelpLevel)
-                {
-                    this.Spout(n, "Look, I got my life to live, and it doesn't involve fixing farm equipment.");
-                }
-                else
-                {
-                    this.Spout(n, "Nah man, these hands were made for gridball.  You're good with this sort of thing, you should talk Grandpa into showing you how.  Or get Maru, she's good at mechanical stuff.$3");
-                    this.State = SeederQuestState.GetHaleyOnSide;
-                }
+                this.Spout(n, "Sorry, what did you say?  I didn't quite hear...");
             }
-            else if (n.Name == "Lewis" && this.State == SeederQuestState.GetHaleyOnSide)
+            else if (n.Name == "Alex" && isHoldingSeeder && this.State == SeederQuestState.TalkToAlex1 && Game1.player.getFriendshipHeartLevelForNPC("Alex") < alexWillingToHelpLevel && isHoldingSeeder)
             {
-                this.Spout(n, "Heh, isn't easy is it.  Keep it up, maybe you'll learn how to be mayor someday!$1#$b#Evelyn was probably right, in that somebody his own age could do it.  Somebody he hangs out with alot.");
+                this.Spout(n, "Look, I got my life to live, and it doesn't involve fixing farm equipment.");
             }
-            else if ((n.Name == "Sebastian" || n.Name == "Abigail" || n.Name == "Sam") && this.State == SeederQuestState.GetHaleyOnSide)
+            else if (n.Name == "Alex" && this.State == SeederQuestState.TalkToAlex1 && Game1.player.getFriendshipHeartLevelForNPC("Alex") >= alexWillingToHelpLevel)
             {
-                this.Spout(n, "You think *I* have a clue what goes on inside Alex's head??$5#$b#Oh wait, I *DO* know...  Absolutely nothing.#4");
+                this.Spout(n, "Nah man, these hands were made for gridball.  You're good with this sort of thing, you should talk Grandpa into showing you how.  Or get Maru, she's good at mechanical stuff.$3");
+                this.State = SeederQuestState.GetHaleyOnSide;
             }
-            else if (n.Name == "Emily" && this.State == SeederQuestState.GetHaleyOnSide)
+            else if (n.Name == "Lewis" && isHoldingSeeder && this.State == SeederQuestState.GetHaleyOnSide)
+            {
+                this.Spout(n, "Heh, isn't easy is it.  Keep it up, maybe you'll learn how to be mayor someday!$1#$b#Evelyn was probably right, in that somebody his own age could convince him.  Somebody he spends a lot of time with.");
+            }
+            else if ((n.Name == "Sebastian" || n.Name == "Abigail" || n.Name == "Sam") && isHoldingSeeder && this.State == SeederQuestState.GetHaleyOnSide)
+            {
+                this.Spout(n, "You think *I* have a clue what goes on inside Alex's head??$5#$b#Oh wait, I *DO* know...  Absolutely nothing.$4");
+            }
+            else if (n.Name == "Emily" && isHoldingSeeder && this.State == SeederQuestState.GetHaleyOnSide)
             {
                 this.Spout(n, "Oh I hate to admit it, but the solution to your problem is Haley.  She can make any boy do any thing, ESPECIALLY Alex.$2#$b#She might seem vaccuous at times, but trust me, if you need some guy manipulated, she can do it.  I'm not saying it's a good thing all the time, but this sounds like a good cause.$4");
             }
@@ -142,12 +106,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
             else if (n.Name == "Alex" && this.State == SeederQuestState.GiveAlexStuff)
             {
-                if (this.TryTakeItemsFromPlayer("335", ironBarCount, ObjectIds.BustedSeeder, 1))
+                if (this.TryTakeItemsFromPlayer("(O)335", ironBarCount, ObjectIds.BustedSeeder, 1))
                 {
                     this.State = SeederQuestState.WaitForAlexDay1;
                     this.Spout(n, "Thanks, that's all the stuff.  Well, I'm off the the garage with Gramps.  I'll send mail or something after we get it working.");
                 }
-                else
+                else if (isHoldingSeeder)
                 {
                     this.Spout(n, $"We'll need the old seeder and {ironBarCount} iron bars.  Bring 'em by when you can.");
                 }
@@ -177,6 +141,9 @@ namespace NermNermNerm.Stardew.QuestableTractor
             {
                 case SeederQuestState.GotPart:
                     this.currentObjective = "Hm.  I wonder what I should do.  I certainly can't fix it, and it'd cost a fortune to send it to Zuza city.";
+                    break;
+                case SeederQuestState.GeorgePestered:
+                    this.currentObjective = "Talking to George didn't go well.  I'm going to have to find a different angle.";
                     break;
                 case SeederQuestState.GetEvelynOnSide:
                     this.currentObjective = $"Get Evelyn to help (Talk to her after getting her to {evelynWillingToHelpLevel} hearts)";

@@ -37,6 +37,12 @@ namespace ContentPatcher.Framework.Migrations
             /// <summary>The 1.6 asset name.</summary>
             private const string NewAssetName = "Data/Buildings";
 
+            /// <summary>The building IDs added in Stardew Valley 1.6.</summary>
+            private readonly HashSet<string> BuildingIdsAddedIn16 = new() { "Cabin", "Pet Bowl", "Farmhouse" };
+
+            /// <summary>The vanilla data without mod edits applied, used as the base when a pre-1.6 content pack loads the asset.</summary>
+            private readonly VanillaAssetFactory<Dictionary<string, BuildingData>> OriginalData = new(DataLoader.Buildings);
+
 
             /*********
             ** Public methods
@@ -56,10 +62,13 @@ namespace ContentPatcher.Framework.Migrations
             /// <inheritdoc />
             public bool TryApplyLoadPatch<T>(LoadPatch patch, IAssetName assetName, [NotNullWhen(true)] ref T? asset, out string? error)
             {
-                Dictionary<string, string> tempData = patch.Load<Dictionary<string, string>>(this.GetOldAssetName(assetName));
-                Dictionary<string, BuildingData> newData = new();
-                this.MergeIntoNewFormat(newData, tempData, null);
-                asset = (T)(object)newData;
+                var data = this.OriginalData.GetFreshCopy();
+                var dataBackup = this.GetOldFormat(data);
+
+                var legacyLoad = patch.Load<Dictionary<string, string>>(this.GetOldAssetName(assetName));
+                this.MergeIntoNewFormat(data, legacyLoad, dataBackup);
+
+                asset = (T)(object)data;
 
                 error = null;
                 return true;
@@ -134,7 +143,12 @@ namespace ContentPatcher.Framework.Migrations
                 foreach (string key in asset.Keys)
                 {
                     if (!from.ContainsKey(key))
+                    {
+                        if (this.BuildingIdsAddedIn16.Contains(key))
+                            continue; // don't remove 1.6 content for a pre-1.6 content pack (usually a load patch)
+
                         asset.Remove(key);
+                    }
                 }
 
                 // apply entries
@@ -145,7 +159,7 @@ namespace ContentPatcher.Framework.Migrations
                     if (!asset.TryGetValue(key, out BuildingData? entry))
                     {
                         isNew = true;
-                        entry = new BuildingData()
+                        entry = new BuildingData
                         {
                             Name = key,
                             Description = "...",
@@ -186,7 +200,7 @@ namespace ContentPatcher.Framework.Migrations
                         );
 
                         entry.IndoorMap = ArgUtility.Get(fields, 7, entry.IndoorMap, allowBlank: false);
-                        if (string.IsNullOrWhiteSpace(entry.IndoorMap) || entry.IndoorMapType == "null")
+                        if (string.IsNullOrWhiteSpace(entry.IndoorMap) || entry.IndoorMap == "null")
                             entry.IndoorMap = null;
 
                         entry.Name = RuntimeMigrationHelper.MigrateLiteralTextToTokenizableField(ArgUtility.Get(fields, 8), ArgUtility.Get(backupFields, 8), entry.Name);

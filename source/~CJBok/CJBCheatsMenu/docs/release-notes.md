@@ -9,6 +9,35 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.36.2
+Released 15 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed 'auto-feed animals' no longer applied if you have no silos with hay available.
+* Fixed 'auto-pet animals' petting animals not owned by players, which caused issues like repeating dialogues.
+* Fixed 'auto-pet pets' petting pets outside the farm in 1.36.0, which conflicted with mods that add pet NPCs.
+* Fixed community center warp sometimes hidden in 1.36.0.
+* Fixed menu not closed when warping into the mines.
+
+## 1.36.1
+Released 14 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed 'no longer compatible' error.
+
+## 1.36.0
+Released 14 April 2024 for SMAPI 4.0.0 or later.
+
+* Other mods [can now edit warps through Content Patcher](author-guide.md).  
+  _That means you no longer need to manually download warp files (once other mods are updated), and you can now have custom warps for multiple mods at once._
+* Added support for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) for the keybinds and default tab (thanks to Tocseoj!).
+* Added mine level selector when warping to the mines or Skull Cavern (thanks to ThatGamerBlue!).
+* Fixed 'one-hit kill' cheat causing grubs to instantly start turning into flies.
+* Fixed 'auto-feed animals' only using hay stored on the farm.
+* Fixed 'auto-feed animals' not watering slimes if you have no more hay.
+* Fixed 'auto-pet animals' and 'auto-feed animals' not applied to animals outside the farm.
+* Fixed 'auto-pet pets' sometimes no longer applied to saves whose date was edited.
+* Removed `cjb_reload_warps` console command, which is no longer needed with the new warp assets.
+* Updated translations. Thanks to EngurRuzgar (updated Turkish) and Tenebrosful (updated French)!
+
 ## 1.35.1
 Released 29 March 2024 for SMAPI 4.0.0 or later.
 

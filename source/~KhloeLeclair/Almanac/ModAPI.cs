@@ -23,6 +23,7 @@ using StardewValley.Menus;
 using StardewValley.Locations;
 
 using Leclair.Stardew.Almanac.Models;
+using StardewValley.GameData.LocationContexts;
 
 namespace Leclair.Stardew.Almanac {
 
@@ -564,42 +565,35 @@ namespace Leclair.Stardew.Almanac {
 
 			string val;
 
-			if (location is Desert)
+			if (location.InDesertContext())
 				val = "Desert";
-			else {
-				GameLocation.LocationContext ctx = location.GetLocationContext();
-				switch(ctx) {
-					case GameLocation.LocationContext.Default:
-						val = "Default";
-						break;
-					case GameLocation.LocationContext.Island:
-						val = "Island";
-						break;
-					default:
-						throw new ArgumentException("Invalid location context");
-				}
-			}
-
+			else if (location.InIslandContext())
+				val = "Island";
+			else if (location.InValleyContext())
+				val = "Default";
+			else
+				throw new ArgumentException("Invalid location context");
 			return GetWeatherForDate(date, val);
 		}
 
 		public string GetWeatherForDate(WorldDate date, string context = "Default") {
-			GameLocation.LocationContext ctx;
+			LocationContextData ctx;
 			switch(context) {
 				case "Default":
-					ctx = GameLocation.LocationContext.Default;
+					ctx = Game1.locationContextData["Default"];
 					break;
 				case "Island":
-					ctx = GameLocation.LocationContext.Island;
+					ctx = Game1.locationContextData["Island"];
 					break;
 				case "Desert":
-					return "Sun";
+					ctx = Game1.locationContextData["Desert"];
+					break;
 				default:
 					throw new ArgumentException("Invalid location context");
 			}
 
-			int weather = Mod.Weather.GetWeatherForDate(Mod.GetBaseWorldSeed(), date, ctx);
-			return WeatherHelper.GetWeatherStringID(weather);
+			string weather = Mod.Weather.GetWeatherForDate(Mod.GetBaseWorldSeed(), date, ctx, context);
+			return weather;
 		}
 
 		#endregion

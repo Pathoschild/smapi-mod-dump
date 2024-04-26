@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22461
+IDs: jslattery26.ChestPoolingV2
+update keys: GitHub:jslattery26/stardew-chest-pooling-v2, Nexus:22461, GitHub:jslattery26/stardew_mods

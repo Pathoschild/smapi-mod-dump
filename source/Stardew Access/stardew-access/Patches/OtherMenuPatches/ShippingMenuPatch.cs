@@ -81,7 +81,7 @@ internal class ShippingMenuPatch : IPatch
             else
             {
                 // Speak category wise profit break down
-                List<string> displayedItems = new();
+                List<string> displayedItems = [];
                 for (int i = __instance.currentTab * __instance.itemsPerCategoryPage; i < __instance.currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
                 {
                     if (___categoryItems[__instance.currentPage].Count <= i)

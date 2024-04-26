@@ -1,0 +1,54 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Name": "LuckSkill",
+    "Author": "moonslime",
+    "Version": "0.1.0",
+    "Description": "A Spacecore version of the luck skill",
+    "UniqueID": "moonslime.LuckSkill",
+    "EntryDll": "LuckSkillCode.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "Nexus:-1"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "DaLion.Overhaul",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "drbirbdev.BirbCore"
+        },
+        {
+            "UniqueID": "Pathoschild.ContentPatcher"
+        },
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "Shockah.XPDisplay",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.JsonAssets",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.DynamicGameAssets",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.21.0"
+        }
+    ]
+}

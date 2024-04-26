@@ -60,8 +60,8 @@ To create your own cfl_map.json feel free to use a [template](#migrating-existin
 📂 Mods
   ┗📂 [CFL] &lt;your mod name&gt;
     ┣ 📜 manifest.json
+    ┣ 📜 cfl_map.json
     ┗ 📁 assets
-       ┣ 📜 cfl_map.json
        ┣ 🌆 Preview.png
        ┣ 🌆 Icon.png (18x20 px recommended)
        ┣ 🌆 Overlay.png (131x61 px)

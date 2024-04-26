@@ -111,6 +111,30 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                     set: (config, value) => config.HighlightUnrevealedGiftTastes = value
                 )
 
+                // advanced options
+                .AddSectionTitle(I18n.Config_Title_CollapseFields)
+                .AddCheckbox(
+                    name: I18n.Config_CollapseFields_Enabled_Name,
+                    tooltip: I18n.Config_CollapseFields_Enabled_Desc,
+                    get: config => config.CollapseLargeFields.Enabled,
+                    set: (config, value) => config.CollapseLargeFields.Enabled = value
+                )
+                .AddNumberField(
+                    name: I18n.Config_CollapseFields_ItemRecipes_Name,
+                    tooltip: I18n.Config_CollapseFields_Any_Desc,
+                    get: config => config.CollapseLargeFields.ItemRecipes,
+                    set: (config, value) => config.CollapseLargeFields.ItemRecipes = value,
+                    min: 1,
+                    max: 1000
+                )
+                .AddNumberField(
+                    name: I18n.Config_CollapseFields_NpcGiftTastes_Name,
+                    tooltip: I18n.Config_CollapseFields_Any_Desc,
+                    get: config => config.CollapseLargeFields.NpcGiftTastes,
+                    set: (config, value) => config.CollapseLargeFields.NpcGiftTastes = value,
+                    min: 1,
+                    max: 1000
+                )
 
                 // advanced options
                 .AddSectionTitle(I18n.Config_Title_AdvancedOptions)

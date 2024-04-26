@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Sandman534/Abilities-Experience-Bars
+**
+*************************************************/
+
+{
+  "ToggleKey": "V",
+  "ConfigKey": "U",
+  "ResetKey": "Delete",
+  "ShowButtons": true,
+  "ShowExperienceInfo": true,
+  "ShowBoxBackground": true,
+  "ShowExpPopup": true,
+  "ShowLevelUp": true,
+  "ShowUI": true,
+  "LevelUpMessageDuration": 4,
+  "mainPosX": 25,
+  "mainPosY": 125,
+  "mainScale": 3
+}

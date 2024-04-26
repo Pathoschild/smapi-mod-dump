@@ -24,16 +24,13 @@ using static StardewValley.BellsAndWhistles.ParrotUpgradePerch;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using Unlockable_Bundles.Lib.AdvancedPricing;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
     public class SpeechBubble : INetObject<NetFields>
     {
         public NetFields NetFields { get; } = new NetFields("DLX.Bundles/SpeechBubble");
-
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
 
         private NetRef<ParrotUpgradePerch> _parrotPerch = new NetRef<ParrotUpgradePerch>();
         public NetEnum<UpgradeState> CurrentState = new NetEnum<UpgradeState>(UpgradeState.Idle);
@@ -67,9 +64,6 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
         private void addNetFieldsAndEvents()
         {
@@ -373,7 +367,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Inventory.removeItemsOfRequirement(who, NextRequirement);
             Unlockable.processContribution(NextRequirement);
             var displayName = NextId == "money" ? NextRequirement.Value.ToString("# ### ##0").TrimStart() + "g" : NextItem.DisplayName;
-            Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("BundleDonate", Game1.player.displayName, displayName);
+            Helper.Reflection.GetField<StardewValley.Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("BundleDonate", Game1.player.displayName, displayName);
             AnimationEvent.Fire();
             return true;
         }

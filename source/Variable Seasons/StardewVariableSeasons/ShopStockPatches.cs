@@ -14,13 +14,12 @@ namespace StardewVariableSeasons
 {
     public static class ShopStockPatches
     {
-        public static void Prefix(ref string item_season)
+        public static void Prefix(ref Season item_season)
         {
-            var season = new Seasons();
-            var nextSeason = season.Next(Game1.currentSeason);
+            var nextSeason = SeasonUtils.GetNextSeason(Game1.season);
 
             if (item_season == nextSeason)
-                item_season = Game1.currentSeason;
+                item_season = Game1.season;
         }
     }
 }

@@ -8,6 +8,32 @@ for queries and analysis.**
 
 # Changelog
 
+## 2.5.1
+Released on April 13th, 2024.
+
+* Fixed: Building upgrades not functioning correctly.
+
+
+## 2.5.0
+Released on April 10th, 2024.
+
+The "increment to 2.5.0 because SMAPI is being weird" update! Sorry for
+people getting mod update available notices, when there wasn't one.
+
+* Changed: Pre-register our recipe types to reduce the performance impact
+  when opening the crafting menu for the first time.
+* Fixed: Recipes will no longer eternally appear as un-crafted with the
+  new 'NEW' indicator.
+* Fixed: Show the proper icon for the Buildings and Actions rule.
+
+
+## 2.0.0
+Released in 2024.
+
+Oops, I forgot to write this version down. This was the 1.6 release, and
+implemented proper building rendering and skins support.
+
+
 ## 1.3.0
 Released September 20th, 2022.
 

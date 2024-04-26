@@ -10,9 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using AnimalHusbandryMod.animals;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.cooking;
@@ -320,8 +320,9 @@ namespace AnimalHusbandryMod.common
         {
             isLoadingFarmAnimals = true;
             bool animalDataChanged = false;
-            data = data ?? Game1.farmAnimalData;
-            HashSet<string> syringeItemsIds = new HashSet<string>();
+            data ??= Game1.farmAnimalData;
+            data ??= ImmutableDictionary<string, FarmAnimalData>.Empty;
+            HashSet<string> syringeItemsIds = new();
             
             foreach (KeyValuePair<string, FarmAnimalData> farmAnimal in data)
             {
@@ -432,7 +433,7 @@ namespace AnimalHusbandryMod.common
             {
                 api.Register(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
 
-                api.RegisterLabel(manifest, "Main Features:", "Properties to disable the mod main features.");
+                api.AddSectionTitle(manifest, () => "Main Features:", () => "Properties to disable the mod main features.");
 
                 api.RegisterSimpleOption(manifest, "Disable Meat", "Disable all features related to meat. Meat Cleaver/Wand will not be delivered , and if already owned, will not work. Meat items and meat dishes will not be loaded. Any item still on the inventory will be bugged. You should sell/trash all of them before disabling meat. Meat Friday will not show on TV. You will not receive any more meat recipe letter from the villagers. Learned recipes will still be known, but will not show on the cooking menu. If re-enabled, they will show again. Restart the game after changing this.", () => DataLoader.ModConfig.DisableMeat, (bool val) => DataLoader.ModConfig.DisableMeat = val);
                 
@@ -442,7 +443,7 @@ namespace AnimalHusbandryMod.common
                 
                 api.RegisterSimpleOption(manifest, "Disable Animal Contest", "Disable all features related to the animal contest. You won't receive any more participant ribbons. Bonus from previous winners will still apply though. Restart the game after changing this.", () => DataLoader.ModConfig.DisableAnimalContest, (bool val) => DataLoader.ModConfig.DisableAnimalContest = val);
 
-                api.RegisterLabel(manifest, "Meat Properties:", "Properties to configure the meat feature.");
+                api.AddSectionTitle(manifest, () => "Meat Properties:", () => "Properties to configure the meat feature.");
 
                 api.RegisterSimpleOption(manifest, "Softmode", "Enable the Softmode. When enabled the Meat Cleaver is replaced with the Meat Want. They work the same, but sound, text and effects are changed to resemble magic. Restart the game after changing this.", () => DataLoader.ModConfig.Softmode, (bool val) => DataLoader.ModConfig.Softmode = val);
 
@@ -458,7 +459,7 @@ namespace AnimalHusbandryMod.common
 
                 api.RegisterSimpleOption(manifest, "Add Meat Tool Key", "Set a keyboard key to directly add the Meat Cleaver/Want to your inventory.", () => DataLoader.ModConfig.AddMeatCleaverToInventoryKey ?? SButton.None, (SButton val) => DataLoader.ModConfig.AddMeatCleaverToInventoryKey = val == SButton.None ? (SButton?)null : val);
 
-                api.RegisterLabel(manifest, "Pregnancy Properties:", "Properties to configure the insemination feature.");
+                api.AddSectionTitle(manifest, () => "Pregnancy Properties:", () => "Properties to configure the insemination feature.");
 
                 api.RegisterSimpleOption(manifest, "Disable Full Build Notif.", "Disable notifications for when an animals can't give birth because their building is full.", () => DataLoader.ModConfig.DisableFullBuildingForBirthNotification, (bool val) => DataLoader.ModConfig.DisableFullBuildingForBirthNotification = val);
                 
@@ -466,7 +467,7 @@ namespace AnimalHusbandryMod.common
 
                 api.RegisterSimpleOption(manifest, "Add Insemination Syringe Key", "Set a keyboard key to directly add the Insemination Syringe to your inventory.", () => DataLoader.ModConfig.AddInseminationSyringeToInventoryKey ?? SButton.None, (SButton val) => DataLoader.ModConfig.AddInseminationSyringeToInventoryKey = val == SButton.None ? (SButton?)null : val);
 
-                api.RegisterLabel(manifest, "Treats Properties:", "Properties to configure the treats feature.");
+                api.AddSectionTitle(manifest, () => "Treats Properties:", () => "Properties to configure the treats feature.");
 
                 api.RegisterSimpleOption(manifest, "Disable Friendship Increase", "Disable animal friendship being increased when given a treat.", () => DataLoader.ModConfig.DisableFriendshipInscreseWithTreats, (bool val) => DataLoader.ModConfig.DisableFriendshipInscreseWithTreats = val);
 
@@ -478,11 +479,11 @@ namespace AnimalHusbandryMod.common
 
                 api.RegisterSimpleOption(manifest, "Add Feeding Basket Key", "Set a keyboard key to directly add the Feeding Basket to your inventory.", () => DataLoader.ModConfig.AddFeedingBasketToInventoryKey ?? SButton.None, (SButton val) => DataLoader.ModConfig.AddFeedingBasketToInventoryKey = val == SButton.None ? (SButton?) null : val);
 
-                api.RegisterLabel(manifest, "Animal Contest Properties:", "Properties to configure the animal contest feature.");
+                api.AddSectionTitle(manifest, () => "Animal Contest Properties:", () => "Properties to configure the animal contest feature.");
 
                 api.RegisterSimpleOption(manifest, "Disable Contest Bonus", "Disable the fertility and the production bonuses from the contest. If enabled again, all winners will receive the bonus again, no matter if the bonus was disabled when they won.", () => DataLoader.ModConfig.DisableContestBonus, (bool val) => DataLoader.ModConfig.DisableContestBonus = val);
 
-                api.RegisterLabel(manifest, "Misc. Properties:", "Miscellaneous Properties.");
+                api.AddSectionTitle(manifest, () => "Misc. Properties:", () => "Miscellaneous Properties.");
 
                 api.RegisterSimpleOption(manifest, "Force Draw Attachment", "Force the patch that draw the hover menu for the feeding basket and insemination syringe on any OS. Restart the game after changing this.", () => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS, (bool val) => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS = val);
 

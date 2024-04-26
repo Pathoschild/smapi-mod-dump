@@ -23,6 +23,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.GameData;
 using StardewValley.GameData.Pets;
 using StardewValley.Locations;
 using StardewValley.Monsters;
@@ -57,6 +58,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <summary>Which gift taste levels to show.</summary>
         private readonly ModGiftTasteConfig ShowGiftTastes;
 
+        /// <summary>The configured minimum field values needed before they're auto-collapsed.</summary>
+        private readonly ModCollapseLargeFieldsConfig CollapseFieldsConfig;
+
         /// <summary>Whether to look up the original entity when the game spawns a temporary copy.</summary>
         private readonly bool EnableTargetRedirection;
 
@@ -85,16 +89,18 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="progressionMode">Whether to only show content once the player discovers it.</param>
         /// <param name="highlightUnrevealedGiftTastes">Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</param>
         /// <param name="showGiftTastes">Which gift taste levels to show.</param>
+        /// <param name="collapseFieldsConfig">The configured minimum field values needed before they're auto-collapsed.</param>
         /// <param name="enableTargetRedirection">Whether to look up the original entity when the game spawns a temporary copy.</param>
         /// <param name="showUnownedGifts">Whether to show gift tastes that the player doesn't own somewhere in the world.</param>
         /// <remarks>Reverse engineered from <see cref="NPC"/>.</remarks>
-        public CharacterSubject(ISubjectRegistry codex, GameHelper gameHelper, NPC npc, SubjectType type, Metadata metadata, bool progressionMode, bool highlightUnrevealedGiftTastes, ModGiftTasteConfig showGiftTastes, bool enableTargetRedirection, bool showUnownedGifts)
+        public CharacterSubject(ISubjectRegistry codex, GameHelper gameHelper, NPC npc, SubjectType type, Metadata metadata, bool progressionMode, bool highlightUnrevealedGiftTastes, ModGiftTasteConfig showGiftTastes, ModCollapseLargeFieldsConfig collapseFieldsConfig, bool enableTargetRedirection, bool showUnownedGifts)
             : base(gameHelper)
         {
             this.Codex = codex;
             this.ProgressionMode = progressionMode;
             this.HighlightUnrevealedGiftTastes = highlightUnrevealedGiftTastes;
             this.ShowGiftTastes = showGiftTastes;
+            this.CollapseFieldsConfig = collapseFieldsConfig;
             this.EnableTargetRedirection = enableTargetRedirection;
             this.ShowUnownedGifts = showUnownedGifts;
 
@@ -179,7 +185,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             // use character portrait (most villager NPCs)
             if (npc.IsVillager && npc.Portrait != null && !this.IsGourmand) // Gourmand uses Professor Snail's portraits
             {
-                spriteBatch.DrawSprite(npc.Portrait, new Rectangle(0, 0, NPC.portrait_width, NPC.portrait_height), position.X, position.Y, Color.White, size.X / NPC.portrait_width);
+                spriteBatch.DrawSprite(npc.Portrait, new Rectangle(0, 0, NPC.portrait_width, NPC.portrait_height), position.X, position.Y, new Point(NPC.portrait_width, NPC.portrait_height), Color.White, size.X / NPC.portrait_width);
                 return true;
             }
 
@@ -280,14 +286,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             yield return new GenericField(I18n.Monster_Attack(), this.Stringify(monster.DamageToFarmer));
 
             // Adventure Guild quest
-            AdventureGuildQuestData? adventureGuildQuest = this.Metadata.GetAdventurerGuildQuest(monster.Name);
-            if (adventureGuildQuest != null)
+            foreach (MonsterSlayerQuestData questData in DataLoader.MonsterSlayerQuests(Game1.content).Values)
             {
-                int kills = adventureGuildQuest.Targets.Select(p => Game1.stats.getMonstersKilled(p)).Sum();
-                string goalName = GameI18n.GetString($@"Strings\Locations:AdventureGuild_KillList_{adventureGuildQuest.KillListKey}");
+                if (questData.Targets?.Contains(monster.Name) is not true)
+                    continue;
+
+                int kills = questData.Targets.Sum(Game1.stats.getMonstersKilled);
+                string goalName = TokenParser.ParseText(questData.DisplayName);
                 var checkbox = CheckboxListField.Checkbox(
-                    text: I18n.Monster_AdventureGuild_EradicationGoal(name: goalName, count: kills, requiredCount: adventureGuildQuest.RequiredKills),
-                    value: kills >= adventureGuildQuest.RequiredKills
+                    text: I18n.Monster_AdventureGuild_EradicationGoal(name: goalName, count: kills, requiredCount: questData.Count),
+                    value: kills >= questData.Count
                 );
                 yield return new CheckboxListField(I18n.Monster_AdventureGuild(), checkbox);
             }
@@ -411,7 +419,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="taste">The gift taste to display.</param>
         private ICustomField GetGiftTasteField(string label, IDictionary<GiftTaste, GiftTasteModel[]> giftTastes, IDictionary<string, bool> ownedItemsCache, GiftTaste taste)
         {
-            return new CharacterGiftTastesField(label, giftTastes, taste, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes, onlyOwned: !this.ShowUnownedGifts, ownedItemsCache);
+            var field = new CharacterGiftTastesField(label, giftTastes, taste, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes, onlyOwned: !this.ShowUnownedGifts, ownedItemsCache);
+            if (this.CollapseFieldsConfig.Enabled && giftTastes.TryGetValue(taste, out GiftTasteModel[]? tastes) && tastes.Length >= this.CollapseFieldsConfig.NpcGiftTastes)
+                field.CollapseByDefault(I18n.Generic_ShowXResults(tastes.Length));
+            return field;
         }
 
         /*****

@@ -14,13 +14,16 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace ChangeFarmCaves
 {
     internal static class Patches
     {
         private static Harmony harmony;
+        private static Dialogue lastDialogue;
 
         internal static void Patch(IModHelper helper)
         {
@@ -38,7 +41,16 @@ namespace ChangeFarmCaves
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Event), nameof(Event.answerDialogue)),
-                prefix: new(typeof(Patches), nameof(answerDialoguePrefix))
+                prefix: new(typeof(Patches), nameof(answerDialoguePrefix)),
+                postfix: new(typeof(Patches), nameof(answerDialoguePostfix))
+            );
+        }
+
+        internal static void Transpile()
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(FarmCave), nameof(FarmCave.setUpMushroomHouse)),
+                transpiler: new(typeof(Patches), nameof(setUpMushroomHouseTranspiler))
             );
         }
 
@@ -48,7 +60,7 @@ namespace ChangeFarmCaves
         {
             try
             {
-                if (Game1.IsMasterGame && __instance.Name == "Demetrius" && __instance.CurrentDialogue.Count <= 0 && (who.CurrentItem is null || !CanGift(__instance, who.CurrentItem, who)) && Game1.activeClickableMenu is null)
+                if (Game1.IsMasterGame && __instance.Name == "Demetrius" && (!__instance.CurrentDialogue.TryPeek(out var dialogue) || dialogue == lastDialogue) && (who.CurrentItem is null || !CanGift(__instance, who.CurrentItem, who)) && Game1.activeClickableMenu is null)
                 {
                     var responses = Game1.currentLocation.createYesNoResponses();
                     Game1.currentLocation.createQuestionDialogue(ModEntry.ITranslations.Get("Question"), responses, (who, answer) =>
@@ -57,11 +69,13 @@ namespace ChangeFarmCaves
                         {
                             Game1.activeClickableMenu = null;
                             isChangingFarmCave = true;
-                            new Event().tryEventCommand(l, Game1.currentGameTime, new[] { "Cave" });
+                            new Event().tryEventCommand(l, Game1.currentGameTime, ["Cave"]);
                         }
                     }, __instance);
                     return false;
                 }
+                if (__instance.CurrentDialogue.TryPeek(out var next))
+                    lastDialogue = next;
                 return true;
             }
             catch (Exception ex) { ModEntry.IMonitor.Log($"Failed patching {nameof(NPC.checkAction)}", LogLevel.Error); ModEntry.IMonitor.Log($"{ex.Message}\n{ex.StackTrace}"); return true; }
@@ -84,22 +98,50 @@ namespace ChangeFarmCaves
             catch (Exception ex) { ModEntry.IMonitor.Log($"Failed patching {nameof(DialogueBox.receiveLeftClick)}", LogLevel.Error); ModEntry.IMonitor.Log($"{ex.Message}\n{ex.StackTrace}"); return true; }
         }
 
-        public static void answerDialoguePrefix(Event __instance, string questionKey, int answerChoice)
+        public static void answerDialoguePrefix(string questionKey)
         {
             try
             {
                 if (questionKey != "cave")
                     return;
-                ModEntry.FarmCave.Objects.Clear(); //This patch only exists for this line of code
+                ModEntry.FarmCave.Objects.Clear();
             }
             catch (Exception ex) { ModEntry.IMonitor.Log($"Failed patching {nameof(Event.answerDialogue)}", LogLevel.Error); ModEntry.IMonitor.Log($"{ex.Message}\n{ex.StackTrace}"); return; }
+        }
+
+        public static void answerDialoguePostfix(string questionKey, int answerChoice)
+        {
+            if (questionKey != "cave")
+                return;
+            if (answerChoice == 0 && !ModEntry.FarmCave.modData.ContainsKey("ChangeFarmCaves.HasGottenDehydrator"))
+            {
+                ModEntry.FarmCave.modData.Add("ChangeFarmCaves.HasGottenDehydrator", "true");
+                Transpile();
+            }
+        }
+
+        public static IEnumerable<CodeInstruction> setUpMushroomHouseTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            if (!ModEntry.FarmCave.modData.ContainsKey("ChangeFarmCaves.HasGottenDehydrator"))
+                return instructions;
+
+            List<CodeInstruction> res = [];
+            int i = 0;
+            foreach (var instruction in instructions)
+            {
+                if (i < 67)
+                    res.Add(instruction);
+                i++;
+            }
+            res.Add(new(OpCodes.Ret));
+            return res;
         }
 
         private static bool CanGift(NPC who, Item what, Farmer player)
         {
             if (!what.canBeGivenAsGift())
                 return false;
-            if ((player.friendshipData[who.Name].GiftsToday == 1 || player.friendshipData[who.Name].GiftsThisWeek == 2) && !who.isMarried())
+            if ((player.friendshipData[who.Name].GiftsToday == 1 || player.friendshipData[who.Name].GiftsThisWeek == 2))
                 return false;
             return true;
         }

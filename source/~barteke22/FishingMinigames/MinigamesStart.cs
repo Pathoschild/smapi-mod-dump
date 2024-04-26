@@ -129,7 +129,16 @@ namespace FishingMinigames
                 else offset += (int)(140 * startMinigameScale);
             }
             //vanilla treasure chance calculation
-            if (fishingFestivalMinigame == 0 && who.fishCaught != null && who.fishCaught.Count() > 1 && Game1.random.NextDouble() < who.LuckLevel * 0.005 + data.effects["TREASURE"] + who.DailyLuck / 2.0 + ((who.professions.Contains(9) ? FishingRod.baseChanceForTreasure : 0)))
+            if (fishingFestivalMinigame == 0                                                    // Not in a festival
+                && who.fishCaught != null && who.fishCaught.Count() > 1                         // Caught a fish
+                && Game1.random.NextDouble()                                                    // RNG
+                < (   who.LuckLevel * 0.005                                                     // Consumables + Rings
+                    + data.effects["TREASURE"]                                                  // The modifier on rods
+                    + who.DailyLuck / 2.0                                                       // Daily Luck
+                    + 0.07                                                                      // Flat amount - in vanilla this is 15%, but we can fish 2-3x as fast so make it 7%
+                    + ((who.professions.Contains(9) ? FishingRod.baseChanceForTreasure : 0))    // The Pirate profession
+                  )
+               )
             {
                 minigameData[4] = Game1.random.Next(minigameArrowData.Length / 2, minigameArrowData.Length - 1);
             }
@@ -166,13 +175,22 @@ namespace FishingMinigames
             if (minigameStyle[screen] == 2 && ((minigameStage > 0 && minigameStage < 5) || (minigameStage > 4 && minigameData[5] > 0))) DrawHangman(batch);
         }
 
-
-
-        private void DrawDDR(SpriteBatch batch)
+        private float DrawIntro(SpriteBatch batch, Vector2 screenMid, float scale)
         {
             if (minigameStage == 1)//fade in (opacity calc)
             {
                 minigameData[5]++;
+
+                //if (minigameData[5] < 70)
+                //{
+                //    float f = (minigameData[5] / 250f) + 0.01f;
+                //    if (Context.IsSplitScreen) Game1.options.localCoopBaseZoomLevel += f;
+                //    else Game1.options.singlePlayerBaseZoomLevel += f;
+
+                //    Game1.viewport.X = Math.Max(who.getStandingX() - (Game1.viewport.Width / 2), 0);
+                //    Game1.viewport.Y = Math.Max(who.getStandingY() - Math.Min(minigameData[5] * 2, 80) - (Game1.viewport.Height / 2), 0);
+                //}
+                //else 
                 if (minigameData[5] == 300)
                 {
                     if (fishingFestivalMinigame == 0)
@@ -184,27 +202,12 @@ namespace FishingMinigames
                     Game1.playSound("FishHit");
                 }
             }
-            //else if (startMinigameStage > 4)//fade out and continue
-            //{
-            //    startMinigameData[5]--;
-            //    if (startMinigameData[5] == 0)
-            //    {
-            //        stage = null;
-            //        if (startMinigameStage == 5)
-            //        {
-            //            DrawAndEmote(who, 2);
-            //            EmergencyCancel();
-            //        }
-            //        else HereFishyAnimation(who, x, y);
-            //        return;
-            //    }
-            //}
             else if (fishingFestivalMinigame != 0 && festivalTimer <= 2000)
             {
                 data.Helper.Multiplayer.SendMessage(false, "hideText", modIDs: new[] { "barteke22.FishingInfoOverlays" }, new[] { who.UniqueMultiplayerID });//clear overlay
                 minigameData[5] -= 4;
                 minigameStage = 4;
-                if ((Game1.currentMinigame as StardewValley.Minigames.FishingGame).perfections == 0)
+                if ((Game1.currentMinigame as FishingGame).perfections == 0)
                 {
                     if (fishingFestivalMinigame == 1)
                     {
@@ -215,24 +218,76 @@ namespace FishingMinigames
                     }
                 }
             }
-            float opacity = minigameData[5] / 100f;
+            float opacity = 0f;
 
+            Texture2D animTexture = Game1.content.Load<Texture2D>("TileSheets\\animations");
+
+
+
+
+            Vector2 whoPos = who.getStandingPosition() + new Vector2(-Game1.viewport.X, -110f - Game1.viewport.Y);
+
+            float s = Math.Min(minigameData[5] / 23f, 3f);
+            Vector2 offsetToMid = new Vector2(screenMid.X - whoPos.X + 32f, screenMid.Y - whoPos.Y + 110f);
+            if (fishingFestivalMinigame != 1)
+            {
+                offsetToMid = new Vector2(screenMid.X - Utility.ModifyCoordinateForUIScale(whoPos.X - 32f), screenMid.Y - Utility.ModifyCoordinateForUIScale(whoPos.Y + 110f));
+                whoPos = Utility.ModifyCoordinatesForUIScale(whoPos);
+                s = Utility.ModifyCoordinateForUIScale(s);
+            }
+
+            batch.Draw(animTexture, whoPos + (offsetToMid * 0.05f), new Rectangle(0, 320, 64, 64), Color.White, 0f, new Vector2(30f, 46f), s, SpriteEffects.None, 0.0f);
+            if (minigameData[5] > 15)
+            {
+                batch.Draw(animTexture, whoPos + (offsetToMid * 0.1f) + new Vector2(0f, -10f), new Rectangle(64, 320, 64, 64), Color.White, 0f, new Vector2(33f, 41f), s, SpriteEffects.None, 0.0f);
+            }
+            if (minigameData[5] > 30)
+            {
+                batch.Draw(animTexture, whoPos + (offsetToMid * 0.18f) + new Vector2(0f, -20f), new Rectangle(128, 320, 64, 64), Color.White, 0f, new Vector2(37f, 38f), s, SpriteEffects.None, 0.0f);
+            }
+            if (minigameData[5] > 45)
+            {
+                batch.Draw(animTexture, whoPos + (offsetToMid * 0.4f), new Rectangle(192, 320, 64, 64), Color.White, 0f, new Vector2(32f), s, SpriteEffects.None, 0.0f);
+            }
+            if (minigameData[5] > 70)
+            {
+                opacity = (minigameData[5] - 30) / 100f;
+            }
+
+
+            //board
+            if (opacity < 2.7f)
+            {
+                batch.Draw(minigameTextures[3], new Rectangle((int)screenMid.X, (int)screenMid.Y, (int)(scale * 324f * Math.Min(opacity, 0.5f)), (int)(scale * 176f * Math.Min(opacity, 0.5f))), new Rectangle(0, 0, 84, 48), Color.White * opacity, 0f, new Vector2(42f, 24f), SpriteEffects.None, 0.1f);
+
+                batch.Draw(minigameTextures[0], screenMid, null, minigameColor * Math.Min((opacity / 1.5f), 1f), 0f, new Vector2(69f, 37f), scale * 2f * Math.Min(opacity, 0.5f), SpriteEffects.None, 0.3f);
+            }
+            else
+            {
+                batch.Draw(minigameTextures[3], new Rectangle((int)screenMid.X, (int)screenMid.Y, (int)(scale * 162f), (int)(scale * 88f)), new Rectangle(0, 0, 84, 48), Color.White, 0f, new Vector2(42f, 24f), SpriteEffects.None, 0.1f);
+
+                batch.Draw(minigameTextures[0], screenMid, null, minigameColor, 0f, new Vector2(69f, 37f), scale, SpriteEffects.None, 0.3f);
+            }
+            return opacity;
+        }
+
+
+
+        private void DrawDDR(SpriteBatch batch)
+        {
             //scale/middle/bounds calculation
             float scale = 7f * startMinigameScale;
-            if (fishingFestivalMinigame == 1) scale *= (1f / Game1.options.zoomLevel);
+            if (fishingFestivalMinigame == 1) scale *= (1f / Game1.options.zoomLevel) * Game1.options.uiScale;
             int width = (int)Math.Round(138f * scale);
             int height = (int)Math.Round(74f * scale);
             Vector2 screenMid = new Vector2(Game1.graphics.GraphicsDevice.Viewport.Width / 2, Game1.graphics.GraphicsDevice.Viewport.Height / 2);
 
-            //board
-            batch.Draw(Game1.mouseCursors, screenMid, new Rectangle(31, 1870, 73, 49), minigameColor * (opacity / 3f), 0f, new Vector2(36.5f, 22.5f), scale * 1.84f, SpriteEffects.None, 0.2f);
-            batch.Draw(minigameTextures[0], screenMid, null, minigameColor * opacity, 0f, new Vector2(69f, 37f), scale, SpriteEffects.None, 0.3f);
-
+            float opacity = DrawIntro(batch, screenMid, scale);//intro
 
             if (minigameData[3] != minigameArrowData.Length)//minigame not done
             {
                 int festivalDifficulty = 1;//festival stuff
-                if (fishingFestivalMinigame == 1) festivalDifficulty += (Game1.currentMinigame as StardewValley.Minigames.FishingGame).fishCaught;
+                if (fishingFestivalMinigame == 1) festivalDifficulty += (Game1.currentMinigame as FishingGame).fishCaught;
                 else if (fishingFestivalMinigame == 2) festivalDifficulty += who.festivalScore;
 
                 //info
@@ -267,6 +322,7 @@ namespace FishingMinigames
                     else if (fishingFestivalMinigame == 1) speed += (festivalDifficulty / 2f - (fishingLevel / 10f)) * minigameDifficulty[screen];
                     else if (fishingFestivalMinigame == 2) speed += (festivalDifficulty / 1.6f - (fishingLevel / 10f)) * minigameDifficulty[screen];
 
+                    if (speed <= 1) speed = 1f;
                     minigameTimer -= (int)(startMinigameScale * speed);
                 }
 
@@ -320,7 +376,7 @@ namespace FishingMinigames
 
                         if (firstArrowLoc.X + arrowData[2] - (6f * scale) >= screenMid.X - (width * 0.464f))//arrow didn't pass end
                         {
-                            float arrowOpacity = opacity > 2.9f ? (bossFish && bossTransparency && i % 10 > 4 ? 0.5f : 1f) : 0f;
+                            float arrowOpacity = opacity > 2.6f ? (bossFish && bossTransparency && i % 10 > 4 ? 0.5f : 1f) : 0f;
 
                             Color color = (arrowData[1] == 2f) ? Color.LimeGreen : ((int)arrowData[1] == 1) ? Color.Orange : (arrowData[1] == -1f) ? Color.Red : (i == minigameData[4]) ? Color.LightPink : minigameColor;
                             batch.Draw(minigameTextures[1], firstArrowLoc + new Vector2((arrowData[2]), 0), new Rectangle((arrowData[0] == 0f || arrowData[0] == 2f) ? 338 : 322, 82, 12, 12),
@@ -494,53 +550,6 @@ namespace FishingMinigames
 
         private void DrawHangman(SpriteBatch batch)
         {
-            if (minigameStage == 1)//fade in (opacity calc)
-            {
-                minigameData[5]++;
-
-                //if (minigameData[5] < 70)
-                //{
-                //    float f = (minigameData[5] / 250f) + 0.01f;
-                //    if (Context.IsSplitScreen) Game1.options.localCoopBaseZoomLevel += f;
-                //    else Game1.options.singlePlayerBaseZoomLevel += f;
-
-                //    Game1.viewport.X = Math.Max(who.getStandingX() - (Game1.viewport.Width / 2), 0);
-                //    Game1.viewport.Y = Math.Max(who.getStandingY() - Math.Min(minigameData[5] * 2, 80) - (Game1.viewport.Height / 2), 0);
-                //}
-                //else 
-                if (minigameData[5] == 300)
-                {
-                    if (fishingFestivalMinigame == 0)
-                    {
-                        data.Helper.Multiplayer.SendMessage((whichFish < 167 || whichFish > 172) ? whichFish : 168, "whichFish", modIDs: new[] { "barteke22.FishingInfoOverlays" }, new[] { who.UniqueMultiplayerID });//notify overlay of which fish
-                    }
-                    Game1.activeClickableMenu = new DummyMenu();
-                    minigameStage = 2;
-                    Game1.playSound("FishHit");
-                }
-            }
-            else if (fishingFestivalMinigame != 0 && festivalTimer <= 2000)
-            {
-                data.Helper.Multiplayer.SendMessage(false, "hideText", modIDs: new[] { "barteke22.FishingInfoOverlays" }, new[] { who.UniqueMultiplayerID });//clear overlay
-                minigameData[5] -= 4;
-                minigameStage = 4;
-                if ((Game1.currentMinigame as FishingGame).perfections == 0)
-                {
-                    if (fishingFestivalMinigame == 1)
-                    {
-                        for (int i = 0; i < minigameData[2] / 30; i++)
-                        {
-                            Game1.CurrentEvent.perfectFishing();
-                        }
-                    }
-                }
-            }
-            float opacity = 0f;
-
-            Texture2D animTexture = Game1.content.Load<Texture2D>("TileSheets\\animations");
-
-
-
             //scale/middle/bounds calculation
             float scale = 7f * startMinigameScale;
             if (fishingFestivalMinigame == 1) scale *= (1f / Game1.options.zoomLevel) * Game1.options.uiScale;
@@ -548,51 +557,7 @@ namespace FishingMinigames
             int height = (int)Math.Round(74f * scale);
             Vector2 screenMid = new Vector2(Game1.graphics.GraphicsDevice.Viewport.Width / 2, Game1.graphics.GraphicsDevice.Viewport.Height / 2);
 
-            Vector2 whoPos = who.getStandingPosition() + new Vector2(-Game1.viewport.X, -110f - Game1.viewport.Y);
-
-            float s = Math.Min(minigameData[5] / 23f, 3f);
-            Vector2 offsetToMid = new Vector2(screenMid.X - whoPos.X + 32f, screenMid.Y - whoPos.Y + 110f);
-            if (fishingFestivalMinigame != 1)
-            {
-                offsetToMid = new Vector2(screenMid.X - Utility.ModifyCoordinateForUIScale(whoPos.X - 32f), screenMid.Y - Utility.ModifyCoordinateForUIScale(whoPos.Y + 110f));
-                whoPos = Utility.ModifyCoordinatesForUIScale(whoPos);
-                s = Utility.ModifyCoordinateForUIScale(s);
-            }
-
-            batch.Draw(animTexture, whoPos + (offsetToMid * 0.05f), new Rectangle(0, 320, 64, 64), Color.White, 0f, new Vector2(30f, 46f), s, SpriteEffects.None, 0.0f);
-            if (minigameData[5] > 15)
-            {
-                batch.Draw(animTexture, whoPos + (offsetToMid * 0.1f) + new Vector2(0f, -10f), new Rectangle(64, 320, 64, 64), Color.White, 0f, new Vector2(33f, 41f), s, SpriteEffects.None, 0.0f);
-            }
-            if (minigameData[5] > 30)
-            {
-                batch.Draw(animTexture, whoPos + (offsetToMid * 0.18f) + new Vector2(0f, -20f), new Rectangle(128, 320, 64, 64), Color.White, 0f, new Vector2(37f, 38f), s, SpriteEffects.None, 0.0f);
-            }
-            if (minigameData[5] > 45)
-            {
-                batch.Draw(animTexture, whoPos + (offsetToMid * 0.4f), new Rectangle(192, 320, 64, 64), Color.White, 0f, new Vector2(32f), s, SpriteEffects.None, 0.0f);
-            }
-            if (minigameData[5] > 70)
-            {
-                opacity = (minigameData[5] - 30) / 100f;
-            }
-
-
-
-            Texture2D cloud = data.Helper.Content.Load<Texture2D>("assets/Textures.png", ContentSource.ModFolder);//  MOVE this and anims above TO TEXTURE array
-            Texture2D cloud2 = Log.ColorizeTexture2D(cloud, Color.Red, new Rectangle(10, 5, 50, 20));
-
-            batch.Draw(cloud, new Rectangle((int)screenMid.X, (int)screenMid.Y + 300, (int)(scale * 162f), (int)(scale * 88f)), new Rectangle(0, 0, 84, 48), Color.White * opacity, 0f, new Vector2(42f, 24f), SpriteEffects.None, 0.1f);
-            batch.Draw(cloud, new Rectangle((int)screenMid.X, (int)screenMid.Y + 0, (int)(scale * 162f), (int)(scale * 88f)), new Rectangle(0, 0, 84, 48), Color.Red * opacity, 0f, new Vector2(42f, 24f), SpriteEffects.None, 0.1f);
-            screenMid.Y -= 300;
-
-            batch.Draw(cloud2, new Rectangle((int)screenMid.X, (int)screenMid.Y, (int)(scale * 162f), (int)(scale * 88f)), new Rectangle(0, 0, 84, 48), Color.White * opacity, 0f, new Vector2(42f, 24f), SpriteEffects.None, 0.1f);
-            ////board
-            //batch.Draw(minigameTextures[0], screenMid, null, minigameColor * Math.Min((opacity / 1.5f), 1f), 0f, new Vector2(69f, 37f), scale, SpriteEffects.None, 0.3f);
-
-
-
-
+            float opacity = DrawIntro(batch, screenMid, scale);//intro
 
             if (minigameData[3] != minigameArrowData.Length)//minigame not done
             {
@@ -604,7 +569,7 @@ namespace FishingMinigames
                 Vector2 textLoc = new Vector2(0f, height * -0.44f);
                 for (int i = 0; i < minigameText.Count; i++)
                 {
-                    DrawStringWithBorder(batch, Game1.smallFont, minigameText[i], screenMid + (textLoc += new Vector2(0f, height * 0.07f)), minigameColor * Math.Min(opacity, 1.5f), 0f, new Vector2(Game1.smallFont.MeasureString(minigameText[i]).X / 2f, 0f), scale * 0.16f, SpriteEffects.None, 0.4f);
+                    DrawStringWithBorder(batch, Game1.smallFont, minigameText[i], screenMid + (textLoc += new Vector2(0f, height * 0.07f)), opacity > 2.6f ? minigameColor * 1.6f : Color.White * Math.Min(opacity, 1.5f), 0f, new Vector2(Game1.smallFont.MeasureString(minigameText[i]).X / 2f, 0f), scale * 0.16f, SpriteEffects.None, 0.4f);
                 }
                 if (fishingFestivalMinigame != 0)
                 {
@@ -625,6 +590,7 @@ namespace FishingMinigames
                     else if (fishingFestivalMinigame == 1) speed += (festivalDifficulty / 2f - (fishingLevel / 10f)) * minigameDifficulty[screen];
                     else if (fishingFestivalMinigame == 2) speed += (festivalDifficulty / 1.6f - (fishingLevel / 10f)) * minigameDifficulty[screen];
 
+                    if (speed <= 1) speed = 1f;
                     minigameTimer -= (int)(startMinigameScale * speed);
                 }
 

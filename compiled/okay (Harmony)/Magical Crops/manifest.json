@@ -1,0 +1,24 @@
+{
+    "Name": "Magical Crops",
+    "Author": "shekurika",
+    "Version": "1.0.6",
+    "MinimumApiVersion": "3.7.0",
+    "Description": "",
+    "UniqueID": "shekurika.MagicalCropsCode",
+	"EntryDll": "MagicalCrops.dll",
+    "UpdateKeys": [],
+	"Dependencies" :[
+		{
+			"UniqueID": "spacechase0.JsonAssets"
+		},
+				{
+			"UniqueID": "DIGUS.MailFrameworkMod"
+		},
+				{
+			"UniqueID": "Pathoschild.ContentPatcher"
+		},
+				{
+			"UniqueID": "Cherry.ShopTileFramework"
+		},
+	]
+}

@@ -8,6 +8,12 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using SVObject = StardewValley.Object;
+
 namespace Randomizer
 {
     /// <summary>
@@ -92,6 +98,7 @@ namespace Randomizer
         SlothSkeletonR = 87,
         StandingGeode = 88,
         ObsidianVase = 89,
+        BoneMill = 90,
         SingingStone = 94,
         StrangeCapsule = 96,
         EmptyCapsule = 98,
@@ -154,6 +161,7 @@ namespace Randomizer
         SolidGoldLewis = 164,
         AutoGrabber = 165,
         DeluxeScarecrow = 167,
+        GeodeCrusher = 182,
         SeasonalPlant1 = 184,
         SeasonalPlant2 = 188,
         SeasonalPlant3 = 192,
@@ -166,21 +174,138 @@ namespace Randomizer
         Telephone = 214,
         MiniFridge = 216,
         CursedPKArcadeSystem = 219,
+        SolarPanel = 231,
         StoneChest = 232,
         MiniObelisk = 238,
         FarmComputer = 239,
         MiniShippingBin = 248,
-        OstrichIncubator = 254,
-        GeodeCrusher = 182,
         CoffeeMaker = 246,
         SewingMachine = 247,
-        SolarPanel = 231,
-        BoneMill = 90,
+        OstrichIncubator = 254,
         JunimoChest = 256,
         HeavyTapper = 264,
         Deconstructor = 265,
         AutoPetter = 272,
         Hopper = 275,
         StatueOfTruePerfection = 280,
+
+        // Big Craftables that don't use integers will get arbitrary negative numbers
+        // DO NOT use these anywhere in the randomizer - use GetId instead
+        Anvil = -10000,
+        BaitMaker,
+        BigChest,
+        BigStoneChest,
+        Dehydrator,
+        DeluxeWormBin,
+        FishSmoker,
+        HeavyFurnace,
+        MiniForge,
+        MushroomLog,
+        StatueOfBlessings,
+        StatueOfTheDwarfKing,
+        TextSign
+    }
+
+    public static class BigCraftableIndexesExtentions
+    {
+        private class BigCraftableIndexData
+        {
+            public static readonly Dictionary<BigCraftableIndexes, string> BigCraftableIndexIdMap = new();
+            public static readonly Dictionary<string, BigCraftableIndexes> IdBigCraftableIndexMap = new();
+
+            public static readonly Dictionary<BigCraftableIndexes, string> NonIntBigCraftableMap = new()
+            {
+                [BigCraftableIndexes.Anvil] = "Anvil",
+                [BigCraftableIndexes.BaitMaker] = "BaitMaker",
+                [BigCraftableIndexes.BigChest] = "BigChest",
+                [BigCraftableIndexes.BigStoneChest] = "BigStoneChest",
+                [BigCraftableIndexes.Dehydrator] = "Dehydrator",
+                [BigCraftableIndexes.DeluxeWormBin] = "DeluxeWormBin",
+                [BigCraftableIndexes.FishSmoker] = "FishSmoker",
+                [BigCraftableIndexes.HeavyFurnace] = "HeavyFurnace",
+                [BigCraftableIndexes.MiniForge] = "MiniForge",
+                [BigCraftableIndexes.MushroomLog] = "MushroomLog",
+                [BigCraftableIndexes.StatueOfBlessings] = "StatueOfBlessings",
+                [BigCraftableIndexes.StatueOfTheDwarfKing] = "StatueOfTheDwarfKing",
+                [BigCraftableIndexes.TextSign] = "TextSign"
+            };
+
+            static BigCraftableIndexData()
+            {
+                Enum.GetValues(typeof(BigCraftableIndexes))
+                    .Cast<BigCraftableIndexes>()
+                    .ToList()
+                    .ForEach(index =>
+                    {
+                        int indexAsInt = (int)index;
+                        string indexAsString = indexAsInt >= 0
+                            ? indexAsInt.ToString()
+                            : NonIntBigCraftableMap[index];
+
+                        BigCraftableIndexIdMap[index] = indexAsString;
+                        IdBigCraftableIndexMap[indexAsString] = index;
+                    });
+            }
+        };
+
+        public static string GetId(this BigCraftableIndexes index) =>
+            BigCraftableIndexData.BigCraftableIndexIdMap[index];
+
+        public static Item GetItem(this BigCraftableIndexes index) =>
+            ItemList.BigCraftableItems[GetId(index)];
+
+        public static BigCraftableIndexes GetBigCraftableIndex(string id) =>
+            BigCraftableIndexData.IdBigCraftableIndexMap[id];
+    }
+
+    public class BigCraftableFunctions
+    {
+        public const string BigCraftableIdPrefix = "(BC)";
+
+        /// <summary>
+        /// Returns whether the given qualified id is for a big craftable
+        /// </summary>
+        /// <param name="id">The id</param>
+        /// <returns>True if the given id is for a big craftable, false otherwise</returns>
+        public static bool IsQualifiedIdForBigCraftable(string id)
+        {
+            return id.StartsWith(BigCraftableIdPrefix);
+        }
+
+        /// <summary>
+        /// Gets the big craftable object from the given index
+        /// </summary>
+        /// <param name="index">The index of the big craftable</param>
+        /// <returns />
+        public static SVObject GetItem(BigCraftableIndexes index)
+        {
+            return new SVObject(Vector2.Zero, index.GetId());
+        }
+
+        /// <summary>
+        /// Gets the qualified id for the given big craftable index
+        /// </summary>
+        /// <param name="index">The index of the big craftable</param>
+        public static string GetQualifiedId(BigCraftableIndexes index)
+        {
+            return $"(BC){index.GetId()}";
+        }
+
+        /// <summary>
+        /// Gets a random furniture's qualified id
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomBigCraftableQualifiedId(RNG rng, List<string> idsToExclude = null)
+        {
+            var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))
+                .Cast<BigCraftableIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
+                .ToList();
+
+            return rng.GetRandomValueFromList(allBigCraftableIds);
+        }
     }
 }

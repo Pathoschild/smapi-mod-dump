@@ -12,7 +12,6 @@
     "Name": "Arcane table",
     "Description": "Table imbued with arcane powers that let it reproduce monster loot.",
     "Price": 50,
-    "ReserveExtraIndexCount": 6,
     "Recipe": {
         "ResultCount": 1,
         "Ingredients": [

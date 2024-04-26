@@ -73,6 +73,14 @@ public static class ColorHelper
         return new Color(ColorList[i], alpha);
     }
 
+    public static Color GetRandomColor(int alpha = 255, int seed = 0)
+    {
+        int i = seed * 26535 % ColorList.Count;
+        if (i < 0)
+            i = -i;
+        return new Color(ColorList[i], alpha);
+    }
+
     /// <summary>
     /// Generates random color that will be unique every time function is called, until color list is exhausted.
     /// After list is exhaused, it is reset

@@ -9,11 +9,7 @@
 *************************************************/
 
 using StardewValley;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Randomizer
 {
@@ -34,6 +30,8 @@ namespace Randomizer
 
     public class DayFunctions
     {
+        private const string ConditionPrefix = "DAY_OF_WEEK";
+
         public static Days GetCurrentDay()
         {
             return (Days)(Game1.Date.TotalDays % 7);
@@ -47,6 +45,47 @@ namespace Randomizer
         public static bool IsWeekend(Days day)
         {
             return day > Days.Friday;
+        }
+
+        /// <summary>
+        /// Gets the appearance condition for the given day
+        /// </summary>
+        /// <param name="day">The day to get the condition for</param>
+        /// <returns>The condition string</returns>
+        public static string GetCondition(Days day)
+        {
+            return $"{ConditionPrefix} {day}";
+        }
+
+        /// <summary>
+        /// Gets the appearance condition for weekdays
+        /// </summary>
+        /// <returns>The condition string</returns>
+        public static string GetConditionForWeekday()
+        {
+            List<Days> weekdays = new()
+            {
+                Days.Monday,
+                Days.Tuesday,
+                Days.Wednesday,
+                Days.Thursday,
+                Days.Friday
+            };
+            return $"{ConditionPrefix} {string.Join(" ", weekdays)}";
+        }
+
+        /// <summary>
+        /// Gets the appearance condition for weekends
+        /// </summary>
+        /// <returns>The condition string</returns>
+        public static string GetConditionForWeekend()
+        {
+            List<Days> weekends = new()
+            {
+                Days.Saturday,
+                Days.Sunday
+            };
+            return $"{ConditionPrefix} {string.Join(" ", weekends)}";
         }
     }
 }

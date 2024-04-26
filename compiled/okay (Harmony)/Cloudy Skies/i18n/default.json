@@ -1,0 +1,17 @@
+{
+	"mod.name": "Cloudy Skies",
+
+	"setting.weather-tooltip": "Show Weather Tool-tip",
+	"setting.weather-tooltip.about": "When enabled, a tool-tip will display when you hover over the clock's weather icon with the name of the current weather conditions.",
+
+	"setting.debug": "Show Debug Timing",
+	"setting.debut.about": "When enabled, a timer will display on screen showing how much time was spent updating and rendering the weather. This can be useful to make sure you don't go too overboard when creating custom weather conditions.",
+
+	"weather.sunny": "Sunny",
+	"weather.rain": "Rain",
+	"weather.debris": "Windy",
+	"weather.lightning": "Thunderstorms",
+	"weather.festival": "Sunny",
+	"weather.snow": "Snow",
+	"weather.green": "Green Rain"
+}

@@ -16,23 +16,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.API
 {
     public class GenericModConfigMenuHandler
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-        public static ModConfig Config;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-            Config = ModEntry.Config;
-
             Helper.Events.GameLoop.GameLaunched += gameLaunched;
         }
 
@@ -43,13 +36,13 @@ namespace Unlockable_Bundles.API
                 return;
 
             configMenu.Register(
-                mod: Mod.ModManifest,
+                mod: ModManifest,
                 reset: () => Config = new ModConfig(),
                 save: () => Helper.WriteConfig(ModEntry.Config)
             );
 
             configMenu.AddNumberOption(
-                mod: Mod.ModManifest,
+                mod: ModManifest,
                 name: () => "Scroll Delay",
                 getValue: () => Config.ScrollDelay,
                 setValue: value => Config.ScrollDelay = value,
@@ -59,7 +52,7 @@ namespace Unlockable_Bundles.API
             );
 
             configMenu.AddNumberOption(
-                mod: Mod.ModManifest,
+                mod: ModManifest,
                 name: () => "Max Cost Name Characters",
                 getValue: () => Config.ScrollCharacterLength,
                 setValue: value => Config.ScrollCharacterLength = value,

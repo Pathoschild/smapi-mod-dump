@@ -8,14 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Runtime.Loader;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -24,7 +19,7 @@ namespace StardewVariableSeasons
     {
         public static int ChangeDate;
         public static int CropSurvivalCounter;
-        public static string SeasonByDay;
+        public static Season SeasonByDay;
         
         public override void Entry(IModHelper helper)
         {
@@ -42,7 +37,8 @@ namespace StardewVariableSeasons
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.IsFestPrefix))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
 
             harmony.Patch(
@@ -71,28 +67,26 @@ namespace StardewVariableSeasons
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "getStartTimeOfFestival"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), "isBirthday"),
-                prefix: new HarmonyMethod(typeof(NPCBirthdayFixes), nameof(NPCBirthdayFixes.Prefix))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             harmony.Patch(
-                original: AccessTools.Method(typeof(NPC), "receiveGift"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
-            );
-            
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Crop), "Kill"),
-                prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix))
+                original: AccessTools.Method(typeof(Crop), "IsInSeason", new [] { typeof(GameLocation) }),
+                prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix)),
+                postfix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Postfix))
             );
 
-            harmony.Patch(
+            /*harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Locations.SeedShop), "addStock"),
                 prefix: new HarmonyMethod(typeof(ShopStockPatches), nameof(ShopStockPatches.Prefix))
-            );
+            );*/
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Menus.Billboard), "draw", new [] { typeof(SpriteBatch) }),

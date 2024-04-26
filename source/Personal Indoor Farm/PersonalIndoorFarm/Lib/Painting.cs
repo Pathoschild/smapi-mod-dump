@@ -20,25 +20,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     internal class Painting
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public const string ItemId = "DLX.PIF_Painting";
         public const string QualifiedItemId = "(F)" + ItemId;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
-            var harmony = new Harmony(Mod.ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
             
             harmony.Patch(
                 original: AccessTools.DeclaredMethod(typeof(Furniture), nameof(Furniture.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),

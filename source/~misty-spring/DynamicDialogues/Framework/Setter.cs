@@ -30,7 +30,7 @@ internal static class Setter
     private static List<(string, string, string)> Patched => ModEntry.AlreadyPatched;
     private static Dictionary<string, List<QuestionData>> Question => ModEntry.Questions;
     private static Dictionary<string, List<DialogueData>> Dialog => ModEntry.Dialogues;
-    private static Dictionary<string, List<string>> RandomDialogue => ModEntry.RandomPool;
+    private static Dictionary<string, List<string>> RandomDialogues => ModEntry.RandomPool;
     private static List<NotificationData> Notifications => ModEntry.Notifs;
     private static IMonitor Monitor => ModEntry.Mon;
     private static IModHelper Helper => ModEntry.Help;
@@ -44,24 +44,21 @@ internal static class Setter
         if (e.NewTime % 30 == 0)
         {
             // ReSharper disable once PossibleNullReferenceException
-            foreach (var name in RandomDialogue?.Keys)
+            foreach (var name in RandomDialogues?.Keys)
             {
                 var who = Game1.getCharacterFromName(name);
                 //if there's already dialogue
                 if (who?.CurrentDialogue?.Count != 0) continue;
-                
+
                 //if not in player location, we don't add it to avoid clutter
-                if (!who.currentLocation.Equals(Game1.player.currentLocation)) continue;
-                
-                if (RandomDialogue == null) continue;
-                
-                var random = RandomDialogue(RandomDialogue[name], name);
-                if (random == null)
+                if (!who.currentLocation.Equals(Game1.player.currentLocation)) 
                     continue;
 
-                who.setNewDialogue(random, true, true);
-
-                //who.Dialogue.Add(new QuestionData(who,null,random));
+                if (RandomDialogues == null || RandomDialogues.Any() == false) 
+                    continue;
+                
+                var random = RandomDialogue(RandomDialogues[name], name);
+                SetNewDialogue(who, random, true, true);
             }
         }
         
@@ -207,7 +204,7 @@ internal static class Setter
                     else
                     {
                         //set new dialogue, log to trace
-                        chara.setNewDialogue(d.Dialogue, true, d.ClearOnMove);
+                        SetNewDialogue(chara, d.Dialogue, true, d.ClearOnMove);
                     }
                 }
                 Log($"Adding dialogue for {patch.Key} at {e.NewTime}, in {chara.currentLocation.Name}");
@@ -288,6 +285,9 @@ internal static class Setter
             chara.setNewDialogue(new Question(chara, qna));
         }
     }
+
+    private static void SetNewDialogue(NPC who, string text, bool add, bool clearOnMove) =>
+        who.setNewDialogue(new Dialogue(who, null, text), add, clearOnMove);
 
     internal static void OnAssetRequest(object sender, AssetRequestedEventArgs e)
     {
@@ -394,7 +394,7 @@ internal static class Setter
 
     private static void GetDialogues(string name)
     {
-        RandomDialogue.Remove(name);
+        RandomDialogues.Remove(name);
 
         var dialogues = Helper.GameContent.Load<Dictionary<string, string>>($"Characters/Dialogue/{name}");
 
@@ -413,7 +413,7 @@ internal static class Setter
         //dont add npcs with no dialogue
         if (texts.Count != 0)
         {
-            RandomDialogue.Add(name, texts);
+            RandomDialogues.Add(name, texts);
         }
     }
 

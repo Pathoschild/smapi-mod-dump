@@ -9,10 +9,8 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.GameData.SpecialOrders;
 using StardewValley.Menus;
 using StardewValley.SpecialOrders;
 using System;
@@ -78,7 +76,7 @@ namespace EscasModdingPlugins
         {
             try
             {
-                if (action == null || __result || !who.IsLocalPlayer) //if this action is null, already performed successfully, or NOT performed by the local player
+                if (action == null || action.Length < 1 || __result || !who.IsLocalPlayer) //if this action is null, has no value, was already performed successfully, or not performed by the local player
                     return; //do nothing
 
                 if (action[0].Equals(ShortActionName, StringComparison.OrdinalIgnoreCase) || action[0].Equals(ActionName, StringComparison.OrdinalIgnoreCase)) //if this action's first parameter is "CustomBoard" or "Esca.EMP/CustomBoard"...

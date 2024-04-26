@@ -1,0 +1,16 @@
+{
+  "InnateEnchantment_1_range": [ "DefenseEnchantment", "LightweightEnchantment", "SlimeGathererEnchantment" ],
+  "InnateEnchantment_2_range": [ "AttackEnchantment", "CritEnchantment", "WeaponSpeedEnchantment", "SlimeSlayerEnchantment", "CritPowerEnchantment" ],
+  "InnateEnchantment_Sword": {
+    "InnateEnchantment_1_list": [ "DefenseEnchantment" ],
+    "InnateEnchantment_2_list": [ "AttackEnchantment" ]
+  },
+  "InnateEnchantment_Club": {
+    "InnateEnchantment_1_list": [ "LightweightEnchantment" ],
+    "InnateEnchantment_2_list": [ "WeaponSpeedEnchantment" ]
+  },
+  "InnateEnchantment_Dagger": {
+    "InnateEnchantment_1_list": [ "DefenseEnchantment" ],
+    "InnateEnchantment_2_list": [ "CritEnchantment", "CritPowerEnchantment" ]
+  }
+}

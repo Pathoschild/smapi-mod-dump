@@ -1,0 +1,276 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "2.0",
+    "ConfigSchema": {
+        "Coal1To39": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.01",
+            "Section": "Normal Coal",
+            "Description": "How many of the stones should become coal stones on mine leves 0 to 20. 0.01 is 1 percent coal stones."
+        },
+        "Coal40To79": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.02",
+            "Section": "Normal Coal",
+            "Description": "How many of the stones should become coal stones on mine leves 21 to 39. 0.01 is 1 percent coal stones."
+        },
+        "Coal80To119": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.02",
+            "Section": "Normal Coal",
+            "Description": "How many of the stones should become coal stones on mine leves 21 to 39. 0.01 is 1 percent coal stones."
+        },
+        "Coal121To170": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.03",
+            "Section": "Normal Coal",
+            "Description": "How many of the stones should become coal stones in the Skull Cavern levels 1-50, 0.01 is 1 percent coal stones."
+        }, 
+        "CoalQuarryDungeon": {
+            "AllowValues": "0.00, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1",
+            "Default": "0.08",
+            "Section": "Normal Coal",
+            "Description": "How many of the stones should become coal stones in the Quarry Dungeon, 0.01 is 1 percent coal stones."
+        },
+        //pure coal
+        "PureCoal1to39": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.00",
+            "Section": "Pure Coal",
+            "Description": "How many of the stones should become pure coal stones on mine leves 1 to 39. 0.01 is 1 percent coal stones."
+        },
+        "PureCoal40to79": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.01",
+            "Section": "Pure Coal",
+            "Description": "How many of the stones should become pure coal stones on mine leves 40 to 80. 0.01 is 1 percent coal stones."
+        },
+        "PureCoal80to119": {
+            "AllowValues": "0.00, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05",
+            "Default": "0.01",
+            "Section": "Pure Coal",
+            "Description": "How many of the stones should become pure coal stones on mine leves 81 to 119. 0.01 is 1 percent coal stones."
+        },
+        "PureCoal171to999": {
+            "AllowValues": "0.00, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1",
+            "Default": "0.05",
+            "Section": "Pure Coal",
+            "Description": "How many of the stones should become pure coal stones in the Skull Cavern levels 70+. 0.01 is 1 percent coal stones."
+        },
+        //prismatic stone
+        "PrismaticStoneSkull": {
+            "AllowValues": "0.00, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01",
+            "Default": "0.003",
+            "Section": "Prismatic Stone",
+            "Description": "How many of the stones should become prismatic stones in Skull Cavern levels 70+. 0.001 is .1 percent prismatic stones."
+        }
+    },
+    "Changes": [
+        {
+            "LogName": "Add resource",
+            "Action": "EditData",
+            "Target": "Mods/mistyspring.ItemExtensions/Resources",
+            "Entries": {
+                //normal coal
+                "{{ModId}}_Coal": {
+                    "Name": "{{ModId}}_Coal",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_NodeWithCoal_Name]",//"[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This stone is rich in coal.",
+                    "Texture": "Mods/{{ModId}}/CoalStone",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 3,
+                    "ItemDropped": "(O)382",
+                    "MinDrops": 1,
+                    "MaxDrops": 2,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)382",
+                            "MaxItems": 1,
+                            "Chance": 0.5
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 8,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "1/39",
+                            "SpawnFrequency": "{{Coal1To39}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "40/79",
+                            "SpawnFrequency": "{{Coal40To79}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "80/119",
+                            "SpawnFrequency": "{{Coal80To119}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "121/170",
+                            "SpawnFrequency": "{{Coal121To170}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "77377",
+                            "SpawnFrequency": "{{CoalQuarryDungeon}}",
+                            "Type": "All"
+                        }
+                    ]
+                },
+                //pure coal
+                "{{ModId}}_PureCoal": {
+                    "Name": "{{ModId}}_PureCoal",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_NodeWithCoal_Name]",
+                    "Description": "This looks like pure Coal.",
+                    "Texture": "Mods/{{ModId}}/CoalPure",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 8,
+                    "ItemDropped": "(O)382",
+                    "MinDrops": 3,
+                    "MaxDrops": 5,
+                    "ExtraItems": [
+                        {
+                            "ItemId": "(O)382",
+                            "MaxItems": 2,
+                            "Chance": 0.5
+                        }
+                    ],
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 12,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "1/39",
+                            "SpawnFrequency": "{{PureCoal1to39}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "40/79",
+                            "SpawnFrequency": "{{PureCoal40to79}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "80/119",
+                            "SpawnFrequency": "{{PureCoal80to119}}",
+                            "Type": "All"
+                        },
+                        {
+                            "Floors": "171/999",
+                            "SpawnFrequency": "{{PureCoal171To999}}",
+                            "Type": "All"
+                        }
+                    ]
+                },
+                //Prismatic stone
+                "NormanPCN.PrismaticStone": {
+                    "Name": "NormanPCN.PrismaticStone",
+                    "DisplayName": "[LocalizedText Strings\\Objects:Stone_Name]",
+                    "Description": "This stone shines like stardust.",
+                    "Texture": "Mods/{{ModId}}/PrismaticStone",
+                    "SpriteIndex": 0,
+                    "Width": 1,
+                    "Height": 1,
+                    "Health": 18,
+                    "ItemDropped": "(O)74",
+                    "MinDrops": 1,
+                    "MaxDrops": 1,
+                    "Debris": "stone",
+                    "FailSounds": [
+                        "clubhit",
+                        "clank"
+                    ],
+                    "BreakingSound": "stoneCrack",
+                    "Sound": "hammer",
+                    "AddHay": 0,
+                    "SecretNotes": true,
+                    "Shake": true,
+                    "CountTowards": "None",
+                    "Tool": "Pickaxe",
+                    "SayWrongTool": null,
+                    "MinToolLevel": 0,
+                    "Exp": 48,
+                    "Skill": "mining",
+                    "ContextTags": [],
+                    "CustomFields": {},
+                    "Light": null,
+                    "OnDestroy": null,
+                    "MineSpawns": [
+                        {
+                            "Floors": "191/999",
+                            "SpawnFrequency": "{{PrismaticStoneSkull}}",
+                            "Type": "All"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/CoalStone",
+            "FromFile": "assets/CoalStone.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/CoalPure",
+            "FromFile": "assets/CoalPure.png"
+        },
+        {
+            "LogName": "Add resource image",
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/PrismaticStone",
+            "FromFile": "assets/PrismaticStone.png"
+        }
+    ]
+}

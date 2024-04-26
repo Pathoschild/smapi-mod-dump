@@ -1,0 +1,279 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Add Dehydrator rules for Tea",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)Dehydrator",
+                "OutputRules"
+            ],
+            "Entries": {
+                "{{ModId}}_Goji_Berry": {
+                    "Id": "{{ModId}}_Goji_Berry",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O){{ModId}}_Goji_Berry",
+                            "RequiredCount": 3
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Dried_Goji_Berries",
+                            "ItemId": "(O){{ModId}}_Dried_Goji_Berries",
+                            "MinStack": 1,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 4.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 40
+                },
+                "{{ModId}}_Lotus_Seeds": {
+                    "Id": "{{ModId}}_Lotus_Seeds",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O){{ModId}}_Lotus_Seeds",
+                            "RequiredCount": 1
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Dried_Lotus_Seeds",
+                            "ItemId": "(O){{ModId}}_Dried_Lotus_Seeds",
+                            "MinStack": 1,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 30
+                },
+                "{{ModId}}_Cassia_Flower": {
+                    "Id": "{{ModId}}_Cassia_Flower",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O){{ModId}}_Cassia_Flower",
+                            "RequiredCount": 1
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Cassia_Seeds",
+                            "ItemId": "(O){{ModId}}_Cassia_Seeds",
+                            "MinStack": 5,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 15
+                },
+                "{{ModId}}_Orange_Peel": {
+                    "Id": "{{ModId}}_Orange_Peel",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O){{ModId}}_Orange_Peel",
+                            "RequiredCount": 1
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Dried_Orange_Peel",
+                            "ItemId": "(O){{ModId}}_Dried_Orange_Peel",
+                            "MinStack": 3,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 20
+                },
+                "{{ModId}}_Sugarcane": {
+                    "Id": "{{ModId}}_Sugarcane",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O){{ModId}}_Sugarcane",
+                            "RequiredCount": 1
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Rock_Sugar",
+                            "ItemId": "(O){{ModId}}_Rock_Sugar",
+                            "MinStack": 3,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 50
+                }
+            }
+        },
+        {
+            "LogName": "Add Compatibility Dehydrator rules for Tea",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)Dehydrator",
+                "OutputRules"
+            ],
+            "When": {
+                "HasMod |contains=Cornucopia.MoreCrops": true
+            },
+            "Entries": {
+                "{{ModId}}_CC_Sugarcane": {
+                    "Id": "{{ModId}}_CC_Sugarcane",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O)Cornucopia_Sugarcane",
+                            "RequiredCount": 1
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Rock_Sugar",
+                            "ItemId": "(O){{ModId}}_Rock_Sugar",
+                            "MinStack": 3,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 50
+                }
+            }
+        },
+        {
+            "LogName": "Add Compatibility Dehydrator rules for Tea",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)Dehydrator",
+                "OutputRules"
+            ],
+            "When": {
+                "HasMod |contains=Cornucopia.MoreFlowers": true
+            },
+            "Entries": {
+                "{{ModId}}_CC_Lotus_Seeds": {
+                    "Id": "{{ModId}}_CC_Lotus_Seeds",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O)Cornucopia_LotusSeeds",
+                            "RequiredCount": 1
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Dried_Lotus_Seeds",
+                            "ItemId": "(O){{ModId}}_Dried_Lotus_Seeds",
+                            "MinStack": 1,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 1.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 30
+                }
+            }
+        },
+        {
+            "LogName": "Overwrite Dehydrator rules for Tea",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [
+                "(BC)Dehydrator",
+                "OutputRules"
+            ],
+            "When": {
+                "CustomDehydratorRules": true
+            },
+            "Entries": {
+                "{{ModId}}_Strawberry": {
+                    "Id": "{{ModId}}_Strawberry",
+                    "Triggers": [
+                        {
+                            "Trigger": "ItemPlacedInMachine",
+                            "RequiredItemId": "(O)400",
+                            "RequiredCount": 3
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "{{ModId}}_Dried_Strawberries",
+                            "ItemId": "(O){{ModId}}_Dried_Strawberries",
+                            "MinStack": 1,
+                            "CopyQuality": true,
+                            "CopyPrice": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 4.25
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 60
+                }
+            },
+            "MoveEntries": [
+                { "ID": "{{ModId}}_Strawberry", "BeforeID": "DriedFruit" },
+                { "ID": "{{ModId}}_Goji_Berry", "BeforeID": "DriedFruit" }
+            ]
+        }
+    ]
+}

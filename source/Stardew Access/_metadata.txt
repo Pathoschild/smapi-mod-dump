@@ -6,13 +6,13 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 2bca9b0a8e9525e422be2572519d53c9a50f8ea0
+   commit f5c527800cd6d8297f99d47b2189398fa7d4ea77
    Author: Mohammad Shoaib Khan <khanshoaibpers@outlook.com>
-   Date:   Mon Apr 1 00:49:23 2024 +0530
+   Date:   Thu Apr 25 21:37:54 2024 +0530
    
-       âœ¨ :bug: Add item sell price and fix tile info menu
+       ðŸŒ Patch Bobber Machine in fish shop
        
-       - Added speaking hovered inventory item's sell price if the player has received the
-         price catalogue book; closes #293
-       - Fixed tile info menu not opening; closes #286
+       - The bobber styles have not been correctly described, waiting for Kat
+         and JJ :)
+       related to #272
    

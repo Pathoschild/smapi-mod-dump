@@ -78,6 +78,7 @@ namespace ContentPatcher.Framework.Migrations
                 {
                     int fieldCount = RuntimeMigrationHelper.CountFields(fromEntry, '/');
 
+                    // copy name into display name
                     if (fieldCount == 6)
                     {
                         string name = fromEntry[..fromEntry.IndexOf('/')];

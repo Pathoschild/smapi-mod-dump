@@ -12,14 +12,13 @@ using Microsoft.Xna.Framework;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Spawn_Monsters.Monsters
 {
-    public class MonsterData
-    {
+    public class MonsterData {
 
-        public enum Monster
-        {
+        public enum Monster {
             GreenSlime,
             BlueSlime,
             RedSlime,
@@ -73,92 +72,414 @@ namespace Spawn_Monsters.Monsters
             StickBug,
             TigerSlime,
             MagmaDuggy,
-            PrismaticSlime
+            PrismaticSlime,
+            IridiumGolem
         }
 
-        private static readonly Dictionary<Monster, MonsterData> data = new Dictionary<Monster, MonsterData>() {
-            { Monster.GreenSlime, new MonsterData("Green Slime", typeof(GreenSlime), new object[]{ null, 0 }, "Green Slime", 16, 24, 0, 4, 100, Color.Lime) },
-            { Monster.BlueSlime, new MonsterData("Frost Jelly", typeof(GreenSlime), new object[]{ null, 40 }, "Green Slime", 16, 24, 0, 4, 100, Color.DarkTurquoise) },
-            { Monster.RedSlime, new MonsterData("Red Sludge", typeof(GreenSlime), new object[]{ null, 80 }, "Green Slime", 16, 24, 0, 4, 100, Color.Red) },
-            { Monster.PurpleSlime, new MonsterData("Purple Sludge", typeof(GreenSlime), new object[]{ null, 121 }, "Green Slime", 16, 24, 0, 4, 100, Color.Purple) },
-            { Monster.YellowSlime, new MonsterData("Yellow Slime", typeof(GreenSlime), new object[]{ null, new Color(255,255,50) }, "Green Slime", 16, 24, 0, 4, 100, Color.Yellow) },
-            { Monster.BlackSlime, new MonsterData("Black Slime", typeof(GreenSlime), new object[]{ null, null }, "Green Slime", 16, 24, 0, 4, 100, Color.Black) },
-            { Monster.GraySlime, new MonsterData("Gray Sludge", typeof(GreenSlime), new object[]{ null, 77377 }, "Green Slime", 16, 24, 0, 4, 100, Color.Gray) },
+        static MonsterData() {
 
-            { Monster.Bat, new MonsterData("Bat", typeof(Bat), new object[] { null }, "Bat") },
-            { Monster.FrostBat, new MonsterData("Frost Bat", typeof(Bat), new object[] { null, 40 }, "Frost Bat") },
-            { Monster.LavaBat, new MonsterData("Lava Bat", typeof(Bat), new object[] { null, 80 }, "Lava Bat")},
-            { Monster.IridiumBat, new MonsterData("Iridium Bat", typeof(Bat), new object[] { null, 171}, "Iridium Bat") },
-            { Monster.HauntedSkull, new MonsterData("Haunted Skull", typeof(Bat), new object[] { null, 77377 }, "Haunted Skull", 16, 16, 4, 2)},
-            { Monster.CursedDoll, new MonsterData("Cursed Doll", typeof(Bat), new object[] { null, -666 }, "", 16, 16) },
+            var slimeBuilder = new Builder()
+                .WithMonsterType(typeof(GreenSlime))
+                .WithTextureName("Green Slime");
 
-            { Monster.Bug, new MonsterData("Bug", typeof(Bug), new object[] { null, 0 }, "Bug", 16, 16) },
-            { Monster.ArmoredBug, new MonsterData("Armored Bug", typeof(Bug), new object[] { null, 121 }, "Armored Bug", 16, 16) },
+            data.Add(Monster.GreenSlime, slimeBuilder
+                .WithDisplayname("Green Slime")
+                .WithSecondConstructorArg(0)
+                .WithTextureColor(Color.Lime)
+                .Build());
 
-            { Monster.Duggy, new MonsterData("Duggy", typeof(DuggyFixed), new object[] { null }, "Duggy", 16, 24, 0, 9) },
+            data.Add(Monster.BlueSlime, slimeBuilder
+                .WithDisplayname("Frost Jelly")
+                .WithSecondConstructorArg(40)
+                .WithTextureColor(Color.DarkTurquoise)
+                .Build());
 
-            { Monster.DustSpirit, new MonsterData("Dust Sprite", typeof(DustSpirit), new object[] { null }, "Dust Spirit") },
+            data.Add(Monster.RedSlime, slimeBuilder
+                .WithDisplayname("Red Sludge")
+                .WithSecondConstructorArg(80)
+                .WithTextureColor(Color.Red)
+                .Build());
 
-            { Monster.Fly, new MonsterData("Cave Fly", typeof(Fly), new object[] { null }, "Fly") },
-            { Monster.MutantFly, new MonsterData("Mutant Fly", typeof(Fly), new object[] { null, true }, "Fly", 16, 24, 0, 4, 100, Color.Lime) },
+            data.Add(Monster.PurpleSlime, slimeBuilder
+                .WithDisplayname("Purple Sludge")
+                .WithSecondConstructorArg(121)
+                .WithTextureColor(Color.Purple)
+                .Build());
 
-            { Monster.Ghost, new MonsterData("Ghost", typeof(Ghost), new object[] { null }, "Ghost") },
-            { Monster.CarbonGhost, new MonsterData("Carbon Ghost", typeof(Ghost), new object[] { null, "Carbon Ghost" }, "Carbon Ghost") },
+            data.Add(Monster.YellowSlime, slimeBuilder
+                .WithDisplayname("Yellow Slime")
+                .WithSecondConstructorArg(new Color(255, 255, 50))
+                .WithTextureColor(Color.Yellow)
+                .Build());
 
-            { Monster.Grub, new MonsterData("Grub", typeof(Grub), new object[] { null }, "Grub") },
-            { Monster.MutantGrub, new MonsterData("Mutant Grub", typeof(Grub), new object[] { null, true }, "Grub", 16, 24, 0, 4, 100, Color.Lime) },
+            data.Add(Monster.BlackSlime, slimeBuilder
+                .WithDisplayname("Black Slime")
+                .WithSecondConstructorArg(null)
+                .WithTextureColor(Color.Black)
+                .Build());
 
-            { Monster.MetalHead, new MonsterData("Metal Head", typeof(MetalHead), new object[] { null, 80 }, "Metal Head", 16, 16) },
+            data.Add(Monster.GraySlime, slimeBuilder
+                .WithDisplayname("Gray Sludge")
+                .WithSecondConstructorArg(77377)
+                .WithTextureColor(Color.Gray)
+                .Build());
 
-            { Monster.Mummy, new MonsterData("Mummy", typeof(Mummy), new object[] { null }, "Mummy", 16, 32) },
+            data.Add(Monster.TigerSlime, slimeBuilder
+                .WithDisplayname("Tiger Slime")
+                .WithTextureName("Tiger Slime")
+                .WithSecondConstructorArg(0)
+                .Build());
 
-            { Monster.RockCrab, new MonsterData("Rock Crab", typeof(RockCrab), new object[] { null }, "Rock Crab") },
-            { Monster.LavaCrab, new MonsterData("Lava Crab", typeof(LavaCrab), new object[] { null }, "Lava Crab") },
-            { Monster.IridiumCrab, new MonsterData("Iridium Crab", typeof(RockCrab), new object[] { null, "Iridium Crab" }, "Iridium Crab") },
+            data.Add(Monster.PrismaticSlime, slimeBuilder
+                .WithDisplayname("Prismatic Slime")
+                .WithSecondConstructorArg(0)
+                .Build());
 
-            { Monster.StoneGolem, new MonsterData("Stone Golem", typeof(RockGolem), new object[] { null }, "Stone Golem") },
-            { Monster.WildernessGolem, new MonsterData("Wilderness Golem", typeof(RockGolem), new object[] { null, 5 }, "Wilderness Golem") },
+            var batBuilder = new Builder()
+                .WithMonsterType(typeof(Bat));
 
-            { Monster.PepperRex, new MonsterData("Pepper Rex", typeof(DinoMonster), new object[] { null }, "Pepper Rex", 32, 32) },
+            data.Add(Monster.Bat, batBuilder
+                .WithDisplayname("Bat")
+                .WithTextureName("Bat")
+                .Build());
 
-            { Monster.BigSlime, new MonsterData("Big Slime", typeof(BigSlime), new object[]{ null, 0 }, "Big Slime", 32, 32, 0, 4, 100, Color.Lime)},
+            data.Add(Monster.FrostBat, batBuilder
+                .WithDisplayname("Frost Bat")
+                .WithTextureName("Frost Bat")
+                .WithSecondConstructorArg(40)
+                .Build());
 
-            { Monster.Serpent, new MonsterData("Serpent", typeof(Serpent), new object[] { null }, "Serpent", 32, 32, 0, 9) },
+            data.Add(Monster.LavaBat, batBuilder
+                .WithDisplayname("Lava Bat")
+                .WithTextureName("Lava Bat")
+                .WithSecondConstructorArg(80)
+                .Build());
 
-            { Monster.ShadowBrute, new MonsterData("Shadow Brute", typeof(ShadowBrute), new object[] { null }, "Shadow Brute", 16, 32) },
-            { Monster.ShadowShaman, new MonsterData("Shadow Shaman", typeof(ShadowShaman), new object[] { null }, "Shadow Shaman") },
+            data.Add(Monster.IridiumBat, batBuilder
+                .WithDisplayname("Iridium Bat")
+                .WithTextureName("Iridium Bat")
+                .WithSecondConstructorArg(171)
+                .Build());
 
-            { Monster.Skeleton, new MonsterData("Skeleton", typeof(Skeleton), new object[] { null, false }, "Skeleton", 16, 32) },
+            data.Add(Monster.HauntedSkull, batBuilder
+                .WithDisplayname("Haunted Skull")
+                .WithTextureName("Haunted Skull")
+                .WithSecondConstructorArg(77377)
+                .WithTextureHeight(16)
+                .AnimationStartingAtFrame(4)
+                .AnimationLastsFor(2)
+                .Build());
 
-            { Monster.SquidKid, new MonsterData("Squid Kid", typeof(SquidKid), new object[] { null }, "Squid Kid", 16, 16) },
+            data.Add(Monster.CursedDoll, batBuilder
+                .WithDisplayname("Cursed Doll")
+                .WithSecondConstructorArg(-666)
+                .WithTextureHeight(16)
+                .Build());
 
 
-            { Monster.DwarvishSentry, new MonsterData("Dwarvish Sentry", typeof(DwarvishSentry), new object[] { null }, "Dwarvish Sentry", 16, 16) },
-            { Monster.FalseMagmaCap, new MonsterData("False Magma Cap", typeof(RockCrab), new object[] { null, "False Magma Cap" }, "False Magma Cap") },
-            { Monster.HotHead, new MonsterData("Hot Head", typeof(HotHead), new object[] { null }, "Hot Head", 16, 16) },
-            { Monster.LavaLurk, new MonsterData("Lava Lurk", typeof(LavaLurk), new object[] { null }, "Lava Lurk", 16, 16) },
-            { Monster.MagmaSprite, new MonsterData("Magma Sprite", typeof(Bat), new object[] { null, -555 }, "Magma Sprite", 16, 16) },
-            { Monster.StickBug, new MonsterData("Stick Bug", typeof(RockCrab), new object[] { null }, "Stick Bug") },
-            { Monster.MagmaSparker, new MonsterData("Magma Sparker", typeof(Bat), new object[] { null, -556 }, "Magma Sparker", 16, 16) },
-            { Monster.MagmaDuggy, new MonsterData("Magma Duggy", typeof(DuggyFixed), new object[] {null, true }, "Magma Duggy")},
-            { Monster.Spiker, new MonsterData("Spiker", typeof(Spiker), new object[] { null, 0 }, "Spiker", 16, 16) },
-            { Monster.TigerSlime, new MonsterData("Tiger Slime", typeof(GreenSlime), new object[] { null, 0 }, "Tiger Slime")},
+            data.Add(Monster.MagmaSprite, new Builder()
+                .WithMonsterType(typeof(Bat))
+                .WithDisplayname("Magma Sprite")
+                .WithTextureName("Magma Sprite")
+                .WithTextureHeight(16)
+                .WithSecondConstructorArg(-555)
+                .Build());
+
+            data.Add(Monster.MagmaSparker, new Builder()
+                .WithMonsterType(typeof(Bat))
+                .WithDisplayname("Magma Sparker")
+                .WithTextureName("Magma Sparker")
+                .WithTextureHeight(16)
+                .WithSecondConstructorArg(-556)
+                .Build());
+
+            var bugBuilder = new Builder()
+                .WithMonsterType(typeof(Bug))
+                .WithTextureHeight(16);
+
+            data.Add(Monster.Bug, bugBuilder
+                .WithDisplayname("Bug")
+                .WithTextureName("Bug")
+                .WithSecondConstructorArg(0)
+                .Build());
+
+            data.Add(Monster.ArmoredBug, bugBuilder
+                .WithDisplayname("Armored Bug")
+                .WithTextureName("Armored Bug")
+                .WithSecondConstructorArg(121)
+                .Build());
+
+            data.Add(Monster.Duggy, new Builder()
+                .WithMonsterType(typeof(DuggyFixed))
+                .WithDisplayname("Duggy")
+                .WithTextureName("Duggy")
+                .AnimationLastsFor(9)
+                .Build());
+
+            data.Add(Monster.DustSpirit, new Builder()
+                .WithMonsterType(typeof(DustSpirit))
+                .WithDisplayname("Dust Sprite")
+                .WithTextureName("Dust Spirit")
+                .Build());
+
+            var flyBuilder = new Builder()
+                .WithMonsterType(typeof(Fly))
+                .WithTextureName("Fly");
+
+            data.Add(Monster.Fly, flyBuilder
+                .WithDisplayname("Cave Fly")
+                .Build());
+
+            data.Add(Monster.MutantFly, flyBuilder
+                .WithDisplayname("Mutant Fly")
+                .WithTextureColor(Color.Lime)
+                .WithSecondConstructorArg(true)
+                .Build());
+
+            var ghostBuilder = new Builder()
+                .WithMonsterType(typeof(Ghost));
+
+            data.Add(Monster.Ghost, ghostBuilder
+                .WithTextureName("Ghost")
+                .WithDisplayname("Ghost")
+                .Build());
+
+            data.Add(Monster.CarbonGhost, ghostBuilder
+                .WithTextureName("Carbon Ghost")
+                .WithDisplayname("Carbon Ghost")
+                .WithSecondConstructorArg("Carbon Ghost")
+                .Build());
+
+            data.Add(Monster.PutridGhost, ghostBuilder
+                .WithDisplayname("Putrid Ghost")
+                .WithTextureName("Putrid Ghost")
+                .WithSecondConstructorArg("Putrid Ghost")
+                .Build());
+
+            var grubBuilder = new Builder()
+                .WithMonsterType(typeof(Grub))
+                .WithTextureName("Grub");
 
 
-            { Monster.Shooter, new MonsterData("Shadow Sniper", typeof(Shooter), new object[] { null }, "Shadow Sniper", 32, 32) },
-            { Monster.SkeletonMage, new MonsterData("Skeleton Mage", typeof(Skeleton), new object[] { null, true }, "Skeleton Mage", 16, 32) },
-            { Monster.Spider, new MonsterData("Spider", typeof(Leaper), new object[] { null }, "Spider", 32, 32, 0, 2) },
-            { Monster.PutridGhost, new MonsterData("Putrid Ghost", typeof(Ghost), new object[] { null, "Putrid Ghost" }, "Putrid Ghost") },
-            { Monster.BlueSquid, new MonsterData("Blue Squid", typeof(BlueSquid), new object[] { null }, "Blue Squid", 24, 24) },
-            { Monster.RoyalSerpent, new MonsterData("Royal Serpent", typeof(Serpent), new object[] { null, "Royal Serpent" }, "Royal Serpent", 32, 32) },
+            data.Add(Monster.Grub, grubBuilder
+                .WithDisplayname("Grub")
+                .Build());
 
-            { Monster.PrismaticSlime, new MonsterData("Prismatic Slime", typeof(GreenSlime), new object[]{ null, 0 }, "Green Slime")},
-        };
+            data.Add(Monster.MutantGrub, grubBuilder
+                .WithDisplayname("Mutant Grub")
+                .WithTextureColor(Color.Lime)
+                .WithSecondConstructorArg(true)
+                .Build());
+
+            data.Add(Monster.MetalHead, new Builder()
+                .WithMonsterType(typeof(MetalHead))
+                .WithDisplayname("Metal Head")
+                .WithTextureName("Metal Head")
+                .WithSecondConstructorArg(80)
+                .WithTextureHeight(16)
+                .Build());
+
+            data.Add(Monster.Mummy, new Builder()
+                .WithMonsterType(typeof(Mummy))
+                .WithDisplayname("Mummy")
+                .WithTextureName("Mummy")
+                .WithTextureHeight(32)
+                .Build());
+
+            var rockCrabBuilder = new Builder()
+                .WithMonsterType(typeof(RockCrab));
+
+            data.Add(Monster.RockCrab, rockCrabBuilder
+                .WithDisplayname("Rock Crab")
+                .WithTextureName("Rock Crab")
+                .WithSecondConstructorArg("Rock Crab")
+                .Build());
+
+            data.Add(Monster.LavaCrab, rockCrabBuilder
+                .WithDisplayname("Lava Crab")
+                .WithTextureName("Lava Crab")
+                .WithSecondConstructorArg("Lava Crab")
+                .Build());
+
+            data.Add(Monster.IridiumCrab, rockCrabBuilder
+                .WithDisplayname("Iridium Crab")
+                .WithTextureName("Iridium Crab")
+                .WithSecondConstructorArg("Iridium Crab")
+                .Build());
+
+            data.Add(Monster.FalseMagmaCap, rockCrabBuilder
+                .WithDisplayname("False Magma Cap")
+                .WithTextureName("False Magma Cap")
+                .WithSecondConstructorArg("False Magma Cap")
+                .Build());
+
+            var golemBuilder = new Builder()
+                .WithMonsterType(typeof(RockGolem));
+
+            data.Add(Monster.StoneGolem, golemBuilder
+                .WithDisplayname("Stone Golem")
+                .WithTextureName("Stone Golem")
+                .Build());
+
+            data.Add(Monster.WildernessGolem, golemBuilder
+                .WithDisplayname("Wilderness Golem")
+                .WithTextureName("Wilderness Golem")
+                .WithSecondConstructorArg(5)
+                .Build());
+
+            // Iridium Golem Constructor checks RNG and farm type, probably needs custom recreation
+            // data.Add(Monster.IridiumGolem, golemBuilder
+            //    .WithDisplayname("Iridium Golem")
+            //    .WithTextureName("Iridium Golem")
+            //    .WithSecondConstructorArg(10)
+            //    .Build());
+
+            data.Add(Monster.PepperRex, new Builder()
+                .WithMonsterType(typeof(DinoMonster))
+                .WithDisplayname("Pepper Rex")
+                .WithTextureName("Pepper Rex")
+                .WithTextureWidth(32)
+                .WithTextureHeight(32)
+                .Build());
+
+            data.Add(Monster.BigSlime, new Builder()
+                .WithMonsterType(typeof(BigSlime))
+                .WithDisplayname("Big Slime")
+                .WithTextureName("Big Slime")
+                .WithSecondConstructorArg(0)
+                .WithTextureWidth(32)
+                .WithTextureHeight(32)
+                .WithTextureColor(Color.Lime)
+                .Build());
+
+            var serpentBuilder = new Builder()
+                .WithMonsterType(typeof(Serpent))
+                .WithTextureWidth(32)
+                .WithTextureHeight(32)
+                .AnimationLastsFor(9);
+
+            data.Add(Monster.Serpent, serpentBuilder
+                .WithDisplayname("Serpent")
+                .WithTextureName("Serpent")
+                .WithSecondConstructorArg("Serpent")
+                .Build());
+
+            data.Add(Monster.RoyalSerpent, serpentBuilder
+                .WithDisplayname("Royal Serpent")
+                .WithTextureName("Royal Serpent")
+                .WithSecondConstructorArg("Royal Serpent")
+                .Build());
+
+            data.Add(Monster.ShadowBrute, new Builder()
+                .WithMonsterType(typeof(ShadowBrute))
+                .WithDisplayname("Shadow Brute")
+                .WithTextureName("Shadow Brute")
+                .WithTextureHeight(32)
+                .Build());
+
+            data.Add(Monster.ShadowShaman, new Builder()
+                .WithMonsterType(typeof(ShadowShaman))
+                .WithDisplayname("Shadow Shaman")
+                .WithTextureName("Shadow Shaman")
+                .Build());
+
+            data.Add(Monster.Skeleton, new Builder()
+                .WithMonsterType(typeof(Skeleton))
+                .WithDisplayname("Skeleton")
+                .WithTextureName("Skeleton")
+                .WithTextureHeight(32)
+                .WithSecondConstructorArg(false)
+                .Build());
+
+            data.Add(Monster.SquidKid, new Builder()
+                .WithMonsterType(typeof(SquidKid))
+                .WithDisplayname("Squid Kid")
+                .WithTextureName("Squid Kid")
+                .WithTextureHeight(16)
+                .Build());
+
+            data.Add(Monster.DwarvishSentry, new Builder()
+                .WithMonsterType(typeof(DwarvishSentry))
+                .WithDisplayname("Dwarvish Sentry")
+                .WithTextureName("Dwarvish Sentry")
+                .WithTextureHeight(16)
+                .Build());
+
+            data.Add(Monster.HotHead, new Builder()
+                .WithMonsterType(typeof(HotHead))
+                .WithDisplayname("Hot Head")
+                .WithTextureName("Hot Head")
+                .WithTextureHeight(16)
+                .Build());
+
+            data.Add(Monster.LavaLurk, new Builder()
+                .WithMonsterType(typeof(LavaLurk))
+                .WithDisplayname("Lava Lurk")
+                .WithTextureName("Lava Lurk")
+                .WithTextureHeight(16)
+                .Build());
+
+            data.Add(Monster.StickBug, new Builder()
+                .WithMonsterType(typeof(RockCrab))
+                .WithDisplayname("Stick Bug")
+                .WithTextureName("Stick Bug")
+                .Build());
+
+
+            data.Add(Monster.MagmaDuggy, new Builder()
+                .WithMonsterType(typeof(DuggyFixed))
+                .WithDisplayname("Magma Duggy")
+                .WithTextureName("Magma Duggy")
+                .WithSecondConstructorArg(true)
+                .Build());
+
+            data.Add(Monster.Spiker, new Builder()
+                .WithMonsterType(typeof(Spiker))
+                .WithDisplayname("Spiker")
+                .WithTextureName("Spiker")
+                .WithTextureHeight(16)
+                .WithSecondConstructorArg(0)
+                .Build());
+
+            data.Add(Monster.Shooter, new Builder()
+                .WithMonsterType(typeof(Shooter))
+                .WithDisplayname("Shadow Sniper")
+                .WithTextureName("Shadow Sniper")
+                .WithTextureWidth(32)
+                .WithTextureHeight(32)
+                .Build());
+
+            data.Add(Monster.SkeletonMage, new Builder()
+                .WithMonsterType(typeof(Skeleton))
+                .WithDisplayname("Skeleton Mage")
+                .WithTextureName("Skeleton Mage")
+                .WithTextureHeight(32)
+                .WithSecondConstructorArg(true)
+                .Build());
+
+            data.Add(Monster.Spider, new Builder()
+                .WithMonsterType(typeof(Leaper))
+                .WithDisplayname("Spider")
+                .WithTextureName("Spider")
+                .WithTextureWidth(32)
+                .WithTextureHeight(32)
+                .AnimationLastsFor(2)
+                .Build());
+
+            data.Add(Monster.BlueSquid, new Builder()
+                .WithMonsterType(typeof(BlueSquid))
+                .WithDisplayname("Blue Squid")
+                .WithTextureName("Blue Squid")
+                .WithTextureWidth(24)
+                .Build());
+        }
+
+        private static readonly Dictionary<Monster, MonsterData> data = new Dictionary<Monster, MonsterData>();
 
 
         public string Displayname { get; }
         public Type Type { get; }
-        public object[] ConstructorArgs { get; }
+        public object SecondConstructorArg { get; }
 
         public string Texturename { get; }
         public int Texturewidth { get; }
@@ -171,10 +492,10 @@ namespace Spawn_Monsters.Monsters
         public int PosShiftX { get; }
         public int PosShiftY { get; }
 
-        public MonsterData(string displayname, Type type, object[] constructorArgs, string texturename, int texturewidth = 16, int textureheight = 24, int startingFrame = 0, int numberOfFrames = 4, int animatingInterval = 100, Color textureColor = default, int posShiftX = 0, int posShiftY = 0) {
+        private MonsterData(string displayname, Type type, object secondConstructorArg, string texturename, int texturewidth = 16, int textureheight = 24, int startingFrame = 0, int numberOfFrames = 4, int animatingInterval = 100, Color textureColor = default, int posShiftX = 0, int posShiftY = 0) {
             Displayname = displayname;
             Type = type;
-            ConstructorArgs = constructorArgs;
+            SecondConstructorArg = secondConstructorArg;
             Texturename = texturename;
             Texturewidth = texturewidth;
             Textureheight = textureheight;
@@ -212,6 +533,108 @@ namespace Spawn_Monsters.Monsters
                 }
             }
             return (Monster)(-1);
+        }
+
+        private class Builder
+        {
+            public Builder() {
+                // Hide Constructor
+            }
+
+            public string Displayname;
+            public Type Type;
+            public object ConstructorArg;
+
+            public string Texturename;
+            public int Texturewidth = 16;
+            public int Textureheight = 24;
+            public int StartingFrame = 0;
+            public int NumberOfFrames = 4;
+            public int AnimatingInterval = 100;
+            public Color TextureColor = default;
+
+            public int PosShiftX = 0;
+            public int PosShiftY = 0;
+
+            public Builder WithDisplayname(string displayname) {
+                var newBuilder = Clone();
+                newBuilder.Displayname = displayname;
+                return newBuilder;
+            }
+
+            public Builder WithMonsterType(Type type) {
+                var newBuilder = Clone();
+                newBuilder.Type = type;
+                return newBuilder;
+            }
+
+            public Builder WithSecondConstructorArg(Object arg) {
+                var newBuilder = Clone();
+                newBuilder.ConstructorArg = arg;
+                return newBuilder;
+            }
+
+            public Builder WithTextureName(string texturename) {
+                var newBuilder = Clone();
+                newBuilder.Texturename = texturename;
+                return newBuilder;
+            }
+
+            public Builder WithTextureWidth(int width) {
+                var newBuilder = Clone();
+                newBuilder.Texturewidth = width;
+                return newBuilder;
+            }
+
+            public Builder WithTextureHeight(int height) {
+                var newBuilder = Clone();
+                newBuilder.Textureheight = height;
+                return newBuilder;
+            }
+
+            public Builder AnimationStartingAtFrame(int startingFrame) {
+                var newBuilder = Clone();
+                newBuilder.StartingFrame = startingFrame;
+                return newBuilder;
+            }
+
+            public Builder AnimationLastsFor(int frameAmount) {
+                var newBuilder = Clone();
+                newBuilder.NumberOfFrames = frameAmount;
+                return newBuilder;
+            }
+
+            public Builder TimeBetweenFrames(int time) {
+                var newBuilder = Clone();
+                newBuilder.AnimatingInterval = time;
+                return newBuilder;
+            }
+
+            public Builder WithTextureColor(Color color) {
+                var newBuilder = Clone();
+                newBuilder.TextureColor = color;
+                return newBuilder;
+            }
+
+            public Builder WithTextureOffsetX(int offset) {
+                var newBuilder = Clone();
+                newBuilder.PosShiftX = offset;
+                return newBuilder;
+            }
+
+            public Builder WithTextureOffsetY(int offset) {
+                var newBuilder = Clone();
+                newBuilder.PosShiftY = offset;
+                return newBuilder;
+            }
+
+            public MonsterData Build() {
+                return new MonsterData(Displayname, Type, ConstructorArg, Texturename, Texturewidth, Textureheight, StartingFrame, NumberOfFrames, AnimatingInterval, TextureColor, PosShiftX, PosShiftY);
+            }
+
+            public Builder Clone() {
+                return (Builder)this.MemberwiseClone();
+            }
         }
     }
 }

@@ -19,8 +19,6 @@ namespace DropItHotkey
         void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
-
-        void SetTitleScreenOnlyForNextOptions(IManifest mod, bool titleScreenOnly);
     }
 
     public class Config
@@ -43,8 +41,6 @@ namespace DropItHotkey
                 reset: () => config = new Config(),
                 save: () => mod.Helper.WriteConfig(config)
             );
-
-            api.SetTitleScreenOnlyForNextOptions(manifest, false);
 
             api.AddKeybindList(manifest, () => config.DropKey, (KeybindList keybindList) => config.DropKey = keybindList, () => "Drop Key");
         }

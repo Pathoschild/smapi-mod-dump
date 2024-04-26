@@ -6,9 +6,9 @@ mods:
    Coop Cursor
 
 latest commit:
-   commit 66742fa0f8bde5f1853ab026175c9b0228a90ca0
+   commit fae8d450e2ced067904fb76e321ba8a94695b42c
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sun Feb 12 14:49:13 2023 +0100
+   Date:   Wed Apr 3 21:19:45 2024 +0200
    
-       updated manifest
+       Updated for SDV 1.6
    

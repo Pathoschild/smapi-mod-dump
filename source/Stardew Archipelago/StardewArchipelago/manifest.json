@@ -11,7 +11,7 @@
 {
   "Name": "StardewArchipelago",
   "Author": "Kaito Kid",
-  "Version": "5.3.6",
+  "Version": "5.4.1",
   "Description": "Stardew Valley Randomizer for Archipelago",
   "UniqueID": "KaitoKid.StardewArchipelago",
   "EntryDll": "StardewArchipelago.dll",

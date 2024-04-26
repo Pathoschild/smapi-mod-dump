@@ -1,0 +1,249 @@
+{      
+    "Spring": [
+        {
+          "cropName" : "Borage",
+          "seedID" : "Lumisteria.SereneMeadow_BorageSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Blue Flame",
+          "seedID" : "Lumisteria.SereneMeadow_BlueFlameSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Forget Me Not",
+          "seedID" : "Lumisteria.SereneMeadow_ForgetMeNotSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Spring Bells",
+          "seedID" : "Lumisteria.SereneMeadow_SpringBellsSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Hollyhock",
+          "seedID" : "Lumisteria.SereneMeadow_HollyhockSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Iris",
+          "seedID" : "Lumisteria.SereneMeadow_IrisSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Spring Pansy",
+          "seedID" : "Lumisteria.SereneMeadow_SpringPansySeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },        
+        {
+          "cropName" : "Dahlia",
+          "seedID" : "Lumisteria.SereneMeadow_DahliaSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }     
+        
+      ],
+      "Summer": [
+        {
+          "cropName" : "Cornflower",
+          "seedID" : "Lumisteria.SereneMeadow_CornflowerSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Borage",
+          "seedID" : "Lumisteria.SereneMeadow_BorageSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Butterfly Lavender",
+          "seedID" : "Lumisteria.SereneMeadow_ButterflyLavenderSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        
+        {
+          "cropName" : "Calendula",
+          "seedID" : "Lumisteria.SereneMeadow_CalendulaSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Hollyhock",
+          "seedID" : "Lumisteria.SereneMeadow_HollyhockSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Foxglove",
+          "seedID" : "Lumisteria.SereneMeadow_FoxgloveSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Tall Mallow",
+          "seedID" : "Lumisteria.SereneMeadow_TallMallowSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Void Lily",
+          "seedID" : "Lumisteria.SereneMeadow_VoidLilySeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Giant Fern",
+          "seedID" : "Lumisteria.SereneMeadow_GiantFernSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }        
+      ],
+      "Fall": [
+        {
+          "cropName" : "Cornflower",
+          "seedID" : "Lumisteria.SereneMeadow_CornflowerSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Baby Boo Squash",
+          "seedID" : "Lumisteria.SereneMeadow_BabyBooSquashSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Clematis",
+          "seedID" : "Lumisteria.SereneMeadow_ClematisStarter",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : true,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Hollyhock",
+          "seedID" : "Lumisteria.SereneMeadow_HollyhockSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Purple Flame",
+          "seedID" : "Lumisteria.SereneMeadow_PurpleFlameSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Romanesco Cabbage",
+          "seedID" : "Lumisteria.SereneMeadow_RomanescoCabbageSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },        
+        {
+          "cropName" : "Willowherb",
+          "seedID" : "Lumisteria.SereneMeadow_WillowherbSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Spotted Orchis",
+          "seedID" : "Lumisteria.SereneMeadow_SpottedOrchisSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }
+        
+        
+      ],
+      
+      "Winter": [
+        {
+          "cropName" : "Snowdrop",
+          "seedID" : "Lumisteria.SereneMeadow_SnowdropSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Winter Pansy",
+          "seedID" : "Lumisteria.SereneMeadow_WinterPansySeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Romanesco Cabbage",
+          "seedID" : "Lumisteria.SereneMeadow_RomanescoCabbageSeeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Winter Iris",
+          "seedID" : "Lumisteria.SereneMeadow_WinterIrisBulb",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }        
+        
+      ]
+      
+}

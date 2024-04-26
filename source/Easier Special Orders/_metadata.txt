@@ -6,9 +6,9 @@ mods:
    Easier Special Orders
 
 latest commit:
-   commit 12ea31f2e40a866bffcf25e9422f12788d2d4684
+   commit ed0d845f768cb1008b98a64888c2e43ae99a04f7
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Mar 20 07:44:35 2024 +1100
+   Date:   Tue Apr 9 15:32:56 2024 +1000
    
-       update manifest.json
+       add GMCM support
    

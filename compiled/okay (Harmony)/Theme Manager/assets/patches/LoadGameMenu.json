@@ -1,0 +1,89 @@
+{
+	"ID": "LoadGameMenu",
+
+	"ColorVariables": {
+		"$LoadGameErrorText": "$ErrorText",
+		"$LoadGameHover": "$Hover"
+	},
+
+	"FontVariables": {
+		"$LoadGame:Dialogue": "$Dialogue"
+	},
+
+	"BmFontVariables": {
+		"$LoadGame:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$LoadGame:ST:Normal": "$ST:Normal",
+		"$LoadGame:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"#LoadGameMenu:draw": {
+			"Colors": {
+				"SpriteText:White": {
+					"*": "$LoadGame:DeleteText"
+				}
+			},
+
+			"FontFields": {
+				"StardewValley.Game1:dialogueFont": {
+					"*": "$LoadGame:Dialogue"
+				}
+			},
+
+			"TextureFields": {
+				"StardewValley.Game1:mouseCursors": {
+					"*": "$LoadGame:mouseCursors"
+				}
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$LoadGame:ST:Normal",
+					"$LoadGame:ST:Colored",
+					"$LoadGame:ST:Font",
+					"$LoadGame:Colors"
+				]
+			}
+		},
+
+		"#LoadGameMenu+SaveFileSlot:drawVersionMismatchSlot": {
+			"Colors": {
+				"Red": { "*": "$LoadGameErrorText" }
+			},
+
+			"FontFields": {
+				"StardewValley.Game1:dialogueFont": {
+					"*": "$LoadGame:Dialogue"
+				}
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$LoadGame:ST:Normal",
+					"$LoadGame:ST:Colored",
+					"$LoadGame:ST:Font",
+					"$LoadGame:Colors"
+				]
+			},
+
+			"DrawTextWithShadow": {
+				"*": "$LoadGame:TextShadowAlt"
+			}
+		},
+
+		"#LoadGameMenu:drawSlotBackground": {
+			"Colors": {
+				"Wheat": { "*": "$LoadGameHover" }
+			},
+
+			"TextureFields": {
+				"StardewValley.Game1:mouseCursors": {
+					"*": "$LoadGame:mouseCursors"
+				}
+			}
+		}
+	}
+}

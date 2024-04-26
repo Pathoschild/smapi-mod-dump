@@ -49,14 +49,20 @@ internal class SlimeHutchLabel : BuildingLabel
         if (slimes.Count() < 0)
             return;
 
+        AddBorder(I18n.LabelSlimeOccupancy(slimes.Count(), SlimeHutchCapacity));
+
         Dictionary<string, int> slimesByType = slimes
             .GroupBy(slime => slime.displayName)
             .ToDictionary(group => group.Key, group => group.Count());
 
-        this.Description.Add($"Slime occupancy: {slimes.Count()}/{SlimeHutchCapacity}");
-        foreach((string typeName, int slime_count) in slimesByType.OrderBy(type => type.Key).Select(x => (x.Key, x.Value)))
+        var orderedSlimes = slimesByType
+            .OrderBy(type => type.Key)
+            .Select(x => (x.Key, x.Value));
+
+        NewBorder();
+        foreach((string typeName, int slime_count) in orderedSlimes)
         {
-            this.Description.Add($"> {typeName}: {slime_count}");
+            AppendLabelToBorder($"> {typeName}: {slime_count}");
         }
     }
 }

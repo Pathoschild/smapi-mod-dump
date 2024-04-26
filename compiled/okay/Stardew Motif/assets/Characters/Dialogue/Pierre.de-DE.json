@@ -1,9 +1,19 @@
 {
   "Introduction": "Hey, du bist @, der neue Bauer, oder? Ich bin Pierre, der Besitzer des örtlichen Gemischtwarenladens.^Hey, du bist @, die neue Bäuerin, oder? Ich bin Pierre, der Besitzer des örtlichen Gemischtwarenladens.#$b#Wenn du Saat brauchst, ist mein Laden der richtige Ort dafür. Ich kaufe dir auch deine Erzeugnisse zu einem guten Preis ab!#$e#Ein wenig Landwirtschaft könnte unsere Wirtschaft etwas ankurbeln!",
+  "eventSeen_3102768_memory_oneday": "Wie kann ich nur mit Joja konkurrieren?$s#$e#Die haben so dicke Taschen, dass sie einfach mit Verlust verkaufen können, bis ein kleiner Mann wie ich aus dem Geschäft ist... dann schrauben sie ihre Preise hoch!$s",
+  "AcceptGift_(O)StardropTea": "Wow, ich kann nicht glauben, dass du mir das schenkst. Es muss dich ein Vermögen gekostet haben! Ich danke dir!",
+  "AcceptGift_(O)Book_PriceCatalogue": "Ergreifend! Faszinierend! Es ist das perfekte Buch für mich!$h",
+  "GreenRain": "Gahh, keine Kunden! Noch mehr von diesem \"grünen\" Regen, und mein Kassenbuch wird \"rot\" sein!$s",
+  "GreenRainFinished": "Nun, ich bin froh, dass die Dinge wieder normal sind. Es scheint, als wäre alles übertrieben worden... so wie alles andere auch.",
+  "GreenRain_2": "Schön, dich zu sehen, @. Was ist schon ein bisschen giftiger Regen, wenn man Saatgut kaufen muss?$h#$e#Ich mache nur Spaß. Der Regen scheint völlig harmlos zu sein.",
+  "eventSeen_4": "Luny macht eine rebellische Phase durch... Ich verstehe das.#$e#Sie wird zur Vernunft kommen, wenn sie ihre erste Hypothek abbezahlen muss!$h",
+  "eventSeen_3102768_memory_oneweek": "Ich bin fest entschlossen, meinen Laden bis zum bitteren Ende am Laufen zu halten. $s#$b#Morris und seine Kumpane werden mich hinter dem Ladentisch hervorzerren müssen, mit Gewalt und Geschrei!$h",
   "Resort": "Ich verliere eine Menge Geld, weil ich nicht im Laden bin... $s#$b#Aber weißt du was? Das ist es wert.",
   "Resort_Shore": "Mmm... dieser salzige Geruch des Meeres macht Lust auf Sashimi.",
   "Resort_Chair": "Ach, lass die Kinder in der Sonne spielen. Ich setze mich einfach auf diesen Stuhl.",
   "Resort_Bar": "Ein Drink nach dem anderen... Gus muss eine Menge Gewinn machen!",
+  "married": "Naja, jetzt, wo du ein doppeltes Einkommen hast, wirst du wohl doppelt so viele Samen kaufen, oder?$h#$b#Haha...Ich mache nur Witze.... *ahem*...",
+  "married_Abigail_memory_oneday": "Hallo, äh... mein Sohn?$s^Hallo, äh... Tochter?$s$s",
   "cc_Complete": "Das ist, als wäre ein Traum in Erfüllung gegangen. Du kannst dir ja kar nicht vorstellen, wie sehr JojaMart mich unter Druck gesetzt hat.#$e#In einem kleinen Ort wie diesem reicht ein Geschäft! Es gibt schon genug gesellschaftlichen Druck, dass ich zu viel verlange.",
   "joja_Begin": "Welch trauriger Tag für Pelikan. Je stärker Joja wird, desto eher bin ich bankrott. Eventuell muss ich schon bald den Laden verkaufen ...$s",
   "MovieInvitation": "Hey, that's a great idea... It'll be nice to get out from behind the counter. I'll meet you there!",
@@ -26,6 +36,7 @@
   "Thu4": "Hey, @. Du bist mein bester Kunde!",
   "summer_Mon": "Ich habe jetzt Sommer-Saat im Angebot! Greif am besten gleich zu.",
   "summer_Wed": "Ich bin so froh, einen Tag frei zu haben.",
+  "summer_Wed2": "$d joja#Den Laden zu führen ist eines der wichtigsten Dinge in meinem Leben, aber manchmal braucht man einfach einen freien Tag... Jetzt, wo Joja nicht mehr da ist, fühle ich mich verpflichtet, den Laden sieben Tage die Woche offen zu halten. Die Leute brauchen Lebensmittel!",
   "summer_Thu": "Jeder genießt das Wetter, anstatt einkaufen zu gehen... *seufz*",
   "summer_Fri": "Oh, hi. Bist du mit der Qualität meiner Sommer-Saat zufrieden?",
   "summer_Sat": "Der Sommer ist die beste Zeit für einen erfrischenden Salat, findest du nicht?",
@@ -42,5 +53,8 @@
   "fall_Sat": "Ich kaufe mit Freude alles, was dein Hof so erwirtschaftet.#$e#Ja, ich verkaufe es mit Gewinn weiter... Aber das ist der Vorteil als etablierter Ladenbesitzer.#$e#Komm nicht auf dumme Gedanken...",
   "fall_Sun": "Hätte ich diesen Laden nicht, wäre ich gerade draußen...#$e#Das Laub sieht so schön aus und die Pilze sprießen.",
   "Event_naga1": "Danke, ich weiß das zu schätzen. Vergiss einfach, dass du das gesehen hast, okay?$h#$b#... Und ich vergesse, dass du in meinem Schlafzimmer herumgeschnüffelt hast!",
-  "Event_naga2": "Du würdest mir das wirklich antun? Du bist ein furchtbarer Mensch.$s#$b#Du hättest gar nicht erst in meinem Schlafzimmer herumschnüffeln sollen! Neugierige Nachbarn sind das Allerletzte.$3"
+  "Event_naga2": "Du würdest mir das wirklich antun? Du bist ein furchtbarer Mensch.$s#$b#Du hättest gar nicht erst in meinem Schlafzimmer herumschnüffeln sollen! Neugierige Nachbarn sind das Allerletzte.$3",
+  "Fair_Judging": "Hey, viel Glück.",
+  "Fair_Judged_PlayerLost": "Es fühlt sich großartig an, die Nummer Eins zu sein! Hah!$h#$e#War aber ein guter Versuch.",
+  "Fair_Judged_PlayerWon": "Ich kann nicht glauben, dass ich verloren habe...$s"
 }

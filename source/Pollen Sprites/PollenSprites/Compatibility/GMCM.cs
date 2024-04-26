@@ -8,90 +8,78 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
+using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Monsters;
+using System;
 
 namespace PollenSprites
 {
     public static class GMCM
     {
-        public static void EnableGMCM(object sender, GameLaunchedEventArgs e)
+        public static void Initialize(object sender, GameLaunchedEventArgs e)
         {
             IManifest manifest = ModEntry.Instance.ModManifest; //get this mod's manifest
 
-            GenericModConfigMenuAPI api = ModEntry.Instance.Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu"); //attempt to get GMCM's API instance
-
-            if (api == null) //if the API is not available
+            var api = ModEntry.Instance.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (api == null)
+            {
+                if (ModEntry.Instance.Monitor.IsVerbose)
+                    ModEntry.Instance.Monitor.Log($"GMCM does not seem to be available. Skipping menu setup.", LogLevel.Trace);
                 return;
+            }
 
-            api.RegisterModConfig(manifest, () => ModEntry.ModConfig = new ModConfig(), () => ModEntry.Instance.Helper.WriteConfig(ModEntry.ModConfig)); //register "revert to default" and "write" methods for this mod's config
+            api.Register(manifest,
+                () => ModEntry.ModConfig = new ModConfig(),
+                () => ModEntry.Instance.Helper.WriteConfig(ModEntry.ModConfig)
+            );
 
             //register an option for each of this mod's config settings
-            api.RegisterSimpleOption(
-                manifest, 
-                "Enable slow debuff", 
-                "If this box is checked, Pollen Sprites will apply a slow effect when they touch you.\nIn multiplayer, this option only affects you.",
+            api.AddBoolOption(
+                manifest,
                 () => ModEntry.ModConfig.EnableSlowDebuff,
-                (bool val) => ModEntry.ModConfig.EnableSlowDebuff = val
+                (bool val) => ModEntry.ModConfig.EnableSlowDebuff = val,
+                () => "Enable slow debuff",
+                () => "If this box is checked, Pollen Sprites will apply a slow effect when they touch you.\nIn multiplayer, this option only affects you."
+
             );
 
-            api.RegisterSimpleOption(
-                manifest, 
-                "Enable energy drain", 
-                "If this box is checked, Pollen Sprites will slowly drain your energy when they touch you (but never below 10 points).\nIn multiplayer, this option only affects you.", 
-                () => ModEntry.ModConfig.EnableEnergyDrain, 
-                (bool val) => ModEntry.ModConfig.EnableEnergyDrain = val
+            api.AddBoolOption(
+                manifest,
+                () => ModEntry.ModConfig.EnableEnergyDrain,
+                (bool val) => ModEntry.ModConfig.EnableEnergyDrain = val,
+                () => "Enable energy drain",
+                () => "If this box is checked, Pollen Sprites will slowly drain your energy when they touch you (but never below 10 points).\nIn multiplayer, this option only affects you."
             );
 
-            api.RegisterLabel(
-                manifest, 
-                "Seed drop chances", 
-                "When Pollen Sprites are defeated, these options decide how often they drop seeds.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc."
+            api.AddSectionTitle(
+                manifest,
+                () => "Seed drop chances",
+                () => "When Pollen Sprites are defeated, these options decide how often they drop seeds.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc."
             );
 
-            api.RegisterSimpleOption(
-                manifest, 
-                "Mixed seeds", 
-                "The chance that Pollen Sprites will drop mixed seeds.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc.", 
-                () => ModEntry.ModConfig.SeedDropChances.MixedSeeds.ToString(), //read this setting as a string
-                (string val) =>
-                {
-                    if (double.TryParse(val, out double result)) //if the string can be parsed to a double
-                        ModEntry.ModConfig.SeedDropChances.MixedSeeds = result; //use the parsed value
-                }
+            api.AddNumberOption(
+                manifest,
+                () => ModEntry.ModConfig.SeedDropChances.MixedSeeds,
+                (float val) => ModEntry.ModConfig.SeedDropChances.MixedSeeds = val,
+                () => "Mixed seeds",
+                () => "The chance that Pollen Sprites will drop mixed seeds.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc."
             );
 
-            api.RegisterSimpleOption(manifest, 
-                "Flower seeds", 
-                "The chance that Pollen Sprites will drop random flower seeds.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc.", 
-                () => ModEntry.ModConfig.SeedDropChances.FlowerSeeds.ToString(), //read this setting as a string
-                (string val) =>
-                {
-                    if (double.TryParse(val, out double result)) //if the string can be parsed to a double
-                        ModEntry.ModConfig.SeedDropChances.FlowerSeeds = result; //use the parsed value
-                }
+            api.AddNumberOption(
+                manifest,
+                () => ModEntry.ModConfig.SeedDropChances.FlowerSeeds,
+                (float val) => ModEntry.ModConfig.SeedDropChances.FlowerSeeds = val,
+                () => "Mixed flower seeds",
+                () => "The chance that Pollen Sprites will drop mixed flower seeds.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc."
             );
 
-            api.RegisterSimpleOption(
-                manifest, 
-                "All seeds", 
-                "The chance that Pollen Sprites will drop ANY random seeds, including from modded crops.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc.",
-                () => ModEntry.ModConfig.SeedDropChances.AllSeeds.ToString(), //read this setting as a string
-                (string val) =>
-                {
-                    if (double.TryParse(val, out double result)) //if the string can be parsed to a double
-                        ModEntry.ModConfig.SeedDropChances.AllSeeds = result; //use the parsed value
-                }
+            api.AddNumberOption(
+                manifest,
+                () => ModEntry.ModConfig.SeedDropChances.AllSeeds,
+                (float val) => ModEntry.ModConfig.SeedDropChances.AllSeeds = val,
+                () => "All seeds",
+                () => "The chance that Pollen Sprites will drop random seeds, including from modded crops.\nUse 0 for a 0% chance, 0.45 for 45%, 1 for 100%, etc."
             );
         }
     }

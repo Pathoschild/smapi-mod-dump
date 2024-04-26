@@ -1,0 +1,69 @@
+{
+	"Name": "Theme Template",
+
+	"ColorVariables": {
+		"Text": "#221122",
+		"TextShadow": "#CE9C5F",
+		"TextShadowAlt": "#DD9454",
+		"ErrorText": "red",
+		"Hover": "wheat",
+		"ButtonHover": "lightpink",
+		"UnselectedOption": "#646464"
+	},
+
+	"SpriteTextColorSets": {
+		"*": {
+			"default": null,
+			"skyblue": "skyblue",
+			"red": "red",
+			"#6E2BFF": "#6E2BFF",
+			"white": "white",
+			"orangered": "orangered",
+			"limegreen": "limegreen",
+			"cyan": "cyan",
+			"#3c3c3c": "#3c3c3c",
+			"jojablue": "jojablue"
+		}
+	},
+
+	"IndexedSpriteTextColors": {
+		"1": "skyblue",
+		"2": "red",
+		"3": "#6E2BFF",
+		"4": "white",
+		"5": "orangered",
+		"6": "limegreen",
+		"7": "cyan",
+		"8": "#3c3c3c",
+		"9": "jojablue"
+	},
+
+	"Patches": [
+		"AboutMenu",
+		"AnimalPage",
+		"AnimalQueryMenu",
+		"Billboard",
+		"BobberBar",
+		"BuildingPaintMenu",
+		"CarpenterMenu",
+		"CharacterCustomization",
+		"CoopMenu",
+		"DayTimeMoneyBox",
+		"DrawHud",
+		"ExitPage",
+		"ForgeMenu",
+		"ItemTooltips",
+		"LetterViewerMenu",
+		"LevelUpMenu",
+		"LoadGameMenu",
+		"MineElevatorMenu",
+		"MoneyDial",
+		"OptionsDropDown",
+		"PrairieKing",
+		"QuestLog",
+		"ShopMenu",
+		"SkillsPage",
+		"SpecialOrdersBoard",
+		"TutorialMenu"
+	]
+}

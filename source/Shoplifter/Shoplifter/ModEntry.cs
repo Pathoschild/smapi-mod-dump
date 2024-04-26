@@ -32,7 +32,7 @@ namespace Shoplifter
 
         public static readonly PerScreen<ArrayList> PerScreenShopsBannedFrom = new PerScreen<ArrayList>(createNewState: () => new ArrayList());
 
-        public static readonly List<string> shops = new List<string>() { "SeedShop", "FishShop", "AnimalShop", "ScienceHouse", "Hospital", "Blacksmith", "Saloon", "SandyHouse" };
+        public static readonly List<string> shops = new List<string>() { "SeedShop", "FishShop", "AnimalShop", "ScienceHouse", "Hospital", "Blacksmith", "Saloon", "SandyHouse", "JojaMart" };
 
         public static IDynamicGameAssetsApi IDGAItem;
      
@@ -290,7 +290,17 @@ namespace Shoplifter
                     ShopMenuUtilities.ResortBarShopliftingMenu(location);
                 }
 
-                foreach(var shopliftableshop in CustomShopUtilities.CustomShops.Values)
+                else if (location.NameOrUniqueName == "JojaMart"
+                    && TileX == 2
+                    && (TileY == 24 
+                    || TileY == 25
+                    || TileY == 26
+                    ))
+                {
+                    ShopMenuUtilities.JojaShopliftingMenu(location);
+                }
+
+                foreach (var shopliftableshop in CustomShopUtilities.CustomShops.Values)
                 {
                     if (shopliftableshop.CounterLocation.NeedsShopProperty == false && CustomShopUtilities.TryOpenCustomShopliftingMenu(shopliftableshop, location, TileX, TileY))
                     {

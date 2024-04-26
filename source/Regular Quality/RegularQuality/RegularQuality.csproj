@@ -2,16 +2,12 @@
 
 	<PropertyGroup>
 		<Platform>x86</Platform>
-		<TargetFramework>net45</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<CodeAnalysisRuleSet>../Common/stylecop/ruleset.xml</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Net.Compilers" Version="3.3.1">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
@@ -23,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    	<Compile Include="../Common/src/Logger.cs" />
+		<Compile Include="../Common/src/Logger.cs" />
 	</ItemGroup>
 
 </Project>

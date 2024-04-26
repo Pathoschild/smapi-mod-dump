@@ -55,10 +55,11 @@ internal class ChildContainer : IStorageContainer
     public IInventory Items => this.child.Items;
 
     /// <inheritdoc />
-    public GameLocation Location => this.parent.Location;
+    public GameLocation Location => this.child.Location ?? this.parent.Location;
 
     /// <inheritdoc />
-    public Vector2 TileLocation => this.parent.TileLocation;
+    public Vector2 TileLocation =>
+        this.child.TileLocation.Equals(Vector2.Zero) ? this.parent.TileLocation : this.child.TileLocation;
 
     /// <inheritdoc />
     public ModDataDictionary ModData => this.child.ModData;
@@ -70,13 +71,19 @@ internal class ChildContainer : IStorageContainer
     public void ForEachItem(Func<Item, bool> action) => this.child.ForEachItem(action);
 
     /// <inheritdoc />
-    public void ShowMenu() => this.child.ShowMenu();
+    public void ShowMenu(bool playSound = false) => this.child.ShowMenu(playSound);
 
     /// <inheritdoc />
     public bool TryAdd(Item item, out Item? remaining) => this.child.TryAdd(item, out remaining);
 
     /// <inheritdoc />
     public bool TryRemove(Item item) => this.child.TryRemove(item);
+
+    /// <inheritdoc />
+    public void GrabItemFromInventory(Item item, Farmer who) => this.child.GrabItemFromInventory(item, who);
+
+    /// <inheritdoc />
+    public void GrabItemFromChest(Item item, Farmer who) => this.child.GrabItemFromChest(item, who);
 
     /// <inheritdoc />
     public override string ToString() => $"{this.DisplayName} in {this.Parent}";

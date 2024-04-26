@@ -24,14 +24,14 @@ namespace FlipBuildings.Patches.AT
 		internal static void Apply(Harmony harmony)
 		{
 			harmony.Patch(
-				original: AccessTools.Method(CompatibilityHelper.BuildingPatchType, "DrawPrefix"),
+				original: AccessTools.Method(CompatibilityUtility.BuildingPatchType, "DrawPrefix"),
 				transpiler: new HarmonyMethod(typeof(BuildingPatch), nameof(DrawPrefixTranspiler))
 			);
 		}
 
 		private static IEnumerable<CodeInstruction> DrawPrefixTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator)
 		{
-			PatchHelper.CodeReplacement[] codeReplacements = new PatchHelper.CodeReplacement[]
+			PatchUtility.CodeReplacement[] codeReplacements = new PatchUtility.CodeReplacement[]
 			{
 				new(
 					instanceType: typeof(Building),
@@ -44,7 +44,7 @@ namespace FlipBuildings.Patches.AT
 					}
 				)
 			};
-			return PatchHelper.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, CompatibilityHelper.BuildingPatchType, "DrawPrefix");
+			return PatchUtility.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, CompatibilityUtility.BuildingPatchType, "DrawPrefix");
 		}
 	}
 }

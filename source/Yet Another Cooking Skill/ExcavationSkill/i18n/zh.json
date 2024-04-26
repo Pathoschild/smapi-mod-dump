@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "考古",
+    "skill.perk": "+{{bonus}}%挖掘奖励的额外奖励",
+    "skill.perk_bonus": "挖掘时有机会获得 {{稀有}} 奖励",
+
+    "config.AlternativeSkillPageIcon": "替代技能图标",
+    "config.AlternativeSkillPageIcon.tooltip": "需要重新启动： 将图标从铲子替换为毛刷和岩石",
+
+    "config.ExperienceFromArtifactSpots": "远古斑点经验增益。",
+    "config.ExperienceFromArtifactSpots.tooltip": "从挖掘远古斑点获得的经验收益（应该是只有挖出古物才有额外经验）。",
+
+    "config.ExperienceFromMinesDigging": "矿井和骷髅洞穴经验增益",
+    "config.ExperienceFromMinesDigging.tooltip": "在矿井和骷髅洞穴获得的经验收益。",
+
+    "config.ExperienceFromBuriedAndPannedItem": "埋藏的物品和淘金经验增益",
+    "config.ExperienceFromBuriedAndPannedItem.tooltip": "从挖掘随机物品（例如粘土）和淘金获得的经验收益。",
+
+    "config.ExperienceFromWaterShifter": "水筛经验增益",
+    "config.ExperienceFromWaterShifter.tooltip": "收获水筛时获得的经验收益。",
+
+    "moonslime.Archaeology.skill_book.levelup": "你学会了一些考古知识。",
+
+    "moonslime.Archaeology.water_shifter.name": "水筛",
+    "moonslime.Archaeology.water_shifter.description": "把它放在水中，系上纤维，第二天检查它是否有任何东西。\n在河流、湖泊和海洋中工作。",
+
+
+    "Archaeology5a.name": "挖掘者",
+    "Archaeology5a.desc": "有机会出现额外的远古斑点。",
+    "Archaeology5b.name": "水脉勘探者",
+    "Archaeology5b.desc": "有机会出现额外的淘金点。",
+    "Archaeology10a1.name": "古物收藏家",
+    "Archaeology10a1.desc": "挖掘时能够找到更多的文物。",
+    "Archaeology10a2.name": "馆长",
+    "Archaeology10a2.desc": "以两倍的价格出售展出的古物！",
+    "Archaeology10b1.name": "挖掘船",
+    "Archaeology10b1.desc": "淘金时获得额外物品。",
+    "Archaeology10b2.name": "49年淘金者",
+    "Archaeology10b2.desc": "成功挖掘或者淘金时，根据等级获得\n速度提升。",
+    "Archaeology10b2.buff": "淘金热！"
+
+}

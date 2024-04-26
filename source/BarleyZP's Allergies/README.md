@@ -10,7 +10,7 @@ for queries and analysis.**
 
 **BarleyZP's Allergy Mod** is a [Stardew Valley](https://www.stardewvalley.net/) mod which allows players to configure food allergies for an extra challenge. It is compatible with version 1.6+.
 
-![Stardew Valley player is prompted to choose whether or not to eat cheese, which they are allergic to.](docs/CheeseAllergenPopup.png)
+![Stardew Valley player is prompted to choose whether or not to eat cheese, which they are allergic to.](docs/screenshots/CheeseAllergenPopup.png)
 
 # Installation
 
@@ -27,23 +27,43 @@ Ensure that both the "\[CP\] BzpAllergies" and the "BzpAllergies" mods are direc
 
 ## Harmony Patches
 
-This mod changes core gameplay logic and thus employs some use of Harmony. Currently, the following methods are patched with prefix or postfix methods:
+This mod changes core gameplay logic and thus employs some use of Harmony. Currently, the following methods are patched with prefix or postfix methods (no transpilers are used):
 
 - `GameLocation.createQuestionDialogue`
 - `Farmer.doneEating`
 - `NPC.checkAction`
+- `CraftingRecipe.createItem`
+- `CraftingRecipe.consumeIngredients`
+- `Object.getDescription`
+- `Item.canStackWith`
 
 All of these prefixes allow the original logic to run afterwards, so they should be fairly compatible with other mods that patch these methods.
 
-## Integrating Your Mod
+## Creating Custom Allergens and Integrating Modded Items
 
-### Registering Objects Under an Allergen
+See [the content pack docs](docs/content_packs.md).
 
-Context tags are the primary method of determining whether an item has an allergen. Assign your object one or more context tags of the form `BarleyZP.BzpAllergies_{allergen}` to give it an allergen. Currently, there are six supported allergen tags: `egg`, `wheat`, `fish`, `shellfish`, `treenuts`, and `dairy`. There are a few other ways objects can be registered under an allergen:
+## Adding NPC Reaction Dialogue
 
-- Any object with the tags `egg_item`, `mayo_item`, or `large_egg_item` contains the egg allergen
-- Any object with `milk_item`, `large_milk_item`, `cow_milk_item`, or `goat_milk_item` contains the dairy allergen
-- Any object with the fish category (`-4`) that was NOT registered with a shellfish allergen context tag contains the fish allergen
+Many of the base game NPCs have special dialogue if you speak to them while having an allergic reaction. If you'd like to have your custom NPCs react, you'll need to add a dialogue option with the key `"BarleyZP.BzpAllergies_farmer_allergic_reaction"`. You may also included dialogue in the `"Characters/Dialogue/MarriageDialogue{Name}"` assets, and the mod will try to use the married dialogue instead if you are married or roommates with that character. Here is an example using Content Patcher (that the base mod uses!) for Alex's non-marriage reaction dialogue.
+
+```json
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Alex Dialogue",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Alex",
+      "Entries": {
+        "BarleyZP.BzpAllergies_farmer_allergic_reaction": "Yikes! You don't look so good...$7"
+      }
+    }
+  ]
+}
+```
+
+Adding this dialogue is not currently supported through the BarleyZP's Allergies content pack framework. You will need to edit the asset in C# or use another framework like Content Patcher.
 
 # Bug Reports and Feature Requests
 
@@ -51,8 +71,7 @@ You may leave a comment on the linked Nexus mod page or create an issue on this 
 
 ## Planned Features
 
-- Support for custom allergens
-- Public API and potential content pack framework to allow other mods to integrate more easily
+- Public API
 - Randomized allergens for an extra challenge
 - Configurable allergies for NPCs that influence gift tastes, dialogue, etc.
 - Compatibility with Stardew Valley Expanded and Ridgeside Village

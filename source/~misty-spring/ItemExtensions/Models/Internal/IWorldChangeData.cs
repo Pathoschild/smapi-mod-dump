@@ -33,6 +33,9 @@ public interface IWorldChangeData
     List<string> AddFlags { get; set; }
     List<string> RemoveFlags { get; set; }
     
+    List<ObjectBuffData> AddBuffs { get; set; } = new();
+    //List<ObjectBuffData> RemoveBuffs { get; set; } = new();
+    
     string Conditions { get; set; }
     string TriggerAction { get; set; }
 
@@ -90,6 +93,23 @@ public interface IWorldChangeData
                 Game1.player.removeFirstOfThisItemFromInventory(pair.Key, pair.Value);
             }
         }
+
+        if (data.AddBuffs.Any())
+        {
+            foreach (var buff in data.AddBuffs)
+            {
+                Game1.player.applyBuff(buff);
+            }
+        }
+
+        /*
+        if (data.RemoveBuffs.Any())
+        {
+            foreach (var buff in data.RemoveBuffs)
+            {
+                //
+            }
+        }*/
         #endregion
         
         #region quests
@@ -123,11 +143,16 @@ public interface IWorldChangeData
 
         if (string.IsNullOrWhiteSpace(data.TriggerAction)) 
             return;
-        
-        TriggerActionManager.TryRunAction(data.TriggerAction, out var error, out var exception);
-        if (!string.IsNullOrWhiteSpace(error))
+
+        //get all actions
+        var actions = data.TriggerAction.replace(", ", ",").split(',');
+        foreach(var trigger in actions)
         {
-            ModEntry.Mon.Log($"Error: {error}. {exception}");
+            TriggerActionManager.TryRunAction(trigger, out var error, out var exception);
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                ModEntry.Mon.Log($"Error: {error}. {exception}", LogLevel.Warn);
+            }
         }
     }
 
@@ -143,8 +168,7 @@ public interface IWorldChangeData
         
         if (int.TryParse(howMuch, out var justNumbers))
         {
-            result = justNumbers <= 0 ? 1 : justNumbers;
-            return result;
+            return justNumbers + value;
         }
 
         var split = howMuch.Split(' ');

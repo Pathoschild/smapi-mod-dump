@@ -33,13 +33,13 @@ public static class TerrainUtils
         );
     }
 
-    public static string GetDirtInfoString(HoeDirt dirt, bool ignoreIfEmpty = false)
+    public static string? GetDirtInfoString(HoeDirt dirt, bool ignoreIfEmpty = false)
     {
         var dirtDetails = GetDirtInfo(dirt);
         return GetDirtInfoString(dirtDetails, ignoreIfEmpty);
     }
 
-    public static string GetDirtInfoString((bool IsWatered, bool IsFertilized, string? CropType, bool IsReadyForHarvest, bool IsDead) dirtDetails, bool ignoreIfEmpty = false)
+    public static string? GetDirtInfoString((bool IsWatered, bool IsFertilized, string? CropType, bool IsReadyForHarvest, bool IsDead) dirtDetails, bool ignoreIfEmpty = false)
     {
         StringBuilder detailString = new();
 
@@ -64,7 +64,8 @@ public static class TerrainUtils
             detailString.Append(Translator.Instance.Translate("terrain_util-crop-soil"));
         }
 
-        return detailString.ToString().Trim();
+        string toReturn = detailString.ToString().Trim();
+        return toReturn == "" ? null : toReturn;
     }
 
     public static (string TreeType, int GrowthStage, bool IsHarvestable) GetFruitTreeInfo(FruitTree fruitTree)

@@ -40,11 +40,11 @@ internal class TileShareRangeOverlay : AchtuurCore.Framework.Overlay
     protected override void DrawOverlayToScreen(SpriteBatch spriteBatch)
     {
         float color_fac = ModEntry.Instance.Config.OverlayOpacity;
-        Vector2 currentTile = Game1.player.getTileLocation();
+        Vector2 currentTile = Game1.player.Tile;
 
         IEnumerable<Farmer> nearbyFarmers = ModEntry.GetNearbyPlayers();
 
-        List<Vector2> nearbyFarmerTile = nearbyFarmers.Select(f => f.getTileLocation()).ToList();
+        List<Vector2> nearbyFarmerTile = nearbyFarmers.Select(f => f.Tile).ToList();
 
         // In tile mode, draw range of tiles
         if (ModEntry.Instance.Config.ExpShareType == ExpShareType.Tile)

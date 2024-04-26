@@ -11,7 +11,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayerPrairie;
-using MultiplayerPrairieKing.Entities;
 using MultiplayerPrairieKing.Utility;
 using StardewValley;
 using System;
@@ -23,12 +22,13 @@ namespace MultiplayerPrairieKing.Components
     public class UI
     {
         readonly GameMultiplayerPrairieKing gameInstance;
-        public static Texture2D startScreenTexture;
-        public static Texture2D startScreenPoppetjesTexture;
+        public static Texture2D StartScreenTexture { get; set; }
+        public static Texture2D StartScreenPoppetjesTexture { get; set; }
+        public static Texture2D CheckMarkTexture { get; set; }
 
         public bool onStartMenu;
 
-        int currentGameOverOption;
+        public int currentGameOverOption;
 
         public UI(GameMultiplayerPrairieKing gameInstance)
         {
@@ -58,34 +58,30 @@ namespace MultiplayerPrairieKing.Components
         public void ProcessInputs(Dictionary<GameKeys, int> _buttonHeldFrames)
         {
             //Start the game after startmenu
-            if (_buttonHeldFrames[GameKeys.UsePowerup] > 0)
+            if (_buttonHeldFrames[GameKeys.UsePowerup] == 1 && onStartMenu && gameInstance.IsHost)
             {
-                if (_buttonHeldFrames[GameKeys.UsePowerup] == 1 && onStartMenu && gameInstance.isHost)
+                SaveState saveState = gameInstance.modInstance.GetSaveState();
+                if (saveState == null || gameInstance.modInstance.playerList.Value.Count == saveState.playerSaveStates.Count)
                 {
                     onStartMenu = false;
                     gameInstance.InstantiatePlayers();
                     Game1.playSound("Pickup_Coin15");
                     PK_StartNewGame mNewGame = new();
-                    gameInstance.modInstance.Helper.Multiplayer.SendMessage(mNewGame, "PK_StartNewGame");
+                    gameInstance.modInstance.SyncMessage(mNewGame);
+                    _buttonHeldFrames[GameKeys.UsePowerup] = 2;
                 }
             }
 
-            if (_buttonHeldFrames[GameKeys.MoveUp] > 0)
+            if (_buttonHeldFrames[GameKeys.MoveUp] == 1 && gameInstance.gameOver)
             {
-                if (_buttonHeldFrames[GameKeys.MoveUp] == 1 && gameInstance.gameOver)
-                {
-                    currentGameOverOption = Math.Max(0, currentGameOverOption - 1);
-                    Game1.playSound("Cowboy_gunshot");
-                }
+                currentGameOverOption = Math.Max(0, currentGameOverOption - 1);
+                Game1.playSound("Cowboy_gunshot");
             }
 
-            if (_buttonHeldFrames[GameKeys.MoveDown] > 0)
+            if (_buttonHeldFrames[GameKeys.MoveDown] == 1 && gameInstance.gameOver)
             {
-                if (_buttonHeldFrames[GameKeys.MoveDown] == 1 && gameInstance.gameOver)
-                {
-                    currentGameOverOption = Math.Min(1, currentGameOverOption + 1);
-                    Game1.playSound("Cowboy_gunshot");
-                }
+                currentGameOverOption = Math.Min(1, currentGameOverOption + 1);
+                Game1.playSound("Cowboy_gunshot");
             }
 
             if (_buttonHeldFrames[GameKeys.SelectOption] == 1 && gameInstance.gameOver)
@@ -96,10 +92,16 @@ namespace MultiplayerPrairieKing.Components
                 }
                 else
                 {
-                    gameInstance.gamerestartTimer = 1500;
-                    gameInstance.gameOver = false;
-                    currentGameOverOption = 0;
-                    Game1.playSound("Pickup_Coin15");
+                    if(gameInstance.IsHost)
+                    {
+                        gameInstance.gamerestartTimer = 1500;
+                        gameInstance.gameOver = false;
+                        currentGameOverOption = 0;
+                        Game1.playSound("Pickup_Coin15");
+
+                        PK_RestartGame message = new();
+                        gameInstance.modInstance.SyncMessage(message);
+                    }
                 }
             }
         }
@@ -109,7 +111,7 @@ namespace MultiplayerPrairieKing.Components
             b.Draw(Game1.mouseCursors, topLeftScreenCoordinate - new Vector2(TileSize + 27, 0f), new Rectangle(294, 1782, 22, 22), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0.25f);
             if (gameInstance.player.heldItem != null)
             {
-                b.Draw(Game1.mouseCursors, topLeftScreenCoordinate - new Vector2(TileSize + 18, -9f), new Rectangle(272 + (int)gameInstance.player.heldItem.which * 16, 1808, 16, 16), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0.5f);
+                b.Draw(Game1.mouseCursors, topLeftScreenCoordinate - new Vector2(TileSize + 18, -9f), new Rectangle(272 + (int)gameInstance.player.heldItem.type * 16, 1808, 16, 16), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0.5f);
             }
             b.Draw(Game1.mouseCursors, topLeftScreenCoordinate - new Vector2(TileSize * 2, -TileSize - 18), new Rectangle(400, 1776, 16, 16), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0.5f);
             b.DrawString(Game1.smallFont, "x" + Math.Max(gameInstance.lives, 0), topLeftScreenCoordinate - new Vector2(TileSize, -TileSize - TileSize / 4 - 18), Color.White);
@@ -194,7 +196,7 @@ namespace MultiplayerPrairieKing.Components
                 0.97f
             );
             b.Draw(
-                startScreenTexture,
+                StartScreenTexture,
                 new Vector2(Game1.viewport.Width / 2, Game1.viewport.Height / 2),
                 new Rectangle(0, 0, 256, 256),
                 Color.White,
@@ -216,14 +218,14 @@ namespace MultiplayerPrairieKing.Components
 
             for (int i = 0; i < 4; i++)
             {
-                bool playerJoined = i < gameInstance.modInstance.playerList.Count;
+                bool playerJoined = i < gameInstance.modInstance.playerList.Value.Count;
                 Rectangle sourceRect;
 
                 if (playerJoined) sourceRect = new Rectangle(16 * i, 0, 16, 16);
                 else sourceRect = new Rectangle(16 * 4, 0, 16, 16);
 
                 b.Draw(
-                    startScreenPoppetjesTexture,
+                    StartScreenPoppetjesTexture,
                     topLeftScreenCoordinate + poppetjePositions[i] * 3f,
                     sourceRect,
                     playerJoined ? Color.White : new Color(255, 255, 255, 20),
@@ -234,6 +236,51 @@ namespace MultiplayerPrairieKing.Components
                     1f
                 );
             }
+
+            //When continueing save game, display which characters should be visible
+            ModMultiPlayerPrairieKing modInstance = gameInstance.modInstance;
+
+            //If this player is the host, there needs to be a savefile present to indicate a continued game
+            if (modInstance.isHost.Value && modInstance.GetSaveState() == null) return;
+            //If this player joined a host, multiplayerSaveState has to be set to indicate a continued game
+            if (!modInstance.isHost.Value && gameInstance.multiplayerSaveState == null) return;
+
+            int iterator = 0;
+            foreach (PlayerSaveState ps in modInstance.GetSaveState().playerSaveStates)
+            {
+                Rectangle sourceRect;
+                bool playerJoined = modInstance.playerList.Value.Contains(ps.PlayerID);
+
+                if (playerJoined) sourceRect = new Rectangle(0, 0, 7, 7);
+                else sourceRect = new Rectangle(7, 0, 7, 7);
+
+                b.Draw(
+                    CheckMarkTexture,
+                    topLeftScreenCoordinate + new Vector2(315 - 21 - 30, 550 + 40 * iterator),
+                    sourceRect,
+                    new Color(255, 255, 255, 20),
+                    0f,
+                    Vector2.Zero,
+                    3f,
+                    SpriteEffects.None,
+                    1f
+                );
+
+                b.DrawString(
+                    Game1.smallFont,
+                    ps.PlayerName,
+                    topLeftScreenCoordinate + new Vector2(310, 547 + 40 * iterator),
+                    new Color(242, 188, 82),
+                    0f,
+                    Vector2.Zero,
+                    1f,
+                    SpriteEffects.None,
+                    1f
+                );
+
+                iterator += 1;
+            }
+            
         }
     }
 }

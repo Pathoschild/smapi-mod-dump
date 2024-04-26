@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/aeremyns/AdoptWithKrobus
+   Git: https://github.com/aeremyns/AdoptWithKrobus.git
+
+mods:
+   Adopt With Krobus
+
+latest commit:
+   commit 75f1aab72cc6e61e7f9bdfab1ce5d5330a09b644
+   Author: aeremyns <154845226+aeremyns@users.noreply.github.com>
+   Date:   Wed Apr 10 01:58:37 2024 -0700
+   
+       test commit
+   

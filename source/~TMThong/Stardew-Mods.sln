@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AndroidPatcher", "AndroidPa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoWarpDelay", "NoWarpDelay\NoWarpDelay.csproj", "{263604B4-3601-4139-846F-08E5E7166C2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThongUICore", "ThongUICore\ThongUICore.csproj", "{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThongUICore", "ThongUICore\ThongUICore.csproj", "{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StardewValleyMod.Shared", "StardewValleyMod.Shared\StardewValleyMod.Shared.shproj", "{F93F4EC6-CAA5-456A-AFB3-7D3CE2AEFA9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,5 +104,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39C4C2DB-CE02-43D5-ACAC-FB18EE425100}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		StardewValleyMod.Shared\StardewValleyMod.Shared.projitems*{f93f4ec6-caa5-456a-afb3-7d3ce2aefa9e}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

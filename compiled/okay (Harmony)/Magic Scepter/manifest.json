@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MagicScepter",
+  "Author": "not4bene",
+  "Version": "1.6.4",
+  "Description": "Makes your Return Scepter worth its price",
+  "UniqueID": "not4bene.MagicScepter",
+  "EntryDll": "MagicScepter.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": [ "Nexus:8169" ]
+}

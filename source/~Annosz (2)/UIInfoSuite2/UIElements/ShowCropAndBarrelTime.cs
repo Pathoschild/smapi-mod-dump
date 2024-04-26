@@ -30,6 +30,8 @@ namespace UIInfoSuite2.UIElements;
 
 internal class ShowCropAndBarrelTime : IDisposable
 {
+  private const int MAX_TREE_GROWTH_STAGE = 5;
+
   private readonly PerScreen<Object> _currentTile = new();
   private readonly PerScreen<Building> _currentTileBuilding = new();
   private readonly IModHelper _helper;
@@ -63,7 +65,7 @@ internal class ShowCropAndBarrelTime : IDisposable
   /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
   /// <param name="sender">The event sender.</param>
   /// <param name="e">The event arguments.</param>
-  private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+  private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
   {
     if (!e.IsMultipleOf(4))
     {
@@ -122,7 +124,7 @@ internal class ShowCropAndBarrelTime : IDisposable
   /// </summary>
   /// <param name="sender">The event sender.</param>
   /// <param name="e">The event arguments.</param>
-  private void OnRenderingHud(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
   {
     if (Game1.activeClickableMenu != null)
     {
@@ -138,7 +140,7 @@ internal class ShowCropAndBarrelTime : IDisposable
 
     // draw hover tooltip
     var inputKey = 0;
-    // TODO1.6 <= The tooltip for Mill says:
+    // TODO 1.6 <= The tooltip for Mill says:
     //     The Mill class is only used to preserve data from old save files. All mills were converted into plain Building instances based on the rules in Data/Buildings.
     //     The input and output items are now stored in Building.buildingChests with the 'Input' and 'Output' keys respectively.
     //   Perhaps this was written when the 'buildingChests' property was a dictionary.  Now it's a list, and there's no property on Chest or ChestData
@@ -148,9 +150,9 @@ internal class ShowCropAndBarrelTime : IDisposable
         currentTileBuilding.buildingChests.Count > inputKey &&
         !currentTileBuilding.buildingChests[inputKey].isEmpty())
     {
-      var wheatCount = 0;
-      var beetCount = 0;
-      var unmilledriceCount = 0;
+      int wheatCount = 0;
+      int beetCount = 0;
+      int unmilledriceCount = 0;
 
       foreach (Item item in currentTileBuilding.buildingChests[inputKey].Items)
       {
@@ -231,10 +233,9 @@ internal class ShowCropAndBarrelTime : IDisposable
 
         hoverText.AppendLine(currentTile.heldObject.Value.DisplayName);
 
-        if (currentTile is Cask)
+        if (currentTile is Cask cask)
         {
-          var currentCask = currentTile as Cask;
-          hoverText.Append((int)(currentCask.daysToMature.Value / currentCask.agingRate.Value))
+          hoverText.Append((int)(cask.daysToMature.Value / cask.agingRate.Value))
                    .Append(" " + _helper.SafeGetString(LanguageKeys.DaysToMature));
         }
         else
@@ -298,14 +299,13 @@ internal class ShowCropAndBarrelTime : IDisposable
         );
       }
     }
-    else if (terrain != null)
+    else if (terrain is not null)
     {
-      if (terrain is HoeDirt)
+      if (terrain is HoeDirt hoeDirt)
       {
-        var hoeDirt = terrain as HoeDirt;
-        if (hoeDirt.crop != null && !hoeDirt.crop.dead.Value)
+        if (hoeDirt.crop is not null && !hoeDirt.crop.dead.Value)
         {
-          var num = 0;
+          int num = 0;
 
           if (hoeDirt.crop.fullyGrown.Value && hoeDirt.crop.dayOfCurrentPhase.Value > 0)
           {
@@ -313,7 +313,7 @@ internal class ShowCropAndBarrelTime : IDisposable
           }
           else
           {
-            for (var i = 0; i < hoeDirt.crop.phaseDays.Count - 1; ++i)
+            for (int i = 0; i < hoeDirt.crop.phaseDays.Count - 1; ++i)
             {
               if (hoeDirt.crop.currentPhase.Value == i)
               {
@@ -340,6 +340,13 @@ internal class ShowCropAndBarrelTime : IDisposable
               hoverText.Append(_helper.SafeGetString(LanguageKeys.ReadyToHarvest));
             }
 
+            if (!string.IsNullOrEmpty(hoeDirt.fertilizer.Value))
+            {
+              string fertilizerName = ItemRegistry.GetData(hoeDirt.fertilizer.Value).DisplayName ?? "Unknown Fertilizer";
+              string withText = _helper.SafeGetString(LanguageKeys.With);
+              hoverText.Append($"\n({withText} {fertilizerName})");
+            }
+
             if (Game1.options.gamepadControls && Game1.timerUntilMouseFade <= 0)
             {
               Vector2 tilePosition = Utility.ModifyCoordinatesForUIScale(
@@ -358,18 +365,79 @@ internal class ShowCropAndBarrelTime : IDisposable
             );
           }
         }
-      }
-      else if (terrain is FruitTree tree)
-      {
-        string itemIdOfFruit =
-          tree.GetData().Fruit.First().ItemId; // TODO 1.6: Might be broken because of more than one item.
-        string? text = ItemRegistry.GetData(itemIdOfFruit).DisplayName;
-        if (tree.daysUntilMature.Value > 0)
+        else if (!string.IsNullOrEmpty(hoeDirt.fertilizer.Value))
         {
-          text += Environment.NewLine +
-                  tree.daysUntilMature.Value +
-                  " " +
-                  _helper.SafeGetString(LanguageKeys.DaysToMature);
+          string fertilizerName = ItemRegistry.GetData(hoeDirt.fertilizer.Value).DisplayName ?? "Unknown Fertilizer";
+          string hoverText = fertilizerName;
+          IClickableMenu.drawHoverText(
+            Game1.spriteBatch,
+            hoverText,
+            Game1.smallFont,
+            overrideX: overrideX,
+            overrideY: overrideY
+          );
+        }
+      }
+      else if (terrain is Tree tree)
+      {
+        string treeTypeName = GetTreeTypeName(tree.treeType.Value);
+        string treeText = _helper.SafeGetString(LanguageKeys.Tree);
+        string treeName = $"{treeTypeName} {treeText}";
+        if (tree.stump.Value)
+        {
+          treeName += " (stump)";
+        }
+
+        string text;
+
+        if (tree.growthStage.Value < MAX_TREE_GROWTH_STAGE)
+        {
+          text = $"{treeName}\nstage {tree.growthStage.Value} / {MAX_TREE_GROWTH_STAGE}";
+
+          if (tree.fertilized.Value)
+          {
+            string fertilizedText = _helper.SafeGetString(LanguageKeys.Fertilized);
+            text += $"\n({fertilizedText})";
+          }
+        }
+        else
+        {
+          text = treeName;
+        }
+
+        if (Game1.options.gamepadControls && Game1.timerUntilMouseFade <= 0)
+        {
+          Vector2 tilePosition =
+            Utility.ModifyCoordinatesForUIScale(Game1.GlobalToLocal(terrain.Tile * Game1.tileSize));
+          overrideX = (int)(tilePosition.X + Utility.ModifyCoordinateForUIScale(32));
+          overrideY = (int)(tilePosition.Y + Utility.ModifyCoordinateForUIScale(32));
+        }
+
+        IClickableMenu.drawHoverText(
+          Game1.spriteBatch,
+          text,
+          Game1.smallFont,
+          overrideX: overrideX,
+          overrideY: overrideY
+        );
+      }
+      else if (terrain is FruitTree fruitTree)
+      {
+        string itemIdOfFruit = fruitTree.GetData().Fruit.First().ItemId; // TODO 1.6: Might be broken because of more than one item.
+        string fruitName = ItemRegistry.GetData(itemIdOfFruit).DisplayName ?? "Unknown";
+        string treeText = _helper.SafeGetString(LanguageKeys.Tree);
+        string treeName = $"{fruitName} {treeText}";
+
+        string text;
+
+        if (fruitTree.daysUntilMature.Value > 0)
+        {
+          string daysToMatureText = _helper.SafeGetString(LanguageKeys.DaysToMature);
+          text = $"{treeName}\n{fruitTree.daysUntilMature.Value} {daysToMatureText}";
+        }
+        else
+        {
+          text = treeName;
         }
 
         if (Game1.options.gamepadControls && Game1.timerUntilMouseFade <= 0)
@@ -419,6 +487,26 @@ internal class ShowCropAndBarrelTime : IDisposable
           }
         }
       }
+    }
+  }
+
+  // See: https://stardewvalleywiki.com/Trees
+  private static string GetTreeTypeName(string treeType)
+  {
+    switch (treeType)
+    {
+      case "1": return "Oak";
+      case "2": return "Maple";
+      case "3": return "Pine";
+      case "6": return "Palm";
+      case "7": return "Mushroom";
+      case "8": return "Mahogany";
+      case "9": return "Palm (Jungle)";
+      case "10": return "Green Rain Type 1";
+      case "11": return "Green Rain Type 2";
+      case "12": return "Green Rain Type 3";
+      case "13": return "Mystic";
+      default: return $"Unknown (#{treeType})";
     }
   }
 

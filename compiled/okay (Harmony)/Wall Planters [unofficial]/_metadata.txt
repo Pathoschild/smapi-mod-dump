@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11339
+IDs: aedenthorn.WallPlanters
+update keys: Nexus:11339, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@WallPlanters

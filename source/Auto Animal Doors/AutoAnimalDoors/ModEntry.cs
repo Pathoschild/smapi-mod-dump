@@ -10,26 +10,20 @@
 
 using AutoAnimalDoors.Menu;
 using AutoAnimalDoors.StardewValleyWrapper;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Buildings = AutoAnimalDoors.StardewValleyWrapper.Buildings;
 
 namespace AutoAnimalDoors
 {
     public class ModEntry : StardewModdingAPI.Mod
     {
-        public static bool HasDoorsClosedToday
-        {
-            get;
-            set;
-        } = false;
-
-        public static bool HasDoorsOpenedToday
-        {
-            get;
-            set;
-        } = false;
+        public static bool HasDoorsClosedToday { get; set; } = false;
+        public static bool HasDoorsOpenedToday { get; set; } = false;
 
 
         private MenuRegistry GenericMenuRegistry { get; set; }
@@ -124,7 +118,7 @@ namespace AutoAnimalDoors
                 Helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
                 Helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
 
-                bool skipDueToWinter = !ModConfig.Instance.OpenDoorsDuringWinter && game.Season == Season.WINTER;
+                bool skipDueToWinter = !ModConfig.Instance.OpenDoorsDuringWinter && game.Season == StardewValleyWrapper.Season.WINTER;
                 bool skipDueToWeather = !ModConfig.Instance.OpenDoorsWhenRaining && (game.Weather == Weather.RAINING || game.Weather == Weather.LIGHTNING);
 
                 if (skipDueToWinter)
@@ -175,7 +169,7 @@ namespace AutoAnimalDoors
             get
             {
                 List<Buildings.AnimalBuilding> eligibleAnimalBuildings = new List<Buildings.AnimalBuilding>(); ;
-                foreach (Farm farm in Game.Instance.Farms)
+                foreach (StardewValleyWrapper.Farm farm in Game.Instance.Farms)
                 {
                     foreach (Buildings.AnimalBuilding animalBuilding in farm.AnimalBuildings)
                     {
@@ -205,17 +199,38 @@ namespace AutoAnimalDoors
             if (timeOfDayChanged.NewTime >= ModConfig.Instance.AnimalDoorCloseTime)
             {
                 List<Buildings.AnimalBuilding> eligibleAnimalBuildings = this.EligibleAnimalBuildings;
-                foreach (Buildings.AnimalBuilding animalBuilding in eligibleAnimalBuildings)
+                if (ModConfig.Instance.CloseAllBuildingsAtOnce)
                 {
-                    if (!animalBuilding.AreAllAnimalsHome())
+                    foreach (Buildings.AnimalBuilding animalBuilding in eligibleAnimalBuildings)
                     {
-                        return;
+                        if (!animalBuilding.AreAllAnimalsHome())
+                        {
+                            return;
+                        }
+                    }
+                    SetAllAnimalDoorsState(Buildings.AnimalDoorState.CLOSED);
+                }
+                else
+                {
+                    foreach (Buildings.AnimalBuilding animalBuilding in eligibleAnimalBuildings)
+                    {
+                        if (animalBuilding.AnimalDoorState == Buildings.AnimalDoorState.OPEN && animalBuilding.AreAllAnimalsHome())
+                        {
+                            animalBuilding.AnimalDoorState = Buildings.AnimalDoorState.CLOSED;
+                        }
                     }
                 }
 
-                SetAllAnimalDoorsState(Buildings.AnimalDoorState.CLOSED);
-                ModEntry.HasDoorsClosedToday = true;
-                Helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
+                if (eligibleAnimalBuildings.All(ab => ab.AnimalDoorState == Buildings.AnimalDoorState.CLOSED))
+                {
+                    if (ModConfig.Instance.DoorEventPopupEnabled)
+                    {
+                        Game1.chatBox.addInfoMessage("All animal doors have been closed!");
+                    }
+                    
+                    ModEntry.HasDoorsClosedToday = true;
+                    Helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
+                }
             }
         }
 
@@ -223,6 +238,11 @@ namespace AutoAnimalDoors
         {
             if (currentTime >= ModConfig.Instance.AnimalDoorOpenTime && currentTime < ModConfig.Instance.AnimalDoorCloseTime)
             {
+                if (ModConfig.Instance.DoorEventPopupEnabled)
+                {
+                    Game1.chatBox.addInfoMessage("All animal doors have been opened!");
+                }
+                
                 ModEntry.HasDoorsOpenedToday = true;
                 Helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
                 SetAllAnimalDoorsState(Buildings.AnimalDoorState.OPEN);

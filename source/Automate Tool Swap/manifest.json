@@ -11,10 +11,10 @@
 {
   "Name": "AutomateToolSwap",
   "Author": "Trapyy",
-  "Version": "2.0.5",
+  "Version": "1.2.3",
   "Description": "Swap tool based on what you are trying to break",
   "UniqueID": "Trapyy.AutomatetoolSwap",
   "EntryDll": "AutomateToolSwap.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:21050", "GitHub:Caua-Oliveira/StardewValley-AutomateToolSwap" ]
+  "UpdateKeys": [ "Nexus:21050" ]
 }

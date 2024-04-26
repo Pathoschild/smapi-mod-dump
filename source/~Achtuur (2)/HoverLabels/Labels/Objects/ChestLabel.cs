@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HoverLabels.Drawing;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
@@ -41,16 +42,18 @@ internal class ChestLabel : ObjectLabel
 
         hoverChest = hoverObject as Chest;
 
-        IEnumerable<string> inventoryContents = ListInventoryContents(hoverChest.items, ModEntry.IsShowDetailButtonPressed());
-        Description = inventoryContents.ToList();
+        InventoryLabelText inventoryLabels = ListInventoryContents(hoverChest.Items, ModEntry.IsShowDetailButtonPressed());
+        if (hoverChest.Items.Count > 0)
+            AddBorder(inventoryLabels);
 
-        string showAllMsg = GetShowAllMessage(hoverChest.items);
+        Border control_border = new Border();
+        string showAllMsg = GetShowAllMessage(hoverChest.Items);
         if (showAllMsg is not null)
-            Description.Add(showAllMsg);
+            control_border.AddLabelText(new LabelText(showAllMsg));
 
-        if (!ModEntry.IsAlternativeSortButtonPressed() && inventoryContents.Count() > 1)
-            Description.Add(I18n.LabelChestAltsort(ModEntry.GetAlternativeSortButtonName()));
-
+        if (!ModEntry.IsAlternativeSortButtonPressed() && hoverChest.Items.Count() > 1)
+            control_border.AddLabelText(new LabelText(I18n.LabelChestAltsort(ModEntry.GetAlternativeSortButtonName())));
+        AddBorder(control_border);
     }
 
 
@@ -59,42 +62,30 @@ internal class ChestLabel : ObjectLabel
     /// </summary>
     /// <param name="inventory"></param>
     /// <returns></returns>
-    public static IEnumerable<string> ListInventoryContents(IEnumerable<Item> inventory, bool showAll)
+    public static InventoryLabelText ListInventoryContents(IEnumerable<Item> inventory, bool showAll)
     {
         if (inventory is null || inventory.Count() <= 0)
-            yield break;
-
-        // Make a dict since multiple items with same quality should be in the same entry
-        // to avoid a cluttered list
-        Dictionary<string, int> inventoryItems = new Dictionary<string, int>();
-        foreach (Item item in inventory)
-        {
-            if (!inventoryItems.ContainsKey(item.DisplayName))
-                inventoryItems.Add(item.DisplayName, 0);
-            inventoryItems[item.DisplayName] += item.Stack;
-        }
+            return new InventoryLabelText(new List<Item>());
 
         // Either take entire dict, or first x entries based on button
-        int listSize = showAll ? inventoryItems.Count : ModEntry.Instance.Config.LabelListMaxSize;
+        int listSize = showAll ? inventory.Count() : ModEntry.Instance.Config.LabelListMaxSize;
 
-        // Sort by name or number of items depending on button
-        IOrderedEnumerable<KeyValuePair<string, int>> orderedDict;
+        // this will show the items as they are in the chest
         if (!ModEntry.IsAlternativeSortButtonPressed())
-            orderedDict = inventoryItems.OrderBy(item => item.Key); //sort by name
-        else
-            orderedDict = inventoryItems.OrderByDescending(item => item.Value).ThenBy(item => item.Key); //sort by amount -> name
+            return new InventoryLabelText(inventory.Take(listSize));
 
+        IOrderedEnumerable<Item> orderedItems = inventory
+            .OrderByDescending(item => item.Stack)
+            .ThenBy(item => item.DisplayName)
+            .ThenByDescending(item => item.quality.Value);
 
         // Loop through items dictionary sorted by name
-        foreach ((string name, int amount) in orderedDict.Take(listSize))
-        {
-            yield return $"{name}: {amount}";
-        }
+        return new InventoryLabelText(orderedItems.Take(listSize));
     }
 
     public static string GetShowAllMessage(IEnumerable<Item> inventoryItems)
     {
-        int allContentLength = ListInventoryContents(inventoryItems, showAll: true).Count();
+        int allContentLength = ListInventoryContents(inventoryItems, showAll: true).ItemCount;
         int inventoryCountListSizeDifference = allContentLength - ModEntry.Instance.Config.LabelListMaxSize;
         if (!ModEntry.IsShowDetailButtonPressed() && inventoryCountListSizeDifference > 0)
             return I18n.LabelPressShowmore(ModEntry.GetShowDetailButtonName(), inventoryCountListSizeDifference);

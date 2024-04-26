@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-    <BaseManifest>new</BaseManifest>
+		<BaseManifest>new</BaseManifest>
 		<AssemblyName>BetterCrafting</AssemblyName>
-		<Version>1.5.0</Version>
+		<Version>2.8.2</Version>
 		<RootNamespace>Leclair.Stardew.BetterCrafting</RootNamespace>
-    
+		
 		<EnableHarmony>true</EnableHarmony>
+		<EnablePintail>true</EnablePintail>
 		<EnableTranslation>true</EnableTranslation>
 	</PropertyGroup>
 
-  <PropertyGroup>
-    <Name>Better Crafting</Name>
-    <UniqueID>leclair.bettercrafting</UniqueID>
-    <Description>Replaces the vanilla crafting menu with an improved reimplementation with support for favorites, categories, and that doesn't lock nearby chests in multiplayer.</Description>
-    <MinimumApiVersion>auto</MinimumApiVersion>
-    <UpdateKeys>Nexus:11115@Main;ModDrop:1115749@Main</UpdateKeys>
-  </PropertyGroup>
-  
+	<PropertyGroup>
+		<Name>Better Crafting</Name>
+		<UniqueID>leclair.bettercrafting</UniqueID>
+		<Description>Replaces the vanilla crafting menu with an improved reimplementation with support for favorites, categories, and that doesn't lock nearby chests in multiplayer.</Description>
+		<MinimumApiVersion>auto</MinimumApiVersion>
+		<UpdateKeys>Nexus:11115@Main;ModDrop:1115749@Main</UpdateKeys>
+	</PropertyGroup>
+	
 	<Import Project="..\Common\Common.projitems" Label="Shared" />
 	<Import Project="..\_build\common.targets" />
 
 	<ItemGroup>
 		<Reference Include="SMAPI.Toolkit">
-			<HintPath>$(GamePath)\smapi-internal\Pintail.dll</HintPath>
+			<HintPath>$(GamePath)\smapi-internal\SMAPI.Toolkit.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
-
+	
 	<PropertyGroup>
 		<DefineConstants>$(DefineConstants);IS_BETTER_CRAFTING</DefineConstants>
 	</PropertyGroup>

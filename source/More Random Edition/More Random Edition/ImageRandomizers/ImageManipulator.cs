@@ -183,26 +183,28 @@ namespace Randomizer
         /// Gets a random color
         /// Fixes the saturation and value so that it's not too unrecognizable
         /// </summary>
+        /// <param name="rng">The rng to use</param>
         /// <param name="hueRange">The hue range to restrict the color to</param>
         /// <param name="saturationRange">The saturation range to restrict the color to</param>
         /// <param name="valueRange">The value range to restrict the color to</param>
         /// <returns>The random color</returns>
         public static Color GetRandomColor(
+            RNG rng,
             Range hueRange = null,
             Range saturationRange = null,
             Range valueRange = null)
         {
             // Value -
             Range hueRangeToUse = hueRange ?? new Range(0, 359);
-            int randomH = hueRangeToUse.GetRandomValue();
+            int randomH = hueRangeToUse.GetRandomValue(rng);
 
             // Saturation - the default won't look look too white or bright
             Range saturationRangeToUse = saturationRange ?? new Range(60, 85);
-            int randomS = saturationRangeToUse.GetRandomValue();
+            int randomS = saturationRangeToUse.GetRandomValue(rng);
 
             // Value - we don't want to it to look too black
             Range valueRangeToUse = valueRange ?? new Range(60, 85);
-            int randomV = valueRangeToUse.GetRandomValue();
+            int randomV = valueRangeToUse.GetRandomValue(rng);
 
             Color randomColor = HsvToColor(randomH, randomS, randomV);
             return randomColor;
@@ -392,6 +394,41 @@ namespace Randomizer
             output[2] = b;
 
             return output;
+        }
+
+        /// <summary>
+        /// Crops a texture out of a given texture
+        /// </summary>
+        /// <param name="originalTexture">The original texture</param>
+        /// <param name="cropRectangle">The rectangle to crop</param>
+        /// <param name="graphicsDevice">The graphics device</param>
+        /// <returns>The new image</returns>
+        public static Texture2D Crop(
+            Texture2D originalTexture, 
+            Rectangle cropRectangle, 
+            GraphicsDevice graphicsDevice)
+        {
+            // Create a new texture to hold the cropped image
+            Texture2D croppedTexture = new(graphicsDevice, cropRectangle.Width, cropRectangle.Height);
+
+            // Get the pixel data from the original texture
+            Color[] data = new Color[originalTexture.Width * originalTexture.Height];
+            originalTexture.GetData(data);
+
+            // Copy the cropped region to a new array
+            Color[] croppedData = new Color[cropRectangle.Width * cropRectangle.Height];
+            for (int y = 0; y < cropRectangle.Height; y++)
+            {
+                for (int x = 0; x < cropRectangle.Width; x++)
+                {
+                    int index = x + y * cropRectangle.Width;
+                    croppedData[index] = data[(cropRectangle.X + x) + (cropRectangle.Y + y) * originalTexture.Width];
+                }
+            }
+
+            // Set the pixel data for the cropped texture
+            croppedTexture.SetData(croppedData);
+            return croppedTexture;
         }
     }
 }

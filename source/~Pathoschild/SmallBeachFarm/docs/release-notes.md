@@ -9,6 +9,23 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 2.5.4
+Released 21 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed some missing `NPCBarrier`/`NoFurniture`/`NoSpawn` tile properties to match the vanilla farm maps.
+* Fixed tile overlap when trees are planted below the farm cave.
+
+## 2.5.3
+Released 15 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed ghost pet bowl left behind if you move the default one.
+* Improved translations. Thanks to Kaian-Campos (added Portuguese)!
+
+## 2.5.2
+Released 04 April 2024 for SMAPI 4.0.0 or later.
+
+* Improved translations. Thanks to Scomar82 (updated German) and Shi974 (updated French)!
+
 ## 2.5.1
 Released 21 March 2024 for SMAPI 4.0.0 or later.
 

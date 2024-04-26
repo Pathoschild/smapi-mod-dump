@@ -42,10 +42,12 @@ namespace Randomizer
 	/// </summary>
 	public class BundleRandomizer
 	{
-		/// <summary>
-		/// Information about all the rooms
-		/// </summary>
-		public readonly static List<RoomInformation> Rooms = new()
+        public static RNG Rng { get; set; }
+
+        /// <summary>
+        /// Information about all the rooms
+        /// </summary>
+        public readonly static List<RoomInformation> Rooms = new()
 		{
 			new RoomInformation(CommunityCenterRooms.CraftsRoom, 13, 19), // skip 18
 			new RoomInformation(CommunityCenterRooms.Pantry, 0, 5),
@@ -56,7 +58,7 @@ namespace Randomizer
 			new RoomInformation(CommunityCenterRooms.Joja, 36, 36)
 		};
 
-        private readonly static Dictionary<string, string> _randomizedBundles = new();
+        private readonly static Dictionary<string, string> RandomizedBundles = new();
 
 		/// <summary>
 		/// A dictionary of the bundle ID to the lastly generated display name
@@ -69,19 +71,25 @@ namespace Randomizer
         /// <returns>A dictionary of bundles to their output string</returns>
         public static Dictionary<string, string> Randomize()
 		{
-			BundleToName.Clear();
-            _randomizedBundles.Clear();
+            RandomizedBundles.Clear();
+            BundleToName.Clear();
+			if (!Globals.Config.Bundles.Randomize)
+			{
+				return new Dictionary<string, string>();
+			}
+
+            Rng = RNG.GetFarmRNG(nameof(BundleRandomizer));
 			Bundle.InitializeAllBundleTypes(); // Must be done so that reloading the game is consistent
 
-			if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite("==== BUNDLES ===="); }
+			Globals.SpoilerWrite("==== BUNDLES ====");
 			foreach (RoomInformation room in Rooms)
 			{
-				if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite(room.Room.ToString()); }
+				Globals.SpoilerWrite(room.Room.ToString());
 				room.Bundles.Clear(); // Clear the bundles in case this was ran multiple times in a session
 				CreateBundlesForRoom(room);
 			}
 
-			return _randomizedBundles;
+			return RandomizedBundles;
 		}
 
 		/// <summary>
@@ -121,7 +129,7 @@ namespace Randomizer
 			if (bundle.Room != CommunityCenterRooms.Vault)
 			{
 				Globals.SpoilerWrite($"Possible items: " +
-					$"{string.Join(", ", bundle.RequiredItems.Select(x => $"{x.Item.Name}: {x.NumberOfItems}").ToList())}"
+					$"{string.Join(", ", bundle.RequiredItems.Select(x => $"{x.Item.DisplayName}: {x.NumberOfItems}").ToList())}"
 				);
 				int minimumRequiredItems = bundle.MinimumRequiredItems == null ?
 					bundle.RequiredItems.Count : bundle.MinimumRequiredItems.Value;
@@ -130,7 +138,7 @@ namespace Randomizer
 
 			if (bundle.Room != CommunityCenterRooms.Joja)
 			{
-				Globals.SpoilerWrite($"Reward: {bundle.Reward.Item.Name}: {bundle.Reward.NumberOfItems}");
+				Globals.SpoilerWrite($"Reward: {bundle.Reward.Item.DisplayName}: {bundle.Reward.NumberOfItems}");
 			}
 			Globals.SpoilerWrite($"---");
 		}
@@ -145,7 +153,7 @@ namespace Randomizer
 			CommunityCenterRooms room, int roomId)
 		{
 			Bundle bundle = Bundle.Create(room, roomId);
-			_randomizedBundles[bundle.Key] = bundle.ToString();
+			RandomizedBundles[bundle.Key] = bundle.ToString();
             return bundle;
 		}
 	}

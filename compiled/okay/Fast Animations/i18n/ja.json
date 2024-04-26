@@ -1,0 +1,75 @@
+﻿{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    /****
+    ** 'General Options' section
+    ****/
+    "config.general-options": "一般オプション",
+
+    "config.disable-eat-prompt.name": "飲食の確認を非表示",
+    "config.disable-eat-prompt.tooltip": "食べたり飲んだりするときの確認を非表示にする。",
+
+    /****
+    ** 'Player Animation Speeds' section
+    ****/
+    "config.animation-speeds": "プレーヤーアニメーション速度",
+
+    "config.eat-or-drink.name": "飲食",
+    "config.eat-or-drink.tooltip": "食べたり飲んだりする速さ。デフォルトは{{defaultValue}}x。",
+
+    "config.fish.name": "釣り",
+    "config.fish.tooltip": "釣りをするときのキャストとリールの速さ(ミニゲームには影響しない)。標準は{{defaultValue}}xで、推奨は{{suggestedValue}}x。",
+
+    "config.harvest.name": "収穫",
+    "config.harvest.tooltip": "手作業で作物や飼料を収穫する速さ。標準は{{defaultValue}}x。",
+
+    "config.horse-flute.name": "馬のフルート",
+    "config.horse-flute.tooltip": "馬のフルートを吹く速さ。標準は{{defaultValue}}x。",
+
+    "config.milk.name": "ミルクいれ",
+    "config.milk.tooltip": "ミルクいれを使う速さ。標準は{{defaultValue}}x。",
+
+    "config.mount.name": "乗降",
+    "config.mount.tooltip": "馬への乗り降りの速さ。(Tractor Modのようなカスタムマウントを含む）。標準は{{defaultValue}}x。",
+
+    "config.shear.name": "大ハサミ",
+    "config.shear.tooltip": "大ハサミを使う速さ。標準は{{defaultValue}}x。",
+
+    "config.slingshot.name": "パチンコ",
+    "config.slingshot.tooltip": "パチンコを使うときのドローの速さ。標準は{{defaultValue}}x、推奨は{{suggestedValue}}x。",
+
+    "config.tool.name": "どうぐ全般",
+    "config.tool.tooltip": "武器と釣り竿を除くどうぐを振る速さ。標準は{{defaultValue}}x、推奨は{{suggestedValue}}x。",
+
+    "config.weapon.name": "武器",
+    "config.weapon.tooltip": "武器を振る速さ。標準は{{defaultValue}}x、推奨は{{suggestedValue}}x。",
+
+    /****
+    ** 'World Animation Speeds' section
+    ****/
+    "config.world-speeds": "ワールドアニメーション速度",
+
+    "config.break-geodes.name": "ジオードの粉砕",
+    "config.break-geodes.tooltip": "鍛冶屋がジオードを割ってくれる速度。標準は{{defaultValue}}x。",
+
+    "config.casino-slots.name": "カジノスロット",
+    "config.casino-slots.tooltip": "カジノスロットの回転速度。標準は{{defaultValue}}x。",
+
+    "config.bus.name": "バス",
+    "config.bus.tooltip": "砂漠を往復するバスの速さ。標準は{{defaultValue}}x。",
+
+    "config.tree-fall.name": "倒木",
+    "config.tree-fall.tooltip": "切り倒した木が倒れる速さ。標準は{{defaultValue}}x、推奨は{{suggestedValue}}x。",
+
+    /****
+    ** 'UI Animation Speeds' section
+    ****/
+    "config.ui-speeds": "UIアニメーション速度",
+
+    "config.title-menu.name": "タイトルメニューの遷移",
+    "config.title-menu.tooltip": "タイトルメニューの画面遷移の速さ。標準は{{defaultValue}}x。",
+
+    "config.load-game-blink.name": "ロード時の点滅",
+    "config.load-game-blink.tooltip": "ロード時にセーブスロットをクリックした後、点滅するスロットのディレイの速さ。標準は{{defaultValue}}x。"
+}

@@ -4,14 +4,15 @@ urls:
 
 mods:
    Ferngill Simple Economy
+   Stardew Valley Balance Overhaul
    Ui Info Suite 2
 
 latest commit:
-   commit 997ad0218b0e5cae3c911f0f36ae43316b9396fb
+   commit 8c650efd003bb01b5fdb3f7bf453d4b0060fbf8f
    Author: Drew Hoener <drewhoener@gmail.com>
-   Date:   Mon Mar 25 16:51:05 2024 -0400
+   Date:   Tue Apr 23 21:22:58 2024 -0400
    
-       Merge pull request #443 from mc-kaishixiaxue/master
+       Merge pull request #481 from Zamiell/fert
        
-       update zh.json
+       feat: show fertilizer
    

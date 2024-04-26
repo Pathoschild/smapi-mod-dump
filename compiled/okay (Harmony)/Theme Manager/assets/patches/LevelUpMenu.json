@@ -1,0 +1,11 @@
+{
+	"ID": "LevelUpMenu",
+
+	"Patches": {
+		"#LevelUpMenu:update(GameTime)": {
+			"Colors": {
+				"Green": { "*": "$LevelUpHoverText" }
+			}
+		}
+	}
+}

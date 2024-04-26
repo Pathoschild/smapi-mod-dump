@@ -1,0 +1,8 @@
+{
+  "config.name.EasyCleanerAssistKey": "一键清理辅助快捷键",
+  "config.tips.EasyCleanerAssistKey": "手持工具，按下辅助快捷键并点击鼠标右键后开始清理",
+  "config.name.CleanTreeSeedInFarm": "允许清理农场中散落的树种",
+  "config.tips.CleanTreeSeedInFarm": "可清理农场中树周围散落的树种子，会忽略已经施肥的种子",
+  "config.name.EnableIndoorsLocation": "允许清理室内区域",
+  "config.tips.EnableIndoorsLocation": "可清理矿井、火山等内部区域的杂草、树枝、石块等"
+}

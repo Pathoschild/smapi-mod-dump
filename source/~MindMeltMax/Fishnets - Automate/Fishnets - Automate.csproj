@@ -10,7 +10,7 @@
       <HintPath>$(GamePath)\Mods\Automate\Automate.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Fishnets">
+    <Reference Include="FishNets">
       <HintPath>$(GamePath)\Mods\Fishnets\Fishnets.dll</HintPath>
       <Private>False</Private>
     </Reference>

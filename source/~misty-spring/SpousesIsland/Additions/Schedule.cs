@@ -81,6 +81,9 @@ internal static class Schedule
     /// <param name="npc">npc whose schedule to edit.</param>
     internal static void Island(NPC npc)
     {
+#if DEBUG
+        ModEntry.Mon.Log($"Trying to change schedule for {npc.displayName}");
+#endif
         //Dictionary<int, SchedulePathDescription> schedule;
         string raw;
 

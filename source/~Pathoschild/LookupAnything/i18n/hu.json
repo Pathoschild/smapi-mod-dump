@@ -37,6 +37,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{price}}g {{count}} rakásért",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Építmény",
@@ -113,13 +114,14 @@
     "location.bugLand": "mutáns rovar odú",
     "location.busStop": "buszmegálló",
     "location.desert": "sivatag",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "farm",
     "location.farmCave": "farmbarlang",
     "location.farmHouse": "parasztház",
     "location.forest": "erdő",
-    "location.forest.fish-area-0": "erdei folyó",
-    "location.forest.fish-area-1": "erdei tó",
     "location.forest.island-tip": "erdei folyó (nagy sziget déli csücske)",
+    "location.forest.lake": "erdei tó",
+    "location.forest.river": "erdei folyó",
     "location.mountain": "hegy",
     "location.railroad": "vasút",
     "location.sewer": "szennyvízcsatorna",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Ginger Island southeast", // TODO
     "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
     "location.islandWest": "Ginger Island west", // TODO
-    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
-    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+    "location.islandWest.freshwater": "Ginger Island west (pond)", // TODO
+    "location.islandWest.ocean": "Ginger Island west (ocean)", // TODO
 
     "location.unknown-fish-area": "{{locationName}} (Horgászhely: {{id}})",
 
@@ -635,6 +637,8 @@
     "tree.name.oak": "Tölgyfa",
     "tree.name.palm": "Pálmafa",
     "tree.name.pine": "Fenyőfa",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "Ismeretlen Fa",
     "tree.stage.done": "Teljesen megnőtt",
     "tree.stage.partial": "{{stageName}} ({{step}} / {{max}})",
@@ -684,6 +688,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Highlight unrevealed gift tastes",
     "config.highlight-unrevealed-gift-tastes.desc": "Whether to highlight item gift tastes which haven't been revealed in the NPC profile. When enabled, unrevealed gift tastes will be bold.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     // TODO

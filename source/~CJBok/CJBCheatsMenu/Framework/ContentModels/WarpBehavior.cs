@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/CJBok/SDV-Mods
+**
+*************************************************/
+
+using System;
+
+namespace CJBCheatsMenu.Framework.ContentModels
+{
+    /// <summary>Indicates special behavior that should override the normal warp logic.</summary>
+    [Obsolete]
+    internal enum WarpBehavior
+    {
+        /// <summary>No special behavior.</summary>
+        Default,
+
+        /// <summary>Apply special logic for the casino warp.</summary>
+        Casino,
+
+        /// <summary>Apply special logic for the community center warp.</summary>
+        CommunityCenter,
+
+        /// <summary>Apply special logic for the farm warp.</summary>
+        Farm,
+
+        /// <summary>Apply special logic for the JojaMart warp.</summary>
+        JojaMart,
+
+        /// <summary>Apply special logic for the movie theater warp when built through the community path.</summary>
+        MovieTheaterCommunity,
+
+        /// <summary>Apply special logic for the movie theater warp when built through the Joja path.</summary>
+        MovieTheaterJoja
+    }
+}

@@ -14,5 +14,19 @@
   "KegAutoInput": true,
   "PreservesJarAutoInput": true,
   "CaskAutoInput": true,
+  "DehydratorAutoInput": true,
+  "SeedMakerAutoInput": true,
+  "AnimalArtisanMachineAutoInput": true,
+  "OtherMachineAutoInput": true,
+  "OtherMachines": [
+    "Furnace",
+    "Heavy Furnace",
+    "Fish Smoker",
+    "Recycling Machine",
+    "Charcoal Kiln",
+    "Crab Pot"
+  ],
+  "AllMachineAutoInput": false,
+  "SprinklerAutoInput": true,
   "AutoInputKeyAssist": "LeftShift"
 }

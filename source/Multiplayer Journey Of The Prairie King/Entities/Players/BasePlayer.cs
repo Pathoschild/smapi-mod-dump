@@ -11,10 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 using MultiPlayerPrairie;
-using MultiplayerPrairieKing.Components;
-using MultiplayerPrairieKing.Utility;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -26,6 +23,8 @@ namespace MultiplayerPrairieKing.Entities
     public class BasePlayer
     {
 		protected GameMultiplayerPrairieKing gameInstance;
+
+		public string playerName = "<error>";
 
 		public Vector2 position;
 		public Rectangle boundingBox;
@@ -45,7 +44,16 @@ namespace MultiplayerPrairieKing.Entities
 		public static Texture2D texture;
 		public Vector2 textureBase;
 
-		public BasePlayer(GameMultiplayerPrairieKing gameInstance)
+        //Stats
+        public int runSpeedLevel;
+        public int fireSpeedLevel;
+        public int ammoLevel;
+        public int bulletDamage = 1;
+        public bool spreadPistol;
+
+        public Powerup heldItem;
+
+        public BasePlayer(GameMultiplayerPrairieKing gameInstance)
 		{
 			this.gameInstance = gameInstance;
 		}
@@ -62,7 +70,7 @@ namespace MultiplayerPrairieKing.Entities
 
                     Game1.playSound("Cowboy_Secret");
                     gameInstance.endCutscene = true;
-                    gameInstance.cutscene.endCutsceneTimer = 4000;
+                    gameInstance.Cutscene.endCutsceneTimer = 4000;
                     gameInstance.world = 0;
                     if (!Game1.player.hasOrWillReceiveMail("Beat_PK"))
                     {
@@ -88,8 +96,7 @@ namespace MultiplayerPrairieKing.Entities
                         zombieSong.Stop(AudioStopOptions.Immediate);
                         zombieSong = null;
                     }
-                    zombieSong = Game1.soundBank.GetCue("Cowboy_undead");
-                    zombieSong.Play();
+                    Game1.playSound("Cowboy_undead", out zombieSong);
                     gameInstance.motionPause = 1800;
                     gameInstance.zombieModeTimer = 10000;
                     break;
@@ -147,7 +154,7 @@ namespace MultiplayerPrairieKing.Entities
 			{
 				if (movementDirections.Count == 1)
 				{
-					_ = (movementDirections.ElementAt(0) + 2) % 4;
+					_ = (movementDirections[0] + 2) % 4;
 				}
 				movementDirections.Add(direction);
 			}
@@ -235,14 +242,14 @@ namespace MultiplayerPrairieKing.Entities
 				}
 				else
 				{
-					int facingDirection = (shootingDirections.Count == 0) ? movementDirections.ElementAt(0) : shootingDirections.Last();
+					int facingDirection = (shootingDirections.Count == 0) ? movementDirections[0] : shootingDirections[shootingDirections.Count - 1];
 					b.Draw(texture, topLeftScreenCoordinate + position + new Vector2(0f, -TileSize / 4) + new Vector2(4f, 13f) * 3f, new Rectangle((int)textureBase.X + 19, (int)textureBase.Y + 16 + motionAnimationTimer / 100 * 3, 10, 3), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, position.Y / 10000f + 0.001f + 0.001f);
 					b.Draw(texture, topLeftScreenCoordinate + position + new Vector2(3f, -TileSize / 4), new Rectangle((int)textureBase.X + facingDirection * 16, (int)textureBase.Y, 16, 16), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, position.Y / 10000f + 0.002f + 0.001f);
 				}
 			}
 		}
 
-        protected float GetMovementSpeed(float speed, int directions)
+        protected static float GetMovementSpeed(float speed, int directions)
         {
             float movementSpeed = speed;
             if (directions > 1)

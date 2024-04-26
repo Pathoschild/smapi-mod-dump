@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21340
+IDs: alja.CustomCCB
+update keys: Nexus:21340, GitHub:Jaksha6472/ChallengingCommunityCenterBundles

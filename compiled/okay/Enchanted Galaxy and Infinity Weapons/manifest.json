@@ -1,0 +1,10 @@
+{
+    "Name": "Enchanted Galaxy Weapons",
+    "Author": "NamelessTo",
+    "Version": "1.2.0",
+    "Description": "Makes it possible to find galaxy and infinity weapons with enchantments",
+    "UniqueID": "NamelessTo.EnchantedGalaxyWeapons",
+    "EntryDll": "EnchantedGalaxyWeapons.dll",
+    "MinimumApiVersion": "4.0.7",
+    "UpdateKeys": [ "Nexus:21904" ]
+}

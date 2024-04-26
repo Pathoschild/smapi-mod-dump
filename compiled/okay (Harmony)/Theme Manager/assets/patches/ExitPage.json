@@ -1,0 +1,15 @@
+{
+	"ID": "ExitPage",
+
+	"ColorVariables": {
+		"$ExitPageHover": "$Hover"
+	},
+
+	"Patches": {
+		"#ExitPage:draw(SpriteBatch)": {
+			"Colors": {
+				"Wheat": { "*": "$ExitPageHover" }
+			}
+		}
+	}
+}

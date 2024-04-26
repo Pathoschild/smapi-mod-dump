@@ -19,7 +19,7 @@ namespace Randomizer
 		/// Constructor
 		/// </summary>
 		/// <param name="id">The id of the item</param>
-		public MonsterItem(int id, ObtainingDifficulties difficulty) : base(id, difficulty)
+		public MonsterItem(string id, ObtainingDifficulties difficulty) : base(id, difficulty)
 		{
 			IsMonsterItem = true;
 		}

@@ -1,0 +1,7 @@
+{
+  "EnableStackSplitRedux": true,
+  "MaxStackingNumber": 999,
+  "DefaultCraftingAmount": 1,
+  "DefaultShopAmount": 5,
+  "DebuggingMode": false
+}

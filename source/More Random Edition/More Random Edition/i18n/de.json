@@ -32,7 +32,7 @@
 	"fish-mountain-location": "Berge",
 	"fish-beach-location": "Ozean",
 	"fish-undergroundmine-location": "Minen",
-	"fish-nightmarket-location": "Meeresgrund",
+	"fish-submarine-location": "Meeresgrund",
 	"fish-bugland-location": "Bug landet",
 	"fish-witchswamp-location": "Hexensumpf",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "Es dauert {{daysToGrow}} Tage, um zu wachsen, aber danach wird weiter produziert.",
 	"crop-tooltip-growth-time": "Die Reifung dauert {{daysToGrow}} Tage.",
 	"crop-tooltip-seasons": "Pflanze während: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Kann nur drinnen angebaut werden.",
-	"crop-tooltip-rice-shoot": "Wächst in der Nähe von Wasser schneller.",
+	"crop-tooltip-indoor-crop": "Kann nur drinnen angebaut werden.",
+	"crop-tooltip-paddy-crop": "Wächst in der Nähe von Wasser schneller.",
 
 	"bundle-random-all": "Zufällig",
 	"bundle-random-letter": "Englisch \"{{letter}}\"",

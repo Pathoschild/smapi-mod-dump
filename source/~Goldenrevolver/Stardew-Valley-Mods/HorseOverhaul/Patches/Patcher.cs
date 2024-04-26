@@ -21,6 +21,7 @@ namespace HorseOverhaul
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
+    using static StardewValley.Menus.AnimalPage;
 
     public class Patcher
     {
@@ -44,7 +45,7 @@ namespace HorseOverhaul
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Horse), nameof(Horse.checkAction)),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(CheckForPetting)));
+                   prefix: new HarmonyMethod(typeof(Patcher), nameof(CheckHorseActionForPetting)));
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Horse), nameof(Horse.PerformDefaultHorseFootstep)),
@@ -54,9 +55,15 @@ namespace HorseOverhaul
                    original: AccessTools.Method(typeof(FarmerSprite), "checkForFootstep"),
                    transpiler: new HarmonyMethod(typeof(Patcher), nameof(FixMultiplayerFootstepDisplay)));
 
+                harmony.Patch(
+                   original: AccessTools.Constructor(typeof(AnimalEntry), new Type[] { typeof(Character) }),
+                   postfix: new HarmonyMethod(typeof(Patcher), nameof(FixHorseAnimalPage)));
+
                 StableAndSaddleBagPatches.ApplyPatches(horseOverhaul, harmony);
 
                 ThinHorsePatches.ApplyPatches(horseOverhaul, harmony);
+
+                ThinHorseDrawPatches.ApplyPatches(horseOverhaul, harmony);
 
                 InteractPatches.ApplyPatches(horseOverhaul, harmony);
 
@@ -68,7 +75,7 @@ namespace HorseOverhaul
             }
         }
 
-        // transpiler checked for 1.6
+        // transpiler checked for 1.6.4
         public static IEnumerable<CodeInstruction> FixMultiplayerFootstepDisplay(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             try
@@ -115,6 +122,39 @@ namespace HorseOverhaul
             else
             {
                 return Game1.player.isRidingHorse();
+            }
+        }
+
+        public static void FixHorseAnimalPage(AnimalEntry __instance, Character animal)
+        {
+            if (animal is not Horse horse || horse.IsTractor() || !mod.Config.ShowHorseInfoInAnimalsMenu)
+            {
+                return;
+            }
+
+            var horseWrapper = mod.Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).FirstOrDefault();
+
+            if (horseWrapper == null)
+            {
+                return;
+            }
+
+            // variables are read-only (and C# doesn't know that we are in a constructor postfix), so we set them with reflection
+
+            if (horseWrapper.Friendship > 0)
+            {
+                AccessTools.Field(typeof(AnimalEntry), nameof(AnimalEntry.FriendshipLevel)).SetValue(__instance, horseWrapper.Friendship);
+            }
+
+            // 'special == 1' means we are drawing a carrot, so we set 'WasPetYet' to -1 to disable it, so they don't overlap
+            // alternatively, if petting is disabled
+            if (__instance.special == 1 || !mod.Config.Petting)
+            {
+                AccessTools.Field(typeof(AnimalEntry), nameof(AnimalEntry.WasPetYet)).SetValue(__instance, -1);
+            }
+            else
+            {
+                AccessTools.Field(typeof(AnimalEntry), nameof(AnimalEntry.WasPetYet)).SetValue(__instance, horseWrapper.WasPet ? 2 : 0);
             }
         }
 
@@ -266,7 +306,7 @@ namespace HorseOverhaul
             }
         }
 
-        public static bool CheckForPetting(Horse __instance, ref bool __result)
+        public static bool CheckHorseActionForPetting(Horse __instance, ref bool __result)
         {
             if (!mod.Config.Petting || __instance.IsTractor())
             {
@@ -279,18 +319,13 @@ namespace HorseOverhaul
             {
                 horseW.JustGotPetted();
 
-                if (mod.Config.ThinHorse)
-                {
-                    __instance.doEmote(Character.heartEmote);
-                }
+                horseW.Horse.doEmote(Character.heartEmote);
 
                 __result = true;
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
     }
 }

@@ -21,28 +21,30 @@ This mod programmatically removes the restriction of not being able to place / u
 
 #### Conflicts
 - No known mod conflicts
-    - If you find one please feel free to notify me here or on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7629) site
+  - If you find one please feel free to notify me here or on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7629) site
 
 ### Limitations
 #### Multiplayer
 - Host must have this mod installed for this mod to work for any players in their game
-    - If the host *does not* have it installed then the animations may still play, but plants will not be considered "watered"
+  - If the host *does not* have it installed then the animations may still play, but plants will not be considered "watered"
 - Any additional player that would like to be able to place sprinklers will also need to install this mod
 
 #### Solo + Multiplayer
 - Players will need to keep this mod installed for sprinklers to continue to water adjacent tiles as expected
-    - If mod is uninstalled, placed sprinklers will remain and animations will continue to run, however the expected adjacent tiles will not be considered "watered"
+  - If mod is uninstalled, placed sprinklers will remain and animations will continue to run, however the expected adjacent tiles will not be considered "watered"
 
 ### Install
 1. Install the latest version of [SMAPI](https://smapi.io)
-    - [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/2400)
-    - [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
+  - [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/2400)
+  - [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
 2. Install this mod by unzipping the mod folder into "Stardew Valley/mods"
-    - This is meant to be whereever your Stardew Valley game is installed
+  - This is meant to be whereever your Stardew Valley game is installed
 3. Launch the game via SMAPI
 
 ## Releases
 Releases can be found [here on GitHub](https://github.com/hedgehog-technologies/StardewMods/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7629) site.
+### 1.2.1
+- Swapped tile edits to on Day Started instead of Save Loaded
 ### 1.2.0
 - Update to SDV 1.6 compatibility
 - Update to SMAPI 4.0.0 compatibility
@@ -53,7 +55,7 @@ Releases can be found [here on GitHub](https://github.com/hedgehog-technologies/
 - Moved to new repository
 - Updated to use Khloe Leclair's [Mod Manifest Builder](https://github.com/KhloeLeclair/Stardew-ModManifestBuilder)
 - Updated to be compatible with I18n translations
-    - Feel free to contribute translations as a Pull Request or on the Nexus Mod site
+  - Feel free to contribute translations as a Pull Request or on the Nexus Mod site
 - Verified working as of Stardew Valley 1.5.6
 
 ### 1.0.0

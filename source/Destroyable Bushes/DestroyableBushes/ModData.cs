@@ -41,8 +41,8 @@ namespace DestroyableBushes
             public bool TownBush { get; set; } = false;
             /// <summary>The destroyed bush's tilesheet offset value. If null, this mod should not edit the value.</summary>
             /// <remarks>
-            /// This value affects the sprite used by bushes, and also controls whether medium and walnut bushes currently contain those items.
-            /// This mod should ignore this value when respawning bushes capable of producing items.
+            /// This value affects the sprite used by bushes, and also controls whether berry and walnut bushes currently contain those items.
+            /// This mod should ignore this value when respawning berry and walnut bushes.
             /// </remarks>
             public int? TilesheetOffset { get; set; } = null;
 

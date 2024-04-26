@@ -17,8 +17,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
-using StardewValley.Objects;
 using StardewValley.Menus;
+
 
 #if IS_BETTER_CRAFTING
 
@@ -65,6 +65,7 @@ public enum CurrencyType {
 /// interact with various item storages in the game.
 /// </summary>
 public interface IInventoryProvider {
+
 	/// <summary>
 	/// Check to see if this object is valid for inventory operations.
 	///
@@ -145,6 +146,15 @@ public interface IInventoryProvider {
 	IList<Item?>? GetItems(object obj, GameLocation? location, Farmer? who);
 
 	/// <summary>
+	/// Get a vanilla <c>IInventory</c> for an object, if one exists.
+	/// </summary>
+	/// <param name="obj">the object</param>
+	/// <param name="location">the map where the object is</param>
+	/// <param name="who">the player accessing the object, or null if no player is involved</param>
+	/// <returns></returns>
+	IInventory? GetInventory(object obj, GameLocation? location, Farmer? who);
+
+	/// <summary>
 	/// Check to see if a specific item is allowed to be stored in the object's inventory.
 	/// </summary>
 	/// <param name="obj">the object</param>
@@ -169,44 +179,52 @@ public interface IInventoryProvider {
 	/// <param name="location">the map where the object is</param>
 	/// <param name="who">the player accessing the inventory, or null if no player is involved</param>
 	int GetActualCapacity(object obj, GameLocation? location, Farmer? who);
+
 }
 
 
 /// <summary>
-/// An <c>IInventory</c> represents an item storage that
+/// An <c>IBCInventory</c> represents an item storage that
 /// Better Crafting is interacting with, whether by extracting
 /// items or inserting them.
 /// </summary>
-public interface IInventory {
+public interface IBCInventory {
+
 	/// <summary>
-	/// The object that has inventory.
+	/// Optional. If this inventory is associated with an object, that object.
 	/// </summary>
 	object Object { get; }
 
 	/// <summary>
-	/// Where this object is located, if a location is relevant.
+	/// If this inventory is associated with an object, where that object is located.
 	/// </summary>
 	GameLocation? Location { get; }
 
 	/// <summary>
-	/// The player accessing the inventory, if a player is involved.
+	/// If this inventory is associated with a player, the player.
 	/// </summary>
 	Farmer? Player { get; }
 
 	/// <summary>
-	/// The NetMutex for this object, which should be locked before
-	/// using it. If there is no mutex, then we apparently don't
-	/// need to worry about that.
+	/// If this inventory is managed by a NetMutex, or an object with one,
+	/// which should be locked before manipulating the inventory, then
+	/// provide it here.
 	/// </summary>
 	NetMutex? Mutex { get; }
 
 	/// <summary>
-	/// Whether or not the object is locked and ready for read/write usage.
+	/// Get this inventory as a vanilla IInventory, if possible. May
+	/// be null if the inventory is not a vanilla inventory.
+	/// </summary>
+	IInventory? Inventory { get; }
+
+	/// <summary>
+	/// Whether or not the inventory is locked and ready for read/write usage.
 	/// </summary>
 	bool IsLocked();
 
 	/// <summary>
-	/// Whether or not the object is a valid inventory.
+	/// Whether or not the inventory is a valid inventory.
 	/// </summary>
 	bool IsValid();
 
@@ -221,28 +239,31 @@ public interface IInventory {
 	bool CanExtractItems();
 
 	/// <summary>
-	/// For multi-tile inventories, the region that this inventory takes
-	/// up in the world. Only rectangular multi-tile inventories are
-	/// supported, and this is used primarily for discovering connections.
+	/// For inventories associated with multiple tile regions in a location,
+	/// such as a farm house kitchen, this is the region the inventory fills.
+	/// Only rectangular shapes are supported. This is used for discovering
+	/// connections to nearby inventories.
 	/// </summary>
 	Rectangle? GetMultiTileRegion();
 
 	/// <summary>
-	/// Get the tile position of this object in the world, if it has one.
+	/// For inventories associated with a tile position in a location, such
+	/// as a chest placed in the world.
+	/// 
 	/// For multi-tile inventories, this should be the primary tile if
 	/// one exists.
 	/// </summary>
 	Vector2? GetTilePosition();
 
 	/// <summary>
-	/// Get this object's inventory as a list of items. May be null if
+	/// Get this inventory as a list of items. May be null if
 	/// there is an issue accessing the object's inventory.
 	/// </summary>
 	IList<Item?>? GetItems();
 
 	/// <summary>
-	/// Check to see if a specific item is allowed to be stored in the
-	/// object's inventory.
+	/// Check to see if a specific item is allowed to be stored in
+	/// this inventory.
 	/// </summary>
 	/// <param name="item">The item we're checking</param>
 	bool IsItemValid(Item item);
@@ -306,15 +327,15 @@ public interface IIngredient {
 	/// </summary>
 	/// <param name="who">The farmer performing the craft</param>
 	/// <param name="items">A list of all available <see cref="Item"/>s across
-	/// all available <see cref="IInventory"/> instances. If you only support
-	/// consuming ingredients from certain <c>IInventory</c> types, you should
+	/// all available <see cref="IBCInventory"/> instances. If you only support
+	/// consuming ingredients from certain <c>IBCInventory</c> types, you should
 	/// not use this value and instead iterate over the inventories. Please
 	/// note that this does <b>not</b> include the player's inventory.</param>
 	/// <param name="inventories">All the available inventories.</param>
 	/// <param name="maxQuality">The maximum item quality we are allowed to
 	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
 	/// returns <c>false</c>.</param>
-	int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality);
+	int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality);
 
 #endregion
 
@@ -332,9 +353,37 @@ public interface IIngredient {
 	/// <param name="lowQualityFirst">Whether or not we should make an effort
 	/// to consume lower quality ingredients before consuming higher quality
 	/// ingredients.</param>
-	void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst);
+	void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst);
 
 #endregion
+}
+
+
+/// <summary>
+/// An optional interface for IIngredients that allows them to track the
+/// exact items consumed when performing a craft, which can then be
+/// reported to the IRecipe in an event.
+/// </summary>
+public interface IConsumptionTrackingIngredient {
+
+	/// <summary>
+	/// Consume this ingredient out of the player's inventory and the other
+	/// available inventories.
+	/// </summary>
+	/// <param name="who">The farmer performing the craft</param>
+	/// <param name="inventories">All the available inventories.</param>
+	/// <param name="maxQuality">The maximum item quality we are allowed to
+	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
+	/// returns <c>false</c>.</param>
+	/// <param name="lowQualityFirst">Whether or not we should make an effort
+	/// to consume lower quality ingredients before consuming higher quality
+	/// ingredients.</param>
+	/// <param name="consumedItems">A list to store consumed items in. This
+	/// is to allow recipes to track what specific items were consumed when
+	/// crafting, to allow for things like adjusting the resulting quality
+	/// based on input items or anything like that.</param>
+	void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst, IList<Item>? consumedItems);
+
 }
 
 
@@ -372,6 +421,91 @@ public interface IPerformCraftEvent {
 	/// consumed and the player will receive the item, if there is one.
 	/// </summary>
 	void Complete();
+
+}
+
+
+/// <summary>
+/// An extended IPerformCraftEvent subclass that also includes a
+/// reference to the recipe being used. This is necessary because
+/// adding this to the existing model would break Pintail proxying,
+/// for some reason.
+/// </summary>
+public interface IGlobalPerformCraftEvent : IPerformCraftEvent {
+
+	/// <summary>
+	/// The recipe being crafted.
+	/// </summary>
+	IRecipe Recipe { get; }
+
+}
+
+
+/// <summary>
+/// This event is dispatched by Better Crafting whenever a
+/// craft has been completed, and may be used to modify
+/// the finished Item, if there is one, before the item is
+/// placed into the player's inventory. At this point
+/// the craft has been finalized and cannot be canceled.
+/// </summary>
+public interface IPostCraftEvent {
+
+	/// <summary>
+	/// The recipe being crafted.
+	/// </summary>
+	IRecipe Recipe { get; }
+
+	/// <summary>
+	/// The player performing the craft.
+	/// </summary>
+	Farmer Player { get; }
+
+	/// <summary>
+	/// The item being crafted, may be null depending on the recipe.
+	/// Can be changed.
+	/// </summary>
+	Item? Item { get; set; }
+
+	/// <summary>
+	/// The <c>BetterCraftingPage</c> menu instance that the player
+	/// is crafting from.
+	/// </summary>
+	IClickableMenu Menu { get; }
+
+	/// <summary>
+	/// A list of ingredient items that were consumed during the
+	/// crafting process. This may not contain all items.
+	/// </summary>
+	List<Item> ConsumedItems { get; }
+
+}
+
+
+/// <summary>
+/// An <c>IRecipe</c> that should be drawn in a unique way in the menu.
+/// This allows you to change the texture dynamically.
+/// </summary>
+public interface IDynamicDrawingRecipe : IRecipe {
+
+	/// <summary>
+	/// Whether or not the icon for this recipe should be drawn dynamically.
+	/// </summary>
+	bool ShouldDoDynamicDrawing { get; }
+
+	/// <summary>
+	/// Called to draw a recipe. The recipe must be drawn within the provided
+	/// bounds. The provided color can be ignored if you handle ghosted/canCraft
+	/// a different way.
+	/// </summary>
+	/// <param name="b">The SpriteBatch to draw with.</param>
+	/// <param name="bounds">The bounds to draw in</param>
+	/// <param name="color">The color to draw with to indicated ghosted/canCraft</param>
+	/// <param name="ghosted">Whether or not the recipe is unlearned and hidden</param>
+	/// <param name="canCraft">Whether or not the recipe is craftable</param>
+	/// <param name="layerDepth">The depth to draw at</param>
+	/// <param name="cmp">The clickable texture component that would be rendered otherwise, if one exists.</param>
+	void Draw(SpriteBatch b, Rectangle bounds, Color color, bool ghosted, bool canCraft, float layerDepth, ClickableTextureComponent? cmp);
+
 }
 
 
@@ -389,7 +523,7 @@ public interface IRecipe {
 	/// An additional sorting value to apply to recipes in the Better Crafting
 	/// menu. Applied before other forms of sorting.
 	/// </summary>
-	int SortValue { get; }
+	string SortValue { get; }
 
 	/// <summary>
 	/// The internal name of the recipe. For standard recipes, this matches the
@@ -409,6 +543,11 @@ public interface IRecipe {
 	/// An optional description of the recipe displayed on its tool-tip.
 	/// </summary>
 	string? Description { get; }
+
+	/// <summary>
+	/// Whether or not this recipe can be reversed with recycling.
+	/// </summary>
+	bool AllowRecycling { get; }
 
 	/// <summary>
 	/// Whether or not the player knows this recipe.
@@ -522,12 +661,31 @@ public interface IRecipe {
 
 
 /// <summary>
+/// An optional interface for IRecipes that adds an event to the recipe
+/// to be called after performing a craft, but before the item is added
+/// to the player's inventory.
+/// </summary>
+public interface IPostCraftEventRecipe {
+
+	/// <summary>
+	/// This method is called after a craft has been performed, and can
+	/// be used to modify the output of a craft based on the ingredients
+	/// consumed by the crafting process.
+	/// </summary>
+	/// <param name="evt">Details about the event, including a reference
+	/// to any produced item, and a list of all consumed items.</param>
+	void PostCraft(IPostCraftEvent evt);
+
+}
+
+
+/// <summary>
 /// Better Crafting uses <c>IRecipeProvider</c> to discover crafting recipes
 /// for display in the menu.
 /// </summary>
 public interface IRecipeProvider {
 	/// <summary>
-	/// The priority of this recipe provider, for sorting purposes.
+	/// The priority of this recipe provider, sort sorting purposes.
 	/// When handling CraftingRecipe instances, the first provider
 	/// to return a result is used.
 	/// </summary>
@@ -550,13 +708,14 @@ public interface IRecipeProvider {
 
 	/// <summary>
 	/// Get any additional recipes in IRecipe form. Additional recipes
-	/// are those recipes not included in the `CraftingRecipe.cookingRecipes`
-	/// and `CraftingRecipe.craftingRecipes` objects.
+	/// are those recipes not included in the <see cref="CraftingRecipe.cookingRecipes"/>
+	/// and <see cref="CraftingRecipe.craftingRecipes"/> objects.
 	/// </summary>
 	/// <param name="cooking">Whether we want cooking recipes or crafting recipes.</param>
 	/// <returns>An enumeration of this provider's additional recipes, or null.</returns>
 	IEnumerable<IRecipe>? GetAdditionalRecipes(bool cooking);
 }
+
 
 /// <summary>
 /// IDynamicRuleData instances represent all the configuration data associated
@@ -696,9 +855,9 @@ public interface IRecipeBuilder {
 	/// menu. This is applied before other forms of sorting. Setting this to
 	/// <c>null</c> will restore the default behavior.
 	/// </summary>
-	/// <param name="value">The sorting value. 0 by default.</param>
+	/// <param name="value">The sorting value. "0" by default.</param>
 	/// <returns>The same <see cref="IRecipeBuilder"/> instance</returns>
-	IRecipeBuilder SortValue(int? value);
+	IRecipeBuilder SortValue(string? value);
 
 	/// <summary>
 	/// Set the recipe's display name. Setting this to <c>null</c> will
@@ -716,6 +875,13 @@ public interface IRecipeBuilder {
 	/// <param name="description">A method that returns a description.</param>
 	/// <returns>The same <see cref="IRecipeBuilder"/> instance</returns>
 	IRecipeBuilder Description(Func<string?>? description);
+
+	/// <summary>
+	/// Set whether or not the recipe can be reversed with recycling. By
+	/// default, this is true.
+	/// </summary>
+	/// <param name="allow">Can the recipe be reversed with recycling?</param>
+	IRecipeBuilder AllowRecycling(bool allow);
 
 	/// <summary>
 	/// Check to see whether or not a given player knows this recipe.
@@ -737,6 +903,16 @@ public interface IRecipeBuilder {
 	#endregion
 
 	#region Display
+
+	/// <summary>
+	/// If this is set, the recipe will be constructed as an <see cref="IDynamicDrawingRecipe"/>
+	/// with support for dynamic icons. See that for documentation on what
+	/// these parameters are.
+	/// </summary>
+	/// <param name="drawFunction">The <seealso cref="IDynamicDrawingRecipe.Draw(SpriteBatch, Rectangle, Color, bool, bool, float, ClickableTextureComponent?)"/> method.</param>
+	/// <param name="shouldDrawCheck">An optional method for checking if the recipe should be drawn dynamically. Sets <seealso cref="IDynamicDrawingRecipe.ShouldDoDynamicDrawing"/></param>
+	/// <returns>The same <see cref="IRecipeBuilder"/> instance</returns>
+	IRecipeBuilder SetDrawFunction(Action<SpriteBatch, Rectangle, Color, bool, bool, float, ClickableTextureComponent?>? drawFunction, Func<bool>? shouldDrawCheck);
 
 	/// <summary>
 	/// The texture to use when drawing this recipe in UI. Setting this to
@@ -843,6 +1019,15 @@ public interface IRecipeBuilder {
 	IRecipeBuilder OnPerformCraft(Action<IPerformCraftEvent>? action);
 
 	/// <summary>
+	/// A method called after a craft has been performed, which can be used
+	/// to modify the output of a crafting operation based on the ingredients
+	/// consumed by the crafting process.
+	/// </summary>
+	/// <param name="action">A method called after performing a craft.</param>
+	/// <returns>The same <see cref="IRecipeBuilder"/> instance</returns>
+	IRecipeBuilder OnPostCraft(Action<IPostCraftEvent>? action);
+
+	/// <summary>
 	/// Creates an instance of the <see cref="Item"/> this recipe crafts, if
 	/// this recipe crafts an item. Return <c>null</c> if the recipe does not
 	/// create an item (and use your logic in <see cref="OnPerformCraft(Action{IPerformCraftEvent}?)"/>).
@@ -890,6 +1075,42 @@ public interface IRecipeBuilder {
 
 }
 
+public interface ICraftingStation {
+
+	/// <summary>
+	/// The crafting station's unique Id.
+	/// </summary>
+	string Id { get; }
+
+	/// <summary>
+	/// The display name of this crafting station.
+	/// </summary>
+	string? DisplayName { get; }
+
+	/// <summary>
+	/// Whether this crafting station's recipes should be available outside
+	/// of this crafting station or not.
+	/// </summary>
+	bool AreRecipesExclusive { get; }
+
+	/// <summary>
+	/// When this is true, this crafting station's recipes will always be
+	/// available, even if the player hasn't learned the recipe yet.
+	/// </summary>
+	bool DisplayUnknownRecipes { get; }
+
+	/// <summary>
+	/// Whether or not this crafting station is for cooking.
+	/// </summary>
+	bool IsCooking { get; }
+
+	/// <summary>
+	/// A list of recipes included in this crafting station.
+	/// </summary>
+	string[] Recipes { get; }
+
+}
+
 /// <summary>
 /// This interface contains a few basic properties on the Better Crafting
 /// menu that may be useful for other mods.
@@ -901,6 +1122,30 @@ public interface IBetterCraftingMenu {
 	/// same object, but included for convenience due to how API proxying works.
 	/// </summary>
 	IClickableMenu Menu { get; }
+
+	/// <summary>
+	/// Whether or not this menu is going to perform container discovery.
+	/// </summary>
+	bool DiscoverContainers { get; }
+
+	/// <summary>
+	/// Whether or not this menu is going to scan buildings as part of
+	/// container discovery.
+	/// </summary>
+	bool DiscoverBuildings { get; }
+
+	/// <summary>
+	/// If this menu is associated with a specific crafting station, this
+	/// is the crafting station.
+	/// </summary>
+	ICraftingStation? Station { get; }
+
+	/// <summary>
+	/// Whether or not this crafting menu is ready, meaning that it has
+	/// finished initializing. Note that it can still be busy crafting, so
+	/// you may need to check <see cref="Working"/> as well.
+	/// </summary>
+	bool IsReady { get; }
 
 	/// <summary>
 	/// Whether or not this crafting menu is for cooking. If this is
@@ -935,6 +1180,27 @@ public interface IBetterCraftingMenu {
 	IRecipe? ActiveRecipe { get; }
 
 	/// <summary>
+	/// The location this menu was opened from, if it has an associated
+	/// location. This may be null if the menu was not opened by
+	/// interacting with something in the world, like a Workbench.
+	/// </summary>
+	GameLocation? Location { get; }
+
+	/// <summary>
+	/// The position this menu was opened from, if it has an associated
+	/// position. This may be null if the menu was not opened by
+	/// interacting with something in the world, like a kitchen.
+	/// </summary>
+	Vector2? Position { get; }
+
+	/// <summary>
+	/// The multi-tile area this menu was opened from, if it has an
+	/// associated area. This is not set when working with single
+	/// tile objects like a Workbench.
+	/// </summary>
+	Rectangle? Area { get; }
+
+	/// <summary>
 	/// Calling this method will toggle edit mode, as though the user
 	/// clicked the button themselves.
 	/// </summary>
@@ -964,26 +1230,46 @@ public interface IBetterCraftingMenu {
 /// or remove specific containers from a menu.
 /// </summary>
 public interface IPopulateContainersEvent {
+
 	/// <summary>
 	/// The relevant Better Crafting menu.
 	/// </summary>
 	IBetterCraftingMenu Menu { get; }
+
+	/// <summary>
+	/// A list of all the containers this menu should draw items from.
+	/// </summary>
 	IList<Tuple<object, GameLocation?>> Containers { get; }
+
+	/// <summary>
+	/// Set this to true to prevent Better Crafting from running its
+	/// own container discovery logic, if you so desire.
+	/// </summary>
+	bool DisableDiscovery { get; set; }
+
 }
+
+/// <summary>
+/// This event is emitted by <see cref="IBetterCrafting"/> whenever the
+/// player opens the category icon picker, and serves to allow other
+/// mods to add icons to the list for the player to pick from.
+/// </summary>
+public interface IDiscoverIconsEvent {
+
+	/// <summary>
+	/// A list of all the extra icons the icon picker should present to
+	/// the player. This expects texture paths to load from game content,
+	/// and source rectangles.
+	/// </summary>
+	IList<(string, Rectangle)> Icons { get; }
+
+}
+
+
 
 public interface IBetterCrafting {
 
 	#region GUI
-
-	[Obsolete("Please use the other call with additional parameters.")]
-	bool OpenCraftingMenu(
-		bool cooking,
-		IList<Chest>? containers = null,
-		GameLocation? location = null,
-		Vector2? position = null,
-		bool silent_open = false,
-		IList<string>? listed_recipes = null
-	);
 
 	/// <summary>
 	/// Try to open the Better Crafting menu. This may fail if there is another
@@ -1012,6 +1298,7 @@ public interface IBetterCrafting {
 	/// <param name="discover_containers">If true, attempt to discover additional material containers.</param>
 	/// <param name="containers">An optional list of containers to draw extra crafting materials from.</param>
 	/// <param name="listed_recipes">An optional list of recipes by name. If provided, only these recipes will be listed in the crafting menu.</param>
+	/// <param name="discover_buildings">If true, attempt to discover additional containers inside of adjacent buildings.</param>
 	/// <returns>Whether or not the menu was opened successfully</returns>
 	bool OpenCraftingMenu(
 		bool cooking,
@@ -1021,7 +1308,8 @@ public interface IBetterCrafting {
 		Rectangle? area = null,
 		bool discover_containers = true,
 		IList<Tuple<object, GameLocation?>>? containers = null,
-		IList<string>? listed_recipes = null
+		IList<string>? listed_recipes = null,
+		bool discover_buildings = false
 	);
 
 	/// <summary>
@@ -1037,15 +1325,50 @@ public interface IBetterCrafting {
 	/// </summary>
 	IBetterCraftingMenu? GetActiveMenu();
 
+	#endregion
+
+	#region Events
+
+	/// <summary>
+	/// This event is fired when the player opens the category icon picker,
+	/// and can be used to register extra icons for the player to pick from.
+	/// </summary>
+	event Action<IDiscoverIconsEvent>? DiscoverIcons;
+
 	/// <summary>
 	/// This event is fired whenever a new Better Crafting menu is opened,
 	/// allowing other mods to manipulate the list of containers.
 	/// </summary>
 	event Action<IPopulateContainersEvent>? MenuPopulateContainers;
 
+	/// <summary>
+	/// This event is fired whenever a player crafts an item using
+	/// Better Crafting. This fires before <see cref="IRecipe.PerformCraft(IPerformCraftEvent)" />
+	/// to allow generic events to cancel before specific events go off.
+	/// </summary>
+	event Action<IGlobalPerformCraftEvent>? PerformCraft;
+
+	/// <summary>
+	/// This event is fired whenever a player crafts an item using
+	/// Better Crafting, once the craft is finished but before the
+	/// item is given to the player. This happens after
+	/// <see cref="IPostCraftEventRecipe.PostCraft(IPostCraftEvent)"/>.
+	/// </summary>
+	event Action<IPostCraftEvent>? PostCraft;
+
 	#endregion
 
 	#region Recipes
+
+	/// <summary>
+	/// Return a list of all recipes that are exclusive to a specific
+	/// crafting station. These recipes should not be listed in general
+	/// crafting stations.
+	/// </summary>
+	/// <param name="cooking">If true, return cooking recipes. If false, return
+	/// crafting recipes.</param>
+	/// <returns>An enumeration of recipe names.</returns>
+	IEnumerable<string> GetExclusiveRecipes(bool cooking);
 
 	/// <summary>
 	/// Register a recipe provider with Better Crafting. Calling this
@@ -1080,20 +1403,6 @@ public interface IBetterCrafting {
 	IReadOnlyCollection<IRecipe> GetRecipes(bool cooking);
 
 	/// <summary>
-	/// Create a simple <see cref="IRecipe"/> that gets its properties from an
-	/// existing <see cref="CraftingRecipe"/> but that uses different
-	/// <see cref="IIngredient"/>s.
-	/// </summary>
-	/// <param name="recipe">The <see cref="CraftingRecipe"/> to use
-	/// as a base.</param>
-	/// <param name="ingredients">An enumeration of <see cref="IIngredient"/>s
-	/// the recipe should consume.</param>
-	/// <param name="onPerformCraft">An optional event handler to perform
-	/// additional logic when the item is crafted.</param>
-	[Obsolete("Use RecipeBuilder instead.")]
-	IRecipe CreateRecipeWithIngredients(CraftingRecipe recipe, IEnumerable<IIngredient> ingredients, Action<IPerformCraftEvent>? onPerformCraft = null);
-
-	/// <summary>
 	/// Get a new <see cref="IRecipeBuilder"/> for customizing a recipe.
 	/// </summary>
 	/// <param name="recipe">The recipe to customize.</param>
@@ -1108,6 +1417,17 @@ public interface IBetterCrafting {
 	/// <param name="name">The recipe's name.</param>
 	IRecipeBuilder RecipeBuilder(string name);
 
+	[Obsolete("Do not use this anymore, we have magic now to make optional interfaces work.")]
+	IRecipe WrapDynamicRecipe(IDynamicDrawingRecipe recipe);
+
+	/// <summary>
+	/// Report a custom <see cref="IRecipe"/> type to Better Crafting.
+	/// This can be used to prime the proxy factory cache, which will
+	/// prevent any performance hiccups once the game has loaded.
+	/// </summary>
+	/// <param name="type">The type to report.</param>
+	void ReportRecipeType(Type type);
+
 	#endregion
 
 	#region Ingredients
@@ -1118,7 +1438,12 @@ public interface IBetterCrafting {
 	/// </summary>
 	/// <param name="item">The item ID to match.</param>
 	/// <param name="quantity">The quantity to consume.</param>
-	IIngredient CreateBaseIngredient(int item, int quantity);
+	/// <param name="recycleRate">The percentage of items to return when recycling.</param>
+	IIngredient CreateBaseIngredient(string item, int quantity, float recycleRate = 1f);
+
+
+	[Obsolete("Use the method that takes a string.")]
+	IIngredient CreateBaseIngredient(int item, int quantity, float recycleRate = 1f);
 
 	/// <summary>
 	/// Create a simple <see cref="IIngredient"/> that matches items using a
@@ -1133,10 +1458,11 @@ public interface IBetterCrafting {
 	/// ingredient. Providing a value here marks this ingredients as non-fuzzy
 	/// for the purpose of recycling. If you want fuzzy behavior, just leave
 	/// this as null and an appropriate item will be discovered.</param>
-	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Item? recycleTo = null);
+	/// <param name="recycleRate">The percentage of items to return when recycling.</param>
+	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Func<Item?>? recycleTo = null, float recycleRate = 1f);
 
-	[Obsolete("Use the method that takes functions instead.")]
-	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, string displayName, Texture2D texture, Rectangle? source = null);
+	[Obsolete("Use the version that takes a function for the recycleTo item.")]
+	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Item? recycleTo = null, float recycleRate = 1f);
 
 	/// <summary>
 	/// Create a simple <see cref="IIngredient"/> that matches a specific
@@ -1144,7 +1470,8 @@ public interface IBetterCrafting {
 	/// </summary>
 	/// <param name="type">The currency to match.</param>
 	/// <param name="quantity">The quantity to consume.</param>
-	IIngredient CreateCurrencyIngredient(CurrencyType type, int quantity);
+	/// <param name="recycleRate">The percentage of items to return when recycling.</param>
+	IIngredient CreateCurrencyIngredient(CurrencyType type, int quantity, float recycleRate = 1f);
 
 	/// <summary>
 	/// Create a simple <see cref="IIngredient"/> that does not match anything
@@ -1154,9 +1481,35 @@ public interface IBetterCrafting {
 	/// </summary>
 	IIngredient CreateErrorIngredient();
 
+	#endregion
+
+	#region Item Manipulation
+
+	/// <summary>
+	/// Lock the provided inventories and call a delegate with the locked
+	/// <see cref="IBCInventory"/> instances, ready to be safely manipulated.
+	///
+	/// This is the same method used internally by the crafting menu to do
+	/// just-in-time mutex locks when crafting.
+	///
+	/// The delegate's first argument is a list of locked inventories, and
+	/// the second argument is an Action to call when you are done.
+	/// </summary>
+	/// <param name="inventories">The list of things with inventories you want
+	/// to lock, the same as you'd pass into other API instances. Each one
+	/// is handled using an <see cref="IInventoryProvider"/>.</param>
+	/// <param name="who">The relevant farmer.</param>
+	/// <param name="withLocks">A delegate to call when the locks are ready,
+	/// which will not be immediate.</param>
+	void WithInventories(
+		IEnumerable<Tuple<object, GameLocation?>> inventories,
+		Farmer? who,
+		Action<IList<IBCInventory>, Action> withLocks
+	);
+
 	/// <summary>
 	/// Consume matching items from a player, and also from a set of
-	/// <see cref="IInventory"/> instances. This is a helper method for
+	/// <see cref="IBCInventory"/> instances. This is a helper method for
 	/// building custom <see cref="IIngredient"/>s.
 	///
 	/// This method is aware of the mod "Stack Quality" and handles merged
@@ -1166,13 +1519,18 @@ public interface IBetterCrafting {
 	/// matches items, and the integer is the quantity to consume.</param>
 	/// <param name="who">The player to consume items from, if any. Items
 	/// are consumed from the player's inventory first.</param>
-	/// <param name="inventories">An enumeration of <see cref="IInventory"/>
+	/// <param name="inventories">An enumeration of <see cref="IBCInventory"/>
 	/// instances to consume items from, such as the one passed to
-	/// <see cref="IIngredient.Consume(Farmer, IList{IInventory}?, int, bool)"/>.</param>
+	/// <see cref="IIngredient.Consume(Farmer, IList{IBCInventory}?, int, bool)"/>.</param>
 	/// <param name="maxQuality">The maximum quality to consume.</param>
 	/// <param name="lowQualityFirst">Whether or not to consume low quality
 	/// items first.</param>
-	void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false);
+	/// <param name="consumedItems">An optional list that will contain copies
+	/// of the consumed Items.</param>
+	void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false, IList<Item>? consumedItems = null);
+
+	[Obsolete("Use the version with an optional parameter for consumedItems.")]
+	void ConsumeItems(IEnumerable<(Func<Item, bool>, int)> items, Farmer? who, IEnumerable<IBCInventory>? inventories, int maxQuality = int.MaxValue, bool lowQualityFirst = false);
 
 	/// <summary>
 	/// Count the number of <see cref="Item"/>s available that match the given

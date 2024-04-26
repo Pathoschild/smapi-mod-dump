@@ -1,0 +1,87 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_TequilaAnejo": {
+                    "Name": "Tequila Anejo",
+                    "DisplayName": "{{i18n: tequilaAnejo_Name}}",
+                    "Description": "{{i18n: tequilaAnejo_Description}}",
+                    "Type": "Basic",
+                    "Category": -26,
+                    "Price": 3036,
+                    "Edibility": 50,
+                    "IsDrink": true,
+                    "Texture": "Mods/{{ModId}}/TequilaAnejo",
+                    "Buffs": [
+                        {
+                            "Id": "Tipsy",
+                            "BuffId": "17"
+                        }
+                    ],
+                    "ContextTags": [
+                        "alcohol_item",
+                        "color_brown",
+                        "drink_item",
+                        "use_reverse_name_for_sorting"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/TequilaAnejo",
+            "FromFile": "assets/tequila_anejo.png"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "TextOperations": [
+                //LOVE
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Sam", 1 ],
+                    "Value": "{{ModId}}_TequilaAnejo",
+                    "Delimiter": " "
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Sandy", 1 ],
+                    "Value": "{{ModId}}_TequilaAnejo",
+                    "Delimiter": " "
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Wizard", 1 ],
+                    "Value": "{{ModId}}_TequilaAnejo",
+                    "Delimiter": " "
+                },
+                //HATE
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Penny", 7 ],
+                    "Value": "{{ModId}}_TequilaAnejo",
+                    "Delimiter": " "
+                },
+                //NEUTRAL
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Leo", 9 ],
+                    "Value": "{{ModId}}_TequilaAnejo",
+                    "Delimiter": " "
+                }
+            ]
+        }
+    ]
+}

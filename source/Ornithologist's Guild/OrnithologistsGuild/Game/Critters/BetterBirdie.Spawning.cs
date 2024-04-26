@@ -14,6 +14,7 @@ using StardewValley;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System.Linq;
+using OrnithologistsGuild.Models;
 
 namespace OrnithologistsGuild.Game.Critters
 {
@@ -89,12 +90,12 @@ namespace OrnithologistsGuild.Game.Critters
             return true;
         }
 
-        public Tuple<Vector3, Perch> GetRandomPositionOrPerch(SpawnType? spawnType = null)
+        public BirdiePosition GetRandomPositionOrPerch(SpawnType? spawnType = null)
         {
             return GetRandomPositionsOrPerchesFor(Environment, BirdieDef, mustBeOffscreen: false, birdie: this, flockSize: 1, spawnType).FirstOrDefault();
         }
 
-        public static IEnumerable<Tuple<Vector3, Perch>> GetRandomPositionsOrPerchesFor(GameLocation location, BirdieDef birdieDef, bool mustBeOffscreen, BetterBirdie birdie = null, int? flockSize = null, SpawnType? spawnType = null, Rectangle? tileAreaBound = null)
+        public static IEnumerable<BirdiePosition> GetRandomPositionsOrPerchesFor(GameLocation location, BirdieDef birdieDef, bool mustBeOffscreen, BetterBirdie birdie = null, int? flockSize = null, SpawnType? spawnType = null, Rectangle? tileAreaBound = null)
         {
             if (!spawnType.HasValue) spawnType = ModEntry.debug_PerchType == null ? GetRandomSpawnType(birdieDef) : SpawnType.Perch;
             if (!flockSize.HasValue) flockSize = Game1.random.Next(1, birdieDef.MaxFlockSize + 1);
@@ -123,7 +124,7 @@ namespace OrnithologistsGuild.Game.Critters
                             bath: ModEntry.debug_PerchType == PerchType.Bath));
                 }
 
-                if (!availablePerches.Any()) return Enumerable.Empty<Tuple<Vector3, Perch>>();
+                if (!availablePerches.Any()) return Enumerable.Empty<BirdiePosition>();
             }
 
             for (var i = 0; i < Trials; i++)
@@ -149,7 +150,7 @@ namespace OrnithologistsGuild.Game.Critters
                         if (spawnType == SpawnType.Land &&
                             !(location.isTilePassable(new xTile.Dimensions.Location((int)tile.X, (int)tile.Y), Game1.viewport) &&
                             !location.isWaterTile((int)tile.X, (int)tile.Y) &&
-                            !location.isTileOccupied(tile))) return false;
+                            !location.IsTileOccupiedBy(tile))) return false;
 
                         // Tile not a valid water tile
                         if (spawnType == SpawnType.Water &&
@@ -173,9 +174,9 @@ namespace OrnithologistsGuild.Game.Critters
 
                         return Enumerable
                             .Repeat(0, flockSize.Value)
-                            .Select(_ => new Tuple<Vector3, Perch>(
-                                new Vector3(Utility.getRandomPositionInThisRectangle(positionArea, Game1.random), 0),
-                                null)
+                            .Select<int, BirdiePosition>(_ => new (
+                                Position: new Vector3(Utility.getRandomPositionInThisRectangle(positionArea, Game1.random), 0),
+                                Perch: null)
                             );
                     }
                 }
@@ -210,7 +211,7 @@ namespace OrnithologistsGuild.Game.Critters
                             return availablePerches
                             .Where(perch => tileArea.Contains(Utilities.XY(perch.Position) / Game1.tileSize) && birdieDef.CanPerchAt(perch))
                             .Take(flockSize.Value)
-                            .Select(perch => new Tuple<Vector3, Perch>(perch.Position, perch));
+                            .Select(perch => new BirdiePosition(perch.Position, perch));
                         }
                     } else
                     {
@@ -220,13 +221,13 @@ namespace OrnithologistsGuild.Game.Critters
                             availablePerches
                                 .GroupBy(perch => perch.Type)
                                 .SelectMany(group => group.Take(3)))
-                            .Select(perch => new Tuple<Vector3, Perch>(perch.Position, perch))
+                            .Select(perch => new BirdiePosition(perch.Position, perch))
                             .Take(1);
                     }
                 }
             }
 
-            return Enumerable.Empty<Tuple<Vector3, Perch>>();
+            return Enumerable.Empty<BirdiePosition>();
         }
     }
 }

@@ -237,6 +237,19 @@ namespace StardewArchipelago.Items.Mail
             "The {0} is a tool that can unlock any lock, whether on a door, a chest, or a heart. It is a powerful weapon that chooses it's owner. It did not choose me.^^It chose you.^^    -{1}",
             "You must use the {0} to defeat the darkness",
             "Have you ever heard the story of {0}?  I thought not.  It's not a story {1} would tell you.",
+			"OR, hear me out, we just collect random things people say from Discord and compile them into a massive string library so that every letter is interesting and unique so people don't feel annoyed having to read them^^    -Madolinn^^{0} from {1}",
+			"I searched for the perfect item to show my feelings for you, and I got you this {0}^^    -Secret Admirer",
+			"I got up early to deliver this mail and all you got was a {0}.",
+			"I found this {0} in the back of the mail truck, it has been there a few weeks hope it isn't important.",
+			"If you look closely, you might just find a {0} hidden in the fine print.",
+			"Are you still looking for your Community Center?  Have you checked in Aginah's cave?  In the meantime, have this {0}.",
+			"{1} was piloted to find your {0}. That means it is important, right?",
+			"{1} was piloted to find your {0}. I think it might have been a mistake.",
+			"Hey, at least this isn't an Emblem for Sonic^^    -{1}",
+			"Hey, at least this isn't a Coin Bundle for DLCQuest^^    -{1}",
+			"My original letter wasn't safe for streaming, so you're getting this one instead. Here's your {0}.^^    -{1}",
+			"Hope you can add this {0} to your power suit like we can here on Zebes^^    -{1}",
+			"Don't worry I didn't forget your birthday, I got you {0}, I hope you love it.^^    -{1}",
         };
     }
 }

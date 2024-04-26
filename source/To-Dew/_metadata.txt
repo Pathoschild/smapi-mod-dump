@@ -6,9 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 77413bf025061d8e1d78ebb12cd9e4a1d9e7ba4e
+   commit 33c9941fc0c9fdb860ddf7b6503418c70d01f777
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sun Mar 31 22:57:01 2024 -0400
+   Date:   Wed Apr 3 23:59:17 2024 -0400
    
-       Support for successors of aedenthorn's Mobile Phone mod; release 2.1.0
+       release 2.1.1
    

@@ -149,7 +149,8 @@ namespace BitwiseJonMods.OneClickShedReloader
 
                             if (container.performObjectDropInAction(player.ActiveObject, false, player))
                             {
-                                player.reduceActiveItemByOne();
+                                //jon, 4/17/24: It appears performObjectDropInAction now reduces inventory so this is no longer needed since it removes twice as much as desired.
+                                //player.reduceActiveItemByOne();
                                 numItemsLoaded++;
                             }
                             else

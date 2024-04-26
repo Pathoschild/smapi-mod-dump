@@ -8,6 +8,31 @@ for queries and analysis.**
 
 # Expanded Storage Change Log
 
+## 3.0.5 (April 12, 2024)
+
+### Changed
+
+* Draw based on current lid frame in local.
+
+## 3.0.4 (April 12, 2024)
+
+### Changed
+
+* Initialize ExpandedStorage DI container on Entry.
+* Update transpilers to use CodeMatchers.
+
+## 3.0.3 (April 9, 2024)
+
+### Changed
+
+* Updated for FauxCore api changes.
+
+## 3.0.2 (April 2, 2024)
+
+### Changed
+
+* Added logging for debugging purposes.
+
 ## 3.0.1 (March 19, 2024)
 
 ### Changed

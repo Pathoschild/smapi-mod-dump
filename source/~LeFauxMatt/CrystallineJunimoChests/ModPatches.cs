@@ -141,18 +141,25 @@ internal sealed class ModPatches
             SpriteEffects.None,
             baseSortOrder);
 
+        var selection = DiscreteColorPicker.getSelectionFromColor(__instance.playerChoiceColor.Value) - 1;
+        var data = ModPatches.modContentHelper.Load<DataModel>("assets/data.json");
+        var color = __instance.playerChoiceColor.Value;
+        if (selection >= 0 && selection < data.Colors.Length)
+        {
+            color = Utility.StringToColor(data.Colors[selection].Color) ?? __instance.playerChoiceColor.Value;
+        }
+
         spriteBatch.Draw(
             ModPatches.texture,
             pos + (__instance.shakeTimer > 0 ? new Vector2(Game1.random.Next(-1, 2), 0) : Vector2.Zero),
             frame with { Y = 64 },
-            __instance.playerChoiceColor.Value * alpha,
+            color * alpha,
             0f,
             Vector2.Zero,
             4f,
             SpriteEffects.None,
             baseSortOrder + 1E-05f);
 
-        var selection = DiscreteColorPicker.getSelectionFromColor(__instance.playerChoiceColor.Value) - 1;
         if (selection < 0)
         {
             return false;
@@ -299,16 +306,5 @@ internal sealed class ModPatches
         chest.modData["furyx639.BetterChests/HslColorPicker"] = "Disabled";
         chest.modData["furyx639.BetterChests/InventoryTabs"] = "Disabled";
         chest.modData["furyx639.BetterChests/ResizeChest"] = "Disabled";
-
-        var data = ModPatches.modContentHelper.Load<DataModel>("assets/data.json");
-        if (__instance.modData.TryGetValue($"{ModPatches.modId}/Color", out var colorString)
-            && int.TryParse(colorString, out var selection)
-            && selection >= 0
-            && selection < data.Colors.Length)
-        {
-            // Copy color from item to chest
-            chest.GlobalInventoryId = $"{ModPatches.modId}-{data.Colors[selection].Name}";
-            chest.playerChoiceColor.Value = data.Colors[selection].Color;
-        }
     }
 }

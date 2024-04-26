@@ -207,6 +207,12 @@ public static class FontUtilities {
 				case NameId.Description:
 				case NameId.UniqueId:
 				case NameId.SampleText:
+				case NameId.CopyrightNotice:
+				case NameId.LicenseDescription:
+				case NameId.LicenseURL:
+				case NameId.ManufacturerName:
+				case NameId.DesignerName:
+				case NameId.DesignerURL:
 					break;
 				default:
 					continue;
@@ -236,6 +242,31 @@ public static class FontUtilities {
 	[return: NotNullIfNotNull("names")]
 	public static IEnumerable<int>? GetLanguageIds(List<NameEntry>? names, PlatformId? platform = null) {
 		return names?.Where(x => platform is null || x.PlatformId == platform).Select(x => x.LanguageId).Distinct();
+	}
+
+	public static string? GetFieldWithLanguage(List<NameEntry>? names, NameId nameId, int? preferredLanguage = null, PlatformId? requiredPlatform = PlatformId.Microsoft) {
+		// First, try to get a result using the preferred language.
+		string? result;
+
+		if (preferredLanguage.HasValue) {
+			result = GetMatchingEntry(names, nameId: nameId, platform: requiredPlatform, languageId: preferredLanguage.Value);
+			if (result is not null)
+				return result;
+		}
+
+		// Next, if we have a current culture and it doesn't match the
+		// preferred language, try getting that.
+		if (CultureInfo.CurrentUICulture != CultureInfo.InvariantCulture) {
+			int lcid = CultureInfo.CurrentUICulture.LCID;
+			if (!preferredLanguage.HasValue || preferredLanguage.Value != lcid) {
+				result = GetMatchingEntry(names, nameId: nameId, platform: requiredPlatform, languageId: lcid);
+				if (result is not null)
+					return result;
+			}
+		}
+
+		// We tried. Just grab anything then.
+		return GetMatchingEntry(names, nameId: nameId, platform: requiredPlatform);
 	}
 
 	public static string? GetFamilyName(List<NameEntry>? names) {

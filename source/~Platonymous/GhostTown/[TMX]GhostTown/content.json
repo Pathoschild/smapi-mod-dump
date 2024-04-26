@@ -1,0 +1,65 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Platonymous/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "mergeMaps": [
+	{
+      "name": "Town",
+	  "file": "assets/TownExt.tmx",
+    },
+	{
+      "name": "JojaMart",
+	  "file": "assets/JojaExt.tmx",
+    },
+	{
+      "name": "Forest",
+	  "file": "assets/ForestExt.tmx",
+    },
+	{
+      "name": "Hospital",
+	  "file": "assets/HospitalExt.tmx",
+    },
+	{
+      "name": "Bathhouse_Pool",
+	  "file": "assets/BathhouseExt.tmx",
+    },
+	{
+      "name": "Railroad",
+	  "file": "assets/RailroadExt.tmx",
+    },
+	{
+      "name": "WizardHouse",
+	  "removeEmpty": false,
+	  "file": "assets/WizExt.tmx",
+    },
+	{
+      "name": "Mine",
+	  "file": "assets/MineExt.tmx",
+    },
+	{
+      "name": "Trailer",
+	  "removeEmpty": false,
+	  "file": "assets/TrailerExt.tmx",
+    },
+	{
+      "name": "Beach",
+	  "file": "assets/BeachExt.tmx",
+    },
+	{
+      "name": "SeedShop",
+	  "removeEmpty": false,
+	  "file": "assets/SeedShopExt.tmx",
+    },
+	{
+      "name": "Sewer",
+	  "file": "assets/SewerExt.tmx",
+    }
+  ]
+}

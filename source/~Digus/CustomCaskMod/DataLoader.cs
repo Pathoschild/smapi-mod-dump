@@ -46,7 +46,6 @@ namespace CustomCaskMod
 
             CaskData = DataLoader.Helper.Data.ReadJsonFile<Dictionary<object, float>>("data\\CaskData.json") ?? new Dictionary<object, float>() { { 342, 2.66f }, { 724, 2f } };
             DataLoader.Helper.Data.WriteJsonFile("data\\CaskData.json", CaskData);
-            DataLoader.LoadContentPacksCommand();
 
             IMailFrameworkModApi mailFrameworkModApi = helper.ModRegistry.GetApi<IMailFrameworkModApi>("DIGUS.MailFrameworkMod");
             mailFrameworkModApi?.RegisterLetter(
@@ -143,8 +142,6 @@ namespace CustomCaskMod
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060", Justification = "Needed for command methods.")]
         public static void LoadContentPacksCommand(string command = null, string[] args = null)
         {
-            Dictionary<string, ObjectData> objects = StardewValley.DataLoader.Objects(Game1.content);
-            Dictionary<string, BigCraftableData> bigCraftables = StardewValley.DataLoader.BigCraftables(Game1.content);
             AgerController.ClearAgers();
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
@@ -171,7 +168,7 @@ namespace CustomCaskMod
                             customAger.ModUniqueID = contentPack.Manifest.UniqueID;
                             if (customAger.QualifiedItemId == null)
                             {
-                                var foundAgers = bigCraftables.Where(b => b.Value.Name.Equals(customAger.Name));
+                                var foundAgers = Game1.bigCraftableData.Where(b => b.Value.Name.Equals(customAger.Name));
                                 if (!foundAgers.Any())
                                 {
                                     CustomCaskModEntry.ModMonitor.Log($"There is no ager with the name '{customAger.Name}'. This data will be ignored.", LogLevel.Warn);
@@ -213,7 +210,7 @@ namespace CustomCaskMod
                                     {
                                         oldAger.AgingData[key] = value;
                                     }
-                                    FillDataIds(objects, oldAger.AgingData, oldAger.AgingDataId);
+                                    FillDataIds(oldAger.AgingData, oldAger.AgingDataId);
                                     continue;
 
                                 }
@@ -231,7 +228,7 @@ namespace CustomCaskMod
                                     continue;
                                 }
                             }
-                            FillDataIds(objects, customAger.AgingData, customAger.AgingDataId);
+                            FillDataIds(customAger.AgingData, customAger.AgingDataId);
                             AgerController.SetAger(customAger);
                         }
                         else
@@ -246,16 +243,16 @@ namespace CustomCaskMod
                     CustomCaskModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt doesn't have both {CaskDataJson} and {AgersDataJson} files.", LogLevel.Warn);
                 }
             }
-            FillDataIds(objects, CaskData, CaskDataId);
+            FillDataIds(CaskData, CaskDataId);
             CustomCaskModEntry.Helper.GameContent.InvalidateCache("Data/Machines");
         }
 
-        public static void FillDataIds(Dictionary<string, ObjectData> objects, Dictionary<object, float> data, Dictionary<string, float> dataIds)
+        public static void FillDataIds(Dictionary<object, float> data, Dictionary<string, float> dataIds)
         {
             data.ToList().ForEach(c =>
             {
                 var (key, value) = c;
-                var id = GetId(key, objects);
+                var id = GetId(key);
                 if (id != null)
                 {
                     dataIds[id] = value;
@@ -263,7 +260,7 @@ namespace CustomCaskMod
             });
         }
 
-        private static string GetId(object identifier, Dictionary<string, ObjectData> objects)
+        private static string GetId(object identifier)
         {
             if (ItemRegistry.IsQualifiedItemId(identifier.ToString()))
             {
@@ -275,7 +272,7 @@ namespace CustomCaskMod
             }
             else
             {
-                var pair = objects.FirstOrDefault(o => o.Value.Name.Equals(identifier));
+                var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
                 if (pair.Value != null)
                 {
                     return ItemRegistry.QualifyItemId(pair.Key);
@@ -357,17 +354,17 @@ namespace CustomCaskMod
             GenericModConfigMenuApi api = Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (api != null)
             {
-                api.RegisterModConfig(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
+                api.Register(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
 
-                api.RegisterSimpleOption(manifest, "Disable Letter", "You won't receive the letter about Custom Cask changes and the cask recipe in case you don't know it.", () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val, ()=>"Disable Letter", ()=>"You won't receive the letter about Custom Cask changes and the cask recipe in case you don't know it.");
 
-                api.RegisterSimpleOption(manifest, "Casks Anywhere", "Casks will accept items anywhere.", () => DataLoader.ModConfig.EnableCasksAnywhere, (bool val) => DataLoader.ModConfig.EnableCasksAnywhere = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableCasksAnywhere, (bool val) => DataLoader.ModConfig.EnableCasksAnywhere = val, () => "Casks Anywhere", () => "Casks will accept items anywhere.");
 
-                api.RegisterSimpleOption(manifest, "Quality++", "Casks will be able to increase more than one quality lever per day.", () => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay, (bool val) => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay, (bool val) => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay = val, () => "Quality++", () => "Casks will be able to increase more than one quality lever per day.");
 
-                api.RegisterSimpleOption(manifest, "Cask Age Every Object", "Casks will be able to age every object.", () => DataLoader.ModConfig.EnableCaskAgeEveryObject, (bool val) => DataLoader.ModConfig.EnableCaskAgeEveryObject = val);
+                api.AddBoolOption(manifest, () => DataLoader.ModConfig.EnableCaskAgeEveryObject, (bool val) => DataLoader.ModConfig.EnableCaskAgeEveryObject = val, () => "Cask Age Every Object", () => "Casks will be able to age every object.");
 
-                api.RegisterSimpleOption(manifest, "Default Aging Rate", "Rate that will be used for non declared objects.", () => DataLoader.ModConfig.DefaultAgingRate, (float val) => DataLoader.ModConfig.DefaultAgingRate = val);
+                api.AddNumberOption(manifest, () => DataLoader.ModConfig.DefaultAgingRate, (float val) => DataLoader.ModConfig.DefaultAgingRate = val, () => "Default Aging Rate", () => "Rate that will be used for non declared objects.");
             }
         }
     }

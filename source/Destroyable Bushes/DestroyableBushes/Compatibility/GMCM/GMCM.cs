@@ -10,6 +10,7 @@
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 
@@ -63,6 +64,35 @@ namespace DestroyableBushes
                 api.AddTextOption
                 (
                     mod: ModManifest,
+                    getValue: () => Math.Clamp(Config.AxeUpgradesRequired, 0, 4).ToString(), //get the value as a clamped string
+                    setValue: (string val) => Config.AxeUpgradesRequired = int.Parse(val), //set by parsing internal text value to integer
+                    name: () => Helper.Translation.Get("AxeUpgradesRequired.Name"),
+                    tooltip: () => Helper.Translation.Get("AxeUpgradesRequired.Desc"),
+                    allowedValues: ["0", "1", "2", "3", "4"],
+                    formatAllowedValue: (string val) =>
+                    {
+                        string axeDisplayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Axe.cs.1"); //load the translated word "Axe"
+
+                        //construct the game's translated display name for each entry
+                        switch (val)
+                        {
+                            case "1":
+                                return Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14299", axeDisplayName);
+                            case "2":
+                                return Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14300", axeDisplayName);
+                            case "3":
+                                return Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14301", axeDisplayName);
+                            case "4":
+                                return Game1.content.LoadString("Strings\\StringsFromCSFiles:Tool.cs.14302", axeDisplayName);
+                            default:
+                                return axeDisplayName;
+                        }
+                    }
+                );
+
+                api.AddTextOption
+                (
+                    mod: ModManifest,
                     getValue: () => Config.WhenBushesRegrow ?? "",
                     setValue: (string val) => Config.WhenBushesRegrow = val, //note: validated/converted within the config code
                     name: () => Helper.Translation.Get("WhenBushesRegrow.Name"),
@@ -112,6 +142,15 @@ namespace DestroyableBushes
                     tooltip: () => Helper.Translation.Get("DestroyableBushTypes.LargeBushes.Desc")
                 );
 
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    getValue: () => Config.DestroyableBushTypes.WalnutBushes,
+                    setValue: (bool val) => Config.DestroyableBushTypes.WalnutBushes = val,
+                    name: () => Helper.Translation.Get("DestroyableBushTypes.WalnutBushes.Name"),
+                    tooltip: () => Helper.Translation.Get("DestroyableBushTypes.WalnutBushes.Desc")
+                );
+
                 api.AddSectionTitle
                 (
                     mod: ModManifest,
@@ -146,6 +185,16 @@ namespace DestroyableBushes
                     setValue: (int val) => Config.AmountOfWoodDropped.LargeBushes = val,
                     name: () => Helper.Translation.Get("AmountOfWoodDropped.LargeBushes.Name"),
                     tooltip: () => Helper.Translation.Get("AmountOfWoodDropped.LargeBushes.Desc"),
+                    min: 0
+                );
+
+                api.AddNumberOption
+                (
+                    mod: ModManifest,
+                    getValue: () => Config.AmountOfWoodDropped.WalnutBushes,
+                    setValue: (int val) => Config.AmountOfWoodDropped.WalnutBushes = val,
+                    name: () => Helper.Translation.Get("AmountOfWoodDropped.WalnutBushes.Name"),
+                    tooltip: () => Helper.Translation.Get("AmountOfWoodDropped.WalnutBushes.Desc"),
                     min: 0
                 );
 

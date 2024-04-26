@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 7962ae5ad04f947142fbee1021fcc2d3ba653285
+   commit 6a0253983b6276fef1b9649e9dce2c677e1d7b4a
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Mar 28 02:49:27 2024 +0100
+   Date:   Thu Apr 11 16:55:12 2024 +0200
    
-       renamed DLX.Bundles_ResetDigSpot to UB_ResetDigSpot
+       updated to 3.0.9
    

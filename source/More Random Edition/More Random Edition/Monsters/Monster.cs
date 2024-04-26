@@ -28,7 +28,16 @@ namespace Randomizer
 		public double MissChance { get; set; }
 		public bool IsMinesMonster { get; set; }
 		public int Experience { get; set; }
+
+		/// <summary>
+		/// This is the key in the Monsters data file
+		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// This is the display name in the Monsters data file (the last property)
+		/// </summary>
+		public string DisplayName { get; set; }
 
 		/// <summary>
 		/// Constructor specifically for mines monsters
@@ -48,7 +57,8 @@ namespace Randomizer
 			double missChance,
 			bool isMinesMonster,
 			int experience,
-			string name)
+			string name,
+			string displayName)
 		{
 			HP = hp;
 			Damage = damage;
@@ -64,6 +74,7 @@ namespace Randomizer
 			IsMinesMonster = isMinesMonster;
 			Experience = experience;
 			Name = name;
+			DisplayName = displayName;
 		}
 
 		/// <summary>

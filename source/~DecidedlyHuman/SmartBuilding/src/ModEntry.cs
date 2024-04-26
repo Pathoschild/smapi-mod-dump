@@ -267,16 +267,18 @@ namespace SmartBuilding
             if (helper.ModRegistry.IsLoaded("furyx639.ToolbarIcons"))
                 if (this.Helper.ModRegistry.Get("furyx639.ToolbarIcons") is IModInfo modInfo)
                 {
-                    if (modInfo.Manifest.Version.IsOlderThan("2.3.0"))
+                    if (modInfo.Manifest.Version.IsOlderThan("2.7.1"))
                     {
                         this.logger.Log(
-                            "Installed version of Toolbar Icons is too old. Please update it to 2.3.0 or higher.");
+                            "Installed version of Toolbar Icons is too old. Please update it to 2.7.1 or higher.");
                         this.toolbarIconsApi = null;
                     }
                     else
                         // Try to get the API.
                         try
                         {
+                            this.logger.Log("Ignore the following Toolbar Icons error. Something very weird is going on somewhere, and we're aware of the issue.", LogLevel.Info);
+
                             this.toolbarIconsApi =
                                 this.Helper.ModRegistry.GetApi<IToolbarIconsApi>("furyx639.ToolbarIcons");
                         }
@@ -512,6 +514,22 @@ namespace SmartBuilding
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_EnableInsertingItemsIntoMachines(),
                 getValue: () => config.EnableInsertingItemsIntoMachines,
                 setValue: value => config.EnableInsertingItemsIntoMachines = value
+            );
+
+            configMenuApi.AddBoolOption(
+                this.ModManifest,
+                name: () => I18n.SmartBuilding_Settings_CheatyOptions_FreezeTimeInBuildMode(),
+                tooltip: () => I18n.SmartBuilding_Settings_CheatyOptions_FreezeTimeInBuildMode_Tooltip(),
+                getValue: () => config.FreezeTimeInBuildMode,
+                setValue: value => config.FreezeTimeInBuildMode = value
+            );
+
+            configMenuApi.AddBoolOption(
+                this.ModManifest,
+                name: () => I18n.SmartBuilding_Settings_CheatyOptions_OnlyFreezeTimeOnFarm(),
+                tooltip: () => I18n.SmartBuilding_Settings_CheatyOptions_OnlyFreezeTimeOnFarm_Tooltip(),
+                getValue: () => config.OnlyFreezeTimeOnFarm,
+                setValue: value => config.OnlyFreezeTimeOnFarm = value
             );
         }
 
@@ -841,10 +859,11 @@ namespace SmartBuilding
                     "Mods/SmartBuilding/ToolButtons",
                     Ui.GetButtonSourceRect(ButtonId.Draw),
                     I18n.SmartBuilding_Integrations_ToolbarIcons_Tooltip());
-                this.toolbarIconsApi.ToolbarIconPressed += (o, s) =>
+
+                this.toolbarIconsApi.Subscribe(args =>
                 {
-                    if (s.Equals("smart-building.toggle-build-mode")) this.ToggleBuildMode();
-                };
+                    if (args.Id.Equals("smart-building.toggle-build-mode")) this.ToggleBuildMode();
+                });
             }
         }
 
@@ -864,6 +883,27 @@ namespace SmartBuilding
         private void OnUpdateTicking(object? sender, UpdateTickingEventArgs e)
         {
             if (this.toolMenuUi != null)
+            {
+                // Our UI isn't null, so double-check we're in build mode.
+                if (this.modState.BuildingMode)
+                {
+                    // We are, so we freeze time if the setting for it is enabled.
+                    if (config.FreezeTimeInBuildMode)
+                    {
+                        if (config.OnlyFreezeTimeOnFarm)
+                        {
+                            if (Game1.currentLocation.Equals(Game1.getFarm()))
+                            {
+                                Game1.gameTimeInterval = 0;
+                            }
+                        }
+                        else
+                        {
+                            Game1.gameTimeInterval = 0;
+                        }
+                    }
+                }
+
                 // If our tool menu is enabled and there's no menu up, we go forward with processing its events.
                 if (this.toolMenuUi.Enabled && Game1.activeClickableMenu == null)
                 {
@@ -894,6 +934,7 @@ namespace SmartBuilding
                         config.HoldToDraw.JustPressed())
                         this.toolMenuUi.ReceiveLeftClick(this.currentMouseX, this.currentMouseY);
                 }
+            }
         }
 
         /// <summary>

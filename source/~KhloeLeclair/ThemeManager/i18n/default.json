@@ -32,9 +32,6 @@
 	"setting.game-theme": "Game Theme",
 	"setting.game-theme.tip": "A game theme overrides colors in the base game's UI, and also allows certain elements to be moved or resized.",
 
-	"setting.fix-text": "Fix Text Alignment",
-	"setting.fix-text.tip": "When enabled, Theme Manager will fix text drawing calls to always position text at an exact (integer) position. This fixes some issues where text, particularly centered text, is drawn with inconsistent thickness.",
-
 	"setting.debug-patches": "Debug Patches",
 	"setting.debug-patches.tip": "When enabled, debug messages will be logged when applying Harmony patches to classes.",
 

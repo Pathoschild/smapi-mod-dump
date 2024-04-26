@@ -9,19 +9,12 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Inventories;
-using StardewValley.Menus;
+using StardewModdingAPI;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
-using System;
+using StardewValley.Menus;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Object = StardewValley.Object;
+using System;
 
 namespace AnythingAnywhere.Framework.Patches.StandardObjects
 {

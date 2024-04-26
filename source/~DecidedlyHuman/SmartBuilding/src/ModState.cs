@@ -129,10 +129,8 @@ namespace SmartBuilding
                 // If this isn't a producer, we return immediately.
                 if (type == ProducerType.NotAProducer)
                     return false;
-                if (type == ProducerType.ManualRemoval)
-                    // If this requires manual removal, we mark that we do need to manually deduct the item.
-                    needToDeduct = true;
-                else if (type == ProducerType.AutomaticRemoval)
+
+                if (type == ProducerType.AutomaticRemoval)
                     // The producer in question removes automatically, so we don't need to manually deduct the item.
                     needToDeduct = false;
                 else if (type == ProducerType.TechnicallyNotAProducerButIsATorch)
@@ -143,7 +141,7 @@ namespace SmartBuilding
                     return true;
                 }
 
-                this.worldUtils.InsertItem(item, o, needToDeduct);
+                return this.worldUtils.TryInsertItem(item, o, needToDeduct);
             }
 
             // There was no object here, so we return false.

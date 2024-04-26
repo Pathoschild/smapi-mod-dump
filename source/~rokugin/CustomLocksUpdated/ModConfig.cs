@@ -9,11 +9,15 @@
 *************************************************/
 
 namespace CustomLocksUpdated {
-    internal class ModConfig {
+    public class ModConfig {
 
-        public bool OutsideNormalHours { get; set; } = true;
-        public bool StrangerRoomEntry { get; set; } = true;
-        public bool EarlyAdventureGuild { get; set; } = true;
+        public bool Enabled { get; set; } = true;
+        public bool AllowSeedShopWed { get; set; } = true;
+        public bool AllowOutsideTime { get; set; } = true;
+        public bool AllowStrangerHomeEntry { get; set; } = true;
+        public bool AllowStrangerRoomEntry { get; set; } = true;
+        public bool AllowAdventureGuildEntry { get; set; } = true;
+        public bool IgnoreEvents { get; set; } = true;
 
     }
 }

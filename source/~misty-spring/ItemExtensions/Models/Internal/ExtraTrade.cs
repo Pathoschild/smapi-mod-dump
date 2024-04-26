@@ -13,7 +13,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.ItemTypeDefinitions;
 
-namespace ItemExtensions.Models;
+namespace ItemExtensions.Models.Internal;
 
 public class ExtraTrade
 {

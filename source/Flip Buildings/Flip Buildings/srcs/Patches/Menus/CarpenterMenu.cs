@@ -135,7 +135,7 @@ namespace FlipBuildings.Patches
 				rightNeighborID = CarpenterMenu.region_paintButton,
 				leftNeighborID = CarpenterMenu.region_appearanceButton,
 				upNeighborID = CarpenterMenu.region_appearanceButton,
-				visible = Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || (Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && __instance.TargetLocation.buildings.Any(building => BuildingHelper.CanBeFlipped(building)))
+				visible = Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || (Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && __instance.TargetLocation.buildings.Any(building => BuildingUtility.CanBeFlipped(building)))
 			};
 			__instance.paintButton.myID = CarpenterMenu.region_paintButton;
 			__instance.moveButton.myID = CarpenterMenu.region_moveBuitton;
@@ -278,7 +278,7 @@ namespace FlipBuildings.Patches
 				{
 					if (building != null)
 					{
-						building.color = BuildingHelper.CanBeFlipped(building) ? Color.Lime : Color.Red * 0.8f;
+						building.color = BuildingUtility.CanBeFlipped(building) ? Color.Lime : Color.Red * 0.8f;
 					}
 					return false;
 				}
@@ -315,7 +315,7 @@ namespace FlipBuildings.Patches
 				Vector2 tile = new((Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64, (Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64);
 				Building buildingAt = __instance.TargetLocation.getBuildingAt(tile);
 
-				BuildingHelper.TryToFlip(buildingAt);
+				BuildingUtility.TryToFlip(buildingAt);
 				return false;
 			}
 			return true;

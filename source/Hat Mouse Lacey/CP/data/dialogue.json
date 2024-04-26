@@ -17,6 +17,9 @@
         "Introduction": "{{i18n: dialogue.Introduction}}",
         "MovieInvitation": "{{i18n: dialogue.MovieInvitation}}",
 
+        "AcceptGift_(O)StardropTea": "{{i18n: dialogue.Gift.StardropTea}}",
+        "AcceptGift_alcohol_item": "{{i18n: dialogue.Gift.AlcoholItem}}",
+
         "AcceptBirthdayGift_Loved": "{{i18n: dialogue.BirthdayGift.Loved}}",
         "AcceptBirthdayGift_Liked": "{{i18n: dialogue.BirthdayGift.Liked}}",
         "AcceptBirthdayGift_Neutral": "{{i18n: dialogue.BirthdayGift.Neutral}}",
@@ -57,6 +60,12 @@
 
         "DumpsterDiveComment": "{{i18n: dialogue.DumpsterDiveComment}}",
         "SpouseStardrop": "{{i18n: dialogue.SpouseStardrop}}",
+
+        "GreenRain": "{{i18n: dialogue.GreenRain}}",
+        "GreenRain_2": "{{i18n: dialogue.GreenRain_2}}",
+        "greenrain_pacing": "{{i18n: dialogue.greenrain_pacing}}",
+
+        "TroutDerby": "{{i18n: dialogue.TroutDerby}}",
 
         "breakUp": "{{i18n: dialogue.breakUp}}",
         "divorced": "{{i18n: dialogue.divorced}}",
@@ -136,6 +145,16 @@
       },
       "When": {
         "Relationship:{{Lacey}}": "Dating"
+      }
+    },
+    {
+      "Target": "Characters/Dialogue/{{Lacey}}",
+      "Action": "EditData",
+      "Entries": {
+        "TroutDerby": "{{i18n: dialogue.TroutDerby_2}}"
+      },
+      "When": {
+        "Query: {{Year}} > 1": true
       }
     },
     {

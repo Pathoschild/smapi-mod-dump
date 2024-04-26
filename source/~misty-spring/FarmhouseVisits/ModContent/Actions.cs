@@ -321,7 +321,7 @@ internal static class Actions
     internal static void SetDialogue(NPC who, string text, bool add = true)
     {
         var dialogue = new Dialogue(who, null, text);
-        who.setNewDialogue(dialogue, add, false);
+        who.setNewDialogue(dialogue, add);
     }
 
     /// <summary>

@@ -1,0 +1,96 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Format": "2.0.0",
+  "ConfigSchema": {
+    "Fish Smoker": {
+      "AllowValues": "No Fuel, 5 Wood, 1 Hardwood, False",
+      "Description": "Pick what fuel you want to use for the fish smoker. Set to false for vanilla.",
+      "Default": "1 Hardwood"
+    },
+    "Charcoal Kiln": {
+      "AllowValues": "5 Wood, 1 Hardwood, False",
+      "Description": "Pick what fuel you want to use for the charcoal kiln. Set to false for vanilla.",
+      "Default": "5 Wood"
+    }
+  },
+  "Changes": [
+    //Fish Smoker
+    { //No Fuel
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)FishSmoker"],
+      "Entries": {"AdditionalConsumedItems": null},
+      "When": {"Fish Smoker": "No Fuel"}
+    },
+    { //5 Wood
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)FishSmoker", "AdditionalConsumedItems", "#0"],
+      "Entries": {
+        "ItemId": "(O)388",
+        "RequiredCount": 5,
+        "InvalidCountMessage": "Requires 5 Wood"
+      },
+      "When": {"Fish Smoker": "5 Wood"}
+    },
+    { //1 Hardwood
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)FishSmoker", "AdditionalConsumedItems", "#0"],
+      "Entries": {
+        "ItemId": "(O)709",
+        "RequiredCount": 1,
+        "InvalidCountMessage": "Requires 1 Hardwood"
+      },
+      "When": {"Fish Smoker": "1 Hardwood"}
+    },
+    //charcoal kiln
+    {
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)114", "OutputRules", "#0", "Triggers", "#0"],
+      "Entries": {"RequiredCount": 5},
+      "When": {"Charcoal Kiln": "5 Wood"}
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)114", "OutputRules", "#0"],
+      "Entries": {"InvalidCountMessage": "Requires 5 Wood"},
+      "When": {"Charcoal Kiln": "5 Wood"}
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)114", "OutputRules", "#0", "Triggers", "#0"],
+      "Entries": {
+        "RequiredItemId": "(O)709",
+        "RequiredCount": 1
+      },
+      "When": {"Charcoal Kiln": "1 Hardwood"}
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)114", "OutputRules", "#0"],
+      "Entries": {"InvalidCountMessage": "Requires 1 Hardwood"},
+      "When": {"Charcoal Kiln": "1 Hardwood"}
+    },
+    //Lava Eel fish pond
+    {
+      "Action": "EditData",
+      "Target": "Data/FishPondData",
+      "TargetField": ["LavaEel", "ProducedItems", "#7"],//Gold Ore: vanilla 5 => 10
+      "Entries": {"MinQuantity": 10, "MaxQuantity": 10}
+    }
+  ]
+}

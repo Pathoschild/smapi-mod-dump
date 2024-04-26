@@ -10,6 +10,7 @@
 
 using CrossSpeak;
 using stardew_access.Translation;
+using stardew_access.Utils;
 
 namespace stardew_access.ScreenReader;
 
@@ -59,6 +60,8 @@ public class ScreenReaderImpl : IScreenReader
         set => menuSuffixNoQueryText = value;
     }
 
+    public BoundedQueue<string> SpokenBuffer { get; set;} = new BoundedQueue<string>(size: 20, allowDuplicacy: false);
+
     public void InitializeScreenReader()
     {
         Log.Info("Initializing CrossSpeak...");
@@ -82,11 +85,13 @@ public class ScreenReaderImpl : IScreenReader
 
     public void CloseScreenReader() => CrossSpeakManager.Instance.Close();
 
-    public bool Say(string text, bool interrupt)
+    public bool Say(string text, bool interrupt, bool excludeFromBuffer = false)
     {
         if (string.IsNullOrWhiteSpace(text)) return false;
         if (!MainClass.Config.TTS) return false;
         if (text.Contains('^')) text = text.Replace('^', '\n');
+
+        if (!excludeFromBuffer) SpokenBuffer.Add(text);
 
         if (!CrossSpeakManager.Instance.Speak(text, interrupt))
         {
@@ -100,15 +105,15 @@ public class ScreenReaderImpl : IScreenReader
         return true;
     }
 
-    public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Default, bool disableTranslationWarnings = false)
+    public bool TranslateAndSay(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Default, bool disableTranslationWarnings = false, bool excludeFromBuffer = false)
     {
         if (string.IsNullOrWhiteSpace(translationKey))
             return false;
 
-        return Say(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt);
+        return Say(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, excludeFromBuffer: excludeFromBuffer);
     }
 
-    public bool SayWithChecker(string text, bool interrupt, string? customQuery = null)
+    public bool SayWithChecker(string text, bool interrupt, string? customQuery = null, bool excludeFromBuffer = false)
     {
         customQuery ??= text;
 
@@ -119,18 +124,18 @@ public class ScreenReaderImpl : IScreenReader
             return false;
 
         prevText = customQuery;
-        return Say(text, interrupt);
+        return Say(text, interrupt, excludeFromBuffer: excludeFromBuffer);
     }
 
-    public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Default, string? customQuery = null, bool disableTranslationWarnings = false)
+    public bool TranslateAndSayWithChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Default, string? customQuery = null, bool disableTranslationWarnings = false, bool excludeFromBuffer = false)
     {
         if (string.IsNullOrWhiteSpace(translationKey))
             return false;
 
-        return SayWithChecker(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, customQuery);
+        return SayWithChecker(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, customQuery, excludeFromBuffer: excludeFromBuffer);
     }
 
-    public bool SayWithMenuChecker(string text, bool interrupt, string? customQuery = null)
+    public bool SayWithMenuChecker(string text, bool interrupt, string? customQuery = null, bool excludeFromBuffer = false)
     {
         customQuery ??= text;
 
@@ -143,31 +148,31 @@ public class ScreenReaderImpl : IScreenReader
         prevMenuText = customQuery;
         prevMenuSuffixText = MenuSuffixText;
         prevMenuPrefixText = MenuPrefixText;
-        bool re = Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt);
+        bool re = Say($"{MenuPrefixNoQueryText}{MenuPrefixText}{text}{MenuSuffixText}{MenuSuffixNoQueryText}", interrupt, excludeFromBuffer: excludeFromBuffer);
         MenuPrefixNoQueryText = "";
         MenuSuffixNoQueryText = "";
 
         return re;
     }
 
-    public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Menu, string? customQuery = null, bool disableTranslationWarnings = false)
+    public bool TranslateAndSayWithMenuChecker(string translationKey, bool interrupt, object? translationTokens = null, TranslationCategory translationCategory = TranslationCategory.Menu, string? customQuery = null, bool disableTranslationWarnings = false, bool excludeFromBuffer = false)
     {
         if (string.IsNullOrWhiteSpace(translationKey))
             return false;
 
-        return SayWithMenuChecker(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, customQuery);
+        return SayWithMenuChecker(Translator.Instance.Translate(translationKey, translationTokens, translationCategory, disableTranslationWarnings), interrupt, customQuery, excludeFromBuffer: excludeFromBuffer);
     }
 
-    public bool SayWithChatChecker(string text, bool interrupt)
+    public bool SayWithChatChecker(string text, bool interrupt, bool excludeFromBuffer = false)
     {
         if (prevChatText == text)
             return false;
 
         prevChatText = text;
-        return Say(text, interrupt);
+        return Say(text, interrupt, excludeFromBuffer: excludeFromBuffer);
     }
 
-    public bool SayWithTileQuery(string text, int x, int y, bool interrupt)
+    public bool SayWithTileQuery(string text, int x, int y, bool interrupt, bool excludeFromBuffer = false)
     {
         string query = $"{text} x:{x} y:{y}";
 
@@ -175,7 +180,7 @@ public class ScreenReaderImpl : IScreenReader
             return false;
 
         prevTextTile = query;
-        return Say(text, interrupt);
+        return Say(text, interrupt, excludeFromBuffer: excludeFromBuffer);
     }
 
     public void Cleanup()

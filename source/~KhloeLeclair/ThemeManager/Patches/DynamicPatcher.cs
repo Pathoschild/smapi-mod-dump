@@ -42,6 +42,7 @@ internal class DynamicPatcher : IDisposable {
 	internal static Dictionary<MethodBase, DynamicPatcher> LivePatchers = new();
 
 	private static IReadOnlyDictionary<string, Color>? Colors;
+	private static IReadOnlyDictionary<string, Dictionary<long, Color?>>? SpriteTextColors;
 	private static IReadOnlyDictionary<string, IManagedAsset<SpriteFont>>? Fonts;
 	private static IReadOnlyDictionary<string, IManagedAsset<IBmFontData>>? BmFonts;
 	private static IReadOnlyDictionary<string, IManagedAsset<Texture2D>>? Textures;
@@ -52,6 +53,10 @@ internal class DynamicPatcher : IDisposable {
 
 	public static void UpdateColors(IReadOnlyDictionary<string, Color> colors) {
 		Colors = colors;
+	}
+
+	public static void UpdateSpriteTextColors(IReadOnlyDictionary<string, Dictionary<long, Color?>> colors) {
+		SpriteTextColors = colors;
 	}
 
 	public static void UpdateFonts(IReadOnlyDictionary<string, IManagedAsset<SpriteFont>> fonts) {
@@ -80,52 +85,77 @@ internal class DynamicPatcher : IDisposable {
 			SpriteTextManager.Instance?.ApplyFont(spriteTex, coloredTex, fontData);
 	}
 
-	public static void SpriteText_drawStringHorizontallyCenteredAt(SpriteBatch b, string s, int x, int y, int characterPosition, int width, int height, float alpha, float layerDepth, bool junimoText, int color, int maxWidth, string? texOne, string? texTwo, string? font) {
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void ModifySpriteTextColor(string? colorMap, ref Color? color) {
+		if (colorMap != null &&
+			SpriteTextColors != null &&
+			(SpriteTextColors.TryGetValue(colorMap, out Dictionary<long, Color?>? colors) || SpriteTextColors.TryGetValue("*", out colors)) &&
+			colors.TryGetValue(color.HasValue ? color.Value.PackedValue : -1, out Color? replaced)
+		)
+			color = replaced;
+	}
+
+	public static void SpriteText_drawStringHorizontallyCenteredAt(SpriteBatch b, string s, int x, int y, int characterPosition, int width, int height, float alpha, float layerDepth, bool junimoText, Color? color, int maxWidth, string? texOne, string? texTwo, string? font, string? colorMap) {
 		ModifySpriteText(texOne, texTwo, font);
+		ModifySpriteTextColor(colorMap, ref color);
+		SpriteText_Patches.UpdateColor = false;
 
 		try {
 			SpriteText.drawStringHorizontallyCenteredAt(b, s, x, y, characterPosition, width, height, alpha, layerDepth, junimoText, color, maxWidth);
 		} finally {
+			SpriteText_Patches.UpdateColor = true;
 			SpriteTextManager.Instance?.ApplyNormalFont();
 		}
 	}
 
-	public static void SpriteText_drawStringWithScrollCenteredAt_Int(SpriteBatch b, string s, int x, int y, int width, float alpha, int color, int scrollType, float layerDepth, bool junimoText, string? texOne, string? texTwo, string? font) {
+	public static void SpriteText_drawStringWithScrollCenteredAt_Int(SpriteBatch b, string s, int x, int y, int width, float alpha, Color? color, int scrollType, float layerDepth, bool junimoText, string? texOne, string? texTwo, string? font, string? colorMap) {
 		ModifySpriteText(texOne, texTwo, font);
+		ModifySpriteTextColor(colorMap, ref color);
+		SpriteText_Patches.UpdateColor = false;
 
 		try {
 			SpriteText.drawStringWithScrollCenteredAt(b, s, x, y, width, alpha, color, scrollType, layerDepth, junimoText);
 		} finally {
+			SpriteText_Patches.UpdateColor = true;
 			SpriteTextManager.Instance?.ApplyNormalFont();
 		}
 	}
 
-	public static void SpriteText_drawStringWithScrollCenteredAt_String(SpriteBatch b, string s, int x, int y, string placeHolderWidthText, float alpha, int color, int scrollType, float layerDepth, bool junimoText, string? texOne, string? texTwo, string? font) {
+	public static void SpriteText_drawStringWithScrollCenteredAt_String(SpriteBatch b, string s, int x, int y, string placeHolderWidthText, float alpha, Color? color, int scrollType, float layerDepth, bool junimoText, string? texOne, string? texTwo, string? font, string? colorMap) {
 		ModifySpriteText(texOne, texTwo, font);
+		ModifySpriteTextColor(colorMap, ref color);
+		SpriteText_Patches.UpdateColor = false;
 
 		try {
 			SpriteText.drawStringWithScrollCenteredAt(b, s, x, y, placeHolderWidthText, alpha, color, scrollType, layerDepth, junimoText);
 		} finally {
+			SpriteText_Patches.UpdateColor = true;
 			SpriteTextManager.Instance?.ApplyNormalFont();
 		}
 	}
 
-	public static void SpriteText_drawStringWithScrollBackground(SpriteBatch b, string s, int x, int y, string placeHolderWidthText, float alpha, int color, ScrollTextAlignment scroll_text_alignment, string? texOne, string? texTwo, string? font) {
+	public static void SpriteText_drawStringWithScrollBackground(SpriteBatch b, string s, int x, int y, string placeHolderWidthText, float alpha, Color? color, ScrollTextAlignment scroll_text_alignment, string? texOne, string? texTwo, string? font, string? colorMap) {
 		ModifySpriteText(texOne, texTwo, font);
+		ModifySpriteTextColor(colorMap, ref color);
+		SpriteText_Patches.UpdateColor = false;
 
 		try {
 			SpriteText.drawStringWithScrollBackground(b, s, x, y, placeHolderWidthText, alpha, color, scroll_text_alignment);
 		} finally {
+			SpriteText_Patches.UpdateColor = true;
 			SpriteTextManager.Instance?.ApplyNormalFont();
 		}
 	}
 
-	public static void SpriteText_drawString(SpriteBatch b, string s, int x, int y, int characterPosition, int width, int height, float alpha, float layerDepth, bool junimoText, int drawBGScroll, string placeHolderScrollWidthText, int color, ScrollTextAlignment scroll_text_alignment, string? texOne, string? texTwo, string? font) {
+	public static void SpriteText_drawString(SpriteBatch b, string s, int x, int y, int characterPosition, int width, int height, float alpha, float layerDepth, bool junimoText, int drawBGScroll, string placeHolderScrollWidthText, Color? color, ScrollTextAlignment scroll_text_alignment, string? texOne, string? texTwo, string? font, string? colorMap) {
 		ModifySpriteText(texOne, texTwo, font);
+		ModifySpriteTextColor(colorMap, ref color);
+		SpriteText_Patches.UpdateColor = false;
 
 		try {
 			SpriteText.drawString(b, s, x, y, characterPosition, width, height, alpha, layerDepth, junimoText, drawBGScroll, placeHolderScrollWidthText, color, scroll_text_alignment);
 		} finally {
+			SpriteText_Patches.UpdateColor = true;
 			SpriteTextManager.Instance?.ApplyNormalFont();
 		}
 	}
@@ -248,6 +278,13 @@ internal class DynamicPatcher : IDisposable {
 		return Colors != null && Colors.TryGetValue(key, out Color val) ? val: new Color(@default);
 	}
 
+	internal static void GetColorPackedRef(ref Color instance, string key, uint @default) {
+		if (Colors != null && Colors.TryGetValue(key, out Color val))
+			instance.PackedValue = val.PackedValue;
+		else
+			instance.PackedValue = @default;
+	}
+
 	internal static Color GetColor(Color @default, string key) {
 		return Colors != null && Colors.TryGetValue(key, out Color val) ? val : @default;
 	}
@@ -309,6 +346,29 @@ internal class DynamicPatcher : IDisposable {
 				AddColor(name, method, color.Value);
 		}
 
+		foreach (PropertyInfo prop in typeof(SpriteText).GetProperties(BindingFlags.Static | BindingFlags.Public)) {
+			string name = prop.Name;
+			if (prop.PropertyType != typeof(Color))
+				continue;
+
+			if (prop.GetGetMethod() is not MethodInfo method)
+				continue;
+
+			Color? color;
+			try {
+				color = prop.GetValue(null) as Color?;
+			} catch {
+				continue;
+			}
+
+			if (name.StartsWith("color_"))
+				name = name[6..];
+
+			if (color.HasValue)
+				AddColor($"SpriteText:{name}", method, color.Value);
+		}
+
+
 		return dict;
 	});
 
@@ -318,7 +378,7 @@ internal class DynamicPatcher : IDisposable {
 
 	private readonly ModEntry Mod;
 
-	public readonly MethodInfo Method;
+	public readonly MethodBase Method;
 	public readonly string Key;
 
 	private readonly MethodInfo HMethod;
@@ -337,7 +397,7 @@ internal class DynamicPatcher : IDisposable {
 
 	#region Life Cycle
 
-	public DynamicPatcher(ModEntry mod, MethodInfo method, string key) {
+	public DynamicPatcher(ModEntry mod, MethodBase method, string key) {
 		Mod = mod;
 		Method = method;
 		Key = key;
@@ -801,7 +861,7 @@ internal class DynamicPatcher : IDisposable {
 		Dictionary<FieldInfo, Dictionary<RuleRange, string>> FontFields = new();
 		Dictionary<FieldInfo, Dictionary<RuleRange, string>> TextureFields = new();
 
-		Dictionary<RuleRange, (string, string, string?)>? SpriteTextDraw = null;
+		Dictionary<RuleRange, (string, string, string?, string?)>? SpriteTextDraw = null;
 
 		Dictionary<RuleRange, string>? DrawTextWithShadow = null;
 		Dictionary<RuleRange, Color>? DirectDrawTextWithShadow = null;
@@ -903,13 +963,27 @@ internal class DynamicPatcher : IDisposable {
 					continue;
 				}
 
-				if (entry.Value is null || entry.Value.Length < 2 || entry.Value.Length > 3 || string.IsNullOrWhiteSpace(entry.Value[0]) || string.IsNullOrWhiteSpace(entry.Value[1]) || !entry.Value[0].StartsWith('$') || !entry.Value[1].StartsWith('$') || (entry.Value.Length == 3 && (string.IsNullOrWhiteSpace(entry.Value[2]) || !entry.Value[2].StartsWith('$')))) {
+				if (entry.Value is null ||
+					entry.Value.Length < 2 ||
+					entry.Value.Length > 4 ||
+					string.IsNullOrWhiteSpace(entry.Value[0]) ||
+					string.IsNullOrWhiteSpace(entry.Value[1]) ||
+					!entry.Value[0].StartsWith('$') ||
+					!entry.Value[1].StartsWith('$') ||
+					(entry.Value.Length >= 3 && (string.IsNullOrWhiteSpace(entry.Value[2]) || !entry.Value[2].StartsWith('$'))) ||
+					(entry.Value.Length >= 4 && (string.IsNullOrWhiteSpace(entry.Value[3]) || !entry.Value[3].StartsWith('$')))
+				) {
 					patcher.Mod.Log($"Invalid value \"{entry.Value}\" for \"{entry.Key}\" for SpriteTextDraw while processing {patcher.Key}", LogLevel.Warn);
 					continue;
 				}
 
 				SpriteTextDraw ??= new();
-				SpriteTextDraw[range] = new(entry.Value[0][1..], entry.Value[1][1..], entry.Value.Length == 3 ? entry.Value[2][1..] : null);
+				SpriteTextDraw[range] = new(
+					entry.Value[0][1..],
+					entry.Value[1][1..],
+					entry.Value.Length >= 3 ? entry.Value[2][1..] : null,
+					entry.Value.Length >= 4 ? entry.Value[3][1..] : null
+				);
 				count++;
 			}
 		}
@@ -986,17 +1060,11 @@ internal class DynamicPatcher : IDisposable {
 				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringWithScrollBackground))
 			},
 			{
-				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawStringWithScrollCenteredAt), new Type[] {
-					typeof(SpriteBatch), typeof(string), typeof(int), typeof(int), typeof(int), typeof(float),
-					typeof(int), typeof(int), typeof(float), typeof(bool)
-				}),
+				patcher.Mod.ResolveMethod($"SpriteText:{nameof(SpriteText.drawStringWithScrollCenteredAt)}(SpriteBatch,,,,int,*)"),
 				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringWithScrollCenteredAt_Int))
 			},
 			{
-				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawStringWithScrollCenteredAt), new Type[] {
-					typeof(SpriteBatch), typeof(string), typeof(int), typeof(int), typeof(string), typeof(float),
-					typeof(int), typeof(int), typeof(float), typeof(bool)
-				}),
+				patcher.Mod.ResolveMethod($"SpriteText:{nameof(SpriteText.drawStringWithScrollCenteredAt)}(SpriteBatch,,,,string,*)"),
 				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringWithScrollCenteredAt_String))
 			}
 		};
@@ -1005,6 +1073,7 @@ internal class DynamicPatcher : IDisposable {
 		MethodInfo getTexture = AccessTools.Method(typeof(DynamicPatcher), nameof(GetTexture));
 
 		MethodInfo getColorPacked = AccessTools.Method(typeof(DynamicPatcher), nameof(GetColorPacked));
+		MethodInfo getColorPackedRef = AccessTools.Method(typeof(DynamicPatcher), nameof(GetColorPackedRef));
 		MethodInfo getColor = AccessTools.Method(typeof(DynamicPatcher), nameof(GetColor));
 		MethodInfo getLerpPacked = AccessTools.Method(typeof(DynamicPatcher), nameof(GetLerpColorPacked));
 		MethodInfo getLerp = AccessTools.Method(typeof(DynamicPatcher), nameof(GetLerpColor));
@@ -1016,12 +1085,8 @@ internal class DynamicPatcher : IDisposable {
 
 		MethodInfo Utility_GetRedGreenLerp = AccessTools.Method(typeof(Utility), nameof(Utility.getRedToGreenLerpColor));
 
-		MethodInfo Utility_DrawTextShadowSB = AccessTools.Method(typeof(Utility), nameof(Utility.drawTextWithShadow), new Type[] {
-			typeof(SpriteBatch), typeof(StringBuilder), typeof(SpriteFont), typeof(Vector2), typeof(Color), typeof(float), typeof(float), typeof(int), typeof(int), typeof(float), typeof(int)
-		});
-		MethodInfo Utility_DrawTextShadowStr = AccessTools.Method(typeof(Utility), nameof(Utility.drawTextWithShadow), new Type[] {
-			typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(Vector2), typeof(Color), typeof(float), typeof(float), typeof(int), typeof(int), typeof(float), typeof(int)
-		});
+		MethodInfo Utility_DrawTextShadowSB = patcher.Mod.ResolveMethod($"Utility:{nameof(Utility.drawTextWithShadow)}(SpriteBatch,StringBuilder,*)");
+		MethodInfo Utility_DrawTextShadowStr = patcher.Mod.ResolveMethod($"Utility:{nameof(Utility.drawTextWithShadow)}(SpriteBatch,string,*)");
 
 		ConstructorInfo cstruct = AccessTools.Constructor(typeof(Color), new Type[] {
 			typeof(uint)
@@ -1062,7 +1127,9 @@ internal class DynamicPatcher : IDisposable {
 				CodeInstruction in2 = instrs[i + 2];
 				CodeInstruction in3 = instrs[i + 3];
 
-				if (in3.IsConstructor<Color>()) {
+				bool is_con = in3.IsConstructor<Color>();
+
+				if (is_con || in3.IsCallConstructor<Color>()) {
 					int? val0 = in0.AsInt();
 					int? val1 = in1.AsInt();
 					int? val2 = in2.AsInt();
@@ -1089,7 +1156,7 @@ internal class DynamicPatcher : IDisposable {
 									),
 									new CodeInstruction(
 										opcode: OpCodes.Call,
-										operand: getColorPacked
+										operand: is_con ? getColorPacked : getColorPackedRef
 									)
 								},
 
@@ -1110,7 +1177,7 @@ internal class DynamicPatcher : IDisposable {
 										operand = unchecked((int) clr.PackedValue)
 									},
 									new CodeInstruction(
-										opcode: OpCodes.Newobj,
+										opcode: in3.opcode,
 										operand: cstruct
 									)
 								},
@@ -1263,6 +1330,10 @@ internal class DynamicPatcher : IDisposable {
 								new CodeInstruction(
 									opcode: values.Item3 == null ? OpCodes.Ldnull : OpCodes.Ldstr,
 									operand: values.Item3
+								),
+								new CodeInstruction(
+									opcode: values.Item4 == null ? OpCodes.Ldnull : OpCodes.Ldstr,
+									operand: values.Item4
 								),
 								new CodeInstruction(
 									opcode: OpCodes.Call,

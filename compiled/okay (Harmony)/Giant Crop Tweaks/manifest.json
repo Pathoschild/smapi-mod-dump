@@ -1,0 +1,21 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "leclair.giantcroptweaks",
+  "Name": "Giant Crop Tweaks",
+  "Author": "Khloe Leclair",
+  "Version": "1.0.0",
+  "Description": "A mod that tweaks the behavior of giant crops in a few ways to hopefully make them less potentially annoying.",
+  "MinimumApiVersion": "4.0",
+  "MinimumGameVersion": "1.6",
+  "EntryDll": "GiantCropTweaks.dll",
+  "UpdateKeys": [
+    "Nexus:14370@Main"
+  ]
+}

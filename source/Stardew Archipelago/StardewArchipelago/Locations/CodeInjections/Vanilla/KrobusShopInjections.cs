@@ -70,7 +70,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
 
             var activeHints = _archipelago.GetMyActiveHints();
-            var purchasableCheck = new PurchaseableArchipelagoLocation("Stardrop", apLocation, _modHelper, _locationChecker, _archipelago, activeHints);
+            var purchasableCheck = new PurchaseableArchipelagoLocation("Stardrop", apLocation, _monitor, _modHelper, _locationChecker, _archipelago, activeHints);
             stock.Add(purchasableCheck, new[] { 20000, 1 });
         }
     }

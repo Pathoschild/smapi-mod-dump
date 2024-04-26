@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "Name": "Immersive Sprinklers",
+  "Author": "aedenthorn",
+  "Version": "0.8.2",
+  "Description": "Immersive Sprinklers.",
+  "UniqueID": "aedenthorn.ImmersiveSprinklers",
+  "EntryDll": "ImmersiveSprinklers.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "ImmersiveSprinklers"
+  },
+  "UpdateKeys": [ "Nexus:15239" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

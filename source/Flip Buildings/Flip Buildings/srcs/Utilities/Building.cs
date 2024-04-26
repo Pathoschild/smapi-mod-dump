@@ -16,7 +16,7 @@ using StardewValley.Locations;
 
 namespace FlipBuildings.Utilities
 {
-	internal class BuildingHelper
+	internal class BuildingUtility
 	{
 		public static bool TryToFlip(Building building, bool drawLayers = false)
 		{

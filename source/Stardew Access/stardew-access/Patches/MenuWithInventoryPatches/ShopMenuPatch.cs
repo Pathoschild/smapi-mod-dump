@@ -110,7 +110,7 @@ internal class ShopMenuPatch : IPatch
 
             name = Translator.Instance.Translate($"menu-character_creation-description-{petType}", translationCategory: TranslationCategory.CharacterCreationMenu, tokens: new
             {
-                breed = breed,
+                breed,
                 less_info = 0
             });
 

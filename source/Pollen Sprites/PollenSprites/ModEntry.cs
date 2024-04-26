@@ -8,17 +8,8 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Monsters;
+using System;
 
 namespace PollenSprites
 {
@@ -50,7 +41,7 @@ namespace PollenSprites
             if (ModConfig == null) //if config.json didn't load
                 ModConfig = new ModConfig(); //use the default version
 
-            helper.Events.GameLoop.GameLaunched += GMCM.EnableGMCM; //enable GMCM's compatibility event
+            helper.Events.GameLoop.GameLaunched += GMCM.Initialize; //enable GMCM's compatibility event
             helper.Events.GameLoop.ReturnedToTitle += SeedManager.GameLoop_ReturnedToTitle_ClearAllSeedsList; //enable SeedManager's list-clearing event
         }
     }

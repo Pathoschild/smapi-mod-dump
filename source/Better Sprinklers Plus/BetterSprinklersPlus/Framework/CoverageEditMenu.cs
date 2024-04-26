@@ -99,15 +99,15 @@ namespace BetterSprinklersPlus.Framework
       _tabs.Add(new ClickableComponent(
         new Rectangle(menuX - TabDistanceFromMenu - tabWidth,
           menuY + TabDistanceVerticalBetweenTabs, tabWidth, tabHeight),
-        new Object(Vector2.Zero, 599)));
+        new Object("599", 1)));
       _tabs.Add(new ClickableComponent(
         new Rectangle(menuX - TabDistanceFromMenu - tabWidth,
           _tabs[0].bounds.Y + tabHeight + TabDistanceVerticalBetweenTabs, tabWidth, tabHeight),
-        new Object(Vector2.Zero, 621)));
+        new Object("621", 1)));
       _tabs.Add(new ClickableComponent(
         new Rectangle(menuX - TabDistanceFromMenu - tabWidth,
           _tabs[1].bounds.Y + tabHeight + TabDistanceVerticalBetweenTabs, tabWidth, tabHeight),
-        new Object(Vector2.Zero, 645)));
+        new Object("645", 1)));
 
       _okButton = new ClickableTextureComponent("save-changes",
         new Rectangle(xPositionOnScreen + width - Game1.tileSize / 2,
@@ -212,7 +212,7 @@ namespace BetterSprinklersPlus.Framework
         Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, _activeSprinklerSheet, 16, 16),
         Color.White);
       
-      // Draw the ok button
+      // Draw the ok and reset buttons
       _okButton.draw(Game1.spriteBatch);
       _resetButton.draw(Game1.spriteBatch);
 
@@ -296,7 +296,7 @@ namespace BetterSprinklersPlus.Framework
       foreach (var tab in _tabs.Where(tab => tab.containsPoint(x, y)))
       {
         Game1.playSound("select");
-        SetActiveSprinklerSheetIndex(tab.item.ParentSheetIndex);
+        SetActiveSprinklerSheetIndex(Convert.ToInt16(tab.item.ItemId));
       }
       
       if (_resetButton.containsPoint(x, y)) Reset();

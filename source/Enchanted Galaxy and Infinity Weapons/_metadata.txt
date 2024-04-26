@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/namelessto/EnchantedGalaxyWeapons
+   Git: https://github.com/namelessto/EnchantedGalaxyWeapons.git
+
+mods:
+   Enchanted Galaxy and Infinity Weapons
+
+latest commit:
+   commit c4202224bd620395245bc3c7c1197d006bc20eb7
+   Author: Shai <shaitnto@gmail.com>
+   Date:   Thu Apr 25 22:41:07 2024 +0300
+   
+       remaded the config menu, added more options to innate and fixed bugs
+   

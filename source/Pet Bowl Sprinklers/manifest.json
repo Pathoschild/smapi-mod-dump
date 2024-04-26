@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/andyruwruw/stardew-valley-pet-bowl-sprinklers
+**
+*************************************************/
+
+{
+  "Name": "PetBowlSprinklers",
+  "Author": "andyruwruw",
+  "Version": "1.0.0",
+  "Description": "Sprinklers should be able to water your pet bowls.",
+  "UniqueID": "andyruwruw.PetBowlSprinklers",
+  "EntryDll": "PetBowlSprinklers.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "GitHub:andyruwruw/stardew-valley-pet-bowl-sprinklers",
+    "Nexus:22546"
+  ]
+}

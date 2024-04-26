@@ -9,6 +9,7 @@
 *************************************************/
 
 using AchtuurCore.Extensions;
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
@@ -29,7 +30,12 @@ internal class SiloLabel : BuildingLabel
     public override void GenerateLabel()
     {
         base.GenerateLabel();
-        int maxHay = Utility.numSilos() * 240;
-        Description.Add($"Hay: {Game1.getFarm().piecesOfHay.Value}/{maxHay}");
+        int maxHay = 0;
+        Utility.ForEachLocation((loc) => {
+            maxHay += loc.GetHayCapacity();
+            return true;
+        });
+        Item hay = ItemRegistry.Create("178", amount: Game1.getFarm().piecesOfHay.Value);
+        AddBorder(new ItemLabelText(hay, I18n.LabelSiloMaxHay(maxHay)));
     }
 }

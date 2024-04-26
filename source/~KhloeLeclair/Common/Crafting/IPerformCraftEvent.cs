@@ -52,3 +52,19 @@ public interface IPerformCraftEvent {
 	/// </summary>
 	void Complete();
 }
+
+
+/// <summary>
+/// An extended IPerformCraftEvent subclass that also includes a
+/// reference to the recipe being used. This is necessary because
+/// adding this to the existing model would break Pintail proxying,
+/// for some reason.
+/// </summary>
+public interface IGlobalPerformCraftEvent : IPerformCraftEvent {
+
+	/// <summary>
+	/// The recipe being crafted.
+	/// </summary>
+	IRecipe Recipe { get; }
+
+}

@@ -43,16 +43,16 @@ namespace SkillfulClothes.Effects.Special
                 Logger.Debug("Grant MaxEnergy buff");
 
                 // create & give buff to player
-                MaxHealthBuff healthBuff = new MaxHealthBuff(Parameters.Amount, 1080, sourceItem?.DisplayName ?? "");
-                Game1.buffsDisplay.addOtherBuff(healthBuff);
+                MaxHealthBuff healthBuff = new MaxHealthBuff(EffectHelper.GetEffectId(this), Parameters.Amount, 1080, sourceItem?.DisplayName ?? "");
+                Game1.player.buffs.Apply(healthBuff);                
 
-                // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));
+                //Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));
             }
         }
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            // nothing to do
+           // nothing to do
         }
     }
 }

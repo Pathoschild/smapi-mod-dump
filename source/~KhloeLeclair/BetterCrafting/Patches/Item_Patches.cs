@@ -32,22 +32,38 @@ public static class Item_Patches {
 		Monitor = mod.Monitor;
 
 		try {
-			foreach(var type in AccessTools.AllTypes()) {
-				if (type.IsAssignableTo(typeof(ISalable)) && AccessTools.DeclaredMethod(type, nameof(ISalable.maximumStackSize)) is MethodInfo method && !method.IsAbstract)
-					mod.Harmony!.Patch(
-						original: method,
-						postfix: new HarmonyMethod(typeof(Item_Patches), nameof(maximumStackSize_Postfix))
-					);
-			}
+			mod.Harmony!.Patch(
+				original: AccessTools.Method(typeof(Item), nameof(Item.canStackWith)),
+				transpiler: new HarmonyMethod(typeof(Item_Patches), nameof(canStackWith_Transpiler))
+			);
 
 		} catch (Exception ex) {
 			mod.Log($"An error occurred while registering a harmony patch for items.", LogLevel.Warn, ex);
 		}
 	}
 
-	static void maximumStackSize_Postfix(ISalable __instance, ref int __result) {
-		if (OverrideStackSize)
-			__result = 2;
+	private static IEnumerable<CodeInstruction> canStackWith_Transpiler(IEnumerable<CodeInstruction> instructions) {
+
+		var method = AccessTools.Method(typeof(ISalable), nameof(ISalable.maximumStackSize));
+		var method_two = AccessTools.Method(typeof(Item), nameof(Item.maximumStackSize));
+
+		var ours = AccessTools.Method(typeof(Item_Patches), nameof(GetMaximumStackSize));
+
+		foreach(var instr in instructions) {
+			if (instr.opcode == OpCodes.Callvirt && instr.operand is MethodInfo minfo && (minfo == method || minfo == method_two))
+				yield return new CodeInstruction(instr) {
+					opcode = OpCodes.Call,
+					operand = ours
+				};
+
+			else
+				yield return instr;
+		}
+
+	}
+
+	public static int GetMaximumStackSize(ISalable salable) {
+		return OverrideStackSize ? 2 : salable.maximumStackSize();
 	}
 
 }

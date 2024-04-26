@@ -11,7 +11,7 @@
 {
   "name": "Better Stardrops",
   "author": "Rokugin",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Adds additional benefits to eating Stardrops.",
   "uniqueID": "Rokugin.BetterStardrops",
   "entryDLL": "BetterStardrops.dll",

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hedgehog-Technologies/StardewMods
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "[AF] Lumisteria - Serene Meadow Forage",
+  "Description": "Forage added by Lumisteria - Serene Meadow",
+  "Author": "Jag3Dagster",
+  "UniqueID": "HedgehogTechnologies.LSMForageAF",
+  "Version": "1.0.1",
+  "MinimumApiVersion": "4.0",
+  "ContentPackFor": {
+    "UniqueID": "HedgehogTechnologies.AutoForager",
+    "MinimumVersion": "3.0.0"
+  }
+}

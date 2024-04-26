@@ -1,0 +1,8 @@
+﻿{
+  "config.name.EasyCleanerAssistKey": "EasyCleaner Assist Key",
+  "config.tips.EasyCleanerAssistKey": "Hold tool, Press Assist Key and Right-click to clean",
+  "config.name.CleanTreeSeedInFarm": "Clean Tree Seed In Farm",
+  "config.tips.CleanTreeSeedInFarm": "clean tree seeds in your farm when you have axe. (except tree seed fertilized)",
+  "config.name.EnableIndoorsLocation": "Enable Indoors Location",
+  "config.tips.EnableIndoorsLocation": "allow to clean sundries of Indoors Location such as Mines or Skull Cavern etc."
+}

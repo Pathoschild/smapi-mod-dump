@@ -12,6 +12,7 @@ using ItemExtensions.Additions;
 using ItemExtensions.Models;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
 namespace ItemExtensions.Events;
@@ -63,14 +64,11 @@ public static class World
             o.tempData.TryAdd("Health", resource.Health);
         }
 
-        /*
-        //bounding box
-        if (resource.Width > 1 || resource.Height > 1)
-        {
-            o.boundingBox.Set((int) o.TileLocation.X * 64, (int) o.TileLocation.Y * 64, resource.Width * 64, resource.Height * 64);
-        }*/
-
         o.modData["Esca.FarmTypeManager/CanBePickedUp"] = "false";
+        
+        if(o.tempData.ContainsKey(ModKeys.IsFtm) == false)
+            o.modData[ModKeys.Days] = "0";
+        
         o.CanBeSetDown = true;
         o.CanBeGrabbed = false;
         o.IsSpawnedObject = false;

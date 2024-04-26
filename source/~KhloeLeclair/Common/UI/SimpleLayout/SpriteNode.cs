@@ -25,17 +25,20 @@ public class SpriteNode : ISimpleNode {
 	public float Scale { get; }
 	public int Quantity { get; }
 	public string? Label { get; }
+	public float? OverrideHeight { get; }
+
 
 	public Alignment Alignment { get; }
 
 	public bool DeferSize => false;
 
-	public SpriteNode(SpriteInfo? sprite, float scale = 4f, string? label = null, int quantity = 0, Alignment alignment = Alignment.None) {
+	public SpriteNode(SpriteInfo? sprite, float scale = 4f, string? label = null, int quantity = 0, Alignment alignment = Alignment.None, float? overrideHeight = null) {
 		Sprite = sprite;
 		Scale = scale;
 		Label = label;
 		Quantity = quantity;
 		Alignment = alignment;
+		OverrideHeight = overrideHeight;
 	}
 
 	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
@@ -55,13 +58,21 @@ public class SpriteNode : ISimpleNode {
 				width -= qX;
 		}
 
+		if (OverrideHeight.HasValue)
+			height = OverrideHeight.Value;
+
 		return new Vector2(width, height);
 	}
 
 	public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
 
 		float itemSize = 16 * Scale;
-		float offsetY = (size.Y - itemSize) / 2;
+		float offsetY = (size.Y - itemSize);
+
+		if (OverrideHeight.HasValue)
+			offsetY += (OverrideHeight.Value - itemSize);
+
+		offsetY /= 2;
 
 		float offsetX = 0;
 

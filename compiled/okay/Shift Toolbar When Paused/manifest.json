@@ -1,0 +1,10 @@
+{
+  "Name": "Shift Toolbar When Paused",
+  "Author": "Zamiel",
+  "Version": "1.0.0",
+  "Description": "Allows you to shift the toolbar when the game is paused",
+  "UniqueID": "Zamiel.ShiftToolbarWhenPaused",
+  "EntryDll": "ShiftToolbarWhenPaused.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["GitHub:Zamiell/stardew-valley-mods"]
+}

@@ -16,16 +16,20 @@ using System.Threading.Tasks;
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
+using StardewValley.Buffs;
 
 namespace SkillfulClothes.Effects.Skills
 {
     class IncreaseAttack : ChangeSkillEffect<AmountEffectParameters>
-    {        
+    {
         protected override EffectIcon Icon => EffectIcon.Attack;
 
-        public override string SkillName => "Attack";        
+        public override string SkillName => "Attack";
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.attack = Math.Max(0, farmer.attack + amount);
+        protected override void UpdateEffects(Farmer farmer, BuffEffects targetEffects)
+        {
+            targetEffects.Attack.Value = Parameters.Amount;
+        }
 
         public IncreaseAttack(AmountEffectParameters parameters)
             : base(parameters)

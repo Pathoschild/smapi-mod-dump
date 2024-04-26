@@ -164,7 +164,7 @@ namespace MultiplayerPrairieKing.Entities.Enemies
 						if (shootTimer < 0)
 						{
                             Vector2 trajectory = StardewValley.Utility.getVelocityTowardPoint(new Point(position.X + TileSize / 2, position.Y), playerPosition + new Vector2(TileSize / 2, TileSize / 2), 8f);
-							if (gameInstance.isHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point((int)trajectory.X, (int)trajectory.Y), 1);
+							if (gameInstance.IsHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point((int)trajectory.X, (int)trajectory.Y), 1);
 							shootTimer = 120;
 							Game1.playSound("Cowboy_gunshot");
 						}
@@ -206,7 +206,7 @@ namespace MultiplayerPrairieKing.Entities.Enemies
 						shootTimer -= time.ElapsedGameTime.Milliseconds;
 						if (shootTimer < 0)
 						{
-							if (gameInstance.isHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point(Game1.random.Next(-2, 3), -8), 1);
+							if (gameInstance.IsHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point(Game1.random.Next(-2, 3), -8), 1);
 							shootTimer = 150;
 							Game1.playSound("Cowboy_gunshot");
 						}
@@ -252,7 +252,7 @@ namespace MultiplayerPrairieKing.Entities.Enemies
 					shootTimer -= time.ElapsedGameTime.Milliseconds;
 					if (shootTimer < 0)
 					{
-						if (gameInstance.isHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point(Game1.random.Next(-1, 2), -8), 1);
+						if (gameInstance.IsHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point(Game1.random.Next(-1, 2), -8), 1);
 						shootTimer = 250;
 						if (fullHealth > 50)
 						{
@@ -313,7 +313,7 @@ namespace MultiplayerPrairieKing.Entities.Enemies
 						shootTimer -= time.ElapsedGameTime.Milliseconds;
 						if (shootTimer < 0)
 						{
-							if (gameInstance.isHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point(Game1.random.Next(-1, 2), -8), 1);
+							if (gameInstance.IsHost) gameInstance.NETspawnBullet(false, new Point(position.X + TileSize / 2, position.Y - TileSize / 2), new Point(Game1.random.Next(-1, 2), -8), 1);
 							shootTimer = 250;
 							if (fullHealth > 50)
 							{
@@ -351,7 +351,7 @@ namespace MultiplayerPrairieKing.Entities.Enemies
 		{
 			base.OnDeath();
 
-			if (gameInstance.isHost)
+			if (gameInstance.IsHost)
 			{
 				gameInstance.NETspawnPowerup((gameInstance.world == 0) ? POWERUP_TYPE.LOG : POWERUP_TYPE.SKULL, new Point(8 * TileSize, 10 * TileSize), 9999999);
 			}

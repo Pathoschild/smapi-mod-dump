@@ -8,60 +8,62 @@
 **
 *************************************************/
 
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.CategorizeChests.Framework;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
 namespace ConvenientChests.StashToChests {
     public static class StackLogic {
+        internal static string StashCueName => Game1.soundBank.GetCue("pickUpItem").Name;
+
         public delegate bool AcceptingFunction(Chest c, Item i);
 
         public static IEnumerable<Chest> GetNearbyChests(this Farmer farmer, int radius)
             => GetNearbyChests(farmer.currentLocation, farmer.Tile, radius);
 
         public static void StashToChest(Chest chest, AcceptingFunction f) {
-            ModEntry.Log("Stash to current chest");
+            if (!TryStashToChest(chest, f))
+                return;
 
+            Game1.playSound(StashCueName);
+        }
+
+        public static void StashToChests(IEnumerable<Chest> chests, AcceptingFunction f) {
+            if (TryStashToChests(chests, f))
+                Game1.playSound(StashCueName);
+        }
+
+        internal static bool TryStashToChests(IEnumerable<Chest> chests, AcceptingFunction f) {
+            var movedAtLeastOne = false;
+
+            foreach (var chest in chests)
+                if (TryStashToChest(chest, f))
+                    movedAtLeastOne = true;
+
+            return !movedAtLeastOne;
+        }
+
+        public static void StashToNearbyChests(int radius, AcceptingFunction f)
+            => StashToChests(Game1.player.GetNearbyChests(radius), f);
+
+        internal static bool TryStashToChest(Chest chest, AcceptingFunction f) {
+            // find items to be moved
             var toBeMoved = Game1.player.Items
                                  .Where(i => i != null && f(chest, i))
                                  .ToList();
 
-            if (toBeMoved.Any() && Game1.player.Items.DumpItemsToChest(chest, toBeMoved).Any())
-                Game1.playSound(Game1.soundBank.GetCue("pickUpItem").Name);
+            // try to move items to chest
+            return toBeMoved.Any() && Game1.player.Items.DumpItemsToChest(chest, toBeMoved).Any();
         }
 
-        public static void StashToNearbyChests(int radius, AcceptingFunction f) {
-            ModEntry.Log("Stash to nearby chests");
-
-            var movedAtLeastOne = false;
-
-            foreach (var chest in Game1.player.GetNearbyChests(radius)) {
-                var moveItems = Game1.player.Items
-                                     .Where(i => i != null)
-                                     .Where(i => f(chest, i))
-                                     .ToList();
-
-                if (!moveItems.Any())
-                    continue;
-
-                var movedItems = Game1.player.Items.DumpItemsToChest(chest, moveItems);
-                if (movedItems.Any())
-                    movedAtLeastOne = true;
-            }
-
-            if (!movedAtLeastOne)
-                return;
-
-            // List of sounds: https://gist.github.com/gasolinewaltz/46b1473415d412e220a21cb84dd9aad6
-            Game1.playSound(Game1.soundBank.GetCue("pickUpItem").Name);
-        }
 
         private static IEnumerable<Chest> GetNearbyChests(GameLocation location, Vector2 point, int radius) {
             // chests

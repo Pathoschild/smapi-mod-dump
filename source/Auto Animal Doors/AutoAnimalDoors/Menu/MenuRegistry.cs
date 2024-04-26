@@ -133,7 +133,18 @@ namespace AutoAnimalDoors.Menu
                     getValue: () => config.DoorSoundSetting.Name(),
                     setValue: (string doorSoundSettingName) => config.DoorSoundSetting = DoorSoundSettingUtils.FromName(doorSoundSettingName),
                     allowedValues: DoorSoundSettingUtils.Names);
+                
+                api.AddBoolOption(mod: manifest,
+                    name: () => "Show Popups",
+                    tooltip: () => "If enabled, shows a popup when all doors have been closed / opened.",
+                    getValue: () => config.DoorEventPopupEnabled,
+                    setValue: (bool doorClosePopupEnabled) => config.DoorEventPopupEnabled = doorClosePopupEnabled);
 
+                api.AddBoolOption(mod: manifest,
+                    name: () => "Close All At Once",
+                    tooltip: () => "If enabled all doors are closed at once when all animals are inside. Otherwise it closes when all animals of a single building are inside.",
+                    getValue: () => config.CloseAllBuildingsAtOnce,
+                    setValue: (bool closeAllAtOnce) => config.CloseAllBuildingsAtOnce = closeAllAtOnce);
 
                 api.AddBoolOption(mod: manifest,
                     name: () => "Open Doors When Raining",
@@ -159,7 +170,7 @@ namespace AutoAnimalDoors.Menu
         private static int GetTimeFromTimePickerValue(int timePickerValue)
         {
             int hour = (timePickerValue / MINUTE_INCREMENTS_PER_HOUR) + MIN_TIMEPICKER_HOUR;
-            int min = timePickerValue % MINUTE_INCREMENTS_PER_HOUR; 
+            int min = timePickerValue % MINUTE_INCREMENTS_PER_HOUR;
             return hour * HOUR_DIVISOR + min * MINUTE_INCREMENT;
         }
 
@@ -194,7 +205,7 @@ namespace AutoAnimalDoors.Menu
             {
                 hourLabel = 12;
             }
-            return string.Format("{0}:{1:D2} {2}", hourLabel, min, isAM? "AM" : "PM");
+            return string.Format("{0}:{1:D2} {2}", hourLabel, min, isAM ? "AM" : "PM");
         }
     }
 }

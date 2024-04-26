@@ -54,7 +54,7 @@ public class QuickShopScreen : ScreenGui
         {
             OnLeftClicked = () => { Utility.TryOpenShopMenu("Carpenter", "Robin"); }
         });
-        //
+
         var carpenterBuildingTitle = $"{GetButtonTranslation("carpenterBuilding")}";
         AddElement(new Button(carpenterBuildingTitle, carpenterBuildingTitle)
         {
@@ -78,16 +78,35 @@ public class QuickShopScreen : ScreenGui
         {
             OnLeftClicked = () => { Utility.TryOpenShopMenu("AnimalShop", "Marnie"); }
         });
-        //
+
         var animalShopTitle = $"{GetButtonTranslation("animalShop")}";
+        var animalShopLocation = "";
+        var animalShopTileX = 0;
+        var animalShopTileY = 0;
+        var animalShop = false;
         AddElement(new Button(animalShopTitle, animalShopTitle)
         {
             OnLeftClicked = () =>
             {
-                Game1.activeClickableMenu =
-                    new PurchaseAnimalsMenu(Utility.getPurchaseAnimalStock(Game1.getFarm()));
+                animalShopTileX = (int)Game1.player.Tile.X;
+                animalShopTileY = (int)Game1.player.Tile.Y;
+                animalShopLocation = Game1.player.currentLocation.Name;
+                animalShop = true;
+                Game1.activeClickableMenu = new PurchaseAnimalsMenu(Utility.getPurchaseAnimalStock(Game1.getFarm()));
             }
         });
+
+        ModEntry.GetInstance().Helper.Events.GameLoop.UpdateTicked += (sender, args) =>
+        {
+            if (!animalShop) return;
+            if (Game1.activeClickableMenu is PurchaseAnimalsMenu) return;
+            if (animalShopLocation != Game1.player.currentLocation.Name)
+            {
+                Game1.warpFarmer(animalShopLocation, animalShopTileX, animalShopTileY, Game1.player.FacingDirection);
+            }
+
+            animalShop = false;
+        };
 
         var merchantShopTitle = $"{GetButtonTranslation("merchantShop")}";
         AddElement(new Button(merchantShopTitle, merchantShopTitle)
@@ -230,14 +249,28 @@ public class QuickShopScreen : ScreenGui
             OnLeftClicked = () => { Utility.TryOpenShopMenu("Sandy", "Sandy"); }
         });
 
-        // var desertShopTitle = $"{GetButtonTranslation("desertShop")}";
-        // AddElement(new Button(desertShopTitle, desertShopTitle)
-        // {
-        //     OnLeftClicked = () =>
-        //     {
-        //         // Game1.activeClickableMenu = new ShopMenu(Desert.getDesertMerchantTradeStock(Game1.player));
-        //     }
-        // });
+        var desertShopTitle = $"{GetButtonTranslation("desertTrade")}";
+        AddElement(new Button(desertShopTitle, desertShopTitle)
+        {
+            OnLeftClicked = () => { Utility.TryOpenShopMenu("DesertTrade", "DesertTrade"); }
+        });
+
+        var desertFestivals = DataLoader.Shops(Game1.content)
+            .Where(shop =>
+                shop.Key.StartsWith("DesertFestival_")
+                && shop.Value.Owners.Count == 1
+                && Utility.getAllCharacters().Any(npc => npc.Name == shop.Value.Owners[0].Id));
+
+        foreach (var festival in desertFestivals)
+        {
+            var festivalTitle =
+                $"{GetButtonTranslation("desertFestival")}({Utility.getAllCharacters().First(npc => npc.Name == festival.Value.Owners[0].Id).displayName})";
+            AddElement(new Button(festivalTitle, festivalTitle)
+            {
+                OnLeftClicked = () => { Utility.TryOpenShopMenu(festival.Key, festival.Value.Owners[0].Id); }
+            });
+        }
+
 
         var islandTradeTitle = $"{GetButtonTranslation("islandTrade")}";
         AddElement(new Button(islandTradeTitle, islandTradeTitle)

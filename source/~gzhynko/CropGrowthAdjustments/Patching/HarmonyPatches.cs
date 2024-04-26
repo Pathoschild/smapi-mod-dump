@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -34,6 +33,18 @@ namespace CropGrowthAdjustments.Patching
                 
                 // run the original method if the patch fails
                 return true;
+            }
+        }
+        
+        public static void HoeDirtPlant(HoeDirt __instance, ref bool __result, string itemId, Farmer who, bool isFertilizer)
+        {
+            try
+            {
+                HarmonyPatchExecutors.HoeDirtPlant(__instance, ref __result);
+            }
+            catch (Exception e)
+            {
+                ModEntry.ModMonitor.Log($"Failed in { nameof(HoeDirtPlant) }:\n{ e }", LogLevel.Error);
             }
         }
 

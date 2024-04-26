@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/arannya/BoomerangMod
+   Git: https://github.com/arannya/BoomerangMod.git
+
+mods:
+   Boomerangs
+
+latest commit:
+   commit 2d12181319febb2070319e2233b2a1b343a26364
+   Author: arannya <arannya.monzur@gmail.com>
+   Date:   Fri Apr 26 11:23:26 2024 +0600
+   
+       [Minor] Changed hard-coded weapon type prefix.
+   

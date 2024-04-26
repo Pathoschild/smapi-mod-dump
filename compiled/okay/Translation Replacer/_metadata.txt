@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22871
+IDs: ofts.transRep
+update keys: Nexus:22871

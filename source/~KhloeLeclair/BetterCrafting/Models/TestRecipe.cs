@@ -45,17 +45,23 @@ internal class TestRecipe : IRecipe {
 			new BaseIngredient(-79, 1),
 			new BaseIngredient(-80, 1),
 			new BaseIngredient(-81, 1),
-			new BaseIngredient(-1, -1)
+			new BaseIngredient(-1, 1),
+			new CurrencyIngredient(CurrencyType.Money, 10),
+			new CurrencyIngredient(CurrencyType.FestivalPoints, 10),
+			new CurrencyIngredient(CurrencyType.ClubCoins, 10),
+			new CurrencyIngredient(CurrencyType.QiGems, 10),
 		};
 	}
 
-	public int SortValue => 42069;
+	public string SortValue => "42069";
 
 	public string Name => "test:recipe:invalid";
 
 	public string DisplayName => "Test Recipe";
 
 	public string? Description => "This recipe exists to test ingredients, and is not otherwise valid and doesn't do anything.";
+
+	public bool AllowRecycling => true;
 
 	public CraftingRecipe? CraftingRecipe => null;
 
@@ -78,7 +84,7 @@ internal class TestRecipe : IRecipe {
 	}
 
 	public Item? CreateItem() {
-		return new StardewValley.Object(1, 50);
+		return ItemRegistry.Create("(O)THISdoesNOTexistEVER");
 	}
 
 	public int GetTimesCrafted(Farmer who) {

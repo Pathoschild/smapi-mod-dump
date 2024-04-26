@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+[
+	{
+		"Id": "alcoholicsacknowledged.distilleryrecipe",
+		"Title": "Distiller Recipe",
+		"Text": "Farmer @!^I noticed you had a lot of momentum on that farm of yours.^ I was thinking about how nice some drink variety would be and thought you'd be interested in using one of these Distilleries. Rather than only fermenting with the Keg, you can distill a few different types of alcohol with this and ship it over!^-Gus",
+		"Recipe": "Distiller",
+		"WhichBG": 0,
+		"Repeatable": false,
+		"AutoOpen": false,
+		"RecipeKnown": ["Keg"]
+	}
+]

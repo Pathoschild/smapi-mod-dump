@@ -29,11 +29,9 @@
   "config.Recipes_Requirement_WoodMachine.values.normal": "正常",
   "config.Recipes_Requirement_WoodMachine.values.easier": "简单",
 
-
   "config.section.GenerateRate.name": "生产速度",
   "config.section.GenerateRate.description": "分",
   "config.Generate_Rate_Minutes.name": "一次生产需要的分钟数",
-
 
   "DisplayName.ClayMachine": "钻泥机",
   "Description.ClayMachine": "生产泥土",

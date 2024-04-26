@@ -71,14 +71,20 @@ namespace BetterJunimos.Utils {
         }
 
         private bool Unlocked(string progression) {
-            var farm = Game1.getFarm();
-            if (farm == null) return false;
-            var k = $"hawkfalcon.BetterJunimos.ProgressionData.{progression}.Unlocked";
-            if (farm.modData.TryGetValue(k, out var v)) {
-                return v == "1";
-            }
+            try {
+                var farm = Game1.getFarm();
 
-            return false;
+                if (farm == null) return false;
+                var k = $"hawkfalcon.BetterJunimos.ProgressionData.{progression}.Unlocked";
+                if (farm.modData.TryGetValue(k, out var v)) {
+                    return v == "1";
+                }
+
+                return false;
+            } catch (Exception e) {
+                _monitor.Log($"Unlocked: {e}", LogLevel.Trace);
+                return false;
+            }
         }
 
         public void SetUnlocked(string progression) {
@@ -298,7 +304,7 @@ namespace BetterJunimos.Utils {
             // BetterJunimos.SMonitor.Log($"ReceiveItems wants {needed} of [{index}]", LogLevel.Debug);
             if (needed <= 0) return true;
 
-            var inChest = chest.Items.Where(item => item != null && item.itemId.ToString() == itemID).ToList();
+            var inChest = chest.Items.Where(item => item != null && item.ItemId == itemID).ToList();
 
             foreach (var itemStack in inChest) {
                 if (itemStack.Stack >= needed) {

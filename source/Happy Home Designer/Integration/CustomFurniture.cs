@@ -43,7 +43,7 @@ namespace HappyHomeDesigner.Integration
 			var modInst = type?.GetField("instance", BindingFlags.Static | bindings)?.GetValue(null);
 			var checker = 
 				modInst is null ?
-				(s) => true :
+				static (s) => true :
 				type.GetMethod("meetsConditions", BindingFlags.Instance | bindings)?.ToDelegate<Func<string, bool>>(modInst);
 
 			if (field is null)

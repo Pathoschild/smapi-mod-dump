@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Objects;
 
 namespace Leclair.Stardew.BetterCrafting.Integrations.SpaceCore;
@@ -28,9 +29,9 @@ public interface IIngredientMatcher {
 
 	int Quantity { get; }
 
-	int GetAmountInList(IList<Item?> items);
+	int GetAmountInList(IList<Item> items);
 
-	void Consume(IList<Chest> additionalIngredients);
+	void Consume(IList<IInventory> additionalIngredients);
 
 }
 
@@ -45,6 +46,6 @@ public interface ICustomCraftingRecipe {
 
 	//IIngredientMatcher[] Ingredients { get; }
 
-	Item? CreateResult();
+	Item CreateResult();
 
 }

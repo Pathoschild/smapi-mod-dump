@@ -10,7 +10,43 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Added config options for the new collapsible fields.
+
+## 1.42.0
+Released 21 April 2024 for SMAPI 4.0.0 or later.
+
+* Some fields now collapse by default when they have too much content. You can click a link to show the full list. This affects:
+  * in item lookups, the recipes field with more than 10 recipes;
+  * in NPC lookups, gift taste fields with more than 30 items.
+* Added integration with Custom Bushes (thanks to LeFauxMatt!).
+* In tree lookups, the growth chance is now rounded to avoid strange values like 15.000001% (thanks to b3nk3lly!).
+* Fixed `no translation:trees.stages.4` message in some tree lookups.
+* Improved translations. Thanks to iglnierod (updated Spanish)!
+
+## 1.41.6
+Released 15 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed handling of tailoring recipes with gender-dependent output.
+* Fixed support for custom adventurer's guild slayer goals, and updated for the goal changes in Stardew Valley 1.6.
+* Fixed fish lookups not handling fish pond changes in Stardew Valley 1.6.
+* Improved translations. Thanks to Jualko (updated German), Kaian-Campos (updated Portuguese), MakinDay (updated Italian), Timur13240 (updated Russian), and wally232 (updated Korean)!
+
+## 1.41.5
+Released 08 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed movie ticket lookup showing broken movie title/description.
+* Fixed fish area names no longer translated.
+* Improved translations. Thanks to EngurRuzgar (updated Turkish), fjf010223 & mc-kaishixiaxue (updated Chinese), iglnierod (updated Spanish), and MakinDay (updated Italian)!
+
+## 1.41.4
+Released 04 April 2024 for SMAPI 4.0.0 or later.
+
+* Improved fish spawn rules in lookups (thanks to gr3ger!).
+* Fixed display names for new wild tree types.
 * Fixed upgrade level check for barns and coops.
+* Fixed errors showing lookups when a mod has broken textures.
+* Fixed backwoods shown as a source for some fish (thanks to gr3ger!).
+* Improved translations. Thanks to EngurRuzgar (updated Turkish) and Jualko (updated German)!
 
 ## 1.41.3
 Released 28 March 2024 for SMAPI 4.0.0 or later.

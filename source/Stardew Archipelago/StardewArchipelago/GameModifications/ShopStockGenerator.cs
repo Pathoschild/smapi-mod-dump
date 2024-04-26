@@ -148,7 +148,7 @@ namespace StardewArchipelago.GameModifications
                 }
 
                 var activeHints = _archipelago.GetMyActiveHints();
-                grassStarterRecipe = new PurchaseableArchipelagoLocation(location, location, _modHelper, _locationChecker, _archipelago, activeHints);
+                grassStarterRecipe = new PurchaseableArchipelagoLocation(location, location, _monitor, _modHelper, _locationChecker, _archipelago, activeHints);
             }
 
             stock.Add(grassStarterRecipe, new int[2]
@@ -304,17 +304,28 @@ namespace StardewArchipelago.GameModifications
                 }
             }
 
+            var stack = 1;
             if (howManyInStock == -1)
             {
-                var random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + itemId);
-                howManyInStock = random.Next(maxAmount);
-                if (howManyInStock < 5)
+                if (ModEntry.Instance.Config.EnableSeedShopOverhaul)
                 {
-                    return;
+                    var random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + itemId);
+                    howManyInStock = random.Next(maxAmount);
+                    if (howManyInStock < 5)
+                    {
+                        return;
+                    }
+
+                    stack = howManyInStock;
+                }
+                else
+                {
+                    stack = 1;
+                    howManyInStock = int.MaxValue;
                 }
             }
 
-            item.Stack = howManyInStock;
+            item.Stack = stack;
             stock.Add(item, new int[2]
             {
                 price,
@@ -441,6 +452,12 @@ namespace StardewArchipelago.GameModifications
             int packSize = 50)
         {
             var priceMultiplier = 1.0;
+
+            if (!ModEntry.Instance.Config.EnableSeedShopOverhaul)
+            {
+                packSize = 1;
+            }
+
             var item = new StardewValley.Object(Vector2.Zero, itemId, packSize);
 
             if (basePrice == -1)
@@ -540,13 +557,22 @@ namespace StardewArchipelago.GameModifications
             var random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + itemId);
             var priceMultiplier = 1.0;
             var maxStock = GetVillagerMaxAmountAndPrice(null, false, ref priceMultiplier);
-            var howManyInStock = random.Next(maxStock);
-            if (howManyInStock < 5)
+
+            var howManyInStock = int.MaxValue;
+            var stack = 1;
+
+            if (ModEntry.Instance.Config.EnableSeedShopOverhaul)
             {
-                return;
+                howManyInStock = random.Next(maxStock);
+                if (howManyInStock < 5)
+                {
+                    return;
+                }
+
+                stack = howManyInStock;
             }
 
-            item.Stack = howManyInStock;
+            item.Stack = stack;
             Utility.AddStock(sandyStock, item, price, limitedQuantity: howManyInStock);
         }
 

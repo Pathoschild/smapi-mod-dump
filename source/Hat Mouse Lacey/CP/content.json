@@ -15,7 +15,8 @@
     "DTF": "ichortower.HatMouseLacey.Core/DTF",
     "SeasonalOutfits": "ichortower.HatMouseLacey.Core/SeasonalOutfits",
     "SVR3Forest": "ichortower.HatMouseLacey.Core/SVRThreeForest",
-    "WeddingAttire": "ichortower.HatMouseLacey.Core/WeddingAttire"
+    "WeddingAttire": "ichortower.HatMouseLacey.Core/WeddingAttire",
+    "EvenFestivalWorkaround": "ichortower.HatMouseLacey.Core/EvenFestivalWorkaround"
   },
   "DynamicTokens": [
     {
@@ -62,18 +63,32 @@
     // default festival positions
     { "Name": "festival_spring13_setUp",     "Value": "24 64 down" },
     { "Name": "festival_spring13_mainEvent", "Value": "32 74 up" },
+    { "Name": "festival_spring13_setUp_y2",     "Value": "24 64 right" },
+    { "Name": "festival_spring13_mainEvent_y2", "Value": "34 73 up" },
     { "Name": "festival_spring24_setUp",     "Value": "5 31 left" },
     { "Name": "festival_spring24_mainEvent", "Value": "5 30 right" },
-    { "Name": "festival_summer11_setUp",     "Value": "22 4 down" },
+    { "Name": "festival_summer11_setUp",     "Value": "21 4 down" },
     { "Name": "festival_summer11_mainEvent", "Value": "39 6 down" },
+    { "Name": "festival_summer11_setUp_y2",     "Value": "18 4 down" },
+    { "Name": "festival_summer11_mainEvent_y2", "Value": "20 6 down" },
     { "Name": "festival_summer28_setUp",     "Value": "48 24 down" },
+    { "Name": "festival_summer28_setUp_y2",     "Value": "46 24 down" },
+    { "Name": "festival_summer28_mainEvent", "Value": "48 24 down" },
+    { "Name": "festival_summer28_mainEvent_y2", "Value": "46 24 down" },
     { "Name": "festival_fall16_stallX",      "Value": "26" },
     { "Name": "festival_fall16_stallY",      "Value": "48" },
+    { "Name": "festival_fall16_stallX_y2",      "Value": "51" },
+    { "Name": "festival_fall16_stallY_y2",      "Value": "60" },
     { "Name": "festival_fall16_setUp",       "Value": "27 50 down" },
+    { "Name": "festival_fall16_setUp_y2",       "Value": "52 62 down" },
     { "Name": "festival_fall27_setUp",       "Value": "32 73 up" },
+    { "Name": "festival_fall27_setUp_y2",       "Value": "27 65 right" },
     { "Name": "festival_winter8_setUp",      "Value": "65 46 up" },
+    { "Name": "festival_winter8_setUp_y2",      "Value": "68 43 up" },
     { "Name": "festival_winter8_mainEvent",  "Value": "65 39 right" },
+    { "Name": "festival_winter8_mainEvent_y2",  "Value": "80 35 left" },
     { "Name": "festival_winter25_setUp",     "Value": "37 60 left" },
+    { "Name": "festival_winter25_setUp_y2",     "Value": "36 73 up" },
     // egg festival: move when Theo is around (Stray Catfe)
     { "Name": "festival_spring13_setUp",     "Value": "36 68 left",
       "When": {"HasMod|contains=ch20youk.TSCCP": true}},
@@ -104,7 +119,7 @@
     // spirit's eve: SVE year 2 is totally different
     { "Name": "festival_fall27_setUp",       "Value": "26 64 right",
       "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true,
-               "Query: {{Year}} % 2 = 1": false}},
+               "Query: {{Year}} % 2 = 0": true}},
     // ice fest: campfire is relocated (SVE)
     { "Name": "festival_winter8_setUp",      "Value": "63 53 up",
       "When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},

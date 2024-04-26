@@ -4,7 +4,8 @@
   "config.hour_format.name": "Hour Format",
   "config.hour_format.tooltip": "How the hour in the clock time should be formatted",
   "config.hour_format.values.12": "12 Hour Format",
-  "config.hour_format.values.24": "24 Hour Format",
+  "config.hour_format.values.24": "24 Hour Format (1-2 Digits)",
+  "config.hour_format.values.24_fixed": "24 Hour Format (2 Digits)",
 
   "config.minute_format.name": "Minute Format",
   "config.minute_format.tooltip": "How the minute in the clock time should be formatted",

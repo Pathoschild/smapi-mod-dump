@@ -5,7 +5,9 @@
 		<Version>0.5.0</Version>
 		<RootNamespace>Leclair.Stardew.ThemeManagerFontStudio</RootNamespace>
 
-		<Name>Theme Manager: Font Studio</Name>
+    <ProductName>Theme Manager: Font Studio</ProductName>
+
+    <Name>$(ProductName)</Name>
 		<UniqueId>leclair.stardew.tmfontstudio</UniqueId>
 		<Author>Khloe Leclair</Author>
 		<Description>A font authoring add-on for Theme Manager, to make it easier for modders to create custom fonts.</Description>
@@ -13,9 +15,7 @@
 		<UpdateKeys></UpdateKeys>
 
     <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
-    
 		<EnableTranslation>true</EnableTranslation>
-    
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 

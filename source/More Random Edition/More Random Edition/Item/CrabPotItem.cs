@@ -18,10 +18,9 @@ namespace Randomizer
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The item id</param>
-		public CrabPotItem(int id) : base(id)
+		/// <param name="index">The item index</param>
+		public CrabPotItem(ObjectIndexes index) : base(index)
 		{
-			IsCrabPotItem = true;
 			DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements;
 		}
 	}

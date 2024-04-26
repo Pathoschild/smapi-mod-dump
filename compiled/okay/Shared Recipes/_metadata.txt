@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22718
+IDs: jslattery26.SharedRecipes
+update keys: GitHub:jslattery26/stardew_mods, Nexus:22718

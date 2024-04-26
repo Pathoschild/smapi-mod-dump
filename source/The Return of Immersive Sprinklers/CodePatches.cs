@@ -316,12 +316,14 @@ namespace ImmersiveSprinklers
                         {
                             try
                             {
-                                SMonitor.Log("A sprinkler is being deleted! You can retrieve it from the Lost and Found.", LogLevel.Warn);
                                 try
                                 {
                                     SMonitor.Log($"Sprinkler Tile: {tileLocation}", LogLevel.Debug);
 
                                     var sprinklerObject = GetSprinklerCached(tf, i, tf.modData.ContainsKey(nozzleKey + i));
+                                    if (sprinklerObject is null) continue;
+
+                                    SMonitor.Log("A sprinkler is being deleted! You can retrieve it from the Lost and Found.", LogLevel.Warn);
                                     Game1.player.team.returnedDonations.Add(sprinklerObject);
                                     Game1.player.team.newLostAndFoundItems.Value = true;
                                 }

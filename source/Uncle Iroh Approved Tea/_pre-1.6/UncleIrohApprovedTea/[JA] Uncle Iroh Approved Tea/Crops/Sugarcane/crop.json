@@ -1,0 +1,34 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Name": "Sugarcane",
+    "Product": "Sugarcane",
+    "SeedName": "Sugarcane Seeds",
+    "SeedDescription": "Plant these in the fall. Takes 8 days to mature. Grows faster if planted near a body of water. Regrows. Harvest with the scythe.",
+    "Price": 25,
+    "Type": "Vegetable",
+    "CropType": "Paddy",
+    "Seasons": ["fall"],
+    "Phases": [1, 2, 2, 1],
+    "RegrowthPhase": 3,
+    "HarvestWithScythe": true,
+    "TrellisCrop": false,
+    "Bonus":
+    {
+        "MinimumPerHarvest": 1,
+        "MaximumPerHarvest": 3,
+        "MaxIncreasePerFarmLevel": 5,
+        "ExtraChance": 0.1
+    },
+    "SeedPurchaseRequirements": null, 
+    "SeedPurchaseFrom": "Pierre",
+    "SeedPurchasePrice": 175
+}

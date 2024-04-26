@@ -41,11 +41,11 @@ namespace PFMAutomate.Automate
 
         public MachineState GetState()
         {
-            if (_machine.heldObject.Value != null && _machine.minutesUntilReady <= 0 && _machine.readyForHarvest.Value)
+            if (_machine.heldObject.Value != null && _machine.MinutesUntilReady <= 0 && _machine.readyForHarvest.Value)
             {
                 return MachineState.Done;
             }
-            if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
+            if (ProducerController.GetProducerConfig(_machine.QualifiedItemId) is ProducerConfig producerConfig)
             {
                 if (!producerConfig.CheckWeatherCondition() || !producerConfig.CheckSeasonCondition(Location) || !producerConfig.CheckLocationCondition(Location) || !producerConfig.CheckCurrentTimeCondition())
                 {
@@ -66,7 +66,7 @@ namespace PFMAutomate.Automate
 
         public ITrackedStack GetOutput()
         {
-            ProducerRuleController.PrepareOutput(_machine, this.Location, Game1.getFarmer((long)_machine.owner));
+            ProducerRuleController.PrepareOutput(_machine, this.Location, Game1.getFarmer((long)_machine.owner.Value));
 
             return new TrackedItem(_machine.heldObject.Value, onEmpty: Reset);
         }
@@ -74,14 +74,14 @@ namespace PFMAutomate.Automate
         public void Reset(Item item)
         {
             ProducerRuleController.ClearProduction(_machine, Location);
-            if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
+            if (ProducerController.GetProducerConfig(_machine.QualifiedItemId) is ProducerConfig producerConfig)
             {
                 if (producerConfig.NoInputStartMode != null || producerConfig.IncrementStatsOnOutput.Count > 0 || producerConfig.IncrementStatsLabelOnOutput.Count > 0)
                 {
                     producerConfig.IncrementStats(item);
                     if (producerConfig.NoInputStartMode == NoInputStartMode.Placement)
                     {
-                        if (ProducerController.GetProducerItem(_machine.Name, null) is ProducerRule producerRule)
+                        if (ProducerController.GetProducerItem(_machine.QualifiedItemId, null) is ProducerRule producerRule)
                         {
                             try
                             {
@@ -103,14 +103,14 @@ namespace PFMAutomate.Automate
             {
                 if (trackedStack.Sample is SObject objectInput 
                     && !objectInput.bigCraftable.Value 
-                    && ProducerController.GetProducerItem(_machine.Name, objectInput) is ProducerRule producerRule
+                    && ProducerController.GetProducerItem(_machine.QualifiedItemId, objectInput) is ProducerRule producerRule
                     && !ProducerRuleController.IsInputExcluded(producerRule, objectInput))
                 {
-                    ProducerConfig producerConfig = ProducerController.GetProducerConfig(_machine.Name);
+                    ProducerConfig producerConfig = ProducerController.GetProducerConfig(_machine.QualifiedItemId);
 
                     if (producerConfig == null || (producerConfig.CheckLocationCondition(Location) && producerConfig.CheckSeasonCondition(Location)))
                     {
-                        if (input.TryGetIngredient(objectInput.ParentSheetIndex, producerRule.InputStack,
+                        if (input.TryGetIngredient(i=> objectInput.ItemId == i.Sample.ItemId, producerRule.InputStack,
                             out IConsumable inputConsumable))
                         {
                             objectInput = inputConsumable.Sample as SObject;
@@ -121,7 +121,7 @@ namespace PFMAutomate.Automate
                                 {
                                     if (objectInput != null) objectInput.Stack = inputConsumable.Consumables.Count;
                                     OutputConfig outputConfig = ProducerRuleController.ProduceOutput(producerRule, _machine,
-                                        (i, q) => input.TryGetIngredient(i, q, out IConsumable fuel), null, Location,
+                                        (i, q) => input.TryGetIngredient((j) => j.Sample.QualifiedItemId == i || j.Sample.Category.ToString() == i, q, out IConsumable fuel), null, Location,
                                         producerConfig, objectInput,noSoundAndAnimation:true);
                                     if (outputConfig != null)
                                     {
@@ -151,9 +151,9 @@ namespace PFMAutomate.Automate
         private List<IConsumable> GetRequiredFuels(ProducerRule producerRule, IStorage storage)
         {
             List<IConsumable> requiredFuels =  new List<IConsumable>();
-            foreach (Tuple<int, int> requiredFuel in producerRule.FuelList)
+            foreach (Tuple<string, int> requiredFuel in producerRule.FuelList)
             {
-                if (!storage.TryGetIngredient(requiredFuel.Item1, requiredFuel.Item2, out IConsumable fuel))
+                if (!storage.TryGetIngredient((i) => i.Sample.QualifiedItemId == requiredFuel.Item1 || i.Sample.Category.ToString() == requiredFuel.Item1, requiredFuel.Item2, out IConsumable fuel))
                 {
                     return null;
                 }
@@ -165,9 +165,9 @@ namespace PFMAutomate.Automate
         private List<IConsumable> GetRequiredFuels(OutputConfig outputConfig, IStorage storage)
         {
             List<IConsumable> requiredFuels = new List<IConsumable>();
-            foreach (Tuple<int, int> requiredFuel in outputConfig.FuelList)
+            foreach (Tuple<string, int> requiredFuel in outputConfig.FuelList)
             {
-                if (!storage.TryGetIngredient(requiredFuel.Item1, requiredFuel.Item2, out IConsumable fuel))
+                if (!storage.TryGetIngredient((i) => i.Sample.QualifiedItemId == requiredFuel.Item1 || i.Sample.Category.ToString() == requiredFuel.Item1, requiredFuel.Item2, out IConsumable fuel))
                 {
                     return null;
                 }

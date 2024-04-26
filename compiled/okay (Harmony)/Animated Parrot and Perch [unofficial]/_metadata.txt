@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7960
+IDs: aedenthorn.AnimatedParrotAndPerch
+update keys: Nexus:7960, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@AnimatedParrotAndPerch

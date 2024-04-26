@@ -4,11 +4,13 @@
     <RootNamespace>CustomSpouseLocation</RootNamespace>
     <AssemblyName>CustomSpouseLocation</AssemblyName>
     <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
-    <GameModsPath>D:\Programs\Steam\steamapps\common\Stardew Valley 155\ModsTesting</GameModsPath>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <GamePath>D:\Programs\Steam\steamapps\common\Stardew Valley 1.6.3</GamePath>
+    <GameModsPath>D:\Programs\Steam\steamapps\common\Stardew Valley 1.6.3\Mods</GameModsPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="config info readme.txt">

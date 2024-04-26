@@ -131,7 +131,7 @@ namespace OrnithologistsGuild.Game.Critters
 
         public void PlayCall()
         {
-            Environment.localSoundAt(BirdieDef.SoundID == null ? "SpringBirds" : BirdieDef.SoundID, TileLocation);
+            Environment.localSound(BirdieDef.SoundID == null ? "SpringBirds" : BirdieDef.SoundID, TileLocation);
         }
 
         public void Flip()
@@ -225,7 +225,7 @@ namespace OrnithologistsGuild.Game.Critters
 
         public void Splash(float scale = 1f, float offsetX = 0, float offsetY = 0)
         {
-            Environment.localSoundAt("waterSlosh", TileLocation);
+            Environment.localSound("waterSlosh", TileLocation);
 
             // Center splash
             var splashPosition = new Vector2(

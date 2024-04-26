@@ -1,0 +1,15 @@
+{
+	"ID": "LetterViewerMenu",
+
+	"ColorVariables": {
+		"$LetterViewerHover": "$ButtonHover"
+	},
+
+	"Patches": {
+		"#LetterViewerMenu:draw(SpriteBatch)": {
+			"Colors": {
+				"LightPink": { "*": "$LetterViewerHover" }
+			}
+		}
+	}
+}

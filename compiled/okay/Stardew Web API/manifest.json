@@ -1,0 +1,13 @@
+{
+    "Name": "Stardew Web API",
+    "Author": "zunderscore",
+    "Version": "0.5.0",
+    "Description": "Adds a web API for Stardew Valley.",
+    "UniqueID": "zunderscore.StardewWebApi",
+    "EntryDll": "StardewWebApi.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "GitHub:zunderscore/StardewWebApi",
+        "Nexus:22540"
+    ]
+}

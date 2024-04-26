@@ -78,7 +78,7 @@ public class Day
         Location.WarpToIsland();
     }
 
-    private static void TryAddQuest()
+    internal static void TryAddQuest()
     {
         var farmersWithoutQuest = Game1.getAllFarmers().Where(f => f.hasQuest($"{ModEntry.Id}_StarterQuest") == false && f.mailReceived.Contains(ModEntry.Id)).ToList();
         foreach (var farmer in farmersWithoutQuest)

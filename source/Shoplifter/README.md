@@ -52,6 +52,7 @@ Blacksmith | Clint | None | 3 | 10 | Yes
 Sandy's Oasis | Sandy | Furniture, clothing | 3 | 3 | Yes
 Icecream Stand | Alex | None | 1 | 5 | No
 Resort Bar | Gus | None | 2 | 1 | No
+JojaMart | Morris, Sam, Shane | Recipes, wallpaper, flooring, furniture | 5 | 5 | Yes
 
 ## Version 1.2.0 ##
 
@@ -110,5 +111,7 @@ Note: Translated GMCM menus may not have the proper layout.
 1.1.5 to 1.1.9 - Minor bug fixes
 
 1.2.0 - Quite a lot of new things, see heading above
+
+1.2.1 - Jojamart can now be shoplifted. Marnie can still be shoplifted if the animal catalogue is read.
 
 

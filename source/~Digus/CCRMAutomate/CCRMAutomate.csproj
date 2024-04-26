@@ -1,37 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <AssemblyName>CCRMAutomate</AssemblyName>
     <RootNamespace>CCRMAutomate</RootNamespace>
-    <Version>1.0.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
-    <Platforms>x86</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0">
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CustomCrystalariumMod\CustomCrystalariumMod.csproj">
-      <Private>false</Private>
-    </ProjectReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MailFrameworkMod\MailFrameworkMod.csproj">
-      <Private>false</Private>
-    </ProjectReference>
-  </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Automate">
-      <HintPath>G:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\Automate\Automate.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>$(GamePath)\Mods\Automate\Automate.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomCrystalariumMod\CustomCrystalariumMod.csproj">
+      <Name>CustomCrystalariumMod</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
 </Project>

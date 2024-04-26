@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/BussinBungus/BungusSDVMods
+   Git: https://github.com/BussinBungus/BungusSDVMods.git
+
+mods:
+   Default Animal Skin Replacer
+   Heart Event Helper
+   Lost Book Menu
+
+latest commit:
+   commit d9afb08b4204e59f4e0ad1d664c3fb5a6292a5d3
+   Author: BussinBungus <BussinBungus>
+   Date:   Thu Apr 11 17:08:22 2024 -0400
+   
+       Sync desktop with Github repo
+   

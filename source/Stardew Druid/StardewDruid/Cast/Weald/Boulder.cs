@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Data;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 
@@ -22,6 +23,7 @@ namespace StardewDruid.Cast.Weald
         public Boulder(Vector2 target,  ResourceClump ResourceClump)
             : base(target)
         {
+            castCost = 1;
 
             resourceClump = ResourceClump;
 
@@ -32,7 +34,16 @@ namespace StardewDruid.Cast.Weald
 
             int debrisType = 390;
 
-            int debrisAmount = randomIndex.Next(1, 5);
+            int debrisAmount = 2 + randomIndex.Next(Mod.instance.PowerLevel);
+
+            if (resourceClump.parentSheetIndex.Value == ResourceClump.meteoriteIndex)
+            {
+
+                debrisType = 386;
+
+                debrisAmount *= 2;
+
+            }
 
             Dictionary<int, Throw> throwList = new();
 
@@ -59,7 +70,9 @@ namespace StardewDruid.Cast.Weald
             targetPlayer.gainExperience(2, 2); // gain foraging experience
 
             Vector2 cursorVector = targetVector * 64 + new Vector2(32, 40);
-            ModUtility.AnimateCursor(targetLocation, cursorVector);
+
+            Mod.instance.iconData.CursorIndicator(targetLocation, cursorVector, IconData.cursors.weald);
+
         }
 
     }

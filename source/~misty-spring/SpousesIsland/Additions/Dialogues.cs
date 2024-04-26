@@ -34,7 +34,7 @@ internal static class Dialogues
     internal static void Set(NPC who, string text, bool add = true)
     {
         var dialogue = new Dialogue(who, null, text);
-        who.setNewDialogue(dialogue, add, false);
+        who.setNewDialogue(dialogue, add);
     }
 
     /// <summary>

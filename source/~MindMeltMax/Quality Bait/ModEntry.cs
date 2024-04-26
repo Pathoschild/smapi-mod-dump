@@ -44,34 +44,14 @@ namespace QualityBait
             Helper.Events.GameLoop.DayStarted += onDayStarted;
             Helper.Events.GameLoop.GameLaunched += onGameLaunched;
 
-            Recipes = new()
-            {
-                { "Bait (Silver)", $"685 5 380 1/Home/685 5/false/Fishing 4/{ITranslations.Get("Bait.1")}" },
-                { "Bait (Gold)", $"685 5 384 1/Home/685 5/false/Fishing 7/{ITranslations.Get("Bait.2")}" },
-                { "Bait (Iridium)", $"685 5 386 1/Home/685 5/false/Fishing 9/{ITranslations.Get("Bait.3")}" },
-                { "Wild Bait (Silver)", $"774 5 380 1/Home/774 5/false/null/{ITranslations.Get("Wild.1")}" },
-                { "Wild Bait (Gold)", $"774 5 384 1/Home/774 5/false/null/{ITranslations.Get("Wild.2")}" },
-                { "Wild Bait (Iridium)", $"774 5 386 1/Home/774 5/false/null/{ITranslations.Get("Wild.3")}" },
-                { "Magic Bait (Silver)", $"908 5 380 1/Home/908 5/false/null/{ITranslations.Get("Magic.1")}" },
-                { "Magic Bait (Gold)", $"908 5 384 1/Home/908 5/false/null/{ITranslations.Get("Magic.2")}" },
-                { "Magic Bait (Iridium)", $"908 5 386 1/Home/908 5/false/null/{ITranslations.Get("Magic.3")}" },
-            };
+            reloadRecipes();
         }
 
         private void onLocaleChanged(object sender, LocaleChangedEventArgs e)
         {
-            Recipes = new()
-            {
-                { "Bait (Silver)", $"685 5 380 1/Home/685 5/false/Fishing 4/{ITranslations.Get("Bait.1")}" },
-                { "Bait (Gold)", $"685 5 384 1/Home/685 5/false/Fishing 7/{ITranslations.Get("Bait.2")}" },
-                { "Bait (Iridium)", $"685 5 386 1/Home/685 5/false/Fishing 9/{ITranslations.Get("Bait.3")}" },
-                { "Wild Bait (Silver)", $"774 5 380 1/Home/774 5/false/null/{ITranslations.Get("Wild.1")}" },
-                { "Wild Bait (Gold)", $"774 5 384 1/Home/774 5/false/null/{ITranslations.Get("Wild.2")}" },
-                { "Wild Bait (Iridium)", $"774 5 386 1/Home/774 5/false/null/{ITranslations.Get("Wild.3")}" },
-                { "Magic Bait (Silver)", $"908 5 380 1/Home/908 5/false/null/{ITranslations.Get("Magic.1")}" },
-                { "Magic Bait (Gold)", $"908 5 384 1/Home/908 5/false/null/{ITranslations.Get("Magic.2")}" },
-                { "Magic Bait (Iridium)", $"908 5 386 1/Home/908 5/false/null/{ITranslations.Get("Magic.3")}" },
-            };
+            reloadRecipes();
+            Helper.GameContent.InvalidateCache("Data/CraftingRecipes");
+            CraftingRecipe.InitShared();
         }
 
         public override object GetApi() => IApi ??= new Api();
@@ -91,28 +71,40 @@ namespace QualityBait
             {
                 if (!Game1.player.knowsRecipe("Bait (Silver)"))
                     Game1.player.craftingRecipes.Add("Bait (Silver)", 0);
+                if (!Game1.player.knowsRecipe("Deluxe Bait (Silver)"))
+                    Game1.player.craftingRecipes.Add("Deluxe Bait (Silver)", 0);
                 if (Game1.player.knowsRecipe("Wild Bait") && !Game1.player.knowsRecipe("Wild Bait (Silver)"))
                     Game1.player.craftingRecipes.Add("Wild Bait (Silver)", 0);
                 if (Game1.player.knowsRecipe("Magic Bait") && !Game1.player.knowsRecipe("Magic Bait (Silver)"))
                     Game1.player.craftingRecipes.Add("Magic Bait (Silver)", 0);
+                if (Game1.player.knowsRecipe("Challenge Bait") && !Game1.player.knowsRecipe("Challenge Bait (Silver)"))
+                    Game1.player.craftingRecipes.Add("Challenge Bait (Silver)", 0);
             }
             if (Game1.player.FishingLevel >= 7)
             {
                 if (!Game1.player.knowsRecipe("Bait (Gold)"))
                     Game1.player.craftingRecipes.Add("Bait (Gold)", 0);
+                if (!Game1.player.knowsRecipe("Deluxe Bait (Gold)"))
+                    Game1.player.craftingRecipes.Add("Deluxe Bait (Gold)", 0);
                 if (Game1.player.knowsRecipe("Wild Bait") && !Game1.player.knowsRecipe("Wild Bait (Gold)"))
                     Game1.player.craftingRecipes.Add("Wild Bait (Gold)", 0);
                 if (Game1.player.knowsRecipe("Magic Bait") && !Game1.player.knowsRecipe("Magic Bait (Gold)"))
                     Game1.player.craftingRecipes.Add("Magic Bait (Gold)", 0);
+                if (Game1.player.knowsRecipe("Challenge Bait") && !Game1.player.knowsRecipe("Challenge Bait (Gold)"))
+                    Game1.player.craftingRecipes.Add("Challenge Bait (Gold)", 0);
             }
             if (Game1.player.FishingLevel >= 9)
             {
                 if (!Game1.player.knowsRecipe("Bait (Iridium)"))
                     Game1.player.craftingRecipes.Add("Bait (Iridium)", 0);
+                if (!Game1.player.knowsRecipe("Deluxe Bait (Iridium)"))
+                    Game1.player.craftingRecipes.Add("Deluxe Bait (Iridium)", 0);
                 if (Game1.player.knowsRecipe("Wild Bait") && !Game1.player.knowsRecipe("Wild Bait (Iridium)"))
                     Game1.player.craftingRecipes.Add("Wild Bait (Iridium)", 0);
                 if (Game1.player.knowsRecipe("Magic Bait") && !Game1.player.knowsRecipe("Magic Bait (Iridium)"))
                     Game1.player.craftingRecipes.Add("Magic Bait (Iridium)", 0);
+                if (Game1.player.knowsRecipe("Challenge Bait") && !Game1.player.knowsRecipe("Challenge Bait (Iridium)"))
+                    Game1.player.craftingRecipes.Add("Challenge Bait (Iridium)", 0);
             }
         }
 
@@ -148,6 +140,30 @@ namespace QualityBait
             gmcm.Register(ModManifest, () => IConfig = new(), () => IHelper.WriteConfig(IConfig));
 
             gmcm.AddNumberOption(ModManifest, () => IConfig.ChancePercentage, (x) => IConfig.ChancePercentage = x, () => "Chance Percentage", () => "Determines the rate a which the caught fish will match the quality of the bait (0: never, 100: always)", 0, 100);
+
+            gmcm.AddBoolOption(ModManifest, () => IConfig.BaitMakerQuality, (x) => IConfig.BaitMakerQuality = x, () => "Bait Maker Quality", () => "Toggle whether or not bait from the bait maker should output quality (same chance as for catches)");
+        }
+
+        private void reloadRecipes()
+        {
+            Recipes = new()
+            {
+                { "Bait (Silver)", $"685 5 380 1/Home/685 5/false/Fishing 4/{ITranslations.Get("Bait.1")}" },
+                { "Bait (Gold)", $"685 5 384 1/Home/685 5/false/Fishing 7/{ITranslations.Get("Bait.2")}" },
+                { "Bait (Iridium)", $"685 5 386 1/Home/685 5/false/Fishing 9/{ITranslations.Get("Bait.3")}" },
+                { "Wild Bait (Silver)", $"774 5 380 1/Home/774 5/false/null/{ITranslations.Get("Wild.1")}" },
+                { "Wild Bait (Gold)", $"774 5 384 1/Home/774 5/false/null/{ITranslations.Get("Wild.2")}" },
+                { "Wild Bait (Iridium)", $"774 5 386 1/Home/774 5/false/null/{ITranslations.Get("Wild.3")}" },
+                { "Magic Bait (Silver)", $"908 5 380 1/Home/908 5/false/null/{ITranslations.Get("Magic.1")}" },
+                { "Magic Bait (Gold)", $"908 5 384 1/Home/908 5/false/null/{ITranslations.Get("Magic.2")}" },
+                { "Magic Bait (Iridium)", $"908 5 386 1/Home/908 5/false/null/{ITranslations.Get("Magic.3")}" },
+                { "Deluxe Bait (Silver)", $"DeluxeBait 5 380 1/Home/DeluxeBait 5/false/Fishing 4/{ITranslations.Get("Deluxe.1")}" },
+                { "Deluxe Bait (Gold)", $"DeluxeBait 5 384 1/Home/DeluxeBait 5/false/Fishing 7/{ITranslations.Get("Deluxe.2")}" },
+                { "Deluxe Bait (Iridium)", $"DeluxeBait 5 386 1/Home/DeluxeBait 5/false/Fishing 9/{ITranslations.Get("Deluxe.3")}" },
+                { "Challenge Bait (Silver)", $"ChallengeBait 5 380 1/Home/ChallengeBait 5/false/null/{ITranslations.Get("Challenge.1")}" },
+                { "Challenge Bait (Gold)", $"ChallengeBait 5 384 1/Home/ChallengeBait 5/false/null/{ITranslations.Get("Challenge.2")}" },
+                { "Challenge Bait (Iridium)", $"ChallengeBait 5 386 1/Home/ChallengeBait 5/false/null/{ITranslations.Get("Challenge.3")}" },
+            };
         }
 
         internal static int GetQualityForCatch(string itemId, int originalQuality, int baitQuality)
@@ -162,6 +178,13 @@ namespace QualityBait
             return Game1.random.NextDouble() <= IConfig.Chance ? baitQuality : Qualities[Qualities.IndexOf(baitQuality) - 1];
         }
 
+        internal static int GetQualityForBait(int originalQuality, int inputQuality)
+        {
+            if (originalQuality == Object.bestQuality || inputQuality == Object.lowQuality || originalQuality >= inputQuality)
+                return originalQuality;
+            return Game1.random.NextDouble() <= IConfig.Chance ? inputQuality : Qualities[Qualities.IndexOf(inputQuality) - 1];
+        }
+
         internal static bool IsTrashObject(Object obj) => obj.Category == Object.junkCategory || obj.Category != Object.FishCategory;
     }
 
@@ -170,6 +193,8 @@ namespace QualityBait
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
         void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
     }
 
 }

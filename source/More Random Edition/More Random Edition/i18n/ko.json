@@ -32,7 +32,7 @@
 	"fish-mountain-location": "산",
 	"fish-beach-location": "대양",
 	"fish-undergroundmine-location": "광산",
-	"fish-nightmarket-location": "심해 바다",
+	"fish-submarine-location": "심해 바다",
 	"fish-bugland-location": "버그 랜드",
 	"fish-witchswamp-location": "마녀 늪",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "성장하는 데 {{daysToGrow}} 일이 걸리지 만 그 이후에는 계속 생산됩니다.",
 	"crop-tooltip-growth-time": "성숙하기까지 {{daysToGrow}} 일이 걸립니다.",
 	"crop-tooltip-seasons": "동안 식물: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "실내에서만 재배 할 수 있습니다.",
-	"crop-tooltip-rice-shoot": "물 근처에서 더 빨리 자랍니다.",
+	"crop-tooltip-indoor-crop": "실내에서만 재배 할 수 있습니다.",
+	"crop-tooltip-paddy-crop": "물 근처에서 더 빨리 자랍니다.",
 
 	"bundle-random-all": "무작위",
 	"bundle-random-letter": "영어 \"{{letter}}\"",

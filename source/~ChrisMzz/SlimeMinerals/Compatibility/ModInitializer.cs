@@ -59,7 +59,18 @@ namespace SlimeMinerals.Compatibility
                 name: () => "Activate anywhere",
                 tooltip: () => "Check this to activate the mod in any location of the game. Overrides other options."
             );
-            
+
+            api.AddNumberOption(
+                mod: modManifest,
+                getValue: () => config.Range,
+                setValue: value => config.Range = value,
+                name: () => "Target Difficulty",
+                tooltip: () => "How far from target color the Slime can be. Set this value to be low for maximum difficulty.",
+                min: 15,
+                max: 25,
+                interval: 1
+            );
+
         }
     }
 }

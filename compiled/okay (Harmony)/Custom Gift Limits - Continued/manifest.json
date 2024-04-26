@@ -1,0 +1,22 @@
+﻿{
+  "Name": "Custom Gift Limits",
+  "Author": "aedenthorn, FlyingTNT",
+  "Version": "1.0.1",
+  "Description": "Allows you to set custom daily and weekly gift limits.",
+  "UniqueID": "FlyingTNT.CustomGiftLimits",
+  "EntryDll": "CustomGiftLimits.dll",
+  "MinimumApiVersion": "4.0.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "FlyingTNT",
+    "Directory": "_releases",
+    "ModFolder": "CustomGiftLimits"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [ "Nexus:22385" ]
+}

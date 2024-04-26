@@ -1,7 +1,7 @@
 ﻿{
   "Name": "NoWarpDelay",
   "Author": "Tran Minh Thong",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "This mod helps you skip the waiting time when passing through another map.",
   "UniqueID": "no.warp.delay",
   "EntryDll": "NoWarpDelay.dll",

@@ -297,6 +297,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                 progressionMode: config.ProgressionMode,
                 highlightUnrevealedGiftTastes: config.HighlightUnrevealedGiftTastes,
                 showGiftTastes: config.ShowGiftTastes,
+                collapseFieldsConfig: config.CollapseLargeFields,
                 enableTargetRedirection: config.EnableTargetRedirection,
                 showUnownedGifts: config.ShowUnownedGifts
             );

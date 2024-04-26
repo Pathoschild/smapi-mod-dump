@@ -1,0 +1,349 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SymaLoernn/Stardew_HatsOnPetsPlus
+**
+*************************************************/
+
+{
+  "Format": "2.0.5",
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Syma.HatsOnPetsPlus/CustomPetData",
+      "Entries": {
+        "testMod.goomyPet": [
+          {
+            "Type": "Cat",
+            "BreedId": "3",
+            "Sprites": [
+              {
+                "SpriteId": 0,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 1,
+                "HatOffsetX": 0,
+                "HatOffsetY": 24,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 2,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 3,
+                "HatOffsetX": 0,
+                "HatOffsetY": 24,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 4,
+                "HatOffsetX": 4,
+                "HatOffsetY": 20,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 5,
+                "HatOffsetX": 8,
+                "HatOffsetY": 20,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 6,
+                "HatOffsetX": 4,
+                "HatOffsetY": 20,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 7,
+                "HatOffsetX": 8,
+                "HatOffsetY": 20,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 8,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": 0,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 9,
+                "HatOffsetX": 0,
+                "HatOffsetY": 24,
+                "Direction": 0,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 10,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": 0,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 11,
+                "HatOffsetX": 0,
+                "HatOffsetY": 24,
+                "Direction": 0,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 12,
+                "HatOffsetX": -8,
+                "HatOffsetY": 20,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 13,
+                "HatOffsetX": -4,
+                "HatOffsetY": 20,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 14,
+                "HatOffsetX": -8,
+                "HatOffsetY": 20,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 15,
+                "HatOffsetX": -4,
+                "HatOffsetY": 20,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 16,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 17,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 18,
+                "HatOffsetX": 0,
+                "HatOffsetY": 20,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 19,
+                "HatOffsetX": 0,
+                "HatOffsetY": 28,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 20,
+                "HatOffsetX": 0,
+                "HatOffsetY": 28,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 21,
+                "HatOffsetX": 0,
+                "HatOffsetY": 25,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 22,
+                "HatOffsetX": 0,
+                "HatOffsetY": 22,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 23,
+                "HatOffsetX": 0,
+                "HatOffsetY": 25,
+                "Direction": -1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 24,
+                "HatOffsetX": 6,
+                "HatOffsetY": 24,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 25,
+                "HatOffsetX": 8,
+                "HatOffsetY": 26,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 26,
+                "HatOffsetX": 10,
+                "HatOffsetY": 29,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 27,
+                "HatOffsetX": 10,
+                "HatOffsetY": 30,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 28,
+                "HatOffsetX": -3,
+                "HatOffsetY": 29,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 29,
+                "HatOffsetX": -3,
+                "HatOffsetY": 29,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 30,
+                "HatOffsetX": 14,
+                "HatOffsetY": 24,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 31,
+                "HatOffsetX": 14,
+                "HatOffsetY": 24,
+                "Direction": 1,
+                "Scale": 1.4,
+                "Flipped": false
+              },
+              {
+                "SpriteId": 24,
+                "HatOffsetX": -6,
+                "HatOffsetY": 24,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 25,
+                "HatOffsetX": -8,
+                "HatOffsetY": 26,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 26,
+                "HatOffsetX": -10,
+                "HatOffsetY": 29,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 27,
+                "HatOffsetX": -10,
+                "HatOffsetY": 30,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 28,
+                "HatOffsetX": -3,
+                "HatOffsetY": 29,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 29,
+                "HatOffsetX": -3,
+                "HatOffsetY": 29,
+                "Direction": 2,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 30,
+                "HatOffsetX": -14,
+                "HatOffsetY": 24,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": true
+              },
+              {
+                "SpriteId": 31,
+                "HatOffsetX": -14,
+                "HatOffsetY": 24,
+                "Direction": 3,
+                "Scale": 1.4,
+                "Flipped": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

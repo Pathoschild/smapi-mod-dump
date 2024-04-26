@@ -1,0 +1,11 @@
+﻿{
+    "Name": "Modular Zen Garden",
+    "Author": "leroymilo",
+    "Version": "1.2",
+    "MinimumApiVersion": "4.0",
+	"MinimumGameVersion": "1.6",
+    "Description": "Adds a set of new craftables: Zen Gardens",
+    "UniqueID": "leroymilo.ModularZenGarden",
+    "EntryDll": "ModularZenGarden.dll",
+    "UpdateKeys": [ "Nexus:22140" ]
+}

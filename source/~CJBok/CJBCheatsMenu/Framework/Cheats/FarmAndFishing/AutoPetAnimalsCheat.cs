@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Linq;
 using CJBCheatsMenu.Framework.Components;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -56,38 +55,63 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
             if (!e.IsOneSecond || !Context.IsWorldReady)
                 return;
 
-            FarmAnimal[] animalsToPet = Game1
-                .getFarm()
-                .getAllFarmAnimals()
-                .Where(p => !p.wasPet.Value)
-                .ToArray();
-
-            if (animalsToPet.Any())
-            {
-                int wasTime = Game1.timeOfDay;
-                Item wasTemporaryItem = Game1.player.TemporaryItem;
-
-                try
+            Utility.ForEachLocation(
+                location =>
                 {
-                    // avoid feeding hay
-                    if (Game1.player.ActiveObject?.QualifiedItemId == "(O)178")
-                        Game1.player.TemporaryItem = new Object("0", 1);
+                    if (this.ShouldPetAnimalsHere(location))
+                    {
+                        List<FarmAnimal> animalsToPet = location.getAllFarmAnimals();
+                        animalsToPet.RemoveAll(animal => animal.wasPet.Value);
 
-                    // avoid 'trying to sleep' dialogue popup
-                    if (Game1.timeOfDay >= 1900)
-                        Game1.timeOfDay = 1850;
+                        if (animalsToPet.Count > 0)
+                        {
+                            int wasTime = Game1.timeOfDay;
+                            Item wasTemporaryItem = Game1.player.TemporaryItem;
 
-                    // pet animals
-                    foreach (FarmAnimal animal in animalsToPet)
-                        animal.pet(Game1.player);
-                }
-                finally
-                {
-                    // restore previous values
-                    Game1.player.TemporaryItem = wasTemporaryItem;
-                    Game1.timeOfDay = wasTime;
-                }
-            }
+                            try
+                            {
+                                // avoid feeding hay
+                                if (Game1.player.ActiveObject?.QualifiedItemId == "(O)178")
+                                    Game1.player.TemporaryItem = new Object("0", 1);
+
+                                // avoid 'trying to sleep' dialogue popup
+                                if (Game1.timeOfDay >= 1900)
+                                    Game1.timeOfDay = 1850;
+
+                                // pet animals
+                                foreach (FarmAnimal animal in animalsToPet)
+                                    animal.pet(Game1.player);
+                            }
+                            finally
+                            {
+                                // restore previous values
+                                Game1.player.TemporaryItem = wasTemporaryItem;
+                                Game1.timeOfDay = wasTime;
+                            }
+                        }
+                    }
+
+                    return true;
+                },
+                includeInteriors: false
+            );
+        }
+
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Get whether to try petting any animals in a location or its buildings.</summary>
+        /// <param name="location">The location to check.</param>
+        private bool ShouldPetAnimalsHere(GameLocation location)
+        {
+            // skip if there are no animals here
+            if (location.animals.Length is 0 && location.buildings.Count is 0)
+                return false;
+
+            // skip if players can't build here
+            // Animals in a non-buildable location may be mod NPCs, which can react to being pet with dialogue.
+            return location.IsBuildableLocation();
         }
     }
 }

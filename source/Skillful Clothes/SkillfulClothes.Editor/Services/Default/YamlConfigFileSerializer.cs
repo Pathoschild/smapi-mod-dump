@@ -55,8 +55,8 @@ namespace SkillfulClothes.Editor.Services.Default
 
                 resultList.Add(vm);
             }
-
-            return resultList;
+            
+            return resultList.OrderBy(x => x.DisplayName).ToList();
         }
 
         public IList<ClothingItemViewModel<T>> LoadFromFile<T>(string filename)

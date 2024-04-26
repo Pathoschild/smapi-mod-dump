@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Only fishes consume bait",
+  "Author": "MercuryVN",
+  "Version": "0.2.0",
+  "Description": "Only fishes consume bait, all other things do not",
+  "UniqueID": "MercuryVN.OnlyFishConsumeBait",
+  "EntryDll": "OnlyFishConsumeBait.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "nexus:22766" ]
+}

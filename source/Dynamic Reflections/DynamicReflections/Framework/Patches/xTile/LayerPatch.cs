@@ -41,10 +41,10 @@ namespace DynamicReflections.Framework.Patches.Tiles
 
         internal void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPostfix)));
+            harmony.Patch(AccessTools.Method(_object, "DrawNormal", new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(int), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawNormalPrefix)));
+            harmony.Patch(AccessTools.Method(_object, "DrawNormal", new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(int), typeof(float) }), postfix: new HarmonyMethod(GetType(), nameof(DrawNormalPostfix)));
 
-            harmony.CreateReversePatcher(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), new HarmonyMethod(GetType(), nameof(DrawReversePatch))).Patch();
+            harmony.CreateReversePatcher(AccessTools.Method(_object, "DrawNormal", new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(int), typeof(float) }), new HarmonyMethod(GetType(), nameof(DrawNormalReversePatch))).Patch();
 
             // Perform PyTK related patches
             if (DynamicReflections.modHelper.ModRegistry.IsLoaded("Platonymous.Toolkit"))
@@ -79,7 +79,7 @@ namespace DynamicReflections.Framework.Patches.Tiles
             }
         }
 
-        private static bool DrawPrefix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset = 0f)
+        private static bool DrawNormalPrefix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, int pixelZoom, float sort_offset = 0f)
         {
             if (__instance is null || String.IsNullOrEmpty(__instance.Id))
             {
@@ -156,7 +156,7 @@ namespace DynamicReflections.Framework.Patches.Tiles
                 }
 
                 // Handle Visible Fish Compatability
-                LayerPatch.DrawReversePatch(__instance, displayDevice, mapViewport, displayOffset, wrapAround, pixelZoom);
+                LayerPatch.DrawNormalReversePatch(__instance, displayDevice, mapViewport, displayOffset, pixelZoom);
                 DynamicReflections.shouldSkipWaterOverlay = true;
                 Game1.currentLocation.drawWater(Game1.spriteBatch);
                 DynamicReflections.shouldSkipWaterOverlay = false;
@@ -213,7 +213,7 @@ namespace DynamicReflections.Framework.Patches.Tiles
             return true;
         }
 
-        private static void DrawPostfix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset = 0f)
+        private static void DrawNormalPostfix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, int pixelZoom, float sort_offset = 0f)
         {
             if (__instance is null || String.IsNullOrEmpty(__instance.Id))
             {
@@ -234,14 +234,14 @@ namespace DynamicReflections.Framework.Patches.Tiles
 
                     // Draw the puddles ontop of the "Back" layer
                     DynamicReflections.isFilteringPuddles = true;
-                    LayerPatch.DrawReversePatch(__instance, displayDevice, mapViewport, displayOffset, wrapAround, pixelZoom);
+                    LayerPatch.DrawNormalReversePatch(__instance, displayDevice, mapViewport, displayOffset, pixelZoom);
                     DynamicReflections.isFilteringPuddles = false;
 
                 }
             }
         }
 
-        internal static void DrawReversePatch(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset = 0f)
+        internal static void DrawNormalReversePatch(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, int pixelZoom, float sort_offset = 0f)
         {
             new NotImplementedException("It's a stub!");
         }
@@ -249,7 +249,7 @@ namespace DynamicReflections.Framework.Patches.Tiles
         // PyTK related patches
         private static void PyTKDrawLayerPrefix(Layer __instance, xTile.Display.IDisplayDevice device, xTile.Dimensions.Rectangle viewport, int pixelZoom, Location offset, bool wrap = false)
         {
-            DrawPrefix(__instance, device, viewport, offset, wrap, pixelZoom);
+            DrawNormalPrefix(__instance, device, viewport, offset, pixelZoom);
         }
     }
 }

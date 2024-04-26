@@ -23,6 +23,9 @@
   //Harvest
   "DaysToMature": "天后成熟",
   "ReadyToHarvest": "可以收获！",
+  "With": "已使用",
+  "Fertilized": "已施肥",
+  "Tree": "树",
   //Display icons - General
   "TodaysRecipe": "今日食谱：",
   "TravelingMerchantIsInTown": "旅行商人在镇上！",

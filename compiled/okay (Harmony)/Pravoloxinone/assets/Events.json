@@ -1,0 +1,3 @@
+{
+  "PlayerKilled_Pravoloxinone": "none/-100 -100/farmer 20 12 2 Harvey 21 12 3/pause 1500/showFrame 5/message \" {0}\"/pause 1000/message \"{1}\"/viewport 20 12 true/pause 1000/speak Harvey \"{2}\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end"
+}

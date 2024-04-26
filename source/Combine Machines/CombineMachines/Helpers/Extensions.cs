@@ -25,23 +25,6 @@ namespace CombineMachines.Helpers
 {
     public static class Extensions
     {
-        /// <summary>Returns true if the output stack has already been modified during the current processing cycle, and should not be changed again until the next processing cycle</summary>
-        public static bool HasModifiedOutput(this SObject Item)
-        {
-            if (Item.modData != null && Item.modData.TryGetValue(ModEntry.ModDataOutputModifiedKey, out string HasModifiedString))
-            {
-                bool Result = bool.Parse(HasModifiedString);
-                return Result;
-            }
-            else
-                return false;
-        }
-
-        public static void SetHasModifiedOutput(this SObject Item, bool Value)
-        {
-            Item.modData[ModEntry.ModDataOutputModifiedKey] = Value.ToString();
-        }
-
         public static bool IsCombinedMachine(this SObject Item)
         {
             return Item.modData != null && Item.modData.TryGetValue(ModEntry.ModDataQuantityKey, out _);
@@ -117,6 +100,7 @@ namespace CombineMachines.Helpers
             710 // Crab Pot
         }.AsReadOnly();
 
+#if LEGACY_CODE
         /// <summary>The item Ids of BigCraftables objects that are not machines.</summary>
         public static readonly ReadOnlyCollection<int> NonMachineBigCraftableIds = new List<int>()
         {
@@ -209,6 +193,15 @@ namespace CombineMachines.Helpers
             return Obj != null && Obj.bigCraftable.Value && ScarecrowIds.Contains(Obj.ParentSheetIndex);
         }
 
+        public static bool IsCombinableObject(this SObject Item)
+        {
+            return 
+                (Item.bigCraftable.Value && !NonMachineBigCraftableIds.Contains(Item.ParentSheetIndex)) || // All BigCraftable Machines, such as Kegs, Mayonnaise Machines, Tappers, Furnaces etc
+                (!Item.bigCraftable.Value && NonBigCraftableMachineIds.Contains(Item.ParentSheetIndex)) || // All non-BigCraftable Machines, such as Crab Pots
+                Item.IsScarecrow();
+        }
+#endif
+
         private static readonly ReadOnlyCollection<int> OreIds = new List<int>() {
             378, 380, 384, 386, 909 // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Radioactive Ore
         }.AsReadOnly();
@@ -224,10 +217,8 @@ namespace CombineMachines.Helpers
 
         public static bool IsCombinableObject(this SObject Item)
         {
-            return 
-                (Item.bigCraftable.Value && !NonMachineBigCraftableIds.Contains(Item.ParentSheetIndex)) || // All BigCraftable Machines, such as Kegs, Mayonnaise Machines, Tappers, Furnaces etc
-                NonBigCraftableMachineIds.Contains(Item.ParentSheetIndex) || // All non-BigCraftable Machines, such as Crab Pots
-                IsScarecrow(Item); // Scarecrow, Rarecrows, and Deluxe Scarecrow
+            return Item.IsScarecrow() || Item.GetMachineData() != null ||
+                (!Item.bigCraftable.Value && NonBigCraftableMachineIds.Contains(Item.ParentSheetIndex)); // All non-BigCraftable Machines, such as Crab Pots
         }
 
         //Taken from: https://stackoverflow.com/questions/521146/c-sharp-split-string-but-keep-split-chars-separators

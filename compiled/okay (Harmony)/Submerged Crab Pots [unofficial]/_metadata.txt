@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11719
+IDs: aedenthorn.SubmergedCrabPots
+update keys: Nexus:11719, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@SubmergedCrabPots, GitHub:aedenthorn/StardewValleyMods

@@ -10,7 +10,7 @@
 
 using System.Text;
 using HarmonyLib;
-using ItemExtensions.Models;
+using ItemExtensions.Models.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -211,22 +211,25 @@ public partial class ShopMenuPatches
     {
         list = null;
         
+        if (hoveredItem is null)
+            return false;
+        
         //prioritize bySalable check
         foreach (var pair in ExtraBySalable)
         {
-            if (pair.Key.QualifiedItemId != hoveredItem.QualifiedItemId)
+            if (pair.Key?.QualifiedItemId != hoveredItem.QualifiedItemId)
                 continue;
 
-            if (pair.Key.IsRecipe != hoveredItem.IsRecipe)
+            if (pair.Key?.IsRecipe != hoveredItem.IsRecipe)
                 continue;
             
-            if(pair.Key.Quality != hoveredItem.Quality)
+            if(pair.Key?.Quality != hoveredItem.Quality)
                 continue;
 
-            if (pair.Key.IsInfiniteStock() != hoveredItem.IsInfiniteStock())
+            if (pair.Key?.IsInfiniteStock() != hoveredItem.IsInfiniteStock())
                 continue;
             
-            if(pair.Key.Stack != hoveredItem.Stack)
+            if(pair.Key?.Stack != hoveredItem.Stack)
                 continue;
 
             list = pair.Value;

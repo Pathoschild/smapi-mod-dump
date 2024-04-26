@@ -1,0 +1,150 @@
+{      
+    "Spring": [          
+        {
+            "cropName" : "Gaelic Root",
+            "seedID" : "FOF_Gaelic_Root_Seeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+          "cropName" : "Spring Onion",
+          "seedID" : "FOF_Spring_Onion_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Buttered Bell",
+          "seedID" : "FOF_Buttered_Bell_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Daye Breaks",
+          "seedID" : "FOF_Daye_Breaks_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Blushing Dawn",
+          "seedID" : "FOF_Blushing_Dawn_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "SabiRoot",
+            "seedID" : "FOF_Sabi_Root_Seeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+          "cropName" : "Lola Bloom",
+          "seedID" : "FOF_Lola_Bloom_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Luck Puff",
+          "seedID" : "FOF_Luck_Puff_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Bright Sides",
+          "seedID" : "FOF_Bright_Sides_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Shifter Bloom",
+          "seedID" : "FOF_Shifter_Bloom_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "Bardic Root",
+            "seedID" : "FOF_Bardic_Root_Seeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+          "cropName" : "Bon Bons",
+          "seedID" : "FOF_Bon_Bons_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Buckle Bray",
+          "seedID" : "FOF_Buckle_Bray_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Fox Shoes",
+          "seedID" : "FOF_Fox_Shoes_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        },
+        {
+          "cropName" : "Night Shadow",
+          "seedID" : "FOF_Night_Shadow_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : true
+        }    
+      ],
+      
+      "Winter" : [
+        {
+            "cropName" : "Chill Bell",
+            "seedID" : "FOF_Chill_Bell_Flower",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+          "cropName" : "Ridge Riser",
+          "seedID" : "FOF_Ridge_Riser_Seeds",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        }    
+      ]
+      
+}

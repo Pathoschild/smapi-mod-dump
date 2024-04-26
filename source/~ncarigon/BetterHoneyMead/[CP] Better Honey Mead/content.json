@@ -1,0 +1,192 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "ConfigSchema": {
+        "EnableColoredSprites": {
+            "AllowValues": "true, false",
+            "Default": "true"
+        },
+        "MeadRetainsQuality": {
+            "AllowValues": "true, false",
+            "Default": "true"
+        }
+    },
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}_Flavor": "{0} {1}"
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/HoneyNoColor",
+            "FromFile": "assets/honey_no-color.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/HoneyColored",
+            "FromFile": "assets/honey_colored.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/MeadNoColor",
+            "FromFile": "assets/mead_no-color.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/MeadColored",
+            "FromFile": "assets/mead_colored.png"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "340" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/HoneyNoColor"
+            },
+            "When": {
+                "EnableColoredSprites": "false"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "340" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/HoneyColored"
+            },
+            "When": {
+                "EnableColoredSprites": "true"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/MeadNoColor"
+            },
+            "When": {
+                "EnableColoredSprites": "false"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/MeadColored"
+            },
+            "When": {
+                "EnableColoredSprites": "true"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "340" ],
+            "Entries": {
+                "ContextTags": [
+                    "honey_item",
+                    "use_reverse_name_for_sorting"
+                ]
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459" ],
+            "Entries": {
+                "ContextTags": [
+                    "alcohol_item",
+                    "use_reverse_name_for_sorting"
+                ]
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "#0" ],
+            "Entries": {
+                "CopyColor": true,
+                "CopyQuality": true,
+                "PreserveId": "DROP_IN_PRESERVE"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "#0" ],
+            "Entries": {
+                "CopyQuality": true
+            },
+            "When": {
+                "MeadRetainsQuality": "true"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "Triggers", "#0" ],
+            "Entries": {
+                "RequiredTags": [ "preserve_sheet_index_-1" ]
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules" ],
+            "Entries": {
+                "Flavored_Honey": {
+                    "Id": "Flavored_Honey",
+                    "Triggers": [
+                        {
+                            "RequiredItemId": "(O)340",
+                            "RequiredTags": [ "!preserve_sheet_index_-1" ]
+                        }
+                    ],
+                    "OutputItem": [
+                        {
+                            "Id": "(O)459",
+                            "ItemId": "(O)459",
+                            "ObjectInternalName": "(O)459_{0}",
+                            "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+                            "PreserveId": "DROP_IN_PRESERVE",
+                            "CopyPrice": true,
+                            "CopyColor": true,
+                            "PriceModifiers": [
+                                {
+                                    "Modification": "Multiply",
+                                    "Amount": 2.0
+                                }
+                            ]
+                        }
+                    ],
+                    "MinutesUntilReady": 600
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules", "Flavored_Honey", "OutputItem", "#0" ],
+            "Entries": {
+                "CopyQuality": true
+            },
+            "When": {
+                "MeadRetainsQuality": "true"
+            }
+        }
+    ]
+}

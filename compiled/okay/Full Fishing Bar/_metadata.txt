@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23006
+IDs: HedgehogTechnologies.FullFishingBar
+update keys: Nexus:23006, GitHub:jag3dagster/AutoShaker

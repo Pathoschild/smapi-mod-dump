@@ -1,0 +1,16 @@
+﻿{
+  "Name": "CustomTapperFramework",
+  "Author": "selph",
+  "Version": "1.2.2-beta1",
+  "Description": "Adds a framework for implementing custom tappers.",
+  "UniqueID": "selph.CustomTapperFramework",
+  "EntryDll": "CustomTapperFramework.dll",
+  "MinimumApiVersion": "4.0.7",
+  "Dependencies": [
+    { "UniqueID": "Pathoschild.Automate",
+      "MinimumVersion": "2.0.0",
+      "IsRequired": false,
+    },
+  ],
+  "UpdateKeys": ["Nexus:22975"]
+}

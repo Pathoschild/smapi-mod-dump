@@ -11,10 +11,11 @@
 {
     "Name": "Mobile Phone App for Joys of Efficiency",
     "Author": "JoXW, aedenthorn",
-    "Version": "0.1.2",
+    "Version": "0.1.3",
     "Description": "Adds an app that triggers the default key for Joys of Efficiency.",
     "UniqueID": "JoXW.MobileJoysOfEfficiency",
     "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:21017@Efficiency" ],
     "ContentPackFor": {
         "UniqueID": "JoXW.MobilePhone",
         "MinimumVersion": "1.0.0"

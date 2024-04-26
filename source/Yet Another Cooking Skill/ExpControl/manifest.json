@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "Name": "Exp Control",
+    "Author": "moonslime",
+    "Version": "1.0.0",
+    "Description": "Allows increasing or decreasing how much exp you get for base skills.",
+    "UniqueID": "moonslime.ExpControl",
+    "EntryDll": "ExpControl.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [
+        "Nexus:23067"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "drbirbdev.BirbCore",
+            "MinimumVersion": "1.0.3"
+        }
+    ]
+}

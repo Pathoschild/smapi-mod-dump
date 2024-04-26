@@ -59,7 +59,7 @@ namespace Spawn_Monsters
             }
 
             if (e.Button == config.MenuKey) {
-                Game1.activeClickableMenu = new MonsterMenu.MonsterMenu();
+                Game1.activeClickableMenu = new MonsterMenu.MonsterMenu(Helper);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Spawn_Monsters
 
         public void MonsterMenu(string command, string[] args) {
             if (Context.IsWorldReady) {
-                Game1.activeClickableMenu = new MonsterMenu.MonsterMenu();
+                Game1.activeClickableMenu = new MonsterMenu.MonsterMenu(Helper);
             } else {
                 Monitor.Log("Load a save first!", LogLevel.Info);
             }

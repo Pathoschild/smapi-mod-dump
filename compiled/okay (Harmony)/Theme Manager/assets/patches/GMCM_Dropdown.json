@@ -1,0 +1,29 @@
+{
+	"ID": "GMCM_Dropdown",
+
+	"RequiredMods": [
+		{
+			"UniqueID": "spacechase0.GenericModConfigMenu",
+			"MinimumVersion": "1.9.6"
+		}
+	],
+
+	"ColorVariables": {
+		"$GMCMDropDownHover": "$DropDownHover",
+		"$DropDownHover": "$Hover",
+		"$GMCMDropDownText": "$DropDownText",
+		"$DropDownText": "$Text"
+	},
+
+	"Patches": {
+		"GenericModConfigMenu!SpaceShared.UI.Dropdown:Draw": {
+			"Colors": {
+				"Wheat": { "*": "$DropDownHover" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$DropDownText" }
+			}
+		}
+	}
+}

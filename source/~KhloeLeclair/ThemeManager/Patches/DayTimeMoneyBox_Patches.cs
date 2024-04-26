@@ -71,7 +71,7 @@ internal static class DayTimeMoneyBox_Patches {
 				if (align.HasFlag(Alignment.Left)) {
 					posX = offX;
 
-				} else if (align.HasFlag(Alignment.Center)) {
+				} else if (align.HasFlag(Alignment.HCenter)) {
 					posX = (Game1.uiViewport.Width - 300) / 2 + offX;
 
 				} else {
@@ -84,7 +84,7 @@ internal static class DayTimeMoneyBox_Patches {
 						);
 				}
 
-				if (align.HasFlag(Alignment.Middle)) {
+				if (align.HasFlag(Alignment.VCenter)) {
 					posY = (Game1.uiViewport.Height - 284) / 2 + offY;
 
 				} else if (align.HasFlag(Alignment.Bottom)) {

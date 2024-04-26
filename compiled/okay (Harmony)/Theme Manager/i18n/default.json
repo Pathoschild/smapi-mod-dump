@@ -1,0 +1,30 @@
+{
+	"settings.mod-themes": "Mod Themes",
+
+	"setting.clock-position": "Clock Position",
+	"setting.clock-position.tip": "This allows you to change the on-screen position of the game's clock, which by default appears in the top-right corner.'",
+
+	"setting.advanced": "Advanced",
+
+	"setting.from-theme": "From Theme",
+
+	"alignment.default": "Default",
+	"alignment.top-left": "Top-Left",
+	"alignment.top-center": "Top-Center",
+	"alignment.top-right": "Top-Right",
+	"alignment.mid-left": "Middle-Left",
+	"alignment.mid-center": "Middle-Center",
+	"alignment.mid-right": "Middle-Right",
+	"alignment.bottom-left": "Bottom-Left",
+	"alignment.bottom-center": "Bottom-Center",
+	"alignment.bottom-right": "Bottom-Right",
+
+	"setting.game-theme": "Game Theme",
+	"setting.game-theme.tip": "A game theme overrides colors in the base game's UI, and also allows certain elements to be moved or resized.",
+
+	"setting.debug-patches": "Debug Patches",
+	"setting.debug-patches.tip": "When enabled, debug messages will be logged when applying Harmony patches to classes.",
+
+	"theme.automatic": "Automatic",
+	"theme.default": "Default"
+}

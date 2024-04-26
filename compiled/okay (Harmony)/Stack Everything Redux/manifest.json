@@ -1,0 +1,10 @@
+{
+    "Name": "Stack Everything Redux",
+    "Author": "thimadera",
+    "Version": "1.1.2",
+    "Description": "Enhance stacking in Stardew Valley beyond 999! Customize stacks and simplify item handling.",
+    "UniqueID": "thimadera.StackEverythingRedux",
+    "EntryDll": "StackEverythingRedux.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:22381" ]
+}

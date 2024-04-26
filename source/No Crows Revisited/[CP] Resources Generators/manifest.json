@@ -12,7 +12,7 @@
     "Name": "[CP] Resources Generators",
     "Author": "Siweipancc",
     "Description": "Resources Generators mod for Stardew Valley 1.6 Content Patcher",
-    "Version": "1.0.0",
+    "Version": "1.1.0",
     "MinimumApiVersion": "4.0.0",
     "UniqueID": "Siweipancc.ResourcesGenerators",
     "UpdateKeys": ["Nexus: 2199"],

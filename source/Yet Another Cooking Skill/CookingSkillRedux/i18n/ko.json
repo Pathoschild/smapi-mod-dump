@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "요리",
+    "skill.perk": "직접 만든 요리의 기력/체력 +{{bonus}}% 추가 회복.",
+    "skill.perk_bonus": "직접 만든 요리의 기력/체력 +{{bonus}}% 추가 회복.",
+
+
+    "config.ExperienceFromCooking": "기본 요리 경험치",
+    "config.ExperienceFromCooking.tooltip": "요리를 만들 때 기본적으로 얻게 될 경험치. (다양한 요리 만들기를 위해 낮게 설정하길 권장.)",
+
+    "config.ExperienceFromEdibility": "기력/체력 기반 경험치",
+    "config.ExperienceFromEdibility.tooltip": "요리의 기력/체력에 비례해 얻을 추가 경험치량",
+
+    "config.BonusExpLimit": "추가 경험치 중복횟수 한도",
+    "config.BonusExpLimit.tooltip": "단일 요리가 추가 경험치를 중복해서 몇번까지만 주는지의 한계치  ",
+
+    "moonslime.Cooking.no_more_bonus_exp": "당신은 이 요리를 완벽하게 익혔기에, 이 요리로 경험치를 많이 못 얻습니다.",
+
+    "cooking5a.name": "요리사",
+    "cooking5a.desc": "조리된 요리의 품질이 향상됩니다.",
+    "cooking5b.name": "대식가",
+    "cooking5b.desc": "레벨에 비례해 버프의 지속시간이 늘어납니다.",
+    "cooking10a1.name": "주방장",
+    "cooking10a1.desc": "요리 할 때, 가끔 요리를 2배로 얻을 수 있습니다.\n요리 레벨에 비례해 확률이 증가합니다.",
+    "cooking10a2.name": "셰프",
+    "cooking10a2.desc": "조리된 요리가 레벨에 비례해 추가 가격을 받습니다.",
+    "cooking10b1.name": "미식가",
+    "cooking10b1.desc": "요리가 주는 버프가 한단계 더 강해집니다.\n(단, 최대 기력/자력은 +16 추가).",
+    "cooking10b2.name": "식도락가",
+    "cooking10b2.desc": "먹거나 마실 때, 임의의 추가 버프를 받습니다.",
+
+    "moonslime.Cooking.Profession10b2.buff": "세련된 미각",
+
+    "moonslime.Cooking.skill_book.levelup": "요리에 대한 새로운 지식을 얻었습니다!"
+
+
+}

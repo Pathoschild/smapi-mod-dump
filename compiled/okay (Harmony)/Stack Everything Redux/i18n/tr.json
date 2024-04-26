@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Maksimum Yığma Miktarı",
+    "config.MaxStackingNumber.tooltip": "Varsayılan maksimum yığma miktarı, 999 olarak ayarlıdır.",
+    "config.DefaultCraftingAmount.name": "Varsayılan pişirme/üretim miktarı",
+    "config.DefaultCraftingAmount.tooltip": "Pişirme/üretim menüsünde Shift+Sağ Tık ile kullanıldığında varsayılan miktar.",
+    "config.DefaultShopAmount.name": "Varsayılan mağaza miktarı",
+    "config.DefaultShopAmount.tooltip": "Bir Mağaza menüsünde Shift+Sağ Tık ile kullanıldığında varsayılan miktar.",
+    "config.EnableStackSplitRedux.name": "Bölme Redux'ı Etkinleştir",
+    "config.EnableStackSplitRedux.tooltip": "Bölme Redux işlevlerini etkinleştirin. Sorun yaşıyorsanız bu kutuyu işaretlemeden bırakın.",
+    "ui.stacksplitmenu.title": "Miktar Seçin"
+}

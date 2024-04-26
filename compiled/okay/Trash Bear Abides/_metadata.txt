@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/11359
 IDs: JohnPeters.TrashBearAbides
-update keys: Nexus:???, Nexus:11359
+update keys: Nexus:11359

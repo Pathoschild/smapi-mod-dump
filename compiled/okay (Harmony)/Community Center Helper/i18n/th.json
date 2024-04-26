@@ -113,6 +113,7 @@
 	"winCraneGame": "ได้จากตู้เครนเกมที่โรงหนัง",
 	"voidEggEvent": "สุ่มในเหตุการณ์แม่มด",
 	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
+	"foxbloom": "Appears in Ridge Forest on random Sunday each season\n(Weather must be sunny and Relic Fox Mask equipped)", // RSV // TODO
 
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "ในท่อระบายน้ำ",
 	"locationDesert": "ที่ทะเลทรายคาลิโก้",
 	"locationSkullPrehistoric": "ในถ้ำหัวกะโหลก ชั้นก่อนประวัติศาสตร์",
+	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "ใน ???",
 
 	// Water Locations (for fishing suggestions)
@@ -189,6 +191,10 @@
 	"waterShearwaterBridge": "ที่สะพานเชียร์วอเทอร์", // SVE
 	"waterForestWest": "ในป่า Cindersap (ตะวันตก)", // SVE
 	"waterAdventurerSummit": "ที่การประชุมสุดยอดนักผจญภัย (กิลด์นักผจญภัย)", // SVE
+	"waterRidgesideRiver": "in Ridgeside Village river", // RSV // TODO
+	"waterRidge": "on the Ridge", // RSV // TODO
+	"waterRidgeForest": "in Ridge Forest", // RSV // TODO
+	"waterRidgeFalls": "at Ridge Falls", // RSV // TODO
 	"waterUnknown": "ใน ???",
 
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "ร้านตีเหล็ก",
 	"shopSaloon": "ซาลูน",
 	"shopClinic": "คลินิก",
+	"shopFish": "Fish Shop", // TODO
+	"shopGuild": "Adventurer's Guild", // TODO
 	"shopDwarf": "คนแคระ",
 	"shopKrobus": "โครบัส",
 	"shopKrobusWeekday": "โครบัส ({{day}})",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "บูทปิแอร์ในเทศกาลไข่อีสเตอร์ (ฤดูใบไม้ผลิ วันที่ 13)",
 	"shopFlowerDance": "บูทปิแอร์ในเทศกาลเต้นรำดอกไม้ (ฤดูใบไม้ผลิ วันที่ 24)",
 	"shopSpiritsEve": "บูทปิแอร์ในเทศกาลภูติ (ฤดูใบไม้ร่วง วันที่ 27)",
+	"shopSophiaLedger": "Sophia's ledger", // SVE // TODO
+	"shopWestForestBear": "Forest West bear", // SVE // TODO
+	"shopNightingaleOrchard": "Nightingale Orchard", // RSV // TODO
+	"shopHotelPastry": "Hotel Pastry Shop", // RSV // TODO
+	"shopPikaRestaurant": "Pika's Restaurant", // RSV // TODO
 	"shopUnknown": "???",
 	"randomlyAvailable": "สุ่ม", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "ขาย {{item}}", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "ต้นพีช",
 	"treePomegranate": "ต้นทับทิม",
 	"treeCherry": "ต้นเชอร์รี่",
-	"treeLime": "ต้นมะนาว", // PPJA
-	"treePapaya": "ต้นมะละกอ", // PPJA
-	"treeWalnut": "ต้นวอลนัท", // PPJA
-	"treePersimmon": "ต้นพลับ", // PPJA
-	"treeGranny": "ต้นแอปเปิลแกรนนีสมิธ", // PPJA
-	"treeEucalyptus": "ต้นยูคาลิปตัส", // PPJA
+	"treeMahogany": "Mahogany Tree", // TODO
+	"treeLime": "ต้นมะนาว", // Cornucopia
+	"treePapaya": "ต้นมะละกอ", // Cornucopia
+	"treeWalnut": "ต้นวอลนัท", // Cornucopia
+	"treePersimmon": "ต้นพลับ", // Cornucopia
+	"treeEucalyptus": "ต้นยูคาลิปตัส", // Cornucopia
+	"treeGranny": "ต้นแอปเปิลแกรนนีสมิธ", // PPJA More Trees
+	"treeAvocado": "Avocado Tree", // Cornucopia // TODO
+	"treeCocoaPod": "Cocoa Pod Tree", // Cornucopia // TODO
+	"treePear": "Pear Tree", // Cornucopia // TODO
+	"treeCherryPluot": "Cherry Pluot Tree", // RSV // TODO
+	"treeMountainPlumcot": "Mountain Plumcot Tree", // RSV // TODO
+	"treeDesertTangelo": "Desert Tangelo Tree", // RSV // TODO
+	"treeTropiUgliFruit": "Tropi Ugli Fruit Tree", // RSV // TODO
+	"treeParadiseRangpur": "Paradise Rangpur Tree", // RSV // TODO
+	"treeEmberBloomLime": "Ember Blood Lime Tree", // RSV // TODO
 	"treeMaple": "ต้นเมเปิล",
 	"treeOak": "ต้นโอ๊ก",
 	"treePine": "ต้นสน",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "สไลม์สีแดง",
 	"monsterPurpleSlime": "สไลม์สีม่วง",
 	"monsterBRPCISlime": "สไลม์สีน้ำเงิน/แดง/ม่วง/ทองแดง/สไลม์เหล็ก",
+	"monsterHauntedSkull": "Haunted Skull", // TODO
+	"monsterRidgeForest": "Ridge Forest monsters", // RSV // TODO
 	"monsterUnknown": "???",
 
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "จดหมายจะส่งมาหลังจาก {{time}} เมื่อ {{friendReq}}",
 	"conditionalMailTimeSkill": "จดหมายจะส่งมาหลังจาก {{time}} ได้รับสกิล {{skillReq}}",
 	"conditionalMailFriendSkill": "จดหมายจะส่งมาหลังจาก {{friendReq}} & {{skillReq}}",
+	"conditionalMailSpecialOrder": "mail after special order {{orderName}}", // TODO
 	"mailConditionFriendship": "มีค่าหัวใจ {{hearts}} ดวงกับ {{person}}",
 
 	// Times (for fishing)

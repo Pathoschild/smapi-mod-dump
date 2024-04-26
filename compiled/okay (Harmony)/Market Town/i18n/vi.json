@@ -693,11 +693,24 @@
 "foodstore.config.museumpricemarkup": "Hệ số nhân giá vé Bảo tàng",
 "foodstore.config.museumpricemarkupText": "Giá vé Bảo tàng dựa trên số lượng hiện vật, khoáng sản và phần thưởng quái vật được trưng bày bên trong. Giá trị cao hơn có nghĩa là giá vé cao hơn, nhưng cũng làm giảm cơ hội của khách tham quan!!!",
 
-"foodstore.todaymuseumvisitor": " Khách tham quan bảo tàng ngày hôm qua: {{todayMMuseumVisitor}}.^^",
+"foodstore.todaymuseumvisitor": " Khách tham quan bảo tàng ngày hôm qua: {{todayMMuseumVisitor}}, {{todayMuseumEarning}}G.^^",
 "foodstore.letter.receivemuseumlicense": "Thân gửi @.^^ Chúc mừng bạn đã có được Giấy phép Bảo tàng của mình. Hãy để tôi hướng dẫn bạn cách thiết lập nó. Bạn có thể sử dụng bất kỳ Tòa nhà Nông nghiệp nào như một Bảo tàng. Điều duy nhất cần là một Biển hiệu hiển thị Giấy phép và sau đó khách tham quan sẽ bắt đầu đến vào ngày mai. Khách tham quan Bảo tàng không mua các mặt hàng trưng bày, nhưng họ sẽ trả giá vé khi vào cửa. Giá vé được xác định bằng số lượng hiện vật, đá quý hiếm, cũng như cá và tượng độc đáo. Bạn có thể quyết định về việc tăng giá vé của mình; tuy nhiên, hãy nhớ rằng mức tăng giá càng cao, bạn có thể thu hút ít khách thăm hơn.^^ Tôi sẽ đến thăm Bảo tàng của bạn sau khi nó sẵn sàng. -Lewis",
   "foodstore.letter.receiverestaurantlicense": "Thân gửi @.^^ Tôi đã nhận thấy rằng bạn đã có được Giấy phép Nhà hàng. Giấy phép này sẽ cho phép bạn sử dụng bất kỳ Tòa nhà Nông nghiệp nào như một Nhà hàng. Chỉ cần hiển thị Giấy phép trên một Biển hiệu, và khách tham quan sẽ bắt đầu đến vào ngày mai. Khách tham quan Nhà hàng sẽ lục lọi và mua thức ăn mà họ thích. Đôi khi, họ sẽ yêu cầu một món đặc biệt, mà bạn có thể bán cho họ trực tiếp với giá cao hơn.^^ Tôi thực sự rất mong được thử thức ăn của bạn. -Lewis",
   "foodstore.letter.receivemarkettownlicense": "Thân gửi @.^^ Cuối cùng, bạn đã có được Giấy phép Thị trấn Thị trường. Từ bây giờ, bạn có thể sở hữu từ một cửa hàng tiện lợi nhỏ đến thậm chí là một siêu thị. Giấy phép này cho phép bạn bán bất kỳ hàng hóa nào bạn muốn, bao gồm thực phẩm, sản phẩm nông sản, vật liệu và nhiều hơn nữa.^^ Cảm ơn bạn rất nhiều vì đã tạo ra một trung tâm thuận tiện cho tất cả mọi người trong làng chúng ta. -Lewis",
   "foodstore.config.multiplayermode": "Kích hoạt chia sẻ tiền bán hàng cho chế độ đa người chơi?",
-  "foodstore.config.multiplayermodeText": "CẢNH BÁO: LỖI. Mặc định là false. Kích hoạt điều này sẽ chia tiền bán hàng giữa các người chơi kết nối. CẢNH BÁO: Đôi khi các người chơi khác không nhận được tiền."
+  "foodstore.config.multiplayermodeText": "CẢNH BÁO: LỖI. Mặc định là false. Kích hoạt điều này sẽ chia tiền bán hàng giữa các người chơi kết nối. CẢNH BÁO: Đôi khi các người chơi khác không nhận được tiền.",
+
+  "foodstore.config.easylicense": "Bỏ qua Yêu cầu Giấy phép?",
+"foodstore.config.textchat": "Vô hiệu hóa trò chuyện văn bản với NPC?",
+
+
+"foodstore.island.building": "Ngọn lửa đang nhảy múa và khách thăm đang đến. Việc xây dựng trên Đảo Thiên Đường đã bị tạm ngừng",
+
+"foodstore.islandtravel.sun": "Đó là một quãng đường khá xa trên thuyền. Bạn cảm thấy mệt mỏi một chút!",
+"foodstore.islandtravel.rain": "Mưa làm cho hành trình trở nên khó khăn hơn. Bạn cảm thấy mệt mỏi.",
+"foodstore.islandtravel.wind": "Gió đôi khi đẩy bạn về phía trước, nhưng đôi khi lại đi ngược hướng của bạn.",
+"foodstore.islandtravel.storm": "Thời tiết bão táp không ngừng. Bạn cảm thấy kiệt sức từ chuyến đi.",
+"foodstore.islandtravel.greenrain": "Mưa xanh lạ thường khiến bạn lạc hướng. Bạn cảm thấy suy nhược.",
+"foodstore.islandtravel.snow": "Đi qua tuyết làm bạn mệt mỏi. Bạn cảm thấy năng lượng đang dần mất đi."
 
 }

@@ -71,7 +71,7 @@ namespace FarmerHelper
             if (!Config.EnableMod || !Config.LabelLatePlanting || hoveredItem == null)
                 return;
             Crop crop = new Crop(hoveredItem.itemId.Value, 0, 0, Game1.currentLocation);
-            if (crop == null || crop.phaseDays.Count == 0 || !crop.GetData().Seasons.Contains(Game1.currentLocation.GetSeason()) || EnoughDaysLeft(crop, null) || (new int[] { 495, 496, 497, 498, 770 }).Contains(hoveredItem.ParentSheetIndex))
+            if (crop == null || crop.phaseDays.Count == 0 || !crop.GetData().Seasons.Contains(Game1.currentLocation.GetSeason()) || EnoughDaysLeft(crop, null) || (new int[] { 495, 496, 497, 498, 770 }).Contains(hoveredItem.ParentSheetIndex) || hoveredItem.ItemId == "MixedFlowerSeeds" )
                 return;
 
             hoverTitle = string.Format(SHelper.Translation.Get("too-late"), hoverTitle);

@@ -1,0 +1,12 @@
+﻿{
+  "config.tips.RestartEffectuate": "Restart game to take effect after change config.",
+  "config.name.MoreFairy": "More Fairy and Witch",
+  "config.name.FairyFrequencyFirstMonth": "Fairy Ratio of first year Spring",
+  "config.name.FairyFrequencySecondMonth": "Fairy Ratio of first year Summer",
+  "config.name.FairyFrequencyAfterwards": "Fairy Ratio Afterwards",
+  "config.name.NoCrows": "No Crows in Farm",
+  "config.name.SpecialMixSeedCrop": "Special MixSeed Crop",
+  "config.tips.SpecialMixSeedCrop": "Garlic, Red Cabbage, Artichoke, Winter Wild Forage and Ancient Fruit",
+  "config.name.MixAncientSeedRatio": "Ancient Fruit grow from MixSeed Ratio",
+  "config.tips.RatioRange": "range: 0~1"
+}

@@ -20,19 +20,19 @@
     "ResultCount": 10,
     "Ingredients": [
       {
-        "Object": "Diamond",
+        "Object": "72",
         "Count": 2
       },
       {
-        "Object": "Void Essence",
+        "Object": "769",
         "Count": 2
       },
       {
-        "Object": "Copper Bar",
+        "Object": "334",
         "Count": 10
       },
       {
-        "Object": "Gold Bar",
+        "Object": "336",
         "Count": 5
       }
     ],

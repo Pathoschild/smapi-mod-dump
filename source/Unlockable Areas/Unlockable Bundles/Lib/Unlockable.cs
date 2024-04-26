@@ -26,6 +26,7 @@ using StardewValley.Menus;
 using Unlockable_Bundles.Lib.AdvancedPricing;
 using StardewValley.GameData;
 using StardewValley.Internal;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -52,6 +53,7 @@ namespace Unlockable_Bundles.Lib
         private NetString _shopEvent = new();
         private NetEnum<ShopType> _shopType = new();
         private NetBool _instantShopRemoval = new();
+        private NetColor _shopColor = new();
 
         private NetBool _drawQuestionMark = new();
         private NetVector2 _questionMarkOffset = new();
@@ -70,6 +72,7 @@ namespace Unlockable_Bundles.Lib
         private NetString _overviewAnimation = new();
         private NetInt _overviewTextureWidth = new();
         private NetString _overviewDescription = new();
+        private NetColor _overviewColor = new();
 
         public NetInt _randomPriceEntries = new();
         public NetInt _randomRewardEntries = new();
@@ -105,6 +108,7 @@ namespace Unlockable_Bundles.Lib
         public string ShopEvent { get => _shopEvent.Value; set => _shopEvent.Value = value; }
         public ShopType ShopType { get => _shopType.Value; set => _shopType.Value = value; }
         public bool InstantShopRemoval { get => _instantShopRemoval.Value; set => _instantShopRemoval.Value = value; }
+        public Color ShopColor { get => _shopColor.Value; set => _shopColor.Value = value; }
 
         public bool DrawQuestionMark { get => _drawQuestionMark.Value; set => _drawQuestionMark.Value = value; }
         public Vector2 QuestionMarkOffset { get => _questionMarkOffset.Value; set => _questionMarkOffset.Value = value; }
@@ -123,6 +127,7 @@ namespace Unlockable_Bundles.Lib
         public string OverviewAnimation { get => _overviewAnimation.Value; set => _overviewAnimation.Value = value; }
         public int OverviewTextureWidth { get => _overviewTextureWidth.Value; set => _overviewTextureWidth.Value = value; }
         public string OverviewDescription { get => _overviewDescription.Value; set => _overviewDescription.Value = value; }
+        public Color OverviewColor { get => _overviewColor.Value; set => _overviewColor.Value = value; }
 
         public int RandomPriceEntries { get => _randomPriceEntries.Value; set => _randomPriceEntries.Value = value; }
         public int RandomRewardEntries { get => _randomRewardEntries.Value; set => _randomRewardEntries.Value = value; }
@@ -159,6 +164,7 @@ namespace Unlockable_Bundles.Lib
             this.ShopEvent = model.ShopEvent;
             this.ShopType = model.ShopType;
             this.InstantShopRemoval = model.InstantShopRemoval == true;
+            this.ShopColor = model.parseColor();
 
             this.DrawQuestionMark = model.DrawQuestionMark;
             this.QuestionMarkOffset = model.QuestionMarkOffset;
@@ -177,6 +183,7 @@ namespace Unlockable_Bundles.Lib
             this.OverviewAnimation = model.OverviewAnimation;
             this.OverviewTextureWidth = model.OverviewTextureWidth;
             this.OverviewDescription = model.OverviewDescription;
+            this.OverviewColor = model.parseOverviewColor();
 
             this.RandomPriceEntries = model.RandomPriceEntries;
             this.RandomRewardEntries = model.RandomRewardEntries;
@@ -215,6 +222,7 @@ namespace Unlockable_Bundles.Lib
             .AddField(_shopEvent, "_shopEvent")
             .AddField(_shopType, "_shopType")
             .AddField(_instantShopRemoval, "_instantShopRemoval")
+            .AddField(_shopColor, "_shopColor")
 
             .AddField(_drawQuestionMark, "_drawQuestionMark")
             .AddField(_questionMarkOffset, "_questionMarkOffset")
@@ -233,6 +241,7 @@ namespace Unlockable_Bundles.Lib
             .AddField(_overviewAnimation, "_overviewAnimation")
             .AddField(_overviewTextureWidth, "_overviewTextureWidth")
             .AddField(_overviewDescription, "overviewDescription")
+            .AddField(_overviewColor, "overviewColor")
 
             .AddField(_randomPriceEntries, "_randomPriceEntries")
             .AddField(_randomRewardEntries, "_randomRewardEntries")
@@ -276,7 +285,7 @@ namespace Unlockable_Bundles.Lib
             if (CachedLocalizedShopDescription != null)
                 return CachedLocalizedShopDescription;
 
-            var unlockables = ModEntry._Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
             if (unlockables == null)
                 return BundleDescription;
 
@@ -302,7 +311,7 @@ namespace Unlockable_Bundles.Lib
             if (CachedLocalizedOverviewDescription != null)
                 return CachedLocalizedOverviewDescription;
 
-            var unlockables = ModEntry._Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
             if (unlockables == null)
                 return OverviewDescription;
 
@@ -355,9 +364,9 @@ namespace Unlockable_Bundles.Lib
         {
             _completed.Value = true;
             ModData.setPurchased(ID, LocationUnique);
-            ModEntry._API.raiseShopPurchased(new API.BundlePurchasedEventArgs(Game1.player, Location, LocationUnique, ID, true));
-            ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)this, "BundlePurchased", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
-            ModEntry._Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("Bundle");
+            ModAPI.raiseShopPurchased(new API.BundlePurchasedEventArgs(Game1.player, Location, LocationUnique, ID, true));
+            Helper.Multiplayer.SendMessage((UnlockableModel)this, "BundlePurchased", modIDs: new[] { ModManifest.UniqueID });
+            Helper.Reflection.GetField<StardewValley.Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("Bundle");
 
             Game1.addMailForTomorrow(getMailKey(), noLetter: BundleCompletedMail == "", sendToEveryone: true);
         }
@@ -367,8 +376,8 @@ namespace Unlockable_Bundles.Lib
             _alreadyPaid.Add(requirement.Key, requirement.Value);
             _alreadyPaidIndex.Add(requirement.Key, index);
             ModData.setPartiallyPurchased(ID, LocationUnique, requirement.Key, requirement.Value, index);
-            ModEntry._API.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int>(requirement.Key, requirement.Value), Location, LocationUnique, ID, true));
-            ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)this, "BundleContributed", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+            ModAPI.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int>(requirement.Key, requirement.Value), Location, LocationUnique, ID, true));
+            Helper.Multiplayer.SendMessage((UnlockableModel)this, "BundleContributed", modIDs: new[] { ModManifest.UniqueID });
         }
 
         public void processShopEvent()
@@ -386,12 +395,12 @@ namespace Unlockable_Bundles.Lib
             if (ShopEvent.ToLower() == "carpentry")
                 Game1.globalFadeToBlack(playPurchasedEvent);
             else if (ShopEvent.ToLower() == "none") {
-                UpdateHandler.applyUnlockable(this);
+                MapPatches.applyUnlockable(this);
                 openRewardsMenu();
                 return;
             } else {
                 if (!ShopEvent.Contains(UBEvent.APPLYPATCH))
-                    UpdateHandler.applyUnlockable(this);
+                    MapPatches.applyUnlockable(this);
                 var ev = new UBEvent(this, ShopEvent, Game1.player);
                 ev.onEventFinished = openRewardsMenu;
                 Game1.globalFadeToBlack(() => Game1.player.currentLocation.startEvent(ev));
@@ -416,7 +425,7 @@ namespace Unlockable_Bundles.Lib
                         rewards.Add(apItem.ItemCopy);
 
                     } else
-                        ModEntry._Monitor.Log($"BundleReward does not accept advanced pricing syntax apart from auto generated flavored Items! Please fix the following itemID: {id}", LogLevel.Error);
+                        Monitor.Log($"BundleReward does not accept advanced pricing syntax apart from auto generated flavored Items! Please fix the following itemID: {id}", LogLevel.Error);
 
                 } else
                     rewards.Add(item);
@@ -458,7 +467,7 @@ namespace Unlockable_Bundles.Lib
 
         public void doneWithPurchasedEvent()
         {
-            UpdateHandler.applyUnlockable(this);
+            MapPatches.applyUnlockable(this);
             Game1.globalFadeToClear();
             Game1.viewportFreeze = false;
             Game1.freezeControls = false;
@@ -487,7 +496,7 @@ namespace Unlockable_Bundles.Lib
                 var match = Game1.objectData.FirstOrDefault(el => el.Value.Name.StartsWith(name, StringComparison.OrdinalIgnoreCase));
 
                 if (match.Value is null)
-                    ModEntry._Monitor.LogOnce($"Unknown item name: {name}", LogLevel.Error);
+                    Monitor.LogOnce($"Unknown item name: {name}", LogLevel.Error);
 
                 CachedJsonAssetIDs.Add(name, match.Key ?? name);
 
@@ -499,7 +508,7 @@ namespace Unlockable_Bundles.Lib
                 return AdvancedPricingItem.parseFlavoredItem(id, initialStack, quality);
 
             else if (id.TrimStart().StartsWith("(!UB)", StringComparison.OrdinalIgnoreCase))
-                ModEntry._Monitor.Log("The Syntax for advanced pricing changed a little to be more readable. Thank you for understanding.\n" +
+                Monitor.Log("The Syntax for advanced pricing changed a little to be more readable. Thank you for understanding.\n" +
                     "New Syntax for generated flavored items: (UB.Flavored)<PreserveType>.<QualifiedItemId>\n" +
                     "New Syntax for advanced pricing items: (UB.AP)<AdvancedPricingKey>", LogLevel.Warn);
 
@@ -569,7 +578,7 @@ namespace Unlockable_Bundles.Lib
         public List<Item> getRewardSpawnFieldItems()
         {
             var ret = new List<Item>();
-            var models = ModEntry._Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            var models = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
             if (!models.TryGetValue(ID, out var model))
                 return ret;
 
@@ -578,7 +587,7 @@ namespace Unlockable_Bundles.Lib
                 if (!GameStateQuery.CheckConditions(entry.Condition))
                     continue;
 
-                var item = ItemQueryResolver.TryResolveRandomItem(entry, itemQueryContext, logError: (query, message) => ModEntry._Monitor.Log($"Failed parsing item query '{query}': {message}", LogLevel.Warn));
+                var item = ItemQueryResolver.TryResolveRandomItem(entry, itemQueryContext, logError: (query, message) => Monitor.Log($"Failed parsing item query '{query}': {message}", LogLevel.Warn));
                 if (item is not null)
                     ret.Add(item);
             }

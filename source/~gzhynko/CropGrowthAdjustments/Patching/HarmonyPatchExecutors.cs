@@ -9,8 +9,6 @@
 *************************************************/
 
 using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Objects;
@@ -28,14 +26,14 @@ namespace CropGrowthAdjustments.Patching
             if (__instance.crop == null) return true;
             
             // change sprites to special if needed
-            ModEntry.ModHelper.GameContent.InvalidateCache("TileSheets/Crops");
+            Utility.ChangeSpritesToSpecial(__instance);
 
             foreach (var contentPack in ModEntry.ContentPackManager.ContentPacks)
             {
                 foreach (var adjustment in contentPack.CropAdjustments)
                 {
                     // skip if this crop is not the desired one.
-                    if (__instance.crop.indexOfHarvest.Value != adjustment.CropProduceItemId.ToString()) continue;
+                    if (__instance.crop.indexOfHarvest.Value != adjustment.CropProduceItemId) continue;
 
                     // run the original method if this crop is supposed to die in winter.
                     if (adjustment.GetSeasonsToGrowIn().All(season => season != Season.Winter)) return true;
@@ -56,6 +54,15 @@ namespace CropGrowthAdjustments.Patching
             }
 
             return true;
+        }
+        
+        /// <summary> Patch for the HoeDirt.plant method </summary>
+        public static void HoeDirtPlant(HoeDirt __instance, ref bool __result)
+        {
+            if (!__result) return;
+            
+            // change sprites to special if needed
+            Utility.ChangeSpritesToSpecial(__instance);
         }
         
         /// <summary> Patch for the IndoorPot.DayUpdate method </summary>
@@ -88,8 +95,8 @@ namespace CropGrowthAdjustments.Patching
                 foreach (var adjustment in contentPack.CropAdjustments)
                 {
                     // skip if this crop is not the desired one.
-                    if (__instance.indexOfHarvest.Value != adjustment.CropProduceItemId.ToString()) continue;
-
+                    if (__instance.indexOfHarvest.Value != adjustment.CropProduceItemId) continue;
+                    
                     // (debug info, uncomment to show)
                     /*
                     ModEntry.ModMonitor.Log(

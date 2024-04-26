@@ -11,7 +11,7 @@
 {
   "Name": "Better Sprinklers Plus",
   "Author": "JamesCodesThings",
-  "Version": "2.12.0-dev",
+  "Version": "2.18.0",
   "Description": "Sprinklers, but better.",
   "UniqueID": "com.CodesThings.BetterSprinklersPlus",
   "EntryDll": "BetterSprinklersPlus.dll",

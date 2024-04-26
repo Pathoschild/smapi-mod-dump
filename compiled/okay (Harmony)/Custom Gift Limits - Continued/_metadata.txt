@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22385
+IDs: FlyingTNT.CustomGiftLimits
+update keys: Nexus:22385, GitHub:FlyingTNT/StardewValleyMods

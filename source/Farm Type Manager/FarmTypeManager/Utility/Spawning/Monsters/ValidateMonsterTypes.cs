@@ -154,16 +154,18 @@ namespace FarmTypeManager
                         case "iridium crab":
                         case "falsemagmacap":
                         case "false magma cap":
-                        case "stickbug":
-                        case "stick bug":
                         case "magmacap":
                         case "magma cap":
+                        case "stickbug":
+                        case "stick bug":
                         case "rockgolem":
                         case "rock golem":
                         case "stonegolem":
                         case "stone golem":
                         case "wildernessgolem":
                         case "wilderness golem":
+                        case "iridiumgolem":
+                        case "iridium golem":
                         case "serpent":
                         case "royalserpent":
                         case "royal serpent":
@@ -195,15 +197,17 @@ namespace FarmTypeManager
                             Type externalType = GetTypeFromName(validTypes[x].MonsterName, typeof(Monster)); //find a monster subclass with a matching name
                             if (externalType != null) //if a matching type was found
                             {
-                                if (externalType.GetConstructor(new[] { typeof(Vector2) }) != null) //if this type has a constructor that takes a Vector2
+                                if (externalType.GetConstructor(Type.EmptyTypes) != null && externalType.GetConstructor(new[] { typeof(Vector2) }) != null) //if this type has a default costructor (no types) and a Vector2 constructor
                                 {
                                     validName = true; //the name is valid
                                 }
 
-                                /* NOTE: Accepting monsters' default constructors would be dangerous and is not recommended.
-                                 * Many monsters' defaults create them without filling game-critical fields, and this code can't reasonably account for them.
-                                 * The game will often freeze or crash if they are used here.
-                                 */
+                                /*
+                                MODDING NOTE: Calling monsters' default constructors generally causes errors and is not recommended.
+                                Default constructors should exist to be used by the net code system. However, they normally don't auto-populate fields that are required for the monster (and Stardew) to function.
+                                The game will often freeze or crash if they are called by mod code.
+                                FTM requires the default constructor to exist for functionality's sake, but it only directly calls the Vector2 constructor.
+                                */
                             }
                             break;
                     }
@@ -808,6 +812,18 @@ namespace FarmTypeManager
                             Monitor.Log($"The \"Gender\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's a string.", LogLevel.Info);
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
                             validTypes[x].Settings.Remove("Gender"); //remove the setting
+                        }
+                    }
+
+                    //validate instant kill immunity
+                    if (validTypes[x].Settings.ContainsKey("InstantKillImmunity"))
+                    {
+                        if (!(validTypes[x].Settings["InstantKillImmunity"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"InstantKillImmunity\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("InstantKillImmunity"); //remove the setting
                         }
                     }
                 }

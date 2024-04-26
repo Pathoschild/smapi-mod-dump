@@ -25,48 +25,40 @@ namespace BillboardProfitMargin
 		{
 			switch (genericQuest)
 			{
-				case SlayMonsterQuest quest:
-					return quest.reward.Value;
-
-				case FishingQuest quest:
-					return quest.reward.Value;
-
-				case ResourceCollectionQuest quest:
-					return quest.reward.Value;
-
 				case ItemDeliveryQuest quest:
 					return quest.moneyReward.Value;
-
+				case FishingQuest quest:
+					return quest.reward.Value;
+				case ResourceCollectionQuest quest:
+					return quest.reward.Value;
+				case SlayMonsterQuest quest:
+					return quest.reward.Value;
 				default:
-					throw new Exception("Can not get reward of unsupported quest type.");
+					throw new Exception("Can not get reward of unsupported quest type: " + genericQuest.ToString());
 			}
 		}
 
 		/// <summary>Set the monetary reward of a quest.</summary>
-		/// <param name="quest">Quest to set the reward of.</param>
+		/// <param name="genericQuest">Quest to set the reward of.</param>
 		/// <param name="reward">Amount of gold.</param>
-		public static void SetReward(Quest quest, int reward)
+		public static void SetReward(Quest genericQuest, int reward)
 		{
-			switch (quest)
+			switch (genericQuest)
 			{
-				case SlayMonsterQuest slayQuest:
-					slayQuest.reward.Value = reward;
+				case SlayMonsterQuest quest:
+					quest.reward.Value = reward;
 					break;
-
-				case FishingQuest fishQuest:
-					fishQuest.reward.Value = reward;
+				case FishingQuest quest:
+					quest.reward.Value = reward;
 					break;
-
-				case ResourceCollectionQuest resourceQuest:
-					resourceQuest.reward.Value = reward;
+				case ResourceCollectionQuest quest:
+					quest.reward.Value = reward;
 					break;
-
-				case ItemDeliveryQuest itemQuest:
-					itemQuest.moneyReward.Value = reward;
+				case ItemDeliveryQuest quest:
+					quest.moneyReward.Value = reward;
 					break;
-
 				default:
-					throw new Exception("Can not set reward of unsupported quest type.");
+					throw new Exception("Can not set reward for unsupported quest type: " + genericQuest.ToString());
 			}
 		}
 
@@ -91,42 +83,59 @@ namespace BillboardProfitMargin
 				? Game1.player.difficultyModifier
 				: config.CustomProfitMargin;
 
-			int adjustReward = (int)Math.Ceiling(originalReward * rewardMultiplier);
-
-			return adjustReward;
+			return (int)Math.Ceiling(originalReward * rewardMultiplier);
 		}
 
-		/// <summary>Load quest information and adjust the reward for quest types that support it.</summary>
+		/// <summary>Adjust the reward for quest types that support it.</summary>
 		/// <param name="genericQuest">Quest to adjust.</param>
 		/// <param name="config">Config object.</param>
 		public static void AdjustRewardImmediately(Quest genericQuest, ModConfig config)
 		{
-			switch (genericQuest)
+			if (genericQuest is SocializeQuest)
 			{
-				case ResourceCollectionQuest quest:
-					quest.loadQuestInfo();
-					break;
-
-				case FishingQuest quest:
-					quest.loadQuestInfo();
-					break;
-
-				case SlayMonsterQuest quest:
-					quest.loadQuestInfo();
-					break;
-
-				default:
-					Logger.Warn("Cannot adjust reward for unknown quest type. -> " + genericQuest.ToString());
-					return;
+				Logger.Trace("Ignoring quest type SocializeQuest. It has no monetary reward.");
+				return;
 			}
 
 			int originalReward = GetReward(genericQuest);
-			if (originalReward == 0) throw new Exception("Reward for current daily quest " + genericQuest.ToString() + " is unknown");
-
-			// adjust reward
 			int adjustedReward = GetAdjustedReward(originalReward, config);
 			SetReward(genericQuest, adjustedReward);
 			UpdateDescription(genericQuest, originalReward, adjustedReward);
+
+			if (GetReward(genericQuest) == adjustedReward)
+			{
+				Logger.Trace($"Set reward for quest \"{genericQuest.GetName()}\" from {originalReward} to {adjustedReward}.");
+			}
+			else
+			{
+				Logger.Error($"Failed to set reward for quest \"{genericQuest.GetName()}\" from {originalReward} to {adjustedReward}.");
+			}
+		}
+
+		/// <summary>Load quest information if the quest type allows it.</summary>
+		/// <param name="genericQuest">Quest to adjust.</param>
+		public static void LoadQuestInfo(Quest genericQuest)
+		{
+			switch (genericQuest)
+			{
+				case FishingQuest quest:
+					quest.loadQuestInfo();
+					break;
+				case ItemDeliveryQuest quest:
+					quest.loadQuestInfo();
+					break;
+				case ResourceCollectionQuest quest:
+					quest.loadQuestInfo();
+					break;
+				case SlayMonsterQuest quest:
+					quest.loadQuestInfo();
+					break;
+				case SocializeQuest quest:
+					quest.loadQuestInfo();
+					break;
+				default:
+					Logger.Warn("Cannot load quest info for unknown quest type: " + genericQuest.ToString()); break;
+			}
 		}
 	}
 }

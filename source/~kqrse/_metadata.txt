@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/kqrse/StardewValleyMods
+   Git: https://github.com/kqrse/StardewValleyMods.git
+
+mods:
+   Brighter Building Paint
+   Empty Jar Bubbles
+   Skinny Animals
+
+latest commit:
+   commit bf7db6a3d43102b28248356c8840aaf969df3e2b
+   Author: Karson Nguyen <karsonn@sfu.ca>
+   Date:   Thu Apr 25 21:03:54 2024 -0700
+   
+       done
+   

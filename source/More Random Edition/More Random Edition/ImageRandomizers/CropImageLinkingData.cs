@@ -11,7 +11,7 @@
 namespace Randomizer
 {
     /// <summary>
-    /// Linking data to be used  by the SpringObjects and CropGrowth image builders so that the 
+    /// Linking data to be used  by the Object and CropGrowth image builders so that the 
     /// images get manipulated in the same way (matching crop/seed/plant graphics, etc)
     /// </summary>
     public class CropImageLinkingData

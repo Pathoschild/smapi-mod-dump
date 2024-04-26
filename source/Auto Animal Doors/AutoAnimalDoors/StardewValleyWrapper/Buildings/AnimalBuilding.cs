@@ -38,7 +38,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
                 }
 
                 Logger.Instance.Log(
-                    string.Format("Animal building {0} has invalid indoor type {1}, name of inddors {2}", this.building, indoors, this.building?.nameOfIndoors),
+                    string.Format("Animal building {0} has invalid indoor type {1}, name of inddors {2}", this.building, indoors, this.building?.indoors?.Name),
                     StardewModdingAPI.LogLevel.Warn);
                 return new StardewValley.AnimalHouse();
             }
@@ -48,7 +48,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         {
             get
             {
-                List<StardewValley.FarmAnimal> farmAnimals = new List<StardewValley.FarmAnimal>();
+                List<StardewValley.FarmAnimal> farmAnimals = new();
                 foreach (long id in Indoors.animalsThatLiveHere)
                 {
                     farmAnimals.Add(StardewValley.Utility.getAnimal(id));
@@ -69,7 +69,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
                 // Only warp home animals that are still on the farm
                 else if (this.Farm.StardewValleyFarm.animals.ContainsKey(animal.myID.Value))
                 {
-                    animal.warpHome(this.Farm.StardewValleyFarm, animal);
+                    animal.warpHome();
                 }
             }
         }
@@ -103,11 +103,8 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         {
             if (this.building?.animalDoor?.Value != null && !this.building.isUnderConstruction())
             {
-
                 PlayDoorSound();
-
                 building.animalDoorOpen.Value = !building.animalDoorOpen.Value;
-                AnimateDoorStateChange();
             }
         }
 
@@ -115,7 +112,8 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         {
             DoorSoundSetting doorSoundSetting = ModConfig.Instance.DoorSoundSetting;
             if (doorSoundSetting == DoorSoundSetting.ALWAYS_ON ||
-                doorSoundSetting == DoorSoundSetting.ONLY_ON_FARM && StardewValley.Game1.player.currentLocation.IsFarm)
+                doorSoundSetting == DoorSoundSetting.ONLY_ON_FARM &&
+                StardewValley.Game1.player.currentLocation == this.building.GetParentLocation())
             {
                 if (!building.animalDoorOpen.Value)
                 {
@@ -144,7 +142,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
             }
         }
 
-        abstract protected void AnimateDoorStateChange();
+        //abstract protected void AnimateDoorStateChange();
 
         abstract public AnimalBuildingType Type { get; }
 

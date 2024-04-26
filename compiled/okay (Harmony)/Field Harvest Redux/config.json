@@ -1,0 +1,7 @@
+{
+  "EnableMod": true,
+  "AllowDiagonal": false,
+  "OnlySameSeed": true,
+  "AutoCollect": false,
+  "ModButton": "LeftShift"
+}

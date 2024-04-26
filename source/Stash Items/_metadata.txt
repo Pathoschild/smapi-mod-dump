@@ -6,9 +6,9 @@ mods:
    Stash Items
 
 latest commit:
-   commit 8ae78859de1fd44b714bcb28a73189dab352b2b5
+   commit e1ba6ced9ba1773251eeeafbb842e1777a6643d7
    Author: Zack Hill <zackary.t.hill@gmail.com>
-   Date:   Sat Jul 30 16:27:25 2022 -0400
+   Date:   Mon Apr 15 19:19:29 2024 -0400
    
-       Add Panstorm mod
+       Add ModZipPath entry
    

@@ -6,9 +6,11 @@ mods:
    The Return of Immersive Sprinklers
 
 latest commit:
-   commit 2c78f619e3ce90694f0900de0123dd1832371bf3
-   Author: Lucas Kaminski <lucaskaminski@protonmail.com>
-   Date:   Wed Mar 27 12:54:16 2024 -0300
+   commit 59829a28ee2acbdf549f4f4a9393c82406cb64d7
+   Author: Lucas Kaminski <31005037+lucaskfreitas@users.noreply.github.com>
+   Date:   Mon Apr 8 08:00:43 2024 -0300
    
-       Updating manifest version
+       Merge pull request #3 from jacob-keller/master
+       
+       avoid adding a null sprinkler to lost and found
    

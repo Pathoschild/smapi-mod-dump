@@ -10,7 +10,6 @@
 
 using FashionSense.Framework.Interfaces.API;
 using FashionSense.Framework.Models.Appearances;
-using FashionSense.Framework.Patches.Renderer;
 using FashionSense.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
@@ -96,7 +95,7 @@ namespace FashionSense.Framework.Models
             AccessoryColors = FashionSense.accessoryManager.GetActiveAccessoryColorValues(who);
 
             AppearanceToMaskColors = new Dictionary<IApi.Type, List<Color>>();
-            foreach (var metadata in DrawPatch.GetCurrentlyEquippedModels(who, who.FacingDirection))
+            foreach (var metadata in AppearanceHelpers.GetCurrentlyEquippedModels(who, who.FacingDirection))
             {
                 if (metadata is null)
                 {

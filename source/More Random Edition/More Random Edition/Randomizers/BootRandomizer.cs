@@ -8,55 +8,65 @@
 **
 *************************************************/
 
+using StardewValley;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
-	public class BootRandomizer
+    public class BootRandomizer
 	{
-		public readonly static Dictionary<int, BootItem> Boots = new();
+		private readonly static Dictionary<string, BootItem> Boots = new();
 
         /// <summary>
         /// The data from Data/Boots.xnb
         /// </summary>
-        public static Dictionary<int, string> BootData { get; private set; }
+        public static Dictionary<string, string> BootData { get; private set; }
 
         /// <summary>
         /// Randomizes boots - currently only changes defense and immunity
         /// </summary>
         /// <returns />
-        public static Dictionary<int, string> Randomize()
+        public static Dictionary<string, string> Randomize()
 		{
-            // Initialize boot data here so that it's reloaded in case of a locale change
-            BootData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<int, string>>("Data/Boots");
-			Boots.Clear();
+			// Initialize boot data here so that it's reloaded in case of a locale change
+			// This is also used by ObjectImageBuilder, so do this here even if we aren't randomizing boots
+			// Only include boots that have int ids - any others are from mods and won't work
+			BootData = DataLoader.Boots(Game1.content)
+				.Where(kv => int.TryParse(kv.Key, out int _))
+				.ToDictionary(kv => kv.Key, kv => kv.Value);
 
-			WeaponAndArmorNameRandomizer nameRandomizer = new();
+            Dictionary<string, string> bootReplacements = new();
+            if (!Globals.Config.Boots.Randomize) 
+			{ 
+				return bootReplacements;
+			}
+
+            RNG rng = RNG.GetFarmRNG(nameof(BootRandomizer));
+            Boots.Clear();
+
+			WeaponAndArmorNameRandomizer nameRandomizer = new(nameof(BootRandomizer));
 			List<string> descriptions = 
 				NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.Count);
-
-			Dictionary<int, string> bootReplacements = new();
 			List<BootItem> bootsToUse = new();
 
 			int index = 0;
-			foreach (KeyValuePair<int, string> bootData in BootData)
+			foreach (KeyValuePair<string, string> bootData in BootData)
 			{
 				string[] bootStringData = bootData.Value.Split("/");
 				int originalDefense = int.Parse(bootStringData[(int)BootIndexes.Defense]);
                 int originalImmunity = int.Parse(bootStringData[(int)BootIndexes.Immunity]);
 
-                int statPool = Globals.RNGGetIntWithinPercentage(originalDefense + originalImmunity, 30);
-				int defense = Range.GetRandomValue(0, statPool);
+                int statPool = rng.NextIntWithinPercentage(originalDefense + originalImmunity, 30);
+				int defense = rng.NextIntWithinRange(0, statPool);
 				int immunity = statPool - defense;
 
 				if ((defense + immunity) == 0)
 				{
-					if (Globals.RNGGetNextBoolean())
+					if (rng.NextBoolean())
 					{
 						defense = 1;
 					}
-
 					else
 					{
 						immunity = 1;
@@ -78,7 +88,7 @@ namespace Randomizer
 
 			foreach (BootItem bootToAdd in bootsToUse)
 			{
-				bootReplacements.Add(bootToAdd.Id, bootToAdd.ToString());
+				bootReplacements.Add(bootToAdd.Id.ToString(), bootToAdd.ToString());
 			}
 
 			WriteToSpoilerLog(bootsToUse);
@@ -91,8 +101,6 @@ namespace Randomizer
 		/// <param name="bootsToUse">The boot data that was used</param>
 		public static void WriteToSpoilerLog(List<BootItem> bootsToUse)
 		{
-			if (!Globals.Config.Boots.Randomize) { return; }
-
 			Globals.SpoilerWrite("==== BOOTS ====");
 			foreach (BootItem bootToAdd in bootsToUse)
 			{

@@ -693,11 +693,24 @@
 "foodstore.config.museumpricemarkup": "박물관 입장권 가격 배수",
 "foodstore.config.museumpricemarkupText": "안에 전시된 유물, 광물 및 몬스터 전리품의 수에 따라 박물관 입장권 가격이 결정됩니다. 이 값을 높이면 입장료가 높아지지만 방문자의 가능성이 낮아집니다!!!",
 
-"foodstore.todaymuseumvisitor": " 어제의 박물관 방문자: {{todayMMuseumVisitor}}.^^",
+"foodstore.todaymuseumvisitor": " 어제의 박물관 방문자: {{todayMMuseumVisitor}}, {{todayMuseumEarning}}G.^^",
  "foodstore.letter.receivemuseumlicense": "친애하는 @.^^ 박물관 라이센스 획득을 축하드립니다. 설정 방법에 대해 안내해 드리겠습니다. 어떤 농장 건물이든 박물관으로 사용할 수 있습니다. 라이센스를 표시하는 간판만 있으면 내일부터 방문객이 도착합니다. 박물관 방문객은 전시품을 구매하지 않지만 입장 시 입장료를 지불합니다. 가격은 유물, 희귀 보석, 이국적인 물고기 또는 조각상의 수에 따라 결정됩니다. 티켓 가격 마크업을 결정할 수 있지만, 마크업이 높을수록 더 적은 방문객을 유치할 수 있습니다.^^ 박물관이 준비되면 방문하겠습니다. -루이스",
   "foodstore.letter.receiverestaurantlicense": "친애하는 @.^^ 레스토랑 라이센스 획득을 알려드립니다. 이 라이센스를 사용하면 어떤 농장 건물이든 레스토랑으로 사용할 수 있습니다. 간판에 라이센스를 표시하기만 하면 내일부터 방문객이 도착합니다. 레스토랑 방문객은 주변을 돌아다니며 자신에게 매력적인 음식을 구매합니다. 때로는 특별한 요리를 요청하기도 하며, 이를 높은 가격에 직접 판매할 수 있습니다.^^ 당신의 음식을 맛보는 것을 정말로 기대합니다. -루이스",
   "foodstore.letter.receivemarkettownlicense": "친애하는 @.^^ 마켓 타운 라이센스를 드디어 획득했습니다. 이제 작은 편의점부터 대형 슈퍼마켓까지 소유할 수 있습니다. 이 라이센스를 사용하면 식품, 수확물, 재료 등을 포함한 원하는 모든 상품을 판매할 수 있습니다.^^ 우리 마을 사람들을 위한 편리한 허브를 만들어 주셔서 정말 감사합니다. -루이스",
   "foodstore.config.multiplayermode": "다중 플레이어 모드에서 판매 금액을 분할하시겠습니까?",
-  "foodstore.config.multiplayermodeText": "경고: 버그가 있습니다. 기본값은 false입니다. 이를 활성화하면 연결된 플레이어 간에 판매 금액이 분할됩니다. 경고: 때로는 다른 플레이어가 돈을 받지 못할 수 있습니다."
+  "foodstore.config.multiplayermodeText": "경고: 버그가 있습니다. 기본값은 false입니다. 이를 활성화하면 연결된 플레이어 간에 판매 금액이 분할됩니다. 경고: 때로는 다른 플레이어가 돈을 받지 못할 수 있습니다.",
+
+  
+"foodstore.config.easylicense": "라이선스 요구 사항을 건너뛸까요?",
+"foodstore.config.textchat": "NPC와의 텍스트 채팅 비활성화?",
+
+"foodstore.island.building": "불길이 춤을 추고 방문자들이 오고 있습니다. 파라다이스 아일랜드의 건설이 중단되었습니다",
+
+"foodstore.islandtravel.sun": "보트를 타고 상당한 거리였습니다. 조금 피곤한 느낌이에요!",
+"foodstore.islandtravel.rain": "비 때문에 여정이 더 어려워졌어요. 지친 느낌이에요.",
+"foodstore.islandtravel.wind": "바람은 때로는 앞으로 밀어주고, 때로는 반대 방향으로 밀어냅니다.",
+"foodstore.islandtravel.storm": "폭풍우는 끝없이 계속되었습니다. 여정에서 기운이 빠져나갑니다.",
+"foodstore.islandtravel.greenrain": "이상한 녹색 비는 방향을 헷갈리게 했습니다. 약해진 느낌이에요.",
+"foodstore.islandtravel.snow": "눈을 헤치고 걸어가는 것은 힘들어요. 에너지가 빠져나가는 느낌입니다."
 
 }

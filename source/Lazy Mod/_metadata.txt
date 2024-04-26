@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/weizinai/StardewValleyMods
+   Git: https://github.com/weizinai/StardewValleyMods.git
+
+mods:
+   Lazy Mod
+
+latest commit:
+   commit d85e3da8676efb9e60f467be26a88cec8c439471
+   Author: weizinai <1776061683@qq.com>
+   Date:   Thu Apr 25 00:29:43 2024 +0800
+   
+       å¢žåŠ å¿«é€ŸåŠ¨ç”»åŠŸèƒ½
+   

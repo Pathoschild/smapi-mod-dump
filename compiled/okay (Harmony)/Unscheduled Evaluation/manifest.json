@@ -1,0 +1,10 @@
+{
+  "Name": "UnscheduledEvaluation",
+  "Author": "wrongcoder",
+  "Version": "0.1.0",
+  "Description": "Grandpa will only evaluate your farm on request.",
+  "UniqueID": "wrongcoder.UnscheduledEvaluation",
+  "EntryDll": "UnscheduledEvaluation.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}

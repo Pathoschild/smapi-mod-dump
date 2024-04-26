@@ -40,7 +40,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
             _nameSimplifier = nameSimplifier;
 
             var desiredTextureName = ArchipelagoTextures.COLOR;
-            _miniArchipelagoIcon = ArchipelagoTextures.GetColoredLogo(modHelper, 12, desiredTextureName);
+            _miniArchipelagoIcon = ArchipelagoTextures.GetArchipelagoLogo(monitor, modHelper, 12, desiredTextureName);
         }
 
         // public abstract void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)

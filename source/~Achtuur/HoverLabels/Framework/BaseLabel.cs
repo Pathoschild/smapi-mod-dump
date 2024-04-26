@@ -16,25 +16,25 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
+using HoverLabels.Drawing;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HoverLabels.Framework;
 internal abstract class BaseLabel : IHoverLabel
 {
     protected Vector2 CursorTile { get; set; }
-    protected string Name { get; set; }
-    protected List<string> Description { get; set; }
+    protected List<Border> Borders { get; set; }
     public virtual int Priority { get; set; }
 
     public BaseLabel(int? priority)
     {
-        this.Name = string.Empty;
-        this.Description = new List<string>();
+        this.Borders = new();
         this.Priority = priority ?? 0;
     }
 
     public void UpdateCursorTile(Vector2 cursorTile)
     {
-        this.ResetLabel();
+        this.ResetBorders();
         this.SetCursorTile(cursorTile);
         this.GenerateLabel();
     }
@@ -53,19 +53,9 @@ internal abstract class BaseLabel : IHoverLabel
     /// </summary>
     public abstract void GenerateLabel();
 
-    public bool HasDescription()
+    public IEnumerable<Border> GetContents()
     {
-        return Description.Count > 0;
-    }
-
-    public virtual string GetName()
-    {
-        return this.Name;
-    }
-
-    public IEnumerable<string> GetDescription()
-    {
-        return this.Description;
+        return this.Borders;
     }
 
     public virtual bool ShouldGenerateLabel(Vector2 cursorTile)
@@ -77,9 +67,79 @@ internal abstract class BaseLabel : IHoverLabel
     {
     }
 
-    protected virtual void ResetLabel()
+    protected virtual void ResetBorders()
     {
-        this.Name = String.Empty;
-        this.Description = new List<string>();
+        this.Borders = new();
+    }
+
+    protected void NewBorder()
+    {
+        if (Borders is null)
+            Borders = new();
+        Borders.Add(new Border());
+    }
+
+    protected void AddBorder(Border border)
+    {
+        if (Borders is null)
+            Borders = new();
+
+        if (!border.IsEmpty)
+            Borders.Add(border);
+    }
+
+    /// <summary>
+    /// Creates a new border with a small font label containing <c>text</c>
+    /// </summary>
+    /// <param name="text"></param>
+    protected void AddBorder(string text)
+    {
+        if (Borders is null)
+            Borders = new();
+        AddBorder(new Border(new LabelText(text)));
+    }
+
+    /// <summary>
+    /// Creates a new border with a label
+    /// </summary>
+    /// <param name="label"></param>
+    protected void AddBorder(LabelText label)
+    {
+        if (Borders is null)
+            Borders = new();
+        AddBorder(new Border(label));
+    }
+
+    /// <summary>
+    ///  Creates a new border with multiple labels
+    /// </summary>
+    /// <param name="labels"></param>
+    protected void AddBorder(IEnumerable<LabelText> labels)
+    {
+        if (Borders is null) 
+            Borders = new();
+        AddBorder(new Border(labels));
+    }
+
+    /// <summary>
+    /// Append label to the newest border
+    /// </summary>
+    /// <param name="label"></param>
+    protected void AppendLabelToBorder(LabelText label)
+    {
+        if (Borders is null)
+            Borders = new();
+        if (Borders.Count == 0)
+            Borders.Add(new Border());
+        Borders.Last().AddLabelText(label);
+    }
+
+    /// <summary>
+    /// Creates a label containing <c>text</c> (small font size) and appends it to the newest border
+    /// </summary>
+    /// <param name="text"></param>
+    protected void AppendLabelToBorder(string text)
+    {
+        AppendLabelToBorder(new LabelText(text));
     }
 }

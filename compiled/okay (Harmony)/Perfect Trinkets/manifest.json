@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PerfectTrinkets",
+  "Author": "season",
+  "Version": "0.0.3",
+  "Description": "The Anvil will get the Perfect Trinkets.",
+  "UniqueID": "season.PerfectTrinkets",
+  "EntryDll": "PerfectTrinkets.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22358" ]
+}

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using StardewDruid.Cast;
 using StardewDruid.Character;
-using StardewDruid.Map;
+
 using StardewDruid.Monster;
 using StardewModdingAPI;
 using StardewValley;

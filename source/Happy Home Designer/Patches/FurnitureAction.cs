@@ -11,6 +11,7 @@
 using HappyHomeDesigner.Framework;
 using HappyHomeDesigner.Menus;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
 using System.Reflection;
@@ -31,6 +32,58 @@ namespace HappyHomeDesigner.Patches
 				typeof(Furniture).GetMethod("loadDescription", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public),
 				postfix: new(typeof(FurnitureAction), nameof(EditDescription))
 			);
+
+			harmony.TryPatch(
+				typeof(Furniture).GetMethod(nameof(Furniture.performObjectDropInAction)),
+				prefix: new(typeof(FurnitureAction), nameof(ApplyFairyDust))
+			);
+		}
+
+		private static bool ApplyFairyDust(Furniture __instance, Item dropInItem, bool probe, 
+			bool returnFalseIfItemConsumed, Farmer who, ref bool __result)
+		{
+			if (__instance.QualifiedItemId != "(F)" + AssetManager.DELUXE_ID || 
+				dropInItem.QualifiedItemId != "(O)872")
+				return true;
+
+			__result = true;
+			if (probe)
+				return false;
+
+			if (who is not null)
+			{
+				__result = !returnFalseIfItemConsumed;
+				who.reduceActiveItemByOne();
+			}
+
+			var location = __instance.Location;
+			var tile = __instance.TileLocation;
+			var size = __instance.sourceRect.Value.Size;
+			var Region = new Rectangle(
+				(int)tile.X + size.X / 32,
+				(int)tile.Y + ((size.Y / 16) - __instance.getTilesHigh()) / 2,
+				size.X / 16,
+				size.Y / 16
+			);
+
+			Game1.playSound("secret1");
+			int FlashDelay = 1500;
+
+			Utility.addStarsAndSpirals(location, Region.X, Region.Y + Region.Height - 2, Region.Width, 1, FlashDelay, 50, Color.Magenta);
+
+			DelayedAction.screenFlashAfterDelay(.5f, FlashDelay, "wand");
+			DelayedAction.functionAfterDelay(() => {
+				Utility.addSprinklesToLocation(location, Region.X, Region.Y, Region.Width, Region.Height, 400, 40, Color.White);
+				location.furniture.Remove(__instance);
+				Game1.createItemDebris(
+					ItemRegistry.Create("(T)" + AssetManager.PORTABLE_ID),
+					(tile + new Vector2(.5f)) * Game1.tileSize,
+					-1,
+					location
+				);
+			}, FlashDelay);
+
+			return false;
 		}
 
 		private static CatalogType GetCatalogTypeOf(string FurnitureID)

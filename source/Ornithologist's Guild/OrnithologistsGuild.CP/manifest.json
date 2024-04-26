@@ -11,20 +11,21 @@
 {
   "Name": "[CP] Ornithologist's Guild",
   "Author": "Ivy",
-  "Version": "1.5.0",
+  "Version": "1.6.1",
   "Description": "Bird houses, binoculars, and a new building to explore! Ornithologist's Guild brings a totally new birding experience to Stardew Valley, complete with updated bird mechanics, seasonal birds, a progression system, a new shop, an NPC with a tragic past, and much more!",
   "UniqueID": "Ivy.OrnithologistsGuild.CP",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:14510" ],
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:14510"
+  ],
   "Dependencies": [
     {
-      "UniqueID": "Pathoschild.ContentPatcher"
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "2.0.0"
     },
     {
-      "UniqueID": "Esca.CustomNPCExclusions"
-    },
-    {
-      "UniqueID": "Ivy.OrnithologistsGuild"
+      "UniqueID": "Ivy.OrnithologistsGuild",
+      "MinimumVersion": "1.6.1"
     }
   ],
   "RequiredForEveryone": true,

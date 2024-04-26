@@ -22,8 +22,8 @@ namespace CauldronOfChance
 {
     class ObjectPatches
     {
-        public static IMonitor IMonitor;
-        public static IModHelper IModHelper;
+        public static IMonitor IMonitor { get; private set; }
+        public static IModHelper IModHelper { get; private set; }
 
         public static void Initialize(IMonitor IMonitor, IModHelper IHelper)
         {
@@ -48,10 +48,12 @@ namespace CauldronOfChance
                             Game1.activeClickableMenu = new DialogueBox("A gigantic cauldron. It smells like the forest after a rainy day.");
                             return false;
                         }
-                        else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID))
+                        else if (ModEntry.userIds.Contains(Game1.player.UniqueMultiplayerID)
+                            //&& false //TODO: REMOVE!!!!
+                            )
                         {
                             CauldronMagic.errorMessageProgress = "Event already seen today";
-                            Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you added today.");
+                            Game1.activeClickableMenu = new DialogueBox("The cauldron is bubbling with the ingredients you've added today.");
                             return false;
                         }
                         else

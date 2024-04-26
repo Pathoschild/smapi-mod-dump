@@ -18,7 +18,7 @@ namespace ConvenientChests.StashToChests {
     public class StashToNearbyChestsModule : Module {
         public StackLogic.AcceptingFunction AcceptingFunction { get; private set; }
 
-        public StashToNearbyChestsModule(ModEntry modEntry) : base(modEntry) { }
+        public StashToNearbyChestsModule(ModEntry modEntry) : base(modEntry) {}
 
         public override void Activate() {
             IsActive = true;
@@ -27,7 +27,7 @@ namespace ConvenientChests.StashToChests {
             AcceptingFunction = CreateAcceptingFunction();
 
             // Events
-            this.Events.Input.ButtonPressed += OnButtonPressed;
+            Events.Input.ButtonPressed += OnButtonPressed;
         }
 
         private StackLogic.AcceptingFunction CreateAcceptingFunction() {
@@ -40,7 +40,7 @@ namespace ConvenientChests.StashToChests {
             if (Config.StashToExistingStacks)
                 return (chest, item) => chest.ContainsItem(item);
 
-            return (chest, item) => false;
+            return (_, _) => false;
         }
 
         public override void Deactivate() {
@@ -54,11 +54,15 @@ namespace ConvenientChests.StashToChests {
             if (Game1.player.currentLocation == null)
                 return;
 
-            if (Game1.activeClickableMenu is ItemGrabMenu m && m.context is Chest c)
+            if (Game1.activeClickableMenu is ItemGrabMenu { context: Chest c }) {
+                ModEntry.Log("Stash to current chest");
                 StackLogic.StashToChest(c, AcceptingFunction);
+            }
 
-            else
+            else {
+                ModEntry.Log("Stash to nearby chests");
                 StackLogic.StashToNearbyChests(Config.StashRadius, AcceptingFunction);
+            }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {

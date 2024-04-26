@@ -1,0 +1,84 @@
+{
+  "Theme": "automatic",
+  "UseFullHeight": false,
+  "ReplaceCooking": true,
+  "ReplaceCrafting": true,
+  "UseCategories": true,
+  "ShowEditButton": true,
+  "ShowSettingsButton": true,
+  "MenuPriority": "Normal",
+  "ShowTastes": "Shift",
+  "ShowAllTastes": false,
+  "TasteStyle": "Heads",
+  "NewRecipes": "Disabled",
+  "NewRecipesPrismatic": false,
+  "MaxQuality": "Iridium",
+  "LowQualityFirst": true,
+  "ShowKeybindTooltip": "ForController",
+  "SuppressBC": "LeftShift",
+  "ModiferKey": "LeftShift, RightTrigger",
+  "FavoriteKey": "F, ControllerBack",
+  "BulkCraftKey": "None",
+  "SearchKey": "F3",
+  "LeftClick": "Craft",
+  "RightClick": "BulkCraft",
+  "RecycleClickToggle": false,
+  "RecycleCrafting": "Disabled",
+  "RecycleCooking": "Disabled",
+  "RecycleUnknownRecipes": false,
+  "RecycleFuzzyItems": false,
+  "UseUniformGrid": false,
+  "SortBigLast": false,
+  "CraftingAlphabetic": false,
+  "UseSeasoning": "Enabled",
+  "HideUnknown": false,
+  "CookingAlphabetic": false,
+  "UseDiscovery": true,
+  "MaxInventories": 50,
+  "MaxDistance": 20,
+  "MaxCheckedTiles": 500,
+  "MaxWorkbenchGap": 0,
+  "NearbyRadius": 0,
+  "UseDiagonalConnections": true,
+  "ValidConnectors": [],
+  "EnableCookoutWorkbench": true,
+  "EnableCookoutLongevity": false,
+  "EnableCookoutExpensive": false,
+  "UseTransfer": true,
+  "AddToBehaviors": {
+    "UseTool": {
+      "Mode": "All",
+      "Quantity": 1
+    },
+    "UseToolModified": {
+      "Mode": "AllButQuantity",
+      "Quantity": 1
+    },
+    "Action": {
+      "Mode": "Quantity",
+      "Quantity": 1
+    },
+    "ActionModified": {
+      "Mode": "Half",
+      "Quantity": 1
+    }
+  },
+  "FillFromBehaviors": {
+    "UseTool": {
+      "Mode": "All",
+      "Quantity": 1
+    },
+    "UseToolModified": {
+      "Mode": "AllButQuantity",
+      "Quantity": 1
+    },
+    "Action": {
+      "Mode": "Quantity",
+      "Quantity": 1
+    },
+    "ActionModified": {
+      "Mode": "Half",
+      "Quantity": 1
+    }
+  }
+}

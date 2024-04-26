@@ -43,15 +43,11 @@ namespace HappyHomeDesigner.Menus
 			Panel.Items = entries;
 		}
 
-		public override int Count()
-		{
-			return entries.Count;
-		}
+		public override int Count() 
+			=> entries.Count;
 
-		public override ClickableTextureComponent GetTab()
-		{
-			return new(new(0, 0, 64, 64), Catalog.MenuTexture, new(64, 48, 16, 16), 4f);
-		}
+		public override ClickableTextureComponent GetTab() 
+			=> new(new(0, 0, 64, 64), Catalog.MenuTexture, new(64, 48, 16, 16), 4f);
 
 		public override void draw(SpriteBatch b)
 		{

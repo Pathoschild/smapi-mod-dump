@@ -11,10 +11,10 @@
 {
   "Name": "Visible Artifact Spots",
   "Author": "Zamiel",
-  "Version": "1.0.1",
+  "Version": "1.2.0",
   "Description": "Increases the visibility of artifact spots",
   "UniqueID": "Zamiel.VisibleArtifactSpots",
   "EntryDll": "VisibleArtifactSpots.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": ["GitHub:Zamiell/stardew-valley-mods"]
+  "UpdateKeys": ["Nexus:21223"]
 }

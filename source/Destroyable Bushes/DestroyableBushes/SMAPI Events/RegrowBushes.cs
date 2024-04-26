@@ -42,7 +42,10 @@ namespace DestroyableBushes
                                     Bush newBush = new Bush(bushData.Tile, bushData.Size, location);
                                     newBush.townBush.Value = bushData.TownBush;
                                     if (bushData.TilesheetOffset.HasValue)
-                                        newBush.tileSheetOffset.Value = bushData.TilesheetOffset.Value;
+                                    {
+                                        newBush.tileSheetOffset.Value = bushData.TilesheetOffset.Value; //set tilesheet offset
+                                        newBush.setUpSourceRect(); //update sprite
+                                    }
 
                                     location.largeTerrainFeatures.Add(newBush); //add the bush to its location
                                     Data.DestroyedBushes.RemoveAt(x); //remove this bush from the list

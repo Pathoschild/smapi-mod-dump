@@ -8,18 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Monsters;
+using System;
 
 namespace PollenSprites
 {
@@ -48,11 +43,36 @@ namespace PollenSprites
             }
         }
 
+        private Color? effectColor = null;
         /// <summary>The color used by some of this monster's visual effects.</summary>
-        public Color EffectColor { get; set; } = new Color(255, 183, 255); //a shade of pink similar to this monster's modded sprite
+        public Color EffectColor
+        {
+            get
+            {
+                if (effectColor == null) //if a color hasn't been selected yet
+                {
+                    GameLocation loc = currentLocation ?? Game1.currentLocation; //try to get this monster's current location, or at least the local player's location
+                    if (loc?.GetSeason() == Season.Fall) //if a location was found and it's fall there
+                    {
+                        effectColor = new Color(246, 97, 76); //red-orange, based on the fall sprite
+                    }
+                    else
+                    {
+                        effectColor = new Color(255, 183, 255); //pink, based on the spring sprite
+                    }
+                }
 
-        /// <summary>The readable version of this monster's name. Needs to match the name used by its spritesheet, as in "Characters/Monsters/Pollen Sprite".</summary>
-        protected static string customName = "Pollen Sprite";
+                return effectColor.Value; //use the cached color
+            }
+
+            set
+            {
+                effectColor = value;
+            }
+        }
+
+        /// <summary>The internal name for this monster. Needs to match the name used by its spritesheet, as in "Characters/Monsters/Esca.PollenSprites".</summary>
+        protected static string customName = "Esca.PollenSprites";
 
         /// <summary>The total game time (in milliseconds) when this monster last used the "sprinkles" visual effect.</summary>
         protected double timeOfLastSprinkle = 0;
@@ -65,6 +85,9 @@ namespace PollenSprites
 
         /// <summary>The approximate amount of time (in milliseconds) between this monster's attempts to harm the player.</summary>
         protected double playerHarmCooldown = 1000;
+
+        /// <summary>The spritesheet coordinantes to use in <see cref="shedChunks(int, float)"/>.</summary>
+        protected Rectangle chunkSpriteRect = new Rectangle(0, 96, 16, 16);
 
         /// <summary>True if this monster is currently turning right.</summary>
         /// <remarks>This is a more accessible duplicate of Ghost.turningRight for use in the updateAnimation override method.</remarks>
@@ -88,20 +111,19 @@ namespace PollenSprites
             HideShadow = true; //hide this monster's shadow, preventing a "double shadow" bug in most game locations
             Scale = (float)Game1.random.Next(70, 91) / 100; //randomly choose a size from 70-90%
 
-            if (Game1.random.NextDouble() < ModEntry.ModConfig.SeedDropChances.MixedSeeds) //if mixed seeds should be dropped
+            if (Game1.random.NextSingle() < ModEntry.ModConfig.SeedDropChances.MixedSeeds) //if mixed seeds should be dropped
             {
                 objectsToDrop.Add(SeedManager.MixedSeeds); //add mixed seeds to this monster's drop list
             }
 
-            if (Game1.random.NextDouble() < ModEntry.ModConfig.SeedDropChances.FlowerSeeds) //if flower seeds should be dropped
+            if (Game1.random.NextSingle() < ModEntry.ModConfig.SeedDropChances.FlowerSeeds) //if flower seeds should be dropped
             {
-                int randomFlowerSeed = SeedManager.FlowerSeeds[Game1.random.Next(0, SeedManager.FlowerSeeds.Count)]; //get a random flower seed ID
-                objectsToDrop.Add(randomFlowerSeed); //add the flower seed to this monster's drop list
+                objectsToDrop.Add(SeedManager.FlowerSeeds); //add mixed flower seeds to this monster's drop list
             }
 
-            if (Game1.random.NextDouble() < ModEntry.ModConfig.SeedDropChances.AllSeeds) //if entirely random seeds should be dropped
+            if (Game1.random.NextSingle() < ModEntry.ModConfig.SeedDropChances.AllSeeds) //if entirely random seeds should be dropped
             {
-                int randomSeed = SeedManager.AllSeeds[Game1.random.Next(0, SeedManager.AllSeeds.Count)]; //get a random seed ID
+                string randomSeed = SeedManager.AllSeeds[Game1.random.Next(0, SeedManager.AllSeeds.Count)]; //get a random seed ID
                 objectsToDrop.Add(randomSeed); //add the random seed to this monster's drop list
             }
         }
@@ -113,7 +135,7 @@ namespace PollenSprites
             drawAboveAllLayers(b); //call the method that draws this monster above everything else
         }
 
-        /// <summary>This override is a modified copy of the DustSpirit version.</summary>
+        /// <summary>This override is a modified copy of the DustSpirit method.</summary>
         /// <remarks>
         /// * A sound effect was added.
         /// * The source rectangle was modified to use this monster's spritesheet.
@@ -123,18 +145,7 @@ namespace PollenSprites
         public override void shedChunks(int number, float scale)
         {
             this.currentLocation.localSound("leafrustle"); //play the leaf rustling sound effect
-            GameLocation currentLocation = this.currentLocation;
-            string textureName = (string)((NetFieldBase<string, NetString>)this.Sprite.textureName);
-            Rectangle sourcerectangle = new Rectangle(0, 96, 16, 16); //use a different y value for this monster's custom spritesheet
-            int sizeOfSourceRectSquares = 8;
-            Rectangle boundingBox = this.GetBoundingBox();
-            int x = boundingBox.Center.X;
-            boundingBox = this.GetBoundingBox();
-            int y1 = boundingBox.Center.Y;
-            int numberOfChunks = number * 2; //multiply chunk count
-            int y2 = (int)this.getTileLocation().Y;
-            //remove locally chosen scale
-            Game1.createRadialDebris(currentLocation, textureName, sourcerectangle, sizeOfSourceRectSquares, x, y1, numberOfChunks, y2, Color.White, scale * 2); //multiply provided scale
+            Game1.createRadialDebris(this.currentLocation, this.Sprite.textureName.Value, chunkSpriteRect, 8, StandingPixel.X, StandingPixel.Y, number * 2, base.TilePoint.Y, Color.White, scale * 2);
         }
 
         /// <summary>This override is a modified copy of the DustSpirit version.</summary>
@@ -167,22 +178,12 @@ namespace PollenSprites
         /// <summary>This override makes this monster's shadow transparent and scales it to the monster's size.</summary>
         public override void drawAboveAllLayers(SpriteBatch b)
         {
-            b.Draw(this.Sprite.Texture, this.getLocalPosition(Game1.viewport) + new Vector2(32f, (float)(21 + this.yOffset)), new Microsoft.Xna.Framework.Rectangle?(this.Sprite.SourceRect), Color.White, 0.0f, new Vector2(8f, 16f), Math.Max(0.2f, (float)((NetFieldBase<float, NetFloat>)this.scale)) * 4f, this.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0.0f, this.drawOnTop ? 0.991f : (float)this.getStandingY() / 10000f));
-            SpriteBatch spriteBatch = b;
-            Texture2D shadowTexture = Game1.shadowTexture;
-            Vector2 position = this.getLocalPosition(Game1.viewport) + new Vector2(32f, 64f);
-            Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?(Game1.shadowTexture.Bounds);
             Color shadowColor = new Color(255, 255, 255, 63); //75% transparency
-            double num1 = 0.0;
-            Microsoft.Xna.Framework.Rectangle bounds = Game1.shadowTexture.Bounds;
-            double x = (double)bounds.Center.X;
-            bounds = Game1.shadowTexture.Bounds;
-            double y = (double)bounds.Center.Y;
-            Vector2 origin = new Vector2((float)x, (float)y);
-            double shadowScale = (3.0 + (double)this.yOffset / 20.0) * Scale; //multiply by the monster's scale
-            int num3 = 0;
-            double num4 = (double)(this.getStandingY() - 1) / 10000.0;
-            spriteBatch.Draw(shadowTexture, position, sourceRectangle, shadowColor, (float)num1, origin, (float)shadowScale, (SpriteEffects)num3, (float)num4);
+            float shadowScale = (3f + (float)this.yOffset / 20f) * Scale; //multiply by the monster's scale
+
+            int standingY = base.StandingPixel.Y;
+            b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2(32f, 21 + this.yOffset), this.Sprite.SourceRect, Color.White, 0f, new Vector2(8f, 16f), Math.Max(0.2f, base.scale.Value) * 4f, base.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, base.drawOnTop ? 0.991f : ((float)standingY / 10000f)));
+            b.Draw(Game1.shadowTexture, base.getLocalPosition(Game1.viewport) + new Vector2(32f, 64f), Game1.shadowTexture.Bounds, shadowColor, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 3f + (float)this.yOffset / 20f, SpriteEffects.None, (float)(standingY - 1) / 10000f);
         }
 
         /// <summary>This override reworks several aspects of the Ghost version.</summary>
@@ -199,72 +200,80 @@ namespace PollenSprites
             {
                 timeOfLastSprinkle = time.TotalGameTime.TotalMilliseconds + Game1.random.Next(-500, 501); //record the current time, randomly offset by up to 0.5 seconds
                 Color color = (Game1.random.NextDouble() < 0.5 ? EffectColor : Color.White); //randomly choose between the monster's effect color or white
-                Utility.addSprinklesToLocation(this.currentLocation, this.getTileX(), this.getTileY(), 2, 2, 101, 50, color, (string)null, false); //display a new sprinkle effect
+                Utility.addSprinklesToLocation(this.currentLocation, (int)this.Tile.X, (int)this.Tile.Y, 2, 2, 101, 50, color, (string)null, false); //display a new sprinkle effect
             }
 
-            this.yOffset = (int)(Math.Sin((double)time.TotalGameTime.Milliseconds / 1000.0 * (2.0 * Math.PI)) * 20.0); //use NPC.yOffset and ignore the unused yOffsetExtra field
-                                                                                                                        //remove lightsource generation process
-            Rectangle playerBox = this.Player.GetBoundingBox();             //improve redundant calls to GetBoundingBox
-            Rectangle monsterBox = this.GetBoundingBox();                   //
-            int x1 = playerBox.Center.X;                                    //
-            int x2 = monsterBox.Center.X;                                   //
-            float num1 = (float)-(x1 - x2);                                 //
-            float num2 = (float)(playerBox.Center.Y - monsterBox.Center.Y); //
-            float num3 = 400f;
-            float num4 = num1 / num3;
-            float num5 = num2 / num3;
-            //remove Ghost.wasHitCounter condition, which was always true
-            float targetRotation = (float)Math.Atan2(-(double)num5, (double)num4) - 1.570796f; //declare targetRotation locally, which is only used in this method anyway
-            if ((double)Math.Abs(targetRotation) - (double)Math.Abs(this.rotation) > 7.0 * Math.PI / 8.0 && Game1.random.NextDouble() < 0.5)
+            this.yOffset = (int)(Math.Sin((double)((float)time.TotalGameTime.Milliseconds / 1000f) * (Math.PI * 2.0)) * 20.0); //the unused yOffsetExtra field
+            //remove lightsource generation process
+            Point monsterPixel = base.StandingPixel;
+            Point standingPixel = base.Player.StandingPixel;
+            float xSlope = -(standingPixel.X - monsterPixel.X);
+            float ySlope = standingPixel.Y - monsterPixel.Y;
+            float t = 400f;
+            xSlope /= t;
+            ySlope /= t;
+            //remove "if Ghost.wasHitCounter <= 0" condition, which was always true
+            float targetRotation = (float)Math.Atan2(0f - ySlope, xSlope) - (float)Math.PI / 2f; //declare targetRotation locally, which is only used in this method anyway
+            if ((double)(Math.Abs(targetRotation) - Math.Abs(base.rotation)) > Math.PI * 7.0 / 8.0 && Game1.random.NextBool())
+            {
                 this.turningRight = true;
-            else if ((double)Math.Abs(targetRotation) - (double)Math.Abs(this.rotation) < Math.PI / 8.0)
+            }
+            else if ((double)(Math.Abs(targetRotation) - Math.Abs(base.rotation)) < Math.PI / 8.0)
+            {
                 this.turningRight = false;
+            }
             if (this.turningRight)
-                this.rotation -= (float)Math.Sign(targetRotation - this.rotation) * ((float)Math.PI / 64f);
+            {
+                base.rotation -= (float)Math.Sign(targetRotation - base.rotation) * ((float)Math.PI / 64f);
+            }
             else
-                this.rotation += (float)Math.Sign(targetRotation - this.rotation) * ((float)Math.PI / 64f);
-            this.rotation %= 6.283185f;
-            //remove wasHitCounter = 0", which was redundant
-            float num6 = Math.Min(4f, Math.Max(1f, (float)(5.0 - (double)num3 / 64.0 / 2.0)));
-            float num7 = (float)Math.Cos((double)this.rotation + Math.PI / 2.0);
-            float num8 = -(float)Math.Sin((double)this.rotation + Math.PI / 2.0);
-            this.xVelocity += (float)(-(double)num7 * (double)num6 / 6.0 + (double)Game1.random.Next(-10, 10) / 100.0);
-            this.yVelocity += (float)(-(double)num8 * (double)num6 / 6.0 + (double)Game1.random.Next(-10, 10) / 100.0);
-            if ((double)Math.Abs(this.xVelocity) > (double)Math.Abs((float)(-(double)num7 * 5.0)))
-                this.xVelocity -= (float)(-(double)num7 * (double)num6 / 6.0);
-            if ((double)Math.Abs(this.yVelocity) > (double)Math.Abs((float)(-(double)num8 * 5.0)))
-                this.yVelocity -= (float)(-(double)num8 * (double)num6 / 6.0);
-            this.faceGeneralDirection(this.Player.getStandingPosition(), 0, false);
-            this.resetAnimationSpeed();
+            {
+                base.rotation += (float)Math.Sign(targetRotation - base.rotation) * ((float)Math.PI / 64f);
+            }
+            base.rotation %= (float)Math.PI * 2f;
+            //remove wasHitCounter value change
+            float maxAccel = Math.Min(4f, Math.Max(1f, 5f - t / 64f / 2f));
+            xSlope = (float)Math.Cos((double)base.rotation + Math.PI / 2.0);
+            ySlope = 0f - (float)Math.Sin((double)base.rotation + Math.PI / 2.0);
+            base.xVelocity += (0f - xSlope) * maxAccel / 6f + (float)Game1.random.Next(-10, 10) / 100f;
+            base.yVelocity += (0f - ySlope) * maxAccel / 6f + (float)Game1.random.Next(-10, 10) / 100f;
+            if (Math.Abs(base.xVelocity) > Math.Abs((0f - xSlope) * 5f))
+            {
+                base.xVelocity -= (0f - xSlope) * maxAccel / 6f;
+            }
+            if (Math.Abs(base.yVelocity) > Math.Abs((0f - ySlope) * 5f))
+            {
+                base.yVelocity -= (0f - ySlope) * maxAccel / 6f;
+            }
+            base.faceGeneralDirection(base.Player.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
+            base.resetAnimationSpeed();
         }
 
         /// <summary>This override reworks miscellaneous behaviors within the Ghost version.</summary>
         /// <remarks>
         /// * The "sprinkles" visual effect's color was changed.
-        /// * Bonus damage and related effects for the "holy sword" weapon were removed.
         /// * Lightsource removal code was removed because this monster no longer generates lightsources.
         /// </remarks>
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
-            int num = Math.Max(1, damage - (int)(NetFieldBase<int, NetInt>)this.resilience);
+            int actualDamage = Math.Max(1, damage - this.resilience.Value);
             this.Slipperiness = 8;
             Color color = (Game1.random.NextDouble() < 0.5 ? EffectColor : Color.White); //randomly choose between the monster's effect color or white
-            Utility.addSprinklesToLocation(this.currentLocation, this.getTileX(), this.getTileY(), 2, 2, 101, 50, color, (string)null, false); //use the selected color
-            if (Game1.random.NextDouble() < (double)(NetFieldBase<double, NetDouble>)this.missChance - (double)(NetFieldBase<double, NetDouble>)this.missChance * addedPrecision)
+            Utility.addSprinklesToLocation(this.currentLocation, this.TilePoint.X, this.TilePoint.Y, 2, 2, 101, 50, color); //use the selected color
+            if (Game1.random.NextDouble() < this.missChance.Value - this.missChance.Value * addedPrecision)
             {
-                num = -1;
+                actualDamage = -1;
             }
             else
             {
-                //remove "holy sword" bonus damage check
-                this.Health -= num;
+                this.Health -= actualDamage;
                 if (this.Health <= 0)
                     this.deathAnimation();
                 this.setTrajectory(xTrajectory, yTrajectory);
             }
             this.addedSpeed = -1;
             //remove lightsource removal code
-            return num;
+            return actualDamage;
         }
 
         /// <summary>This override adds a "damage" check for debuffs and stamina drain when this monster touches the player.</summary>
@@ -282,24 +291,17 @@ namespace PollenSprites
                     {
                         timeOfLastPlayerHarm = time.TotalGameTime.TotalMilliseconds; //update the "last harm attempt" time
 
-                        //if the player isn't invincible & the player isn't wearing the Slime Charmer ring & the player doesn't resist the effect (mimicking the immunity check from DebuffProjectile)
-                        if (!Game1.player.temporarilyInvincible && !Game1.player.isWearingRing(520) && Game1.random.Next(10) > Player.immunity)
+                        //if the player isn't invincible, isn't wearing the Slime Charmer ring, and doesn't resist the effect (mimicking the immunity check from GreenSlime)
+                        if (!Game1.player.temporarilyInvincible && !Game1.player.isWearingRing("520") && Game1.random.Next(10) > Player.Immunity && !Player.hasBuff("28") && !Player.hasTrinketWithID("BasiliskPaw"))
                         {
                             Game1.player.Stamina = Math.Max(10, Game1.player.Stamina - EnergyDamage); //reduce the player's energy by this monster's energy damage (but not below 10)
 
                             if (EnableDebuff) //if this monster's debuff is enabled
                             {
-                                Buff debuff = new Buff(13); //create a new buff effect based on the "Slimed" debuff
+                                Buff debuff = new Buff("13"); //create a new buff effect based on the "Slimed" debuff
                                 debuff.glow = EffectColor; //use this monster's effect color
-                                var buffAttributesField = ModEntry.Instance.Helper.Reflection.GetField<int[]>(debuff, "buffAttributes", false); //get the debuff's private "buffAttributes" field
-                                if (buffAttributesField != null) //if reflection succeeded
-                                {
-                                    int[] attributes = buffAttributesField.GetValue(); //get the debuff's current values
-                                    attributes[9] = -2; //drain less speed (original value: -4)
-                                    buffAttributesField.SetValue(attributes); //set the debuff's values
-                                }
-
-                                Game1.buffsDisplay.addOtherBuff(debuff); //apply the debuff to the player
+                                debuff.effects.Speed.Value = -2f; //drain less speed (original value: -4)
+                                Player.applyBuff(debuff);
                             }
                         }
                     }

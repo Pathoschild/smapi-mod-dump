@@ -11,10 +11,10 @@
 {
     "Name": "SlimeMinerals",
     "Author": "ChrisMzz",
-    "Version": "1.0.0",
+    "Version": "1.1.0",
     "Description": "Add more minerals to slime drops.",
     "UniqueID": "ChrisMzz.slimeminerals",
     "EntryDll": "slimeminerals.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": ["Nexus:20930"]
 }

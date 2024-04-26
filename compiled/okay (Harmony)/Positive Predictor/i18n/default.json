@@ -1,0 +1,22 @@
+﻿{
+  "config.name.ShowLuckOfTomorrow": "Show Luck Of Tomorrow",
+  "config.name.LookForPrismaticButterfly": "LookFor Prismatic Butterfly",
+  "config.name.PreviewGeodeContent": "Preview Geode and MysteryBox",
+  "config.name.DisplayLadderIconOfMine": "Display Ladder Icon in MineShaft",
+  "config.name.DisplayIslandBirdGem": "Display BirdGems of IslandShrine",
+  "config.name.DisplayWeatherOnCalendar": "Display Weather On Calendar",
+  "config.name.DisplayFishingBubblesAtBegin": "Show Fishing Bubbles at Begin",
+  "config.name.DisplayFishingBubblesLimitDays": "Show Bubbles Limit Days",
+
+  "config.name.MovieTheaterOpenCraneGame": "MovieTheater CraneGame Always Open",
+  "config.name.SeedMakerBumperHarvest": "AncientFruit get 3 seed on SeedMaker",
+  "config.name.JourneyOfThePrairieKingEasier": "JourneyOfThePrairieKing Easier",
+  "config.name.JourneyOfThePrairieKingEffect": "JourneyOfThePrairieKing Effect",
+
+  "mod.text.Bubble": "Bubble",
+  "mod.text.Butterfly": "Butterfly",
+  "mod.text.Player": "Player",
+  "mod.text.Weather": "Weather",
+  "mod.text.LuckOfTomorrow": "Luck Of Tomorrow",
+  "mod.text.Range": "Range"
+}

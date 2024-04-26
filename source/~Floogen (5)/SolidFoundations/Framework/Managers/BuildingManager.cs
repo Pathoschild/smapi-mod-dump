@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
 using StardewValley;
@@ -25,7 +26,8 @@ namespace SolidFoundations.Framework.Managers
 
         private Dictionary<string, string> _assetPathToMap;
         private Dictionary<string, string> _assetToTileSheet;
-        private Dictionary<string, string> _assetPathToTexture;
+        private Dictionary<string, string> _assetPathToTexturePath;
+        private Dictionary<string, Texture2D> _assetPathToTexture;
         private Dictionary<string, ExtendedBuildingModel> _idToModels;
 
         public BuildingManager(IMonitor monitor, IModHelper helper)
@@ -35,7 +37,8 @@ namespace SolidFoundations.Framework.Managers
 
             _assetPathToMap = new Dictionary<string, string>();
             _assetToTileSheet = new Dictionary<string, string>();
-            _assetPathToTexture = new Dictionary<string, string>();
+            _assetPathToTexturePath = new Dictionary<string, string>();
+            _assetPathToTexture = new Dictionary<string, Texture2D>();
             _idToModels = new Dictionary<string, ExtendedBuildingModel>();
         }
 
@@ -87,14 +90,15 @@ namespace SolidFoundations.Framework.Managers
             _assetToTileSheet[assetPath] = pathToTileSheet;
         }
 
-        public void AddTextureAsset(string assetPath, string pathToTexture)
+        public void AddTextureAsset(string assetPath, string pathToTexture, IContentPack contentPack)
         {
-            if (String.IsNullOrEmpty(assetPath) || String.IsNullOrEmpty(pathToTexture))
+            if (String.IsNullOrEmpty(assetPath) || String.IsNullOrEmpty(pathToTexture) || contentPack is null)
             {
                 return;
             }
 
-            _assetPathToTexture[assetPath] = pathToTexture;
+            _assetPathToTexture[assetPath] = contentPack.ModContent.Load<Texture2D>(pathToTexture);
+            _assetPathToTexturePath[assetPath] = pathToTexture;
         }
 
         public string GetMapAsset(string assetPath)
@@ -117,7 +121,17 @@ namespace SolidFoundations.Framework.Managers
             return null;
         }
 
-        public string GetTextureAsset(string assetPath)
+        public string GetTextureAssetPath(string assetPath)
+        {
+            if (String.IsNullOrEmpty(assetPath) is false && _assetPathToTexturePath.ContainsKey(assetPath))
+            {
+                return _assetPathToTexturePath[assetPath];
+            }
+
+            return null;
+        }
+
+        public Texture2D GetTextureAsset(string assetPath)
         {
             if (String.IsNullOrEmpty(assetPath) is false && _assetPathToTexture.ContainsKey(assetPath))
             {

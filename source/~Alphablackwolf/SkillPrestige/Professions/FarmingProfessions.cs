@@ -14,6 +14,9 @@ namespace SkillPrestige.Professions
 {
     public partial class Profession
     {
+        /*********
+        ** Accessors
+        *********/
         public static IEnumerable<Profession> FarmingProfessions => new List<Profession>
         {
             Rancher,
@@ -31,4 +34,3 @@ namespace SkillPrestige.Professions
         protected static TierTwoProfession Agriculturist { get; set; }
     }
 }
-    

@@ -1,0 +1,411 @@
+{      
+    "Spring": [
+        {
+          "cropName" : "Parsnip",
+          "seedID" : "472",
+          "dropChance" : 8,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Green Bean",
+          "seedID" : "473",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : true,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Cauliflower",
+          "seedID" : "474",
+          "dropChance" : 4,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+            "cropName" : "Potato",
+            "seedID" : "475",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Garlic",
+            "seedID" : "476",
+            "dropChance" : 5,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false,
+            "minYear" : 2
+        },
+        {
+            "cropName" : "Rice",
+            "seedID" : "273",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Kale",
+            "seedID" : "477",
+            "dropChance" : 5,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Rhubarb",
+            "seedID" : "478",
+            "dropChance" : 2,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },   
+        {
+            "cropName" : "Strawberry",
+            "seedID" : "745",
+            "dropChance" : 2,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Coffee",
+            "seedID" : "433",
+            "dropChance" : 0.2,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },        
+        {
+            "cropName" : "Ancient Fruit",
+            "seedID" : "499",
+            "dropChance" : 0.1,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        }, 
+        {
+            "cropName" : "Carrot",
+            "seedID" : "CarrotSeeds",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Tulip",
+            "seedID" : "427",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Blue Jazz",
+            "seedID" : "429",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+        
+      ],
+
+      "Summer": [
+        {
+          "cropName" : "Melon",
+          "seedID" : "479",
+          "dropChance" : 6,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Tomato",
+          "seedID" : "480",
+          "dropChance" : 8,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+          "cropName" : "Blueberry",
+          "seedID" : "481",
+          "dropChance" : 6,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+            "cropName" : "Hot Pepper",
+            "seedID" : "482",
+            "dropChance" : 8,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },       
+        {
+            "cropName" : "Wheat",
+            "seedID" : "483",
+            "dropChance" : 12,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Radish",
+            "seedID" : "484",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Red Cabbage",
+            "seedID" : "485",
+            "dropChance" : 3,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false,
+            "minYear" : 2
+        },
+        {
+            "cropName" : "Starfruit",
+            "seedID" : "486",
+            "dropChance" : 0.5,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Corn",
+            "seedID" : "487",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Hops",
+            "seedID" : "302",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Taro Root",
+            "seedID" : "433",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Pineapple",
+            "seedID" : "745",
+            "dropChance" : 3,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Coffee",
+            "seedID" : "433",
+            "dropChance" : 0.2,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Ancient Fruit",
+            "seedID" : "499",
+            "dropChance" : 0.1,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Summer Squash",
+            "seedID" : "SummerSquashSeeds",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Sunflower",
+            "seedID" : "431",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Poppy",
+            "seedID" : "453",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Spangle",
+            "seedID" : "455",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+        
+      ],
+
+      "Fall": [
+        {
+          "cropName" : "Wheat",
+          "seedID" : "483",
+          "dropChance" : 12,
+          "enabled" : true,
+          "isTrellis" : false,
+          "isFlower" : false
+        },
+        {
+            "cropName" : "Corn",
+            "seedID" : "487",
+            "dropChance" : 8,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Grape",
+            "seedID" : "301",
+            "dropChance" : 6,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Amaranth",
+            "seedID" : "299",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Eggplant",
+            "seedID" : "488",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Artichoke",
+            "seedID" : "489",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Pumpkin",
+            "seedID" : "490",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Bok Choy",
+            "seedID" : "491",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Yam",
+            "seedID" : "492",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Cranberries",
+            "seedID" : "493",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Beet",
+            "seedID" : "494",
+            "dropChance" : 6,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Ancient Fruit",
+            "seedID" : "499",
+            "dropChance" : 0.1,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Sweet Gem Berry",
+            "seedID" : "347",
+            "dropChance" : 0.2,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Broccoli",
+            "seedID" : "BroccoliSeeds",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Sunflower",
+            "seedID" : "431",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Fairy Rose",
+            "seedID" : "425",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+        
+      ],
+      
+      "Winter" : [
+        {
+            "cropName" : "Powdermelon",
+            "seedID" : "PowdermelonSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false 
+        }
+      ]
+      
+}

@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/idermailer/InstantDialogues
+   Git: https://github.com/idermailer/InstantDialogues.git
+
+mods:
+   Instant Dialogues
+
+latest commit:
+   commit 12ee827f5ca849692cb730f928e52e9e812c4c8f
+   Author: idermailer <idermailer@gmail.com>
+   Date:   Fri Apr 26 10:09:22 2024 +0900
+   
+       1.0.1
+       - New Config: EnableOnLaunchWhenUseToggleKey: Decides the function is work on game launch
+       - a config name changed: ModEnabled -> EntireModEnabled
+   

@@ -20,12 +20,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 
 namespace Leclair.Stardew.BetterCrafting.Integrations.SpaceCore;
 
 public class SCRecipe : IRecipe {
 
 	public readonly ICustomCraftingRecipe Recipe;
+	public readonly Item? ExampleItem;
 	public readonly bool Cooking;
 
 	public SCRecipe(string name, ICustomCraftingRecipe recipe, bool cooking, IEnumerable<IIngredient> ingredients) {
@@ -35,20 +37,26 @@ public class SCRecipe : IRecipe {
 		Ingredients = ingredients.ToArray();
 
 		Item? example = CreateItem();
-		SortValue = example?.ParentSheetIndex ?? 0;
+		SortValue = $"{example?.ParentSheetIndex ?? 0}";
 		QuantityPerCraft = example?.Stack ?? 1;
 		Stackable = (example?.maximumStackSize() ?? 1) > 1;
 
+		if (recipe.Name != null)
+			DisplayName = recipe.Name;
+		else if (example is not null && ItemRegistry.GetData(example.QualifiedItemId) is ParsedItemData data)
+			DisplayName = data.DisplayName;
+		else
+			DisplayName = Name;
+
 		// Ensure we can access things.
-		string? test = recipe.Name;
-		test = recipe.Description;
+		string? test = recipe.Description;
 		Texture2D testtwo = recipe.IconTexture;
 		Rectangle? testthree = recipe.IconSubrect;
 	}
 
 	#region Identity
 
-	public int SortValue { get; }
+	public string SortValue { get; }
 	public string Name { get; }
 
 	public virtual bool HasRecipe(Farmer who) {
@@ -75,7 +83,9 @@ public class SCRecipe : IRecipe {
 
 	#region Display
 
-	public string DisplayName => Recipe.Name ?? Name;
+	public bool AllowRecycling { get; } = true;
+
+	public string DisplayName { get; }
 	public string Description => Recipe.Description ?? string.Empty;
 
 	public Texture2D Texture => Recipe.IconTexture;

@@ -1,0 +1,9 @@
+{
+  "Name": "Put Batteries in Fish Tanks",
+  "Author": "BadNetCode",
+  "Version": "1.0.0",
+  "Description": "Lets you put batteries in fish tanks",
+  "UniqueID": "BadNetCode.PutBatteriesInFishTanks",
+  "EntryDll": "PutBatteriesInFishTanks.dll",
+  "UpdateKeys": [ "Nexus:23155" ]
+}

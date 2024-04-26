@@ -6,9 +6,9 @@ mods:
    Multiplayer Journey Of The Prairie King
 
 latest commit:
-   commit 0e7a21ceb79dab5c7149d7ed49b1f8b07304294a
+   commit 8472b925039b7a7032ed1674e6868f3a76eab8f4
    Author: Manuel Strey <manuel.strey@gmx.de>
-   Date:   Wed Mar 29 19:31:25 2023 +0200
+   Date:   Sat Apr 13 21:24:19 2024 +0200
    
-       Big refactor
+       Savestate and music bug fix
    

@@ -69,22 +69,24 @@ You can find it in the mods install directory.
 | **DoorSoundSetting**                  | *string*  | "ONLY_ON_FARM" | Sets when you hear the door sound openning and closing. Possible values: ("ONLY_ON_FARM", "ALWAYS_ON", "ALWAYS_OFF") |
 | **OpenDoorsWhenRaining**              | *boolean* | false   | true if doors should open even when raining/lightning, false if not              |
 | **OpenDoorsDuringWinter**             | *boolean* | false   | true if doors should open even during winter, false if not                       |
-
+| **CloseAllBuildingsAtOnce**           | *boolean* | true    | true if all buildings should wait till every animal is inside before closing, false if each building should only wait for their own animals|
+| **DoorEventPopupEnabled**             | *boolean* | false   | true if you want a chat popup when the doors open/close, false otherwise         |
   
 ### Example config.json
 
 ```json
 {
-
   "AnimalDoorOpenTime": 730,
   "AnimalDoorCloseTime": 1800,
   "CoopRequiredUpgradeLevel": 1,
   "BarnRequiredUpgradeLevel": 1,
   "UnrecognizedAnimalBuildingsEnabled": false,
   "AutoOpenEnabled": true,
-  "DoorSoundSetting": "ONLY_ON_FARM",
   "OpenDoorsWhenRaining": false,
-  "OpenDoorsDuringWinter": false
+  "OpenDoorsDuringWinter": false,
+  "CloseAllBuildingsAtOnce": false,
+  "DoorEventPopupEnabled": false,
+  "DoorSoundSetting": "ONLY_ON_FARM"
 }
 ```
 

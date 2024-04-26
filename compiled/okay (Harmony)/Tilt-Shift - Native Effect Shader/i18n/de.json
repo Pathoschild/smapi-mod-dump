@@ -1,0 +1,66 @@
+{
+    // ------------------------------------------  Global
+    "settings.section-global": "Global",
+
+    "settings.enable-global.label": "Effekt aktivieren",
+    "settings.enable-global.tooltip": "Effekt global aktivieren",
+
+    // ------------------------------------------  Mod
+    "settings.section-mod": "Allgemein",
+
+    "settings.enable-indoors.label": "Drinnen aktivieren",
+    "settings.enable-indoors.tooltip": "Effekt drinnen aktivieren",
+
+    "settings.enable-mines.label": "In Minen aktivieren",
+    "settings.enable-mines.tooltip": "Effekt in Minen aktivieren",
+
+    "settings.enable-events.label": "Während Ereignissen aktivieren",
+    "settings.enable-events.tooltip": "Effekt während Ereignissen und Veranstaltungen aktivieren",
+
+    // ------------------------------------------  Fading
+    "settings.section-fading": "Ausblenden",
+
+    "settings.enable-directionalFading.label": "Richtungsabhängiges Ausblenden",
+    "settings.enable-directionalFading.tooltip": "Den Effekt in Richtung ausblenden, in die der Spieler schaut",
+
+    "settings.directionalFading-time.label": "Ausblende-Zeit",
+    "settings.directionalFading-time.tooltip": "Wie lange der Effekt ausblenden soll, um die gewünschte Stärke zu erreichen (Max. 1 Sekunde)",
+
+    "settings.directionalFading-min.label": "Minimale Stärke",
+    "settings.directionalFading-min.tooltip": "Die minimale Effektstärke nach dem Ausblenden (Mehr bedeutet Effekt wird weniger ausgeblendet)",
+
+    // ------------------------------------------  Shader
+    "settings.section-shader": "Shader",
+
+    "settings.shader-offset.label": "Effekt-Versatz",
+    "settings.shader-offset.tooltip": "Diese Einstellung gibt dem Shader an, wo er mit dem Zeichnen der Unschärfe beginnen soll (Ein höherer Versatz führt zu einem kleineren Effektbereich)",
+
+    "settings.shader-strength.label": "Unschärfe-Stärke",
+    "settings.shader-strength.tooltip": "Wie stark der Effekt angewendet werden soll",
+
+    "settings.shader-type.label": "Shader-Typ",
+    "settings.shader-type.tooltip": "Gaussian erzeugt eine weichere Unschärfe. Box ist schneller",
+
+    "settings.shader-method.label": "Shader-Methode",
+    "settings.shader-method.tooltip": "Automatic wählt automatisch die richtige Methode um Artefakte in bestimmten Situationen zu eliminieren und die Leistung zu maximieren. Nutze Automatic oder One-Pass (2D) wenn Artefakte auftreten. Nutze Two-Pass (1D) für Leistung",
+
+    "settings.shader-radius.label": "Unschärfe-Radius",
+    "settings.shader-radius.tooltip": "Der Radius, in dem der Shader nahegelegene Pixel abtastet, um einen Unschärfeeffekt zu erzeugen (Höhere Werte führen zu mehr Unschärfe, können aber die Leistung verringern)",
+
+    // ------------------------------------------  Advanced
+    "settings.section-advanced": "Erweitert",
+
+    "settings.shader-passes.label": "Shader-Durchläufe",
+    "settings.shader-passes.tooltip": "Die Anzahl der Durchläufe, die der Shader durchführen soll (Mehr Durchläufe führen zu mehr und weicherer Unschärfe, können aber die Leistung verringern)",
+
+    "settings.shader-sampleOffset.label": "Proben-Versatz",
+    "settings.shader-sampleOffset.tooltip": "Verschiebt die Probenpunkte um den Wert in PX. Erhöht die Unschärfe, verringert die Qualität. Keine Leistungseinbußen",
+    "settings.paragraph-sampleOffset": "Eine Kombination aus großem Unschärfe-Radius, mehreren Durchläufen und einem hohen Proben-Versatz kann zu Artefakten führen",
+
+    "settings.shader-alternative.label": "Alternative Methode deaktivieren",
+    "settings.shader-alternative.tooltip": "Effekt beim Zeichnen mit der alternativen Methode deaktivieren",
+    "settings.paragraph-alternative": "Effekt beim Zeichnen mit der alternativen Workaround-Methode deaktivieren. Dies ist nützlich wenn Artefakte auftreten während die alternative Zeichenmethode verwendet wird. Der Effekt wird an bestimmten Stellen wie Minen oder während Ereignissen nicht angewendet",
+
+    "settings.enable-debug.label": "Debug",
+    "settings.enable-debug.tooltip": "Debug aktivieren"
+}

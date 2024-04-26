@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/Hunter-Chambers/StardewValleyMods
+   Git: https://github.com/Hunter-Chambers/StardewValleyMods.git
+
+mods:
+   Auto Grab Truffles
+   Deluxe Auto-Petter
+   Easy Fishin'
+
+latest commit:
+   commit 249fd5fd86e6c3d977bb2acf16582f14bf3bbef3
+   Author: hunter-chambers <hrchambers.333@gmail.com>
+   Date:   Thu Apr 25 18:15:59 2024 -0500
+   
+       set fish quality as well when setting perfect catch
+   

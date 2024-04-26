@@ -9,6 +9,12 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.11.10
+Released 21 April 2024 for SMAPI 4.0.0 or later.
+
+* Fixed error when speeding up tree-fall animations in some cases.
+* Improved translations. Thanks to mitekano23 (added Japanese)!
+
 ## 1.11.9
 Released 26 March 2024 for SMAPI 4.0.0 or later.
 

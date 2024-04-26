@@ -18,8 +18,8 @@ namespace Randomizer
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The id of the item</param>
-		public GeodeMineralItem(int id) : base(id)
+		/// <param name="index">The id of the item</param>
+		public GeodeMineralItem(ObjectIndexes index) : base(index)
 		{
 			IsGeodeMineral = true;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;

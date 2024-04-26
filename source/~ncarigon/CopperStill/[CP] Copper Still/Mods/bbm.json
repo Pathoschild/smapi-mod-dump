@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "NCarigon.BushBloomMod/Schedules",
+			"Entries": {
+				"{{ModId}}/fall_JuniperBerry": {
+					"ShakeOff": "{{ModId}}_JuniperBerry",
+					"StartSeason": "fall",
+					"StartDay": 21,
+					"EndDay": 24
+				}
+			}
+		},
+		{
+			"Action": "EditImage",
+			"Target": "NCarigon.BushBloomMod/Textures/{{ModId}}/fall_JuniperBerry",
+			"FromFile": "assets/juniper_bush.png"
+		}
+	]
+}

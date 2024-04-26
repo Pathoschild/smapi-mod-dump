@@ -476,7 +476,8 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 		}
 
 		// Invoke the discovery event.
-		ThemesDiscovered?.SafeInvoke(this, new ThemesDiscoveredEventArgs<DataT>(Themes), monitor: Mod.Monitor);
+		ThemesDiscovered?.Invoke(new ThemesDiscoveredEventArgs<DataT>(Themes));
+		//ThemesDiscovered?.SafeInvoke(this, new ThemesDiscoveredEventArgs<DataT>(Themes), monitor: Mod.Monitor);
 
 		// Store our currently selected theme.
 		string? oldKey = SelectedThemeId;
@@ -777,6 +778,7 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 		return Themes.ContainsKey(themeId);
 	}
 
+#if PINTAIL_CAN_OUT
 	/// <inheritdoc />
 	public bool TryGetTheme(string themeId, [NotNullWhen(true)] out DataT? theme) {
 		if (Themes.TryGetValue(themeId, out var tdata)) {
@@ -786,6 +788,14 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 
 		theme = null;
 		return false;
+	}
+#endif
+
+	/// <inheritdoc />
+	public DataT? GetTheme(string themeId) {
+		if (Themes.TryGetValue(themeId, out var tdata))
+			return tdata.Data;
+		return null;
 	}
 
 	public bool TryGetThemeRaw(string themeId, [NotNullWhen(true)] out object? theme) {
@@ -798,6 +808,7 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 		return false;
 	}
 
+#if PINTAIL_CAN_OUT
 	/// <inheritdoc />
 	public bool TryGetManifest(string themeId, [NotNullWhen(true)] out IThemeManifest? manifest) {
 		if (Themes.TryGetValue(themeId, out var tdata)) {
@@ -807,6 +818,13 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 
 		manifest = null;
 		return false;
+	}
+#endif
+
+	public IThemeManifest? GetManifest(string themeId) {
+		if (Themes.TryGetValue(themeId, out var tdata))
+			return tdata.Manifest;
+		return null;
 	}
 
 	#endregion
@@ -876,14 +894,14 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 			Invalidate(postReload ? null : old_active);
 
 			// And emit our event.
-			ThemeChanged?.SafeInvoke(this, new ThemeChangedEventArgs<DataT>(
+			ThemeChanged?.Invoke(new ThemeChangedEventArgs<DataT>(
 				old_active,
 				old_data?.Manifest,
 				old_data?.Data,
 				ActiveThemeId,
 				ActiveThemeManifest,
 				Theme
-			), monitor: Mod.Monitor);
+			)); //, monitor: Mod.Monitor);
 		}
 	}
 
@@ -899,14 +917,14 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 			DataT? oldData = Theme;
 			_DefaultTheme = value ?? new DataT();
 			if (is_default)
-				ThemeChanged?.SafeInvoke(this, new ThemeChangedEventArgs<DataT>(
+				ThemeChanged?.Invoke(new ThemeChangedEventArgs<DataT>(
 					"default",
 					null,
 					oldData,
 					"default",
 					null,
 					_DefaultTheme
-				), monitor: Mod.Monitor);
+				)); //, monitor: Mod.Monitor);
 		}
 	}
 
@@ -923,10 +941,10 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 	public DataT Theme => ActiveThemeData?.Data ?? _DefaultTheme;
 
 	/// <inheritdoc />
-	public event EventHandler<IThemeChangedEvent<DataT>>? ThemeChanged;
+	public event Action<IThemeChangedEvent<DataT>>? ThemeChanged;
 
 	/// <inheritdoc />
-	public event EventHandler<IThemesDiscoveredEvent<DataT>>? ThemesDiscovered;
+	public event Action<IThemesDiscoveredEvent<DataT>>? ThemesDiscovered;
 
 	/// <inheritdoc />
 	public void RegisterCPToken(string name = "Theme") {
@@ -1409,7 +1427,7 @@ public class ThemeManager<DataT> : IThemeManager<DataT>, IThemeManagerInternal w
 		}
 
 		// Is it loading an asset?
-		if (!e.Name.StartsWith(AssetLoaderPrefix))
+		if (!e.Name.StartsWith(AssetLoaderPrefix) || e.Name.Name.Length <= AssetLoaderPrefix.Length)
 			return;
 
 		// Figure out the theme component.

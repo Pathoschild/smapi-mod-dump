@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/BinaryLip/TrainInfo
+   Git: https://github.com/BinaryLip/TrainInfo.git
+
+mods:
+   Train Info
+
+latest commit:
+   commit 18598f57b0b268acf66a7f6f4f0bef9f3c8e97e8
+   Author: BinaryLip <dev@philliploveland.dev>
+   Date:   Sat Apr 6 00:04:36 2024 -0400
+   
+       Added Nexus update key
+   

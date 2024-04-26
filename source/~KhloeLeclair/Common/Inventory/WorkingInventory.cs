@@ -15,17 +15,20 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Network;
 
 namespace Leclair.Stardew.Common.Inventory;
 
-public struct WorkingInventory : IInventory {
+public struct WorkingInventory : IBCInventory {
 
 	public object Object { get; }
 	public IInventoryProvider Provider { get; }
 	public NetMutex? Mutex { get; }
 	public GameLocation? Location { get; }
 	public Farmer? Player { get; }
+
+	public IInventory? Inventory => Provider.GetInventory(Object, Location, Player);
 
 	public WorkingInventory(object @object, IInventoryProvider provider, NetMutex? mutex, GameLocation? location, Farmer? player) {
 		Object = @object;

@@ -10,7 +10,6 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Pathoschild.Stardew.Automate;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -28,7 +27,9 @@ namespace AutomateChests
     {
 
         /// <summary>The <see cref="Item.modData"/> flag which indicates a chest is automatable.</summary>
-        private readonly string ModDataFlag = "SinZ.AutomateChests";
+        public const string ModDataFlag = "SinZ.AutomateChests";
+        /// <summary>The <see cref="Item.modData"/> flag which indicates a chest should not have interactions applied from this mod (taking/removing hopper or equivalent).</summary>
+        public const string ModDataExemptFlag = "SinZ.AutomateChests/ExemptInteractivity";
 
         private ModConfig Config;
 
@@ -50,6 +51,10 @@ namespace AutomateChests
                 original: AccessTools.Method(Type.GetType("Pathoschild.Stardew.Automate.ModEntry,Automate"), "OnModMessageReceived", parameters: new Type[] { typeof(object), typeof(ModMessageReceivedEventArgs)}),
                 postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.Automate_ModEntry_OnModMessageReceived__Postfix))
              );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Chest), nameof(Chest.performObjectDropInAction)),
+                transpiler: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.Chest__performObjectDropInAction__Transpiler))
+            );
             this.Monitor.Log("This mod patches Automate. If you notice issues with Automate, make sure it happens without this mod before reporting it to the Automate page.", LogLevel.Trace);
         }
 
@@ -69,19 +74,11 @@ namespace AutomateChests
             configMenu.AddParagraph(
                 mod: this.ModManifest,
                 text: () => "The following config is for controlling the item required to enable a chest for automation, and the item you get back when undoing the chest automation. If you change the config while having chests automated, if you remove the item you will get the new configs item instead");
-            // add some config options
-            configMenu.AddBoolOption(
+            configMenu.AddTextOption(
                 mod: this.ModManifest,
-                name: () => "Activation Item is BigCraftable",
-                tooltip: () => "This controls whether to interpret ActivationItemIndex as a BigCraftable or as an Object",
-                getValue: () => this.Config.ActivationItemIsBigCraftable,
-                setValue: value => this.Config.ActivationItemIsBigCraftable = value
-            );
-            configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                name: () => "Activation Item Index",
-                getValue: () => this.Config.ActivationItemIndex,
-                setValue: value => this.Config.ActivationItemIndex = value
+                name: () => "Activation Item ID",
+                getValue: () => this.Config.ActivationItemId,
+                setValue: value => this.Config.ActivationItemId = value
             );
         }
 
@@ -96,14 +93,17 @@ namespace AutomateChests
                 return;
 
             Game1.currentLocation.objects.TryGetValue(e.Cursor.GrabTile, out SObject obj);
-            if (obj != null && obj is Chest { SpecialChestType: Chest.SpecialChestTypes.None} chest)
+            if (obj != null && obj is Chest { SpecialChestType: Chest.SpecialChestTypes.None or Chest.SpecialChestTypes.BigChest } chest)
             {
+                if (chest.modData.ContainsKey(ModDataExemptFlag))
+                    return;
+
                 var heldItem = Game1.player.ActiveObject;
                 // if the player is holding a hopper and the chest isn't tagged by us, it should be now
-                if (heldItem != null && heldItem.ParentSheetIndex == Config.ActivationItemIndex && heldItem.bigCraftable.Value == Config.ActivationItemIsBigCraftable && !chest.modData.ContainsKey(this.ModDataFlag))
+                if (heldItem != null && heldItem.QualifiedItemId == Config.ActivationItemId && !chest.modData.ContainsKey(ModDataFlag))
                 {
                     chest.Tint = Color.DarkViolet;
-                    chest.modData[this.ModDataFlag] = "1";
+                    chest.modData[ModDataFlag] = "1";
 
                     if (heldItem.Stack > 1)
                         Game1.player.ActiveObject.Stack--;
@@ -114,20 +114,13 @@ namespace AutomateChests
                     NotifyAutomateOfChestUpdate(Game1.currentLocation.Name, chest.TileLocation);
                 }
                 // otherwise if it is already marked by us, we should just return it to them if they have an empty hand
-                else if (Game1.player.CurrentItem == null && chest.modData.ContainsKey(this.ModDataFlag))
+                else if (Game1.player.CurrentItem == null && chest.modData.ContainsKey(ModDataFlag))
                 {
                     chest.Tint = Color.White;
                     chest.heldObject.Value = null;
-                    chest.modData.Remove(this.ModDataFlag);
+                    chest.modData.Remove(ModDataFlag);
 
-                    Item item;
-                    if (Config.ActivationItemIsBigCraftable)
-                    {
-                        item = new SObject(Vector2.Zero, Config.ActivationItemIndex, false);
-                    } else
-                    {
-                        item = new SObject(Config.ActivationItemIndex, 1, false);
-                    }
+                    Item item = ItemRegistry.Create(Config.ActivationItemId);
                     Game1.player.addItemByMenuIfNecessary(item);
 
                     Game1.playSound("shiny4");

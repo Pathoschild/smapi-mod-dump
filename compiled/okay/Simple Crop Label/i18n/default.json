@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Mushroom Tree",
   "custom-tree.mahogany": "Mahogany Tree",
   "custom-tree.palm": "Palm Tree",
+  "custom-tree.green-rain-wild": "Wild Green Rain Tree",
+  "custom-tree.green-rain-lush": "Lush Green Rain Tree",
+  "custom-tree.fiddlehead-fern": "Fiddlehead Fern Tree",
+  "custom-tree.mystic": "Mystic Tree",
 
   // growth info translation
   "growth-info.fully-grown": "fully grown",

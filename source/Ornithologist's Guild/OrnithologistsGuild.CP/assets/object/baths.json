@@ -1,0 +1,99 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Textures
+        {
+            "Action": "Load",
+            "Target": "Tilesheets/Ivy_OrnithologistsGuild_StoneBath",
+            "FromFile": "assets/map/StoneBath.png",
+            "Priority": "Low"
+        },
+        {
+            "Action": "Load",
+            "Target": "Tilesheets/Ivy_OrnithologistsGuild_StoneBath",
+            "FromFile": "assets/object/FrozenStoneBath.png",
+            "Priority": "Medium",
+            "When": {
+                "Season": "Winter"
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "Tilesheets/Ivy_OrnithologistsGuild_HeatedStoneBath",
+            "FromFile": "assets/object/HeatedStoneBath.png"
+        },
+        // BigCraftables
+        {
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "Ivy_OrnithologistsGuild_StoneBath": {
+                    "Name": "Ivy_OrnithologistsGuild_StoneBath",
+                    "DisplayName": "{{i18n:big-craftable.StoneBath.name}}",
+                    "Description": "{{i18n:big-craftable.StoneBath.description}}",
+                    "Price": 2500,
+                    "CanBePlacedIndoors": false,
+                    "Texture": "Tilesheets/Ivy_OrnithologistsGuild_StoneBath",
+                    "SpriteIndex": 0,
+                    "CustomFields": {
+                        "Ivy_OrnithologistsGuild_Heated": false,
+                        "Ivy_OrnithologistsGuild_ZOffset": -8
+                    },
+                    "ContextTags": [
+                        "Ivy_OrnithologistsGuild",
+                        "Ivy_OrnithologistsGuild_Bath"
+                    ]
+                },
+                "Ivy_OrnithologistsGuild_HeatedStoneBath": {
+                    "Name": "Ivy_OrnithologistsGuild_HeatedStoneBath",
+                    "DisplayName": "{{i18n:big-craftable.HeatedStoneBath.name}}",
+                    "Description": "{{i18n:big-craftable.HeatedStoneBath.description}}",
+                    "Price": 5000,
+                    "CanBePlacedIndoors": false,
+                    "Texture": "Tilesheets/Ivy_OrnithologistsGuild_HeatedStoneBath",
+                    "SpriteIndex": 0,
+                    "CustomFields": {
+                        "Ivy_OrnithologistsGuild_Heated": true,
+                        "Ivy_OrnithologistsGuild_ZOffset": -8
+                    },
+                    "ContextTags": [
+                        "Ivy_OrnithologistsGuild",
+                        "Ivy_OrnithologistsGuild_Bath"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Fields": {
+                "Ivy_OrnithologistsGuild_StoneBath": {
+                    "SpriteIndex": 1
+                }
+            },
+            "When": {
+                "Season": "Winter"
+            }
+        },
+        // Recipes
+        {
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                // 250 Stone, 5 Refined Quartz
+                "{{i18n:big-craftable.StoneBath.name}}": "390 250 338 5/Home/Ivy_OrnithologistsGuild_StoneBath/true/default/{{i18n:big-craftable.StoneBath.name}}",
+                // 250 Stone, 5 Refined Quartz, 10 Battery Pack
+                "{{i18n:big-craftable.HeatedStoneBath.name}}": "390 250 338 5 787 10/Home/Ivy_OrnithologistsGuild_HeatedStoneBath/true/default/{{i18n:big-craftable.HeatedStoneBath.name}}"
+            }
+        }
+    ]
+}

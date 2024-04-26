@@ -57,7 +57,7 @@ namespace JsonAssets.Patches
         }
         private static void Before_SetUpShopOwner2(ShopOwnerData ownerData, NPC owner)
         {
-            ShopMenuPatcher.LastShopOwner = ownerData.Name;
+            ShopMenuPatcher.LastShopOwner = ownerData?.Name;
         }
     }
 }

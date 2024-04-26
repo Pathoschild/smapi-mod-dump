@@ -1,0 +1,16 @@
+﻿{
+  "Name": "RobinBuildingToken",
+  "Author": "NateMod",
+  "Version": "1.0.0",
+  "Description": "Returns whether Robin is currently building something on the Farm and allows that to be used as a token in CP.",
+  "UniqueID": "NateMod.RobinBuildingToken",
+  "EntryDll": "RobinBuildingToken.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

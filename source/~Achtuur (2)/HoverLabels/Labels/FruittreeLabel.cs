@@ -11,6 +11,7 @@
 using HoverLabels.Framework;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.GameData.FruitTrees;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace HoverLabels.Labels;
 internal class FruittreeLabel : BaseLabel
 {
     FruitTree hoverTree;
-    SObject treeFruit;
+    FruitTreeData treeFruit;
     public FruittreeLabel(int? priority=null) : base(priority)
     {
     }
@@ -38,23 +39,24 @@ internal class FruittreeLabel : BaseLabel
     {
         base.SetCursorTile(cursorTile);
         this.hoverTree = Game1.currentLocation.terrainFeatures[cursorTile] as FruitTree;
-        this.treeFruit = ModEntry.GetObjectWithId(hoverTree.indexOfFruit.Value);
+        this.treeFruit = hoverTree.GetData();
     }
     public override void GenerateLabel()
     {
-        this.Name = $"{treeFruit.DisplayName} Tree";
+        string FruitName = ModEntry.GetObjectWithId(treeFruit.Fruit.First().ItemId).DisplayName;
+        AddBorder(I18n.LabelFruittreeName(FruitName));
 
         // Not fully grown
         if (hoverTree.daysUntilMature.Value > 0)
         {
             int days = this.hoverTree.daysUntilMature.Value;
-            this.Description.Add(I18n.LabelFruittreeGrow(days));
+            AddBorder(I18n.LabelFruittreeGrow(days));
         }
         // Fully grown
         else
         {
-            int fruitAmount = this.hoverTree.fruitsOnTree.Value;
-            this.Description.Add(I18n.LabelFruittreeAmount(this.treeFruit.DisplayName, fruitAmount));
+            int fruitAmount = this.hoverTree.fruit.Count();
+            AddBorder(I18n.LabelFruittreeAmount(FruitName, fruitAmount));
         }
     }
 }

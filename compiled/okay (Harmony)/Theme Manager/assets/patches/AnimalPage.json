@@ -1,0 +1,31 @@
+{
+	"ID": "AnimalPage",
+
+	"ColorVariables": {
+		"$AnimalPage:Text": "$Text"
+	},
+
+	"FontVariables": {
+		"$AnimalPage:Small": "$Small",
+		"$AnimalPage:Dialogue": "$Dialogue"
+	},
+
+	"Patches": {
+		"#AnimalPage:draw": {
+			"FontFields": {
+				"Game1:smallFont": { "*": "$AnimalPage:Small" }
+			}
+		},
+
+		"#AnimalPage:drawNPCSlot": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$AnimalPage:Text" }
+			},
+
+			"FontFields": {
+				"Game1:smallFont": { "*": "$AnimalPage:Small" },
+				"Game1:dialogueFont": { "*": "$AnimalPage:Dialogue" }
+			}
+		}
+	}
+}

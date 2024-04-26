@@ -47,6 +47,9 @@ namespace Pathoschild.Stardew.Automate.Framework.Models
         /// <remarks>The <see cref="JunimoHutBehavior.AutoDetect"/> option is equivalent to <see cref="JunimoHutBehavior.Ignore"/> (if Better Junimos is installed), else <see cref="JunimoHutBehavior.MoveIntoChests"/>.</remarks>
         public JunimoHutBehavior JunimoHutBehaviorForSeeds { get; set; } = JunimoHutBehavior.AutoDetect;
 
+        /// <summary>Whether to collect moss on trees.</summary>
+        public bool CollectTreeMoss { get; set; } = true;
+
         /// <summary>Whether to log a warning if the player installs a custom-machine mod that requires a separate compatibility patch which isn't installed.</summary>
         public bool WarnForMissingBridgeMod { get; set; } = true;
 

@@ -1,0 +1,8 @@
+{
+  "config-help-key": "mit dieser Schaltfläche wird die Agenda aktiviert",
+  "config-help-silent": "Menüton deaktivieren",
+  "config-label-key": "Agenda button",
+  "config-label-silent": "Leiser Betrieb",
+  "passive-festival-begin": "beginnt",
+  "passive-festival-end": "endet"
+}

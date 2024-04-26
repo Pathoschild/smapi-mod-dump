@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Nom0ri/StatueShortsRedux
+**
+*************************************************/
+
+{
+  "Name": "Statue Shorts Redux",
+  "Author": "aedenthorn - update by Nom0ri",
+  "Version": "1.0",
+  "Description": "Statue Shorts",
+  "UniqueID": "aedenthorn.StatueShorts",
+  "EntryDll": "StatueShorts.dll",
+  "MinimumApiVersion": "3.15.0",
+  "Dependencies": [
+  ],
+  "UpdateKeys": [ "Nexus:22135" ]
+}

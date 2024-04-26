@@ -6,9 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit 372984d5a38947baf48705f434e37b9ef927d373
+   commit 30148011e0d65c4cd02ec158ad8d373c1f9b3cbb
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Mar 20 07:52:41 2024 +1100
+   Date:   Thu Apr 11 16:40:53 2024 +1000
    
-       update contentpack info
+       Merge branch '1.6_contentpacks'
    

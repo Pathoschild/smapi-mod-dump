@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using ItemExtensions.Models.Items;
 using Microsoft.Xna.Framework;
 
 namespace ItemExtensions.Models.Contained;

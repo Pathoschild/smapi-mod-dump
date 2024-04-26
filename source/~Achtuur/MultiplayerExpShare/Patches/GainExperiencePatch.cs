@@ -68,7 +68,6 @@ public class GainExperiencePatch : BaseExpPatcher
 
         int level = __instance.GetSkillLevel(which);
         int actor_exp = GetActorExp(howMuch, level, skillName);
-
         // Calculate shared exp, with rounding
         int shared_exp = (int)Math.Round(howMuch * ModEntry.GetSharedExpPercentage(level, skillName) / nearbyFarmers.Length);
 

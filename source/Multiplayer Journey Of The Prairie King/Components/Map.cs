@@ -19,14 +19,7 @@ namespace MultiplayerPrairieKing.Components
 {
     public class Map
     {
-        readonly GameMultiplayerPrairieKing gameInstance;
-
         private readonly MAP_TILE[,] _map = new MAP_TILE[16, 16];
-
-        public Map(GameMultiplayerPrairieKing gameInstance)
-        {
-            this.gameInstance = gameInstance;
-        }
 
         public MAP_TILE this[int x, int y]
         {
@@ -52,7 +45,19 @@ namespace MultiplayerPrairieKing.Components
             return true;
         }
 
-        public bool IsCollidingWithMonster(Rectangle r, Enemy subject)
+        public bool IsCollidingWithMonster(Rectangle r, GameMultiplayerPrairieKing gameInstance)
+        {
+            foreach (Enemy c in gameInstance.monsters)
+            {
+                if (Math.Abs(c.position.X - r.X) < 48 && Math.Abs(c.position.Y - r.Y) < 48 && r.Intersects(new Rectangle(c.position.X, c.position.Y, 48, 48)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsCollidingWithMonster(Rectangle r, Enemy subject, GameMultiplayerPrairieKing gameInstance)
         {
             foreach (Enemy c in gameInstance.monsters)
             {

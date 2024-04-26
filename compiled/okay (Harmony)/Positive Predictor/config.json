@@ -1,0 +1,23 @@
+{
+  "ShowLuckOfTomorrow": true,
+  "LookForPrismaticButterfly": true,
+  "PreviewGeodeContent": true,
+  "DisplayLadderIconOfMine": true,
+  "DisplayIslandBirdGem": true,
+  "DisplayWeatherOnCalendar": true,
+  "DisplayFishingBubblesAtBegin": true,
+  "DisplayFishingBubblesLimitDays": 28,
+  "MovieTheaterOpenCraneGame": true,
+  "SeedMakerBumperHarvest": true,
+  "SeedMakerConfig": [
+    "454/499/3",
+    "417/347/3"
+  ],
+  "JourneyOfThePrairieKingEasier": true,
+  "JourneyOfThePrairieKingEffects": [
+    2,
+    3,
+    6,
+    7
+  ]
+}

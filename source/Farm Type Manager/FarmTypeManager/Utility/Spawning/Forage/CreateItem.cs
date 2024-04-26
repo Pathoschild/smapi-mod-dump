@@ -149,6 +149,14 @@ namespace FarmTypeManager
                             return null;
                         }
                         break;
+                    case "fence":
+                    case "fences":
+                        item = new Fence(tile, save.StringID, false); //isGate = false
+                        break;
+                    case "gate":
+                    case "gates":
+                        item = new Fence(tile, save.StringID, true); //isGate = true
+                        break;
                     case "(f)":
                     case "f":
                     case "furniture":
@@ -189,6 +197,12 @@ namespace FarmTypeManager
                     case "tool":
                     case "tools":
                         item = ItemRegistry.Create("(T)" + save.StringID);
+                        break;
+                    case "(tr)":
+                    case "tr":
+                    case "trinket":
+                    case "trinkets":
+                        item = ItemRegistry.Create("(TR)" + save.StringID);
                         break;
                     case "(w)":
                     case "w":

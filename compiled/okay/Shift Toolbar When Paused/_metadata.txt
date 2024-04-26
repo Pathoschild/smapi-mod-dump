@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/21613
+IDs: Zamiel.ShiftToolbarWhenPaused
+update keys: GitHub:Zamiell/stardew-valley-mods, Nexus:21613

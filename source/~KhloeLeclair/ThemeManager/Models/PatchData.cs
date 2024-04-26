@@ -17,6 +17,8 @@ namespace Leclair.Stardew.ThemeManager.Models;
 
 public class PatchData {
 
+	public bool WarnIfNotFound { get; set; } = true;
+
 	public CaseInsensitiveDictionary<Dictionary<string, string>>? Colors { get; set; }
 
 	public CaseInsensitiveDictionary<Dictionary<string, string>>? RawColors { get; set; }
@@ -26,6 +28,8 @@ public class PatchData {
 	public CaseInsensitiveDictionary<Dictionary<string, string>>? FontFields { get; set; }
 
 	public CaseInsensitiveDictionary<Dictionary<string, string>>? TextureFields { get; set; }
+
+	public Dictionary<int, Dictionary<string, string>>? SpriteTextColors { get; set; }
 
 	public Dictionary<string, string[]>? SpriteTextDraw { get; set; }
 

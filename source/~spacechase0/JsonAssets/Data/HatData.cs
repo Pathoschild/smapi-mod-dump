@@ -24,7 +24,13 @@ namespace JsonAssets.Data
         ** Accessors
         *********/
         /// <inheritdoc />
-        public string Description { get; set; }
+        public string Description
+        {
+            get => descript;
+            set => descript = value ?? " ";
+        }
+        private string descript = " ";
+
         public string PurchaseFrom { get; set; } = "HatMouse";
         public int PurchasePrice { get; set; }
         public bool ShowHair { get; set; }
@@ -49,7 +55,7 @@ namespace JsonAssets.Data
         *********/
         internal string GetHatInformation()
         {
-            return $"{this.Name}/{this.LocalizedDescription()}/" + (this.ShowHair ? "true" : "false") + "/" + (this.IgnoreHairstyleOffset ? "true" : "false") + $"/{this.Metadata}/{this.LocalizedName()}/0/JA\\Hat\\{Name.FixIdJA()}";
+            return $"{this.Name.FixIdJA("H")}/{this.LocalizedDescription()}/" + (this.ShowHair ? "true" : "false") + "/" + (this.IgnoreHairstyleOffset ? "true" : "false") + $"/{this.Metadata}/{this.LocalizedName()}/0/JA\\Hat\\{Name.FixIdJA("H")}";
         }
 
 

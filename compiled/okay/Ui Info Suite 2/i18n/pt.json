@@ -1,31 +1,31 @@
 {
   // GUI - Game Menu
-  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
+  "OptionsTabTooltip": "Opções do UI Info Suite 2",
   //GUI - Billboard
   "Billboard": "Quadro de avisos",
   "Calendar": "Calendário",
   //GUI - Seed shop
-  "HarvestPrice": "Colheita",
+  "HarvestPrice": "Preço da Colheita",
   //Production
   "Days": "dias",
   "Hours": "horas",
   "Minutes": "minutos",
   //Harvest
   "DaysToMature": "dias para amadurecer",
-  "ReadyToHarvest": "pronto para colher!",
+  "ReadyToHarvest": "Pronto para colher!",
   //Display icons - General
   "TodaysRecipe": "Receita de hoje: ",
   "TravelingMerchantIsInTown": "O mercador está na cidade!",
-  "RainNextDay": "Vai chover amanhã",
+  "RainNextDay": "Choverá amanhã",
   "ThunderstormNextDay": "Haverá uma tempestade amanhã",
-  "SnowNextDay": "Vai nevar amanhã",
-  "IslandRainNextDay": "Vai chover amanhã",
-  "IslandThunderstormNextDay": "Haverá uma tempestade amanhã",
+  "SnowNextDay": "Nevará amanhã",
+  "IslandRainNextDay": "Choverá na ilha amanhã",
+  "IslandThunderstormNextDay": "Haverá uma tempestade na ilha amanhã",
   "DaysUntilToolIsUpgraded": "{1} ficará pronto em {0} dia(s)",
   "ToolIsFinishedBeingUpgraded": "{0} está pronto!",
   "NpcBirthday": "Aniversariante do dia: {0}",
   "RobinBuildingStatus": "Robin terminará sua construção em {0} dia(s)",
-  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
+  "RobinHouseUpgradeStatus": "Robin terminará a melhoria na sua casa em {0} dia(s)",
   // Display icons - Foragables
   "CanFindSalmonberry": "Você pode encontrar amoras-silvestres hoje",
   "CanFindBlackberry": "Você pode encontrar amoras hoje",
@@ -38,26 +38,26 @@
   "MaybeStayHome": "Os espíritos estão muito aborrecidos",
   "LuckStatus1": "Os espíritos estão muito felizes!",
   "LuckStatus2": "Os espíritos estão de bom humor",
-  "LuckStatus3": "Os espíritos estão neutros",
-  "LuckStatus4": "Os espíritos estão neutros",
-  "LuckStatus5": "Os espíritos estão meio aborrecidos",
+  "LuckStatus3": "Os espíritos se sentem neutros hoje.",
+  "LuckStatus4": "Os espíritos se sentem absolutamente neutros hoje.",
+  "LuckStatus5": "Os espíritos estão pouco aborrecidos",
   "LuckStatus6": "Os espíritos estão muito aborrecidos",
   //Settings - General
-  "ShowLevelUpAnimation": "Mostrar animação de Level Up",
+  "ShowLevelUpAnimation": "Mostrar animação de subida de nível",
   "ShowExperienceBar": "Mostrar barra de experiência",
-  "AllowExperienceBarToFadeOut": "Ocultar barra de exp automaticamente",
+  "AllowExperienceBarToFadeOut": "Ocultar barra de experiência automaticamente",
   "ShowExperienceGain": "Mostrar ganho de experiência",
   "ShowLocationOfTownsPeople": "Mostrar pessoas da cidade no mapa",
   "ShowAnimalsNeedPets": "Mostra animais q precisam de carinho",
   "HideAnimalPetOnMaxFriendship": "Esconder na amizade máxima",
   "ShowCropAndBarrelTooltip": "Mostrar tempo de colheita e produção",
-  "ShowItemEffectRanges": "Exibe alcance do espantalho/aspersor",
-  "ShowExtraItemInformation": "Exibir infos extras sobre os items",
+  "ShowItemEffectRanges": "Exibe alcance do espantalho e aspersor",
+  "ShowExtraItemInformation": "Exibir informações extras sobre os items",
   "ShowHarvestPricesInShop": "Mostrar preços de colheita na loja",
   //Settings - Tabs info
   "DisplayCalendarAndBillboard": "Inventário: Exibir ícone calendário",
-  "ShowHeartFills": "Social: Exibir preench. dos corações",
-  "ShowTodaysGifts": "Social: Exibir presentes dados",
+  "ShowHeartFills": "Exibir preenchimento dos corações",
+  "ShowTodaysGifts": "Exibir presentes dados hoje",
   //Settings - Show icons
   "ShowBirthdayIcon": "Exibir ícone dos aniversariantes",
   "HideBirthdayIfFullFriendShip": "Esconder na amizade máxima",
@@ -72,5 +72,5 @@
   "ShowSeasonalBerry": "Mostrar coletáveis sazonais",
   "ShowSeasonalBerryHazelnut": "Mostrar avelãs nas árvores",
   //Others
-  "LevelUp": "Level Up"
+  "LevelUp": "Subir de nível"
 }

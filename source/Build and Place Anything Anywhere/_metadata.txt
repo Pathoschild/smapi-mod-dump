@@ -6,9 +6,9 @@ mods:
    Build and Place Anything Anywhere
 
 latest commit:
-   commit 3162e2e9ee8959e1dffba5361f5f69dfa42c9303
+   commit 61315c2b2214a67c60a98844e4574b1f04340bd8
    Author: Smoked Fish <espy.jacob@gmail.com>
-   Date:   Sun Mar 31 23:05:17 2024 -0700
+   Date:   Wed Apr 17 20:40:08 2024 -0700
    
-       trees and farming
+       new debug command & rug removal bypass
    

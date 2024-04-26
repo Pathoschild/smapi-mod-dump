@@ -9,17 +9,26 @@
 *************************************************/
 
 {
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "leclair.almanac",
   "Name": "Almanac",
   "Author": "Khloe Leclair",
-  "Version": "0.18.1",
+  "Version": "0.18.1-Debug",
   "Description": "Adds an Almanac for the player, with forecasts, planting dates, and other calendar information useful for a farmer.",
-  "UniqueID": "leclair.almanac",
-  "EntryDll": "Almanac.dll",
   "MinimumApiVersion": "3.17.0",
-  "UpdateKeys": [
-    "Nexus:11022@Main"
-  ],
+  "EntryDll": "Almanac.dll",
   "Dependencies": [
+    {
+      "UniqueID": "leclair.giantcroptweaks",
+      "IsRequired": false
+    },
     {
       "UniqueID": "Pathoschild.ContentPatcher",
       "IsRequired": false
@@ -35,10 +44,9 @@
     {
       "UniqueID": "spacechase0.MoreGiantCrops",
       "IsRequired": false
-    },
-    {
-      "UniqueID": "leclair.giantcroptweaks",
-      "IsRequired": false
     }
+  ],
+  "UpdateKeys": [
+    "Nexus:11022@Main"
   ]
 }

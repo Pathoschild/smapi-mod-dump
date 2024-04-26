@@ -3,7 +3,7 @@
   "UniqueID": "drbirbdev.BirbCore",
   "Name": "BirbCore",
   "Author": "drbirbdev",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Core Functionality for drbirbdev mods",
   "MinimumApiVersion": "4.0",
   "EntryDll": "BirbCore.dll",

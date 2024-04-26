@@ -188,6 +188,35 @@ namespace FarmTypeManager
                                     }
                                 }
                                 break;
+                            case "fence":
+                            case "fences":
+                            case "gate":
+                            case "gates":
+                                //if a fence exists at the saved tile with a matching ID
+                                if (location.Objects.TryGetValue(saved.Tile, out realObject) && realObject is Fence realFence && realFence.ItemId == saved.StringID)
+                                {
+                                    stillExists = true;
+
+                                    if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                        realFence.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
+
+                                    if (endOfDay) //if expirations should be processed
+                                    {
+                                        if (saved.DaysUntilExpire == 1) //if the fence should expire tonight
+                                        {
+                                            Monitor.VerboseLog($"Removing expired object. Type: Fence. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                            realFence.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                            realFence.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
+                                            location.removeObject(saved.Tile, false); //remove the object from the game
+                                            objectsToRemove.Add(saved); //mark object for removal from save
+                                        }
+                                        else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                        {
+                                            saved.DaysUntilExpire--; //decrease counter by 1
+                                        }
+                                    }
+                                }
+                                break;
                             case "(f)":
                             case "f":
                             case "furniture":

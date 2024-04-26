@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
@@ -21,32 +22,53 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     public class Door
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public const string ItemId = "DLX.PIF_Door";
         public const string QualifiedItemId = "(F)" + ItemId;
 
         public const string LastDoorLocationKey = "DLX.PIF_LastDoorLocation";
 
+        public const string SoundDoor = "";
+        public const string SoundSilent = "Silent_";
+        public const string SoundWoodStep = "WoodStep_";
+
+        public static readonly List<string> VanillaDoors = new() {
+            "DecorativeJojaDoor",
+            "DecorativeWizardDoor",
+            "DecorativeJunimoDoor",
+            "DecorativeRetroDoor",
+            "DecorativeDoor1",
+            "DecorativeDoor2",
+            "DecorativeDoor3",
+            "DecorativeDoor4",
+            "DecorativeDoor5",
+            "DecorativeDoor6"
+        };
+
+        public static readonly List<string> VMVDoors = new() {
+            "Lumisteria.MtVapius_FurnitureDeluxeSet_Door01",
+            "Lumisteria.MtVapius_FurnitureDarkDeluxeSet_Door01"
+        };
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
+            //Working around a Harmony Bug where PlacementPlus also Prefixed Furniture.checkForAction, but this for some reason removed my patch from the result
+            Helper.Events.GameLoop.DayStarted += DayStarted;
+        }
 
-            var harmony = new Harmony(Mod.ModManifest.UniqueID);
-
+        private static void DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        {
+            var harmony = new Harmony(ModManifest.UniqueID);
             harmony.Patch(
                 original: AccessTools.DeclaredMethod(typeof(Furniture), nameof(Furniture.checkForAction), new[] { typeof(Farmer), typeof(bool) }),
-                prefix: new HarmonyMethod(typeof(Door), nameof(Door.checkForAction_Prefix))
+                prefix: new HarmonyMethod(typeof(Door).GetMethod(nameof(checkForAction_Prefix)), priority: Priority.First)
             );
+
+            Helper.Events.GameLoop.DayStarted -= DayStarted;
         }
 
         public static Warp getWarpToLast(Farmer who)
@@ -61,21 +83,38 @@ namespace PersonalIndoorFarm.Lib
 
             return new Warp(0, 0, who.homeLocation.Value, (int)who.mostRecentBed.X / 64, 1 + (int)who.mostRecentBed.Y / 64, false);
         }
-
         public static bool checkForAction_Prefix(Furniture __instance, ref bool __result)
         {
             try {
-                if (!__instance.QualifiedItemId.StartsWith(QualifiedItemId))
+                if (!isDimensionDoor(__instance.ItemId, out string doorId))
                     return true;
 
                 __result = true;
-                var doorId = __instance.QualifiedItemId.Split("_").Last();
                 checkWarp(doorId);
                 return false;
             } catch (Exception err) {
                 Monitor.LogOnce("Error at Door.checkForAction_Prefix:\n" + err.Message, LogLevel.Error);
                 return true;
             }
+        }
+
+        public static bool isDimensionDoor(string itemId, out string doorId)
+        {
+            if (itemId.StartsWith(ItemId)) {
+                doorId = itemId.Substring(ItemId.Length + 1);
+                return true;
+
+            } else if (Config.UseVanillaDoors && VanillaDoors.Contains(itemId)) {
+                doorId = "Vanilla." + itemId;
+                return true;
+
+            } else if(Config.UseVMVDoors && VMVDoors.Contains(itemId)) {
+                doorId = itemId;
+                return true;
+            }
+
+            doorId = null;
+            return false;
         }
 
         public static void checkWarp(string doorId)
@@ -113,7 +152,7 @@ namespace PersonalIndoorFarm.Lib
 
                     owner.modData.Add(PersonalFarm.generateFarmerPIDKey(doorId), pid);
                     var location = PersonalFarm.createLocation(pid, Game1.player, doorId);
-                    Helper.Multiplayer.SendMessage(new ShareLocationModel(pid, doorId, Game1.player.UniqueMultiplayerID), "shareLocation", new[] { Mod.ModManifest.UniqueID });
+                    Helper.Multiplayer.SendMessage(new ShareLocationModel(pid, doorId, Game1.player.UniqueMultiplayerID), "shareLocation", new[] { ModManifest.UniqueID });
                     PersonalFarm.setInitialDayAndSeason(location);
                 };
                 Game1.activeClickableMenu = farmSelection;
@@ -124,16 +163,28 @@ namespace PersonalIndoorFarm.Lib
             Game1.player.modData[LastDoorLocationKey] = $"{Game1.player.currentLocation.NameOrUniqueName};{Game1.player.TilePoint.X};{Game1.player.TilePoint.Y}";
 
             var model = PersonalFarm.getModel(pid);
-            if( model is null) {
+            if (model is null) {
                 Game1.showRedMessage(Helper.Translation.Get("Door.Empty"));
                 return;
             }
-            
-            Game1.currentLocation.playSound("doorOpen", Game1.player.Tile);
+
+            playDoorSound(doorId);
 
             var target = PersonalFarm.getArrivalTile(Game1.getFarmerMaybeOffline(fh.OwnerId), model);
             Game1.player.warpFarmer(new Warp(0, 0, PersonalFarm.generateLocationKey(pid, fh.OwnerId, doorId), target.X, target.Y, false));
             var location = Game1.getLocationFromName(PersonalFarm.generateLocationKey(pid, fh.OwnerId, doorId)); //For debugging :)
+        }
+
+        private static void playDoorSound(string doorId)
+        {
+            if (doorId.StartsWith(SoundSilent))
+                return;
+            else if (doorId.StartsWith(SoundWoodStep)) {
+                Game1.currentLocation.playSound("woodyStep", Game1.player.Tile);
+                DelayedAction.playSoundAfterDelay("woodyStep", 300, Game1.currentLocation, Game1.player.Tile);
+                DelayedAction.playSoundAfterDelay("woodyStep", 600);
+            } else
+                Game1.currentLocation.playSound("doorOpen", Game1.player.Tile);
         }
 
         public static List<string> getDoorIds(Farmer who)

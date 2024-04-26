@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22354
+IDs: SirDigby.NoOffscreenFlyers
+update keys: Nexus:22354

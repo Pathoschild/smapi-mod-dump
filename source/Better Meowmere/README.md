@@ -16,7 +16,7 @@ A few config options are also included to customise your meowmere experience. Li
 
 - ProjectileSounds (default is All): All: all sound effects, Some: no sound effects when bouncing off walls, None: No sound effects.
 - ProjectileIsSecondaryAttack (default is true): Projectile is shot using the secondary attack, set this to false if you want the projectile to be shot using the primary attack instead (this would be more in line with how the weapon functions in Terraria)
-- BuffAttack (default is false): Set this to true to make the sword deal more damage (and make the sword Terraria level overpowered). 
+- AttackDamage (default is 20): The average attack damage of the meowmere blade. Projectiles will do about half this damage. Make the sword Terraria level overpowered!
 
 Changes to buff attack will only be applied to newly acquired meowmeres and to any meowmeres stored in the player inventory upon saving. Ensure the meowmere is in your inventory when saving if the BuffAttack setting is changed to ensure changes apply.
 
@@ -47,3 +47,4 @@ Should be fully compatible with multiplayer although this has not been tested. L
 
 ### Version History: ###
 1.0.0 - initial release
+1.0.1 - Improved collision, adjustable attack damage, bug fixes

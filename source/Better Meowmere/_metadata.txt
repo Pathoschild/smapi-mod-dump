@@ -6,9 +6,9 @@ mods:
    Better Meowmere
 
 latest commit:
-   commit 415bce3f7aafa0bcacda247c38c5035e747b86fe
+   commit d2e4cf1a08ad5dc98877bcfa53e49d74ff8c90c4
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Mar 27 16:20:16 2024 +1100
+   Date:   Thu Apr 4 09:19:53 2024 +1100
    
-       Merge branch 'master' of https://github.com/TheMightyAmondee/BetterMeowmere
+       fix enchants disappearing
    

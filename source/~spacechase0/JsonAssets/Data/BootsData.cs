@@ -32,7 +32,12 @@ namespace JsonAssets.Data
         public Texture2D TextureColor { get; set; }
 
         /// <inheritdoc />
-        public string Description { get; set; }
+        public string Description
+        {
+            get => descript;
+            set => descript = value ?? " ";
+        }
+        private string descript = " ";
 
         public int Price { get; set; }
 
@@ -65,7 +70,7 @@ namespace JsonAssets.Data
 
         internal string GetBootsInformation()
         {
-            return $"{this.Name}/{this.LocalizedDescription()}/{this.Price}/{this.Defense}/{this.Immunity}/0/{this.LocalizedName()}/JA\\BootsColor\\{Name.FixIdJA()}/0/JA\\Boots\\{Name.FixIdJA()}";
+            return $"{this.Name}/{this.LocalizedDescription()}/{this.Price}/{this.Defense}/{this.Immunity}/0/{this.LocalizedName()}/JA\\BootsColor\\{Name.FixIdJA("B")}/0/JA\\Boots\\{Name.FixIdJA("B")}";
         }
 
 

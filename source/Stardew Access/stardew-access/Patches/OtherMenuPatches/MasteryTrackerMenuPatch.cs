@@ -55,7 +55,7 @@ internal class MasteryTrackerMenuPatch : IPatch
             bool wasSpoken = MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-mastery-walls-claim_button", true, translationTokens: new
             {
                 name = Game1.content.LoadString("Strings\\1_6_Strings:" + ___which + "_Mastery"),
-                rewards = rewards
+                rewards
             });
 
             if (wasSpoken && !___canClaim)

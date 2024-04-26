@@ -6,17 +6,9 @@ mods:
    Forage Pointers
 
 latest commit:
-   commit 38ea9fa8535a706f8fec8be8c0a6dd69b91d69d4
+   commit a8de5b74c0e8e6555f618e73b9d88fdfafbe9906
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Sun Mar 24 14:16:38 2024 -0700
+   Date:   Sat Apr 13 13:16:44 2024 -0700
    
-       Full Update for 1.6 (#3)
-       
-       * Replace getTileLocation to Tile and change context when pointer is drawn
-       
-       * Full 1.6/4.0 update
-       
-       ---------
-       
-       Co-authored-by: itsbenter <68511682+itsbenter@users.noreply.github.com>
+       Update README.md
    

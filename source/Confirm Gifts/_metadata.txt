@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/BadScientist/ConfirmGifts
+   Git: https://github.com/BadScientist/ConfirmGifts.git
+
+mods:
+   Confirm Gifts
+
+latest commit:
+   commit 55dfc477661f3801cac4b855feebc014dc08f1ba
+   Author: Joseph Tong <jdtong89@gmail.com>
+   Date:   Thu Apr 25 18:25:47 2024 -0500
+   
+       Update manifest.json
+       
+       Added Nexus update key
+   

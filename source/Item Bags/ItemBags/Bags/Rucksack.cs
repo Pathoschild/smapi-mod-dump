@@ -246,6 +246,7 @@ namespace ItemBags.Bags
             InitializeSizeSettings();
             LoadTextures();
             OnSizeChanged += Rucksack_OnSizeChanged;
+            GMCM.OnConfigChanged += (sender, e) => { InitializeSizeSettings(); };
         }
 
         private void Rucksack_OnSizeChanged(object sender, EventArgs e)
@@ -273,6 +274,7 @@ namespace ItemBags.Bags
             InitializeSizeSettings();
             LoadTextures();
             OnSizeChanged += Rucksack_OnSizeChanged;
+            GMCM.OnConfigChanged += (sender, e) => { InitializeSizeSettings(); };
         }
 
         public Rucksack(BagInstance SavedData)
@@ -376,7 +378,7 @@ namespace ItemBags.Bags
                 return true;
 
             return base.IsValidBagObject(Item) && !BlacklistedItemIds.Contains(Item.ParentSheetIndex)
-                && (!Item.GetType().IsSubclassOf(typeof(Object)) || Item is ColoredObject)
+                && (!Item.GetType().IsSubclassOf(typeof(Object)) || Item is ColoredObject || Item is Torch)
                 && !Item.IsRecipe
                 && Item.maximumStackSize() > 1; // Possible TODO: Remove this condition, and add logic to account for it in: IsFull, GetNumEmptySlots, GetMaxStackSize, GetNumSlots, MoveToBag, and the Menu handling logic
 

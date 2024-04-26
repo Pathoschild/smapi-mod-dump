@@ -398,7 +398,7 @@ public class DynamicTiles
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
-                name = Translator.Instance.Translate("tile-mail_box-unread_mail_count-prefix", new
+                name = Translator.Instance.Translate("tile_name-mail_box-unread_mail_count-prefix", new
                 {
                     mail_count = mailbox.Count,
                     content = name
@@ -493,7 +493,7 @@ public class DynamicTiles
             var mailbox = Game1.player.mailbox;
             if (mailbox is not null && mailbox.Count > 0)
             {
-                mailboxName = Translator.Instance.Translate("tile-mail_box-unread_mail_count-prefix", new
+                mailboxName = Translator.Instance.Translate("tile_name-mail_box-unread_mail_count-prefix", new
                 {
                     mail_count = mailbox.Count,
                     content = mailboxName
@@ -570,13 +570,9 @@ public class DynamicTiles
         {
             return ("tile_name-traveling_cart_pig", CATEGORY.NPCs);
         }
-        else if (forest.obsolete_log != null && x == 2 && y == 7) // TODO Check for conflicts
+        else if (Game1.MasterPlayer.mailReceived.Contains("raccoonTreeFallen") && x == 56 && y == 6)
         {
-            return ("item_name-log", CATEGORY.Interactables);
-        }
-        else if (forest.obsolete_log == null && x == 0 && y == 7) // TODO Check for conflicts
-        {
-            return ("entrance_name-secret_woods_entrance", CATEGORY.Doors);
+            return ("tile-forest-giant_tree_sump", forest.stumpFixed.Value ? CATEGORY.Decor : CATEGORY.Quest);
         }
 
         return (null, null);
@@ -624,6 +620,10 @@ public class DynamicTiles
         if (islandNorth.traderActivated.Value && x == 36 && y == 71)
         {
             return ("npc_name-island_trader", CATEGORY.Interactables);
+        }
+        else if (!islandNorth.caveOpened.Value && y == 47 && (x == 21 || x == 22))
+        {
+            return ("tile-resource_clump-boulder-name", CATEGORY.ResourceClumps);
         }
 
         // Return (null, null) if no relevant object is found
@@ -763,6 +763,14 @@ public class DynamicTiles
         // If a parrot perch was found at the specified tile coordinates
         if (foundPerch != null)
         {
+            if (foundPerch.upgradeName.Value == "GoldenParrot") return Translator.Instance.Translate("building-golden_parrot");
+            if (islandLocation is IslandWest islandWest)
+            {
+                if (islandWest.farmhouseMailbox.Value && foundPerch.tilePosition.X == 81 && foundPerch.tilePosition.Y == 40)
+                {
+                    return "tile_name-mail_box";
+                }
+            }
             string toSpeak = Translator.Instance.Translate("building-parrot_perch-required_nuts", new { item_count = foundPerch.requiredNuts.Value });
 
             // Return appropriate string based on the current state of the parrot perch
@@ -802,7 +810,20 @@ public class DynamicTiles
         }
         else if (parrot != null)
         {
-            return (parrot, CATEGORY.Buildings);
+            if (islandLocation is IslandWest islandWest && islandWest.farmhouseMailbox.Value && parrot == "tile_name-mail_box")
+            {
+                var mailbox = Game1.player.mailbox;
+                string content = Translator.Instance.Translate(parrot);
+                if (mailbox != null && mailbox.Count > 0)
+                {
+                    return (Translator.Instance.Translate("tile_name-mail_box-unread_mail_count-prefix", new { mail_count = mailbox.Count, content }), CATEGORY.Ready);
+                }
+                return (content, CATEGORY.Interactables);
+            }
+            else
+            {
+                return (parrot, CATEGORY.Buildings);
+            }
         }
 
         return islandLocation switch

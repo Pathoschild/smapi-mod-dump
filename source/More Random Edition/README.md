@@ -39,7 +39,7 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 
 * Bundle randomization
   * New bundles for each room with random items selected from themed pools and random number of those items required
-  * IMPORTANT: DO NOT use the new Stardew Valley 1.5 feature for the remixed bundles if using this feature! This will overwrite this mod's randomization and result in the incorrect images being used for the bundle pictures.
+  * IMPORTANT: DO NOT use remixed bundles if using this feature! This will overwrite this mod's randomization and result in the incorrect images being used for the bundle pictures.
   * Some bundles are completely random and select from most items in the game.
   * Optionally (on by default), the community center now has tooltips over the possible things to put in a bundle to make it easier to identify where to get fish and other items.
 * Crafting recipe randomization
@@ -64,8 +64,12 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
   * Foragables will have the seasons they can be foraged in listed on them
   * Every forageable appears at least once per year, and some may appear more than once
 * Fruit tree randomization
-  * Fruit tree saplings are now item saplings that grow a randomly selected item
+  * Fruit tree saplings are now item saplings that grow different items
   * Prices will be randomized and are loosely balanced based on the item they give
+  * 2 trees give items from a random category
+  * 1 tree gives a random item from the "Objects" list ("O" Sapling)
+  * 1 tree gives a random item from the "Big Craftables" list ("BC" Sapling)
+  * 2 trees will give only a single random item
 * Weapon randomization
   * Weapon stats, types, etc. are randomized
   * Many weapons can now appear in mines containers
@@ -82,7 +86,7 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
   * Up to a 5% chance to be able to miss an attack on a monster
   * Setting to shuffle unique monster drops among all monsters (Slime, Bat Wing, Solar Essence, Bug Meat, Void Essence, and Squid Ink)
   * Each monster can now drop a new random item
-* Blueprint randomization
+* Building randomization
   * Farm buildings that you get from Robin now choose from a more random pool of resources/items instead of a set list
   * This does not yet include anything you don't get from Robin (Obelisks, the Gold Clock, etc.)
 * Shop randomization (credit to Vertigon for doing the initial work for this) - note that each of these have their own associated setting
@@ -129,7 +133,7 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
   * Horse: chooses a random horse image from the files in CustomImages/Animals/Horses
   * Pets: chooses a random pet image from the files in CustomImages/Animals/Pets
   * Rain: every day chooses a random rain image from the files in CustomImages/TileSheets
-  * Critters (unchanged from the original mod): every seed, chance of blue bunnies, white squirrels and purple seagulls, a bear crow, or a seagull crow
+  * Critters: every day, all critters will get a random hue shift
 * Music randomization
   * Most in-game songs and ambience are now randomly swapped 1 to 1 with another in-game song or ambience
   * Option to play a completely random song each time an area is moved to
@@ -142,25 +146,12 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
   * Randomizes the season and day of each NPC's birthday
   * Does not assign birthdays to the same day
   * Does not assign birthdays on the same day of most festivals (excludes night market and the moonlight jellies)
+* Garbage Can Randomizer
+  * Places disliked/hated items in garbage cans from characters that are likely to use them
 * Spoiler log
   * A spoiler log can be generated to see info about what was randomized
   * You must turn on this option in the settings to generate the log
-* Misc
-  * Bug fixes to prevent game crashing
-  * Different variants of randomized rain can now appear in one playthrough (previously only one type per playthrough)
-  * A random item is added to each location's artifact spot pool
   
-## Stardew Valley 1.5 Compatibility Notes:
-* In terms of the new items added, the following are randomized:
-  * New weapons and boots
-  * New enemies' stats and their random item drop
-  * 3 of the new songs - if anyone knows how to get the song IDs of the rest of them, that would be helpful!
-* The following are NOT randomized on the new island (these will come in a future update):
-  * The new fish will be there as expected. Existing fish tooltips will NOT reflect whether the specific fish will be found on the island.
-  * The new crops (including the fruit trees)
-  * The random artifact spot drop
-  * Any foragables
-
 ## Possible Future Features
 * Enemy changes
   * Change where enemies can appear
@@ -172,53 +163,9 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 * Randomize house upgrade cost
 * Randomize tailoring recipes
 * Add settings for more things, such as stats that can be modified on weapons, possible random names, etc.
+* More things randomized on Ginger Island
 
-## 0.7.0 Changelog (Next Release)
-* Updated for 1.6 compatibility
-  * Randomize most of the new 1.6 crafting recipes
-  * Added some of the new 1.6 items as crafting ingredients
-  * Randomized the four new artifact spot crops
-  * Updated item IDs so that string IDs are supported in the randomizer
-    * Help mitigate errors from other mods
-    * Allows for the new Stardew items to be randomized, as some of them do not use integer IDs
-  * The 1.6 update changed the filesize of rain graphics - the following changes were made accordingly:
-    * The custom rain graphics were redrawn and will now work
-    * The cats and dogs rain was removed for now, since there's not a lot of space for that much detail
-    * The readme was updated with the new dimensions
-* Randomize missing crafting recipes from 1.5
-  * Does not yet include the endgame Ginger island ones that need radioactive ore/bars
-* Recipes that roll eggs or milk will now accept any item from that category
-* Carpenter shop changes
-  * Randomized the cost of building a Pet Bowl
-  * Do not randomize cabins, since they aren't meant to cost much anymore
-* Added bone fragments to the monster drop shuffle
-* Updated the Egg Bundle to look for items in the Egg category
-  * Prevents potential issues with playing in non-english locales
-* Reworked fruit tree randomization to take advantage of the new options
-  * 2 trees now give items from a random category
-  * 1 tree gives a random item from the "Objects" list ("O" Sapling)
-  * 1 tree gives a random item from the "Big Craftables" list ("BC" Sapling)
-  * 2 trees work like before, and gives only a single random item type
-* Removed the old critter randomizer in favor of hue-shifting the current critters every day
-* Added Garbage Can Randomizer
-  * Places disliked/hated items in garbage cans from characters that are likely to use them
-* Revamped the music randomizer
-  * Now done in a way that won't check the played song every frame (improves performance)
-  * The same song played during screen transitions will no longer restart the song
-  * The RandomSongEachTransition setting is now RandomSongEachChange, which results in a new random song each time the song would normally change to something else
-* Reworked the RNG so that things can be added/modified without impacting everything for existing farms
-  * Turning settings off should make saves load faster, as we can skip unnecessary RNG calls
-* Allow custom weapon images to be used even if the weapons themselves aren't randomized
-* Cleaned up several parts of the spoiler log so it's more human-readable
-* Fixed the name randomizers to better handle more data than this mod expects to better support mods that add more content
-* Fixed the spoiler log's names for the Transmute Iron and Gold recipes
-* Fixed shop stock issues related to loading different farms in one play session
-* Fixed tappers requiring tapper products to craft
-* Fixed the title screen text edit - the leaf animation should no longer cut it off
-  * Also redid it so it's an overlay, which eliminates the need to store each modified title screen image
-  
 ## Known Issues
-* [Fixed in 0.7.0] Music restarts when you transition screens, even if it's the same song
 * This mod does not fully support other languages (but it does for the most part)
   * Randomly generated weapon/crop names are English
   * The mad-lib style crop descriptions are English

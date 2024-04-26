@@ -1,0 +1,11 @@
+{
+    "config.MaxStackingNumber.name": "Número Máximo de Empilhamento",
+    "config.MaxStackingNumber.tooltip": "O número máximo de empilhamento, o padrão é 999.",
+    "config.DefaultCraftingAmount.name": "Quantidade padrão para cozinha/construção",
+    "config.DefaultCraftingAmount.tooltip": "A quantidade padrão quando você usa Shift+clique direito no menu de cozinha/construção",
+    "config.DefaultShopAmount.name": "Quantidade padrão para compra",
+    "config.DefaultShopAmount.tooltip": "A quantidade padrão quando você usa Shift+clique direito em um menu de loja",
+    "config.EnableStackSplitRedux.name": "Ativar Split Redux",
+    "config.EnableStackSplitRedux.tooltip": "Ativar funcionalidades do Split Redux. Desmarque esta caixa se você estiver com algum problema.",
+    "ui.stacksplitmenu.title": "Selecione a quantidade"
+}

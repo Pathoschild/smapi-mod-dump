@@ -43,40 +43,47 @@ namespace HappyHomeDesigner.Integration
 
 			ModEntry.monitor.Log("Alternative Textures detected! Integrating...", LogLevel.Debug);
 
+			const BindingFlags STATIC = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+			string error = null;
+			Type entry;
+			FieldInfo manager;
+
+
+			// Find assembly
 			if (!ModUtilities.TryFindAssembly("AlternativeTextures", out var asm))
+				error = "Failed to find AT assembly, could not integrate.";
+
+			// Find mod entry
+			else if ((entry = asm.GetType("AlternativeTextures.AlternativeTextures")) is null)
+				error = "Failed to find entry point for Alternative Textures.";
+
+			// Get handle for texture manager
+			else if ((manager = entry.GetField("textureManager", STATIC)) is null)
+				error = "Failed to find texture manager.";
+
+			// bind variant checker
+			else if (!BindHasVariant(manager))
+				error = "Failed to bind HasVariant.";
+
+			// bind furniture variant factory
+			else if (!TryBindVariantsOf(manager, "Furniture_", out VariantsOfFurniture))
+				error = "Failed to bind Furniture variants.";
+
+			// bind craftable variant factory
+			else if (!TryBindVariantsOf(manager, "Craftable_", out VariantsOfCraftable))
+				error = "Failed to bind Craftable variants.";
+
+
+			if (error is null)
 			{
-				ModEntry.monitor.Log("Failed to find AT assembly, could not integrate.", LogLevel.Warn);
-				return;
-			}
-			var entry = asm.GetType("AlternativeTextures.AlternativeTextures");
-			if (entry is null)
+				ModEntry.monitor.Log("Integration successful.", LogLevel.Debug);
+				Installed = true;
+			} 
+			else
 			{
-				ModEntry.monitor.Log("Failed to find entry point for Alternative Textures.", LogLevel.Warn);
-				return;
+				ModEntry.monitor.Log("Error integrating Alternative Textures: " + error, LogLevel.Error);
+				Installed = false;
 			}
-			var manager = entry.GetField("textureManager", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-			if (manager is null)
-			{
-				ModEntry.monitor.Log("Failed to find texture manager.", LogLevel.Warn);
-				return;
-			}
-			if (!BindHasVariant(manager))
-			{
-				ModEntry.monitor.Log("Failed to bind HasVariant", LogLevel.Warn);
-				return;
-			}
-			if (!TryBindVariantsOf(manager, "Furniture_", out VariantsOfFurniture))
-			{
-				ModEntry.monitor.Log("Failed to bind Furniture variants", LogLevel.Warn);
-				return;
-			}
-			if (!TryBindVariantsOf(manager, "Craftable_", out VariantsOfCraftable))
-			{
-				ModEntry.monitor.Log("Failed to bind Craftable variants", LogLevel.Warn);
-				return;
-			}
-			ModEntry.monitor.Log("Integration successful.", LogLevel.Debug);
-			Installed = true;
 		}
 
 		private static bool BindHasVariant(FieldInfo manager)

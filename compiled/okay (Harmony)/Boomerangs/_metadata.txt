@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22724
+IDs: Arannya.Weapons.Boomerangs
+update keys: Nexus:22724, GitHub:arannya/BoomerangMod

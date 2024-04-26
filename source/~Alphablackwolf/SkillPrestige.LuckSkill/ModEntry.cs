@@ -8,28 +8,30 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using LuckSkill;
 using Microsoft.Xna.Framework;
 using SkillPrestige.LuckSkill.Framework;
-using SkillPrestige.Menus;
 using SkillPrestige.Mods;
 using SkillPrestige.Professions;
 using SkillPrestige.SkillTypes;
 using StardewModdingAPI;
 using StardewValley;
-using OriginalMod = LuckSkill;
 
 namespace SkillPrestige.LuckSkill
 {
     /// <summary>The mod entry class.</summary>
-    public class ModEntry : Mod, ISkillMod
+    internal class ModEntry : Mod, ISkillMod
     {
         /*********
         ** Fields
         *********/
         /// <summary>The luck skill type.</summary>
-        private SkillType LuckSkillType;
+        private SkillType SkillType;
+
+        /// <summary>The unique ID for the Luck Skill mod.</summary>
+        private const string TargetModId = "spacechase0.LuckSkill";
 
 
         /*********
@@ -45,7 +47,7 @@ namespace SkillPrestige.LuckSkill
         public IEnumerable<Skill> AdditionalSkills => this.GetAddedSkills();
 
         /// <summary>The prestiges added by this mod.</summary>
-        public IEnumerable<Prestige> AdditonalPrestiges => this.GetAddedPrestiges();
+        public IEnumerable<Prestige> AdditionalPrestiges => this.GetAddedPrestiges();
 
 
         /*********
@@ -55,8 +57,8 @@ namespace SkillPrestige.LuckSkill
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.LuckSkillType = new SkillType("Luck", 5);
-            this.IsFound = helper.ModRegistry.IsLoaded("spacechase0.LuckSkill");
+            this.SkillType = new SkillType("Luck", 5);
+            this.IsFound = helper.ModRegistry.IsLoaded(TargetModId);
 
             ModHandler.RegisterMod(this);
         }
@@ -73,21 +75,12 @@ namespace SkillPrestige.LuckSkill
 
             yield return new Skill
             {
-                Type = this.LuckSkillType,
+                Type = this.SkillType,
                 SkillScreenPosition = 6,
                 SourceRectangleForSkillIcon = new Rectangle(64, 0, 16, 16),
                 Professions = this.GetAddedProfessions(),
-                SetSkillLevel = level => Game1.player.luckLevel.Value = level,
                 GetSkillLevel = () => Game1.player.luckLevel.Value,
-                SetSkillExperience = this.SetLuckExperience,
-                LevelUpManager = new LevelUpManager
-                {
-                    IsMenu = menu => menu is OriginalMod.LuckLevelUpMenu,
-                    GetLevel = () => (int)(Game1.activeClickableMenu as OriginalMod.LuckLevelUpMenu).GetInstanceField("currentLevel"),
-                    GetSkill = () => Skill.AllSkills.Single(x => x.Type == this.LuckSkillType),
-                    CreateNewLevelUpMenu = (skill, level) => new LevelUpMenuDecorator<OriginalMod.LuckLevelUpMenu>(skill, level, new OriginalMod.LuckLevelUpMenu(skill.Type.Ordinal, level),
-                        "professionsToChoose", "leftProfessionDescription", "rightProfessionDescription", OriginalMod.LuckLevelUpMenu.getProfessionDescription)
-                }
+                SetSkillLevel = level => Game1.player.luckLevel.Value = level
             };
         }
 
@@ -99,88 +92,69 @@ namespace SkillPrestige.LuckSkill
 
             yield return new Prestige
             {
-                SkillType = this.LuckSkillType
+                SkillType = this.SkillType
             };
         }
 
         /// <summary>Get the professions added by this mod.</summary>
         private IEnumerable<Profession> GetAddedProfessions()
         {
-            var lucky = new TierOneProfession
+            var api = this.GetLuckSkillApi();
+            var professions = api.GetProfessions();
+
+            // ReSharper disable once MoveLocalFunctionAfterJumpStatement
+            TProfession Create<TProfession>(int id, IProfessionSpecialHandling specialHandling = null) where TProfession : Profession, new()
             {
-                Id = 30,
-                DisplayName = "Lucky",
-                EffectText = new[] { "Better daily luck." }
+                var profession = professions[id];
+                return new TProfession
+                {
+                    Id = id,
+                    DisplayName = profession.Name,
+                    EffectText = new[] { profession.Description },
+                    SpecialHandling = specialHandling
+                };
+            }
+
+            var fortunate = Create<TierOneProfession>(api.FortunateProfessionId);
+            var popularHelper = Create<TierOneProfession>(api.PopularHelperProfessionId);
+            var lucky = Create<TierTwoProfession>(api.LuckyProfessionId, new SpecialCharmSpecialHandling());
+            var unUnlucky = Create<TierTwoProfession>(api.UnUnluckyProfessionId);
+            var shootingStar = Create<TierTwoProfession>(api.ShootingStarProfessionId);
+            var spiritChild = Create<TierTwoProfession>(api.SpiritChildProfessionId);
+
+            lucky.TierOneProfession = fortunate;
+            unUnlucky.TierOneProfession = fortunate;
+            shootingStar.TierOneProfession = popularHelper;
+            spiritChild.TierOneProfession = popularHelper;
+
+            fortunate.TierTwoProfessions = new List<TierTwoProfession>
+            {
+                lucky,
+                unUnlucky
             };
-            var quester = new TierOneProfession
+            popularHelper.TierTwoProfessions = new List<TierTwoProfession>
             {
-                Id = 31,
-                DisplayName = "Quester",
-                EffectText = new[] { "Quests are more likely to appear each day." },
-            };
-            var specialCharm = new TierTwoProfession
-            {
-                Id = 32,
-                DisplayName = "Special Charm",
-                EffectText = new[] { "Great daily luck most of the time." },
-                SpecialHandling = new SpecialCharmSpecialHandling(),
-                TierOneProfession = lucky
-            };
-            var luckA2 = new TierTwoProfession
-            {
-                Id = 33,
-                DisplayName = "Luck A2",
-                EffectText = new[] { "Does...nothing, yet." },
-                TierOneProfession = lucky
-            };
-            var nightOwl = new TierTwoProfession
-            {
-                Id = 34,
-                DisplayName = "Night Owl",
-                EffectText = new[] { "Nightly events occur twice as often." },
-                TierOneProfession = quester
-            };
-            var luckB2 = new TierTwoProfession
-            {
-                Id = 35,
-                DisplayName = "Luck B2",
-                EffectText = new[] { "Does...nothing, yet." },
-                TierOneProfession = quester
-            };
-            quester.TierTwoProfessions = new List<TierTwoProfession>
-            {
-                nightOwl,
-                luckB2
-            };
-            lucky.TierTwoProfessions = new List<TierTwoProfession>
-            {
-                specialCharm,
-                luckA2
+                shootingStar,
+                spiritChild
             };
 
             return new Profession[]
             {
+                fortunate,
+                popularHelper,
                 lucky,
-                quester,
-                specialCharm,
-                luckA2,
-                nightOwl,
-                luckB2
+                unUnlucky,
+                shootingStar,
+                spiritChild
             };
         }
 
-        /// <summary>Set the current luck skill XP.</summary>
-        /// <param name="amount">The amount to set.</param>
-        private void SetLuckExperience(int amount)
+        /// <summary>Get the Luck Skill mod's API.</summary>
+        private ILuckSkillApi GetLuckSkillApi()
         {
-            int skillId = this.LuckSkillType.Ordinal;
-            if (amount <= Game1.player.experiencePoints[skillId])
-                Game1.player.experiencePoints[skillId] = amount;
-            else
-            {
-                var addedExperience = amount - Game1.player.experiencePoints[skillId];
-                OriginalMod.Mod.gainLuckExp(addedExperience);
-            }
+            return
+                this.Helper.ModRegistry.GetApi<ILuckSkillApi>(TargetModId)
+                ?? throw new InvalidOperationException("Can't load the API for the Luck Skill mod.");
         }
     }
 }

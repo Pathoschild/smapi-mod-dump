@@ -1,0 +1,84 @@
+﻿{
+  "config.section.toggles": "切换设置",
+
+  "config.fertilizer_mode.title": "肥料模式",
+  "config.fertilizer_mode.tooltip.choose": "选择你的肥料应用模式: \n",
+  "config.fertilizer_mode.tooltip.multi-fertilizer-stack": "multi-fertilizer-stack: 允许你在单个田混合不同类型和等级的肥料。\n",
+  "config.fertilizer_mode.tooltip.multi-fertilizer-single-level": "multi-fertilizer-single-level: 允许你在单个田混合不同类型的肥料，但每类只能有一个。\n",
+  "config.fertilizer_mode.tooltip.single-fertilizer-replace": "single-fertilizer-replace: 允许你在任何时候替换田上的单一类型肥料。\n",
+  "config.fertilizer_mode.tooltip.single-fertilizer-stack": "single-fertilizer-stack: 允许你在田上堆叠不同等级的单一类型肥料。\n",
+  "config.fertilizer_mode.tooltip.vanilla": "原版: Stardew Valley默认的肥料行为。\n",
+  "config.fertilizer_mode.tooltip.note": "注意: 此配置仅在使用肥料时适用。\n      如果你已经在一格上混合了肥料，然后禁用此选项， \n      那些格仍将按照之前的设置工作。",
+
+  "config.enable_fertilizer_anytime.title": "随时启用肥料",
+  "config.enable_fertilizer_anytime.tooltip": "允许你在已经有作物的田上施用肥料。",
+
+  "config.keep_fertilizer_across_season.title": "跨季节保留肥料",
+  "config.keep_fertilizer_across_season.tooltip": "允许肥料在季节更替时不消失。",
+
+
+  "config.section.speed_fertilizer": "生长激素",
+
+  "config.affect_multi_harvest.title": "影响多次收获",
+  "config.affect_multi_harvest.tooltip": "是否在多次收获的作物（如上古水果）首次收获后保持生长激素的活性。",
+
+  "config.speed_gro_bonus.title": "生长激素加成",
+  "config.speed_gro_bonus.tooltip": "修改生长激素的速度加成；默认 10% (0.1)",
+
+  "config.deluxe_speed_gro_bonus.title": "高级生长激素加成",
+  "config.deluxe_speed_gro_bonus.tooltip": "修改高级生长激素的速度加成；默认 25% (0.25)",
+
+  "config.hyper_speed_gro_bonus.title": "顶级生长激素加成",
+  "config.hyper_speed_gro_bonus.tooltip": "修改顶级生长激素的速度加成；默认 33% (0.33)",
+
+  "config.speed_gro_amount.title": "生长激素数量",
+  "config.speed_gro_amount.tooltip": "修改每次制作得到的生长激素数量；默认 5",
+
+  "config.deluxe_speed_gro_amount.title": "高级生长激素数量",
+  "config.deluxe_speed_gro_amount.tooltip": "修改每次制作得到的高级生长激素数量；默认 5",
+
+  "config.hyper_speed_gro_amount.title": "顶级生长激素数量",
+  "config.hyper_speed_gro_amount.tooltip": "修改每次制作得到的顶级生长激素数量；默认 1",
+
+
+  "config.section.quality_fertilizer": "质量肥料",
+
+  "config.basic_fertilizer_bonus.title": "初级肥料加成",
+  "config.basic_fertilizer_bonus.tooltip": "修改初级肥料的质量加成；默认 1",
+
+  "config.quality_fertilizer_bonus.title": "高级肥料加成",
+  "config.quality_fertilizer_bonus.tooltip": "修改高级肥料的质量加成；默认 2",
+
+  "config.deluxe_fertilizer_bonus.title": "顶级肥料加成",
+  "config.deluxe_fertilizer_bonus.tooltip": "修改顶级肥料的质量加成；默认 3",
+
+  "config.basic_fertilizer_amount.title": "初级肥料数量",
+  "config.basic_fertilizer_amount.tooltip": "修改每次制作得到的初级肥料数量；默认 1",
+
+  "config.quality_fertilizer_amount.title": "高级肥料数量",
+  "config.quality_fertilizer_amount.tooltip": "修改每次制作得到的高级肥料数量；默认 2",
+
+  "config.deluxe_fertilizer_amount.title": "顶级肥料数量",
+  "config.deluxe_fertilizer_amount.tooltip": "修改每次制作得到的顶级肥料数量；默认 5",
+
+
+  "config.section.water_fertilizer": "保湿土壤",
+
+  "config.basic_retaining_soil_bonus.title": "初级保湿土壤加成",
+  "config.basic_retaining_soil_bonus.tooltip": "修改使用初级保湿土壤时保留水分的概率；默认 33% (0.33)",
+
+  "config.quality_retaining_soil_bonus.title": "高级保湿土壤加成",
+  "config.quality_retaining_soil_bonus.tooltip": "修改使用高级保湿土壤时保留水分的概率；默认 66% (0.66)",
+
+  "config.deluxe_retaining_soil_bonus.title": "顶级保湿土壤加成",
+  "config.deluxe_retaining_soil_bonus.tooltip": "修改使用顶级保湿土壤时保留水分的概率；默认 100% (1.0)",
+
+  "config.basic_retaining_soil_amount.title": "初级保湿土壤数量",
+  "config.basic_retaining_soil_amount.tooltip": "修改每次制作得到的初级保湿土壤数量；默认 1",
+
+  "config.quality_retaining_soil_amount.title": "高级保湿土壤数量",
+  "config.quality_retaining_soil_amount.tooltip": "修改每次制作得到的高级保湿土壤数量；默认 2",
+
+  "config.deluxe_retaining_soil_amount.title": "顶级保湿土壤数量",
+  "config.deluxe_retaining_soil_amount.tooltip": "修改每次制作得到的顶级保湿土壤数量；默认 1"
+}

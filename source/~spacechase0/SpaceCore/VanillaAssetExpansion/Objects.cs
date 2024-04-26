@@ -58,7 +58,7 @@ namespace SpaceCore.VanillaAssetExpansion
         public static void Postfix(StardewValley.Object __instance, ref string __result)
         {
             var dict = Game1.content.Load<Dictionary<string, ObjectExtensionData>>("spacechase0.SpaceCore/ObjectExtensionData");
-            if (dict.ContainsKey(__instance.ItemId) && dict[__instance.ItemId].CategoryTextOverride != null)
+            if (!__instance.bigCraftable.Value && dict.ContainsKey(__instance.ItemId) && dict[__instance.ItemId].CategoryTextOverride != null)
             {
                 __result = dict[__instance.ItemId].CategoryTextOverride;
             }
@@ -71,7 +71,7 @@ namespace SpaceCore.VanillaAssetExpansion
         public static void Postfix(StardewValley.Object __instance, ref Color __result)
         {
             var dict = Game1.content.Load<Dictionary<string, ObjectExtensionData>>("spacechase0.SpaceCore/ObjectExtensionData");
-            if (dict.ContainsKey(__instance.ItemId) && dict[__instance.ItemId].CategoryColorOverride.A != 0)
+            if (!__instance.bigCraftable.Value && dict.ContainsKey(__instance.ItemId) && dict[__instance.ItemId].CategoryColorOverride.A != 0)
             {
                 __result = dict[__instance.ItemId].CategoryColorOverride;
             }

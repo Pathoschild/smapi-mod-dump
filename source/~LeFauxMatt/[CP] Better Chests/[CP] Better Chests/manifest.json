@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "[CP] Better Chests",
+  "Author": "furyx639",
+  "Version": "1.0.1",
+  "Description": "Adds to CustomFields for Chests and Buildings to allow for more customization.",
+  "UniqueID": "furyx639.BetterChestsCP",
+  "UpdateKeys": [
+    "Nexus:9791@CP"
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "furyx639.BetterChests",
+      "IsRequired": true
+    }
+  ],
+  "$schema": "https://smapi.io/schemas/manifest.json"
+}

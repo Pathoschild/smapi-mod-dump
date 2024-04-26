@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
+using BaseButton = EnaiumToolKit.Framework.Screen.Components.BaseButton;
 using Button = EnaiumToolKit.Framework.Screen.Components.Button;
 
 namespace EnaiumToolKit.Framework.Screen;
@@ -41,10 +42,13 @@ public class ScreenGui : GuiScreen
         xPositionOnScreen = (int)centeringOnScreen.X;
         yPositionOnScreen = (int)centeringOnScreen.Y + 32;
         const int buttonSize = 60;
-        AddComponent(new Button("U", GetTranslation("screenGui.component.textField.flipUp"),
-            xPositionOnScreen + width + buttonSize, yPositionOnScreen, buttonSize,
-            buttonSize)
+        _searchTextField = new TextField("", GetTranslation("screenGui.component.textField.Search"),
+            xPositionOnScreen,
+            yPositionOnScreen - 100, width, 50);
+        AddComponent(_searchTextField);
+        AddComponent(new ArrowButton(xPositionOnScreen + width + ArrowButton.Width, yPositionOnScreen)
         {
+            Direction = ArrowButton.DirectionType.Up,
             OnLeftClicked = () =>
             {
                 if (_index >= _maxElement)
@@ -57,11 +61,10 @@ public class ScreenGui : GuiScreen
                 }
             }
         });
-        AddComponent(new Button("D", GetTranslation("screenGui.component.textField.flipDown"),
-            xPositionOnScreen + width + buttonSize,
-            yPositionOnScreen + height - buttonSize,
-            buttonSize, buttonSize)
+        AddComponent(new ArrowButton(xPositionOnScreen + width + ArrowButton.Width,
+            yPositionOnScreen + height - ArrowButton.Height)
         {
+            Direction = ArrowButton.DirectionType.Down,
             OnLeftClicked = () =>
             {
                 if (_index + (_searchElements.Count >= _maxElement ? _maxElement : _searchElements.Count) <
@@ -79,19 +82,13 @@ public class ScreenGui : GuiScreen
             }
         });
 
-        if (!(Game1.activeClickableMenu is TitleMenu))
+        if (Game1.activeClickableMenu is not TitleMenu)
         {
-            AddComponent(new Button("C", GetTranslation("screenGui.component.textField.closeScreen"),
-                Game1.viewport.Width - buttonSize, 0, buttonSize, buttonSize)
+            AddComponent(new CloseButton(xPositionOnScreen + width + ArrowButton.Width, _searchTextField.Y)
             {
                 OnLeftClicked = () => { Game1.activeClickableMenu = null; }
             });
         }
-
-        _searchTextField = new TextField("", GetTranslation("screenGui.component.textField.Search"),
-            xPositionOnScreen,
-            yPositionOnScreen - 100, width, 50);
-        AddComponent(_searchTextField);
 
         base.Init();
     }
@@ -131,10 +128,10 @@ public class ScreenGui : GuiScreen
                     drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), 0, 0,
                         descriptionWidth,
                         descriptionHeight, Color.Wheat, 4f, false);
-                    FontUtils.DrawHvCentered(b, element.Description, descriptionWidth / 2,
-                        descriptionHeight / 2);
+                    FontUtils.DrawHvCentered(b, element.Description, 0, 0, descriptionWidth, descriptionHeight);
                 }
             }
+
             i++;
         }
 
@@ -157,7 +154,6 @@ public class ScreenGui : GuiScreen
                      variable is { Visibled: true, Enabled: true, Hovered: true }))
         {
             variable.MouseLeftClicked(x, y);
-            Game1.playSound("drumkit6");
         }
 
         base.receiveLeftClick(x, y, playSound);
@@ -210,15 +206,15 @@ public class ScreenGui : GuiScreen
 
         base.receiveKeyPress(key);
     }
-    
+
     private IEnumerable<Element> GetElements()
     {
-        List<Element> elements = new List<Element>();
+        var elements = new List<Element>();
         for (int i = _index, j = 0;
              j < (_searchElements.Count >= _maxElement ? _maxElement : _searchElements.Count);
              i++, j++)
         {
-            elements.Add(_elements[i]);
+            elements.Add(_searchElements[i]);
         }
 
         return elements;
@@ -230,9 +226,11 @@ public class ScreenGui : GuiScreen
         if (!_searchTextField.Text.Equals(""))
         {
             elements = elements.Where(element =>
-                element.Title.IndexOf(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase) >= 0);
+                element.Title.Contains(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase)
+                || element.Description.Contains(_searchTextField.Text, StringComparison.InvariantCultureIgnoreCase)
+            );
         }
-
+        
         return elements;
     }
 

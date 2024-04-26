@@ -9,7 +9,9 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Journal;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 
 namespace StardewDruid.Cast.Weald
@@ -42,8 +44,6 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            int probability = randomIndex.Next(2);
-
             List<Throw> throwList = new();
 
             if (randomIndex.Next(100) == 0) // 1:1000 chance
@@ -52,10 +52,10 @@ namespace StardewDruid.Cast.Weald
                 throwList.Add(new(targetPlayer, targetVector * 64, 114, 0));
 
             }
-
-            if (probability == 0 && !Mod.instance.EffectDisabled("Seeds") && Mod.instance.rite.castTask.ContainsKey("masterCreature"))
+ 
+            if (!Mod.instance.EffectDisabled("Seeds") && Mod.instance.questHandle.IsComplete(QuestHandle.bushLesson))
             {
-
+                
                 int wildSeed;
 
                 switch (Game1.currentSeason)
@@ -84,7 +84,7 @@ namespace StardewDruid.Cast.Weald
 
                 }
 
-                for (int i = 0; i < randomIndex.Next(4); i++)
+                for (int i = 0; i < randomIndex.Next(1 + Mod.instance.PowerLevel); i++)
                 {
 
                     throwList.Add(new(targetPlayer, targetVector * 64, wildSeed, 0));
@@ -92,15 +92,11 @@ namespace StardewDruid.Cast.Weald
                 }
 
             }
-            else
+
+            for (int i = 0; i < randomIndex.Next(1 + Mod.instance.PowerLevel); i++)
             {
 
-                for (int i = 0; i < randomIndex.Next(4); i++)
-                {
-
-                    throwList.Add(new(targetPlayer, targetVector * 64, 771, 0));
-
-                }
+                throwList.Add(new(targetPlayer, targetVector * 64, 771, 0));
 
             }
 

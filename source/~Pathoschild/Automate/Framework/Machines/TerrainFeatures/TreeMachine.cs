@@ -12,13 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Pathoschild.Stardew.Common.Enums;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewValley;
 using StardewValley.GameData.WildTrees;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
-using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
 {
@@ -29,6 +27,9 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /*********
         ** Fields
         *********/
+        /// <summary>Whether to collect moss on the tree.</summary>
+        private readonly bool CollectMoss;
+
         /// <summary>The items to drop.</summary>
         private readonly Cached<Stack<string>> ItemDrops;
 
@@ -40,11 +41,14 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /// <param name="tree">The underlying tree.</param>
         /// <param name="location">The machine's in-game location.</param>
         /// <param name="tile">The tree's tile position.</param>
-        public TreeMachine(Tree tree, GameLocation location, Vector2 tile)
+        /// <param name="collectMoss">Whether to collect moss on the tree.</param>
+        public TreeMachine(Tree tree, GameLocation location, Vector2 tile, bool collectMoss)
             : base(tree, location, BaseMachine.GetTileAreaFor(tile))
         {
+            this.CollectMoss = collectMoss;
+
             this.ItemDrops = new Cached<Stack<string>>(
-                getCacheKey: () => $"{Game1.season},{Game1.dayOfMonth},{tree.hasSeed.Value}",
+                getCacheKey: () => $"{Game1.season},{Game1.dayOfMonth},{tree.hasSeed.Value},{this.CollectMoss && tree.hasMoss.Value}",
                 fetchNew: () => new Stack<string>()
             );
         }
@@ -55,7 +59,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
             if (this.Machine.growthStage.Value < Tree.treeStage || this.Machine.stump.Value)
                 return MachineState.Disabled;
 
-            return this.HasSeed()
+            return this.HasSeed() || this.CanCollectMoss()
                 ? MachineState.Done
                 : MachineState.Processing;
         }
@@ -77,6 +81,14 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
                 // get extra drops
                 foreach (string itemId in this.GetRandomExtraDrops())
                     drops.Push(itemId);
+
+                // get moss
+                if (this.CanCollectMoss())
+                {
+                    Item item = Tree.CreateMossItem();
+                    for (int i = 0; i < item.Stack; i++)
+                        drops.Push(item.ItemId);
+                }
             }
 
             // get next drop
@@ -113,6 +125,8 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
 
             if (ItemRegistry.HasItemId(item, TreeMachine.GetSeedForTree(tree, this.Location)))
                 tree.hasSeed.Value = false;
+            if (ItemRegistry.HasItemId(item, "(O)Moss"))
+                tree.hasMoss.Value = false;
 
             Stack<string> drops = this.ItemDrops.Value;
             if (drops.Any() && drops.Peek() == item.ItemId)
@@ -127,6 +141,12 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
                 && (Game1.IsMultiplayer || Game1.player.ForagingLevel >= 1);
         }
 
+        /// <summary>Get whether the tree has grown moss</summary>>
+        private bool CanCollectMoss()
+        {
+            return this.CollectMoss && this.Machine.hasMoss.Value;
+        }
+
         /// <summary>Get the random items that should also drop when this tree has a seed.</summary>
         private IEnumerable<string> GetRandomExtraDrops()
         {
@@ -134,7 +154,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
             string type = tree.treeType.Value;
 
             // golden coconut
-            if ((type == TreeType.Palm || type == TreeType.Palm2) && this.Location is IslandLocation && new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + this.TileArea.X * 13 + this.TileArea.Y * 54).NextDouble() < 0.1)
+            if (type is (Tree.palmTree or Tree.palmTree2) && this.Location is IslandLocation && new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + this.TileArea.X * 13 + this.TileArea.Y * 54).NextDouble() < 0.1)
                 yield return "791";
 
             // Qi bean

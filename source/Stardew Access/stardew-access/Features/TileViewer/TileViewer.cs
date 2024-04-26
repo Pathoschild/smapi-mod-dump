@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using xTile;
+using stardew_access.Patches;
 using stardew_access.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -34,7 +35,7 @@ internal class TileViewer : FeatureBase
     private Vector2 _prevTile = Vector2.Zero;
 
     public Boolean IsAutoWalking = false;
-        
+
     private static TileViewer? instance;
     public new static TileViewer Instance
     {
@@ -79,8 +80,7 @@ internal class TileViewer : FeatureBase
     {
         if (IsCarpenterMenuBuilderViewport())
         {    
-            return new Vector2(Game1.viewport.X / 64, Game1.viewport.Y / 64);
-            //return new Vector2((Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64, (Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64);
+            return CarpenterMenuPatch.MousePosition!.Value;
         }
         Vector2 target = PlayerPosition;
         if (_relativeOffsetLock)
@@ -119,12 +119,12 @@ internal class TileViewer : FeatureBase
     public override bool OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         // Exit if in a menu
-        if (Game1.activeClickableMenu != null && !IsCarpenterMenuBuilderViewport())
+        if (!IsCarpenterMenuBuilderViewport() && Game1.activeClickableMenu != null)
         {
             return false;
         }
 
-        if (Game1.activeClickableMenu != null && MainClass.Config.ToggleRelativeCursorLockKey.JustPressed())
+        if (Game1.activeClickableMenu == null && MainClass.Config.ToggleRelativeCursorLockKey.JustPressed())
         {
             _relativeOffsetLock = !_relativeOffsetLock;
             if (_relativeOffsetLock)
@@ -278,13 +278,41 @@ internal class TileViewer : FeatureBase
             MainClass.ScreenReader.TranslateAndSay("feature-tile_viewer-stopped_moving", true);
     }
 
+    // For currently unimplemented report panning of map in CarpenterMenu
+    internal static int GetDirectionAsInt(int x, int y)
+    {
+        // Compute the direction code based on the signs of x and y
+        return (Math.Sign(x), Math.Sign(y)) switch
+        {
+            (0, -1) => 1, // North
+            (0, 1) => 2,  // South
+            (1, 0) => 3,  // East
+            (-1, 0) => 4, // West
+            (1, -1) => 5, // Northeast
+            (-1, -1) => 6, // Northwest
+            (1, 1) => 7,  // Southeast
+            (-1, 1) => 8, // Southwest
+            _ => -1       // Invalid direction or no movement
+        };
+    }
+
     private void CursorMoveInput(Vector2 delta, Boolean precise = false)
     {
         bool isCarpenterMenu = IsCarpenterMenuBuilderViewport();
-        if (isCarpenterMenu) Game1.panScreen((int)delta.X, (int)delta.Y);
+        if (isCarpenterMenu)
+        {
+            int deltaX = (int)delta.X, deltaY = (int)delta.Y;
+            int currentX = Game1.getMouseX(ui_scale: false), currentY = Game1.getMouseY(ui_scale: false);
+            Vector2 newPosition = new Vector2(currentX, currentY) + delta;
+            int newX = (int)newPosition.X, newY = (int)newPosition.Y;
+            if (CarpenterMenuPatch.carpenterMenu != null)
+            {
+                CarpenterMenuPatch.MousePosition = newPosition;
+            }
+        }
         else if (!TryMoveTileView(delta)) return;
-        Vector2 position = isCarpenterMenu ? new Vector2(Game1.viewport.X, Game1.viewport.Y) : GetTileCursorPosition();
-        string name = TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(GetViewingTile());
+        Vector2 position = !isCarpenterMenu ? GetTileCursorPosition() : CarpenterMenuPatch.MousePosition!.Value + new Vector2(Game1.viewport.X, Game1.viewport.Y);
+        string name = TileInfo.GetNameAtTileWithBlockedOrEmptyIndication(!isCarpenterMenu ? GetViewingTile() : position/64);
         
         MainClass.ScreenReader.Say(precise
             ? $"{name}, {position.X}, {position.Y}"
@@ -314,8 +342,11 @@ internal class TileViewer : FeatureBase
     {
         Vector2 cursorPosition = GetTileCursorPosition();
         if (AllowMouseSnap(cursorPosition))
+        {
             // Must account for viewport here
-            Game1.setMousePosition((int)cursorPosition.X - Game1.viewport.X, (int)cursorPosition.Y - Game1.viewport.Y);
+            int newX = (int)cursorPosition.X - Game1.viewport.X, newY = (int)cursorPosition.Y - Game1.viewport.Y;
+            Game1.setMousePosition(newX, newY);
+        }
     }
 
     /// <summary>

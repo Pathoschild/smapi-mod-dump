@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22616
+IDs: MercuryVN.AutoCatch
+update keys: Nexus:22616, GitHub:MercuryVN/AutoCatch

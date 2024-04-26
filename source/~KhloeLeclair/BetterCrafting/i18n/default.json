@@ -13,6 +13,9 @@
 	"setting.show-adv": "Show Adv. Crafting Info",
 	"setting.show-adv.tip": "Show advanced crafting information, such as how many ingredients you have and how many times you've crafted a recipe before. This is the same as the vanilla setting, duplicated here for convenience.",
 
+	"setting.use-per-save": "Use Per-Save Data",
+	"setting.use-per-save.tip": "When this is enabled, your categories and favorites will be tracked per individual save. Disable this to use the same data for all your saves. Note that seen recipes are always per-save.",
+
 	"setting.general": "General Options",
 
 	"setting.priority": "Menu Handler Priority",
@@ -24,6 +27,9 @@
 
 	"setting.theme": "UI Theme",
 	"setting.theme-desc": "This UI theme will be used for Better Crafting's buttons. Note that most of Better Crafting's UI is drawn from standard game textures.",
+
+	"setting.use-full-height": "Use Full Height",
+	"setting.use-full-height.tip": "When enabled, the Better Crafting menu will expand to fill the full height of the screen when not open in the game menu.",
 
 	"theme.automatic": "Automatic",
 	"theme.default": "Default",
@@ -54,8 +60,20 @@
 	"setting.enable-categories": "Enable Categories",
 	"setting.enable-categories.tip": "Display category tabs in crafting menus, rather than one big list of everything.",
 
+	"setting.new-recipes": "Highlight New Recipes",
+	"setting.new-recipes.tip": "When this is enabled, new recipes will have a 'NEW' label displayed on them.",
+	"setting.new-recipes.uncrafted": "Not Yet Crafted",
+	"setting.new-recipes.unseen": "Not Yet Seen",
+	"setting.new-recipes.disabled": "Disabled",
+
+	"setting.new-recipes.prismatic": "Prismatic New Recipes",
+	"setting.new-recipes.prismatic.tip": "When enabled, the 'NEW' label on recipes will be displayed with shifting colors.",
+
 	"setting.settings": "Show Settings Button",
 	"setting.settings.tip": "When enabled, a button to open Better Crafting's settings will be added to the Better Crafting menu.",
+
+	"setting.show-edit": "Show Edit Categories Button",
+	"setting.show-edit.tip": "When enabled, a button to start editing categories will appear when categories can be edited.",
 
 	"setting.bindings": "Hotkeys and Actions",
 	"setting.bindings.tip": "Settings related to input and keybindings.",
@@ -73,7 +91,7 @@
 	"setting.key.favorite.tip": "Press this key on a recipe to favorite or unfavorite that recipe.",
 
 	"setting.key.bulk": "Bulk Crafting Key",
-	"setting.key.bulk.tip": "Press this key on a recipe to open Bulk Crafting for that recipe.",
+	"setting.key.bulk.tip": "Press this key on a recipe to open Bulk Crafting or Cooking for that recipe.",
 
 	"setting.key.behavior.left": "Left-Click / A Behavior",
 	"setting.key.behavior.left.tip": "When left clicking (or pressing A on controller) on a recipe, this action will be performed.",
@@ -91,11 +109,20 @@
 	"setting.action.Craft": "Craft",
 	"setting.action.Favorite": "Toggle Favorite",
 	"setting.action.BulkCraft": "Bulk Craft",
+	"setting.action.BulkCook": "Bulk Cook",
 
 	"setting.nearby": "Extended Workbench",
 	"setting.nearby.tip": "This feature allows Workbenches and your kitchen to connect to more chests at once, improving on the game's default range of one block. You can create chains of connected chests, or use allowed connectors to bridge gaps.",
 
 	"setting.nearby.enable": "Enable Extended Workbench",
+
+	"setting.nearby.nearby": "Use Nearby Chests",
+	"setting.nearby.nearby.tip": "If this is set to more than zero, you will always be able to use items in chests up to this many tiles away.",
+
+	"setting.nearby.nearby.active": "Everywhere",
+	"setting.nearby.nearby.map": "Full Map",
+	"setting.nearby.nearby.off": "Disabled",
+	"setting.nearby.nearby.tiles": "{{tiles}} Tiles",
 
 	"setting.nearby.diagonal": "Allow Diagonal Connections",
 	"setting.nearby.diagonal.tip": "When enabled, chests and connectors can be placed diagonally and still connect.",
@@ -116,6 +143,7 @@
 	"setting.nearby.connectors.tip": "Placeable objects that can be used as connectors. You should avoid adding unnecessary connector types to keep performance up. Please note that these entries are examples, and you can manually edit your config file to add other objects and terrain features.",
 
 	"setting.nearby.floors": "Flooring",
+	"setting.nearby.fences": "Fences",
 	"setting.nearby.other": "Other Examples",
 
 	"setting.recycle": "Recycling",
@@ -212,7 +240,19 @@
 	"tooltip.loves": "Loves: {{npcs}}",
 	"tooltip.likes": "Likes: {{npcs}}",
 
+	"tooltip.copy-cat": "Copy Category to Clipboard",
+	"tooltip.paste-cat": "Paste Category from Clipboard",
+	"tooltip.trash-cat": "Delete Category",
+	"tooltip.trash-cat.confirm": "Are you sure you wish to delete the category \"{{name}}\"?",
+
+	"tooltip.trash-all": "Reset Categories to Defaults",
+	"tooltip.trash-all.confirm": "Are you sure you wish to reset all your categories to the defaults?",
+
+	"tooltip.move-up": "Move Category Up",
+	"tooltip.move-down": "Move Category Down",
+
 	"tooltip.crafted": "Crafted {{count}} Times",
+	"tooltip.cooked": "Cooked {{count}} Times",
 
 	"tooltip.toggle-recipe": "Toggle in Category",
 	"tooltip.use-as-icon": "Use as Icon",
@@ -276,10 +316,16 @@
 
 	"ingredient.error": "Invalid Ingredient",
 
+	"error.locking": "Unable to access some inventories.",
+	"error.pasting": "Unable to paste category.",
+
 	// Bulk Crafting
 	"bulk.crafting": "Bulk Crafting",
 	"bulk.craftable": "{{count}} Craftable",
 	"bulk.craft": "Craft {{count}} of {{name}}",
+	"bulk.cooking": "Bulk Cooking",
+	"bulk.cookable": "{{count}} Cookable",
+	"bulk.cook": "Cook {{count}} of {{name}}",
 
 	// Categories
 	"category.new": "New Category",
@@ -304,7 +350,8 @@
 	"currency.club-coins": "Club Coins",
 	"currency.qi-gems": "Qi Gems",
 
-	// Ingredient Categories
+	// Ingredient / Item Categories
+	"item.category.equipment": "Equipment",
 	"item.category.cooking": "Cooking (Any)",
 	"item.category.crafting": "Crafting (Any)",
 	"item.category.mineral": "Mineral (Any)",
@@ -317,12 +364,16 @@
 
 	// Dynamic Filters
 	"filter.add-new": "Add New Rule",
+	"filter.from-rule": "Enabled By Rule",
+
+	"filter.storage": "Storage",
+	"filter.storage.about": "This rule matches items that act as storage, like chests or hoppers.",
 
 	"filter.everything": "Everything",
 	"filter.everything.about": "This rule matches every recipe.",
 
 	"filter.buff": "Buff: {{type}}",
-	"filter.buff.about": "This rule matches items that give the {{type}} buff when consumed.",
+	"filter.buff.about": "This rule matches items that give a {{type}} buff when consumed.",
 
 	"filter.uncrafted": "Not Yet Crafted",
 	"filter.uncrafted.about": "This rule matches items that you haven't crafted yet.",
@@ -330,16 +381,42 @@
 	"filter.search": "Search",
 	"filter.search.about": "This rule matches items against a search, using the same rules as the crafting menu.",
 
+	"filter.mod": "Items From Mod",
+	"filter.mod.about": "This rule will attempt to match all recipes added by a specific mod.",
+
 	"filter.machine": "Machines",
 	"filter.machine.about": "This rule matches items that act as machines, processing items or performing some other function.",
 
 	"filter.sprinkler": "Sprinklers",
 	"filter.sprinkler.about": "This rule matches sprinklers.",
 
+	"filter.floors": "Floors and Paths",
+	"filter.floors.about": "This rule matches all floor and path items.",
+
+	"filter.fences": "Fences",
+	"filter.fences.about": "This rule matches all fence items.",
+
+	"filter.furniture": "Furniture",
+	"filter.furniture.about": "This rule matches all furniture items.",
+
 	"filter.light": "Light",
 	"filter.light.about": "This rule matches placeable lights.",
 
 	"filter.error": "Invalid Rule",
-	"filter.error.about": "This rule ID is invalid or not registered, and may be from a mod that was removed."
+	"filter.error.about": "This rule ID is invalid or not registered, and may be from a mod that was removed.",
+
+	"filter.category": "Category",
+	"filter.category.about": "This rule matches items within a specific category.",
+
+	"filter.context-tag": "Context Tag",
+	"filter.context-tag.about": "This rule matches items with a specific context tag.",
+
+	"filter.edible": "Edible",
+	"filter.edible.about": "This rule matches edible items.",
+
+	"filter.recipe-count": "{{count}} Recipes",
+
+	// Kitchen
+	"station.kitchen": "Kitchen"
 
 }

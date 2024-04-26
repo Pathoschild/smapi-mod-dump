@@ -1,0 +1,31 @@
+{
+  // In Game Notifications. Please feel freeo to tweak. When Translating, please do not translate anything between {{ }} 's.
+  "notifications.1-heart": "{{villager}} 注意到了你。",
+  "notifications.2-heart": "{{villager}} 对你笑了笑。",
+  "notifications.3-heart": "{{villager}} 对你微笑。",
+  "notifications.4-heart": "{{villager}} 看到你开心地笑了！",
+  "notifications.5-heart": "{{villager}} 对你友好地打了个招呼。",
+  "notifications.6-heart": "{{villager}} 小声说了几句关于你的话",
+  "notifications.7-heart": "{{villager}} 看到你脸红了。",
+  "notifications.8-heart": "{{villager}} 很高兴见到你！",
+  "notifications.9-heart": "{{villager}} 喜欢和你在一起的时光。",
+  "notifications.10-heart": "{{villager}} 很高兴见到你！",
+  "notifications.11-heart": "{{villager}} 对见到你感到非常高兴！",
+  "notifications.12-heart": "{{villager}} 见到你感到非常幸福！",
+  "notifications.13-heart": "{{villager}} 对你喊：我爱你！",
+  "notifications.14-heart": "{{villager}} 看到你幸福得昏过去！",
+  
+  // Stuff in the settings menu. Only how much friendship supports new lines, though if you need them please feel free to ask.
+  
+  "settings.show-notifications": "显示提示",
+  "settings.show-notifications.description": "当村民看到你时显示提示。",
+  
+  "settings.notification-duration": "提示时长", 
+  "settings.notification-duration.description": "提示持续多少毫秒 (1000 = 1秒)",
+  
+  "settings.range": "范围",
+  "settings.range.description": "mod可以检测到村民的范围",
+  
+  "settings.how-much-friendship": "好感度", 
+  "settings.how-much-friendship.description": "你可以和这个村民提升多少好感度. {{newline}}1心是250分，普通关系村民每天减少-2分（除了约会，结婚等等）"
+}

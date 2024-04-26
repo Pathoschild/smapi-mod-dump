@@ -114,6 +114,39 @@ public class IconPicker : MenuSubscriber<ModEntry> {
 				}
 			}
 
+		Dictionary<string, Texture2D?> extraTextures = new();
+
+		foreach(var api in Mod.APIInstances) {
+			var icons = api.Value.EmitDiscoverIcons();
+			if (icons is not null)
+				foreach(var (texName, source) in icons) {
+					if (!extraTextures.TryGetValue(texName, out Texture2D? texture)) {
+						try {
+							texture = Mod.Helper.GameContent.Load<Texture2D>(texName);
+						} catch (Exception ex) {
+							Log($"Unable to load texture '{texName}' for icon from mod '{api.Key.UniqueID}'", StardewModdingAPI.LogLevel.Warn, ex);
+							texture = null;
+						}
+
+						extraTextures[texName] = texture;
+					}
+
+					if (texture == null)
+						continue;
+
+					var src = source;
+					if (src == Rectangle.Empty)
+						src = texture.Bounds;
+
+					SpriteInfo sprite = new(texture, src);
+					builder.Sprite(sprite, scale: 3, onClick: (_, _, _) => {
+						Pick(texName, src);
+						return true;
+					});
+				}
+		}
+
+
 		Flow.Set(builder.Build());
 
 		if (Game1.options.SnappyMenus)
@@ -124,6 +157,16 @@ public class IconPicker : MenuSubscriber<ModEntry> {
 		onPick(new() {
 			Type = CategoryIcon.IconType.Texture,
 			Source = texture,
+			Rect = source
+		});
+
+		exitThisMenu();
+	}
+
+	private void Pick(string textureName, Rectangle source) {
+		onPick(new() {
+			Type = CategoryIcon.IconType.Texture,
+			Path = textureName,
 			Rect = source
 		});
 

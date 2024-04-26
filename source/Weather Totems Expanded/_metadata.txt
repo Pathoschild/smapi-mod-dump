@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/TheMightyAmondee/WeatherTotems
+   Git: https://github.com/TheMightyAmondee/WeatherTotems.git
+
+mods:
+   Weather Totems Expanded
+
+latest commit:
+   commit 5df6ebd48bd19a9f6c3ef2b0dc5977dea3d9210e
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Sun Apr 7 09:45:37 2024 +1000
+   
+       update README
+   

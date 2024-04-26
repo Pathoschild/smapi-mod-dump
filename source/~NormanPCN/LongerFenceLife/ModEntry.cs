@@ -22,6 +22,7 @@ using GenericModConfigMenu;
 //using HarmonyLib;
 using Helpers;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 
 namespace LongerFenceLife
@@ -344,21 +345,24 @@ namespace LongerFenceLife
                 if (location != null)
                 {
                     Vector2 view = new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                    Vector2 tile = new Vector2(0, 0);
-
-                    StardewValley.Object obj;
-
                     Rectangle visibleArea = GetVisibleAreaInTiles(1);
-                    for (int x = visibleArea.X; x < visibleArea.X+visibleArea.Width; x++)
+
+                    //Stopwatch stopWatch = new Stopwatch();
+                    //stopWatch.Start();
+                    foreach (StardewValley.Object obj in location.Objects.Values)
                     {
-                        tile.X = x;
-                        for (int y = visibleArea.Y; y < visibleArea.Y+visibleArea.Height; y++)
+                        if (obj is StardewValley.Fence fence)
                         {
-                            tile.Y = y;
-                            if (location.Objects.TryGetValue(tile, out obj) && (obj is StardewValley.Fence fence1))
+                            Vector2 tile = obj.TileLocation;
+                            if (
+                                (tile.X >= visibleArea.X) &&
+                                (tile.X < visibleArea.X + visibleArea.Width) &&
+                                (tile.Y >= visibleArea.Y) &&
+                                (tile.Y < visibleArea.Y + visibleArea.Height)
+                               )
                             {
                                 Color color = Color.Green;
-                                int daysLeft = (int)(fence1.health.Value * 1440f / 60 / 24);
+                                int daysLeft = (int)(fence.health.Value * 1440f / 60 / 24);
                                 if (daysLeft <= 28)
                                     color = Color.Red;
                                 else if (daysLeft <= 56)
@@ -371,9 +375,11 @@ namespace LongerFenceLife
                             }
                         }
                     }
+                    //stopWatch.Stop();
+                    //long t = stopWatch.ElapsedTicks;
+                    //Log.Debug($"t={t}");
 
-                    tile = Game1.currentCursorTile;
-                    if (location.Objects.TryGetValue(tile, out obj) && (obj is StardewValley.Fence fence2))
+                    if (location.Objects.TryGetValue(Game1.currentCursorTile, out StardewValley.Object obj1) && (obj1 is StardewValley.Fence fence2))
                     {
                         int daysLeft = (int)(fence2.health.Value * 1440f / 60 / 24);
 

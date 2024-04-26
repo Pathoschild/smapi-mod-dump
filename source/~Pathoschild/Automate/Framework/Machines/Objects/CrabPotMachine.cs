@@ -73,7 +73,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             {
                 this.Machine.bait.Value = (SObject)bait.Take()!;
                 this.Machine.lidFlapping = true;
-                this.Machine.lidFlapTimer = 60;
+                this.Machine.lidFlapTimer = CrabPot.lidFlapTimerInterval;
                 return true;
             }
 
@@ -132,7 +132,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         /// <param name="owner">The player who owns the machine.</param>
         private bool PlayerNeedsBait(Farmer owner)
         {
-            return !owner.professions.Contains(11); // no bait needed if luremaster
+            return !owner.professions.Contains(Farmer.mariner); // no bait needed if luremaster
         }
     }
 }

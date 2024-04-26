@@ -32,7 +32,7 @@
 	"fish-mountain-location": "Mountains",
 	"fish-beach-location": "Ocean",
 	"fish-undergroundmine-location": "Mines",
-	"fish-nightmarket-location": "Ocean Floor",
+	"fish-submarine-location": "Ocean Floor",
 	"fish-bugland-location": "Bug Lands",
 	"fish-witchswamp-location": "Witch Swamp",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "Takes {{daysToGrow}} days to grow but keeps producing after that.",
 	"crop-tooltip-growth-time": "Takes {{daysToGrow}} days to mature.",
 	"crop-tooltip-seasons": "Plant during: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Can only be grown indoors.",
-	"crop-tooltip-rice-shoot": "Grows faster near water.",
+	"crop-tooltip-indoor-crop": "Can only be grown indoors.",
+	"crop-tooltip-paddy-crop": "Grows faster near water.",
 
 	"bundle-random-all": "Random",
 	"bundle-random-letter": "\"{{letter}}\"",
@@ -240,7 +240,7 @@
 	"cooking-channel-10": "Trout Soup/{{recipe}}! There's something about fresh-caught {{item1}} that just gets me buzzing. Maybe it's the subtle taste of the river. At any rate, I've got a wonderful {{recipe}} recipe to share with you today...",
 	"cooking-channel-11": "Glazed Yams/{{recipe}}! It's {{item1}} season, and what better way to enjoy these delightful tubers than by slathering them in a sweet, sticky glaze? You'll need a nice, ripe {{item1}} and a whole bunch of sugar. Now, here's how you do it... ",
 	"cooking-channel-12": "Artichoke Dip/{{recipe}}! This is a delightful way to get more {{item1}}s into your body. Personally, I don't even dip anything in there. I just guzzle the sauce down like it's a milkshake. Delicious.",
-	"cooking-channel-15": "Pumpkin Pie/{{recipe}}! In my house, it's a tradition to eat {{recipe}} during the feast of the winter star. The season just isn't complete without that wonderful flavor you can only achieve with the finest farm-fresh {{item1}}s. A little nutmeg, cinnamon, and clove will sweep you off to a land of crimson and gold... ",
+	"cooking-channel-15": "Pumpkin Pie/{{recipe}}! In my house, it's a tradition to eat {{recipe}} during the Feast of the Winter Star. The season just isn't complete without that wonderful flavor you can only achieve with the finest farm-fresh {{item1}}s. A little nutmeg, cinnamon, and clove will sweep you off to a land of crimson and gold... ",
 	"cooking-channel-16": "Cranberry Candy/{{recipe}}! Here's a fun one to help you celebrate the new year. {{item1}}s are quite bitter on their own, but submerge them in an ocean of sugar and they'll taste like angels' tears. Here's how you do it...",
 	"cooking-channel-17": "Pizza/Pizza! There's a reason pizza is a timeless culinary classic. You've got an artisan golden-brown crust, you've got a tangy, garlic-infused marinara sauce, and you're topping it all with a mouth-watering three-cheese blend. And we're just getting started! Let's throw some fresh pepper and {{item1}} on the top. Oh, my!",
 	"cooking-channel-18": "Hashbrowns/Hashbrowns! This one's simple, but that's a good thing! You'll just want to shred some {{item1}}s, add a liberal amount of salt, and fry to perfection in your favorite high-heat oil. Sounds easy, right? Well, I've got some pointers that'll make your job a lot easier... ",

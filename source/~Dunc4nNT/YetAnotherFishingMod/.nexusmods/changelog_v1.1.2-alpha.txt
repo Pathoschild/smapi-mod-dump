@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+Version 1.1.2-alpha
+
+- Fixed an issue with multiplayer when overriding attachment limit. Disabled the option in multiplayer.
+- Added an experimental "skip minigame popup" option, which will skip the minigame from popping up at all when skipping the minigame.
+- Added an experimental "disable vibrations" option, which removes various fishing related controller vibrations.

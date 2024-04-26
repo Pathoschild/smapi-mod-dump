@@ -1,0 +1,7 @@
+{
+  "InfiniteTries": true,
+  "StopConveyorBelt": true,
+  "StopTimer": true,
+  "NoDroppingPrize": true,
+  "NoFoliageBlockingPossiblePrizes": true
+}

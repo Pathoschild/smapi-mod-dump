@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.GameData.Buildings;
 using StardewValley.Menus;
 
 namespace Leclair.Stardew.BCBuildings;
@@ -28,38 +29,35 @@ public class BuildingRuleHandler : IDynamicRuleHandler {
 
 	public readonly ModEntry Mod;
 
+	public readonly BuildingData Building;
+
+	private Lazy<Texture2D> _Texture;
+
 	public BuildingRuleHandler(ModEntry mod) {
 		Mod = mod;
 
-		_Source = new(() => {
-			if (Mod.BuildingSources.TryGetValue("Shed", out Rectangle? source)) {
-				return (source.HasValue && !source.Value.IsEmpty) ?
-					source.Value :
-					Texture.Bounds;
-			}
+		var buildings = DataLoader.Buildings(Game1.content);
+		if (!buildings.TryGetValue("Shed", out var building))
+			building = buildings.First().Value;
 
-			return Print.Value.sourceRectForMenuView;
-		});
-
+		Building = building;
+		_Texture = new Lazy<Texture2D>(() => Mod.Helper.GameContent.Load<Texture2D>(Building.Texture));
 	}
-
-	public readonly Lazy<BluePrint> Print = new(() => new BluePrint("Shed"));
-	public readonly Lazy<Rectangle> _Source;
 
 	public string DisplayName => I18n.Filter_Name();
 
 	public string Description => I18n.Filter_About();
 
-	public Texture2D Texture => Print.Value.texture;
+	public Texture2D Texture => _Texture.Value;
 
-	public Rectangle Source => _Source.Value;
+	public Rectangle Source => Building.SourceRect.IsEmpty ? Texture.Bounds : Building.SourceRect;
 
 	public bool AllowMultiple => false;
 
 	public bool HasEditor => false;
 
 	public bool DoesRecipeMatch(IRecipe recipe, Lazy<Item?> item, object? state) {
-		return recipe is BPRecipe || recipe is ActionRecipe;
+		return recipe.Name?.StartsWith("bcbuildings:") ?? false;
 	}
 
 	public IClickableMenu? GetEditor(IClickableMenu parent, IDynamicRuleData data) {

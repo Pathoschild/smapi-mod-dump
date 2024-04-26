@@ -12,9 +12,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using StardewValley.Pathfinding;
 
 namespace WaterBot.Framework
 {
@@ -143,19 +141,19 @@ namespace WaterBot.Framework
         /// <param name="tile">Tile to water.</param>
         public void water(Point tile)
         {
-            if (Game1.player.getTileY() > tile.Y)
+            if (Game1.player.TilePoint.Y > tile.Y)
             {
                 Game1.player.FacingDirection = 0;
             }
-            else if (Game1.player.getTileY() < tile.Y)
+            else if (Game1.player.TilePoint.Y < tile.Y)
             {
                 Game1.player.FacingDirection = 2;
             }
-            else if (Game1.player.getTileX() > tile.X)
+            else if (Game1.player.TilePoint.X > tile.X)
             {
                 Game1.player.FacingDirection = 3;
             }
-            else if (Game1.player.getTileX() < tile.X)
+            else if (Game1.player.TilePoint.X < tile.X)
             {
                 Game1.player.FacingDirection = 1;
             }
@@ -165,7 +163,7 @@ namespace WaterBot.Framework
                 Game1.player.EndEmoteAnimation();
             }
 
-            Game1.player.FarmerSprite.setOwner(Game1.player);
+            Game1.player.FarmerSprite.SetOwner(Game1.player);
             Game1.player.CanMove = false;
             Game1.player.UsingTool = true;
             Game1.player.canReleaseTool = true;
@@ -243,7 +241,7 @@ namespace WaterBot.Framework
         {
             if (!this.active) return;
 
-            Tile playerLocation = this.map.map[Game1.player.getTileY()][Game1.player.getTileX()];
+            Tile playerLocation = this.map.map[Game1.player.TilePoint.Y][Game1.player.TilePoint.X];
 
             this.refillStation = this.map.getClosestRefill(playerLocation, this.console);
 
@@ -318,7 +316,7 @@ namespace WaterBot.Framework
         /// </summary>
         public void end()
         {
-            this.console("Bot finished watering accessable crops. Ending process.");
+            this.console("Bot finished watering accessible crops. Ending process.");
             this.active = false;
             Game1.player.controller = null;
             this.displayMessage(this.helper.Translation.Get("process.end"), 1);

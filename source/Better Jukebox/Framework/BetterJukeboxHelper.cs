@@ -15,8 +15,8 @@ namespace Gaphodil.BetterJukebox.Framework
 {
     static class BetterJukeboxHelper
     {
-        public static List<string> SoundtrackOrderIds = new()
-        {
+        public static List<string> SoundtrackOrderIds =
+        [
             "title_day",
             "MainTheme",
             "CloudCountry",
@@ -129,11 +129,11 @@ namespace Gaphodil.BetterJukebox.Framework
             "PIRATE_THEME(muffled)",
             "sad_kid",
             "end_credits"
-        };
+        ];
 
         // also used to determine locked tracks (minus cowboy)
-        public static List<string> UnheardSoundtrack = new()
-        {
+        public static List<string> UnheardSoundtrack =
+        [
             // "title_day",
             "MainTheme",
             "CloudCountry",
@@ -249,28 +249,28 @@ namespace Gaphodil.BetterJukebox.Framework
             "PIRATE_THEME(muffled)",
             "sad_kid",
             "end_credits"
-        };
+        ];
 
-        public static List<string> UnheardNamed = new()
-        {
+        public static List<string> UnheardNamed =
+        [
             "aerobics",
             "bugLevelLoop",
             "jojaOfficeSoundscape",
             // "random",
             "starshoot",
-        };
+        ];
 
-        public static List<string> UnheardRandom = new()
-        {
+        public static List<string> UnheardRandom =
+        [
             "springsongs",
             "EarthMine",
             "FrostMine",
             "LavaMine",
             "VolcanoMines"
-        };
+        ];
 
-        public static List<string> UnheardMisc = new()
-        {
+        public static List<string> UnheardMisc =
+        [
             // "springsongs",
             // "EarthMine",
             // "FrostMine",
@@ -310,10 +310,10 @@ namespace Gaphodil.BetterJukebox.Framework
             "Upper_Ambient",
             "Volcano_Ambient",
             "winter_day_ambient"
-        };
+        ];
 
-        public static List<string> UnheardDupes = new()
-        {
+        public static List<string> UnheardDupes =
+        [
             "Cyclops",
             "Ghost Synth",
             "Majestic",
@@ -322,10 +322,10 @@ namespace Gaphodil.BetterJukebox.Framework
             "Pink Petals",
             "Plums",
             "Tropical Jam"
-        };
+        ];
         
-        public static List<string> UnheardMusical = new()
-        {
+        public static List<string> UnheardMusical =
+        [
             "aerobics",
             "starshoot",
             "archaeo",
@@ -333,7 +333,7 @@ namespace Gaphodil.BetterJukebox.Framework
             "sappypiano",
             "secret1",
             "stardrop"
-        };
+        ];
 
 
         /// <summary>

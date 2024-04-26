@@ -11,7 +11,7 @@
 {
   "Name": "Prairie King - Multiplayer Support",
   "Author": "Scayze",
-  "Version": "0.1.3",
+  "Version": "1.1.0",
   "Description": "Adds a multiplayer mode to Prairie King",
   "UniqueID": "scayze.MultiplayerPrairieKing",
   "EntryDll": "MultiplayerPrairieKing.dll",

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Magnet Mod Redux",
+  "Author": "Cheath",
+  "Version": "1.2.1-unofficial.1-hirayuki",
+  "Description": "Increase loot magnet radius and speed.",
+  "UniqueID": "Cheath.MagnetModRedux",
+  "EntryDll": "MagnetModRedux.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:4856"]
+}

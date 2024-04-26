@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using SpaceShared;
+using StardewValley;
 using SObject = StardewValley.Object;
 
 namespace JsonAssets.Data
@@ -32,7 +33,13 @@ namespace JsonAssets.Data
         public Texture2D TextureColor { get; set; }
 
         /// <inheritdoc />
-        public string Description { get; set; }
+        public string Description
+        {
+            get => descript;
+            set => descript = value ?? " ";
+        }
+        private string descript = " ";
+
         public ObjectCategory Category { get; set; }
         public string CategoryTextOverride { get; set; }
         public Color CategoryColorOverride { get; set; } = new(0, 0, 0, 0);
@@ -88,7 +95,7 @@ namespace JsonAssets.Data
                 Type = Category == ObjectCategory.Artifact ? "Arch" : (Category == ObjectCategory.Ring ? "Ring" : "Basic"),
                 Category = (int)this.Category,
                 Price = Price,
-                Texture = $"JA\\Object\\{Name.FixIdJA()}",
+                Texture = $"JA\\Object\\{Name.FixIdJA("O")}",
                 SpriteIndex = 0,
                 Edibility = Edibility,
                 IsDrink = EdibleIsDrink,
@@ -114,6 +121,28 @@ namespace JsonAssets.Data
             };
 
             return ret;
+        }
+
+        public Texture2D GetTexture()
+        {
+            if (!this.IsColored)
+            {
+                return this.Texture;
+            }
+            else
+            {
+                Texture2D tex = new Texture2D(Game1.graphics.GraphicsDevice, 32, 16);
+                Color[] frame = new Color[16 * 16];
+
+                // Put in the base texture
+                this.Texture.GetData(0, new Rectangle(0, 0, 16, 16), frame, 0, 16 * 16);
+                tex.SetData(0, 0, new Rectangle(0, 0, 16, 16), frame, 0, 16 * 16);
+
+                // Put in the colored texture
+                this.TextureColor.GetData(0, new Rectangle(0, 0, 16, 16), frame, 0, 16 * 16);
+                tex.SetData(0, 0, new Rectangle(16, 0, 16, 16), frame, 0, 16 * 16);
+                return tex;
+            }
         }
 
 

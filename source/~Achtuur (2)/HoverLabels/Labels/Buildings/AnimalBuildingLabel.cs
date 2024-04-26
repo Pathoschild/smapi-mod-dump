@@ -40,29 +40,32 @@ internal class AnimalBuildingLabel : BuildingLabel
     {
         base.GenerateLabel();
         List<FarmAnimal> buildingAnimals = GetBuildingAnimals(this.hoverBuilding).ToList();
+        if (buildingAnimals.Count <= 0)
+            return;
 
         int pettableAnimals = buildingAnimals.Count(a => !a.wasPet.Value);
         if (pettableAnimals > 0)
-            this.Description.Add($"{pettableAnimals} animals left to pet");
+            AddBorder(I18n.LabelPettableAnimals(pettableAnimals));
 
         int shownAnimals = 0;
         int labelLimit = ModEntry.GetLabelSizeLimit();
 
         Dictionary<string, IEnumerable<FarmAnimal>> barnAnimalPerType = GetBuildingAnimalsPerType(this.hoverBuilding);
+        NewBorder();
         foreach((string animalType, IEnumerable<FarmAnimal> animals) in barnAnimalPerType.OrderBy(x => x.Key).Select(x => (x.Key, x.Value)))
         {
-            this.Description.Add($"{animalType} ({animals.Count()}):");
+            AppendLabelToBorder($"{animalType} ({animals.Count()}):");
             foreach (FarmAnimal animal in animals.OrderBy(a => a.Name))
             {
                 string descString = $"> {animal.Name}";
 
                 // Check if animal was pet
                 if (animal.wasPet.Value)
-                    descString += " (Pet)";
+                    descString += " " + I18n.LabelPetAnimal();
                 else if (animal.wasAutoPet.Value)
-                    descString += " (Auto-Pet)";
+                    descString += " " + I18n.LabelAutoPetAnimal();
 
-                this.Description.Add(descString);
+                AppendLabelToBorder(descString);
             }
 
             shownAnimals += animals.Count();
@@ -71,7 +74,10 @@ internal class AnimalBuildingLabel : BuildingLabel
         }
 
         if (!ModEntry.IsShowDetailButtonPressed() && buildingAnimals.Count > shownAnimals)
-            this.Description.Add(I18n.LabelPressShowmore(ModEntry.GetShowDetailButtonName(), buildingAnimals.Count - shownAnimals));
+        {
+            string show_detail_text = I18n.LabelPressShowmore(ModEntry.GetShowDetailButtonName(), buildingAnimals.Count - shownAnimals);
+            AddBorder(show_detail_text);
+        }
 
     }
 

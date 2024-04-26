@@ -17,24 +17,17 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib
 {
-    public class UtilityMisc
+    public static class UtilityMisc
     {
-        public static Mod Mod;
-        public static IMonitor Monitor;
-        public static IModHelper Helper;
-
         public static Texture2D TinyLetters;
         public static Texture2D MoneyTexture;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = ModEntry._Monitor;
-            Helper = ModEntry._Helper;
-
             TinyLetters = Helper.ModContent.Load<Texture2D>("assets/TinyLetters.png");
         }
 
@@ -72,5 +65,8 @@ namespace Unlockable_Bundles.Lib
                     b.Draw(TinyLetters, new Vector2(x, y) + new Vector2(16f * scale, 15f * scale), text[i] == 'K' ? new Rectangle(0,0,5,7) : new Rectangle(5,0,7,7), color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
             }
         }
+
+        public static string asHexString(this Color color)
+            => $"#{color.R.ToString("X")}{color.G.ToString("X")}{color.B.ToString("X")}{color.A.ToString("X")}";
     }
 }

@@ -419,6 +419,9 @@ namespace LittleNPCs.Framework {
         }
 
         protected override void prepareToDisembarkOnNewSchedulePath() {
+            // Base method only works for married NPCs but we must call it to stop running animations.
+            base.prepareToDisembarkOnNewSchedulePath();
+            // This is normally only for married NPCs.
             if (Utility.getGameLocationOfCharacter(this) is FarmHouse) {
                 var home = getHome();
                 ModEntry.monitor_.VerboseLog($"[{GetHostTag()}] prepareToDisembarkOnNewSchedulePath: {home.NameOrUniqueName}");

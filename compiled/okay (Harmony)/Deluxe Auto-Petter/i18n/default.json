@@ -1,0 +1,14 @@
+{
+  "quest_mail_title": "Auto-Petter Improvements",
+  "quest_mail_start": "Hey there!",
+  "quest_mail_details": "I heard you found a Joja Auto-Petter. If you want, I could look into improving that for you. Just drop off the Auto-Petter, 300 Hardwood, and 25 Iridium Bars in my garage, and I will handle the rest!",
+  "quest_reward_mail_title": "The Deluxe Auto-Petter",
+  "quest_reward_mail_details": "Good news! Robin was able to create the \"Deluxe Auto-Petter\" with the materials that you provided! I am now selling these Deluxe Auto-Petters, so come buy one when you have a chance. Your animals will love it!",
+  "quest_title": "The Deluxe Auto-Petter",
+  "quest_description": "Deliver the necessary materials to Robin's house.",
+  "quest_objective": "Deliver 1 Auto-Petter, 300 Hardwood, and 25 Iridium Bars",
+  "deluxe_auto_petter_display_name": "Deluxe Auto-Petter",
+  "deluxe_auto_petter_description": "Behaves similarly to a regular Auto-Petter, but with better results! Hooray!",
+  "robin_name": "Robin",
+  "marnie_name": "Marnie"
+}

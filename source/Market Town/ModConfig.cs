@@ -80,6 +80,8 @@ namespace MarketTown
         public int NPCCheckTimer { get; set; } = 1;
         public float MuseumPriceMarkup { get; set; } = 1.0f;
         public bool MultiplayerMode { get; set; } = false;
+        public bool EasyLicense { get; set; } = false;
+        public bool DisableTextChat { get; set; } = false;
 
     }
 }

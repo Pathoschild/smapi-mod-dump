@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TeleportationToolMod Code",
+  "Author": "jeWel",
+  "Version": "1.1.1",
+  "Description": "Code for TeleportationToolMod",
+  "UniqueID": "jeWel.TeleportationToolModCode",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:???"],
+  "EntryDll": "TeleportationToolMod.dll"
+}

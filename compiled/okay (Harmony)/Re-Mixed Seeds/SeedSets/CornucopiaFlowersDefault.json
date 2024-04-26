@@ -1,0 +1,119 @@
+{      
+    "Spring": [          
+        {
+            "cropName" : "Morning Glory",
+            "seedID" : "Cornucopia_MorningGlorySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : true,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Pansy",
+            "seedID" : "Cornucopia_PansySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Pink Cat",
+            "seedID" : "Cornucopia_PinkCatSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Rose",
+            "seedID" : "Cornucopia_RoseSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }  
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "Blue Mist",
+            "seedID" : "Cornucopia_BlueMistSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Lily",
+            "seedID" : "Cornucopia_LilySeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        },
+        {
+            "cropName" : "Lotus",
+            "seedID" : "Cornucopia_LotusSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Orchid",
+            "seedID" : "Cornucopia_OrchidSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 3
+        },
+        {
+            "cropName" : "Rose",
+            "seedID" : "Cornucopia_RoseSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "Chrysanthemum",
+            "seedID" : "Cornucopia_ChrysanthemumSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 2
+        },
+        {
+            "cropName" : "Iris",
+            "seedID" : "Cornucopia_IrisSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        },
+        {
+            "cropName" : "Orchid",
+            "seedID" : "Cornucopia_OrchidSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true,
+            "minYear" : 3
+        },
+        {
+            "cropName" : "Rose",
+            "seedID" : "Cornucopia_RoseSeeds",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : true
+        }
+      ]
+      
+}

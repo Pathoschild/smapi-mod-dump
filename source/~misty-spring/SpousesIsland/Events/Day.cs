@@ -19,6 +19,7 @@ namespace SpousesIsland.Events;
 
 internal static class Day
 {
+    internal static void Log(string msg, LogLevel lv = LogLevel.Trace) => Mon.Log(msg, lv);
     internal static void OnStart(object sender, DayStartedEventArgs e)
     {
         //if rain during a random visit, don't
@@ -39,6 +40,9 @@ internal static class Day
         //if no island or not unlocked, do nothing (if unlocked but no island, make devan invisible)
         if (!IslandToday || !Unlocked)
         {
+#if DEBUG
+            Log("Island visit won't happen today.", LogLevel.Info);
+#endif
             if (!Unlocked)
                 return;
 
@@ -54,7 +58,7 @@ internal static class Day
         foreach (var character in ValidSpouses)
         {
             #if DEBUG
-            Mon.Log($"Checking {character}...", LogLevel.Debug);
+            Log($"Checking {character}...", LogLevel.Debug);
             #endif
             
             if(Status is not null && Status.Any() && !Status.ContainsKey(character))
@@ -78,7 +82,7 @@ internal static class Day
 
         if (!Beds.HasAnyKidBeds() && Config.UseFurnitureBed)
         {
-            Mon.Log("There's no child beds in island farmhouse. Farmer's kids won't visit.", LogLevel.Warn);
+            Log("There's no child beds in island farmhouse. Farmer's kids won't visit.", LogLevel.Warn);
             Schedule.Babysitter();
             return;
         }

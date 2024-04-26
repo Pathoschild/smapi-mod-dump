@@ -6,9 +6,9 @@ mods:
    Esca's Modding Plugins
 
 latest commit:
-   commit e64647dc670b6436d276a962f62fe2ed42262d60
+   commit 2f09b6cd8b82a3b4e9c5d1f47969a4a8d92636bd
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Mar 24 13:17:32 2024 -0500
+   Date:   Fri Apr 19 16:14:34 2024 -0500
    
-       Add i18n info to readme
+       Add spanish i18n by nitropicc
    

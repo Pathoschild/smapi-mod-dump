@@ -14,24 +14,53 @@ using StardewValley;
 
 namespace CopperStill.ModPatches {
     internal static class ModifyBundle {
-        public static void Register(IModHelper helper, IMonitor monitor) {
-            helper.Events.GameLoop.SaveLoaded += (s, e) => {
-                var id = Game1.objectData
+        public static void Register() {
+            if (ModEntry.Instance?.Helper is not null) {
+                ModEntry.Instance.Helper.Events.GameLoop.SaveLoaded += (s, e) => UpdateBundle(Config.Instance?.ModifyDefaultBundle ?? false);
+            }
+        }
+
+        public static void UpdateBundle(bool include) {
+            var id = Game1.objectData
                     .Where(o => o.Value.Name.Contains("Brandy", System.StringComparison.OrdinalIgnoreCase))
                     .Select(o => ItemRegistry.GetMetadata(o.Key).QualifiedItemId).FirstOrDefault();
-                if (id != null) {
-                    var bundles = Game1.netWorldState.Value.BundleData;
-                    foreach (var key in bundles.Keys.ToArray()) {
-                        var val = bundles[key];
-                        if (key == "Abandoned Joja Mart/36" && val == "The Missing//348 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing") {
+            var bundles = Game1.netWorldState.Value.BundleData;
+            foreach (var key in bundles.Keys.ToArray()) {
+                if (key == "Abandoned Joja Mart/36") {
+                    var val = bundles[key];
+                    if (val == "The Missing//348 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing") { // original bundle
+                        if (include) {
+                            ModEntry.Instance?.Monitor?.Log("Found default bundle, updating to current.", LogLevel.Info);
                             bundles[key] = val.Replace("//348 1 1 ", $"//{id} 1 1 ");
-                            Game1.netWorldState.Value.SetBundleData(bundles);
-                            monitor.Log("Found default bundle, adjusting accordingly.", LogLevel.Info);
-                            break;
+                        } else {
+                            ModEntry.Instance?.Monitor?.Log("Found default bundle, nothing to do.", LogLevel.Info);
+                        }
+                    } else if (val == "The Missing//(O)Brandy 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing" // older item IDs
+                        || val == "The Missing//(O)NCarigon.CopperStillJA_Brandy 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing"
+                    ) {
+                        if (include) {
+                            ModEntry.Instance?.Monitor?.Log("Found legacy bundle, updating to current.", LogLevel.Info);
+                            bundles[key] = val.Replace("//(O)Brandy 1 1 ", $"//{id} 1 1 ")
+                                .Replace("//(O)NCarigon.CopperStillJA_Brandy 1 1 ", $"//{id} 1 1 ");
+                        } else {
+                            ModEntry.Instance?.Monitor?.Log("Found legacy bundle, resetting to default.", LogLevel.Info);
+                            bundles[key] = val.Replace("//(O)Brandy 1 1 ", $"//348 1 1 ")
+                                .Replace("//(O)NCarigon.CopperStillJA_Brandy 1 1 ", $"//348 1 1 ");
+                        }
+                    } else if (val == $"The Missing//{id} 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing") { // current item ID
+                        if (include) {
+                            ModEntry.Instance?.Monitor?.Log("Found updated bundle, nothing to do.", LogLevel.Info);
+                        } else {
+                            ModEntry.Instance?.Monitor?.Log("Found updated bundle, resetting to default.", LogLevel.Info);
+                            bundles[key] = val.Replace($"//{id} 1 1 ", $"//348 1 1 ");
                         }
                     }
+                    if (val != bundles[key]) {
+                        Game1.netWorldState.Value.SetBundleData(bundles);
+                    }
+                    break;
                 }
-            };
+            }
         }
     }
 }

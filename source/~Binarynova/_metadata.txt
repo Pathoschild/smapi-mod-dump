@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Binarynova/MyStardewMods
+   Git: https://github.com/Binarynova/MyStardewMods.git
+
+mods:
+   Instant Tool Upgrades
+   More Level Up Notifications
+
+latest commit:
+   commit 43102ed7b8cdf38903d866cb1b20c9ea1e2938f4
+   Author: Thomas <binarynova@gmail.com>
+   Date:   Wed Apr 3 02:02:40 2024 -0500
+   
+       Update manifest and comments
+   

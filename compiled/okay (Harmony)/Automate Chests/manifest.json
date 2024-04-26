@@ -1,16 +1,16 @@
 {
   "Name": "AutomateChests",
   "Author": "SinZ",
-  "Version": "1.1.0",
+  "Version": "2.0.0",
   "Description": "Changes Automate to only use this mods defined chest instead of normal chests for storage",
   "UniqueID": "SinZ.AutomateChests",
   "EntryDll": "AutomateChests.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:11727" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.Automate",
-      "MinimumVersion": "1.25.3"
+      "MinimumVersion": "2.0.0"
     }
   ]
 }

@@ -10,17 +10,19 @@
 
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
-using StardewDruid.Event.Challenge;
-using StardewDruid.Map;
+using StardewDruid.Data;
+using StardewDruid.Journal;
 using StardewDruid.Monster.Boss;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Minigames;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using xTile;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
@@ -29,6 +31,8 @@ namespace StardewDruid.Location
 {
     public static class LocationData
     {
+
+        public const string druid_grove_name = "18465_Druid_Grove";
 
         public static void LocationEdit(QueryData query)
         {
@@ -124,6 +128,45 @@ namespace StardewDruid.Location
 
         }
 
+        public static void WarpResets()
+        {
+
+            DruidGrove grove = Game1.getLocationFromName(LocationData.druid_grove_name) as DruidGrove;
+
+            if( grove != null )
+            {
+                
+                foreach (WarpBack warpBack in grove.warpBacks)
+                {
+
+                    Game1.getLocationFromName(warpBack.location).warps[warpBack.index] = warpBack.warp;
+
+                }
+
+            }
+
+        }
+
+        public static void DruidEdit()
+        {
+            Mod.instance.Monitor.Log("madeGrove", LogLevel.Debug);
+            GameLocation grove = Game1.getLocationFromName(druid_grove_name);
+
+            if (grove != null)
+            {
+
+                return;
+
+            }
+
+            grove = new Location.DruidGrove(druid_grove_name);
+
+            Game1.locations.Add(grove);
+
+            Mod.instance.locations.Add(druid_grove_name);
+
+        }
+
         public static void SandDragonReset()
         {
             
@@ -138,7 +181,7 @@ namespace StardewDruid.Location
             
             GameLocation targetLocation = Game1.getLocationFromName("Desert");
 
-            Vector2 targetVector = QuestData.SpecialVector(targetLocation, "challengeSandDragon");
+            Vector2 targetVector = ModUtility.PositionToTile(Mod.instance.eventRegister["challengeSandDragon"].origin);
 
             Random randomIndex = new();
 
@@ -492,18 +535,16 @@ namespace StardewDruid.Location
 
             Game1.locations.Add(crypt);
 
-            Mod.instance.locationList.Add("18465_Crypt");
+            Mod.instance.locations.Add("18465_Crypt");
 
         }
 
         public static void CryptReturn()
         {
 
-            Quest questData = QuestData.RetrieveQuest("challengeCrypt");
+            int warpX = (int)(Mod.instance.questHandle.quests["challengeCrypt"].origin.X / 64);
 
-            int warpX = (int)questData.triggerVector.X;
-
-            int warpY = (int)questData.triggerVector.Y + 2;
+            int warpY = (int)(Mod.instance.questHandle.quests["challengeCrypt"].origin.Y / 64)+ 2;
 
             Game1.warpFarmer("town", warpX, warpY, 2);
 

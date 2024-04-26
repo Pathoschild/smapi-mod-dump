@@ -17,8 +17,7 @@ A fork of [Better Sprinklers by Maurício Gomes (Speeder)](http://www.nexusmods.
 
 Sprinklers, but better.
 
-Originally by Maurício Gomes (Speeder), maintained by [JamesCodesThings](https://codesthings.com).
-
+Originally by Maurício Gomes (Speeder), maintained by [JamesCodesThings](https://codesthings.com), updated for SDV 1.6 by gingajamie.
 
 
 # Contents
@@ -133,6 +132,9 @@ __Off:__ No coverage is shown.
 
 This is useful if you only want to use Data Layers.
 
+## Sprinkler Cooldown (seconds)
+This is used to avoid sprinkler animation overlap when a sprinkler is activated multiple times within quick succesion. Default value of 30 seconds.
+
 ## Show Config Key
 __Use:__ Changes the hotkey to change sprinkler configuration.
 
@@ -199,6 +201,10 @@ It's out of scope of my aims to improve this. But, I'll happily accept and consi
 - [ ] (accessibility) i18n basics.
 
 # Versions
+## 2.18.0
+- Update to `.Net 6`
+- Added sprinkler cooldown logic to avoid overlapping of sprinkler animations if a sprinkler is activated in quick succession. Configurable via settings.
+
 ## 2.17.2
 - Changelog update only.
 

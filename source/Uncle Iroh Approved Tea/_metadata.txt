@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/slimerrain/stardew-mods
+   Git: https://github.com/slimerrain/stardew-mods.git
+
+mods:
+   Uncle Iroh Approved Tea
+
+latest commit:
+   commit 7925d5cf92477e222198afbb49f33a321b409511
+   Author: Manon Lefebvre <manonalefebvre@gmail.com>
+   Date:   Wed Apr 24 07:24:07 2024 -0700
+   
+       fixed dried goji berry prices, added russian translation; thanks @kuwhio
+   

@@ -26,16 +26,12 @@ namespace HappyHomeDesigner.Menus
 			base(Item, season, seasonName, favorites, "Craftable_"){}
 
 		public override bool CanPlace()
-		{
-			return true;
-		}
+			=> true;
 
 		public override SObject GetOne()
-		{
-			return Item.getOne() as SObject;
-		}
+			=> Item.getOne() as SObject;
 
-		public override IList<VariantEntry<SObject>> GetVariants()
+		public override IReadOnlyList<VariantEntry<SObject>> GetVariants()
 		{
 			if (!HasVariants)
 				return new[] { new BigObjectEntry(Item) };

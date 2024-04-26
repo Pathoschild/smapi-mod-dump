@@ -13,7 +13,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common;
-using Pathoschild.Stardew.Common.Enums;
 using Pathoschild.Stardew.TractorMod.Framework.Config;
 using StardewModdingAPI;
 using StardewValley;
@@ -288,7 +287,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
                 case Tree tree:
                     if (tree.hasSeed.Value && !tree.tapped.Value)
                     {
-                        bool shouldHarvest = tree.treeType.Value == TreeType.Palm || tree.treeType.Value == TreeType.Palm2
+                        bool shouldHarvest = tree.treeType.Value is (Tree.palmTree or Tree.palmTree2)
                             ? this.Config.HarvestFruitTrees
                             : this.Config.HarvestTreeSeeds;
 

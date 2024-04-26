@@ -1,0 +1,100 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    // ========== CROPS & SEEDS ==========
+    "UnmilledRice.displayname": "Brown Rice",
+    "Rice.displayname": "White Rice",
+
+    "Barley.displayname": "Barley",
+    "Barley.description": "One of the most nutritional and widely cultivated grains.",
+    "Barley.seed.displayname": "Barley Seeds",
+    "Barley.seed.description": "Plant these in spring. Takes 4 days to mature. Harvest with the scythe.",
+    
+    "Buckwheat.displayname": "Buckwheat",
+    "Buckwheat.description": "One of the most widely cultivated grains. Great for cooking!",
+    "Buckwheat.seed.displayname": "Buckwheat Seeds",
+    "Buckwheat.seed.description": "Plant these in spring or summer. Takes 5 days to mature.",
+    
+    "Millet.displayname": "Millet",
+    "Millet.description": "An ancient nutritional grain commonly used for cooking.",
+    "Millet.seed.displayname": "Millet Seeds",
+    "Millet.seed.description": "Plant these in summer. Takes 4 days to mature. Harvest with the scythe.",
+    
+    "Oat.displayname": "Oat",
+    "Oat.description": "A nutritious grain with lots of fiber and a variety of uses.",
+    "Oat.seed.displayname": "Oat Seeds",
+    "Oat.seed.description": "Plant these in spring. Takes 4 days to mature. Harvest with the scythe.",
+    
+    "Rye.displayname": "Rye",
+    "Rye.description": "A hardy and nutritious grain used for baking and brewing.",
+    "Rye.seed.displayname": "Rye Seeds",
+    "Rye.seed.description": "Plant these in summer or fall. Takes 6 days to mature. Harvest with the scythe.",
+    
+    "Sorghum.displayname": "Sorghum",
+    "Sorghum.description": "A versatile and nutritional grain with a variety of uses.",
+    "Sorghum.seed.displayname": "Sorghum Seeds",
+    "Sorghum.seed.description": "Plant these in spring or summer. Takes 5 days to mature. Harvest with the scythe.",
+    
+    // ========== INGREDIENTS ==========
+    "PearlBarley.displayname": "Pearl Barley",
+    "PearlBarley.description": "A less common cooking ingredient made from crushed barley.",
+
+    "BuckwheatFlour.displayname": "Buckwheat Flour",
+    "BuckwheatFlour.description": "A fairly common cooking ingredient made from crushed buckwheat seeds.",
+
+    "HulledMillet.displayname": "Hulled Millet",
+    "HulledMillet.description": "A subtly-flavored cooking ingredient made from lightly processed millet.",
+
+    "RolledOats.displayname": "Rolled Oats",
+    "RolledOats.description": "A common cooking ingredient made from lightly processed oats.",
+
+    "RyeFlour.displayname": "Rye Flour",
+    "RyeFlour.description": "A common cooking ingredient used sparsely in dishes for the unique flavor it possesses. It's made from crushed rye.",
+
+    // ========== DISHES ==========
+    "HarvestBowl.displayname": "Harvest Bowl",
+    "HarvestBowl.description": "Nice on the eyes and on the tongue.",
+
+    "BlueberryOatmeal.displayname": "Blueberry Oatmeal",
+    "BlueberryOatmeal.description": "It's sweet and hearty.",
+
+    "OvernightOats.displayname": "Overnight Oats",
+    "OvernightOats.description": "Easy meal prep for a busy worker.",
+
+    "TrailMix.displayname": "Trail Mix",
+    "TrailMix.description": "A light mix to take out foraging.",
+
+    "Galette.displayname": "Galette",
+    "Galette.description": "A savory crepe.",
+
+    "MilletPorridge.displayname": "Millet Porridge",
+    "MilletPorridge.description": "A comforting side dish that goes well with anything.",
+
+    "RyeBread.displayname": "Rye Bread",
+    "RyeBread.description": "A tangier and sourer handmade loaf.",
+
+    "SorghumSalad.displayname": "Sorghum Salad",
+    "SorghumSalad.description": "A refreshing blend for a quick morning boost.",
+
+    "BuckwheatWaffles.displayname": "Buckwheat Waffles",
+    "BuckwheatWaffles.description": "A small way to keep life interesting.",
+
+    // ========== CONFIG ==========
+    "Config.RenameUnmilledRice.description": "If you want \"Unmilled Rice\" to be called \"Brown Rice\" instead.",
+    "Config.RenameMilledRice.description": "If you want \"Rice\" to be called \"White Rice\" instead.",
+
+    "Config.Barley.description": "Uncheck this if you want to remove this mod's Barley from the game.",
+    "Config.Buckwheat.description": "Uncheck this if you want to remove this mod's Buckwheat from the game.",
+    "Config.Millet.description": "Uncheck this if you want to remove this mod's Millet from the game.",
+    "Config.Oats.description": "Uncheck this if you want to remove this mod's Oats from the game.",
+    "Config.Rye.description": "Uncheck this if you want to remove this mod's Rye from the game.",
+    "Config.Sorghum.description": "Uncheck this if you want to remove this mod's Sorghum from the game."
+}

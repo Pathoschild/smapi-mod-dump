@@ -1,0 +1,36 @@
+{
+	"mod.name": "Better Crafting: Yapılar",
+	"category.name": "Yapılar",
+
+	"error.not-buildable": "@C{red}Şu anki konumunda bunu inşa edemezsin.",
+	"error.cant-upgrade": "@C{red}Yükseltilecek bir @B{{other}}@b yok.",
+
+	"error.unmet-condition": "@C{red}Bunu inşa etmek için bir koşulu karşılamıyorsunuz.",
+
+	"setting.cost": "Ücret Çarpanı",
+	"setting.cost.desc": "BC: Yapılar (başka kaynaklar değil) kullanarak bir yapı inşa ettiğinizde, yapı maliyetleri bu miktara göre daha ucuz veya daha pahalı olacak şekilde ayarlanacaktır.",
+
+	"setting.cost-additional": "Fazladan Maliyet",
+	"setting.cost-additional.tip": "Bir yapı inşa etmek bu ek malzemeleri gerektirir. Girdiler, virgülle ayrılmış bir girdi listesi şeklinde olmalıdır. Burada bir girdi; nesne miktarıyla başlar, ardından iki nokta üst üste ve ardından bir nesne ID'si yazılır.",
+
+	"setting.cost-material": "Materyal Yüzdesi",
+	"setting.cost-material.tip": "Bir yapı inşa etmek, normal malzemelerin bu kadarını gerektirir. Normal maliyetler için %100'e ayarlayın.",
+
+	"setting.cost-currency": "Para Birimi Yüzdesi",
+	"setting.cost-currency.tip": "Bir yapı inşa etmek, normal para biriminin bu kadarını gerektirir. Normal maliyetler için %100'e ayarlayın.",
+
+	"setting.refund": "Yıkarken İade Et",
+	"setting.refund.desc": "Bir binayı BC: Yapılar (diğer kaynaklar değil) kullanarak yıktığınızda , onu inşa etmek için ödenen malzemelerin iadesini alacaksınız.",
+
+	"setting.refund-material": "Materyal Yüzdesi",
+	"setting.refund-material.tip": "Bir yapıyı yıkarken bu malzeme yüzdesini geri alırsınız. Malzeme iadelerini devre dışı bırakmak için %0 olarak ayarlayın.",
+
+	"setting.refund-currency": "Para Birimi Yüzdesi",
+	"setting.refund-currency.tip": "Bir yapıyı yıkarken bu para yüzdesini geri alırsınız. Para birimi iadelerini devre dışı bırakmak için %0 olarak ayarlayın.",
+
+	"setting.greenhouse-move": "Yıkık Serayı Taşımaya İzin Ver",
+	"setting.greenhouse-move.tip": "Etkinleştirildiğinde, BC: Yapılar ile serayı tamir etmeden önce bile yerini değiştirebilirsiniz.",
+
+	"filter.name": "Yapılar ve Eylemler",
+	"filter.about": "Bu kural yapıları ve yapılarda gerçekleştirilen işlemleri içerir."
+}

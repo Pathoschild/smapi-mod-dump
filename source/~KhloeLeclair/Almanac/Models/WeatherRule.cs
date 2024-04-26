@@ -50,15 +50,15 @@ public struct RuleDateRange {
 	}
 }
 
-public struct RulePatternEntry {
-	public RuleWeather Weather { get; set; }
-	public float Weight { get; set; } = 1;
+	public struct RulePatternEntry {
+		public string Weather { get; set; }
+		public float Weight { get; set; } = 1;
 
-	public RulePatternEntry(RuleWeather weather, float weight) {
-		Weather = weather;
-		Weight = weight;
+		public RulePatternEntry(string weather, float weight) {
+			Weather = weather;
+			Weight = weight;
+		}
 	}
-}
 
 public class WeatherRule {
 	public string? Id { get; set; }
@@ -82,8 +82,8 @@ public class WeatherRule {
 	public TimeScale Period { get; set; }
 	public RuleDateRange[]? Dates { get; set; }
 
-	public RulePatternEntry[][]? WeightedPattern { get; set; }
-	public RuleWeather[][]? Pattern { get; set; }
+		public RulePatternEntry[][] WeightedPattern { get; set; }
+		public string[][] Pattern { get; set; }
 
 	public RuleWeight Weight { get; set; } = RuleWeight.None;
 
@@ -109,27 +109,27 @@ public class WeatherRule {
 
 			RulePatternEntry[][] result = new RulePatternEntry[Pattern.Length][];
 
-			for (int i = 0; i < result.Length; i++) {
-				RuleWeather[] input = Pattern[i];
-				result[i] = new RulePatternEntry[input.Length];
-				for (int j = 0; j < input.Length; j++) {
-					result[i][j] = new RulePatternEntry {
-						Weather = input[j],
-						Weight = GetDefaultWeight(input[j])
-					};
+				for (int i = 0; i < result.Length; i++) {
+					string[] input = Pattern[i];
+					result[i] = new RulePatternEntry[input.Length];
+					for (int j = 0; j < input.Length; j++) {
+						result[i][j] = new RulePatternEntry {
+							Weather = input[j],
+							Weight = GetDefaultWeight(input[j])
+						};
+					}
 				}
-			}
 
 			return result;
 		}
 	}
 
-	public static float GetDefaultWeight(RuleWeather weather) {
-		if (weather == RuleWeather.Storm)
-			return 0.25f;
+		public static float GetDefaultWeight(string weather) {
+			if (weather == "Storm")
+				return 0.25f;
 
-		if (weather == RuleWeather.Festival)
-			return 0f;
+			if (weather == "Festival")
+				return 0f;
 
 		return 1f;
 	}

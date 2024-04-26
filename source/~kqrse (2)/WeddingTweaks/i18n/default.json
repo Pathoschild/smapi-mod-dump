@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "ask-x-to-witness": "Ask {0} to act as your witness at the wedding?",
+  "witness-accept": "Of course! I'd be honoured to be your witness!$h",
+  "witness-decline": "Sorry, I'm not comfortable doing that.$s"
+
+}

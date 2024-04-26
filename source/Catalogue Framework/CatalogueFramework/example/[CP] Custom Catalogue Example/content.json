@@ -1,0 +1,87 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Leroymilo/Catalogue-Framework
+**
+*************************************************/
+
+{
+    "Format": "2.0.0",
+    "Changes": [
+        // your changes will go here
+
+		{
+			"LogName": "Creating the Furniture to host the Catalogue",
+			"Action": "EditData",
+			"Target": "Data/Furniture",
+			"Entries": {
+				"Example_Catalogue_Furniture": "Example Catalogue/other/1 2/1 1/1/2000/2/Example Catalogue/0/example_catalogue/true/custom_catalogue"
+			}
+			// The Furniture's data.
+			// See these for reference :
+			// 		https://stardewvalleywiki.com/Modding:Items#Furniture 
+			// 		https://stardewvalleywiki.com/Modding:Migrate_to_Stardew_Valley_1.6#Furniture_changes
+		},
+
+		{
+			"LogName": "Loading the Texture of the Furniture",
+			"Action": "Load",
+			"Target": "example_catalogue",
+			"FromFile": "assets/catalogue.png"
+		},
+
+		{
+			"LogName": "Creating the Catalogue's Shop",
+			"Action": "EditData",
+			"Target": "Data/Shops",
+			"Entries": {
+				"Example_Catalogue_Shop": {
+					"Items": [
+						{
+							// Example of item group
+							"Id": "item_group",
+							"ItemId": "ALL_ITEMS (F)",	// (F) for Furniture
+							"PerItemCondition": "ITEM_CONTEXT_TAG Target custom_catalogue"
+							// This item entry will put every item with the context tag "custom_catalogue" in this shop.
+						},
+						{
+							// Example of simple item
+							"Id": "vanilla_f_catalogue",
+							"ItemId": "(F)1226"			// The Id for the vanilla furniture catalogue item
+							// This will add the vanilla furniture catalogue to this shop.
+							// You can put your custom items ItemIds to sell items from your mod.
+						}
+						// There are a TON of fields that you can change to personalize how items are sold.
+					],
+					"SalableItemTags": [
+						// The context tags of items you can sell in this shop.
+						// This will only work for items that you can sell in the first place.
+					],
+					"Owners": [ {"Name": "AnyOrNone"} ]	// Don't change this unless you know what you're doing.
+				}
+				// Your catalogue shop's data.
+				// See here for refernce : https://stardewvalleywiki.com/Modding:Shops
+			}
+		},
+
+		{
+			"LogName": "Adding the Furniture to Robin's Shop",
+			"Action": "EditData",
+			"Target": "Data/Shops",
+			"TargetField": ["Carpenter", "Items"],
+			"Entries": {
+				"Example_Catalogue_Furniture": {
+					"Id": "Example_Catalogue_Furniture",
+					"ItemId": "(F)Example_Catalogue_Furniture"
+				}
+			},
+			"MoveEntries": [
+				{ "ID": "Example_Catalogue_Furniture", "AfterID": "(F)1226"}
+				// moving the new catalogue just after the default catalogue
+			]
+		}
+    ]
+}

@@ -74,6 +74,41 @@ namespace Custom_Farm_Loader.GameLoopInjections
             //But it's fine for now, I guess and there's more important things to do :)
             placeFurniture();
             placeFences();
+            placeBuildings();
+        }
+
+        private static void placeBuildings()
+        {
+            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+
+            foreach (var sb in customFarm.StartBuildings) {
+                var loc = Game1.getLocationFromName(sb.Area.LocationName);
+
+                if(!loc.isAlwaysActive.Value) {
+                    Monitor.Log($"Tried placing a StartBuilding {sb.Type} at {sb.Area.LocationName}, but that location is not set as AlwaysActive.");
+                    continue;
+                }
+
+                foreach(var pos in sb.Area.Include) {
+                    var tile = new Vector2(pos.X, pos.Y);
+                    if (!loc.buildStructure(sb.Type, tile, Game1.player, out var building, false, true))
+                        continue;
+
+                    building.FinishConstruction(true);
+
+                    if (building.GetIndoors() is not AnimalHouse animalHouse)
+                        continue;
+
+                    foreach(var a in sb.Animals) {
+                        if (animalHouse.isFull())
+                            break;
+
+                        var animal = new FarmAnimal(a.Value, Game1.random.Next(int.MaxValue), Game1.player.UniqueMultiplayerID);
+                        animal.Name = a.Key;
+                        animalHouse.adoptAnimal(animal);
+                    }
+                }
+            }
         }
 
         private static void placeFences()
@@ -163,7 +198,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
                     "spousearea" => "SpouseAreaLocation",
                     "petbowl" => "PetBowlLocation",
                     "farmcave" => "FarmCaveEntry",
-                    "mailbox" => "MailboxLocation",
+                    //"mailbox" => "MailboxLocation", //Deprecated
                     "shippingbin" => "ShippingBinLocation",
                     "grandpashrine" => "GrandpaShrineLocation",
                     _ => ""

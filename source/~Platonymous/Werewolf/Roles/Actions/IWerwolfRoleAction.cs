@@ -8,9 +8,9 @@
 **
 *************************************************/
 
-using Werewolf.Game;
+using LandGrants.Game;
 
-namespace Werewolf.Roles.Actions
+namespace LandGrants.Roles.Actions
 {
     public interface IWerwolfRoleAction
     {

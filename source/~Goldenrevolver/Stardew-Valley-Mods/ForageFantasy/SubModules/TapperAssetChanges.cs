@@ -19,6 +19,7 @@ namespace ForageFantasy
     using StardewValley.GameData.WildTrees;
     using StardewValley.TerrainFeatures;
     using System.Collections.Generic;
+    using static TapperAndMushroomQualityLogic;
 
     internal class TapperAssetChanges
     {
@@ -128,6 +129,17 @@ namespace ForageFantasy
                 }
             }
 
+            if (data.TryGetValue(Tree.mysticTree, out var mysticData))
+            {
+                foreach (var item in mysticData.TapItems)
+                {
+                    if (item.Id == "Default")
+                    {
+                        item.DaysUntilReady = config.MysticTapperDaysNeeded;
+                    }
+                }
+            }
+
             if (config.MushroomTreeTappersConsistentDaysNeeded && data.TryGetValue(Tree.mushroomTree, out var mushroomData))
             {
                 WildTreeTapItemData redTap = null;
@@ -215,31 +227,66 @@ namespace ForageFantasy
             ----
 
             wanted values:
-            maple syrup 7 days 150g
+            maple syrup 7 days 155g
             oak resin 7 days 150g
-            pine tar 7 days 150g
-
-            so the calculation is:
-            newSellPrice = (int)Math.Round(daysNeeded * (150f / 7f), MidpointRounding.AwayFromZero);
+            pine tar 7 days 140g
 
             */
 
             IDictionary<string, ObjectData> data = asset.AsDictionary<string, ObjectData>().Data;
 
-            var priceChanges = new Dictionary<string, int>()
-            {
-                { "724", config.MapleTapperDaysNeeded },
-                { "725", config.OakTapperDaysNeeded },
-                { "726", config.PineTapperDaysNeeded }
-            };
+            int? mapleSyrupPriceOverride = null;
+            int? oakResinPriceOverride = null;
+            int? pineTarPriceOverride = null;
 
-            foreach (var item in priceChanges)
+            if (data.TryGetValue(mapleSyrupNonQID, out ObjectData mapleSyrupData))
             {
-                if (data.TryGetValue(item.Key, out var objectData))
+                mapleSyrupPriceOverride = GetTapperProductDefaultPriceOverride(mapleSyrupData, "MapleSyrupPriceBasedOn9Days");
+            }
+
+            if (data.TryGetValue(oakResinNonQID, out ObjectData oakResinData))
+            {
+                oakResinPriceOverride = GetTapperProductDefaultPriceOverride(oakResinData, "OakResinPriceBasedOn7Days");
+            }
+
+            if (data.TryGetValue(pineTarNonQID, out ObjectData pineTarData))
+            {
+                pineTarPriceOverride = GetTapperProductDefaultPriceOverride(pineTarData, "PineTarPriceBasedOn5Days");
+            }
+
+            if (mapleSyrupData != null)
+            {
+                mapleSyrupData.Price = GetTapperProductValueForDaysNeededWithEqualizedPriceCheck(config, config.MapleTapperDaysNeeded, mapleSyrupNonQID, mapleSyrupPriceOverride, mapleSyrupPriceOverride, oakResinPriceOverride, pineTarPriceOverride);
+            }
+
+            if (oakResinData != null)
+            {
+                oakResinData.Price = GetTapperProductValueForDaysNeededWithEqualizedPriceCheck(config, config.OakTapperDaysNeeded, oakResinNonQID, oakResinPriceOverride, mapleSyrupPriceOverride, oakResinPriceOverride, pineTarPriceOverride);
+            }
+
+            if (pineTarData != null)
+            {
+                pineTarData.Price = GetTapperProductValueForDaysNeededWithEqualizedPriceCheck(config, config.PineTapperDaysNeeded, pineTarNonQID, pineTarPriceOverride, mapleSyrupPriceOverride, oakResinPriceOverride, pineTarPriceOverride);
+            }
+
+            if (data.TryGetValue(mysticSyrupNonQID, out var mysticSyrupData))
+            {
+                int? priceOverride = GetTapperProductDefaultPriceOverride(mysticSyrupData, "MysticSyrupPriceBasedOn7Days");
+                mysticSyrupData.Price = GetTapperProductValueForDaysNeeded(config.MysticTapperDaysNeeded, mysticSyrupNonQID, priceOverride);
+            }
+        }
+
+        private static int? GetTapperProductDefaultPriceOverride(ObjectData itemData, string customFieldName)
+        {
+            if (itemData?.CustomFields != null)
+            {
+                if (itemData.CustomFields.TryGetValue($"{ForageFantasy.Manifest?.UniqueID}.{customFieldName}", out string priceString) && int.TryParse(priceString, out int priceOverride))
                 {
-                    objectData.Price = TapperAndMushroomQualityLogic.GetTapperProductValueForDaysNeeded(item.Value);
+                    return priceOverride;
                 }
             }
+
+            return null;
         }
     }
 }

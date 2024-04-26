@@ -19,8 +19,6 @@ namespace Randomizer
     public class AssetLoader
 	{
 		private readonly ModEntry _mod;
-
-		private readonly Dictionary<string, string> _customAssetReplacements = new();
         private readonly Dictionary<string, Texture2D> _editedAssetReplacements = new();
 
         /// <summary>Constructor</summary>
@@ -43,20 +41,18 @@ namespace Randomizer
             {
                 e.Edit(new RainPatcher().OnAssetRequested);
             }
-            else if (e.Name.IsEquivalentTo(AnimalIconPatcher.StardewAssetPath))
+            else if (e.NameWithoutLocale.IsEquivalentTo(AnimalIconPatcher.StardewAssetPath))
             {
                 e.Edit(new AnimalIconPatcher().OnAssetRequested);
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo(CritterPatcher.StardewAssetPath))
+            {
+                e.Edit(new CritterPatcher().OnAssetRequested);
             }
             else if (e.NameWithoutLocale.IsEquivalentTo(TitleScreenPatcher.StardewAssetPath))
             {
                 e.Edit(new TitleScreenPatcher().OnAssetRequested);
             }
-
-			// Files that come from our own images: we're replacing an xnb asset with one on our filesystem
-            else if (_customAssetReplacements.TryGetValue(e.Name.BaseName, out string customAsset))
-            {
-                e.LoadFromModFile<Texture2D>(customAsset, AssetLoadPriority.Medium);
-            } 
 
 			// Files that we have in memory: we're replacing an xnb asset with a Texture2D object
 			else if (_editedAssetReplacements.TryGetValue(e.Name.BaseName, out Texture2D editedAsset))
@@ -68,17 +64,6 @@ namespace Randomizer
                 });
             }
         }
-
-		/// <summary>
-		/// Adds a replacement to our internal dictionary
-		/// </summary>
-		/// <param name="originalAsset">The original asset</param>
-		/// <param name="replacementAsset">The asset to replace it with</param>
-		private void AddReplacement(string originalAsset, string replacementAsset)
-		{
-			IAssetName normalizedAssetName = _mod.Helper.GameContent.ParseAssetName(originalAsset);
-			_customAssetReplacements[normalizedAssetName.BaseName] = replacementAsset;
-		}
 
         /// <summary>
         /// Adds a replacement to our internal dictionary
@@ -92,26 +77,11 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Adds a set of replacements to our internal dictionary for assets coming from our own files
-        /// </summary>
-        /// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
-        private void AddCustomAssetReplacements(Dictionary<string, string> replacements)
-		{
-			foreach (string key in replacements.Keys)
-			{
-				AddReplacement(key, replacements[key]);
-			}
-		}
-
-        /// <summary>
         /// Invalidate all replaced assets so that the changes are reapplied
+        /// We currently only care about the cat icon here
         /// </summary>
         public void InvalidateCache()
 		{
-			foreach (string assetName in _customAssetReplacements.Keys)
-			{
-				_mod.Helper.GameContent.InvalidateCache(assetName);
-			}
             ReplaceCatIcon();
         }
 
@@ -144,8 +114,6 @@ namespace Randomizer
 
         /// <summary>
         /// Replaces the rain - intended to be called once per day start
-        /// <param name="sender">The event sender</param>
-        /// <param name="e">The event arguments</param>
         /// </summary>
         public void ReplaceRain()
         {
@@ -155,12 +123,16 @@ namespace Randomizer
             }
         }
 
-        /// <summary>Asset replacements to load when the farm is loaded</summary>
-        public void CalculateReplacements()
-		{
-			_customAssetReplacements.Clear();
-			AddCustomAssetReplacements(AnimalSkinRandomizer.Randomize());
-		}
+        /// <summary>
+        /// Hue shift criters if the hue shift value allows for it
+        /// </summary>
+        public void ReplaceCritters()
+        {
+            if (Globals.Config.Animals.CritterHueShiftMax > 0)
+            {
+                _mod.Helper.GameContent.InvalidateCache(CritterPatcher.StardewAssetPath);
+            }
+        }
 
 		/// <summary>
 		/// Randomizes the images - depending on what settings are on
@@ -177,12 +149,18 @@ namespace Randomizer
 
             HandleImageReplacement(new WeaponImageBuilder());
             HandleImageReplacement(cropGrowthImageBuilder);
-            HandleImageReplacement(new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToLinkingData));
+            HandleImageReplacement(new ObjectImageBuilder(cropGrowthImageBuilder.CropIdsToLinkingData));
             HandleImageReplacement(new BundleImageBuilder());
 
             Globals.SpoilerWrite("==== ANIMALS ====");
-            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
-            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
+            if (Globals.Config.Animals.RandomizeHorses)
+            {
+				HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
+			}
+            if (Globals.Config.Animals.RandomizePets)
+            {
+				HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
+			}
             Globals.SpoilerWrite("");
 
             MonsterHueShifter.GetHueShiftedMonsterAssets().ForEach(monsterData =>
@@ -190,22 +168,21 @@ namespace Randomizer
         }
 
 		/// <summary>
-		/// Adds the image builder's modified asset to the dictionary
+		/// Adds the image builder's modified assets to the dictionary
         /// Replace the localized version - our cache invalidator will invalidate it and the base one
 		/// </summary>
 		/// <param name="imageBuilder">The image builder</param>
 		private void HandleImageReplacement(ImageBuilder imageBuilder)
 		{
-            AddReplacement(
-                Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath), 
-                imageBuilder.GenerateModifiedAsset());
+            Dictionary<string, Texture2D> modifiedAssets = imageBuilder.GenerateModifiedAssets();
+            foreach (KeyValuePair<string, Texture2D> assetData in modifiedAssets)
+            {
+                var assetName = assetData.Key;
+                var texture = assetData.Value;
 
-            // Unclear on the best way to do this - but invalidate the cache both for
-            // The current locale, and the localized one, since not all assets
-            // have translations for all locales
-            _mod.Helper.GameContent.InvalidateCache
-                (Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath));
-            _mod.Helper.GameContent.InvalidateCache(imageBuilder.StardewAssetPath);
+                AddReplacement(assetName, texture);
+				_mod.Helper.GameContent.InvalidateCache(assetName);
+			}
         }
 	}
 }

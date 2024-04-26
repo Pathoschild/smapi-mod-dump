@@ -18,9 +18,11 @@ namespace Randomizer
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The id of the item</param>
+		/// <param name="index">The index of the item</param>
 		/// <param name="difficultyToObtain">The difficulty to obtain this item - defaults to medium</param>
-		public SmeltedItem(int id, ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.MediumTimeRequirements) : base(id)
+		public SmeltedItem(ObjectIndexes index, 
+			ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.MediumTimeRequirements) 
+			: base(index)
 		{
 			DifficultyToObtain = difficultyToObtain;
 			IsSmelted = true;

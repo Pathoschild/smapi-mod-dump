@@ -33,6 +33,21 @@ Well then, this is the mod for you! This mod introduces the _Prismatic Statue_, 
 
 ## Changelog
 
+## 1.5.1
+* New/Changed
+  * Change unlock requirement to be mining level 9 due to issues with mail framework mod.
+
+## 1.5.0
+* Updated to Stardew 1.6.3
+
+## 1.4.0
+* New/Changed
+  * Updated overlay to better fit my other mods
+
+* Fixes
+  * Fix id collision bug, so other items don't change texture unintentionally
+  * Fix cask duration resetting to default
+
 ## 1.3.2
 * Fixes
   * Overlay can no longer be toggled in menus

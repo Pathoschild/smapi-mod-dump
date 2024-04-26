@@ -15,14 +15,13 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewMods.BetterChests.Framework.Interfaces;
 using StardewMods.BetterChests.Framework.Models.Containers;
+using StardewMods.BetterChests.Framework.Models.Events;
 using StardewMods.BetterChests.Framework.Services.Factory;
-using StardewMods.BetterChests.Framework.Services.Transient;
 using StardewMods.BetterChests.Framework.UI;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services.Integrations.BetterChests.Enums;
 using StardewMods.Common.Services.Integrations.FauxCore;
 using StardewMods.Common.Services.Integrations.ToolbarIcons;
-using StardewValley.Menus;
 
 /// <summary>Search for which chests have the item you're looking for.</summary>
 internal sealed class ChestFinder : BaseFeature<ChestFinder>
@@ -31,12 +30,11 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
     private readonly ContainerFactory containerFactory;
     private readonly PerScreen<int> currentIndex = new();
     private readonly IInputHelper inputHelper;
-    private readonly PerScreen<bool> isActive = new();
-    private readonly PerScreen<ItemMatcher> itemMatcher;
+    private readonly MenuManager menuManager;
     private readonly PerScreen<List<Pointer>> pointers = new(() => []);
-    private readonly PerScreen<bool> resetCache = new(() => true);
-    private readonly PerScreen<SearchBar> searchBar;
-    private readonly PerScreen<SearchOverlay> searchOverlay;
+    private readonly PerScreen<ISearchExpression?> searchExpression;
+    private readonly SearchHandler searchHandler;
+    private readonly PerScreen<string> searchText;
     private readonly ToolbarIconsIntegration toolbarIconsIntegration;
 
     /// <summary>Initializes a new instance of the <see cref="ChestFinder" /> class.</summary>
@@ -44,39 +42,37 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
     /// <param name="containerFactory">Dependency used for accessing containers.</param>
     /// <param name="eventManager">Dependency used for managing events.</param>
     /// <param name="inputHelper">Dependency used for checking and changing input state.</param>
-    /// <param name="itemMatcherFactory">Dependency used for getting an ItemMatcher.</param>
     /// <param name="log">Dependency used for logging debug information to the console.</param>
     /// <param name="manifest">Dependency for accessing mod manifest.</param>
+    /// <param name="menuManager">Dependency used for managing the current menu.</param>
     /// <param name="modConfig">Dependency used for accessing config data.</param>
+    /// <param name="searchExpression">Dependency for retrieving a parsed search expression.</param>
+    /// <param name="searchHandler">Dependency used for handling search.</param>
+    /// <param name="searchText">Dependency for retrieving the unified search text.</param>
     /// <param name="toolbarIconsIntegration">Dependency for Toolbar Icons integration.</param>
     public ChestFinder(
         AssetHandler assetHandler,
         ContainerFactory containerFactory,
         IEventManager eventManager,
         IInputHelper inputHelper,
-        ItemMatcherFactory itemMatcherFactory,
         ILog log,
         IManifest manifest,
+        MenuManager menuManager,
         IModConfig modConfig,
+        PerScreen<ISearchExpression?> searchExpression,
+        SearchHandler searchHandler,
+        PerScreen<string> searchText,
         ToolbarIconsIntegration toolbarIconsIntegration)
         : base(eventManager, log, manifest, modConfig)
     {
         this.assetHandler = assetHandler;
         this.containerFactory = containerFactory;
         this.inputHelper = inputHelper;
+        this.menuManager = menuManager;
+        this.searchExpression = searchExpression;
+        this.searchHandler = searchHandler;
+        this.searchText = searchText;
         this.toolbarIconsIntegration = toolbarIconsIntegration;
-        this.itemMatcher = new PerScreen<ItemMatcher>(itemMatcherFactory.GetOneForSearch);
-        this.searchBar = new PerScreen<SearchBar>(
-            () => new SearchBar(
-                () => this.itemMatcher.Value.SearchText,
-                value =>
-                {
-                    this.Log.Trace("{0}: Searching for {1}", this.Id, value);
-                    this.itemMatcher.Value.SearchText = value;
-                    this.resetCache.Value = true;
-                }));
-
-        this.searchOverlay = new PerScreen<SearchOverlay>(() => new SearchOverlay(this.searchBar.Value));
     }
 
     /// <inheritdoc />
@@ -87,10 +83,9 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
     {
         // Events
         this.Events.Subscribe<RenderedHudEventArgs>(this.OnRenderedHud);
-        this.Events.Subscribe<RenderingHudEventArgs>(this.OnRenderingHud);
-        this.Events.Subscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
         this.Events.Subscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
-        this.Events.Subscribe<ChestInventoryChangedEventArgs>(this.OnChestInventoryChanged);
+        this.Events.Subscribe<MenuChangedEventArgs>(this.OnMenuChanged);
+        this.Events.Subscribe<SearchChangedEventArgs>(this.OnSearchChanged);
         this.Events.Subscribe<WarpedEventArgs>(this.OnWarped);
 
         // Integrations
@@ -101,7 +96,7 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
 
         this.toolbarIconsIntegration.Api.AddToolbarIcon(
             this.Id,
-            this.assetHandler.IconTexturePath,
+            this.assetHandler.Icons.Name.BaseName,
             new Rectangle(48, 0, 16, 16),
             I18n.Button_FindChest_Name());
 
@@ -113,10 +108,9 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
     {
         // Events
         this.Events.Unsubscribe<RenderedHudEventArgs>(this.OnRenderedHud);
-        this.Events.Unsubscribe<RenderingHudEventArgs>(this.OnRenderingHud);
-        this.Events.Unsubscribe<ButtonPressedEventArgs>(this.OnButtonPressed);
         this.Events.Unsubscribe<ButtonsChangedEventArgs>(this.OnButtonsChanged);
-        this.Events.Unsubscribe<ChestInventoryChangedEventArgs>(this.OnChestInventoryChanged);
+        this.Events.Subscribe<MenuChangedEventArgs>(this.OnMenuChanged);
+        this.Events.Subscribe<SearchChangedEventArgs>(this.OnSearchChanged);
         this.Events.Unsubscribe<WarpedEventArgs>(this.OnWarped);
 
         // Integrations
@@ -129,123 +123,77 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
         this.toolbarIconsIntegration.Api.Unsubscribe(this.OnIconPressed);
     }
 
-    private void OnButtonPressed(ButtonPressedEventArgs e)
-    {
-        if (!this.isActive.Value
-            || e.Button is not (SButton.MouseLeft or SButton.MouseRight)
-            || !Context.IsPlayerFree
-            || !Game1.displayHUD)
-        {
-            return;
-        }
-
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        switch (e.Button)
-        {
-            case SButton.MouseLeft:
-                this.searchOverlay.Value.receiveLeftClick(mouseX, mouseY);
-                break;
-            case SButton.MouseRight:
-                this.searchOverlay.Value.receiveRightClick(mouseX, mouseY);
-                break;
-            default: return;
-        }
-
-        if (Game1.activeClickableMenu is SearchOverlay)
-        {
-            this.inputHelper.Suppress(e.Button);
-        }
-    }
-
     private void OnButtonsChanged(ButtonsChangedEventArgs e)
     {
         // Activate Search Bar
         if (Context.IsPlayerFree
             && Game1.displayHUD
-            && Game1.activeClickableMenu is null
-            && this.Config.Controls.FindChest.JustPressed())
+            && this.menuManager.CurrentMenu is null
+            && this.Config.Controls.ToggleSearch.JustPressed())
         {
+            this.inputHelper.SuppressActiveKeybinds(this.Config.Controls.ToggleSearch);
             this.OpenSearchBar();
-            this.inputHelper.SuppressActiveKeybinds(this.Config.Controls.FindChest);
             return;
         }
 
-        // Close Search Bar
-        if (this.isActive.Value && this.Config.Controls.CloseChestFinder.JustPressed())
-        {
-            this.CloseSearchBar();
-            this.inputHelper.SuppressActiveKeybinds(this.Config.Controls.CloseChestFinder);
-            return;
-        }
-
-        if (!this.isActive.Value || !this.pointers.Value.Any() || !this.Config.Controls.OpenFoundChest.JustPressed())
+        if (this.menuManager.CurrentMenu is not SearchOverlay
+            || !this.pointers.Value.Any()
+            || !this.Config.Controls.OpenFoundChest.JustPressed())
         {
             return;
         }
 
         // Open Found Chest
-        if (Game1.activeClickableMenu is ItemGrabMenu)
-        {
-            this.currentIndex.Value++;
-        }
-        else
-        {
-            this.currentIndex.Value = 0;
-        }
-
-        this.OpenFoundChest();
         this.inputHelper.SuppressActiveKeybinds(this.Config.Controls.OpenFoundChest);
-    }
-
-    private void OnChestInventoryChanged(ChestInventoryChangedEventArgs e)
-    {
-        if (e.Location.Equals(Game1.currentLocation))
-        {
-            this.resetCache.Value = true;
-        }
+        var container = this.pointers.Value.First().Container;
+        container.Mutex?.RequestLock(
+            () =>
+            {
+                container.ShowMenu();
+            });
     }
 
     private void OnRenderedHud(RenderedHudEventArgs e)
     {
-        if (!this.isActive.Value || !Game1.displayHUD || Game1.activeClickableMenu is SearchOverlay)
+        if (this.menuManager.CurrentMenu is not SearchOverlay && (!Game1.displayHUD || !Context.IsPlayerFree))
         {
             return;
         }
 
-        // Check if storages needs to be reset
-        if (this.resetCache.Value)
-        {
-            this.SearchForStorages();
-            this.resetCache.Value = false;
-        }
-
-        // Check if there are any storages found
         foreach (var pointer in this.pointers.Value)
         {
             pointer.Draw(e.SpriteBatch);
         }
-
-        this.searchOverlay.Value.draw(e.SpriteBatch);
     }
 
-    private void OnRenderingHud(RenderingHudEventArgs e)
-    {
-        if (!this.isActive.Value || !Game1.displayHUD)
-        {
-            return;
-        }
+    private void OnMenuChanged(MenuChangedEventArgs e) => this.ReinitializePointers();
 
-        var (mouseX, mouseY) = Game1.getMousePosition(true);
-        this.searchBar.Value.Update(mouseX, mouseY);
-    }
+    private void OnSearchChanged(SearchChangedEventArgs e) => this.ReinitializePointers();
 
-    private void OnWarped(WarpedEventArgs e) => this.resetCache.Value = true;
+    private void OnWarped(WarpedEventArgs e) => this.ReinitializePointers();
 
-    private void OpenSearchBar()
-    {
-        this.isActive.Value = true;
-        this.searchOverlay.Value.Show();
-    }
+    private void OpenSearchBar() =>
+        Game1.activeClickableMenu = new SearchOverlay(
+            () => this.searchText.Value,
+            value =>
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    this.Log.Trace("{0}: Searching for {1}", this.Id, value);
+                }
+
+                if (this.searchText.Value == value)
+                {
+                    return;
+                }
+
+                this.searchText.Value = value;
+                this.searchExpression.Value = this.searchHandler.TryParseExpression(value, out var expression)
+                    ? expression
+                    : null;
+
+                this.Events.Publish(new SearchChangedEventArgs(this.searchExpression.Value));
+            });
 
     private void OnIconPressed(IIconPressedEventArgs e)
     {
@@ -255,53 +203,32 @@ internal sealed class ChestFinder : BaseFeature<ChestFinder>
         }
     }
 
-    private void CloseSearchBar()
-    {
-        this.isActive.Value = false;
-        this.pointers.Value.Clear();
-        this.resetCache.Value = true;
-    }
-
-    private void OpenFoundChest()
-    {
-        if (this.currentIndex.Value < 0)
-        {
-            this.currentIndex.Value = this.pointers.Value.Count - 1;
-        }
-        else if (this.currentIndex.Value >= this.pointers.Value.Count)
-        {
-            this.currentIndex.Value = 0;
-        }
-
-        var container = this.pointers.Value[this.currentIndex.Value].Container;
-        container.Mutex?.RequestLock(
-            () =>
-            {
-                container.ShowMenu();
-            });
-    }
-
-    private void SearchForStorages()
+    private void ReinitializePointers()
     {
         this.pointers.Value.Clear();
-        if (this.itemMatcher.Value.IsEmpty)
+        if (this.searchExpression.Value is null)
+        {
+            return;
+        }
+
+        if (this.menuManager.CurrentMenu is not SearchOverlay && (!Game1.displayHUD || !Context.IsPlayerFree))
         {
             return;
         }
 
         foreach (var container in this
-            .containerFactory.GetAllFromLocation(
+            .containerFactory.GetAll(
                 Game1.player.currentLocation,
                 container => container.Options.ChestFinder == FeatureOption.Enabled)
-            .Where(container => container is ChestContainer or ObjectContainer))
+            .Where(container => container is not FarmerContainer))
         {
-            if (container.Items.Any(this.itemMatcher.Value.MatchesFilter))
+            if (container.Items.Any(this.searchExpression.Value.PartialMatch))
             {
                 this.pointers.Value.Add(new Pointer(container));
             }
         }
 
-        this.Log.Trace("{0}: Found {1} chests", this.Id, this.pointers.Value.Count);
+        this.Log.Info("{0}: Found {1} chests", this.Id, this.pointers.Value.Count);
         this.currentIndex.Value = 0;
     }
 }

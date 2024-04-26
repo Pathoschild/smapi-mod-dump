@@ -67,15 +67,15 @@ public interface IIngredient {
 	/// </summary>
 	/// <param name="who">The farmer performing the craft</param>
 	/// <param name="items">A list of all available <see cref="Item"/>s across
-	/// all available <see cref="IInventory"/> instances. If you only support
-	/// consuming ingredients from certain <c>IInventory</c> types, you should
+	/// all available <see cref="IBCInventory"/> instances. If you only support
+	/// consuming ingredients from certain <c>IBCInventory</c> types, you should
 	/// not use this value and instead iterate over the inventories. Please
 	/// note that this does <b>not</b> include the player's inventory.</param>
 	/// <param name="inventories">All the available inventories.</param>
 	/// <param name="maxQuality">The maximum item quality we are allowed to
 	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
 	/// returns <c>false</c>.</param>
-	int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality);
+	int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality);
 
 	#endregion
 
@@ -91,11 +91,49 @@ public interface IIngredient {
 	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
 	/// returns <c>false</c>.</param>
 	/// <param name="lowQualityFirst">Whether or not we should make an effort
-	/// to consume lower quality ingredients before ocnsuming higher quality
+	/// to consume lower quality ingredients before consuming higher quality
 	/// ingredients.</param>
-	void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst);
+	void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst);
 
 	#endregion
+}
+
+/// <summary>
+/// An optional interface for IIngredients that allows them to track the
+/// exact items consumed when performing a craft, which can then be
+/// reported to the IRecipe in an event.
+/// </summary>
+public interface IConsumptionTrackingIngredient {
+
+	/// <summary>
+	/// Consume this ingredient out of the player's inventory and the other
+	/// available inventories.
+	/// </summary>
+	/// <param name="who">The farmer performing the craft</param>
+	/// <param name="inventories">All the available inventories.</param>
+	/// <param name="maxQuality">The maximum item quality we are allowed to
+	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
+	/// returns <c>false</c>.</param>
+	/// <param name="lowQualityFirst">Whether or not we should make an effort
+	/// to consume lower quality ingredients before consuming higher quality
+	/// ingredients.</param>
+	/// <param name="consumedItems">A list to store consumed items in. This
+	/// is to allow recipes to track what specific items were consumed when
+	/// crafting, to allow for things like adjusting the resulting quality
+	/// based on input items or anything like that.</param>
+	void Consume(Farmer who, IList<IBCInventory>? inventories, int maxQuality, bool lowQualityFirst, IList<Item>? consumedItems);
+
+}
+
+
+public interface IConditionalIngredient {
+
+	/// <summary>
+	/// A Game State Query that needs to evaluate to true for this
+	/// ingredient to be required by the recipe.
+	/// </summary>
+	string? Condition { get; }
+
 }
 
 
@@ -109,15 +147,15 @@ public interface IOptimizedIngredient : IIngredient {
 	/// <param name="quantity">The required quantity.</param>
 	/// <param name="who">The farmer performing the craft</param>
 	/// <param name="items">A list of all available <see cref="Item"/>s across
-	/// all available <see cref="IInventory"/> instances. If you only support
-	/// consuming ingredients from certain <c>IInventory</c> types, you should
+	/// all available <see cref="IBCInventory"/> instances. If you only support
+	/// consuming ingredients from certain <c>IBCInventory</c> types, you should
 	/// not use this value and instead iterate over the inventories. Please
 	/// note that this does <b>not</b> include the player's inventory.</param>
 	/// <param name="inventories">All the available inventories.</param>
 	/// <param name="maxQuality">The maximum item quality we are allowed to
 	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
 	/// returns <c>false</c>.</param>
-	bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+	bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IBCInventory>? inventories, int maxQuality) {
 		return GetAvailableQuantity(who, items, inventories, maxQuality) >= quantity;
 	}
 

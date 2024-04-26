@@ -11,7 +11,7 @@
 {
 	"Name": "Buildable Ginger Island Farm",
 	"Author": "mouahrara",
-	"Version": "1.0.0",
+	"Version": "1.0.3",
 	"Description": "Turn the Ginger Island farm into a buildable location.",
 	"UniqueID": "mouahrara.BuildableGingerIslandFarm",
 	"EntryDll": "BuildableGingerIslandFarm.dll",

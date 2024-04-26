@@ -109,6 +109,7 @@ namespace DynamicReflections
             monitor = Monitor;
             modHelper = helper;
             multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            modConfig = new ModConfig();
 
             // Load the managers
             apiManager = new ApiManager(monitor);
@@ -228,8 +229,7 @@ namespace DynamicReflections
 
             if (e.NewLocation is not null && e.NewLocation.IsOutdoors is true)
             {
-                // TODO: Revise the below line for SDV v1.6, as the Desert exception should no longer be needed
-                bool canRainHere = e.NewLocation.GetLocationContext().WeatherConditions.Any(w => w.Weather == "Rain" || w.Weather == "Storm") && e.NewLocation.Name.Equals("Desert") is false;
+                bool canRainHere = e.NewLocation.GetLocationContext().WeatherConditions.Any(w => w.Weather == "Rain" || w.Weather == "Storm");
                 if (canRainHere is true)
                 {
                     int puddlesPercentage = 0;

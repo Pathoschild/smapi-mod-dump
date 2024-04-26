@@ -20,6 +20,7 @@ using SolidFoundations.Framework.Models.ContentPack.Compatibility;
 using SolidFoundations.Framework.Patches.Buildings;
 using SolidFoundations.Framework.Patches.GameData;
 using SolidFoundations.Framework.Utilities;
+using SolidFoundations.Framework.Utilities.Extensions;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -260,9 +261,10 @@ namespace SolidFoundations
             else if (e.DataType == typeof(Texture2D))
             {
                 var asset = e.Name;
-                if (buildingManager.GetTextureAsset(asset.Name) is var texturePath && texturePath is not null)
+                if (buildingManager.GetTextureAsset(asset.Name) is var texture && texture is not null)
                 {
-                    e.LoadFrom(() => Game1.content.Load<Texture2D>(texturePath), AssetLoadPriority.Exclusive);
+                    var clonedTexture = texture.CreateSelectiveCopy(Game1.graphics.GraphicsDevice, new Microsoft.Xna.Framework.Rectangle(0, 0, texture.Width, texture.Height));
+                    e.LoadFrom(() => clonedTexture, AssetLoadPriority.Exclusive);
                 }
                 else if (buildingManager.GetTileSheetAsset(asset.Name) is var tileSheetPath && tileSheetPath is not null)
                 {
@@ -274,7 +276,7 @@ namespace SolidFoundations
                 var asset = e.Name;
                 if (buildingManager.GetMapAsset(asset.Name) is var mapPath && mapPath is not null)
                 {
-                    e.LoadFrom(() => Game1.content.Load<Map>(mapPath), AssetLoadPriority.Exclusive);
+                    e.LoadFrom(() => Helper.GameContent.Load<Map>(mapPath), AssetLoadPriority.Exclusive);
                 }
             }
         }
@@ -478,7 +480,7 @@ namespace SolidFoundations
                     {
                         var paintMaskPath = Path.Combine(parentFolderName, folder.Name, "paint_mask.png");
                         buildingModel.PaintMaskTexture = $"{buildingModel.ID}_BaseTexture_PaintMask";
-                        buildingManager.AddTextureAsset(buildingModel.PaintMaskTexture, contentPack.ModContent.GetInternalAssetName(paintMaskPath).Name);
+                        buildingManager.AddTextureAsset(buildingModel.PaintMaskTexture, contentPack.ModContent.GetInternalAssetName(paintMaskPath).Name, contentPack);
 
                         Monitor.Log($"Loaded the building {buildingModel.ID} PaintMask texture: {buildingModel.PaintMaskTexture} | {paintMaskPath}", LogLevel.Trace);
                     }
@@ -489,7 +491,7 @@ namespace SolidFoundations
                         foreach (var skinPath in Directory.GetFiles(Path.Combine(folder.FullName, "Skins"), "*.png").OrderBy(s => s))
                         {
                             var localSkinPath = Path.Combine(parentFolderName, folder.Name, "Skins", Path.GetFileName(skinPath));
-                            buildingManager.AddTextureAsset($"{buildingModel.ID}_Skins_{Path.GetFileNameWithoutExtension(skinPath)}", contentPack.ModContent.GetInternalAssetName(localSkinPath).Name);
+                            buildingManager.AddTextureAsset($"{buildingModel.ID}_Skins_{Path.GetFileNameWithoutExtension(skinPath)}", contentPack.ModContent.GetInternalAssetName(localSkinPath).Name, contentPack);
                         }
 
                         if (buildingModel.Skins is not null)
@@ -513,7 +515,7 @@ namespace SolidFoundations
                                     else
                                     {
                                         skin.PaintMaskTexture = $"{skinAsset}_PaintMask";
-                                        buildingManager.AddTextureAsset(skin.PaintMaskTexture, buildingManager.GetTextureAsset(maskAsset));
+                                        buildingManager.AddTextureAsset(skin.PaintMaskTexture, buildingManager.GetTextureAssetPath(maskAsset), contentPack);
 
                                         Monitor.Log($"Loaded the building {buildingModel.ID} skin {skin.Id} mask texture: {skin.PaintMaskTexture}", LogLevel.Trace);
                                     }
@@ -521,7 +523,7 @@ namespace SolidFoundations
                                 else if (File.Exists(Path.Combine(folder.FullName, "paint_mask.png")))
                                 {
                                     skin.PaintMaskTexture = $"{skinAsset}_PaintMask";
-                                    buildingManager.AddTextureAsset(skin.PaintMaskTexture, contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, folder.Name, "paint_mask.png")).Name);
+                                    buildingManager.AddTextureAsset(skin.PaintMaskTexture, contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, folder.Name, "paint_mask.png")).Name, contentPack);
 
                                     Monitor.Log($"Loaded the building {buildingModel.ID} skin {skin.Id} mask texture using the default paint mask", LogLevel.Trace);
                                 }
@@ -538,7 +540,7 @@ namespace SolidFoundations
                         foreach (var spritePath in Directory.GetFiles(Path.Combine(folder.FullName, "Sprites"), "*.png"))
                         {
                             var localSpritePath = Path.Combine(parentFolderName, folder.Name, "Sprites", Path.GetFileName(spritePath));
-                            buildingManager.AddTextureAsset($"{buildingModel.ID}_Sprites_{Path.GetFileNameWithoutExtension(spritePath)}", contentPack.ModContent.GetInternalAssetName(localSpritePath).Name);
+                            buildingManager.AddTextureAsset($"{buildingModel.ID}_Sprites_{Path.GetFileNameWithoutExtension(spritePath)}", contentPack.ModContent.GetInternalAssetName(localSpritePath).Name, contentPack);
                         }
 
                         if (buildingModel.DrawLayers is not null)
@@ -561,10 +563,7 @@ namespace SolidFoundations
                     // Load in the texture
                     var texturePath = Path.Combine(parentFolderName, folder.Name, "building.png");
                     buildingModel.Texture = $"{buildingModel.ID}_BaseTexture";
-                    buildingManager.AddTextureAsset(buildingModel.Texture, contentPack.ModContent.GetInternalAssetName(texturePath).Name);
-
-                    // Add building's ID to texture tracker so we can quickly reference it for Content Patcher
-                    buildingManager.AddTextureAsset(buildingModel.ID.ToLower(), buildingModel.Texture);
+                    buildingManager.AddTextureAsset(buildingModel.Texture, contentPack.ModContent.GetInternalAssetName(texturePath).Name, contentPack);
 
                     Monitor.Log($"Loaded the building texture {buildingModel.Texture} | {texturePath}", LogLevel.Trace);
 

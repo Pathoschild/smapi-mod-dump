@@ -1,0 +1,95 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+// Thank you to @YinGeLiXi for this mandarin translation!
+{
+    "UnmilledRice.displayname": "糙米",
+    "Rice.displayname": "白米",
+
+    "Barley.displayname": "大麦",
+    "Barley.description": "广泛种植且营养丰富的谷物之一。",
+    "Barley.seed.displayname": "大麦种子",
+    "Barley.seed.description": "春天播种。4天成熟。用镰刀收获。",
+    
+    "Buckwheat.displayname": "荞麦",
+    "Buckwheat.description": "广泛种植且营养丰富的谷物之一。",
+    "Buckwheat.seed.displayname": "荞麦种子",
+    "Buckwheat.seed.description": "春天或夏天播种。5天成熟。用镰刀收获。",
+    
+    "Millet.displayname": "小米",
+    "Millet.description": "一种古代常用于烹饪的营养谷物。",
+    "Millet.seed.displayname": "小米种子",
+    "Millet.seed.description": "夏天播种。4天成熟。用镰刀收获。",
+    
+    "Oat.displayname": "燕麦",
+    "Oat.description": "一种营养丰富的谷物，富含纤维，用途多样。",
+    "Oat.seed.displayname": "燕麦种子",
+    "Oat.seed.description": "春天播种。4天成熟。用镰刀收获。",
+    
+    "Rye.displayname": "黑麦",
+    "Rye.description": "一种耐寒且营养丰富的谷物，用于烘烤和酿造。",
+    "Rye.seed.displayname": "黑麦种子",
+    "Rye.seed.description": "夏天或秋天播种。6天成熟。用镰刀收获。",
+    
+    "Sorghum.displayname": "高梁",
+    "Sorghum.description": "一种用途多样且营养丰富的谷物。",
+    "Sorghum.seed.displayname": "高粱种子",
+    "Sorghum.seed.description": "春天或夏天播种。5天成熟。用镰刀收获。",
+    
+    // ========== INGREDIENTS ==========
+    "PearlBarley.displayname": "薏米",
+    "PearlBarley.description": "一种不太常见的烹饪原料，用碾碎的大麦制成。",
+
+    "BuckwheatFlour.displayname": "小麦麸皮面粉",
+    "BuckwheatFlour.description": "一种相当常见的烹饪原料，用碾碎的荞麦种子制成。",
+
+    "HulledMillet.displayname": "去壳小米",
+    "HulledMillet.description": "一种味道微妙的烹饪原料，用简单加工后的小米制成",
+
+    "RolledOats.displayname": "燕麦片",
+    "RolledOats.description": "一种常见的烹饪原料，用简单加工后的燕麦制成。",
+
+    "RyeFlour.displayname": "黑麦面粉",
+    "RyeFlour.description": "一种常见的烹饪原料，因其独特的风味而很少在菜肴中使用。 用碾碎的黑麦制成。",
+
+    // ========== DISHES ==========
+    "HarvestBowl.displayname": "丰收碗",
+    "HarvestBowl.description": "视觉与味觉上的双重享受。",
+
+    "BlueberryOatmeal.displayname": "蓝莓燕麦片",
+    "BlueberryOatmeal.description": "一份甜蜜而丰盛的美食。",
+
+    "OvernightOats.displayname": "隔夜的麦片",
+    "OvernightOats.description": "为忙碌的工人准备的简易食品。",
+
+    "Galette.displayname": "咸法式薄饼",
+    "Galette.description": "一种美味的薄饼。",
+
+    "MilletPorridge.displayname": "小米粥",
+    "MilletPorridge.description": "一道令人心旷神怡的配菜，与任何东西都很相配。",
+
+    "RyeBread.displayname": "黑麦面包",
+    "RyeBread.description": "一种浓郁而酸的手工面包。",
+
+    "SorghumSalad.displayname": "高粱沙拉",
+    "SorghumSalad.description": "独特的混合物，适合早晨快速提神。",
+
+    "BuckwheatWaffles.displayname": "荞麦华夫饼",
+    "BuckwheatWaffles.description": "一道旨在让起床变得更有趣的菜肴。",
+
+    "Config.RenameUnmilledRice.description": "如果你想把“未碾米”替换为“糙米”。",
+    "Config.RenameMilledRice.description": "如果你想把“大米”替换为“白米”。",
+    "Config.Barley.description": "如果您想从游戏中删除此模组的大麦，请取消选中此选项。",
+    "Config.Buckwheat.description": "如果您想从游戏中删除此模组的荞麦，请取消选中此选项。",
+    "Config.Millet.description": "如果您想从游戏中删除此模组的小米，请取消选中此选项。",
+    "Config.Oats.description": "如果您想从游戏中删除此模组的燕麦，请取消选中此选项。",
+    "Config.Rye.description": "如果您想从游戏中删除此模组的黑麦，请取消选中此选项。",
+    "Config.Sorghum.description": "如果您想从游戏中删除此模组的高粱，请取消选中此选项。"
+}

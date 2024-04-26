@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9600
+IDs: lumisteria.visitmountvapius.code
+update keys: Nexus:9600

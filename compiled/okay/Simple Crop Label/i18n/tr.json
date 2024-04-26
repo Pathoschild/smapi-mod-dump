@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "Mantar Ağacı",
   "custom-tree.mahogany": "Maun Ağacı",
   "custom-tree.palm": "Palmiye",
+  "custom-tree.green-rain-wild": "Vahşi Yeşil Yağmur Ağacı",
+  "custom-tree.green-rain-lush": "Yemyeşil Yeşil Yağmur Ağacı",
+  "custom-tree.fiddlehead-fern": "Eğrelti Ağacı",
+  "custom-tree.mystic": "Mistik Ağaç",
 
   // growth info translation
   "growth-info.fully-grown": "Tam büyümüş",

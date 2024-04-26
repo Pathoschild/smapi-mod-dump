@@ -1,9 +1,0 @@
-{
-  "Name": "Iron Cluster",
-  "Description": "A cluster of very pure iron ore.",
-  "Category": "Metal",
-  "Edibility": -300,  
-  "Price": 75,
-  "IsColored": false,
-  "Recipe": null
-}

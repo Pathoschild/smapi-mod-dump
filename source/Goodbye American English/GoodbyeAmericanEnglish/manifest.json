@@ -11,7 +11,7 @@
 {
 	"Name": "Goodbye American English",
 	"Author": "TheMightyAmondee",
-	"Version": "1.6.0",
+	"Version": "1.6.1",
 	"Description": "Replaces american spelling with british spelling",
 	"UniqueID": "TheMightyAmondee.GoodbyeAmericanEnglish",
 	"EntryDll": "GoodbyeAmericanEnglish.dll",

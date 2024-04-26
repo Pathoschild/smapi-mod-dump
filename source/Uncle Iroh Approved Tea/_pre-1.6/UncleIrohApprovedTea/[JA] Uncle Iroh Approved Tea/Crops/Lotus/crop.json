@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Name": "Lotus", 
+    "Product": "Lotus",
+    "SeedName": "Lotus Seeds", 
+    "SeedDescription": "Plant these in spring, summer, or fall. Takes 6 days to mature. Grows faster if planted near a body of water. Regrows. Harvest with the scythe.",
+    "Type": "Flower",
+    "CropType": "Paddy", 
+    "Seasons": ["spring", "summer", "fall"],
+    "Phases": [1, 2, 2, 1],
+    "RegrowthPhase": -1,
+    "Bonus":
+    {
+        "MinimumPerHarvest": 1,
+        "MaximumPerHarvest": 1,
+        "MaxIncreasePerFarmLevel": 0,
+        "ExtraChance": 0.0
+    },
+    "SeedPurchaseFrom": "Sandy",
+    "SeedPurchasePrice": 90
+}

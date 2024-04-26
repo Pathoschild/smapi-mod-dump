@@ -1,0 +1,99 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/foxwhite25/Stardew-Ultimate-Fertilizer
+**
+*************************************************/
+
+{
+  "config.section.toggles": "토글",
+  
+  "config.fertilizer_mode.title": "비료 모드",
+  "config.fertilizer_mode.tooltip.choose": "비료 적용 모드 선택: \n",
+  "config.fertilizer_mode.tooltip.multi-fertilizer-stack": "다양한 종류의 비료를 한 칸에 섞어 사용할 수 있습니다.\n",
+  "config.fertilizer_mode.tooltip.multi-fertilizer-single-level": "다양한 종류의 비료를 사용할 수 있지만 한 수준에서만 섞어 사용할 수 있습니다.\n",
+  "config.fertilizer_mode.tooltip.single-fertilizer-replace": "언제든지 한 종류의 비료를 대체할 수 있습니다.\n",
+  "config.fertilizer_mode.tooltip.single-fertilizer-stack": "한 종류의 비료를 다른 수준에서 섞어 사용할 수 있습니다.\n",
+  "config.fertilizer_mode.tooltip.vanilla": "기본 Stardew Valley 비료 동작입니다.\n",
+  "config.fertilizer_mode.tooltip.note": "참고: 이 설정은 비료를 사용할 때만 적용됩니다.\n      이미 비료를 섞은 타일을 사용하지 않도록 설정을 해제하면,\n      해당 타일은 이전 설정대로 작동합니다.",
+  "config.fertilizer_mode.option.multi-fertilizer-stack": "multi-fertilizer-stack",
+  "config.fertilizer_mode.option.multi-fertilizer-single-level": "multi-fertilizer-single-level",
+  "config.fertilizer_mode.option.single-fertilizer-replace": "single-fertilizer-replace",
+  "config.fertilizer_mode.option.single-fertilizer-stack": "single-fertilizer-stack",
+  "config.fertilizer_mode.option.vanilla": "Vanilla",
+
+  "config.enable_fertilizer_anytime.title": "언제든지 비료 사용 가능",
+  "config.enable_fertilizer_anytime.tooltip": "이미 작물이 있는 농작물 영역에 비료를 적용할 수 있도록 합니다.",
+  
+  "config.keep_fertilizer_across_season.title": "계절 간 비료 유지",
+  "config.keep_fertilizer_across_season.tooltip": "비료가 계절 전환 시 사라지지 않도록 합니다.",
+  
+  
+  "config.section.speed_fertilizer": "성장 촉진제",
+  
+  "config.affect_multi_harvest.title": "다수 수확에 영향 주기",
+  "config.affect_multi_harvest.tooltip": "다수 수확 작물(예: 고대 과일)의 첫 번째 수확 이후에도 성장 촉진제가 계속 적용되는지 여부입니다.",
+  
+  "config.speed_gro_bonus.title": "성장 촉진제 보너스",
+  "config.speed_gro_bonus.tooltip": "성장 촉진제의 성장 보너스를 수정합니다. 기본값은 10% (0.1)입니다.",
+  
+  "config.deluxe_speed_gro_bonus.title": "디럭스 성장 촉진제 보너스",
+  "config.deluxe_speed_gro_bonus.tooltip": "디럭스 성장 촉진제의 성장 보너스를 수정합니다. 기본값은 25% (0.25)입니다.",
+  
+  "config.hyper_speed_gro_bonus.title": "하이퍼 성장 촉진제 보너스",
+  "config.hyper_speed_gro_bonus.tooltip": "하이퍼 성장 촉진제의 성장 보너스를 수정합니다. 기본값은 33% (0.33)입니다.",
+  
+  "config.speed_gro_amount.title": "성장 촉진제 양",
+  "config.speed_gro_amount.tooltip": "제작 당 성장 촉진제 수량을 수정합니다. 기본값은 5입니다.",
+  
+  "config.deluxe_speed_gro_amount.title": "디럭스 성장 촉진제 양",
+  "config.deluxe_speed_gro_amount.tooltip": "제작 당 디럭스 성장 촉진제 수량을 수정합니다. 기본값은 5입니다.",
+  
+  "config.hyper_speed_gro_amount.title": "하이퍼 성장 촉진제 양",
+  "config.hyper_speed_gro_amount.tooltip": "제작 당 하이퍼 성장 촉진제 수량을 수정합니다. 기본값은 1입니다.",
+  
+  
+  "config.section.quality_fertilizer": "고급 비료",
+  
+  "config.basic_fertilizer_bonus.title": "기본 비료 보너스",
+  "config.basic_fertilizer_bonus.tooltip": "기본 비료의 품질 보너스를 수정합니다. 기본값은 1입니다.",
+  
+  "config.quality_fertilizer_bonus.title": "고급 비료 보너스",
+  "config.quality_fertilizer_bonus.tooltip": "고급 비료의 품질 보너스를 수정합니다. 기본값은 2입니다.",
+  
+  "config.deluxe_fertilizer_bonus.title": "디럭스 비료 보너스",
+  "config.deluxe_fertilizer_bonus.tooltip": "디럭스 비료의 품질 보너스를 수정합니다. 기본값은 3입니다.",
+  
+  "config.basic_fertilizer_amount.title": "기본 비료 양",
+  "config.basic_fertilizer_amount.tooltip": "제작 당 기본 비료 수량을 수정합니다. 기본값은 1입니다.",
+  
+  "config.quality_fertilizer_amount.title": "고급 비료 양",
+  "config.quality_fertilizer_amount.tooltip": "제작 당 고급 비료 수량을 수정합니다. 기본값은 2입니다.",
+  
+  "config.deluxe_fertilizer_amount.title": "디럭스 비료 양",
+  "config.deluxe_fertilizer_amount.tooltip": "제작 당 디럭스 비료 수량을 수정합니다. 기본값은 5입니다.",
+  
+  
+  "config.section.water_fertilizer": "수분 비료",
+  
+  "config.basic_retaining_soil_bonus.title": "기본 보습 토양 보너스",
+  "config.basic_retaining_soil_bonus.tooltip": "기본 보습 토양 사용 시 수분 보존 확률을 수정합니다. 기본값은 33% (0.33)입니다.",
+  
+  "config.quality_retaining_soil_bonus.title": "고급 보습 토양 보너스",
+  "config.quality_retaining_soil_bonus.tooltip": "고급 보습 토양 사용 시 수분 보존 확률을 수정합니다. 기본값은 66% (0.66)입니다.",
+  
+  "config.deluxe_retaining_soil_bonus.title": "디럭스 보습 토양 보너스",
+  "config.deluxe_retaining_soil_bonus.tooltip": "디럭스 보습 토양 사용 시 수분 보존 확률을 수정합니다. 기본값은 100% (1.0)입니다.",
+  
+  "config.basic_retaining_soil_amount.title": "기본 보습 토양 양",
+  "config.basic_retaining_soil_amount.tooltip": "제작 당 기본 보습 토양 수량을 수정합니다. 기본값은 1입니다.",
+  
+  "config.quality_retaining_soil_amount.title": "고급 보습 토양 양",
+  "config.quality_retaining_soil_amount.tooltip": "제작 당 고급 보습 토양 수량을 수정합니다. 기본값은 2입니다.",
+  
+  "config.deluxe_retaining_soil_amount.title": "디럭스 보습 토양 양",
+  "config.deluxe_retaining_soil_amount.tooltip": "제작 당 디럭스 보습 토양 수량을 수정합니다. 기본값은 1입니다."
+}

@@ -11,10 +11,10 @@
 {
   "Name": "Always Organize Chests",
   "Author": "Zamiel",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Automatically organizes chests once their contents change",
   "UniqueID": "Zamiel.AlwaysOrganizeChests",
   "EntryDll": "AlwaysOrganizeChests.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": ["GitHub:Zamiell/stardew-valley-mods"]
+  "UpdateKeys": ["Nexus:21207"]
 }

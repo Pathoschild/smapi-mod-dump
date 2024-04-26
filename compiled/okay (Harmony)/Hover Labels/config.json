@@ -1,7 +1,9 @@
 {
   "LabelPopupDelayTicks": 30,
-  "LabelListMaxSize": 5,
+  "LabelListMaxSize": 6,
   "ShowDetailsButton": "LeftControl",
   "AlternativeSortButton": "LeftShift",
-  "EnabledLabels": {}
+  "EnabledLabels": {},
+  "CompactLabels": false,
+  "SmallItemIconLabel": false
 }

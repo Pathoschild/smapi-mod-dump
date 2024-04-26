@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +17,7 @@ namespace Randomizer
 {
 	public class SecretNotesRandomizer
 	{
+		private static RNG Rng { get; set; }
 		private static Dictionary<string, string> prefs;
 
 		/// <summary>
@@ -23,87 +26,95 @@ namespace Randomizer
 		/// <returns><c>Dictionary&lt;int, string&gt;</c> containing the secret note IDs and strings to replace.</returns>
 		public static Dictionary<int, string> FixSecretNotes(Dictionary<string, string> preferenceReplacements)
 		{
-			prefs = preferenceReplacements;
-			Dictionary<int, string> _replacements = new();
-			Dictionary<int, string> secretNoteData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<int, string>>("Data/SecretNotes");
-
-			// The data dictionary has more entries than we want to change - we do only want indexes 1-9
-            for (int noteIndex = 1; noteIndex < 9; noteIndex++)
+			Dictionary<int, string> secretNoteReplacements = new();
+			if (!Globals.Config.NPCs.RandomizeIndividualPreferences)
 			{
-				// Pick from 1-3 random items to reveal loved items for, choosing more items for fewer characters
-				int characterNum = Range.GetRandomValue(1, 3);
-				int itemNum = Range.GetRandomValue(5, 6) - characterNum;
-
-				List<string> NoteNPCs = Globals.RNGGetRandomValuesFromList(
-					PreferenceRandomizer.GiftableNPCs.Values.ToList(), characterNum);
-				string NPCLovesString = FormatRevealString(NoteNPCs, itemNum);
-
-				string dataWithoutReveal = secretNoteData[noteIndex].Split("%revealtaste")[0];
-                string noteText = $"{dataWithoutReveal}{NPCLovesString}";
-				_replacements.Add(noteIndex, noteText);
+				return secretNoteReplacements;
 			}
 
-			WriteToSpoilerLog(_replacements);
+			Globals.SpoilerWrite("===== SECRET NOTES =====");
 
-			return _replacements;
+			Rng = RNG.GetFarmRNG(nameof(SecretNotesRandomizer));
+			prefs = preferenceReplacements;
+			Dictionary<int, string> secretNoteData = DataLoader.SecretNotes(Game1.content);
+
+			// The data dictionary has more entries than we want to change - we do only want indexes 1-9
+			for (int noteIndex = 1; noteIndex < 9; noteIndex++)
+			{
+				// Pick from 1-3 random characters to reveal loved items for, choosing more items for fewer characters
+				int numberOfCharactersToRevealFor = Rng.NextIntWithinRange(1, 3);
+				int numberOfItemsToReveal = Rng.NextIntWithinRange(5, 6) - numberOfCharactersToRevealFor;
+
+				List<string> charactersToRevealFor = Rng.GetRandomValuesFromList(
+					PreferenceRandomizer.GiftableNPCs.Values.ToList(), numberOfCharactersToRevealFor);
+				string npcLovesString = FormatRevealString(noteIndex, charactersToRevealFor, numberOfItemsToReveal);
+
+				string dataWithoutReveal = secretNoteData[noteIndex].Split("%revealtaste")[0];
+				string noteText = $"{dataWithoutReveal}{npcLovesString}";
+				secretNoteReplacements.Add(noteIndex, noteText);
+			}
+
+			Globals.SpoilerWrite("");
+
+			return secretNoteReplacements;
 		}
 
 		/// <summary>
-		/// Formats set of reveal commands (e.g. <c>"%revealtasteSam270%revealtasteMaru113..."</c>).
+		/// Formats set of reveal commands (e.g. <c>"%revealtaste:Sam:270%revealtaste:Maru:113..."</c>).
 		/// </summary>
-		/// <param name="NPCs">NPCs to reveal items for</param>
-		/// <param name="itemNum">Number of items to reveal for each NPC</param>
+		/// <param name="noteIndex">The note index</param>
+		/// <param name="npcs">NPCs to reveal items for</param>
+		/// <param name="numberToReveal">Number of items to reveal for each NPC</param>
 		/// <returns><c>String</c> containing NPCs' preferences to reveal.</returns>
-		private static string FormatRevealString(List<string> NPCs, int itemNum)
+		private static string FormatRevealString(int noteIndex, List<string> npcs, int numberToReveal)
 		{
 			string lovesString = "";
+			List<string> spoilerLogStrings = new();
 
-			foreach (string NPC in NPCs)
+			foreach (string npc in npcs)
 			{
-				string[] tokens = prefs[NPC].Split('/');
-				List<string> items = tokens[1].Trim().Split(' ') 
-					.Where(x => int.Parse(x) > 0)            
-					.ToList();                               
+				List<string> spoilerLogItems = new();
+				string[] tokens = prefs[npc].Split('/');
+				List<string> items = tokens[1].Trim().Split(' ')
+					.Where(id => !id.StartsWith("-"))
+					.ToList();
 
-				for (int num = itemNum; num > 0; num--)
+				for (int num = numberToReveal; num > 0; num--)
 				{
-					lovesString += GetItemRevealString(NPC, items);
+					string itemRevealString = GetItemRevealString(npc, items);
+					lovesString += itemRevealString;
+
+					string itemId = itemRevealString.Split(":")[^1];
+					try
+					{
+						string itemName = ObjectIndexesExtentions.GetObjectIndex(itemId).GetItem().DisplayName;
+						spoilerLogItems.Add(itemName);
+					}
+					catch (Exception)
+					{
+						Globals.ConsoleError($"Secret notes randomizer: Failed to convert item with id {itemId}.");
+					}
 				}
+
+				spoilerLogStrings.Add($"{npc} - {string.Join(", ", spoilerLogItems)}");
 			}
+
+			Globals.SpoilerWrite($"{noteIndex}: {string.Join("; ", spoilerLogStrings)}");
 
 			return lovesString;
 		}
 
 		/// <summary>
-		/// Builds a single item reveal string (e.g. <c>%revealtasteAbigail206</c>).
+		/// Builds a single item reveal string (e.g. <c>%revealtaste:Abigail:206</c>)
 		/// </summary>
-		/// <param name="NPC">Name of the NPC to build the item reveal string for.</param>
-		/// <returns>String representing item reveal command.</returns>
-		private static string GetItemRevealString(string name, List<string> items)
+		/// <param name="npc">Name of the NPC to build the item reveal string for</param>
+		/// <param name="items">The list of items to select from - will remove the chosen entry from it!</param>
+		/// <returns>String representing item reveal command</returns>
+		private static string GetItemRevealString(string npc, List<string> items)
 		{
 			return items.Any()
-				? "%revealtaste" + name + Globals.RNGGetAndRemoveRandomValueFromList(items)
+				? $"%revealtaste:{npc}:{Rng.GetAndRemoveRandomValueFromList(items)}"
 				: "";
-		}
-
-		/// <summary>
-		/// Log the results
-		/// </summary>
-		/// <param name="replacements">The results</param>
-		private static void WriteToSpoilerLog(Dictionary<int, string> replacements)
-		{
-			if (!Globals.Config.NPCs.RandomizeIndividualPreferences) 
-			{ 
-				return; 
-			}
-
-			Globals.SpoilerWrite("===== SECRET NOTES =====");
-			foreach (KeyValuePair<int, string> pair in replacements)
-			{
-				Globals.SpoilerWrite($"{pair.Key}: {pair.Value}");
-			}
-			Globals.SpoilerWrite("");
 		}
 	}
 }

@@ -29,3 +29,4 @@ Alternative Textures has been generously translated into several languages by th
 * **Thai** - ellipszist
 * **Turkish** - KediDili
 * **Ukrainian** - burunduk, ChulkyBow
+* **Portuguese** - Maatsuki, padilhath, Vila dos Tradutores

@@ -214,8 +214,20 @@ namespace ItemBags.Bags
                     //  Allow different colors of the same ColoredObject flowers to stack together
                     Type type1 = object1.GetType();
                     Type type2 = object2.GetType();
-                    bool AreTypesCompatible = type1 == type2 || (type1 == typeof(Object) && type2 == typeof(ColoredObject)) || (type2 == typeof(Object) && type1 == typeof(ColoredObject));
-                    return AreTypesCompatible;
+                    if (type1 == type2)
+                        return true;
+                    else
+                    {
+                        //  In other parts of the code, I'm not properly instantiating Object subclasses such as Torches.
+                        //  So we need to verify if 1 item is an Object and the other is a known subtype that is typically allowed inside of bags
+                        List<Type> types = new List<Type>() { type1, type2 };
+                        if (types.Any(x => x == typeof(Object)))
+                        {
+                            List<Type> CompatibleTypes = new List<Type>() { typeof(ColoredObject), typeof(Torch) };
+                            return types.Any(x => CompatibleTypes.Contains(x));
+                        }
+                    }
+                    return false;
                 }
             }
         }
@@ -471,6 +483,8 @@ namespace ItemBags.Bags
             return ValidateContentsIds(API, AllowResyncing);
         }
 
+        public override bool CanBeLostOnDeath() => false;
+
         [XmlIgnore]
         private bool HasValidatedContentsIds { get; set; } = false;
 
@@ -681,7 +695,9 @@ namespace ItemBags.Bags
                                             // But when I reloaded the save it was now getting autofilled so something is different after it got deserialized
                 Item.heldObject.Value == null &&
                 !IsSecretNote(Item) &&
-                !Item.isLostItem && (!Item.GetType().IsSubclassOf(typeof(Object)) || Item is ColoredObject);
+                !Item.isLostItem && (!Item.GetType().IsSubclassOf(typeof(Object)) || Item is ColoredObject || Item is Torch) &&
+                // "Better Chests" mod allows picking up chests that contain items. Disallow this from being placed in a bag because the chest contents would be lost
+                !Item.modData.ContainsKey("furyx639.BetterChests-ProxyChestFactory-GlobalInventoryId");
         }
 
         private static bool IsSecretNote(Object Item)

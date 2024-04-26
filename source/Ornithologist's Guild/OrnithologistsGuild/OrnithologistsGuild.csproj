@@ -1,31 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GamePath>/Users/ivy/Applications/Stardew Valley Development.app/Contents/MacOS</GamePath>
     <AssemblyName>OrnithologistsGuild</AssemblyName>
     <EnableHarmony>true</EnableHarmony>
     <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
     <ModFolderName>Ornithologists Guild</ModFolderName>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CustomCommands>
-      <CustomCommands>
-        <Command>
-          <type>BeforeBuild</type>
-          <command>node build-content.js</command>
-        </Command>
-      </CustomCommands>
-    </CustomCommands>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <CustomCommands>
       <CustomCommands>
-        <Command>
-          <type>BeforeBuild</type>
-          <command>node build-content.js</command>
-        </Command>
         <Command>
           <type>AfterBuild</type>
           <command>bash ${SolutionDir}/generate_zip.sh</command>
@@ -37,12 +24,8 @@
   <ItemGroup>
     <None Remove="Pathoschild.Stardew.ModBuildConfig" />
     <None Remove="lib\" />
-    <None Remove="DynamicGameAssets" />
     <None Remove="assets\" />
-    <None Remove="assets\dga\" />
-    <None Remove="assets\dga\i18n\" />
     <None Remove="Game\" />
-    <None Remove="Game\Items\" />
     <None Remove="MailFrameworkMod" />
     <None Remove="SimpleStateMachineLibrary" />
     <None Remove="StateMachine" />
@@ -65,10 +48,7 @@
   <ItemGroup>
     <Folder Include="lib\" />
     <Folder Include="assets\" />
-    <Folder Include="assets\dga\" />
-    <Folder Include="assets\dga\i18n\" />
     <Folder Include="Game\" />
-    <Folder Include="Game\Items\" />
     <Folder Include="Utilities\" />
     <Folder Include="Game\Critters\" />
     <Folder Include="Content\" />
@@ -78,14 +58,12 @@
     <Folder Include="i18n\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="DynamicGameAssets" Private="False">
-      <HintPath>lib\DynamicGameAssets.dll</HintPath>
-    </Reference>
-    <Reference Include="MailFrameworkMod" Private="False">
-      <HintPath>lib\MailFrameworkMod.dll</HintPath>
-    </Reference>
     <Reference Include="ContentPatcher" Private="False">
       <HintPath>lib\ContentPatcher.dll</HintPath>
+    </Reference>
+    <Reference Include="MailFrameworkMod">
+      <HintPath>lib\MailFrameworkMod.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,12 +71,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="birds.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="baths.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="feeders.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="foods.json">

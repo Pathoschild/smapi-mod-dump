@@ -1,0 +1,145 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jibblestein/StardewMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        //Disabled Destination to Suppress Errors
+        {
+            "Action": "EditData",
+            "Target": "Data/Minecarts",
+            "TargetField": ["Default", "Destinations"],
+            "Entries": {
+                "Disabled": {
+                    "Id": "Disabled",
+                    "TargetLocation": "Town",
+                    "DisplayName": "{{i18n: Disabled}}", //Add prefix to change menu order 
+
+                    "TargetTile": {
+                        "X": 1,
+                        "Y": 1
+                    },
+                    "LandingPointDirection": "down",
+                },
+            },
+        },
+	{
+	"Action": "EditData",
+	"Target": "Data/Minecarts",
+	"TargetField": [ "Default", "Destinations" ],
+		"MoveEntries": [
+						{"ID": "{{1.}}", "ToPosition": "Bottom"},
+						{"ID": "{{2.}}", "ToPosition": "Bottom"},
+						{"ID": "{{3.}}", "ToPosition": "Bottom"},
+						{"ID": "{{4.}}", "ToPosition": "Bottom"},
+						{"ID": "{{5.}}", "ToPosition": "Bottom"},
+						{"ID": "{{6.}}", "ToPosition": "Bottom"},
+						{"ID": "{{7.}}", "ToPosition": "Bottom"},
+						{"ID": "{{8.}}", "ToPosition": "Bottom"},
+						{"ID": "{{9.}}", "ToPosition": "Bottom"},
+						{"ID": "{{10.}}", "ToPosition": "Bottom"},
+						{"ID": "{{11.}}", "ToPosition": "Bottom"},
+						{"ID": "{{12.}}", "ToPosition": "Bottom"},
+						{"ID": "{{13.}}", "ToPosition": "Bottom"},
+						{"ID": "{{14.}}", "ToPosition": "Bottom"},
+						{"ID": "{{15.}}", "ToPosition": "Bottom"},
+						{"ID": "{{16.}}", "ToPosition": "Bottom"},
+						{"ID": "{{17.}}", "ToPosition": "Bottom"},
+						{"ID": "{{18.}}", "ToPosition": "Bottom"},
+						{"ID": "{{19.}}", "ToPosition": "Bottom"},
+						{"ID": "{{20.}}", "ToPosition": "Bottom"},
+						{"ID": "{{21.}}", "ToPosition": "Bottom"},
+						{"ID": "{{22.}}", "ToPosition": "Bottom"},
+						{"ID": "{{23.}}", "ToPosition": "Bottom"},
+						{"ID": "{{24.}}", "ToPosition": "Bottom"},
+						{"ID": "{{25.}}", "ToPosition": "Bottom"},
+						{"ID": "{{26.}}", "ToPosition": "Bottom"},
+						{"ID": "{{27.}}", "ToPosition": "Bottom"},
+						{"ID": "{{28.}}", "ToPosition": "Bottom"},
+						{"ID": "{{29.}}", "ToPosition": "Bottom"},
+						{"ID": "{{30.}}", "ToPosition": "Bottom"},
+						{"ID": "{{31.}}", "ToPosition": "Bottom"},
+						{"ID": "{{32.}}", "ToPosition": "Bottom"},
+						{"ID": "{{33.}}", "ToPosition": "Bottom"},
+						{"ID": "{{34.}}", "ToPosition": "Bottom"},
+						{"ID": "{{35.}}", "ToPosition": "Bottom"},
+						{"ID": "{{36.}}", "ToPosition": "Bottom"},
+						{"ID": "{{37.}}", "ToPosition": "Bottom"},
+						{"ID": "{{38.}}", "ToPosition": "Bottom"},
+						{"ID": "{{39.}}", "ToPosition": "Bottom"},
+						{"ID": "{{40.}}", "ToPosition": "Bottom"},
+						{"ID": "{{41.}}", "ToPosition": "Bottom"},
+						{"ID": "{{42.}}", "ToPosition": "Bottom"},
+						{"ID": "{{43.}}", "ToPosition": "Bottom"},
+						],
+	},
+{
+    "Action": "EditData",
+    "Target": "Data/Minecarts",
+    "TargetField": [ "Default", "Destinations" ],
+    "Fields": {
+        "{{1.}}": {"DisplayName": "1. {{i18n: {{1.}}}}",},
+        "{{2.}}": {"DisplayName": "2. {{i18n: {{2.}}}}",},
+        "{{3.}}": {"DisplayName": "3. {{i18n: {{3.}}}}",},
+        "{{4.}}": {"DisplayName": "4. {{i18n: {{4.}}}}",},
+        "{{5.}}": {"DisplayName": "5. {{i18n: {{5.}}}}",},
+        "{{6.}}": {"DisplayName": "6. {{i18n: {{6.}}}}",},
+        "{{7.}}": {"DisplayName": "7. {{i18n: {{7.}}}}",},
+        "{{8.}}": {"DisplayName": "8. {{i18n: {{8.}}}}",},
+        "{{9.}}": {"DisplayName": "9. {{i18n: {{9.}}}}",},
+        "{{10.}}": {"DisplayName": "10. {{i18n: {{10.}}}}",},
+        "{{11.}}": {"DisplayName": "11. {{i18n: {{11.}}}}",},
+        "{{12.}}": {"DisplayName": "12. {{i18n: {{12.}}}}",},
+        "{{13.}}": {"DisplayName": "13. {{i18n: {{13.}}}}",},
+        "{{14.}}": {"DisplayName": "14. {{i18n: {{14.}}}}",},
+        "{{15.}}": {"DisplayName": "15. {{i18n: {{15.}}}}",},
+        "{{16.}}": {"DisplayName": "16. {{i18n: {{16.}}}}",},
+        "{{17.}}": {"DisplayName": "17. {{i18n: {{17.}}}}",},
+        "{{18.}}": {"DisplayName": "18. {{i18n: {{18.}}}}",},
+        "{{19.}}": {"DisplayName": "19. {{i18n: {{19.}}}}",},
+        "{{20.}}": {"DisplayName": "20. {{i18n: {{20.}}}}",},
+        "{{21.}}": {"DisplayName": "21. {{i18n: {{21.}}}}",},
+        "{{22.}}": {"DisplayName": "22. {{i18n: {{22.}}}}",},
+        "{{23.}}": {"DisplayName": "23. {{i18n: {{23.}}}}",},
+        "{{24.}}": {"DisplayName": "24. {{i18n: {{24.}}}}",},
+        "{{25.}}": {"DisplayName": "25. {{i18n: {{25.}}}}",},
+        "{{26.}}": {"DisplayName": "26. {{i18n: {{26.}}}}",},
+        "{{27.}}": {"DisplayName": "27. {{i18n: {{27.}}}}",},
+        "{{28.}}": {"DisplayName": "28. {{i18n: {{28.}}}}",},
+        "{{29.}}": {"DisplayName": "29. {{i18n: {{29.}}}}",},
+        "{{30.}}": {"DisplayName": "30. {{i18n: {{30.}}}}",},
+        "{{31.}}": {"DisplayName": "31. {{i18n: {{31.}}}}",},
+        "{{32.}}": {"DisplayName": "32. {{i18n: {{32.}}}}",},
+        "{{33.}}": {"DisplayName": "33. {{i18n: {{33.}}}}",},
+        "{{34.}}": {"DisplayName": "34. {{i18n: {{34.}}}}",},
+        "{{35.}}": {"DisplayName": "35. {{i18n: {{35.}}}}",},
+        "{{36.}}": {"DisplayName": "36. {{i18n: {{36.}}}}",},
+        "{{37.}}": {"DisplayName": "37. {{i18n: {{37.}}}}",},
+        "{{38.}}": {"DisplayName": "38. {{i18n: {{38.}}}}",},
+        "{{39.}}": {"DisplayName": "39. {{i18n: {{39.}}}}",},
+        "{{40.}}": {"DisplayName": "40. {{i18n: {{40.}}}}",},
+        "{{41.}}": {"DisplayName": "41. {{i18n: {{41.}}}}",},
+        "{{42.}}": {"DisplayName": "42. {{i18n: {{42.}}}}",},
+        "{{43.}}": {"DisplayName": "43. {{i18n: {{43.}}}}",},
+    },
+	"When": {
+		"Numbering": true,
+		   },
+},
+//Delete Disabled Destination to Suppress Errors
+        {
+            "Action": "EditData",
+            "Target": "Data/Minecarts",
+            "TargetField": ["Default", "Destinations"],
+            "Entries": {
+                "Disabled": null,
+            },
+        },
+    ]
+}

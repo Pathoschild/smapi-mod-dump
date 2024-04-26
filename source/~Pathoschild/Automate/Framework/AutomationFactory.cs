@@ -133,7 +133,7 @@ namespace Pathoschild.Stardew.Automate.Framework
                     return new FruitTreeMachine(fruitTree, location, tile);
 
                 case Tree tree when TreeMachine.CanAutomate(tree, location) && tree.growthStage.Value >= Tree.treeStage: // avoid accidental machine links due to seeds spreading automatically
-                    return new TreeMachine(tree, location, tile);
+                    return new TreeMachine(tree, location, tile, this.Config().CollectTreeMoss);
             }
 
             // connector
@@ -202,19 +202,16 @@ namespace Pathoschild.Stardew.Automate.Framework
         public IAutomatable? GetForTile(GameLocation location, in Vector2 tile)
         {
             // shipping bin on island farm
-            if (location is IslandWest farm && (int)tile.X == farm.shippingBinPosition.X && (int)tile.Y == farm.shippingBinPosition.Y)
+            if (location is IslandWest farm && farm.farmhouseRestored.Value && (int)tile.X == farm.shippingBinPosition.X && (int)tile.Y == farm.shippingBinPosition.Y)
                 return new ShippingBinMachine(Game1.getFarm(), new Rectangle(farm.shippingBinPosition.X, farm.shippingBinPosition.Y, 2, 1));
 
             // garbage can
-            if (location is Town town)
+            string action = location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Action", "Buildings");
+            if (!string.IsNullOrWhiteSpace(action))
             {
-                string action = town.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Action", "Buildings");
-                if (!string.IsNullOrWhiteSpace(action))
-                {
-                    string[] fields = ArgUtility.SplitBySpace(action);
-                    if (string.Equals(fields[0], "Garbage", StringComparison.OrdinalIgnoreCase) && ArgUtility.HasIndex(fields, 1))
-                        return new TrashCanMachine(town, tile, fields[1]);
-                }
+                string[] fields = ArgUtility.SplitBySpace(action);
+                if (string.Equals(fields[0], "Garbage", StringComparison.OrdinalIgnoreCase) && ArgUtility.HasIndex(fields, 1))
+                    return new TrashCanMachine(location, tile, fields[1]);
             }
 
             // fridge

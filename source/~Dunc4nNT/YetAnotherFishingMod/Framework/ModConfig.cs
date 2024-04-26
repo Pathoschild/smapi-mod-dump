@@ -8,15 +8,44 @@
 **
 *************************************************/
 
+using StardewModdingAPI.Utilities;
+using System.Collections.Generic;
+
 namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
 {
     internal class ModConfig
     {
         public ModConfigKeys Keys { get; set; } = new();
 
-        public int CatchFishRetries { get; set; } = 0;
+        public bool SkipMinigamePopup { get; set; } = true;
 
-        public bool InstantCatchFish { get; set; } = true;
+        public bool DisableVibrations { get; set; } = false;
+
+        public float TreasureInBarMultiplier { get; set; } = 1f;
+
+        public float FishInBarMultiplier { get; set; } = 1f;
+
+        public bool DoSpeedUpAnimations { get; set; } = false;
+
+        public bool AutoLootFish { get; set; } = false;
+
+        public float FishNotInBarPenaltyMultiplier { get; set; } = 1f;
+
+        public float BarSizeMultiplier { get; set; } = 1f;
+
+        public bool AllowCatchingFish { get; set; } = true;
+
+        public bool AllowCatchingRubbish { get; set; } = true;
+
+        public bool AllowCatchingOther { get; set; } = true;
+
+        public bool SkipFishingMinigame { get; set; } = true;
+
+        public int SkipFishingMinigameCatchesRequired { get; set; } = 0;
+
+        public float SkipFishingMinigamePerfectChance { get; set; } = 1f;
+
+        public float SkipFishingMinigameTreasureChance { get; set; } = 1f;
 
         public bool InstantCatchTreasure { get; set; } = false;
 
@@ -26,27 +55,27 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
 
         public TreasureAppearanceSettings TreasureAppearence { get; set; } = TreasureAppearanceSettings.Vanilla;
 
-        public bool AlwaysCatchDouble { get; set; } = false;
+        public TreasureAppearanceSettings GoldenTreasureAppearance { get; set; } = TreasureAppearanceSettings.Vanilla;
+
+        public int NumberOfFishCaught { get; set; } = 1;
 
         public bool InstantBite { get; set; } = false;
 
         public bool AutoHook { get; set; } = false;
 
-        public bool SpawnBaitWhenEquipped { get; set; } = false;
-
         public Quality FishQuality { get; set; } = Quality.Any;
 
         public Quality MinimumFishQuality { get; set; } = Quality.None;
 
-        public string SpawnWhichBait { get; set; } = "(O)685";
+        public List<string> BaitToSpawn { get; set; } = [""];
 
-        public bool SpawnTackleWhenEquipped { get; set; } = false;
+        public int AmountOfBait { get; set; } = 1;
 
-        public string SpawnWhichTackle { get; set; } = "(O)686";
+        public List<string> TacklesToSpawn { get; set; } = ["", ""];
 
         public bool OverrideAttachmentLimit { get; set; } = false;
 
-        public bool ResetAttachmentsWhenNotEquipped { get; set; } = true;
+        public bool ResetAttachmentsLimitWhenNotEquipped { get; set; } = true;
 
         public bool InfiniteBait { get; set; } = false;
 
@@ -55,6 +84,8 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
         public bool AutoLootTreasure { get; set; } = false;
 
         public float DifficultyMultiplier { get; set; } = 1.0f;
+
+        public bool AdjustXpGainDifficulty { get; set; } = true;
 
         public bool DoAddEnchantments { get; set; } = false;
 
@@ -69,5 +100,12 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
         public bool AddPreservingEnchantment { get; set; } = false;
 
         public bool ResetEnchantmentsWhenNotEquipped { get; set; } = true;
+    }
+
+    internal class ModConfigKeys
+    {
+        public KeybindList ReloadConfig { get; set; } = new();
+
+        public KeybindList DoAutoCast { get; set; } = new();
     }
 }

@@ -116,8 +116,10 @@ namespace BetterJunimos.Patches {
     // pathfindToRandomSpotAroundHut
     // Expand radius of random pathfinding
     public class PatchPathfindToRandomSpotAroundHut {
-        public static void Postfix(JunimoHarvester __instance, ref NetGuid ___netHome) {
-            var hut = Util.GetHutFromId(___netHome.Value);
+        public static void Postfix(JunimoHarvester __instance) {
+            var hut = __instance.home;
+            if (hut is null) return;
+
             var radius = Util.CurrentWorkingRadius;
             var retry = 0;
             do {
@@ -189,11 +191,13 @@ namespace BetterJunimos.Patches {
     // Remove the max distance boundary
     [HarmonyPriority(Priority.Low)]
     public class PatchPathfindDoWork {
-        public static bool Prefix(JunimoHarvester __instance, ref NetGuid ___netHome,
+        public static bool Prefix(JunimoHarvester __instance,
             ref NetEvent1Field<int, NetInt> ___netAnimationEvent) {
             if (!Context.IsMainPlayer) return true;
 
-            var hut = Util.GetHutFromId(___netHome.Value);
+            var hut = __instance.home;
+            if (hut is null) return true;
+
             var quittingTime = Util.Progression.CanWorkInEvenings ? 2400 : 1900;
 
             // BetterJunimos.SMonitor.Log($"PatchPathfindDoWork: Junimo {__instance.whichJunimoFromThisHut} in {__instance.currentLocation.Name} looking for work", LogLevel.Debug);

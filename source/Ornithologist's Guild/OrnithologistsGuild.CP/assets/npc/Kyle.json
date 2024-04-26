@@ -1,0 +1,214 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Sprites
+        {
+            "Action": "Load",
+            "Target": "Characters/OrinothlogistsGuild_Kyle",
+            "FromFile": "assets/npc/sprites_Kyle.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/OrinothlogistsGuild_Kyle",
+            "FromFile": "assets/npc/portrait_Kyle.png"
+        },
+        // Animation
+        {
+            "Action": "EditData",
+            "Target": "Data/animationDescriptions",
+            "Entries": {
+                "OrinothlogistsGuild_Kyle_perch": "16/16 16 16 17 17 17 18 18 18 19 19 19/16",
+                "OrinothlogistsGuild_Kyle_doze": "20 20 20 21 21 21 22 22 22 23/23/23 22 22 22 21 21 21 20 20 20" // naming this "sleep" causes issues because of the non-standard sprite size and emotes
+            }
+        },
+        // Character
+        {
+            "Action": "EditData",
+            "Target": "Data/Characters",
+            "Entries": {
+                "OrinothlogistsGuild_Kyle": {
+                    // Basic info
+                    "DisplayName": "{{i18n:npc.Kyle.DisplayName}}",
+                    "HomeRegion": "Other",
+                    "Gender": "Male",
+                    "Manner": "Rude",
+                    "SocialAnxiety": "Outgoing",
+                    "Optimism": "Neutral",
+                    "BirthSeason": "fall",
+                    "BirthDay": "25",
+                    // Social features
+                    "CanSocialize": true,
+                    "CanBeRomanced": false,
+                    "CanReceiveGifts": true,
+                    "CanCommentOnPurchasedShopItems": false,
+                    "CanGreetNearbyCharacters": true,
+                    "CanVisitIsland": false,
+                    "IntroductionsQuest": true,
+                    "PerfectionScore": true,
+                    "ItemDeliveryQuests": false,
+                    // Dumpster diving
+                    "DumpsterDiveEmote": 20,
+                    "DumpsterDiveFriendshipEffect": 5,
+                    // Festivals
+                    "FlowerDanceCanDance": false,
+                    "WinterStarParticipant": false,
+                    // Spawn rules
+                    "Home": [
+                        {
+                            "ID": "Default",
+                            "Location": "Custom_Ivy_OrnithologistsGuild",
+                            "Tile": {
+                                "X": 15,
+                                "Y": 14
+                            },
+                            "Direction": "left"
+                        }
+                    ],
+                    // Appearance & sprite
+                    "MugShotSourceRect": {
+                        "X": 0,
+                        "Y": 40,
+                        "Width": 16,
+                        "Height": 24
+                    },
+                    "Breather": false,
+                    "Shadow": {
+                        "Scale": 0.75
+                    },
+                    "EmoteOffset": {
+                        "X": 0,
+                        "Y": 64
+                    },
+                    "ShakePortraits": [
+                        3,
+                        5,
+                        9,
+                        11
+                    ]
+                }
+            }
+        },
+        // Gift taste
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "Entries": {
+                "OrinothlogistsGuild_Kyle": "
+                    {{i18n:npc.Kyle.dialogue.giftTaste.love}}/787 72 74 203 206 800 684 397/
+                    {{i18n:npc.Kyle.dialogue.giftTaste.like}}/80 86 82 68 70 66 64 62 60 84 108 129 136 131 130 132 137 138 139 140 141 128 142 143 144 145 146 147 149 150 151 156 158 159 160 164 165 168 171 170 194 195 197 198 199 201 202 204 205 207 208 209 210 211 212 213 214 215 218 219 221 222 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 267 -79 -81 -20 -26 -12 -7 -5 -4 -2 807 799 798 797 795 775 734 733 732 731 730 729 728 727 723 721 720 717 716 715 708 707 706 705 704 702 701 699 700 698 682 651 649 648 638 637 636 635 634 618 613 612 611 610 609 608 607 606 605 604 454 445 444 442 48 436 430 428 312 424 423 417 416 414 410 406 400 398 396 394 393 372 344 342 340 308 307 306 305 296 282 280 279 270 269 268 258 254 186 184 182 180 176 174 124 105 90/
+                    {{i18n:npc.Kyle.dialogue.giftTaste.dislike}}/78 116 172 196 192 190 188 200 223 247 -75 -6 772 769 768 767 766 724 597 595 593 591 589 588 587 586 585 579 578 577 576 574 575 573 572 571 570 569 568 567 566 565 564 563 562 561 560 559 558 557 556 555 554 553 552 551 549 548 547 550 546 544 545 543 542 541 540 539 538 459 457 456 446 432 421 418 412 408 402 399 376 373 350 349 304 284 283 278 274 272 271 266 264 260 259 257 256 250 248 163 161 157 155 154 153 152 127 126 125 123 122 121 120 119 117 115 114 113 112 111 110 109 107 106 104 101 103 100 98 99 96 97 92 88 24 22 20 18 16/
+                    {{i18n:npc.Kyle.dialogue.giftTaste.hate}}/162 167 220 815 814 726 725 614 433 395 348 346 303 253 30/
+                    {{i18n:npc.Kyle.dialogue.giftTaste.neutral}}/148 216 243 244 -80 -27 812 796 774 773 722 719 718 685 447 422 420 404 403 392 338 337 336 335 334 300 281 276 265 252 169 "
+            }
+        },
+        // Schedules
+        {
+            "Action": "Load",
+            "Target": "Characters/schedules/OrinothlogistsGuild_Kyle",
+            "FromFile": "assets/blank.json"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/OrinothlogistsGuild_Kyle",
+            "Entries": {
+                "spring": "
+                    610 15 14 0 OrinothlogistsGuild_Kyle_doze/
+                    730 25 11 0/
+                    800 15 22 0 OrinothlogistsGuild_Kyle_perch/
+                    1300 9 25 3/
+                    1330 9 28 3/
+                    1400 21 25 1/
+                    1430 25 11 0/
+                    1500 3 11 0/
+                    1530 2 12 3/
+                    1600 15 14 0 OrinothlogistsGuild_Kyle_doze",
+                "summer": "
+                    610 15 14 0 OrinothlogistsGuild_Kyle_doze/
+                    730 25 11 0/
+                    800 15 22 0 OrinothlogistsGuild_Kyle_perch/
+                    1300 9 25 3/
+                    1330 9 28 3/
+                    1400 21 25 1/
+                    1430 25 11 0/
+                    1500 3 11 0/
+                    1530 2 12 3/
+                    1600 15 14 0 OrinothlogistsGuild_Kyle_doze",
+                "fall": "
+                    610 15 14 0 OrinothlogistsGuild_Kyle_doze/
+                    730 25 11 0/
+                    800 15 22 0 OrinothlogistsGuild_Kyle_perch/
+                    1300 9 25 3/
+                    1330 9 28 3/
+                    1400 21 25 1/
+                    1430 25 11 0/
+                    1500 3 11 0/
+                    1530 2 12 3/
+                    1600 15 14 0 OrinothlogistsGuild_Kyle_doze",
+                "winter": "
+                    610 15 14 0 OrinothlogistsGuild_Kyle_doze/
+                    730 25 11 0/
+                    800 15 22 0 OrinothlogistsGuild_Kyle_perch/
+                    1300 9 25 3/
+                    1330 9 28 3/
+                    1400 21 25 1/
+                    1430 25 11 0/
+                    1500 3 11 0/
+                    1530 2 12 3/
+                    1600 15 14 0 OrinothlogistsGuild_Kyle_doze"
+            }
+        },
+        // Quests
+        {
+            "Action": "EditData",
+            "Target": "data/Quests",
+            "Entries": {
+                "OrnithologistsGuild_Kyle_PowerUp": "ItemDelivery/{{i18n:npc.Kyle.quest.PowerUp.name}}/{{i18n:npc.Kyle.quest.PowerUp.description}}/{{i18n:npc.Kyle.quest.PowerUp.requirement}}/OrinothlogistsGuild_Kyle 787 4/-1/1000/-1/false/{{i18n:npc.Kyle.dialogue.mostHappy}}$1#$1 Ivy_OrinothlogistsGuild_PowerUp##$e#"
+            }
+        },
+        // Dialogue
+        {
+            "Action": "Load",
+            "Target": "Characters/Dialogue/OrinothlogistsGuild_Kyle",
+            "FromFile": "assets/blank.json"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/OrinothlogistsGuild_Kyle",
+            "Entries": {
+                "Custom_Ivy_OrnithologistsGuild_Mon": "{{i18n:npc.Kyle.dialogue.Mon}}",
+                "Custom_Ivy_OrnithologistsGuild_Tue": "{{i18n:npc.Kyle.dialogue.Tue}}",
+                "Custom_Ivy_OrnithologistsGuild_Wed": "{{i18n:npc.Kyle.dialogue.Wed}}",
+                "Custom_Ivy_OrnithologistsGuild_Thu": "{{i18n:npc.Kyle.dialogue.Thu}}",
+                "Custom_Ivy_OrnithologistsGuild_Fri": "{{i18n:npc.Kyle.dialogue.Fri}}",
+                "Custom_Ivy_OrnithologistsGuild_Sat": "{{i18n:npc.Kyle.dialogue.Sat}}",
+                "Custom_Ivy_OrnithologistsGuild_Sun": "{{i18n:npc.Kyle.dialogue.Sun}}",
+                "Custom_Ivy_OrnithologistsGuild_15_14": "{{i18n:npc.Kyle.dialogue.15_14}}",
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/OrinothlogistsGuild_Kyle",
+            "Entries": {
+                "Custom_Ivy_OrnithologistsGuild_Mon": "{{i18n:npc.Kyle.dialogue.PowerUp_Mon}}",
+                "Custom_Ivy_OrnithologistsGuild_Tue": "{{i18n:npc.Kyle.dialogue.PowerUp_Tue}}",
+                "Custom_Ivy_OrnithologistsGuild_Wed": "{{i18n:npc.Kyle.dialogue.PowerUp_Wed}}",
+                "Custom_Ivy_OrnithologistsGuild_Thu": "{{i18n:npc.Kyle.dialogue.PowerUp_Thu}}",
+                "Custom_Ivy_OrnithologistsGuild_Sat": "{{i18n:npc.Kyle.dialogue.PowerUp_Sat}}",
+                "Custom_Ivy_OrnithologistsGuild_Sun": "{{i18n:npc.Kyle.dialogue.PowerUp_Sun}}",
+            },
+            "When": {
+                "HasFlag": "Ivy_OrinothlogistsGuild_PowerUp"
+            },
+            "Update": "OnLocationChange"
+        }
+    ]
+}

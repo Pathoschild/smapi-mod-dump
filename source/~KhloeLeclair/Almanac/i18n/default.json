@@ -76,6 +76,7 @@
 	"weather.lightning": "Thunderstorms",
 	"weather.festival": "Sunny",
 	"weather.snow": "Snow",
+	"weather.green": "Green rain",
 
 	"page.train": "Train Schedule",
 	"page.train.about": "@BWarning:@b Trains will be passing by the Stardew Valley station at the following times. For your safety, always remain clear of the tracks when a train is present.",
@@ -121,7 +122,7 @@
 
 	"page.notices.season": "{{item}} season goes from {{start}} through {{end}}.",
 	"page.notices.summer": "The summer ocean currents are expected to hit Pelican Beach with extra debris from the 12th to the 14th.",
-	"page.notices.market": "The Night Market is open late from the 15th to the 17th.",
+	"page.notices.passive-festival": "The {{name}} is open starting at {{startTime}} on the {{startDay}} to the {{endDay}}.",
 
 	"page.notices.anniversary.no-s": "It's {{name}} and {{spouse}}' anniversary!",
 	"page.notices.anniversary.s": "It's {{name}} and {{spouse}}'s anniversary!",
@@ -136,6 +137,8 @@
 
 	"page.notices.merchant": "The Traveling Merchant will be in town.",
 	"page.notices.merchant.stock": "The Traveling Merchant will be selling:",
+	"page.notices.bookseller": "The Bookseller will be in town.",
+	"page.notices.bookseller.stock": "The Bookseller will be selling:",
 
 	"page.notices.train": "A train is scheduled to pass the station at {{time}}.",
 
@@ -292,6 +295,12 @@
 	"settings.notices.merchant.Disabled": "Disabled",
 	"settings.notices.merchant.Visit": "Show Visits Only",
 	"settings.notices.merchant.Stock": "Show Visits and Stock",
+
+	"settings.notices.bookseller": "Show Bookseller",
+	"settings.notices.bookseller-desc": "When enabled, visits from the Bookseller will be listed in Local Notices. If you wish, we can show the items they'll have as well.",
+	"settings.notices.bookseller.Disabled": "Disabled",
+	"settings.notices.bookseller.Visit": "Show Visits Only",
+	"settings.notices.bookseller.Stock": "Show Visits and Stock",
 
 	"settings.restore-state": "Restore Previous State",
 	"settings.restore-state.desc": "When enabled, the Almanac will remember what state it was in when you close and re-open it.",

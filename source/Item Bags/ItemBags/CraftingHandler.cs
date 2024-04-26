@@ -26,6 +26,61 @@ using Object = StardewValley.Object;
 
 namespace ItemBags
 {
+#if NEVER
+    public static class ItemPatches
+    {
+        [HarmonyPatch(typeof(Item), nameof(Item.ConsumeStack))]
+        public static bool ConsumeStack_Prefix(Item __instance, int amount, ref Item __result)
+        {
+            try
+            {
+                // From decompiled game code, File version 1.6.3.24087
+                //  Notice that "Stack -= amount" does not execute when Stack-amount<=0
+                /*
+                if (amount == 0)
+                {
+                    return this;
+                }
+
+                if (Stack - amount <= 0)
+                {
+                    return null;
+                }
+
+                Stack -= amount;
+                return this;
+                */
+
+                //  Maybe instead should check if Stack <= amount, but who knows if a negative Stack value will cause weird issues elsewhere,
+                //  and doing Math.Max(0, Stack - amount) also seems a little bit risky. Let's only handle the most common case
+                if (__instance.Stack == amount)
+                {
+                    __instance.Stack -= amount;
+                    __result = null;
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ItemBagsMod.ModInstance.Monitor.Log($"Error in {nameof(ItemPatches)}.{nameof(ConsumeStack_Prefix)}: {ex.Message}", LogLevel.Error);
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(Item), nameof(Item.ConsumeStack))]
+        public static void ConsumeStack_Postfix(Item __instance, int amount, ref Item __result)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex) { ItemBagsMod.ModInstance.Monitor.Log($"Error in {nameof(ItemPatches)}.{nameof(ConsumeStack_Postfix)}: {ex.Message}", LogLevel.Error); }
+        }
+    }
+#endif
+
     public static class CraftingHandler
     {
         private const string CookingSkillModUniqueId = "spacechase0.CookingSkill";
@@ -55,11 +110,20 @@ namespace ItemBags
                 IsCookingSkillModCompatible = Helper.ModRegistry.IsLoaded(CookingSkillModUniqueId) &&
                     Helper.ModRegistry.Get(CookingSkillModUniqueId).Manifest.Version.IsNewerThan("1.1.4"); // "_materialContainers" field was added to CookingSkill.NewCraftingPage in version 1.1.5
             }
+
+#if NEVER
+            Harmony Harmony = new Harmony(ItemBagsMod.ModInstance.ModManifest.UniqueID);
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(Item), nameof(Item.ConsumeStack)),
+                prefix: new HarmonyMethod(typeof(ItemPatches), nameof(ItemPatches.ConsumeStack_Prefix)),
+                postfix: new HarmonyMethod(typeof(ItemPatches), nameof(ItemPatches.ConsumeStack_Postfix))
+            );
+#endif
         }
 
         private static HashSet<ItemBag> BagsInUse = null;
         internal static bool IsUsingForCrafting(ItemBag Bag) { return BagsInUse != null && BagsInUse.Contains(Bag); }
-        private static Dictionary<Object, List<Object>> SplitStacks = null;
+        private static List<ItemBagCraftingInventory> ItemBagInventories = null;
 
         /// <summary>Initializes extra data for the Crafting Page so it can search for and use materials within bags in your inventory.</summary>
         private static void OnCraftingPageActivated(IClickableMenu CraftingMenu)
@@ -88,88 +152,14 @@ namespace ItemBags
                     ReflectionResult.SetValue(MaterialContainers);
                 }
 
+                ItemBagInventories = new();
+
                 //  Create a temporary chest from the items of each bag, and add the chest to _materialContainers
                 foreach (ItemBag IB in SearchedBags.Where(x => AllowUsingBundleBagItemsForCrafting || !(x is BundleBag)))
                 {
-                    //  Note that if the item inside the bag has Stack > 999, it must be split up into chunks with Stacks <= 999
-                    //  Because the Game truncates the actual stack down to 999 anytime it modifies a stack value
-                    if (IB is OmniBag OB)
-                    {
-                        foreach (ItemBag NestedBag in OB.NestedBags.Where(x => AllowUsingBundleBagItemsForCrafting || !(x is BundleBag)))
-                        {
-                            List<Item> TempItems = new List<Item>();
-
-                            foreach (Object Item in NestedBag.Contents)
-                            {
-                                if (Item.Stack > 999)
-                                {
-                                    if (SplitStacks == null)
-                                        SplitStacks = new Dictionary<Object, List<Object>>();
-
-                                    List<Object> Chunks = new List<Object>();
-
-                                    int TotalStack = Item.Stack;
-                                    int DistributedAmt = 0;
-                                    while (DistributedAmt < TotalStack)
-                                    {
-                                        int CurrentStackAmt = Math.Min(999, TotalStack - DistributedAmt);
-                                        Object Chunk = ItemBag.CreateCopy(Item);
-                                        ItemBag.ForceSetQuantity(Chunk, CurrentStackAmt);
-                                        DistributedAmt += CurrentStackAmt;
-                                        Chunks.Add(Chunk);
-                                    }
-
-                                    SplitStacks.Add(Item, Chunks);
-                                    TempItems.AddRange(Chunks);
-                                }
-                                else
-                                {
-                                    TempItems.Add(Item);
-                                }
-                            }
-
-                            Inventory TempInventory = new Inventory();
-                            TempInventory.AddRange(TempItems);
-                            MaterialContainers.Add(TempInventory);
-                        }
-                    }
-                    else
-                    {
-                        List<Item> TempItems = new List<Item>();
-
-                        foreach (Object Item in IB.Contents)
-                        {
-                            if (Item.Stack > 999)
-                            {
-                                if (SplitStacks == null)
-                                    SplitStacks = new Dictionary<Object, List<Object>>();
-
-                                List<Object> Chunks = new List<Object>();
-
-                                int TotalStack = Item.Stack;
-                                int DistributedAmt = 0;
-                                while (DistributedAmt < TotalStack)
-                                {
-                                    int CurrentStackAmt = Math.Min(999, TotalStack - DistributedAmt);
-                                    Object Chunk = ItemBag.CreateCopy(Item);
-                                    ItemBag.ForceSetQuantity(Chunk, CurrentStackAmt);
-                                    DistributedAmt += CurrentStackAmt;
-                                    Chunks.Add(Chunk);
-                                }
-
-                                SplitStacks.Add(Item, Chunks);
-                                TempItems.AddRange(Chunks);
-                            }
-                            else
-                            {
-                                TempItems.Add(Item);
-                            }
-                        }
-
-                        Inventory TempInventory = new Inventory();
-                        TempInventory.AddRange(TempItems);
-                        MaterialContainers.Add(TempInventory);
-                    }
+                    ItemBagCraftingInventory BagInventory = new(IB);
+                    ItemBagInventories.Add(BagInventory);
+                    MaterialContainers.Add(BagInventory);
                 }
             }
         }
@@ -182,15 +172,7 @@ namespace ItemBags
                 //  so we must Resynchronize the bag contents in multiplayer
                 if (BagsInUse != null && BagsInUse.Any())
                 {
-                    //  Recombine item Stacks that were split to avoid having > 999
-                    if (SplitStacks != null && SplitStacks.Any())
-                    {
-                        foreach (KeyValuePair<Object, List<Object>> KVP in SplitStacks)
-                        {
-                            int NewQuantity = KVP.Value.Sum(x => x.Stack);
-                            ItemBag.ForceSetQuantity(KVP.Key, NewQuantity);
-                        }
-                    }
+                    ItemBagInventories?.ForEach(x => x.Close());
 
                     foreach (ItemBag Bag in BagsInUse)
                     {
@@ -211,7 +193,7 @@ namespace ItemBags
             finally
             {
                 BagsInUse = null;
-                SplitStacks = null;
+                ItemBagInventories = null;
             }
         }
 
@@ -287,5 +269,222 @@ namespace ItemBags
             return Menu is CraftingPage || 
                 (Menu?.GetType().FullName == "CookingSkill.NewCraftingPage" && IsCookingSkillModCompatible); // CookingSkill.NewCraftingPage is a menu defined in the "Cooking Skill" mod
         }
+    }
+
+    public class ItemBagCraftingInventory : IInventory
+    {
+        public ItemBag Source { get; }
+        private List<Item> Items { get; }
+        private Dictionary<string, List<Item>> ItemsById { get; }
+        private Dictionary<Object, List<Object>> SplitStacks { get; } = new();
+
+        public ItemBagCraftingInventory(ItemBag bag)
+        {
+            Source = bag;
+            Items = new();
+            ItemsById = new();
+
+            List<List<Object>> ItemLists = new();
+            if (bag is OmniBag ob)
+            {
+                ItemLists.AddRange(ob.NestedBags.Select(x => x.Contents));
+            }
+            else
+            {
+                ItemLists.Add(bag.Contents);
+            }
+
+            foreach (List<Object> ItemList in ItemLists)
+            {
+                foreach (Object Item in ItemList)
+                {
+                    string ItemId = Item.QualifiedItemId;
+                    if (Item.Stack > 999)
+                    {
+                        List<Object> Chunks = new List<Object>();
+
+                        int TotalStack = Item.Stack;
+                        int DistributedAmt = 0;
+                        while (DistributedAmt < TotalStack)
+                        {
+                            int CurrentStackAmt = Math.Min(999, TotalStack - DistributedAmt);
+                            Object Chunk = ItemBag.CreateCopy(Item);
+                            ItemBag.ForceSetQuantity(Chunk, CurrentStackAmt);
+                            DistributedAmt += CurrentStackAmt;
+                            Chunks.Add(Chunk);
+                        }
+
+                        SplitStacks.Add(Item, Chunks);
+                        Items.AddRange(Chunks);
+                        if (!ItemsById.TryGetValue(ItemId, out List<Item> IndexedItems))
+                            ItemsById.Add(ItemId, new List<Item>());
+                        ItemsById[ItemId].AddRange(Chunks);
+                    }
+                    else
+                    {
+                        Items.Add(Item);
+                        if (!ItemsById.TryGetValue(ItemId, out List<Item> IndexedItems))
+                            ItemsById.Add(ItemId, new List<Item>());
+                        ItemsById[ItemId].Add(Item);
+                    }
+                }
+            }
+        }
+
+        public void Close()
+        {
+            //  Recombine item Stacks that were split to avoid having > 999
+            if (SplitStacks != null && SplitStacks.Any())
+            {
+                foreach (KeyValuePair<Object, List<Object>> KVP in SplitStacks)
+                {
+                    int NewQuantity = KVP.Value.Sum(x => x.Stack);
+                    ItemBag.ForceSetQuantity(KVP.Key, NewQuantity);
+                }
+            }
+        }
+
+        private const string NotSupportedErrorMsg = $"{nameof(ItemBagCraftingInventory)} does not support adding/replacing its items. " +
+            $"This object is only intended to be used by crafting pages, and only supports removing items.";
+
+        public Item this[int index]
+        { 
+            get => Items[index]; 
+            set
+            {
+                //  As of game version 1.6.3.24087, this is the decompiled logic for StardewValley.Item.ConsumeStack(int amount):
+                //  Notice that "Stack -= amount" does not execute when Stack-amount<=0
+                /*
+                if (amount == 0)
+                {
+                    return this;
+                }
+
+                if (Stack - amount <= 0)
+                {
+                    return null;
+                }
+
+                Stack -= amount;
+                return this;
+                */
+
+                //  CraftingPage.clickCraftingRecipe calls CraftingRecipe.consumeIngredients, which then calls Item.ConsumeStack.
+                //  Since the Item.Stack amount isn't decreased when the required amount is >= the current Item.Stack, it causes issues where the bags aren't correctly consuming the inputs
+                //  The below if-statement attempts to reconcile this issue
+                if (value == null)
+                    Items[index].Stack = 0;
+
+                Items[index] = value;
+            }
+        }
+
+        public long LastTickSlotChanged => throw new NotImplementedException();
+
+        public int Count => Items.Count;
+
+        public bool IsReadOnly => false;
+
+        public void Add(Item item) => throw new InvalidOperationException(NotSupportedErrorMsg);
+        public void AddRange(ICollection<Item> collection) => throw new InvalidOperationException(NotSupportedErrorMsg);
+        public void Insert(int index, Item item) => throw new InvalidOperationException(NotSupportedErrorMsg);
+        public void Clear() => throw new InvalidOperationException(NotSupportedErrorMsg);
+        public void OverwriteWith(IList<Item> list) => throw new InvalidOperationException(NotSupportedErrorMsg);
+        public void CopyTo(Item[] array, int arrayIndex) => Items.CopyTo(array, arrayIndex);
+
+        public bool Contains(Item item) => Items.Contains(item);
+        public bool ContainsId(string itemId) => GetById(itemId).Any();
+        public bool ContainsId(string itemId, int minimum) => CountId(itemId) >= minimum;
+        public int CountId(string itemId) => GetById(itemId).Sum(x => x.Stack);
+        public int CountItemStacks() => ItemsById.Values.Sum(x => x.Count);
+
+        public IEnumerable<Item> GetById(string itemId)
+        {
+            itemId = ItemRegistry.QualifyItemId(itemId);
+            if (itemId == null || ItemsById.TryGetValue(itemId, out List<Item> results))
+                return Enumerable.Empty<Item>();
+            else
+                return results;
+        }
+            
+        public bool HasAny() => Items.Any();
+        public bool HasEmptySlots() => Count > CountItemStacks();
+        public int IndexOf(Item item) => Items.IndexOf(item);
+
+        public int ReduceId(string itemId, int count)
+        {
+            if (count <= 0)
+                return 0;
+
+            itemId = ItemRegistry.QualifyItemId(itemId);
+            if (itemId == null || ItemsById.TryGetValue(itemId, out List<Item> items))
+                return 0;
+
+            bool revalidateItemsList = false;
+
+            int totalConsumed = 0;
+            int remaining = count;
+            for (int i = 0; i < items.Count; i++)
+            {
+                Item item = items[i];
+
+                int amtToConsume = Math.Min(item.Stack, remaining);
+                item.Stack -= amtToConsume;
+                remaining -= amtToConsume;
+                totalConsumed += amtToConsume;
+
+                if (item.Stack <= 0)
+                {
+                    revalidateItemsList = true;
+                    items.RemoveAt(i);
+                    i--;
+                }
+
+                if (remaining <= 0)
+                    break;
+            }
+
+            if (revalidateItemsList)
+            {
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    Item item = Items[i];
+                    if (item?.Stack == 0)
+                        Items[i] = null;
+                }
+            }
+
+            return totalConsumed;
+        }
+
+        //  These implementations are probably fine... but may need to remove from the ItemsById dictionary too.
+        public bool Remove(Item item) => Items.Remove(item);
+        public void RemoveAt(int index) => Items.RemoveAt(index);
+        public void RemoveRange(int index, int count) => Items.RemoveRange(index, count);
+
+        public bool RemoveButKeepEmptySlot(Item item)
+        {
+            int Index = IndexOf(item);
+            if (Index >= 0)
+            {
+                Items[Index] = null;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public void RemoveEmptySlots()
+        {
+            for (int i = Items.Count - 1; i >= 0; i--)
+            {
+                if (Items[i] == null)
+                    Items.RemoveAt(i);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => Items.GetEnumerator();
+        public IEnumerator<Item> GetEnumerator() => Items.GetEnumerator();
+        public IList<Item> GetRange(int index, int count) => Items.GetRange(index, count);
     }
 }

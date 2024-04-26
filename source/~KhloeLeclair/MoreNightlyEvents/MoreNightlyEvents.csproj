@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>MoreNightlyEvents</AssemblyName>
+    <Version>0.2.0</Version>
+    <RootNamespace>Leclair.Stardew.MoreNightlyEvents</RootNamespace>
+
+    <Name>More Nightly Events</Name>
+    <UniqueId>leclair.morenightlyevents</UniqueId>
+    <Author>Khloe Leclair</Author>
+    <Description>A framework mod for adding new random night time events to the game via content packs!</Description>
+    <UpdateKeys>Nexus:22612</UpdateKeys>
+    
+    <EnableHarmony>true</EnableHarmony>
+    <EnableTranslation>true</EnableTranslation>
+  </PropertyGroup>
+
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
+  <Import Project="..\_build\common.targets" />
+
+</Project>

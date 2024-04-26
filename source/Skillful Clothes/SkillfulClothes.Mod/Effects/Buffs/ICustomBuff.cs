@@ -19,10 +19,6 @@ namespace SkillfulClothes.Effects.Buffs
 {
     interface ICustomBuff
     {
-        void ApplyCustomEffect();
-
-        void RemoveCustomEffect(bool clearingAllBuffs);
-
-        List<ClickableTextureComponent> GetCustomBuffIcons();
+       
     }
 }

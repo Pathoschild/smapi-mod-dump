@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Mailbox Menu Continued",
+  "Author": "aedenthorn, tem696969696969",
+  "Version": "0.3.8-beta2",
+  "Description": "A menu to view new and old mail.",
+  "UniqueID": "tem696969696969.MailboxMenu",
+  "EntryDll": "MailboxMenu.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21068" ]
+}

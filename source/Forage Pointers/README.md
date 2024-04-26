@@ -60,9 +60,12 @@ None beyond SMAPI
 | `BlinkPointers` | `bool` | `true` | `true`, `false` | If set to true, on screen pointers will blink occasionally as defined below. |
 | `NumFramesArrowsOn` | `uint` | 50 | 1-int.MaxValue | Approx. number of frames the arrows should be on before blinking off. Actually based on ticks, there is about 1 tick per frame, and 60 frames per second |
 | `NumFramesArrowsOff` | `uint` | 10 | 1-int.MaxValue | Approx. number of frames the arrows should be off before turning back on. |
-| `ShowArtifactSpots` | `bool` | `true` | `true`, `false` | If set to true, on screen pointers will point at Artifact Spots (aka "Worms" or "Twigs". |
+| `ShowArtifactSpots` | `bool` | `true` | `true`, `false` | If set to true, on screen pointers will point at Artifact Spots (aka "Worms" or "Twigs"). |
+| `ShowSeedSpots` | `bool` | `true` | `true`, `false` | If set to true, on screen pointers will point to the new Seed Spots (i.e. carrots, broccoli, etc.). |
 
 View Distance is calculated as `MinimumViewDistance + ((player.ForagingLevel/ScaleEveryNLevels) * ScalingRadius)` this is done as integer math and will only increase in discrete steps.
+
+All of these values can also be edited through use of [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 
 ## Changelog
 

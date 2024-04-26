@@ -1,0 +1,54 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hedgehog-Technologies/StardewMods
+**
+*************************************************/
+
+{
+  "Category": "Ridgeside Village",
+  "Forageables": [
+    // All Seasons
+    "Rafseazz.RSVCP_Mountain_Mistbloom",
+    "Rafseazz.RSVCP_Foxbloom",
+
+    // Spring
+    "Rafseazz.RSVCP_Ridge_Cherry",
+    "Rafseazz.RSVCP_Mountain_Arugula",
+    "Rafseazz.RSVCP_Ridge_Azorean_Flower",
+    "Rafseazz.RSVCP_Ridgeside_Monkshood",
+
+    // Summer
+    "Rafseazz.RSVCP_Forest_Amancay",
+    "Rafseazz.RSVCP_Mountain_Chico",
+    "Rafseazz.RSVCP_Mountain_Hokkaido",
+    "Rafseazz.RSVCP_Ridge_Wild_Apple",
+    "Rafseazz.RSVCP_Violet_Devil_s_Claw",
+
+    // Fall
+    "Rafseazz.RSVCP_Autumn_Drop_Berry",
+    "Rafseazz.RSVCP_Highland_Butterwort",
+    "Rafseazz.RSVCP_Highland_Chard",
+    "Rafseazz.RSVCP_Lava_Lily",
+    "Rafseazz.RSVCP_Summit_Snowbell",
+
+    // Winter
+    "Rafseazz.RSVCP_Aurorean_Iris",
+    "Rafseazz.RSVCP_Frost_Clump_Berry",
+    "Rafseazz.RSVCP_Ridgeside_Clementine",
+    "Rafseazz.RSVCP_Sierra_Wintergreen"
+  ],
+  "FruitTrees": [
+    "Rafseazz.RSVCP_Cherry_Pluot_Sapling",
+    "Rafseazz.RSVCP_Desert_Tangelo_Sapling",
+    "Rafseazz.RSVCP_Ember_Blood_Lime_Sapling",
+    "Rafseazz.RSVCP_Highland_Jostaberry_Sapling",
+    "Rafseazz.RSVCP_Mountain_Plumcot_Sapling",
+    "Rafseazz.RSVCP_Northern_Limequat_Sapling",
+    "Rafseazz.RSVCP_Paradise_Rangpur_Sapling",
+    "Rafseazz.RSVCP_Tropi_Ugli_Fruit_Sapling"
+  ]
+}

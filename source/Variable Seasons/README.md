@@ -6,9 +6,21 @@ for queries and analysis.**
 
 ----
 
-# Stardew Variable Seasons
+## Stardew Valley 1.6 Update 
 
-## NOTICE: Not yet compatible with Stardew Valley 1.6. Support is in development.
+The mod builds and the core functionality runs properly with Stardew Valley 1.6.
+The current version (beta v0.4) is a feature regression over the previous version, but it supports the main functionality of the mod (randomizing the season change date and allowing crops to survive out of season).
+The next version will restore feature-parity (shop stock changes).
+
+### 1.6 Development Roadmap (if a feature isn't listed, it's already working)
+
+- [x] Season changes on randomly rolled day
+- [X] Birthdays and festivals occur on the proper calendar day
+- [X] Save file compatibility with pre-1.6 versions
+- [X] Out-of-season crop death randomization works
+- [ ] General store stock contains current and next season inventory
+
+# Stardew Variable Seasons
 
 A mod for Stardew Valley that adds some variability to when the seasons actually change, rather than just changing on the first of each season.
 
@@ -17,7 +29,7 @@ For example, the actual change from Spring to Summer can now occur on any day be
 
 About halfway through a season, the weather channel will give hints as to the length of the season, letting the player know whether the current season will be abnormally short, shorter than average, about average, longer than average, or abnormally long.
 
-This mod will also include a mechanic to allow out-of-season crops to survive for some amount of time based on a percentage that decreases each day the crop remains out of season, and will allow for the purchase of crops for the next season from the general store.
+This mod also includes a mechanic to allow out-of-season crops to survive for some amount of time based on a percentage that decreases each day the crop remains out of season, and will allow for the purchase of crops for the next season from the general store.
 
 What works:
 

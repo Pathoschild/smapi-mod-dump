@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "Name": "Mailbox Menu Continued",
+  "Author": "aedenthorn, tem696969696969",
+  "Version": "0.3.8",
+  "Description": "A menu to view new and old mail.",
+  "UniqueID": "tem696969696969.MailboxMenu",
+  "EntryDll": "MailboxMenu.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21068" ]
+}

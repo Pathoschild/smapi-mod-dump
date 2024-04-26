@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Quality Bait",
   "Author": "MindMeltMax",
-  "Version": "1.0.1",
-  "Description": "Adds recipes for quality variants of normal, wild and magic bait",
+  "Version": "1.1.1",
+  "Description": "Adds recipes for quality variants for all bait variants",
   "UniqueID": "MindMeltMax.QualityBait",
   "EntryDll": "Quality Bait.dll",
   "MinimumApiVersion": "4.0.0",

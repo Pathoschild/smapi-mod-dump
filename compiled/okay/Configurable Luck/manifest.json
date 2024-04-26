@@ -1,10 +1,20 @@
-﻿{
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "sophie.ConfigurableLuck",
   "Name": "Configurable Luck",
   "Author": "sophie",
-  "Version": "0.2.1",
+  "Version": "0.3.0",
   "Description": "Allows you to set your luck value manually.",
-  "UniqueID": "sophie.ConfigurableLuck",
+  "MinimumApiVersion": "4.0",
   "EntryDll": "ConfigurableLuck.dll",
-  "MinimumApiVersion": "3.13.0",
-  "UpdateKeys": [ "Nexus:14610" ]
+  "UpdateKeys": [
+    "Nexus:14610"
+  ]
 }

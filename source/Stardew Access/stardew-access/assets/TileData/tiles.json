@@ -379,20 +379,6 @@
       "Category": "interactables"
     }
   ],
-  "BathHouse_MensLocker": [
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-entry_room_door",
-      "X": [3],
-      "Y": [27],
-      "Category": "doors"
-    },
-    {
-      "NameOrTranslationKey": "static_tile-bathhouse_locker-pool_entrance",
-      "X": [15],
-      "Y": [27],
-      "Category": "doors"
-    }
-  ],
   "BathHouse_Pool": [
     {
       "NameOrTranslationKey": "static_tile-bathhouse_pool-womens_locker_room_door",
@@ -809,8 +795,8 @@
   "FarmHouse": [
     {
       "NameOrTranslationKey": "static_tile-farmhouse-cellar_door",
-      "X": [4, 5],
-      "Y": [25],
+      "X": [19, 20],
+      "Y": [35],
       "Category": "doors",
       "Conditions": ["FarmHouse:3"]
     }
@@ -821,6 +807,24 @@
       "X": [4,5,6],
       "Y": [5],
       "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-fishshop-bobber_machine",
+      "X": [10],
+      "Y": [4],
+      "Category": "interactables"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-fishshop-miniature_frigate",
+      "X": [9],
+      "Y": [4],
+      "Category": "decor"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-fishshop-tackle_box",
+      "X": [8],
+      "Y": [4],
+      "Category": "decor"
     }
   ],
   "Forest": [
@@ -1069,7 +1073,14 @@
       "Category": "interactables"
     },
     {
-      "NameOrTranslationKey": "static_tile-island_north-volcano_entrance",
+      "NameOrTranslationKey": "static_tile-island_north-volcano_entrance_east",
+      "X": [39, 40, 41, 42],
+      "Y": [20],
+      "Suffix": "",
+      "Category": "doors"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-island_north-volcano_entrance_west",
       "X": [12],
       "Y": [30],
       "Suffix": "",
@@ -2836,19 +2847,37 @@
     {
       "NameOrTranslationKey": "static_tile-common-river",
       "X": [94],
-      "Y": [10],
+      "Y": [12],
       "Category": "Fishing"
     },
     {
-      "NameOrTranslationKey": "static_tile-town-joja_bridge",
+      "NameOrTranslationKey": "static_tile-town-wooden_bridge",
       "X": [92,93,94,95,96],
-      "Y": [11],
+      "Y": [13],
+      "Category": "bridges"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-joja_bridge",
+      "X": [70, 71, 72, 73, 74, 75, 76, 77],
+      "Y": [53, 54],
+      "Category": "bridges"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-joja_billboard",
+      "X": [84, 85, 86, 87],
+      "Y": [48],
+      "Category": "decor"
+    },
+    {
+      "NameOrTranslationKey": "static_tile-town-museum_bridge",
+      "X": [75, 76, 77, 78, 79, 80, 81, 82],
+      "Y": [94, 95],
       "Category": "bridges"
     },
     {
       "NameOrTranslationKey": "static_tile-town-beach_bridge",
-      "X": [75,76,77,78,79,80,81,82],
-      "Y": [4, 5],
+      "X": [53, 54, 55],
+      "Y": [101, 102, 103, 104, 105, 106, 107, 108, 109],
       "Category": "bridges"
     },
     {

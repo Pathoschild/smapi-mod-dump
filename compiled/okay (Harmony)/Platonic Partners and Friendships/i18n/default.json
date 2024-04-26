@@ -61,12 +61,12 @@
 	"GMCM.EditSprites.Desc": "Determines whether wedding dresses will be recolored for NPCs with a non-romantic Relationship Type. (This option does nothing if you have DSV installed, since DSV instead replaces wedding outfits with unique commitment ceremony outfits designed by DSV team member Airyn.)",
 
 	"GMCM.Compatibility.Title": "Compatibility",
-	"GMCM.ExInvolvement.Name": "Spouses React Ex Involvement",
-	"GMCM.ExInvolvement.Desc": "When using the Spouses React to Death mod, implements platonic edits for some events with an ex-partner visiting the hospital after player \"death\". Set to false if you have ex involvement disabled in Spouses React.",
+	"GMCM.SpousesReact_ExInvolvement.Name": "Spouses React Ex Involvement",
+	"GMCM.SpousesReact_ExInvolvement.Desc": "When using the Spouses React to Death mod, implements platonic edits for some events with an ex-partner visiting the hospital after player \"death\". Set to false if you have ex involvement disabled in Spouses React.",
 	"GMCM.Auncle.Name": "Auncle Nickname",
 	"GMCM.Auncle.Desc": "Determines what title you want to be used by NPCs with a niece/nephew/nibling-like relationship with you; e.g. Aunt, Uncle, Nini, etc. Only applicable with certain mods installed.",
 
 	"GMCM.Schedules.Title": "Schedules",
-	"GMCM.ChangeSchedules.Name": "Enable Schedules Changes",
-	"GMCM.ChangeSchedules.Desc": "When true, blocks some vanilla schedule changes that imply romantic rivalry; e.g., if you have a non-romantic Relationship Type with Haley, reaching 6 hearts with her won't make Alex stop visiting her house.)"
+	"GMCM.EnableScheduleChanges.Name": "Enable Schedule Changes",
+	"GMCM.EnableScheduleChanges.Desc": "When true, blocks some vanilla schedule changes that imply romantic rivalry; e.g., if you have a non-romantic Relationship Type with Haley, reaching 6 hearts with her won't make Alex stop visiting her house. Disable if editing Alex, Elliott, or Abigail's schedules will conflict with another mod.)"
 }

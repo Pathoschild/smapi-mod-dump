@@ -17,10 +17,6 @@
 		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
 	</ItemGroup>
 	
-	<ItemGroup>
-	  <ProjectReference Include="..\Utils\Utils.csproj" />
-	</ItemGroup>
-	
 	<Import Project="..\common.targets" />
 
 </Project>

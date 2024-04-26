@@ -64,31 +64,37 @@ namespace GiftDecline
 				EventHandler.OnNpcListChanged(e);
 		}
 
-		private void OnItemRemoved(Item plainItem)
+		private void OnItemRemoved(Item item)
 		{
 			if (!this.isInDialog) return;
 
-			if (!(plainItem is StardewValley.Object item)) return;
+			if (!(item is StardewValley.Object)) return;
 			if (!item.canBeGivenAsGift()) return; // e.g. Tools or any placable object
 
-			IEnumerator<NPC> enumerator = Game1.player.currentLocation.characters.GetEnumerator();
-			while (enumerator.MoveNext())
+			IEnumerator<NPC> npcEnumerator = Game1.player.currentLocation.characters.GetEnumerator();
+			while (npcEnumerator.MoveNext())
 			{
-				NPC npc = enumerator.Current;
+				NPC npc = npcEnumerator.Current;
 				if (NpcHelper.AcceptsGifts(npc) && NpcHelper.HasJustReceivedGift(npc, item))
 				{
-					Logger.Trace(npc.Name + " received gift #" + item.ParentSheetIndex + " (" + item.Name + ")");
+					Logger.Trace(npc.Name + " received gift #" + item.ItemId + " (" + item.Name + ")");
 					SaveGameHelper.HandleReceivedGift(npc, item);
 					return;
 				}
 			}
 
-			foreach (ItemDeliveryQuest quest in QuestLogHelper.GetDailyItemDeliveryQuests())
+			IEnumerator<Quest> questEnumerator = Game1.player.questLog.GetEnumerator();
+			while (questEnumerator.MoveNext())
 			{
-				if (quest.deliveryItem.Value.ParentSheetIndex == item.ParentSheetIndex && quest.hasReward())
+				// Daily quests have no ID
+				if (questEnumerator.Current.id.Value == null && questEnumerator.Current is ItemDeliveryQuest itemDeliveryQuest && itemDeliveryQuest.hasReward())
 				{
-					Logger.Trace("Handed over quest item");
-					return;
+					// item.ItemId is just a number, while the quest ItemId has a prefix
+					if (itemDeliveryQuest.ItemId.Value == $"(O){item.ItemId}")
+					{
+						Logger.Trace("Handed over quest item: " + item.Name);
+						return;
+					}
 				}
 			}
 

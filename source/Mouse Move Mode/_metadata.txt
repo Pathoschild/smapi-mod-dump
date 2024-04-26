@@ -6,9 +6,9 @@ mods:
    Mouse Move Mode
 
 latest commit:
-   commit 89cfb597f9c5d4ae489cbb33fc56b6fbd7c9d444
-   Author: nghiango1 <ducnghia.tin47@gmail.com>
-   Date:   Wed Feb 14 18:40:17 2024 +0700
+   commit 5ed49a2f0e91ac4a0679821c1d8435a97f2905c1
+   Author: Nghia Ngo <ylongkaka3@gmail.com>
+   Date:   Wed Apr 17 09:33:22 2024 +0700
    
-       Add detail linux
+       Create LICENSE
    

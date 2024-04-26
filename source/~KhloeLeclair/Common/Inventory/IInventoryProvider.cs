@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Network;
 
 namespace Leclair.Stardew.Common.Inventory;
@@ -31,7 +32,7 @@ public interface IInventoryProvider {
 	/// Check to see if this object is valid for inventory operations.
 	///
 	/// If location is null, it should not be considered when determining
-	/// the validitiy of the object.
+	/// the validity of the object.
 	/// 
 	/// </summary>
 	/// <param name="obj">the object</param>
@@ -105,6 +106,15 @@ public interface IInventoryProvider {
 	/// <param name="location">the map where the object is</param>
 	/// <param name="who">the player accessing the inventory, or null if no player is involved</param>
 	IList<Item?>? GetItems(object obj, GameLocation? location, Farmer? who);
+
+	/// <summary>
+	/// Get a vanilla IInventory for an object.
+	/// </summary>
+	/// <param name="obj">the object</param>
+	/// <param name="location">the map where the object is</param>
+	/// <param name="who">the player accessing the object, or null if no player is involved</param>
+	/// <returns></returns>
+	IInventory? GetInventory(object obj, GameLocation? location, Farmer? who);
 
 	/// <summary>
 	/// Check to see if a specific item is allowed to be stored in the object's inventory.

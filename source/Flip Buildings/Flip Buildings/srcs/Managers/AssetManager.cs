@@ -18,7 +18,7 @@ namespace FlipBuildings.Managers
 
 		internal static void Apply()
 		{
-			flipButton = ModEntry.Helper.ModContent.Load<Texture2D>("assets/flip_button.png");
+			flipButton = ModEntry.Helper.ModContent.Load<Texture2D>("assets/flip_button");
 		}
 	}
 }

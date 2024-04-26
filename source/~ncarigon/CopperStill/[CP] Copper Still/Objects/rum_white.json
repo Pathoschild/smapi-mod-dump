@@ -1,0 +1,87 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_RumWhite": {
+                    "Name": "White Rum",
+                    "DisplayName": "{{i18n: rumWhite_Name}}",
+                    "Description": "{{i18n: rumWhite_Description}}",
+                    "Type": "Basic",
+                    "Category": -26,
+                    "Price": 1800,
+                    "Edibility": 50,
+                    "IsDrink": true,
+                    "Texture": "Mods/{{ModId}}/RumWhite",
+                    "Buffs": [
+                        {
+                            "Id": "Tipsy",
+                            "BuffId": "17"
+                        }
+                    ],
+                    "ContextTags": [
+                        "alcohol_item",
+                        "color_white",
+                        "drink_item",
+                        "use_reverse_name_for_sorting"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/RumWhite",
+            "FromFile": "assets/rum_white.png"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "TextOperations": [
+                //LOVE
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Abigail", 1 ],
+                    "Value": "{{ModId}}_RumWhite",
+                    "Delimiter": " "
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Willy", 1 ],
+                    "Value": "{{ModId}}_RumWhite",
+                    "Delimiter": " "
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Kent", 1 ],
+                    "Value": "{{ModId}}_RumDark",
+                    "Delimiter": " "
+                },
+                //HATE
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Penny", 7 ],
+                    "Value": "{{ModId}}_RumWhite",
+                    "Delimiter": " "
+                },
+                //NEUTRAL
+                {
+                    "Operation": "Append",
+                    "Target": [ "Fields", "Leo", 9 ],
+                    "Value": "{{ModId}}_RumWhite",
+                    "Delimiter": " "
+                }
+            ]
+        }
+    ]
+}

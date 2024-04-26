@@ -1,0 +1,53 @@
+{
+	"ID": "Billboard",
+
+	"ColorVariables": {
+		"$BillboardHover": "$ButtonHover",
+		"$BillboardText": "$Text",
+		"$BillboardTextShadow": "$TextShadowAlt"
+	},
+
+	"FontVariables": {
+		"$Billboard:Dialogue": "$Dialogue",
+		"$Billboard:Small": "$Small"
+	},
+
+	"BmFontVariables": {
+		"$Billboard:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$Billboard:ST:Normal": "$ST:Normal",
+		"$Billboard:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"#Billboard:draw(SpriteBatch)": {
+			"Colors": {
+				"Gray": { "*": "$CalendarDim" },
+				"Blue": { "*": "$CalendarToday" },
+				"LightPink": { "*": "$BillboardHover" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$BillboardText" }
+			},
+
+			"DrawTextWithShadow": { "*": "$BillboardTextShadow" },
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$Billboard:Dialogue" },
+				"Game1:smallFont": { "*": "$Billboard:Small" }
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$Billboard:ST:Normal",
+					"$Billboard:ST:Colored",
+					"$Billboard:ST:Font",
+					"$Billboard:Colors"
+				]
+			}
+		}
+	}
+}

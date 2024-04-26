@@ -1,0 +1,6 @@
+{
+    "DisplayName": "Nevera",
+    "Description": "Permite almacenar incluso más ingredientes para cocinar.",
+    "Config_HouseFridgeProgressive_Name": "Nevera Progresiva en casa",
+    "Config_HouseFridgeProgressive_Tooltip": "Activa: Casa con Mini-Nevera en la primera mejora, Nevera en la segunda.\nInactiva: Casa siempre con Nevera."
+}

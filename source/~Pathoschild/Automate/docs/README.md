@@ -43,62 +43,66 @@ Place a chest next to a crafting machine (in any direction including diagonal) t
 Machines connected to a chest will push their output into it, and pull ingredients to process out
 of it.
 
-By default, Automate supports these machines:
+By default, Automate supports...
 
 * custom machines using the Stardew Valley 1.6+ format;
-* [auto-grabbers](https://stardewvalleywiki.com/Auto-Grabber);
-* [bee houses](https://stardewvalleywiki.com/Bee_House);
-* [bone mills](https://stardewvalleywiki.com/Bone_Mill);
-* bushes (including [blackberry](https://stardewvalleywiki.com/Blackberry), [salmonberry](https://stardewvalleywiki.com/Salmonberry), and [tea](https://stardewvalleywiki.com/Tea_Bush) bushes);
-* [casks](https://stardewvalleywiki.com/Cask);
-* [charcoal kilns](https://stardewvalleywiki.com/Charcoal_Kiln);
-* [cheese presses](https://stardewvalleywiki.com/Cheese_Press);
-* [coffee makers](https://stardewvalleywiki.com/Coffee_Maker);
-* [crab pots](https://stardewvalleywiki.com/Crab_Pot);
-* [crystalariums](https://stardewvalleywiki.com/Crystalarium) (once started with the gem/mineral you want);
-* [deconstructors](https://stardewvalleywiki.com/Deconstructor);
-* [fish ponds](https://stardewvalleywiki.com/Fish_Pond) (for output only);
-* [fruit trees](https://stardewvalleywiki.com/Fruit_Trees);
-* [furnaces](https://stardewvalleywiki.com/Furnace) (don't forget they also need coal);
-* [garbage cans](https://stardewvalleywiki.com/Garbage_Can);
-* [geode crushers](https://stardewvalleywiki.com/Geode_Crusher)  (don't forget they also need coal);
-* [hay hoppers](https://stardewvalleywiki.com/Hay_Hopper);
-* [incubators (for eggs)](https://stardewvalleywiki.com/Incubator);
-* [Junimo huts](https://stardewvalleywiki.com/Junimo_Hut);
-* [kegs](https://stardewvalleywiki.com/Keg);
-* [lightning rods](https://stardewvalleywiki.com/Lightning_Rod);
-* [looms](https://stardewvalleywiki.com/Loom);
-* [mayonnaise machines](https://stardewvalleywiki.com/Mayonnaise_Machine);
-* [mills](https://stardewvalleywiki.com/Mill);
-* [mini-shipping bins](https://stardewvalleywiki.com/Mini-Shipping_Bin);
-* [mushroom boxes](https://stardewvalleywiki.com/The_Cave#Mushrooms);
-* [oil makers](https://stardewvalleywiki.com/Oil_Maker);
-* [preserves jars](https://stardewvalleywiki.com/Preserves_Jar);
-* [recycling machines](https://stardewvalleywiki.com/Recycling_Machine);
-* [seed makers](https://stardewvalleywiki.com/Seed_Maker);
-* [shipping bins](https://stardewvalleywiki.com/Shipping) (can be disabled in `config.json`);
-* [silos](https://stardewvalleywiki.com/Silo);
-* [slime egg-presses](https://stardewvalleywiki.com/Slime_Egg);
-* [slime incubators](https://stardewvalleywiki.com/Slime_Incubator);
-* [soda machines](https://stardewvalleywiki.com/Soda_Machine);
-* [solar panels](https://stardewvalleywiki.com/Solar_Panel);
-* [statues of endless fortune](https://stardewvalleywiki.com/Statue_Of_Endless_Fortune);
-* [statues of perfection](https://stardewvalleywiki.com/Statue_of_Perfection);
-* [statues of true perfection](https://stardewvalleywiki.com/Statue_Of_True_Perfection);
-* [tappers](https://stardewvalleywiki.com/Tapper);
-* [trees](https://stardewvalleywiki.com/Trees);
-* [wood chippers](https://stardewvalleywiki.com/Wood_Chipper);
-* [worm bins](https://stardewvalleywiki.com/Worm_Bin);
-* and custom machines added via the game's `Data/Machines`.
-
-And these containers:
-
-* [chests](https://stardewvalleywiki.com/Chest) and [stone chests](https://stardewvalleywiki.com/Stone_Chest);
-* farmhouse/cabin fridges;
-* [hoppers](https://stardewvalleywiki.com/Hopper) (these act just like chests, except they're output-only);
-* [Junimo chests](https://stardewvalleywiki.com/Junimo_Chest);
-* [mini-fridges](https://stardewvalleywiki.com/Mini-Fridge);
-* and [mini-shipping bins](https://stardewvalleywiki.com/Mini-Shipping_Bin).
+* all vanilla machines, including:
+  * [anvils](https://stardewvalleywiki.com/Anvil);
+  * [auto-grabbers](https://stardewvalleywiki.com/Auto-Grabber);
+  * [bait makers](https://stardewvalleywiki.com/Bait_Maker);
+  * [bee houses](https://stardewvalleywiki.com/Bee_House);
+  * [bone mills](https://stardewvalleywiki.com/Bone_Mill);
+  * [casks](https://stardewvalleywiki.com/Cask);
+  * [charcoal kilns](https://stardewvalleywiki.com/Charcoal_Kiln);
+  * [cheese presses](https://stardewvalleywiki.com/Cheese_Press);
+  * [coffee makers](https://stardewvalleywiki.com/Coffee_Maker);
+  * [crab pots](https://stardewvalleywiki.com/Crab_Pot) (tip: see [how to connect crab pots at the beach](https://i.imgur.com/Vnl3YXe.png));
+  * [crystalariums](https://stardewvalleywiki.com/Crystalarium);
+  * [deconstructors](https://stardewvalleywiki.com/Deconstructor);
+  * [dehydrators](https://stardewvalleywiki.com/Dehydrator);
+  * [fish smokers](https://stardewvalleywiki.com/Fish_Smoker);
+  * [furnaces](https://stardewvalleywiki.com/Furnace) and heavy furnaces (don't forget they also need coal);
+  * [geode crushers](https://stardewvalleywiki.com/Geode_Crusher) (don't forget they also need coal);
+  * [hay hoppers](https://stardewvalleywiki.com/Hay_Hopper);
+  * [incubators (for eggs)](https://stardewvalleywiki.com/Incubator);
+  * [kegs](https://stardewvalleywiki.com/Keg);
+  * [lightning rods](https://stardewvalleywiki.com/Lightning_Rod);
+  * [looms](https://stardewvalleywiki.com/Loom);
+  * [mayonnaise machines](https://stardewvalleywiki.com/Mayonnaise_Machine);
+  * [mini-shipping bins](https://stardewvalleywiki.com/Mini-Shipping_Bin);
+  * [mushroom boxes](https://stardewvalleywiki.com/The_Cave#Mushrooms);
+  * [mushroom logs](https://stardewvalleywiki.com/Mushroom_Log);
+  * [oil makers](https://stardewvalleywiki.com/Oil_Maker);
+  * [preserves jars](https://stardewvalleywiki.com/Preserves_Jar);
+  * [recycling machines](https://stardewvalleywiki.com/Recycling_Machine);
+  * [seed makers](https://stardewvalleywiki.com/Seed_Maker);
+  * [slime egg-presses](https://stardewvalleywiki.com/Slime_Egg);
+  * [slime incubators](https://stardewvalleywiki.com/Slime_Incubator);
+  * [soda machines](https://stardewvalleywiki.com/Soda_Machine);
+  * [solar panels](https://stardewvalleywiki.com/Solar_Panel);
+  * [statues of endless fortune](https://stardewvalleywiki.com/Statue_Of_Endless_Fortune);
+  * [statues of perfection](https://stardewvalleywiki.com/Statue_of_Perfection);
+  * [statues of true perfection](https://stardewvalleywiki.com/Statue_Of_True_Perfection);
+  * [wood chippers](https://stardewvalleywiki.com/Wood_Chipper);
+  * and [worm bins](https://stardewvalleywiki.com/Worm_Bin) (including deluxe worm bins);
+* some things you wouldn't normally consider machines:
+  * bushes (including [blackberry](https://stardewvalleywiki.com/Blackberry), [salmonberry](https://stardewvalleywiki.com/Salmonberry), and [tea](https://stardewvalleywiki.com/Tea_Bush) bushes);
+  * [fish ponds](https://stardewvalleywiki.com/Fish_Pond) (for output only);
+  * [fruit trees](https://stardewvalleywiki.com/Fruit_Trees);
+  * [garbage cans](https://stardewvalleywiki.com/Garbage_Can);
+  * [Junimo huts](https://stardewvalleywiki.com/Junimo_Hut);
+  * [mills](https://stardewvalleywiki.com/Mill);
+  * [shipping bin](https://stardewvalleywiki.com/Shipping) (configurable);
+  * [silos](https://stardewvalleywiki.com/Silo);
+  * [tappers](https://stardewvalleywiki.com/Tapper);
+  * [trees](https://stardewvalleywiki.com/Trees);
+* and these containers:
+  * [chests](https://stardewvalleywiki.com/Chest) (including variants like [big chests](https://stardewvalleywiki.com/Big_Chest) and [stone chests](https://stardewvalleywiki.com/Stone_Chest));
+  * farmhouse/cabin fridges;
+  * [hoppers](https://stardewvalleywiki.com/Hopper) (these act just like chests, except they're output-only);
+  * [Junimo chests](https://stardewvalleywiki.com/Junimo_Chest);
+  * [mini-fridges](https://stardewvalleywiki.com/Mini-Fridge);
+  * and [mini-shipping bins](https://stardewvalleywiki.com/Mini-Shipping_Bin).
 
 Automated machines will give you the same XP, achievements, and items you'd get for using them
 directly. If multiple chests are part of a group, they'll all be used in the automation. Input
@@ -427,6 +431,17 @@ for more info.
   </td>
 </tr>
 <tr>
+  <td><code>CollectTreeMoss</code></td>
+  <td>
+
+Whether to collect moss on trees. Default true.
+
+For example, you may want to disable this to keep moss on trees to boost the quality of mushrooms
+from [mushroom logs](https://stardewvalleywiki.com/Mushroom_Log).
+
+  </td>
+</tr>
+<tr>
   <td><code>JunimoHutBehaviorForGems</code><br /><code>JunimoHutBehaviorForFertilizer</code><br /><code>JunimoHutBehaviorForSeeds</code></td>
   <td>
 
@@ -506,11 +521,6 @@ to add custom machines to Automate.)
 Path connectors aren't enabled by default. See the "Enable path connectors (config.json)" download
 on [the mod page's Files tab](https://www.nexusmods.com/stardewvalley/mods/1063/?tab=files) which
 enables some for you, or see [_connectors_ above](#connectors) for more info.
-
-### Why aren't my crystalariums starting automatically?
-Once a crystalarium is started, it continues producing the initial gem forever. So you need to
-start them with the gem you want manually, then Automate will collect their output automatically.
-(You can check the machine list in the mod description, it has notes about how some machines work.)
 
 ### In multiplayer, who gets XP and whose professions apply?
 A few machines give XP, update player stats, or check player skills based on the player who uses

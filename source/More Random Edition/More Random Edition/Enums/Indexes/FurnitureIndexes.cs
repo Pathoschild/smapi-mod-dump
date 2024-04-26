@@ -8,6 +8,11 @@
 **
 *************************************************/
 
+using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Randomizer
 {
     /// <summary>
@@ -362,5 +367,72 @@ namespace Randomizer
         SquirrelFigurine = 2814,
         FunkyRug = 2870,
         ModernRug = 2875
+    }
+
+    public class FurnitureFunctions
+    {
+        public const string FurnitureIdPrefix = "(F)";
+
+        /// <summary>
+        /// Returns whether the given qualified id is for furniture
+        /// </summary>
+        /// <param name="id">The id</param>
+        /// <returns>True if the given id is for furniture, false otherwise</returns>
+        public static bool IsQualifiedIdForFurniture(string id)
+        {
+            return id.StartsWith(FurnitureIdPrefix);
+        }
+
+        /// <summary>
+        /// Gets the Stardew furniture item from the given index
+        /// </summary>
+        /// <param name="index">The furniture index</param>
+        /// <returns />
+        public static Furniture GetItem(FurnitureIndexes index)
+        {
+            return Furniture.GetFurnitureInstance(((int)index).ToString());
+        }
+        
+        /// <summary>
+        /// Gets the qualified id for the given furniture index
+        /// </summary>
+        /// <param name="index">The index of the furniture</param>
+        public static string GetQualifiedId(FurnitureIndexes index)
+        {
+            return $"{FurnitureIdPrefix}{(int)index}";
+        }
+
+        /// <summary>
+        /// Gets a random furniture's qualified id
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomFurnitureQualifiedId(RNG rng, List<string> idsToExclude = null)
+        {
+            return GetRandomFurnitureQualifiedIds(rng, numberToGet: 1, idsToExclude)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of random furniture qualified ids
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="numberToGet">The number of ids to get</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static List<string> GetRandomFurnitureQualifiedIds(
+            RNG rng,
+            int numberToGet, 
+            List<string> idsToExclude = null)
+        {
+            var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
+                .Cast<FurnitureIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
+                .ToList();
+
+            return rng.GetRandomValuesFromList(allFurnitureIds, numberToGet);
+        }
     }
 }

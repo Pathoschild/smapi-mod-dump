@@ -34,7 +34,7 @@ namespace SkillfulClothes.Types
             if (WrappedItem == clothing) return;
             Effect = effect;
 
-            this._GetOneFrom(clothing);
+            this.GetOneCopyFrom(clothing);
             clothesColor.Value = clothing.clothesColor.Value;
         }
 

@@ -39,7 +39,7 @@ namespace PassableCrops.Patches {
         }
 
         private static bool AnyPassable(Bush bush) {
-            return Mod?.Config is not null && Mod.Config.PassableTeaBushes && (bush?.size.Value ?? 0) == 3;
+            return Mod?.Config is not null && Mod.Config.PassableTeaBushes && (bush?.size.Value ?? 0) == 3 && !(bush?.inPot.Value ?? false);
         }
 
         private static void Postfix_Bush_isPassable(
@@ -48,18 +48,21 @@ namespace PassableCrops.Patches {
             Character c) {
             try {
                 if (AnyPassable(__instance)) {
-                    if (c is Farmer farmer) {
+                    var farmer = c as Farmer;
+                    if (farmer is not null || (Mod?.Config?.PassableByAll ?? false)) {
                         __result = true;
-                        if (Mod?.Config?.SlowDownWhenPassing ?? false)
+                        if (farmer is not null && (Mod?.Config?.SlowDownWhenPassing ?? false)) {
                             farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
+                        }
                         // need to manually set shake info or it won't happen
-                        if (___maxShake == 0f) {
-                            ___shakeLeft = farmer.Tile.X > __instance!.Tile.X || (farmer.Tile.X == __instance.Tile.X && Game1.random.NextBool());
+                        if ((Mod?.Config?.ShakeWhenPassing ?? true) && c is not null && ___maxShake == 0f) {
+                            ___shakeLeft = c.Tile.X > __instance!.Tile.X || (c.Tile.X == __instance.Tile.X && Game1.random.NextBool());
                             // using a wider, longer shake to seem less rigid
                             // compared to bush.shake()
                             ___maxShake = (float)Math.PI / 40f;
                             __instance.shakeTimer = 1000f;
                             __instance.NeedsUpdate= true;
+                            Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
                         }
                     }
                 }

@@ -13,6 +13,12 @@
 	"GenericMC.barDescription": "The bar that shows location info when holding a Fishing Rod (bait/tackle/trash/fish here), or Crab Pot (trash/crustaceans here).",
 	"GenericMC.barDescription2": "You can hover over the variable names for more info. If you're holding a fishing rod and save, you can see the results update while in this menu.",
 
+	"GenericMC.barSonarMode": "Require Sonar Tackle",
+	"GenericMC.barSonarModeDesc": "Makes the Sonar tackle a requirement for certain mod functionality:\nWhole Mod: Disables all mod functionality if no Sonar.\nMini + Scan: Disables Minigame Preview and Shift Scan functionality if no Sonar.\nShift Scan: Disables mouse tile aim when Shift key is held if no Sonar.",
+	"GenericMC.barSonarMode0": "Whole Mod",
+	"GenericMC.barSonarMode1": "Mini + Scan",
+	"GenericMC.barSonarMode2": "Shift Scan",
+
 	"GenericMC.barIconMode": "Icon Mode",
 	"GenericMC.barIconModeDesc": "The direction in which the bait/tackle/trash/fish icons will travel, before being split into rows/columns.",
 	"GenericMC.barIconMode0": "Horizontal Icons",

@@ -1,0 +1,9 @@
+﻿{
+  "config.name.AutoHookEnchantment": "AutoHook Enchantment",
+  "config.tips.AutoHookEnchantment": "Add AutoHook Enchantment to Rod",
+  "config.name.DirectFishingSuccessful": "Skip Fishing Minigame",
+  "config.name.DirectSuccessfulTreasureChance": "Treasure Box Chance",
+  "config.tips.DirectSuccessfulTreasureChance": "Treasure Box Chance When Skip Fishing Minigame, range: 0~1",
+  "config.name.AutoFishing": "AutoFishing(Experimental)",
+  "config.tips.AutoFishing": "AutoFishing when swinging rod, Press any movement button to stop. will enable AutoHook Enchantment and Skip Fishing Minigame."
+}

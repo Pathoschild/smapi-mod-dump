@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22719
+IDs: nnn.Special_Orders_Tweaks
+update keys: Nexus:22719

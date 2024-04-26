@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/HeyImAmethyst/SkinToneLoader
+   Git: https://github.com/HeyImAmethyst/SkinToneLoader.git
+
+mods:
+   Skin Tone Loader
+
+latest commit:
+   commit a0f58221312b4c0e86806438b3edbb8072fc7b51
+   Author: HeyImAmethyst <HeyImAmethyst44@gmail.com>
+   Date:   Tue Apr 23 11:55:26 2024 -0400
+   
+       Updated mod version
+   

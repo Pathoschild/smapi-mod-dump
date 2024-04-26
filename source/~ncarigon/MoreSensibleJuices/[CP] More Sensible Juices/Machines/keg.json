@@ -1,0 +1,107 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Strings/Objects",
+			"Entries": {
+				"{{ModId}}_Flavor": "{{i18n: flavor_Name}}"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wheat", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)350",
+				"RequiredTags": [ "juice_vegetable", "preserve_sheet_index_262" ]
+			},
+			"When": {
+				"UseNormalBeerRecipe": "false"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Hops", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)350",
+				"RequiredTags": [ "juice_vegetable", "preserve_sheet_index_304" ]
+			},
+			"When": {
+				"UseNormalPaleAleRecipe": "false"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)350",
+				"RequiredTags": [ "juice_fruit" ]
+			},
+			"When": {
+				"UseNormalWineRecipe": "false"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "OutputItem", "#0" ],
+			"Entries": {
+				"ItemId": "(O)348",
+				"ObjectInternalName": "(O)348_{0}",
+				"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+				"PreserveId": "DROP_IN_PRESERVE",
+				"CopyColor": true,
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 2.5
+					}
+				]
+			},
+			"When": {
+				"UseNormalWineRecipe": "false"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)350",
+				"RequiredTags": [ "juice_vegetable" ]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "OutputItem", "#0" ],
+			"Entries": {
+				"ItemId": "{{ModId}}_Mash",
+				"ObjectInternalName": "{{ModId}}_Mash_{0}",
+				"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+				"PreserveId": "DROP_IN_PRESERVE",
+				"CopyColor": true,
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 2.0
+					}
+				]
+			}
+		}
+	]
+}

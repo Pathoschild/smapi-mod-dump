@@ -112,10 +112,8 @@ namespace HappyHomeDesigner.Menus
 			preservedFloorFavorites = floorFavs.ToArray();
 		}
 
-		public override int Count()
-		{
-			return Math.Max(floors.Count, walls.Count);
-		}
+		public override int Count() 
+			=> Math.Max(floors.Count, walls.Count);
 
 		public override void draw(SpriteBatch b)
 		{
@@ -207,13 +205,15 @@ namespace HappyHomeDesigner.Menus
 
 		public override bool isWithinBounds(int x, int y)
 		{
-			return base.isWithinBounds(x, y) || ActivePanel.isWithinBounds(x, y) || undoRedo.containsPoint(x, y);
+			return 
+				base.isWithinBounds(x, y) || 
+				ActivePanel.isWithinBounds(x, y) || 
+				undoRedo.containsPoint(x, y);
 		}
 
-		public override ClickableTextureComponent GetTab()
-		{
-			return new(new(0, 0, 64, 64), Catalog.MenuTexture, new(80, 24, 16, 16), 4f);
-		}
+		public override ClickableTextureComponent GetTab() 
+			=> new(new(0, 0, 64, 64), Catalog.MenuTexture, new(80, 24, 16, 16), 4f);
+
 		public override void Exit()
 		{
 			Game1.player.modData[KeyFloorFav] = string.Join('	', favoriteFloors) + '	' + string.Join('	', preservedFloorFavorites);

@@ -1,0 +1,21 @@
+{
+  "ModEnabled": true,
+  "BackpackPosition": "456, 1088",
+  "ShowRowNumbers": true,
+  "ShowArrows": true,
+  "MinHandleHeight": 16,
+  "ShiftRows": 3,
+  "HandleColor": {
+    "B": 32,
+    "G": 84,
+    "R": 233,
+    "A": 255
+  },
+  "BackgroundColor": {
+    "B": 159,
+    "G": 167,
+    "R": 174,
+    "A": 255
+  },
+  "ShowExpandedButton": "RightShoulder"
+}

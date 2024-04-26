@@ -60,7 +60,7 @@ public class ModEntry : Mod
         if (Game1.currentLocation.terrainFeatures.ContainsKey(tile))
         {
             HoeDirt tileFeature = Game1.currentLocation.terrainFeatures[tile] as HoeDirt;
-            return tileFeature.canPlantThisSeedHere(held_object.ParentSheetIndex, (int)tile.X, (int)tile.Y, isFertilizer)
+            return tileFeature.canPlantThisSeedHere(held_object.ItemId, isFertilizer)
                 && !Game1.currentLocation.isObjectAtTile(tile);
         }
 
@@ -68,7 +68,7 @@ public class ModEntry : Mod
         else if (IsObjectAtTileGardenPot(tile))
         {
             IndoorPot pot = Game1.currentLocation.getObjectAtTile(tile) as IndoorPot;
-            return pot.hoeDirt.Value.canPlantThisSeedHere(held_object.ParentSheetIndex, (int)tile.X, (int)tile.Y, isFertilizer);
+            return pot.hoeDirt.Value.canPlantThisSeedHere(held_object.ItemId, isFertilizer);
         }
 
         return false;
@@ -95,7 +95,7 @@ public class ModEntry : Mod
     internal static bool IsCursorTilePlantable()
     {
         // cursor has to be on ring of 8 tiles around player and object must be plantable
-        float player_cursor_distance = (Game1.currentCursorTile - Game1.player.getTileLocation()).Length();
+        float player_cursor_distance = (Game1.currentCursorTile - Game1.player.Tile).Length();
         return player_cursor_distance < 1.5f && CanPlantHeldObject(Game1.currentCursorTile);
     }
 
@@ -119,7 +119,7 @@ public class ModEntry : Mod
 
     private void OnPlayerWarped(object sender, WarpedEventArgs e)
     {
-        this.TileFiller.SetFillMode(FillMode.Disabled);
+        this.TileFiller.ResetFillMode();
     }
 
     private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
@@ -155,7 +155,7 @@ public class ModEntry : Mod
         if (!PlayerIsHoldingPlantableObject() || !Context.IsPlayerFree)
             return;
 
-        IEnumerable<FillTile> tiles = TileFiller.GetFillTiles(Game1.player.getTileLocation(), CursorTile)
+        IEnumerable<FillTile> tiles = TileFiller.GetFillTiles(Game1.player.Tile, CursorTile)
             .Where(t => t.IsPlantable());
 
         if (IsCursorTilePlantable())
@@ -167,7 +167,7 @@ public class ModEntry : Mod
             bool planted_gardenpot = TryPlantSeedGardenPot(tile, held_object);
 
             if (planted_hoedirt || planted_gardenpot)
-                Game1.player.ActiveObject.ConsumeInventoryItem(Game1.player, held_object.ParentSheetIndex, 1);
+                SObject.ConsumeInventoryItem(Game1.player, held_object, 1);
         }
 
     }
@@ -178,7 +178,7 @@ public class ModEntry : Mod
     /// <param name="tile"></param>
     /// <param name="held_object"></param>
     /// <returns>True if sucessfully planted, false if not</returns>
-    private bool TryPlantSeedHoeDirt(FillTile tile, Item held_object)
+    private static bool TryPlantSeedHoeDirt(FillTile tile, Item held_object)
     {
         if (!tile.IsHoeDirt())
             return false;
@@ -186,9 +186,7 @@ public class ModEntry : Mod
         HoeDirt tileFeature = Game1.currentLocation.terrainFeatures[tile.Location] as HoeDirt;
         bool isFertilizer = held_object.Category == SObject.fertilizerCategory;
 
-        return tileFeature.plant(held_object.ParentSheetIndex, (int)tile.Location.X, (int)tile.Location.Y, Game1.player, isFertilizer, Game1.currentLocation);
-
-        
+        return tileFeature.plant(held_object.ItemId, Game1.player, isFertilizer);
     }
 
     /// <summary>
@@ -197,7 +195,7 @@ public class ModEntry : Mod
     /// <param name="tile"></param>
     /// <param name="held_object"></param>
     /// <returns>Whether seed had been sucessfully planted</returns>
-    private bool TryPlantSeedGardenPot(FillTile tile, Item held_object)
+    private static bool TryPlantSeedGardenPot(FillTile tile, Item held_object)
     {
         if (!tile.IsGardenPot())
             return false;
@@ -205,6 +203,6 @@ public class ModEntry : Mod
         IndoorPot gardenPot = Game1.currentLocation.getObjectAtTile(tile.Location) as IndoorPot;
         bool isFertilizer = held_object.Category == SObject.fertilizerCategory;
 
-        return gardenPot.hoeDirt.Value.plant(held_object.ParentSheetIndex, (int)tile.Location.X, (int)tile.Location.Y, Game1.player, isFertilizer, Game1.currentLocation);
+        return gardenPot.hoeDirt.Value.plant(held_object.ItemId, Game1.player, isFertilizer);
     }
 }

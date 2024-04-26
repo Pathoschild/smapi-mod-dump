@@ -1,0 +1,12 @@
+{
+  "CastingPower": 1.0,
+  "StaminaThreshold": 25.0,
+  "AutoCast": false,
+  "AutoHit": true,
+  "AutoFish": true,
+  "CaughtDoubleFish": false,
+  "ActiveAutoCastButton": "V",
+  "ActiveAutoFishButton": "X",
+  "IncreasePowerButton": "Add",
+  "DecreasePowerButton": "Subtract"
+}

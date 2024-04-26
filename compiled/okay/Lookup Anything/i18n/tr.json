@@ -27,6 +27,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{count}} adet için {{price}}g",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Bina",
@@ -103,13 +104,14 @@
     "location.bugLand": "Mutant böcek yuvası",
     "location.busStop": "Otobüs Durağı",
     "location.desert": "Çöl",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "Çiftlik",
     "location.farmCave": "Çiftlik Mağarası",
     "location.farmHouse": "Çiftlik Evi",
     "location.forest": "Orman",
-    "location.forest.fish-area-0": "Orman Nehri",
-    "location.forest.fish-area-1": "Orman Göleti",
     "location.forest.island-tip": "Orman Nehri (büyük adanın güney ucu)",
+    "location.forest.lake": "Orman Göleti",
+    "location.forest.river": "Orman Nehri",
     "location.mountain": "Dağ",
     "location.railroad": "Demiryolu",
     "location.sewer": "Kanalizasyon",
@@ -129,8 +131,8 @@
     "location.islandSouthEast": "Zencefil Adası güneydoğu",
     "location.islandSouthEastCave": "Zencefil Adası güneydoğu mağarası",
     "location.islandWest": "Zencefil Adası batı",
-    "location.islandWest.fish-area-1": "Zencefil Adası batı (okyanus)",
-    "location.islandWest.fish-area-2": "Zencefil Adası batı (gölet)",
+    "location.islandWest.freshwater": "Zencefil Adası batı (gölet)",
+    "location.islandWest.ocean": "Zencefil Adası batı (okyanus)",
 
     "location.unknown-fish-area": "{{locationName}} (balıkçılık alanı {{id}})",
 
@@ -282,7 +284,7 @@
     ** Item > generic lookups
     *********/
     // labels
-    "item.custom-item": "Custom item", // TODO
+    "item.custom-item": "Özel eşya",
     "item.contents": "İçindekiler",
     "item.loves-this": "Bunu seviyor",
     "item.likes-this": "Bunu beğeniyor",
@@ -301,7 +303,7 @@
     "item.produces-dye": "Boya üretir",
 
     // values
-    "item.custom-item.summary": "added by {{modName}}", // TODO
+    "item.custom-item.summary": "{{modName}} tarafından eklendi",
     "item.contents.placed": "{{name}} yerleştirildi",
     "item.contents.ready": "{{name}} hazır",
     "item.contents.partial": "{{name}} içinde {{time}}",
@@ -610,12 +612,14 @@
     "tree.is-fertilized": "Gübrelenmiş",
 
     // values
-    "tree.name.big-mushroom": "Mantar Ağaçı",
-    "tree.name.mahogany": "Maun Ağaçı",
+    "tree.name.big-mushroom": "Mantar Ağacı",
+    "tree.name.mahogany": "Maun Ağacı",
     "tree.name.maple": "Akçaağaç",
-    "tree.name.oak": "Meşe Ağaçı",
-    "tree.name.palm": "Palmiye Ağaçı",
-    "tree.name.pine": "Çam Ağaçı",
+    "tree.name.oak": "Meşe Ağacı",
+    "tree.name.palm": "Palmiye Ağacı",
+    "tree.name.pine": "Çam Ağacı",
+    "tree.name.mossy": "Yosun Ağacı",
+    "tree.name.mystic": "Mistik Ağaç",
     "tree.name.unknown": "Bilinmeyen Ağaç",
     "tree.stage.done": "Tamamen olgunlaşmış",
     "tree.stage.partial": "{{stageName}} ({{step}} of {{max}})",
@@ -659,7 +663,7 @@
     "config.show-gift-tastes.hated.desc": "Nefret edilen hediyelerin NPC'de ve eşya aramalarında gösterilip gösterilmeyeceği.",
 
     "config.show-unowned-gifts.name": "Sahip olunmayan hediye zevklerini göster",
-    "config.show-unowned-gifts.desc": "Whether to show gift tastes for items that the player doesn't own somewhere in the world.",
+    "config.show-unowned-gifts.desc": "Oyuncunun, dünyanın herhangi bir yerinde sahip olmadığı hediye zevklerini gösterir.",
 
     "config.highlight-unrevealed-gift-tastes.name": "Açıklanmayan hediye zevklerini vurgulayın",
     "config.highlight-unrevealed-gift-tastes.desc": "NPC profilinde açıklanmayan eşya hediye zevklerinin vurgulanıp vurgulanmayacağı. Etkinleştirildiğinde, açıklanmayan hediye zevkleri gösterilecek.",

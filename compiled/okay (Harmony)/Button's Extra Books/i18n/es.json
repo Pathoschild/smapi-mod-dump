@@ -1,0 +1,50 @@
+{
+  // UI //
+  "Config.SectionTitle.General": "Ajustes generales",
+  // TODO /////////////////////////////////////////////////////////
+  "Config.SectionTitle.EnableDisable": "Enable / Disable Books",
+  "Config.SectionTitle.Prices": "Change Book Prices",
+  "Config.SectionTitle.Adjustments": "Adjust Book Powers",
+  /////////////////////////////////////////////////////////////////
+  "Config.SectionTitle.Debug": "Ajustes de depuración",
+
+  // GENERAL CONFIG //
+  "Config.General.AlwaysAvailable.Name": "Libros siempre disponibles",
+  "Config.General.AlwaysAvailable.Description": "Si está activado, todos los libros estarán siempre disponibles en la librería sin necesidad de cumplir ciertos requisitos.",
+
+  "Config.General.Enabled.Name": "Activado",
+  "Config.General.Enabled.Description": "Si se desactiva, este libro y sus beneficios no estarán disponibles.",
+
+  // BOOK SETTINGS //
+  "Config.Books.Luck.Title": "Suerte del principiante",
+  "Config.Books.LuckBonus.Name": "Bonificación de suerte",
+  "Config.Books.LuckBonus.Description": "Cuánta suerte se agrega después de leer el libro: Suerte del principiante.",
+
+  "Config.Books.ExtraGifts.Title": "Libro del altruismo",
+
+  "Config.Books.TreesIgnoreSeason.Title": "Bosques de invierno",
+
+  "Config.Books.ArtisanMachines.Title": "Manual del gremio de artesanos",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Name": "La exhibición de la granja debe ganar",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Description": "Si está activado, la exhibición de tu granja debe quedar en primer lugar además de tener más de 6 productos artesanales.",
+  "Config.Books.ArtisanMachinesBonus.Name": "Bonificación de velocidad de las máquinas",
+  "Config.Books.ArtisanMachinesBonus.Description": "Reducción porcentual del tiempo de procesamiento de las máquinas que producen productos artesanales.",
+
+  "Config.Books.GiantCrops.Title": "Melones gigantes",
+  "Config.Books.GiantCropsBonus.Name": "Oportunidad de cosecha gigante",
+  "Config.Books.GiantCropsBonus.Description": "Porcentaje de probabilidad de que los cultivos formen una cosecha gigante durante la noche.",
+
+  "Config.Books.Popularity.Title": "Amistad 202",
+  
+  // TODO /////////////////////////////////////////////////////////
+  "Config.Books.BusDriving.Title": "Bus Driving for Dummies",
+
+  "Config.Books.QiNotebook.Title": "Mr. Qi's Notebook",
+  "Config.Books.QiNotebookBonus.Name": "Qi Gem Chance",
+  "Config.Books.QiNotebookBonus.Description": "Percent chance that a Qi Gem will drop in addition to the usual odds.",
+  //////////////////////////////////////////////////////////////////
+
+  // DEBUG SETTINGS //
+  "Config.Debug.EnableDebugBook.Name": "Habilitar libro de depuración",
+  "Config.Debug.EnableDebugBook.Description": "Si está habilitado, Pierre tendrá disponible un libro de depuración que eliminará todos los beneficios otorgados por este mod."
+}

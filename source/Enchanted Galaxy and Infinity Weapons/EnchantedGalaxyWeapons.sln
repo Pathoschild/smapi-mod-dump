@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnchantedGalaxyWeapons", "EnchantedGalaxyWeapons.csproj", "{B3C01218-DE97-4407-9A8D-D6932A6093F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3C01218-DE97-4407-9A8D-D6932A6093F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C01218-DE97-4407-9A8D-D6932A6093F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C01218-DE97-4407-9A8D-D6932A6093F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C01218-DE97-4407-9A8D-D6932A6093F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35226A00-6050-40CC-AE0B-2B67C0F8471A}
+	EndGlobalSection
+EndGlobal

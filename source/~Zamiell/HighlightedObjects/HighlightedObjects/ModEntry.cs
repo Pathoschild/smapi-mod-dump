@@ -56,22 +56,6 @@ namespace HighlightedObjects
 
             configMenu.AddBoolOption(
                 this.ModManifest,
-                () => config.HighlightJars,
-                (bool val) => config.HighlightJars = val,
-                () => "Preserves Jars",
-                () => "Whether to highlight Preserves Jars."
-            );
-
-            configMenu.AddBoolOption(
-                this.ModManifest,
-                () => config.HighlightKegs,
-                (bool val) => config.HighlightKegs = val,
-                () => "Kegs",
-                () => "Whether to highlight Kegs."
-            );
-
-            configMenu.AddBoolOption(
-                this.ModManifest,
                 () => config.HighlightCasks,
                 (bool val) => config.HighlightCasks = val,
                 () => "Casks",
@@ -85,6 +69,30 @@ namespace HighlightedObjects
                 () => "Crystalariums",
                 () => "Whether to highlight Crystalariums."
             );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.HighlightKegs,
+                (bool val) => config.HighlightKegs = val,
+                () => "Kegs",
+                () => "Whether to highlight Kegs."
+            );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.HighlightPreservesJars,
+                (bool val) => config.HighlightPreservesJars = val,
+                () => "Preserves Jars",
+                () => "Whether to highlight Preserves Jars."
+            );
+
+            configMenu.AddBoolOption(
+                this.ModManifest,
+                () => config.HighlightSeedMakers,
+                (bool val) => config.HighlightSeedMakers = val,
+                () => "Seed Makers",
+                () => "Whether to highlight Seed Makers."
+            );
         }
 
         private void OnRenderedWorld(object? sender, RenderedWorldEventArgs e)
@@ -96,10 +104,11 @@ namespace HighlightedObjects
 
             var highlightableObjects = Game1.currentLocation.objects.Values.Where(o =>
                 (
-                    (config.HighlightJars && o.Name == "Preserves Jar")
-                    || (config.HighlightKegs && o.Name == "Keg")
-                    || (config.HighlightCasks && o.Name == "Cask")
+                    (config.HighlightCasks && o.Name == "Cask")
                     || (config.HighlightCrystalariums && o.Name == "Crystalarium")
+                    || (config.HighlightKegs && o.Name == "Keg")
+                    || (config.HighlightPreservesJars && o.Name == "Preserves Jar")
+                    || (config.HighlightSeedMakers && o.Name == "Seed Maker")
                 )
                 && o.MinutesUntilReady <= 0
                 && !o.readyForHarvest.Value

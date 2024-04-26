@@ -122,6 +122,7 @@ namespace Pathoschild.Stardew.Automate
             helper.Events.World.LocationListChanged += this.OnLocationListChanged;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             helper.Events.World.TerrainFeatureListChanged += this.OnTerrainFeatureListChanged;
+            helper.Events.World.LargeTerrainFeatureListChanged += this.OnLargeTerrainFeatureListChanged;
 
             // hook commands
             this.CommandHandler.RegisterWith(helper.ConsoleCommands);
@@ -276,6 +277,21 @@ namespace Pathoschild.Stardew.Automate
                 this.ReloadIfNeeded(e.Location, this.GetDiffList(e.Added, e.Removed))
                     ? $"Terrain feature list changed in {e.Location.Name}, reloading its machines."
                     : $"Terrain feature list changed in {e.Location.Name}, but no reload is needed."
+            );
+        }
+
+        /// <inheritdoc cref="IWorldEvents.LargeTerrainFeatureListChanged"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnLargeTerrainFeatureListChanged(object? sender, LargeTerrainFeatureListChangedEventArgs e)
+        {
+            if (!this.EnableAutomationChangeTracking || this.MachineManager.IsReloadQueued(e.Location))
+                return;
+
+            this.Monitor.VerboseLog(
+                this.ReloadIfNeeded(e.Location, this.GetDiffList(e.Added, e.Removed, BaseMachine.GetTileAreaFor))
+                    ? $"Large terrain feature list changed in {e.Location.Name}, reloading its machines."
+                    : $"Large terrain feature list changed in {e.Location.Name}, but no reload is needed."
             );
         }
 

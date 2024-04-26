@@ -1,7 +1,7 @@
 {
   "Name": "Eat & Drink From Inventory",
   "Author": "Zamiel",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Allows food and drink items to be consumed from the pause screen by pressing a hotkey",
   "UniqueID": "Zamiel.EatDrinkFromInventory",
   "EntryDll": "EatDrinkFromInventory.dll",

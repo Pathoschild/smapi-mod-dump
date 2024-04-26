@@ -21,7 +21,10 @@ namespace PassableCrops {
         public int PassableTreeGrowth { get; set; } = 4;
         public int PassableFruitTreeGrowth { get; set; } = 1;
         public bool PassableWeeds { get; set; } = true;
+        public bool PassableByAll { get; set; } = false;
         public bool SlowDownWhenPassing { get; set; } = true;
+        public bool ShakeWhenPassing { get; set; } = true;
+        public bool PlaySoundWhenPassing { get; set; } = true;
         public bool UseCustomDrawing { get; set; } = true;
 
         internal static Config Register(IModHelper helper) {
@@ -99,10 +102,41 @@ namespace PassableCrops {
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
+                    name: () => "Passable by all",
+                    tooltip: () => "Makes selected obstacles passable to all entities, not just farmers. This notably effects monsters walking through weeds.",
+                    getValue: () => config.PassableByAll,
+                    setValue: value => config.PassableByAll = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
                     name: () => "Slow down when passing",
                     tooltip: () => "Farmers will walk slightly slower through objects, just like in tall grass.",
                     getValue: () => config.SlowDownWhenPassing,
                     setValue: value => config.SlowDownWhenPassing = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
+                    name: () => "Shake when passing",
+                    tooltip: () => "Makes non-crop objects shake when passing by (crops automatically shake).",
+                    getValue: () => config.ShakeWhenPassing,
+                    setValue: value => {
+                        config.ShakeWhenPassing = value;
+                        if (!value) {
+                            config.PlaySoundWhenPassing = value;
+                        }
+                    }
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
+                    name: () => "Also make rustling sound",
+                    tooltip: () => "Passing through objects also makes the rustling sound.",
+                    getValue: () => config.PlaySoundWhenPassing,
+                    setValue: value => {
+                        config.PlaySoundWhenPassing = value;
+                        if (value) {
+                            config.ShakeWhenPassing = value;
+                        }
+                    }
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,

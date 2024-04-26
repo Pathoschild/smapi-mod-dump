@@ -2,11 +2,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AssemblyName>ThemeManager</AssemblyName>
-		<Version>0.5.0</Version>
+		<Version>0.7.0</Version>
 		<RootNamespace>Leclair.Stardew.ThemeManager</RootNamespace>
 
 		<EnableHarmony>true</EnableHarmony>
 		<EnableTranslation>true</EnableTranslation>
+    <EnablePintail>true</EnablePintail>
+    
+    <MinimumGameVersion>auto</MinimumGameVersion>
+
+    <DefineConstants>$(DefineConstants);BM_FONTS;PINTAIL_CAN_OUT</DefineConstants>
     
 	</PropertyGroup>
 	
@@ -14,10 +19,6 @@
 	<Import Project="..\_build\common.targets" />
 
 	<ItemGroup>
-    <Reference Include="Nanoray.Pintail">
-      <HintPath>$(GamePath)\smapi-internal\Pintail.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
 		<Reference Include="SMAPI.Toolkit">
 			<HintPath>$(GamePath)\smapi-internal\SMAPI.Toolkit.dll</HintPath>
 			<Private>false</Private>

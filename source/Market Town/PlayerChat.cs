@@ -370,7 +370,7 @@ namespace MarketTown
 
                     foreach (string split in splits)
                     {
-                        float minDisplayTime = 1000f;
+                        float minDisplayTime = 1500f;
                         float maxDisplayTime = 3000f;
                         float percentOfMax = (float)split.Length / (float)60;
                         int duration = (int)(minDisplayTime + (maxDisplayTime - minDisplayTime) * percentOfMax);

@@ -1,0 +1,8 @@
+{
+	"setting.allowed-location": "Allowed Locations",
+	"setting.allowed-location.tooltip": "Where to allow giant crops to grow.\n\n- Base Game Only: Only on the farm, or maps that specifically allow giant crops.",
+
+	"setting.allowed-location.BaseGame": "Base Game Only",
+	"setting.allowed-location.BaseAndIsland": "Base Game + Ginger Island",
+	"setting.allowed-location.Anywhere": "Anywhere"
+}

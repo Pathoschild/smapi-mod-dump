@@ -18,27 +18,31 @@ namespace Leclair.Stardew.ThemeManager.Models;
 
 public readonly record struct BmFontData : IBmFontData {
 
-	public FontFile File { get; init; }
+	internal readonly FontFile _File;
+	internal readonly Dictionary<char, FontChar> _CharacterMap;
 
-	public Dictionary<char, FontChar> CharacterMap { get; init; }
+
+	public object File => _File;
+
+	public object CharacterMap => _CharacterMap;
 
 	public List<Texture2D> FontPages { get; init; }
 
 	public float PixelZoom { get; init; }
 
 	public BmFontData(FontFile file, List<Texture2D> fontPages, float pixelZoom, Dictionary<char, FontChar>? characterMap = null) {
-		File = file;
+		_File = file;
 		FontPages = fontPages;
 		PixelZoom = pixelZoom;
 
 		if (characterMap is null) {
-			CharacterMap = new Dictionary<char, FontChar>(File.Chars.Count);
-			foreach (FontChar fchar in File.Chars) {
+			_CharacterMap = new Dictionary<char, FontChar>(_File.Chars.Count);
+			foreach (FontChar fchar in _File.Chars) {
 				char c = (char) fchar.ID;
-				CharacterMap[c] = fchar;
+				_CharacterMap[c] = fchar;
 			}
 		} else
-			CharacterMap = characterMap;
+			_CharacterMap = characterMap;
 	}
 
 }

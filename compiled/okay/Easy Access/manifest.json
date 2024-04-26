@@ -9,14 +9,14 @@
   "UniqueID": "furyx639.EasyAccess",
   "Name": "Easy Access",
   "Author": "furyx639",
-  "Version": "2.1.2",
+  "Version": "2.1.4",
   "Description": "Provides easier access to producers in the game.",
   "MinimumApiVersion": "4.0",
   "EntryDll": "EasyAccess.dll",
   "Dependencies": [
     {
       "UniqueID": "furyx639.FauxCore",
-      "MinimumVersion": "1.0.0"
+      "MinimumVersion": "1.1.1"
     },
     {
       "UniqueID": "furyx639.ToolbarIcons",

@@ -43,6 +43,26 @@ using StardewValley.Pathfinding;
 
 namespace ExperimentalLagReduction.HarmonyPatches;
 
+[HarmonyPatch(typeof(NPC))]
+internal static class ReschedulerNpcData
+{
+    internal static NPC lastNpc = null;
+
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(NPC.pathfindToNextScheduleLocation))]
+    private static void PrefixNpcGetLocationRoute(NPC __instance)
+    {
+        lastNpc = __instance;
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(nameof(NPC.pathfindToNextScheduleLocation))]
+    private static void PrefixNpcGetLocationRoute()
+    {
+        lastNpc = null;
+    }
+}
+
 /// <summary>
 /// Re-does the scheduler so it's faster.
 /// </summary>
@@ -410,7 +430,7 @@ internal static class Rescheduler
                 _visited.Value.Add(node.Name);
                 if (Game1.getLocationFromName(node.Name) is not GameLocation current)
                 {
-                    SpaceCore.SpaceCore.Instance.Monitor.LogOnce($"A warp references {node.Name} which could not be found.", LogLevel.Warn);
+                    SpaceCore.SpaceCore.Instance.Monitor.LogOnce($"A warp from {start.Name} references {node.Name} which could not be found.", LogLevel.Warn);
                     continue;
                 }
 
@@ -622,7 +642,6 @@ internal static class Rescheduler
             return true;
         }
     }
-
     [HarmonyPrefix]
     [HarmonyPatch(nameof(WarpPathfindingCache.GetLocationRoute))]
     [HarmonyPriority(Priority.VeryLow)]
@@ -649,7 +668,7 @@ internal static class Rescheduler
             Log.Verbose($"Got macro schedule from cache: {startingLocation} -> {endingLocation}");
             if (__result is null)
             {
-                SpaceCore.SpaceCore.Instance.Monitor.Log($"Gender {gender} requested path from {startingLocation} to {endingLocation} where no valid path was found.", LogLevel.Warn);
+                SpaceCore.SpaceCore.Instance.Monitor.Log($"Gender {gender} requested path from {startingLocation} to {endingLocation} where no valid path was found, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}.", LogLevel.Warn);
             }
             return false;
         }
@@ -659,40 +678,40 @@ internal static class Rescheduler
         __result = null;
         if (GetActualLocation(startingLocation) is not string actualStart)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path to {endingLocation} is blacklisted from pathing", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path to {endingLocation} is blacklisted from pathing, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}", LogLevel.Warn);
             return false;
         }
 
         if (GetActualLocation(endingLocation) is not string actualEnd)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path to {endingLocation} is blacklisted from pathing", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path to {endingLocation} is blacklisted from pathing, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}", LogLevel.Warn);
             return false;
         }
 
         GameLocation start = Game1.getLocationFromName(actualStart);
         if (start is null)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {startingLocation}, which does not exist.", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {startingLocation}, which does not exist, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}.", LogLevel.Warn);
             return false;
         }
 
         Gender? startPathfindingGender = GetTightestPathfindingGenderConstraint((Gender?)gender, GetPathfindingGenderConstraint(startingLocation));
         if (startPathfindingGender == null)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {startingLocation}, which is not allowed due to Gender constraint {gender}.", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {startingLocation}, which is not allowed due to Gender constraint {gender}, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}.", LogLevel.Warn);
             return false;
         }
 
         GameLocation end = Game1.getLocationFromName(actualEnd);
         if (end is null)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {endingLocation}, which does not exist.", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {endingLocation}, which does not exist, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}.", LogLevel.Warn);
             return false;
         }
         Gender? endPathfindingGender = GetTightestPathfindingGenderConstraint((Gender?)gender, GetPathfindingGenderConstraint(actualEnd));
         if (endPathfindingGender == null)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {endingLocation}, which is not allowed due to Gender constraint {gender}.", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.Log($"Requested path starting at {endingLocation}, which is not allowed due to Gender constraint {gender}, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}.", LogLevel.Warn);
             return false;
         }
 
@@ -705,7 +724,7 @@ internal static class Rescheduler
         __result = GetPathFor(start, end, (Gender)gender, false/*ModEntry.Config.AllowPartialPaths*/);
         if (__result is null)
         {
-            SpaceCore.SpaceCore.Instance.Monitor.LogOnce($"Requested path from {startingLocation} to {endingLocation} for Gender {gender} where no valid path was found.", LogLevel.Warn);
+            SpaceCore.SpaceCore.Instance.Monitor.LogOnce($"Requested path from {startingLocation} to {endingLocation} for Gender {gender} where no valid path was found, for NPC {ReschedulerNpcData.lastNpc?.Name ?? "<null>"}.", LogLevel.Warn);
         }
 #if TIMING
         else

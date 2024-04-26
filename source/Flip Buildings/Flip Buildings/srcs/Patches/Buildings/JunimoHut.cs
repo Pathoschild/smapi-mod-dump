@@ -31,7 +31,7 @@ namespace FlipBuildings.Patches
 
 		private static IEnumerable<CodeInstruction> DrawTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator)
 		{
-			PatchHelper.CodeReplacement[] codeReplacements = new PatchHelper.CodeReplacement[]
+			PatchUtility.CodeReplacement[] codeReplacements = new PatchUtility.CodeReplacement[]
 			{
 				new(
 					// Flip hut texture
@@ -77,7 +77,7 @@ namespace FlipBuildings.Patches
 					}
 				)
 			};
-			return PatchHelper.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, typeof(JunimoHut), nameof(JunimoHut.draw));
+			return PatchUtility.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, typeof(JunimoHut), nameof(JunimoHut.draw));
 		}
 	}
 }

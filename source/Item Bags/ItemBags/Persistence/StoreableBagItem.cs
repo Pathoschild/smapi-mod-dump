@@ -10,6 +10,7 @@
 
 using ItemBags.Bags;
 using ItemBags.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,9 +37,12 @@ namespace ItemBags.Persistence
         /// <summary>If null, all qualities are accepted</summary>
         [XmlArray("Qualities")]
         [XmlArrayItem("Quality")]
+        [DefaultValue(null)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ObjectQuality[] Qualities { get; set; }
 
-        [DefaultValue(false)]
+        //[DefaultValue(false)]
+        //[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("IsBigCraftable")]
         public bool IsBigCraftable { get; set; }
 

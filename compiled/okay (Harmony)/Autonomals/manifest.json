@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Autonomals",
+  "Author": "DespairScent",
+  "Version": "1.0.0",
+  "Description": "Gives animals freedom of movement regardless of the player's current location",
+  "UniqueID": "DespairScent.Autonomals",
+  "EntryDll": "Autonomals.dll",
+  "MinimumApiVersion": "4.0.0",
+  "MinimumGameVersion": "1.6.0",
+  "UpdateKeys": [ "Nexus:22879" ]
+}

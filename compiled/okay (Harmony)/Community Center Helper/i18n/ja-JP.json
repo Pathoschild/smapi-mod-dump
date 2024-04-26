@@ -113,6 +113,7 @@
 	"winCraneGame": "映画館のクレーンゲーム",
 	"voidEggEvent": "ランダムな魔女イベント",
 	"mysteryBoxesLocked": "まだ入手不可能（ボックスが落ちてくるイベント起こるまで）",
+	"foxbloom": "季節ごとにひとつの日曜日に、尾根の森に現れる\n（晴れの時、古代のキツネ面を装備してないと現れない）", // RSV
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "下水管",
 	"locationDesert": "カリコ砂漠",
 	"locationSkullPrehistoric": "ドクロの洞窟の先史時代",
+	"locationRidgeForest": "尾根の森", // RSV
 	"locationUnknown": "???",
 	
 	// Water Locations (for fishing suggestions)
@@ -185,10 +187,14 @@
 	"waterCrimsonfishSpot": "海の東側の岸か桟橋",
 	"waterGlacierfishSpot": "シンダーサップの森の中央島の最南端",
 	"waterLegendSpot": "山の湖の丸太のあたり",
-	"waterBlueMoonVineyard": "ブルームーンヴィニヤード", // SVE (no existing translation, but...)
-	"waterShearwaterBridge": "シアーウォーター橋", // SVE (no existing translation, but...)
+	"waterBlueMoonVineyard": "ブルームーンヴィニヤード", // SVE
+	"waterShearwaterBridge": "シアーウォーター橋", // SVE
 	"waterForestWest": "シンダーサップの森（西）", // SVE
-	"waterAdventurerSummit": "冒険者の山頂", // SVE (no existing translation, but...)
+	"waterAdventurerSummit": "冒険者の山頂", // SVE
+	"waterRidgesideRiver": "リッジサイドビレッジの川", // RSV
+	"waterRidge": "尾根", // RSV
+	"waterRidgeForest": "尾根の森", // RSV
+	"waterRidgeFalls": "尾根の滝", // RSV
 	"waterUnknown": "???",
 	
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "鍛冶屋",
 	"shopSaloon": "酒場",
 	"shopClinic": "診療所",
+	"shopFish": "釣具店",
+	"shopGuild": "冒険者ギルド",
 	"shopDwarf": "ドワーフ",
 	"shopKrobus": "クロバス",
 	"shopKrobusWeekday": "クロバス（{{day}}）",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "エッグフェスティバル（春の13日)でピエール",
 	"shopFlowerDance": "フラワーダンス（春の24日）でピエール",
 	"shopSpiritsEve": "スピリットイブ（秋の27日）でピエール",
+	"shopSophiaLedger": "ソフィアの台帳", // SVE
+	"shopWestForestBear": "西の森のクマさん", // SVE
+	"shopNightingaleOrchard": "ナイチンゲールオーチャード", // SVE
+	"shopHotelPastry": "ホテルのお菓子屋", // RSV
+	"shopPikaRestaurant": "ピカの店", // RSV
 	"shopUnknown": "???",
 	"randomlyAvailable": "ランダム", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "{{item}}を出荷", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "モモの木",
 	"treePomegranate": "ザクロの木",
 	"treeCherry": "サクランボの木",
-	"treeLime": "ライムの木", // PPJA
-	"treePapaya": "パパイヤの木", // PPJA
-	"treeWalnut": "クルミの木", // PPJA
-	"treePersimmon": "柿の木", // PPJA
-	"treeGranny": "グラニースミスアップルの木", // PPJA
-	"treeEucalyptus": "ユーカリの木", // PPJA
+	"treeMahogany": "マホガニーの木",
+	"treeLime": "ライムの木", // Cornucopia
+	"treePapaya": "パパイヤの木", // Cornucopia
+	"treeWalnut": "クルミの木", // Cornucopia
+	"treePersimmon": "柿の木", // Cornucopia
+	"treeEucalyptus": "ユーカリの木", // Cornucopia
+	"treeGranny": "グラニースミスアップルの木", // PPJA More Trees
+	"treeAvocado": "アボカドの木", // Cornucopia
+	"treeCocoaPod": "カカオポッドの木", // Cornucopia
+	"treePear": "梨の木", // Cornucopia
+	"treeCherryPluot": "チェリープルオットの木", // RSV
+	"treeMountainPlumcot": "山岳プラムコットの木", // RSV
+	"treeDesertTangelo": "砂漠タンジェロの木", // RSV
+	"treeTropiUgliFruit": "熱帯アグリフルーツの木", // RSV
+	"treeParadiseRangpur": "楽園ラングプールの木", // RSV
+	"treeEmberBloomLime": "炎血ライムの木", // RSV
 	"treeMaple": "カエデの木",
 	"treeOak": "オークの木",
 	"treePine": "マツの木",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "赤のスライム",
 	"monsterPurpleSlime": "紫のスライム",
 	"monsterBRPCISlime": "青・赤・紫・銅・鉄のスライム",
+	"monsterHauntedSkull": "おばけガイコツ",
+	"monsterRidgeForest": "尾根の森の化け物", // RSV
 	"monsterUnknown": "???",
 	
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "{{time}}から{{friendReq}}なら手紙",
 	"conditionalMailTimeSkill": "{{time}}から{{skillReq}}なら手紙",
 	"conditionalMailFriendSkill": "{{friendReq}}そして{{skillReq}}なら手紙",
+	"conditionalMailSpecialOrder": "特別注文「{{orderName}}」を終了した後の手紙",
 	"mailConditionFriendship": "{{person}}が{{hearts}}ハート",
 	
 	// Times (for fishing)

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="2" height="2" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="10">
+ <properties>
+  <property name="AmbientLight" value="170 190 90"/>
+  <property name="Light" value="7 13 4 11 13 4 3 18 5 5 1 4 7 20 4 9 20 4 7 23 4 9 23 4 2 9 4 2 11 4 2 13 4"/>
+  <property name="Music" value="WizardSong"/>
+  <property name="Warp" value="8 25 Forest 5 27"/>
+ </properties>
+ <tileset firstgid="1" name=".VFStatue" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+  <image source=".VFStatue.png" width="32" height="32"/>
+ </tileset>
+ <layer id="2" name="Buildings" width="2" height="2">
+  <data encoding="csv">
+0,0,
+3,4
+</data>
+ </layer>
+ <layer id="3" name="Front" width="2" height="2">
+  <data encoding="csv">
+1,2,
+0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="Buildings">
+  <object id="5" name="TileData" x="0" y="0" width="16" height="16">
+   <properties>
+    <property name="Action" value="VF.SpawnBasket"/>
+   </properties>
+  </object>
+  <object id="7" name="TileData" x="16" y="0" width="16" height="16">
+   <properties>
+    <property name="Action" value="VF.SpawnBasket"/>
+   </properties>
+  </object>
+  <object id="8" name="TileData" x="0" y="16" width="16" height="16">
+   <properties>
+    <property name="Action" value="VF.SpawnBasket"/>
+   </properties>
+  </object>
+  <object id="9" name="TileData" x="16" y="16" width="16" height="16">
+   <properties>
+    <property name="Action" value="VF.SpawnBasket"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Front"/>
+</map>

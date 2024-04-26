@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hunter-Chambers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "config.always-perfect": "Always Perfect:",
+  "config.always-find-treasure": "Always Find Treasure:",
+  "config.instant-catch-fish": "Instantly Catch Fish:",
+  "config.instant-catch-treasure": "Instantly Catch Treasure:",
+  "config.infinite-bait": "Infinite Bait:",
+  "config.infinite-tackle": "Infinte Tackle:",
+  "config.auto-hook": "Auto Hook:",
+  "config.disable-controller-vibration": "Disable Controller Vibration:"
+}

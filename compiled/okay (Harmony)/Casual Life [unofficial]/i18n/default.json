@@ -1,0 +1,14 @@
+{
+  "config.Is24HourDefault.name": "24 Hour Clock",
+  "config.Is24HourDefault.desc": "Sets clock to 24 hours.",
+  "config.ControlDayLightLevels.name": "Enable custom lighting",
+  "config.ControlDayLightLevels.desc": "Use the mods lighting rebuild.",
+  "config.ControlDayWithKeys.name": "Enable debug time controls",
+  "config.ControlDayWithKeys.desc": "Using arrows on the keyboard you can change time/day/seasons.",
+  "config.DisplaySunTimes.name": "Show Sun rise/set times",
+  "config.DisplaySunTimes.desc": "Print out the sun rise and sunset times, when custom lighting is on.",
+  "config.MillisecondsPerSecond.name": "Milliseconds per clock tick",
+  "config.MillisecondsPerSecond.desc": "How many milliseconds per clock tick.",
+  "draw.hoverMenuText": "Journal (F)\nRight Click to Change Clock",
+  "draw.sunsetTime": "Today the sun will rise at {{sunrise}} and set at {{sunset}}"
+}

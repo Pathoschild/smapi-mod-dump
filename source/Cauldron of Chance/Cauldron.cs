@@ -10,9 +10,12 @@
 
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Objects;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -672,7 +675,7 @@ namespace CauldronOfChance
             initializeRecipes();
         }
 
-        public void addToCauldron(string name, int value)
+        public void addToCauldron(string name, float value)
         {
             if (value == 0)
             {
@@ -697,7 +700,7 @@ namespace CauldronOfChance
             }
         }
 
-        public void addToCauldron(string buff, string debuff, int value)
+        public void addToCauldron(string buff, string debuff, float value)
         {
             int buffIndex1 = -1;
             int buffIndex2 = -1;
@@ -750,7 +753,7 @@ namespace CauldronOfChance
                     DebuffList[debuffIndex1] += 1;
                 }
             }
-            else if (value == 2)
+            else if (value >= 2)
             {
                 if (buff != null && buff.Equals("") == false)
                 {
@@ -763,7 +766,7 @@ namespace CauldronOfChance
                     DebuffList[debuffIndex1] += 1;
                 }
             }
-            else if (value == 1)
+            else if (value >= 1)
             {
                 if (buff != null && buff.Equals("") == false)
                 {
@@ -775,7 +778,7 @@ namespace CauldronOfChance
                     DebuffList[debuffIndex1] += 1;
                 }
             }
-            else if (value == -1)
+            else if (value <= -1)
             {
                 if (debuff != null && debuff.Equals("") == false)
                 {
@@ -787,7 +790,7 @@ namespace CauldronOfChance
                     BuffList[buffIndex1] += 1;
                 }
             }
-            else if (value == -2)
+            else if (value <= -2)
             {
                 if (debuff != null && debuff.Equals("") == false)
                 {
@@ -829,45 +832,64 @@ namespace CauldronOfChance
                 {
                     Item csItem = Utility.fuzzyItemSearch(recipe.Key);
 
-                    if(csItem is StardewValley.Object)
+                    if(csItem is StardewValley.Object csObject)
                     {
-                        StardewValley.Object csObject = csItem as StardewValley.Object;
-
-                        string[] objectDescription = Game1.objectInformation[csObject.ParentSheetIndex].Split('/');
-
-                        string[] whatToBuff = (string[])((objectDescription.Length > 7) ? ((object)objectDescription[7].Split(' ')) : ((object)new string[12]
+                        if ((int)csObject.Edibility > -300 && Game1.objectData.TryGetValue(csObject.ItemId, out var data))
                         {
-                        "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-                        "0", "0"
-                        }));
+                            List<ObjectBuffData> buffs = data.Buffs;
 
-                        csObject.ModifyItemBuffs(whatToBuff);
-
-                        if(whatToBuff.Select(x => Int32.Parse(x)).Sum() > 0)
-                        {
-                            List<int> Items = new List<int>();
-                            List<int> Categories = new List<int>();
-
-                            List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
-
-                            foreach (string ingredient in ingredients)
+                            if (buffs != null && buffs.Count > 0)
                             {
-                                int id;
-
-                                if (Int32.TryParse(ingredient, out id))
+                                float durationMultiplier = ((csObject.Quality != 0) ? 1.5f : 1f);
+                                foreach (Buff item in StardewValley.Object.TryCreateBuffsFromData(data, csObject.Name, csObject.DisplayName, durationMultiplier, csObject.ModifyItemBuffs))
                                 {
-                                    if (id >= 0)
+                                    //Check if the item has anything buffing (or debuffing)
+                                    if(item.effects.FarmingLevel.Value != 0
+                                        || item.effects.MiningLevel.Value != 0
+                                        || item.effects.FishingLevel.Value != 0
+                                        || item.effects.ForagingLevel.Value != 0
+                                        || item.effects.Attack.Value != 0
+                                        || item.effects.Defense.Value != 0
+                                        || item.effects.MaxStamina.Value != 0
+                                        || item.effects.LuckLevel.Value != 0
+                                        || item.effects.MagneticRadius.Value != 0
+                                        || item.effects.Speed.Value != 0)
                                     {
-                                        Items.Add(id);
-                                    }
-                                    else
-                                    {
-                                        Categories.Add(id);
+                                        List<int> Items = new List<int>();
+                                        List<int> Categories = new List<int>();
+
+                                        List<string> ingredients = recipe.Value.Split('/')[0].Split(' ').ToList();
+
+                                        for (int counter = 0; counter < ingredients.Count/2; counter++)
+                                        {
+                                            int id;
+
+                                            if (Int32.TryParse(ingredients[counter * 2], out id))
+                                            {
+                                                if (id >= 0)
+                                                {
+                                                    int amount;
+                                                    if (Int32.TryParse(ingredients[counter * 2 + 1], out amount) == false)
+                                                    {
+                                                        amount = 1;
+                                                    }
+
+                                                    for (int i = 0; i < amount; i++)
+                                                    {
+                                                        Items.Add(id);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Categories.Add(id);
+                                                }
+                                            }
+                                        }
+
+                                        cookingRecipes.Add((recipe.Key, Items, Categories));
                                     }
                                 }
                             }
-
-                            cookingRecipes.Add((recipe.Key, Items, Categories));
                         }
                     }
                 }

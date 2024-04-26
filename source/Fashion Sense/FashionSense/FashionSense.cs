@@ -124,10 +124,11 @@ namespace FashionSense
                 new SaveFileSlotPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply entity related patches
-                new CharacterPatch(monitor, modHelper).Apply(harmony);
+                new FarmerPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply object related patches
                 new ObjectPatch(monitor, modHelper).Apply(harmony);
+                new ColoredObjectPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply core related patches
                 new GamePatch(monitor, modHelper).Apply(harmony);

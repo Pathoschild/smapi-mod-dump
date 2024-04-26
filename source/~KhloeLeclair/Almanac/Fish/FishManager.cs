@@ -198,85 +198,78 @@ public class FishManager : BaseManager {
 
 	#region Locations
 
-	private static void AddFish(SubLocation loc, int[] seasons, int fish, Dictionary<int, Dictionary<SubLocation, List<int>>> result ) {
-		if ( ! result.TryGetValue(fish, out var entry)) { 
-			result[fish] = new() {
-				[loc] = seasons.ToList(),
-			};
-
-			return;
-		}
-
-		if (!entry.TryGetValue(loc, out var slist)) {
-			entry[loc] = seasons.ToList();
-			return;
-		}
-
-		foreach(int season in seasons) {
-			if (!slist.Contains(season))
-				slist.Add(season);
-		}
-	}
-
-	private static void RemoveFish(SubLocation loc, int[] seasons, int fish, Dictionary<int, Dictionary<SubLocation, List<int>>> result) {
-		if (!result.TryGetValue(fish, out var entry))
-			return;
-
-		if (!entry.TryGetValue(loc, out var slist))
-			return;
-
-		for (int i = slist.Count - 1; i >= 0; i--) {
-			if (seasons.Contains(slist[i]))
-				slist.RemoveAt(i);
-		}
-
-		if (slist.Count > 0)
-			return;
-
-		entry.Remove(loc);
-
-		if (entry.Count > 0)
-			return;
-
-		result.Remove(fish);
-	}
-
-	public Dictionary<int, Dictionary<SubLocation, List<int>>> GetFishLocations() {
-		if (!OverridesLoaded)
-			LoadOverrides();
-
-		var result = FishHelper.GetFishLocations();
-
-		WithOverrides(() => {
-			foreach(var ovr in Overrides.SelectMany(x => x.Value)) {
-				if (string.IsNullOrEmpty(ovr.Map))
-					continue;
-
-				int[] seasons;
-				if (ovr.Season == Season.All)
-					seasons = new int[] { 0, 1, 2, 3 };
-				else
-					seasons = new int[] { (int) ovr.Season };
-
-				SubLocation sl = new(ovr.Map, ovr.Zone);
-
-				if (ovr.AddFish != null)
-					foreach(string sFish in ovr.AddFish) {
-						if (int.TryParse(sFish, out int fish))
-							AddFish(sl, seasons, fish, result);
-					}
-
-				if (ovr.RemoveFish != null)
-					foreach(string sFish in ovr.RemoveFish) {
-						if (int.TryParse(sFish, out int fish))
-							RemoveFish(sl, seasons, fish, result);
-					}
-
+		private static void AddFish(SubLocation loc, int[] seasons, string fish, Dictionary<string, Dictionary<SubLocation, List<int>>> result ) {
+			if (!result.TryGetValue(fish, out var entry)) { 
+				result[fish] = new() {
+					[loc] = seasons.ToList(),
+				};
+				return;
 			}
-		});
+			if (!entry.TryGetValue(loc, out var slist)) {
+				entry[loc] = seasons.ToList();
+				return;
+			}
+			foreach(int season in seasons) {
+				if (!slist.Contains(season))
+					slist.Add(season);
+			}
+		}
 
-		return result;
-	}
+		private static void RemoveFish(SubLocation loc, int[] seasons, string fish, Dictionary<string, Dictionary<SubLocation, List<int>>> result) {
+			if (!result.TryGetValue(fish, out var entry))
+				return;
+
+			if (!entry.TryGetValue(loc, out var slist))
+				return;
+
+			for (int i = slist.Count - 1; i >= 0; i--) {
+				if (seasons.Contains(slist[i]))
+					slist.RemoveAt(i);
+			}
+
+			if (slist.Count > 0)
+				return;
+
+			entry.Remove(loc);
+
+			if (entry.Count > 0)
+				return;
+
+			result.Remove(fish);
+		}
+
+		public Dictionary<string, Dictionary<SubLocation, List<int>>> GetFishLocations() {
+			if (!OverridesLoaded)
+				LoadOverrides();
+
+			var result = FishHelper.GetFishLocations();
+
+			WithOverrides(() => {
+				foreach(var ovr in Overrides.SelectMany(x => x.Value)) {
+					if (string.IsNullOrEmpty(ovr.Map))
+						continue;
+
+					int[] seasons;
+					if (ovr.Season == Common.Enums.Season.All)
+						seasons = new int[] { 0, 1, 2, 3 };
+					else
+						seasons = new int[] { (int) ovr.Season };
+
+					SubLocation sl = new(ovr.Map, ovr.Zone);
+
+					if (ovr.AddFish != null)
+						foreach(string fish in ovr.AddFish) {
+							AddFish(sl, seasons, fish, result);
+						}
+
+					if (ovr.RemoveFish != null)
+						foreach(string fish in ovr.RemoveFish) {
+							RemoveFish(sl, seasons, fish, result);
+						}
+				}
+			});
+			return result;
+		}
 
 	#endregion
 
@@ -301,7 +294,7 @@ public class FishManager : BaseManager {
 	public List<FishInfo> GetSeasonFish(int season, bool filter = true) {
 		if (!Loaded)
 			RefreshFish();
-
+		ModEntry.Instance.Log("Fish Loaded.");
 		var overrides = filter ?
 			Game1.content.Load<Dictionary<string, FishOverride>>(AssetManager.FishOverridesPath)
 			: null;

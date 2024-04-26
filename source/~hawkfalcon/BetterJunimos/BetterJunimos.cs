@@ -53,7 +53,7 @@ namespace BetterJunimos {
             Util.Progression = new JunimoProgression(ModManifest, Monitor, Helper);
             Util.Greenhouse = new JunimoGreenhouse(ModManifest, Monitor, Helper);
             
-            helper.Events.Content.AssetRequested += BlueprintEditor.OnAssetRequested;
+            helper.Events.Content.AssetRequested += BuildingEditor.OnAssetRequested;
             helper.Events.Content.AssetRequested += JunimoEditor.OnAssetRequested;
 
             helper.Events.GameLoop.OneSecondUpdateTicked += Util.Progression.ConfigureFromWizard;
@@ -640,8 +640,8 @@ namespace BetterJunimos {
             SHelper.WriteConfig(Config);
             SHelper.GameContent.InvalidateCache("Characters/Junimo");
             SHelper.GameContent.InvalidateCache($"Characters/Junimo.{SHelper.Translation.Locale}");
-            SHelper.GameContent.InvalidateCache("Data/Blueprints");
-            SHelper.GameContent.InvalidateCache($"Data/Blueprints.{SHelper.Translation.Locale}");
+            SHelper.GameContent.InvalidateCache("Data/Buildings");
+            SHelper.GameContent.InvalidateCache($"Data/Buildings.{SHelper.Translation.Locale}");
         }
 
         private static void AllowJunimoHutPurchasing() {

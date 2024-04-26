@@ -115,4 +115,20 @@ namespace MultiplayerPrairieKing
 		RETRY = 0,
 		QUIT = 1
 	}
+
+
+	public enum SYNC_SCOPE
+	{
+		SINGLE = 0,
+		PLAYERS = 1,
+		GLOBAL = 2
+	}
+
+	public enum ERROR
+	{
+		UNDEFINED = -1,
+		MATCH_FULL = 0,
+		MATCH_STARTED = 1,
+		NOT_IN_LIST = 2
+	}
 }

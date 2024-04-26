@@ -21,6 +21,8 @@ using StardewValley.Network;
 using Unlockable_Bundles.NetLib;
 using Newtonsoft.Json;
 using StardewModdingAPI;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib
 {
@@ -175,13 +177,13 @@ namespace Unlockable_Bundles.Lib
                     savedata.Price.Remove(migration.Key);
                     savedata.AlreadyPaid.Remove(migration.Key);
                     savedata.AlreadyPaidIndex.Remove(migration.Key);
-                    ModEntry._Monitor.Log($"Removed price savedata in bundle '{unlockable.ID}' for '{migration.Key}'");
+                    Monitor.Log($"Removed price savedata in bundle '{unlockable.ID}' for '{migration.Key}'");
                     continue;
                 }
 
                 if (migration.Value.Trim().ToLower() == "reroll") { //Reroll
                     if (unlockable.RandomPriceEntries <= 0) {
-                        ModEntry._Monitor.LogOnce($"PriceMigration reroll requested for '{migration.Key}' of bundle '{unlockable.ID}', but this bundle does not remember its Price entries.\n"
+                        Monitor.LogOnce($"PriceMigration reroll requested for '{migration.Key}' of bundle '{unlockable.ID}', but this bundle does not remember its Price entries.\n"
                             + "Reroll request will be ignored", LogLevel.Warn);
                         continue;
                     }
@@ -189,7 +191,7 @@ namespace Unlockable_Bundles.Lib
                     var unusedPriceEntries = unlockable.Price.Where(e => !savedata.Price.ContainsKey(e.Key)).ToDictionary(x => x.Key, x => x.Value);
 
                     if (unusedPriceEntries.Count == 0) {
-                        ModEntry._Monitor.LogOnce($"PriceMigration reroll requested for '{migration.Key}' of bundle '{unlockable.ID}', but there's no unused Price entries left\n"
+                        Monitor.LogOnce($"PriceMigration reroll requested for '{migration.Key}' of bundle '{unlockable.ID}', but there's no unused Price entries left\n"
                             + "Reroll request will be ignored", LogLevel.Warn);
                         continue;
                     }
@@ -200,7 +202,7 @@ namespace Unlockable_Bundles.Lib
                 }
 
                 if (!unlockable.Price.TryGetValue(migration.Value, out var newPriceAmount)) {
-                    ModEntry._Monitor.LogOnce($"PriceMigration requested from '{migration.Key}' to '{migration.Value}' of bundle '{unlockable.ID}' without a matching Price entry.\n"
+                    Monitor.LogOnce($"PriceMigration requested from '{migration.Key}' to '{migration.Value}' of bundle '{unlockable.ID}' without a matching Price entry.\n"
                         + "Migration request will be ignored.", LogLevel.Warn);
                     continue;
                 }
@@ -226,7 +228,7 @@ namespace Unlockable_Bundles.Lib
                 savedata.Price.Add(newPriceKey, newPriceAmount);
             }
 
-            ModEntry._Monitor.Log($"Migrated Price in bundle '{unlockable.ID}' from '{oldPriceKey}' to '{newPriceKey}':'{newPriceAmount}'");
+            Monitor.Log($"Migrated Price in bundle '{unlockable.ID}' from '{oldPriceKey}' to '{newPriceKey}':'{newPriceAmount}'");
         }
     }
 }

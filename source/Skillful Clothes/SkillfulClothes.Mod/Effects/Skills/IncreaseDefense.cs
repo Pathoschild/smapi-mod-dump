@@ -11,6 +11,7 @@
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
+using StardewValley.Buffs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,12 @@ namespace SkillfulClothes.Effects.Skills
     {
         protected override EffectIcon Icon => EffectIcon.Defense;
 
-        public override string SkillName => "Defense";        
+        public override string SkillName => "Defense";
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.resilience = Math.Max(0, farmer.resilience + amount);
+        protected override void UpdateEffects(Farmer farmer, BuffEffects targetEffects)
+        {
+            targetEffects.Defense.Value = Parameters.Amount;
+        }
 
         public IncreaseDefense(AmountEffectParameters parameters)
             : base(parameters)

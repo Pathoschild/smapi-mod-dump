@@ -48,6 +48,9 @@ namespace LadderLocator
             if (_config.NodeRadar) Helper.Events.Display.RenderingHud += OnRenderingHud;
             Helper.Events.Input.ButtonPressed += OnButtonPressed;
             Helper.Events.Player.Warped += OnWarped;
+
+            Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+
         }
 
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
@@ -285,6 +288,210 @@ namespace LadderLocator
             Game1.objectSpriteSheet.GetData(0, new Rectangle((spriteIndex % 24) * 16 + 4, (int)(spriteIndex / 24) * 16 + 4, 8, 8), colors, 0, 8 * 8);
             var average = new Color(Convert.ToByte(colors.Sum(c => c.R) / colors.Count()), Convert.ToByte(colors.Sum(c => c.G) / colors.Count()), Convert.ToByte(colors.Sum(c => c.B) / colors.Count()));
             return average;
+        }
+
+        /// <summary>
+        /// Initialize GMCM settings when the game launches.
+        /// </summary>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            var gmcmApi = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (gmcmApi != null)
+            {
+                RegisterModConfigMenu(gmcmApi);
+            }
+            else
+            {
+                Monitor.Log("Failed to access GMCM API. Is the Generic Mod Config Menu installed?", LogLevel.Warn);
+            }
+        }
+
+        /// <summary>
+        /// Register the mod configuration menu using GMCM.
+        /// </summary>
+        private void RegisterModConfigMenu(IGenericModConfigMenuApi api)
+        {
+            api.Register(
+                mod: ModManifest,
+                reset: ResetConfig,
+                save: SaveConfig
+            );
+
+            AddOptions(api);
+        }
+
+        private void ResetConfig()
+        {
+            _config = new ModConfig();
+            UpdateHudDisplay();
+        }
+
+        private void SaveConfig()
+        {
+            Helper.WriteConfig(_config);
+            UpdateHudDisplay();
+        }
+
+        /// <summary>
+        /// Add all mod configuration options to the GMCM menu.
+        /// </summary>
+        private void AddOptions(IGenericModConfigMenuApi api)
+        {
+
+            api.AddKeybindList(
+                mod: ModManifest,
+                getValue: () => _config.ToggleShaftsKey,
+                setValue: value => _config.ToggleShaftsKey = value,
+                name: () => Helper.Translation.Get("toggle-shafts-key"),
+                tooltip: () => Helper.Translation.Get("toggle-shafts-key-tooltip")
+            );
+
+            api.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => _config.ForceShafts,
+                setValue: value => _config.ForceShafts = value,
+                name: () => Helper.Translation.Get("force-shafts"),
+                tooltip: () => Helper.Translation.Get("force-shafts-tooltip")
+            );
+
+            api.AddKeybindList(
+                mod: ModManifest,
+                getValue: () => _config.ToggleHighlightTypeKey,
+                setValue: value => _config.ToggleHighlightTypeKey = value,
+                name: () => Helper.Translation.Get("toggle-highlight-type-key"),
+                tooltip: () => Helper.Translation.Get("toggle-highlight-type-key-tooltip")
+            );
+
+            api.AddTextOption(
+                mod: ModManifest,
+                getValue: () => string.Join(", ", _config.HighlightTypes),
+                setValue: value => _config.HighlightTypes = new HashSet<HighlightType>(value.Split(',').Select(Enum.Parse<HighlightType>)),
+                name: () => Helper.Translation.Get("highlight-types"),
+                tooltip: () => Helper.Translation.Get("highlight-types-tooltip"),
+                allowedValues: Enum.GetNames(typeof(HighlightType))
+            );
+
+            api.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => _config.HighlightRectangleRGBA.R,
+                setValue: value => _config.HighlightRectangleRGBA = new Color(value, _config.HighlightRectangleRGBA.G, _config.HighlightRectangleRGBA.B, _config.HighlightRectangleRGBA.A),
+                min: 0,
+                max: 255,
+                name: () => Helper.Translation.Get("highlight-color-r"),
+                tooltip: () => Helper.Translation.Get("highlight-color-r-tooltip")
+            );
+
+            api.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => _config.HighlightRectangleRGBA.G,
+                setValue: value => _config.HighlightRectangleRGBA = new Color(_config.HighlightRectangleRGBA.R, value, _config.HighlightRectangleRGBA.B, _config.HighlightRectangleRGBA.A),
+                min: 0,
+                max: 255,
+                name: () => Helper.Translation.Get("highlight-color-g"),
+                tooltip: () => Helper.Translation.Get("highlight-color-g-tooltip")
+            );
+
+            api.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => _config.HighlightRectangleRGBA.B,
+                setValue: value => _config.HighlightRectangleRGBA = new Color(_config.HighlightRectangleRGBA.R, _config.HighlightRectangleRGBA.G, value, _config.HighlightRectangleRGBA.A),
+                min: 0,
+                max: 255,
+                name: () => Helper.Translation.Get("highlight-color-b"),
+                tooltip: () => Helper.Translation.Get("highlight-color-b-tooltip")
+            );
+
+            api.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => _config.HighlightRectangleRGBA.A,
+                setValue: value => _config.HighlightRectangleRGBA = new Color(_config.HighlightRectangleRGBA.R, _config.HighlightRectangleRGBA.G, _config.HighlightRectangleRGBA.B, value),
+                min: 0,
+                max: 255,
+                name: () => Helper.Translation.Get("highlight-color-a"),
+                tooltip: () => Helper.Translation.Get("highlight-color-a-tooltip")
+            );
+
+            api.AddKeybindList(
+                mod: ModManifest,
+                getValue: () => _config.ToggleTint,
+                setValue: value => {
+                    _config.ToggleTint = value;
+                    _config.HighlightUsesStoneTint = !_config.HighlightUsesStoneTint;
+                    Helper.WriteConfig(_config);
+                },
+                name: () => Helper.Translation.Get("toggle-tint-key"),
+                tooltip: () => Helper.Translation.Get("toggle-tint-key-tooltip")
+            );
+
+            api.AddTextOption(
+                mod: ModManifest,
+                getValue: () => _config.HighlightImageFilename,
+                setValue: value => _config.HighlightImageFilename = value,
+                name: () => Helper.Translation.Get("highlight-image-filename"),
+                tooltip: () => Helper.Translation.Get("highlight-image-filename-tooltip")
+            );
+
+            api.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => (float)_config.HighlightAlpha,
+                setValue: value => _config.HighlightAlpha = (decimal)value,
+                min: 0.0f,
+                max: 1.0f,
+                interval: 0.05f,
+                name: () => Helper.Translation.Get("highlight-alpha"),
+                tooltip: () => Helper.Translation.Get("highlight-alpha-tooltip")
+            );
+
+            api.AddKeybindList(
+                mod: ModManifest,
+                getValue: () => _config.CycleAlpha,
+                setValue: value => _config.CycleAlpha = value,
+                name: () => Helper.Translation.Get("cycle-alpha-key"),
+                tooltip: () => Helper.Translation.Get("cycle-alpha-key-tooltip")
+            );
+
+            api.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => _config.HighlightUsesStoneTint,
+                setValue: value => _config.HighlightUsesStoneTint = value,
+                name: () => Helper.Translation.Get("highlight-uses-stone-tint"),
+                tooltip: () => Helper.Translation.Get("highlight-uses-stone-tint-tooltip")
+            );
+
+            api.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => _config.NodeRadar,
+                setValue: value => _config.NodeRadar = value,
+                name: () => Helper.Translation.Get("node-radar"),
+                tooltip: () => Helper.Translation.Get("node-radar-tooltip")
+            );
+
+            api.AddKeybindList(
+                mod: ModManifest,
+                getValue: () => _config.ToggleNodeRadar,
+                setValue: value => _config.ToggleNodeRadar = value,
+                name: () => Helper.Translation.Get("toggle-node-radar-key"),
+                tooltip: () => Helper.Translation.Get("toggle-node-radar-key-tooltip")
+            );
+
+            api.AddNumberOption(
+                mod: ModManifest,
+                getValue: () => (float)_config.RadarScale,
+                setValue: value => _config.RadarScale = (decimal)value,
+                min: 0.1f,
+                max: 5.0f,
+                interval: 0.1f,
+                name: () => Helper.Translation.Get("radar-scale"),
+                tooltip: () => Helper.Translation.Get("radar-scale-tooltip")
+            );
+        }
+        private void UpdateHudDisplay()
+        {
+            Helper.Events.Display.RenderingHud -= OnRenderingHud;
+            if (_config.NodeRadar)
+            {
+                Helper.Events.Display.RenderingHud += OnRenderingHud;
+            }
         }
     }
 }

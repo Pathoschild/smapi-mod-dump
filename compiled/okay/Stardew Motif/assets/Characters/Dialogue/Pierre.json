@@ -1,9 +1,19 @@
 {
   "Introduction": "Hey, it's Mr. @, the new farmer! I'm Pierre, owner of the local general store.^Hey, it's Ms. @, the new farmer! I'm Pierre, owner of the local general store.#$b#If you're looking for seeds, my shop is the place to go. I'll also buy produce from you for a good price!#$e#A little agriculture could really inject new life into the local economy!",
+  "eventSeen_3102768_memory_oneday": "How can I possibly compete with Joja?$s#$e#Their pockets are so deep, they can just sell at a loss until little guys like me are out of business... then they'll jack up their prices!$s",
+  "AcceptGift_(O)StardropTea": "Wow, I can't believe you'd give this to me. It must've cost you a fortune! Thanks!",
+  "AcceptGift_(O)Book_PriceCatalogue": "Gripping! Fascinating! It's the perfect book for me!$h",
+  "GreenRain": "Gahh, no customers! Any more of this 'green' rain, and my ledger will be in the 'red'!$s",
+  "GreenRainFinished": "Well, I'm glad things are back to normal. Seems like it was all overblown... just like everything.",
+  "GreenRain_2": "Glad to see you, @. What's a little toxic rain when you have seeds to buy?$h#$e#I'm just kidding. The rain seems to be completely harmless.",
+  "eventSeen_4": "Luny's going through a rebellious phase... I get it.#$e#She'll wise up when she has to make her first mortgage payment!$h",
+  "eventSeen_3102768_memory_oneweek": "I'm determined to keep my shop running until the bitter end.$s#$b#Morris and his cronies will have to drag me out from behind the counter, kicking and screaming!$h",
   "Resort": "I'm losing a lot of money being away from the shop...$s#$b#But, you know what? It's worth it.",
   "Resort_Shore": "Mmm... that salty smell of the sea is making me want some sashimi.",
   "Resort_Chair": "Eh, let the kids play in the sun. I'll just sit in this chair.",
   "Resort_Bar": "Drink after drink... Gus must be making a killing!",
+  "married": "Well, now that you have dual incomes, I expect you'll be purchasing twice as many seeds, right?$h#$b#Haha... I'm only joking.... *ahem*...",
+  "married_Abigail_memory_oneday": "Hello, er... my son?$s^Hello, er... daughter?$s",
   "cc_Complete": "This is a dream-come-true! You can't begin to imagine how much stress JojaMart was causing me.#$e#For a small town like this, one store is enough! There's too much social pressure for me to overcharge, anyway.",
   "joja_Begin": "This is a sad day for Pelican Town... The stronger Joja becomes, the closer I move toward bankruptcy. I might have to sell the shop soon...$s",
   "MovieInvitation": "Hey, that's a great idea... It'll be nice to get out from behind the counter. I'll meet you there!",
@@ -26,6 +36,7 @@
   "Thu4": "Hey, @. You're my number one customer!",
   "summer_Mon": "I've got summer seeds available! You'd better stock up.",
   "summer_Wed": "I'm so glad to have a day off from work.",
+  "summer_Wed2": "$d joja#Running the shop is one of the most important things in my life, but sometimes you just need a day off...|Now that Joja is gone, I feel a responsibility to keep the shop open seven days a week. People need groceries!",
   "summer_Thu": "Everyone's enjoying the weather instead of shopping... *sigh*",
   "summer_Fri": "Oh, hi. Are you satisfied with the quality of my summer seeds?",
   "summer_Sat": "Summer is a good time to eat a refreshing salad, don't you think?",
@@ -42,5 +53,8 @@
   "fall_Sat": "I'm happy to buy whatever you produce on the farm.#$e#Yes, I do resell it for a profit... but that's the benefit of being an established shop owner.#$e#Don't get any ideas...",
   "fall_Sun": "If I didn't have this shop to run I would be outside right now...#$e#The leaves look great and the mushrooms are sprouting.",
   "Event_naga1": "Thanks, I appreciate that. Just forget you ever saw this, okay?$h#$b#...And I'll just forget that you were snooping around in my bedroom!",
-  "Event_naga2": "You would really do that to me? You're terrible.$s#$b#You shouldn't have been snooping around in my bedroom in the first place! Nosy neighbors are the worst.$3"
+  "Event_naga2": "You would really do that to me? You're terrible.$s#$b#You shouldn't have been snooping around in my bedroom in the first place! Nosy neighbors are the worst.$3",
+  "Fair_Judging": "Hey, good luck.",
+  "Fair_Judged_PlayerLost": "It feels great to be on top! Hah!$h#$e#Nice effort, though.",
+  "Fair_Judged_PlayerWon": "I can't believe I lost...$s"
 }

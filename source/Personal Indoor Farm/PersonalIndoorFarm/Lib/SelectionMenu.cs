@@ -19,15 +19,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     internal class SelectionMenu : IClickableMenu
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         private Dictionary<string, PersonalFarmModel> Models;
         private int Index;
         private Texture2D Preview;
@@ -42,9 +39,6 @@ namespace PersonalIndoorFarm.Lib
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
 
         public SelectionMenu() : base(Game1.uiViewport.Width / 2 - 320, Game1.uiViewport.Height - 64 - 192, 640, 192)
@@ -57,25 +51,33 @@ namespace PersonalIndoorFarm.Lib
 
         private void createClickTableTextures()
         {
-            LeftArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) - 40 - 64 - 80, yPositionOnScreen + height - 100, 44, 48), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f) {
+            var buttonSpacing = 16;
+            var arrowSpacing = 40;
+
+            var buttonSize = 64;
+
+            var arrowWidth = 48;
+            var arrowHeight = 44;
+
+            LeftArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) - buttonSpacing - buttonSize - arrowWidth - arrowSpacing, yPositionOnScreen + height - 100, arrowWidth, arrowHeight), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), arrowWidth / 12f) {
                 myID = 8000,
                 rightNeighborID = 8001,
                 downNeighborID = 8003,
             };
 
-            RightArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) + 40 - 64 + 80, yPositionOnScreen + height - 100, 44, 48), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f) {
+            RightArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) + buttonSpacing + buttonSize + arrowSpacing, yPositionOnScreen + height - 100, arrowWidth, arrowHeight), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), arrowWidth / 12f) {
                 myID = 8001,
                 leftNeighborID = 8000,
                 downNeighborID = 8004
             };
 
-            CancelButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) - 80, yPositionOnScreen + height - 60, 64, 64), Game1.mouseCursors, new Rectangle(192, 256, 64, 64), 1f) {
+            CancelButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) - buttonSize - buttonSpacing, yPositionOnScreen + height - 60, buttonSize, buttonSize), Game1.mouseCursors, new Rectangle(192, 256, 64, 64), buttonSize / 64f) {
                 myID = 8003,
                 upNeighborID = 8000,
                 rightNeighborID = 8004
             };
 
-            ConfirmButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) + 12, yPositionOnScreen + height - 60, 64, 64), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), 1f) {
+            ConfirmButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + (width / 2) + buttonSpacing, yPositionOnScreen + height - 60, buttonSize, buttonSize), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), buttonSize / 64f) {
                 myID = 8004,
                 upNeighborID = 8001,
                 leftNeighborID = 8003

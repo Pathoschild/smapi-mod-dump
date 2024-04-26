@@ -1,0 +1,10 @@
+{
+  "config.apply-profession-label": "Aplicar Profissão {{professionName}}:",
+  "config.whose-to-apply-label": "Profissão {{professionName}} a ser Usada:",
+  "config.gatherer": "Coletor",
+  "config.botanist": "Botânico",
+  "config.gain-xp-label": "Ganhar Experiência:",
+  "config.who-gains-xp-label": "Quem Ganha Experiência:",
+  "config.update-game-stats": "Atualizar Estatísticas do Jogo:",
+  "config.disabled-message": "As configurações deste mod são controladas pelo host."
+}

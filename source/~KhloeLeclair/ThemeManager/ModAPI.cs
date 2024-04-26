@@ -43,18 +43,18 @@ public class ModAPI : IThemeManagerApi {
 		Mod.GameThemeManager!.ThemeChanged += BaseThemeManager_ThemeChanged;
 	}
 
-	private void BaseThemeManager_ThemeChanged(object? sender, IThemeChangedEvent<GameTheme> e) {
-		GameThemeChanged?.SafeInvoke(sender, new ThemeChangedEventArgs<IGameTheme>(
+	private void BaseThemeManager_ThemeChanged(IThemeChangedEvent<GameTheme> e) {
+		GameThemeChanged?.Invoke(new ThemeChangedEventArgs<IGameTheme>(
 			e.OldId, e.OldManifest, e.OldData,
 			e.NewId, e.NewManifest, e.NewData
-		), monitor: Mod.Monitor);
+		)); //, monitor: Mod.Monitor);
 	}
 
 	#region Base Theme
 
 	public IGameTheme GameTheme => Mod.GameTheme!;
 
-	public event EventHandler<IThemeChangedEvent<IGameTheme>>? GameThemeChanged;
+	public event Action<IThemeChangedEvent<IGameTheme>>? GameThemeChanged;
 
 	#endregion
 
@@ -114,7 +114,7 @@ public class ModAPI : IThemeManagerApi {
 		);
 	}
 
-	public IThemeManager<DataT> GetOrCreateManager<DataT>(DataT? defaultTheme = null, string? embeddedThemesPath = "assets/themes", string? assetPrefix = "assets", string? assetLoaderPrefix = null, string? themeLoaderPath = null, bool? forceAssetRedirection = null, bool? forceThemeRedirection = null, EventHandler<IThemeChangedEvent<DataT>>? onThemeChanged = null) where DataT : class, new() {
+	public IThemeManager<DataT> GetOrCreateManager<DataT>(DataT? defaultTheme = null, string? embeddedThemesPath = "assets/themes", string? assetPrefix = "assets", string? assetLoaderPrefix = null, string? themeLoaderPath = null, bool? forceAssetRedirection = null, bool? forceThemeRedirection = null, Action<IThemeChangedEvent<DataT>>? onThemeChanged = null) where DataT : class, new() {
 		IThemeManager<DataT>? manager;
 		lock ((Mod.Managers as ICollection).SyncRoot) {
 			if (Mod.Managers.TryGetValue(Other, out var mdata)) {
@@ -163,6 +163,17 @@ public class ModAPI : IThemeManagerApi {
 		return manager;
 	}
 
+	public IThemeManager? GetManager(IManifest? forMod = null) {
+		lock ((Mod.Managers as ICollection).SyncRoot) {
+			if (!Mod.Managers.TryGetValue(forMod ?? Other, out var manager)) {
+				return null;
+			}
+
+			return manager.Item2;
+		}
+	}
+
+#if PINTAIL_CAN_OUT
 	public bool TryGetManager([NotNullWhen(true)] out IThemeManager? themeManager, IManifest? forMod = null) {
 		lock((Mod.Managers as ICollection).SyncRoot) {
 			if (!Mod.Managers.TryGetValue(forMod ?? Other, out var manager)) {
@@ -174,8 +185,19 @@ public class ModAPI : IThemeManagerApi {
 			return true;
 		}
 	}
+#endif
 
-	public bool TryGetManager<DataT>([NotNullWhen(true)] out IThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new() {
+	public IThemeManager<DataT>? GetTypedManager<DataT>(IManifest? forMod = null) where DataT : class, new() {
+		lock ((Mod.Managers as ICollection).SyncRoot) {
+			if (!Mod.Managers.TryGetValue(forMod ?? Other, out var manager) || manager.Item1 != typeof(DataT))
+				return null;
+
+			return manager.Item2 as IThemeManager<DataT>;
+		}
+	}
+
+#if PINTAIL_CAN_OUT
+	public bool TryGetTypedManager<DataT>([NotNullWhen(true)] out IThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new() {
 		lock ((Mod.Managers as ICollection).SyncRoot) {
 			if (!Mod.Managers.TryGetValue(forMod ?? Other, out var manager) || manager.Item1 != typeof(DataT)) {
 				themeManager = null;
@@ -186,6 +208,7 @@ public class ModAPI : IThemeManagerApi {
 			return themeManager is not null;
 		}
 	}
+#endif
 
 	#endregion
 
@@ -212,25 +235,16 @@ public class ModAPI : IThemeManagerApi {
 
 	#endregion
 
-	#region Colored SpriteText
+	#region Font-ed SpriteText
 
 	public void DrawSpriteText(SpriteBatch batch, IBmFontData? font, string text, int x, int y, Color? color, float alpha = 1f) {
-		int c = color.HasValue ? CommonHelper.PackColor(color.Value) + 100 : -1;
-
 		if (font is not null)
 			Mod.SpriteTextManager.ApplyFont(null, null, font);
 
-		SpriteText.drawString(batch, text, x, y, alpha: alpha, color: c);
+		SpriteText.drawString(batch, text, x, y, alpha: alpha, color: color);
 
 		if (font is not null)
 			Mod.SpriteTextManager.ApplyNormalFont();
-	}
-
-	[Obsolete("Use the method with a font instead.")]
-	public void DrawSpriteText(SpriteBatch batch, string text, int x, int y, Color? color, float alpha = 1f) {
-		int c = color.HasValue ? CommonHelper.PackColor(color.Value) + 100 : -1;
-
-		SpriteText.drawString(batch, text, x, y, alpha: alpha, color: c);
 	}
 
 	#endregion

@@ -103,7 +103,7 @@ Chinese     | [✓](UIInfoSuite2/i18n/zh.json)
 French      | [↻](UIInfoSuite2/i18n/fr.json)
 German      | [✓](UIInfoSuite2/i18n/de.json)
 Hungarian   | [↻](UIInfoSuite2/i18n/hu.json)
-Italian     | ❑
+Italian     | [✓](UIInfoSuite2/i18n/it.json)
 Japanese    | [✓](UIInfoSuite2/i18n/ja.json)
 Korean      | [↻](UIInfoSuite2/i18n/ko.json)
 [Polish]    | [✓](UIInfoSuite2/i18n/pl.json)

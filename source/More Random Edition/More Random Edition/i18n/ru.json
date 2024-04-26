@@ -32,7 +32,7 @@
 	"fish-mountain-location": "Горы",
 	"fish-beach-location": "Океан",
 	"fish-undergroundmine-location": "копи",
-	"fish-nightmarket-location": "Дно океана",
+	"fish-submarine-location": "Дно океана",
 	"fish-bugland-location": "Bug Lands",
 	"fish-witchswamp-location": "Болото Ведьмы",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "Требуется {{daysToGrow}} дней, чтобы расти, но продолжает производить после этого.",
 	"crop-tooltip-growth-time": "Требуется {{daysToGrow}} дней для созревания.",
 	"crop-tooltip-seasons": "Завод во время: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Можно выращивать только в помещении.",
-	"crop-tooltip-rice-shoot": "Растет быстрее возле воды.",
+	"crop-tooltip-indoor-crop": "Можно выращивать только в помещении.",
+	"crop-tooltip-paddy-crop": "Растет быстрее возле воды.",
 
 	"bundle-random-all": "случайный",
 	"bundle-random-letter": "Английский \"{{letter}}\"",

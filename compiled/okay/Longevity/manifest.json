@@ -1,0 +1,10 @@
+{
+  "Name": "Longevity",
+  "Author": "RTGOAT",
+  "Version": "2.0.4",
+  "Description": "Overhaul player progression with dynamic item pricing, a progressive tax system, and stamina balance!",
+  "UniqueID": "RTGOAT.Longevity",
+  "EntryDll": "Longevity.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:649" ]
+}

@@ -14,19 +14,12 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Reflection;
-using StardewValley.Monsters;
-using StardewDruid.Cast;
-using StardewDruid.Map;
+
 using System.Linq;
-using StardewDruid.Cast.Ether;
-using Force.DeepCloner;
-using StardewDruid.Cast.Weald;
-using static System.Net.Mime.MediaTypeNames;
-using StardewValley.GameData.HomeRenovations;
-using System.Text.Json.Serialization;
-using System.Net.Http.Json;
+
 using StardewModdingAPI;
+
+using StardewDruid.Data;
 
 
 namespace StardewDruid.Event
@@ -40,11 +33,21 @@ namespace StardewDruid.Event
 
         public Vector2 origin;
 
-        public int missiles;
-
         public int counter;
 
         public int radius;
+
+        public int projectile;
+
+        public int projectileIncrements;
+
+        public int projectileTrack;
+
+        public int projectileSpeed;
+
+        public bool projectileSent;
+
+        public int threshold;
 
         public float damageFarmers;
 
@@ -58,45 +61,48 @@ namespace StardewDruid.Event
 
         public int debris;
 
-        public List<TemporaryAnimatedSprite> animations;
-        
-        public List<TemporaryAnimatedSprite> aoes;
+        public List<TemporaryAnimatedSprite> animations = new();
+
+        public TemporaryAnimatedSprite cursor;
 
         public Vector2 impact;
 
-        public StardewValley.Monsters.Monster monster;
+        public StardewDruid.Monster.Boss.Boss boss;
+
+        public List<StardewValley.Monsters.Monster> monsters = new();
 
         public float critical;
 
+        public float criticalModifier;
+
         public bool external;
 
-        public enum barrages
+        public bool local;
+
+        public bool instant;
+
+        public enum spells
         {
+            effect,
+            explode,
             ballistic,
             beam,
-            burn,
-            fireball,
+            missile,
             wisp,
             chaos,
             meteor,
             bolt,
             rockfall,
+            blackhole,
         }
 
-        public barrages type;
+        public spells type;
 
-        public enum indicators
-        {
-            target,
-            stars,
-            fates,
-            death,
-        }
-
-        public indicators indicator;
+        public IconData.cursors indicator;
 
         public enum schemes
         {
+            none,
             fire,
             stars,
             fates,
@@ -106,7 +112,114 @@ namespace StardewDruid.Event
 
         public schemes scheme;
 
-        public SpellHandle(GameLocation Location, Vector2 Destination, Vector2 Origin, int Radius = 2, int Missiles = 1, float Farmers = -1, float Monsters = -1, int Power = -1)
+        public enum effects
+        {
+            sap,
+            drain,
+            knock,
+            burn,
+            homing,
+            aiming,
+            push,
+            warp,
+            gravity,
+            harvest,
+            morph,
+            doom,
+        }
+
+        public List<effects> added = new();
+
+        public enum displays
+        {
+            none,
+            Impact,
+            Flashbang,
+            Glare,
+            Sparkle,
+            Blaze,
+            Death,
+
+        }
+
+        public displays display;
+
+        public enum sounds
+        {
+            none,
+            explosion,
+            flameSpellHit,
+            shadowDie,
+
+        }
+
+        public sounds sound;
+        
+        public SpellHandle(Farmer farmer, List<StardewValley.Monsters.Monster> Monsters, float damage)
+        {
+
+            location = farmer.currentLocation;
+
+            origin = farmer.Position;
+
+            destination = Monsters.First().Position;
+
+            radius = 128;
+
+            projectile = 2;
+
+            damageFarmers = -1f;
+
+            damageMonsters = damage;
+
+            impact = destination;
+
+            type = spells.explode;
+
+            indicator = IconData.cursors.none;
+
+            scheme = schemes.none;
+
+            display = displays.none;
+
+            sound = sounds.none;
+
+            monsters = Monsters;
+
+        }
+
+        public SpellHandle(Farmer farmer, Vector2 Destination, int Radius, float damage)
+        {
+
+            location = farmer.currentLocation;
+
+            origin = farmer.Position;
+
+            destination = Destination;
+
+            radius = Radius;
+
+            projectile = 2;
+
+            damageFarmers = -1f;
+
+            damageMonsters = damage;
+
+            impact = destination;
+
+            type = spells.explode;
+
+            indicator = IconData.cursors.none;
+
+            scheme = schemes.none;
+
+            display = displays.none;
+
+            sound = sounds.none;
+
+        }
+
+        public SpellHandle(GameLocation Location, Vector2 Destination, Vector2 Origin, int Radius = 128, float vsFarmers = -1f, float vsMonsters = -1f)
         {
 
             location = Location;
@@ -117,31 +230,23 @@ namespace StardewDruid.Event
 
             radius = Radius;
 
-            damageFarmers = Farmers;
+            projectile = 2;
 
-            damageMonsters = Monsters;
+            damageFarmers = vsFarmers;
 
-            power = Power;
-
-            environment = radius;
-
-            terrain = 0;
-
-            debris = 0;
-
-            missiles = Missiles;
-
-            animations = new();
-
-            aoes = new();
+            damageMonsters = vsMonsters;
 
             impact = Destination;
 
-            type = barrages.fireball;
+            type = spells.explode;
 
-            scheme = schemes.fire;
+            indicator = IconData.cursors.none;
 
-            indicator = indicators.target;
+            scheme = schemes.none;
+
+            display = displays.none;
+
+            sound = sounds.none;
 
         }
 
@@ -158,6 +263,8 @@ namespace StardewDruid.Event
                 Convert.ToInt32(type),
                 Convert.ToInt32(scheme),
                 Convert.ToInt32(indicator),
+                Convert.ToInt32(display),
+                projectile,
             };
 
             QueryData query = new()
@@ -176,31 +283,164 @@ namespace StardewDruid.Event
         
         }
 
+        public SpellHandle(GameLocation Location, List<int> spellData)
+        {
+
+            location = Location;
+
+            destination = new Vector2(spellData[0], spellData[1]);
+
+            origin = new Vector2(spellData[2], spellData[3]);
+
+            radius = spellData[4];
+
+            impact = destination;
+
+            damageFarmers = -1;
+
+            damageMonsters = -1;
+
+            external = true;
+
+            type = (spells)Enum.Parse(typeof(spells), spellData[5].ToString());
+
+            scheme = (schemes)Enum.Parse(typeof(schemes), spellData[6].ToString());
+
+            indicator = (IconData.cursors)Enum.Parse(typeof(IconData.cursors), spellData[7].ToString());
+
+            display = (displays)Enum.Parse(typeof(displays), spellData[8].ToString());
+
+            sound = sounds.none;
+
+            projectile = spellData[9];
+
+        }
+
         public bool Update()
         {
 
             counter++;
 
-            if (counter == 1 && Context.IsMultiplayer && !external)
+            if (counter == 1) 
+            {
+                
+                if(Context.IsMultiplayer && !external && !local){
+
+                    SpellQuery();
+                
+                }
+                
+            }
+
+            if(counter % 10 == 0)
             {
 
-                SpellQuery();
+                if(boss != null)
+                {
+                    
+                    if (!ModUtility.MonsterVitals(boss, location))
+                    {
+
+                        Shutdown();
+
+                        return false;
+
+                    }
+
+                }
+
+                if(monsters.Count > 0)
+                {
+
+                    for(int m = monsters.Count - 1; m >= 0; m--)
+                    {
+
+                        if (!ModUtility.MonsterVitals(monsters[m], location))
+                        {
+
+                            monsters.Remove(monsters[m]);
+
+                        }
+
+                    }
+
+                }
 
             }
 
             switch (type)
             {
 
-                case barrages.meteor:
+                case spells.effect:
 
                     if (counter == 1)
                     {
 
-                        indicator = indicators.stars;
+                        ApplyEffects();
 
-                        scheme = schemes.stars;
+                    }
 
-                        origin = destination - new Vector2 (320, 640);
+                    if (counter == 120)
+                    {
+
+                        Shutdown();
+
+                        return false;
+
+                    }
+
+                    return true;
+
+
+                case spells.explode:
+
+                    if (counter == 1)
+                    {
+                        if (instant)
+                        {
+
+                            counter = 15;
+
+                        }
+                        else
+                        {
+                            
+                            TargetCircle(0.35f);
+
+                        }
+
+                    }
+
+                    if (counter == 15)
+                    {
+
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters,new());
+
+                        RadialExplode();
+
+                        RadialDisplay();
+
+                        ApplyEffects();
+
+                    }
+
+                    if (counter == 120)
+                    {
+
+                        Shutdown();
+
+                        return false;
+
+                    }
+
+                    return true;
+
+                case spells.meteor:
+
+                    if (counter == 1)
+                    {
+
+                        origin = destination - new Vector2(320, 640);
 
                         LaunchMissile();
 
@@ -213,20 +453,12 @@ namespace StardewDruid.Event
                     if (counter == 60)
                     {
 
-                        RadialDamage();
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters, new());
 
-                        LightRadius(destination);
+                        RadialExplode();
 
-                        RadialImpact(radius);
+                        RadialDisplay();
 
-                        if (radius > 5)
-                        {
-                            Game1.currentLocation.playSound("explosion");
-                        }
-                        else
-                        {
-                            Game1.currentLocation.playSound("flameSpellHit");
-                        }
                         return true;
 
                     }
@@ -243,21 +475,14 @@ namespace StardewDruid.Event
                     return true;
 
 
-                case barrages.bolt:
+                case spells.bolt:
 
                     if (counter == 1)
                     {
 
                         LaunchBolt();
 
-                        return true;
-
-                    }
-
-                    if (counter == 15)
-                    {
-
-                        LocalDamage();
+                        ApplyDamage(impact, radius, -1, damageMonsters, new());
 
                         return true;
 
@@ -274,7 +499,7 @@ namespace StardewDruid.Event
 
                     return true;
 
-                case barrages.rockfall:
+                case spells.rockfall:
 
                     if (counter == 1)
                     {
@@ -288,9 +513,11 @@ namespace StardewDruid.Event
                     if (counter == 36)
                     {
 
-                        RadialDamage();
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters, new());
 
-                        RadialImpact();
+                        RadialExplode();
+
+                        ModUtility.AnimateImpact(location, impact, 1);
 
                         RockDebris();
 
@@ -309,45 +536,37 @@ namespace StardewDruid.Event
 
                     return true;
 
-                case barrages.ballistic:
+                case spells.ballistic:
 
-                    
+
                     if (counter == 1)
                     {
-                        
-                        AdjustTarget();
-                        
-                        TargetCircle(2);
 
-                        return true;
+                        Scheme();
+
+                        TargetCircle(3);
 
                     }
 
-                    if(counter == 60)
+                    if (counter >= 60 && counter % 20 == 0)
                     {
 
-                        LaunchMissile();
-
-                        return true;
-
-                    }
-
-                    if (counter == 120)
-                    {
-
-                        RadialDamage();
-
-                        LightRadius(destination);
-
-                        RadialImpact();
-
-                        Game1.currentLocation.playSound("flameSpellHit",destination,800+new Random().Next(7)*100);
-
-                        return true;
+                        MissileOnScreen();
 
                     }
 
                     if (counter == 180)
+                    {
+
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters, new());
+
+                        RadialExplode();
+
+                        RadialDisplay();
+
+                    }
+
+                    if (counter == 240)
                     {
 
                         Shutdown();
@@ -358,113 +577,115 @@ namespace StardewDruid.Event
 
                     return true;
 
-                case barrages.burn:
+
+                case spells.missile:
 
                     if (counter == 1)
                     {
+                        Scheme();
 
-                        BurnCircle();
+                        AdjustMissile();
 
-                        BurnImpacts();
-
-                        LightRadius(origin);
-
-                        return true;
-
-                    }
-
-                    if (counter == 180)
-                    {
-
-                        Shutdown();
-
-                        return false;
-
-                    }
-
-                    if (counter % 60 == 0)
-                    {
-
-                        BurnImpacts();
-
-                        LightRadius(origin);
-
-                    }
-
-                    return true;
-
-                case barrages.fireball:
-
-                    if (counter == 1)
-                    {
-                        AdjustTarget();
                         TargetCircle();
-                        return true;
+
+                        AdjustTarget();
+
+                        InstantFire();
+
+                    }
+                    else if (counter < 30)
+                    {
+
+                        AdjustTarget();
+
                     }
 
                     if (counter == 30)
                     {
 
+                        AdjustSpeed();
+
                         LaunchMissile();
 
                         return true;
+                    
                     }
 
-                    if (counter == 40)
+                    if(counter < 300)
                     {
 
-                        GrazeDamage(1,4);
+                        if(counter % 20 == 0)
+                        {
 
-                        return true;
+                            GrazeDamage(projectileTrack,projectileIncrements);
+
+                            projectileTrack++;
+
+                        }
 
                     }
 
-                    if (counter == 70)
+                    if (counter == 300)
                     {
-                        RadialDamage();
 
-                        LightRadius(destination);
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters, new());
 
-                        RadialImpact(radius-1);
+                        RadialExplode();
 
-                        return true;
+                        RadialDisplay();
 
                     }
 
-                    if (counter == 120)
+                    if (counter == 360)
                     {
 
                         Shutdown();
 
                         return false;
                     }
-                 
+
                     return true;
 
-                case barrages.beam:
+                case spells.beam:
 
                     if (counter == 1)
                     {
+                        Scheme();
+
+                        TargetCircle();
 
                         LaunchBeam();
 
                         LightRadius(origin);
 
-                        return true;
-
                     }
 
-                    if (counter == 30)
+                    if (counter == 45)
                     {
 
-                        RadialDamage();
+                        GrazeDamage(1, 3, 3);
 
-                        LightRadius(destination);
-
-                        return true;
                     }
 
-                    if (counter == 90)
+                    if (counter == 60)
+                    {
+
+                        GrazeDamage(1, 3, 3);
+
+                    }
+
+                    if (counter == 75)
+                    {
+
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters, new());
+
+                        RadialDisplay();
+
+                        ApplyEffects();
+
+                    }
+
+                    if (counter == 130)
                     {
 
                         Shutdown();
@@ -475,27 +696,28 @@ namespace StardewDruid.Event
 
                     return true;
 
-                case barrages.chaos:
+                case spells.chaos:
 
                     if (counter == 1)
                     {
 
                         LaunchChaos();
 
-                        return true;
+                    }
+
+                    if (counter == 10)
+                    {
+
+                        GrazeDamage(1, 2);
 
                     }
 
-                    if (counter == 30)
+                    if (counter == 15)
                     {
 
-                        RadialDamage();
+                        ApplyDamage(impact, radius, damageFarmers, damageMonsters, new());
 
-                        LightRadius(destination);
-
-                        RadialImpact(3);
-
-                        return true;
+                        RadialDisplay();
 
                     }
 
@@ -510,10 +732,103 @@ namespace StardewDruid.Event
 
                     return true;
 
+                case spells.blackhole:
+
+                    if (counter == 1)
+                    {
+
+                        LaunchBlackhole();
+
+                    }
+
+                    if (counter == 60)
+                    {
+
+                        ApplyEffects();
+
+                    }
+
+                    if (counter == 300)
+                    {
+
+                        Shutdown();
+
+                        return false;
+
+                    }
+
+                    return true;
 
             }
 
             return true;
+        }
+
+        public void Scheme()
+        {
+
+            switch (type)
+            {
+
+                case spells.ballistic:
+
+                    projectileIncrements = 6;
+
+                    switch (scheme)
+                    {
+
+                        case schemes.ether:
+
+                            indicator = IconData.cursors.blueTarget;
+
+                            break;
+
+                        case schemes.death:
+
+                            indicator = IconData.cursors.death;
+
+                            break;
+
+                        default:
+
+                            indicator = IconData.cursors.redTarget;
+
+                            break;
+
+                    }
+
+                    break;
+
+                default:
+
+                    switch (scheme)
+                    {
+
+                        case schemes.ether:
+
+                            indicator = IconData.cursors.blueArrow;
+
+                            break;
+
+                        case schemes.death:
+
+                            indicator = IconData.cursors.death;
+
+                            break;
+
+                        default:
+
+                            indicator = IconData.cursors.redArrow;
+
+                            break;
+
+                    }
+
+                    break;
+
+            }
+
+
         }
 
         public void Shutdown()
@@ -531,45 +846,167 @@ namespace StardewDruid.Event
 
             }
 
-            if (aoes.Count > 0)
-            {
+        }
 
-                foreach (TemporaryAnimatedSprite animatedSprite in animations)
+        // ========================================= setup
+
+        public void AdjustMissile()
+        {
+            
+            if (!added.Contains(effects.aiming))
+            {
+                float range = Vector2.Distance(origin, impact);
+
+                if (range < 192)
                 {
 
-                    location.temporarySprites.Remove(animatedSprite);
+                    Vector2 diff = ((impact - origin) / Vector2.Distance(origin, impact)) * 192;
+
+                    impact = origin + diff;
+
+                }
+
+                if (range > 192 * 6)
+                {
+
+                    Vector2 diff = ((impact - origin) / Vector2.Distance(origin, impact)) * (192 * 6);
+
+                    impact = origin + diff;
 
                 }
 
             }
+
         }
-        
-        public void TargetCircle(int duration = 1)
+
+
+        public void MissileOnScreen()
         {
 
-            TemporaryAnimatedSprite innerCircle = ModUtility.AnimateCursor(location, destination, indicator.ToString(), duration*1000);
+            if (projectileSent)
+            {
+                return;
+
+            }
+
+            origin = impact - new Vector2(0, 192 * projectileIncrements);
+
+            if (Utility.isOnScreen(origin,0))
+            {
+
+                LaunchMissile();
+
+                return;
+
+            }
+
+            projectileIncrements--;
+
+        }
+
+
+        public void TargetCircle(float duration = 1)
+        {
+
+            if(indicator == IconData.cursors.none)
+            {
+
+                return;
+
+            }
+
+            TemporaryAnimatedSprite innerCircle = Mod.instance.iconData.CursorIndicator(location, impact, indicator, duration * 1000);
+
+            if(type == spells.missile || type == spells.beam)
+            {
+
+                innerCircle.rotationChange = 0f;
+
+                Vector2 diff = (impact - origin);
+
+                float rotate = (float)Math.Atan2(diff.Y, diff.X);
+
+                innerCircle.rotation = rotate;
+
+            }
 
             animations.Add(innerCircle);
 
+            cursor = innerCircle;
+
         }
 
-        public void LightRadius(Vector2 source)
+        public void AdjustTarget()
         {
 
-            TemporaryAnimatedSprite lightCircle = new(23, 200f, 6, 1, source, false, Game1.random.NextDouble() < 0.5)
+            if (added.Contains(effects.aiming) && !external)
             {
-                texture = Game1.mouseCursors,
-                light = true,
-                lightRadius = 3f,
-                lightcolor = Color.Black,
-                alphaFade = 0.03f,
-                Parent = location,
-            };
 
-            location.temporarySprites.Add(lightCircle);
+                Vector2 adjust = Vector2.Zero;
 
-            animations.Add(lightCircle);
+                if (damageMonsters > 0 && monsters.Count > 0)
+                {
 
+                    if (ModUtility.MonsterVitals(monsters.First(), location))
+                    {
+
+                        adjust = monsters.First().Position - impact;
+
+                    }
+
+                }
+
+                if (adjust != Vector2.Zero)
+                {
+
+                    impact += adjust;
+
+                    if (cursor != null)
+                    {
+
+                        cursor.position += adjust;
+
+                        float rotate = (float)Math.Atan2(adjust.Y, adjust.X);
+
+                        cursor.rotation += rotate;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        public void InstantFire(int counterUpdate = 30)
+        {
+
+            if (instant)
+            {
+
+                counter = counterUpdate;
+
+            }
+
+        }
+
+        public void AdjustSpeed()
+        {
+
+            if(projectileSpeed == 0)
+            {
+
+                projectileSpeed = 1;
+
+            }
+
+            float distance = Vector2.Distance(impact, origin);
+
+            projectileIncrements = (int)(distance / (192 * projectileSpeed));
+
+            projectileTrack = 1;
+
+            counter = 300 - (projectileIncrements * 20);
 
         }
 
@@ -579,220 +1016,6 @@ namespace StardewDruid.Event
             if(id == "ether") { return "Blue"; }
 
             return "Red";
-
-        }
-
-        public void BurnCircle()
-        {
-
-            List<Vector2> impactVectors;
-            
-            Dictionary<Vector2,TemporaryAnimatedSprite> burnSprites = new();
-
-            string colour = ColourSchemes(scheme.ToString());
-
-            Texture2D flameTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", colour+"Embers.png"));
-
-            for (int i = 0; i < Math.Min(3,radius + 1); i++)
-            {
-
-                impactVectors = ModUtility.GetTilesWithinRadius(location, new Vector2((int)(destination.X/64),(int)(destination.Y/64)), i);
-
-                foreach (Vector2 vector in impactVectors)
-                {
-
-                    Vector2 position = new((vector.X * 64), (vector.Y * 64));
-
-                    TemporaryAnimatedSprite burnSprite =  new(0, 150, 4, 8, position, false, false)
-                    {
-
-                        sourceRect = new(0, i * 32, 32, 32),
-
-                        sourceRectStartingPos = new(0, i * 32),
-
-                        texture = flameTexture,
-
-                        scale = 2f,
-
-                        extraInfoForEndBehavior = 99999,
-
-                        layerDepth = vector.Y / 10000,
-
-                        alpha = 0.5f,
-
-                    };
-
-                    burnSprites.Add(vector,burnSprite);
-
-                }
-
-            }
-
-            for (int i = location.temporarySprites.Count - 1; i >= 0; i--)
-            {
-
-                TemporaryAnimatedSprite sprite = location.temporarySprites.ElementAt(i);
-
-                if (sprite.extraInfoForEndBehavior == 99999)
-                {
-
-                    Vector2 localVector;
-
-                    //localVector = new((int)(sprite.Position.X / 64), (int)(sprite.Position.Y / 64));
-
-                    localVector = new((int)((sprite.Position.X) / 64), (int)((sprite.Position.Y) / 64));
-
-                    if (burnSprites.ContainsKey(localVector))
-                    {
-
-                        if(sprite.sourceRect.Y < burnSprites[localVector].sourceRect.Y)
-                        {
-                            burnSprites[localVector].sourceRect = sprite.sourceRect;
-                            burnSprites[localVector].sourceRectStartingPos = sprite.sourceRectStartingPos;
-                            burnSprites[localVector].Position = sprite.Position;
-                            burnSprites[localVector].timer = sprite.timer;
-                        }
-
-                        location.temporarySprites.Remove(sprite);
-
-                    }
-                    else
-                    {
-
-                        aoes.Add(sprite);
-
-                    }
-
-                }
-
-            }
-
-            foreach(KeyValuePair< Vector2,TemporaryAnimatedSprite> spritePair in burnSprites)
-            {
-
-                location.temporarySprites.Add(spritePair.Value);
-
-                aoes.Add(spritePair.Value);
-
-            }
-
-        }
-
-        public void BurnImpacts()
-        {
-
-            if(external) { return; }
-
-            List<Vector2> burnVectors = new();
-
-            for (int i = aoes.Count - 1; i >= 0; i--)
-            {
-
-                TemporaryAnimatedSprite sprite = aoes.ElementAt(i);
-
-                if (!location.temporarySprites.Contains(sprite))
-                {
-
-                    aoes.RemoveAt(i);
-
-                    continue;
-
-                }
-
-                Vector2 localVector = new((int)(sprite.Position.X / 64), (int)(sprite.Position.Y / 64));
-
-                burnVectors.Add(localVector*64);
-
-            }
-
-            if (!Mod.instance.eventRegister.ContainsKey("immolate"))
-            {
-
-                new Immolate(Game1.player.Position).EventTrigger();
-
-            }
-
-            Immolate immolateEvent = Mod.instance.eventRegister["immolate"] as Immolate;
-
-            immolateEvent.expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 10;
-
-            if (damageFarmers > 0)
-            {
-
-                List<Farmer> farmerVictims = new();
-
-                foreach(Vector2 vector in burnVectors)
-                {
-                    
-                    List<Farmer> foundVictims = ModUtility.FarmerProximity(location, vector, radius, true);
-
-                    if(foundVictims.Count > 0)
-                    {
-
-                        foreach(Farmer found in foundVictims)
-                        {
-
-                            if (!farmerVictims.Contains(found))
-                            {
-
-                                farmerVictims.Add(found);
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                foreach(Farmer victim in  farmerVictims)
-                {
-
-                    if(immolateEvent.farmerVictims.ContainsKey(victim))
-                    {
-
-                        immolateEvent.farmerVictims[victim].timer = 3;
-
-                        immolateEvent.farmerVictims[victim].damage = (int)damageFarmers;
-
-                    }
-                    else
-                    {
-
-                        immolateEvent.farmerVictims.Add(victim, new((int)damageFarmers));
-                    
-                    }
-
-                }
-
-            }
-
-            if (damageMonsters > 0)
-            {
-
-                List<StardewValley.Monsters.Monster> monsterVictims = ModUtility.MonsterProximity(location, burnVectors, radius, true);
-
-                foreach (StardewValley.Monsters.Monster victim in monsterVictims)
-                {
-
-                    if (immolateEvent.monsterVictims.ContainsKey(victim))
-                    {
-
-                        immolateEvent.monsterVictims[victim].timer = 3;
-
-                        immolateEvent.monsterVictims[victim].damage = (int)damageMonsters;
-
-                    }
-                    else
-                    {
-
-                        immolateEvent.monsterVictims.Add(victim, new((int)damageMonsters));
-
-                    }
-
-                }
-
-            }
 
         }
 
@@ -834,73 +1057,62 @@ namespace StardewDruid.Event
 
         }
 
-        public Rectangle OverlayRectangles(string id)
+        public IconData.cursors SchemeCursor(schemes schemeId)
         {
 
-            Microsoft.Xna.Framework.Rectangle rect = new(-1, 0, 32, 32);
-
-            switch (id)
+            switch (schemeId.ToString())
             {
 
                 case "stars":
 
-                    rect = new(0, 32, 32, 32);
-
-                    break;
+                    return IconData.cursors.comet;
 
                 case "fates":
 
-                    rect = new(96, 64, 32, 32);
-
-                    break;
+                    return IconData.cursors.fatesCharge;
 
             }
 
-            return rect;
+            return IconData.cursors.none;
 
         }
+        
+        // ========================================= start
 
         public void LaunchBolt()
         {
             
-            ModUtility.AnimateBolt(location, new Vector2(destination.X, destination.Y - 64), 600 + new Random().Next(1, 8) * 100);
-
-        }
-
-        public void AdjustTarget(int threshold = 384)
-        {
-
-            if (Vector2.Distance(origin, destination) < threshold)
-            {
-
-                Vector2 diff = ((destination - origin) / Vector2.Distance(origin, destination)) * threshold;
-
-                destination = origin + diff;
-
-                impact = destination;
-
-            }
+            ModUtility.AnimateBolt(location, new Vector2(destination.X, destination.Y - 64));
 
         }
 
         public void LaunchMissile()
         {
 
+            projectileSent = true;
+
             Game1.currentLocation.playSound("fireball");
 
             float targetDepth = location.IsOutdoors ? (destination.Y / 640000) + 0.00001f : 999f;
 
-            Vector2  diff = (destination - origin);
-            
-            float rotate = (float)Math.Atan2(diff.Y, diff.X);
+            Vector2 diff = (impact - origin);
 
-            Vector2 motion = diff / 900;
+            if (projectileIncrements == 0)
+            {
+
+                projectileIncrements = 3;
+
+            }
+
+            Vector2 motion = diff / (projectileIncrements * 300);
+
+            float rotate = (float)Math.Atan2(diff.Y, diff.X);
 
             Rectangle rect = MissileRectangles(scheme.ToString());
 
-            Vector2 setat = origin - (new Vector2(48,48)*radius);
+            Vector2 setat = origin - (new Vector2(48, 48) * projectile);
 
-            TemporaryAnimatedSprite missile = new(0, 75, 4, 3, setat, false, false)
+            TemporaryAnimatedSprite missile = new(0, 75, 4, projectileIncrements, setat, false, false)
             {
 
                 sourceRect = rect,
@@ -909,7 +1121,7 @@ namespace StardewDruid.Event
 
                 texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Missiles.png")),
 
-                scale = radius,
+                scale = projectile,
 
                 layerDepth = targetDepth,
 
@@ -927,27 +1139,29 @@ namespace StardewDruid.Event
 
             animations.Add(missile);
 
-            Rectangle overlay = OverlayRectangles(scheme.ToString());
+            IconData.cursors cursorId = SchemeCursor(scheme);
 
-            if(overlay.X == -1)
+            if(cursorId == IconData.cursors.none)
             {
 
                 return;
 
             }
 
-            Vector2 setattwo = origin - (new Vector2(16, 16) * radius);
+            Vector2 setattwo = origin - (new Vector2(16, 16) * projectile);
 
-            TemporaryAnimatedSprite cursorAnimation = new(0, 900, 1, 1, setattwo, false, false)
+            Microsoft.Xna.Framework.Rectangle cursorRect = Mod.instance.iconData.CursorRect(cursorId);
+
+            TemporaryAnimatedSprite cursorAnimation = new(0, 300 * projectileIncrements, 1, 1, setattwo, false, false)
             {
 
-                sourceRect = overlay,
+                sourceRect = cursorRect,
 
-                sourceRectStartingPos = new Vector2(overlay.X, overlay.Y),
+                sourceRectStartingPos = new Vector2(cursorRect.X, cursorRect.Y),
 
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Cursors.png")),
+                texture = Mod.instance.iconData.cursorTexture,
 
-                scale = radius,
+                scale = projectile,
 
                 layerDepth = targetDepth + 0.0001f,
 
@@ -972,13 +1186,19 @@ namespace StardewDruid.Event
 
             Texture2D beamTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Laser.png"));
 
-            Vector2 diff = (destination - origin) / Vector2.Distance(origin, destination) * 384;
+            Vector2 diff = (destination - origin) / Vector2.Distance(origin, destination);
+
+            Vector2 middle = diff * 336;
+
+            impact = origin + (diff * 560);
+
+            cursor.position = origin + (diff * 640) - new Vector2(16,16);
 
             float rotate = (float)Math.Atan2(diff.Y, diff.X);
 
-            Vector2 setPosition = origin + diff - new Vector2(320,64);
+            Vector2 setPosition = origin + middle - new Vector2(320,64);
 
-            TemporaryAnimatedSprite beam = new(0, 125f, 8, 1, setPosition, false, false)
+            TemporaryAnimatedSprite beam = new(0, 125f, 12, 1, setPosition, false, false)
             {
                 sourceRect = new(0, 0, 160, 32),
                 sourceRectStartingPos = new Vector2(0.0f, 0.0f),
@@ -987,7 +1207,7 @@ namespace StardewDruid.Event
                 timeBasedMotion = true,
                 layerDepth = 999f,
                 rotation = rotate,
-                alpha = 0.75f,
+                alpha = 0.65f,
 
             };
 
@@ -1004,21 +1224,17 @@ namespace StardewDruid.Event
 
             Vector2 ratio = (destination - origin) / Vector2.Distance(origin, destination);
 
-            Vector2 diff = ratio * 240;
+            Vector2 diff = ratio * 192;
 
-            Vector2 terminus = origin + (ratio * 360);
-
-            Vector2 zone = new((int)(terminus.X / 64), (int)(terminus.Y / 64));
-
-            radius = 4;
+            impact = origin + (ratio * 384);
 
             float rotate = (float)Math.Atan2(diff.Y, diff.X);
 
-            Vector2 setPosition = origin + diff - new Vector2(240, 96);
+            Vector2 setPosition = origin + diff - new Vector2(192, 96);
 
-            TemporaryAnimatedSprite beam = new(0, 120f, 5, 1, setPosition, false, false)
+            TemporaryAnimatedSprite beam = new(0, 75f, 6, 1, setPosition, false, false)
             {
-                sourceRect = new(0, 0, 160, 64),
+                sourceRect = new(0, 0, 128, 64),
                 sourceRectStartingPos = new Vector2(0.0f, 0.0f),
                 texture = beamTexture,
                 scale = 3f,
@@ -1034,127 +1250,358 @@ namespace StardewDruid.Event
 
         }
 
-        public void RadialDamage(int hit = 0)
-        {
-
-            int zone = radius;
-
-            if (type == barrages.burn)
-            {
-                zone = radius - 1;
-            }
-
-            if (damageFarmers > 0)
-            {
-
-                ModUtility.DamageFarmers(location, ModUtility.FarmerProximity(location, impact, zone, true), (int)damageFarmers, monster);
-                
-            }
-
-            if (damageMonsters > 0)
-            {
-                    
-                ModUtility.DamageMonsters(location, ModUtility.MonsterProximity(location, new() { impact}, zone, true), Game1.player, (int)damageMonsters, true);
-
-            }
-
-            if (power > 0)
-            {
-
-                ModUtility.Explode(location, impact/64, Game1.player, environment, power);
-
-            }
-
-            if(terrain > 0)
-            {
-                
-                ModUtility.Explode(location, impact/64, Game1.player, terrain);
-
-            }
-
-        }
-
-        public void GrazeDamage(int piece, int division)
-        {
-
-            Vector2 diff = (destination - origin) / division * piece;
-
-            Vector2 current = origin + diff;
-
-            int zone = radius / 2;
-
-            if (damageFarmers > 0)
-            {
-
-                ModUtility.DamageFarmers(location, ModUtility.FarmerProximity(location, current, zone, true), (int)damageFarmers, monster);
-
-            }
-
-            if (damageMonsters > 0)
-            {
-
-                ModUtility.DamageMonsters(location, ModUtility.MonsterProximity(location, new() { current }, zone, true), Game1.player, (int)damageMonsters, true);
-
-            }
-
-        }
-
-        public void LocalDamage()
-        {
-
-            int damageApplied = (int)(damageMonsters * 0.7);
-
-            bool critApplied = false;
-
-            float critDamage = ModUtility.CalculateCritical(damageApplied, critical);
-
-            if (critDamage > 0)
-            {
-
-                damageApplied = (int)critDamage;
-
-                critApplied = true;
-
-            }
-
-            List<int> diff = ModUtility.CalculatePush(location, monster, Game1.player.Position, 64);
-
-            ModUtility.HitMonster(location, Game1.player, monster, damageApplied, critApplied, diffX: diff[0], diffY: diff[1]);
-
-        }
-
-        public void RadialImpact(int reach = 1)
-        {
-
-            ModUtility.AnimateImpact(location, impact, reach);
-
-        }
-
         public void LaunchRockfall()
         {
 
-            List<int> indexes = Map.SpawnData.RockFall(location, Game1.player, Mod.instance.rockCasts[Mod.instance.rite.castLocation.Name]);
+            List<int> indexes = SpawnData.RockFall(location, Game1.player, 20 - (Mod.instance.PowerLevel * 2));
 
             int objectIndex = indexes[0];
 
             int scatterIndex = indexes[1];
 
-            if(debris == 1)
+            if (debris == 1)
             {
 
                 debris = indexes[2];
 
             }
 
-            ModUtility.AnimateRockfall(location, destination/64, 0, objectIndex, scatterIndex);
+            ModUtility.AnimateRockfall(location, destination / 64, 0, objectIndex, scatterIndex);
 
         }
 
+        public void LaunchBlackhole()
+        {
+
+            Texture2D gravity = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Gravity.png"));
+
+            TemporaryAnimatedSprite startAnimation = new(0, 1000f, 1, 1, origin, false, false)
+            {
+
+                sourceRect = new(0, 0, 64, 64),
+
+                sourceRectStartingPos = new Vector2(0, 0),
+
+                texture = gravity,
+
+                scale = 2f,
+
+                scaleChange = 0.002f,
+
+                layerDepth = location.IsOutdoors ? (impact.Y / 640000) + 0.00001f : 999f,
+
+                motion = (impact - origin) / 1000 - (new Vector2(96,96) / 1000),
+
+                timeBasedMotion = true,
+
+                rotationChange = -0.06f,
+
+                alpha = 0.75f,
+
+            };
+
+            location.temporarySprites.Add(startAnimation);
+
+            animations.Add(startAnimation);
+
+            TemporaryAnimatedSprite staticAnimation = new(0, 99999f, 1, 1, impact - new Vector2(96, 96), false, false)
+            {
+
+                sourceRect = new(0, 0, 64, 64),
+
+                sourceRectStartingPos = new Vector2(0, 0),
+
+                texture = gravity,
+
+                scale = 4f,
+
+                layerDepth = location.IsOutdoors ? (impact.Y / 640000) + 0.00001f : 990f,
+
+                rotationChange = -0.06f,
+
+                timeBasedMotion = true,
+
+                delayBeforeAnimationStart = 1000,
+
+                alpha = 0.75f,
+
+            };
+
+            location.temporarySprites.Add(staticAnimation);
+
+            animations.Add(staticAnimation);
+
+            TemporaryAnimatedSprite bandAnimation = new(0, 9999f, 1, 1, impact - new Vector2(96, 96), false, false)
+            {
+
+                sourceRect = new(64, 0, 64, 64),
+
+                sourceRectStartingPos = new Vector2(64, 0),
+
+                texture = gravity,
+
+                scale = 4f,
+
+                layerDepth = location.IsOutdoors ? (impact.Y / 640000) + 0.00002f : 991f,
+
+                timeBasedMotion = true,
+
+                delayBeforeAnimationStart = 1000,
+
+                alpha = 0.75f,
+
+            };
+
+            location.temporarySprites.Add(bandAnimation);
+
+            animations.Add(bandAnimation);
+
+        }
+
+
+        // ========================================= end
+
+        public void RadialDisplay()
+        {
+
+            LightRadius(impact);
+
+            if (display != displays.none)
+            {
+
+                ModUtility.AnimateImpact(location, impact, (int)(radius/64) - 1, 0, display.ToString());
+
+            }
+
+            if(sound != sounds.none)
+            {
+
+                Game1.currentLocation.playSound(sound.ToString(), null, 800 + new Random().Next(7) * 100);
+
+            }
+
+        }
+
+        public void LightRadius(Vector2 source)
+        {
+
+            TemporaryAnimatedSprite lightCircle = new(23, 200f, 6, 1, source, false, Game1.random.NextDouble() < 0.5)
+            {
+                texture = Game1.mouseCursors,
+                light = true,
+                lightRadius = 3f,
+                lightcolor = Color.Black,
+                alphaFade = 0.03f,
+                Parent = location,
+            };
+
+            location.temporarySprites.Add(lightCircle);
+
+            animations.Add(lightCircle);
+
+
+        }
+
+        public void GrazeDamage(int piece, int division, float reach = -1)
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            if(reach == -1)
+            {
+
+                reach = projectile;
+
+            }
+
+            Vector2 diff = (impact - origin) / division * piece;
+
+            Vector2 current = origin + diff;
+
+            ApplyDamage(current, reach * 32, (int)(damageFarmers / 2), (int)(damageMonsters / 2), new());
+
+        }
+
+        public void ApplyDamage(Vector2 position, float reach, float hitfarmers, float hitmonsters, List<StardewValley.Monsters.Monster> individuals)
+        {
+            
+            if (external)
+            {
+
+                return;
+
+            }
+
+            if (hitfarmers > 0 && boss != null)
+            {
+
+                List<Farmer> farmers = ModUtility.FarmerProximity(location, new() { position }, reach + 32, true);
+
+                ModUtility.DamageFarmers(farmers, (int)hitfarmers, boss);
+
+            }
+            
+            if (hitmonsters > 0)
+            {
+
+                if(individuals.Count == 0)
+                {
+
+                    individuals = ModUtility.MonsterProximity(location, new() { position }, reach + 32, true);
+
+                }
+
+                if(individuals.Count == 0)
+                {
+
+                    return;
+
+                }
+
+                bool push = false;
+
+                foreach(effects effect in added)
+                {
+
+                    switch (effect)
+                    {
+
+                        case effects.push:
+
+                            push = true;
+
+                            break;
+
+                    }
+
+                }
+
+                if(critical == 0)
+                {
+                    
+                    critical = 0.1f;
+
+                }
+
+                if(criticalModifier == 0)
+                {
+                    
+                    criticalModifier = 1f;
+
+                }
+
+                ModUtility.DamageMonsters(location, individuals, Game1.player, (int)hitmonsters, critical, criticalModifier, push);
+
+            }
+
+        }
+
+        public void ApplyEffects()
+        {
+
+            foreach (effects effect in added)
+            {
+
+               /* switch (effect)
+                {
+                    case effects.sap:
+
+                        SapEffect();
+
+                        break;
+
+                    case effects.knock:
+                    case effects.doom:
+                    case effects.morph:
+
+                        KnockEffect(effect);
+
+                        break;
+
+                    case effects.burn:
+
+                        BurnEffect();
+
+                        break;
+
+                    case effects.warp:
+
+                        WarpEffect();
+
+                        break;
+
+                    case effects.gravity:
+
+                        GravityEffect();
+
+                        break;
+
+                    case effects.harvest:
+
+                        HarvestEffect();
+
+                        break;
+
+                }*/
+
+            }
+
+
+        }
+
+        public void RadialExplode()
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            if (power > 0)
+            {
+
+                if(environment == 0)
+                {
+
+                    environment = (int)(radius / 64);
+
+                }
+
+                ModUtility.Explode(location, impact / 64, Game1.player, environment, power);
+
+            }
+
+            if (terrain > 0)
+            {
+
+                ModUtility.Reave(location, impact / 64, Game1.player, terrain);
+
+            }
+
+        }
+
+        // ========================================= effects
+
         public void RockDebris()
         {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
             if (debris == 0)
             {
-                
+
                 return;
 
             }
@@ -1163,7 +1610,7 @@ namespace StardewDruid.Event
 
             int rockCut = randomIndex.Next(2);
 
-            int generateAmt = 1 + randomIndex.Next(Mod.instance.virtualPick.UpgradeLevel) / 2;
+            int generateAmt = Math.Max(1, randomIndex.Next(Mod.instance.PowerLevel));
 
             Vector2 targetVector = destination / 64;
 
@@ -1197,14 +1644,272 @@ namespace StardewDruid.Event
 
             }
 
-            if (!Mod.instance.rite.castTask.ContainsKey("masterRockfall"))
+        }
+
+        public void SapEffect()
+        {
+
+            if (external)
             {
 
-                Mod.instance.UpdateTask("lessonRockfall", generateAmt);
+                return;
+
+            }
+
+            int leech = 0;
+
+            int drain = Mod.instance.PowerLevel * 3;
+
+            if (monsters.Count == 0)
+            {
+
+                monsters = ModUtility.MonsterProximity(location, new() { impact }, radius + 32, true);
+
+            }
+
+            foreach (var monster in monsters)
+            {
+
+                if (!ModUtility.MonsterVitals(monster, monster.currentLocation))
+                {
+                    continue;
+                }
+
+                ModUtility.AnimateGlare(monster.currentLocation, monster.Position, Color.Teal);
+
+                Microsoft.Xna.Framework.Rectangle boundingBox = monster.GetBoundingBox();
+
+                Color color = Color.DarkGreen;
+
+                location.debris.Add(new Debris(drain, new Vector2(boundingBox.Center.X + 16, boundingBox.Center.Y), color, 1f, monster));
+
+                leech += drain;
+
+            }
+
+            int num = Math.Min(leech, Mod.instance.rite.caster.MaxStamina - (int)Mod.instance.rite.caster.stamina);
+
+            if (num > 0)
+            {
+
+                Mod.instance.rite.caster.stamina += num;
+
+                Rectangle healthBox = Mod.instance.rite.caster.GetBoundingBox();
+
+                location.debris.Add(
+                    new Debris(
+                        num,
+                        new Vector2(healthBox.Center.X + 16, healthBox.Center.Y),
+                        Color.Teal,
+                        0.75f,
+                        Mod.instance.rite.caster
+                    )
+                );
 
             }
 
         }
+
+        /*public void KnockEffect(effects effect = effects.knock)
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            Cast.Stars.Curse Knockout;
+
+            if (!Mod.instance.eventRegister.ContainsKey("curse"))
+            {
+
+                Knockout = new();
+
+                Knockout.EventTrigger();
+
+            }
+            else
+            {
+
+                Knockout = Mod.instance.eventRegister["curse"] as Curse;
+
+            }
+
+            if (monsters.Count == 0)
+            {
+
+                monsters = ModUtility.MonsterProximity(location, new() { impact }, radius + 32, true);
+
+            }
+
+            foreach (var monster in monsters)
+            {
+
+                Knockout.AddTarget(location, monster, effect.ToString());
+
+            }
+
+
+        }
+
+        public void BurnEffect()
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            Cast.Ether.Immolate immolation;
+
+            if (!Mod.instance.eventRegister.ContainsKey("immolate"))
+            {
+
+                immolation = new();
+
+                immolation.EventTrigger();
+
+            }
+            else
+            {
+
+                immolation = Mod.instance.eventRegister["immolate"] as Immolate;
+
+            }
+
+            int vsFarmers = 0;
+
+            if(damageFarmers > 0)
+            {
+
+                vsFarmers = (int)(damageFarmers / 3);
+
+            }
+
+            int vsMonsters = 0;
+
+            if(damageMonsters > 0)
+            {
+
+                vsMonsters = (int)(damageMonsters / 3);
+
+            }
+
+            immolation.RadialTarget(
+                location,
+                new((int)(impact.X/64),(int)(impact.Y/64)),
+                vsFarmers,
+                vsMonsters,
+                scheme
+            );
+
+        }
+
+        public void WarpEffect()
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            Cast.Fates.WarpStrike warpstrike;
+
+            if (!Mod.instance.eventRegister.ContainsKey("warpstrike"))
+            {
+
+                warpstrike = new();
+
+                warpstrike.EventTrigger();
+
+            }
+            else
+            {
+
+                warpstrike = Mod.instance.eventRegister["warpstrike"] as WarpStrike;
+            }
+
+            if (monsters.Count == 0)
+            {
+
+                monsters = ModUtility.MonsterProximity(location, new() { impact }, radius + 32, true);
+
+            }
+
+            foreach (var monster in monsters)
+            {
+                
+                warpstrike.AddTarget(location, monster, 5);
+
+            }
+
+        }
+
+        public void GravityEffect()
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            Cast.Fates.Gravity gravity;
+
+            if (!Mod.instance.eventRegister.ContainsKey("gravity"))
+            {
+
+                gravity = new();
+
+                gravity.EventTrigger();
+
+            }
+            else
+            {
+
+                gravity = Mod.instance.eventRegister["gravity"] as Gravity;
+            }
+
+            gravity.AddTarget(location, ModUtility.PositionToTile(impact), 4, radius * 2);
+
+        }
+
+        public void HarvestEffect()
+        {
+
+            if (external)
+            {
+
+                return;
+
+            }
+
+            Cast.Fates.Harvest harvest;
+
+            if (!Mod.instance.eventRegister.ContainsKey("harvest"))
+            {
+
+                harvest = new();
+
+                harvest.EventTrigger();
+
+            }
+            else
+            {
+
+                harvest = Mod.instance.eventRegister["harvest"] as Harvest;
+            }
+
+            harvest.AddTarget(location, ModUtility.PositionToTile(impact));
+
+        }*/
 
     }
 

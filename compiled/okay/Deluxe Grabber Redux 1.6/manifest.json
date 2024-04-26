@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Deluxe Grabber Redux 1.6",
   "Author": "Nykal145",
-  "Version": "1.7.5",
+  "Version": "1.9.2",
   "Description": "Allows use of autograbber for harvesting crops, slime balls, fruit trees, bushes, forageable items, and artifact spots.",
   "UniqueID": "Nykal145.DeluxeGrabberRedux16",
   "EntryDll": "DeluxeGrabberRedux.dll",

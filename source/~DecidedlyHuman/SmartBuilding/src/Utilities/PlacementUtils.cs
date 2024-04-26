@@ -445,25 +445,31 @@ namespace SmartBuilding.Utilities
                     }
 
                     return true;
+                case ItemType.Sapling:
+                    if (here.terrainFeatures.ContainsKey(v))
+                    {
+                        this.logger.Log(I18n.SmartBuilding_Warning_ThereMightBeATreeHere(), LogLevel.Trace, true);
+                        return false;
+                    }
+
+                    return i.canBePlacedHere(here, v, CollisionMask.All);
                 case ItemType.Generic:
                     GenericPlaceable
                         : // A goto, I know, gross, but... it works, and is fine for now, until I split out detection logic into methods.
 
                     if (this.config.LessRestrictiveObjectPlacement)
                     {
-                        // If the less restrictive object placement setting is enabled, we first want to check if vanilla logic dictates the object be placeable.
-                        if (Game1.currentLocation.isTileLocationOpen(v))
-                            // It dictates that it is, so we can simply return true.
-                            return true;
-                        // Otherwise, we want to check for an object already present in this location.
-                        if (!here.Objects.ContainsKey(v))
-                            // There is no object here, so we return true, as we should be able to place the object here.
+                        // We want to check if the location's SObject dictionary contains something on this tile.
+                        if (Game1.currentLocation.Objects.ContainsKey(v))
+                            return false;
+                        else
                             return true;
                     }
 
-                    if (Game1.currentLocation.isTileLocationOpen(v))
+                    if (i.canBePlacedHere(here, v, CollisionMask.All))
                         // This is true, so we simply return true.
                         return true;
+
                     // It's false, so we want to warn that placement would be possible if the correct setting were enabled, and there's no object in the tile.
 
                     if (!here.objects.ContainsKey(v))

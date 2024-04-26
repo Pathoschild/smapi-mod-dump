@@ -1,0 +1,7 @@
+{
+    "DisplayName": "Big Fridge",
+    "Description": "Allows you to store even more ingredients for cooking.",
+    "Config_HouseFridgeProgressive_Name": "Progressive House Fridge",
+    "Config_HouseFridgeProgressive_Tooltip": "Enabled: First house upgrade has a Mini-Fridge, second upgrade have a Big Fridge.\nDisabled: Always a big fridge in the house."
+
+}

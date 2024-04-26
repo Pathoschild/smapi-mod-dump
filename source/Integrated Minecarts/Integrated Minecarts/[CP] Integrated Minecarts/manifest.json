@@ -1,0 +1,100 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jibblestein/StardewMods
+**
+*************************************************/
+
+{
+    "Name": "Integrated Minecarts (CP Component)",
+    "Author": "Jibb",
+    "Version": "4.2.1",
+    "Description": "Content Pack for Content Patcher",
+    "UniqueID": "jibb.minecarts",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:11881"],
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    "Dependencies":
+    [{
+            "UniqueID": "Pathoschild.ContentPatcher",
+            "IsRequired": true,
+        }, {
+            "UniqueID": "Rafseazz.RSVCP",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "unclearya.beachminecart",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "unclearya.farmcaveminecart",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "DaisyNiko.SVR3",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lemurkat.JacobEloise.CP",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lemurkat.EastScarpNPCs.CP",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "DaisyNiko.OasisGreenhouse",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lunatyx.LegacyFarmCave",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "maxvollmer.deepwoodsmod",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "dreamygloom.AnnettaNPC",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "dreamy.kickitspot",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "zilch.meadowlands_minecarts",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "flashshifter.immersivefarm2remastered",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "LemurKat.JulietHouse.NPC",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Kana.Grotta",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "flashshifter.GrandpasFarm",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lnh.MiNiFarm",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Tikamin557.CP.SecretWoodsExtraArea",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "A_TK.FarmProjectForaging",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "A_TK.FarmProjectForaging.LE",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Tikamin557.FloodedCave",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Tikamin557.dam",
+            "IsRequired": false,
+        }, {
+            "UniqueID": "Lumisteria.MtVapius",
+            "IsRequired": false,
+        },
+    ]
+}

@@ -1,10 +1,10 @@
 {
     "Name": "StardewMotif",
     "Author": "Vinyks",
-    "Version": "1.1",
-    "Description": "Replaces Abigail, Leah, Sam, Penny nad Robin; with the popular german Vtubers: Luny, Mona, Fin, Laphi and Jinja",
+    "Version": "1.2",
+    "Description": "Replaces Abigail, Leah, Sam, Penny, Robin and Emily; with the popular german Vtubers: Luny, Mona, Fin, Laphi, Jinja and Nayami",
     "UniqueID": "Vinyks.StardewMotif",
     "EntryDll": "StardewMotif.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:14326" ]
 }

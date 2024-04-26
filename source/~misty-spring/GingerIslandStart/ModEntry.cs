@@ -166,8 +166,6 @@ public sealed class ModEntry : Mod
     {
         //create build question from other strings
         var barn = Game1.content.LoadString("Strings/Buildings:Barn_Name");
-        //var build = Game1.content.LoadString("Strings/UI:Carpenter_Build");
-        //var prepend = LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.es ? '¿' : (char?)null;
         
         var woodBuilder = new StringBuilder();
         woodBuilder.AppendFormat(Game1.content.LoadString("Strings/UI:ItemHover_Requirements"), 120, Game1.content.LoadString("Strings/Objects:Wood_Name"));

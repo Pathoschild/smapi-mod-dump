@@ -27,53 +27,38 @@ public class ItemEqualityComparer : IEqualityComparer<Item> {
 	public static readonly ItemEqualityComparer Instance = new();
 
 	public bool Equals(Item? first, Item? second) {
+		// If either one is null, they're only equal if they're both null.
 		if (first is null || second is null)
 			return first == second;
 
+		// Now, the easiest check in 1.6.
+		if (first.QualifiedItemId != second.QualifiedItemId)
+			return false;
+
+		// SObject specific check for preserved items.
+		SObject? fobj = first as SObject;
+		if (fobj is not null) {
+			if (second is not SObject sobj)
+				return false;
+
+			// Make sure they're preserving (or not) the same parent.
+			if (fobj.preservedParentSheetIndex.Value != sobj.preservedParentSheetIndex.Value)
+				return false;
+		}
+
+		// Use the built-in canStackWith method. We need to patch maximumStackSize first
+		// though, just to be sure about things.
 		try {
 			Item_Patches.OverrideStackSize = true;
-			if (first.canStackWith(second))
-				return true;
+			if (! first.canStackWith(second))
+				return false;
 
 		} finally {
 			Item_Patches.OverrideStackSize = false;
 		}
 
-		bool justCompare = false;
-
-		// Equality for other things.
-
-		if (first is CombinedRing || second is CombinedRing)
-			return false;
-
-		if (first is Ring && second is Ring)
-			justCompare = true;
-
-		if (first is Boots fboots && second is Boots sboots) {
-			justCompare = true;
-			if (fboots.indexInColorSheet.Value != sboots.indexInColorSheet.Value)
-				return false;
-		}
-
-		if (first is Clothing fclothes && second is Clothing sclothes) {
-			justCompare = true;
-			if (fclothes.clothesColor.Value != sclothes.clothesColor.Value)
-				return false;
-		}
-
-		if (first is Hat fhat && second is Hat shat) {
-			return fhat.which.Value == shat.which.Value
-				&& first.Name.Equals(second.Name);
-		}
-
-		// Technically we could compare tools, but we're never going to be
-		// recycling those really so...
-
-		if (justCompare)
-			return first.ParentSheetIndex == second.ParentSheetIndex
-				&& first.Name.Equals(second.Name);
-
-		return false;
+		// If we got here, they're probably the same.
+		return true;
 	}
 
 	public int GetHashCode(Item obj) {

@@ -7,12 +7,9 @@ mods:
    AutoShaker
 
 latest commit:
-   commit 2de2dcf13dab457306c53ed2e85e16a83860dadb
+   commit bdada09c5352aa3e17ee31071b13bd2131f205b2
    Author: Jag <jag3dagster@gmail.com>
-   Date:   Thu Mar 28 18:04:37 2024 -0700
+   Date:   Thu Apr 25 22:22:19 2024 -0700
    
-       chore: Update reference libraries
-       
-       Stardew Valley: 1.6.3
-       SMAPI: 4.0.3
+       feat(contentpacks): Add Stranded Fish content pack
    

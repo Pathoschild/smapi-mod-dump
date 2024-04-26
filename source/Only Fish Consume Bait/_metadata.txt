@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/MercuryVN/OnlyFishConsumeBait
+   Git: https://github.com/MercuryVN/OnlyFishConsumeBait.git
+
+mods:
+   Only Fish Consume Bait
+
+latest commit:
+   commit ac9d782309a6a5ba36fb231a7c3e094ee64a9807
+   Author: MercuryVN <121730147+MercuryVN@users.noreply.github.com>
+   Date:   Fri Apr 19 20:16:18 2024 +0700
+   
+       0.2.0
+   

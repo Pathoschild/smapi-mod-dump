@@ -1,0 +1,8 @@
+{
+  "ModEnabled": true,
+  "SwimAfterAutoPet": true,
+  "EatBeforeSwimming": true,
+  "MaxDistance": 20.0,
+  "ChancePerTick": 0.03,
+  "FriendshipGain": 10
+}

@@ -42,10 +42,12 @@ namespace StardewArchipelago.Items.Unlocks
         public const string PROGRESSIVE_BOOTS = "Progressive Footwear";
         public const string PROGRESSIVE_SLINGSHOT = "Progressive Slingshot";
 
+        private ArchipelagoClient _archipelago;
         private Dictionary<string, Func<ReceivedItem, LetterAttachment>> _unlockables;
 
-        public VanillaUnlockManager()
+        public VanillaUnlockManager(ArchipelagoClient archipelago)
         {
+            _archipelago = archipelago;
             _unlockables = new Dictionary<string, Func<ReceivedItem, LetterAttachment>>();
             RegisterCommunityCenterRepairs();
             RegisterPlayerSkills();
@@ -384,55 +386,110 @@ namespace StardewArchipelago.Items.Unlocks
 
         private LetterAttachment SendProgressiveFarmingLevel(ReceivedItem receivedItem)
         {
+            const Skill skill = Skill.Farming;
+            var apItem = $"{skill} Level";
+            var receivedLevels = _archipelago.GetReceivedItemCount(apItem);
             foreach (var farmer in Game1.getAllFarmers())
             {
-                GiveExperienceToNextLevel(farmer, Skill.Farming);
-                farmer.FarmingLevel = farmer.farmingLevel.Value + 1;
-                farmer.newLevels.Add(new Point((int)Skill.Farming, farmer.farmingLevel.Value));
+                var currentLevel = farmer.farmingLevel.Value;
+                var newLevel = currentLevel + 1;
+                newLevel = Math.Max(0, Math.Min(receivedLevels, newLevel));
+                if (newLevel <= currentLevel)
+                {
+                    continue;
+                }
+
+                GiveExperienceToNextLevel(farmer, skill);
+                farmer.FarmingLevel = newLevel;
+                farmer.newLevels.Add(new Point((int)skill, newLevel));
             }
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveFishingLevel(ReceivedItem receivedItem)
         {
+            const Skill skill = Skill.Fishing;
+            var apItem = $"{skill} Level";
+            var receivedLevels = _archipelago.GetReceivedItemCount(apItem);
             foreach (var farmer in Game1.getAllFarmers())
             {
-                GiveExperienceToNextLevel(farmer, Skill.Fishing);
-                farmer.FishingLevel = farmer.fishingLevel.Value + 1;
-                farmer.newLevels.Add(new Point((int)Skill.Fishing, farmer.fishingLevel.Value));
+                var currentLevel = farmer.fishingLevel.Value;
+                var newLevel = currentLevel + 1;
+                newLevel = Math.Max(0, Math.Min(receivedLevels, newLevel));
+                if (newLevel <= currentLevel)
+                {
+                    continue;
+                }
+
+                GiveExperienceToNextLevel(farmer, skill);
+                farmer.FishingLevel = newLevel;
+                farmer.newLevels.Add(new Point((int)skill, newLevel));
             }
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveForagingLevel(ReceivedItem receivedItem)
         {
+            const Skill skill = Skill.Foraging;
+            var apItem = $"{skill} Level";
+            var receivedLevels = _archipelago.GetReceivedItemCount(apItem);
             foreach (var farmer in Game1.getAllFarmers())
             {
-                GiveExperienceToNextLevel(farmer, Skill.Foraging);
-                farmer.ForagingLevel = farmer.foragingLevel.Value + 1;
-                farmer.newLevels.Add(new Point((int)Skill.Foraging, farmer.foragingLevel.Value));
+                var currentLevel = farmer.foragingLevel.Value;
+                var newLevel = currentLevel + 1;
+                newLevel = Math.Max(0, Math.Min(receivedLevels, newLevel));
+                if (newLevel <= currentLevel)
+                {
+                    continue;
+                }
+
+                GiveExperienceToNextLevel(farmer, skill);
+                farmer.ForagingLevel = newLevel;
+                farmer.newLevels.Add(new Point((int)skill, newLevel));
             }
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveMiningLevel(ReceivedItem receivedItem)
         {
+            const Skill skill = Skill.Mining;
+            var apItem = $"{skill} Level";
+            var receivedLevels = _archipelago.GetReceivedItemCount(apItem);
             foreach (var farmer in Game1.getAllFarmers())
             {
-                GiveExperienceToNextLevel(farmer, Skill.Mining);
-                farmer.MiningLevel = farmer.miningLevel.Value + 1;
-                farmer.newLevels.Add(new Point((int)Skill.Mining, farmer.miningLevel.Value));
+                var currentLevel = farmer.miningLevel.Value;
+                var newLevel = currentLevel + 1;
+                newLevel = Math.Max(0, Math.Min(receivedLevels, newLevel));
+                if (newLevel <= currentLevel)
+                {
+                    continue;
+                }
+
+                GiveExperienceToNextLevel(farmer, skill);
+                farmer.MiningLevel = newLevel;
+                farmer.newLevels.Add(new Point((int)skill, newLevel));
             }
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveCombatLevel(ReceivedItem receivedItem)
         {
+            const Skill skill = Skill.Combat;
+            var apItem = $"{skill} Level";
+            var receivedLevels = _archipelago.GetReceivedItemCount(apItem);
             foreach (var farmer in Game1.getAllFarmers())
             {
-                GiveExperienceToNextLevel(farmer, Skill.Combat);
-                farmer.CombatLevel = farmer.combatLevel.Value + 1;
-                farmer.newLevels.Add(new Point((int)Skill.Combat, farmer.combatLevel.Value));
+                var currentLevel = farmer.combatLevel.Value;
+                var newLevel = currentLevel + 1;
+                newLevel = Math.Max(0, Math.Min(receivedLevels, newLevel));
+                if (newLevel <= currentLevel)
+                {
+                    continue;
+                }
+
+                GiveExperienceToNextLevel(farmer, skill);
+                farmer.CombatLevel = newLevel;
+                farmer.newLevels.Add(new Point((int)skill, newLevel));
             }
             return new LetterInformationAttachment(receivedItem);
         }

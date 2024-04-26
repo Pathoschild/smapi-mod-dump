@@ -21,36 +21,35 @@ namespace FarmTypeManager
         /// <summary>Harmony patches that optimize some monster-related code, generally reducing CPU load and improving framerate.</summary>
         public static class HarmonyPatch_OptimizeMonsterCode
         {
-            /// <summary>Indicates whether this class's patches are currently enabled.</summary>
-            public static bool IsApplied { get; private set; } = false;
-
             /// <summary>Enables this class's Harmony patches. Does nothing if patches are currently applied.</summary>
             /// <param name="harmony"></param>
             public static void ApplyPatch(Harmony harmony)
             {
-                if (IsApplied) //if these patches are currently applied
-                    return; //do nothing
+                try
+                {
+                    //apply Harmony patches
+                    Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefixing SDV method \"GameLocation.isCollidingPosition\".", LogLevel.Trace);
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.isCollidingPosition), new[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool), typeof(bool) }),
+                        prefix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(GameLocation_isCollidingPosition_Prefix))
+                    );
 
-                IsApplied = true; //indicate that patches are applied
+                    Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefixing SDV method \"Monster.findPlayer\".", LogLevel.Trace);
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
+                        prefix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(Monster_findPlayer_Prefix))
+                    );
 
-                //apply Harmony patches
-                Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefixing SDV method \"GameLocation.isCollidingPosition\".", LogLevel.Trace);
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.isCollidingPosition), new[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool), typeof(bool) }),
-                    prefix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(GameLocation_isCollidingPosition_Prefix))
-                );
-
-                Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefixing SDV method \"Monster.findPlayer\".", LogLevel.Trace);
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
-                    prefix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(Monster_findPlayer_Prefix))
-                );
-
-                Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": postfixing SDV method \"Monster.findPlayer\".", LogLevel.Trace);
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
-                    postfix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(Monster_findPlayer_Postfix))
-                );
+                    Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": postfixing SDV method \"Monster.findPlayer\".", LogLevel.Trace);
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
+                        postfix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(Monster_findPlayer_Postfix))
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\" failed to apply. Monsters might slow the game down or cause errors. Full error message: \n{ex.ToString()}", LogLevel.Error);
+                }
             }
 
             /// <summary>Returns false (i.e. "not colliding") for flying monsters immediately, skipping any additional logic.</summary>

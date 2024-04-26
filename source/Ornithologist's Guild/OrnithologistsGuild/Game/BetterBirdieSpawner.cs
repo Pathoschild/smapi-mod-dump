@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using DynamicGameAssets.Game;
 using Microsoft.Xna.Framework;
 using OrnithologistsGuild.Content;
 using OrnithologistsGuild.Game;
@@ -30,7 +28,7 @@ namespace OrnithologistsGuild
             {
                 ModEntry.Instance.Monitor.Log("Deferring AddBirdies until after warp...");
 
-                EventHandler<StardewModdingAPI.Events.WarpedEventArgs> handlerPlayerWarped = null;
+                System.EventHandler<StardewModdingAPI.Events.WarpedEventArgs> handlerPlayerWarped = null;
                 handlerPlayerWarped = delegate
                 {
                     ModEntry.Instance.Monitor.Log("...warped, calling AddBirdies");
@@ -50,31 +48,22 @@ namespace OrnithologistsGuild
             // Original SDV source:
             // `double chance1 = Math.Max(0.15, Math.Min(0.5, (double) (this.map.Layers[0].LayerWidth * this.map.Layers[0].LayerHeight) / 15000.0));
             // ...followed by other chances for other types of birds, e.g. woodpecker (which is 1/5th of `chance1`)
-            chance = Math.Clamp(chance, 0.15, 0.35);
+            chance = System.Math.Clamp(chance, 0.15, 0.35);
 
             ModEntry.Instance.Monitor.Log($"AddBirdies onScreen={onScreen} chance={chance}");
 
             // First, get locations of all bird feeders
             foreach (var overlaidDict in location.Objects)
             {
-                foreach (var obj in overlaidDict.Values)
+                foreach (var obj in overlaidDict.Values.Where(obj => obj.IsFeeder()))
                 {
-                    if (typeof(CustomBigCraftable).IsAssignableFrom(obj.GetType()))
+                    // Only attract birds if there is food
+                    if (obj.MinutesUntilReady > 0)
                     {
-                        var feeder = (CustomBigCraftable)obj;
-
-                        // Only attract birds if there is food
-                        if (feeder.MinutesUntilReady > 0)
+                        var foodDef = FoodDef.FromFeeder(obj);
+                        if (foodDef != null)
                         {
-                            var feederDef = FeederDef.FromFeeder(feeder);
-                            if (feederDef != null)
-                            {
-                                var foodDef = FoodDef.FromFeeder(feeder);
-                                if (foodDef != null)
-                                {
-                                    AddBirdiesNearFeeder(location, feeder, feederDef, foodDef, chance, onScreen);
-                                }
-                            }
+                            AddBirdiesNearFeeder(location, obj, foodDef, chance, onScreen);
                         }
                     }
                 }
@@ -103,21 +92,23 @@ namespace OrnithologistsGuild
             }
         }
 
-        private static void AddBirdiesNearFeeder(GameLocation location, CustomBigCraftable feeder, FeederDef feederDef, FoodDef food, double chance, bool onScreen)
+        private static void AddBirdiesNearFeeder(GameLocation location, Object feeder, FoodDef food, double chance, bool onScreen)
         {
             ModEntry.Instance.Monitor.Log("AddBirdiesNearFeeder");
 
+            var feederFields = feeder.GetFeederFields();
+
             // Build a rectangle around the feeder based on the range
-            var feederRect = Utility.getRectangleCenteredAt(feeder.TileLocation, (feederDef.Range * 2) + 1);
+            var feederRect = Utility.getRectangleCenteredAt(feeder.TileLocation, (feederFields.Range * 2) + 1);
 
             BirdieDef flockBirdieDef = null;
 
             // Chance to add another flock
             int flocksAdded = 0;
-            while (flocksAdded < feederDef.MaxFlocks && Game1.random.NextDouble() < (chance * 2))
+            while (flocksAdded < feederFields.MaxFlocks && Game1.random.NextDouble() < (chance * 2))
             {
                 // Determine flock parameters
-                flockBirdieDef = GetRandomFeederBirdieDef(feederDef, food);
+                flockBirdieDef = GetRandomFeederBirdieDef(feederFields, food);
                 if (flockBirdieDef == null) return;
 
                 var shouldAddBirdToFeeder = flocksAdded == 0 && Game1.random.NextDouble() < 0.65;
@@ -136,18 +127,18 @@ namespace OrnithologistsGuild
             }
         }
 
-        private static void SpawnBirdies(GameLocation location, BirdieDef birdieDef, IEnumerable<Tuple<Vector3, Perch>> spawnLocations)
+        private static void SpawnBirdies(GameLocation location, BirdieDef birdieDef, IEnumerable<BirdiePosition> spawnLocations)
         {
             foreach (var spawnLocation in spawnLocations)
             {
-                if (spawnLocation.Item2 != null)
+                if (spawnLocation.Perch != null)
                 {
                     // Add perched bird
-                    location.addCritter(new BetterBirdie(birdieDef, Vector2.Zero, spawnLocation.Item2));
+                    location.addCritter(new BetterBirdie(birdieDef, Vector2.Zero, spawnLocation.Perch));
                 }
                 else
                 {
-                    var tile = Utilities.XY(spawnLocation.Item1) / Game1.tileSize;
+                    var tile = Utilities.XY(spawnLocation.Position) / Game1.tileSize;
                     location.addCritter(new BetterBirdie(birdieDef, tile));
                 }
             }
@@ -158,11 +149,11 @@ namespace OrnithologistsGuild
             return Utilities.WeightedRandom(ContentPackManager.BirdieDefs.Values, birdieDef => birdieDef.GetContextualWeight(true));
         }
 
-        private static BirdieDef GetRandomFeederBirdieDef(FeederDef feederDef, FoodDef foodDef)
+        private static BirdieDef GetRandomFeederBirdieDef(FeederFields feederFields, FoodDef foodDef)
         {
-            var usualSuspects = ContentPackManager.BirdieDefs.Values.Where(birdieDef => birdieDef.CanPerchAt(feederDef) && birdieDef.CanEat(foodDef));
+            var usualSuspects = ContentPackManager.BirdieDefs.Values.Where(birdieDef => birdieDef.CanPerchAt(feederFields) && birdieDef.CanEat(foodDef));
 
-            return Utilities.WeightedRandom(usualSuspects, birdieDef => birdieDef.GetContextualWeight(true, feederDef, foodDef));
+            return Utilities.WeightedRandom(usualSuspects, birdieDef => birdieDef.GetContextualWeight(true, feederFields, foodDef));
         }
     }
 }

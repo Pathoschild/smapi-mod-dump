@@ -1,0 +1,50 @@
+{
+  // UI //
+  "Config.SectionTitle.General": "Paramètres généraux",
+  // TODO ////////////////////////////////////////////////////////////////
+  "Config.SectionTitle.EnableDisable": "Enable / Disable Books",
+  "Config.SectionTitle.Prices": "Change Book Prices",
+  "Config.SectionTitle.Adjustments": "Adjust Book Powers",
+  ////////////////////////////////////////////////////////////////////////
+  "Config.SectionTitle.Debug": "Paramètres de débogage",
+  
+  // GENERAL CONFIG //
+  "Config.General.AlwaysAvailable.Name": "Livres toujours disponibles",
+  "Config.General.AlwaysAvailable.Description": "Si activé, tous les livres seront disponibles au libraire sans conditions.",
+  
+  "Config.General.Enabled.Name": "Activé",
+  "Config.General.Enabled.Description": "Si désactivé, ce livre et ses pouvoirs ne seront pas disponibles.",
+  
+  // BOOK SETTINGS //
+  "Config.Books.Luck.Title": "Chance du Débutant",
+  "Config.Books.LuckBonus.Name": "Bonus de chance",
+  "Config.Books.LuckBonus.Description": "Quelle quantité de chance est obtenue après avoir lu le livre Chance du Débutant.",
+  
+  "Config.Books.ExtraGifts.Title": "Livre de l'Altruisme",
+  
+  "Config.Books.TreesIgnoreSeason.Title": "Sylviculture d'Hiver",
+  
+  "Config.Books.ArtisanMachines.Title": "Manuel de la guilde des artisans",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Name": "Victoire au festival",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Description": "Si activé, votre présentoir doit être numéro 1 et avoir plus de 6 produits artisanaux.",
+  "Config.Books.ArtisanMachinesBonus.Name": "Bonus Vitesse de Machine",
+  "Config.Books.ArtisanMachinesBonus.Description": "Diminution en pourcentage du temps de traitement des machines produisant des produits artisanaux.",
+  
+  "Config.Books.GiantCrops.Title": "Gros Melons!",
+  "Config.Books.GiantCropsBonus.Name": "Chance de Culture Géante",
+  "Config.Books.GiantCropsBonus.Description": "Pourcentage de chance que les cultures forment une culture géante pendant la nuit.",
+  
+  "Config.Books.Popularity.Title": "Amitiés 202",
+  
+  // TODO ////////////////////////////////////////////////////////////////
+  "Config.Books.BusDriving.Title": "Bus Driving for Dummies",
+
+  "Config.Books.QiNotebook.Title": "Mr. Qi's Notebook",
+  "Config.Books.QiNotebookBonus.Name": "Qi Gem Chance",
+  "Config.Books.QiNotebookBonus.Description": "Percent chance that a Qi Gem will drop in addition to the usual odds.",
+  ////////////////////////////////////////////////////////////////////////
+  
+  // DEBUG SETTINGS //
+  "Config.Debug.EnableDebugBook.Name": "Activer Livre de Débogage",
+  "Config.Debug.EnableDebugBook.Description": "Si activé, un livre de débogage sera disponible chez Pierre qui retire tous les pouvoirs octroyés par les livres de ce mod."
+}

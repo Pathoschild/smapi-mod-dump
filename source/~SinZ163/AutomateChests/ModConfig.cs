@@ -18,7 +18,6 @@ namespace AutomateChests
 {
     internal class ModConfig
     {
-        public bool ActivationItemIsBigCraftable { get; set; } = true;
-        public int ActivationItemIndex { get; set; } = 275;
+        public string ActivationItemId { get; set; } = "(BC)275";
     }
 }

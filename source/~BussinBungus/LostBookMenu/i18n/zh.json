@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BussinBungus/BungusSDVMods
+**
+*************************************************/
+
+{
+	"BookName.0": "种植小贴士",
+	"BookName.1": "玛尼的动物指南",
+	"BookName.2": "关于采集",
+	"BookName.3": "渔夫，第一幕",
+	"BookName.4": "矿井有多深？",
+	"BookName.5": "一本老农民的日记",
+	"BookName.6": "稻草人",
+	"BookName.7": "星之果实的秘密",
+	"BookName.8": "草原王者大冒险",
+	"BookName.9": "关于钻石生产的研究",
+	"BookName.10": "酿酒师指南",
+	"BookName.11": "神秘的矮人",
+	"BookName.12": "由巴之书",
+	"BookName.13": "农民结婚手册",
+	"BookName.14": "渔夫，第二幕",
+	"BookName.15": "科技报告！",
+	"BookName.16": "传说之鱼的秘密",
+	"BookName.17": "隧道里的秘密",
+	"BookName.18": "冈瑟的字条",
+	"BookName.19": "哥布林",
+	"BookName.20": "神秘笔记",
+	"MenuName": "星露谷图书馆",
+	"MissingName": "???"
+}

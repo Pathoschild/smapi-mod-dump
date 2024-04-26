@@ -1,0 +1,10 @@
+{
+  "Name": "ElliottIsFabio",
+  "Author": "DrDirtbag",
+  "Version": "1.0.0",
+  "Description": "Player now sees Elliot as Fabio. Results may vary.",
+  "UniqueID": "ElliottIsFabio.ElliottIsFabio",
+  "EntryDll": "ElliottIsFabio.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

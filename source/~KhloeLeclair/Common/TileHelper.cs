@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 
@@ -25,9 +26,22 @@ namespace Leclair.Stardew.Common;
 
 public static class TileHelper {
 
-	internal static IEnumerable<Vector2> IterArea(this Vector2 origin, int radius) {
-		return IterArea(origin, -radius, radius, -radius, radius);
+	internal static Vector2 Move(this Vector2 origin, float x, float y) {
+		return new(origin.X + x, origin.Y + y);
 	}
+
+	internal static IEnumerable<Vector2> IterArea(this Vector2 origin, int radius, bool lazy = true) {
+		var result = IterArea(origin, -radius, radius, -radius, radius);
+		if (lazy)
+			return result;
+
+		return result.Where(other => origin.Distance(other.X, other.Y) <= radius);
+	}
+
+	internal static float Distance(this Vector2 start, float x, float y) {
+		return MathF.Sqrt(MathF.Pow(start.X - x, 2) + MathF.Pow(start.Y - y, 2));
+	}
+
 
 	internal static IEnumerable<Vector2> IterArea(this Vector2 origin, int width, int height) {
 		width = Math.Max(0, width - 1);
@@ -51,24 +65,19 @@ public static class TileHelper {
 	}
 
 	internal static bool GetObjectAtPosition(this GameLocation location, Vector2 position, [NotNullWhen(true)] out SObject? obj) {
-		if (location is FarmHouse farmHouse && position.X == farmHouse.fridgePosition.X && position.Y == farmHouse.fridgePosition.Y) {
-			obj = farmHouse.fridge.Value;
-			return obj is not null;
-
-		} else if (location is IslandFarmHouse islandHouse && position.X == islandHouse.fridgePosition.X && position.Y == islandHouse.fridgePosition.Y) {
-			obj = islandHouse.fridge.Value;
+		if (location.GetFridgePosition() is Point pos && pos.X == position.X && pos.Y == position.Y) {
+			obj = location.GetFridge(false);
 			return obj is not null;
 		}
 
-		return location.objects.TryGetValue(position, out obj);
+		return location.Objects.TryGetValue(position, out obj);
 	}
 
 	internal static Vector2 GetRealPosition(this SObject obj, GameLocation? location) {
-		if (location is FarmHouse farmHouse && farmHouse.fridge.Value == obj)
-			return new Vector2(farmHouse.fridgePosition.X, farmHouse.fridgePosition.Y);
+		location ??= obj.Location;
 
-		if (location is IslandFarmHouse islandHouse && islandHouse.fridge.Value == obj)
-			return new Vector2(islandHouse.fridgePosition.X, islandHouse.fridgePosition.Y);
+		if (location is not null && location.GetFridge(false) == obj && location.GetFridgePosition() is Point pos)
+			return new Vector2(pos.X, pos.Y);
 
 		return obj.TileLocation;
 	}
@@ -79,21 +88,13 @@ public static class TileHelper {
 	internal static Rectangle? GetBenchRegion(this CraftingPage menu, Farmer? who = null) {
 		who ??= Game1.player;
 
-		// When using the kitchen in the farmhouse, it locks the fridge's mutex. Check
-		// to see if it's locked. If it is, then return the position one tile to the
-		// left of the fridge.
-		if (menu.IsCooking() && who.currentLocation is FarmHouse farmHouse && farmHouse.fridge.Value.GetMutex().IsLockHeld())
+		// When using the kitchen, it locks the fridge's mutex. Check to see if it's locked.
+		// If it is, then return the position one tile to the left of the fridge.
+		if (menu.cooking && (who.currentLocation.GetFridge(false)?.GetMutex()?.IsLockHeld() ?? false) && who.currentLocation.GetFridgePosition() is Point p)
 			return new Rectangle(
-				farmHouse.fridgePosition.X - 4,
-				farmHouse.fridgePosition.Y,
+				p.X - 4,
+				p.Y,
 				4, 1
-			);
-
-		if (menu.IsCooking() && who.currentLocation is IslandFarmHouse islandHouse && islandHouse.fridge.Value.GetMutex().IsLockHeld())
-			return new Rectangle(
-				islandHouse.fridgePosition.X - 2,
-				islandHouse.fridgePosition.Y,
-				2, 1
 			);
 
 		return null;
@@ -101,27 +102,24 @@ public static class TileHelper {
 
 	internal static Vector2? GetBenchPosition(this CraftingPage menu, Farmer? who = null) {
 		who ??= Game1.player;
-		bool cooking = menu.IsCooking();
 
 		// When using the kitchen in the farmhouse, it locks the fridge's mutex. Check
 		// to see if it's locked. If it is, then return the position one tile to the
 		// left of the fridge.
-		if (cooking && who.currentLocation is FarmHouse farmHouse && farmHouse.fridge.Value.GetMutex().IsLockHeld())
-			return new Vector2(farmHouse.fridgePosition.X - 1, farmHouse.fridgePosition.Y);
-
-		if (cooking && who.currentLocation is IslandFarmHouse islandHouse && islandHouse.fridge.Value.GetMutex().IsLockHeld())
-			return new Vector2(islandHouse.fridgePosition.X - 1, islandHouse.fridgePosition.Y);
+		if (menu.cooking && (who.currentLocation.GetFridge(false)?.GetMutex()?.IsLockHeld() ?? false) && who.currentLocation.GetFridgePosition() is Point p)
+			return new Vector2(p.X - 1, p.Y);
 
 		// Next, scan a 3x3 region centered on the player, looking for a Workbench object
 		// that the player holds the mutex for.
-		foreach (Vector2 pos in who.getTileLocation().IterArea()) {
+		foreach (Vector2 pos in who.Tile.IterArea()) {
 			if (!GetObjectAtPosition(who.currentLocation, pos, out SObject? obj))
 				continue;
 
 			if (obj is Workbench bench && bench.checkForAction(who, true) && bench.mutex.IsLockHeld())
 				return obj.GetRealPosition(who.currentLocation);
 
-			if (obj is Torch torch && cooking && torch.checkForAction(who, true) && torch.bigCraftable.Value && torch.ParentSheetIndex == 278)
+			// We also support crafting from Cookout Kits.
+			if (obj is Torch torch && menu.cooking && torch.checkForAction(who, true) && torch.bigCraftable.Value && torch.ParentSheetIndex == 278)
 				return obj.GetRealPosition(who.currentLocation);
 		}
 

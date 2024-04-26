@@ -37,6 +37,7 @@
     "generic.price": "{{price}}g",
     "generic.price-for-quality": "{{price}}g ({{quality}})",
     "generic.price-for-stack": "{{price}}g por montón de {{count}}",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Edificio",
@@ -113,13 +114,14 @@
     "location.bugLand": "guarida de los insectos mutantes",
     "location.busStop": "parada de autobús",
     "location.desert": "desierto",
+    "location.desert.topPond": "desierto (estanque del norte)",
     "location.farm": "granja",
     "location.farmCave": "cueva de granja",
     "location.farmHouse": "casa de granja",
     "location.forest": "bosque",
-    "location.forest.fish-area-0": "río de bosque",
-    "location.forest.fish-area-1": "estanque de bosque",
     "location.forest.island-tip": "río de bosque (en la punta sureña de la gran isla)",
+    "location.forest.lake": "estanque de bosque",
+    "location.forest.river": "río de bosque",
     "location.mountain": "montaña",
     "location.railroad": "ferrocarril",
     "location.sewer": "alcantarilla",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Sureste de la isla Jengibre",
     "location.islandSouthEastCave": "Cueva sureste de la isla Jengibre",
     "location.islandWest": "Oeste de la isla Jengibre",
-    "location.islandWest.fish-area-1": "Oeste de la isla Jengibre (Oceano)",
-    "location.islandWest.fish-area-2": "Oeste de la isla Jengibre (Estanque)",
+    "location.islandWest.freshwater": "Oeste de la isla Jengibre (Estanque)",
+    "location.islandWest.ocean": "Oeste de la isla Jengibre (Oceano)",
 
     "location.unknown-fish-area": "{{locationName}} (zona de pesca {{id}})",
 
@@ -191,7 +193,7 @@
     "building.output-processing": "Procesando producto", // translator note: changed 'output' to 'product' as we don't have a word with the same meaning
     "building.output-ready": "Producto listo",
     "building.slimes.summary": "{{count}} de {{max}} slimes",
-    "building.stored-hay.summary": "{{hayCount}} of {{maxHayInLocation}} hay in this location (max capacity in this building: {{maxHayInBuilding}})", // TODO
+    "building.stored-hay.summary": "{{hayCount}} of {{maxHayInLocation}} heno en este edificio (máxima capacidad del edificio: {{maxHayInBuilding}})",
     "building.upgrades.barn.0": "hasta 4 animales, añade vacas",
     "building.upgrades.barn.1": "hasta 8 animales, añade cabras y permite embarazos",
     "building.upgrades.barn.2": "hasta 12 animales, añade cerdos, ovejas y automatiza los comederos",
@@ -291,7 +293,7 @@
     ** Item > generic lookups
     *********/
     // labels
-    "item.custom-item": "Custom item", // TODO
+    "item.custom-item": "Objeto personalizado",
     "item.contents": "Contiene",
     "item.loves-this": "Lo ama",
     "item.likes-this": "Le gusta a",
@@ -310,7 +312,7 @@
     "item.produces-dye": "Produce  tinte",
 
     // values
-    "item.custom-item.summary": "added by {{modName}}", // TODO
+    "item.custom-item.summary": "Añadido por {{modName}}",
     "item.contents.placed": "{{name}}",
     "item.contents.ready": "{{name}} listo",
     "item.contents.partial": "{{name}} en {{time}}",
@@ -388,24 +390,22 @@
     ** Item > melee weapon lookups
     *********/
     // labels
-    // TODO
-    "item.melee-weapon.accuracy": "Accuracy",
-    "item.melee-weapon.critical-chance": "Critical chance",
-    "item.melee-weapon.critical-damage": "Critical damage",
-    "item.melee-weapon.damage": "Damage",
-    "item.melee-weapon.defense": "Defense",
-    "item.melee-weapon.knockback": "Knockback",
-    "item.melee-weapon.reach": "Reach",
-    "item.melee-weapon.speed": "Attack speed",
+    "item.melee-weapon.accuracy": "Precisión",
+    "item.melee-weapon.critical-chance": "Posibilidad de crítico",
+    "item.melee-weapon.critical-damage": "Daño crítico",
+    "item.melee-weapon.damage": "Daño",
+    "item.melee-weapon.defense": "Defensa",
+    "item.melee-weapon.knockback": "Empuje",
+    "item.melee-weapon.reach": "Alcance",
+    "item.melee-weapon.speed": "Velocidad de ataque",
 
     // values
-    // TODO
-    "item.melee-weapon.critical-damage.label": "{{multiplier}} times normal damage (before player bonuses)",
-    "item.melee-weapon.defense.label": "{{amount}} while equipped",
-    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}} times normal distance)",
-    "item.melee-weapon.reach.label": "{{amount}} pixels",
-    "item.melee-weapon.speed.shown-vs-actual": "shown: {{shownSpeed}}{{lineBreak}}actual: {{actualSpeed}}",
-    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} milliseconds per swing frame, before player speed bonuses)",
+    "item.melee-weapon.critical-damage.label": "{{multiplier}} veces el daño normal (antes de bonus del jugador)",
+    "item.melee-weapon.defense.label": "{{amount}} mientras esté equipada",
+    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}} veces la distancia normal)",
+    "item.melee-weapon.reach.label": "{{amount}} pixeles",
+    "item.melee-weapon.speed.shown-vs-actual": "muestra: {{shownSpeed}}{{lineBreak}}real: {{actualSpeed}}",
+    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} milisegundos, antes de bonus del jugador)",
 
 
     /*********
@@ -476,7 +476,7 @@
     "npc.friendship.need-bouquet": "Necesitas un ramo de flores para lo siguiente",
     "npc.friendship.need-points": "siguiente en {{count}} puntos",
     "npc.undiscovered-gift-taste": "{{count}} items sin revelar",
-    "npc.unowned-gift-taste": "{{count}} unowned items", // TODO
+    "npc.unowned-gift-taste": "{{count}} objetos no obtenidos",
 
 
     /*********
@@ -628,15 +628,17 @@
     "tree.name.oak": "Roble",
     "tree.name.palm": "Palmera",
     "tree.name.pine": "Pino",
+    "tree.name.mossy": "Árbol musgoso",
+    "tree.name.mystic": "Árbol místico",
     "tree.name.unknown": "Árbol desconocido",
     "tree.stage.done": "Completamente maduro",
     "tree.stage.partial": "{{stageName}} ({{step}} de {{max}})",
     "tree.next-growth.winter": "no puede crecer en invierno fuera del invernadero a menos que se fertilice",
     "tree.next-growth.adjacent-trees": "no puede crecer porque otros árboles estan muy cerca",
     "tree.next-growth.chance": "{{chance}}% de probabilidad de evolucionar a «{{stage}}» mañana",
-    "tree.seed.not-ready": "Not ready", // TODO
-    "tree.seed.probability-daily": "{{chance}}% chance of {{itemName}} each day.", // TODO
-    "tree.seed.probability-on-chop": "{{chance}}% chance of dropping {{itemName}} when chopped down.", // TODO
+    "tree.seed.not-ready": "No está lista",
+    "tree.seed.probability-daily": "{{chance}}% posibilidad de {{itemName}} cada día.",
+    "tree.seed.probability-on-chop": "{{chance}}% posibilidades de que caiga {{itemName}} cuando lo tales.",
 
     // growth stages
     "tree.stages.seed": "Semilla",
@@ -658,24 +660,34 @@
     "config.force-full-screen.desc": "Si el menú debe estar siempre a pantalla completa, en lugar de centrado en la ventana. Esto es útil principalmente cuando se visualizan campos de minería de datos.",
 
     // gift tastes
-    // TODO
-    "config.title.gift-tastes": "Gift tastes",
-    "config.show-gift-tastes.loved.name": "Show loved gifts",
-    "config.show-gift-tastes.loved.desc": "Whether to show loved gifts in NPC and item lookups.",
-    "config.show-gift-tastes.liked.name": "Show liked gifts",
-    "config.show-gift-tastes.liked.desc": "Whether to show liked gifts in NPC and item lookups.",
-    "config.show-gift-tastes.neutral.name": "Show neutral gifts",
-    "config.show-gift-tastes.neutral.desc": "Whether to show neutral gifts in NPC and item lookups.",
-    "config.show-gift-tastes.disliked.name": "Show disliked gifts",
-    "config.show-gift-tastes.disliked.desc": "Whether to show disliked gifts in NPC and item lookups.",
-    "config.show-gift-tastes.hated.name": "Show hated gifts",
-    "config.show-gift-tastes.hated.desc": "Whether to show hated gifts in NPC and item lookups.",
+    "config.title.gift-tastes": "Gusto por los regalos",
+    "config.show-gift-tastes.loved.name": "Mostrar regalos que ama",
+    "config.show-gift-tastes.loved.desc": "Indica si mostrar regalos que ama en las búsquedas de NPC y objetos.",
+    "config.show-gift-tastes.liked.name": "Mostrar regalos que le gustan",
+    "config.show-gift-tastes.liked.desc": "Indica si mostrar regalos que le gustan en las búsquedas de NPC y objetos.",
+    "config.show-gift-tastes.neutral.name": "Mostrar regalos neutrales",
+    "config.show-gift-tastes.neutral.desc": "Indica si mostrar regalos neutrales en las búsquedas de NPC y objetos.",
+    "config.show-gift-tastes.disliked.name": "Mostrar regalos que no le gustan",
+    "config.show-gift-tastes.disliked.desc": "Indica si mostrar regalos que no le gustan en las búsquedas de NPC y objetos.",
+    "config.show-gift-tastes.hated.name": "Mostrar regalos que odia",
+    "config.show-gift-tastes.hated.desc": "Indica si mostrar regalos que odia en las búsquedas de NPC y objetos.",
 
     "config.show-unowned-gifts.name": "Show unowned gift tastes",
     "config.show-unowned-gifts.desc": "Whether to show gift tastes for items that the player doesn't own somewhere in the world.",
 
     "config.highlight-unrevealed-gift-tastes.name": "Destacar los gustos de los regalos no revelados",
     "config.highlight-unrevealed-gift-tastes.desc": "Si se desea resaltar los gustos de los regalos que no han sido revelados en el perfil del NPC. Cuando se activa, los gustos de los regalos no revelados estarán en negrita.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Opciones avanzadas",

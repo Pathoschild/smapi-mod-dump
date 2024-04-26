@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11539
-IDs: aedenthorn.BulkAnimalPurchase
-update keys: Nexus:11539, GitHub:aedenthorn/StardewValleyMods

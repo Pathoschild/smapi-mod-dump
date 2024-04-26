@@ -26,6 +26,10 @@
     "config.overlay.x-offset.desc": "Décalage X de l'overlay en pixels à partir du bord gauche de l'écran",
     "config.overlay.y-offset": "Décalage Y",
     "config.overlay.y-offset.desc": "Décalage Y de l'overlay en pixels à partir du bord supérieur de l'écran",
+    "config.add-location": "Emplacement des tâches",
+    "config.add-location.desc": "Indique où les nouvelles tâches sont ajotués dans la liste. En multijoueur, seul l'option de l'hôte compte.",
+    "config.add-location.Top": "En haut",
+    "config.add-location.Bottom": "En bas",
 
     // Superposition
     "overlay.header": "Liste To-Dew",

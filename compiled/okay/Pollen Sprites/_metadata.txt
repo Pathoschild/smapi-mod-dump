@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6149
+IDs: Esca.PollenSprites
+update keys: Nexus:6149, GitHub:Esca-MMC/PollenSprites, ModDrop:790268

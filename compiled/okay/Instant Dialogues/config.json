@@ -1,0 +1,7 @@
+{
+  "EntireModEnabled": true,
+  "UseToggleKey": true,
+  "ToggleKey": "OemPeriod",
+  "EnableOnLaunchWhenUseToggleKey": true,
+  "SkipPreventTimeWhileModOn": 750
+}

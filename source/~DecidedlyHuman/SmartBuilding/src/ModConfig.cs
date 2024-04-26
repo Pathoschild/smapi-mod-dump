@@ -43,6 +43,8 @@ namespace SmartBuilding
         public bool EnableReplacingFloors = false;
         public bool EnableTreeTappers = false;
         public bool CreativeMode = false;
+        public bool FreezeTimeInBuildMode = false;
+        public bool OnlyFreezeTimeOnFarm = true;
 
         // Main keybinds
         public KeybindList EngageBuildMode = KeybindList.Parse("LeftShift+B");

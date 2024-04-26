@@ -129,9 +129,9 @@ public class ModOptionsPage : IClickableMenu
   {
     if (e.NewMenu is GameMenu)
     {
-      xPositionOnScreen = Game1.activeClickableMenu.xPositionOnScreen;
-      yPositionOnScreen = Game1.activeClickableMenu.yPositionOnScreen + 10;
-      height = Game1.activeClickableMenu.height;
+      xPositionOnScreen = e.NewMenu.xPositionOnScreen;
+      yPositionOnScreen = e.NewMenu.yPositionOnScreen + 10;
+      height = e.NewMenu.height;
 
       for (var i = 0; i < _optionSlots.Count; ++i)
       {

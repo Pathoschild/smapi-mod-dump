@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Journal;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 //using System.Numerics;
@@ -66,42 +67,40 @@ namespace StardewDruid.Cast.Weald
 
                     hoeDirt.destroyCrop(true);
 
+                    if (Game1.currentSeason == "winter" && !Game1.currentLocation.IsGreenhouse)
+                    {
+
+                        Mod.instance.targetCasts[targetLocation.Name][targetVector] = "Hoed";
+
+                        return;
+
+                    }
+
+                    string wildSeed = "498";
+
+                    switch (Game1.currentSeason)
+                    {
+
+                        case "spring":
+
+                            wildSeed = "495";
+                            break;
+
+                        case "summer":
+
+                            wildSeed = "496";
+                            break;
+
+                        case "fall":
+
+                            wildSeed = "497";
+                            break;
+
+                    }
+
+                    hoeDirt.plant(wildSeed, targetPlayer, false);
+
                 }
-
-            }
-
-            if (hoeDirt.crop == null)
-            {
-
-                if (!reseed)
-                {
-                    return;
-
-                }
-
-                string wildSeed = "498";
-
-                switch (Game1.currentSeason)
-                {
-
-                    case "spring":
-
-                        wildSeed = "495";
-                        break;
-
-                    case "summer":
-
-                        wildSeed = "496";
-                        break;
-
-                    case "fall":
-
-                        wildSeed = "497";
-                        break;
-
-                }
-
-                hoeDirt.plant(wildSeed,targetPlayer, false);
 
             }
 
@@ -114,46 +113,46 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            StardewValley.Crop targetCrop = hoeDirt.crop;
-
-            if(targetCrop == null)
+            if(hoeDirt.crop == null)
             {
+
+                Mod.instance.targetCasts[targetLocation.Name][targetVector] = "Hoed";
 
                 return;
 
             }
 
-            if (targetCrop.isWildSeedCrop() && targetCrop.currentPhase.Value <= 1 && (Game1.currentSeason != "winter" || targetLocation.isGreenhouse.Value))
+            if (hoeDirt.crop.isWildSeedCrop() && hoeDirt.crop.currentPhase.Value <= 1 && (Game1.currentSeason != "winter" || targetLocation.isGreenhouse.Value))
             {
 
-                bool enableQuality = Mod.instance.TaskList().ContainsKey("masterCrop") ? true : false;
+                bool enableQuality = Mod.instance.questHandle.IsComplete(QuestHandle.cropLesson) ? true : false;
 
                 ModUtility.UpgradeCrop(hoeDirt, (int)targetVector.X, (int)targetVector.Y, targetPlayer, targetLocation, enableQuality);
 
                 if (hoeDirt.crop == null)
                 {
 
+                    Mod.instance.targetCasts[targetLocation.Name][targetVector] = "Hoed";
+
                     return;
 
                 }
 
-                targetCrop = hoeDirt.crop;
-
                 castFire = true;
 
-                if (!Mod.instance.TaskList().ContainsKey("masterCrop"))
+                if (!Mod.instance.questHandle.IsComplete(QuestHandle.cropLesson))
                 {
 
-                    Mod.instance.UpdateTask("lessonCrop", 1);
+                    Mod.instance.questHandle.UpdateTask(QuestHandle.cropLesson, 1);
 
                 }
 
             }
 
-            if (targetCrop.currentPhase.Value <= 1)
+            if (hoeDirt.crop.currentPhase.Value <= 1)
             {
 
-                targetCrop.currentPhase.Value = 2;
+                hoeDirt.crop.currentPhase.Value = 2;
 
                 hoeDirt.crop.dayOfCurrentPhase.Value = 0;
 
@@ -169,6 +168,8 @@ namespace StardewDruid.Cast.Weald
                 hoeDirt.state.Value = 1;
 
             }
+
+            Mod.instance.targetCasts[targetLocation.Name][targetVector] = "Crop";
 
         }
 

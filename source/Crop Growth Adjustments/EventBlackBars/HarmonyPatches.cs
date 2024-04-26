@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -23,6 +25,24 @@ namespace EventBlackBars
             if (__instance.isFestival || __instance.isWedding) return;
             
             ModEntry.Instance.StartMovingBars(Direction.MoveOut);
+        }
+
+        public static void DrawAfterMap(SpriteBatch b)
+        {
+            if (!ModEntry.RenderBars) return;
+            
+            var viewportWidth = ModEntry.GraphicsDevice.Viewport.Width;
+            var viewportHeight = ModEntry.GraphicsDevice.Viewport.Height;
+            
+            // Top bar
+            b.Draw(ModEntry.BlackRectangle, new Vector2(0, 0), null,
+                Color.White, 0f, Vector2.Zero, new Vector2(viewportWidth, ModEntry.BarHeight),
+                SpriteEffects.None, 0.0f);
+            
+            // Bottom bar
+            b.Draw(ModEntry.BlackRectangle, new Vector2(0, viewportHeight - ModEntry.BarHeight), null,
+                Color.White, 0f, Vector2.Zero, new Vector2(viewportWidth, ModEntry.BarHeight),
+                SpriteEffects.None, 0.0f);
         }
         
         /// <summary> Patch for the GameLocation.startEvent method. </summary>

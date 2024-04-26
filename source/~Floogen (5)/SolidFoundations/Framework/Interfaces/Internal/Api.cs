@@ -179,7 +179,7 @@ namespace SolidFoundations.Framework.Interfaces.Internal
                 return new KeyValuePair<bool, string>(false, null);
             }
 
-            return new KeyValuePair<bool, string>(true, SolidFoundations.buildingManager.GetTextureAsset(modelIdCaseInsensitive.ToLower()));
+            return new KeyValuePair<bool, string>(true, SolidFoundations.buildingManager.GetTextureAssetPath(modelIdCaseInsensitive.ToLower()));
         }
 
         public KeyValuePair<bool, Texture2D> GetBuildingTexture(string modelIdCaseSensitive)

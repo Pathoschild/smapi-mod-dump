@@ -39,7 +39,7 @@ namespace EscasModdingPlugins
 
         /// <summary>Attempts to populate this instance with data parsed from a string.</summary>
         /// <param name="raw">The raw string to parse. Typically loaded from a tile property at a <see cref="GameLocation"/>.</param>
-        /// <returns>True if parsing succeeded; false otherwise. If false, instance should be unmodified from its previous state.</returns>
+        /// <returns>True if parsing succeeded; false otherwise. If false, this instance should be unmodified from its previous state.</returns>
         public abstract bool TryParse(string raw);
 
         /// <summary>Gets the currently applicable data for a location and tile. Uses the named data asset and/or tile property.</summary>

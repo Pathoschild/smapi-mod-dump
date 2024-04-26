@@ -10,11 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Randomizer
 {
-	public class FishTankBundle : Bundle
+    public class FishTankBundle : Bundle
 	{
 		public static List<BundleTypes> RoomBundleTypes { get; set; }
 
@@ -23,8 +22,10 @@ namespace Randomizer
 		/// </summary>
 		protected override void Populate()
 		{
-			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
-			List<RequiredItem> potentialItems = new List<RequiredItem>();
+			RNG rng = BundleRandomizer.Rng;
+
+			BundleType = rng.GetAndRemoveRandomValueFromList(RoomBundleTypes);
+			List<RequiredBundleItem> potentialItems = new List<RequiredBundleItem>();
 
 			switch (BundleType)
 			{
@@ -42,7 +43,7 @@ namespace Randomizer
 					break;
 				case BundleTypes.FishTankOceanFood:
 					SetBundleName("bundle-fishtank-ocean-food");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.CrispyBass,
 						ObjectIndexes.FriedEel,
@@ -63,14 +64,14 @@ namespace Randomizer
 						ObjectIndexes.SalmonDinner,
 						ObjectIndexes.FishTaco
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 4;
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.FishTankRandom:
 					SetBundleName("bundle-fishtank-random");
-                    RequiredItems = RequiredItem.CreateList(Globals.RNGGetRandomValuesFromList(FishItem.Get(), 8));
-                    MinimumRequiredItems = Range.GetRandomValue(3, 4);
+                    RequiredItems = RequiredBundleItem.CreateList(rng.GetRandomValuesFromList(FishItem.Get(), 8));
+                    MinimumRequiredItems = rng.NextIntWithinRange(3, 4);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.FishTankLocation:
@@ -81,37 +82,37 @@ namespace Randomizer
 						Locations.Desert,
 						Locations.Woods,
 						Locations.Forest,
-						Locations.NightMarket,
+						Locations.Submarine,
 						Locations.Beach
 					};
-					Locations location = Globals.RNGGetRandomValueFromList(locations);
+					Locations location = rng.GetRandomValueFromList(locations);
 					string locationString = Globals.GetTranslation($"fish-{location.ToString().ToLower()}-location");
 
 					SetBundleName("bundle-fishtank-location", new { location = locationString });
-					RequiredItems = RequiredItem.CreateList(Globals.RNGGetRandomValuesFromList(FishItem.Get(location), 8));
-					MinimumRequiredItems = Math.Min(RequiredItems.Count, Range.GetRandomValue(2, 4));
+					RequiredItems = RequiredBundleItem.CreateList(rng.GetRandomValuesFromList(FishItem.Get(location), 8));
+					MinimumRequiredItems = Math.Min(RequiredItems.Count, rng.NextIntWithinRange(2, 4));
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankRainFish:
 					SetBundleName("bundle-fishtank-rain-fish");
-					RequiredItems = RequiredItem.CreateList(
-						Globals.RNGGetRandomValuesFromList(FishItem.Get(Weather.Rainy), 8)
+					RequiredItems = RequiredBundleItem.CreateList(
+						rng.GetRandomValuesFromList(FishItem.Get(Weather.Rainy), 8)
 					);
 					MinimumRequiredItems = Math.Min(RequiredItems.Count, 4);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankNightFish:
 					SetBundleName("bundle-fishtank-night-fish");
-					RequiredItems = RequiredItem.CreateList(
-						Globals.RNGGetRandomValuesFromList(FishItem.GetNightFish(), 8)
+					RequiredItems = RequiredBundleItem.CreateList(
+						rng.GetRandomValuesFromList(FishItem.GetNightFish(), 8)
 					);
 					MinimumRequiredItems = Math.Min(RequiredItems.Count, 4);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.FishTankQualityFish:
 					SetBundleName("bundle-fishtank-quality-fish");
-					potentialItems = RequiredItem.CreateList(
-						Globals.RNGGetRandomValuesFromList(FishItem.Get(), 8)
+					potentialItems = RequiredBundleItem.CreateList(
+						rng.GetRandomValuesFromList(FishItem.Get(), 8)
 					);
 					potentialItems.ForEach(x => x.MinimumQuality = ItemQualities.Gold);
 					RequiredItems = potentialItems;
@@ -120,49 +121,49 @@ namespace Randomizer
 					break;
 				case BundleTypes.FishTankBeachForagables:
 					SetBundleName("bundle-fishtank-beach-foragables");
-					RequiredItems = RequiredItem.CreateList(
-						Globals.RNGGetRandomValuesFromList(ItemList.GetUniqueBeachForagables(), 6)
+					RequiredItems = RequiredBundleItem.CreateList(
+						rng.GetRandomValuesFromList(ItemList.GetUniqueBeachForagables(), 6)
 					);
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.FishTankFishingTools:
 					SetBundleName("bundle-fishtank-fishing-tools");
-					potentialItems = new List<RequiredItem>
+					potentialItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.Spinner, 1),
-						new RequiredItem(ObjectIndexes.DressedSpinner, 1),
-						new RequiredItem(ObjectIndexes.TrapBobber, 1),
-						new RequiredItem(ObjectIndexes.CorkBobber, 1),
-						new RequiredItem(ObjectIndexes.LeadBobber, 1),
-						new RequiredItem(ObjectIndexes.TreasureHunter, 1),
-						new RequiredItem(ObjectIndexes.Bait, 25, 50),
-						new RequiredItem(ObjectIndexes.WildBait, 10, 20)
+						new(ObjectIndexes.Spinner, 1),
+						new(ObjectIndexes.DressedSpinner, 1),
+						new(ObjectIndexes.TrapBobber, 1),
+						new(ObjectIndexes.CorkBobber, 1),
+						new(ObjectIndexes.LeadBobber, 1),
+						new(ObjectIndexes.TreasureHunter, 1),
+						new(ObjectIndexes.Bait, 25, 50),
+						new(ObjectIndexes.WildBait, 10, 20)
 					};
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 4);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 4);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankUnique:
 					SetBundleName("bundle-fishtank-unique");
 
-					List<Item> nightFish = FishItem.Get(Locations.NightMarket);
+					List<Item> nightFish = FishItem.Get(Locations.Submarine);
 					List<Item> minesFish = FishItem.Get(Locations.UndergroundMine);
 					List<Item> desertFish = FishItem.Get(Locations.Desert);
 					List<Item> woodsFish = FishItem.Get(Locations.Woods);
 
-					RequiredItems = new List<RequiredItem>
+					RequiredItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(Globals.RNGGetRandomValueFromList(nightFish)),
-						new RequiredItem(Globals.RNGGetRandomValueFromList(minesFish)),
-						new RequiredItem(Globals.RNGGetRandomValueFromList(desertFish)),
-						new RequiredItem(Globals.RNGGetRandomValueFromList(woodsFish))
+						new(rng.GetRandomValueFromList(nightFish)),
+						new(rng.GetRandomValueFromList(minesFish)),
+						new(rng.GetRandomValueFromList(desertFish)),
+						new(rng.GetRandomValueFromList(woodsFish))
 					};
-					MinimumRequiredItems = Range.GetRandomValue(RequiredItems.Count - 1, RequiredItems.Count);
+					MinimumRequiredItems = rng.NextIntWithinRange(RequiredItems.Count - 1, RequiredItems.Count);
 					Color = BundleColors.Cyan;
 					break;
 				case BundleTypes.FishTankColorBlue:
 					SetBundleName("bundle-fishtank-blue");
 
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.Aquamarine,
 						ObjectIndexes.Diamond,
@@ -196,13 +197,13 @@ namespace Randomizer
 						ObjectIndexes.WarpTotemBeach,
 						ObjectIndexes.Battery
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankColorPurple:
 					SetBundleName("bundle-fishtank-purple");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.Amethyst,
 						ObjectIndexes.AncientDrum,
@@ -230,8 +231,8 @@ namespace Randomizer
 						ObjectIndexes.IridiumSprinkler,
 						ObjectIndexes.DressedSpinner
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Purple;
 					break;
 			}
@@ -248,9 +249,11 @@ namespace Randomizer
 			seasonString = $"{seasonString[0].ToString().ToUpper()}{seasonString.Substring(1)}";
 
 			SetBundleName("bundle-fishtank-seasonal", new { season = seasonString });
-			List<RequiredItem> potentialItems = RequiredItem.CreateList(FishItem.Get(season));
-			RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-			MinimumRequiredItems = Math.Min(Range.GetRandomValue(6, 8), RequiredItems.Count);
+			List<RequiredBundleItem> potentialItems = RequiredBundleItem.CreateList(FishItem.Get(season));
+
+            RNG rng = BundleRandomizer.Rng;
+            RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+			MinimumRequiredItems = Math.Min(rng.NextIntWithinRange(6, 8), RequiredItems.Count);
 			Color = color;
 		}
 
@@ -259,27 +262,38 @@ namespace Randomizer
 		/// </summary>
 		protected override void GenerateReward()
 		{
-			var tackles = new List<RequiredItem>
+            RNG rng = BundleRandomizer.Rng;
+
+            var tackles = new List<RequiredBundleItem>
 			{
-				new(ObjectIndexes.Spinner, 1),
+				new(ObjectIndexes.Spinner),
 				new(ObjectIndexes.DressedSpinner),
 				new(ObjectIndexes.TrapBobber),
 				new(ObjectIndexes.CorkBobber),
 				new(ObjectIndexes.LeadBobber),
+				new(ObjectIndexes.SonarBobber),
 				new(ObjectIndexes.TreasureHunter)
 			};
 
-			var potentialRewards = new List<RequiredItem>
+            var bait = new List<RequiredBundleItem>
+            {
+                new(ObjectIndexes.Bait, 500),
+                new(ObjectIndexes.WildBait, 500),
+                new(ObjectIndexes.DeluxeBait, 500),
+                new(ObjectIndexes.ChallengeBait, 500)
+            };
+
+            var potentialRewards = new List<RequiredBundleItem>
 			{
 				new(BigCraftableIndexes.RecyclingMachine),
-				new(ObjectIndexes.Bait, 500),
-				new(ObjectIndexes.WildBait, 500),
-				Globals.RNGGetRandomValueFromList(tackles),
-				Globals.RNGGetRandomValueFromList(RequiredItem.CreateList(FishItem.Get(), 25, 50)),
-				Globals.RNGGetRandomValueFromList(RequiredItem.CreateList(ItemList.GetUniqueBeachForagables(), 25, 50)),
+				new(BigCraftableIndexes.FishSmoker),
+				rng.GetRandomValueFromList(bait),
+                rng.GetRandomValueFromList(tackles),
+				rng.GetRandomValueFromList(RequiredBundleItem.CreateList(FishItem.Get(), 25, 50)),
+				rng.GetRandomValueFromList(RequiredBundleItem.CreateList(ItemList.GetUniqueBeachForagables(), 25, 50)),
 			};
 
-			Reward = Globals.RNGGetRandomValueFromList(potentialRewards);
+			Reward = rng.GetRandomValueFromList(potentialRewards);
 		}
 	}
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12179
+IDs: Ophaneom.Survivalistic
+update keys: Nexus:12179, GitHub:Locked15/SDV_Survivalistic-Rebooted, GitHub:Ophaneom/Survivalistic

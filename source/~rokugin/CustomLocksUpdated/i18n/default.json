@@ -9,10 +9,18 @@
 *************************************************/
 
 {
-  "outside-hours.label": "Outside Normal Hours",
-  "outside-hours.tooltip": "Allows entry to places outside the normal entry hours.",
-  "stranger-entry.label": "Stranger Room Entry",
-  "stranger-entry.tooltip": "Allows entry to single room homes and bedrooms before having a high enough relationship.",
-  "early-guild.label": "Early Adventurer's Guild",
-  "early-guild.tooltip": "Allows entry to Adventurer's Guild before being accepted. Approach the door once to unlock it."
+  "overall-enabled.label": "Mod Enabled?",
+  "overall-enabled.tooltip": "Enable/disable entire mod, can be used to return to vanilla functionality in case of an issue.",
+  "general-store-wed.label": "General Store on Wed?",
+  "general-store-wed.tooltip": "Enable/disable general store being accessible on Wednesdays.",
+  "outside-hours.label": "Outside Normal Hours?",
+  "outside-hours.tooltip": "Enable/disable entering locations that have set access hours.",
+  "stranger-home-entry.label": "Stranger Home Entry?",
+  "stranger-home-entry.tooltip": "Enable/disable entering homes that require a certain relationship level to access.",
+  "stranger-room-entry.label": "Stranger Room Entry?",
+  "stranger-room-entry.tooltip": "Enable/disable entering rooms that require a certain relationship level to access.",
+  "adventure-guild.label": "Early Adventurers Guild?",
+  "adventure-guild.tooltip": "Enable/disable entering the Adventurers Guild before being accepted as a member.",
+  "ignore-events.label": "Ignore Events?",
+  "ignore-events.tooltip": "Enable/disable accessing buildings that are locked during events."
 }

@@ -10,11 +10,11 @@
 
 {
   "Name": "Indoor Sprinklers",
-  "Author": "mpomirski",
-  "Version": "1.0.0",
+  "Author": "ramen",
+  "Version": "1.0.1",
   "Description": "Makes the sprinklers work indoors (with garden pots)",
-  "UniqueID": "mpomirski.IndoorSprinklers",
+  "UniqueID": "ramen.IndoorSprinklers",
   "EntryDll": "IndoorSprinklers.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": ["Nexus:21124"]
 }

@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods
+**
+*************************************************/
+
+{
+  "enabled": "Enabled",
+  "modded-machines-enabled": "Modded Machines Enabled",
+  "modded-machines-enabled-tooltip": "This will enable bubbles for ALL modded machines",
+  "bubble-y-offset": "Bubble Y Offset",
+  "bubble-x-offset": "Bubble X Offset",
+  "emote-interval": "Emote Interval (ms)",
+  "opacity": "Opacity",
+  "bubble-size": "Bubble Size",
+  "zoom-level-99-enabled": "Set Zoom Level to 99",
+  "zoom-level-99-enabled-tooltip": "Fixes the zoom level to 99 instead of 100 to prevent UI scaling bugs",
+  
+  "jars-enabled": "Jars Enabled",
+  "kegs-enabled": "Kegs Enabled",
+  "casks-enabled": "Casks Enabled",
+  "mayonnaise-machines-enabled": "Mayonnaise Machines Enabled",
+  "cheese-presses-enabled": "Cheese Presses Enabled",
+  "looms-enabled": "Looms Enabled",
+  "oil-makers-enabled": "Oil Makers Enabled",
+  "dehydrators-enabled": "Dehydrators Enabled",
+  "fish-smokers-enabled": "Fish Smokers Enabled",
+  "bait-makers-enabled": "Bait Makers Enabled",
+  "bone-mills-enabled": "Bone Mills Enabled",
+  "charcoal-kilns-enabled": "Charcoal Kilns Enabled",
+  "crystalariums-enabled": "Crystalariums Enabled",
+  "furnaces-enabled": "Furnaces Enabled",
+  "recycling-machines-enabled": "Recycling Machines Enabled",
+  "seed-makers-enabled": "Seed Makers Enabled",
+  "slime-egg-presses-enabled": "Slime Egg-Presses Enabled",
+  "crab-pots-enabled": "Crab Pots Enabled",
+  "deconstructors-enabled": "Deconstructors Enabled",
+  "geode-crushers-enabled": "Geode Crushers Enabled",
+  "wood-chippers-enabled": "Wood Chippers Enabled"
+}

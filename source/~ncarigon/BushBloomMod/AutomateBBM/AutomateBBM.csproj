@@ -25,8 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Automate">
-      <HintPath>E:\GOG Games\Stardew Valley\MO2\mods\Automate 2.0.3\Automate\Automate.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>E:\GOG Games\Stardew Valley\MO2\mods\Automate\Automate\Automate.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

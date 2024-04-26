@@ -64,6 +64,13 @@ namespace BetterSprinklersPlus.Framework
       "Very Hard",
     };
 
+    private static readonly string[] SprinklerCooldownAllowedValues = {
+      "30",
+      "60",
+      "90",
+      "120"
+    };
+
     public static readonly float[] BalancedModeOptionsMultipliers =
     {
       0f,
@@ -99,6 +106,7 @@ namespace BetterSprinklersPlus.Framework
     /// </summary>
     public int DefaultTiles { get; set; } = (int)DefaultTilesOptions.CostMoney;
     public int CannotAfford { get; set; } = (int)CannotAffordOptions.DoNotWater;
+    public int SprinklerCooldown { get; set; } = 30;
     public bool BalancedModeCostMessage { get; set; } = true;
     public bool BalancedModeCannotAffordWarning { get; set; } = true;
 
@@ -191,7 +199,7 @@ namespace BetterSprinklersPlus.Framework
     public static void SaveChanges()
     {
       Helper.WriteConfig(Active);
-      Game1.addHUDMessage(new HUDMessage("Sprinkler Configurations Saved", Color.Green, 3500f));
+      Game1.addHUDMessage(new HUDMessage("Sprinkler Configurations Saved", 2));
     }
 
     public static void UpdateMaxCoverage(BetterSprinklersPlusConfig config, int sprinklerId, string value) {
@@ -207,6 +215,12 @@ namespace BetterSprinklersPlus.Framework
       {
         Logger.Error($"Error changing sprinkler value for {sprinklerId}: {e.Message}");
       }
+    }
+
+    public static void UpdateSprinklerCooldown(BetterSprinklersPlusConfig config, string cooldownValue)
+    {
+      var cooldownAsInt = int.Parse(cooldownValue);
+      config.SprinklerCooldown = cooldownAsInt;
     }
 
     public static void SetupGenericModConfigMenu()
@@ -371,6 +385,14 @@ namespace BetterSprinklersPlus.Framework
         tooltip: () => "When checked the Overlay shows Sprinkler/Scarecrow reach when placing.",
         getValue: () => Active.OverlayEnabledOnPlace,
         setValue: value => Active.OverlayEnabledOnPlace = value
+      );
+
+      configMenu.AddTextOption(
+        mod: Mod,
+        name: () => "Sprinkler Cooldown (seconds)",
+        getValue: () => $"{Active.SprinklerCooldown}",
+        setValue: value => UpdateSprinklerCooldown(Active, value),
+        allowedValues: SprinklerCooldownAllowedValues
       );
 
       configMenu.AddSectionTitle(mod: Mod, () => "Key Bindings:");

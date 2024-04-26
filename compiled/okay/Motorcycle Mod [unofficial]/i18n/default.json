@@ -1,0 +1,98 @@
+﻿{
+    /*********
+    ** motorcycle
+    *********/
+    "buff.name": "Motorcycle Power",
+    "garage.name": "Motorcycle Garage",
+    "garage.description": "A garage to store your motorcycle. Motorcycle included!",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    /****
+    ** Section titles
+    ****/
+    "config.main-options": "Main Options",
+    "config.controls": "Controls",
+    "config.axe": "Axe Features",
+    "config.hoe": "Hoe Features",
+    "config.pickaxe": "Pickaxe Features",
+    "config.scythe": "Scythe Features",
+    "config.melee-blunt": "Melee Blunt Weapons Features",
+    "config.melee-dagger": "Melee Dagger Features",
+    "config.melee-sword": "Melee Sword Features",
+
+
+    /****
+    ** Main options
+    ****/
+    "config.speed.name": "Motorcycle Speed",
+    "config.speed.tooltip": "The speed modifier when riding a motorcycle. Default {{defaultValue}}.",
+
+    "config.magnetic-radius.name": "Magnetic Radius",
+    "config.magnetic-radius.tooltip": "The item magnetism amount (higher values attract items from father away). Default {{defaultValue}}.",
+
+    "config.motorcycle-sounds.name": "Sound Effects",
+    "config.motorcycle-sounds.tooltip": "Which sound effects to play while riding the motorcycle. Changes may not fully take effect until you reload the save. Default {{defaultValue}}.",
+    "config.motorcycle-sounds.value.None": "no sounds",
+    "config.motorcycle-sounds.value.Horse": "horse sounds",
+    "config.motorcycle-sounds.value.motorcycle": "motorcycle sounds",
+
+    "config.build-price.name": "Build Price",
+    "config.build-price.tooltip": "The gold price to buy a motorcycle garage. Default {{defaultValue}}g.",
+
+    "config.can-summon-without-garage.name": "Can Summon Without Garage",
+    "config.can-summon-without-garage.tooltip": "Whether you can summon a temporary motorcycle without building a garage first.",
+
+    "config.invincible-on-motorcycle.name": "Invincible on Motorcycle",
+    "config.invincible-on-motorcycle.tooltip": "Whether you should be immune to damage from any source when riding the motorcycle.",
+
+    "config.highlight-radius.name": "Highlight Radius (Debug)",
+    "config.highlight-radius.tooltip": "Whether to highlight the motorcycle radius when riding one, to help visualize the distance option.",
+
+
+    /****
+    ** Keybind options
+    ****/
+    "config.summon-key.name": "Summon Motorcycle",
+    "config.summon-key.tooltip": "Warp an available motorcycle to your position. Default backspace.",
+
+    "config.dismiss-key.name": "Dismiss Motorcycle",
+    "config.dismiss-key.tooltip": "Return the motorcycle you're riding to its home.",
+
+    "config.hold-to-activate-key.name": "Hold to Activate",
+    "config.hold-to-activate-key.tooltip": "If specified, the motorcycle will only do something while you're holding this button. If nothing is specified, the motorcycle will work automatically while you're riding it.",
+
+
+
+    /****
+    ** Crops/forage/grass
+    ****/
+    "config.harvest-forage.name": "Harvest Forage",
+    "config.harvest-forage.tooltip": "Whether to harvest forage.",
+
+
+    /****
+    ** Debris
+    ****/
+    "config.clear-debris.name": "Clear Debris",
+    "config.clear-debris.tooltip": "Whether to destroy debris like weeds, twigs, giant stumps, and fallen logs.",
+
+    "config.clear-weeds.name": "Clear Weeds",
+    "config.clear-weeds.tooltip": "Whether to destroy weeds.",
+
+
+    /****
+    ** Mining
+    ****/
+    "config.harvest-mine-spawns.name": "Harvest Mine Spawns",
+    "config.harvest-mine-spawns.tooltip": "Whether to harvest spawned mine items like quartz and frozen tears.",
+
+
+    /****
+    ** Placed items
+    ****/
+    "config.break-mine-containers.name": "Break Mine Containers",
+    "config.break-mine-containers.tooltip": "Whether to break containers in the mine."
+}

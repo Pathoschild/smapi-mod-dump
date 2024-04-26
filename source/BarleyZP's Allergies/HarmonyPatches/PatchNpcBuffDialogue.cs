@@ -18,13 +18,13 @@ namespace BZP_Allergies.HarmonyPatches
     internal class PatchNpcBuffDialogue : Initializable
     {
         [HarmonyPrefix]
-        static bool CheckAction_Prefix(ref NPC __instance, ref Farmer who)
+        static void CheckAction_Prefix(ref NPC __instance, ref Farmer who)
         {
             try
             {
                 if (__instance.IsInvisible || __instance.isSleeping.Value || !who.CanMove)
                 {
-                    return true;  // run the original logic here
+                    return;  // run the original logic here
                 }
 
                 // is the farmer having a reaction?
@@ -44,7 +44,6 @@ namespace BZP_Allergies.HarmonyPatches
                 Monitor.Log($"Failed in {nameof(CheckAction_Prefix)}:\n{ex}", LogLevel.Error);
             }
 
-            return true;  // more dialogue can stack here; let the original method do its thing
         }
 
         private static Dialogue? GetNpcAllergicReactionDialogue(NPC npc, Farmer who)

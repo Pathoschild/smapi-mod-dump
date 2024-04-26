@@ -1,0 +1,10 @@
+{
+  "Name": "Translation Replacer",
+  "Author": "ofts",
+  "Version": "1.2.1",
+  "Description": "Change the new translations in 1.6.4 to the previous translations. ",
+  "UniqueID": "ofts.transRep",
+  "EntryDll": "Translation Replacer.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}

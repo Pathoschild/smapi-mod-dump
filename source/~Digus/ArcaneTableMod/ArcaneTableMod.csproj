@@ -4,43 +4,23 @@
     <AssemblyName>ArcaneTableMod</AssemblyName>
     <RootNamespace>ArcaneTableMod</RootNamespace>
     <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
-    <Platforms>x86</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>false</EnableHarmony>
     <IgnoreModFilePatterns>\.dll$, \.pdb$, \.manifest$</IgnoreModFilePatterns>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="[CCRM]ArcaneTableMod\ClonersData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="[CCRM]ArcaneTableMod\manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable-2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable-3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable-4.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable-5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable-6.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable-7.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="[JA]ArcaneTableMod\BigCraftables\Arcane table\big-craftable.json">

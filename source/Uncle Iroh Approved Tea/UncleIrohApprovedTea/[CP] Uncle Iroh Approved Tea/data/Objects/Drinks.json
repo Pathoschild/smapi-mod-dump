@@ -1,0 +1,380 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Load Drinks Tilesheet",
+      "Action": "Load",
+      "Target": "{{ModId}}/Drinks",
+      "FromFile": "assets/Objects/Drinks.png"
+    },
+    {
+      "LogName": "Objects Data",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_Barley_Tea": {
+          "Name": "{{ModId}}_Barley_Tea",
+          "DisplayName": "{{i18n:Tea.Barley.name}}",
+          "Description": "{{i18n:Tea.Barley.description}}",
+          "Price": 70,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "0",
+          "Edibility": 75,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 600,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 2.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 0.0,
+                "MagneticRadius": 0.0,
+                "Speed": 1.0,
+                "Defense": 0.0,
+                "Attack": 0.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_yellow",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Brown_Rice_Tea": {
+          "Name": "{{ModId}}_Brown_Rice_Tea",
+          "DisplayName": "{{i18n:Tea.BrownRice.name}}",
+          "Description": "{{i18n:Tea.BrownRice.description}}",
+          "Price": 150,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "1",
+          "Edibility": 4,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 600,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 0.0,
+                "MagneticRadius": 0.0,
+                "Speed": 2.0,
+                "Defense": 0.0,
+                "Attack": 0.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_brown",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Cassia_Tea": {
+          "Name": "{{ModId}}_Cassia_Tea",
+          "DisplayName": "{{i18n:Tea.Cassia.name}}",
+          "Description": "{{i18n:Tea.Cassia.description}}",
+          "Price": 95,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "2",
+          "Edibility": 4,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 600,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 0.0,
+                "MagneticRadius": 0.0,
+                "Speed": 1.0,
+                "Defense": 0.0,
+                "Attack": 1.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_brown",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Chamomile_Tea": {
+          "Name": "{{ModId}}_Chamomile_Tea",
+          "DisplayName": "{{i18n:Tea.Chamomile.name}}",
+          "Description": "{{i18n:Tea.Chamomile.description}}",
+          "Price": 55,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "3",
+          "Edibility": 95,
+          "IsDrink": true,
+          "ContextTags": [
+            "color_yellow",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Chrysanthemum_Tea": {
+          "Name": "{{ModId}}_Chrysanthemum_Tea",
+          "DisplayName": "{{i18n:Tea.Chrysanthemum.name}}",
+          "Description": "{{i18n:Tea.Chrysanthemum.description}}",
+          "Price": 43,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "4",
+          "Edibility": 25,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 600,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 40.0,
+                "MagneticRadius": 0.0,
+                "Speed": 1.0,
+                "Defense": 1.0,
+                "Attack": 0.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_yellow",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Health_Blend_Tea": {
+          "Name": "{{ModId}}_Health_Blend_Tea",
+          "DisplayName": "{{i18n:Tea.HealthBlend.name}}",
+          "Description": "{{i18n:Tea.HealthBlend.description}}",
+          "Price": 240,
+          "Type": "Cooking",
+          "Category": -7,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "5",
+          "Edibility": 100,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 1800,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 40.0,
+                "MagneticRadius": 0.0,
+                "Speed": 2.0,
+                "Defense": 1.0,
+                "Attack": 1.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_brown",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Lavender_Tea": {
+          "Name": "{{ModId}}_Lavender_Tea",
+          "DisplayName": "{{i18n:Tea.Lavender.name}}",
+          "Description": "{{i18n:Tea.Lavender.description}}",
+          "Price": 110,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "6",
+          "Edibility": 5,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 600,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 1.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 0.0,
+                "MagneticRadius": 0.0,
+                "Speed": 1.0,
+                "Defense": 0.0,
+                "Attack": 0.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_light_yellow",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Jasmine_Tea": {
+          "Name": "{{ModId}}_Jasmine_Tea",
+          "DisplayName": "{{i18n:Tea.Jasmine.name}}",
+          "Description": "{{i18n:Tea.Jasmine.description}}",
+          "Price": 150,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "7",
+          "Edibility": 6,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 600,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 0.0,
+                "ForagingLevel": 1.0,
+                "MaxStamina": 100.0,
+                "MagneticRadius": 0.0,
+                "Speed": 2.0,
+                "Defense": 0.0,
+                "Attack": 0.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_light_green",
+            "drink_item",
+            "tea_item"
+          ]
+        },
+        "{{ModId}}_Osmanthus_Tea": {
+          "Name": "{{ModId}}_Osmanthus_Tea",
+          "DisplayName": "{{i18n:Tea.Osmanthus.name}}",
+          "Description": "{{i18n:Tea.Osmanthus.description}}",
+          "Price": 70,
+          "Type": "ArtisanGoods",
+          "Category": -26,
+          "Texture": "{{ModId}}/Drinks",
+          "SpriteIndex": "8",
+          "Edibility": 7,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "Drink",
+              "BuffId": null,
+              "IconTexture": null,
+              "IconSpriteIndex": 0,
+              "Duration": 300,
+              "IsDebuff": false,
+              "GlowColor": null,
+              "CustomAttributes": {
+                "FarmingLevel": 0.0,
+                "FishingLevel": 0.0,
+                "MiningLevel": 0.0,
+                "LuckLevel": 2.0,
+                "ForagingLevel": 0.0,
+                "MaxStamina": 0.0,
+                "MagneticRadius": 0.0,
+                "Speed": 2.0,
+                "Defense": 0.0,
+                "Attack": 0.0
+              },
+              "CustomFields": null
+            }
+          ],
+          "ContextTags": [
+            "color_light_yellow",
+            "drink_item",
+            "tea_item"
+          ]
+        }
+      }
+    },
+    {
+      "Log": "Cooking Recipe Data",
+      "Action": "EditData",
+      "Target": "Data/CookingRecipes",
+      "Entries": {
+          "{{ModId}}_Health_Blend_Tea": "{{ModId}}_Chrysanthemum_Tea 1 {{ModId}}_Cassia_Tea 1 {{ModId}}_Dried_Goji_Berries 1/6 9/{{ModId}}_Health_Blend_Tea 3/null/{{i18n:Tea.HealthBlend.name}}"
+      }
+    }
+  ]
+}

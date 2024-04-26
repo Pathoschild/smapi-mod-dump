@@ -8,15 +8,17 @@
 **
 *************************************************/
 
+using SObject = StardewValley.Object;
+
 namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
 {
     internal enum Quality
     {
         Any = -1,
-        None = 0,
-        Silver = 1,
-        Gold = 2,
-        Iridium = 4
+        None = SObject.lowQuality,
+        Silver = SObject.medQuality,
+        Gold = SObject.highQuality,
+        Iridium = SObject.bestQuality
     }
 
     internal enum TreasureAppearanceSettings

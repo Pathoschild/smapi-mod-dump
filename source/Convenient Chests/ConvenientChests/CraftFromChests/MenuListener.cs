@@ -81,9 +81,8 @@ namespace ConvenientChests.CraftFromChests {
         /// <param name="e">The event data.</param>
         private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e) {
             switch (Game1.activeClickableMenu) {
-                case TitleMenu _:
-                    // Quit to title
-                    // -> unregister silently
+                case null: // Game Menu closed
+                case TitleMenu: // Quit to title
                     UnregisterTabEvent();
                     return;
 
@@ -105,8 +104,7 @@ namespace ConvenientChests.CraftFromChests {
 
                 default:
                     // How did we get here?
-                    ModEntry.StaticMonitor.Log(
-                        $"Unexpected menu: {Game1.activeClickableMenu?.GetType().ToString() ?? "null"}");
+                    ModEntry.StaticMonitor.Log($"Unexpected menu: {Game1.activeClickableMenu.GetType()}");
                     UnregisterTabEvent();
                     return;
             }

@@ -15,7 +15,7 @@ namespace Randomizer
 	/// </summary>
 	public class ForagableItem : Item
 	{
-		public ForagableItem(int id) : base(id)
+		public ForagableItem(ObjectIndexes index) : base(index)
 		{
 			ShouldBeForagable = true;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;

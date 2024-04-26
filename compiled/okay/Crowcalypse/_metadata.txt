@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22594
+IDs: stardemod.Crowcalypse
+update keys: Nexus:22594

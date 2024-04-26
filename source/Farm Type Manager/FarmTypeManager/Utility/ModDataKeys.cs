@@ -19,6 +19,7 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>A collection of keys for this mod's <see cref="IHaveModData.modData"/> entries.</summary>
+            /// <remarks>This class uses caching to allow faster comparison of non-constant keys.</remarks>
             public static class ModDataKeys
             {
                 private static string canBePickedUp = null;
@@ -42,6 +43,18 @@ namespace FarmTypeManager
                         if (extraLoot == null)
                             extraLoot = Utility.Helper.ModRegistry.ModID + "/ExtraLoot";
                         return extraLoot;
+                    }
+                }
+
+                private static string instantKillImmunity = null;
+
+                public static string InstantKillImmunity
+                {
+                    get
+                    {
+                        if (instantKillImmunity == null)
+                            instantKillImmunity = Utility.Helper.ModRegistry.ModID + "/InstantKillImmunity";
+                        return instantKillImmunity;
                     }
                 }
             }

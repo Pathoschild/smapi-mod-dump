@@ -64,7 +64,7 @@ namespace FlipBuildings.Patches
 				Vector2 tile = new((Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64, (Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64);
 				Building buildingAt = carpenterMenu.TargetLocation.getBuildingAt(tile);
 
-				BuildingHelper.TryToFlip(buildingAt, true);
+				BuildingUtility.TryToFlip(buildingAt, true);
 				return false;
 			}
 			return true;

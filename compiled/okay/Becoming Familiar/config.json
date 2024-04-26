@@ -1,0 +1,6 @@
+{
+  "ShowNotification": false,
+  "NotificationDuration": 5000,
+  "Range": 25,
+  "HowMuchFriendShip": 3
+}

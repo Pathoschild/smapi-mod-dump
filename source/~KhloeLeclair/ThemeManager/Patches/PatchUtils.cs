@@ -93,9 +93,14 @@ internal static class PatchUtils {
 		);
 	}
 
-	internal static bool IsConstructor<T>(this CodeInstruction instr) {
+	internal static bool IsConstructor<T>(this CodeInstruction instr, bool loose = false) {
 		return instr.opcode == OpCodes.Newobj && instr.operand is ConstructorInfo cinfo && cinfo.DeclaringType == typeof(T);
 	}
+
+	internal static bool IsCallConstructor<T>(this CodeInstruction instr) {
+		return instr.opcode == OpCodes.Call && instr.operand is ConstructorInfo cinfo && cinfo.DeclaringType == typeof(T);
+	}
+
 
 	internal static int? AsInt(this CodeInstruction instr) {
 		if (instr.opcode == OpCodes.Ldc_I4_0)

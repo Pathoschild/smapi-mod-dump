@@ -6,9 +6,9 @@ mods:
    Custom Tracker
 
 latest commit:
-   commit 659cbb672bfde3c192a6a0ccc3a93514799d53cc
+   commit 29b46af3fa4d06de09b65492bf7f23071038931c
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Mar 24 13:41:27 2024 -0500
+   Date:   Fri Apr 12 17:28:38 2024 -0500
    
-       Add i18n info to readme
+       Tweak GMCM text for artifact/seed spot setting
    

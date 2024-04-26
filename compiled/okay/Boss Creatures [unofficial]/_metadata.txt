@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5864
+IDs: Aedenthorn.BossCreatures
+update keys: Nexus:5864, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@BossCreatures, GitHub:aedenthorn/StardewValleyMods

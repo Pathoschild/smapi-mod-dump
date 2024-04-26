@@ -301,7 +301,7 @@ namespace ItemBags.Persistence
         public int GetCapacity(BagType Type, double GlobalCapacityModifier)
         {
             int BaseCapacity = BaseCapacities[Size];
-            double Multiplier = GlobalCapacityModifier * Type.SizeSettings.First(x => x.Size == Size).CapacityMultiplier;
+            double Multiplier = GlobalCapacityModifier * CapacityModifier * Type.SizeSettings.First(x => x.Size == Size).CapacityMultiplier;
             if (Multiplier == 1.0)
                 return BaseCapacity;
             else

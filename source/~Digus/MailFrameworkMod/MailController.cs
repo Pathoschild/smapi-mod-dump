@@ -53,7 +53,7 @@ namespace MailFrameworkMod
                 {
                     if (l.AutoOpen)
                     {
-                        if (l.Recipe != null) GetAndLearnRecipe(l.Recipe, out var s, out var i, out var t);
+                        if (l.Recipe != null) GetAndLearnRecipe(l.Recipe, out var s, out var t);
                         l.Callback?.Invoke(l);
                     }
                     else
@@ -238,14 +238,12 @@ namespace MailFrameworkMod
                 if (ShownLetter.Value.Recipe != null)
                 {
                     string recipe = ShownLetter.Value.Recipe;
-                    GetAndLearnRecipe(recipe, out string recipeString, out int dataArrayI18NSize, out string cookingOrCraftingText);
+                    GetAndLearnRecipe(recipe, out string recipeString, out string cookingOrCraftingText);
 
                     if (recipeString != null)
                     {
-                        string learnedRecipe = recipe;
-                        
                         activeClickableMenu.cookingOrCrafting = cookingOrCraftingText;
-                        activeClickableMenu.learnedRecipe = learnedRecipe;
+                        activeClickableMenu.learnedRecipe = recipeString;
                     }
                 }
                 activeClickableMenu.exitFunction = (IClickableMenu.onExit)Delegate.Combine(activeClickableMenu.exitFunction, (IClickableMenu.onExit)delegate
@@ -259,17 +257,13 @@ namespace MailFrameworkMod
             }
         }
 
-        private static void GetAndLearnRecipe(string recipe, out string learnedRecipe, out int dataArrayI18NSize,
-            out string cookingOrCraftingText)
+        private static void GetAndLearnRecipe(string recipe, out string learnedRecipe, out string cookingOrCraftingText)
         {
-            Dictionary<string, string> cookingData =
-                MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/CookingRecipes"));
-            Dictionary<string, string> craftingData =
-                MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/CraftingRecipes"));
+            Dictionary<string, string> cookingData = StardewValley.DataLoader.CookingRecipes(Game1.content);
+            Dictionary<string, string> craftingData = StardewValley.DataLoader.CraftingRecipes(Game1.content);
             learnedRecipe = null;
-            dataArrayI18NSize = 0;
             cookingOrCraftingText = null;
-            if (cookingData.ContainsKey(recipe))
+            if (cookingData.ContainsKey(recipe) || cookingData.Where(r => ItemRegistry.GetData(r.Value.Split("/")[2].Split(" ")[0])?.InternalName == recipe).Any(r => { recipe = r.Key; return true; }))
             {
                 if (!Game1.player.cookingRecipes.ContainsKey(recipe))
                 {
@@ -277,10 +271,9 @@ namespace MailFrameworkMod
                 }
 
                 learnedRecipe = new CraftingRecipe(recipe, isCookingRecipe: true).DisplayName;
-                dataArrayI18NSize = 5;
                 cookingOrCraftingText =  Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
             }
-            else if (craftingData.ContainsKey(recipe))
+            else if (craftingData.ContainsKey(recipe) || craftingData.Where(r => ItemRegistry.GetData(r.Value.Split("/")[2].Split(" ")[0])?.InternalName == recipe).Any(r=>{recipe = r.Key; return true;}))
             {
                 if (!Game1.player.craftingRecipes.ContainsKey(recipe))
                 {
@@ -288,7 +281,6 @@ namespace MailFrameworkMod
                 }
 
                 learnedRecipe = new CraftingRecipe(recipe, isCookingRecipe: false).DisplayName;
-                dataArrayI18NSize = 6;
                 cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_crafting");
             }
             else

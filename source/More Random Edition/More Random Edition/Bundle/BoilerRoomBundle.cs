@@ -22,41 +22,43 @@ namespace Randomizer
 		/// </summary>
 		protected override void Populate()
 		{
-			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
-			List<RequiredItem> potentialItems = new List<RequiredItem>();
+            RNG rng = BundleRandomizer.Rng;
+
+            BundleType = rng.GetAndRemoveRandomValueFromList(RoomBundleTypes);
+			List<RequiredBundleItem> potentialItems = new();
 
 			switch (BundleType)
 			{
 				case BundleTypes.BoilerArtifacts:
 					SetBundleName("bundle-boiler-artifacts");
-					potentialItems = RequiredItem.CreateList(
+					potentialItems = RequiredBundleItem.CreateList(
 						ItemList.GetArtifacts().Where(x => x.DifficultyToObtain < ObtainingDifficulties.RareItem).ToList()
 					);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BoilerMinerals:
 					SetBundleName("bundle-boiler-minerals");
-					potentialItems = RequiredItem.CreateList(ItemList.GetGeodeMinerals());
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(4, 6);
+					potentialItems = RequiredBundleItem.CreateList(ItemList.GetGeodeMinerals());
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(4, 6);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BoilerGeode:
 					SetBundleName("bundle-boiler-geode");
-					RequiredItems = new List<RequiredItem>
+					RequiredItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.Geode, 1, 10),
-						new RequiredItem(ObjectIndexes.FrozenGeode, 1, 10),
-						new RequiredItem(ObjectIndexes.MagmaGeode, 1, 10),
-						new RequiredItem(ObjectIndexes.OmniGeode, 1, 10),
+						new(ObjectIndexes.Geode, 1, 10),
+						new(ObjectIndexes.FrozenGeode, 1, 10),
+						new(ObjectIndexes.MagmaGeode, 1, 10),
+						new(ObjectIndexes.OmniGeode, 1, 10),
 					};
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerGemstone:
 					SetBundleName("bundle-boiler-gemstone");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.Quartz,
 						ObjectIndexes.FireQuartz,
@@ -70,78 +72,78 @@ namespace Randomizer
 						ObjectIndexes.Jade,
 						ObjectIndexes.Diamond
 					}, 1, 5);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
-					MinimumRequiredItems = Range.GetRandomValue(RequiredItems.Count - 2, RequiredItems.Count);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, rng.NextIntWithinRange(6, 8));
+					MinimumRequiredItems = rng.NextIntWithinRange(RequiredItems.Count - 2, RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BoilerMetal:
 					SetBundleName("bundle-boiler-metal");
-					potentialItems = new List<RequiredItem>
+					potentialItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.CopperOre, 5, 10),
-						new RequiredItem(ObjectIndexes.IronOre, 5, 10),
-						new RequiredItem(ObjectIndexes.GoldOre, 5, 10),
-						new RequiredItem(ObjectIndexes.IridiumOre, 5, 10),
-						new RequiredItem(ObjectIndexes.CopperBar, 1, 5),
-						new RequiredItem(ObjectIndexes.IronBar, 1, 5),
-						new RequiredItem(ObjectIndexes.GoldBar, 1, 5),
-						new RequiredItem(ObjectIndexes.IridiumBar, 1, 5),
+						new(ObjectIndexes.CopperOre, 5, 10),
+						new(ObjectIndexes.IronOre, 5, 10),
+						new(ObjectIndexes.GoldOre, 5, 10),
+						new(ObjectIndexes.IridiumOre, 5, 10),
+						new(ObjectIndexes.CopperBar, 1, 5),
+						new(ObjectIndexes.IronBar, 1, 5),
+						new(ObjectIndexes.GoldBar, 1, 5),
+						new(ObjectIndexes.IridiumBar, 1, 5),
 					};
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
-					MinimumRequiredItems = Range.GetRandomValue(RequiredItems.Count - 2, RequiredItems.Count);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, rng.NextIntWithinRange(6, 8));
+					MinimumRequiredItems = rng.NextIntWithinRange(RequiredItems.Count - 2, RequiredItems.Count);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerExplosive:
 					SetBundleName("bundle-boiler-explosive");
-					RequiredItems = new List<RequiredItem>
+					RequiredItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.CherryBomb, 1, 5),
-						new RequiredItem(ObjectIndexes.Bomb, 1, 5),
-						new RequiredItem(ObjectIndexes.MegaBomb, 1, 5),
+						new RequiredBundleItem(ObjectIndexes.CherryBomb, 1, 5),
+						new RequiredBundleItem(ObjectIndexes.Bomb, 1, 5),
+						new RequiredBundleItem(ObjectIndexes.MegaBomb, 1, 5),
 					};
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerRing:
 					SetBundleName("bundle-boiler-ring");
-					RequiredItems = RequiredItem.CreateList(
-						Globals.RNGGetRandomValuesFromList(ItemList.GetRings(), 8)
+					RequiredItems = RequiredBundleItem.CreateList(
+						rng.GetRandomValuesFromList(ItemList.GetRings(), 8)
 					);
-					MinimumRequiredItems = Range.GetRandomValue(4, 6);
+					MinimumRequiredItems = rng.NextIntWithinRange(4, 6);
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.BoilerSpoopy:
 					SetBundleName("bundle-boiler-spoopy");
-					potentialItems = new List<RequiredItem>
+					potentialItems = new List<RequiredBundleItem>
 					{
-						new RequiredItem(ObjectIndexes.Pumpkin, 6),
-						new RequiredItem(ObjectIndexes.JackOLantern, 6),
-						new RequiredItem(ObjectIndexes.Ghostfish, 6),
-						new RequiredItem(ObjectIndexes.BatWing, 6),
-						new RequiredItem(ObjectIndexes.VoidEssence, 6),
-						new RequiredItem(ObjectIndexes.VoidEgg, 6),
-						new RequiredItem(ObjectIndexes.PurpleMushroom, 6),
-						new RequiredItem(ObjectIndexes.GhostCrystal, 6),
-						new RequiredItem(ObjectIndexes.SpookFish, 6)
+						new RequiredBundleItem(ObjectIndexes.Pumpkin, 6),
+						new RequiredBundleItem(ObjectIndexes.JackOLantern, 6),
+						new RequiredBundleItem(ObjectIndexes.Ghostfish, 6),
+						new RequiredBundleItem(ObjectIndexes.BatWing, 6),
+						new RequiredBundleItem(ObjectIndexes.VoidEssence, 6),
+						new RequiredBundleItem(ObjectIndexes.VoidEgg, 6),
+						new RequiredBundleItem(ObjectIndexes.PurpleMushroom, 6),
+						new RequiredBundleItem(ObjectIndexes.GhostCrystal, 6),
+						new RequiredBundleItem(ObjectIndexes.SpookFish, 6)
 					};
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 6);
 					MinimumRequiredItems = 3;
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BoilerMonster:
 					SetBundleName("bundle-boiler-monster");
-					RequiredItems = new List<RequiredItem>()
+					RequiredItems = new List<RequiredBundleItem>()
 					{
-						new RequiredItem(ObjectIndexes.BugMeat, 10, 50),
-						new RequiredItem(ObjectIndexes.Slime, 10, 50),
-						new RequiredItem(ObjectIndexes.BatWing, 10, 50),
-						new RequiredItem(ObjectIndexes.SolarEssence, 10, 50),
-						new RequiredItem(ObjectIndexes.VoidEssence, 10, 50)
+						new RequiredBundleItem(ObjectIndexes.BugMeat, 10, 50),
+						new RequiredBundleItem(ObjectIndexes.Slime, 10, 50),
+						new RequiredBundleItem(ObjectIndexes.BatWing, 10, 50),
+						new RequiredBundleItem(ObjectIndexes.SolarEssence, 10, 50),
+						new RequiredBundleItem(ObjectIndexes.VoidEssence, 10, 50)
 					};
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerColorBlack:
 					SetBundleName("bundle-boiler-black");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.RareDisc,
 						ObjectIndexes.MakiRoll,
@@ -156,13 +158,13 @@ namespace Randomizer
 						ObjectIndexes.BatWing,
 						ObjectIndexes.VoidEssence,
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BoilerColorRed:
 					SetBundleName("bundle-boiler-red");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.Ruby,
 						ObjectIndexes.FireQuartz,
@@ -193,13 +195,13 @@ namespace Randomizer
 						ObjectIndexes.CrabPot,
 						ObjectIndexes.LifeElixir
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerColorGray:
 					SetBundleName("bundle-boiler-gray");
-					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
+					potentialItems = RequiredBundleItem.CreateList(new List<ObjectIndexes>
 					{
 						ObjectIndexes.Stone,
 						ObjectIndexes.Arrowhead,
@@ -234,8 +236,8 @@ namespace Randomizer
 						ObjectIndexes.TrapBobber,
 						ObjectIndexes.OmniGeode,
 					});
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
-					MinimumRequiredItems = Range.GetRandomValue(3, 6);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
+					MinimumRequiredItems = rng.NextIntWithinRange(3, 6);
 					Color = BundleColors.Blue;
 					break;
 			}
@@ -246,62 +248,65 @@ namespace Randomizer
 		/// </summary>
 		protected override void GenerateReward()
 		{
-			RequiredItem randomOre = Globals.RNGGetRandomValueFromList(new List<RequiredItem>()
+            RNG rng = BundleRandomizer.Rng;
+
+            RequiredBundleItem randomOre = rng.GetRandomValueFromList(new List<RequiredBundleItem>()
 			{
-				new RequiredItem(ObjectIndexes.CopperOre, 100),
-				new RequiredItem(ObjectIndexes.IronOre, 100),
-				new RequiredItem(ObjectIndexes.GoldOre, 100),
-				new RequiredItem(ObjectIndexes.IridiumOre, 10),
+				new(ObjectIndexes.CopperOre, 100),
+				new(ObjectIndexes.IronOre, 100),
+				new(ObjectIndexes.GoldOre, 100),
+				new(ObjectIndexes.IridiumOre, 10),
 			});
 
-			RequiredItem randomBar = Globals.RNGGetRandomValueFromList(new List<RequiredItem>()
+			RequiredBundleItem randomBar = rng.GetRandomValueFromList(new List<RequiredBundleItem>()
 			{
-				new RequiredItem(ObjectIndexes.CopperBar, 15),
-				new RequiredItem(ObjectIndexes.IronBar, 15),
-				new RequiredItem(ObjectIndexes.GoldBar, 15),
-				new RequiredItem(ObjectIndexes.IridiumBar)
+				new(ObjectIndexes.CopperBar, 15),
+				new(ObjectIndexes.IronBar, 15),
+				new(ObjectIndexes.GoldBar, 15),
+				new(ObjectIndexes.IridiumBar)
 			});
 
-			RequiredItem randomGeode = Globals.RNGGetRandomValueFromList(new List<RequiredItem>()
+			RequiredBundleItem randomGeode = rng.GetRandomValueFromList(new List<RequiredBundleItem>()
 			{
-				new RequiredItem(ObjectIndexes.Geode, 25),
-				new RequiredItem(ObjectIndexes.FrozenGeode, 25),
-				new RequiredItem(ObjectIndexes.MagmaGeode, 25),
-				new RequiredItem(ObjectIndexes.OmniGeode, 25)
+				new(ObjectIndexes.Geode, 25),
+				new(ObjectIndexes.FrozenGeode, 25),
+				new(ObjectIndexes.MagmaGeode, 25),
+				new(ObjectIndexes.OmniGeode, 25)
 			});
 
-			RequiredItem randomMonsterDrop = Globals.RNGGetRandomValueFromList(new List<RequiredItem>()
+			RequiredBundleItem randomMonsterDrop = rng.GetRandomValueFromList(new List<RequiredBundleItem>()
 			{
-				new RequiredItem(ObjectIndexes.BugMeat, 200),
-				new RequiredItem(ObjectIndexes.Slime, 150),
-				new RequiredItem(ObjectIndexes.BatWing, 100),
-				new RequiredItem(ObjectIndexes.SolarEssence, 50),
-				new RequiredItem(ObjectIndexes.VoidEssence, 50)
+				new(ObjectIndexes.BugMeat, 200),
+				new(ObjectIndexes.Slime, 150),
+				new(ObjectIndexes.BatWing, 100),
+				new(ObjectIndexes.BoneFragment, 100),
+				new(ObjectIndexes.SolarEssence, 50),
+				new(ObjectIndexes.VoidEssence, 50),
 			});
 
-			RequiredItem randomExplosive = Globals.RNGGetRandomValueFromList(new List<RequiredItem>()
+			RequiredBundleItem randomExplosive = rng.GetRandomValueFromList(new List<RequiredBundleItem>()
 			{
-				new RequiredItem(ObjectIndexes.CherryBomb, 25, 50),
-				new RequiredItem(ObjectIndexes.Bomb, 25, 50),
-				new RequiredItem(ObjectIndexes.MegaBomb, 25, 50)
+				new(ObjectIndexes.CherryBomb, 25, 50),
+				new(ObjectIndexes.Bomb, 25, 50),
+				new(ObjectIndexes.MegaBomb, 25, 50)
 			});
 
-			RequiredItem randomGemstone = Globals.RNGGetRandomValueFromList(new List<RequiredItem>()
+			RequiredBundleItem randomGemstone = rng.GetRandomValueFromList(new List<RequiredBundleItem>()
 			{
-				new RequiredItem(ObjectIndexes.Quartz, 25, 50),
-				new RequiredItem(ObjectIndexes.FireQuartz, 25, 50),
-				new RequiredItem(ObjectIndexes.EarthCrystal, 25, 50),
-				new RequiredItem(ObjectIndexes.FrozenTear, 25, 50),
-				new RequiredItem(ObjectIndexes.Aquamarine, 25, 50),
-				new RequiredItem(ObjectIndexes.Amethyst, 25, 50),
-				new RequiredItem(ObjectIndexes.Emerald, 25, 50),
-				new RequiredItem(ObjectIndexes.Ruby, 25, 50),
-				new RequiredItem(ObjectIndexes.Topaz, 25, 50),
-				new RequiredItem(ObjectIndexes.Jade, 25, 50),
-				new RequiredItem(ObjectIndexes.Diamond, 10, 30),
+				new(ObjectIndexes.Quartz, 25, 50),
+				new(ObjectIndexes.FireQuartz, 25, 50),
+				new(ObjectIndexes.EarthCrystal, 25, 50),
+				new(ObjectIndexes.FrozenTear, 25, 50),
+				new(ObjectIndexes.Aquamarine, 25, 50),
+				new(ObjectIndexes.Amethyst, 25, 50),
+				new(ObjectIndexes.Emerald, 25, 50),
+				new(ObjectIndexes.Ruby, 25, 50),
+				new(ObjectIndexes.Topaz, 25, 50),
+				new(ObjectIndexes.Jade, 25, 50),
+				new(ObjectIndexes.Diamond, 10, 30),
 			});
 
-			var potentialRewards = new List<RequiredItem>
+			var potentialRewards = new List<RequiredBundleItem>
 			{
 				randomOre,
 				randomBar,
@@ -309,23 +314,18 @@ namespace Randomizer
 				randomMonsterDrop,
 				randomExplosive,
 				randomGemstone,
-				new RequiredItem(Globals.RNGGetRandomValueFromList(ItemList.GetGeodeMinerals()), 25),
-				new RequiredItem(Globals.RNGGetRandomValueFromList(ItemList.GetArtifacts())),
-				new RequiredItem(Globals.RNGGetRandomValueFromList(ItemList.GetRings())),
-				new RequiredItem(BigCraftableIndexes.Crystalarium),
-				new RequiredItem(BigCraftableIndexes.MayonnaiseMachine),
-				new RequiredItem(ObjectIndexes.Coal, 100)
+				new(rng.GetRandomValueFromList(ItemList.GetGeodeMinerals()), 25),
+				new(rng.GetRandomValueFromList(ItemList.GetArtifacts())),
+				new(rng.GetRandomValueFromList(ItemList.GetRings())),
+				new(BigCraftableIndexes.Crystalarium),
+				new(BigCraftableIndexes.MayonnaiseMachine),
+				new(ObjectIndexes.Coal, 100)
 			};
 
-			if (Globals.RNGGetNextBoolean(1)) // 1% chance of a prismatic shard reward
-			{
-				Reward = new RequiredItem(ObjectIndexes.PrismaticShard);
-			}
-
-			else
-			{
-				Reward = Globals.RNGGetRandomValueFromList(potentialRewards);
-			}
+            // 1% chance of a prismatic shard reward
+            Reward = rng.NextBoolean(1)
+				? new RequiredBundleItem(ObjectIndexes.PrismaticShard)
+				: rng.GetRandomValueFromList(potentialRewards);
 		}
 	}
 }

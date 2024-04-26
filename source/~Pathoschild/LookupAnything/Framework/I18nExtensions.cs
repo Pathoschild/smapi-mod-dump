@@ -37,7 +37,11 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /// <param name="stage">The tree growth stage.</param>
         public static string For(WildTreeGrowthStage stage)
         {
-            return I18n.GetByKey($"tree.stages.{stage}");
+            string stageKey = stage == (WildTreeGrowthStage)4
+                ? "smallTree"
+                : stage.ToString();
+
+            return I18n.GetByKey($"tree.stages.{stageKey}");
         }
 
         /// <summary>Get a translation for an enum value.</summary>

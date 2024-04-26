@@ -9,7 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
-using MarketTown;
+using MarketTown.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -214,7 +214,7 @@ namespace MarketTown
                 && Microsoft.Xna.Framework.Vector2.Distance(__instance.Tile, Game1.player.Tile) < 30
                 && __instance.modData["hapyke.FoodStore/LastFoodTaste"] != "-1" && Config.EnableDecor && !Config.DisableChatAll)
             {
-                if (Game1.random.NextDouble() < 0.1)
+                if (Game1.random.NextDouble() < 0.033)
                 {
                     Random random = new Random();
                     int randomIndex = random.Next(8);
@@ -330,7 +330,17 @@ namespace MarketTown
                 __instance.MovePosition(Game1.currentGameTime, Game1.viewport, __instance.currentLocation);
             }
 
-            PlacedFoodData food = GetClosestFood(__instance, __instance.currentLocation);
+            foreach (var pair in validBuildingObjectPairs)
+            {
+                Building building = pair.Building;
+                string buildingType = pair.buildingType;
+
+                var museumCheck = Game1.getLocationFromName(building.GetIndoorsName());
+
+                if (museumCheck == __instance.currentLocation && buildingType == "museum") return;
+            }
+
+            DataPlacedFood food = GetClosestFood(__instance, __instance.currentLocation);
             TryToEatFood(__instance, food);
         }
         private static void FarmHouse_updateEvenIfFarmerIsntHere_Postfix(GameLocation __instance)
@@ -340,7 +350,7 @@ namespace MarketTown
 
             foreach (NPC npc in __instance.characters)
             {
-                double talkChance = 0.000025;
+                double talkChance = 0.00002;
                 Random randomSayChance = new Random();
 
                 //Send bubble about decoration, dish of the week
@@ -351,7 +361,7 @@ namespace MarketTown
                     && Config.EnableDecor
                     && !Config.DisableChatAll)
                 {
-                    PlacedFoodData tempFood = GetClosestFood(npc, npc.currentLocation);
+                    DataPlacedFood tempFood = GetClosestFood(npc, npc.currentLocation);
 
                     int localNpcCount = 2;
                     if (Utility.isThereAFarmerOrCharacterWithinDistance(new Microsoft.Xna.Framework.Vector2(npc.Tile.X, npc.Tile.Y), 10, npc.currentLocation) != null) localNpcCount += 1;
@@ -430,7 +440,18 @@ namespace MarketTown
                     {
                         if (npc != null && WantsToEat(npc) && Game1.random.NextDouble() < moveToFoodChance / 100f && npc.modData["hapyke.FoodStore/walkingBlock"] == "false")
                         {
-                            PlacedFoodData food = GetClosestFood(npc, __instance);
+                            DataPlacedFood food = GetClosestFood(npc, __instance);
+
+                            foreach (var pair in validBuildingObjectPairs)
+                            {
+                                Building building = pair.Building;
+                                string buildingType = pair.buildingType;
+
+                                var museumCheck = Game1.getLocationFromName(building.GetIndoorsName());
+
+                                if (museumCheck == npc.currentLocation && buildingType == "museum") return;
+                            }
+
                             if (food == null || (!Config.AllowRemoveNonFood && food.foodObject.Edibility <= 0 && (npc.currentLocation is Farm || npc.currentLocation is FarmHouse)))
                                 return;
                             if (TryToEatFood(npc, food))
@@ -541,7 +562,7 @@ namespace MarketTown
                     __instance.modData.Remove(orderKey);
                     return;
                 }
-                OrderData orderData = JsonConvert.DeserializeObject<OrderData>(data);
+                DataOrder orderData = JsonConvert.DeserializeObject<DataOrder>(data);
                 int emoteIndex = __instance.CurrentEmoteIndex >= emoteBaseIndex ? __instance.CurrentEmoteIndex - emoteBaseIndex : __instance.CurrentEmoteIndex;
                 if (__instance.CurrentEmoteIndex >= emoteBaseIndex + 3)
                 {
@@ -577,7 +598,7 @@ namespace MarketTown
                     npc.modData.Remove(orderKey);
                     return true;
                 }
-                OrderData orderData = JsonConvert.DeserializeObject<OrderData>(data);
+                DataOrder orderData = JsonConvert.DeserializeObject<DataOrder>(data);
                 if (who.ActiveObject != null && who.ActiveObject.canBeGivenAsGift() && who.ActiveObject.Name == orderData.dishName)
                 {
                     Game1.mouseCursor = 6;
@@ -594,7 +615,7 @@ namespace MarketTown
             {
                 if (!Config.EnableMod || !Config.RestaurantLocations.Contains(__instance.currentLocation.Name) || !__instance.modData.TryGetValue(orderKey, out string data))
                     return true;
-                OrderData orderData = JsonConvert.DeserializeObject<OrderData>(data);
+                DataOrder orderData = JsonConvert.DeserializeObject<DataOrder>(data);
                 if (who.ActiveObject?.ParentSheetIndex == orderData.dish)
                 {
                     if (!npcOrderNumbers.Value.ContainsKey(__instance.Name))

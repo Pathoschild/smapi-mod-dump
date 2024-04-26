@@ -22,6 +22,8 @@ using System.Linq;
 using Unlockable_Bundles.Lib.Enums;
 using Unlockable_Bundles.Lib.ShopTypes;
 using static StardewValley.LocalizedContentManager;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib
 {
@@ -29,16 +31,8 @@ namespace Unlockable_Bundles.Lib
     {
         private static Texture2D BGTexture;
 
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             BGTexture = Helper.ModContent.Load<Texture2D>("assets\\BundleOverviewBG.png");
         }
 

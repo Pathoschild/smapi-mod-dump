@@ -26,7 +26,7 @@ for queries and analysis.**
 
 ### Read Tile
 
-Reads the name and information about the tile the player is currently looking (not the one the player is standing on).
+Reads the name and information about the tile the player is currently facing (not the one the player is standing on).
 This feature uses in-game methods/properties to get the name and information of the object on the tile.
 Many tiles don't have textual information so for that, the mod uses a json file to get the name of the tile.
 You can find this file in the `assets/TilesData` folder by the name `tiles.json`.
@@ -74,7 +74,7 @@ See related: [keybindings](keybindings.md#object-tracker-keys), [configs](config
 When enabled, the player moves tile by tile instead of freely.
 This feature is most helpful when planting/harvesting crops or in any case where precise movement is required.
 
-_Note: If in case you encounter the player moving more than one step or the speed being faster than usual,
+_Note: In case you encounter the player moving more than one step or the speed being faster than usual,
 try reducing the speed of grid movement from the config._
 
 See related: [keybindings](keybindings.md#grid-movement-keys), [configs](config.md#grid-movement-configs).
@@ -111,4 +111,4 @@ See related: [commands](commands.md#radar-related), [configs](config.md#radar-co
 - [Keybindings](keybindings.md)
 - [Commands](commands.md)
 - [Configs](config.md)
-- [Guides](https://github.com/khanshoaib3/stardew-access/tree/master/docs/guides.md)
+- [Guides](guides.md)

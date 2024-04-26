@@ -6,9 +6,9 @@ mods:
    Better Jukebox
 
 latest commit:
-   commit 729936465322110f080a754de4402863b81a5a33
+   commit 47d0ca51738f13c48c769a5847dafec4504f7de4
    Author: gaphodil <gaphodillo@gmail.com>
-   Date:   Sat Dec 16 13:09:33 2023 -0800
+   Date:   Mon Apr 15 19:30:14 2024 -0700
    
-       fixed random button
+       migration to 1.6 songsHeard alternative
    

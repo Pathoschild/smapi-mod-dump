@@ -88,9 +88,15 @@ namespace FashionSense.Framework.Patches.Objects
             }
         }
 
-        private static float AdjustLayerDepthForHeldObjects(float layerDepth)
+        internal static float AdjustLayerDepthForHeldObjects(float layerDepth)
         {
-            return DrawPatch.lastCustomLayerDepth is null ? layerDepth : DrawPatch.lastCustomLayerDepth.Value + 0.0001f;
+            if (DrawPatch.lastCustomLayerDepth is null)
+            {
+                return layerDepth;
+            }
+
+            DrawPatch.lastCustomLayerDepth += 0.0001f;
+            return DrawPatch.lastCustomLayerDepth.Value;
         }
     }
 }

@@ -1,7 +1,7 @@
 {
   "Name": "LowHealthWarning",
   "Author": "NMVH5",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Provide a more obvious indicator when your health is low.",
   "UniqueID": "nmvh5.LowHealthWarning",
   "EntryDll": "LowHealthWarning.dll",

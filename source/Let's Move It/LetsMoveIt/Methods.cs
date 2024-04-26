@@ -14,266 +14,313 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;
 
 namespace LetsMoveIt
 {
-    public partial class ModEntry
+    internal partial class ModEntry
     {
-        
+        /// <summary>Pickup Object</summary>
+        /// /// <param name="location">The current location.</param>
         private void PickupObject(GameLocation location)
         {
-            if (Config.ModKey != SButton.None && !Helper.Input.IsDown(Config.ModKey))
+            if (Config.ModKey != SButton.None && !this.Helper.Input.IsDown(Config.ModKey))
             {
-                if (movingObject is not null)
+                if (MovingObject is not null)
                 {
-                    PlaceObject(location);
+                    this.Helper.Input.Suppress(Config.MoveKey);
+                    this.Helper.Input.Suppress(Config.OverwriteKey);
+                    bool overwriteTile = this.Helper.Input.IsDown(Config.OverwriteKey);
+                    PlaceObject(location, overwriteTile);
                 }
                 return;
             }
-            Vector2 cursorTile = Game1.lastCursorTile;
+            Vector2 cursorTile = Game1.currentCursorTile;
             var mp = Game1.getMousePosition() + new Point(Game1.viewport.Location.X, Game1.viewport.Location.Y);
-
-            foreach (var c in Game1.currentLocation.characters)
+            //SMonitor.Log("pickupMain | " + location.isBuildable(cursorTile) + " | " + location.IsBuildableLocation() + " | " + location.IsTileOccupiedBy(cursorTile, CollisionMask.Buildings) + " | " + location.isTilePassable(cursorTile) + " | " + location.isTileOnMap(cursorTile), LogLevel.Info); // <<< debug >>>
+            foreach (var c in location.characters)
             {
                 var bb = c.GetBoundingBox();
                 if(c is NPC)
                     bb = new Rectangle(bb.Location - new Point(0, 64), new Point(64, 128));
                 if (bb.Contains(mp))
                 {
-                    Pickup(c, cursorTile, c.Name);
+                    this.Pickup(c, cursorTile, c.currentLocation);
                     return;
                 }
             }
-            if (Game1.currentLocation is Farm)
+            if (location is Farm)
             {
-                foreach (var a in (Game1.currentLocation as Farm).animals.Values)
+                foreach (var a in (location as Farm).animals.Values)
                 {
                     if (a.GetBoundingBox().Contains(mp))
                     {
-                        Pickup(a, cursorTile, a.Name);
+                        this.Pickup(a, cursorTile, a.currentLocation);
                         return;
                     }
                 }
             }
-            if (Game1.currentLocation is AnimalHouse)
+            if (location is AnimalHouse)
             {
-                foreach (var a in (Game1.currentLocation as AnimalHouse).animals.Values)
+                foreach (var a in (location as AnimalHouse).animals.Values)
                 {
                     if (a.GetBoundingBox().Contains(mp))
                     {
-                        Pickup(a, cursorTile, a.Name);
+                        this.Pickup(a, cursorTile, a.currentLocation);
                         return;
                     }
                 }
             }
-            if (Game1.currentLocation is Forest)
+            if (location is Forest)
             {
-                foreach (var a in (Game1.currentLocation as Forest).marniesLivestock)
+                foreach (var a in (location as Forest).marniesLivestock)
                 {
                     if (a.GetBoundingBox().Contains(mp))
                     {
-                        Pickup(a, cursorTile, a.Name);
+                        this.Pickup(a, cursorTile, a.currentLocation);
                         return;
                     }
                 }
-                // hat nicht funktionirt
-                //foreach (var rc in (Game1.currentLocation as Forest).resourceClumps)
-                //{
-                //    if (rc.occupiesTile((int)cursorTile.X, (int)cursorTile.Y))
-                //    {
-                //        Pickup(rc, cursorTile, rc.GetType().ToString());
-                //        return;
-                //    }
-                //}
-
-                // -- 1.6 "log" obsolete
-                if ((Game1.currentLocation as Forest).obsolete_log?.occupiesTile((int)cursorTile.X, (int)cursorTile.Y) == true)
-                {
-                    Pickup((Game1.currentLocation as Forest).obsolete_log, cursorTile, (Game1.currentLocation as Forest).obsolete_log.GetType().ToString());
-                    return;
-                }
             }
-            //if (Game1.currentLocation is Woods)
-            //{
-            //    foreach (var rc in (Game1.currentLocation as Woods).resourceClumps)
-            //    {
-            //        if (rc.occupiesTile((int)cursorTile.X, (int)cursorTile.Y))
-            //        {
-            //            Pickup(rc, cursorTile, rc.GetType().ToString());
-            //            return;
-            //        }
-            //    }
-            //}
-            if (Game1.currentLocation.objects.TryGetValue(cursorTile, out var obj))
+            if (location.objects.TryGetValue(cursorTile, out var obj))
             {
-                Pickup(obj, cursorTile, obj.Name);
+                this.Pickup(obj, cursorTile, obj.Location);
                 return;
             }
-            if (location.IsBuildableLocation())
-            {
-                var building = location.buildings.FirstOrDefault(b => b.intersects(new Rectangle(Utility.Vector2ToPoint(Game1.currentCursorTile * 64 - new Vector2(32, 32)), new Point(64, 64))));
-                if (building != null)
-                {
-                    var mousePos = Game1.getMousePosition().ToVector2();
-                    var viewport = new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                    var buildingPos = new Vector2(building.tileX.Value, building.tileY.Value) * 64 - viewport;
-                    Pickup(building, cursorTile, mousePos - buildingPos, building.GetType().ToString());
-                    return;
-                }
-            }
-            foreach (var rc in Game1.currentLocation.resourceClumps)
+            foreach (var rc in location.resourceClumps)
             {
                 if (rc.occupiesTile((int)cursorTile.X, (int)cursorTile.Y))
                 {
-                    Pickup(rc, cursorTile, rc.GetType().ToString());
+                    //SMonitor.Log("pickup | " + Game1.currentLocation.resourceClumps.IndexOf(rc), LogLevel.Info); // <<< debug >>>
+                    this.Pickup(rc, cursorTile, rc.Location);
                     return;
                 }
             }
-            if (Game1.currentLocation.largeTerrainFeatures is not null)
+            if (location.isCropAtTile((int)cursorTile.X, (int)cursorTile.Y) && Config.MoveCropWithoutTile)
             {
-
-                foreach (var ltf in Game1.currentLocation.largeTerrainFeatures)
+                var cp = (location.terrainFeatures[cursorTile] as HoeDirt).crop;
+                //SMonitor.Log("pickup | " + cp, LogLevel.Info); // <<< debug >>>
+                this.Pickup(cp, cursorTile, cp.currentLocation);
+                return;
+            }
+            if (location.largeTerrainFeatures is not null)
+            {
+                foreach (var ltf in location.largeTerrainFeatures)
                 {
                     if (ltf.getBoundingBox().Contains((int)cursorTile.X * 64, (int)cursorTile.Y * 64))
                     {
-                        Pickup(ltf, cursorTile, ltf.GetType().ToString());
+                        this.Pickup(ltf, cursorTile, ltf.Location);
                         return;
                     }
                 }
             }
-            if (Game1.currentLocation.terrainFeatures.TryGetValue(cursorTile, out var tf))
+            if (location.terrainFeatures.TryGetValue(cursorTile, out var tf))
             {
-                Pickup(tf, cursorTile, tf.GetType().ToString());
+                this.Pickup(tf, cursorTile, tf.Location);
                 return;
 
             }
+            if (location.IsTileOccupiedBy(cursorTile, CollisionMask.Buildings) && Config.MoveBuilding)
+            {
+                //SMonitor.Log("pickupBuilding | " + location.isBuildable(cursorTile), LogLevel.Info); // <<< debug >>>
+                var building = location.buildings.FirstOrDefault(b => b.intersects(new Rectangle(Utility.Vector2ToPoint(cursorTile * 64 - new Vector2(32, 32)), new Point(64, 64))));
+                if (building != null)
+                {
+                    Vector2 mousePos = GetGridPosition();
+                    Vector2 viewport = new(Game1.viewport.X, Game1.viewport.Y);
+                    Vector2 buildingPos = new Vector2(building.tileX.Value, building.tileY.Value) * 64 - viewport;
+                    this.Pickup(building, cursorTile, mousePos - buildingPos, location);
+                    return;
+                }
+            }
         }
-        public static void PlaceObject(GameLocation location)
+
+        /// <summary>Place Object</summary>
+        /// <param name="location">The current location.</param>
+        /// <param name="overwriteTile">To Overwrite existing Object.</param>
+        public static void PlaceObject(GameLocation location, bool overwriteTile)
         {
             if (!Config.ModEnabled)
             {
-                movingObject = null;
+                MovingObject = null;
                 return;
             }
-            if (movingObject is null)
+            if (MovingObject is null)
                 return;
-            SHelper.Input.Suppress(Config.MoveKey);
-            if (movingObject is Character)
+            Vector2 cursorTile = Game1.currentCursorTile;
+            if (!overwriteTile)
             {
-                (movingObject as Character).Position = (Game1.getMousePosition() + new Point(Game1.viewport.Location.X - 32, Game1.viewport.Location.Y - 32)).ToVector2();
-                movingObject = null;
-            }
-            else if (movingObject is Object)
-            {
-                if (Game1.currentLocation.objects.ContainsKey(movingTile))
+                if (!location.isTilePassable(cursorTile) || !location.isTileOnMap(cursorTile) || location.isTileHoeDirt(cursorTile) || location.isCropAtTile((int)cursorTile.X, (int)cursorTile.Y) || location.IsTileBlockedBy(cursorTile, ignorePassables: CollisionMask.All))
                 {
-                    if (Config.ProtectOverwrite && Game1.currentLocation.objects.ContainsKey(Game1.currentCursorTile))
+                    //SMonitor.Log("Impassable " + Game1.tileSize, LogLevel.Info); // <<< debug >>>
+                    if (MovingObject is not Crop && !location.isTileHoeDirt(cursorTile))
                     {
                         Game1.playSound("cancel");
-                        // SMonitor.Log($"Preventing overwrite", StardewModdingAPI.LogLevel.Info);
                         return;
                     }
-                    var obj = Game1.currentLocation.objects[movingTile];
-                    Game1.currentLocation.objects.Remove(movingTile);
-                    Game1.currentLocation.objects[Game1.currentCursorTile] = obj;
-                    Game1.currentLocation.objects[Game1.currentCursorTile].TileLocation = Game1.currentCursorTile;
-                    movingObject = null;
                 }
-            }
-            else if (movingObject is FarmAnimal)
-            {
-                (movingObject as FarmAnimal).Position = (Game1.getMousePosition() + new Point(Game1.viewport.Location.X - 32, Game1.viewport.Location.Y - 32)).ToVector2();
-                movingObject = null;
-            }
-            else if (movingObject is ResourceClump)
-            {
-                if (Game1.currentLocation is Forest && (Game1.currentLocation as Forest).obsolete_log == movingObject)
+                if (BoundingBoxTile.Count is not 0)
                 {
-                    //(Game1.currentLocation as Forest).obsolete_log.currentTileLocation = Game1.lastCursorTile;
-                    (Game1.currentLocation as Forest).obsolete_log.netTile.Value = Game1.lastCursorTile;
-                    movingObject = null;
-                }
-
-                // -- 1.6 stumps moved to resourceClump?
-                //else if (Game1.currentLocation is Woods && (Game1.currentLocation as Woods).stumps.IndexOf(movingObject as ResourceClump) >= 0)
-                //{
-                //    var index = (Game1.currentLocation as Woods).stumps.IndexOf(movingObject as ResourceClump);
-                //    (Game1.currentLocation as Woods).stumps[index].currentTileLocation = Game1.lastCursorTile;
-                //    (Game1.currentLocation as Woods).stumps[index].tile.Value = Game1.lastCursorTile;
-                //    movingObject = null;
-                //}
-                else
-                {
-                    var index = Game1.currentLocation.resourceClumps.IndexOf(movingObject as ResourceClump);
-                    if (index >= 0)
-                    {
-                        // Game1.currentLocation.resourceClumps[index].currentTileLocation = Game1.lastCursorTile; -- currentTileLocation (in 1.6 not exist)
-                        Game1.currentLocation.resourceClumps[index].netTile.Value = Game1.lastCursorTile;
-                        movingObject = null;
-                    }
-                }
-                   
-            }
-            else if (movingObject is TerrainFeature)
-            {
-                if (movingObject is LargeTerrainFeature && Game1.currentLocation.largeTerrainFeatures.Contains(movingObject as LargeTerrainFeature))
-                {
-                    var index = Game1.currentLocation.largeTerrainFeatures.IndexOf(movingObject as LargeTerrainFeature);
-                    if (index >= 0)
-                    {
-                        // Game1.currentLocation.largeTerrainFeatures[index].currentTileLocation = Game1.lastCursorTile; -- currentTileLocation (in 1.6 not exist)
-                        Game1.currentLocation.largeTerrainFeatures[index].netTilePosition.Value = Game1.lastCursorTile;
-                        movingObject = null;
-                    }
-                }
-                else if (Game1.currentLocation.terrainFeatures.ContainsKey(movingTile))
-                {
-                    if (Config.ProtectOverwrite && Game1.currentLocation.terrainFeatures.ContainsKey(Game1.currentCursorTile))
-                    {
-                        Game1.playSound("cancel");
-                        // SMonitor.Log($"Preventing overwrite", StardewModdingAPI.LogLevel.Info);
-                        return;
-                    }
-                    var tf = Game1.currentLocation.terrainFeatures[movingTile];
-                    Game1.currentLocation.terrainFeatures.Remove(movingTile);
-                    Game1.currentLocation.terrainFeatures[Game1.currentCursorTile] = tf;
-                    if (Game1.currentLocation.terrainFeatures[Game1.currentCursorTile] is HoeDirt)
-                    {
-                        (Game1.currentLocation.terrainFeatures[Game1.currentCursorTile] as HoeDirt).updateNeighbors();
-                        (Game1.currentLocation.terrainFeatures[Game1.currentCursorTile] as HoeDirt).crop?.updateDrawMath(Game1.currentCursorTile);
-                    }
-                    movingObject = null;
-                }
-            }
-            else if (movingObject is Building building)
-            {
-                if (location.IsBuildableLocation() && location.buildings.Contains(building))
-                {
-                    if (location.buildStructure(building, new Vector2((int)Math.Round(Game1.currentCursorTile.X - movingOffset.X / 64), (int)Math.Round(Game1.currentCursorTile.Y - movingOffset.Y / 64)), Game1.player, false))
-                    {
-                        if (movingObject is ShippingBin)
+                    bool occupied = false;
+                    BoundingBoxTile.ToList().ForEach(b => {
+                        if (!location.isTilePassable(b) || !location.isTileOnMap(b) || location.isTileHoeDirt(b) || location.isCropAtTile((int)b.X, (int)b.Y) || location.IsTileBlockedBy(b, ignorePassables: CollisionMask.All))
                         {
-                            (movingObject as ShippingBin).initLid();
+                            occupied = true;
                         }
-                        if (movingObject is GreenhouseBuilding)
+                    });
+                    if (occupied)
+                    {
+                        Game1.playSound("cancel");
+                        return;
+                    }
+
+                }
+            }
+            if (MovingObject is Character)
+            {
+                (MovingObject as Character).Position = (Game1.getMousePosition() + new Point(Game1.viewport.Location.X - 32, Game1.viewport.Location.Y - 32)).ToVector2();
+                MovingObject = null;
+            }
+            else if (MovingObject is Object)
+            {
+                //SMonitor.Log("Object", LogLevel.Info); // <<< debug >>>
+                var obj = MovingLocation.objects[MovingTile];
+                MovingLocation.objects.Remove(MovingTile);
+                if (location.objects.ContainsKey(cursorTile))
+                {
+                    location.objects.Remove(cursorTile);
+                }
+                location.objects.Add(cursorTile, obj);
+                MovingObject = null;
+            }
+            else if (MovingObject is FarmAnimal)
+            {
+                (MovingObject as FarmAnimal).Position = (Game1.getMousePosition() + new Point(Game1.viewport.Location.X - 32, Game1.viewport.Location.Y - 32)).ToVector2();
+                MovingObject = null;
+            }
+            else if (MovingObject is ResourceClump)
+            {
+                //SMonitor.Log("RC", LogLevel.Info); // <<< debug >>>
+                int index = MovingLocation.resourceClumps.IndexOf(MovingObject as ResourceClump);
+                if (index >= 0)
+                {
+                    if (location == MovingLocation)
+                    {
+                        location.resourceClumps[index].netTile.Value = cursorTile;
+                        MovingObject = null;
+                    }
+                    else
+                    {
+                        MovingLocation.resourceClumps.Remove(MovingObject as ResourceClump);
+                        location.resourceClumps.Add(MovingObject as ResourceClump);
+                        int newIndex = location.resourceClumps.IndexOf(MovingObject as ResourceClump);
+                        location.resourceClumps[newIndex].netTile.Value = Game1.lastCursorTile;
+                        MovingObject = null;
+                    }
+                }
+            }
+            else if (MovingObject is TerrainFeature)
+            {
+                if (MovingObject is LargeTerrainFeature && MovingLocation.largeTerrainFeatures.Contains(MovingObject as LargeTerrainFeature))
+                {
+                    int index = MovingLocation.largeTerrainFeatures.IndexOf(MovingObject as LargeTerrainFeature);
+                    //SMonitor.Log("LTF: " + index, LogLevel.Info); // <<< debug >>>
+                    if (index >= 0)
+                    {
+                        if (location == MovingLocation)
+                        {
+                            location.largeTerrainFeatures[index].netTilePosition.Value = cursorTile;
+                            MovingObject = null;
+                        }
+                        else
+                        {
+                            MovingLocation.largeTerrainFeatures.Remove(MovingObject as LargeTerrainFeature);
+                            location.largeTerrainFeatures.Add(MovingObject as LargeTerrainFeature);
+                            int newIndex = location.largeTerrainFeatures.IndexOf(MovingObject as LargeTerrainFeature);
+                            location.largeTerrainFeatures[newIndex].netTilePosition.Value = cursorTile;
+                            MovingObject = null;
+                        }
+                    }
+                }
+                else if (MovingLocation.terrainFeatures.ContainsKey(MovingTile))
+                {
+                    var tf = MovingLocation.terrainFeatures[MovingTile];
+                    //SMonitor.Log("TF: " + tf, LogLevel.Info); // <<< debug >>>
+                    MovingLocation.terrainFeatures.Remove(MovingTile);
+                    if(location.terrainFeatures.ContainsKey(cursorTile))
+                    {
+                        location.terrainFeatures.Remove(cursorTile);
+                    }
+                    location.terrainFeatures.Add(cursorTile, tf);
+                    HashSet<Vector2> neighbors = new() { cursorTile + new Vector2(0, 1), cursorTile + new Vector2(1, 0), cursorTile + new Vector2(0, -1), cursorTile + new Vector2(-1, 0) };
+                    //SMonitor.Log("cursor:" + cursorTile, LogLevel.Info); // <<< debug >>>
+                    foreach (Vector2 ct in neighbors)
+                    {
+                        //SMonitor.Log("neighbors:" + ct, LogLevel.Info); // <<< debug >>>
+                        if (location.terrainFeatures.ContainsKey(ct))
+                        {
+                            if (location.terrainFeatures[ct] is HoeDirt)
+                            {
+                                (location.terrainFeatures[ct] as HoeDirt).updateNeighbors();
+                            }
+                        }
+                    }
+                    if (location.terrainFeatures[cursorTile] is HoeDirt)
+                    {
+                        (location.terrainFeatures[cursorTile] as HoeDirt).updateNeighbors();
+                        (location.terrainFeatures[cursorTile] as HoeDirt).crop?.updateDrawMath(cursorTile);
+                    }
+                    MovingObject = null;
+                }
+            }
+            else if (MovingObject is Crop crop)
+            {
+                if (location.isCropAtTile((int)cursorTile.X, (int)cursorTile.Y) || !location.isTileHoeDirt(cursorTile))
+                {
+                    Game1.playSound("cancel");
+                    return;
+                }
+                if (location.isTileHoeDirt(cursorTile))
+                {
+                    (MovingLocation.terrainFeatures[MovingTile] as HoeDirt).crop = null;
+                    (location.terrainFeatures[cursorTile] as HoeDirt).crop = crop;
+                    (location.terrainFeatures[cursorTile] as HoeDirt).crop.updateDrawMath(cursorTile);
+                    MovingObject = null;
+                }
+            }
+            else if (MovingObject is Building building)
+            {
+                if (location.IsBuildableLocation())
+                {
+                    //SMonitor.Log("Building | " + new Vector2((int)Math.Round(cursorTile.X - MovingOffset.X / 64), (int)Math.Round(cursorTile.Y - MovingOffset.Y / 64)) + " | " + cursorTile, LogLevel.Info); // <<< debug >>>
+                    if (location.buildStructure(building, new Vector2(cursorTile.X - MovingOffset.X / 64, cursorTile.Y - MovingOffset.Y / 64), Game1.player, overwriteTile))
+                    {
+                        if (MovingObject is ShippingBin)
+                        {
+                            (MovingObject as ShippingBin).initLid();
+                        }
+                        if (MovingObject is GreenhouseBuilding)
                         {
                             Game1.getFarm().greenhouseMoved.Value = true;
                         }
-                        (movingObject as Building).performActionOnBuildingPlacement();
-                        movingObject = null;
+                        (MovingObject as Building).performActionOnBuildingPlacement();
+                        MovingObject = null;
                     }
                     else
                     {
                         Game1.playSound("cancel");
                         return;
                     }
-
+                }
+                else
+                {
+                    Game1.playSound("cancel");
+                    return;
                 }
             }
-            if (movingObject is null)
+            if (MovingObject is null)
             {
                 PlaySound();
             }
@@ -285,18 +332,19 @@ namespace LetsMoveIt
                 Game1.playSound(Config.Sound);
         }
 
-        private void Pickup(object obj, Vector2 cursorTile, string name)
+        private void Pickup(object obj, Vector2 cursorTile, GameLocation lastLocation)
         {
-            Pickup(obj, cursorTile, Game1.getMousePosition().ToVector2() + new Vector2(Game1.viewport.X, Game1.viewport.Y) - cursorTile * 64, name);
+            this.Pickup(obj, cursorTile, GetGridPosition(), lastLocation);
         }
 
-        private void Pickup(object obj, Vector2 cursorTile, Vector2 offset, string name)
+        private void Pickup(object obj, Vector2 cursorTile, Vector2 offset, GameLocation lastLocation)
         {
-            movingObject = obj;
-            movingTile = cursorTile;
-            movingOffset = offset;
-            SMonitor.Log($"Picked up {name}");
-            Helper.Input.Suppress(Config.MoveKey);
+            MovingObject = obj;
+            MovingTile = cursorTile;
+            MovingLocation = lastLocation;
+            MovingOffset = offset;
+            //SMonitor.Log($"Picked up {name}"); // <<< debug >>>
+            this.Helper.Input.Suppress(Config.MoveKey);
             PlaySound();
         }
     }

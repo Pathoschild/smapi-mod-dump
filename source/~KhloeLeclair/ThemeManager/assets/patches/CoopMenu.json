@@ -12,10 +12,76 @@
 	"ID": "CoopMenu",
 
 	"ColorVariables": {
-		"$CoopHover": "$Hover"
+		"$CoopHover": "$Hover",
+		"$CoopMenu:Text": "$Text"
+	},
+
+	"FontVariables": {
+		"$CoopMenu:Dialogue": "$Dialogue"
+	},
+
+	"BmFontVariables": {
+		"$CoopMenu:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$CoopMenu:ST:Normal": "$ST:Normal",
+		"$CoopMenu:ST:Colored": "$ST:Colored"
 	},
 
 	"Patches": {
+		"#CoopMenu+LabeledSlot:Draw": {
+			"SpriteTextDraw": {
+				"*": [
+					"$CoopMenu:ST:Normal",
+					"$CoopMenu:ST:Colored",
+					"$CoopMenu:ST:Font",
+					"$CoopMenu:Colors"
+				]
+			}
+		},
+
+		"#CoopMenu+FriendFarmSlot:drawSlotName": {
+			"SpriteTextDraw": {
+				"*": [
+					"$CoopMenu:ST:Normal",
+					"$CoopMenu:ST:Colored",
+					"$CoopMenu:ST:Font",
+					"$CoopMenu:Colors"
+				]
+			}
+		},
+
+		"#CoopMenu+FriendFarmSlot:drawSlotDate": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$CoopMenu:Text" }
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CoopMenu:Dialogue" }
+			},
+
+			"DrawTextWithShadow": { "*": "$CoopMenu:TextShadowAlt" }
+		},
+
+		"#CoopMenu+FriendFarmSlot:drawSlotOwnerName": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$CoopMenu:Text" }
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CoopMenu:Dialogue" }
+			},
+
+			"DrawTextWithShadow": { "*": "$CoopMenu:TextShadowAlt" }
+		},
+
+		"#CoopMenu:connectionFinished": {
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CoopMenu:Dialogue" }
+			}
+		},
+
 		"#CoopMenu:drawTabs(SpriteBatch)": {
 			"Colors": {
 				"Orange": { "*": "$CoopSmallTabSelected" },
@@ -25,14 +91,45 @@
 			},
 
 			"RawColors": {
-				"255, 255, 150": { "*": "$CoopTabSelected" },
-				"221, 148, 84": { "*": "$CoopTabSelectedShadow" }
+				"255, 255, 150": { "*": "$CoopTabSelected" }
+			},
+
+			"ColorFields": {
+				"Game1:textShadowDarkerColor": { "*": "$CoopMenu:textShadowDarkerColor" },
+				"Game1:textColor": { "*": "$CoopMenu:Text" }
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CoopMenu:Dialogue" }
 			}
 		},
 
 		"#CoopMenu:drawExtra(SpriteBatch)": {
 			"Colors": {
-				"Wheat": { "*": "$CoopHover" }
+				"Wheat": { "*": "$CoopHover" },
+				"Gray": { "*": "$CoopMenu:RefreshDisabled" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$CoopMenu:Text" }
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CoopMenu:Dialogue" }
+			},
+
+			"DrawTextWithShadow": { "*": "$CoopMenu:TextShadowAlt" }
+
+		},
+
+		"#CoopMenu:drawStatusText": {
+			"SpriteTextDraw": {
+				"*": [
+					"$CoopMenu:ST:Normal",
+					"$CoopMenu:ST:Colored",
+					"$CoopMenu:ST:Font",
+					"$CoopMenu:Colors"
+				]
 			}
 		}
 	}

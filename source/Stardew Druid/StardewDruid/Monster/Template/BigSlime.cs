@@ -11,7 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
-using StardewDruid.Map;
+using StardewDruid.Data;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -45,7 +45,7 @@ namespace StardewDruid.Monster.Template
         }
 
         public BigSlime(Vector2 position, int combatModifier)
-            : base(position * 64, combatModifier * 10)
+            : base(position*64, combatModifier * 10)
         {
 
             moveTowardPlayerThreshold.Value = 99;

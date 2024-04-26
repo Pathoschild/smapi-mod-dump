@@ -470,9 +470,9 @@
       "Entries": {
         "{{ModId}}_TriggerAction_10Hearts": {
           "Id": "{{ModId}}_TriggerAction_10Hearts",
-          "Trigger": "LocationChanged",
+          "Trigger": "DayStarted",
           "Location": "Farm",
-          "Condition": "PLAYER_FRIENDSHIP_POINTS Current {{Lacey}} 2505, !IS_FESTIVAL_DAY, !DAY_OF_WEEK Fri, WEATHER Here Sun",
+          "Condition": "PLAYER_FRIENDSHIP_POINTS Current {{Lacey}} 2505, PLAYER_NPC_RELATIONSHIP Current {{Lacey}} Dating Engaged, !IS_FESTIVAL_DAY, !DAY_OF_WEEK Fri, WEATHER Here Sun",
           "Actions": ["AddMail Current {{ModId}}_Mail_HouseCall Now"]
         }
       }
@@ -640,10 +640,10 @@
       "Target": "Data/Events/BusStop",
       "Action": "EditData",
       "Entries": {
-        "{{ModId}}_Event_14Hearts/Friendship {{Lacey}} 3500/Spouse {{Lacey}}/!FestivalDay/Tile 33 23 33 24/Time 1500 1800/Weather sunny/!Season winter": "
+        "{{ModId}}_Event_14Hearts/Friendship {{Lacey}} 3500/Spouse {{Lacey}}/!FestivalDay/Tile 42 23 42 24/Time 1500 1800/Weather sunny/!Season winter": "
           sweet/
-          12 23/
-          {{Lacey}} 12 22 1 farmer 19 23 3/
+          22 23/
+          {{Lacey}} 22 22 1 farmer 29 23 3/
           advancedMove farmer false -6 0 0 -1 3 10/
           pause 700/
           emote {{Lacey}} 32 true/
@@ -660,18 +660,18 @@
           emote {{Lacey}} 40/
           speak {{Lacey}} \"{{i18n:events.14h.r2}}\"/
           pause 300/
-          end position 13 22",
+          end position 23 22",
 
-        "{{ModId}}_Event_14Hearts_Postponed/Friendship {{Lacey}} 3500/Spouse {{Lacey}}/!FestivalDay/Tile 0 23 0 24 33 23 33 24/Time 1500 1800/Weather sunny/!Season winter/LocalMail {{ModId}}_Mail_PicnicPostponed": "
+        "{{ModId}}_Event_14Hearts_Postponed/Friendship {{Lacey}} 3500/Spouse {{Lacey}}/!FestivalDay/Tile 11 23 11 24 42 23 42 24/Time 1500 1800/Weather sunny/!Season winter/LocalMail {{ModId}}_Mail_PicnicPostponed": "
           sweet/
-          12 23/
-          {{Lacey}} 12 22 1 farmer 13 22 3/
+          22 23/
+          {{Lacey}} 22 22 1 farmer 23 22 3/
           pause 1000/
           speak {{Lacey}} \"{{i18n:events.14h.reboot.0}}\"/
           quickQuestion {{i18n:events.14h.reboot.q0}}#{{i18n:events.14h.reboot.q1}}#{{i18n:events.14h.reboot.q2}}(break)switchEvent {{ModId}}_Event_14Hearts_Accept(break)eventSeen {{ModId}}_Event_14Hearts_Postponed false/
           speak {{Lacey}} \"{{i18n:events.14h.reboot.r2}}\"/
           pause 300/
-          end position 13 22",
+          end position 23 22",
 
         "{{ModId}}_Event_14Hearts_Accept": "
           pause 10/

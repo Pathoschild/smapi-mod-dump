@@ -30,7 +30,7 @@ namespace ForageFantasy
                    original: AccessTools.Method(typeof(Crop), nameof(Crop.getRandomWildCropForSeason)),
                    postfix: new HarmonyMethod(typeof(Patcher), nameof(PatchSummerWildSeedResult)));
 
-                MushroomTapperCalendar.ApplyPatches(forageFantasy.Config, harmony);
+                ForageCalendar.ApplyPatches(forageFantasy, harmony);
 
                 QualityAndXPPatches.ApplyPatches(forageFantasy.Config, harmony);
             }

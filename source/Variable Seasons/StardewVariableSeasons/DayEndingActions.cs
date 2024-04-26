@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -32,11 +30,9 @@ namespace StardewVariableSeasons
         {
             ModEntry.ChangeDate = helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
             
-            var season = new Seasons();
             var changeDate = ModEntry.ChangeDate;
             
-            monitor.Log($"Next season is {season.Next(Game1.currentSeason)}", LogLevel.Debug);
-            monitor.Log($"Previous season was {season.Prev(Game1.currentSeason)}", LogLevel.Debug);
+            monitor.Log($"Next season is {SeasonUtils.GetNextSeason(Game1.season).ToString()}", LogLevel.Debug);
 
             monitor.Log($"Current day is {Game1.Date.DayOfMonth.ToString()}", LogLevel.Debug);
             switch (Game1.dayOfMonth)
@@ -46,7 +42,7 @@ namespace StardewVariableSeasons
                     monitor.Log("Drawing new date...", LogLevel.Debug);
                     var nextSeasonChange = new ModData
                     {
-                        NextSeasonChange = season.GenNextChangeDate()
+                        NextSeasonChange = SeasonUtils.GenNextChangeDate()
                     };
                 
                     helper.Data.WriteSaveData("next-season-change", nextSeasonChange);
@@ -54,14 +50,12 @@ namespace StardewVariableSeasons
                 }
                 case 28:
                     Game1.dayOfMonth = 0;
-                    if (season.Next(ModEntry.SeasonByDay) == "spring")
+                    if (SeasonUtils.GetNextSeason(ModEntry.SeasonByDay) == Season.Spring)
                     {
                         Game1.year++;
-                        if (Game1.year == 2)
-                            Game1.addKentIfNecessary();
                     }
                     
-                    ModEntry.SeasonByDay = season.Next(ModEntry.SeasonByDay);
+                    ModEntry.SeasonByDay = SeasonUtils.GetNextSeason(ModEntry.SeasonByDay);
                     var seasonByDay = new ModData
                     {
                         SeasonByDay = ModEntry.SeasonByDay
@@ -77,22 +71,21 @@ namespace StardewVariableSeasons
                 SaveCropSurvivalCounter(helper);
             }
 
-            monitor.Log($"Current actual season is {Game1.currentSeason}", LogLevel.Debug);
-            monitor.Log($"Current season by day is {ModEntry.SeasonByDay}", LogLevel.Debug);
+            monitor.Log($"Current actual season is {Game1.season.ToString()}", LogLevel.Debug);
+            monitor.Log($"Current season by day is {ModEntry.SeasonByDay.ToString()}", LogLevel.Debug);
             monitor.Log($"Next season change on {changeDate.ToString()}", LogLevel.Debug);
             monitor.Log($"Crop survival counter is {ModEntry.CropSurvivalCounter.ToString()}", LogLevel.Debug);
 
             if (Game1.Date.DayOfMonth != changeDate) return;
             monitor.Log("Change to next season", LogLevel.Debug);
+            Game1.season = SeasonUtils.GetNextSeason(Game1.season);
+
+            Game1.timeOfDay = 600;
+            Game1.setGraphicsForSeason();
+            Game1.netWorldState.Value.UpdateFromGame1();
+            
             ModEntry.CropSurvivalCounter = 0;
             SaveCropSurvivalCounter(helper);
-            
-            Game1.currentSeason = season.Next(Game1.currentSeason);
-            Game1.setGraphicsForSeason();
-            Utility.ForAllLocations(delegate(GameLocation l)
-            {
-                l.seasonUpdate(Game1.GetSeasonForLocation(l));
-            });
         }
     }
 }

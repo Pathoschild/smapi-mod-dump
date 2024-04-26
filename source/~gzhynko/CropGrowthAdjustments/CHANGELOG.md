@@ -8,6 +8,11 @@ for queries and analysis.**
 
 # Version history for CropGrowthAdjustments
 
+## 1.4.0
+Released April 5, 2024.
+- Fixed errors when JsonAssets is installed.
+- Fixed issues with special sprites in JsonAssets crops.
+
 ## 1.3.0
 Released March 23, 2024.
 - Updated for SMAPI 4.0 and Stardew Valley 1.6

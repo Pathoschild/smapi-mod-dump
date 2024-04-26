@@ -32,7 +32,7 @@
 	"fish-mountain-location": "Hegység",
 	"fish-beach-location": "Óceán",
 	"fish-undergroundmine-location": "Mines",
-	"fish-nightmarket-location": "Tengerfenék",
+	"fish-submarine-location": "Tengerfenék",
 	"fish-bugland-location": "Bug Lands",
 	"fish-witchswamp-location": "Boszorkány-mocsár",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "{{daysToGrow}} napig tart a növekedés, de azután folytatja a termelést.",
 	"crop-tooltip-growth-time": "{{daysToGrow}} nap eltel.",
 	"crop-tooltip-seasons": "Növény a következő időszakban: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Csak beltérben termeszthető.",
-	"crop-tooltip-rice-shoot": "Gyorsabban nő víz közelében.",
+	"crop-tooltip-indoor-crop": "Csak beltérben termeszthető.",
+	"crop-tooltip-paddy-crop": "Gyorsabban nő víz közelében.",
 
 	"bundle-random-all": "Véletlen",
 	"bundle-random-letter": "Angol \"{{letter}}\"",

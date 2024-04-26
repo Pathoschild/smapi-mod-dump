@@ -1,0 +1,8 @@
+{
+  "beforePositive": "{heart}|",
+  "beforeNeutral": "*|",
+  "beforeNegative": "{3}|",
+  "afterPositive": " ({#_abs})",
+  "afterNeutral": "",
+  "afterNegative": " ({#})"
+}

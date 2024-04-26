@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22006
+IDs: seferoni.FoodPoisoning
+update keys: Nexus:22006, GitHub:seferoni/FoodPoisoning

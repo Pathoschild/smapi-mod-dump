@@ -1,0 +1,138 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Load Seeds Tilesheet",
+            "Action": "Load",
+            "Target": "{{ModId}}/Seeds",
+            "FromFile": "assets/Crops/Seeds.png"
+        },
+        {
+            "LogName": "Objects Data",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_Chamomile_Seeds": {
+                    "Name": "{{ModId}}_Chamomile_Seeds",
+                    "DisplayName": "{{i18n:Seeds.Chamomile.name}}",
+                    "Description": "{{i18n:Seeds.Chamomile.description}}",
+                    "Price": 21,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "0",
+                    "Edibility": -300,
+                    "ContextTags": [ "seed_item" ]
+                },
+                "{{ModId}}_Chrysanthemum_Seeds": {
+                    "Name": "{{ModId}}_Chrysanthemum_Seeds",
+                    "DisplayName": "{{i18n:Seeds.Chrysanthemum.name}}",
+                    "Description": "{{i18n:Seeds.Chrysanthemum.description}}",
+                    "Price": 20,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "1",
+                    "Edibility": -300,
+                    "ContextTags": [ "seed_item" ]
+                },
+                "{{ModId}}_Goji_Berry_Seeds": {
+                    "Name": "{{ModId}}_Goji_Berry_Seeds",
+                    "DisplayName": "{{i18n:Seeds.GojiBerry.name}}",
+                    "Description": "{{i18n:Seeds.GojiBerry.description}}",
+                    "Price": 40,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "2",
+                    "Edibility": -300,
+                    "ContextTags": [ "seed_item" ]
+                },
+                "{{ModId}}_Lotus_Seeds": {
+                    "Name": "{{ModId}}_Lotus_Seeds",
+                    "DisplayName": "{{i18n:Seeds.Lotus.name}}",
+                    "Description": "{{i18n:Seeds.Lotus.description}}",
+                    "Price": 55,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "5",
+                    "Edibility": -300,
+                    "ContextTags": [ "seed_item" ]
+                },
+                "{{ModId}}_Sugarcane_Seeds": {
+                    "Name": "{{ModId}}_Sugarcane_Seeds",
+                    "DisplayName": "{{i18n:Seeds.Sugarcane.name}}",
+                    "Description": "{{i18n:Seeds.Sugarcane.description}}",
+                    "Price": 75,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "6",
+                    "Edibility": -300,
+                    "ContextTags": [ "seed_item" ]
+                },
+                "{{ModId}}_Osmanthus_Sapling": {
+                    "Name": "{{ModId}}_Osmanthus_Sapling",
+                    "DisplayName": "{{i18n:Bush.Sapling.Osmanthus.name}}",
+                    "Description": "{{i18n:Bush.Sapling.Osmanthus.description}}",
+                    "Price": 825,
+                    "Type": "Basic",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "8",
+                    "Edibility": -300,
+                    "ContextTags": [ "bush_item" ],
+                    "CustomFields": null
+                },
+                "{{ModId}}_Lavender_Seeds": {
+                    "Name": "{{ModId}}_Lavender_Seeds",
+                    "DisplayName": "{{i18n:Seeds.Lavender.name}}",
+                    "Description": "{{i18n:Seeds.Lavender.description}}",
+                    "Price": 65,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "3",
+                    "Edibility": -300,
+                    "ContextTags": [ "seed_item" ]
+                },
+                "{{ModId}}_Lily_Bulb": {
+                    "Name": "{{ModId}}_Lily_Bulb",
+                    "DisplayName": "{{i18n:Seeds.Lily.name}}",
+                    "Description": "{{i18n:Seeds.Lily.description}}",
+                    "Price": 50,
+                    "Type": "Seeds",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "4",
+                    "Edibility": -300,
+                    "ContextTags": [ "bulb_item", "seed_item" ]
+                },
+                "{{ModId}}_Jasmine_Sapling": {
+                    "Name": "{{ModId}}_Jasmine_Sapling",
+                    "DisplayName": "{{i18n:Bush.Sapling.Jasmine.name}}",
+                    "Description": "{{i18n:Bush.Sapling.Jasmine.description}}",
+                    "Price": 850,
+                    "Type": "Basic",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Seeds",
+                    "SpriteIndex": "7",
+                    "Edibility": -300,
+                    "ContextTags": [ "bush_item" ],
+                    "CustomFields": null
+                }
+            }
+        }
+
+    ]
+}

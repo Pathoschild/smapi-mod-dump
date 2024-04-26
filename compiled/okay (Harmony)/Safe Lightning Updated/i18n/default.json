@@ -1,0 +1,6 @@
+{
+  "enable-mod.label": "Mod Enabled",
+  "enable-mod.tooltip": "Toggle all functions of the mod. Disable if you suspect there's an issue. Default: true",
+  "disable-strikes.label": "Disable Strikes",
+  "disable-strikes.tooltip": "Toggle strike visuals and audio. Default: true"
+}

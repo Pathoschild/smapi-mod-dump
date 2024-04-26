@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22258
+IDs: BadNetCode.QuickAgenda
+update keys: Nexus:22258

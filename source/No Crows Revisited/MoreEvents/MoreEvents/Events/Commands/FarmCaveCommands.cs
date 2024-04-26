@@ -32,7 +32,6 @@ public class FarmCaveCommands
             // 蘑菇 + 水果
             case 2:
                 wrapper!.Set(1);
-                ++@event.CurrentCommand;
                 break;
             // 错误状态
             default:

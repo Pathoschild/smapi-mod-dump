@@ -268,11 +268,11 @@ namespace Pathoschild.Stardew.LookupAnything.Components
             // custom link fields
             else
             {
-                foreach (var area in this.LinkFieldAreas)
+                foreach ((ILinkField link, Rectangle area) in this.LinkFieldAreas)
                 {
-                    if (area.Value.Contains(x, y))
+                    if (area.Contains(x, y))
                     {
-                        ISubject? subject = area.Key.GetLinkSubject();
+                        ISubject? subject = link.GetLinkSubject();
                         if (subject != null)
                             this.ShowNewPage(subject);
                         break;
@@ -331,7 +331,7 @@ namespace Pathoschild.Stardew.LookupAnything.Components
                         : this.height / (float)Sprites.Letter.Sprite.Height;
 
                     backgroundBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
-                    backgroundBatch.DrawSprite(Sprites.Letter.Sheet, Sprites.Letter.Sprite, x, y, scale: scale);
+                    backgroundBatch.DrawSprite(Sprites.Letter.Sheet, Sprites.Letter.Sprite, x, y, Sprites.Letter.Sprite.Size, scale: scale);
                     backgroundBatch.End();
                 }
 
@@ -390,15 +390,26 @@ namespace Pathoschild.Stardew.LookupAnything.Components
                                     if (!field.HasValue)
                                         continue;
 
-                                    // draw label & value
+                                    // draw label
                                     Vector2 labelSize = contentBatch.DrawTextBlock(font, field.Label, new Vector2(x + leftOffset + cellPadding, y + topOffset + cellPadding), wrapWidth);
+
+                                    // draw value
                                     Vector2 valuePosition = new Vector2(x + leftOffset + labelWidth + cellPadding * 3, y + topOffset + cellPadding);
-                                    Vector2 valueSize =
-                                        field.DrawValue(contentBatch, font, valuePosition, valueWidth)
-                                        ?? contentBatch.DrawTextBlock(font, field.Value, valuePosition, valueWidth);
-                                    Vector2 rowSize = new Vector2(labelWidth + valueWidth + cellPadding * 4, Math.Max(labelSize.Y, valueSize.Y));
+                                    Vector2 valueSize;
+                                    if (field.ExpandLink is not null)
+                                    {
+                                        valueSize = contentBatch.DrawTextBlock(font, field.ExpandLink.Value, valuePosition, valueWidth);
+                                        this.LinkFieldAreas[field.ExpandLink] = new Rectangle((int)valuePosition.X, (int)valuePosition.Y, (int)valueSize.X, (int)valueSize.Y);
+                                    }
+                                    else
+                                    {
+                                        valueSize =
+                                            field.DrawValue(contentBatch, font, valuePosition, valueWidth)
+                                            ?? contentBatch.DrawTextBlock(font, field.Value, valuePosition, valueWidth);
+                                    }
 
                                     // draw table row
+                                    Vector2 rowSize = new Vector2(labelWidth + valueWidth + cellPadding * 4, Math.Max(labelSize.Y, valueSize.Y));
                                     Color lineColor = Color.Gray;
                                     contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(rowSize.X, tableBorderWidth), lineColor); // top
                                     contentBatch.DrawLine(x + leftOffset, y + topOffset + rowSize.Y, new Vector2(rowSize.X, tableBorderWidth), lineColor); // bottom

@@ -9,11 +9,9 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Randomizer
 {
@@ -157,8 +155,8 @@ namespace Randomizer
             Texture2D monsterImage = Globals.ModRef.Helper.GameContent
                 .Load<Texture2D>(GetStardewAssetPath(monsterName));
 
-            Random rng = Globals.GetFarmRNG($"{nameof(MonsterHueShifter)}{monsterName}");
-            int hueShiftAmount = Range.GetRandomValue(0, Globals.Config.Monsters.HueShiftMax, rng);
+            RNG rng = RNG.GetFarmRNG($"{nameof(MonsterHueShifter)}.{monsterName}");
+            int hueShiftAmount = rng.NextIntWithinRange(0, Globals.Config.Monsters.HueShiftMax);
 
             return new MonsterHueShiftData(
                 monsterName,
@@ -170,7 +168,7 @@ namespace Randomizer
         /// Clean up the randomized image directory
         /// This is so they're gone if you turn off the setting
         /// </summary>
-        public static void CleanUpRandomizedImageDirectory()
+        private static void CleanUpRandomizedImageDirectory()
         {
             Directory.CreateDirectory(RandomizedImagesDirectory);
             DirectoryInfo directoryInfo = new(RandomizedImagesDirectory);

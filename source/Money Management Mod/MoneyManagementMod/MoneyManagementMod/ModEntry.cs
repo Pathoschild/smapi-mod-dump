@@ -49,10 +49,10 @@ namespace MoneyManagementMod
             for (int i = 1; i <= 8; i++)
             {
                 int transferAmount = (int)Math.Pow(10, i - 1);
-                _backgrounds[transferAmount] = helper.Content.Load<Texture2D>($"assets/background{i}.png", ContentSource.ModFolder);
+                _backgrounds[transferAmount] = helper.ModContent.Load<Texture2D>($"assets/background{i}.png");
             }
 
-            _Glow = helper.Content.Load<Texture2D>("assets/GlowEffect.png", ContentSource.ModFolder);
+            _Glow = helper.ModContent.Load<Texture2D>("assets/GlowEffect.png");
             /* This code is not included in the final version of the code.
             // this is for debugging
             helper.ConsoleCommands.Add("player_setmoney", "Sets the player's money.\n\nUsage: player_setmoney <value>\n- value: the integer amount.", this.Commands);
@@ -194,6 +194,24 @@ namespace MoneyManagementMod
             Helper.Multiplayer.SendMessage(message, "PublicBalUpdate", new[] { this.ModManifest.UniqueID });
             return;
         }
+        public void TaxMyMoney(int transferAmount, long PlayerID)
+        { 
+            if (Game1.IsMasterGame)
+            {
+                _publicMoney.PublicBal += transferAmount;
+                Game1.player.Money -= transferAmount;
+            }
+            else
+            {
+                var message = new TaxMessage { PlayerID = PlayerID, TransferAmount = transferAmount };
+                Helper.Multiplayer.SendMessage(message, "TaxMe", new[] { this.ModManifest.UniqueID });
+            }
+        }
+        public class TaxMessage
+        {
+            public long PlayerID { get; set; }
+            public int TransferAmount { get; set; }
+        }
         private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
         {
             if (e.FromModID == this.ModManifest.UniqueID && e.Type == "PublicBalUpdate")
@@ -218,6 +236,16 @@ namespace MoneyManagementMod
                     _publicMoney.TransferFromPublic(message.TransferAmount, message.PlayerID);
 
                 SendPublicBalToAllPlayers();
+            }
+            if (e.FromModID == this.ModManifest.UniqueID && e.Type == "TaxMe")
+            {
+                var message = e.ReadAs<TaxMessage>();
+                if (Game1.IsMasterGame)
+                {
+                    var player = Game1.getFarmer(message.PlayerID);
+                    _publicMoney.PublicBal += message.TransferAmount;
+                    Game1.player.team.AddIndividualMoney(player, -message.TransferAmount);
+                }
             }
         }
         private void Update(object? sender, UpdateTickedEventArgs e)
@@ -499,8 +527,7 @@ namespace MoneyManagementMod
         {
             decimal taxRate = Config.TaxPercent / 100m;
             int transferAmount = (int)Math.Round(amount * taxRate);
-            _publicMoney.PublicBal += transferAmount;
-            Game1.player.Money -= transferAmount;
+            TaxMyMoney(transferAmount, Game1.player.UniqueMultiplayerID);
             return transferAmount;
         }
     }

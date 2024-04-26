@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Survivalistic (Rebooted)",
+  "Author": "Ophaneom and Locked15",
+  "Version": "1.0.5-unofficial.2-Locked15",
+  "Description": "Adds some survival odds to the game.",
+  "UniqueID": "Ophaneom.Survivalistic",
+  "EntryDll": "Survivalistic-Rebooted.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:12179",
+    "GitHub:Locked15/SDV_Survivalistic-Rebooted"
+  ]
+}

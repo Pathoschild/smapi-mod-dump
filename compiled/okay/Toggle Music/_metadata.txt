@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22913
+IDs: MaltoseMatt.ToggleMusic
+update keys: Nexus:22913

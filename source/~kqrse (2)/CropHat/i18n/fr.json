@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kqrse/StardewValleyMods-aedenthorn
+**
+*************************************************/
+
+{
+  "x-hat": "Chapeau {0}",
+
+  // GMCM
+  "GMCM_Option_ModEnabled_Name": "Activer le Mod",
+  "GMCM_Option_AllowOthersToPick_Name": "Récolter les autres",
+  "GMCM_Option_AllowOthersToPick_Tooltip": "Permet aux agriculteurs de récolter les chapeaux de culture des autres."
+}

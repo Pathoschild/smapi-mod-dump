@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9586
+IDs: ELL.ThaiFontAdjuster
+update keys: Nexus:9586

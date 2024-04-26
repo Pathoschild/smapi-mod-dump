@@ -1,0 +1,144 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    // THANKS TO @weiguanmiao FOR THIS TRANSLATION!!
+    // ========== BYPRODUCTS ==========
+    "Byproduct.Fruit.Orange.name": "橘皮",
+    "Byproduct.Fruit.Orange.description": "橘子皮。",
+    
+    // ========== BUSHES ==========
+    "Bush.Jasmine.name": "茉莉",
+    "Bush.Jasmine.description": "一种白色的小花，有令人愉快的花香。",
+    "Bush.Sapling.Jasmine.name": "茉莉花树",
+    "Bush.Sapling.Jasmine.description": "在夏天和秋天，用18天的时间制作一株茉莉花茶树。",
+    
+    "Bush.Osmanthus.name": "桂花",
+    "Bush.Osmanthus.description": "一朵亮黄色的小花，散发着浓郁的花香。",
+    "Bush.Sapling.Osmanthus.name": "桂花树",
+    "Bush.Sapling.Osmanthus.description": "在春天和夏天，制作一株桂花茶树需要18天的时间。",
+    
+    // ========== DISHES ==========
+    "Dishes.Mooncake.name": "月饼",
+    "Dishes.Mooncake.description": "一种传统的中式糕点，上面压着复杂的图案。",
+
+    "Dishes.CandiedOrangePeel.name": "糖渍橙皮",
+    "Dishes.CandiedOrangePeel.description": "味道好极了！",
+
+    "Dishes.RicePorridge.name": "稀饭",
+    "Dishes.RicePorridge.description": "品尝浇头的额外风味。",
+
+    "Dishes.TeaEggs.name": "茶叶蛋",
+    "Dishes.TeaEggs.description": "酱汁给它们带来了一种很酷的大理石花纹效果。",
+
+    // ========== DRIED ITEMS ==========
+    "Dried.Seeds.Cassia.name": "决明子",
+    "Dried.Seeds.Cassia.description": "决明子决明子的坚硬而深色的种子，通常用于泡茶",
+
+    "Dried.Fruit.Goji.name": "枸杞干",
+    "Dried.Fruit.Goji.description": "松脆的脱水枸杞。",
+
+    "Dried.Seeds.Lotus.name": "莲子干",
+    "Dried.Seeds.Lotus.description": "莲子荚中的种子。通常用于糊状物和汤中。",
+
+    "Dried.Seeds.Lily.name": "百合鳞茎",
+    "Dried.Seeds.Lily.description": "百合花的干球茎。可以加入汤中帮助咳嗽。",
+
+    "Dried.Fruit.Peel.Orange.name": "橘皮",
+    "Dried.Fruit.Peel.Orange.description": "一种制作食物或饮料的通用配料。",
+
+    "Dried.Fruit.Strawberry.name": "草莓干",
+    "Dried.Fruit.Strawberry.description": "松脆的脱水草莓片。",
+    
+    "Dried.Vegetables.Sugarcane.name": "冰糖",
+    "Dried.Vegetables.Sugarcane.description": "嗯，松脆的。",
+
+    // ========== CROPS ==========
+    "Crops.Chamomile.name": "洋甘菊",
+    "Crops.Chamomile.description": "一种白色的小花，中心是黄色的。用于泡茶。",
+    "Seeds.Chamomile.name": "洋甘菊种子",
+    "Seeds.Chamomile.description": "在春天或夏天种植。生产一朵洋甘菊花需要7天时间。",
+    
+    "Crops.Chrysanthemum.name": "菊花",
+    "Crops.Chrysanthemum.description": "一种黄色的花，有许多小花瓣。用于泡茶。",
+    "Seeds.Chrysanthemum.name": "菊花种子",
+    "Seeds.Chrysanthemum.description": "在春天、夏天或秋天种植。生产菊花需要8天时间。",
+    
+    "Crops.GojiBerry.name": "枸杞",
+    "Crops.GojiBerry.description": "一种粉红色的小浆果，可以脱水，用于各种菜肴和泡茶。",
+    "Seeds.GojiBerry.name": "枸杞子",
+    "Seeds.GojiBerry.description": "在春天或夏天种植。需要11天才能成熟，第一次收获后继续生产枸杞。",
+    
+    "Crops.Lavender.name": "薰衣草",
+    "Crops.Lavender.description": "一种开着刺鼻的紫色小花的大茎。",
+    "Seeds.Lavender.name": "薰衣草种子",
+    "Seeds.Lavender.description": "在春天种植。花5天时间才能开出薰衣草花。",
+    
+    "Crops.Lily.name": "百合花",
+    "Crops.Lily.description": "一种高高的花，有明亮的花瓣。",
+    "Seeds.Lily.name": "百合鳞茎",
+    "Seeds.Lily.description": "在春天种植这些。花7天的时间才能开出百合花。",
+    
+    "Crops.Lotus.name": "莲花",
+    "Crops.Lotus.description": "一种观赏性的水性花，有许多展开的花瓣。",
+    "Seeds.Lotus.name": "莲子",
+    "Seeds.Lotus.description": "在春天、夏天或秋天种植。需要6天才能成熟。如果种植在水体附近，生长速度会更快。",
+    
+    "Crops.Sugarcane.name": "甘蔗",
+    "Crops.Sugarcane.description": "一种高而纤维状的糖茎。",
+    "Seeds.Sugarcane.name": "甘蔗种子",
+    "Seeds.Sugarcane.description":" 秋天种这些。需要8天才能成熟。如果种植在水体附近，生长速度会更快。再生。用镰刀收割。",
+
+    // ========== TEA ==========
+    "Tea.Barley.name": "大麦茶",
+    "Tea.Barley.description": "一种用大麦倒在冰上制成的充满活力的泥土茶。",
+
+    "Tea.BrownRice.name": "糙米茶",
+    "Tea.BrownRice.description": "一种泥土味的烤米茶，味道很深。",
+    
+    "Tea.Cassia.name": "肉桂茶",
+    "Tea.Cassia.description": "一种苦乐参半的茶，用决明子的咸味种子浸泡而成。",
+
+    "Tea.Chamomile.name": "洋甘菊茶",
+    "Tea.Chamomile.description": "一种由洋甘菊花制成的放松茶。",
+
+    "Tea.Chrysanthemum.name": "菊花茶",
+    "Tea.Chrysanthemum.description": "一种由菊花制成的甜茶，能让你立刻感到温暖。",
+    
+    "Tea.HealthBlend.name": "健康混合茶",
+    "Tea.HealthBlend.description":"菊花茶和黑醋栗茶的美味混合物，加入了一些干枸杞 。",
+    
+    "Tea.Lavender.name": "薰衣草茶",
+    "Tea.Lavender.description": "一种用薰衣草花制成的松果花茶。",
+    
+    "Tea.Jasmine.name": "茉莉花茶",
+    "Tea.Jasmine.description": "一种带有淡淡花香的经典茶。",
+    
+    "Tea.Osmanthus.name": "桂花茶",
+    "Tea.Osmanthus.description": "一种经典的东方茶，具有可识别的花香。",
+
+    "Teapot.name": "茶壶",
+    "Teapot.description": "一个可爱的容器，用于泡茶和倒茶。",
+
+    // ========== TREES ==========
+    "Tree.Cassia.name": "决明子树",
+    "Tree.Cassia.description": "一种挂着的花，里面长着许多小种子。",
+    "Tree.Cassia.Harvest.name": "决明子花",
+    "Tree.Cassia.Sapling.name": "决明子树",
+    "Tree.Cassia.Sapling.description": "一棵成熟的决明树需要28天。熊在夏天开花。只有当周围的8个“瓦片”为空时才会生长。",
+
+    // ========== CONFIG ==========
+    "Config.TeaRecipes.description": "如果您想在厨房泡茶，请打开此设置。",
+    "Config.TeaBrewing.description": "如果您想用茶壶泡茶，请打开此设置。",
+    "Config.CustomDehydratorRules.description": "如果您想关闭定制草莓干，请关闭此设置。",
+    "Config.QuaintLivingFlowerGarden2Compatability.description": "Quaint Living Flower Garden 2: 如果您想关闭重复项目，请打开此设置。",
+    "Config.CornucopiaCompatability.description": "Cornucopia: 如果您想关闭重复项目，请打开此设置。",
+    "Config.WildFlourCompatability.description": "WildFlour Crops and Forage: 如果您想关闭重复项目，请打开此设置。"
+}

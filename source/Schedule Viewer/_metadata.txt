@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit 692ef99a9b39db865a57dbc440ec949d97c7be77
+   commit 6c4f538e7695be1efce314aaaf76e6df00bca60a
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Thu Mar 28 21:52:32 2024 -0400
+   Date:   Fri Apr 12 23:19:24 2024 -0400
    
-       Prevented opening the schedule if in a minigame.
+       Removed unnecessary loop.
    

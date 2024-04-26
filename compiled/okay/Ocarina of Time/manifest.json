@@ -1,0 +1,10 @@
+﻿{
+  "Name": "OcarinaOfTimeMelodies",
+  "Author": "LokiG4m3r",
+  "Version": "1.4.1", // fixed locally
+  "Description": "Triggers charming melodies with various effects.",
+  "UniqueID": "LokiG4m3r.OcarinaOfTimeMelodies",
+  "EntryDll": "OcarinaOfTimeMelodies.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:21819" ]
+}

@@ -46,7 +46,7 @@ namespace SwapRings
                 this.ModManifest,
                 () => config.Hotkey,
                 (KeybindList val) => config.Hotkey = val,
-                () => "Hotkey",
+                () => "Swap Hotkey",
                 () => "The hotkey to swap the rings."
             );
         }

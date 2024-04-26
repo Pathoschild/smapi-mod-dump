@@ -32,11 +32,12 @@ namespace BetterButterflyHutch
         internal static bool Debug;
         internal static Logger Log;
 
-        public const int MaxMaxButterflies = 64;
-        public const int MaxMinButterflies = MaxMaxButterflies;
-        public const int MinBatWings = 10;
-        public const int MaxBatWings = 200;
-        public const int HutchIdx = 1971;
+        private const int MaxMaxButterflies = 64;
+        private const int MaxMinButterflies = MaxMaxButterflies;
+        private const int MinBatWings = 10;
+        private const int MaxBatWings = 200;
+        private const int HutchIdx = 1971;
+        private const String HutchQID = "(F)1971";
 
         internal static Random Rand;
 
@@ -114,7 +115,7 @@ namespace BetterButterflyHutch
                 catch (Exception ex)
                 {
                     Log.Error($"Failed Harmony Furniture Patches:\n{ex}");
-                    Config.UseHarmony = false;
+                    //Config.UseHarmony = false;
                 }
             }
 
@@ -442,7 +443,7 @@ namespace BetterButterflyHutch
             {
                 try
                 {
-                    if ((__instance.ParentSheetIndex == HutchIdx) && !dropDown)
+                    if ((__instance.QualifiedItemId == HutchQID) && !dropDown)
                         Before = CountButterflies(environment);
                     return true;
                 }
@@ -460,7 +461,7 @@ namespace BetterButterflyHutch
             {
                 try
                 {
-                    if ((__instance.ParentSheetIndex == HutchIdx) && !dropDown)
+                    if ((__instance.QualifiedItemId == HutchQID) && !dropDown)
                         SpawnButterflies(environment, CountButterflies(environment) - Before, __instance.boundingBox.Value);
                 }
                 catch (Exception ex)

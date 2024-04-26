@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -32,21 +33,10 @@ public interface IHoverLabel
     public int Priority {get; set;}
 
     /// <summary>
-    /// Gets the name of the label. This is the part that appears in the top part of the label in a larger font.
+    /// Returns the borders that should be drawn for this label. Borders themselves contain contents
     /// </summary>
     /// <returns></returns>
-    public string GetName();
-
-    /// <summary>
-    /// Gets the description part of the label. This is the bottom part of the label and has a smaller font.
-    /// 
-    /// <remark>
-    ///     Every item in the list is separated by a newline. 
-    ///     If you want no description, return an empty IEnumerable. In that case, only the name is shown.
-    /// </remark>
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerable<string> GetDescription();
+    public IEnumerable<Border> GetContents();
 
     /// <summary>
     /// Returns whether a label should be generated based on <paramref name="cursorTile"/>.

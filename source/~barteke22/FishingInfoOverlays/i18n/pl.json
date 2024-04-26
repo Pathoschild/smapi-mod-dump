@@ -70,10 +70,11 @@
 	"GenericMC.MinigameDescription2": "Dopóki inny mod prawidłowo zmienia pozycje BobberBar, powinno to z nim działać. W przeciwnym razie możesz wypróbować inny tryb, lub wyłączyć podgląd tutaj.",
 
 	"GenericMC.MinigameMode": "Tryb minigry",
-	"GenericMC.MinigameModeDesc": "Pełny: Kopiuje wiele warstw minigry, aby wyglądać lepiej.\nProsty: Kopiuje tylko rybę. Wygląda gorzej, ale może działać lepiej.\nTylko pasek (również zawarty w powyższych dwóch trybach): Wyróżnia rybę w Pasky Info (jeśli jest włączony).",
+	"GenericMC.MinigameModeDesc": "Pełny: Kopiuje wiele warstw minigry, aby wyglądać lepiej (jeśli Sonar opcja działa tylko z Sonarem).\nProsty: Kopiuje tylko rybę. Wygląda gorzej, ale może działać lepiej.\nTylko pasek (również zawarty w powyższych dwóch trybach): Wyróżnia rybę w Pasky Info (jeśli jest włączony).",
 	"GenericMC.MinigameMode0": "Pełny",
-	"GenericMC.MinigameMode1": "Prosty",
-	"GenericMC.MinigameMode2": "Tylko pasek",
+	"GenericMC.MinigameMode1": "Pełny (jeśli Sonar)",
+	"GenericMC.MinigameMode2": "Prosty",
+	"GenericMC.MinigameMode3": "Tylko pasek",
 
 	"GenericMC.SplitScreenDesc": "Opcje dla trybu dzielonego ekranu, nie są ważne w innych trybach. Tylko główny użytkownik powinien je zmieniać.",
 	"GenericMC.SplitScreen2": "Podzielony Ekran 2: Prawy (Górny)",

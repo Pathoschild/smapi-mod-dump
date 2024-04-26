@@ -29,7 +29,7 @@ namespace SkillfulClothes.Types
             if (WrappedItem == hat) return;
             Effect = effect;
 
-            this._GetOneFrom(hat);            
+            this.GetOneCopyFrom(hat);
         }
 
         public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)

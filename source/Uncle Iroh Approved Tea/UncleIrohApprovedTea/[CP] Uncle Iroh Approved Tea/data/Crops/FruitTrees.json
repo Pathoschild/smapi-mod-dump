@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Load Fruit Tree Tilesheet",
+            "Action": "Load",
+            "Target": "{{ModId}}/FruitTrees",
+            "FromFile": "assets/FruitTrees/Trees.png"
+        },
+        {
+            "LogName": "Load Sapling Tilesheet",
+            "Action": "Load",
+            "Target": "{{ModId}}/Saplings",
+            "FromFile": "assets/FruitTrees/Saplings.png"
+        },
+        {
+            "LogName": "Fruit Tree Object Data",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_Cassia_Flower": {
+                    "Name": "{{ModId}}_Cassia_Flower",
+                    "DisplayName": "{{i18n:Tree.Cassia.Harvest.name}}",
+                    "Description": "{{i18n:Tree.Cassia.description}}",
+                    "Price": 80,
+                    "Type": "Basic",
+                    "Category": -80,
+                    "Texture": "{{ModId}}/TreeHarvests",
+                    "SpriteIndex": "0",
+                    "Edibility": 5,
+                    "ContextTags": ["season_summer, flower_item"]
+                },
+                "{{ModId}}_Cassia_Sapling": {
+                    "Name": "{{ModId}}_Cassia_Sapling",
+                    "DisplayName": "{{i18n:Tree.Cassia.Sapling.name}}",
+                    "Description": "{{i18n:Tree.Cassia.Sapling.description}}",
+                    "Price": 450,
+                    "Type": "Basic",
+                    "Category": -74,
+                    "Texture": "{{ModId}}/Saplings",
+                    "SpriteIndex": "0",
+                    "Edibility": -300,
+                    "ContextTags": ["season_summer"]
+                }
+            }
+        },
+        {
+            "LogName": "Fruit Tree Data",
+            "Action": "EditData",
+            "Target": "Data/FruitTrees",
+            "Entries": {
+                "{{ModId}}_Cassia_Sapling": {
+                    "DisplayName": "{{i18n:Tree.Cassia.name}}",
+                    "Seasons": [ "Summer" ],
+                    "Fruit": [
+                        {
+                            "Id": "Default",
+                            "ItemId": "(O){{ModId}}_Cassia_Flower"
+                        }
+                    ],
+                    "Texture": "{{ModId}}/FruitTrees",
+                    "TextureSpriteRow": 0
+                }
+            }
+        }
+    ]
+}

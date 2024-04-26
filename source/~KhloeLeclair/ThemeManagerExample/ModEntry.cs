@@ -47,7 +47,7 @@ public class ModEntry : Mod {
 	private void Display_RenderedHud(object? sender, StardewModdingAPI.Events.RenderedHudEventArgs e) {
 		// Read values from our theme!
 		float scale = Theme.TextScale;
-		Color color = Theme.TextColor ?? GameTheme?.GetVariable("Text") ?? Game1.textColor;
+		Color color = Theme.TextColor ?? GameTheme?.GetColorVariable("Text") ?? Game1.textColor;
 
 		// Set up the text!
 		string text = $"Hello!\n\nSelected Theme: {ThemeManager?.SelectedThemeId}\nActive Theme: {ThemeManager?.ActiveThemeId}";
@@ -118,11 +118,11 @@ public class ModEntry : Mod {
 		ThemeManager.ThemeChanged += OnThemeChanged;
 	}
 
-	private void OnBaseThemeChanged(object? sender, IThemeChangedEvent<IGameTheme> e) {
+	private void OnBaseThemeChanged(IThemeChangedEvent<IGameTheme> e) {
 		GameTheme =  e.NewData;
 	}
 
-	private void OnThemeChanged(object? sender, IThemeChangedEvent<ThemeData> e) {
+	private void OnThemeChanged(IThemeChangedEvent<ThemeData> e) {
 		Theme = e.NewData;
 		Background = LoadManaged<Texture2D>("Background.png");
 	}

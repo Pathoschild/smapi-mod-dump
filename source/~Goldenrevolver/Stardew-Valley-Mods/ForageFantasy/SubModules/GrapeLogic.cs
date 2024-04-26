@@ -82,6 +82,21 @@ namespace ForageFantasy
 
                     grapeData.DisplayName = translation.Get("WildGrape");
 
+                    int fineGrapePrice = 110;
+
+                    if (grapeData.CustomFields != null)
+                    {
+                        if (grapeData.CustomFields.TryGetValue($"{ForageFantasy.Manifest?.UniqueID}.WildGrapePrice", out string wildGrapePriceString) && int.TryParse(wildGrapePriceString, out int wildGrapePriceOverride))
+                        {
+                            grapeData.Price = wildGrapePriceOverride;
+                        }
+
+                        if (grapeData.CustomFields.TryGetValue($"{ForageFantasy.Manifest?.UniqueID}.FineGrapePrice", out string fineGrapePriceString) && int.TryParse(fineGrapePriceString, out int fineGrapePriceOverride))
+                        {
+                            fineGrapePrice = fineGrapePriceOverride;
+                        }
+                    }
+
                     var fineGrapeData = new ObjectData
                     {
                         Name = fineGrapeNonQID,
@@ -89,7 +104,7 @@ namespace ForageFantasy
                         Description = grapeData.Description,
                         Type = "Basic",
                         Category = StardewObject.FruitsCategory,
-                        Price = 110,
+                        Price = fineGrapePrice,
                         Texture = ForageFantasy.FineGrapeAssetPath,
                         SpriteIndex = 0,
                         Edibility = 17,

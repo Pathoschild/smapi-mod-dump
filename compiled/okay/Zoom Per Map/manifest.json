@@ -1,0 +1,20 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "DecidedlyHuman.ZoomPerMap",
+  "Name": "Zoom Per Map",
+  "Author": "DecidedlyHuman",
+  "Version": "1.0.0",
+  "Description": "Remembers the zoom level you set in each map, and switches to that zoom level when you enter it.",
+  "MinimumApiVersion": "4.0.0",
+  "EntryDll": "ZoomPerMap.dll",
+  "UpdateKeys": [
+    "Nexus:22227"
+  ]
+}

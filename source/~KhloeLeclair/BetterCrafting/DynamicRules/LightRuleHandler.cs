@@ -41,37 +41,25 @@ public class LightRuleHandler : IDynamicRuleHandler {
 	public bool HasEditor => false;
 
 	public bool DoesRecipeMatch(IRecipe recipe, Lazy<Item?> item, object? state) {
-		// TODO: List of vanilla torches
-
 		if (item.Value is not SObject sobj)
 			return false;
 
-		if (sobj.isLamp.Value)
+		// The basics that should work for 99% of items.
+		if (sobj.isLamp.Value || sobj.HasContextTag("light_source"))
 			return true;
 
-		if (sobj is Torch)
+		// Furniture Items
+		if (sobj is Furniture furn && furn.furniture_type.Value is int ftype && (ftype == Furniture.fireplace || ftype == Furniture.torch || ftype == Furniture.sconce))
 			return true;
 
-		if (sobj.Name.Equals("Bonfire"))
-			return true;
-
-		if (sobj is Furniture furn && (furn.furniture_type.Value == 14 || furn.furniture_type.Value == 16))
-			return true;
-
-		if (sobj.ParentSheetIndex == 93 || sobj.ParentSheetIndex == 94 || sobj.ParentSheetIndex == 95)
-			return true;
-
-		if (!sobj.bigCraftable.Value && sobj.ParentSheetIndex == 746)
+		// Jack-O-Lantern is not tagged.
+		if (sobj.QualifiedItemId == "(O)746")
 			return true;
 
 		return false;
 	}
 
 	public IClickableMenu? GetEditor(IClickableMenu parent, IDynamicRuleData type) {
-		return null;
-	}
-
-	public IFlowNode[]? GetExtraInfo(object? state) {
 		return null;
 	}
 

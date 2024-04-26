@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using System.IO;
 
@@ -33,19 +34,27 @@ namespace Randomizer
         public override void OnAssetRequested(IAssetData asset)
         {
             var editor = asset.AsImage();
-            IRawTextureData overlay = Globals.ModRef.Helper.ModContent
-                .Load<IRawTextureData>(GetCustomAssetPath());
-
-            editor.PatchImage(overlay);
+            ApplyOverlay(editor, "SplashScreenOverlay", x: 173, y: 359);
+            ApplyOverlay(editor, "TitleScreenOverlay", x: 0, y: 132);
         }
 
         /// <summary>
-        /// Gets the pet icon to replace
+        /// Applies an overlay to the title screen asset
         /// </summary>
-        /// <returns>The full path of the icon, starting at the root of the mod</returns>
-        public string GetCustomAssetPath()
+        /// <param name="editor">The editor used to path the image</param>
+        /// <param name="overlayFileName">The file name of the overlay</param>
+        /// <param name="x">The x coordinate to overlay onto</param>
+        /// <param name="y">The y coordinate to overlay onto</param>
+        private void ApplyOverlay(IAssetDataForImage editor, string overlayFileName, int x, int y)
         {
-            return Path.Combine(PatcherImageFolder, Globals.GetLocalizedFileName("TitleButtons", "png"));
+            string path = Path.Combine(PatcherImageFolder, $"{overlayFileName}.png");
+            IRawTextureData overlay =
+                Globals.ModRef.Helper.ModContent.Load<IRawTextureData>(path);
+
+            editor.PatchImage(
+                overlay,
+                targetArea: new Rectangle(x, y, overlay.Width, overlay.Height),
+                patchMode: PatchMode.Overlay);
         }
     }
 }

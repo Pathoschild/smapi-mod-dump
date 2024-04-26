@@ -8,7 +8,48 @@ for queries and analysis.**
 
 # Garbage Day Change Log
 
-## 3.1.2 (Unreleased)
+## 3.1.8 (April 15, 2024)
+
+### Changed
+
+* Toolbar icon forces the trash can lid event on the nearby garbage can.
+* Provide default options for Better Chests.
+
+### Fixed
+
+* Fixed garbage cans dropping infinite special items.
+
+## 3.1.7 (April 12, 2024)
+
+### Changed
+
+* Initialize GarbageDay DI container on Entry.
+
+## 3.1.6 (April 9, 2024)
+
+### Changed
+
+* Updated for FauxCore api changes.
+
+## 3.1.5 (April 6, 2024)
+
+### Fixed
+
+* Add toolbar icon integration on game launched.
+
+## 3.1.4 (April 4, 2024)
+
+### Fixed
+
+* Garbage cans can now be loaded by default when the config option is set.
+
+## 3.1.3 (April 2, 2024)
+
+### Changed
+
+* Added logging for debugging purposes.
+
+## 3.1.2 (March 25, 2024)
 
 ### Fixed
 

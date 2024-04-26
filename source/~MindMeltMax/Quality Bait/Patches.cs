@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Machines;
 using StardewValley.Inventories;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -37,33 +38,38 @@ namespace QualityBait
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingPage), "clickCraftingRecipe", new[] { typeof(ClickableTextureComponent), typeof(bool) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(ClickCraftingRecipePrefix))
+                prefix: new(typeof(Patches), nameof(ClickCraftingRecipePrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingPage), nameof(CraftingPage.draw), new[] { typeof(SpriteBatch) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(DrawPrefix))
+                prefix: new(typeof(Patches), nameof(DrawPrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CrabPot), nameof(CrabPot.DayUpdate)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(DayUpdatePrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(DayUpdatePostfix))
+                prefix: new(typeof(Patches), nameof(DayUpdatePrefix)),
+                postfix: new(typeof(Patches), nameof(DayUpdatePostfix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(FishingRod), nameof(FishingRod.pullFishFromWater)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(PullFishFromWaterPrefix))
+                prefix: new(typeof(Patches), nameof(PullFishFromWaterPrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.consumeIngredients)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(ConsumeIngredientsPrefix))
+                prefix: new(typeof(Patches), nameof(ConsumeIngredientsPrefix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.doesFarmerHaveIngredientsInInventory)),
                 prefix: new(typeof(Patches), nameof(DoesFarmerHaveIngredientsInInventoryPrefix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MachineDataUtility), nameof(MachineDataUtility.GetOutputItem)),
+                postfix: new(typeof(Patches), nameof(GetOutputItemPostfix))
             );
         }
 
@@ -243,7 +249,7 @@ namespace QualityBait
             }
         }
 
-        private static bool PullFishFromWaterPrefix(FishingRod __instance, string fishId, int fishSize, ref int fishQuality, int fishDifficulty, bool treasureCaught, bool wasPerfect, bool fromFishPond, string setFlagOnCatch, bool isBossFish, bool caughtDouble)
+        private static bool PullFishFromWaterPrefix(FishingRod __instance, string fishId, ref int fishQuality)
         {
             try
             {
@@ -352,6 +358,13 @@ namespace QualityBait
                 handleError(nameof(CraftingRecipe.doesFarmerHaveIngredientsInInventory), ex);
                 return true;
             }
+        }
+
+        private static void GetOutputItemPostfix(Object machine, Item inputItem, ref Item __result)
+        {
+            if (__result is null || machine.QualifiedItemId != "(BC)BaitMaker" || !ModEntry.IConfig.BaitMakerQuality)
+                return;
+            __result.Quality = ModEntry.GetQualityForBait(__result.Quality, inputItem.Quality);
         }
 
         private static int GetQualityForRecipe(CraftingRecipe recipe)

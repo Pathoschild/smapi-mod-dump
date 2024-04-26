@@ -15,6 +15,7 @@ using DecidedlyShared.Logging;
 using DecidedlyShared.Utilities;
 using HarmonyLib;
 using MappingExtensionsAndExtraProperties.Api;
+using MappingExtensionsAndExtraProperties.Commands;
 using MappingExtensionsAndExtraProperties.Features;
 using MappingExtensionsAndExtraProperties.Functionality;
 using MappingExtensionsAndExtraProperties.Models.FarmAnimals;
@@ -33,6 +34,9 @@ public class ModEntry : Mod
     private MeepApi api;
     private Harmony harmony;
 
+    // Debug/emergency command static mess
+    public static bool AnimalRemovalMode = false;
+
     private ISaveAnywhereApi saveAnywhereApi;
     private ISpaceCoreApi spaceCoreApi;
     private EventCommands eventCommands;
@@ -45,8 +49,13 @@ public class ModEntry : Mod
         this.propertyUtils = new Properties(this.logger);
         Parsers.InitialiseParsers(this.logger, helper);
         this.eventCommands = new EventCommands(this.Helper, this.logger);
+        ConsoleCommands commands = new ConsoleCommands(this.logger);
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        helper.Events.Display.RenderedStep += this.DisplayOnRendered;
+        helper.ConsoleCommands.Add(
+            "meep_emergency_remove_animals", "Enter MEEP's animal removal mode. PAY ATTENTION TO THE WARNINGS.",
+            commands.MeepAnimalWipingMode);
 
         this.LoadContentPacks();
 
@@ -204,6 +213,11 @@ public class ModEntry : Mod
     private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
         FeatureManager.OnDayStart();
+    }
+
+    private void DisplayOnRendered(object? sender, RenderedStepEventArgs e)
+    {
+        FeatureManager.OnRenderedStep(e);
     }
 
     public override object? GetApi()

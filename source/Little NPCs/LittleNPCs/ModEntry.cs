@@ -73,6 +73,7 @@ namespace LittleNPCs {
             helper.Events.GameLoop.OneSecondUpdateTicking += OnOneSecondUpdateTicking;
             helper.Events.GameLoop.Saving += OnSaving;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            helper.Events.Player.Warped += OnWarped;
 
             HarmonyPatcher.Create(this);
         }
@@ -332,6 +333,14 @@ namespace LittleNPCs {
 
                     this.Monitor.Log($"{npc.Name} will visit Volcano Island today.", StardewModdingAPI.LogLevel.Info);
                 }
+            }
+        }
+        
+        private void OnWarped(object sender, WarpedEventArgs e) {
+            // When children appear in different locations, e.g. on festivals reloadSprite()
+            // is called and makes children's shadows visible again. We don't want that.
+            foreach (var child in TrackedLittleNPCs.Values) {
+                child.HideShadow = true;
             }
         }
 

@@ -213,15 +213,15 @@ internal class JunimoNoteMenuPatch : IPatch
                 currentIngredientListItem = 0;
 
         ClickableTextureComponent c = __instance.ingredientList[currentIngredientListItem];
-        BundleIngredientDescription ingredient = ___currentPageBundle.ingredients[
-            currentIngredientListItem
-        ];
+        BundleIngredientDescription ingredient = ___currentPageBundle.ingredients[currentIngredientListItem];
+        string representativeItemId = JunimoNoteMenu.GetRepresentativeItemId(ingredient);
+        Item item = ingredient.preservesId == null
+            ? ItemRegistry.Create(representativeItemId, ingredient.stack, ingredient.quality)
+            : Utility.CreateFlavoredItem(representativeItemId, ingredient.preservesId, ingredient.quality, ingredient.stack);
 
-        Item item = new StardewValley.Object(ingredient.id, ingredient.stack, isRecipe: false, -1,
-            ingredient.quality);
         bool completed = ___currentPageBundle != null && ___currentPageBundle.ingredients != null
                                                       && currentIngredientListItem < ___currentPageBundle.ingredients.Count
-                                                      && ___currentPageBundle.ingredients[currentIngredientListItem] .completed;
+                                                      && ___currentPageBundle.ingredients[currentIngredientListItem].completed;
 
         string toSpeak = item.DisplayName;
 

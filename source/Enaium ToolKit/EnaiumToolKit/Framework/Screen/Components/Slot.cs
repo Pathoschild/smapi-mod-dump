@@ -23,7 +23,7 @@ public class Slot<T> : Component where T : Slot<T>.Entry
 
     public int SlotHeight;
 
-    public T SelectedEntry;
+    public T? SelectedEntry;
     private bool _mouseClicked;
     private int _index;
     private int _maxEntry;

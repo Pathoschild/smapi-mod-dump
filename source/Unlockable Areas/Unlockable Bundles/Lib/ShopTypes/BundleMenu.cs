@@ -23,23 +23,20 @@ using StardewValley.Objects;
 using StardewValley.BellsAndWhistles;
 using Unlockable_Bundles.Lib.Enums;
 using Unlockable_Bundles.Lib.AdvancedPricing;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
     //CCBundleMenu
     internal class BundleMenu : IClickableMenu
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public Unlockable Unlockable;
         public Farmer Who;
 
         public bool CanClick = true;
         private bool ClickableComponentsDirty = false;
         public ScreenSwipe ScreenSwipe;
-        public List<TemporaryAnimatedSprite> TempSprites = new List<TemporaryAnimatedSprite>();
+        public List<TemporaryAnimatedSprite> TempSprites = new();
 
         public string HoverText = "";
         private ClickableRequirementTexture HoveredComponent = null;
@@ -51,7 +48,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public InventoryMenu InventoryMenu;
         public Item PartialDonationItem;
-        public List<Item> PartialDonationComponents = new List<Item>();
+        public List<Item> PartialDonationComponents = new();
         public KeyValuePair<string, int> CurrentPartialRequirement { get => Unlockable._price.Pairs.ElementAtOrDefault(CurrentPartialRequirementIndex); }
         public int CurrentPartialRequirementIndex = -1;
 
@@ -60,15 +57,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         public Texture2D IconTexture;
         public static Texture2D MoneyTexture;
 
-        public List<ClickableRequirementTexture> RequirementSlots = new List<ClickableRequirementTexture>();
-        public List<ClickableRequirementTexture> AlreadyPaidSlots = new List<ClickableRequirementTexture>();
+        public List<ClickableRequirementTexture> RequirementSlots = new();
+        public List<ClickableRequirementTexture> AlreadyPaidSlots = new();
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Helper.Events.GameLoop.GameLaunched += delegate {
                 MoneyTexture = UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(280, 412, 15, 14));
             };
@@ -726,7 +719,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             slot.sourceRect.X = 512;
             slot.sourceRect.Y = 244;
             var displayName = slot.ReqItemId == "money" ? slot.ReqValue.ToString("# ### ##0") + "g" : slot.item.DisplayName;
-            Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("BundleDonate", Game1.player.displayName, displayName);
+            Helper.Reflection.GetField<StardewValley.Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("BundleDonate", Game1.player.displayName, displayName);
         }
 
         public void ingredientDepositAnimation(ClickableTextureComponent slot, bool skipAnimation = false)

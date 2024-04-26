@@ -3,16 +3,18 @@ urls:
    Git: https://github.com/ncarigon/StardewValleyMods.git
 
 mods:
+   Better Honey Mead
    Bush Bloom Mod
    Copper Still
    Garden Pot - Automate
+   Garden Pot Options
    Passable Crops
    Tree Shake Mod
 
 latest commit:
-   commit d188c03d26c4039c744ceb05adaaa551595a7137
+   commit 3250208f176a34fa7d6c3dad8d3734530f0d801a
    Author: ncarigon <ncarigon@outlook.com>
-   Date:   Wed Mar 27 15:52:00 2024 -0400
+   Date:   Thu Apr 25 15:58:27 2024 -0400
    
-       Reworked custom drawing logic for better mod compatibility.
+       Prevent farmhands from placing down filled garden pots, due to unknown error source during dayUpdate(). Added Evelyn heart event configuration for early garden pot.
    

@@ -8,178 +8,176 @@
 **
 *************************************************/
 
+using Force.DeepCloner;
+using StardewValley;
+using StardewValley.GameData.Locations;
 using System.Collections.Generic;
-using System.Linq;
+using static StardewValley.GameData.QuantityModifier;
+using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 namespace Randomizer
 {
     /// <summary>
-    /// Contains information about foragable items and fish per season, as well as diggable items
+    /// Contains information about foragable items and helper functions to help
+    /// with fish and artifact spot locations
     /// </summary>
     public class LocationData
 	{
 		public Locations Location { get; set; }
-		public string LocationName { get { return Location.ToString(); } }
+        public string LocationName { get { return Location.ToString(); } }
+        public SVLocationData StardewLocationData { get; private set; }
 		public List<ForagableData> SpringForagables { get; } = new List<ForagableData>();
 		public List<ForagableData> SummerForagables { get; } = new List<ForagableData>();
 		public List<ForagableData> FallForagables { get; } = new List<ForagableData>();
 		public List<ForagableData> WinterForagables { get; } = new List<ForagableData>();
 
-		public Item ExtraDiggingItem { get; set; }
-		public double ExtraDiggingItemRarity { get; set; }
-
-        /// <summary>
-        /// The default location data from Data/Locations.xnb
-		/// It is keyed by the string version of the enum string of the Locations enum
-        /// </summary>
-        public readonly static Dictionary<string, string> DefaultLocationData =
-            Globals.ModRef.Helper.GameContent.Load<Dictionary<string, string>>("Data/Locations");
-
-        /// <summary>
-        /// Returns whether there's any foragable location data
-        /// </summary>
-        /// <returns />
-        public bool HasData()
-		{
-			return SpringForagables.Count + SummerForagables.Count + FallForagables.Count + WinterForagables.Count > 0;
-		}
-
-		/// <summary>
-		/// Gets the string for this set of location data
-		/// </summary>
-		/// <returns>
-		/// A string in the following format:
-		/// springForagables/summerForagables/fallForagables/winterForagables/springFishing/summerFishing/fallFishing/winterFishing/dirtFindings
-		/// </returns>
-		public override string ToString()
-		{
-			string foragableString;
-			if (Globals.Config.RandomizeForagables)
-			{
-				string springForagables = GetStringForSeason(SpringForagables);
-				string summerForagables = GetStringForSeason(SummerForagables);
-				string fallForagables = GetStringForSeason(FallForagables);
-				string winterForagables = GetStringForSeason(WinterForagables);
-				foragableString = $"{springForagables}/{summerForagables}/{fallForagables}/{winterForagables}";
-			}
-
-			else
-			{
-				// Load the defaults
-                string[] locData = DefaultLocationData[Location.ToString()].Split("/");
-				string spring = locData[(int)LocationDataIndexes.SpringForage];
-                string summer = locData[(int)LocationDataIndexes.SummerForage];
-                string fall = locData[(int)LocationDataIndexes.FallForage];
-                string winter = locData[(int)LocationDataIndexes.WinterForage];
-                foragableString = $"{spring}/{summer}/{fall}/{winter}";
-            }
-
-			return $"{foragableString}/{GetDefaultFishAndDiggingLocationString()}";
-		}
-
-		/// <summary>
-		/// Gets the string for the given season of data
-		/// </summary>
-		/// <param name="data">The season of data</param>
-		/// <returns>
-		/// -1 if there's no data; the string in the following format otherwise:
-		///   {itemId} {itemRarity} ...
-		/// </returns>
-		private static string GetStringForSeason(List<ForagableData> foragableList)
-		{
-			if (foragableList.Count == 0) { return "-1"; }
-			string output = "";
-
-			foreach (ForagableData data in foragableList)
-			{
-				output += $"{data} ";
-			}
-			return output.Trim();
-		}
-
-		/// <summary>
-		/// Gets the hard-coded string of location data for the current location name
-		/// </summary>
-		/// <returns />
-		private string GetDefaultFishAndDiggingLocationString()
-		{
-            // Load the artifact data
-            string[] locData = DefaultLocationData[Location.ToString()].Split("/");
-            string artifactString = locData[(int)LocationDataIndexes.ArtifactData];
-         
-            if (ExtraDiggingItem != null)
-			{
-				string extraDiggingItemString = $"{ExtraDiggingItem.Id} {ExtraDiggingItemRarity}";
-				string clayItemString = $"{(int)ObjectIndexes.Clay} 1";
-
-				// Always place the clay item string at the end, since it's guaranteed to roll that one and
-				// we will never see our custom item in that case
-				artifactString = artifactString.EndsWith(clayItemString)
-					? $"{artifactString[..^clayItemString.Length].Trim()} {extraDiggingItemString} {clayItemString}"
-					: $"{artifactString} {clayItemString}";
-
-            }
-
-			return $"{GetFishLocationData()}/{artifactString}";
-		}
-
-		/// <summary>
-		/// Gets the fish location data string for all the seasons
-		/// </summary>
-		/// <returns />
-		private string GetFishLocationData()
-		{
-			Locations location = (Location == Locations.Backwoods) ? Locations.Mountain : Location;
-
-			string[] locData = DefaultLocationData[location.ToString()].Split("/");
-
-			string springDefault = locData[(int)LocationDataIndexes.SpringFish];
-			string summerDefault = locData[(int)LocationDataIndexes.SummerFish];
-			string fallDefault = locData[(int)LocationDataIndexes.FallFish];
-			string winterDefault = locData[(int)LocationDataIndexes.WinterFish];
-
-			string spring = GetFishLocationDataForSeason(Seasons.Spring, springDefault);
-            string summer = GetFishLocationDataForSeason(Seasons.Summer, summerDefault);
-            string fall = GetFishLocationDataForSeason(Seasons.Fall, fallDefault);
-            string winter = GetFishLocationDataForSeason(Seasons.Winter, winterDefault);
-            return $"{spring}/{summer}/{fall}/{winter}";
+        public static List<Locations> ForagableLocations { 
+            get => new()
+            {
+                Locations.Desert,
+                Locations.BusStop,
+                Locations.Forest,
+                Locations.Town,
+                Locations.Mountain,
+                Locations.Backwoods,
+                Locations.Railroad,
+                Locations.Beach,
+                Locations.Woods
+            };
+        }
+        public static List<Locations> ArtifactSpotLocations
+        {
+            get => new()
+            {
+                Locations.Desert,
+                Locations.BusStop,
+                Locations.Forest,
+                Locations.Town,
+                Locations.Mountain,
+                Locations.Backwoods,
+                Locations.Railroad,
+                Locations.Beach,
+                Locations.Woods,
+                Locations.UndergroundMine
+            };
         }
 
-		/// <summary>
-		/// Gets the fish location data string for the given season
-		/// </summary>
-		/// <param name="season">The season</param>
-		/// <returns />
-		private string GetFishLocationDataForSeason(Seasons season, string defaultString)
-		{
-			if (!Globals.Config.Fish.Randomize) 
-			{ 
-				return defaultString; 
-			}
-
-			// This location thing is just how the game did it... probably don't need fish locations
-			// in the backwoods, but doing this just to be safe
-			Locations location = (Location == Locations.Backwoods) ? Locations.Mountain : Location;
-
-			// Legendaries not included in FishItem.Get by default, so we're good there
-			List<int> validFish = FishItem.Get(location, season)
-				.Cast<FishItem>()
-				.Where(fishItem =>
-					// Don't include the mines fish here, as the are hard-coded
-					!(location == Locations.UndergroundMine && fishItem.IsMinesFish)
-				 )
-				.Select(item => item.Id)
-				.ToList();
-
-			// Get all the junk items out of the string and patch in the new fish
-			List<int> fishingList = ItemList.GetItemListFromString(defaultString)
-				.Where(item => item is not FishItem)
-				.Select(item => item.Id)
-				.Concat(validFish)
-				.ToList();
-
-			// Build the output string from the list we just built
-            return $"{string.Join(" -1 ", fishingList)} -1";
+		public LocationData(Locations location) 
+		{ 
+			Location = location;
+			StardewLocationData = DataLoader.Locations(Game1.content)[LocationName];
 		}
-	}
+
+        /// <summary>
+        /// Gets the location data populated with the foragable info in this class
+        /// </summary>
+        /// <returns>The modified data</returns>
+		public SVLocationData GetLocationDataWithModifiedForagableData()
+		{
+            var modifiedData = StardewLocationData.DeepClone();
+            modifiedData.Forage.Clear();
+
+            AddForagableDataForSeason(modifiedData, Season.Spring, SpringForagables);
+            AddForagableDataForSeason(modifiedData, Season.Summer, SummerForagables);
+            AddForagableDataForSeason(modifiedData, Season.Fall, FallForagables);
+            AddForagableDataForSeason(modifiedData, Season.Winter, WinterForagables);
+
+            return modifiedData;
+        }
+
+        /// <summary>
+        /// Adds the foragable data for the given season
+        /// </summary>
+        /// <param name="locationData">The data to add the foragables to</param>
+        /// <param name="season">The season</param>
+        /// <param name="data">The list of foragables to add</param>
+        private static void AddForagableDataForSeason(
+            SVLocationData locationData,
+            Season season, 
+            List<ForagableData> data)
+        {
+            data.ForEach(foragableData =>
+                locationData.Forage.Add(GetSpawnForageData(foragableData, season)));
+        }
+
+        /// <summary>
+        /// Gets the spawn forage data to set in the location
+        /// this is mostly default values, but with the season and our own
+        /// foragable data values added on
+        /// </summary>
+        /// <param name="foragableData">Our foragable data to include</param>
+        /// <param name="season">The season of the foragable</param>
+        /// <returns>The created spawn forage data</returns>
+		private static SpawnForageData GetSpawnForageData(ForagableData foragableData, Season season)
+		{
+            return new SpawnForageData
+            {
+                Chance = foragableData.ItemRarity,
+                Season = season,
+                Condition = null,
+                Id = foragableData.QualifiedItemId,
+                ItemId = foragableData.QualifiedItemId,
+                RandomItemId = null,
+                MaxItems = null,
+                MinStack = -1,
+                MaxStack = -1,
+                Quality = -1,
+                ObjectInternalName = null,
+                ObjectDisplayName = null,
+                ToolUpgradeLevel = -1,
+                IsRecipe = false,
+                StackModifiers = null,
+                StackModifierMode = QuantityModifierMode.Stack,
+                QualityModifiers = null,
+                QualityModifierMode = QuantityModifierMode.Stack,
+                PerItemCondition = null
+            };
+		}
+
+        /// <summary>
+        /// Try to set the key-value pair into the given dictionary of location data
+        /// - If the entry does not exist, adds it to the dictionary
+        /// - In either case, returns back the location data that's in the dictionary
+        /// </summary>
+        /// <param name="locationName">The location name - the key to the replacement dictionary</param>
+        /// <param name="locationDataToSet">The location data to set into the dictionary</param>
+        /// <param name="locationDataReplacements">The replacements dictionary</param>
+        /// <returns>The location data that's present, or that became present in the dictionary</returns>
+        public static SVLocationData TrySetLocationData(
+            string locationName,
+            SVLocationData locationDataToSet,
+            Dictionary<string, SVLocationData> locationDataReplacements)
+        {
+            // Grab the location from the dictionary if it exists, otherwise use the given value
+            bool locationAlreadyExists = locationDataReplacements.ContainsKey(locationName);
+            SVLocationData locationData = locationAlreadyExists
+                ? locationDataReplacements[locationName]
+                : locationDataToSet;
+
+            // Set the value if it's not already set
+            if (!locationAlreadyExists)
+            {
+                locationDataReplacements[locationName] = locationData;
+            }
+
+            return locationData;
+        }
+
+        /// <summary>
+        /// Try to set the key-value pair into the given dictionary of location data
+        /// - If the entry does not exist, adds it to the dictionary
+        /// - In either case, returns back the location data that's in the dictionary
+        /// </summary>
+        /// <param name="location">The location to set the data for</param>
+        /// <param name="locationDataToSet">The location data to set into the dictionary</param>
+        /// <param name="locationDataReplacements">The replacements dictionary</param>
+        /// <returns>The location data that's present, or that became present in the dictionary</returns>
+        public static SVLocationData TrySetLocationData(
+            Locations location,
+            SVLocationData locationDataToSet,
+            Dictionary<string, SVLocationData> locationDataReplacements)
+        {
+            return TrySetLocationData(location.ToString(), locationDataToSet, locationDataReplacements);
+        }
+    }
 }

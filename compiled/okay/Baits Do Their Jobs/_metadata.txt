@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/23217
+IDs: MercuryVN.BaitsDoTheirJobs
+update keys: Nexus:23217, GitHub:MercuryVN/BaitsDoTheirJobs

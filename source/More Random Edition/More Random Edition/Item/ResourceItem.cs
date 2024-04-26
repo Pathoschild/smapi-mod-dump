@@ -18,8 +18,8 @@ namespace Randomizer
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The item id</param>
-		public ResourceItem(int id) : base(id)
+		/// <param name="index">The item index</param>
+		public ResourceItem(ObjectIndexes index) : base(index)
 		{
 			IsResource = true;
 			RequiredItemMultiplier = 5; // 5 will be the minimum number of items for resources by default
@@ -27,13 +27,13 @@ namespace Randomizer
 			DifficultyToObtain = ObtainingDifficulties.NoRequirements;
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="id">The item id</param>
-		/// <param name="requiredItemMultiplier">A multiplier for the number of required items for a recipe</param>
-		/// <param  name="itemsRequiredForRecipe">A range for the number of items that could be required for a recipe</param>
-		public ResourceItem(int id, double requiredItemMultiplier, Range itemsRequiredForRecipe) : base(id)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="index">The item index</param>
+        /// <param name="requiredItemMultiplier">A multiplier for the number of required items for a recipe</param>
+        /// <param  name="itemsRequiredForRecipe">A range for the number of items that could be required for a recipe</param>
+        public ResourceItem(ObjectIndexes index, double requiredItemMultiplier, Range itemsRequiredForRecipe) : base(index)
 		{
 			IsResource = true;
 			RequiredItemMultiplier = requiredItemMultiplier;

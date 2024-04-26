@@ -1,0 +1,46 @@
+{
+  // UI //
+  "Config.SectionTitle.General": "基本設定",
+  "Config.SectionTitle.EnableDisable": "本の有効化",
+  "Config.SectionTitle.Prices": "本の販売価格",
+  "Config.SectionTitle.Adjustments": "本の力の調整",
+  "Config.SectionTitle.Debug": "デバッグ設定",
+  
+  // GENERAL CONFIG //
+  "Config.General.AlwaysAvailable.Name": "本がいつでも入手可能",
+  "Config.General.AlwaysAvailable.Description": "有効にすると、特定の条件を満たさなくても、すべての本が常に書店から入手できるようになる。",
+  
+  "Config.General.Enabled.Name": "有効",
+  "Config.General.Enabled.Description": "無効にすると、MOD本とその効果は利用できなくなる。",
+  
+  // BOOK SETTINGS //
+  "Config.Books.Luck.Title": "ビギナーズラック",
+  "Config.Books.LuckBonus.Name": "幸運ボーナス",
+  "Config.Books.LuckBonus.Description": "ビギナーズラックの本を読んだ後の運の上昇値。",
+  
+  "Config.Books.ExtraGifts.Title": "利他主義の本",
+  
+  "Config.Books.TreesIgnoreSeason.Title": "冬の林業",
+  
+  "Config.Books.ArtisanMachines.Title": "職人ギルドのマニュアル",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Name": "品評会での優勝",
+  "Config.Books.ArtisanMachinesGrangeMustWin.Description": "有効にすると、入手には品評会で6つ以上の加工品で1位を取る必要がある。",
+  "Config.Books.ArtisanMachinesBonus.Name": "設備の生産速度",
+  "Config.Books.ArtisanMachinesBonus.Description": "加工品を生産する設備の加工時間の減少率。",
+  
+  "Config.Books.GiantCrops.Title": "大きなメロン！",
+  "Config.Books.GiantCropsBonus.Name": "巨大な作物の発生率",
+  "Config.Books.GiantCropsBonus.Description": "作物が一夜にして巨大な作物を形成する確率。",
+  
+  "Config.Books.Popularity.Title": "親友のつくり方",
+  
+  "Config.Books.BusDriving.Title": "バスの運転マニュアル",
+
+  "Config.Books.QiNotebook.Title": "ミスターQiのノート",
+  "Config.Books.QiNotebookBonus.Name": "Qiジェムのドロップボーナス値。",
+  "Config.Books.QiNotebookBonus.Description": "モンスターを倒した時にドロップするQiジェムのドロップボーナス値。",
+  
+  // DEBUG SETTINGS //
+  "Config.Debug.EnableDebugBook.Name": "デバッグブックの有効化",
+  "Config.Debug.EnableDebugBook.Description": "有効にすると、ピエールからデバッグブックが入手できるようになり、このMODによって付与された力をすべて取り除くことができる。"
+}

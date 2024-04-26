@@ -1,0 +1,94 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Load textures",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/FruitTrees, Mods/{{ModId}}/Objects,",
+      "FromFile": "assets/sprites/{{TargetWithoutPath}}.png"
+    },
+    {
+      "LogName": "Add cacao fruit and sapling to objects",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_CacaoFruit": {
+          "Name": "{{ModId}}_CacaoFruit",
+          "Displayname": "Cacao",
+          "Description": "A tropical, sweet, and acidic flavor with an incredible floral scent.",
+          "Type": "Basic",
+          "Category": -79,
+          "Price": 100,
+          "Texture": "Mods/{{ModId}}/Objects",
+          "SpriteIndex": 0,
+          "Edibility": 15,
+          "ContextTags": [
+            "color_yellow"
+          ]
+        },
+        "{{ModId}}_CacaoSapling": {
+          "Name": "{{ModId}}_CacaoSapling",
+          "Displayname": "Cacao Sapling",
+          "Description": "Takes 28 days to produce a mature Cacao tree. Bears fruit in the summer, or all year round when planted on Ginger Island.",
+          "Type": "Basic",
+          "Category": -74,
+          "Price": 1000,
+          "Texture": "Mods/{{ModId}}/Objects",
+          "SpriteIndex": 1,
+          "Edibility": -300
+        }
+      }
+    },
+    {
+      "LogName": "Add cacao to fruit trees",
+      "Action": "EditData",
+      "Target": "Data/FruitTrees",
+      "Entries": {
+        "{{ModId}}_CacaoSapling": {
+          "DisplayName": "Cacao",
+          "Seasons": [
+            "Summer"
+          ],
+          "Fruit": [
+            {
+              "ID": "CacaoFruit",
+              "ItemId": "{{ModId}}_CacaoFruit"
+            }
+          ],
+          "Texture": "Mods/{{ModId}}/FruitTrees",
+          "TextureSpriteRow": 0
+        }
+      }
+    },
+    {
+      "LogName": "Add cacao sapling to seed shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": [ "SeedShop", "Items" ],
+      "Entries": {
+        "{{ModId}}_CacaoSapling": {
+          "Id": "{{ModId}}_CacaoSapling",
+          "ItemId": "{{ModId}}_CacaoSapling",
+          "ObjectInternalName": "{{ModId}}_CacaoSapling",
+          "Price": 1000
+        }
+      },
+      "MoveEntries": [
+        {
+          "ID": "{{ModId}}_CacaoSapling",
+          "BeforeID": "(O)630"
+        }
+      ]
+    }
+  ]
+}

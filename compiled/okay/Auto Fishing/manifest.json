@@ -1,0 +1,10 @@
+{
+  "Name": "Auto Fishing 2.0",
+  "Author": "Tibbles",
+  "Version": "2.1.1",
+  "Description": "Automates fishing in Stardew Valley.",
+  "UniqueID": "Tibbles.AutoFishing2",
+  "EntryDll": "AutoFishing2.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}

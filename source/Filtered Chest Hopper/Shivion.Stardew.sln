@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{622B2762-903D-417C-8E20-810F9ED2731F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		common-unreleased.targets = common-unreleased.targets
+		common.targets = common.targets
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "internal", "internal", "{DED81BB3-A571-46E2-91C2-6A8B7890C7EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteredChestHopper", "FilteredChestHopper\FilteredChestHopper.csproj", "{D93E668B-6C2A-470C-B9D3-AB86BD3A1E99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D93E668B-6C2A-470C-B9D3-AB86BD3A1E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93E668B-6C2A-470C-B9D3-AB86BD3A1E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93E668B-6C2A-470C-B9D3-AB86BD3A1E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93E668B-6C2A-470C-B9D3-AB86BD3A1E99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38EB01DD-BAE8-4977-9815-463F5F434FBF}
+	EndGlobalSection
+EndGlobal

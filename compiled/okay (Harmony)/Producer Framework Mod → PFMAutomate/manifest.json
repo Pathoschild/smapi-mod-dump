@@ -1,0 +1,14 @@
+﻿{
+  "Name": "PFMAutomate",
+  "Author": "Digus",
+  "Version": "1.5.0",
+  "Description": "Integrate Producer Framework Mod to Automate",
+  "UniqueID": "Digus.PFMAutomate",
+  "EntryDll": "PFMAutomate.dll",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+	{ "UniqueID": "Digus.ProducerFrameworkMod", "MinimumVersion": "1.8.0" }
+    ,{ "UniqueID": "Pathoschild.Automate", "MinimumVersion": "2.0.0" }
+  ],
+  "UpdateKeys": [ "Nexus:5038" ]
+}

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,14 +20,13 @@ namespace Randomizer
 	public class CropItem : Item
 	{
 		public int Price { get; set; }
-		public string CategoryString { get; set; }
         public string Description { get; set; }
 
         public override bool IsFlower
 		{
 			get
 			{
-				return CategoryString == "18/Basic -80";
+				return Game1.objectData[Id].Category == Object.flowersCategory;
 			}
 		}
 
@@ -38,17 +38,10 @@ namespace Randomizer
 			}
 		}
 
-		public CropItem(int id, string categoryString) : base(id)
+		public CropItem(ObjectIndexes index) : base(index)
 		{
 			IsCrop = true;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
-			CategoryString = categoryString;
-		}
-
-		public override string ToString()
-		{
-            string seasonsString = $"{Globals.GetTranslation("crop-tooltip-seasons", new { seasons = MatchingSeedItem.CropGrowthInfo.GetSeasonsStringForDisplay() })} ";
-            return $"{Name}/{Price}/{CategoryString}/{Name}/{Description} {seasonsString}";
 		}
 
 		/// <summary>
@@ -60,7 +53,7 @@ namespace Randomizer
 		{
 			return ItemList.Items.Values.Where(x =>
 				x.IsCrop &&
-				(includeUnchangedCrops || x.Id != (int)ObjectIndexes.AncientFruit))
+				(includeUnchangedCrops || x.ObjectIndex != ObjectIndexes.AncientFruit))
 			.Cast<CropItem>()
 			.ToList();
 		}

@@ -49,7 +49,7 @@ public interface IDynamicRuleHandler {
 	/// to the user when hovering over the rule in the interface to
 	/// add a new rule.
 	/// </summary>
-	string Description { get; }
+	string? Description { get; }
 
 	/// <summary>
 	/// The source texture for an icon to display alongside this dynamic rule.
@@ -114,7 +114,7 @@ public abstract class DynamicTypeHandler<T> : IDynamicRuleHandler, IExtraInfoRul
 
 	public abstract string DisplayName { get; }
 
-	public abstract string Description { get; }
+	public abstract string? Description { get; }
 
 	public abstract Texture2D Texture { get; }
 

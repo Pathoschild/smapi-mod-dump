@@ -38,7 +38,7 @@ namespace StardewArchipelago.Stardew.NameMapping
             if (name.Contains("moonslime.excavation."))
             {
                 TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
-                var displayName = ti.ToTitleCase(item.DisplayName.Replace("Woooden", "Wooden"));
+                var displayName = ti.ToTitleCase(item.DisplayName);
                 if (name.Contains("strange_doll_green"))
                 {
                     displayName += " (Green)";
@@ -46,10 +46,6 @@ namespace StardewArchipelago.Stardew.NameMapping
                 if (name.Contains("trilobite")) // Temporary fix.
                 {
                     displayName = displayName.Replace("Trilobite Fossil", "Trilobite");
-                }
-                if (displayName.Contains("Rusty Sur"))
-                {
-                    displayName = displayName.Replace("Sur", "Spur");
                 }
                 name = displayName;
             }

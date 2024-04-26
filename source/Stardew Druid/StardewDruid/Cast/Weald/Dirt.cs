@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Data;
 using StardewValley;
 using System.Collections.Generic;
 
@@ -38,14 +39,14 @@ namespace StardewDruid.Cast.Weald
 
             int probability = randomIndex.Next(3);
 
-            if (probability == 0)
+            Dictionary<string, List<Vector2>> neighbourList = ModUtility.NeighbourCheck(targetLocation, targetVector, 1, 0);
+
+            if (probability == 0 && neighbourList.Count == 0)
             {
 
-                int hoeLevel = Mod.instance.virtualHoe.UpgradeLevel;
+                int procChance = 65 - Mod.instance.CurrentProgress;
 
-                int procChance = 50 - 5 * hoeLevel;
-
-                if (randomIndex.Next(procChance) == 0 && Mod.instance.rite.spawnIndex["artifact"] && hoeLevel >= 3)
+                if (randomIndex.Next(procChance) == 0 && Mod.instance.rite.spawnIndex["artifact"])
                 {
 
                     int tileX = (int)targetVector.X;
@@ -61,13 +62,14 @@ namespace StardewDruid.Cast.Weald
                         targetLocation.objects.Add(targetVector, new StardewValley.Object("590", 1));
 
                         castFire = true;
-
+                        Vector2 cursorVector = targetVector * 64 + new Vector2(0, 8);
+                        Mod.instance.iconData.CursorIndicator(targetLocation, cursorVector, IconData.cursors.weald);
                     }
 
                 }
 
             }
-            else if (Mod.instance.rite.spawnIndex["trees"] && !Mod.instance.EffectDisabled("Trees")) // 1/10 tree
+            else if (Mod.instance.rite.spawnIndex["trees"] && neighbourList.Count == 0 && !Mod.instance.EffectDisabled("Trees"))
             {
 
                 bool treeSpawn  = false;

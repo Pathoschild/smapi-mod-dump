@@ -34,9 +34,9 @@ namespace ConvenientChests {
             StaticMonitor = Monitor;
             StaticHelper  = Helper;
 
-            helper.Events.GameLoop.SaveLoaded      += (sender, e) => LoadModules();
-            helper.Events.GameLoop.ReturnedToTitle += (sender, e) => UnloadModules();
-
+            helper.Events.GameLoop.GameLaunched    += (_, _) => RegisterSettings();
+            helper.Events.GameLoop.SaveLoaded      += (_, _) => LoadModules();
+            helper.Events.GameLoop.ReturnedToTitle += (_, _) => UnloadModules();
         }
 
         private void LoadModules() {
@@ -73,6 +73,60 @@ namespace ConvenientChests {
 
         public override object GetApi() {
             return new ModAPI();
+        }
+
+        private void RegisterSettings() {
+            {
+                // get Generic Mod Config Menu's API (if it's installed)
+                var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+                if (configMenu is null)
+                    return;
+
+                // register mod
+                var options = new ModConfigOptions(configMenu, ModManifest);
+                options.Register(
+                                 reset: () => Config = new Config(),
+                                 save: () => Helper.WriteConfig(Config)
+                                );
+
+                options.AddSection("Categorize chests");
+                options.Add(() => Config.CategorizeChests,
+                            value => Config.CategorizeChests = value,
+                            "Active");
+
+                options.AddSection("Craft from chests");
+                options.Add(() => Config.CraftFromChests,
+                            value => Config.CraftFromChests = value,
+                            "Active");
+                options.Add(() => Config.CraftRadius,
+                            value => Config.CraftRadius = value,
+                            "Radius");
+
+                options.AddSection("Stash to nearby", "Allows for items to be stashed to chests in the player's vicinity.");
+                options.Add(() => Config.StashToNearbyChests,
+                            value => Config.StashToNearbyChests = value,
+                            "Active");
+                options.Add(() => Config.StashRadius,
+                            value => Config.StashRadius = value,
+                            "Radius");
+                options.Add(() => Config.StashKey,
+                            value => Config.StashKey = value,
+                            "Stash to nearby key");
+
+                options.AddSection("Stash from anywhere", "Allows for items to be stashed to any chest accessible to the player.");
+                options.Add(() => Config.StashAnywhere,
+                            value => Config.StashAnywhere = value,
+                            "Active");
+                options.Add(() => Config.StashAnywhereToFridge,
+                            value => Config.StashAnywhereToFridge = value,
+                            "Stash to fridge first?");
+                options.Add(() => Config.StashToExistingStacks,
+                            value => Config.StashToExistingStacks = value,
+                            "Stash to existing stacks?");
+                options.Add(() => Config.StashAnywhereKey,
+                            value => Config.StashAnywhereKey = value,
+                            "Stash from anywhere key");
+            }
         }
     }
 }

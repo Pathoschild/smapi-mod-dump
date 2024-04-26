@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22872
+IDs: philosquare.EatInBackpack
+update keys: Nexus:22872, GitHub:philosquare/EatInBackpack

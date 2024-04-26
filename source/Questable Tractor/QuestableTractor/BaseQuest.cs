@@ -11,26 +11,41 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using StardewValley;
 using StardewValley.Quests;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
-    public abstract class BaseQuest : Quest, ISimpleLog
+    public abstract class BaseQuest : FakeQuest, ISimpleLog
     {
         // Putting this implementation here denies a few other usages, and it also means that our suppressions are
         //  tied to the quest, and thus get tossed out every day.  I can't say if that's a bug or a feature right now.
-        private HashSet<string> oldNews = new HashSet<string>();
+        private static HashSet<string> oldNews = new HashSet<string>();
 
         /// <summary>
         ///   Hacky way to know if the call to <see cref="CheckIfComplete(NPC, Item?)"/> resulted in a call to <see cref="Spout"/>.
         /// </summary>
         private bool didNpcTalk;
 
+        /// <summary>
+        ///   Hacky way to pass information to Spout about whether the player is trying to force a dialog about the quest
+        ///   by holding the needed item.
+        /// </summary>
+        private bool isHeldItemRelatedToQuest;
+
         protected BaseQuest(BaseQuestController controller)
         {
             this.Controller = controller;
             this.SetObjective();
+        }
+
+        /// <summary>
+        ///   Called from an OnSaveLoad implementation.
+        /// </summary>
+        public static void ClearOldNews()
+        {
+            oldNews.Clear();
         }
 
         public BaseQuestController Controller { get; }
@@ -60,39 +75,39 @@ namespace NermNermNerm.Stardew.QuestableTractor
         /// </returns>
         public override sealed bool checkIfComplete(NPC n, int number1, int number2, Item item, string str, bool probe)
         {
-            // TODO: Right now, this makes it look like you could talk to any NPC about any of our quest items, when really
-            //   there's only a few people who are going to take an interest.  Perhaps it would be better if we made it so
-            //   that CheckIfComplete returns an Action?, which we run if probe is false.  Then we could unhack didNpcTalk too.
-            if (probe && n is not null && item is not null && this.IsItemForThisQuest(item))
+            if (probe)
             {
-                return true;
+                return n is not null && item is not null && this.IsConversationPiece(item);
             }
 
-            if (probe || n is null)
+            if (n is null)
             {
                 return false;
             }
 
-            if (item is not null && !this.IsItemForThisQuest(item))
-            {
-                return false;
-            }
+            //if (item is not null && !this.IsConversationPiece(item))
+            //{
+            //    return false;
+            //}
 
+            this.isHeldItemRelatedToQuest = item is not null && this.IsConversationPiece(item);
             this.didNpcTalk = false;
             this.CheckIfComplete(n, item);
             return this.didNpcTalk;
         }
 
-        public abstract bool IsItemForThisQuest(Item item);
-
+        /// <summary>
+        ///   Returns true if the player holding the item indicates that the player wants to talk about this quest.
+        /// </summary>
+        public abstract bool IsConversationPiece(Item item);
 
         public abstract void CheckIfComplete(NPC n, Item? item);
 
-        public void SetDisplayAsNew()
+        public override void questComplete()
         {
-            this.showNew.Value = true;
+            this.Controller.RawQuestState = BaseQuestController.QuestCompleteStateMagicWord;
+            base.questComplete();
         }
-
 
         public void IndicateQuestHasMadeProgress()
         {
@@ -103,29 +118,26 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public void Spout(NPC n, string message)
         {
-            // This only impacts quest-based messages, and the 'oldNews' thing gets reset once per day.  Not sure if
-            // the once-per-day thing is a bug or a feature.
-            if (!this.oldNews.Add(n.Name + message))
+            if (oldNews.Add(n.Name + message) || this.isHeldItemRelatedToQuest)
             {
-                return;
+                this.didNpcTalk = true;
+
+                // Conversation keys and location specific dialogs take priority.  We can't fix the location-specific
+                // stuff, but we can nix conversation topics.
+
+                // Forces it to see if there are Conversation Topics that can be pulled down.
+                // Pulling them down toggles their "only show this once" behavior.
+                n.checkForNewCurrentDialogue(Game1.player.getFriendshipHeartLevelForNPC(n.Name));
+
+                // Perhaps we should only nix topics that are for this mod?
+                // Can (maybe) be culled off of the tail end of 'n.CurrentDialogue.First().TranslationKey'
+                n.CurrentDialogue.Clear();
+
+                n.CurrentDialogue.Push(new Dialogue(n, null, message));
+                Game1.drawDialogue(n); // <- Push'ing or perhaps the clicking on the NPC causes this to happen anyway. so not sure if it actually helps.
             }
-
-            this.didNpcTalk = true;
-
-            // Conversation keys and location specific dialogs take priority.  We can't fix the location-specific
-            // stuff, but we can nix conversation topics.
-
-            // Forces it to see if there are Conversation Topics that can be pulled down.
-            // Pulling them down toggles their "only show this once" behavior.
-            n.checkForNewCurrentDialogue(Game1.player.getFriendshipHeartLevelForNPC(n.Name));
-
-            // Perhaps we should only nix topics that are for this mod?
-            // Can (maybe) be culled off of the tail end of 'n.CurrentDialogue.First().TranslationKey'
-            n.CurrentDialogue.Clear();
-
-            n.CurrentDialogue.Push(new Dialogue(n, null, message));
-            Game1.drawDialogue(n); // <- Push'ing or perhaps the clicking on the NPC causes this to happen anyway. so not sure if it actually helps.
         }
+
 
         public void Spout(string message) => BaseQuestController.Spout(message);
 
@@ -138,61 +150,35 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         protected bool TryTakeItemsFromPlayer(string itemId, int count = 1)
         {
-            var stack = Game1.player.Items.FirstOrDefault(i => i?.ItemId == itemId && i.stack.Value >= count);
-            if (stack == null)
+            // This is busted for partial stacks e.g. 2 silver and one base item.
+            string qualifiedItemId = ItemRegistry.IsQualifiedItemId(itemId) ? itemId : "(O)" + itemId;
+            if (Game1.player.Items.Where(i => i?.QualifiedItemId == qualifiedItemId).Sum(c => c.Stack) < count)
             {
                 return false;
             }
-            else if (stack.Stack == count)
-            {
-                Game1.player.removeItemFromInventory(stack);
-                return true;
-            }
-            else
-            {
-                stack.Stack -= 3;
-                return true;
-            }
+
+            Game1.player.Items.ReduceId(qualifiedItemId, count);
+            return true;
         }
 
         protected bool TryTakeItemsFromPlayer(string item1Id, int count1, string item2Id, int count2)
         {
-            var stack1 = Game1.player.Items.FirstOrDefault(i => i?.ItemId == item1Id && i.stack.Value >= count1);
-            var stack2 = Game1.player.Items.FirstOrDefault(i => i?.ItemId == item2Id && i.stack.Value >= count2);
-            if (stack1 is null || stack2 is null)
+            string qualifiedItem1Id = ItemRegistry.IsQualifiedItemId(item1Id) ? item1Id : "(O)" + item1Id;
+            string qualifiedItem2Id = ItemRegistry.IsQualifiedItemId(item2Id) ? item2Id : "(O)" + item2Id;
+
+            if (Game1.player.Items.Where(i => i?.QualifiedItemId == qualifiedItem1Id).Sum(c => c.Stack) < count1
+                || Game1.player.Items.Where(i => i?.QualifiedItemId == qualifiedItem2Id).Sum(c => c.Stack) < count2)
             {
                 return false;
             }
 
-            if (stack1.Stack == count1)
-            {
-                Game1.player.removeItemFromInventory(stack1);
-            }
-            else
-            {
-                stack1.Stack -= count1;
-            }
-
-            if (stack2.Stack == count2)
-            {
-                Game1.player.removeItemFromInventory(stack2);
-            }
-            else
-            {
-                stack2.Stack -= count2;
-            }
-
+            Game1.player.Items.ReduceId(qualifiedItem1Id, count1);
+            Game1.player.Items.ReduceId(qualifiedItem2Id, count2);
             return true;
         }
 
         public virtual void WriteToLog(string message, StardewModdingAPI.LogLevel level, bool isOnceOnly)
             => this.Controller.WriteToLog(message, level, isOnceOnly);
-
-        public override void questComplete()
-        {
-            this.Controller.RawQuestState = BaseQuestController.QuestCompleteStateMagicWord;
-            base.questComplete();
-        }
     }
 
     public abstract class BaseQuest<TState> : BaseQuest

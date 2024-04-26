@@ -56,7 +56,7 @@ namespace ScheduleViewer
 
         public readonly List<ClickableTextureComponent> questIcons = new();
 
-        private readonly Texture2D emptySprite = ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/Unknown.png");
+        private readonly Texture2D emptySprite = ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/Icons.png");
 
         public Friendship emptyFriendship = new();
 
@@ -143,7 +143,7 @@ namespace ScheduleViewer
             this.scrollBar = new ClickableTextureComponent(new Rectangle(this.upButton.bounds.X + 12, this.upButton.bounds.Y + this.upButton.bounds.Height + 4, 24, 40), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f);
             this.scrollBarRunner = new Rectangle(this.scrollBar.bounds.X, this.upButton.bounds.Y + this.upButton.bounds.Height + 4, this.scrollBar.bounds.Width, base.height - 128 - this.upButton.bounds.Height - 8);
             // init slot position but don't overflow
-            this.slotPosition = initialSlotPosition >= this.sprites.Count - slotsOnPage ? this.sprites.Count - slotsOnPage : initialSlotPosition;
+            this.slotPosition = Math.Max(0, Math.Min(initialSlotPosition, this.sprites.Count - slotsOnPage));
             // set the scoll bar postion and sets yPos for characterSlots and sprites
             this.SetScrollBarToCurrentIndex();
         }

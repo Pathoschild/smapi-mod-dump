@@ -12,7 +12,15 @@
 	"ID": "DayTimeMoneyBox",
 
 	"ColorVariables": {
-		"$DayTimeAfterMidnight": "$ErrorText"
+		"$DayTimeAfterMidnight": "$ErrorText",
+		"$DayTimeText": "$Text",
+
+		"$DayTimeMoneyBox:TextShadowAlt": "$TextShadowAlt"
+	},
+
+	"FontVariables": {
+		"$DayTimeMoneyBox:Dialogue": "$Dialogue",
+		"$DayTimeMoneyBox:Small": "$Small"
 	},
 
 	"Patches": {
@@ -21,9 +29,16 @@
 				"Red": { "*": "$DayTimeAfterMidnight" }
 			},
 
-			"Fields": {
+			"ColorFields": {
 				"Game1:textColor": { "*": "$DayTimeText" }
-			}
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$DayTimeMoneyBox:Dialogue" },
+				"Game1:smallFont": { "*": "$DayTimeMoneyBox:Small" }
+			},
+
+			"DrawTextWithShadow": { "*": "$DayTimeMoneyBox:TextShadowAlt" }
 		}
 	}
 }

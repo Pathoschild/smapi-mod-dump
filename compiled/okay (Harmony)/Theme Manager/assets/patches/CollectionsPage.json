@@ -1,0 +1,15 @@
+{
+	"ID": "CollectionsPage",
+
+	"FontVariables": {
+		"$CollectionsPage:Small": "$Small"
+	},
+
+	"Patches": {
+		"#CollectionsPage:draw": {
+			"FontFields": {
+				"Game1:smallFont": { "*": "$CollectionsPage:Small" }
+			}
+		}
+	}
+}

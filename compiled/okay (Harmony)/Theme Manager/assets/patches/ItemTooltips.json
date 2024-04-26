@@ -1,0 +1,74 @@
+{
+	"ID": "ItemTooltips",
+
+	"ColorVariables": {
+		"$TooltipInsufficientText": "$ErrorText",
+		"$TooltipText": "$Text",
+		"$TooltipTextShadow": "$TextShadow"
+	},
+
+	"Patches": {
+		"#IClickableMenu:drawHoverText(SpriteBatch,StringBuilder,*)": {
+			"Colors": {
+				"DimGray": { "*": "$ForgeCountText" },
+				"DarkRed": { "*": "$ForgedText" }
+			},
+			"ColorFields": {
+				"Game1:textColor": { "*": "$TooltipText" },
+				"Game1:textShadowColor": { "*": "$TooltipTextShadow" }
+			}
+		},
+
+		"StardewValley.Object:drawInMenu": {
+			"RedToGreenLerp": {
+				"*": [
+					"$TooltipHealthRed",
+					"$TooltipHealthYellow",
+					"$TooltipHealthGreen"
+				]
+			}
+		},
+
+		"StardewValley.Item:drawTooltip": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$TooltipText" },
+				"Game1:textShadowColor": { "*": "$TooltipTextShadow" }
+			}
+		},
+
+		"StardewValley.Objects.Boots:drawTooltip": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$TooltipText" }
+			}
+		},
+
+		"StardewValley.Tools.MeleeWeapon:drawTooltip": {
+			"RawColors": {
+				"0, 120, 120": { "*": "$TooltipModifiedStatText" },
+				"120, 0, 210": { "*": "$TooltipEnchantmentText" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$TooltipText" },
+				"Game1:textShadowColor": { "*": "$TooltipTextShadow" }
+			}
+		},
+
+		"StardewValley.Objects.Ring:drawTooltip": {
+			"ColorFields": {
+				"Game1:textColor": { "*": "$TooltipText" }
+			}
+		},
+
+		"StardewValley.CraftingRecipe:drawRecipeDescription": {
+			"Colors": {
+				"Red": { "*": "$TooltipInsufficientText" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$TooltipText" },
+				"Game1:textShadowColor": { "*": "$TooltipTextShadow" }
+			}
+		}
+	}
+}

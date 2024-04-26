@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Data;
 
 namespace StardewDruid.Cast.Weald
 {
@@ -47,7 +48,7 @@ namespace StardewDruid.Cast.Weald
             castFire = true;
 
             Vector2 cursorVector = targetVector * 64 + new Vector2(0, 8);
-            ModUtility.AnimateCursor(targetLocation, cursorVector);
+            Mod.instance.iconData.CursorIndicator(targetLocation, cursorVector, IconData.cursors.weald);
         }
 
     }

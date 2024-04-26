@@ -205,12 +205,6 @@ public class AccessibleTile : ConditionalBase
         string[]? conditions = jObject["Conditions"]?.ToObject<string[]>();
         bool? isEvent = jObject["IsEvent"]?.Value<bool?>() ?? false;
         string? suffix = jObject["Suffix"]?.Value<string>();
-        if (suffix is null || suffix == null)
-            Log.Trace($"asdf: Suffix is null, staticNameOrTranslationKey is {staticNameOrTranslationKey}");
-        else if (suffix == "")
-            Log.Trace($"asdf: suffix is empty, staticNameOrTranslationKey is {staticNameOrTranslationKey}");
-        else
-            Log.Trace($"asdf: suffix is \"{suffix}\", staticNameOrTranslationKey is {staticNameOrTranslationKey}");
         Log.Trace(jObject.ToString());
         // Parse X and Y arrays, handling potential errors and nulls
         int[]? xValues = jObject["X"]?.ToObject<int[]>();

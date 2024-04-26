@@ -28,6 +28,7 @@ using Leclair.Stardew.Common;
 using Leclair.Stardew.BetterCrafting.Models;
 using StardewValley.Menus;
 using Newtonsoft.Json.Linq;
+using Leclair.Stardew.Common.UI.FlowNode;
 
 namespace Leclair.Stardew.BetterCrafting.Menus;
 
@@ -40,8 +41,7 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 
 	public readonly FinishedDelegate OnFinished;
 
-	private DynamicRuleData Data;
-	private object? Obj;
+	private readonly DynamicRuleData Data;
 
 	private ISimpleNode Layout;
 	private Vector2 LayoutSize;
@@ -52,16 +52,26 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	public TextBox? txtText;
 	public ClickableComponent? btnText;
 
+	// Dropdown
+
+	public List<ClickableComponent>? FlowComponents;
+	public ClickableTextureComponent? btnPageUp;
+	public ClickableTextureComponent? btnPageDown;
+
+	public ScrollableFlow? optionPicker;
+	public ClickableComponent? btnPicker;
+
+	public string? PickedOption;
+
 	public RuleEditorDialog(ModEntry mod, BetterCraftingPage menu, IDynamicRuleHandler handler, object? obj, DynamicRuleData data, FinishedDelegate onFinished) : base(mod) {
 		Menu = menu;
 		Handler = handler;
-		Obj = obj;
 		Data = data;
 		OnFinished = onFinished;
 
 		if (Handler is ISimpleInputRuleHandler) {
 			string text = "";
-			if (Data.Fields.TryGetValue("Input", out var token) && token.Type == Newtonsoft.Json.Linq.JTokenType.String)
+			if (Data.Fields.TryGetValue("Input", out var token) && token.Type == JTokenType.String)
 				text = (string?) token ?? "";
 
 			txtText = new TextBox(
@@ -94,6 +104,78 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 			};
 		}
 
+		else if (Handler is IOptionInputRuleHandler opts) {
+			var options = opts.GetOptions(Menu.Cooking);
+			PickedOption = options.First().Key;
+			if (Data.Fields.TryGetValue("Input", out var token) && token.Type == JTokenType.String)
+				PickedOption = (string?) token;
+
+			optionPicker = new(
+				this,
+				0, 0, Math.Max(300, Math.Min(1000, Game1.uiViewport.Width - 128)), Math.Max(300, Math.Min(600, Game1.uiViewport.Height - 256))
+			);
+
+			if (Menu.Theme.CustomScroll && Menu.Background is not null)
+				Sprites.CustomScroll.ApplyToScrollableFlow(optionPicker, Menu.Background);
+
+			btnPageDown = optionPicker.btnPageDown;
+			btnPageUp = optionPicker.btnPageUp;
+			FlowComponents = optionPicker.DynamicComponents;
+
+			var builder = FlowHelper.Builder();
+
+			Dictionary<string, SelectableNode> nodes = [];
+
+			void OnSelect(string? value) {
+				PickedOption = value;
+				foreach(var entry in nodes) {
+					entry.Value.Selected = value == entry.Key;
+				}
+			}
+
+			foreach(var entry in options) {
+				var b2 = FlowHelper.Builder()
+					.FormatText(entry.Value, align: Alignment.VCenter)
+					.Build();
+
+				string id = entry.Key;
+
+				var node = nodes[id] = new SelectableNode(
+					b2,
+					onHover: (_, _, _) => {
+						return true;
+					},
+					onClick: (_, _, _) => {
+						OnSelect(id);
+						return true;
+					}
+				) {
+					Selected = id == PickedOption,
+					SelectedTexture = Sprites.Buttons.Texture,
+					SelectedSource = Sprites.Buttons.SELECT_BG,
+					HoverTexture = Sprites.Buttons.Texture,
+					HoverSource = Sprites.Buttons.SELECT_BG,
+					HoverColor = Color.White * 0.4f
+				};
+
+				builder.Add(node);
+			}
+
+			optionPicker.Set(builder.Build());
+
+			btnPicker = new ClickableComponent(
+				bounds: new Rectangle(0, 0, optionPicker.Width, optionPicker.Height),
+				name: ""
+			) {
+				myID = 3,
+				upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+				downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+				leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+				rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
+			};
+
+		}
+
 		UpdateLayout();
 
 		int width = (int) LayoutSize.X + 32;
@@ -106,9 +188,11 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 
 		btnSave = new ClickableTextureComponent(
 			bounds: new Rectangle(0, 0, 64, 64),
-			texture: Game1.mouseCursors,
-			sourceRect: new Rectangle(128, 256, 64, 64),
-			scale: 1f
+			texture: Menu.Background ?? Game1.mouseCursors,
+			sourceRect: Menu.Background is null
+				? new Rectangle(128, 256, 64, 64)
+				: Sprites.Other.BTN_OK,
+			scale: Menu.Background is null ? 1f : 4f
 		) {
 			myID = 1,
 			upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
@@ -119,9 +203,11 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 
 		btnDelete = new ClickableTextureComponent(
 			bounds: new Rectangle(0, 0, 64, 64),
-			texture: Game1.mouseCursors,
-			sourceRect: new Rectangle(192, 256, 64, 64),
-			scale: 1f
+			texture: Menu.Background ?? Game1.mouseCursors,
+			sourceRect: Menu.Background is null
+				? new Rectangle(192, 256, 64, 64)
+				: Sprites.Other.BTN_CANCEL,
+			scale: Menu.Background is null ? 1f : 4f
 		) {
 			myID = 2,
 			upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
@@ -161,6 +247,11 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		if (txtText is not null && btnText is not null) {
 			txtText.X = btnText.bounds.X;
 			txtText.Y = btnText.bounds.Y;
+		}
+
+		if (optionPicker is not null && btnPicker is not null) {
+			optionPicker.X = btnPicker.bounds.X;
+			optionPicker.Y = btnPicker.bounds.Y;
 		}
 
 		var first = btnSave ?? btnDelete;
@@ -211,6 +302,14 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 			builder.Component(btnText, onDraw: OnComponentDraw);
 		}
 
+		if (btnPicker is not null && Handler is IOptionInputRuleHandler opt) {
+			if (!string.IsNullOrEmpty(opt.HelpText))
+				builder
+					.FormatText(opt.HelpText, wrapText: true);
+
+			builder.Component(btnPicker, onDraw: OnComponentDraw);
+		}
+
 		Layout = builder.GetLayout();
 		LayoutSize = Layout.GetSize(Game1.smallFont, new Vector2(400, 0));
 	}
@@ -224,6 +323,10 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 			txtText.X = btnText.bounds.X;
 			txtText.Y = btnText.bounds.Y;
 		}
+		if (optionPicker is not null && btnPicker is not null) {
+			optionPicker.X = btnPicker.bounds.X;
+			optionPicker.Y = btnPicker.bounds.Y;
+		}
 	}
 
 	public void Close() {
@@ -234,6 +337,9 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	public void Save() {
 		if (txtText is not null)
 			Data.Fields["Input"] = new JValue(txtText.Text);
+
+		else if (optionPicker is not null)
+			Data.Fields["Input"] = new JValue(PickedOption);
 
 		OnFinished(true, false, Data);
 		exitThisMenu(false);
@@ -257,11 +363,27 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 
 	public override void receiveScrollWheelAction(int direction) {
 		base.receiveScrollWheelAction(direction);
+
+		if (optionPicker is not null && optionPicker.Scroll(direction > 0 ? -1 : 1))
+			Game1.playSound("shwip");
+	}
+
+	public override void leftClickHeld(int x, int y) {
+		base.leftClickHeld(x, y);
+		optionPicker?.LeftClickHeld(x, y);
+	}
+
+	public override void releaseLeftClick(int x, int y) {
+		base.releaseLeftClick(x, y);
+		optionPicker?.ReleaseLeftClick();
 	}
 
 	public override void receiveLeftClick(int x, int y, bool playSound = true) {
 
 		txtText?.Update();
+
+		if (optionPicker is not null && optionPicker.ReceiveLeftClick(x, y, playSound))
+			return;
 
 		if (btnSave is not null && btnSave.containsPoint(x, y)) {
 			Save();
@@ -283,6 +405,13 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 	public override void performHoverAction(int x, int y) {
 		base.performHoverAction(x, y);
 
+		if (optionPicker is not null) {
+			if (optionPicker.PerformMiddleScroll(x, y))
+				return;
+
+			optionPicker.PerformHover(x, y);
+		}
+
 		txtText?.Hover(x, y);
 		btnSave?.tryHover(x, y);
 		btnDelete?.tryHover(x, y);
@@ -297,17 +426,21 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		// Dim the Background
 		b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
 
+		Texture2D? texture = Menu.Theme.CustomTooltip ? Menu.Background : null;
+
 		// Background
 		RenderHelper.DrawBox(
 			b,
-			texture: Game1.menuTexture,
-			sourceRect: new Rectangle(0, 256, 60, 60),
+			texture: texture ?? Game1.menuTexture,
+			sourceRect: texture is null
+				? RenderHelper.Sprites.NativeDialogue.ThinBox
+				: RenderHelper.Sprites.CustomBCraft.ThinBox,
 			x: xPositionOnScreen,
 			y: yPositionOnScreen,
 			width: width,
 			height: height,
 			color: Color.White,
-			scale: 1f
+			scale: texture is null ? 1f : 4f
 		);
 
 		Layout?.Draw(
@@ -317,8 +450,8 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 			new Vector2(width, height),
 			1f,
 			Game1.smallFont,
-			Game1.textColor,
-			null
+			(texture is null ? null : Menu.Theme.TooltipTextColor ?? Menu.Theme.TextColor) ?? Game1.textColor,
+			(texture is null ? null : Menu.Theme.TooltipTextShadowColor ?? Menu.Theme.TextShadowColor)
 		);
 
 		// Text
@@ -328,12 +461,22 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		btnSave?.draw(b);
 		btnDelete?.draw(b);
 
+		// Options
+		optionPicker?.Draw(
+			b,
+			texture is null ? null : (Menu.Theme.TooltipTextColor ?? Menu.Theme.TextColor),
+			texture is null ? null : (Menu.Theme.TooltipTextShadowColor ?? Menu.Theme.TextShadowColor)
+		);
+
 		// Base Menu Stuff
 		base.draw(b);
 
+		optionPicker?.DrawMiddleScroll(b);
+
 		// Mouse
 		Game1.mouseCursorTransparency = 1f;
-		drawMouse(b);
+		if (!Menu.Theme.CustomMouse || !RenderHelper.DrawMouse(b, Menu.Background, RenderHelper.Sprites.BCraftMouse))
+			drawMouse(b);
 	}
 
 	#endregion

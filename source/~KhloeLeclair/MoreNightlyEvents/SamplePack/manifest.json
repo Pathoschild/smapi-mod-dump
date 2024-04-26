@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"$schema": "https://smapi.io/schemas/manifest.json",
+	"UniqueID": "leclair.mne.samplepack",
+	"Name": "[MNE] Sample Events",
+	"Author": "Khloe Leclair",
+	"Version": "1.1.0",
+	"Description": "Some sample night-time events using More Nightly Events.",
+	"UpdateKeys": [],
+	"ContentPackFor": {
+		"UniqueID": "leclair.morenightlyevents",
+		"MinimumVersion": "0.2.0"
+	}
+}

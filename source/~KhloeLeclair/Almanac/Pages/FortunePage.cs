@@ -126,7 +126,7 @@ public class FortunePage : BasePage<BaseState>, ICalendarPage {
 				if (evt.AdvancedLabel != null)
 					db.AddRange(evt.AdvancedLabel);
 				else if (has_simple)
-					db.FormatText(evt.SimpleLabel!, align: Alignment.Middle, onHover: onHover);
+					db.FormatText(evt.SimpleLabel!, align: Alignment.VCenter, onHover: onHover);
 			}
 
 			Extras[day - 1] = extra.Count > 0 ? extra.ToArray() : null;
@@ -138,7 +138,7 @@ public class FortunePage : BasePage<BaseState>, ICalendarPage {
 
 			SDate sdate = new(day, date.Season);
 
-			IFlowNode node = new SpriteNode(sprite, 3, Alignment.Middle, size: 13);
+			IFlowNode node = new SpriteNode(sprite, 3, Alignment.VCenter, size: 13);
 			Nodes[day - 1] = node;
 
 			builder

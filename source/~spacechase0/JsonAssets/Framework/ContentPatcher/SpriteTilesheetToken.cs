@@ -18,34 +18,29 @@ namespace JsonAssets.Framework.ContentPatcher
 {
     internal class SpriteTilesheetToken : BaseToken
     {
-        private readonly Func<List<DataNeedsIdWithTexture>> ObjsFunc;
-        private IDictionary<string, string> Tilesheets = new Dictionary<string, string>();
+        private readonly Func<IDictionary<string, string>> IdsFunc;
+        private IDictionary<string, string> Ids;
 
-        public SpriteTilesheetToken(string type, Func<List<DataNeedsIdWithTexture>> func)
+        public SpriteTilesheetToken(string type, Func<IDictionary<string,string>> func)
             : base(type, "SpriteTilesheet")
         {
-            this.ObjsFunc = func;
+            this.IdsFunc = func;
         }
 
         public override IEnumerable<string> GetValidInputs()
         {
-            return this.Tilesheets.Keys;
+            return this.Ids.Keys;
         }
 
         public override bool TryValidateInput(string input, out string error)
         {
             error = "";
-            if (!this.Tilesheets.ContainsKey(input))
+            if (!this.Ids.ContainsKey(input))
             {
                 error = $"Invalid name for {this.Type}: {input}";
                 return false;
             }
             return true;
-        }
-
-        public override bool IsReady()
-        {
-            return base.IsReady() && this.Tilesheets?.Count > 0 && !string.IsNullOrEmpty(this.Tilesheets.First().Value);
         }
 
         public override IEnumerable<string> GetValues(string input)
@@ -54,41 +49,17 @@ namespace JsonAssets.Framework.ContentPatcher
                 return Array.Empty<string>();
 
             if (input == "")
-                return this.Tilesheets.Values.Select(p => p.ToString()).ToArray();
+                return this.Ids.Values.Select(n => $"JA/{Type}/{n}").ToArray();
 
-            return this.Tilesheets.TryGetValue(input, out string value) && !string.IsNullOrEmpty(value)
-                ? new[] { $"JA/{Type}/{input}" }
-                : Array.Empty<string>();
-        }
+            if (this.Ids.ContainsKey(input))
+                return new[] { $"JA/{Type}/{Ids[input]}" };
 
-        public override bool UpdateContext()
-        {
-            if (base.UpdateContext())
-                return true;
-
-            var objs = this.ObjsFunc();
-            if (objs.Count == 0)
-                return false;
-
-            var obj = objs[0];
-            if (!string.IsNullOrEmpty(obj.Tilesheet) && this.Tilesheets.Count > 0 && string.IsNullOrEmpty(this.Tilesheets.First().Value))
-            {
-                this.UpdateContextImpl();
-                return true;
-            }
-
-            return false;
+            return Array.Empty<string>();
         }
 
         protected override void UpdateContextImpl()
         {
-            var dict = new Dictionary<string, string>();
-            var objs = this.ObjsFunc();
-            foreach (var obj in objs)
-            {
-                dict.Add(obj.Name, obj.Tilesheet);
-            }
-            this.Tilesheets = dict;
+            this.Ids = this.IdsFunc();
         }
     }
 }

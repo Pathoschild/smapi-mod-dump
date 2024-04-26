@@ -96,7 +96,5 @@ for queries and analysis.**
 
   For example, `Any Axe 1 3 true` will check whether any player has an axe between copper and gold.
 
-## Item behavior
-You can make items affect others (via the inventory). This includes a few things like: changing quality, price, context tags, replacing the item altogether, etc.
-
-The documentation for it is [here](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/menu-item-actions.md).
+## Overriding arch taste
+By default, all NPCs will dislike arch-category this (even if you put the item on Love). You can override this behavior by giving the item the context tag "override_arch_taste"

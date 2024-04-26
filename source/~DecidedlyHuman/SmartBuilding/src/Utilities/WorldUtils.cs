@@ -762,15 +762,9 @@ namespace SmartBuilding.Utilities
             }
         }
 
-        public void InsertItem(Item item, SObject o, bool shouldManuallyDeduct)
+        public bool TryInsertItem(Item item, SObject o, bool shouldManuallyDeduct)
         {
-            // For some reason, apparently, we always need to deduct the held item by one, even if we're working with a producer which does it by itself.
-
-            // First, we perform the drop in action.
-            bool successfullyInserted = o.performObjectDropInAction(item, false, Game1.player);
-
-            // Then, perplexingly, we still need to manually deduct the item by one, or we can end up with an item that has a stack size of zero.
-            if (successfullyInserted) Game1.player.reduceActiveItemByOne();
+            return o.performObjectDropInAction(item, false, Game1.player);
         }
 
         public void ShoveGemIntoTorch(Item item, SObject o, Vector2 targetTile)

@@ -1,0 +1,148 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "Entries": {
+                "{{ModId}}_Brown_Rice_Tea": "271 1/6 9/{{ModId}}_Brown_Rice_Tea 2/null/{{i18n:Tea.BrownRice.name}}",
+                "{{ModId}}_Cassia_Tea": "{{ModId}}_Cassia_Seeds 1/6 9/{{ModId}}_Cassia_Tea 2/null/{{i18n:Tea.Cassia.name}}",
+                "{{ModId}}_Osmanthus_Tea": "{{ModId}}_Osmanthus 5/6 9/{{ModId}}_Osmanthus_Tea 1/null/{{i18n:Tea.Osmanthus.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepWFCFDupes": true,
+                "KeepCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Chamomile_Tea": "{{ModId}}_Chamomile 1/6 9/{{ModId}}_Chamomile_Tea 2/null/{{i18n:Tea.Chamomile.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepWFCFDupes": false,
+                "KeepCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Chamomile_Tea": "wildflour.ateliercrops_chamomile 1/6 9/{{ModId}}_Chamomile_Tea 2/null/{{i18n:Tea.Chamomile.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Chrysanthemum_Tea": "{{ModId}}_Chrysanthemum 1/6 9/{{ModId}}_Chrysanthemum_Tea 2/null/{{i18n:Tea.Chrysanthemum.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepQLFG2Dupes": true,
+                "KeepCFDupes": true,
+                "KeepWFCFDupes": true
+            },
+            "Entries": {
+                "{{ModId}}_Lavender_Tea": "{{ModId}}_Lavender 1/6 9/{{ModId}}_Lavender_Tea 2/null/{{i18n:Tea.Lavender.name}}",
+                "{{ModId}}_Jasmine_Tea": "{{ModId}}_Jasmine 3/6 9/{{ModId}}_Jasmine_Tea 1/null/{{i18n:Tea.Jasmine.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepCFDupes": false
+            },
+            "Entries": {
+                "{{ModId}}_Chrysanthemum_Tea": "Cornucopia_Chrysanthemum 1/6 9/{{ModId}}_Chrysanthemum_Tea 2/null/{{i18n:Tea.Chrysanthemum.name}}",
+                "{{ModId}}_Chamomile_Tea": "Cornucopia_Chamomile 1/6 9/{{ModId}}_Chamomile_Tea 2/null/{{i18n:Tea.Chamomile.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepCFDupes": false,
+                "CornucopiaCompatability": "extended"
+            },
+            "Entries": {
+                "{{ModId}}_Lavender_Tea": "Cornucopia_Lavender 1/6 9/{{ModId}}_Lavender_Tea 2/null/{{i18n:Tea.Lavender.name}}",
+                "{{ModId}}_Jasmine_Tea": "Cornucopia_Jasmine 1/6 9/{{ModId}}_Jasmine_Tea 1/null/{{i18n:Tea.Jasmine.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepCFDupes": true,
+                "KeepWFCFDupes": false
+            },
+            "Entries": {
+                "{{ModId}}_Lavender_Tea": "wildflour.ateliercrops_lavender 1/6 9/{{ModId}}_Lavender_Tea 2/null/{{i18n:Tea.Lavender.name}}",
+                "{{ModId}}_Jasmine_Tea": "wildflour.ateliercrops_jasmine 1/6 9/{{ModId}}_Jasmine_Tea 1/null/{{i18n:Tea.Jasmine.name}}"
+            }
+        },
+        {
+            "Log": "Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "When": {
+                "KeepCFDupes": true,
+                "KeepWFCFDupes": true,
+                "KeepQLFG2Dupes": false
+            },
+            "Entries": {
+                "{{ModId}}_Lavender_Tea": "QL_Lavender 1/6 9/{{ModId}}_Lavender_Tea 2/null/{{i18n:Tea.Lavender.name}}",
+                "{{ModId}}_Jasmine_Tea": "QL_Jasmine 1/6 9/{{ModId}}_Jasmine_Tea 1/null/{{i18n:Tea.Jasmine.name}}"
+            }
+        },
+        {
+            "Log": "Barley Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+			"When": { 
+                "HasMod |contains=slimerrain.grainsoverhullcp": true,
+                "KeepCCDupes": true
+             },
+            "Entries": {
+                "{{ModId}}_Barley_Tea": "slimerrain.grainsoverhullcp_Barley 1/6 9/{{ModId}}_Barley_Tea 1/null/{{i18n:Tea.Barley.name}}"
+            }
+        },
+        {
+            "Log": "Barley Tea Recipe Data",
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+			"When": { 
+                "KeepCCDupes": false
+             },
+            "Entries": {
+                "{{ModId}}_Barley_Tea": "Cornucopia_Barley 1/6 9/{{ModId}}_Barley_Tea 1/null/{{i18n:Tea.Barley.name}}"
+            }
+        }
+    ]
+}

@@ -17,7 +17,7 @@ namespace BZP_Allergies.AssetPatches
     internal sealed class PatchObjects
     {
 
-        public static void AddAllergen(AssetRequestedEventArgs e, Allergens allergen)
+        public static void AddAllergen(AssetRequestedEventArgs e, string allergen)
         {
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
             {
@@ -36,7 +36,9 @@ namespace BZP_Allergies.AssetPatches
                         objectData.ContextTags ??= new List<string>();
                         objectData.ContextTags.Add(GetAllergenContextTag(allergen));
                     }
-                });
+                },
+                AssetEditPriority.Late
+                );
             }
         }
 

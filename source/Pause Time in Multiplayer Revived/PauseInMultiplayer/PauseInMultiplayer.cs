@@ -76,7 +76,7 @@ namespace PauseInMultiplayer
             Helper.Events.Multiplayer.PeerConnected += Multiplayer_PeerConnected;
             Helper.Events.Multiplayer.PeerDisconnected += Multiplayer_PeerDisconnected;
 
-            Helper.Events.Display.Rendered += Display_Rendered;
+            Helper.Events.Display.RenderedHud += Display_Rendered;
 
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
 
@@ -188,8 +188,6 @@ namespace PauseInMultiplayer
                 getValue: () => this.config.AnyCutscenePauses,
                 setValue: value => this.config.AnyCutscenePauses = value
             );
-
-
         }
 
         private void Input_ButtonPressed(object? sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
@@ -239,15 +237,28 @@ namespace PauseInMultiplayer
             Game1.player.temporarilyInvincible = false;
         }
 
-        private void Display_Rendered(object? sender, StardewModdingAPI.Events.RenderedEventArgs e)
+        private void Display_Rendered(object? sender, StardewModdingAPI.Events.RenderedHudEventArgs e)
         {
             if (!Context.IsWorldReady) return;
-
+            
+            Game1.PushUIMode();
+            
             //draw X over time indicator
             if (shouldPause() && this.config.ShowPauseX && Game1.displayHUD)
-                Game1.spriteBatch.Draw(Game1.mouseCursors, updatePosition(), new Rectangle(269, 471, 15, 15), new Color(0, 0, 0, 64), 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.91f);
-
-
+            {
+                Game1.spriteBatch.Draw(
+                    Game1.mouseCursors,
+                    updatePosition(),
+                    new Rectangle(269, 471, 15, 15),
+                    new Color(0, 0, 0, 64),
+                    0f,
+                    Vector2.Zero,
+                    4f,
+                    SpriteEffects.None,
+                    0.91f);
+            }
+            
+            Game1.PopUIMode();
         }
 
         private void Multiplayer_PeerDisconnected(object? sender, StardewModdingAPI.Events.PeerDisconnectedEventArgs e)
@@ -750,12 +761,12 @@ namespace PauseInMultiplayer
             {
                 position = new Vector2(Math.Min(position.X, -Game1.uiViewport.X + Game1.currentLocation.map.Layers[0].LayerWidth * 64 - 300), 8f);
             }
-
-            Utility.makeSafe(ref position, 300, 284);
-
+            
             position.X += 23;
             position.Y += 55;
 
+            Utility.makeSafe(ref position, 60, 60);
+            
             return position;
         }
 

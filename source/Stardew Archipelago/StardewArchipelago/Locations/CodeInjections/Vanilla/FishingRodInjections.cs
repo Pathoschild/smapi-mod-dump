@@ -197,19 +197,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var myActiveHints = _archipelago.GetMyActiveHints();
             if (_locationChecker.IsLocationMissing(TRAINING_ROD))
             {
-                var trainingRodAPlocation = new PurchaseableArchipelagoLocation("Training Rod", TRAINING_ROD, _modHelper,
+                var trainingRodAPlocation = new PurchaseableArchipelagoLocation("Training Rod", TRAINING_ROD, _monitor, _modHelper,
                     _locationChecker, _archipelago, myActiveHints);
                 fishShopStock.Add(trainingRodAPlocation, new[] { (int)(25 * priceMultiplier), 1 });
             }
             if (Game1.player.fishingLevel.Value >= 2 && _locationChecker.IsLocationMissing(FIBERGLASS_ROD))
             {
-                var fiberglassRodAPlocation = new PurchaseableArchipelagoLocation("Fiberglass Rod", FIBERGLASS_ROD, _modHelper,
+                var fiberglassRodAPlocation = new PurchaseableArchipelagoLocation("Fiberglass Rod", FIBERGLASS_ROD, _monitor, _modHelper,
                     _locationChecker, _archipelago, myActiveHints);
                 fishShopStock.Add(fiberglassRodAPlocation, new[] { (int)(1800 * priceMultiplier), 1 });
             }
             if (Game1.player.fishingLevel.Value >= 6 && _locationChecker.IsLocationMissing(IRIDIUM_ROD))
             {
-                var iridiumRodAPLocation = new PurchaseableArchipelagoLocation("Iridium Rod", IRIDIUM_ROD, _modHelper,
+                var iridiumRodAPLocation = new PurchaseableArchipelagoLocation("Iridium Rod", IRIDIUM_ROD, _monitor, _modHelper,
                     _locationChecker, _archipelago, myActiveHints);
                 fishShopStock.Add(iridiumRodAPLocation, new[] { (int)(7500 * priceMultiplier), 1 });
             }

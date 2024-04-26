@@ -65,5 +65,21 @@ namespace DecidedlyShared.Utilities
                 1f
             );
         }
+
+        /// <summary>
+        /// Draws a solid rectangle on screen.
+        /// </summary>
+        /// <param name="sb">The <see cref="SpriteBatch"/> doing the drawing.</param>
+        /// <param name="destinationRect">The pixels on-screen to be filled.</param>
+        /// <param name="colour">The colour.</param>
+        public static void DrawSolidColourBox(SpriteBatch sb, Rectangle destinationRect, Color colour)
+        {
+            sb.Draw(
+                Game1.mouseCursors,
+                destinationRect,
+                new Rectangle(177, 1355, 1, 1),
+                colour
+                );
+        }
     }
 }

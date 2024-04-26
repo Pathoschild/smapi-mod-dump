@@ -12,16 +12,17 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Objects;
+using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace EscasModdingPlugins
 {
     /// <summary>Allows customization of which fishing "zones" and locations are used from the "Data/Locations" asset. Uses a custom data asset and/or tile properties.</summary>
+    /// <remarks>
+    /// To access information about this feature in other mods, see <see cref="IEmpApi"/>.
+    /// </remarks>
     public static class HarmonyPatch_FishLocations
     {
         /// <summary>The name of the data asset used by this patch.</summary>
@@ -68,11 +69,16 @@ namespace EscasModdingPlugins
                 prefix: new HarmonyMethod(typeof(HarmonyPatch_FishLocations), nameof(Prefix_getFish))
             );
 
+            Monitor.VerboseLog($"Applying Harmony patch \"{nameof(HarmonyPatch_FishLocations)}\": prefixing method \"GameLocation.GetFishFromLocationData\".");
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.GetFishFromLocationData), new Type[] { typeof(string), typeof(Vector2), typeof(int), typeof(Farmer), typeof(bool), typeof(bool), typeof(GameLocation), typeof(ItemQueryContext) }),
+                prefix: new HarmonyMethod(typeof(HarmonyPatch_FishLocations), nameof(Prefix_GetFishFromLocationData))
+            );
 
-        Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_FishLocations)}\": postfixing every implementation of method \"GameLocation.GetCrabPotFishForTile(Vector2)\".", LogLevel.Trace);
+            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_FishLocations)}\": postfixing every implementation of method \"GameLocation.GetCrabPotFishForTile\".", LogLevel.Trace);
             foreach (var type in crabPotMethods) //for each unique version of the crab pot method
             {
-                Monitor.VerboseLog($"Applying Harmony patch \"{nameof(HarmonyPatch_FishLocations)}\": postfixing method \"{type.Name}.GetCrabPotFishForTile(Vector2)\".");
+                Monitor.VerboseLog($"Applying Harmony patch \"{nameof(HarmonyPatch_FishLocations)}\": postfixing method \"{type.Name}.GetCrabPotFishForTile\".");
                 harmony.Patch(
                     original: AccessTools.Method(type, nameof(GameLocation.GetCrabPotFishForTile), new[] { typeof(Vector2) }),
                     postfix: new HarmonyMethod(typeof(HarmonyPatch_FishLocations), nameof(Postfix_GetCrabPotFishForTile))
@@ -86,16 +92,25 @@ namespace EscasModdingPlugins
         /// <param name="__instance">The instance calling the original method.</param>
         /// <param name="tile">The tile of the fishing bobber.</param>
         /// <param name="locationName">The name of the location to check for fish data. If null, this GameLocation instance will be used.</param>
-        private static void Prefix_getFish(GameLocation __instance, Vector2 bobberTile, ref string locationName)
+        /// <remarks>
+        /// If this mod has customization data for the location and tile targeted by this method, this patch will replace the "locationName" and/or "bobberTile" arguments' values.
+        /// </remarks>
+        private static void Prefix_getFish(GameLocation __instance, ref Vector2 bobberTile, ref string locationName)
         {
             try
             {
                 var data = TileData.GetDataForTile<FishLocationsData>(AssetName, TilePropertyName, __instance, (int)bobberTile.X, (int)bobberTile.Y); //get fishing location data for this tile
-                if (data?.UseLocation != null) //if a custom fish location exists for this tile
+                if (data?.UseLocation != null) //if a location override exists for this tile
                 {
                     if (Monitor.IsVerbose)
-                        Monitor.VerboseLog($"Using fish from another location ({data.UseLocation}) at {__instance?.Name} ({bobberTile.X},{bobberTile.Y}).");
+                        Monitor.VerboseLog($"Using fish from another location ({data.UseLocation}) at {__instance?.Name} ({(int)bobberTile.X},{(int)bobberTile.Y}).");
                     locationName = data.UseLocation; //override the target location
+                }
+                if (data?.UseTile != null) //if a tile override exists for this tile
+                {
+                    if (Monitor.IsVerbose)
+                        Monitor.VerboseLog($"Using fish from another tile ({data.UseTile.Value.X},{data.UseTile.Value.Y}) at {__instance?.Name} ({(int)bobberTile.X},{(int)bobberTile.Y}).");
+                    bobberTile = data.UseTile.Value.AsVector2();
                 }
             }
             catch (Exception ex)
@@ -106,23 +121,65 @@ namespace EscasModdingPlugins
         }
 
         /// <summary>Modifies the result of the original method, based on a customizable data asset and/or tile property.</summary>
+        /// <param name="locationName">The name of the location to check. Only used if "location" is null.</param>
+        /// <param name="bobberTile">The tile location to check.</param>
+        /// <param name="location">The location to check. Loaded from "locationName" if null; if still null, data from "locationName" will be used regardless.</param>
+        /// <remarks>
+        /// If this mod has customization data for the location and tile targeted by this method, this patch will replace the "locationName", "bobberTile", and/or "location" arguments' values.
+        /// </remarks>
+        private static void Prefix_GetFishFromLocationData(ref string locationName, ref Vector2 bobberTile, ref GameLocation location)
+        {
+            try
+            {
+                //imitate the location/name priority of the original method
+                GameLocation loc = location;
+                if (loc == null)
+                    loc = Game1.getLocationFromName(locationName);
+
+                if (loc == null) //if no actual location instance is found
+                    return;
+
+                var data = TileData.GetDataForTile<FishLocationsData>(AssetName, TilePropertyName, loc, (int)bobberTile.X, (int)bobberTile.Y); //get fishing location data for this tile
+                if (data?.UseLocation != null) //if a location override exists for this tile
+                {
+                    if (Monitor.IsVerbose)
+                        Monitor.VerboseLog($"Using fish data from another location ({data.UseLocation}) at {loc.Name} ({(int)bobberTile.X},{(int)bobberTile.Y}).");
+                    locationName = data.UseLocation;
+                    location = Game1.getLocationFromName(data.UseLocation); //get the location to use, or use null if not found
+                }
+                if (data?.UseTile != null) //if a tile override exists for this tile
+                {
+                    if (Monitor.IsVerbose)
+                        Monitor.VerboseLog($"Using fish data from another tile ({data.UseTile.Value.X},{data.UseTile.Value.Y}) at {loc.Name} ({(int)bobberTile.X},{(int)bobberTile.Y}).");
+                    bobberTile = data.UseTile.Value.AsVector2();
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_FishLocations)}.{nameof(Prefix_GetFishFromLocationData)}\" has encountered an error. Locations with custom fish might use defaults instead. Full error message: \n{ex.ToString()}", LogLevel.Error);
+                return; //run the original method
+            }
+        }
+
+        /// <summary>Modifies the result of the original method, based on a customizable data asset and/or tile property.</summary>
         /// <param name="__instance">The instance calling the original method.</param>
         /// <param name="tile">The tile location of the crab pot.</param>
         /// <param name="__result">The result of the original method. A list of categories for crab pot results to use from Data/Fish. (In unmodded SDV 1.6, this contains either "ocean" or "freshwater").</param>
+        /// <remarks>
+        /// If this mod has customization data for the location and tile targeted by this method, this patch will replace the result of this method with a different list of fish types.
+        /// </remarks>
         private static void Postfix_GetCrabPotFishForTile(GameLocation __instance, Vector2 tile, ref IList<string> __result)
         {
             try
             {
                 var data = TileData.GetDataForTile<FishLocationsData>(AssetName, TilePropertyName, __instance, (int)tile.X, (int)tile.Y); //get fishing location data for this tile
-                if (data?.UseOceanCrabPots != null) //if custom crab pot data exists for this tile
+
+                if (data?.UseCrabPotTypes != null) //if a list of crab types exists for this tile
                 {
                     if (Monitor.IsVerbose)
-                        Monitor.VerboseLog($"Using custom crab pot results ({(data.UseOceanCrabPots.Value ? "ocean" : "freshwater")}) at {__instance?.Name} ({tile.X},{tile.Y}).");
+                        Monitor.VerboseLog($"Using custom crab pot results ({string.Join(", ", data.UseCrabPotTypes)}) at {__instance?.Name} ({tile.X},{tile.Y}).");
 
-                    if (data.UseOceanCrabPots.Value)
-                        __result = GameLocation.OceanCrabPotFishTypes; //override to ocean results
-                    else
-                        __result = GameLocation.DefaultCrabPotFishTypes; //override to freshwater results
+                    __result = data.UseCrabPotTypes;
                 }
             }
             catch (Exception ex)

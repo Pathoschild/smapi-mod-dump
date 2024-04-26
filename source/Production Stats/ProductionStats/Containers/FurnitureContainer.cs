@@ -10,8 +10,8 @@
 
 // derived from code by Jesse Plamondon-Willard under MIT license: https://github.com/Pathoschild/StardewMods
 
-using StardewValley.Objects;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace ProductionStats.Containers;
 

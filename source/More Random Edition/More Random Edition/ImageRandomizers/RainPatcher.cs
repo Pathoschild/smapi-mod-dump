@@ -55,8 +55,8 @@ namespace Randomizer
         /// <returns>The full path of the image, starting at the root of the mod</returns>
         public string GetCustomAssetPath()
         {
-            Random rng = Globals.GetDailyRNG("rain"); // DO NOT use the global RNG for this!
-            string randomRainAsset = Globals.RNGGetRandomValueFromList(GetAllFileNamesInFolder(), rng);
+            RNG rng = RNG.GetDailyRNG(nameof(RainPatcher));
+            string randomRainAsset = rng.GetRandomValueFromList(GetAllFileNamesInFolder());
             return Path.Combine(PatcherImageFolder, randomRainAsset);
         }
     }

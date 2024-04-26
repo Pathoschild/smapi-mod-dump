@@ -6,8 +6,12 @@
   "custom-tree.pine": "Fenyőfa",
   "custom-tree.coconut": "Kókuszfa",
   "custom-tree.mushroom": "Gombafa",
-  "custom-tree.mahogany": "Mahagóni fa",
+  "custom-tree.mahogany": "Mahagóni Fa",
   "custom-tree.palm": "Pálmafa",
+  "custom-tree.green-rain-wild": "Vad Zöld Esőfa",
+  "custom-tree.green-rain-lush": "Buja Zöld Esőfae",
+  "custom-tree.fiddlehead-fern": "Hegedűfejű Páfrány Fa",
+  "custom-tree.mystic": "Misztikus Fa",
 
   // growth info translation
   "growth-info.fully-grown": "teljesen kifejlett",

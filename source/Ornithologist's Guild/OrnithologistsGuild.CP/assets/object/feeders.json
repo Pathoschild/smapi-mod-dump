@@ -1,0 +1,292 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Textures
+        {
+            "Action": "Load",
+            "Target": "Tilesheets/Ivy_OrnithologistsGuild_WoodenHopper",
+            "FromFile": "assets/map/WoodenHopper.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Tilesheets/Ivy_OrnithologistsGuild_PlasticTube",
+            "FromFile": "assets/map/PlasticTube.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Tilesheets/Ivy_OrnithologistsGuild_WoodenPlatform",
+            "FromFile": "assets/map/WoodenPlatform.png"
+        },
+        // BigCraftables
+        {
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "Ivy_OrnithologistsGuild_WoodenHopper": {
+                    "Name": "Ivy_OrnithologistsGuild_WoodenHopper",
+                    "DisplayName": "{{i18n:big-craftable.WoodenHopper.name}}",
+                    "Description": "{{i18n:big-craftable.WoodenHopper.description}}",
+                    "Price": 2500,
+                    "CanBePlacedIndoors": false,
+                    "Texture": "Tilesheets/Ivy_OrnithologistsGuild_WoodenHopper",
+                    "SpriteIndex": 0,
+                    "CustomFields": {
+                        "Ivy_OrnithologistsGuild_Type": "Hopper",
+                        "Ivy_OrnithologistsGuild_Range": 10,
+                        "Ivy_OrnithologistsGuild_MaxFlocks": 1,
+                        "Ivy_OrnithologistsGuild_ZOffset": -28
+                    },
+                    "ContextTags": [
+                        "Ivy_OrnithologistsGuild",
+                        "Ivy_OrnithologistsGuild_Feeder"
+                    ]
+                },
+                "Ivy_OrnithologistsGuild_PlasticTube": {
+                    "Name": "Ivy_OrnithologistsGuild_PlasticTube",
+                    "DisplayName": "{{i18n:big-craftable.PlasticTube.name}}",
+                    "Description": "{{i18n:big-craftable.PlasticTube.description}}",
+                    "Price": 1250,
+                    "CanBePlacedIndoors": false,
+                    "Texture": "Tilesheets/Ivy_OrnithologistsGuild_PlasticTube",
+                    "SpriteIndex": 0,
+                    "CustomFields": {
+                        "Ivy_OrnithologistsGuild_Type": "Tube",
+                        "Ivy_OrnithologistsGuild_Range": 15,
+                        "Ivy_OrnithologistsGuild_MaxFlocks": 2,
+                        "Ivy_OrnithologistsGuild_ZOffset": -16
+                    },
+                    "ContextTags": [
+                        "Ivy_OrnithologistsGuild",
+                        "Ivy_OrnithologistsGuild_Feeder"
+                    ]
+                },
+                "Ivy_OrnithologistsGuild_WoodenPlatform": {
+                    "Name": "Ivy_OrnithologistsGuild_WoodenPlatform",
+                    "DisplayName": "{{i18n:big-craftable.WoodenPlatform.name}}",
+                    "Description": "{{i18n:big-craftable.WoodenPlatform.description}}",
+                    "Price": 5000,
+                    "CanBePlacedIndoors": false,
+                    "Texture": "Tilesheets/Ivy_OrnithologistsGuild_WoodenPlatform",
+                    "SpriteIndex": 0,
+                    "CustomFields": {
+                        "Ivy_OrnithologistsGuild_Type": "Platform",
+                        "Ivy_OrnithologistsGuild_Range": 25,
+                        "Ivy_OrnithologistsGuild_MaxFlocks": 3,
+                        "Ivy_OrnithologistsGuild_ZOffset": -10
+                    },
+                    "ContextTags": [
+                        "Ivy_OrnithologistsGuild",
+                        "Ivy_OrnithologistsGuild_Feeder"
+                    ]
+                }
+            }
+        },
+        // Recipes
+        {
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                // 100 Wood, 5 Refined Quartz, 5 Hardwood
+                "{{i18n:big-craftable.WoodenHopper.name}}": "388 100 338 5 709 5/Home/Ivy_OrnithologistsGuild_WoodenHopper/true/default/{{i18n:big-craftable.WoodenHopper.name}}",
+                // 25 Iron, 5 Refined Quartz
+                "{{i18n:big-craftable.PlasticTube.name}}": "335 25 338 5/Home/Ivy_OrnithologistsGuild_PlasticTube/true/default/{{i18n:big-craftable.PlasticTube.name}}",
+                // 250 Wood, 20 Hardwood, 5 Iron
+                "{{i18n:big-craftable.WoodenPlatform.name}}": "388 250 709 20 335 5/Home/Ivy_OrnithologistsGuild_WoodenPlatform/true/default/{{i18n:big-craftable.WoodenPlatform.name}}"
+            }
+        },
+        // Machines
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Entries": {
+                "(BC)Ivy_OrnithologistsGuild_WoodenHopper": {
+                    "OutputRules": [
+                        {
+                            "Id": "Corn",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)270"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 1,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Fruit",
+                            "Triggers": [
+                                {
+                                    "RequiredTags": [
+                                        "category_fruits"
+                                    ]
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 3,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Mixed Seeds",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)770"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 5,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Hulled Sunflower Seeds",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)Ivy_OrnithologistsGuild_HulledSunflowerSeeds"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 7,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        }
+                    ],
+                    "AllowFairyDust": false,
+                    "AllowLoadWhenFull": true,
+                    "ShowNextIndexWhenReady": true,
+                    "WobbleWhileWorking": false
+                },
+                "(BC)Ivy_OrnithologistsGuild_PlasticTube": {
+                    "OutputRules": [
+                        {
+                            "Id": "Mixed Seeds",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)770"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 5,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Hulled Sunflower Seeds",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)Ivy_OrnithologistsGuild_HulledSunflowerSeeds"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 7,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        }
+                    ],
+                    "AllowFairyDust": false,
+                    "AllowLoadWhenFull": true,
+                    "ShowNextIndexWhenReady": true,
+                    "WobbleWhileWorking": false
+                },
+                "(BC)Ivy_OrnithologistsGuild_WoodenPlatform": {
+                    "OutputRules": [
+                        {
+                            "Id": "Corn",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)270"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 1,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Fruit",
+                            "Triggers": [
+                                {
+                                    "RequiredTags": [
+                                        "category_fruits"
+                                    ]
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 3,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Mixed Seeds",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)770"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 5,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        },
+                        {
+                            "Id": "Hulled Sunflower Seeds",
+                            "Triggers": [
+                                {
+                                    "RequiredItemId": "(O)Ivy_OrnithologistsGuild_HulledSunflowerSeeds"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "IncrementMachineParentSheetIndex": 7,
+                                    "OutputMethod": "OrnithologistsGuild.SpecializedMethods, OrnithologistsGuild:GetFeederOutput"
+                                }
+                            ],
+                            "DaysUntilReady": 1
+                        }
+                    ],
+                    "AllowFairyDust": false,
+                    "AllowLoadWhenFull": true,
+                    "ShowNextIndexWhenReady": true,
+                    "WobbleWhileWorking": false
+                }
+            }
+        }
+    ]
+}

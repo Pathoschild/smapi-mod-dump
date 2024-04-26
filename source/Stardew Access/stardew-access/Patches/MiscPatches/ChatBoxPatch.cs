@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework.Input;
+using stardew_access.Commands;
 using stardew_access.Features;
 using StardewValley;
 using StardewValley.Menus;
@@ -33,6 +34,43 @@ internal class ChatBoxPatch : IPatch
            original: AccessTools.DeclaredMethod(typeof(KeyboardDispatcher), "Event_TextInput"),
            prefix: new HarmonyMethod(typeof(ChatBoxPatch), nameof(ChatBoxPatch.KeyboardDispatcher_RecieveTextInputPatch))
         );
+
+        harmony.Patch(
+           original: AccessTools.DeclaredMethod(typeof(ChatBox), "runCommand"),
+           prefix: new HarmonyMethod(typeof(ChatBoxPatch), nameof(ChatBoxPatch.RunCommandPatch))
+        );
+    }
+
+    /// <summary> Executes the custom commands if matched and skips further execution of original method. </summary>
+    private static bool RunCommandPatch(ChatBox __instance, string command)
+    {
+        try
+        {
+            string[] commandWithArgs = ArgUtility.SplitBySpaceQuoteAware(command);
+            string commandName = commandWithArgs[0];
+            string[] args = commandWithArgs.Skip(1).ToArray();
+
+            if (CommandManager.Commands.TryGetValue(commandName, out var delegateMethod))
+            {
+                try
+                {
+                    Log.Verbose($"ChatBoxPatch->RunCommandPatch: Found a custom command named {commandName}, invoking...");
+                    delegateMethod(args, true);
+                }
+                catch (Exception ee)
+                {
+                    __instance.addErrorMessage($"An error occured while executing {commandName} command");
+                    Log.Error($"Error in {commandName}: {ee.StackTrace}");
+                }
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error($"An error occurred in ChatBoxPatch->RunCommandPatch:\n{e.Message}\n{e.StackTrace}");
+        }
+
+        return true;
     }
 
     private static bool KeyboardDispatcher_RecieveTextInputPatch()

@@ -8,14 +8,11 @@
 **
 *************************************************/
 
-using System;
-using DynamicGameAssets.Game;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using OrnithologistsGuild.Game.Critters;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using OrnithologistsGuild.Content;
 using System.Linq;
 using OrnithologistsGuild.Models;
 
@@ -34,8 +31,8 @@ namespace OrnithologistsGuild.Game
         public Vector3 Position; // NOT tile
 
         public Vector2? MapTile;
-        public CustomBigCraftable Bath;
-        public CustomBigCraftable Feeder;
+        public Object Bath;
+        public Object Feeder;
         public Tree Tree;
 
         public PerchType? Type
@@ -68,42 +65,40 @@ namespace OrnithologistsGuild.Game
         {
             Tree = tree;
 
-            var height = tree.getRenderBounds(tree.currentTileLocation).Height;
+            var height = tree.getRenderBounds().Height;
             Position = new Vector3(
-                tree.currentTileLocation.X * Game1.tileSize,
-                tree.currentTileLocation.Y * Game1.tileSize,
-                -MathF.Ceiling((float)(height) / 1.65f));
+                tree.Tile.X * Game1.tileSize,
+                tree.Tile.Y * Game1.tileSize,
+                -System.MathF.Ceiling((float)(height) / 1.65f));
 
             // Center on tile
             Position.X += Game1.tileSize / 2;
             Position.Y += Game1.tileSize / 2;
         }
-        public Perch(CustomBigCraftable customBigCraftable)
+        public Perch(Object bigCraftable)
         {
-            var perchType = GetCustomBigCraftablePerchType(customBigCraftable);
-
-            if (perchType == PerchType.Bath)
+            if (bigCraftable.IsBath())
             {
-                Bath = customBigCraftable;
+                Bath = bigCraftable;
 
-                var bathDef = BathDef.FromBath(Bath);
+                var bathFields = bigCraftable.GetBathFields();
                 Position = new Vector3(
                     Bath.TileLocation.X * Game1.tileSize,
                     Bath.TileLocation.Y * Game1.tileSize,
-                    bathDef.ZOffset);
+                    bathFields.ZOffset);
 
                 // Center on tile
                 Position.X += Game1.tileSize / 2;
                 Position.Y += Game1.tileSize / 2;
-            } else if (perchType == PerchType.Feeder)
+            } else if (bigCraftable.IsFeeder())
             {
-                Feeder = customBigCraftable;
+                Feeder = bigCraftable;
 
-                var feederDef = FeederDef.FromFeeder(Feeder);
+                var feederFields = bigCraftable.GetFeederFields();
                 Position = new Vector3(
                     Feeder.TileLocation.X * Game1.tileSize,
                     Feeder.TileLocation.Y * Game1.tileSize,
-                    feederDef.ZOffset);
+                    feederFields.ZOffset);
 
                 // Center on tile
                 Position.X += Game1.tileSize / 2;
@@ -123,7 +118,7 @@ namespace OrnithologistsGuild.Game
             else if (perch.Type == PerchType.Feeder && this.Type == PerchType.Feeder)
                 return perch.Feeder.TileLocation.Equals(Feeder.TileLocation);
             else if (perch.Type == PerchType.Tree && this.Type == PerchType.Tree)
-                return perch.Tree.currentTileLocation.Equals(Tree.currentTileLocation);
+                return perch.Tree.Tile.Equals(Tree.Tile);
             return false;
         }
 
@@ -136,15 +131,10 @@ namespace OrnithologistsGuild.Game
             return 0;
         }
 
-        public static PerchType? GetCustomBigCraftablePerchType(CustomBigCraftable customBigCraftable)
-        {
-            if (ContentManager.BathIds.Contains(customBigCraftable.Id)) return PerchType.Bath;
-            else if (ContentManager.FeederIds.Contains(customBigCraftable.Id)) return PerchType.Feeder;
-            return null;
-        }
-
         public BetterBirdie GetOccupant(GameLocation location)
         {
+            if (location.critters == null) return null;
+
             IEnumerable<BetterBirdie> birdies = location.critters.Where(c => c is BetterBirdie && ((BetterBirdie)c).IsPerched).Select(c => (BetterBirdie)c);
             return birdies.FirstOrDefault(birdie => birdie.Perch.Equals(this));
         }
@@ -170,7 +160,7 @@ namespace OrnithologistsGuild.Game
 
                         return new Perch(tileLocation, zOffset);
                     });
-            } catch (Exception e) {
+            } catch (System.Exception e) {
                 ModEntry.Instance.Monitor.Log($"Invalid map property Perches: {e.ToString()}", StardewModdingAPI.LogLevel.Error);
             }
 
@@ -183,7 +173,7 @@ namespace OrnithologistsGuild.Game
                 .Select(tree => (Tree)tree)
                 .Where(tree =>
                 {
-                    var tileHeight = tree.getRenderBounds(tree.currentTileLocation).Height / Game1.tileSize;
+                    var tileHeight = tree.getRenderBounds().Height / Game1.tileSize;
                     if (tileHeight < 4) return false; // Small tree
                     if (tree.health.Value < Tree.startingHealth) return false; // Damaged tree
                     if (tree.tapped.Value) return false; // Tapped tree
@@ -197,12 +187,8 @@ namespace OrnithologistsGuild.Game
         {
             return location.Objects
                 .SelectMany(overlaidDict => overlaidDict.Values)
-                .Where(obj =>
-                    typeof(CustomBigCraftable).IsAssignableFrom(obj.GetType()) &&
-                    GetCustomBigCraftablePerchType((CustomBigCraftable)obj) == PerchType.Bath
-                )
-                .Select(obj => (CustomBigCraftable)obj)
-                .Where(bath => !Game1.currentSeason.Equals("winter") || BathDef.FromBath(bath).Heated)
+                .Where(obj => obj.IsBath())
+                .Where(bath => !Game1.currentSeason.Equals("winter") || bath.GetBathFields().Heated)
                 .Select(bath => new Perch(bath));
         }
 
@@ -211,11 +197,7 @@ namespace OrnithologistsGuild.Game
             // Get all bird feeders
             return location.Objects
                 .SelectMany(overlaidDict => overlaidDict.Values)
-                .Where(obj =>
-                    typeof(CustomBigCraftable).IsAssignableFrom(obj.GetType()) &&
-                    GetCustomBigCraftablePerchType((CustomBigCraftable)obj) == PerchType.Feeder
-                )
-                .Select(obj => (CustomBigCraftable)obj)
+                .Where(obj => obj.IsFeeder())
                 .Where(feeder => feeder.MinutesUntilReady > 0) // No empty feeders
                 .Select(feeder => new Perch(feeder));
         }
@@ -223,7 +205,9 @@ namespace OrnithologistsGuild.Game
         public static IEnumerable<Perch> GetAllAvailablePerches(GameLocation location, bool mapTile, bool tree, bool feeder, bool bath)
         {
             // Get all perched birdies
-            var occupiedPerches = location.critters.Where(c => c is BetterBirdie && ((BetterBirdie)c).IsPerched).Select(c => ((BetterBirdie)c).Perch);
+            var occupiedPerches = location.critters == null ?
+                Enumerable.Empty<Perch>() :
+                location.critters.Where(c => c is BetterBirdie && ((BetterBirdie)c).IsPerched).Select(c => ((BetterBirdie)c).Perch);
 
             return Enumerable.Empty<Perch>()
                 .Concat(mapTile ? GetAllMapPerches(location)      : Enumerable.Empty<Perch>())

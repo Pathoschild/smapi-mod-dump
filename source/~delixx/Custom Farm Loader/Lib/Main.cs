@@ -37,6 +37,7 @@ namespace Custom_Farm_Loader.Lib
             Fish.Initialize(mod);
             FarmProperties.Initialize(mod);
             FarmTypeCache.Initialize(mod);
+            StartBuilding.Initialize(mod);
 
             CustomFarm.Initialize(mod);
         }

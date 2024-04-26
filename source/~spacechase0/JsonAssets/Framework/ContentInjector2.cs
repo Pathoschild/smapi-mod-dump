@@ -84,15 +84,15 @@ namespace JsonAssets.Framework
                         foreach (var obj in Mod.instance.Objects)
                         {
                             if (obj.GiftTastes.Love.Contains(npc.Key))
-                                loveIds.Add(obj.Name.ToString().FixIdJA());
+                                loveIds.Add(obj.Name.ToString().FixIdJA("O"));
                             if (obj.GiftTastes.Like.Contains(npc.Key))
-                                likeIds.Add(obj.Name.ToString().FixIdJA());
+                                likeIds.Add(obj.Name.ToString().FixIdJA("O"));
                             if (obj.GiftTastes.Neutral.Contains(npc.Key))
-                                neutralIds.Add(obj.Name.ToString().FixIdJA());
+                                neutralIds.Add(obj.Name.ToString().FixIdJA("O"));
                             if (obj.GiftTastes.Dislike.Contains(npc.Key))
-                                dislikeIds.Add(obj.Name.ToString().FixIdJA());
+                                dislikeIds.Add(obj.Name.ToString().FixIdJA("O"));
                             if (obj.GiftTastes.Hate.Contains(npc.Key))
-                                hateIds.Add(obj.Name.ToString().FixIdJA());
+                                hateIds.Add(obj.Name.ToString().FixIdJA("O"));
                         }
 
                         string loveIdStr = string.Join(" ", loveIds);

@@ -29,5 +29,7 @@
   "HorseEatOnion": "Pferde sollten keine Zwiebeln oder verwandte Pflanzenarten fressen.",
   "HorseEatNightshade": "Pferde sollten keine Nachtschattengewächse fressen, wie Kartoffeln, Tomaten, Paprika oder Auberginen.",
   "HorseEatHorseRadish": "Meerrettich ist sehr gefährlich für Pferde, Garten-Rettich hingegen ist okay.",
-  "HorseEatDislike": "Dein Pferd möchte das nicht fressen."
+  "HorseEatDislike": "Dein Pferd möchte das nicht fressen.",
+  "Owner": "Gehört: {{ownerName}}",
+  "UnknownName": "Unbekannt"
 }

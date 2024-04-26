@@ -1,0 +1,8 @@
+{
+  "Config.Special_Order_Tweaks_Title": "特别订单修改",
+  "Config.EnableSpecialOrderUnlockDay": "特别订单解锁日期修改",
+  "Config.SpecialOrderUnlockDay": "特别订单解锁日期",
+  "Config.EnableRewardsMultiplier": "启用奖励倍率",
+  "Config.RewardsMultiplier": "奖励倍率",
+  "Config.SpecialOrderRefreshEveryday": "特别订单每日刷新"
+}

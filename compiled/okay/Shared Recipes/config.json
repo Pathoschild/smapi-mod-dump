@@ -1,0 +1,7 @@
+{
+  "ShareCrafting": true,
+  "ShareCooking": true,
+  "Keys": {
+    "SyncRecipes": "LeftShift + S + R"
+  }
+}

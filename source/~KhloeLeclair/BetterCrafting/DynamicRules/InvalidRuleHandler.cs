@@ -51,9 +51,9 @@ public class InvalidRuleHandler : IDynamicRuleHandler, IExtraInfoRuleHandler {
 		if (state is not IDynamicRuleData data)
 			return null;
 
-		return new IFlowNode[] {
+		return [
 			new TextNode(data.Id, new Common.UI.TextStyle(shadow: false))
-		};
+		];
 	}
 
 	public object? ParseState(IDynamicRuleData data) {

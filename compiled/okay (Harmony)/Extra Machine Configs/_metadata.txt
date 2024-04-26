@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22256
+IDs: selph.ExtraMachineConfig
+update keys: Nexus:22256, GitHub:zombifier/My_Stardew_Mods

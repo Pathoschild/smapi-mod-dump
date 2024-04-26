@@ -129,16 +129,13 @@ namespace ChestFeatureSet.MoveChests
                             if (Game1.player.Items[i] != null)
                                 continue;
 
-                            if (this.HeldChest.SpecialChestType is Chest.SpecialChestTypes.None)
-                                Game1.player.addItemToInventory(new Chest(true), i);
-                            else if (this.HeldChest.SpecialChestType is Chest.SpecialChestTypes.BigChest)
-                                Game1.player.addItemToInventory(new Chest(true, "BigChest"), i);
-                            else
+                            if (this.HeldChest.SpecialChestType is not Chest.SpecialChestTypes.None && this.HeldChest.SpecialChestType is not Chest.SpecialChestTypes.BigChest)
                             {
                                 this.HeldChest = null;
                                 return;
                             }
 
+                            Game1.player.addItemToInventory(new Chest(true, this.HeldChest.ItemId), i);
                             Game1.player.Items[i].Name = this.TempChestName;
                             Game1.player.Items[i].Quality = 4;
 
@@ -166,7 +163,7 @@ namespace ChestFeatureSet.MoveChests
             var chest = e.Added.Select(p => p.Value).OfType<Chest>().LastOrDefault();
 
             // can not get bigChest name corrected. So skip now, later fix.
-            if (chest != null && (chest.Name == this.TempChestName || chest.ItemId == "BigChest"))
+            if (chest != null && (chest.Name == this.TempChestName || chest.ItemId == "BigChest" || chest.ItemId == "BigStoneChest"))
             {
                 chest = this.CopyChestData(chest, this.HeldChest);
 

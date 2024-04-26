@@ -32,10 +32,10 @@ namespace NermNermNerm.Stardew.QuestableTractor
         private LoaderQuestController loaderQuestController = null!;
         private ScytheQuestController scytheQuestController = null!;
         private SeederQuestController seederQuestController = null!;
-        private WatererQuestController watererQuestController = null!;
         private BorrowHarpoonQuestController borrowHarpoonQuestController = null!;
         private RestoreTractorQuestController restoreTractorQuestController = null!;
 
+        public WatererQuestController WatererQuestController = null!;
         public BorrowHarpoonQuestController BorrowHarpoonQuestController => this.borrowHarpoonQuestController;
         public RestoreTractorQuestController RestoreTractorQuestController => this.restoreTractorQuestController;
 
@@ -44,31 +44,76 @@ namespace NermNermNerm.Stardew.QuestableTractor
         public Harmony Harmony = null!;
         internal readonly TractorModConfig TractorModConfig;
 
+        public static ModEntry Instance = null!; // Set in ModEntry
+
         public ModEntry()
         {
             this.TractorModConfig = new TractorModConfig(this);
         }
 
+        public PetFindsThings PetFindsThings = new PetFindsThings();
+
+
         public override void Entry(IModHelper helper)
         {
+            Instance = this;
             this.Harmony = new Harmony(this.ModManifest.UniqueID);
 
+            this.PetFindsThings.Entry(this);
             this.loaderQuestController = new LoaderQuestController(this);
             this.scytheQuestController = new ScytheQuestController(this);
             this.seederQuestController = new SeederQuestController(this);
-            this.watererQuestController = new WatererQuestController(this);
+            this.WatererQuestController = new WatererQuestController(this);
             this.borrowHarpoonQuestController = new BorrowHarpoonQuestController(this);
             this.restoreTractorQuestController = new RestoreTractorQuestController(this);
-            this.QuestControllers = new List<BaseQuestController> { this.loaderQuestController, this.scytheQuestController, this.seederQuestController, this.watererQuestController, this.borrowHarpoonQuestController, this.restoreTractorQuestController };
+            this.QuestControllers = new List<BaseQuestController> { this.loaderQuestController, this.scytheQuestController, this.seederQuestController, this.WatererQuestController, this.borrowHarpoonQuestController, this.restoreTractorQuestController };
 
             this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
             this.Helper.Events.GameLoop.OneSecondUpdateTicked += this.GameLoop_OneSecondUpdateTicked;
-            this.Helper.Events.GameLoop.SaveLoaded += (_, _) => this.UpdateTractorModConfig();
+            this.Helper.Events.GameLoop.SaveLoaded += (_, _) =>
+            {
+                this.UpdateTractorModConfig();
+                BaseQuest.ClearOldNews();
+
+                // Clean up an entry in modData that was added in 1.1.4 that's no longer a thing.
+                Game1.getFarm()?.modData.Remove("PetFindsThings.InterestingTiles");
+            };
             this.Helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             this.Helper.Events.GameLoop.DayEnding += this.OnDayEnding;
+
+            this.Helper.ConsoleCommands.Add(
+                "fixqt",
+                "Fixes Questable Tractor - It finds all the objects buried on the farm and adds them to our inventory.  It starts the main tractor quest and the quests for the two hidden parts.  It replaces any missing quest items and deletes excess quest items.  Note this command does not look at or alter chests or other players' inventories.  You can run this command again to get rid of the duplicate if you need to.",
+                this.FixItAll);
         }
 
-        void ISimpleLog.WriteToLog(string message, LogLevel level, bool isOnceOnly)
+        private void FixItAll(string cmd, string[] args)
+        {
+            if (Game1.player is null || !Game1.hasLoadedGame)
+            {
+                this.LogInfo("Cannot run command - the game isn't loaded/started yet.");
+                return;
+            }
+
+            if (!Game1.IsMasterGame)
+            {
+                this.LogInfo("Cannot run command - only the master player in a multiplayer game can run this command.");
+                return;
+            }
+
+            if (Game1.player.freeSpotsInInventory() < 5)
+            {
+                this.LogInfo("Cannot run command - need at least 5 free spots in your inventory.");
+                return;
+            }
+
+            foreach (var qc in this.QuestControllers)
+            {
+                qc.Fix();
+            }
+        }
+
+        public void WriteToLog(string message, LogLevel level, bool isOnceOnly)
         {
             if (isOnceOnly)
             {
@@ -80,38 +125,44 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
         }
 
-        private void UpdateTractorModConfig()
+        public void UpdateTractorModConfig()
         {
             this.TractorModConfig.SetConfig(
                 isHoeUnlocked: true, // <- comes stock
-                isLoaderUnlocked: this.loaderQuestController.IsComplete,
-                isHarvesterUnlocked: this.scytheQuestController.IsComplete,
-                isSpreaderUnlocked: this.seederQuestController.IsComplete,
-                isWatererUnlocked: this.watererQuestController.IsComplete);
+                isLoaderUnlocked: this.loaderQuestController.IsCompletedByMasterPlayer,
+                isHarvesterUnlocked: this.scytheQuestController.IsCompletedByMasterPlayer,
+                isSpreaderUnlocked: this.seederQuestController.IsCompletedByMasterPlayer,
+                isWatererUnlocked: this.WatererQuestController.IsCompletedByMasterPlayer);
         }
 
         private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
         {
-            if (!Context.IsMainPlayer)
+            if (!Game1.hasLoadedGame)
             {
                 return;
             }
 
-            bool IsPlayerInGarage(Character c, Stable b)
-                => b.intersects(new Rectangle(new Point((int)c.Position.X, (int)c.Position.Y - 128), new Point(64, 128)));
-
-            var itemInHand = Game1.player?.CurrentItem;
-            if (Game1.player is not null && Game1.player.currentLocation is not null && itemInHand is not null && Game1.player.currentLocation == Game1.getFarm()
-                && Game1.player.currentLocation.buildings
-                    .OfType<Stable>()
-                    .Where(s => s.buildingType.Value == TractorModConfig.GarageBuildingId)
-                    .Any(s => IsPlayerInGarage(Game1.player, s)))
+            if (Context.IsMainPlayer)
             {
-                foreach (var qc in this.QuestControllers)
+                bool IsPlayerInGarage(Character c, Stable b)
+                    => b.intersects(new Rectangle(new Point((int)c.Position.X, (int)c.Position.Y - 128), new Point(64, 128)));
+
+                if (Game1.player is not null
+                    && Game1.player.IsMainPlayer
+                    && Game1.player.currentLocation is Farm
+                    && Game1.player.CurrentItem is not null
+                    && Game1.player.currentLocation.buildings
+                        .OfType<Stable>()
+                        .Where(s => s.buildingType.Value == TractorModConfig.GarageBuildingId)
+                        .Any(s => IsPlayerInGarage(Game1.player, s)))
                 {
-                    if (qc.PlayerIsInGarage(itemInHand))
+                    foreach (var qc in this.QuestControllers)
                     {
-                        this.UpdateTractorModConfig();
+                        qc.PlayerIsInGarage(Game1.player.CurrentItem);
+                        if (Game1.player.CurrentItem == null)
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -120,17 +171,19 @@ namespace NermNermNerm.Stardew.QuestableTractor
         [EventPriority(EventPriority.Low)] // Causes our OnDayStarted to come after TractorMod's, which does not set EventPriority
         public void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
-            if (!Context.IsMainPlayer)
-            {
-                return;
-            }
-
             foreach (var qc in this.QuestControllers)
             {
+                // It's up to the QuestControllers to decide if their stuff matters for the current player.
                 qc.OnDayStarted();
             }
 
-            this.SetupMissingPartConversations();
+            if (Game1.IsMasterGame)
+            {
+                // Farmhands aren't grandpa's grandchildren, thus they shouldn't get the same stuff.
+                this.SetupMissingPartConversations();
+            }
+
+            // Every player should get this treatment.
             this.TractorModConfig.OnDayStarted();
         }
 
@@ -155,7 +208,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
             else
             {
-                string[] possibleHintTopics = new BaseQuestController[] { this.loaderQuestController, this.scytheQuestController, this.watererQuestController, this.seederQuestController }
+                string[] possibleHintTopics = new BaseQuestController[] { this.loaderQuestController, this.scytheQuestController, this.WatererQuestController, this.seederQuestController }
                     .Where(qc => !qc.IsStarted && qc.HintTopicConversationKey is not null)
                     .Select(qc => qc.HintTopicConversationKey!).ToArray();
                 if (possibleHintTopics.Any())
@@ -172,18 +225,15 @@ namespace NermNermNerm.Stardew.QuestableTractor
         }
 
         /// <summary>
-        ///   Custom classes, like we're doing with the tractor and the quest, don't serialize without some help.
-        ///   This method provides that help by converting the objects to player moddata and deleting the objects
-        ///   prior to save.  <see cref="InitializeQuestable"/> restores them.
+        ///   Handle end-of-day by removing stuff to do with our mod that would be difficult for the player to remove
+        ///   if they uninstalled the mod.
         /// </summary>
         private void OnDayEnding(object? sender, DayEndingEventArgs e)
         {
+            // ? This should be needless if !MasterGame
             Game1.getFarm().terrainFeatures.RemoveWhere(p => p.Value is DerelictTractorTerrainFeature);
 
-            foreach (var qc in this.QuestControllers)
-            {
-                qc.OnDayEnding();
-            }
+            FakeQuest.RemoveAllFakeQuests(Game1.player);
         }
 
         [EventPriority(EventPriority.Low)] // Causes us to come after TractorMod's, which does not set EventPriority

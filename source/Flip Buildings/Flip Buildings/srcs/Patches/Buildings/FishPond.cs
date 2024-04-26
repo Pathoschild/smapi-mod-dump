@@ -32,7 +32,7 @@ namespace FlipBuildings.Patches
 
 		private static IEnumerable<CodeInstruction> DrawTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator)
 		{
-			PatchHelper.CodeReplacement[] codeReplacements = new PatchHelper.CodeReplacement[]
+			PatchUtility.CodeReplacement[] codeReplacements = new PatchUtility.CodeReplacement[]
 			{
 				new(
 					// Flip inner shadow texture
@@ -166,6 +166,29 @@ namespace FlipBuildings.Patches
 					skip: true
 				),
 				new(
+					// Offset empty golden bowl position (Chest)
+					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
+					offset: 43,
+					targetInstruction: new(OpCodes.Mul),
+					replacementInstructions: new CodeInstruction[]
+					{
+						new(OpCodes.Mul),
+						new(OpCodes.Ldc_I4, 260),
+						new(OpCodes.Sub)
+					},
+					goNext: false
+				),
+				new(
+					// Flip empty golden bowl texture (Chest)
+					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
+					offset: 13,
+					targetInstruction: new(OpCodes.Ldc_I4_0),
+					replacementInstructions: new CodeInstruction[]
+					{
+						new(OpCodes.Ldc_I4_1)
+					}
+				),
+				new(
 					// Offset bowl position (Chest)
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 43,
@@ -180,6 +203,29 @@ namespace FlipBuildings.Patches
 				),
 				new(
 					// Flip bowl texture (Chest)
+					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
+					offset: 13,
+					targetInstruction: new(OpCodes.Ldc_I4_0),
+					replacementInstructions: new CodeInstruction[]
+					{
+						new(OpCodes.Ldc_I4_1)
+					}
+				),
+				new(
+					// Offset full golden bowl position (Chest)
+					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
+					offset: 43,
+					targetInstruction: new(OpCodes.Mul),
+					replacementInstructions: new CodeInstruction[]
+					{
+						new(OpCodes.Mul),
+						new(OpCodes.Ldc_I4, 260),
+						new(OpCodes.Sub)
+					},
+					goNext: false
+				),
+				new(
+					// Flip full golden bowl texture (Chest)
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 13,
 					targetInstruction: new(OpCodes.Ldc_I4_0),
@@ -242,7 +288,7 @@ namespace FlipBuildings.Patches
 					}
 				)
 			};
-			return PatchHelper.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, typeof(FishPond), nameof(FishPond.draw));
+			return PatchUtility.ReplaceInstructionsByOffsets(instructions, iLGenerator, codeReplacements, typeof(FishPond), nameof(FishPond.draw));
 		}
 	}
 }

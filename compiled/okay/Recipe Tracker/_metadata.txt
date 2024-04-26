@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/22378
+IDs: NoxChimaera.StardewValleyTodo
+update keys: Nexus:22378, GitHub:NoxChimaera/StardewValleyTODO

@@ -31,6 +31,7 @@ public record struct MachineInfo(
 
 public class MachineRuleHandler : DynamicTypeHandler<MachineInfo> {
 
+	/*
 	public static string[] VANILLA_MACHINES = new string[] {
 		"9", // Lightning Rod
 		"10", // Bee House
@@ -75,7 +76,7 @@ public class MachineRuleHandler : DynamicTypeHandler<MachineInfo> {
 		"265", // Deconstructor
 		"272", // Auto-Petter
 		"275", // Hopper
-	};
+	};*/
 
 	public readonly ModEntry Mod;
 
@@ -96,13 +97,13 @@ public class MachineRuleHandler : DynamicTypeHandler<MachineInfo> {
 	public override bool HasEditor => false;
 
 	public override bool DoesRecipeMatch(IRecipe recipe, Lazy<Item?> item, MachineInfo state) {
-
-		if (item.Value is not SObject sobj || !sobj.bigCraftable.Value)
+		if (item.Value is not Item i)
 			return false;
 
-		string key = $"{sobj.ParentSheetIndex}";
+		if (DataLoader.Machines(Game1.content).ContainsKey(i.QualifiedItemId))
+			return true;
 
-		return state.KnownMachines.Contains(key);
+		return state.KnownMachines.Contains(i.QualifiedItemId);
 	}
 
 	public override IClickableMenu? GetEditor(IClickableMenu parent, IDynamicRuleData type) {
@@ -116,8 +117,8 @@ public class MachineRuleHandler : DynamicTypeHandler<MachineInfo> {
 	public override MachineInfo ParseStateT(IDynamicRuleData type) {
 		HashSet<string> known = Mod.intPFM!.GetMachineIDs() ?? new();
 
-		foreach (string machine in VANILLA_MACHINES)
-			known.Add(machine);
+		/*foreach (string machine in VANILLA_MACHINES)
+			known.Add(machine);*/
 
 		return new MachineInfo(known);
 	}

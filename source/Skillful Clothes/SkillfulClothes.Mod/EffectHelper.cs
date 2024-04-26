@@ -55,6 +55,11 @@ namespace SkillfulClothes
             Events.Watch(modHelper);
         }
 
+        public static string GetEffectId(IEffect effect)
+        {
+            return $"{effect.GetType().Name}_{effect.GetHashCode()}";
+        }
+
         private static void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady) return;

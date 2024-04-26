@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -29,7 +28,6 @@ namespace RemoteFridgeStorage.controller
     {
         private readonly ClickableTextureComponent _fridgeSelected;
         private readonly ClickableTextureComponent _fridgeDeselected;
-        private readonly bool _offsetIcon;
 
         private readonly HashSet<Chest> _chests;
         private readonly bool _chestAnywhereLoaded;
@@ -45,9 +43,6 @@ namespace RemoteFridgeStorage.controller
         {
             _openChest = null;
             _chests = new HashSet<Chest>();
-            _offsetIcon =
-                compatibilityInfo.CategorizeChestLoaded || compatibilityInfo.ConvenientChestLoaded ||
-                compatibilityInfo.MegaStorageLoaded;
             _chestAnywhereLoaded = compatibilityInfo.ChestAnywhereLoaded;
             var sourceRect = new Rectangle(0, 0, textures.FridgeSelected.Width, textures.FridgeSelected.Height);
             _fridgeSelected =
@@ -68,7 +63,7 @@ namespace RemoteFridgeStorage.controller
             var itemGrabMenu = clickableMenu as ItemGrabMenu;
             if (itemGrabMenu?.behaviorOnItemGrab?.Target == null) return null;
             if (itemGrabMenu.behaviorOnItemGrab.Target is Chest chest) return chest;
-            
+
             return _chestAnywhereLoaded && itemGrabMenu.behaviorOnItemGrab.Target.GetType().ToString()
                 .Equals("Pathoschild.Stardew.ChestsAnywhere.Framework.Containers.ChestContainer")
                 ? ChestsAnywhere(itemGrabMenu.behaviorOnItemGrab.Target)
@@ -89,48 +84,18 @@ namespace RemoteFridgeStorage.controller
         }
 
         /// <summary>
-        /// Update the position of the button based on the settings in the config.
-        /// </summary>
-        private void UpdatePos()
-        {
-            //Number values here are based on trial and error
-            var menu = Game1.activeClickableMenu;
-            if (menu == null) return;
-
-            var xOffset = 0.0;
-            var yOffset = 1.0;
-            //A mod is loaded that places an icon on the same location so we change it.
-            if (_offsetIcon)
-            {
-                xOffset = -1.0;
-                yOffset = -0.25;
-            }
-
-            var xScaledOffset = (int)(xOffset * Game1.tileSize);
-            var yScaledOffset = (int)(yOffset * Game1.tileSize);
-
-            var screenX = menu.xPositionOnScreen - 17 * Game1.pixelZoom + xScaledOffset;
-            var screenY = menu.yPositionOnScreen + yScaledOffset + Game1.pixelZoom * 5;
-
-            var rectangle = new Rectangle(screenX, screenY,
-                (int)(16 * Game1.pixelZoom),
-                (int)(16 * Game1.pixelZoom));
-
-            _fridgeSelected.bounds = _fridgeDeselected.bounds = rectangle;
-        }
-
-        /// <summary>
         /// Handle the click event if it was on the fridge icon.
         /// </summary>
         /// <param name="cursor">The current cursor position.</param>
         public void HandleClick(ICursorPosition cursor)
         {
-            var chest = GetOpenChest();
+            UpdateChest();
+            var chest = _openChest;
             if (chest == null) return;
 
             var screenPixels = Utility.ModifyCoordinatesForUIScale(cursor.ScreenPixels);
 
-            if (!_fridgeSelected.containsPoint((int)screenPixels.X, (int)screenPixels.Y)) return;
+            if (!_fridgeSelected.containsPoint((int) screenPixels.X, (int) screenPixels.Y)) return;
 
             Game1.playSound("smallSelect");
 
@@ -145,12 +110,31 @@ namespace RemoteFridgeStorage.controller
         }
 
         /// <summary>
+        /// Update the position of the button based on the settings in the config.
+        /// </summary>
+        /// <param name="e"></param>
+        private void UpdateButtonPosition(RenderedActiveMenuEventArgs e)
+        {
+            if (!(Game1.activeClickableMenu is ItemGrabMenu menu)) return;
+
+            var offset = _openChest.SpecialChestType == Chest.SpecialChestTypes.BigChest ? 3 : 2;
+            var screenX = menu.xPositionOnScreen - Game1.pixelZoom * 16 * offset + Game1.pixelZoom;
+            var screenY = menu.yPositionOnScreen + Game1.pixelZoom;
+
+            var rectangle = new Rectangle(screenX, screenY,
+                16 * Game1.pixelZoom,
+                16 * Game1.pixelZoom);
+
+            _fridgeSelected.bounds = _fridgeDeselected.bounds = rectangle;
+        }
+
+        /// <summary>
         /// Draw the icon.
         /// </summary>
         /// <param name="e"></param>
         public void DrawFridgeIcon(RenderedActiveMenuEventArgs e)
         {
-            var openChest = this._openChest;
+            var openChest = _openChest;
             if (openChest == null) return;
 
             var farmHouse = Game1.getLocationFromName("farmHouse") as FarmHouse;
@@ -158,14 +142,14 @@ namespace RemoteFridgeStorage.controller
             if (openChest == farmHouse?.fridge.Value || Game1.activeClickableMenu == null ||
                 !openChest.playerChest.Value) return;
 
-            UpdatePos();
+            UpdateButtonPosition(e);
             if (_chests.Contains(openChest))
             {
-                _fridgeSelected.draw(e.SpriteBatch, Color.White, 0);
+                _fridgeSelected.draw(e.SpriteBatch, Color.White, 10f);
             }
             else
             {
-                _fridgeDeselected.draw(e.SpriteBatch, Color.White, 0);
+                _fridgeDeselected.draw(e.SpriteBatch, Color.White, 10f);
             }
 
             Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY()),
@@ -193,14 +177,6 @@ namespace RemoteFridgeStorage.controller
             {
                 _chests.Add(chest);
             }
-        }
-
-        /// <summary>
-        /// Clears the list of chests.
-        /// </summary>
-        public void ClearChests()
-        {
-            _chests.Clear();
         }
 
         public void UpdateChest()

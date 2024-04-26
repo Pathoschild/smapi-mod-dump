@@ -7,13 +7,16 @@
   "SmallStumpBonusXPAmount": 1,
   "TwigDebrisXPAmount": 1,
   "TapperDaysNeededChangesEnabled": true,
-  "MapleTapperDaysNeeded": 9,
+  "MapleTapperDaysNeeded": 7,
   "OakTapperDaysNeeded": 7,
-  "PineTapperDaysNeeded": 5,
+  "PineTapperDaysNeeded": 7,
+  "MysticTapperDaysNeeded": 7,
+  "EqualizedPricePerDayForMapleOakPineTapperProduct": 0,
   "MushroomTreeTappersConsistentDaysNeeded": true,
   "CommonFiddleheadFern": true,
   "WildAndFineGrapes": true,
   "ForageSurvivalBurger": true,
   "TreeMenuKey": "None",
-  "MushroomTapperCalendar": false
+  "MushroomTapperCalendar": false,
+  "HazelnutSeasonCalendarReminder": false
 }

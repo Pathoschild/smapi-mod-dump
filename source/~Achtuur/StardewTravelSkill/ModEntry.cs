@@ -216,13 +216,13 @@ internal sealed class ModEntry : Mod
             return;
 
         // Calcuate difference in steps, and if it exceeds 1 exp treshold, add it as exp. Hacky fix to get xp values between 0 and 1
-        uint step_diff = Game1.player.stats.stepsTaken - this.m_previousSteps.Value;
+        uint step_diff = Game1.player.stats.StepsTaken - this.m_previousSteps.Value;
         if (step_diff >= Instance.Config.StepsPerExp * Instance.Config.AddExpIncrement)
         {
             Game1.player.AddCustomSkillExperience(travelSkill, Instance.Config.AddExpIncrement);
             // Set previous steps to current steps, with correction
             uint steps_over_exp_incr = step_diff - (uint)(Instance.Config.StepsPerExp * Instance.Config.AddExpIncrement);
-            this.m_previousSteps.Value = Game1.player.stats.stepsTaken - steps_over_exp_incr;
+            this.m_previousSteps.Value = Game1.player.stats.StepsTaken - steps_over_exp_incr;
         }
 
     }
@@ -253,7 +253,7 @@ internal sealed class ModEntry : Mod
         if (!Context.IsWorldReady)
             return;
 
-        this.m_previousSteps.Value = Game1.player.stats.stepsTaken;
+        this.m_previousSteps.Value = Game1.player.stats.StepsTaken;
         this.totemRecipeChanged = false;
         this.obeliskRecipeChanged = false;
     }
@@ -375,12 +375,12 @@ internal sealed class ModEntry : Mod
         if (!MovementButtonHeld())
         {
             // "Reset" counter by setting it to current step count
-            this.m_consecutiveSteps.Value = Game1.player.stats.stepsTaken;
+            this.m_consecutiveSteps.Value = Game1.player.stats.StepsTaken;
             this.SprintActive.Value = false;
             return;
         }
 
-        uint step_diff = Game1.player.stats.stepsTaken - this.m_consecutiveSteps.Value;
+        uint step_diff = Game1.player.stats.StepsTaken - this.m_consecutiveSteps.Value;
 
         if (step_diff > Instance.Config.SprintSteps && !this.SprintActive.Value)
         {

@@ -14,6 +14,7 @@ using RemoteFridgeStorage.controller;
 using RemoteFridgeStorage.controller.saving;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.Menus;
 
 namespace RemoteFridgeStorage
 {
@@ -22,7 +23,6 @@ namespace RemoteFridgeStorage
     public class ModEntry : Mod
     {
         /// <summary>The mod configuration from the player.</summary>
-
         public FridgeController FridgeController;
 
         public ChestController ChestController;
@@ -63,17 +63,11 @@ namespace RemoteFridgeStorage
         {
             // Compatibility checks
             var cookingSkillLoaded = helper.ModRegistry.IsLoaded("spacechase0.CookingSkill");
-            var categorizeChestsLoaded = helper.ModRegistry.IsLoaded("CategorizeChests");
-            var convenientChestsLoaded = helper.ModRegistry.IsLoaded("aEnigma.ConvenientChests");
-            var megaStorageLoaded = helper.ModRegistry.IsLoaded("Alek.MegaStorage");
             var chestAnywhereLoaded = helper.ModRegistry.IsLoaded("Pathoschild.ChestsAnywhere");
 
             var compatibilityInfo = new CompatibilityInfo
             {
-                CategorizeChestLoaded = categorizeChestsLoaded,
-                ConvenientChestLoaded = convenientChestsLoaded,
                 CookingSkillLoaded = cookingSkillLoaded,
-                MegaStorageLoaded = megaStorageLoaded,
                 ChestAnywhereLoaded = chestAnywhereLoaded
             };
             return compatibilityInfo;
@@ -125,29 +119,17 @@ namespace RemoteFridgeStorage
             {
                 return;
             }
+
             // If The (Cooking) Crafting page is opened
-            if (e.NewMenu is StardewValley.Menus.CraftingPage &&
-                Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
-                Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue())
+            if (e.NewMenu is CraftingPage page && page.cooking)
             {
                 FridgeController.InjectItems();
                 return;
             }
 
             // If the Cooking Skill Page is opened.
-            if (_compatibilityInfo.CookingSkillLoaded &&
-                e.NewMenu.GetType().ToString() == "CookingSkill.NewCraftingPage")
-            {
-                FridgeController.InjectItems();
-                return;
-            }
-            
-            if (Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
-                Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue())
-            {
-                Monitor.Log("Menu changed to " + e.NewMenu.GetType() + " which is a unrecognized type. Is it from an incompatible mod?",LogLevel.Warn);    
-            }
-            
+            if (!_compatibilityInfo.CookingSkillLoaded || e.NewMenu.GetType().ToString() != "CookingSkill.NewCraftingPage") return;
+            FridgeController.InjectItems();
         }
 
         /// <summary>
@@ -171,9 +153,7 @@ namespace RemoteFridgeStorage
         public struct Textures
         {
             public Texture2D FridgeSelected;
-            public Texture2D FridgeSelectedAlt;
             public Texture2D FridgeDeselected;
-            public Texture2D FridgeDeselectedAlt;
         }
 
         /// <summary>
@@ -182,15 +162,12 @@ namespace RemoteFridgeStorage
         public struct CompatibilityInfo
         {
             public bool CookingSkillLoaded;
-            public bool CategorizeChestLoaded;
-            public bool ConvenientChestLoaded;
-            public bool MegaStorageLoaded;
             public bool ChestAnywhereLoaded;
         }
 
-        public void Log(string s)
+        public override object GetApi()
         {
-            Monitor.Log(s);
+            return new RemoteFridgeApi(this);
         }
     }
 }

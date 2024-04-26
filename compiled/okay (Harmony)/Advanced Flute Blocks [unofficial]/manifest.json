@@ -1,0 +1,13 @@
+﻿{
+	"Name": "Advanced Flute Blocks",
+	"Author": "aedenthorn",
+	"Version": "0.2.1-unofficial.2-mouahrara",
+	"Description": "Provides advanced control over flute blocks.",
+	"UniqueID": "aedenthorn.AdvancedFluteBlocks",
+	"EntryDll": "AdvancedFluteBlocks.dll",
+	"MinimumApiVersion": "4.0.0",
+	"UpdateKeys": [
+		"Nexus:10934",
+		"UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@AdvancedFluteBlocks"
+	]
+}

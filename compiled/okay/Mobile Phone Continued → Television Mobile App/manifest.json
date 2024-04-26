@@ -1,11 +1,12 @@
 ﻿{
   "Name": "Mobile Television Continued",
   "Author": "JoXW",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Television for your mobile phone.",
   "UniqueID": "JoXW.MobileTelevision",
   "EntryDll": "MobileTelevision.dll",
   "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21017@TV" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.ModUpdater",

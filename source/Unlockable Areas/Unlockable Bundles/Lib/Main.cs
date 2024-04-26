@@ -15,35 +15,31 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewModdingAPI;
 using StardewValley;
+using Unlockable_Bundles.Lib.MapFeatures;
 
 namespace Unlockable_Bundles.Lib
 {
     public class Main
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             ShopTypes.Main.Initialize();
             AdvancedPricing.Main.Initialize();
+            MapFeatures.Main.Initialize();
 
+            ConsoleCommands.Initialize();
             AssetRequested.Initialize();
             SaveDataEvents.Initialize();
             ShopObject.Initialize();
             ShopPlacement.Initialize();
-            UpdateHandler.Initialize();
-            UB_NoGrass.Initialize();
-            UB_SharedDigSpot.Initialize();
+            MapPatches.Initialize();
             UtilityMisc.Initialize();
             UnsafeMap.Initialize();
             UBEvent.Initialize();
             _InventoryPage.Initialize();
+            _GameLocation.Initialize();
             BundleOverviewMenu.Initialize();
+            Multiplayer.Initialize();
         }
     }
 }

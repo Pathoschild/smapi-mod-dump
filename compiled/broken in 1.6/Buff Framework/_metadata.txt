@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/17746
-IDs: aedenthorn.BuffFramework
-update keys: Nexus:17746, GitHub:aedenthorn/StardewValleyMods

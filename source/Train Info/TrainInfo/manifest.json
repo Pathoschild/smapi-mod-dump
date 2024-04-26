@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BinaryLip/TrainInfo
+**
+*************************************************/
+
+{
+  "Name": "Train Info",
+  "Author": "BinaryLip",
+  "Version": "1.0.0",
+  "Description": "Displays a popup of what's going to be in the train passing through Stardew Valley",
+  "UniqueID": "BinaryLip.TrainInfo",
+  "EntryDll": "TrainInfo.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:21883"
+  ]
+}

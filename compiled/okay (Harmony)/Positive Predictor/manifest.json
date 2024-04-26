@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PositivePredictor",
+  "Author": "season",
+  "Version": "0.0.1",
+  "Description": "Predict better results for some events.",
+  "UniqueID": "season.PositivePredictor",
+  "EntryDll": "PositivePredictor.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:23132" ]
+}

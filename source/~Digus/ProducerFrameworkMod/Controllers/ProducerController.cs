@@ -55,6 +55,8 @@ namespace ProducerFrameworkMod.Controllers
             }
         };
 
+        private const string WarningNotBugPrefix = "This is just a Warning, don't report this as a bug. ";
+
         /// <summary>
         /// Adds or replace a custom producer rule to the game.
         /// You should probably call this method everytime a save game loads, to ensure all custom objects are properly loaded.
@@ -92,11 +94,11 @@ namespace ProducerFrameworkMod.Controllers
                     }
                     else if (string.IsNullOrEmpty(producerRule.InputIdentifier) && (GetProducerConfig(producerRule.ProducerQualifiedItemId)?.NoInputStartMode == null))
                     {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't be null or empty if there is no config for 'NoInputStartMode' for producer '{producerRule.ProducerIdentification}'. This rule will be ignored.", LogLevel.Warn);
+                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't be null or empty if there is no config for 'NoInputStartMode' for producer '{producerRule.ProducerIdentification}'. This rule will be ignored.", producerRule.WarningsLogLevel);
                     }
                     else if ((!string.IsNullOrEmpty(producerRule.InputIdentifier) && GetProducerConfig(producerRule.ProducerQualifiedItemId)?.NoInputStartMode != null))
                     {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't have a value if there is a config for 'NoInputStartMode' for producer '{producerRule.ProducerIdentification}'. This rule will be ignored.", LogLevel.Warn);
+                        ProducerFrameworkModEntry.ModMonitor.Log($"The InputIdentifier property can't have a value if there is a config for 'NoInputStartMode' for producer '{producerRule.ProducerIdentification}'. This rule will be ignored.", producerRule.WarningsLogLevel);
                     } 
                     else
                     {
@@ -139,7 +141,7 @@ namespace ProducerFrameworkMod.Controllers
                             outputConfig.OutputItemId = FindObjectKey(outputConfig.OutputIdentifier, true);
                             if(outputConfig.OutputItemId == null)
                             {
-                                ProducerFrameworkModEntry.ModMonitor.Log($"No Output found for '{outputConfig.OutputIdentifier}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
+                                ProducerFrameworkModEntry.ModMonitor.Log($"{WarningNotBugPrefix}No Output found for '{outputConfig.OutputIdentifier}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
                                 break;
                             }
                             
@@ -148,7 +150,7 @@ namespace ProducerFrameworkMod.Controllers
                                 var fuelItemId = FindObjectKey(fuel.Key);
                                 if (fuelItemId == null)
                                 {
-                                    ProducerFrameworkModEntry.ModMonitor.Log($"No required fuel found for '{fuel.Key}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
+                                    ProducerFrameworkModEntry.ModMonitor.Log($"{WarningNotBugPrefix}No required fuel found for '{fuel.Key}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
                                     outputConfig.OutputItemId = null;
                                     break;
                                 }
@@ -169,7 +171,7 @@ namespace ProducerFrameworkMod.Controllers
                             string fuelItemId = FindObjectKey(fuel.Key);
                             if (fuelItemId == null)
                             {
-                                ProducerFrameworkModEntry.ModMonitor.Log($"No fuel found for '{fuel.Key}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
+                                ProducerFrameworkModEntry.ModMonitor.Log($"{WarningNotBugPrefix}No fuel found for '{fuel.Key}', producer '{producerRule.ProducerIdentification}' and input '{producerRule.InputIdentifier}'. This rule will be ignored.", producerRule.WarningsLogLevel);
                                 break;
                             }
                             producerRule.FuelList.Add(new Tuple<string, int>(fuelItemId, fuel.Value));
@@ -316,7 +318,7 @@ namespace ProducerFrameworkMod.Controllers
                             var outputIndex = FindObjectKey(animation.Key);
                             if (outputIndex == null)
                             {
-                                ProducerFrameworkModEntry.ModMonitor.Log($"No object found for '{animation.Key}', producer '{producerConfig.ProducerIdentification}'. This animation will be ignored.", LogLevel.Debug);
+                                ProducerFrameworkModEntry.ModMonitor.Log($"{WarningNotBugPrefix}No object found for '{animation.Key}', producer '{producerConfig.ProducerIdentification}'. This animation will be ignored.", LogLevel.Debug);
                                 break;
                             }
                             producerConfig.ProducingAnimation.AdditionalAnimationsId[outputIndex] = animation.Value;
@@ -330,7 +332,7 @@ namespace ProducerFrameworkMod.Controllers
                             var outputIndex = FindObjectKey(animation.Key);
                             if (outputIndex == null)
                             {
-                                ProducerFrameworkModEntry.ModMonitor.Log($"No object found for '{animation.Key}', producer '{producerConfig.ProducerIdentification}'. This animation will be ignored.", LogLevel.Debug);
+                                ProducerFrameworkModEntry.ModMonitor.Log($"{WarningNotBugPrefix}No object found for '{animation.Key}', producer '{producerConfig.ProducerIdentification}'. This animation will be ignored.", LogLevel.Debug);
                                 break;
                             }
                             producerConfig.ReadyAnimation.AdditionalAnimationsId[outputIndex] = animation.Value;
@@ -402,7 +404,7 @@ namespace ProducerFrameworkMod.Controllers
                     .FirstOrDefault();
                 if (producer.ProducerQualifiedItemId == null)
                 {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"No producer found for ProducerName {producer.ProducerName}. This rule will be ignored.", LogLevel.Warn);
+                    ProducerFrameworkModEntry.ModMonitor.Log($"{WarningNotBugPrefix}No producer found for ProducerName {producer.ProducerName}. This rule will be ignored.", LogLevel.Warn);
                     return false;
                 }
 
@@ -470,7 +472,7 @@ namespace ProducerFrameworkMod.Controllers
             {
                 itemId = ItemRegistry.QualifyItemId(identifier);
             }
-            else if (!Int32.TryParse(identifier, out int fuelIndex))
+            else if (!Int32.TryParse(identifier, out int index))
             {
                 var pair = Game1.objectData.FirstOrDefault(o => o.Value.Name.Equals(identifier));
                 if (pair.Value != null)
@@ -480,10 +482,10 @@ namespace ProducerFrameworkMod.Controllers
             }
             else
             {
-                if (fuelIndex < 0)
-                    itemId = nullOnNegative ? null : fuelIndex.ToString();
+                if (index < 0)
+                    itemId = nullOnNegative ? null : index.ToString();
                 else
-                    itemId = ItemRegistry.type_object + fuelIndex;
+                    itemId = ItemRegistry.type_object + index;
             }
 
             return itemId;
@@ -541,6 +543,16 @@ namespace ProducerFrameworkMod.Controllers
         public static bool HasProducerRuleWithInput(string producerQualifiedItemId)
         {
             return RulesRepository.Keys.Any(k => k.Item1 == producerQualifiedItemId && k.Item2 != null);
+        }
+
+        /// <summary>
+        /// Check if a producer config for a given producer exist.
+        /// </summary>
+        /// <param name="producerQualifiedItemId">The Qualified Item Id of the producer</param>
+        /// <returns>true if there is a config for the producer</returns>
+        public static bool HasProducerConfig(string producerQualifiedItemId)
+        {
+            return ConfigRepository.Keys.Any(k => k == producerQualifiedItemId);
         }
 
         /// <summary>

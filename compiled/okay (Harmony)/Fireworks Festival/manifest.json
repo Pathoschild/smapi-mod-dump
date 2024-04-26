@@ -1,10 +1,21 @@
-﻿{
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "violetlizabet.FireworksFestival",
   "Name": "Fireworks Festival",
   "Author": "violetlizabet",
-  "Version": "2.0.1",
+  "Version": "2.0.2",
   "Description": "Adds a summer fireworks festival as well as craftable fireworks.",
-  "UniqueID": "violetlizabet.FireworksFestival",
-  "EntryDll": "FireworksFestival.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "Nexus:15261", "Github:elizabethcd/FireworksFestival" ]
+  "EntryDll": "FireworksFestival.dll",
+  "UpdateKeys": [
+    "Nexus:15261",
+    "Github:elizabethcd/FireworksFestival"
+  ]
 }

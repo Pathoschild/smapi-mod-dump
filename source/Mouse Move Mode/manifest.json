@@ -16,5 +16,5 @@
   "Name": "MouseMoveMode",
   "UniqueID": "nghiango1.MouseMoveMode",
   "UpdateKeys": [ "Nexus:2614", "Github:nghiango1/RightClickMoveMode" ],
-  "Version": "1.2.8-b"
+  "Version": "1.2.9-c"
 }

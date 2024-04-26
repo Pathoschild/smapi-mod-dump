@@ -8,8 +8,7 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
+using BotFramework;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -34,7 +33,9 @@ namespace WaterBot
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            Logger.SetMonitor(Monitor);
             this.bot = new WaterBotControler(helper);
+            // Set static reference to monitor for logging.
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
@@ -53,13 +54,13 @@ namespace WaterBot
 
             if (this.bot.active)
             {
-                this.console("Player provided interrupt signal. Process stopped.");
+                Logger.Log("Player provided interrupt signal. Process stopped.");
                 this.bot.stop();
             } else if (e.Button.IsActionButton()) // SButton.MouseRight 
             {
                 if (this.isWateringHoedDirt())
                 {
-                    this.console("Player provided trigger to begin bot.");
+                    Logger.Log("Player provided trigger to begin bot.");
                     this.bot.start(this.console);
                 }
             }
@@ -73,7 +74,7 @@ namespace WaterBot
             // Is the player using a Watering Can on their Farm?
             if (Game1.player.CurrentItem is WateringCan)
             {
-                // Find action tilesw
+                // Find action tiles
                 Vector2 mousePosition = Utility.PointToVector2(Game1.getMousePosition()) + new Vector2(Game1.viewport.X, Game1.viewport.Y);
                 Vector2 toolLocation = Game1.player.GetToolLocation(mousePosition);
                 Vector2 tile = Utility.clampToTile(toolLocation);
@@ -91,8 +92,8 @@ namespace WaterBot
                         Game1.currentLocation.terrainFeatures[rounded] is HoeDirt &&
                         (Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop != null &&
                         (((Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.fullyGrown &&
-                        (Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.dayOfCurrentPhase > 0) ||
-                        ((Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.currentPhase < (Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.phaseDays.Count - 1)))
+                        (Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.dayOfCurrentPhase > 0) || 
+                            ((Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.currentPhase < (Game1.currentLocation.terrainFeatures[rounded] as HoeDirt).crop.phaseDays.Count - 1)))
                     {
                         return true;
                     }
@@ -108,7 +109,7 @@ namespace WaterBot
         /// <param name="message">Message text.</param>
         public void console(string message)
         {
-            this.Monitor.Log(message, LogLevel.Debug);
+            Logger.Log(message, LogLevel.Debug);
         }
     }
 }

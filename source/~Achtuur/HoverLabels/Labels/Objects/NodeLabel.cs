@@ -10,6 +10,7 @@
 
 using AchtuurCore.Extensions;
 using AchtuurCore.Utility;
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Network;
@@ -129,28 +130,28 @@ internal class NodeLabel : ObjectLabel
     private void GenerateNodeLabel()
     {
         SObject nodeItem = GetNodeItem(hoverObject.ParentSheetIndex);
-        Name = I18n.LabelNodeName(nodeItem.DisplayName);
+        AddBorder(new TitleLabelText(I18n.LabelNodeName(nodeItem.DisplayName)));
     }
 
     private void GenerateMysticNodeLabel()
     {
-        Name = I18n.LabelNodeMysticName();
-        Description.Add("Drops the following items:");
+        AddBorder(new TitleLabelText(I18n.LabelNodeMysticName()));
+        AddBorder(I18n.LabelDropItems());
 
         SObject iridiumOre = ModEntry.GetObjectWithId(SObject.iridium);
         SObject goldOre = ModEntry.GetObjectWithId(SObject.gold);
         SObject prismaticShard = ModEntry.GetObjectWithId(SObject.prismaticShardIndex);
 
-        Description.Add($"> {iridiumOre.DisplayName} (1-3)");
-        Description.Add($"> {goldOre.DisplayName} (1-4");
-        Description.Add($"> {prismaticShard.DisplayName} (25% chance)");
+        AppendLabelToBorder($"> {iridiumOre.DisplayName} (1-3)");
+        AppendLabelToBorder($"> {goldOre.DisplayName} (1-4)");
+        AppendLabelToBorder($"> {prismaticShard.DisplayName} (25% chance)");
 
     }
 
     private void GenerateGemNodeLabel()
     {
-        Name = I18n.LabelNodeGemName();
-        Description.Add("Drops one of the following gems:");
+        AddBorder(new TitleLabelText(I18n.LabelNodeGemName()));
+        AddBorder("Drops one of the following gems:");
 
         // Use array of SObjects since then the displayname can be used
         // which is automatically translated
@@ -167,13 +168,13 @@ internal class NodeLabel : ObjectLabel
 
         foreach (SObject gem in gemObjects)
         {
-            Description.Add($"> {gem.DisplayName}");
+            AppendLabelToBorder($"> {gem.DisplayName}");
         }
     }
 
     private void GenerateBoneNodeLabel()
     {
-        Name = I18n.LabelNodeBoneName();
+        AddBorder(new TitleLabelText(I18n.LabelNodeBoneName()));
     }
 
     private static NodeType? GetNodeType(int stoneIndex)

@@ -1,5 +1,6 @@
 {
   "InSlimeHutch": true,
   "InWoods": false,
-  "Anywhere": false
+  "Anywhere": false,
+  "Range": 20
 }

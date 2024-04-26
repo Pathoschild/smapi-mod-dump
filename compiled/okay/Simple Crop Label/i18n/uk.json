@@ -1,0 +1,30 @@
+{
+  // use Helper.Translation.Get(<translation key>) in code // uk (ukrainian)
+  // custom tree translation
+  "custom-tree.oak": "Дуб",
+  "custom-tree.maple": "Клен",
+  "custom-tree.pine": "Сосна",
+  "custom-tree.coconut": "Кокос",
+  "custom-tree.mushroom": "Грибне дерево",
+  "custom-tree.mahogany": "Червоне дерево",
+  "custom-tree.palm": "Пальма",
+  "custom-tree.green-rain-wild": "Дикий зелений дощ дерево",
+  "custom-tree.green-rain-lush": "Пишний зелений дощ дерево",
+  "custom-tree.fiddlehead-fern": "Дерево папороті",
+  "custom-tree.mystic": "Містичне дерево",
+
+  // growth info translation
+  "growth-info.fully-grown": "повністю виросло",
+  "growth-info.stage": "стадія",
+  "growth-info.of": "з",
+  "growth-info.days-left": "днів залишилося",
+  "growth-info.day-left": "день залишився",
+
+  // for Generic Config Menu Mod
+  "config.mouse-hover.name": "Наведення Курсора",
+  "config.mouse-hover.desc": "Коли увімкнено, наведіть курсор на ділянку з врожаєм, щоб відобразити позначки.",
+  "config.growth-info.name": "Інформація про зростання",
+  "config.growth-info.desc": "Коли увімкнено, відображає зростання культур, або стадії збору.",
+  "config.custom-keybinds.name": "Користувацькі Гарячі Клавіши",
+  "config.custom-keybinds.desc": "Заміна стандартних. Увімкнення Наведення Курсора перекриє це."
+}

@@ -8,50 +8,28 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using HarmonyLib;
 using StardewValley;
 
 namespace StardewVariableSeasons
 {
     public static class FestivalDayFixes
     {
-        public static void IsFestPrefix(ref string season)
-        {
-            season = ModEntry.SeasonByDay;
-        }
-
         public static void LoadFestPrefix(ref string festival)
         {
-            festival = $"{ModEntry.SeasonByDay}{Game1.dayOfMonth}";
+            festival = $"{ModEntry.SeasonByDay.ToString().ToLower()}{Game1.dayOfMonth}";
         }
 
-        public static void ResetSeasonPrefix(out string __state)
+        public static void ResetSeasonPrefix(out Season __state)
         {
-            __state = Game1.currentSeason;
-            Game1.currentSeason = ModEntry.SeasonByDay;
+            __state = Game1.season;
+            Game1.season = ModEntry.SeasonByDay;
+            Game1.currentSeason = ModEntry.SeasonByDay.ToString().ToLower();
         }
         
-        public static void ResetSeasonPostfix(string __state)
+        public static void ResetSeasonPostfix(Season __state)
         {
-            Game1.currentSeason = __state;
-        }
-        
-        public static IEnumerable<CodeInstruction> ReplaceCurrentSeasonTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            var codes = new List<CodeInstruction>(instructions);
-            
-            foreach (var code in codes.Where(code =>
-                         code.opcode == OpCodes.Ldsfld &&
-                         code.operand.ToString().Contains("currentSeason")))
-            {
-                code.operand = typeof(ModEntry).GetField("SeasonByDay", BindingFlags.Static | BindingFlags.Public);
-            }
-
-            return codes.AsEnumerable();
+            Game1.season = __state;
+            Game1.currentSeason = Game1.season.ToString().ToLower();
         }
     }
 }

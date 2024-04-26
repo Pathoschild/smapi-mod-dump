@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Tocseoj/StardewValleyMods
+   Git: https://github.com/Tocseoj/StardewValleyMods.git
+
+mods:
+   Mossy Tree Bubble
+
+latest commit:
+   commit 883c9072aff93b53da596926a51c198b301bce03
+   Author: Joe Marshall <joe.marshall@multiplytechnology.com>
+   Date:   Thu Apr 25 16:58:22 2024 -0400
+   
+       â€œfunctionalâ€ needs refactored baaad
+   

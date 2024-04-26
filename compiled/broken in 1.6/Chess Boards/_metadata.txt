@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11580
-IDs: aedenthorn.ChessBoards
-update keys: Nexus:11580, GitHub:aedenthorn/StardewValleyMods

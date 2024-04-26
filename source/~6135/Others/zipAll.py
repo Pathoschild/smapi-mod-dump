@@ -33,10 +33,10 @@ for folder_name in os.listdir():
                 for root, dirs, files in os.walk(folder_name):
                     for file in files:
                         file_path = os.path.join(root, file)
-                        zipf.write(file_path, os.path.relpath(file_path, folder_name))
+                        zipf.write(file_path, os.path.join(folder_name, os.path.relpath(file_path, folder_name)))
 
                 # Add empty directories to the zip file
                 for root, dirs, files in os.walk(folder_name):
                     for dir in dirs:
                         dir_path = os.path.join(root, dir)
-                        zipf.write(dir_path, os.path.relpath(dir_path, folder_name))
+                        zipf.write(dir_path, os.path.join(folder_name, os.path.relpath(dir_path, folder_name)))

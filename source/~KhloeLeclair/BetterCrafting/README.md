@@ -14,5 +14,6 @@ keeping chests locked when playing in multiplayer.
 
 * [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/11115/)
 * [Changelog](https://github.com/KhloeLeclair/StardewMods/blob/main/BetterCrafting/CHANGELOG.md)
+* [Author Guide](https://github.com/KhloeLeclair/StardewMods/blob/main/BetterCrafting/author-guide.md)
 * [API](https://github.com/KhloeLeclair/StardewMods/blob/main/BetterCrafting/ModAPI.cs)
-* [ContentPack Support](https://github.com/KhloeLeclair/StardewMods/tree/main/BetterCrafting.Example)
+* [Example ContentPack](https://github.com/KhloeLeclair/StardewMods/tree/main/BetterCrafting.Example)

@@ -1,0 +1,24 @@
+urls:
+   web: https://github.com/FlyingTNT/StardewValleyMods
+   Git: https://github.com/FlyingTNT/StardewValleyMods.git
+
+mods:
+   Better Elevator - Continued
+   Catalogue Filter - Continued
+   Custom Gift Limits - Continued
+   Pacifist Valley - Continued
+   Quest Time Limits - Continued
+   Resource Storage - Continued
+   Seed Info - Continued
+   Swim - Continued
+   Wall Televisions - Continued
+
+latest commit:
+   commit ed47f2a667657410ebb0f5a1083853d42fe5f38d
+   Author: C. Cooper <c.cooper@ku.edu>
+   Date:   Thu Apr 25 20:51:23 2024 -0500
+   
+       Fix issue with special orders
+       
+       Farmer.OnItemReceived was not being called when resources entered the storage, so the counter was not being updated
+   

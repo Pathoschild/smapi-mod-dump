@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HoverLabels.Drawing;
 using HoverLabels.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
@@ -75,43 +76,17 @@ internal class LabelManager
 
         RegisteredLabels.Add(new RegisteredLabel(manifest, name, label));
     }
-    public string GetDescriptionAsString()
-    {
-        return String.Join(NewLineDelimiter, CurrentLabel.GetDescription().ToArray());
-    }
-
-    public string GetLabelString()
-    {
-        return CurrentLabel.GetName() + (this.LabelHasDescription() ? NewLineDelimiter + this.GetDescriptionAsString() : "");
-
-    }
-    public Vector2 GetNameSize(SpriteFont font)
-    {
-        return font.MeasureString(CurrentLabel.GetName());
-    }
-
-    public Vector2 GetDescriptionSize(SpriteFont font)
-    {
-        if (this.LabelHasDescription())
-            return font.MeasureString(this.GetDescriptionAsString());
-        return Vector2.Zero;
-    }
-    public Vector2 GetLabelSize(SpriteFont nameFont, SpriteFont descFont)
-    {
-        Vector2 nameSize = this.GetNameSize(nameFont);
-        Vector2 descSize = this.GetDescriptionSize(descFont);
-        return new Vector2(Math.Max(nameSize.X, descSize.X), nameSize.Y + descSize.Y);
-    }
     
     public bool HasLabel()
     {
         return this.CurrentLabel is not null;
     }
 
-    public bool LabelHasDescription()
+    public IEnumerable<Border> GetLabelContents()
     {
-        return CurrentLabel.GetDescription().Count() > 0;
+        return this.CurrentLabel.GetContents();
     }
+
 
     internal void ClearLabel()
     {

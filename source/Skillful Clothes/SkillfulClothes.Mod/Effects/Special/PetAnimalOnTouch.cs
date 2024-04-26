@@ -42,11 +42,8 @@ namespace SkillfulClothes.Effects.Special
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
             if (!Context.IsPlayerFree) return;
-
-            if (Game1.currentLocation is IAnimalLocation loc)
-            {
-                CheckPetAnimal(loc, Game1.player);
-            }
+            
+            CheckPetAnimal(Game1.currentLocation, Game1.player);            
         }
 
         private bool canPet(FarmAnimal animal)
@@ -55,7 +52,7 @@ namespace SkillfulClothes.Effects.Special
             return Game1.timeOfDay < 1900 && !animal.wasPet.Value;
         }
 
-        private void CheckPetAnimal(IAnimalLocation location, Farmer who)
+        private void CheckPetAnimal(GameLocation location, Farmer who)
         {
             foreach (KeyValuePair<long, FarmAnimal> kvp in location.Animals.Pairs)
             {

@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "LogName": "Gift tastes: Susan",
+      "TextOperations": [
+        /*Dislike*/
+        {
+          "Operation": "Append",
+          "Target": [
+            "Fields",
+            "Susan",
+            5
+          ],
+          "Value": "moonslime.Archaeology.w_trilobite moonslime.Archaeology.w_strange_doll_yellow moonslime.Archaeology.w_strange_doll_green moonslime.Archaeology.w_snake_vertebrae moonslime.Archaeology.w_snake_skull moonslime.Archaeology.w_skeletal_tail moonslime.Archaeology.w_skeletal_hand moonslime.Archaeology.w_rusty_spur moonslime.Archaeology.w_rusty_spoon moonslime.Archaeology.w_rusty_cog moonslime.Archaeology.w_rare_disc moonslime.Archaeology.w_prehistoric_vertebra moonslime.Archaeology.w_prehistoric_tool moonslime.Archaeology.w_prehistoric_tibia moonslime.Archaeology.w_prehistoric_skull moonslime.Archaeology.w_prehistoric_scapula moonslime.Archaeology.w_prehistoric_rib moonslime.Archaeology.w_prehistoric_handaxe moonslime.Archaeology.w_palm_fossil moonslime.Archaeology.w_ornamental_fan moonslime.Archaeology.w_nautilus_fossil moonslime.Archaeology.w_mummified_frog moonslime.Archaeology.w_mummified_bat moonslime.Archaeology.w_golden_relic moonslime.Archaeology.w_golden_mask moonslime.Archaeology.w_glass_shards moonslime.Archaeology.w_fossilized_tail moonslime.Archaeology.w_fossilized_spine moonslime.Archaeology.w_fossilized_skull moonslime.Archaeology.w_fossilized_ribs moonslime.Archaeology.w_fossilized_leg moonslime.Archaeology.w_elvish_jewelry moonslime.Archaeology.w_dwarvish_helm moonslime.Archaeology.w_dwarf_scroll_iv moonslime.Archaeology.w_dwarf_scroll_iii moonslime.Archaeology.w_dwarf_scroll_ii moonslime.Archaeology.w_dwarf_scroll_i moonslime.Archaeology.w_dwarf_gadget moonslime.Archaeology.w_dried_starfish moonslime.Archaeology.w_display moonslime.Archaeology.w_dinosaur_egg moonslime.Archaeology.w_chipped_amphora moonslime.Archaeology.w_chicken_statue moonslime.Archaeology.w_chewing_stick moonslime.Archaeology.w_bone_flute moonslime.Archaeology.w_arrowhead moonslime.Archaeology.w_ancient_sword moonslime.Archaeology.w_ancient_seed moonslime.Archaeology.w_ancient_drum moonslime.Archaeology.w_ancient_doll moonslime.Archaeology.w_anchor moonslime.Archaeology.w_amphibian_fossil moonslime.Archaeology.h_trilobite moonslime.Archaeology.h_strange_doll_yellow moonslime.Archaeology.h_strange_doll_green moonslime.Archaeology.h_snake_vertebrae moonslime.Archaeology.h_snake_skull moonslime.Archaeology.h_skeletal_tail moonslime.Archaeology.h_skeletal_hand moonslime.Archaeology.h_rusty_spur moonslime.Archaeology.h_rusty_spoon moonslime.Archaeology.h_rusty_cog moonslime.Archaeology.h_rare_disc moonslime.Archaeology.h_prehistoric_vertebra moonslime.Archaeology.h_prehistoric_tool moonslime.Archaeology.h_prehistoric_tibia moonslime.Archaeology.h_prehistoric_skull moonslime.Archaeology.h_prehistoric_scapula moonslime.Archaeology.h_prehistoric_rib moonslime.Archaeology.h_prehistoric_handaxe moonslime.Archaeology.h_palm_fossil moonslime.Archaeology.h_ornamental_fan moonslime.Archaeology.h_nautilus_fossil moonslime.Archaeology.h_mummified_frog moonslime.Archaeology.h_mummified_bat moonslime.Archaeology.h_golden_relic moonslime.Archaeology.h_golden_mask moonslime.Archaeology.h_glass_shards moonslime.Archaeology.h_fossilized_tail moonslime.Archaeology.h_fossilized_spine moonslime.Archaeology.h_fossilized_skull moonslime.Archaeology.h_fossilized_ribs moonslime.Archaeology.h_fossilized_leg moonslime.Archaeology.h_elvish_jewelry moonslime.Archaeology.h_dwarvish_helm moonslime.Archaeology.h_dwarf_scroll_iv moonslime.Archaeology.h_dwarf_scroll_iii moonslime.Archaeology.h_dwarf_scroll_ii moonslime.Archaeology.h_dwarf_scroll_i moonslime.Archaeology.h_dwarf_gadget moonslime.Archaeology.h_dried_starfish moonslime.Archaeology.h_display moonslime.Archaeology.h_dinosaur_egg moonslime.Archaeology.h_chipped_amphora moonslime.Archaeology.h_chicken_statue moonslime.Archaeology.h_chewing_stick moonslime.Archaeology.h_bone_flute moonslime.Archaeology.h_arrowhead moonslime.Archaeology.h_ancient_sword moonslime.Archaeology.h_ancient_seed moonslime.Archaeology.h_ancient_drum moonslime.Archaeology.h_ancient_doll moonslime.Archaeology.h_anchor moonslime.Archaeology.h_amphibian_fossil moonslime.Archaeology.rusty_scrap moonslime.Archaeology.rusty_scrap moonslime.Archaeology.glass_fence moonslime.Archaeology.rocky_root moonslime.Archaeology.diggers_delight moonslime.Archaeology.totem_volcano_warp moonslime.Archaeology.rust_path moonslime.Archaeology.bone_path moonslime.Archaeology.glass_path",
+          "Delimiter": " "
+        }
+      ]
+    }
+  ]
+}

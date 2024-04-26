@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Jibblestein/StardewMods
+   Git: https://github.com/Jibblestein/StardewMods.git
+
+mods:
+   Integrated Minecarts
+
+latest commit:
+   commit 963d79b3ec9dd2d346440f7def0e2bd9b13db796
+   Author: Jibb <103417406+Jibblestein@users.noreply.github.com>
+   Date:   Fri Apr 19 23:56:51 2024 +0800
+   
+       v4.2.1 removed harmony debug
+   

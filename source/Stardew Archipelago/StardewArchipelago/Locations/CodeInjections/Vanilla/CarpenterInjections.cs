@@ -471,7 +471,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void AddToStock(Dictionary<ISalable, int[]> stock, string locationDisplayName, int price, Item[] materials, string locationName, Hint[] myActiveHints)
         {
             var priceMultiplier = _archipelago.SlotData.BuildingPriceMultiplier;
-            var purchasableCheck = new PurchaseableArchipelagoLocation(locationDisplayName, locationName, _modHelper, _locationChecker, _archipelago, myActiveHints);
+            var purchasableCheck = new PurchaseableArchipelagoLocation(locationDisplayName, locationName, _monitor, _modHelper, _locationChecker, _archipelago, myActiveHints);
             foreach (var material in materials)
             {
                 material.Stack = Math.Max(1, (int)(material.Stack * priceMultiplier));

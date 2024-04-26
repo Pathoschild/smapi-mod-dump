@@ -168,7 +168,7 @@ namespace HorseOverhaul
             helper.Events.Content.AssetReady += InvalidateStableTroughTexture;
 
             helper.Events.Input.ButtonPressed += (_, e) => ButtonHandling.OnButtonPressed(this, e);
-            helper.Events.Input.ButtonsChanged += (_, e) => ButtonHandling.OnButtonsChanged(this, e);
+            helper.Events.Input.ButtonsChanged += (_, _) => ButtonHandling.OnButtonsChanged(this);
 
             Patcher.PatchAll(this);
         }
@@ -497,9 +497,16 @@ namespace HorseOverhaul
 
                     Horses.Add(new HorseWrapper(stable, this, saddleBag, stableID));
 
-                    if (Context.IsMainPlayer && Config.HorseHeater)
+                    if (Context.IsMainPlayer && Config.HorseHeater && Game1.IsWinter)
                     {
-                        CheckForHeater(location, stable);
+                        var horse = stable.getStableHorse();
+
+                        if (horse != null && CheckForHeater(location, stable))
+                        {
+                            var horseW = Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).FirstOrDefault();
+
+                            horseW?.AddHeaterBonus();
+                        }
                     }
                 }
 
@@ -529,28 +536,15 @@ namespace HorseOverhaul
             }
         }
 
-        private void CheckForHeater(GameLocation location, Stable stable)
+        public bool CheckForHeater(GameLocation location, Stable stable)
         {
-            var horse = stable.getStableHorse();
-
-            if (horse == null || !Game1.IsWinter)
-            {
-                return;
-            }
-
             // this stable skin includes a heater, so we give the player the bonus for free
             if (SeasonalVersion == SeasonalVersion.Magimatica)
             {
-                var horseW = Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).FirstOrDefault();
-
-                horseW?.AddHeaterBonus();
-
-                return;
+                return true;
             }
 
-            var farmObjects = location.Objects.Values;
-
-            foreach (var item in farmObjects)
+            foreach (var item in location.Objects.Values)
             {
                 if (item == null || !item.Name.Equals("Heater"))
                 {
@@ -562,14 +556,12 @@ namespace HorseOverhaul
                 {
                     if (stable.tileY.Value - 1 <= item.TileLocation.Y && item.TileLocation.Y <= stable.tileY.Value + 2)
                     {
-                        var horseW = Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).FirstOrDefault();
-
-                        horseW?.AddHeaterBonus();
-
-                        return;
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
 
         private Chest GetSaddleBag(Func<Stable> stable, int stableID)

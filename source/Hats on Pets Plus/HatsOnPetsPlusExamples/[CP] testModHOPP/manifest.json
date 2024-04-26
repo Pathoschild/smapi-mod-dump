@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SymaLoernn/Stardew_HatsOnPetsPlus
+**
+*************************************************/
+
+{
+	"Name" : "Test mod for HOPP",
+	"Author" : "Syma",
+	"Version" : "0.0.1",
+	"Description" : "A test mod",
+	"UniqueID" : "Syma.HOPPTest",
+	"UpdateKeys": [],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	}
+}

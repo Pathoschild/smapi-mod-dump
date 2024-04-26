@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using OrnithologistsGuild.Content;
+using OrnithologistsGuild.Models;
 using StardewValley;
 using StateMachine;
 
@@ -53,7 +54,7 @@ namespace OrnithologistsGuild.Game.Critters
 
         // Relocate
         private Vector3? RelocateFrom;
-        private Tuple<Vector3, Perch> RelocateTo;
+        private BirdiePosition RelocateTo;
         private float? RelocateDistance;
         private int? RelocateDuration;
         private int? RelocateElapsed;
@@ -308,7 +309,7 @@ namespace OrnithologistsGuild.Game.Critters
                                 list.Add(new FarmerSprite.AnimationFrame((short)(baseFrame + 4), 100, secondaryArm: false, flip, (Farmer who) =>
                                 {
                                     // Play pecking noise
-                                    Environment.localSoundAt("shiny4", TileLocation);
+                                    Environment.localSound("shiny4", TileLocation);
                                 }));
                             }
 
@@ -371,13 +372,13 @@ namespace OrnithologistsGuild.Game.Critters
                     .TransitionTo(BetterBirdieState.Stopping).On(BetterBirdieTrigger.Stop)
                     .OnEnter(e =>
                     {
-                        Tuple<Vector3, Perch> relocateTo;
+                        BirdiePosition relocateTo;
                         if (!ModEntry.debug_BirdWhisperer.HasValue)
                         {
                             relocateTo = GetRandomPositionOrPerch();
                         } else
                         {
-                            relocateTo = new Tuple<Vector3, Perch>(new Vector3(ModEntry.debug_BirdWhisperer.Value.X, ModEntry.debug_BirdWhisperer.Value.Y, 0), null);
+                            relocateTo = new (Position: new Vector3(ModEntry.debug_BirdWhisperer.Value.X, ModEntry.debug_BirdWhisperer.Value.Y, 0), Perch: null);
                             ModEntry.debug_BirdWhisperer = null;
                         }
 
@@ -386,17 +387,17 @@ namespace OrnithologistsGuild.Game.Critters
                             stopEmote();
 
                             // Immediately update perch to prevent collisions
-                            Perch = relocateTo.Item2;
+                            Perch = relocateTo.Perch;
 
                             RelocateFrom = Position3;
                             RelocateTo = relocateTo;
 
-                            RelocateDistance = Vector2.Distance(position, Utilities.XY(relocateTo.Item1));
+                            RelocateDistance = Vector2.Distance(position, Utilities.XY(relocateTo.Position));
 
                             RelocateDuration = (int)(RelocateDistance.Value / ((BirdieDef.FlySpeed + FlySpeedOffset) / 15f));
                             RelocateElapsed = 0;
 
-                            if (position.X > RelocateTo.Item1.X) flip = false;
+                            if (position.X > RelocateTo.Position.X) flip = false;
                             else flip = true;
 
                             if (Game1.random.NextDouble() < 0.8) PlayCall();
@@ -437,7 +438,7 @@ namespace OrnithologistsGuild.Game.Critters
                             {
                                 var factor = (float)RelocateElapsed.Value / (float)RelocateDuration.Value;
 
-                                var midPointZ = ((RelocateFrom.Value.Z + RelocateTo.Item1.Z) / 2) - (RelocateDistance.Value / 6f); // Midpoint of Z values + (distance / 6)
+                                var midPointZ = ((RelocateFrom.Value.Z + RelocateTo.Position.Z) / 2) - (RelocateDistance.Value / 6f); // Midpoint of Z values + (distance / 6)
 
                                 // Fly in an arc
                                 // Note: yOffset is Z
@@ -451,21 +452,21 @@ namespace OrnithologistsGuild.Game.Critters
                                 {
                                     // Fly down from mid point
                                     var arcFactor = (factor - 0.5f) * 2f;
-                                    yOffset = Utility.Lerp(midPointZ, RelocateTo.Item1.Z, Utilities.EaseOutSine(arcFactor));
+                                    yOffset = Utility.Lerp(midPointZ, RelocateTo.Position.Z, Utilities.EaseOutSine(arcFactor));
                                 }
 
-                                position = Vector2.Lerp(Utilities.XY(RelocateFrom.Value), Utilities.XY(RelocateTo.Item1), Utilities.EaseOutSine(factor));
+                                position = Vector2.Lerp(Utilities.XY(RelocateFrom.Value), Utilities.XY(RelocateTo.Position), Utilities.EaseOutSine(factor));
                             }
                             else
                             {
                                 // Relocation complete
-                                Position3 = RelocateTo.Item1;
+                                Position3 = RelocateTo.Position;
                                 startingPosition = position;
    
                                 if (IsPerched && Perch.Type == PerchType.Tree)
                                 {
                                     // Shake tree on landing
-                                    ModEntry.Instance.Helper.Reflection.GetMethod(Perch.Tree, "shake").Invoke(Perch.Tree.currentTileLocation, false, Game1.player.currentLocation);
+                                    ModEntry.Instance.Helper.Reflection.GetMethod(Perch.Tree, "shake").Invoke(Perch.Tree.Tile, false);
                                 }
 
                                 if (IsInWater) Splash(1.75f);

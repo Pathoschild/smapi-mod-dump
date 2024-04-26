@@ -22,8 +22,8 @@ namespace Leclair.Stardew.Common.UI;
 
 public static class SimpleHelper {
 
-	public static SimpleBuilder Builder(LayoutDirection dir = LayoutDirection.Vertical, int margin = 0, Vector2? minSize = null, Alignment align = Alignment.None) {
-		return new(null, new LayoutNode(dir, null, margin, minSize, align));
+	public static ISimpleBuilder Builder(LayoutDirection dir = LayoutDirection.Vertical, int margin = 0, Vector2? minSize = null, Alignment align = Alignment.None) {
+		return new SimpleBuilder(null, new LayoutNode(dir, null, margin, minSize, align));
 	}
 
 	public static void DrawHover(

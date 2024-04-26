@@ -48,7 +48,7 @@ namespace JsonAssets.Data
 
             recipe.CraftedItemIds = new List<string>();
             foreach (object entry in this.CraftedItems)
-                recipe.CraftedItemIds.Add(this.CraftedItems[0].ToString()); // TODO: always uses first crafted item?
+                recipe.CraftedItemIds.Add(GetCraftedItem(entry.ToString())); // TODO: always uses first crafted item?
 
             return recipe;
         }
@@ -69,6 +69,19 @@ namespace JsonAssets.Data
             this.FirstItemTags.FilterNulls();
             this.SecondItemTags.FilterNulls();
             this.CraftedItems.FilterNulls();
+        }
+
+        private string GetCraftedItem(string itemName)
+        {
+            if (itemName.FixIdJA("S") != null)
+                return itemName.FixIdJA("S");
+            else if (itemName.FixIdJA("P") != null)
+                return itemName.FixIdJA("P");
+            else if (itemName.FixIdJA("B") != null)
+                return itemName.FixIdJA("B");
+            else if (!StardewValley.ItemRegistry.GetDataOrErrorItem(itemName).IsErrorItem)
+                return StardewValley.ItemRegistry.GetDataOrErrorItem(itemName).ItemId;
+            else return itemName;
         }
     }
 }

@@ -14,6 +14,7 @@ using StardewModdingAPI.Events;
 using System.Text.RegularExpressions;
 using Translation;
 using StardewValley;
+using stardew_access.Utils;
 
 internal class GameStateNarrator : FeatureBase
 {
@@ -31,7 +32,7 @@ internal class GameStateNarrator : FeatureBase
     /// <summary>
     /// Stores the last 9 spoken hud messages.
     /// </summary>
-    public static List<string> HudMessagesBuffer = new();
+    public static BoundedQueue<string> HudMessagesBuffer = new(size: 9, allowDuplicacy: true);
 
     public new static GameStateNarrator Instance
     {
@@ -137,7 +138,6 @@ internal class GameStateNarrator : FeatureBase
                 hudMessageQueryKey = searchQuery;
                 MainClass.ScreenReader.Say(toSpeak, true);
                 HudMessagesBuffer.Add(toSpeak);
-                if (HudMessagesBuffer.Count > 9) HudMessagesBuffer.RemoveAt(0);
             }
         }
         catch (Exception e)

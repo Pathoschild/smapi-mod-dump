@@ -30,24 +30,22 @@ namespace AnimalHusbandryMod.animals
             LinkedList<CodeInstruction> newInstructions = new LinkedList<CodeInstruction>(instructions);
             CodeInstruction codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Ldfld && c.operand?.ToString() == "StardewValley.GameData.FarmAnimals.FarmAnimalHarvestType HarvestType");
             LinkedListNode<CodeInstruction> linkedListNode = newInstructions.Find(codeInstruction);
-            if (linkedListNode != null)
+            if (linkedListNode?.Previous != null)
             {
-                var lastInstruction = new CodeInstruction(OpCodes.Ldarg_0, null);
+                var lastInstruction = linkedListNode.Previous;
                 Label endLabel = generator.DefineLabel();
-                lastInstruction.labels.Add(endLabel);
+                lastInstruction.Value.labels.Add(endLabel);
 
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Pop, null));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(DataLoader), "ModConfig")));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ModConfig), "DisableContestBonus")));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Brtrue, endLabel));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldarg_0, null));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalContestController), "HasProductionBonus", new Type[]{typeof(FarmAnimal)})));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Brfalse, endLabel));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldarg_0, null));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), "produceQuality")));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldc_I4_4, null));
-                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(NetInt), "Value").GetSetMethod()));
-                newInstructions.AddBefore(linkedListNode, lastInstruction);
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(DataLoader), "ModConfig")));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ModConfig), "DisableContestBonus")));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Brtrue, endLabel));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Ldarg_0, null));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalContestController), "HasProductionBonus", new Type[]{typeof(FarmAnimal)})));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Brfalse, endLabel));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Ldarg_0, null));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), "produceQuality")));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Ldc_I4_4, null));
+                newInstructions.AddBefore(lastInstruction, new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(NetInt), "Value").GetSetMethod()));
             }
 
             codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Call && c.operand?.ToString() == "Boolean spawnObjectAround(Microsoft.Xna.Framework.Vector2, StardewValley.Object, StardewValley.GameLocation, Boolean, System.Action`1[StardewValley.Object])");

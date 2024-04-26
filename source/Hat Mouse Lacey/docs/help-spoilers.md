@@ -35,6 +35,12 @@ the saloon for the evening.
 
 She visits the Night Market on Winter 15 *and* Winter 17.
 
+On Summer 20 (the first day of the Trout Derby), she watches near the stall
+for a few hours, then returns to the area near her cabin.
+
+During the Year 1 Green Rain event, she does not leave her cabin. This makes
+her inaccessible for the day if you don't have 2 hearts with her.
+
 ## Something is wrong with the Forest map around Lacey's house.
 
 This mod adds a SMAPI console command `hatmouselacey map_repair`. Try running

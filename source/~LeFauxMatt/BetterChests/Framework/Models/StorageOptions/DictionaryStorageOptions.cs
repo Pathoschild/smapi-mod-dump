@@ -20,12 +20,17 @@ using StardewMods.Common.Services.Integrations.BetterChests.Interfaces;
 internal abstract class DictionaryStorageOptions : IStorageOptions
 {
     private const string Prefix = "furyx639.BetterChests/";
-    private readonly Dictionary<string, CachedValue<FilterMethod>> cachedFilterMethod = new();
 
-    private readonly Dictionary<string, CachedValue<HashSet<string>>> cachedHashSet = new();
     private readonly Dictionary<string, CachedValue<int>> cachedInt = new();
     private readonly Dictionary<string, CachedValue<FeatureOption>> cachedOption = new();
     private readonly Dictionary<string, CachedValue<RangeOption>> cachedRangeOption = new();
+
+    /// <inheritdoc />
+    public RangeOption AccessChest
+    {
+        get => this.Get(RangeOptionKey.AccessChest);
+        set => this.Set(RangeOptionKey.AccessChest, value);
+    }
 
     /// <inheritdoc />
     public FeatureOption AutoOrganize
@@ -49,24 +54,24 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     }
 
     /// <inheritdoc />
-    public FeatureOption CategorizeChestAutomatically
+    public FeatureOption CategorizeChestBlockItems
     {
-        get => this.Get(OptionKey.CategorizeChestAutomatically);
-        set => this.Set(OptionKey.CategorizeChestAutomatically, value);
+        get => this.Get(OptionKey.CategorizeChestBlockItems);
+        set => this.Set(OptionKey.CategorizeChestBlockItems, value);
     }
 
     /// <inheritdoc />
-    public FilterMethod CategorizeChestMethod
+    public string CategorizeChestSearchTerm
     {
-        get => this.Get(FilterMethodKey.CategorizeChestMethod);
-        set => this.Set(FilterMethodKey.CategorizeChestMethod, value);
+        get => this.Get(StringKey.CategorizeChestSearchTerm);
+        set => this.Set(StringKey.CategorizeChestSearchTerm, value);
     }
 
     /// <inheritdoc />
-    public HashSet<string> CategorizeChestTags
+    public FeatureOption CategorizeChestIncludeStacks
     {
-        get => this.Get(HashSetKey.FilterItemsList);
-        set => this.Set(HashSetKey.FilterItemsList, value);
+        get => this.Get(OptionKey.CategorizeChestIncludeStacks);
+        set => this.Set(OptionKey.CategorizeChestIncludeStacks, value);
     }
 
     /// <inheritdoc />
@@ -98,6 +103,13 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     }
 
     /// <inheritdoc />
+    public RangeOption CookFromChest
+    {
+        get => this.Get(RangeOptionKey.CookFromChest);
+        set => this.Set(RangeOptionKey.CookFromChest, value);
+    }
+
+    /// <inheritdoc />
     public RangeOption CraftFromChest
     {
         get => this.Get(RangeOptionKey.CraftFromChest);
@@ -119,20 +131,6 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     }
 
     /// <inheritdoc />
-    public FeatureOption InventoryTabs
-    {
-        get => this.Get(OptionKey.InventoryTabs);
-        set => this.Set(OptionKey.InventoryTabs, value);
-    }
-
-    /// <inheritdoc />
-    public HashSet<string> InventoryTabList
-    {
-        get => this.Get(HashSetKey.InventoryTabList);
-        set => this.Set(HashSetKey.InventoryTabList, value);
-    }
-
-    /// <inheritdoc />
     public FeatureOption OpenHeldChest
     {
         get => this.Get(OptionKey.OpenHeldChest);
@@ -140,13 +138,20 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     }
 
     /// <inheritdoc />
-    public CapacityOption ResizeChest
+    public ChestMenuOption ResizeChest
     {
         get =>
-            CapacityOptionExtensions.TryParse(this.Get(StringKey.ResizeChest), out var capacityOption)
+            ChestMenuOptionExtensions.TryParse(this.Get(StringKey.ResizeChest), out var capacityOption)
                 ? capacityOption
-                : CapacityOption.Default;
+                : ChestMenuOption.Default;
         set => this.Set(StringKey.ResizeChest, value.ToStringFast());
+    }
+
+    /// <inheritdoc />
+    public virtual int ResizeChestCapacity
+    {
+        get => this.Get(IntegerKey.ResizeChestCapacity);
+        set => this.Set(IntegerKey.ResizeChestCapacity, value);
     }
 
     /// <inheritdoc />
@@ -154,6 +159,13 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     {
         get => this.Get(OptionKey.SearchItems);
         set => this.Set(OptionKey.SearchItems, value);
+    }
+
+    /// <inheritdoc />
+    public FeatureOption ShopFromChest
+    {
+        get => this.Get(OptionKey.ShopFromChest);
+        set => this.Set(OptionKey.ShopFromChest, value);
     }
 
     /// <inheritdoc />
@@ -171,25 +183,38 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     }
 
     /// <inheritdoc />
-    public int StashToChestPriority
+    public StashPriority StashToChestPriority
     {
-        get => this.Get(IntegerKey.StashToChestPriority);
-        set => this.Set(IntegerKey.StashToChestPriority, value);
+        get =>
+            StashPriorityExtensions.TryParse(this.Get(StringKey.StashToChestPriority), out var stashPriority)
+                ? stashPriority
+                : StashPriority.Default;
+        set => this.Set(StringKey.StashToChestPriority, value.ToStringFast());
     }
 
     /// <inheritdoc />
-    public string GetDescription() => I18n.Storage_Other_Tooltip();
+    public string StorageName
+    {
+        get => this.Get(StringKey.StorageName);
+        set => this.Set(StringKey.StorageName, value);
+    }
 
     /// <inheritdoc />
-    public string GetDisplayName() => I18n.Storage_Other_Name();
+    public IStorageOptions GetActualOptions() => this;
+
+    /// <inheritdoc />
+    public IStorageOptions GetParentOptions() => this;
+
+    /// <inheritdoc />
+    public virtual string GetDescription() => I18n.Storage_Other_Tooltip();
+
+    /// <inheritdoc />
+    public virtual string GetDisplayName() => I18n.Storage_Other_Name();
 
     /// <summary>Tries to get the data associated with the specified key.</summary>
     /// <param name="key">The key to search for.</param>
-    /// <param name="value">
-    /// When this method returns, contains the value associated with the specified key, if the key is
-    /// found; otherwise, null.
-    /// </param>
-    /// <returns>true if the key was found and the data associated with it was retrieved successfully; otherwise, false.</returns>
+    /// <param name="value">When this method returns, contains the value associated with the specified key; otherwise, null.</param>
+    /// <returns>true if the key was found; otherwise, false.</returns>
     protected abstract bool TryGetValue(string key, [NotNullWhen(true)] out string? value);
 
     /// <summary>Sets the value for a given key in the derived class.</summary>
@@ -237,49 +262,6 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
         return newValue;
     }
 
-    private FilterMethod Get(FilterMethodKey filterMethodKey)
-    {
-        var key = DictionaryStorageOptions.Prefix + filterMethodKey.ToStringFast();
-        if (!this.TryGetValue(key, out var value))
-        {
-            return FilterMethod.Default;
-        }
-
-        // Return from cache
-        if (this.cachedFilterMethod.TryGetValue(key, out var cachedValue) && cachedValue.OriginalValue == value)
-        {
-            return cachedValue.Value;
-        }
-
-        // Save to cache
-        var newValue = FilterMethodExtensions.TryParse(value, out var filterMethod)
-            ? filterMethod
-            : FilterMethod.Default;
-
-        this.cachedFilterMethod[key] = new CachedValue<FilterMethod>(value, newValue);
-        return newValue;
-    }
-
-    private HashSet<string> Get(HashSetKey hashSetKey)
-    {
-        var key = DictionaryStorageOptions.Prefix + hashSetKey.ToStringFast();
-        if (!this.TryGetValue(key, out var value))
-        {
-            return [];
-        }
-
-        // Return from cache
-        if (this.cachedHashSet.TryGetValue(key, out var cachedValue) && cachedValue.OriginalValue == value)
-        {
-            return cachedValue.Value;
-        }
-
-        // Save to cache
-        var newValue = string.IsNullOrWhiteSpace(value) ? new HashSet<string>() : [..value.Split(',')];
-        this.cachedHashSet[key] = new CachedValue<HashSet<string>>(value, newValue);
-        return newValue;
-    }
-
     private int Get(IntegerKey integerKey)
     {
         var key = DictionaryStorageOptions.Prefix + integerKey.ToStringFast();
@@ -322,22 +304,6 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
         this.SetValue(key, stringValue);
     }
 
-    private void Set(FilterMethodKey filterMethodKey, FilterMethod value)
-    {
-        var key = DictionaryStorageOptions.Prefix + filterMethodKey.ToStringFast();
-        var stringValue = value == FilterMethod.Default ? string.Empty : value.ToStringFast();
-        this.cachedFilterMethod[key] = new CachedValue<FilterMethod>(stringValue, value);
-        this.SetValue(key, stringValue);
-    }
-
-    private void Set(HashSetKey hashSetKey, HashSet<string> value)
-    {
-        var key = DictionaryStorageOptions.Prefix + hashSetKey.ToStringFast();
-        var stringValue = !value.Any() ? string.Empty : string.Join(',', value);
-        this.cachedHashSet[key] = new CachedValue<HashSet<string>>(stringValue, value);
-        this.SetValue(key, stringValue);
-    }
-
     private void Set(IntegerKey integerKey, int value)
     {
         var key = DictionaryStorageOptions.Prefix + integerKey.ToStringFast();
@@ -361,25 +327,13 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
 #pragma warning disable SA1201
 #pragma warning disable SA1600
 #pragma warning disable SA1602
-    [EnumExtensions]
-    internal enum HashSetKey
-    {
-        FilterItemsList,
-        InventoryTabList,
-    }
 
     [EnumExtensions]
     internal enum IntegerKey
     {
         CraftFromChestDistance,
+        ResizeChestCapacity,
         StashToChestDistance,
-        StashToChestPriority,
-    }
-
-    [EnumExtensions]
-    internal enum FilterMethodKey
-    {
-        CategorizeChestMethod,
     }
 
     [EnumExtensions]
@@ -388,16 +342,16 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
         AutoOrganize,
         CarryChest,
         CategorizeChest,
-        CategorizeChestAutomatically,
+        CategorizeChestBlockItems,
+        CategorizeChestIncludeStacks,
         ChestFinder,
         ChestInfo,
         CollectItems,
         ConfigureChest,
         HslColorPicker,
-        InventoryTabs,
         OpenHeldChest,
-        OrganizeItems,
         SearchItems,
+        ShopFromChest,
         TransferItems,
         UnloadChest,
     }
@@ -405,6 +359,8 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     [EnumExtensions]
     internal enum RangeOptionKey
     {
+        AccessChest,
+        CookFromChest,
         CraftFromChest,
         StashToChest,
     }
@@ -412,7 +368,9 @@ internal abstract class DictionaryStorageOptions : IStorageOptions
     [EnumExtensions]
     internal enum StringKey
     {
-        ChestLabel,
+        CategorizeChestSearchTerm,
         ResizeChest,
+        StashToChestPriority,
+        StorageName,
     }
 }

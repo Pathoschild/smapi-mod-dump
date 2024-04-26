@@ -41,16 +41,27 @@ using StardewValley.TerrainFeatures;
 using Leclair.Stardew.BetterCrafting.Managers;
 using Leclair.Stardew.BetterCrafting.Models;
 using Newtonsoft.Json.Linq;
-using StardewValley.Tools;
-using Leclair.Stardew.BetterCrafting.Integrations.RaisedGardenBeds;
+
+using StardewValley.ItemTypeDefinitions;
+using StardewValley.Buildings;
+using Leclair.Stardew.BetterCrafting.Menus;
+using System.Diagnostics;
+
+
+using SMAPIJsonHelper = StardewModdingAPI.Toolkit.Serialization.JsonHelper;
+using System.Reflection;
 
 namespace Leclair.Stardew.BetterCrafting;
 
-public class ModEntry : ModSubscriber {
+public class ModEntry : PintailModSubscriber {
 
 	public static readonly string NPCMapLocationPath = "Mods/Bouhm.NPCMapLocations/NPCs";
 
 	public static readonly string HeadsPath = "Mods/leclair.bettercrafting/Heads";
+
+	public static readonly string MagicWorkbenchTexture = @"Mods/leclair.bettercrafting/Texture/MagicWorkbench";
+	public static readonly string MagicWorkbenchId = "leclair.bettercrafting_MagicWorkbench";
+
 
 #nullable disable
 	public static ModEntry Instance { get; private set; }
@@ -58,6 +69,7 @@ public class ModEntry : ModSubscriber {
 
 	internal readonly Dictionary<IManifest, ModAPI> APIInstances = new();
 
+	internal SMAPIJsonHelper? JsonHelper;
 	internal Harmony? Harmony;
 
 	private readonly PerScreen<IClickableMenu?> CurrentMenu = new();
@@ -74,8 +86,13 @@ public class ModEntry : ModSubscriber {
 #nullable disable
 	public ModConfig Config;
 
+	public DataRecipeManager DataRecipes;
 	public RecipeManager Recipes;
 	public FavoriteManager Favorites;
+	public ItemCacheManager ItemCache;
+	public TriggerManager Triggers;
+	public CraftingStationManager Stations;
+	public SpookyActionAtADistance SpookyAction;
 
 	internal ThemeManager<Theme> ThemeManager;
 
@@ -89,19 +106,22 @@ public class ModEntry : ModSubscriber {
 	private readonly object providerLock = new();
 
 	private CaseInsensitiveHashSet? ConnectorExamples;
-	private Dictionary<int, string>? FloorMap;
+	private Dictionary<string, (string, string)>? FloorMap;
+	private Dictionary<string, (string, string)>? FenceMap;
 
 	private GMCMIntegration<ModConfig, ModEntry>? GMCMIntegration;
 
 	internal Integrations.ProducerFrameworkMod.PFMIntegration? intPFM;
-	internal Integrations.RaisedGardenBeds.RGBIntegration? intRGB;
+	//internal Integrations.RaisedGardenBeds.RGBIntegration? intRGB;
+	//internal Integrations.ConvenientChests.CCIntegration? intCC;
 	internal Integrations.StackSplitRedux.SSRIntegration? intSSR;
 	internal Integrations.CookingSkill.CSIntegration? intCSkill;
 	internal Integrations.SpaceCore.SCIntegration? intSCore;
 	internal Integrations.CustomCraftingStation.CCSIntegration? intCCStation;
-	internal Integrations.DynamicGameAssets.DGAIntegration? intDGA;
 
-	internal Models.Theme? Theme => ThemeManager.Theme;
+	private bool? _UseGlobalSave;
+
+	private TextureColorWatcher? TextureWatcher;
 
 	public override void Entry(IModHelper helper) {
 		base.Entry(helper);
@@ -109,15 +129,22 @@ public class ModEntry : ModSubscriber {
 		RenderHelper.SetHelper(helper);
 
 		Instance = this;
+		AdvancedMultipleMutexRequest.Mod = this;
+
+		// Before Harmony...
+		SpookyAction = new SpookyActionAtADistance(this);
 
 		// Harmony
 		Harmony = new Harmony(ModManifest.UniqueID);
 
+		SpookyAction.PatchGame(Harmony);
+		Patches.CraftingPage_Patches.Patch(this);
+		Patches.LetterViewerMenu_Patches.Patch(this);
+		Patches.SObject_Patches.Patch(this);
 		Patches.Item_Patches.Patch(this);
-		Patches.Workbench_Patches.Patch(this);
+		Patches.GameLocation_Patches.Patch(this);
 		Patches.Torch_Patches.Patch(this);
-
-		Common_SpriteText_Patches.Patch(Harmony, Monitor);
+		Patches.Workbench_Patches.Patch(this);
 
 		// Read Config
 		Config = Helper.ReadConfig<ModConfig>();
@@ -127,14 +154,12 @@ public class ModEntry : ModSubscriber {
 
 		RegisterProviders();
 
+		ItemCache = new ItemCacheManager(this);
 		Recipes = new RecipeManager(this);
+		DataRecipes = new DataRecipeManager(this);
 		Favorites = new FavoriteManager(this);
-
-		ThemeManager = new ThemeManager<Models.Theme>(this, Config.Theme);
-		ThemeManager.ThemeChanged += OnThemeChanged;
-		ThemeManager.Discover();
-
-		//Sprites.Load(Helper.Content, Helper.ModRegistry);
+		Triggers = new TriggerManager(this);
+		Stations = new CraftingStationManager(this);
 
 		CheckRecommendedIntegrations();
 		InjectMenuHandler();
@@ -197,20 +222,20 @@ public class ModEntry : ModSubscriber {
 	}
 
 	private void OnThemeChanged(object? sender, ThemeChangedEventArgs<Models.Theme> e) {
-		var oldTex = Sprites.Buttons.Texture;
-		var newTex = Sprites.Buttons.Texture = ThemeManager.Load<Texture2D>("buttons.png");
+		var oldTex = Sprites.Buttons._TexCache;
+		Sprites.Buttons._TexCache = null;
 
 		if (Game1.activeClickableMenu is GameMenu gm) {
 			foreach(var gmp in gm.pages) {
 				if (gmp is Menus.BetterCraftingPage bcp) {
-					UpdateTextures(oldTex, newTex, gmp);
+					UpdateTextures(oldTex, Sprites.Buttons.Texture!, gmp);
 					bcp.LoadTextures();
 				}
 			}
 		}
 
-		if (Game1.activeClickableMenu is Menus.BetterCraftingPage page) {
-			UpdateTextures(oldTex, newTex, page);
+		if (Game1.activeClickableMenu is BetterCraftingPage page) {
+			UpdateTextures(oldTex, Sprites.Buttons.Texture!, page);
 			page.LoadTextures();
 		}
 	}
@@ -254,21 +279,24 @@ public class ModEntry : ModSubscriber {
 						menu = Game1.activeClickableMenu = game;
 					}
 
-					var bcm = Menus.BetterCraftingPage.Open(
+					var bcm = BetterCraftingPage.Open(
 						mod: this,
-						location: OldCraftingPage.Value.Location,
-						position: OldCraftingPage.Value.Position,
+						location: OldCraftingPage.Value.BenchLocation,
+						position: OldCraftingPage.Value.BenchPosition,
 						width: game?.width ?? -1,
 						height: game?.height ?? -1,
 						x: game?.xPositionOnScreen ?? -1,
 						y: game?.yPositionOnScreen ?? -1,
-						area: OldCraftingPage.Value.Area,
+						area: OldCraftingPage.Value.BenchArea,
 						cooking: OldCraftingPage.Value.cooking,
 						standalone_menu: !OldCraftingGameMenu.Value,
 						material_containers: OldCraftingPage.Value.MaterialContainers,
 						silent_open: true,
 						discover_containers: OldCraftingPage.Value.DiscoverContainers,
-						listed_recipes: OldCraftingPage.Value.GetListedRecipes()
+						discover_buildings: OldCraftingPage.Value.DiscoverBuildings,
+						listed_recipes: OldCraftingPage.Value.GetListedRecipes(),
+						station: OldCraftingPage.Value.Station?.Id,
+						areaOverride: OldCraftingPage.Value.DiscoverAreaOverride
 					);
 
 					if (game != null) {
@@ -294,6 +322,16 @@ public class ModEntry : ModSubscriber {
 
 		// No menu?
 		if (menu == null) {
+			// Did we *used* to have a GameMenu
+			if (CurrentMenu.Value is GameMenu gm1) {
+				if (gm1.GetCurrentPage() is not BetterCraftingPage) {
+					foreach(var page1 in gm1.pages) {
+						if (page1 is BetterCraftingPage bcp1)
+							bcp1.emergencyShutDown();
+					}
+				}
+			}
+
 			CurrentMenu.Value = null;
 			return;
 		}
@@ -305,8 +343,7 @@ public class ModEntry : ModSubscriber {
 		}
 
 		if (menu is CraftingPage page) {
-			bool cooking = CraftingPageHelper.IsCooking(page);
-			if (cooking ? Config.ReplaceCooking : Config.ReplaceCrafting) {
+			if (page.cooking ? Config.ReplaceCooking : Config.ReplaceCrafting) {
 
 				// Make a copy of the existing chests.
 				List<object>? chests = page._materialContainers is null ? null : new(page._materialContainers);
@@ -324,7 +361,7 @@ public class ModEntry : ModSubscriber {
 					location: Game1.player.currentLocation,
 					position: where,
 					area: area,
-					cooking: cooking,
+					cooking: page.cooking,
 					standalone_menu: true,
 					material_containers: chests
 				);
@@ -382,24 +419,11 @@ public class ModEntry : ModSubscriber {
 		if (menu is GameMenu gm && Config.ReplaceCrafting) {
 			for (int i = 0; i < gm.pages.Count; i++) {
 				if (gm.pages[i] is CraftingPage cp) {
-					// Make a copy of the existing chests.
-					List<object>? containers = cp._materialContainers is null ? null : new(cp._materialContainers);
+
+					gm.pages[i] = new TemporaryCraftingPage(this, cp);
 
 					// Make sure to clean up the existing menu.
 					CommonHelper.YeetMenu(cp);
-
-					gm.pages[i] = Menus.BetterCraftingPage.Open(
-						mod: this,
-						location: Game1.player.currentLocation,
-						position: null,
-						width: gm.width,
-						height: gm.height,
-						cooking: false,
-						standalone_menu: false,
-						material_containers: containers,
-						x: gm.xPositionOnScreen,
-						y: gm.yPositionOnScreen
-					);
 				}
 			}
 		}
@@ -409,8 +433,22 @@ public class ModEntry : ModSubscriber {
 
 	[Subscriber]
 	private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
+		TextureWatcher = new(this, "Mods/leclair.bettercrafting/DynamicTextures/", (name, e) => {
+			return () => Helper.ModContent.Load<IRawTextureData>($"assets/{name}");
+		});
+
+		ThemeManager = new ThemeManager<Theme>(this, Config.Theme);
+
+		Sprites.Buttons._TexLoader = () => ThemeManager.ActiveThemeId == "default"
+			? Helper.GameContent.Load<Texture2D>("Mods/leclair.bettercrafting/DynamicTextures/buttons.png")
+			: ThemeManager.Load<Texture2D>("buttons.png");
+
+		ThemeManager.ThemeChanged += OnThemeChanged;
+		ThemeManager.Discover();
+
 		// Load Data
 		LoadFloorMap();
+		LoadFenceMap();
 		LoadConnectorExamples();
 
 		// More Init
@@ -421,31 +459,26 @@ public class ModEntry : ModSubscriber {
 		InventoryHelper.InitializeStackQuality(this);
 
 		intPFM = new(this);
-		intRGB = new(this);
+		//intRGB = new(this);
 		intSSR = new(this);
+		//intCC = new(this);
 		intCSkill = new(this);
 		intSCore = new(this);
 		intCCStation = new(this);
-		intDGA = new(this);
 
 		// Commands
 		Helper.ConsoleCommands.Add("bc_update", "Invalidate cached data.", (name, args) => {
+			DataRecipes.Invalidate();
 			Recipes.Invalidate();
+			ItemCache.Invalidate();
+			Stations.Invalidate();
 
-			CachedObjects = null;
-			CachedBigCraftables = null;
-			CachedFurniture = null;
-			CachedBoots = null;
-			CachedClothing = null;
-			CachedHats = null;
-			CachedWeapons = null;
-
-			Log($"Invalided caches.");
+			Log($"Invalided caches.", LogLevel.Info);
 		});
 
 		Helper.ConsoleCommands.Add("bc_retheme", "Reload all themes.", (name, args) => {
 			ThemeManager.Discover();
-			Log($"Reloaded themes. You may need to reopen menus.");
+			Log($"Reloaded themes. You may need to reopen menus.", LogLevel.Info);
 		});
 
 		Helper.ConsoleCommands.Add("bc_theme", "List all themes, or switch to a new theme.", (name, args) => {
@@ -455,50 +488,88 @@ public class ModEntry : ModSubscriber {
 			}
 		});
 
-		// Load Data -- Actually, this is unnecessary. Do it on demand.
-		// Recipes.LoadRecipes();
-		// Recipes.LoadDefaults();
+		Helper.ConsoleCommands.Add("bc_stations", "List all custom crafting stations, or open one if you provide a name.", (name, args) => {
+			if ( args.Length > 0 && !string.IsNullOrEmpty(args[0]) ) {
+				string key = args[0].Trim();
+
+				if (key.Equals("reload", StringComparison.OrdinalIgnoreCase)) {
+					Stations.Invalidate();
+					Log($"Invalidated cache.", LogLevel.Info);
+					return;
+				}
+
+				if (!Stations.IsStation(key)) {
+					Log($"No such station: {key}", LogLevel.Warn);
+					return;
+				}
+
+				Triggers.Map_OpenMenu(Game1.currentLocation, new string[] {
+					"", "false", "false", key
+				}, Game1.player, Game1.player.Position.ToPoint());
+				return;
+			}
+
+			Log($"Available Crafting Stations:", LogLevel.Info);
+			foreach(var station in Stations.GetStations())
+				Log($" [{station.Id}]: {station.DisplayName} (Recipes: {station.Recipes?.Length ?? 0}, Exclusive: {station.AreRecipesExclusive})", LogLevel.Info);
+		});
+
 	}
 
 	[Subscriber]
 	private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
+		_UseGlobalSave = null;
 		AtTitle = false;
 		RegisterSettings();
+
+		// Touch this to load our texture ahead of time.
+		_ = Sprites.Buttons.Texture;
 	}
+
 
 	[Subscriber]
 	private void OnReturnToTitle(object? sender, ReturnedToTitleEventArgs e) {
+		_UseGlobalSave = null;
 		AtTitle = true;
 		RegisterSettings();
 	}
 
 	[Subscriber]
 	private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
-		foreach(var name in e.Names) {
+		bool reload_settings = false;
+
+		foreach (var name in e.Names) {
 			if (name.IsEquivalentTo(HeadsPath))
 				HeadsCache = null;
 
-			if (name.IsEquivalentTo(@"Data\ObjectInformation"))
-				CachedObjects = null;
+			/*if (name.IsEquivalentTo(@"Mods/leclair.bettercrafting/DynamicTextures/buttons.png") && ThemeManager.ActiveThemeId == "default")
+				Sprites.Buttons._TexCache = null;*/
 
-			if (name.IsEquivalentTo(@"Data\BigCraftablesInformation"))
-				CachedBigCraftables = null;
+			bool is_objects = name.IsEquivalentTo(@"Data/Objects");
 
-			if (name.IsEquivalentTo(@"Data\Furniture"))
-				CachedFurniture = null;
+			if (is_objects || name.IsEquivalentTo(@"Data/Fences")) {
+				var old_map = FenceMap;
+				FenceMap = null;
+				if (old_map is not null) {
+					LoadFenceMap();
+					if (!old_map.ShallowEquals(FenceMap))
+						reload_settings = true;
+				}
+			}
 
-			if (name.IsEquivalentTo(@"Data\Boots"))
-				CachedBoots = null;
-
-			if (name.IsEquivalentTo(@"Data\ClothingInformation"))
-				CachedClothing = null;
-
-			if (name.IsEquivalentTo(@"Data\hats"))
-				CachedHats = null;
-
-			if (name.IsEquivalentTo(@"Data\weapons"))
-				CachedWeapons = null;
+			if (is_objects || name.IsEquivalentTo(@"Data/FloorsAndPaths")) {
+				var old_map = FloorMap;
+				FloorMap = null;
+				if (old_map is not null) {
+					LoadFloorMap();
+					if (!old_map.ShallowEquals(FloorMap))
+						reload_settings = true;
+				}
+			}
 		}
+
+		if (reload_settings)
+			RegisterSettings();
 	}
 
 	[Subscriber]
@@ -520,15 +591,16 @@ public class ModEntry : ModSubscriber {
 			foreach(var pair in e.Removed) {
 				var obj = pair.Value;
 				if (obj is Torch torch && torch.bigCraftable.Value && torch.ParentSheetIndex == 278 && torch.Fragility != 2) {
-					e.Location.debris.Add(new Debris(new StardewValley.Object(926, 1), new Vector2(pair.Key.X * 64 + 32, pair.Key.Y * 64 + 32)));
+					e.Location.debris.Add(new Debris(ItemRegistry.Create("(O)926", 1), new Vector2(pair.Key.X * 64 + 32, pair.Key.Y * 64 + 32)));
 				}
 			}
 	}
 
+
 	[Subscriber]
 	private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
 		// Edit the cookout kit's recipe.
-		if (Config.EnableCookoutExpensive && e.NameWithoutLocale.IsEquivalentTo(@"Data\CraftingRecipes"))
+		if (Config.EnableCookoutExpensive && e.Name.IsEquivalentTo(@"Data/CraftingRecipes"))
 			e.Edit(data => {
 				var recipes = data.AsDictionary<string, string>();
 				if (recipes.Data.TryGetValue("Cookout Kit", out string? value)) {
@@ -551,8 +623,7 @@ public class ModEntry : ModSubscriber {
 					Log($"The {path} file is invalid.", LogLevel.Error, ex);
 				}
 
-				if (heads is null)
-					heads = new();
+				heads ??= new();
 
 				// Read any extra data files.
 				foreach (var cp in Helper.ContentPacks.GetOwned()) {
@@ -620,9 +691,49 @@ public class ModEntry : ModSubscriber {
 
 	#region Configuration
 
+	public bool UseGlobalSave {
+		get {
+			if (_UseGlobalSave.HasValue)
+				return _UseGlobalSave.Value;
+
+			string path = $"savedata/settings/{Constants.SaveFolderName}.json";
+			SaveSpecificConfig? data = null;
+
+			try {
+				data = Helper.Data.ReadJsonFile<SaveSpecificConfig>(path);
+			} catch (Exception ex) {
+				Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
+				data = null;
+			}
+
+			_UseGlobalSave = data?.UseGlobalSave;
+
+			// We need a sensible default.
+			_UseGlobalSave ??=
+				!(Favorites.DoesHaveSaveFavorites() ||
+				Recipes.DoesHaveSaveCategories());
+
+			return _UseGlobalSave.Value;
+		}
+
+		set {
+			if (_UseGlobalSave == value || string.IsNullOrEmpty(Constants.SaveFolderName))
+				return;
+
+			_UseGlobalSave = value;
+			string path = $"savedata/settings/{Constants.SaveFolderName}.json";
+			Helper.Data.WriteJsonFile(path, new SaveSpecificConfig() {
+				UseGlobalSave = _UseGlobalSave
+			});
+
+			Recipes.ReloadCategories();
+			Favorites.LoadFavorites();
+		}
+	}
+
 	public void SaveConfig() {
 		Helper.WriteConfig(Config);
-		Helper.GameContent.InvalidateCache(@"Data\CraftingRecipes");
+		Helper.GameContent.InvalidateCache(@"Data/CraftingRecipes");
 		InjectMenuHandler();
 	}
 
@@ -656,20 +767,27 @@ public class ModEntry : ModSubscriber {
 
 		ConfigRegistered = true;
 
-		Dictionary<Models.SeasoningMode, Func<string>> seasoning = new();
-		seasoning.Add(Models.SeasoningMode.Disabled, I18n.Seasoning_Disabled);
-		seasoning.Add(Models.SeasoningMode.Enabled, I18n.Seasoning_Enabled);
-		seasoning.Add(Models.SeasoningMode.InventoryOnly, I18n.Seasoning_Inventory);
+		Dictionary<SeasoningMode, Func<string>> seasoning = new();
+		seasoning.Add(SeasoningMode.Disabled, I18n.Seasoning_Disabled);
+		seasoning.Add(SeasoningMode.Enabled, I18n.Seasoning_Enabled);
+		seasoning.Add(SeasoningMode.InventoryOnly, I18n.Seasoning_Inventory);
 
 		GMCMIntegration.Register(true);
 
 		if (!AtTitle)
-			GMCMIntegration.Add(
-				I18n.Setting_ShowAdv,
-				I18n.Setting_ShowAdv_Tip,
-				c => Game1.options.showAdvancedCraftingInformation,
-				(c, v) => Game1.options.changeCheckBoxOption(Options.toggleShowAdvancedCraftingInformation, v)
-			);
+			GMCMIntegration
+				.Add(
+					I18n.Setting_ShowAdv,
+					I18n.Setting_ShowAdv_Tip,
+					c => Game1.options.showAdvancedCraftingInformation,
+					(c, v) => Game1.options.changeCheckBoxOption(Options.toggleShowAdvancedCraftingInformation, v)
+				)
+				.Add(
+					I18n.Setting_UsePerSave,
+					I18n.Setting_UsePerSave_Tip,
+					c => ! UseGlobalSave,
+					(c, v) => UseGlobalSave = ! v
+				);
 
 		GMCMIntegration
 			.AddLabel(I18n.Setting_General)
@@ -684,10 +802,22 @@ public class ModEntry : ModSubscriber {
 				ThemeManager.GetThemeChoiceMethods()
 			)
 			.Add(
+				I18n.Setting_UseFullHeight,
+				I18n.Setting_UseFullHeight_Tip,
+				c => c.UseFullHeight,
+				(c, v) => c.UseFullHeight = v
+			)
+			.Add(
 				I18n.Setting_Settings,
 				I18n.Setting_Settings_Tip,
 				c => c.ShowSettingsButton,
 				(c, v) => c.ShowSettingsButton = v
+			)
+			.Add(
+				I18n.Setting_ShowEdit,
+				I18n.Setting_ShowEdit_Tip,
+				c => c.ShowEditButton,
+				(c, v) => c.ShowEditButton = v
 			)
 			.Add(
 				I18n.Setting_ReplaceCrafting,
@@ -744,6 +874,23 @@ public class ModEntry : ModSubscriber {
 					{ MenuPriority.Normal, I18n.Setting_Priority_Normal },
 					{ MenuPriority.High, I18n.Setting_Priority_High },
 				}
+			)
+			.AddChoice(
+				name: I18n.Setting_NewRecipes,
+				tooltip: I18n.Setting_NewRecipes_Tip,
+				get: c => c.NewRecipes,
+				set: (c, v) => c.NewRecipes = v,
+				choices: new Dictionary<NewRecipeMode, Func<string>> {
+					{ NewRecipeMode.Disabled, I18n.Setting_NewRecipes_Disabled },
+					{ NewRecipeMode.Uncrafted, I18n.Setting_NewRecipes_Uncrafted },
+					{ NewRecipeMode.Unseen, I18n.Setting_NewRecipes_Unseen }
+				}
+			)
+			.Add(
+				name: I18n.Setting_NewRecipes_Prismatic,
+				tooltip: I18n.Setting_NewRecipes_Prismatic_Tip,
+				get: c => c.NewRecipesPrismatic,
+				set: (c, v) => c.NewRecipesPrismatic = v
 			);
 
 		GMCMIntegration
@@ -811,6 +958,29 @@ public class ModEntry : ModSubscriber {
 				I18n.Setting_SortQuality_Tip,
 				c => c.LowQualityFirst,
 				(c, v) => c.LowQualityFirst = v
+			)
+			.Add(
+				I18n.Setting_Nearby_Nearby,
+				I18n.Setting_Nearby_Nearby_Tip,
+				c => c.NearbyRadius switch {
+					-2 => -2,
+					-1 => -1,
+					0 => 0,
+					_ => (int) (Math.Ceiling(Math.Log2(c.NearbyRadius)) - 1)
+				},
+				(c, v) => c.NearbyRadius = v switch {
+					-2 => -2,
+					-1 => -1,
+					0 => 0,
+					_ => (int) Math.Pow(2, v + 1)
+				},
+				-1, 4, 1,
+				format: val => val switch {
+					-2 => I18n.Setting_Nearby_Nearby_Active(),
+					-1 => I18n.Setting_Nearby_Nearby_Map(),
+					0 => I18n.Setting_Nearby_Nearby_Off(),
+					_ => I18n.Setting_Nearby_Nearby_Tiles($"{Math.Pow(2, val + 1)}")
+				}
 			);
 
 		GMCMIntegration
@@ -952,12 +1122,15 @@ public class ModEntry : ModSubscriber {
 			GMCMIntegration.AddLabel(I18n.Setting_Nearby_Floors);
 
 			var floors = FloorMap.Values.ToList();
-			floors.Sort(StringComparer.InvariantCultureIgnoreCase);
+			floors.Sort((a, b) => a.Item2.CompareTo(b.Item2));
 
-			foreach (string connector in floors)
+			foreach (var pair in floors) {
+				string connector = pair.Item1;
+				string displayName = pair.Item2;
+
 				if (!string.IsNullOrEmpty(connector))
 					GMCMIntegration.Add(
-						connector,
+						displayName,
 						null,
 						c => c.ValidConnectors.Contains(connector),
 						(c, v) => {
@@ -967,6 +1140,32 @@ public class ModEntry : ModSubscriber {
 								c.ValidConnectors.Remove(connector);
 						}
 					);
+			}
+		}
+
+		if (FenceMap != null) {
+			GMCMIntegration.AddLabel(I18n.Setting_Nearby_Fences);
+
+			var fences = FenceMap.Values.ToList();
+			fences.Sort((a,b) => a.Item2.CompareTo(b.Item2));
+
+			foreach (var pair in fences) {
+				string connector = pair.Item1;
+				string displayName = pair.Item2;
+
+				if (!string.IsNullOrEmpty(connector))
+					GMCMIntegration.Add(
+						displayName,
+						null,
+						c => c.ValidConnectors.Contains(connector),
+						(c, v) => {
+							if (v)
+								c.ValidConnectors.Add(connector);
+							else
+								c.ValidConnectors.Remove(connector);
+						}
+					);
+			}
 		}
 
 		if (ConnectorExamples != null) {
@@ -1149,145 +1348,6 @@ public class ModEntry : ModSubscriber {
 
 	#endregion
 
-	#region Item Enumeration
-
-	private List<Item>? CachedObjects;
-	private List<Item>? CachedBigCraftables;
-	private List<Item>? CachedFurniture;
-	private List<Item>? CachedWeapons;
-	private List<Item>? CachedBoots;
-	private List<Item>? CachedHats;
-	private List<Item>? CachedClothing;
-
-	[MemberNotNull(nameof(CachedObjects))]
-	private void LoadObjects() {
-		if (CachedObjects is null) {
-			CachedObjects = new();
-			foreach(int id in Game1.objectInformation.Keys) {
-				Item? item = InventoryHelper.CreateObjectOrRing(id);
-				if (item is not null)
-					CachedObjects.Add(item);
-			}
-		}
-	}
-
-	[MemberNotNull(nameof(CachedBigCraftables))]
-	private void LoadBigCraftables() {
-		if (CachedBigCraftables is null) {
-			CachedBigCraftables = new();
-			foreach(int id in Game1.bigCraftablesInformation.Keys)
-				CachedBigCraftables.Add(new SObject(Vector2.Zero, id, 1));
-		}
-	}
-
-	[MemberNotNull(nameof(CachedFurniture))]
-	private void LoadFurniture() {
-		if (CachedFurniture is null) {
-			CachedFurniture = new();
-			foreach(int id in Game1.content.Load<Dictionary<int, string>>(@"Data\Furniture").Keys)
-				CachedFurniture.Add(Furniture.GetFurnitureInstance(id, Vector2.Zero));
-		}
-	}
-
-	[MemberNotNull(nameof(CachedWeapons))]
-	private void LoadWeapons() {
-		if (CachedWeapons is null) {
-			CachedWeapons = new();
-			foreach (int id in Game1.content.Load<Dictionary<int, string>>(@"Data\weapons").Keys)
-				CachedWeapons.Add(new MeleeWeapon(id));
-		}
-	}
-
-	[MemberNotNull(nameof(CachedBoots))]
-	private void LoadBoots() {
-		if (CachedBoots is null) {
-			CachedBoots = new();
-			foreach (int id in Game1.content.Load<Dictionary<int, string>>(@"Data\Boots").Keys)
-				CachedBoots.Add(new Boots(id));
-		}
-	}
-
-	[MemberNotNull(nameof(CachedHats))]
-	private void LoadHats() {
-		if (CachedHats is null) {
-			CachedHats = new();
-			foreach (int id in Game1.content.Load<Dictionary<int, string>>(@"Data\hats").Keys)
-				CachedHats.Add(new Hat(id));
-		}
-	}
-
-	[MemberNotNull(nameof(CachedClothing))]
-	private void LoadClothes() {
-		if (CachedClothing is null) {
-			CachedClothing = new();
-			foreach (int id in Game1.clothingInformation.Keys)
-				CachedClothing.Add(new Clothing(id));
-		}
-	}
-
-	public IEnumerable<Item> GetMatchingItems(Func<Item, bool> predicate, bool normalObjects = true, bool bigCraftables = true, bool clothing = true, bool dga = true) {
-		if (normalObjects)
-			LoadObjects();
-			// Screw you VS this is not "may be null" why are you not seeing
-			// the MemberNotNull attribute on LoadObjects()?
-			foreach(Item item in CachedObjects!) {
-				if (predicate(item))
-					yield return item;
-			}
-
-		if (bigCraftables) {
-			LoadBigCraftables();
-			foreach(Item item in CachedBigCraftables) {
-				if (predicate(item))
-					yield return item;
-			}
-
-			LoadFurniture();
-			foreach(Item item in CachedFurniture) {
-				if (predicate(item))
-					yield return item;
-			}
-		}
-
-		// if tools
-		LoadWeapons();
-		foreach(Item item in CachedWeapons) {
-			if (predicate(item))
-				yield return item;
-		}
-
-		// if boots
-		LoadBoots();
-		foreach(Item item in CachedBoots) {
-			if (predicate(item))
-				yield return item;
-		}
-
-		// if hats
-		LoadHats();
-		foreach(Item item in CachedHats) {
-			if (predicate(item))
-				yield return item;
-		}
-
-		if (clothing) {
-			LoadClothes();
-			foreach(Item item in CachedClothing) {
-				if (predicate(item))
-					yield return item;
-			}
-		}
-
-		// Finally, DynamicGameAssets.
-		if (dga && intDGA != null)
-			foreach(Item item in intDGA.GetAllItems()) {
-				if (predicate(item))
-					yield return item;
-			}
-	}
-
-	#endregion
-
 	public bool HasLoveOfCooking() {
 		if (!hasLoveOfCooking.HasValue)
 			hasLoveOfCooking = Helper.ModRegistry.IsLoaded("blueberry.LoveOfCooking");
@@ -1300,6 +1360,23 @@ public class ModEntry : ModSubscriber {
 			hasBiggerBackpacks = Helper.ModRegistry.IsLoaded("spacechase0.BiggerBackpack");
 
 		return hasBiggerBackpacks.Value;
+	}
+
+	internal void GetJsonHelper() {
+		if (JsonHelper is not null)
+			return;
+
+		if (Helper.Data.GetType().GetField("JsonHelper", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Helper.Data) is SMAPIJsonHelper helper) {
+			JsonHelper = new();
+			var converters = JsonHelper.JsonSettings.Converters;
+			converters.Clear();
+			foreach (var converter in helper.JsonSettings.Converters)
+				if (converter.GetType().Name != "ColorConverter")
+					converters.Add(converter);
+
+			//converters.Add(new VariableSetConverter());
+			converters.Add(new Common.Serialization.Converters.ColorConverter());
+		}
 	}
 
 	public IEnumerable<GameLocation> GetLocations() {
@@ -1321,41 +1398,35 @@ public class ModEntry : ModSubscriber {
 
 	[MemberNotNull(nameof(FloorMap))]
 	private void LoadFloorMap() {
-		const string path = "assets/floors.json";
-		Dictionary<int, string>? floors = null;
+		if (FloorMap is not null)
+			return;
 
-		try {
-			floors = Helper.Data.ReadJsonFile<Dictionary<int, string>>(path);
-			if (floors == null)
-				Log($"The {path} file is missing or invalid.", LogLevel.Error);
-		} catch(Exception ex) {
-			Log($"The {path} file is invalid.", LogLevel.Error, ex);
-		}
+		var data = DataLoader.FloorsAndPaths(Game1.content);
+		FloorMap = new();
 
-		if (floors == null)
-			floors = new();
-
-		// Read any extra data files
-		foreach(var cp in Helper.ContentPacks.GetOwned()) {
-			if (!cp.HasFile("floors.json"))
+		foreach(var pair in data) {
+			if (string.IsNullOrEmpty(pair.Value.ItemId) || ItemRegistry.GetData(pair.Value.ItemId) is not ParsedItemData itemData)
 				continue;
 
-			Dictionary<int, string>? extra = null;
-			try {
-				extra = cp.ReadJsonFile<Dictionary<int, string>>("floors.json");
-			} catch(Exception ex) {
-				Log($"The floors.json file of {cp.Manifest.Name} is invalid.", LogLevel.Error, ex);
-			}
-
-			if (extra != null)
-				foreach(var entry in extra)
-					if ( string.IsNullOrEmpty(entry.Value) )
-						floors.Remove(entry.Key);
-					else
-						floors[entry.Key] = entry.Value;
+			string id = pair.Value.Id ?? pair.Key;
+			FloorMap[id] = (itemData.InternalName, itemData.DisplayName);
 		}
+	}
 
-		FloorMap = floors;
+	[MemberNotNull(nameof(FenceMap))]
+	private void LoadFenceMap() {
+		if (FenceMap is not null)
+			return;
+
+		var data = DataLoader.Fences(Game1.content);
+		FenceMap = new();
+
+		foreach (var pair in data) {
+			if (string.IsNullOrEmpty(pair.Key) || ItemRegistry.GetData(pair.Key) is not ParsedItemData itemData)
+				continue;
+
+			FenceMap[pair.Key] = (itemData.InternalName, itemData.DisplayName);
+		}
 	}
 
 	[MemberNotNull(nameof(ConnectorExamples))]
@@ -1371,8 +1442,7 @@ public class ModEntry : ModSubscriber {
 			Log($"The {path} file is invalid.", LogLevel.Error, ex);
 		}
 
-		if (examples == null)
-			examples = new();
+		examples ??= new();
 
 		// Read any extra data files
 		foreach(var cp in Helper.ContentPacks.GetOwned()) {
@@ -1403,24 +1473,46 @@ public class ModEntry : ModSubscriber {
 	}
 
 	public bool IsValidConnector(object obj) {
-		// TODO: Check for MoveToConnected?
+		if (obj == null)
+			return false;
 
-		if (obj == null) return false;
+		(string, string) names;
 
 		switch(obj) {
+			case Fence fence:
+				// Just accept the raw value.
+				if (Config.ValidConnectors.Contains(fence.ItemId))
+					return true;
+
+				// But also look up a better name.
+				return FenceMap != null
+					&& FenceMap.TryGetValue(fence.ItemId, out names)
+					&& names.Item1 != null
+					&& (
+						Config.ValidConnectors.Contains(names.Item1) ||
+						Config.ValidConnectors.Contains(names.Item2)
+					);
+
 			case Item item:
 				return Config.ValidConnectors.Contains(item.Name);
 
 			case Flooring floor:
+				// Just accept the raw value.
+				if (Config.ValidConnectors.Contains(floor.whichFloor.Value))
+					return true;
+
+				// But also look up a better name.
 				return FloorMap != null
-					&& FloorMap.TryGetValue(floor.whichFloor.Value, out string? name)
-					&& name != null
-					&& Config.ValidConnectors.Contains(name);
+					&& FloorMap.TryGetValue(floor.whichFloor.Value, out names)
+					&& names.Item1 != null
+					&& (
+						Config.ValidConnectors.Contains(names.Item1) ||
+						Config.ValidConnectors.Contains(names.Item2)
+					);
 
 			default:
 				return false;
 		}
-
 	}
 
 	#endregion
@@ -1430,6 +1522,7 @@ public class ModEntry : ModSubscriber {
 	public void RegisterProviders() {
 		RegisterInventoryProvider(typeof(Chest), new ChestProvider(any: true));
 		RegisterInventoryProvider(typeof(Workbench), new WorkbenchProvider());
+		RegisterInventoryProvider(typeof(Building), new BuildingProvider());
 	}
 
 	public void RegisterInventoryProvider(Type type, IInventoryProvider provider) {
@@ -1449,8 +1542,20 @@ public class ModEntry : ModSubscriber {
 		// TODO: Check for MoveToConnected?
 
 		Type? type = obj?.GetType();
-		if (type == null || !invProviders.ContainsKey(type))
+		if (type is null)
 			return null;
+
+		if (! invProviders.ContainsKey(type)) {
+			// Try less specific.
+			if (obj is Chest)
+				type = typeof(Chest);
+			else if (obj is Building)
+				type = typeof(Building);
+			else if (obj is Workbench)
+				type = typeof(Workbench);
+			else
+				return null;
+		}
 
 		return invProviders[type] as IInventoryProvider;
 	}

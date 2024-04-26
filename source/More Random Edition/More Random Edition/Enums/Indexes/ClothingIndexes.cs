@@ -8,12 +8,17 @@
 **
 *************************************************/
 
+using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Randomizer
 {
-    /// <summary>
-    /// An enum representing all the clothing
-    /// </summary>
-    public enum ClothingIndexes
+	/// <summary>
+	/// An enum representing all the clothing
+	/// </summary>
+	public enum ClothingIndexes
     {
         FarmerPants = 0,
         Shorts = 1,
@@ -230,5 +235,60 @@ namespace Randomizer
         MagicSprinkleShirt = 1997,
         PrismaticShirt1 = 1998,
         PrismaticShirt2 = 1999
+    }
+
+    public class ClothingFunctions
+    {
+        /// <summary>
+        /// Gets the Stardew clothing item from the given index
+        /// </summary>
+        /// <param name="index">The clothing item's index</param>
+        /// <returns />
+        public static Clothing GetItem(ClothingIndexes index)
+        {
+            return new Clothing(((int)index).ToString());
+        }
+
+        /// <summary>
+        /// Gets the qualified id for the given clothing index
+        /// </summary>
+        /// <param name="index">The index of the clothing item</param>
+        public static string GetQualifiedId(ClothingIndexes index)
+        {
+            return GetItem(index).QualifiedItemId;
+        }
+
+        /// <summary>
+        /// Gets a random clothing item's qualified id
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomClothingQualifiedId(RNG rng, List<string> idsToExclude = null)
+        {
+            return GetRandomClothingQualifiedIds(rng, numberToGet: 1, idsToExclude)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of random clothing item qualified ids
+        /// </summary>
+        /// <param name="rng">The rng to use</param>
+        /// <param name="numberToGet">The number of ids to get</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static List<string> GetRandomClothingQualifiedIds(
+            RNG rng,
+            int numberToGet,
+            List<string> idsToExclude = null)
+        {
+            var allClothingIds = Enum.GetValues(typeof(ClothingIndexes))
+                .Cast<ClothingIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
+                .ToList();
+
+            return rng.GetRandomValuesFromList(allClothingIds, numberToGet);
+        }
     }
 }

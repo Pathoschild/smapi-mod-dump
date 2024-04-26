@@ -50,7 +50,7 @@ public class GuiScreen : IClickableMenu
 
                 drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), 0, 0, descriptionWidth,
                     descriptionHeight, Color.Wheat, 4f, false);
-                FontUtils.DrawHvCentered(b, component.Description, descriptionWidth / 2, descriptionHeight / 2);
+                FontUtils.DrawHvCentered(b, component.Description, 0, 0, descriptionWidth, descriptionHeight);
             }
         }
 
@@ -128,7 +128,7 @@ public class GuiScreen : IClickableMenu
             _components.Remove(variable);
         }
     }
-    
+
     protected void OpenScreenGui(IClickableMenu clickableMenu)
     {
         if (Game1.activeClickableMenu is TitleMenu)

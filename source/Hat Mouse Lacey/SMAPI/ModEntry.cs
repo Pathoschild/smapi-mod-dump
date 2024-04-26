@@ -348,6 +348,9 @@ namespace ichortower_HatMouseLacey
             cpapi.RegisterToken(this.ModManifest, "SVRThreeForest", () => {
                 return new[] {$"{ModEntry.CompatSVR3Forest}"};
             });
+            cpapi.RegisterToken(this.ModManifest, "EvenFestivalWorkaround", () => {
+                return new[] {$"{Utility.CompareGameVersions(Game1.version, "1.6.4") < 0}"};
+            });
             Log.Trace($"Registered Content Patcher tokens for config options");
             cpapi.RegisterToken(this.ModManifest, "FatherName", () => new[]{"Fletcher"});
             cpapi.RegisterToken(this.ModManifest, "MotherName", () => new[]{"Diana"});

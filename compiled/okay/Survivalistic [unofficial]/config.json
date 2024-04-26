@@ -1,0 +1,13 @@
+{
+  "ThirstMultiplier": 0.5,
+  "HungerMultiplier": 1.0,
+  "HungerActionMultiplier": 1.0,
+  "ThirstActionMultiplier": 1.0,
+  "BarsPosition": "bottom-right",
+  "BarsCustomX": 0,
+  "BarsCustomY": 0,
+  "NonSupportedFood": false,
+  "DecreaseValuesAfterSleep": false,
+  "FoodDecreaseAfterSleep": 0,
+  "ThirstDecreaseAfterSleep": 0
+}

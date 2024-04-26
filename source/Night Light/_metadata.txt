@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/KankuroGB/NightLight
+   Git: https://github.com/KankuroGB/NightLight.git
+
+mods:
+   Night Light
+
+latest commit:
+   commit df388fe49d25c31845ab7412216795ed48f66759
+   Author: Kankuro <kankuro@geekbeacon.org>
+   Date:   Thu Apr 4 03:55:15 2024 -0500
+   
+       Reworked mines to include farm cave
+   

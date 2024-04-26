@@ -9,9 +9,9 @@
 *************************************************/
 
 using ItemExtensions.Models;
-using ItemExtensions.Models.Contained;
 using ItemExtensions.Models.Enums;
 using ItemExtensions.Models.Internal;
+using ItemExtensions.Models.Items;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -328,6 +328,10 @@ public static class GeneralResource
         if (resource.OnDestroy != null)
         {
             IWorldChangeData.Solve(resource.OnDestroy);
+            if (!string.IsNullOrWhiteSpace(resource.OnDestroy.ChangeMoney))
+            {
+                Game1.player.Money = IWorldChangeData.ChangeValues(resource.OnDestroy.ChangeMoney, Game1.player.Money, Game1.player.Money);
+            }
             var monsters = resource.OnDestroy.SpawnMonsters;
             if (monsters is not null)
             {
@@ -394,21 +398,12 @@ public static class GeneralResource
 
         if (!string.IsNullOrWhiteSpace(resource.ItemDropped))
         {
-            if (Game1.IsMultiplayer)
-            {
-                Game1.recentMultiplayerRandom = Utility.CreateRandom(tileLocation.X * 1000.0, tileLocation.Y);
-                for (var index = 0; index < Game1.random.Next(2, 4); ++index)
-                    CreateItemDebris(resource.ItemDropped, num2, (int)tileLocation.X, (int)tileLocation.Y, location);
-            }
-            else
-            {
-                CreateItemDebris(resource.ItemDropped, num2, (int)tileLocation.X, (int)tileLocation.Y, location);
-            }
+            CreateItemDebris(resource.ItemDropped, num2, (int)tileLocation.X, (int)tileLocation.Y, location);
         }
 
         if (resource.ExtraItems != null && resource.ExtraItems.Any())
         {
-            TryExtraDrops(resource.ExtraItems, location, t.getLastFarmerToUse(), tileLocation);
+            TryExtraDrops(resource.ExtraItems, location, who, tileLocation);
         }
 
         if(!string.IsNullOrWhiteSpace(resource.BreakingSound))
@@ -420,7 +415,7 @@ public static class GeneralResource
         }
         
         if(resource.ActualSkill >= 0)
-            t.getLastFarmerToUse().gainExperience(resource.ActualSkill, resource.Exp);
+            who.gainExperience(resource.ActualSkill, resource.Exp);
 
         if (resource.CountTowards is not StatCounter.None)
             AddStats(resource.CountTowards);
@@ -600,7 +595,18 @@ public static class GeneralResource
             return damage;
         }
         //otherwise, return calculation
-        return (int)Math.Max(1f, (tool.UpgradeLevel + 1) * 0.75f);
+        var dmg = (int)Math.Max(1f, (tool.UpgradeLevel + 1) * 0.75f);
+        
+        if (tool is Pickaxe p)
+        {
+            dmg += p.additionalPower.Value;
+        }
+        if (tool is Axe a)
+        {
+            dmg += a.additionalPower.Value;
+        }
+
+        return dmg;
     }
 
     public static bool IsVanilla(string id)

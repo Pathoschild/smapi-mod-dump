@@ -89,13 +89,7 @@ namespace HappyHomeDesigner.Menus
 					Favorites;
 		}
 
-		public override int Count()
-		{
-			return entries.Count;
-		}
-		public override ClickableTextureComponent GetTab()
-		{
-			return new(new(0, 0, 64, 64), Catalog.MenuTexture, new(64, 24, 16, 16), 4f);
-		}
+		public override ClickableTextureComponent GetTab() 
+			=> new(new(0, 0, 64, 64), Catalog.MenuTexture, new(64, 24, 16, 16), 4f);
 	}
 }

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BussinBungus/BungusSDVMods
+**
+*************************************************/
+
+{
+  "Name": "Lost Book Menu",
+  "Author": "bungus",
+  "Version": "1.1.2",
+  "Description": "An easier way to read lost books.",
+  "UniqueID": "bungus.LostBookMenu",
+  "EntryDll": "LostBookMenu.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:20301" ]
+}

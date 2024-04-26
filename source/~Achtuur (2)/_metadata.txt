@@ -12,11 +12,9 @@ mods:
    Watering Can Give Exp
 
 latest commit:
-   commit 8eb34073b02a84466a51de216866a2ea13019803
-   Author: Arthur de Groot <68847937+Achtuur@users.noreply.github.com>
-   Date:   Wed Sep 27 12:09:57 2023 +0200
+   commit 1592ad9cfbf915b9873ffc7ba9a54b535320b0be
+   Author: Achtuur <arthurdegroot88@gmail.com>
+   Date:   Sat Apr 20 14:30:12 2024 +0200
    
-       Merge pull request #3 from Summer1Solstice/patch-1
-       
-       Create zh.json
+       Fishcatalogue wip 2
    

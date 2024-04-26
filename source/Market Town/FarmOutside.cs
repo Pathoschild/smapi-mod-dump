@@ -18,6 +18,7 @@ using StardewValley.Network;
 using StardewValley.Pathfinding;
 using StardewValley.TerrainFeatures;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using lv = StardewModdingAPI.LogLevel;
 
@@ -30,7 +31,7 @@ namespace MarketTown
             var x = 0;
             var y = 0;
             var farm = Game1.getLocationFromName("Farm");
-            foreach (NPC who in Utility.getAllCharacters())
+            foreach (NPC who in Utility.getAllVillagers())
             {
                 if (who.IsVillager && who.currentLocation.Name == "Farm" 
                     && who.modData.ContainsKey("hapyke.FoodStore/invited") && who.modData["hapyke.FoodStore/invited"] == "true")
@@ -47,21 +48,32 @@ namespace MarketTown
 
         internal static void PlayerWarp(object sender, WarpedEventArgs e)
         {
+            if (e.NewLocation.Name.Contains("Custom_MT_Island"))
+            {
+                Game1.chatBox.addInfoMessage("Let me know what do you think about the map on Nexus page_____. This is Market Paradise Island for ALPHA TESTING. The map likely to change: SHOULD NOT build anything on yet!!!!");
+            }
 
             var isBusStop = e.NewLocation.Name.Contains("BusStop");
 
             if (isBusStop)
             {
-                foreach (NPC who in Game1.getLocationFromName("BusStop").characters)
+                List<NPC> npcsToWarp = new List<NPC>();
+
+                foreach (NPC who in Game1.getLocationFromName("BusStop").characters.ToList())
                 {
-                    if (who.Name.Contains("MT.Guest_") && who.Tile != who.DefaultPosition / 64)
+                    if (who.Name.Contains("MT.Guest_"))
                     {
-                        who.Halt();
-                        who.temporaryController = null;
-                        who.controller = null;
-                        who.ClearSchedule();
-                        Game1.warpCharacter(who, who.DefaultMap, who.DefaultPosition / 64);
+                        npcsToWarp.Add(who);
                     }
+                }
+
+                foreach (NPC npc in npcsToWarp)
+                {
+                    npc.Halt();
+                    npc.temporaryController = null;
+                    npc.controller = null;
+                    npc.ClearSchedule();
+                    Game1.warpCharacter(npc, npc.DefaultMap, npc.DefaultPosition / 64);
                 }
             }
 
@@ -104,7 +116,7 @@ namespace MarketTown
                 name = home.Name;
             }
 
-            foreach (NPC visit in Utility.getAllCharacters())
+            foreach (NPC visit in Utility.getAllVillagers())
             {
                 try
                 {
@@ -152,7 +164,7 @@ namespace MarketTown
 
         internal static Point getRandomOpenPointInFarm(GameLocation location, Random r, int tries = 5, int maxDistance = 15)
         {
-            foreach (NPC who in Utility.getAllCharacters())
+            foreach (NPC who in Utility.getAllVillagers())
             {
                 if (who.IsVillager && (((who.currentLocation.Name == "Farm" || who.currentLocation.Name == "FarmHouse") && who.modData["hapyke.FoodStore/invited"] == "true") || (who.Name.Contains("MT.Guest_") && !who.currentLocation.Name.Contains("BusStop")) ))
                 {

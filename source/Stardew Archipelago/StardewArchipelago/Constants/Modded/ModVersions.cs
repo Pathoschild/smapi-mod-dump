@@ -17,7 +17,7 @@ namespace StardewArchipelago.Constants.Modded
         public static readonly Dictionary<string, string> Versions = new Dictionary<string, string>()
         {
             { ModNames.ALEC, "2.1.0"},
-            { ModNames.ARCHAEOLOGY, "1.5.0"},
+            { ModNames.ARCHAEOLOGY, "1.6.0"},
             { ModNames.AYEISHA, "0.6.2-alpha"},
             { ModNames.BIGGER_BACKPACK, "6.0.0"},
             { ModNames.BINNING, "1.2.7"},

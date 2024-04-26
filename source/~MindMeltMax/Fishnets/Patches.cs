@@ -8,228 +8,253 @@
 **
 *************************************************/
 
-using Fishnets.Data;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
+using StardewValley.Objects;
 using StardewValley;
-using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using xTile.Dimensions;
+using Microsoft.Xna.Framework;
+using System.Reflection.Emit;
+using System.Reflection;
+using StardewValley.ItemTypeDefinitions;
 
 namespace Fishnets
 {
     internal static class Patches
     {
-        internal static IMonitor IMonitor => ModEntry.IMonitor;
-
-        internal static readonly Fishnet _instance = new();
-
-        internal static void Patch(IModHelper helper)
+        internal static void Patch(string id)
         {
-            Harmony harmony = new(helper.ModRegistry.ModID);
+            Harmony harmony = new(id);
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Object), nameof(Object.canBePlacedHere)),
+                postfix: new(typeof(Patches), nameof(Object_CanBePlacedHere_Postfix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Object), nameof(Object.draw), [typeof(SpriteBatch), typeof(int), typeof(int), typeof(float)]),
+                prefix: new(typeof(Patches), nameof(Object_Draw_Prefix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Object), nameof(Object.DayUpdate)),
+                postfix: new(typeof(Patches), nameof(Object_DayUpdate_Postfix))
+            );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Object), nameof(Object.placementAction)),
-                prefix: new(typeof(Patches), nameof(placementActionPrefix))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.canBePlacedHere)),
-                prefix: new(typeof(Patches), nameof(canBePlacedHerePrefix))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.isPlaceable)),
-                prefix: new(typeof(Patches), nameof(isPlaceablePrefix))
+                prefix: new(typeof(Patches), nameof(Object_PlacementAction_Prefix))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(CraftingPage), "layoutRecipes"),
-                postfix: new(typeof(Patches), nameof(layoutRecipesPostfix))
+                original: AccessTools.Method(typeof(Object), nameof(Object.performToolAction)),
+                prefix: new(typeof(Patches), nameof(Object_PerformToolAction_Prefix))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.drawMenuView)),
-                prefix: new(typeof(Patches), nameof(drawMenuViewPrefix))
+                original: AccessTools.Method(typeof(Object), nameof(Object.performObjectDropInAction)),
+                prefix: new(typeof(Patches), nameof(Object_PerformObjectDropInAction_Prefix))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.drawInMenu), [typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool)]),
-                prefix: new(typeof(Patches), nameof(drawInMenuPrefix))
+                original: AccessTools.Method(typeof(Object), nameof(Object.checkForAction)),
+                prefix: new(typeof(Patches), nameof(Object_CheckForAction_Prefix))
             );
+
             harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.drawWhenHeld)),
-                prefix: new(typeof(Patches), nameof(drawWhenHeldPrefix))
+                original: AccessTools.Method(typeof(Object), nameof(Object.actionOnPlayerEntry)),
+                postfix: new(typeof(Patches), nameof(Object_ActionOnPlayerEntry_Postfix))
             );
+
             harmony.Patch(
-                original: AccessTools.Method(typeof(Object), nameof(Object.drawPlacementBounds)),
-                postfix: new(typeof(Patches), nameof(drawPlacementBoundsPostfix))
+                original: AccessTools.Method(typeof(Object), nameof(Object.updateWhenCurrentLocation)),
+                postfix: new(typeof(Patches), nameof(Object_UpdateWhenCurrentLocation_Postfix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Object), nameof(Object.isActionable)),
+                postfix: new(typeof(Patches), nameof(Object_IsActionable_Postfix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ParsedItemData), nameof(ParsedItemData.GetSourceRect)),
+                postfix: new(typeof(Patches), nameof(ParsedItemData_GetSourceRect_Postfix))
             );
         }
 
-        internal static bool placementActionPrefix(Object __instance, ref bool __result, GameLocation location, int x, int y, Farmer who = null)
+        private static void Object_CanBePlacedHere_Postfix(Object __instance, GameLocation l, Vector2 tile, ref bool __result)
         {
-            try
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return;
+            __result = CrabPot.IsValidCrabPotLocationTile(l, (int)tile.X, (int)tile.Y);
+        }
+
+        private static bool Object_Draw_Prefix(Object __instance, SpriteBatch spriteBatch, int x, int y, float alpha)
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return true;
+            Statics.Draw(__instance, spriteBatch, x, y, alpha);
+            return false;
+        }
+
+        private static void Object_DayUpdate_Postfix(Object __instance)
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id && __instance.Location != null)
+                return;
+            Statics.DoDayUpdate(__instance);
+        }
+
+        private static bool Object_PlacementAction_Prefix(Object __instance, GameLocation location, int x, int y, Farmer who, ref bool __result) //Works \\Solution: a reference from the original object in the players inventory was placed instead of a new object
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return true;
+            Vector2 tileLocation = new((int)Math.Floor(x / 64f), (int)Math.Floor(y / 64f));
+            if (!CrabPot.IsValidCrabPotLocationTile(location, (int)tileLocation.X, (int)tileLocation.Y))
             {
-                if (__instance.ItemId == ModEntry.ObjectInfo.Id)
+                __result = false;
+                return false;
+            }
+            Object o = (Object)__instance.getOne();
+            o.Location = location;
+            o.setHealth(10);
+            o.TileLocation = tileLocation;
+            o.owner.Value = (who ?? Game1.player).UniqueMultiplayerID;
+            location.Objects.Add(tileLocation, o);
+            if (!ModEntry.NoSound)
+            {
+                location.playSound("waterSlosh");
+                DelayedAction.playSoundAfterDelay("slosh", 150);
+            }
+            Statics.OnPlace(location, tileLocation);
+            __result = true;
+            return false;
+        }
+
+        private static bool Object_PerformToolAction_Prefix(Object __instance)
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return true;
+            return false;
+        }
+
+        private static bool Object_PerformObjectDropInAction_Prefix(Object __instance, Item dropInItem, bool probe, Farmer who, ref bool __result)
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id || probe)
+                return true;
+            var modData = Statics.GetModDataAt(__instance.Location, __instance.TileLocation);
+            if (dropInItem is not Object o || o.Category != Object.baitCategory || !string.IsNullOrWhiteSpace(modData?.BaitId) || (who ?? Game1.player).professions.Contains(11) || __instance.heldObject.Value is not null)
+            {
+                __result = false;
+                return false;
+            }
+            if (!probe)
+            {
+                Statics.SetModDataAt(__instance.Location, __instance.TileLocation, (modData ?? new(Statics.SetDirectionOffset(__instance.Location, __instance.TileLocation))) with { BaitId = o.ItemId, BaitQuality = o.Quality });
+                __instance.modData[ModEntry.ModDataTileIndexKey] = "0,0,60";
+                __instance.Location.playSound("Ship");
+            }
+            __result = true;
+            return false;
+        }
+
+        private static bool Object_CheckForAction_Prefix(Object __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id || justCheckingForActivity)
+                return true;
+
+            var modData = Statics.GetModDataAt(__instance.Location, __instance.TileLocation);
+            if (__instance.heldObject.Value is not null)
+            {
+                Object o = __instance.heldObject.Value;
+                if (who.IsLocalPlayer && !who.addItemToInventoryBool(o))
                 {
-                    Point tile = new((int)Math.Floor(x / 64f), (int)Math.Floor(y / 64f));
-                    if (!Fishnet.IsValidPlacementLocation(location, tile.X, tile.Y))
-                        return false;
-                    __result = new Fishnet(new(tile.X, tile.Y)).placementAction(location, x, y, who);
-                    if (__result && __instance.Stack <= 0)
-                        Game1.player.removeItemFromInventory(__instance);
+                    Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
                     return false;
                 }
-                return true;
+                __instance.heldObject.Value = null;
+                Dictionary<string, string> fishData = ModEntry.IHelper.GameContent.Load<Dictionary<string, string>>("Data\\Fish");
+                if (fishData.ContainsKey(o.ItemId))
+                    who.caughtFish(o.ItemId, -1, numberCaught: o.Stack);
+                __instance.readyForHarvest.Value = false;
+                Statics.SetModDataAt(__instance.Location, __instance.TileLocation, (modData ?? new(Statics.SetDirectionOffset(__instance.Location, __instance.TileLocation))) with { BaitId = "", BaitQuality = 0 });
+                who.animateOnce(279 + who.FacingDirection);
+                Statics.SetTileIndexData(__instance, false, 5, 60);
+                __instance.Location.playSound("fishingRodBend");
+                DelayedAction.playSoundAfterDelay("coin", 500);
+                who.gainExperience(1, 5);
+                __result = true;
+                return false;
             }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.placementAction)}", ex, __instance?.ItemId != ModEntry.ObjectInfo.Id); }
-        }
-
-        internal static bool canBePlacedHerePrefix(Object __instance, ref bool __result, GameLocation l, Vector2 tile)
-        {
-            try
+            if (string.IsNullOrWhiteSpace(modData?.BaitId))
             {
-                if (__instance.ItemId == ModEntry.ObjectInfo.Id)
+                if (Game1.didPlayerJustClickAtAll(true))
                 {
-                    __result = Fishnet.IsValidPlacementLocation(l, (int)tile.X, (int)tile.Y);
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.canBePlacedHere)}", ex, true); }
-        }
-
-        internal static bool isPlaceablePrefix(Object __instance, ref bool __result)
-        {
-            try
-            {
-                if (__instance.ItemId == ModEntry.ObjectInfo.Id)
-                {
-                    __result = _instance.isPlaceable();
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.isPlaceable)}", ex, true); }
-        }
-
-        internal static void layoutRecipesPostfix(CraftingPage __instance)
-        {
-            try
-            {
-                var recipeList = __instance.pagesOfCraftingRecipes;
-                int pageIndex = -1;
-                int recipeIndex = -1;
-                foreach (var page in recipeList)
-                {
-                    bool exit = false;
-                    foreach (var recipe in page)
+                    if (who.addItemToInventoryBool(__instance.getOne()))
                     {
-                        if (recipe.Value.name == "Fish Net")
-                        {
-                            pageIndex = recipeList.IndexOf(page);
-                            recipeIndex = page.ToList().IndexOf(recipe);
-                            exit = true;
-                            break;
-                        }
+                        if (who.isMoving())
+                            Game1.haltAfterCheck = false;
+                        Game1.playSound("coin");
+                        Statics.OnRemove(__instance.Location, __instance.TileLocation);
+                        __instance.Location.Objects.Remove(__instance.TileLocation);
+                        __result = true;
+                        return false;
                     }
-                    if (exit)
-                        break;
-                }
-                if (pageIndex != -1 && recipeIndex != -1)
-                {
-                    var originalDict = recipeList[pageIndex].ToList();
-                    originalDict[recipeIndex].Value.DisplayName = ModEntry.I18n.Get("Name");
-                    originalDict[recipeIndex].Value.description = ModEntry.I18n.Get("Description");
-                    originalDict[recipeIndex] = new(rewriteCraftingComponent(originalDict[recipeIndex].Key), originalDict[recipeIndex].Value);
-                    __instance.pagesOfCraftingRecipes[pageIndex] = originalDict.ToDictionary(x => x.Key, x => x.Value);
+                    else
+                        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
                 }
             }
-            catch (Exception ex) { handleError("CraftingPage.layoutRecipes", ex, false); }
+            __result = false;
+            return false;
         }
 
-        internal static bool drawMenuViewPrefix(CraftingRecipe __instance, SpriteBatch b, int x, int y, float layerDepth = 0.88f, bool shadow = true)
+        private static void Object_ActionOnPlayerEntry_Postfix(Object __instance)
         {
-            try
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return;
+            var modData = Statics.GetModDataAt(__instance.Location, __instance.TileLocation);
+            if (modData is null)
+                Statics.SetModDataAt(__instance.Location, __instance.TileLocation, modData = new(Statics.SetDirectionOffset(__instance.Location, __instance.TileLocation)));
+            Statics.AddOverlayTiles(__instance.Location, __instance.TileLocation, modData!.Offset);
+        }
+
+        private static void Object_UpdateWhenCurrentLocation_Postfix(Object __instance, GameTime time)
+        {
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id || !Statics.TryGetTileIndexData(__instance, out var data) || data.complete)
+                return;
+            int curTileIndex = data.tileIndex;
+            int timer = data.timer;
+            timer -= time.ElapsedGameTime.Milliseconds;
+            if (timer <= 0)
             {
-                if (__instance.name != "Fish Net")
-                    return true;
-                Utility.drawWithShadow(b, Fishnet.Texture, new(x, y), Fishnet.SourceRect, Color.White, 0f, Vector2.Zero, 4f, false, layerDepth);
-                return false;
+                curTileIndex++;
+                timer = 60;
             }
-            catch (Exception ex) { return handleError($"CraftingRecipe.{nameof(CraftingRecipe.drawMenuView)}", ex, __instance?.name != "Fish Net"); }
+            if (curTileIndex == 3)
+                Statics.SetTileIndexData(__instance, true, curTileIndex, 0);
+            else if (curTileIndex >= 8)
+                Statics.ClearTileIndexData(__instance);
+            else
+                Statics.SetTileIndexData(__instance, false, curTileIndex, timer);
         }
 
-        internal static bool drawInMenuPrefix(Object __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
+        private static void Object_IsActionable_Postfix(Object __instance, ref bool __result)
         {
-            try
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return;
+            var modData = Statics.GetModDataAt(__instance.Location, __instance.TileLocation);
+            if (!string.IsNullOrWhiteSpace(modData?.BaitId))
             {
-                if (__instance.ItemId != ModEntry.ObjectInfo.Id)
-                    return true;
-                _instance.Stack = __instance.Stack;
-                _instance.Quality = __instance.Quality;
-                _instance.drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
-                return false;
+                __result = false;
+                return;
             }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.drawInMenu)}", ex, __instance?.ItemId != ModEntry.ObjectInfo.Id); }
+            __result = true;
+            return;
         }
 
-        internal static bool drawWhenHeldPrefix(Object __instance, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
+        private static void ParsedItemData_GetSourceRect_Postfix(ParsedItemData __instance, ref Rectangle __result)
         {
-            try
-            {
-                if (__instance.ItemId != ModEntry.ObjectInfo.Id)
-                    return true;
-                _instance.drawWhenHeld(spriteBatch, objectPosition, f);
-                return false;
-            }
-            catch (Exception ex) { return handleError($"Object.{nameof(Object.drawWhenHeld)}", ex, __instance?.ItemId != ModEntry.ObjectInfo.Id); }
-        }
-
-        internal static void drawPlacementBoundsPostfix(Object __instance, SpriteBatch spriteBatch, GameLocation location)
-        {
-            try
-            {
-                if (__instance.ItemId != ModEntry.ObjectInfo.Id)
-                    return;
-                int X = (int)Game1.GetPlacementGrabTile().X * 64;
-                int Y = (int)Game1.GetPlacementGrabTile().Y * 64;
-                Game1.isCheckingNonMousePlacement = !Game1.IsPerformingMousePlacement();
-                if (Game1.isCheckingNonMousePlacement)
-                {
-                    Vector2 nearbyValidPlacementPosition = Utility.GetNearbyValidPlacementPosition(Game1.player, location, _instance, X, Y);
-                    X = (int)nearbyValidPlacementPosition.X;
-                    Y = (int)nearbyValidPlacementPosition.Y;
-                }
-                _instance.draw(spriteBatch, X / 64, Y / 64, 0.5f);
-            }
-            catch (Exception ex) { handleError($"Object.{nameof(Object.drawWhenHeld)}", ex, false); }
-        }
-
-        private static ClickableTextureComponent rewriteCraftingComponent(ClickableTextureComponent original)
-        {
-            return new ClickableTextureComponent(original.name, original.bounds, original.label, original.hoverText, Fishnet.Texture, Fishnet.SourceRect, original.scale, original.drawShadow)
-            {
-                myID = original.myID,
-                rightNeighborID = original.rightNeighborID,
-                leftNeighborID = original.leftNeighborID,
-                upNeighborID = original.upNeighborID,
-                downNeighborID = original.downNeighborID,
-                fullyImmutable = original.fullyImmutable,
-                region = original.region
-            };
-        }
-
-        private static bool handleError(string source, Exception ex, bool result)
-        {
-            IMonitor.Log($"Faild patching {source}", LogLevel.Error);
-            IMonitor.Log($"{ex.Message}\n{ex.StackTrace}");
-            return result;
+            if (__instance.ItemId != ModEntry.ObjectInfo.Id)
+                return;
+            __result = Statics.GetSourceRectAtTileIndex(-1);
         }
     }
 }

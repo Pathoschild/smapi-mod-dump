@@ -21,12 +21,15 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
 using Leclair.Stardew.Common;
+using System.Linq;
 
 namespace Leclair.Stardew.BetterCrafting.Menus;
 
 public class RulePickerDialog : MenuSubscriber<ModEntry> {
 
 	public readonly Action<DynamicRuleData?, bool> OnPick;
+
+	public readonly BetterCraftingPage Menu;
 
 	public List<ClickableComponent> FlowComponents;
 
@@ -37,8 +40,9 @@ public class RulePickerDialog : MenuSubscriber<ModEntry> {
 
 	private string? HoverText;
 
-	public RulePickerDialog(ModEntry mod, int x, int y, int width, int height, HashSet<string> existing, Action<DynamicRuleData?, bool> onPick) : base(mod) {
+	public RulePickerDialog(ModEntry mod, BetterCraftingPage menu, int x, int y, int width, int height, HashSet<string> existing, Action<DynamicRuleData?, bool> onPick) : base(mod) {
 		OnPick = onPick;
+		Menu = menu;
 
 		initialize(x, y, width, height);
 
@@ -54,9 +58,25 @@ public class RulePickerDialog : MenuSubscriber<ModEntry> {
 		btnPageUp = Flow.btnPageUp;
 		FlowComponents = Flow.DynamicComponents;
 
+		if (menu.Theme.CustomScroll && menu.Background is not null)
+			Sprites.CustomScroll.ApplyToScrollableFlow(Flow, menu.Background);
+
 		var builder = FlowHelper.Builder();
 
-		foreach(var entry in Mod.Recipes.GetRuleHandlers()) {
+		var entries = Mod.Recipes.GetRuleHandlers().ToList();
+		entries.Sort((a, b) => {
+			bool aBuff = a.Key.Contains("buff", StringComparison.OrdinalIgnoreCase);
+			bool bBuff = b.Key.Contains("buff", StringComparison.OrdinalIgnoreCase);
+
+			if (aBuff && !bBuff)
+				return 1;
+			if (!aBuff && bBuff)
+				return -1;
+
+			return a.Value.DisplayName.CompareTo(b.Value.DisplayName);
+		});
+
+		foreach(var entry in entries) {
 			string id = entry.Key;
 			var handler = entry.Value;
 
@@ -162,20 +182,30 @@ public class RulePickerDialog : MenuSubscriber<ModEntry> {
 		// Dim the Background
 		b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
 
+		Texture2D? texture = Menu.Theme.CustomTooltip ? Menu.Background : null;
+
 		// Background
 		RenderHelper.DrawBox(
 			b,
-			texture: Game1.menuTexture,
-			sourceRect: new Rectangle(0, 256, 60, 60),
+			texture: texture ?? Game1.menuTexture,
+			sourceRect: texture is null
+				? RenderHelper.Sprites.NativeDialogue.ThinBox
+				: RenderHelper.Sprites.CustomBCraft.ThinBox,
 			x: xPositionOnScreen,
 			y: yPositionOnScreen,
 			width: width,
 			height: height,
 			color: Color.White,
-			scale: 1f
+			scale: texture is null
+				? 1f
+				: 4f
 		);
 
-		Flow.Draw(b);
+		Flow.Draw(
+			b,
+			texture is null ? null : (Menu.Theme.TooltipTextColor ?? Menu.Theme.TextColor),
+			texture is null ? null : (Menu.Theme.TooltipTextShadowColor ?? Menu.Theme.TextShadowColor)
+		);
 
 		// Base Menu
 		base.draw(b);
@@ -184,14 +214,17 @@ public class RulePickerDialog : MenuSubscriber<ModEntry> {
 
 		// Mouse
 		Game1.mouseCursorTransparency = 1f;
-		drawMouse(b);
+		if (!Menu.Theme.CustomMouse || !RenderHelper.DrawMouse(b, Menu.Background, RenderHelper.Sprites.BCraftMouse))
+			drawMouse(b);
 
 		// Hover Text
-		if (!string.IsNullOrEmpty(HoverText))
-			SimpleHelper.Builder(minSize: new Vector2(400, 0))
+		if (!string.IsNullOrEmpty(HoverText)) {
+			var layout = SimpleHelper.Builder(minSize: new Vector2(400, 0))
 				.FormatText(HoverText, wrapText: true)
-				.GetLayout()
-				.DrawHover(b, Game1.smallFont);
+				.GetLayout();
+
+			Menu.DrawSimpleNodeHover(layout, b);
+		}
 	}
 
 }

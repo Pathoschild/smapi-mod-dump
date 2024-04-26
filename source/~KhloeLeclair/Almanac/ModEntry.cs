@@ -111,7 +111,7 @@ public class ModEntry : ModSubscriber {
 
 		// Patches
 		// Patches.GameMenu_Patches.Patch(this);
-		SpriteText_Patches.Patch(Harmony, Monitor);
+		Common_SpriteText_Patches.Patch(Harmony, Monitor);
 
 		Assets = new(this);
 
@@ -131,17 +131,18 @@ public class ModEntry : ModSubscriber {
 		ThemeManager.ThemeChanged += OnThemeChanged;
 		ThemeManager.Discover();
 
-		// Init
-		RegisterBuilder(CoverPage.GetPage);
-		RegisterBuilder(CropPage.GetPage);
-		RegisterBuilder(WeatherPage.GetPage);
-		RegisterBuilder(WeatherPage.GetIslandPage);
-		RegisterBuilder(TrainPage.GetPage);
-		RegisterBuilder(FortunePage.GetPage);
-		RegisterBuilder(MinesPage.GetPage);
-		RegisterBuilder(NoticesPage.GetPage);
-		RegisterBuilder(FishingPage.GetPage);
-	}
+			// Init
+			RegisterBuilder(CoverPage.GetPage);
+			RegisterBuilder(CropPage.GetPage);
+			RegisterBuilder(WeatherPage.GetPage);
+			RegisterBuilder(WeatherPage.GetIslandPage);
+			RegisterBuilder(TrainPage.GetPage);
+			RegisterBuilder(FortunePage.GetPage);
+			RegisterBuilder(MinesPage.GetPage);
+			RegisterBuilder(NoticesPage.GetPage);
+			RegisterBuilder(FishingPage.GetPage);
+			RegisterBuilder(DebugItemsPage.GetPage);
+		}
 
 	public override object GetApi() {
 		return API;
@@ -285,17 +286,17 @@ public class ModEntry : ModSubscriber {
 			tomorrow.TotalDays++;
 
 			// Main Weather
-			Game1.weatherForTomorrow = Weather.GetWeatherForDate(seed, tomorrow, GameLocation.LocationContext.Default);
+			Game1.weatherForTomorrow = Weather.GetWeatherForDate(seed, tomorrow, Game1.locationContextData["Default"], "Default");
 			if (Game1.IsMasterGame)
-				Game1.netWorldState.Value.GetWeatherForLocation(GameLocation.LocationContext.Default).weatherForTomorrow.Value = Game1.weatherForTomorrow;
+				Game1.netWorldState.Value.GetWeatherForLocation("Default").weatherForTomorrow.Value = Game1.weatherForTomorrow;
 
 			// Island Weather
 			if (Game1.IsMasterGame && Utility.doesAnyFarmerHaveOrWillReceiveMail("Visited_Island")) {
-				var ctx = GameLocation.LocationContext.Island;
+				var ctx = Game1.locationContextData["Island"];
 
-				Game1.netWorldState.Value.GetWeatherForLocation(ctx)
+				Game1.netWorldState.Value.GetWeatherForLocation("Island")
 					.weatherForTomorrow.Value = Weather
-						.GetWeatherForDate(seed, tomorrow, ctx);
+						.GetWeatherForDate(seed, tomorrow, ctx, "Island");
 			}
 		}
 	}
@@ -352,7 +353,7 @@ public class ModEntry : ModSubscriber {
 			Log($" Query: {query}");
 			if (seed != -1)
 				Log($"  Seed: {seed}");
-			Log($"Result: {GameStateQuery.CheckConditions(query, rnd: rnd, item: Game1.player.CurrentItem, monitor: Monitor, trace: true)}");
+			Log($"Result: {Common.GameStateQuery.CheckConditions(query, rnd: rnd, item: Game1.player.CurrentItem, monitor: Monitor, trace: true)}");
 		});
 
 		Helper.ConsoleCommands.Add("al_update", "Invalidate cached data.", (name, args) => {
@@ -368,7 +369,7 @@ public class ModEntry : ModSubscriber {
 				Log($"  - Which: {Game1.whichFarm}", LogLevel.Info);
 				Log($"  - Fish Override: {farm.getMapProperty("FarmFishLocationOverride")}", LogLevel.Info);
 			}
-			Log($"  - Fish Sample: {Game1.currentLocation.getFish(0f, 0, 4, Game1.player, 0, Microsoft.Xna.Framework.Vector2.Zero).Name}", LogLevel.Info);
+			Log($"  - Fish Sample: {Game1.currentLocation.getFish(0f, "", 4, Game1.player, 0, Microsoft.Xna.Framework.Vector2.Zero).Name}", LogLevel.Info);
 		});
 
 		Helper.ConsoleCommands.Add("al_retheme", "Reload all themes.", ThemeManager.PerformReloadCommand);
@@ -380,16 +381,25 @@ public class ModEntry : ModSubscriber {
 			}
 		});
 
-		Helper.ConsoleCommands.Add("al_forecast", "Get the forecast for the loaded save.", (name, args) => {
-			ulong seed = GetBaseWorldSeed();
-			WorldDate date = new(Game1.Date);
-			for (int i = 0; i < 4 * 28; i++) {
-				int weather = Weather.GetWeatherForDate(seed, date, GameLocation.LocationContext.Default);
-				Log($"Date: {date.Localize()} -- Weather: {WeatherHelper.GetWeatherName(weather)}");
-				date.TotalDays++;
-			}
-		});
-	}
+			Helper.ConsoleCommands.Add("al_now", "Print information about the in-game time.", (_, _) => {
+				Log($"Date: {Game1.Date.Localize()}", LogLevel.Info);
+				Log($"-   Year: {Game1.year}", LogLevel.Info);
+				Log($"- Season: {Game1.currentSeason}", LogLevel.Info);
+				Log($"-  DayOf: {Game1.dayOfMonth}", LogLevel.Info);
+				Log($"-  TDays: {Game1.Date.TotalDays}", LogLevel.Info);
+				Log($"DaysPlayed: {Game1.stats.DaysPlayed}", LogLevel.Info);
+			});
+
+			Helper.ConsoleCommands.Add("al_forecast", "Get the forecast for the loaded save.", (name, args) => {
+				ulong seed = GetBaseWorldSeed();
+				WorldDate date = new(Game1.Date);
+				for (int i = 0; i < 4 * 28; i++) {
+					string weather = Weather.GetWeatherForDate(seed, date, Game1.locationContextData["Default"], "Default");
+					Log($"Date: {date.Localize()} -- Weather: {weather}");
+					date.TotalDays++;
+				}
+			});
+		}
 
 	[Subscriber]
 	private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
@@ -793,6 +803,17 @@ public class ModEntry : ModSubscriber {
 					[MerchantMode.Stock] = I18n.Settings_Notices_Merchant_Stock
 				}
 			)
+			.AddChoice(
+				I18n.Settings_Notices_Bookseller,
+				I18n.Settings_Notices_BooksellerDesc,
+				c => c.NoticesShowBookseller,
+				(c, v) => c.NoticesShowBookseller = v,
+				new Dictionary<MerchantMode, Func<string>> {
+					[MerchantMode.Disabled] = I18n.Settings_Notices_Bookseller_Disabled,
+					[MerchantMode.Visit] = I18n.Settings_Notices_Bookseller_Visit,
+					[MerchantMode.Stock] = I18n.Settings_Notices_Bookseller_Stock
+				}
+			)
 			.Add(
 				I18n.Settings_Notices_Trains,
 				I18n.Settings_Notices_TrainsDesc,
@@ -856,6 +877,10 @@ public class ModEntry : ModSubscriber {
 		return Config.IslandAlwaysAvailable || who.mailReceived.Contains(Mail_Has_Island);
 	}
 
+	public bool HasDesertAccess() {
+		return Game1.locationContextData.ContainsKey("Desert");
+	}
+
 	public bool HasMagic(Farmer who) {
 		return Config.MagicAlwaysAvailable || who.mailReceived.Contains(Mail_Has_Magic);
 	}
@@ -872,7 +897,7 @@ public class ModEntry : ModSubscriber {
 	}
 
 	public string GetSubLocationName(Models.SubLocation sub) {
-		if (sub.Area == -1)
+		if (sub.Area == "")
 			return I18n.Location_SubAny();
 
 		string name = sub.Key;
@@ -885,16 +910,16 @@ public class ModEntry : ModSubscriber {
 				return I18n.Location_SubFloor(sub.Area);
 
 			case "Forest":
-				if (sub.Area == 0)
+				if (sub.Area == "River")
 					return I18n.Location_Forest_River();
-				if (sub.Area == 1)
+				if (sub.Area == "Pond")
 					return I18n.Location_Forest_Pond();
 				break;
 
 			case "IslandWest":
-				if (sub.Area == 1)
+				if (sub.Area == "Ocean")
 					return I18n.Location_Island_Ocean();
-				if (sub.Area == 2)
+				if (sub.Area == "Freshwater")
 					return I18n.Location_Island_Freshwater();
 				break;
 		}

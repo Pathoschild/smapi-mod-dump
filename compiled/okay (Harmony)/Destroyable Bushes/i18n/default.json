@@ -1,4 +1,6 @@
 {
+  "AxeUpgradesRequired.Name": "Axe upgrade",
+  "AxeUpgradesRequired.Desc": "The minimum axe upgrade required to destroy bushes.",
   "WhenBushesRegrow.Name": "When bushes regrow",
   "WhenBushesRegrow.Desc": "The amount of time before destroyed bushes will regrow.\nType a number and then a unit of time (Days, Seasons, Years).\nIf this is blank, bushes will never regrow.\nExamples: \"3 days\" \"1 season\" \"1 year\"",
   "DestroyableBushLocations.Name": "Destroyable bush locations",
@@ -11,6 +13,8 @@
   "DestroyableBushTypes.MediumBushes.Desc": "Check this box to make medium bushes destroyable. These are the type that can produce berries.",
   "DestroyableBushTypes.LargeBushes.Name": "Large bushes",
   "DestroyableBushTypes.LargeBushes.Desc": "Check this box to make large bushes destroyable.",
+  "DestroyableBushTypes.WalnutBushes.Name": "Walnut bushes",
+  "DestroyableBushTypes.WalnutBushes.Desc": "Check this box to make walnut bushes destroyable.",
   "AmountOfWoodDropped.Name": "Amount of wood dropped",
   "AmountOfWoodDropped.Desc": "The number of wood pieces dropped when each type of bush is destroyed.",
   "AmountOfWoodDropped.SmallBushes.Name": "Small bushes",
@@ -19,6 +23,8 @@
   "AmountOfWoodDropped.MediumBushes.Desc": "The number of wood pieces dropped when a medium bush is destroyed.",
   "AmountOfWoodDropped.LargeBushes.Name": "Large bushes",
   "AmountOfWoodDropped.LargeBushes.Desc": "The number of wood pieces dropped when a large bush is destroyed.",
+  "AmountOfWoodDropped.WalnutBushes.Name": "Walnut bushes",
+  "AmountOfWoodDropped.WalnutBushes.Desc": "The number of wood pieces dropped when a walnut bush is destroyed.",
   "AmountOfWoodDropped.GreenTeaBushes.Name": "Green tea bushes",
   "AmountOfWoodDropped.GreenTeaBushes.Desc": "The number of wood pieces dropped when a green tea bush is destroyed."
 }

@@ -11,7 +11,6 @@
 namespace StardewMods.FauxCore;
 
 using SimpleInjector;
-using StardewModdingAPI.Events;
 using StardewMods.Common.Interfaces;
 using StardewMods.Common.Services;
 using StardewMods.Common.Services.Integrations.FauxCore;
@@ -30,21 +29,6 @@ public sealed class ModEntry : Mod
     {
         // Init
         I18n.Init(this.Helper.Translation);
-
-        // Events
-        this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-    }
-
-    /// <inheritdoc />
-    public override object GetApi(IModInfo mod) =>
-        new FauxCoreApi(
-            mod,
-            this.container.GetInstance<Func<IModConfig>>(),
-            this.container.GetInstance<IThemeHelper>());
-
-    private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-    {
-        // Init
         this.container = new Container();
 
         // Configuration
@@ -72,6 +56,13 @@ public sealed class ModEntry : Mod
         // Verify
         this.container.Verify();
     }
+
+    /// <inheritdoc />
+    public override object GetApi(IModInfo mod) =>
+        new FauxCoreApi(
+            mod,
+            this.container.GetInstance<Func<IModConfig>>(),
+            this.container.GetInstance<IThemeHelper>());
 
     private IModConfig GetConfig() => this.container.GetInstance<IModConfig>();
 }

@@ -50,6 +50,13 @@ public static class ExtensionClump
     public static ResourceClump Create (string id, Vector2 position, int remainingHealth = -1)
     {
         ResourceClump clump;
+
+        if (ModEntry.BigClumps is null || ModEntry.BigClumps.Any() == false)
+            return new ResourceClump(600,2,2,position) { 
+                modData =
+                {
+                    { ModKeys.ClumpId, id ?? "none" } 
+                }};
         
         if (ModEntry.BigClumps.TryGetValue(id, out var data) == false)
         {
@@ -75,6 +82,12 @@ public static class ExtensionClump
     /// <returns></returns>
     public static bool IsCustom(ResourceClump clump)
     {
+        if (clump is null)
+            return false;
+        
+        if (clump.modData is null || clump.modData.Any() == false)
+            return false;
+        
         if (clump.modData.TryGetValue(ModKeys.ClumpId, out var id) == false)
             return false;
         
@@ -97,6 +110,11 @@ public static class ExtensionClump
         if (ModEntry.BigClumps.TryGetValue(id, out var resource) == false)
             return false;
 
+        if(clump.health.Value <= 0.0)
+        {
+            return;
+        }
+        
         if (resource.Tool != "vanilla" && !GeneralResource.ToolMatches(t, resource))
         {
             if (GeneralResource.ShouldShowWrongTool(t,resource) && CanShowMessage)
@@ -172,8 +190,6 @@ public static class ExtensionClump
                 }
             }
 
-            //var location = __instance.Location;
-            //location.resourceClumps.Remove(__instance);
             return true;
         }
 

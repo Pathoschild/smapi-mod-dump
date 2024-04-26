@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using PFMAutomate.Automate;
@@ -45,16 +45,9 @@ namespace PFMAutomate
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             IAutomateAPI automate = Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
-            automate.AddFactory(new ProducerFrameworkAutomationFactory());
+            automate?.AddFactory(new ProducerFrameworkAutomationFactory());
 
-            var harmony = HarmonyInstance.Create("Digus.PFMAutomate");
-
-            Assembly automateAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName.StartsWith("Automate,"));
-            MethodInfo automateMethodInfo = AccessTools.GetDeclaredMethods(automateAssembly.GetType("Pathoschild.Stardew.Automate.Framework.AutomationFactory")).Find(m=> m.GetParameters().Any(p=>p.ParameterType == typeof(SObject)));
-            harmony.Patch(
-                original: automateMethodInfo,
-                postfix: new HarmonyMethod(typeof(AutomateOverrides), nameof(AutomateOverrides.GetFor))
-            );
+            var harmony = new Harmony("Digus.PFMAutomate");
 
             Assembly ccrmAutomateAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.StartsWith("CCRMAutomate,"));
             if (ccrmAutomateAssembly != null)

@@ -1,0 +1,7 @@
+{
+  "SprinklersFillBowls": true,
+  "ForceExactBowlTile": true,
+  "BowlFilledDuration": 1,
+  "SnowFillsBowl": false,
+  "CheatyWatering": false
+}

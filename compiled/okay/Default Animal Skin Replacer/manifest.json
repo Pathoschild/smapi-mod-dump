@@ -1,0 +1,10 @@
+{
+  "Name": "DefaultSkinReplace",
+  "Author": "bungus",
+  "Version": "1.1.0",
+  "Description": "Assigns a skin (if they exist) to existing animals with default skins.",
+  "UniqueID": "bungus.DefaultSkinReplace",
+  "EntryDll": "DefaultSkinReplace.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21612" ]
+}

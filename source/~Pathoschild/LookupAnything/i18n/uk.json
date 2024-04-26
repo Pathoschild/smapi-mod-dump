@@ -37,6 +37,7 @@
     "generic.price": "{{price}} з.",
     "generic.price-for-quality": "{{price}} з. ({{quality}})",
     "generic.price-for-stack": "{{price}} з. за набір з {{count}} од.",
+    "generic.show-x-results": "show {{count}} results", // TODO
 
     // types
     "type.building": "Будівля",
@@ -113,13 +114,14 @@
     "location.bugLand": "Лігво жуків-мутантів",
     "location.busStop": "Автобусна зупинка",
     "location.desert": "Пустеля",
+    "location.desert.topPond": "desert (north pond)", // TODO
     "location.farm": "Ферма",
     "location.farmCave": "Печера ферми",
     "location.farmHouse": "Будинок ферми",
     "location.forest": "Ліс",
-    "location.forest.fish-area-0": "Лісова річка",
-    "location.forest.fish-area-1": "Лісове озеро",
     "location.forest.island-tip": "Лісова річка (південна частина великого острова)",
+    "location.forest.lake": "Лісове озеро",
+    "location.forest.river": "Лісова річка",
     "location.mountain": "Гори",
     "location.railroad": "Залізниця",
     "location.sewer": "Каналізація",
@@ -139,8 +141,8 @@
     "location.islandSouthEast": "Південно-східна частина Імбирного острова",
     "location.islandSouthEastCave": "Печера південно-східної частини Імбирного острова",
     "location.islandWest": "Західна частина Імбирного острова",
-    "location.islandWest.fish-area-1": "Західна частина Імбирного острова (океан)",
-    "location.islandWest.fish-area-2": "Західна частина Імбирного острова (ставок)",
+    "location.islandWest.freshwater": "Західна частина Імбирного острова (ставок)",
+    "location.islandWest.ocean": "Західна частина Імбирного острова (океан)",
 
     "location.unknown-fish-area": "{{locationName}} (риболовна місцина {{id}})",
 
@@ -626,6 +628,8 @@
     "tree.name.oak": "Дуб",
     "tree.name.palm": "Пальма",
     "tree.name.pine": "Сосна",
+    "tree.name.mossy": "Mossy Tree", // TODO
+    "tree.name.mystic": "Mystic Tree", // TODO
     "tree.name.unknown": "Невідоме дерево",
     "tree.stage.done": "Повністю виросло",
     "tree.stage.partial": "{{stageName}} ({{step}} з {{max}})",
@@ -673,6 +677,17 @@
 
     "config.highlight-unrevealed-gift-tastes.name": "Підкреслити незвідані улюблені\nподарунки",
     "config.highlight-unrevealed-gift-tastes.desc": "Виділення улюблених подарунків, які не були виявлені в профілі НП. Якщо ввімкнено, не виявлені улюблені подарунки будуть жирними.",
+
+    // collapse fields
+    // TODO
+    "config.title.collapse-fields": "Collapse large fields",
+
+    "config.collapse-fields.enabled.name": "Enabled",
+    "config.collapse-fields.enabled.desc": "Whether to collapse large fields, so the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
+
+    "config.collapse-fields.npc-gift-tastes.name": "NPC lookup: gift tastes",
+    "config.collapse-fields.item-recipes.name": "Item lookup: recipes",
+    "config.collapse-fields.any.desc": "If the field contains this many values, the lookup menu will replace the list with a clickable 'show X values' link to expand it.",
 
     // advanced options
     "config.title.advanced-options": "Розширені опції",

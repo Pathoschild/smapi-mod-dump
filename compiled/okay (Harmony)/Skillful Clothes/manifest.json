@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Skillful Clothes",
+  "Author": "LunaticShade",
+  "Version": "1.5.2",
+  "Description": "Adds effects to shirts, pants and hats",
+  "UniqueID": "LunaticShade.SkillfulClothes",
+  "EntryDll": "SkillfulClothes.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:8541"]
+}

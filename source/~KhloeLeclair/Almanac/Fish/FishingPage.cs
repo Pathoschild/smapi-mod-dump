@@ -309,8 +309,8 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 			if (Tank == null)
 				return null;
 
-			var urchin = new SObject(397, 1);
-			FillTank(urchin, 4);
+				var urchin = ItemRegistry.Create("(O)397", 1);
+				FillTank(urchin, 4);
 
 			builder.Text("\n\n\n\n");
 
@@ -331,7 +331,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 			builder.Text("\n\n");
 			builder.FormatText(
 				I18n.Page_Fish_Nothing(),
-				align: Alignment.Center
+				align: Alignment.HCenter
 			);
 
 			return builder.Build();
@@ -345,12 +345,12 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		}
 
 		builder
-			.Sprite(info.Sprite, 4f, Alignment.Center, onHover: OnHover, noComponent: true)
+			.Sprite(info.Sprite, 4f, Alignment.HCenter, onHover: OnHover, noComponent: true)
 			.Text(
 				$" {info.Name}\n",
 				fancy: info.Legendary,
 				font: Game1.dialogueFont,
-				align: Alignment.Middle,
+				align: Alignment.VCenter,
 				onHover: OnHover,
 				noComponent: true
 			);
@@ -543,11 +543,11 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 						),
 						2f,
 						size: 10,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					)
 					.Text(" ")
 					.Text(
-						Game1.content.LoadString(@"Strings\StringsFromCSFiles:SkillsPage.cs.11607"),
+						Game1.content.LoadString(@"Strings\StringsFromCSFiles:Farmer.cs.1993"),
 						bold: true
 					)
 					.Build();
@@ -572,7 +572,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 				List<Tuple<string, bool, IFlowNode[]>> sorted = new();
 
 				foreach (var pair in caught.Locations) {
-					string? subloc = pair.Key.Area == -1 ? null
+					string? subloc = pair.Key.Area == "No zone" ? null
 						: Mod.GetSubLocationName(pair.Key);
 
 					string name = Mod.GetLocationName(pair.Key.Key, pair.Key.Location);
@@ -660,7 +660,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 			foreach(var item in pond.ProducedItems)
 				builder
 					.Text("\n  ")
-					.Sprite(SpriteHelper.GetSprite(item), 2f, align: Alignment.Middle, extra: item)
+					.Sprite(SpriteHelper.GetSprite(item), 2f, align: Alignment.VCenter, extra: item)
 					.Text(" ")
 					.Text(item.DisplayName, extra: item);
 
@@ -683,7 +683,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 
 		var selected = CurrentFish;
 
-		var sorted = Mod.Fish.GetSeasonFish(Menu.Date.Season);
+		var sorted = Mod.Fish.GetSeasonFish((Menu.Date.SeasonIndex));
 		sorted.Sort((a, b) => {
 			return a.Name.CompareTo(b.Name);
 		});
@@ -698,12 +698,15 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 					continue;
 			}
 
-			if (FType == FishType.Trap && !fish.TrapInfo.HasValue)
+			if (FType == FishType.Trap && !fish.TrapInfo.HasValue) {
+				ModEntry.Instance.Log("Fish has trap info: " + fish.TrapInfo.HasValue);
 				continue;
+			}
 
-			if (FType == FishType.Catch && !fish.CatchInfo.HasValue)
+			if (FType == FishType.Catch && !fish.CatchInfo.HasValue) {
+				ModEntry.Instance.Log("Fish has catch info: "+fish.CatchInfo.HasValue);
 				continue;
-
+			}
 			if (CStatus != CaughtStatus.None) {
 				int caught = fish.NumberCaught(Game1.player);
 				if (CStatus == CaughtStatus.Caught && caught == 0)
@@ -757,11 +760,11 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 				to_select = fish;
 
 			var sb = FlowHelper.Builder()
-				.Sprite(fish.Sprite, 4f, Alignment.Middle)
-				.Text($" {fish.Name}", font: Game1.dialogueFont, align: Alignment.Middle);
+				.Sprite(fish.Sprite, 4f, Alignment.VCenter)
+				.Text($" {fish.Name}", font: Game1.dialogueFont, align: Alignment.VCenter);
 
 			if (Mod.Config.DebugMode)
-				sb.Text($" (#{fish.Id})", align: Alignment.Middle | Alignment.Right);
+				sb.Text($" (#{fish.Id})", align: Alignment.VCenter | Alignment.Right);
 
 			var node = new SelectableNode(
 				sb.Build(),
@@ -794,7 +797,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		if (builder.Count == 0)
 			builder
 				.Text("\n\n\n")
-				.FormatText(I18n.Page_Fish_None(), align: Alignment.Center);
+				.FormatText(I18n.Page_Fish_None(), align: Alignment.HCenter);
 
 		SetLeftFlow(builder, scroll: -1);
 		SelectFish(to_select);
@@ -822,12 +825,12 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		Tank.ResetFish();
 		Tank.generationSeed.Value++;
 
-		// Decor
-		if (Mod.Config.DecorateFishTank) {
-			Tank.heldItems.Add(new SObject(152, 1));
-			Tank.heldItems.Add(new SObject(390, 1));
-			Tank.heldItems.Add(new SObject(393, 1));
-		}
+			// Decor
+			if (Mod.Config.DecorateFishTank) {
+				Tank.heldItems.Add(ItemRegistry.Create("(O)152", 1));
+				Tank.heldItems.Add(ItemRegistry.Create("(O)390", 1));
+				Tank.heldItems.Add(ItemRegistry.Create("(O)393", 1));
+			}
 
 		// Add the Fish
 		if (count < 1) {
@@ -848,15 +851,15 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 
 		// Do we want hats?
 
-		if (Tank.tankFish.Count > 0 && Tank.tankFish[0].fishIndex == 86) {
-			Dictionary<int, string> dictionary = Game1.content.Load<Dictionary<int, string>>(@"Data\hats");
+			if (Tank.tankFish.Count > 0 && Tank.tankFish[0].fishIndex == 86) {
+				Dictionary<string, string> dictionary = Game1.content.Load<Dictionary<string, string>>(@"Data\hats");
 
-			for (int i = 0; i < 4; i++) {
-				int hat = Game1.random.Next(0, dictionary.Keys.Count);
-				Tank.heldItems.Add(new Hat(hat));
+				for (int i = 0; i < 4; i++) {
+					string hat = dictionary.Keys.ElementAt(Game1.random.Next(0, dictionary.Count));
+					Tank.heldItems.Add(ItemRegistry.Create($"(H){hat}", 1));
+				}
 			}
 		}
-	}
 
 	#endregion
 

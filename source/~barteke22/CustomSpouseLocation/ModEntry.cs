@@ -46,8 +46,6 @@ namespace StardewMods
 
         private static Dictionary<string, NPC> allNPCs;
         private static DictionaryEditor state;
-        private static string warningMenu = "";
-        private static string warningCoop = "";
 
         private bool resized = true;
         private bool SelectedImpl;
@@ -101,68 +99,62 @@ namespace StardewMods
             var GenericMC = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (GenericMC != null)
             {
-                warningMenu = translate.Get("GenericMC.WarningMenu");
-                warningCoop = translate.Get("GenericMC.WarningCoop");
-                GenericMC.RegisterModConfig(ModManifest, () => config = new ModConfig(), () => Helper.WriteConfig(config));
-                GenericMC.SetDefaultIngameOptinValue(ModManifest, true);
-                GenericMC.RegisterParagraph(ModManifest, translate.Get("GenericMC.Description"));//All of these strings are stored in the traslation files.
-                GenericMC.RegisterParagraph(ModManifest, translate.Get("GenericMC.Description2"));
+                GenericMC.Register(ModManifest, () => config = new ModConfig(), () => Helper.WriteConfig(config));
+                GenericMC.AddParagraph(ModManifest, () => translate.Get("GenericMC.Description"));//All of these strings are stored in the traslation files.
+                GenericMC.AddParagraph(ModManifest, () => translate.Get("GenericMC.Description2"));
 
                 try
                 {
-                    GenericMC.RegisterSimpleOption(ModManifest, translate.Get("GenericMC.SpritePreview"), translate.Get("GenericMC.SpritePreviewDesc"),
-                        () => config.SpritePreviewName, (string val) => config.SpritePreviewName = val);
+                    GenericMC.AddTextOption(ModManifest, () => config.SpritePreviewName, (string val) => config.SpritePreviewName = val,
+                        () => translate.Get("GenericMC.SpritePreview"), () => translate.Get("GenericMC.SpritePreviewDesc"));
 
                     //auto
-                    GenericMC.RegisterLabel(ModManifest, "--- " + translate.Get("GenericMC.SpouseRoomAuto") + " ---", "");
-                    GenericMC.RegisterSimpleOption(ModManifest, translate.Get("GenericMC.AutoBlacklist"), translate.Get("GenericMC.AutoBlacklistDesc"),
-                        () => config.SpouseRoom_Auto_Blacklist, (string val) => config.SpouseRoom_Auto_Blacklist = val);
-                    GenericMC.RegisterClampedOption(ModManifest, translate.Get("GenericMC.AutoChance"), translate.Get("GenericMC.AutoChanceDesc"),
-                        () => config.SpouseRoom_Auto_Chance, (float val) => config.SpouseRoom_Auto_Chance = (int)val, 0f, 100f);
-                    GenericMC.RegisterSimpleOption(ModManifest, translate.Get("GenericMC.AutoPerfomance"), translate.Get("GenericMC.AutoPerformanceDesc"),
-                        () => config.SpouseRoom_Auto_PerformanceMode, (bool val) => config.SpouseRoom_Auto_PerformanceMode = val);
-                    GenericMC.RegisterSimpleOption(ModManifest, translate.Get("GenericMC.FurnitureChairs"), translate.Get("GenericMC.FurnitureChairsDesc"),
-                        () => config.SpouseRoom_Auto_FurnitureChairs_UpOnly_Blacklist, (string val) => config.SpouseRoom_Auto_FurnitureChairs_UpOnly_Blacklist = val);
-                    GenericMC.RegisterSimpleOption(ModManifest, translate.Get("GenericMC.MapChairs"), translate.Get("GenericMC.MapChairsDesc"),
-                        () => config.SpouseRoom_Auto_MapChairs_DownOnly_Blacklist, (string val) => config.SpouseRoom_Auto_MapChairs_DownOnly_Blacklist = val);
+                    GenericMC.AddSectionTitle(ModManifest, () => "--- " + translate.Get("GenericMC.SpouseRoomAuto") + " ---");
+                    GenericMC.AddTextOption(ModManifest, () => config.SpouseRoom_Auto_Blacklist, (string val) => config.SpouseRoom_Auto_Blacklist = val,
+                        () => translate.Get("GenericMC.AutoBlacklist"), () => translate.Get("GenericMC.AutoBlacklistDesc"));
+                    GenericMC.AddNumberOption(ModManifest, () => config.SpouseRoom_Auto_Chance, (float val) => config.SpouseRoom_Auto_Chance = (int)val,
+                        () => translate.Get("GenericMC.AutoChance"), () => translate.Get("GenericMC.AutoChanceDesc"), 0f, 100f);
+                    GenericMC.AddBoolOption(ModManifest, () => config.SpouseRoom_Auto_PerformanceMode, (bool val) => config.SpouseRoom_Auto_PerformanceMode = val,
+                        () => translate.Get("GenericMC.AutoPerfomance"), () => translate.Get("GenericMC.AutoPerformanceDesc"));
+                    GenericMC.AddTextOption(ModManifest, () => config.SpouseRoom_Auto_FurnitureChairs_UpOnly_Blacklist, (string val) => config.SpouseRoom_Auto_FurnitureChairs_UpOnly_Blacklist = val,
+                        () => translate.Get("GenericMC.FurnitureChairs"), () => translate.Get("GenericMC.FurnitureChairsDesc"));
+                    GenericMC.AddTextOption(ModManifest, () => config.SpouseRoom_Auto_MapChairs_DownOnly_Blacklist, (string val) => config.SpouseRoom_Auto_MapChairs_DownOnly_Blacklist = val,
+                        () => translate.Get("GenericMC.MapChairs"), () => translate.Get("GenericMC.MapChairsDesc"));
 
-                    GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.SpouseRoomTile"), "", translate.Get("GenericMC.SpouseRoomTile"));
+                    GenericMC.AddPageLink(ModManifest, "SpouseRoomTile", () => translate.Get("GenericMC.SpouseRoomTile"), () => translate.Get("GenericMC.SpouseRoomTile"));
 
                     //manual
-                    GenericMC.RegisterLabel(ModManifest, "--- " + translate.Get("GenericMC.Manual") + " ---", "");
+                    GenericMC.AddSectionTitle(ModManifest, () => "--- " + translate.Get("GenericMC.Manual") + " ---");
 
-                    GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.SpouseRoomManual"), "", translate.Get("GenericMC.SpouseRoomManual"));
-                    GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.Kitchen"), "", translate.Get("GenericMC.Kitchen"));
-                    GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.Patio"), "", translate.Get("GenericMC.Patio"));
-                    GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.Porch"), "", translate.Get("GenericMC.Porch"));
+                    GenericMC.AddPageLink(ModManifest, "SpouseRoomManual", () => translate.Get("GenericMC.SpouseRoomManual"), () => translate.Get("GenericMC.SpouseRoomManual"));
+                    GenericMC.AddPageLink(ModManifest, "Kitchen", () => translate.Get("GenericMC.Kitchen"), () => translate.Get("GenericMC.Kitchen"));
+                    GenericMC.AddPageLink(ModManifest, "Patio", () => translate.Get("GenericMC.Patio"), () => translate.Get("GenericMC.Patio"));
+                    GenericMC.AddPageLink(ModManifest, "Porch", () => translate.Get("GenericMC.Porch"), () => translate.Get("GenericMC.Porch"));
 
                     //pages
-                    string hover = translate.Get("GenericMC.Hover") + ": ";
-                    string shared = "\n\n" + translate.Get("GenericMC.SharedManualDesc");
-
                     //spouse room auto tile config
-                    GenericMC.StartNewPage(ModManifest, translate.Get("GenericMC.SpouseRoomTile"));
-                    GenericMCDictionaryEditor(GenericMC, ModManifest, hover + translate.Get("GenericMC.SpouseRoomTile"), translate.Get("GenericMC.SpouseRoomTileDesc") + (mode == 0 || mode == 2 ? "\n" + translate.Get("GenericMC.SpouseRoomTileDesc2") : ""), 0);
+                    GenericMC.AddPage(ModManifest, "SpouseRoomTile", () => translate.Get("GenericMC.SpouseRoomTile"));
+                    GenericMCDictionaryEditor(GenericMC, ModManifest, "SpouseRoomTile", 0);
 
                     //spouse room manual config
-                    GenericMC.StartNewPage(ModManifest, translate.Get("GenericMC.SpouseRoomManual"));
-                    GenericMCDictionaryEditor(GenericMC, ModManifest, hover + translate.Get("GenericMC.SpouseRoomManual"), translate.Get("GenericMC.SpouseRoomManualDesc" + (mode == 0 || mode == 2 ? "\n" + translate.Get("GenericMC.SpouseRoomManualDesc2") : "")) + shared, 1);
+                    GenericMC.AddPage(ModManifest, "SpouseRoomManual", () => translate.Get("GenericMC.SpouseRoomManual"));
+                    GenericMCDictionaryEditor(GenericMC, ModManifest, "SpouseRoomManual", 1);
 
                     //kitchen config
-                    GenericMC.StartNewPage(ModManifest, translate.Get("GenericMC.Kitchen"));
-                    GenericMCDictionaryEditor(GenericMC, ModManifest, hover + translate.Get("GenericMC.Kitchen"), translate.Get("GenericMC.KitchenDesc") + shared, 2);
+                    GenericMC.AddPage(ModManifest, "Kitchen", () => translate.Get("GenericMC.Kitchen"));
+                    GenericMCDictionaryEditor(GenericMC, ModManifest, "Kitchen", 2);
 
                     //patio config
-                    GenericMC.StartNewPage(ModManifest, translate.Get("GenericMC.Patio"));
-                    GenericMCDictionaryEditor(GenericMC, ModManifest, hover + translate.Get("GenericMC.Patio"), translate.Get("GenericMC.PatioDesc") + shared, 3);
+                    GenericMC.AddPage(ModManifest, "Patio", () => translate.Get("GenericMC.Patio"));
+                    GenericMCDictionaryEditor(GenericMC, ModManifest, "Patio", 3);
 
                     //porch config
-                    GenericMC.StartNewPage(ModManifest, translate.Get("GenericMC.Porch"));
-                    GenericMCDictionaryEditor(GenericMC, ModManifest, hover + translate.Get("GenericMC.Porch"), translate.Get("GenericMC.PorchDesc") + shared, 4);
+                    GenericMC.AddPage(ModManifest, "Porch", () => translate.Get("GenericMC.Porch"));
+                    GenericMCDictionaryEditor(GenericMC, ModManifest, "Porch", 4);
 
 
                     //dummy value validation trigger - must be the last thing, so all values are saved before validation
-                    GenericMC.RegisterComplexOption(ModManifest, "", "", (Vector2 pos, object state_) => null, (SpriteBatch b, Vector2 pos, object state_) => null, (object state) => UpdateConfig(true));
+                    GenericMC.AddComplexOption(ModManifest, () => "", () => "", (SpriteBatch b, Vector2 pos) => { }, () => UpdateConfig(true));
                 }
                 catch (Exception)
                 {
@@ -231,353 +223,347 @@ namespace StardewMods
         }
 
 
-        public void GenericMCDictionaryEditor(IGenericModConfigMenuApi GenericMC, IManifest mod, string optionName, string optionDesc, int which)//GMCM Widget
+        public void GenericMCDictionaryEditor(IGenericModConfigMenuApi GenericMC, IManifest mod, string name, int which)//GMCM Widget
         {
-            Func<Vector2, object, object> editorUpdate =
-                (Vector2 pos, object state_) =>
+            DictionaryEditor state = null;
+            void Draw(SpriteBatch b, Vector2 pos)
+            {
+                if (state == null)
                 {
-                    state = state_ as DictionaryEditor;
-                    if (state == null)
-                    {
-                        switch (which)
-                        {
-                            case 0:
-                                Dictionary<string, List<KeyValuePair<string, Vector2>>> temp = new Dictionary<string, List<KeyValuePair<string, Vector2>>>();
-                                foreach (var item in config.SpouseRoom_Auto_Facing_TileOffset)
-                                {
-                                    temp[item.Key] = new List<KeyValuePair<string, Vector2>>() { new KeyValuePair<string, Vector2>("", item.Value) };
-                                }
-                                state = new DictionaryEditor(temp, which);
-                                break;
-                            case 1:
-                                state = new DictionaryEditor(config.SpouseRoom_Manual_TileOffsets, which);
-                                break;
-                            case 2:
-                                state = new DictionaryEditor(config.Kitchen_Manual_TileOffsets, which);
-                                break;
-                            case 3:
-                                state = new DictionaryEditor(config.Patio_Manual_TileOffsets, which);
-                                break;
-                            case 4:
-                                state = new DictionaryEditor(config.Porch_Manual_TileOffsets, which);
-                                break;
-                        }
-                        resized = true;
-                    }
-
-
-                    if (state.dataEditing != null)
-                    {
-                        if (left.JustPressed() || right.JustPressed() || del.JustPressed()) buttonHeld = -41;
-                        buttonHeld++;
-                        if (buttonHeld == 0 || buttonHeld == -40)
-                        {
-                            if (left.IsDown() && state.dataIndex > 0) state.dataIndex--;
-                            else if (right.IsDown() && state.dataIndex < state.dataStrings[state.dataEditing].Length) state.dataIndex++;
-                            else if (del.IsDown() && state.dataIndex < state.dataStrings[state.dataEditing].Length)
-                            {
-                                Game1.playSound("tinyWhip");
-                                state.dataStrings[state.dataEditing] = state.dataStrings[state.dataEditing].Remove(state.dataIndex, 1);
-                            }
-                        }
-                        else if (buttonHeld > 1) buttonHeld = -1;
-                    }
-
-
-                    if (state.boundsLeftRight.Contains(Game1.getMouseX(), Game1.getMouseY()))
-                    {
-                        if (state.scrollState != Game1.input.GetMouseState().ScrollWheelValue)
-                        {
-                            int scroll = Game1.input.GetMouseState().ScrollWheelValue;
-
-                            if (scroll > state.scrollState && state.scrollBar.Y + state.boundsTopBottom.Height < pos.Y + state.boundsTopBottom.Height) state.scrollBar.Y += lineSpacing;
-                            else if (scroll < state.scrollState && state.contentBottom + state.scrollBar.Y - state.boundsTopBottom.Height > pos.Y) state.scrollBar.Y -= lineSpacing;
-
-                            state.dataEditing = null;
-                            state.scrollState = scroll;
-                        }
-                    }
-                    else state.scrollState = Game1.input.GetMouseState().ScrollWheelValue;
-
-
-                    if (click.JustPressed())
-                    {
-                        foreach (var button in state.hoverNames)
-                        {
-                            if (button.Value.Contains(Game1.getMouseX(), Game1.getMouseY()))
-                            {
-                                if (button.Key.StartsWith("Arrow", StringComparison.Ordinal))
-                                {
-                                    if (button.Key.Equals("ArrowUp", StringComparison.Ordinal)) state.scrollBar.Y += lineSpacing;
-                                    else state.scrollBar.Y -= lineSpacing;
-                                    state.dataEditing = null;
-                                }
-                                else if (which != 0 && state.enabledNPCs.ContainsKey(button.Key))
-                                {
-                                    int numb = int.Parse(state.dataStrings.Keys.Where(val => val.StartsWith(button.Key)).OrderBy(val => int.Parse(val.Replace(button.Key + "_", ""))).Last().Replace(button.Key + "_", "")) + 1;
-                                    state.enabledNPCs[button.Key].Add(button.Key + "_" + numb);
-                                    state.dataStrings.Add(button.Key + "_" + numb, "Down / 0, 0");
-                                    state.dataEditing = null;
-                                    break;
-                                }
-                                else if (which == 0 && (state.enabledNPCs.ContainsKey(button.Key))) ;//skips
-                                else if (allNPCs.ContainsKey(button.Key))
-                                {
-                                    state.enabledNPCs[button.Key] = new List<string>() { button.Key + "_0" };
-                                    if (which == 0) state.dataStrings.Add(button.Key + "_0", "0, 0");
-                                    else state.dataStrings.Add(button.Key + "_0", "Down / 0, 0");
-                                    state.dataEditing = null;
-                                    break;
-                                }
-                                else if (state.dataStrings.ContainsKey(button.Key))
-                                {
-                                    state.dataEditing = button.Key;
-                                    float lineWidth = Game1.smallFont.MeasureString(state.dataStrings[button.Key]).X;
-
-                                    float ind = ((Game1.getMouseX() - button.Value.X - 12f) / (lineWidth * ((lineWidth > state.boundsLeftRight.Width - 190) ? 1f : 1.2f)));
-                                    ind = Utility.Clamp(ind * state.dataStrings[button.Key].Length, 0f, state.dataStrings[button.Key].Length);
-                                    state.dataIndex = (int)ind;
-                                    break;
-                                }
-                                else state.dataEditing = null;
-                            }
-                        }
-                        Selected = state.dataEditing != null;
-                    }
-                    else if (remove.JustPressed())
-                    {
-                        state.dataEditing = null;
-                        foreach (var button in state.hoverNames)
-                        {
-                            if (button.Value.Contains(Game1.getMouseX(), Game1.getMouseY()))
-                            {
-                                if (state.enabledNPCs.ContainsKey(button.Key))
-                                {
-                                    if (!button.Key.Equals("Default", StringComparison.Ordinal) && !button.Key.Equals("sebastianFrog", StringComparison.Ordinal))
-                                    //&& state.dataStrings.Keys.Where(val => val.StartsWith(button.Key, StringComparison.Ordinal)).Count() < 2)//old - delete only if 1 entry
-                                    {
-                                        state.enabledNPCs.Remove(button.Key);//delete name if only 1 entry + delete entries
-                                        foreach (var entry in state.hoverNames)
-                                        {
-                                            if (entry.Key.StartsWith(button.Key, StringComparison.Ordinal)) state.dataStrings.Remove(entry.Key);
-                                        }
-                                        break;
-                                    }
-                                }
-                                else if (state.dataStrings.ContainsKey(button.Key) && state.dataStrings.Keys.Where(val => val.StartsWith(button.Key.Split('_')[0], StringComparison.Ordinal)).Count() > 1)
-                                {
-                                    state.dataStrings.Remove(button.Key);//otherwise delete selected entry
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-
-                    return state;
-                };
-            Func<SpriteBatch, Vector2, object, object> editorDraw =
-                (SpriteBatch b, Vector2 pos, object state_) =>
-                {
-                    var state = state_ as DictionaryEditor;
-                    if (resized)
-                    {
-                        state.scrollBar = pos;
-                        int width = Math.Min(Game1.uiViewport.Width / 4, 400);
-                        state.boundsTopBottom = new Rectangle(100, (int)pos.Y, width * 2, -300 + (int)(Math.Min(Game1.uiViewport.Height, 1300f) * 0.8f));
-                        state.boundsLeftRight = new Rectangle((int)(-550 + pos.X), state.boundsTopBottom.Y, 1100, state.boundsTopBottom.Height);
-                        resized = false;
-                    }
-                    Vector2 left = new Vector2(-100f - (state.boundsTopBottom.Width / 2f), 10f);
-
-                    state.hoverNames = new Dictionary<string, Rectangle>();
-
-                    //bg
-                    b.Draw(Game1.staminaRect, new Rectangle(state.boundsLeftRight.X - 66, state.boundsTopBottom.Y, state.boundsLeftRight.Width + 132, state.boundsTopBottom.Height + (int)lineSpacing), null, new Color(253, 186, 105), 0f, Vector2.Zero, SpriteEffects.None, 0.9f);
-                    //arrows
-                    if (state.scrollBar.Y + state.boundsTopBottom.Height < pos.Y + state.boundsTopBottom.Height)
-                    {
-                        Rectangle arrow = new Rectangle((int)(pos.X + state.boundsTopBottom.Width / 2f + 100f), (int)pos.Y, 32, 32);
-                        state.hoverNames["ArrowUp"] = arrow;
-                        b.Draw(Game1.mouseCursors, arrow, new Rectangle(421, 459, 12, 12), Color.White);
-                    }
-                    if (state.contentBottom + state.scrollBar.Y - state.boundsTopBottom.Height > pos.Y)
-                    {
-                        Rectangle arrow = new Rectangle((int)(pos.X + state.boundsTopBottom.Width / 2f + 100f), (int)pos.Y + state.boundsTopBottom.Height, 32, 32);
-                        state.hoverNames["ArrowDown"] = arrow;
-                        b.Draw(Game1.mouseCursors, arrow, new Rectangle(421, 472, 12, 12), Color.White);
-                    }
-                    //warning
-                    if (!Context.IsWorldReady) b.DrawString(Game1.smallFont, warningMenu, Vector2.One, Color.Red, 0f, Vector2.Zero, 1.1f, SpriteEffects.None, 1f);
-                    else if (!Context.IsMainPlayer) b.DrawString(Game1.smallFont, warningCoop, Vector2.One, Color.Red, 0f, Vector2.Zero, 1.1f, SpriteEffects.None, 1f);
-
-                    //npcs
-                    foreach (var entry in state.enabledNPCs.OrderBy(val => val.Key))//npcs in config
-                    {
-                        if (entry.Key.Equals("sebastianFrog", StringComparison.Ordinal) && mode != 0 && mode != 2) continue;
-
-                        Rectangle nameR = new Rectangle((int)(state.scrollBar + left).X, (int)(state.scrollBar + left).Y, state.boundsTopBottom.Width, (int)lineSpacing);
-
-                        NPC current = null;
-                        if (!allNPCs.TryGetValue(entry.Key, out current))
-                        {
-                            if (entry.Key.Equals("sebastianFrog", StringComparison.Ordinal) && allNPCs.TryGetValue("Sebastian", out current)) ;
-                            else if (Game1.player.getSpouse()?.isVillager() != null) current = Game1.player.getSpouse();
-                            else allNPCs.TryGetValue("Emily", out current);
-                        }
-
-                        if (!state.boundsTopBottom.Contains(state.boundsTopBottom.Width, (int)(state.scrollBar.Y + left.Y))) left.Y += lineSpacing; //out of bounds?
-                        else
-                        {
-                            state.hoverNames[entry.Key] = nameR;
-                            if (current != null) b.Draw(current.Sprite.Texture, state.scrollBar + left, new Rectangle(1, 2, 14, 16), Color.White, 0f, new Vector2(16f, 1f), 2f, SpriteEffects.None, 1f);
-                            b.DrawString(Game1.smallFont, entry.Key + (current == null || current.displayName.Equals(entry.Key, StringComparison.Ordinal) ? "" : " (" + current.displayName + ")"), state.scrollBar + left, (nameR.Contains(Game1.getMouseX(), Game1.getMouseY())) ? Color.DarkSlateGray : Color.ForestGreen, 0f, Vector2.Zero, fontScale, SpriteEffects.None, 1f);
-                            left.Y += lineSpacing;
-                        }
-                        foreach (var text in state.dataStrings)//npc's entries
-                        {
-                            if (text.Key.StartsWith(entry.Key, StringComparison.Ordinal))
-                            {
-                                if (!state.boundsTopBottom.Contains(state.boundsTopBottom.Width, (int)(state.scrollBar.Y + left.Y))) //out of bounds?
-                                {
-                                    left.Y += lineSpacing;
-                                    continue;
-                                }
-                                nameR = new Rectangle((int)(state.scrollBar + left).X, (int)(state.scrollBar + left).Y, state.boundsLeftRight.Width, (int)lineSpacing);
-
-                                float fontScale2 = 1.2f;
-                                if (Game1.smallFont.MeasureString(text.Value).X > state.boundsLeftRight.Width - 190)
-                                {
-                                    fontScale2 = 1f;
-                                    nameR.X = 20;
-                                    nameR.Width = Game1.uiViewport.Width - 40;
-                                    b.Draw(Game1.staminaRect, new Rectangle(nameR.X - 10, nameR.Y - 5, nameR.Width + 20, nameR.Height + 10), null, new Color(253, 186, 105), 0f, Vector2.Zero, SpriteEffects.None, 0.9f);
-                                }
-
-
-                                state.hoverNames[text.Key] = nameR;
-                                Color color = Color.OrangeRed;
-
-                                if (which == 0 && text.Value.Split(',').Length == 2 && float.TryParse(text.Value.Split(',')[0], out _) && float.TryParse(text.Value.Split(',')[1], out _)) color = Color.ForestGreen;
-                                else if (which != 0)
-                                {
-                                    int spriteIndex = TryGetSprite(text.Value);
-                                    if (spriteIndex != -9999)
-                                    {
-                                        if (which != 0 && current != null)
-                                        {
-                                            b.Draw(current.Sprite.Texture, new Vector2(20f + nameR.X, nameR.Y), Game1.getSquareSourceRectForNonStandardTileSheet(current.Sprite.Texture, current.Sprite.SpriteWidth, current.Sprite.SpriteHeight, Math.Abs(spriteIndex)),
-                                                Color.White, 0f, new Vector2(18f, 6f), 1.4f, (spriteIndex < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1f);
-                                        }
-                                        if (TryGetVector2(text.Value) != new Vector2(-9999f)) color = Color.ForestGreen;
-                                    }
-                                }
-                                if (nameR.Contains(Game1.getMouseX(), Game1.getMouseY()))
-                                {
-                                    if (color == Color.OrangeRed) color = Color.Crimson;
-                                    else color = Color.DarkSlateGray;
-                                }
-
-                                b.DrawString(Game1.smallFont, text.Value, new Vector2(20f + nameR.X, nameR.Y), color, 0f, Vector2.Zero, fontScale2, SpriteEffects.None, 1f);
-
-                                if (Selected && text.Key.Equals(state.dataEditing, StringComparison.Ordinal)) b.Draw(Game1.staminaRect, new Rectangle(nameR.X + 19
-                                    + (int)((Game1.smallFont.MeasureString((state.dataIndex == text.Value.Length) ? text.Value : text.Value.Remove(state.dataIndex)).X) * fontScale2), nameR.Y, 3, 32),
-                                    Color.Black * ((DateTime.UtcNow.Millisecond % 1000 >= 500) ? 0.3f : 1f));
-
-                                left.Y += lineSpacing;
-                            }
-                        }
-                    }
-                    foreach (var npc in allNPCs)//.OrderBy(val => val.Value?.datable ? 0 : 1).ThenBy(val => val.Key))//technically Dictionary isn't ordered, but it works for now//other datable npcs
-                    {
-                        if (!state.enabledNPCs.ContainsKey(npc.Key))
-                        {
-                            if (!state.boundsTopBottom.Contains(state.boundsTopBottom.Width, (int)(state.scrollBar.Y + left.Y))) //out of bounds?
-                            {
-                                left.Y += lineSpacing;
-                                continue;
-                            }
-                            Rectangle nameR = new Rectangle((int)(state.scrollBar + left).X, (int)(state.scrollBar + left).Y, state.boundsTopBottom.Width, (int)lineSpacing);
-                            state.hoverNames[npc.Key] = nameR;
-
-                            Color c = (nameR.Contains(Game1.getMouseX(), Game1.getMouseY())) ? Color.Black : Color.Gray;
-
-                            if (npc.Value?.datable)
-                            {
-                                if (c == Color.Gray) c = Color.DeepPink;
-                                else c = Color.HotPink;
-                            }
-
-                            if (npc.Value != null) b.Draw(npc.Value.Sprite.Texture, state.scrollBar + left, new Rectangle(1, 2, 14, 16), Color.Gray, 0f, new Vector2(16f, 1f), 2f, SpriteEffects.None, 1f);
-                            b.DrawString(Game1.smallFont, npc.Key + (npc.Value == null || npc.Value.displayName.Equals(npc.Key, StringComparison.Ordinal) ? "" : " (" + npc.Value.displayName + ")"), state.scrollBar + left, c, 0f, Vector2.Zero, fontScale, SpriteEffects.None, 1f);
-                            left.Y += lineSpacing;
-                        }
-                    }
-                    state.contentBottom = (int)left.Y;
-
-                    //ui
-                    b.Draw(Game1.staminaRect, new Rectangle((int)pos.X, (int)pos.Y, (int)(state.boundsTopBottom.Width * 1.4f), 1), null, Color.Black, 0f, new Vector2(0.5f), SpriteEffects.None, 1f);
-                    b.Draw(Game1.staminaRect, new Rectangle((int)pos.X, (int)(pos.Y + state.boundsTopBottom.Height + lineSpacing), (int)(state.boundsTopBottom.Width * 1.4f), 1), null, Color.Black, 0f, new Vector2(0.5f), SpriteEffects.None, 1f);
-
-                    return state;
-                };
-            Action<object> editorSave =
-                (object state_) =>
-                {
-                    if (state_ == null) return;
-                    var state = (state_ as DictionaryEditor);
-
-                    Dictionary<string, List<KeyValuePair<string, Vector2>>> temp = new Dictionary<string, List<KeyValuePair<string, Vector2>>>();
-                    if (which != 0)
-                    {
-                        foreach (var npc in state.enabledNPCs)
-                        {
-                            temp[npc.Key] = new List<KeyValuePair<string, Vector2>>();
-
-                            foreach (var entry in state.dataStrings.Where(val => val.Key.StartsWith(npc.Key)))
-                            {
-                                int spriteIndex = TryGetSprite(entry.Value);
-                                Vector2 offset = TryGetVector2(entry.Value);
-
-                                if (spriteIndex != -9999 && offset != new Vector2(-9999f))
-                                {
-                                    temp[npc.Key].Add(new KeyValuePair<string, Vector2>(entry.Value.Split('/')[0], offset));
-                                }
-                                else temp[npc.Key].Add(new KeyValuePair<string, Vector2>("Down", Vector2.Zero));
-                            }
-                        }
-                    }
                     switch (which)
                     {
                         case 0:
-                            Dictionary<string, Vector2> temp2 = new Dictionary<string, Vector2>();
-                            foreach (var item in state.enabledNPCs)
+                            Dictionary<string, List<KeyValuePair<string, Vector2>>> temp = new Dictionary<string, List<KeyValuePair<string, Vector2>>>();
+                            foreach (var item in config.SpouseRoom_Auto_Facing_TileOffset)
                             {
-                                if (state.dataStrings[item.Key + "_0"].Split(',').Length == 2 && float.TryParse(state.dataStrings[item.Key + "_0"].Split(',')[0], out float x) && float.TryParse(state.dataStrings[item.Key + "_0"].Split(',')[1], out float y))
-                                {
-                                    temp2[item.Key] = new Vector2(x, y);
-                                }
+                                temp[item.Key] = new List<KeyValuePair<string, Vector2>>() { new KeyValuePair<string, Vector2>("", item.Value) };
                             }
-                            config.SpouseRoom_Auto_Facing_TileOffset = temp2;
+                            state = new DictionaryEditor(temp, which);
                             break;
                         case 1:
-                            config.SpouseRoom_Manual_TileOffsets = temp;
+                            state = new DictionaryEditor(config.SpouseRoom_Manual_TileOffsets, which);
                             break;
                         case 2:
-                            config.Kitchen_Manual_TileOffsets = temp;
+                            state = new DictionaryEditor(config.Kitchen_Manual_TileOffsets, which);
                             break;
                         case 3:
-                            config.Patio_Manual_TileOffsets = temp;
+                            state = new DictionaryEditor(config.Patio_Manual_TileOffsets, which);
                             break;
                         case 4:
-                            config.Porch_Manual_TileOffsets = temp;
+                            state = new DictionaryEditor(config.Porch_Manual_TileOffsets, which);
                             break;
                     }
-                };
+                    resized = true;
+                }
 
-            GenericMC.RegisterLabel(mod, optionName, optionDesc);
-            GenericMC.RegisterLabel(mod, translate.Get("GenericMC.Hover") + ":  " + translate.Get("GenericMC.Instructions"), (which == 0 ? translate.Get("GenericMC.InstructionsTile") : translate.Get("GenericMC.InstructionsDesc")));
-            GenericMC.RegisterComplexOption(mod, "", "", editorUpdate, editorDraw, editorSave);
+                ModEntry.state = state;
+
+                if (state.dataEditing != null)
+                {
+                    if (left.JustPressed() || right.JustPressed() || del.JustPressed()) buttonHeld = -41;
+                    buttonHeld++;
+                    if (buttonHeld == 0 || buttonHeld == -40)
+                    {
+                        if (left.IsDown() && state.dataIndex > 0) state.dataIndex--;
+                        else if (right.IsDown() && state.dataIndex < state.dataStrings[state.dataEditing].Length) state.dataIndex++;
+                        else if (del.IsDown() && state.dataIndex < state.dataStrings[state.dataEditing].Length)
+                        {
+                            Game1.playSound("tinyWhip");
+                            state.dataStrings[state.dataEditing] = state.dataStrings[state.dataEditing].Remove(state.dataIndex, 1);
+                        }
+                    }
+                    else if (buttonHeld > 1) buttonHeld = -1;
+                }
+
+
+                if (state.boundsLeftRight.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                {
+                    if (state.scrollState != Game1.input.GetMouseState().ScrollWheelValue)
+                    {
+                        int scroll = Game1.input.GetMouseState().ScrollWheelValue;
+
+                        if (scroll > state.scrollState && state.scrollBar.Y + state.boundsTopBottom.Height < pos.Y + state.boundsTopBottom.Height) state.scrollBar.Y += lineSpacing;
+                        else if (scroll < state.scrollState && state.contentBottom + state.scrollBar.Y - state.boundsTopBottom.Height > pos.Y) state.scrollBar.Y -= lineSpacing;
+
+                        state.dataEditing = null;
+                        state.scrollState = scroll;
+                    }
+                }
+                else state.scrollState = Game1.input.GetMouseState().ScrollWheelValue;
+
+
+                if (click.JustPressed())
+                {
+                    foreach (var button in state.hoverNames)
+                    {
+                        if (button.Value.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                        {
+                            if (button.Key.StartsWith("Arrow", StringComparison.Ordinal))
+                            {
+                                if (button.Key.Equals("ArrowUp", StringComparison.Ordinal)) state.scrollBar.Y += lineSpacing;
+                                else state.scrollBar.Y -= lineSpacing;
+                                state.dataEditing = null;
+                            }
+                            else if (which != 0 && state.enabledNPCs.ContainsKey(button.Key))
+                            {
+                                int numb = int.Parse(state.dataStrings.Keys.Where(val => val.StartsWith(button.Key)).OrderBy(val => int.Parse(val.Replace(button.Key + "_", ""))).Last().Replace(button.Key + "_", "")) + 1;
+                                state.enabledNPCs[button.Key].Add(button.Key + "_" + numb);
+                                state.dataStrings.Add(button.Key + "_" + numb, "Down / 0, 0");
+                                state.dataEditing = null;
+                                break;
+                            }
+                            else if (which == 0 && (state.enabledNPCs.ContainsKey(button.Key))) ;//skips
+                            else if (allNPCs.ContainsKey(button.Key))
+                            {
+                                state.enabledNPCs[button.Key] = new List<string>() { button.Key + "_0" };
+                                if (which == 0) state.dataStrings.Add(button.Key + "_0", "0, 0");
+                                else state.dataStrings.Add(button.Key + "_0", "Down / 0, 0");
+                                state.dataEditing = null;
+                                break;
+                            }
+                            else if (state.dataStrings.ContainsKey(button.Key))
+                            {
+                                state.dataEditing = button.Key;
+                                float lineWidth = Game1.smallFont.MeasureString(state.dataStrings[button.Key]).X;
+
+                                float ind = ((Game1.getMouseX() - button.Value.X - 12f) / (lineWidth * ((lineWidth > state.boundsLeftRight.Width - 190) ? 1f : 1.2f)));
+                                ind = Utility.Clamp(ind * state.dataStrings[button.Key].Length, 0f, state.dataStrings[button.Key].Length);
+                                state.dataIndex = (int)ind;
+                                break;
+                            }
+                            else state.dataEditing = null;
+                        }
+                    }
+                    Selected = state.dataEditing != null;
+                }
+                else if (remove.JustPressed())
+                {
+                    state.dataEditing = null;
+                    foreach (var button in state.hoverNames)
+                    {
+                        if (button.Value.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                        {
+                            if (state.enabledNPCs.ContainsKey(button.Key))
+                            {
+                                if (!button.Key.Equals("Default", StringComparison.Ordinal) && !button.Key.Equals("sebastianFrog", StringComparison.Ordinal))
+                                //&& state.dataStrings.Keys.Where(val => val.StartsWith(button.Key, StringComparison.Ordinal)).Count() < 2)//old - delete only if 1 entry
+                                {
+                                    state.enabledNPCs.Remove(button.Key);//delete name if only 1 entry + delete entries
+                                    foreach (var entry in state.hoverNames)
+                                    {
+                                        if (entry.Key.StartsWith(button.Key, StringComparison.Ordinal)) state.dataStrings.Remove(entry.Key);
+                                    }
+                                    break;
+                                }
+                            }
+                            else if (state.dataStrings.ContainsKey(button.Key) && state.dataStrings.Keys.Where(val => val.StartsWith(button.Key.Split('_')[0], StringComparison.Ordinal)).Count() > 1)
+                            {
+                                state.dataStrings.Remove(button.Key);//otherwise delete selected entry
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //draw
+                if (resized)
+                {
+                    state.scrollBar = pos;
+                    int width = Math.Min(Game1.uiViewport.Width / 4, 400);
+                    state.boundsTopBottom = new Rectangle(100, (int)pos.Y, width * 2, -300 + (int)(Math.Min(Game1.uiViewport.Height, 1300f) * 0.8f));
+                    state.boundsLeftRight = new Rectangle((int)(-550 + pos.X), state.boundsTopBottom.Y, 1100, state.boundsTopBottom.Height);
+                    resized = false;
+                }
+                Vector2 leftMargin = new Vector2(-100f - (state.boundsTopBottom.Width / 2f), 10f);
+
+                state.hoverNames = new Dictionary<string, Rectangle>();
+
+                //bg
+                b.Draw(Game1.staminaRect, new Rectangle(state.boundsLeftRight.X - 66, state.boundsTopBottom.Y, state.boundsLeftRight.Width + 132, state.boundsTopBottom.Height + (int)lineSpacing), null, new Color(253, 186, 105), 0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+                //arrows
+                if (state.scrollBar.Y + state.boundsTopBottom.Height < pos.Y + state.boundsTopBottom.Height)
+                {
+                    Rectangle arrow = new Rectangle((int)(pos.X + state.boundsTopBottom.Width / 2f + 100f), (int)pos.Y, 32, 32);
+                    state.hoverNames["ArrowUp"] = arrow;
+                    b.Draw(Game1.mouseCursors, arrow, new Rectangle(421, 459, 12, 12), Color.White);
+                }
+                if (state.contentBottom + state.scrollBar.Y - state.boundsTopBottom.Height > pos.Y)
+                {
+                    Rectangle arrow = new Rectangle((int)(pos.X + state.boundsTopBottom.Width / 2f + 100f), (int)pos.Y + state.boundsTopBottom.Height, 32, 32);
+                    state.hoverNames["ArrowDown"] = arrow;
+                    b.Draw(Game1.mouseCursors, arrow, new Rectangle(421, 472, 12, 12), Color.White);
+                }
+                //warning
+                if (!Context.IsWorldReady) b.DrawString(Game1.smallFont, translate.Get("GenericMC.WarningMenu"), Vector2.One, Color.Red, 0f, Vector2.Zero, 1.1f, SpriteEffects.None, 1f);
+                else if (!Context.IsMainPlayer) b.DrawString(Game1.smallFont, translate.Get("GenericMC.WarningCoop"), Vector2.One, Color.Red, 0f, Vector2.Zero, 1.1f, SpriteEffects.None, 1f);
+
+                //npcs
+                foreach (var entry in state.enabledNPCs.OrderBy(val => val.Key))//npcs in config
+                {
+                    if (entry.Key.Equals("sebastianFrog", StringComparison.Ordinal) && mode != 0 && mode != 2) continue;
+
+                    Rectangle nameR = new Rectangle((int)(state.scrollBar + leftMargin).X, (int)(state.scrollBar + leftMargin).Y, state.boundsTopBottom.Width, (int)lineSpacing);
+
+                    NPC current = null;
+                    if (!allNPCs.TryGetValue(entry.Key, out current))
+                    {
+                        if (entry.Key.Equals("sebastianFrog", StringComparison.Ordinal) && allNPCs.TryGetValue("Sebastian", out current)) ;
+                        else if (Game1.player.getSpouse()?.isVillager() != null) current = Game1.player.getSpouse();
+                        else allNPCs.TryGetValue("Emily", out current);
+                    }
+
+                    if (!state.boundsTopBottom.Contains(state.boundsTopBottom.Width, (int)(state.scrollBar.Y + leftMargin.Y))) leftMargin.Y += lineSpacing; //out of bounds?
+                    else
+                    {
+                        state.hoverNames[entry.Key] = nameR;
+                        if (current != null) b.Draw(current.Sprite.Texture, state.scrollBar + leftMargin, new Rectangle(1, 2, 14, 16), Color.White, 0f, new Vector2(16f, 1f), 2f, SpriteEffects.None, 1f);
+                        b.DrawString(Game1.smallFont, entry.Key + (current == null || current.displayName.Equals(entry.Key, StringComparison.Ordinal) ? "" : " (" + current.displayName + ")"), state.scrollBar + leftMargin, (nameR.Contains(Game1.getMouseX(), Game1.getMouseY())) ? Color.DarkSlateGray : Color.ForestGreen, 0f, Vector2.Zero, fontScale, SpriteEffects.None, 1f);
+                        leftMargin.Y += lineSpacing;
+                    }
+                    foreach (var text in state.dataStrings)//npc's entries
+                    {
+                        if (text.Key.StartsWith(entry.Key, StringComparison.Ordinal))
+                        {
+                            if (!state.boundsTopBottom.Contains(state.boundsTopBottom.Width, (int)(state.scrollBar.Y + leftMargin.Y))) //out of bounds?
+                            {
+                                leftMargin.Y += lineSpacing;
+                                continue;
+                            }
+                            nameR = new Rectangle((int)(state.scrollBar + leftMargin).X, (int)(state.scrollBar + leftMargin).Y, state.boundsLeftRight.Width, (int)lineSpacing);
+
+                            float fontScale2 = 1.2f;
+                            if (Game1.smallFont.MeasureString(text.Value).X > state.boundsLeftRight.Width - 190)
+                            {
+                                fontScale2 = 1f;
+                                nameR.X = 20;
+                                nameR.Width = Game1.uiViewport.Width - 40;
+                                b.Draw(Game1.staminaRect, new Rectangle(nameR.X - 10, nameR.Y - 5, nameR.Width + 20, nameR.Height + 10), null, new Color(253, 186, 105), 0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+                            }
+
+
+                            state.hoverNames[text.Key] = nameR;
+                            Color color = Color.OrangeRed;
+
+                            if (which == 0 && text.Value.Split(',').Length == 2 && float.TryParse(text.Value.Split(',')[0], out _) && float.TryParse(text.Value.Split(',')[1], out _)) color = Color.ForestGreen;
+                            else if (which != 0)
+                            {
+                                int spriteIndex = TryGetSprite(text.Value);
+                                if (spriteIndex != -9999)
+                                {
+                                    if (which != 0 && current != null)
+                                    {
+                                        b.Draw(current.Sprite.Texture, new Vector2(20f + nameR.X, nameR.Y), Game1.getSquareSourceRectForNonStandardTileSheet(current.Sprite.Texture, current.Sprite.SpriteWidth, current.Sprite.SpriteHeight, Math.Abs(spriteIndex)),
+                                            Color.White, 0f, new Vector2(18f, 6f), 1.4f, (spriteIndex < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1f);
+                                    }
+                                    if (TryGetVector2(text.Value) != new Vector2(-9999f)) color = Color.ForestGreen;
+                                }
+                            }
+                            if (nameR.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                            {
+                                if (color == Color.OrangeRed) color = Color.Crimson;
+                                else color = Color.DarkSlateGray;
+                            }
+
+                            b.DrawString(Game1.smallFont, text.Value, new Vector2(20f + nameR.X, nameR.Y), color, 0f, Vector2.Zero, fontScale2, SpriteEffects.None, 1f);
+
+                            if (Selected && text.Key.Equals(state.dataEditing, StringComparison.Ordinal)) b.Draw(Game1.staminaRect, new Rectangle(nameR.X + 19
+                                + (int)((Game1.smallFont.MeasureString((state.dataIndex == text.Value.Length) ? text.Value : text.Value.Remove(state.dataIndex)).X) * fontScale2), nameR.Y, 3, 32),
+                                Color.Black * ((DateTime.UtcNow.Millisecond % 1000 >= 500) ? 0.3f : 1f));
+
+                            leftMargin.Y += lineSpacing;
+                        }
+                    }
+                }
+                foreach (var npc in allNPCs)//.OrderBy(val => val.Value?.datable ? 0 : 1).ThenBy(val => val.Key))//technically Dictionary isn't ordered, but it works for now//other datable npcs
+                {
+                    if (!state.enabledNPCs.ContainsKey(npc.Key))
+                    {
+                        if (!state.boundsTopBottom.Contains(state.boundsTopBottom.Width, (int)(state.scrollBar.Y + leftMargin.Y))) //out of bounds?
+                        {
+                            leftMargin.Y += lineSpacing;
+                            continue;
+                        }
+                        Rectangle nameR = new Rectangle((int)(state.scrollBar + leftMargin).X, (int)(state.scrollBar + leftMargin).Y, state.boundsTopBottom.Width, (int)lineSpacing);
+                        state.hoverNames[npc.Key] = nameR;
+
+                        Color c = (nameR.Contains(Game1.getMouseX(), Game1.getMouseY())) ? Color.Black : Color.Gray;
+
+                        if (npc.Value?.datable)
+                        {
+                            if (c == Color.Gray) c = Color.DeepPink;
+                            else c = Color.HotPink;
+                        }
+
+                        if (npc.Value != null) b.Draw(npc.Value.Sprite.Texture, state.scrollBar + leftMargin, new Rectangle(1, 2, 14, 16), Color.Gray, 0f, new Vector2(16f, 1f), 2f, SpriteEffects.None, 1f);
+                        b.DrawString(Game1.smallFont, npc.Key + (npc.Value == null || npc.Value.displayName.Equals(npc.Key, StringComparison.Ordinal) ? "" : " (" + npc.Value.displayName + ")"), state.scrollBar + leftMargin, c, 0f, Vector2.Zero, fontScale, SpriteEffects.None, 1f);
+                        leftMargin.Y += lineSpacing;
+                    }
+                }
+                state.contentBottom = (int)leftMargin.Y;
+
+                //ui
+                b.Draw(Game1.staminaRect, new Rectangle((int)pos.X, (int)pos.Y, (int)(state.boundsTopBottom.Width * 1.4f), 1), null, Color.Black, 0f, new Vector2(0.5f), SpriteEffects.None, 1f);
+                b.Draw(Game1.staminaRect, new Rectangle((int)pos.X, (int)(pos.Y + state.boundsTopBottom.Height + lineSpacing), (int)(state.boundsTopBottom.Width * 1.4f), 1), null, Color.Black, 0f, new Vector2(0.5f), SpriteEffects.None, 1f);
+            }
+
+            void Save()
+            {
+                if (state == null) return;
+                Dictionary<string, List<KeyValuePair<string, Vector2>>> temp = new Dictionary<string, List<KeyValuePair<string, Vector2>>>();
+                if (which != 0)
+                {
+                    foreach (var npc in state.enabledNPCs)
+                    {
+                        temp[npc.Key] = new List<KeyValuePair<string, Vector2>>();
+
+                        foreach (var entry in state.dataStrings.Where(val => val.Key.StartsWith(npc.Key)))
+                        {
+                            int spriteIndex = TryGetSprite(entry.Value);
+                            Vector2 offset = TryGetVector2(entry.Value);
+
+                            if (spriteIndex != -9999 && offset != new Vector2(-9999f))
+                            {
+                                temp[npc.Key].Add(new KeyValuePair<string, Vector2>(entry.Value.Split('/')[0], offset));
+                            }
+                            else temp[npc.Key].Add(new KeyValuePair<string, Vector2>("Down", Vector2.Zero));
+                        }
+                    }
+                }
+                switch (which)
+                {
+                    case 0:
+                        Dictionary<string, Vector2> temp2 = new Dictionary<string, Vector2>();
+                        foreach (var item in state.enabledNPCs)
+                        {
+                            if (state.dataStrings[item.Key + "_0"].Split(',').Length == 2 && float.TryParse(state.dataStrings[item.Key + "_0"].Split(',')[0], out float x) && float.TryParse(state.dataStrings[item.Key + "_0"].Split(',')[1], out float y))
+                            {
+                                temp2[item.Key] = new Vector2(x, y);
+                            }
+                        }
+                        config.SpouseRoom_Auto_Facing_TileOffset = temp2;
+                        break;
+                    case 1:
+                        config.SpouseRoom_Manual_TileOffsets = temp;
+                        break;
+                    case 2:
+                        config.Kitchen_Manual_TileOffsets = temp;
+                        break;
+                    case 3:
+                        config.Patio_Manual_TileOffsets = temp;
+                        break;
+                    case 4:
+                        config.Porch_Manual_TileOffsets = temp;
+                        break;
+                }
+            }
+
+            if (which == 0) GenericMC.AddSectionTitle(mod, () => translate.Get("GenericMC.Hover") + ": " + translate.Get("GenericMC.SpouseRoomTile"), 
+                () => translate.Get("GenericMC.SpouseRoomTileDesc") + (mode == 0 || mode == 2 ? "\n" + translate.Get("GenericMC.SpouseRoomTileDesc2") : ""));
+            else if (which == 1) GenericMC.AddSectionTitle(mod, () => translate.Get("GenericMC.Hover") + ": " + translate.Get("GenericMC.SpouseRoomManual"), 
+                () => translate.Get("GenericMC.SpouseRoomManualDesc" + (mode == 0 || mode == 2 ? "\n" + translate.Get("GenericMC.SpouseRoomManualDesc2") : "")) + "\n\n" + translate.Get("GenericMC.SharedManualDesc"));
+            else GenericMC.AddSectionTitle(mod, () => translate.Get("GenericMC.Hover") + ": " + translate.Get("GenericMC." + name), () => translate.Get("GenericMC." + name + "Desc") + "\n\n" + translate.Get("GenericMC.SharedManualDesc"));
+            GenericMC.AddSectionTitle(mod, () => translate.Get("GenericMC.Hover") + ":  " + translate.Get("GenericMC.Instructions"), () => (which == 0 ? translate.Get("GenericMC.InstructionsTile") : translate.Get("GenericMC.InstructionsDesc")));
+            GenericMC.AddComplexOption(mod, () => "", () => "", Draw, Save, () => 300);
         }
 
         private int TryGetSprite(string input)

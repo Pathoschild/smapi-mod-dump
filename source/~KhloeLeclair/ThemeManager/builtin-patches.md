@@ -10,8 +10,11 @@ for queries and analysis.**
 
 # Built-in Patches
 
-The following is a list of built-in patches:
+The following is a list of the currently built-in patches. It is generally
+very easy to add new patches, so please don't hesitate to ask if you want
+something that isn't listed here:
 
+* [AboutMenu](#aboutmenu)
 * [Billboard](#billboard)
 * [BobberBar](#bobberbar)
 * [CarpenterMenu](#carpentermenu)
@@ -19,7 +22,6 @@ The following is a list of built-in patches:
 * [CoopMenu](#coopmenu)
 * [DayTimeMoneyBox](#daytimemoneybox)
 * [DrawHud](#drawhud)
-* [DrawTextWithShadow](#drawtextwithshadow)
 * [ExitPage](#exitpage)
 * [ForgeMenu](#forgemenu)
 * [ItemTooltips](#itemtooltips)
@@ -29,11 +31,44 @@ The following is a list of built-in patches:
 * [MineElevatorMenu](#mineelevatormenu)
 * [MoneyDial](#moneydial)
 * [OptionsDropDown](#optionsdropdown)
+* [PrairieKing](#prairieking)
 * [QuestLog](#questlog)
 * [ShopMenu](#shopmenu)
 * [SkillsPage](#skillspage)
 * [SpecialOrdersBoard](#specialordersboard)
 * [TutorialMenu](#tutorialmenu)
+
+# AboutMenu
+
+<table>
+<tr>
+<th>Id</th>
+<td>AboutMenu</td>
+</tr>
+<tr>
+<th>Variables</th>
+<td>
+<table>
+<tr><th>Name</th><th>Default Value</th></tr>
+<tr><td>$CreditsText</td><td><i>White (#FFFFFF)</i></td></tr>
+<tr><td>$CreditsLink</td><td></td></tr>
+<tr><td>$CreditsLinkHover</td><td></td></tr>
+</table>
+</td>
+</tr>
+<tr>
+<th>Target</th>
+<td>
+<table>
+<tr><th>Class</th><th>Method</th></tr>
+<tr><td>StardewValley.Menus.AboutMenu</td><td>draw</td></tr>
+<tr><td>StardewValley.Menus.TextCreditsBlock</td><td><i>Constructor</i></td></tr>
+<tr><td>StardewValley.Menus.LinkCreditsBlock</td><td><i>Constructor</i></td></tr>
+</table>
+</td>
+</tr>
+</table>
+
 
 # Billboard
 
@@ -49,6 +84,7 @@ The following is a list of built-in patches:
 <tr><th>Name</th><th>Default Value</th></tr>
 <tr><td>$BillboardHover</td><td>$ButtonHover</td></tr>
 <tr><td>$BillboardText</td><td></td></tr>
+<tr><td>$BillboardTextShadow</td><td></td></tr>
 <tr><td>$CalendarDim</td><td><i>Gray (#808080)</i></td></tr>
 <tr><td>$CalendarToday</td><td><i>Blue (#0000FF)</i></td></tr>
 </table>
@@ -432,34 +468,6 @@ the game.
 </table>
 
 
-# DrawTextWithShadow
-
-<table>
-<tr>
-<th>Id</th>
-<td>DrawTextWithShadow</td>
-</tr>
-<tr>
-<th>Variables</th>
-<td>
-<table>
-<tr><th>Name</th><th>Default Value</th></tr>
-<tr><td>$TextShadowAlt</td><td><i>#DD9454</i></td></tr>
-</table>
-</td>
-</tr>
-<tr>
-<th>Target</th>
-<td>
-<table>
-<tr><th>Class</th><th>Method</th></tr>
-<tr><td>StardewValley.Utility</td><td>drawTextWithShadow</td></tr>
-</table>
-</td>
-</tr>
-</table>
-
-
 # ExitPage
 
 <table>
@@ -731,6 +739,38 @@ the game.
 </table>
 
 
+# PrairieKing
+
+<table>
+<tr>
+<th>Id</th>
+<td>OptionsDropDown</td>
+</tr>
+<tr>
+<th>Variables</th>
+<td>
+<table>
+<tr><th>Name</th><th>Default Value</th></tr>
+<tr><td>$PrairieKingAbigailDialogueText</td><td><i>Purple (#6E2BFF)</i></td></tr>
+<tr><td>$PrairieKingStoreItemText</td><td><i>(#581D2B)</i></td></tr>
+<tr><td>$PrairieKingTimerGreen</td><td><i>(#93B126)</i></td></tr>
+<tr><td>$PrairieKingTimerRed</td><td><i>(#BC334A)</i></td></tr>
+<tr><td>$PrairieKingScreenFlash</td><td><i>(#FFD6A8)</i></td></tr>
+</table>
+</td>
+</tr>
+<tr>
+<th>Target</th>
+<td>
+<table>
+<tr><th>Class</th><th>Method</th></tr>
+<tr><td>StardewValley.Minigames.AbigailGame</td><td>draw</td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+
 # QuestLog
 
 <table>
@@ -765,36 +805,6 @@ the game.
 </table>
 
 
-# ShopMenu
-
-> Note: Shops will have theme support in 1.6, natively. Much nicer than this.
-
-<table>
-<tr>
-<th>Id</th>
-<td>ShopMenu</td>
-</tr>
-<tr>
-<th>Variables</th>
-<td>
-<table>
-<tr><th>Name</th><th>Default Value</th></tr>
-<tr><td>$ShopSelected</td><td><i>Wheat (#F5DEB3)</i></td></tr>
-<tr><td>$ShopQiSelected</td><td><i>Blue (#0000FF)</i></td></tr>
-</table>
-</td>
-<tr>
-<th>Target</th>
-<td>
-<table>
-<tr><th>Class</th><th>Method</th></tr>
-<tr><td>StardewValley.Menus.ShopMenu</td><td>draw</td></tr>
-</table>
-</td>
-</tr>
-</table>
-
-
 # SkillsPage
 
 <table>
@@ -810,6 +820,19 @@ the game.
 <tr><td>$SkillsPageText</td><td>$Text</td></tr>
 <tr><td>$SkillsPageModifiedNumber</td><td><i>LightGreen (#90EE90)</i></td></tr>
 <tr><td>$SkillsPageNumber</td><td><i>SandyBrown (#F4A460)</i></td></tr>
+<tr><td>$SkillsPageDivider</td><td><i>(#D68F54)</i></td></tr>
+<tr><td>$SkillsPageStardropText</td><td><i>(#A01EEB)</i></td></tr>
+<tr><td>$SkillsPageNumber</td><td><i>SandyBrown (#F4A460)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressBorder</td><td><i>(#3C3C19)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressBackground</td><td><i>(#AD814F)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressLabel</td><td><i>White (#FFFFFF)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressLight</td><td><i>(#3CB450)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressMedium</td><td><i>(#00713E)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressMediumDark</td><td><i>(#005032)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressDark</td><td><i>(#003C1E)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressCompleteLight</td><td><i>(#DCDCDC)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressCompleteMedium</td><td><i>(#8C8C8C)</i></td></tr>
+<tr><td>$SkillsPageMasteryProgressCompleteMediumDark</td><td><i>(#505050)</i></td></tr>
 </table>
 </td>
 </tr>
@@ -819,6 +842,8 @@ the game.
 <table>
 <tr><th>Class</th><th>Method</th></tr>
 <tr><td>StardewValley.Menus.SkillsPage</td><td>draw</td></tr>
+<tr><td>StardewValley.Menus.MasteryTrackerMenu</td><td>drawBar</td></tr>
+<tr><td>SpaceCore.Interface.NewSkillsPage</td><td>draw</td></tr>
 </table>
 </td>
 </tr>

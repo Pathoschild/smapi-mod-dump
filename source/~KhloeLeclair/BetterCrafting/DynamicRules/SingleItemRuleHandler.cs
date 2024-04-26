@@ -17,26 +17,31 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 
 namespace Leclair.Stardew.BetterCrafting.DynamicRules;
 
 public class SingleItemRuleHandler : IDynamicRuleHandler {
 
-	public readonly int ItemId;
+	public readonly string ItemId;
 	public readonly Lazy<Item> Item;
+	public readonly Lazy<ParsedItemData> Data;
 
-	public SingleItemRuleHandler(int itemId) {
+	public SingleItemRuleHandler(int itemId) : this($"{itemId}") { }
+
+	public SingleItemRuleHandler(string itemId) {
 		ItemId = itemId;
-		Item = new Lazy<Item>(() => new SObject(ItemId, 1));
+		Item = new Lazy<Item>(() => ItemRegistry.Create(ItemId, 1));
+		Data = new Lazy<ParsedItemData>(() => ItemRegistry.GetDataOrErrorItem(ItemId));
 	}
 
-	public string DisplayName => I18n.Filter_Buff(Item.Value.DisplayName);
-	public string Description => I18n.Filter_Buff_About(Item.Value.DisplayName);
+	public string DisplayName => I18n.Filter_Buff(Data.Value.DisplayName);
+	public string Description => I18n.Filter_Buff_About(Data.Value.DisplayName);
 
-	public Texture2D Texture => Game1.objectSpriteSheet;
+	public Texture2D Texture => Data.Value.GetTexture();
 
-	public Rectangle Source => Game1.getSourceRectForStandardTileSheet(Texture, Item.Value.ParentSheetIndex, 16, 16);
+	public Rectangle Source => Data.Value.GetSourceRect();
 
 	public bool AllowMultiple => false;
 

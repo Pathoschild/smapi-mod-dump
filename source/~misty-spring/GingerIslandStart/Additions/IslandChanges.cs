@@ -66,10 +66,15 @@ public static class IslandChanges
             }
         }
 
-        Game1.player.mailReceived.Add(ModEntry.GiftWarpId);
-
         if (gift is null)
+        {
+#if DEBUG
+            ModEntry.Mon.Log("Gift is null.", StardewModdingAPI.LogLevel.Warn);
+#endif
             return;
+        }
+
+        Game1.player.mailReceived.Add(ModEntry.GiftWarpId);
 
         (gift as Chest)?.addItem(ItemRegistry.Create("(T)BambooPole"));
 

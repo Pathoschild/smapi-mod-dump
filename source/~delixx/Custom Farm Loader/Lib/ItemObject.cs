@@ -46,7 +46,7 @@ namespace Custom_Farm_Loader.Lib
         public static string MapNameToItemId(string name)
         {
             var comparableName = name.ToLower().Replace("_", " ").Replace("'", "");
-            var match = Game1.objectData.FirstOrDefault(fur => fur.Value.Name.ToLower().Replace("'", "").StartsWith(comparableName));
+            var match = Game1.objectData.FirstOrDefault(fur => fur.Value.Name?.ToLower().Replace("'", "").StartsWith(comparableName) == true);
 
             if (match.Value != null)
                 return match.Key;

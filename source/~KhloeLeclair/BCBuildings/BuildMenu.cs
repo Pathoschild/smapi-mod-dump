@@ -8,54 +8,82 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
-using System.Linq;
+using System;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using Leclair.Stardew.BetterCrafting;
 
 using StardewValley;
-using StardewValley.BellsAndWhistles;
-using StardewValley.Buildings;
-using StardewValley.Locations;
+using StardewValley.GameData.Buildings;
 using StardewValley.Menus;
 using StardewValley.Objects;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using StardewValley.TokenizableStrings;
+using StardewValley.Buildings;
+using Leclair.Stardew.Common;
+using StardewValley.Locations;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using StardewValley.BellsAndWhistles;
+using StardewValley.Extensions;
 
 namespace Leclair.Stardew.BCBuildings;
 
-internal class BuildMenu : IClickableMenu {
+public class BuildMenu : IClickableMenu {
+
+	public static readonly Color COLOR_OKAY = Color.Lime * 0.8f;
+	public static readonly Color COLOR_ERROR = Color.Red * 0.8f;
+
+
+	// Basics
 
 	public readonly ModEntry Mod;
-	public readonly BluePrint? Blueprint;
+
+	public readonly string? BuildingId;
+	public readonly string? SkinId;
+	public readonly BuildingData? Data;
 	public readonly ActionType Action;
-	public readonly BuildableGameLocation? Location;
+
+	public readonly GameLocation? Location;
 	public readonly IPerformCraftEvent Event;
 
+	// UI Stuff
+
 	public readonly ClickableTextureComponent btnCancel;
+	public readonly string Message;
 
-	private BluePrint? DemolishCheckBlueprint = null;
+	// State
+
+	private Building? BuildingToBuild = null;
+
 	private Building? MovingBuilding = null;
-
-	private readonly string Message;
 
 	private bool frozen = false;
 	private bool checkingDemolish = false;
 
-	public BuildMenu(BluePrint? bp, ActionType action, IPerformCraftEvent evt, ModEntry mod) : base() {
+	#region Life Cycle
+
+	public BuildMenu(ModEntry mod, ActionType action, string? buildingId, string? skinId, BuildingData? building, IPerformCraftEvent evt) : base() {
 		Mod = mod;
 		Action = action;
-		Blueprint = bp;
+		BuildingId = buildingId;
+		SkinId = skinId;
+		Data = building;
 		Event = evt;
 
-		Location = Game1.currentLocation as BuildableGameLocation;
+		Location = Game1.currentLocation;
 
-		Game1.displayHUD = false;
-		Game1.viewportFreeze = true;
-		Game1.panScreen(0, 0);
+		// We need a building instance if we're trying to build.
+		if (Action == ActionType.Build && BuildingId != null) {
+			BuildingToBuild = Building.CreateInstanceFromId(BuildingId, Vector2.Zero);
+			if (BuildingToBuild != null)
+				BuildingToBuild.skinId.Value = SkinId;
+		}
 
+		// Ui Stuff
 		btnCancel = new ClickableTextureComponent(
 			"OK",
 			new Rectangle(
@@ -70,217 +98,282 @@ internal class BuildMenu : IClickableMenu {
 			1f
 		);
 
-		if (Action == ActionType.Upgrade && Blueprint != null)
-			Message = Game1.content.LoadString(@"Strings\UI:Carpenter_SelectBuilding_Upgrade", new BluePrint(Blueprint.nameOfBuildingToUpgrade).displayName);
+
+		// Message
+		if (Action == ActionType.Upgrade && Data?.BuildingToUpgrade != null && DataLoader.Buildings(Game1.content).TryGetValue(Data.BuildingToUpgrade, out var target))
+			Message = Game1.content.LoadString(@"Strings\UI:Carpenter_SelectBuilding_Upgrade", TokenParser.ParseText(target.Name));
 		else if (Action == ActionType.Demolish)
 			Message = Game1.content.LoadString(@"Strings\UI:Carpenter_SelectBuilding_Demolish");
 		else if (Action == ActionType.Paint)
 			Message = Game1.content.LoadString(@"Strings\UI:Carpenter_SelectBuilding_Paint");
 		else
 			Message = Game1.content.LoadString(@"Strings\UI:Carpenter_ChooseLocation");
+
+
+		// Set up for building placement.
+		Game1.displayHUD = false;
+		Game1.viewportFreeze = true;
+		Game1.clampViewportToGameMap();
+		Game1.panScreen(0, 0);
+	}
+
+	public override bool readyToClose() {
+		if (MovingBuilding is not null || checkingDemolish)
+			return false;
+
+		return base.readyToClose();
 	}
 
 	protected override void cleanupBeforeExit() {
 		base.cleanupBeforeExit();
 
 		if (Location is not null)
-			foreach (Building building in Location.buildings)
-				building.color.Value = Color.White;
+			foreach(var building in Location.buildings)
+				building.color = Color.White;
 
 		Game1.displayHUD = true;
 		Game1.viewportFreeze = false;
 		Game1.displayFarmer = true;
 	}
 
-	public override bool shouldClampGamePadCursor() {
-		return true;
+	private void Close(bool complete = false) {
+		if (complete)
+			Event.Complete();
+		exitThisMenu();
+		Game1.player.forceCanMove();
 	}
 
-	public static bool CanPaintHouse() {
-		return Game1.MasterPlayer.HouseUpgradeLevel >= 2;
+	private void SuccessClose() {
+		Close(true);
 	}
 
-	public bool CanPaint(Building? building) {
-		if (Location == null)
-			return false;
+	#endregion
 
-		// null building means farmhouse
-		if (building == null) {
-			if (!CanPaintHouse())
-				return false;
-
-			if (Game1.player.UniqueMultiplayerID == Game1.MasterPlayer.UniqueMultiplayerID)
-				return true;
-			if (Game1.player.spouse == Game1.MasterPlayer.UniqueMultiplayerID.ToString())
-				return true;
-			return false;
-		}
-
-		if (!building.CanBePainted())
-			return false;
-
-		if (building.isCabin && building.indoors.Value is Cabin cabin) {
-			Farmer who = cabin.owner;
-			if (who == null)
-				return false;
-			if (Game1.player.UniqueMultiplayerID == who.UniqueMultiplayerID)
-				return true;
-			if (Game1.player.spouse == who.UniqueMultiplayerID.ToString())
-				return true;
-			return false;
-		}
-
-		return true;
-	}
+	#region Permission Checks
 
 	public bool CanMove(Building building) {
-		if (building == null || Location == null)
+		if (Location is null || building is null)
 			return false;
 
-		if (Location is Farm farm && building is GreenhouseBuilding && !farm.greenhouseUnlocked.Value && ! Mod.Config.AllowMovingUnfinishedGreenhouse)
+		if (building is GreenhouseBuilding && !Game1.getFarm().greenhouseUnlocked.Value && !Mod.Config.AllowMovingUnfinishedGreenhouse)
 			return false;
 
 		if (Game1.IsMasterGame)
 			return true;
 
-		if (Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On)
-			return true;
+		return Game1.player.team.farmhandsCanMoveBuildings.Value switch {
+			FarmerTeam.RemoteBuildingPermissions.On => true,
+			FarmerTeam.RemoteBuildingPermissions.OwnedBuildings => building.hasCarpenterPermissions(),
+			_ => false
+		};
+	}
 
-		if (Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && building.hasCarpenterPermissions())
-			return true;
+	public bool CanPaint(Building building) {
+		if (Location is null || building is null)
+			return false;
 
-		return false;
+		if ( ! building.CanBePainted() && ! building.CanBeReskinned(ignoreSeparateConstructionEntries: true) )
+			return false;
+
+		if ((building.isCabin || building.HasIndoorsName("Farmhouse")) && building.GetIndoors() is FarmHouse house)
+			return house.IsOwnedByCurrentPlayer || house.OwnerId.ToString() == Game1.player.spouse;
+
+		return true;
 	}
 
 	public bool CanDemolish(Building building) {
-		if (building == null)
+		if (Location is null || building is null)
 			return false;
 
-		if (DemolishCheckBlueprint == null || DemolishCheckBlueprint.name != building.buildingType.Value)
-			DemolishCheckBlueprint = new BluePrint(building.buildingType.Value);
+		string type = building.buildingType.Value;
 
-		if (DemolishCheckBlueprint != null)
-			return CanDemolish(DemolishCheckBlueprint);
+		switch (building.buildingType.Value) {
+			case "Farmhouse":
+				return ! building.HasIndoorsName("Farmhouse");
 
-		return true;
+			case "Greenhouse":
+				return ! building.HasIndoorsName("Greenhouse");
+
+			case "Pet Bowl":
+			case "Shipping Bin":
+				return Location != Game1.getFarm() || Location.HasMinBuildings(type, 2);
+
+			default:
+				return true;
+		}
 	}
 
-	public bool CanDemolish(BluePrint blueprint) {
-		if (blueprint == null || Location == null)
-			return false;
-
-		if (blueprint.moneyRequired < 0)
-			return false;
-
-		if (blueprint.name == "Shipping Bin") {
-			int bins = 0;
-			foreach(Building bld in Location.buildings) {
-				if (bld is ShippingBin)
-					bins++;
-				if (bins > 1)
-					break;
-			}
-
-			if (bins <= 1)
-				return false;
-		}
-
-		return true;
+	public bool HasPermissionToDemolish(Building building) {
+		return Game1.IsMasterGame;
 	}
 
-	public override void update(GameTime time) {
-		base.update(time);
+	#endregion
 
-		if (frozen)
-			return;
+	#region Helper Methods
 
-		int mouseX = Game1.getOldMouseX(ui_scale: false) + Game1.viewport.X;
-		int mouseY = Game1.getOldMouseY(ui_scale: false) + Game1.viewport.Y;
-
-		if (mouseX - Game1.viewport.X < 64) {
-			Game1.panScreen(-8, 0);
-		} else if (mouseX - (Game1.viewport.X + Game1.viewport.Width) >= -128) {
-			Game1.panScreen(8, 0);
-		}
-
-		if (mouseY - Game1.viewport.Y < 64) {
-			Game1.panScreen(0, -8);
-		} else if (mouseY - (Game1.viewport.Y + Game1.viewport.Height) >= -64) {
-			Game1.panScreen(0, 8);
-		}
-
-		Keys[] pressedKeys = Game1.oldKBState.GetPressedKeys();
-		foreach (Keys key in pressedKeys)
-			if (!Game1.options.doesInputListContain(Game1.options.menuButton, key))
-				receiveKeyPress(key);
-
-		checkingDemolish = false;
-
-		if (Game1.IsMultiplayer)
-			return;
-
-		if (Location is Farm farm)
-			foreach (FarmAnimal value in farm.animals.Values)
-				value.MovePosition(Game1.currentGameTime, Game1.viewport, farm);
-	}
-
-	public override void performHoverAction(int x, int y) {
-		btnCancel.tryHover(x, y);
-		base.performHoverAction(x, y);
-
-		if (frozen || Action == ActionType.Build || Location == null)
-			return;
-
-		Vector2 mouseTile = new(
+	private Vector2 GetMouseTile() {
+		return new(
 			(Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64,
 			(Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64
 		);
+	}
 
-		if (Action == ActionType.Paint && Location is Farm farm && farm.GetHouseRect().Contains(Utility.Vector2ToPoint(mouseTile)) && CanPaint(null))
-			farm.frameHouseColor = Color.Lime;
+	private Building? GetBuildingAt(Vector2 tile) {
+		if (Location is null)
+			return null;
 
-		foreach (Building building in Location.buildings)
-			building.color.Value = Color.White;
+		var building = Location.getBuildingAt(tile)
+			?? Location.getBuildingAt(tile.Move(0, 1))
+			?? Location.getBuildingAt(tile.Move(0, 2))
+			?? Location.getBuildingAt(tile.Move(0, 3));
 
-		Building bld = Location.getBuildingAt(mouseTile);
-		if (bld == null) {
-			mouseTile.Y++;
-			bld = Location.getBuildingAt(mouseTile);
-			if (bld == null) {
-				mouseTile.Y++;
-				bld = Location.getBuildingAt(mouseTile);
+		var data = building?.GetData();
+		if (data != null) {
+			int height = data.SourceRect.IsEmpty ? building!.texture.Value.Height : data.SourceRect.Height;
+			int extraHeight = (int) (height * (4 / 64.0) - building!.tilesHigh.Value);
+
+			if (building.tileY.Value - extraHeight > tile.Y)
+				return null;
+		}
+
+		return building;
+	}
+
+	#region Pathfinding Nonsense
+
+	public bool ConfirmBuildingAccessibility(Vector2 pos, Building building) {
+		if (Location is null)
+			return false;
+
+		if (building.buildingType.Value != "Farmhouse")
+			return true;
+
+		Point start = building.humanDoor.Value;
+		start.X += (int) pos.X;
+		start.Y += (int) pos.Y;
+		start.Y++;
+
+		HashSet<Point> closedTiles = new();
+		Stack<Point> openTiles = new();
+
+		openTiles.Push(start);
+		closedTiles.Add(start);
+
+		HashSet<Point> validWarpTiles = new();
+
+		foreach (var warp in Location.warps) {
+			if (warp.TargetName != "FarmCave")
+				validWarpTiles.Add(new(warp.X, warp.Y));
+		}
+
+		bool success = false;
+		while (openTiles.Count > 0) {
+			var tile = openTiles.Pop();
+			if (validWarpTiles.Contains(tile)) {
+				success = true;
+				break;
+			}
+
+			if (Location.isTileOnMap(tile.X, tile.Y) && VerifyTileAccessibility(tile.X, tile.Y, pos, building)) {
+				Point newPoint = tile;
+				newPoint.X++;
+				if (closedTiles.Add(newPoint))
+					openTiles.Push(newPoint);
+
+				newPoint = tile;
+				newPoint.X--;
+				if (closedTiles.Add(newPoint))
+					openTiles.Push(newPoint);
+
+				newPoint = tile;
+				newPoint.Y++;
+				if (closedTiles.Add(newPoint))
+					openTiles.Push(newPoint);
+
+				newPoint = tile;
+				newPoint.Y--;
+				if (closedTiles.Add(newPoint))
+					openTiles.Push(newPoint);
 			}
 		}
 
-		if (bld == null)
-			return;
+		return success;
+	}
 
-		if (Action == ActionType.Upgrade && Blueprint != null) {
-			if (Blueprint.nameOfBuildingToUpgrade == bld.buildingType.Value)
-				bld.color.Value = Color.Lime * 0.8f;
-			else
-				bld.color.Value = Color.Red * 0.8f;
+	public bool VerifyTileAccessibility(int x, int y, Vector2 pos, Building building) {
+		Vector2 targetPos = new(x, y);
+		if (Location is null || !Location.isTilePassable(targetPos.ToLocation(), Game1.viewport))
+			return false;
+
+		if (building != null) {
+			int relativeX = x - (int) pos.X;
+			int relativeY = y - (int) pos.Y;
+
+			if (!building.isTilePassable(new Vector2(building.tileX.Value + relativeX, building.tileY.Value + relativeY)))
+				return false;
 		}
 
-		if (Action == ActionType.Move && CanMove(bld))
-			bld.color.Value = Color.Lime * 0.8f;
+		Building? bld = Location.getBuildingAt(targetPos);
+		if (bld != null && !bld.isMoving && !bld.isTilePassable(targetPos))
+			return false;
 
-		if (Action == ActionType.Demolish && CanDemolish(bld))
-			bld.color.Value = Color.Red * 0.8f;
+		var rect = new Rectangle(x * 64, y * 64, 64, 64);
+		rect.Inflate(-1, -1);
+		foreach (var clump in Location.resourceClumps)
+			if (clump.getBoundingBox().Intersects(rect))
+				return false;
 
-		if (Action == ActionType.Paint && CanPaint(bld))
-			bld.color.Value = Color.Lime * 0.8f;
+		if (Location.getLargeTerrainFeatureAt(x, y) != null)
+			return false;
+
+		return true;
+	}
+
+	#endregion
+
+	#endregion
+
+	#region Events
+
+	public override bool shouldClampGamePadCursor() {
+		return true;
 	}
 
 	public override bool overrideSnappyMenuCursorMovementBan() {
 		return true;
 	}
 
-	public override bool readyToClose() {
-		if (MovingBuilding != null || checkingDemolish)
-			return false;
+	public override void performHoverAction(int x, int y) {
+		btnCancel.tryHover(x, y);
+		base.performHoverAction(x, y);
 
-		return base.readyToClose();
+		if (frozen || Action == ActionType.Build || Location is null)
+			return;
+
+		foreach (var bld in Location.buildings)
+			bld.color = Color.White;
+
+		Vector2 mouseTile = GetMouseTile();
+		Building? building = GetBuildingAt(mouseTile);
+
+		if (building is null || MovingBuilding is not null)
+			return;
+
+		if ( Action == ActionType.Upgrade && Data != null ) {
+			if (Data.BuildingToUpgrade == building.buildingType.Value)
+				building.color = COLOR_OKAY;
+			else
+				building.color = COLOR_ERROR;
+		}
+
+		if (Action == ActionType.Move && CanMove(building))
+			building.color = COLOR_OKAY;
+
+		if (Action == ActionType.Demolish && HasPermissionToDemolish(building) && CanDemolish(building))
+			building.color = COLOR_ERROR;
+
+		if (Action == ActionType.Paint && CanPaint(building))
+			building.color = COLOR_OKAY;
 	}
 
 	public override void receiveKeyPress(Keys key) {
@@ -288,8 +381,7 @@ internal class BuildMenu : IClickableMenu {
 			return;
 
 		if (Game1.options.doesInputListContain(Game1.options.menuButton, key) && readyToClose()) {
-			exitThisMenu();
-			Game1.player.forceCanMove();
+			Close();
 			return;
 		}
 
@@ -316,290 +408,297 @@ internal class BuildMenu : IClickableMenu {
 				return;
 			}
 
-			Game1.playSound("smallSelect");
-			exitThisMenu();
-			Game1.player.forceCanMove();
+			Game1.playSound("bigDeSelect");
+			Close();
 			return;
 		}
 
 		if (Location is null)
 			return;
 
-		Vector2 mouseTile = new(
-			(Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64,
-			(Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64
-		);
+		Vector2 pos = GetMouseTile();
+		Building? building = GetBuildingAt(pos);
 
-		if (Action == ActionType.Build && Blueprint != null)
-			Game1.player.team.buildLock.RequestLock(delegate {
-				if (!Location.buildStructure(
-					Blueprint,
-					mouseTile,
-					Game1.player,
-					true
-				)) {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantBuild"), Color.Red, 3500f));
-					return;
+		if (Action == ActionType.Demolish)
+			HandleClickDemolish(building, playSound);
+
+		else if (Action == ActionType.Upgrade)
+			HandleClickUpgrade(building, playSound);
+
+		else if (Action == ActionType.Move)
+			HandleClickMove(pos, building, playSound);
+
+		else if (Action == ActionType.Paint)
+			HandleClickPaint(building, playSound);
+
+		else if (Action == ActionType.Build)
+			HandleClickBuild(pos, playSound);
+	}
+
+	public void HandleClickBuild(Vector2 pos, bool playSound) {
+		if (Data is null || Location is null || BuildingId is null)
+			return;
+
+		void OnLocked() {
+			if (!Location.buildStructure(BuildingId, pos, Game1.player, out var building, true)) {
+				Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild"), 3));
+				return;
+			}
+
+			building.skinId.Value = SkinId;
+			building.FinishConstruction();
+
+			frozen = true;
+			DelayedAction.functionAfterDelay(SuccessClose, 2000);
+		}
+
+		Game1.player.team.buildLock.RequestLock(OnLocked);
+	}
+
+	public void HandleClickPaint(Building? building, bool playSound) {
+		if (building is null)
+			return;
+
+		if ( ! building.CanBePainted() && !building.CanBeReskinned(ignoreSeparateConstructionEntries: true) ) {
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), 3));
+			return;
+		}
+
+		if (! CanPaint(building) ) {
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), 3));
+			return;
+		}
+
+		building.color = Color.White;
+		SetChildMenu(
+			building.CanBePainted()
+				? new BuildingPaintMenu(building)
+				: new BuildingSkinMenu(building, ignoreSeparateConstructionEntries: true)
+		);
+	}
+
+	public void HandleClickUpgrade(Building? building, bool playSound) {
+		if (Location is null || building is null || Data is null)
+			return;
+
+		if (Data.BuildingToUpgrade != building.buildingType.Value) {
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType"), 3));
+			return;
+		}
+
+		building.upgradeName.Value = BuildingId;
+		building.daysUntilUpgrade.Value = Math.Max(Data.BuildDays, 1);
+		building.showUpgradeAnimation(Location);
+		if (playSound)
+			Game1.playSound("axe");
+
+		building.FinishConstruction();
+
+		frozen = true;
+		DelayedAction.functionAfterDelay(SuccessClose, 500);
+	}
+
+	public void HandleClickMove(Vector2 pos, Building? building, bool playSound) {
+		if (Location is null)
+			return;
+
+		if (MovingBuilding is null) {
+			if (building is null)
+				return;
+
+			if (building.daysOfConstructionLeft.Value > 0)
+				return;
+
+			if (!CanMove(building))
+				return;
+
+			MovingBuilding = building;
+			MovingBuilding.isMoving = true;
+			if (playSound)
+				Game1.playSound("axchop");
+			return;
+		}
+
+		if (! ConfirmBuildingAccessibility(pos, MovingBuilding)) {
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild"), 3));
+			if (playSound)
+				Game1.playSound("cancel");
+
+		} else if (Location.buildStructure(MovingBuilding, pos, Game1.player)) {
+			MovingBuilding.isMoving = false;
+			MovingBuilding = null;
+			if (playSound)
+				Game1.playSound("axchop");
+			DelayedAction.playSoundAfterDelay("dirtyHit", 50);
+			DelayedAction.playSoundAfterDelay("dirtyHit", 150);
+
+		} else if (playSound)
+			Game1.playSound("cancel");
+	}
+
+	public void HandleClickDemolish(Building? building, bool playSound) {
+		if (building is null || checkingDemolish)
+			return;
+
+		if (!CanDemolish(building) || !HasPermissionToDemolish(building))
+			return;
+
+		GameLocation? interior = building.GetIndoors();
+		Cabin? cabin = interior as Cabin;
+
+		if (cabin is not null && ! Game1.IsMasterGame) {
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), 3));
+			return;
+		}
+
+		if (building.daysOfConstructionLeft.Value > 0 || building.daysUntilUpgrade.Value > 0) {
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction"), 3));
+			return;
+		}
+
+		void lockFailed() {
+			checkingDemolish = false;
+			Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), 3));
+		}
+
+		void continueDemolish() {
+			checkingDemolish = false;
+			if (Location is null || !Location.buildings.Contains(building))
+				return;
+
+			if (interior is AnimalHouse house && house.animalsThatLiveHere.Count > 0) {
+				Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere"), 3));
+				return;
+			}
+
+			if (interior != null && interior.farmers.Any()) {
+				Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), 3));
+				return;
+			}
+
+			if (cabin is not null) {
+				string name = cabin.GetCellarName();
+				foreach(var who in Game1.getAllFarmers()) {
+					if (who.currentLocation != null && who.currentLocation.Name == name) {
+						Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), 3));
+						return;
+					}
 				}
 
-				Building building = Location.buildings.Last();
+				if (cabin.IsOwnerActivated) {
+					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline"), 3));
+					return;
+				}
+			}
 
-				int day = Game1.dayOfMonth;
-				while(Utility.isFestivalDay(day, Game1.currentSeason))
-					day++;
+			building.BeforeDemolish();
 
-				// We use dayUpdate to finish the construction so that any
-				// custom behavior gets called.
-				building.daysOfConstructionLeft.Value = 1;
-				building.dayUpdate(day);
+			Chest? chest = null;
+			if (cabin is not null) {
+				var list = cabin.demolish();
+				if (list.Count > 0) {
+					chest = new Chest(playerChest: true);
+					chest.fixLidFrame();
+					chest.Items.OverwriteWith(list);
+				}
+			}
+
+			if (Location.destroyStructure(building)) {
+				Game1.flashAlpha = 1f;
+				building.showDestroyedAnimation(Location);
+				if (playSound)
+					Game1.playSound("explosion");
+				Utility.spreadAnimalsAround(building, Location);
 
 				frozen = true;
 
-				DelayedAction.functionAfterDelay(delegate {
-					Event.Complete();
-					exitThisMenu();
-					Game1.player.forceCanMove();
-				}, 2000);
-			});
+				if (chest != null)
+					Location.objects[new Vector2(
+						building.tileX.Value + building.tilesWide.Value / 2,
+						building.tileY.Value + building.tilesHigh.Value / 2
+					)] = chest;
 
-		if (Action == ActionType.Upgrade && Blueprint != null) {
-			Building? building = Location.getBuildingAt(mouseTile);
-			if (building != null) {
-				if (building.buildingType.Value == Blueprint.nameOfBuildingToUpgrade) {
 
-					building.showUpgradeAnimation(Location);
-					Game1.playSound("axe");
+				// Try to refund the materials, maybe.
+				var data = building.GetData();
 
-					int day = Game1.dayOfMonth;
-					while (Utility.isFestivalDay(day, Game1.currentSeason))
-						day++;
+				if (data?.BuildMaterials != null && Mod.Config.RefundMaterial > 0) 
+					foreach(var entry in data.BuildMaterials) {
+						int amount = (int) (entry.Amount * (Mod.Config.RefundMaterial / 100.0));
+						if (amount > 0)
+							Game1.player.addItemToInventory(ItemRegistry.Create(entry.ItemId, amount));
+					}
 
-					// We use dayUpdate to finish the construction so that any
-					// custom behavior gets called.
-					building.daysUntilUpgrade.Value = 1;
-					building.dayUpdate(day);
-
-					frozen = true;
-
-					DelayedAction.functionAfterDelay(delegate {
-						Event.Complete();
-						exitThisMenu();
-						Game1.player.forceCanMove();
-					}, 2000);
-
-				} else {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantUpgrade_BuildingType"), Color.Red, 3500f));
+				if (data != null && data.BuildCost > 0 && Mod.Config.RefundCurrency > 0) {
+					int amount = (int) (data.BuildCost * (Mod.Config.RefundCurrency / 100.0));
+					if (amount > 0)
+						Game1.player.addUnearnedMoney(amount);
 				}
+
+				// Close the menu, we won.
+				DelayedAction.functionAfterDelay(SuccessClose, 2000);
 			}
 		}
 
-		if (Action == ActionType.Demolish) {
-			Building? building = Location.getBuildingAt(mouseTile);
-			if (building != null) {
-				Cabin? cabin = building.indoors.Value as Cabin;
-				if (cabin != null && !Game1.IsMasterGame) { 
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f));
-					return;
+		checkingDemolish = true;
+
+		if (cabin != null && cabin.HasOwner && cabin.owner.isCustomized.Value) {
+			Game1.currentLocation.createQuestionDialogue(
+				Game1.content.LoadString("Strings\\UI:Carpenter_DemolishCabinConfirm", cabin.owner.Name),
+				Game1.currentLocation.createYesNoResponses(),
+				delegate(Farmer who, string answer) {
+					Game1.activeClickableMenu = this;
+					if (answer == "Yes")
+						Game1.player.team.demolishLock.RequestLock(continueDemolish, lockFailed);
+					else
+						checkingDemolish = false;
 				}
+			);
 
-				if (!CanDemolish(building))
-					return;
-
-				if (building.daysOfConstructionLeft.Value > 0 || building.daysUntilUpgrade.Value > 0) {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_DuringConstruction"), Color.Red, 3500f));
-					return;
-				}
-
-				void lockFailed() {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f));
-				}
-
-				void continueDemolish() {
-					if (Location == null || !Location.buildings.Contains(building))
-						return;
-
-					if (building.indoors.Value is AnimalHouse house && house.animalsThatLiveHere.Count > 0) {
-						Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_AnimalsHere"), Color.Red, 3500f));
-						return;
-					}
-
-					if (building.indoors.Value != null && building.indoors.Value.farmers.Any()) {
-						Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
-						return;
-					}
-
-					if (building.indoors.Value is Cabin cabin) {
-						string name = cabin.GetCellarName();
-						foreach (Farmer who in Game1.getAllFarmers()) {
-							if (who.currentLocation != null && who.currentLocation.Name == name) {
-								Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
-								return;
-							}
-						}
-
-						if (cabin.farmhand.Value.isActive()) {
-							Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CantDemolish_FarmhandOnline"), Color.Red, 3500f));
-							return;
-						}
-					}
-
-					building.BeforeDemolish();
-					Chest? chest = null;
-
-					if (building.indoors.Value is Cabin cbn) {
-						List<Item> list = cbn.demolish();
-						if (list.Count > 0) {
-							chest = new Chest(playerChest: true);
-							chest.fixLidFrame();
-							chest.items.Set(list);
-						}
-					}
-
-					if (Location.destroyStructure(building)) {
-						Game1.flashAlpha = 1f;
-						building.showDestroyedAnimation(Location);
-						Game1.playSound("explosion");
-						if (Location is Farm farm)
-							Utility.spreadAnimalsAround(building, farm);
-
-						frozen = true;
-
-						if (chest != null) {
-							Location.objects[new Vector2(
-								building.tileX.Value + building.tilesWide.Value / 2,
-								building.tileY.Value + building.tilesHigh.Value / 2
-							)] = chest;
-						}
-
-						if (DemolishCheckBlueprint == null || DemolishCheckBlueprint.name != building.buildingType.Value)
-							DemolishCheckBlueprint = new BluePrint(building.buildingType.Value);
-
-						if (DemolishCheckBlueprint != null) {
-							if ( Mod.Config.RefundMaterial > 0 )
-								foreach (var entry in DemolishCheckBlueprint.itemsRequired) {
-									int amount = (int) (entry.Value * (Mod.Config.RefundMaterial / 100.0));
-									if ( amount > 0 )
-										Game1.player.addItemToInventory(new StardewValley.Object(entry.Key, amount));
-								}
-
-							if ( Mod.Config.RefundCurrency > 0 ) {
-								int amount = (int) (DemolishCheckBlueprint.moneyRequired * (Mod.Config.RefundCurrency / 100.0));
-								if ( amount > 0 )
-									Game1.player.addUnearnedMoney(amount);
-							}
-						}
-
-						DelayedAction.functionAfterDelay(delegate {
-							Event.Complete();
-							exitThisMenu();
-							Game1.player.forceCanMove();
-						}, 2000);
-					}
-				}
-
-				if (cabin != null && cabin.farmhand.Value.isCustomized.Value) {
-					checkingDemolish = true;
-					Game1.currentLocation.createQuestionDialogue(
-						Game1.content.LoadString(@"Strings\UI:Carpenter_DemolishCabinConfirm", cabin.farmhand.Value.Name),
-						Game1.currentLocation.createYesNoResponses(),
-						delegate(Farmer who, string answer) {
-							Game1.activeClickableMenu = this;
-							if (answer == "Yes")
-								Game1.player.team.demolishLock.RequestLock(continueDemolish, lockFailed);
-						}
-					);
-
-					return;
-				}
-
-				Game1.player.team.demolishLock.RequestLock(continueDemolish, lockFailed);
-			}
+			return;
 		}
 
-		if (Action == ActionType.Move) {
-			if (MovingBuilding == null) {
-				MovingBuilding = Location.getBuildingAt(mouseTile);
-				if (MovingBuilding != null) {
-					if (MovingBuilding.daysOfConstructionLeft.Value > 0) {
-						MovingBuilding = null;
-						return;
-					}
-
-					if (!CanMove(MovingBuilding)) {
-						MovingBuilding = null;
-						return;
-					}
-
-					MovingBuilding.isMoving = true;
-					Game1.playSound("axchop");
-				}
-
-			} else if (Location.buildStructure(MovingBuilding, mouseTile, Game1.player)) {
-				MovingBuilding.isMoving = false;
-				if (MovingBuilding is ShippingBin bin)
-					bin.initLid();
-				if (MovingBuilding is GreenhouseBuilding green && Location is Farm farm)
-					farm.greenhouseMoved.Value = true;
-
-				MovingBuilding.performActionOnBuildingPlacement();
-				MovingBuilding = null;
-				Game1.playSound("axchop");
-
-				DelayedAction.playSoundAfterDelay("dirtyHit", 50);
-				DelayedAction.playSoundAfterDelay("dirtyHit", 150);
-
-			} else
-				Game1.playSound("cancel");
-		}
-
-		if (Action == ActionType.Paint) {
-			Building bld = Location.getBuildingAt(mouseTile);
-			if (bld == null) {
-				mouseTile.Y++;
-				bld = Location.getBuildingAt(mouseTile);
-				if (bld == null) {
-					mouseTile.Y++;
-					bld = Location.getBuildingAt(mouseTile);
-				}
-			}
-
-			if (bld != null) {
-				if (!bld.CanBePainted()) {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
-					return;
-				}
-
-				if (!CanPaint(bld)) {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
-					return;
-				}
-
-				bld.color.Value = Color.White;
-				SetChildMenu(new BuildingPaintMenu(bld));
-				return;
-
-			} else if (Location is Farm farm && farm.GetHouseRect().Contains(Utility.Vector2ToPoint(mouseTile))) {
-				// Check Farmhouse
-				if (!CanPaintHouse()) {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
-					return;
-				}
-
-				if (!CanPaint(null)) {
-					Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(@"Strings\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
-					return;
-				}
-
-				SetChildMenu(new BuildingPaintMenu(
-					"House",
-					() => farm.paintedHouseTexture ?? Farm.houseTextures,
-					farm.houseSource.Value,
-					farm.housePaintColor.Value
-				));
-			}
-		}
-
+		Game1.player.team.demolishLock.RequestLock(continueDemolish, lockFailed);
 	}
+
+	public override void update(GameTime time) {
+		base.update(time);
+
+		if (frozen)
+			return;
+
+		int mouseX = Game1.getOldMouseX(ui_scale: false) + Game1.viewport.X;
+		int mouseY = Game1.getOldMouseY(ui_scale: false) + Game1.viewport.Y;
+
+		// TODO: Scroll faster holding a key?
+
+		if (mouseX - Game1.viewport.X < 64) {
+			Game1.panScreen(-8, 0);
+		} else if (mouseX - (Game1.viewport.X + Game1.viewport.Width) >= -128) {
+			Game1.panScreen(8, 0);
+		}
+
+		if (mouseY - Game1.viewport.Y < 64) {
+			Game1.panScreen(0, -8);
+		} else if (mouseY - (Game1.viewport.Y + Game1.viewport.Height) >= -64) {
+			Game1.panScreen(0, 8);
+		}
+
+		Keys[] pressedKeys = Game1.oldKBState.GetPressedKeys();
+		foreach (Keys key in pressedKeys)
+			if (!Game1.options.doesInputListContain(Game1.options.menuButton, key))
+				receiveKeyPress(key);
+
+		if (Game1.IsMultiplayer || Location is null)
+			return;
+
+		foreach (var animal in Location.Animals.Values)
+			animal.MovePosition(Game1.currentGameTime, Game1.viewport, Location);
+	}
+
+	#endregion
+
+	#region Drawing
 
 	public override void draw(SpriteBatch b) {
 		if (frozen)
@@ -607,16 +706,11 @@ internal class BuildMenu : IClickableMenu {
 
 		Game1.StartWorldDrawInUI(b);
 
-		Vector2 mouseTile = new(
-			(Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / 64,
-			(Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / 64
-		);
-
 		if (Action == ActionType.Build)
-			DrawBuild(b, mouseTile);
+			DrawBuild(b);
 
 		else if (Action == ActionType.Move)
-			DrawMove(b, mouseTile);
+			DrawMove(b);
 
 		Game1.EndWorldDrawInUI(b);
 
@@ -632,55 +726,71 @@ internal class BuildMenu : IClickableMenu {
 		drawMouse(b);
 	}
 
-	public void DrawBuild(SpriteBatch b, Vector2 mouseTile) {
-		if (Blueprint == null || Location is null)
+	public void DrawBuild(SpriteBatch b) {
+		if (BuildingToBuild is null)
 			return;
 
-		for (int y = 0; y < Blueprint.tilesHeight; y++) {
-			for (int x = 0; x < Blueprint.tilesWidth; x++) {
-				int idx = Blueprint.getTileSheetIndexForStructurePlacementTile(x, y);
-				Vector2 tile = new(mouseTile.X + x, mouseTile.Y + y);
+		DrawBuildingTiles(b, BuildingToBuild);
+	}
+
+	public void DrawBuildingTiles(SpriteBatch b, Building building) {
+		if (Location is null)
+			return;
+
+		Vector2 pos = GetMouseTile();
+
+		for (int y = 0; y < building.tilesHigh.Value; y++) {
+			for(int x = 0; x < building.tilesWide.Value; x++) {
+				int idx = building.getTileSheetIndexForStructurePlacementTile(x, y);
+				Vector2 tile = pos.Move(x, y);
 				if (!Location.isBuildable(tile))
 					idx++;
 
-				b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, tile * 64f), new Rectangle(194 + idx * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+				b.Draw(
+					Game1.mouseCursors,
+					Game1.GlobalToLocal(Game1.viewport, tile * 64f),
+					new Rectangle(194 + idx * 16, 388, 16, 16),
+					Color.White,
+					0f,
+					Vector2.Zero,
+					4f,
+					SpriteEffects.None,
+					0.999f
+				);
 			}
 		}
-		foreach (Point extra in Blueprint.additionalPlacementTiles) {
-			int x = extra.X;
-			int y = extra.Y;
-			int idx = Blueprint.getTileSheetIndexForStructurePlacementTile(x, y);
-			Vector2 tile = new(mouseTile.X + x, mouseTile.Y + y);
-			if (!Location.isBuildable(tile))
-				idx++;
-			b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, tile * 64f), new Rectangle(194 + idx * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
-		}
-	}
 
-	public void DrawMove(SpriteBatch b, Vector2 mouseTile) {
-		if (MovingBuilding == null || Location is null)
-			return;
+		foreach(var additional in building.GetAdditionalPlacementTiles()) {
+			bool only_passable = additional.OnlyNeedsToBePassable;
 
-		for (int y = 0; y < MovingBuilding.tilesHigh.Value; y++) {
-			for (int x = 0; x < MovingBuilding.tilesWide.Value; x++) {
-				int idx = MovingBuilding.getTileSheetIndexForStructurePlacementTile(x, y);
-				Vector2 tile = new(mouseTile.X + x, mouseTile.Y + y);
-				bool occupying = Location.buildings.Contains(MovingBuilding) && MovingBuilding.occupiesTile(tile);
-				if (!Location.isBuildable(tile) && !occupying)
+			foreach(var point in additional.TileArea.GetPoints()) {
+				int idx = building.getTileSheetIndexForStructurePlacementTile(point.X, point.Y);
+				Vector2 tile = pos.Move(point.X, point.Y);
+				if (!Location.isBuildable(tile, onlyNeedsToBePassable: only_passable))
 					idx++;
 
-				b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, tile * 64f), new Rectangle(194 + idx * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+				b.Draw(
+					Game1.mouseCursors,
+					Game1.GlobalToLocal(Game1.viewport, tile * 64f),
+					new Rectangle(194 + idx * 16, 388, 16, 16),
+					Color.White,
+					0f,
+					Vector2.Zero,
+					4f,
+					SpriteEffects.None,
+					0.999f
+				);
 			}
 		}
-		foreach (Point extra in MovingBuilding.additionalPlacementTiles) {
-			int x = extra.X;
-			int y = extra.Y;
-			int idx = MovingBuilding.getTileSheetIndexForStructurePlacementTile(x, y);
-			Vector2 tile = new(mouseTile.X + x, mouseTile.Y + y);
-			bool occupying = Location.buildings.Contains(MovingBuilding) && MovingBuilding.occupiesTile(tile);
-			if (!Location.isBuildable(tile) && !occupying)
-				idx++;
-			b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, tile * 64f), new Rectangle(194 + idx * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
-		}
 	}
+
+	public void DrawMove(SpriteBatch b) {
+		if (MovingBuilding is null || Location is null)
+			return;
+
+		DrawBuildingTiles(b, MovingBuilding);
+	}
+
+	#endregion
+
 }

@@ -1,0 +1,10 @@
+{
+  "Name": "PrismaticButterflyLocation",
+  "Author": "no12nv2",
+  "Version": "1.0.1",
+  "Description": "Log the location of the prismatic butterfly",
+  "UniqueID": "no12nv2.PrismaticButterflyLocation",
+  "EntryDll": "PrismaticButterflyLocation.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": ["Nexus:23045"]
+}

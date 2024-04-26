@@ -32,5 +32,8 @@
   "color.Black": "black",
   "color.Gray": "gray",
   "color.Silver": "silver",
-  "color.White": "white"
+  "color.White": "white",
+  // Config options
+  "config.gem-cost.name": "Gem Cost",
+  "config.gem-cost.tooltip": "The amount of gems required to change the color."
 }

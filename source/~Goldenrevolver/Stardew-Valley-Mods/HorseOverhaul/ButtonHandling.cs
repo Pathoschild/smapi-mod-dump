@@ -33,18 +33,21 @@ namespace HorseOverhaul
             if (e.Button.IsUseToolButton())
             {
                 bool ignoreMousePosition = !mouseButtons.Contains(e.Button);
-                Point cursorPosition = Game1.getMousePosition();
 
-                bool interacted = Feeding.CheckHorseInteraction(mod, Game1.player, cursorPosition.X + Game1.viewport.X, cursorPosition.Y + Game1.viewport.Y, ignoreMousePosition);
+                Point cursorPosition = Game1.getMousePosition();
+                var mouseX = cursorPosition.X + Game1.viewport.X;
+                var mouseY = cursorPosition.Y + Game1.viewport.Y;
+
+                bool interacted = HorsePetInteraction.CheckHorseInteraction(mod, Game1.player, mouseX, mouseY, ignoreMousePosition);
 
                 if (!interacted)
                 {
-                    Feeding.CheckPetInteraction(mod, Game1.player, cursorPosition.X + Game1.viewport.X, cursorPosition.Y + Game1.viewport.Y, ignoreMousePosition);
+                    HorsePetInteraction.CheckPetInteraction(mod, Game1.player, mouseX, mouseY, ignoreMousePosition);
                 }
             }
         }
 
-        internal static void OnButtonsChanged(HorseOverhaul mod, ButtonsChangedEventArgs e)
+        internal static void OnButtonsChanged(HorseOverhaul mod)
         {
             if (!Context.IsWorldReady || !Context.IsPlayerFree)
             {
@@ -57,53 +60,64 @@ namespace HorseOverhaul
 
             // this is done in buttonsChanged instead of buttonPressed as recommended
             // in the documentation: https://stardewcommunitywiki.com/Modding:Modder_Guide/APIs/Input#KeybindList
-            if (mod.Config.HorseMenuKey.JustPressed() || mod.Config.PetMenuKey.JustPressed())
+            if (mod.Config.HorseMenuKey.JustPressed())
             {
-                var keyBindToCheck = mod.Config.HorseMenuKey.JustPressed() ? mod.Config.HorseMenuKey : mod.Config.PetMenuKey;
+                bool isControllerInput = JustPressedControllerKey(mod.Config.HorseMenuKey);
 
-                bool isControllerInput = false;
+                OpenHorseMenu(mod, Game1.player, mouseX, mouseY, isControllerInput);
+                return;
+            }
+            else if (mod.Config.PetMenuKey.JustPressed())
+            {
+                bool isControllerInput = JustPressedControllerKey(mod.Config.PetMenuKey);
 
-                foreach (Keybind keybind in keyBindToCheck.Keybinds)
-                {
-                    if (keybind.GetState() != SButtonState.Pressed)
-                    {
-                        continue;
-                    }
-
-                    foreach (var button in keybind.Buttons)
-                    {
-                        if (button.TryGetController(out _))
-                        {
-                            isControllerInput = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (keyBindToCheck == mod.Config.HorseMenuKey)
-                {
-                    OpenHorseMenu(mod, Game1.player, mouseX, mouseY, isControllerInput);
-                }
-                else
-                {
-                    OpenPetMenu(mod, Game1.player, mouseX, mouseY, isControllerInput);
-                }
-
+                OpenPetMenu(mod, Game1.player, mouseX, mouseY, isControllerInput);
                 return;
             }
 
             if (mod.Config.AlternateSaddleBagAndFeedKey.JustPressed())
             {
-                bool interacted = Feeding.CheckHorseInteraction(mod, Game1.player, 0, 0, true);
+                bool interacted = HorsePetInteraction.CheckHorseInteraction(mod, Game1.player, 0, 0, true);
 
                 if (!interacted)
                 {
-                    Feeding.CheckPetInteraction(mod, Game1.player, 0, 0, true);
+                    HorsePetInteraction.CheckPetInteraction(mod, Game1.player, 0, 0, true);
                 }
             }
         }
 
+        private static bool JustPressedControllerKey(KeybindList keyBindToCheck)
+        {
+            foreach (Keybind keybind in keyBindToCheck.Keybinds)
+            {
+                if (keybind.GetState() != SButtonState.Pressed)
+                {
+                    continue;
+                }
+
+                foreach (var button in keybind.Buttons)
+                {
+                    if (button.TryGetController(out _))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private static void OpenHorseMenu(HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
+        {
+            var horse = GetHorseMenuHorse(mod, who, mouseX, mouseY, ignoreMousePosition);
+
+            if (horse != null)
+            {
+                Game1.activeClickableMenu = new HorseMenu(mod, horse);
+            }
+        }
+
+        private static HorseWrapper GetHorseMenuHorse(HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
         {
             HorseWrapper horse;
 
@@ -113,8 +127,7 @@ namespace HorseOverhaul
 
                 if (horse != null)
                 {
-                    Game1.activeClickableMenu = new HorseMenu(mod, horse);
-                    return;
+                    return horse;
                 }
             }
 
@@ -122,17 +135,17 @@ namespace HorseOverhaul
             {
                 foreach (NPC npc in who.currentLocation.characters)
                 {
-                    if (npc is not Horse nearbyHorse)
+                    if (npc is not Horse nearbyHorse || nearbyHorse.IsTractor())
                     {
                         continue;
                     }
 
-                    if (ignoreMousePosition && !Utility.withinRadiusOfPlayer((int)nearbyHorse.Position.X, (int)nearbyHorse.Position.Y, 1, who))
+                    if (ignoreMousePosition && !nearbyHorse.WithinRangeOfPlayer(mod, who))
                     {
                         continue;
                     }
 
-                    if (!nearbyHorse.MouseOrPlayerIsInRange(who, mouseX, mouseY, ignoreMousePosition))
+                    if (!nearbyHorse.MouseOrPlayerIsInRange(mod, who, mouseX, mouseY, ignoreMousePosition))
                     {
                         continue;
                     }
@@ -141,19 +154,13 @@ namespace HorseOverhaul
 
                     if (horse != null)
                     {
-                        Game1.activeClickableMenu = new HorseMenu(mod, horse);
-                        return;
+                        return horse;
                     }
                 }
             }
 
             // get the exact first horse you got
-            horse = mod.Horses.Where(h => h?.Horse?.getOwner() == who && h?.Horse?.getName() == who.horseName.Value).FirstOrDefault();
-
-            if (horse != null)
-            {
-                Game1.activeClickableMenu = new HorseMenu(mod, horse);
-            }
+            return mod.Horses.Where(h => h?.Horse?.getOwner() == who && h?.Horse?.getName() == who.horseName.Value).FirstOrDefault();
         }
 
         private static void OpenPetMenu(HorseOverhaul mod, Farmer who, int mouseX, int mouseY, bool ignoreMousePosition)
@@ -167,12 +174,12 @@ namespace HorseOverhaul
                         continue;
                     }
 
-                    if (ignoreMousePosition && !Utility.withinRadiusOfPlayer((int)pet.Position.X, (int)pet.Position.Y, 1, who))
+                    if (ignoreMousePosition && !pet.WithinRangeOfPlayer(mod, who))
                     {
                         continue;
                     }
 
-                    if (!pet.MouseOrPlayerIsInRange(who, mouseX, mouseY, ignoreMousePosition))
+                    if (!pet.MouseOrPlayerIsInRange(mod, who, mouseX, mouseY, ignoreMousePosition))
                     {
                         continue;
                     }

@@ -6,9 +6,9 @@ mods:
    Destroyable Bushes
 
 latest commit:
-   commit 86b6674060a306c913b9b446ecb05d7765feda9d
+   commit 8f8106932b4a7c78762fe72e0b29a7127fba7f02
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Thu Mar 28 17:46:59 2024 -0500
+   Date:   Wed Apr 10 16:48:33 2024 -0500
    
-       Run code cleanup
+       Tweak readme phrasing
    

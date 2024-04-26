@@ -1,0 +1,247 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Format": "2.0.0",
+  "ConfigSchema": {
+    "EventLookupHotkey": {
+      "AllowBlank": true,
+      "Default": "N"
+    },
+    "ResetTerrainFeaturesHotkey": {
+      "AllowBlank": true,
+      "Default": "L"
+    },
+    "ScreenshotHotkey": {
+      "AllowBlank": true,
+      "Default": "F9"
+    }
+  },
+  "Changes": [
+    {
+      "Action": "Load",
+      "Target": "furyx639.ToolbarIconsCP/Icons",
+      "FromFile": "assets/icons.png"
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/ChestsAnywhere.OpenMenu": {
+          "ModId": "Pathoschild.ChestsAnywhere",
+          "Type": "Method",
+          "ExtraData": "OpenMenu",
+          "HoverText": "{{i18n: button.ChestsAnywhere}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 0
+        }
+      },
+      "When": {
+        "HasMod": "Pathoschild.ChestsAnywhere"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/DataLayers.Toggle": {
+          "ModId": "Pathoschild.DataLayers",
+          "Type": "Method",
+          "ExtraData": "ToggleLayers",
+          "HoverText": "{{i18n: button.DataLayers}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 1
+        }
+      },
+      "When": {
+        "HasMod": "Pathoschild.DataLayers"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/DebugMode.Toggle": {
+          "ModId": "Pathoschild.DebugMode",
+          "Type": "Method",
+          "ExtraData": "ToggleDebugMenu",
+          "HoverText": "{{i18n: button.DebugMode}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 2
+        }
+      },
+      "When": {
+        "HasMod": "Pathoschild.DebugMode"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/EventLookup.Lookup": {
+          "ModId": "shekurika.EventLookup",
+          "Type": "Keybind",
+          "ExtraData": "{{EventLookupHotkey}}",
+          "HoverText": "{{i18n: button.EventLookup}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 3
+        }
+      },
+      "When": {
+        "HasMod": "shekurika.EventLookup"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/FashionSense.ShowMenu": {
+          "ModId": "PeacefulEnd.FashionSense",
+          "Type": "Menu",
+          "ExtraData": "FashionSense.Framework.UI.HandMirrorMenu",
+          "HoverText": "{{i18n: button.FashionSense}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 4
+        }
+      },
+      "When": {
+        "HasMod": "PeacefulEnd.FashionSense"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/HorseFluteAnywhere.SummonHorse": {
+          "ModId": "Pathoschild.HorseFluteAnywhere",
+          "Type": "Method",
+          "ExtraData": "TryUseHorseFlute",
+          "HoverText": "{{i18n: button.HorseFluteAnywhere}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 5
+        }
+      },
+      "When": {
+        "HasMod": "Pathoschild.HorseFluteAnywhere"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/InstantBuildings.Build": {
+          "ModId": "BitwiseJonMods.InstantBuildings",
+          "Type": "Method",
+          "ExtraData": "HandleInstantBuildButtonClick",
+          "HoverText": "{{i18n: button.InstantBuildings.Build}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 6
+        },
+        "furyx639.ToolbarIconsCP/InstantBuildings.Upgrade": {
+          "ModId": "BitwiseJonMods.InstantBuildings",
+          "Type": "Method",
+          "ExtraData": "HandleInstantUpgradeButtonClick",
+          "HoverText": "{{i18n: button.InstantBuildings.Upgrade}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 7
+        }
+      },
+      "When": {
+        "HasMod": "BitwiseJonMods.InstantBuildings"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/LookupAnything.Search": {
+          "ModId": "Pathoschild.LookupAnything",
+          "Type": "Method",
+          "ExtraData": "TryToggleSearch",
+          "HoverText": "{{i18n: button.LookupAnything}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 8
+        }
+      },
+      "When": {
+        "HasMod": "Pathoschild.LookupAnything"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/Magic.ShowMenu": {
+          "ModId": "spacechase0.Magic",
+          "Type": "Menu",
+          "ExtraData": "Magic.Framework.Game.Interface.MagicMenu",
+          "HoverText": "{{i18n: button.Magic}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 9
+        }
+      },
+      "When": {
+        "HasMod": "spacechase0.Magic"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/ResetTerrainFeatures.Reset": {
+          "ModId": "MabelSyrup.ResetTerrainFeatures",
+          "Type": "Keybind",
+          "ExtraData": "{{ResetTerrainFeaturesHotkey}}",
+          "HoverText": "{{i18n: button.ResetTerrainFeatures}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 10
+        }
+      },
+      "When": {
+        "HasMod": "MabelSyrup.ResetTerrainFeatures"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/Screenshot.Take": {
+          "ModId": "aedenthorn.Screenshot",
+          "Type": "Keybind",
+          "ExtraData": "{{ScreenshotHotkey}}",
+          "HoverText": "{{i18n: button.Screenshot}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 11
+        }
+      },
+      "When": {
+        "HasMod": "aedenthorn.Screenshot"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "furyx639.ToolbarIcons/Data",
+      "Entries": {
+        "furyx639.ToolbarIconsCP/TractorMod.SummonTractor": {
+          "ModId": "Pathoschild.TractorMod",
+          "Type": "Method",
+          "ExtraData": "SummonTractor",
+          "HoverText": "{{i18n: button.TractorMod}}",
+          "Texture": "furyx639.ToolbarIconsCP/Icons",
+          "Index": 12
+        }
+      },
+      "When": {
+        "HasMod": "Pathoschild.TractorMod"
+      }
+    }
+  ],
+  "$schema": "https://smapi.io/schemas/content-patcher.json"
+}

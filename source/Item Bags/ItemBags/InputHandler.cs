@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
@@ -230,7 +231,7 @@ namespace ItemBags
                                 IB.MoveToBag(Obj, Qty, out int MovedQty, true, Game1.player.Items);
 
                                 if (e.Button == SButton.MouseLeft)
-                                    //|| (MovedQty > 0 && Obj.Stack == 0)) // Handle moving the last quantity with a right-click
+                                //|| (MovedQty > 0 && Obj.Stack == 0)) // Handle moving the last quantity with a right-click
                                 {
                                     //  Clicking the bag will have made it become the held CursorSlotItem, so queue up an action that will swap them back on next game tick
                                     QueueCursorSlotIndex = ClickedItemIndex;
@@ -240,7 +241,7 @@ namespace ItemBags
                         }
                     }
                 }
-                else if (Game1.activeClickableMenu == null && 
+                else if (Game1.activeClickableMenu == null &&
                     (e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight || (IsGamepadInput && GamepadControls.IsMatch(GamepadButtons, GamepadControls.Current.OpenBagFromToolbar))))
                 {
                     //  Check if they clicked a bag on the toolbar, open the bag if so
@@ -255,7 +256,7 @@ namespace ItemBags
                                 //  Find the slot on the toolbar that they clicked, if any
                                 for (int i = 0; i < toolbarButtons.Count; i++)
                                 {
-                                    if (toolbarButtons[i].bounds.Contains(CursorPos) ||(IsGamepadInput && toolbar.currentlySnappedComponent == toolbarButtons[i]))
+                                    if (toolbarButtons[i].bounds.Contains(CursorPos) || (IsGamepadInput && toolbar.currentlySnappedComponent == toolbarButtons[i]))
                                     {
                                         int ActualIndex = i;
                                         if (Constants.TargetPlatform == GamePlatform.Android)
@@ -282,43 +283,65 @@ namespace ItemBags
                         catch (Exception) { }
                     }
                 }
-                else if (Game1.activeClickableMenu is ItemGrabMenu IGM && IGM.context is Chest ChestSource && 
-                    (e.Button == SButton.MouseRight || e.Button == SButton.MouseMiddle || (IsGamepadInput && GamepadControls.IsMatch(GamepadButtons, GamepadControls.Current.OpenBagFromChest))))
+                else if (Game1.activeClickableMenu is ItemGrabMenu IGM)
                 {
-                    //  Check if they clicked a Bag in the inventory part of the chest interface
-                    bool Handled = false;
-                    for (int i = 0; i < IGM.inventory.inventory.Count; i++)
+                    if (IsShippingBinMenu(Game1.activeClickableMenu))
                     {
-                        ClickableComponent Component = IGM.inventory.inventory[i];
-                        if (Component != null && Component.bounds.Contains(CursorPos))
+                        InventoryMenu InvMenu = IGM.inventory;
+
+                        int ClickedItemIndex = InvMenu.getInventoryPositionOfClick(CursorPos.X, CursorPos.Y);
+                        bool IsValidInventorySlot = ClickedItemIndex >= 0 && ClickedItemIndex < InvMenu.actualInventory.Count;
+                        if (IsValidInventorySlot)
                         {
-                            Item ClickedInvItem = i < 0 || i >= IGM.inventory.actualInventory.Count ? null : IGM.inventory.actualInventory[i];
-                            if (ClickedInvItem is ItemBag IB && ValidateBag(IB))
+                            Item ClickedItem = InvMenu.actualInventory[ClickedItemIndex];
+
+                            //  Right-click an ItemBag to open it
+                            if ((e.Button == SButton.MouseRight || (IsGamepadInput && GamepadControls.IsMatch(GamepadButtons, GamepadControls.Current.OpenBagFromInventory)))
+                                && ClickedItem is ItemBag ClickedBag)
                             {
-                                IB.OpenContents(IGM.inventory.actualInventory, Game1.player.MaxItems);
+                                if (ValidateBag(ClickedBag))
+                                    ClickedBag.OpenContents(Game1.player.Items, Game1.player.MaxItems);
                             }
-                            Handled = true;
-                            break;
                         }
                     }
-
-                    bool IsMegaStorageCompatibleWithCurrentChest = IGM.ItemsToGrabMenu.capacity == DefaultChestCapacity ||
-                        MegaStorageInstalledVersion == null || MegaStorageInstalledVersion.IsNewerThan(new SemanticVersion(1, 4, 4));
-                    if (!Handled && IsMegaStorageCompatibleWithCurrentChest)
+                    else if (IGM.context is Chest ChestSource &&
+                        (e.Button == SButton.MouseRight || e.Button == SButton.MouseMiddle || (IsGamepadInput && GamepadControls.IsMatch(GamepadButtons, GamepadControls.Current.OpenBagFromChest))))
                     {
-                        //  Check if they clicked a Bag in the chest part of the chest interface
-                        for (int i = 0; i < IGM.ItemsToGrabMenu.inventory.Count; i++)
+                        //  Check if they clicked a Bag in the inventory part of the chest interface
+                        bool Handled = false;
+                        for (int i = 0; i < IGM.inventory.inventory.Count; i++)
                         {
-                            ClickableComponent Component = IGM.ItemsToGrabMenu.inventory[i];
+                            ClickableComponent Component = IGM.inventory.inventory[i];
                             if (Component != null && Component.bounds.Contains(CursorPos))
                             {
-                                Item ClickedChestItem = i < 0 || i >= IGM.ItemsToGrabMenu.actualInventory.Count ? null : IGM.ItemsToGrabMenu.actualInventory[i];
-                                if (ClickedChestItem is ItemBag IB && ValidateBag(IB))
+                                Item ClickedInvItem = i < 0 || i >= IGM.inventory.actualInventory.Count ? null : IGM.inventory.actualInventory[i];
+                                if (ClickedInvItem is ItemBag IB && ValidateBag(IB))
                                 {
-                                    IB.OpenContents(IGM.ItemsToGrabMenu.actualInventory, IGM.ItemsToGrabMenu.capacity);
+                                    IB.OpenContents(IGM.inventory.actualInventory, Game1.player.MaxItems);
                                 }
                                 Handled = true;
                                 break;
+                            }
+                        }
+
+                        bool IsMegaStorageCompatibleWithCurrentChest = IGM.ItemsToGrabMenu.capacity == DefaultChestCapacity ||
+                            MegaStorageInstalledVersion == null || MegaStorageInstalledVersion.IsNewerThan(new SemanticVersion(1, 4, 4));
+                        if (!Handled && IsMegaStorageCompatibleWithCurrentChest)
+                        {
+                            //  Check if they clicked a Bag in the chest part of the chest interface
+                            for (int i = 0; i < IGM.ItemsToGrabMenu.inventory.Count; i++)
+                            {
+                                ClickableComponent Component = IGM.ItemsToGrabMenu.inventory[i];
+                                if (Component != null && Component.bounds.Contains(CursorPos))
+                                {
+                                    Item ClickedChestItem = i < 0 || i >= IGM.ItemsToGrabMenu.actualInventory.Count ? null : IGM.ItemsToGrabMenu.actualInventory[i];
+                                    if (ClickedChestItem is ItemBag IB && ValidateBag(IB))
+                                    {
+                                        IB.OpenContents(IGM.ItemsToGrabMenu.actualInventory, IGM.ItemsToGrabMenu.capacity);
+                                    }
+                                    Handled = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -328,6 +351,19 @@ namespace ItemBags
             {
                 ItemBagsMod.ModInstance.Monitor.Log(string.Format("Unhandled error in {0}: {1}", nameof(Input_ButtonPressed), ex.Message), LogLevel.Error);
             }
+        }
+
+        private static bool IsShippingBinMenu(IClickableMenu menu)
+        {
+            if (menu is not ItemGrabMenu IGM)
+                return false;
+
+            if (IGM.shippingBin && IGM.context is ShippingBin)
+                return true;
+
+            //  The "Chests Anywhere" mod overrides the vanilla shipping bin menu
+            bool isChestsAnywhereShippingBin = object.ReferenceEquals(IGM.ItemsToGrabMenu.actualInventory, Game1.getFarm().getShippingBin(Game1.player));
+            return isChestsAnywhereShippingBin;
         }
     }
 }

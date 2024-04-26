@@ -28,12 +28,12 @@ public static class Tiles
     /// <returns></returns>
     public static IEnumerable<Vector2> GetTilesInManhattan(this Farmer farmer, int radius, int min_radius = 0)
     {
-        return GetTilesInManhattan(farmer.getTileLocation(), radius, min_radius);
+        return GetTilesInManhattan(farmer.Tile, radius, min_radius);
     }
 
     public static IEnumerable<Vector2> GetTilesInRadius(this Farmer farmer, int radius, int min_radius)
     {
-        return GetTilesInRadius(farmer.getTileLocation(), radius, min_radius);
+        return GetTilesInRadius(farmer.Tile, radius, min_radius);
     }
 
     /// <summary>
@@ -237,16 +237,16 @@ public static class Tiles
     }
 
     /// <summary>
-    /// Checks whether object with <paramref name="object_id"/> is on <paramref name="tile"/>
+    /// Checks whether object with <paramref name="qualified_id"/> is on <paramref name="tile"/>
     /// </summary>
     /// <param name="tile">Tile to check for object</param>
-    /// <param name="object_id">Id of object that is checked whether it is on this tile</param>
+    /// <param name="qualified_id">Id of object that is checked whether it is on this tile</param>
     /// <returns></returns>
-    public static bool ContainsObject(this Vector2 tile, int object_id, GameLocation location = null)
+    public static bool ContainsObject(this Vector2 tile, string qualified_id, GameLocation location = null)
     {
         location ??= Game1.currentLocation;
         SObject obj = location.getObjectAtTile((int)tile.X, (int)tile.Y);
-        return obj != null && obj.ParentSheetIndex == object_id;
+        return obj != null && obj.QualifiedItemId == qualified_id;
     }
 
 }

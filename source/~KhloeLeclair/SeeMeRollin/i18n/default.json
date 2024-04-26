@@ -39,6 +39,5 @@
 	"setting.allow-swim.desc": "Whether or not to allow Rollin' when swimming.",
 
 	"setting.allow-slowed": "Allow when Slowed",
-	"setting.allow-slowed.desc": "Whether or not to allow Rollin' when debuffed with a movement penalty."
-
+	"setting.allow-slowed.desc": "Whether or not to allow Rollin' when debuffed with a movement penalty.",
 }

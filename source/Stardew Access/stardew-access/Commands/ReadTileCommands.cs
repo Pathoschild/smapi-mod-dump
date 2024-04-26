@@ -9,47 +9,45 @@
 *************************************************/
 
 using stardew_access.Translation;
-using StardewModdingAPI;
+using StardewValley;
 
 namespace stardew_access.Commands;
 
-public class ReadTileCommands : ICustomCommand
+public class ReadTileCommands
 {
-    private IModHelper? _modHelper;
-
-    public void Add(IModHelper modHelper)
-    {
-        _modHelper = modHelper;
-
-        _modHelper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", callback: ReadTile);
-        _modHelper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", Flooring);
-        _modHelper.ConsoleCommands.Add("watered", "Toggle speaking watered or unwatered for crops.", Watered);
-    }
-
-    private void Flooring(string command, string[] args)
+    public static void Flooring(string[] args, bool fromChatBox = false)
     {
         MainClass.Config.ReadFlooring = !MainClass.Config.ReadFlooring;
-        _modHelper!.WriteConfig(MainClass.Config);
+        MainClass.ModHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info(Translator.Instance.Translate("commands-read_tile-flooring_toggle",
-            new { is_enabled = MainClass.Config.ReadFlooring ? 1 : 0 }, TranslationCategory.CustomCommands));
+        string text = Translator.Instance.Translate("commands-read_tile-flooring_toggle",
+            new { is_enabled = MainClass.Config.ReadFlooring ? 1 : 0 }, TranslationCategory.CustomCommands);
+
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 
-    private void Watered(string command, string[] args)
+    public static void Watered(string[] args, bool fromChatBox = false)
     {
         MainClass.Config.WateredToggle = !MainClass.Config.WateredToggle;
-        _modHelper!.WriteConfig(MainClass.Config);
+        MainClass.ModHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info(Translator.Instance.Translate("commands-read_tile-watered_toggle",
-            new { is_enabled = MainClass.Config.WateredToggle ? 1 : 0 }, TranslationCategory.CustomCommands));
+        string text = Translator.Instance.Translate("commands-read_tile-watered_toggle",
+            new { is_enabled = MainClass.Config.WateredToggle ? 1 : 0 }, TranslationCategory.CustomCommands);
+
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 
-    void ReadTile(string command, string[] args)
+    public static void ReadTile(string[] args, bool fromChatBox = false)
     {
         MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
-        _modHelper!.WriteConfig(MainClass.Config);
+        MainClass.ModHelper!.WriteConfig(MainClass.Config);
 
-        Log.Info(Translator.Instance.Translate("commands-read_tile-read_tile_toggle",
-            new { is_enabled = MainClass.Config.ReadTile ? 1 : 0 }, TranslationCategory.CustomCommands));
+        string text = Translator.Instance.Translate("commands-read_tile-read_tile_toggle",
+            new { is_enabled = MainClass.Config.ReadTile ? 1 : 0 }, TranslationCategory.CustomCommands);
+
+        if (fromChatBox) Game1.chatBox.addInfoMessage(text);
+        else Log.Info(text);
     }
 }

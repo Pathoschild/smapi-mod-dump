@@ -33,13 +33,27 @@ namespace HorseOverhaul
             string petAnswer = horse.WasPet ? yes : no;
             string waterAnswer = horse.GotWater ? yes : no;
             string foodAnswer = horse.GotFed ? yes : no;
-            string heaterAnswer = horse.HasHeater ? yes : no;
 
             string friendship = mod.Helper.Translation.Get("Friendship", new { value = horse.Friendship }) + "\n";
             string petted = mod.Config.Petting ? mod.Helper.Translation.Get("GotPetted", new { value = petAnswer }) + "\n" : string.Empty;
             string water = mod.Config.Water ? mod.Helper.Translation.Get("GotWater", new { value = waterAnswer }) + "\n" : string.Empty;
             string food = mod.Config.Feeding ? mod.Helper.Translation.Get("GotFood", new { value = foodAnswer }) + "\n" : string.Empty;
-            string heater = mod.Config.HorseHeater && Game1.IsWinter ? mod.Helper.Translation.Get("HasHeater", new { value = heaterAnswer }) + "\n" : string.Empty;
+            string heater = string.Empty;
+
+            if (mod.Config.HorseHeater && Game1.IsWinter)
+            {
+                string heaterAnswer = no;
+
+                var stable = horse.Horse?.TryFindStable();
+                var location = stable.GetParentLocation();
+
+                if (stable != null && location != null && mod.CheckForHeater(location, stable))
+                {
+                    heaterAnswer = yes;
+                }
+
+                heater = mod.Helper.Translation.Get("HasHeater", new { value = heaterAnswer }) + "\n";
+            }
 
             string owner = string.Empty;
 

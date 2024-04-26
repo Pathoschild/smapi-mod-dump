@@ -36,7 +36,7 @@ public static class NoticesHelper {
 
 		try {
 			Game1.dayOfMonth = date.DayOfMonth;
-			Game1.currentSeason = date.Season;
+			Game1.currentSeason = date.SeasonKey;
 
 			result = IslandSouth.CanVisitIslandToday(who);
 
@@ -53,7 +53,7 @@ public static class NoticesHelper {
 		if (Utility.isFestivalDay(date.DayOfMonth, date.Season))
 			return null;
 
-		if (date.Season == "winter" && date.DayOfMonth >= 15 && date.DayOfMonth <= 17)
+		if (date.SeasonKey == "winter" && date.DayOfMonth >= 15 && date.DayOfMonth <= 17)
 			return null;
 
 		if (Game1.getLocationFromName("IslandSouth") is not IslandSouth isle)
@@ -77,7 +77,7 @@ public static class NoticesHelper {
 
 		try {
 			Game1.dayOfMonth = date.DayOfMonth;
-			Game1.currentSeason = date.Season;
+			Game1.currentSeason = date.SeasonKey;
 
 			foreach (NPC npc in chars) {
 				if (IslandSouth.CanVisitIslandToday(npc)) {
@@ -97,7 +97,7 @@ public static class NoticesHelper {
 		List<string> visitors = new();
 		if (rnd.NextDouble() < 0.4) {
 			for (int i = 0; i < 5; i++) {
-				string who = Utility.GetRandom(valid, rnd);
+				string who = valid[rnd.Next(valid.Count)];
 				if (who != null && ! young.Contains(who)) { 
 					valid.Remove(who);
 					visitors.Add(who);
@@ -137,7 +137,7 @@ public static class NoticesHelper {
 			}
 
 			for(int i = 0; i < 5 - visitors.Count; i++) {
-				string who = Utility.GetRandom(valid, rnd);
+				string who = valid[rnd.Next(valid.Count)];
 				if (who != null && ! young.Contains(who)) { 
 					valid.Remove(who);
 					visitors.Add(who);

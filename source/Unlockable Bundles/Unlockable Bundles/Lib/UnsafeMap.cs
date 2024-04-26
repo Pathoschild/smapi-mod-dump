@@ -21,6 +21,7 @@ using xTile.Layers;
 using xTile.ObjectModel;
 using xTile.Tiles;
 using static StardewValley.WaterTiles;
+using static Unlockable_Bundles.ModEntry;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -28,15 +29,9 @@ namespace Unlockable_Bundles.Lib
     //Buildings all share the same map, so when one gets updated the other does as well
     public class UnsafeMap : Map
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
 
         private WaterTileData[,] WaterTiles = null;
@@ -83,14 +78,14 @@ namespace Unlockable_Bundles.Lib
 
         public void CopyFromTileSheets(List<TileSheet> tileSheets)
         {
-            var m_tileSheets = ModEntry._Helper.Reflection.GetField<List<TileSheet>>(this, "m_tileSheets").GetValue();
+            var m_tileSheets = Helper.Reflection.GetField<List<TileSheet>>(this, "m_tileSheets").GetValue();
             m_tileSheets.AddRange(tileSheets);
         }
 
         public void CopyLayer(Layer layer)
         {
-            var m_layers = ModEntry._Helper.Reflection.GetField<List<Layer>>(this, "m_tileSheets").GetValue();
-            var m_layersById = ModEntry._Helper.Reflection.GetField<Dictionary<string, Layer>>(this, "m_tileSheets").GetValue();
+            var m_layers = Helper.Reflection.GetField<List<Layer>>(this, "m_tileSheets").GetValue();
+            var m_layersById = Helper.Reflection.GetField<Dictionary<string, Layer>>(this, "m_tileSheets").GetValue();
 
             m_layers.Add(layer);
             m_layersById.Add(layer.Id, layer);

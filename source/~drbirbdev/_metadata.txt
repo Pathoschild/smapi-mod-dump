@@ -17,9 +17,9 @@ mods:
    Winter Star Spouse
 
 latest commit:
-   commit eaacc4f4737fa1643081849c5313718726143d71
+   commit 07f8fe719ae7a2bce609dd8e1e5fe1f7082e1cf2
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Sun Mar 31 14:56:36 2024 -0700
+   Date:   Sun Apr 21 08:57:34 2024 -0700
    
-       Release patches for skills
+       Release Birbcore update
    

@@ -40,16 +40,19 @@ namespace SkillfulClothes.Effects.Skills
             EffectHelper.ModHelper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 
-        protected Boolean IsRealFish(int index)
+        protected bool IsRealFish(string fishId)
         {
-            // Seaweed, Green & White Algea
-            if (index == 152 || index == 153 || index == 157) return false;
+            if (int.TryParse(fishId, out int fishNumericalId))
+            {
+                // Seaweed, Green & White Algea
+                if (fishNumericalId == 152 || fishNumericalId == 153 || fishNumericalId == 157) return false;
 
-            // Lobster, Crab, Oyster, Clam Shrimp
-            if (index == 715 || index == 717 || index == 723 || index == 372 || index == 720) return false;
+                // Lobster, Crab, Oyster, Clam Shrimp
+                if (fishNumericalId == 715 || fishNumericalId == 717 || fishNumericalId == 723 || fishNumericalId == 372 || fishNumericalId == 720) return false;
 
-            // Cockle, Mussel, Snail, Crayfish, Periwinkle
-            if (index == 718 || index == 719 || index == 721 || index == 716 || index == 722) return false;
+                // Cockle, Mussel, Snail, Crayfish, Periwinkle
+                if (fishNumericalId == 718 || fishNumericalId == 719 || fishNumericalId == 721 || fishNumericalId == 716 || fishNumericalId == 722) return false;
+            }
 
             return true;
         }
@@ -64,11 +67,11 @@ namespace SkillfulClothes.Effects.Skills
                 int currentHeight = bobberBarHeight.GetValue();                               
 
                 int fishCaught = 0;
-                foreach(var fishidx in farmer.fishCaught.Keys)
+                foreach(var fishNumericalId in farmer.fishCaught.Keys)
                 {
-                    if (IsRealFish(fishidx))
+                    if (IsRealFish(fishNumericalId))
                     {
-                        int[] fishStat = farmer.fishCaught[fishidx];
+                        int[] fishStat = farmer.fishCaught[fishNumericalId];
                         if (fishStat != null && fishStat.Length > 0)
                         {
                             fishCaught += fishStat[0];

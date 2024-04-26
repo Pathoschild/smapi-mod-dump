@@ -10,10 +10,17 @@
   "UniqueID": "DecidedlyHuman.SmartBuilding",
   "Name": "Smart Building",
   "Author": "DecidedlyHuman",
-  "Version": "1.8.0",
+  "Version": "1.8.8",
   "Description": "Allows you to build fences/walls/paths, etc. in a much more streamlined way.",
   "MinimumApiVersion": "3.15.0",
   "EntryDll": "SmartBuilding.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "furyx639.ToolbarIcons",
+      "MinimumVersion": "2.7.1",
+      "IsRequired": false
+    }
+  ],
   "UpdateKeys": [
     "Nexus:11158"
   ]

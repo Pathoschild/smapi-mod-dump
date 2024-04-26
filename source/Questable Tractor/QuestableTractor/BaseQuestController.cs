@@ -15,6 +15,7 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using StardewValley.Quests;
+using StardewValley.Objects;
 
 namespace NermNermNerm.Stardew.QuestableTractor
 {
@@ -47,9 +48,52 @@ namespace NermNermNerm.Stardew.QuestableTractor
         public bool IsStarted => this.OverallQuestState != OverallQuestState.NotStarted;
         public bool IsComplete => this.OverallQuestState == OverallQuestState.Completed;
 
+        public bool IsCompletedByMasterPlayer => this.GetOverallQuestState(Game1.MasterPlayer) == OverallQuestState.Completed;
+        public bool IsStartedByMasterPlayer => this.GetOverallQuestState(Game1.MasterPlayer) != OverallQuestState.NotStarted;
+
         public static void Spout(string message)
         {
             Game1.DrawDialogue(new Dialogue(null, null, message));
+        }
+
+        /// <summary>
+        ///   Attempt to fix a player in a broken state.
+        /// </summary>
+        public abstract void Fix();
+
+        protected void EnsureInventory(string itemId, bool shouldContain)
+        {
+            if (shouldContain)
+            {
+                this.EnsureItemIsInInventory(itemId);
+            }
+            else
+            {
+                this.EnsureItemIsNotInInventory(itemId);
+            }
+        }
+
+        protected void EnsureItemIsInInventory(string itemId)
+        {
+            string qiid = ItemRegistry.QualifyItemId(itemId)!;
+            if (!Game1.player.Items.Any(i => i?.QualifiedItemId == qiid))
+            {
+                var restoredItem = ItemRegistry.Create(qiid);
+                if (restoredItem is StardewValley.Object o)
+                {
+                    o.questItem.Value = true;
+                }
+                Game1.player.addItemToInventory(restoredItem);
+            }
+        }
+
+        protected void EnsureItemIsNotInInventory(string itemId)
+        {
+            string qiid = ItemRegistry.QualifyItemId(itemId)!;
+            while (Game1.player.Items.Any(i => i?.QualifiedItemId == qiid))
+            {
+                Game1.player.removeFirstOfThisItemFromInventory(qiid);
+            }
         }
 
         /// <summary>
@@ -59,7 +103,16 @@ namespace NermNermNerm.Stardew.QuestableTractor
         /// </summary>
         public virtual string? HintTopicConversationKey { get; } = null;
 
-        protected void MonitorInventoryForItem(string itemId, Action<Item> onItemAdded)
+        /// <summary>
+        ///   Registers for watching for an item appearing in the player's inventory.
+        ///   The assumption is that <paramref name="itemId"/> is a quest item, and
+        ///   <paramref name="onItemAddedToHostPlayer"/> will only be called if the host player
+        ///   gets the item.  For non-host players, there's a dialog telling them to give
+        ///   the item to the host.
+        /// </summary>
+        /// <param name="itemId">The item to watch for</param>
+        /// <param name="onItemAddedToHostPlayer">A callback for when the host player gets the item.</param>
+        protected void MonitorInventoryForItem(string itemId, Action<Item> onItemAddedToHostPlayer)
         {
             if (!this.isWatchingInventory)
             {
@@ -73,7 +126,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 this.LogTrace($"{this.GetType().Name} Started monitoring inventory for {itemId}");
             }
 
-            this.itemsToWatch[itemId] = onItemAdded;
+            this.itemsToWatch[itemId] = onItemAddedToHostPlayer;
         }
 
         protected void StopMonitoringInventoryFor(string itemId)
@@ -100,7 +153,7 @@ namespace NermNermNerm.Stardew.QuestableTractor
                     if (!e.Player.IsMainPlayer)
                     {
                         e.Player.holdUpItemThenMessage(item, true);
-                        Spout("This item is for unlocking the tractor - only the host can advance this quest.  Give this item to the host.");
+                        Spout("This item is for unlocking the tractor - only the host can advance this quest.  Give this item to the host.  (You have to put in a chest for them.)");
                     }
                     else
                     {
@@ -112,35 +165,43 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public string? RawQuestState
         {
-            get
-            {
-                Game1.MasterPlayer.modData.TryGetValue(this.ModDataKey, out string storedValue);
-                return storedValue;
-            }
+            get => this.GetRawQuestState(Game1.player);
             set
             {
-                if (!Game1.player.IsMainPlayer)
-                {
-                    throw new NotImplementedException("QuestableTractorMod quests should only be playable by the main player");
-                }
+                this.SetRawQuestState(Game1.player, value);
+            }
+        }
 
-                bool wasChanged;
-                if (value is null)
-                {
-                    wasChanged = Game1.player.modData.Remove(this.ModDataKey);
-                }
-                else
-                {
-                    Game1.player.modData.TryGetValue(this.ModDataKey, out string? oldValue);
-                    Game1.player.modData[this.ModDataKey] = value;
-                    wasChanged = (value != oldValue);
-                }
 
-                if (wasChanged)
-                {
-                    this.LogTrace($"Set {Game1.player.Name}'s ModData[{this.ModDataKey}] to '{value ?? "<null>"}'");
-                    this.OnStateChanged();
-                }
+        public string? GetRawQuestState(Farmer player)
+        {
+            player.modData.TryGetValue(this.ModDataKey, out string storedValue);
+            return storedValue;
+        }
+
+        public void SetRawQuestState(Farmer player, string? value)
+        {
+            if (player != Game1.MasterPlayer)
+            {
+                throw new NotImplementedException("QuestableTractorMod quests should only be playable by the main player");
+            }
+
+            bool wasChanged;
+            if (value is null)
+            {
+                wasChanged = player.modData.Remove(this.ModDataKey);
+            }
+            else
+            {
+                player.modData.TryGetValue(this.ModDataKey, out string? oldValue);
+                player.modData[this.ModDataKey] = value;
+                wasChanged = (value != oldValue);
+            }
+
+            if (wasChanged)
+            {
+                this.LogTrace($"Set {player.Name}'s ModData[{this.ModDataKey}] to '{value ?? "<null>"}'");
+                this.OnStateChanged();
             }
         }
 
@@ -149,21 +210,22 @@ namespace NermNermNerm.Stardew.QuestableTractor
         /// </summary>
         protected virtual void OnStateChanged() { }
 
-        public OverallQuestState OverallQuestState =>
-            this.RawQuestState switch
+        public OverallQuestState OverallQuestState => this.GetOverallQuestState(Game1.player);
+
+        public OverallQuestState GetOverallQuestState(Farmer player) =>
+            this.GetRawQuestState(player) switch
             {
                 null => OverallQuestState.NotStarted,
                 QuestCompleteStateMagicWord => OverallQuestState.Completed,
                 _ => OverallQuestState.InProgress
             };
 
-
         /// <summary>
         ///   This is a hacky way to deal with quest completion until something more clever can be thought up.
         ///   Right now this gets called in the 1-second-tick callback.  It returns true if the item resulted
         ///   in quest completion and the tractor config should be rebuilt.
         /// </summary>
-        public virtual bool PlayerIsInGarage(Item itemInHand) { return false; }
+        public virtual void PlayerIsInGarage(Item itemInHand) {}
 
         public virtual void WriteToLog(string message, LogLevel level, bool isOnceOnly)
             => ((ISimpleLog)this.Mod).WriteToLog(message, level, isOnceOnly);
@@ -182,15 +244,15 @@ namespace NermNermNerm.Stardew.QuestableTractor
         /// <summary>
         ///   Creates a new instance of the Quest object, assuming the State empty.
         /// </summary>
-        public void CreateQuestNew()
+        public void CreateQuestNew(Farmer player)
         {
             this.RawQuestState = this.InitialQuestState;
             var quest = this.CreateQuest();
             quest.SetDisplayAsNew();
-            Game1.player.questLog.Add(quest);
+            FakeQuest.AddToQuestLog(player, quest);
         }
 
-        public BaseQuest? GetQuest() => Game1.player.questLog.OfType<BaseQuest>().FirstOrDefault(bc => bc.Controller == this);
+        public BaseQuest? GetQuest(Farmer player) => FakeQuest.GetFakeQuestByController(player, this);
 
         /// <summary>
         ///   Called once at the start of every day when the quest is not started.
@@ -230,17 +292,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
             }
 
             // Re-test the state beause it might have completed overnight
-            if (this.OverallQuestState == OverallQuestState.InProgress)
+            if (Game1.IsMasterGame && this.OverallQuestState == OverallQuestState.InProgress)
             {
                 var newQuest = this.CreateQuest();
                 newQuest.MarkAsViewed();
-                Game1.player.questLog.Add(newQuest);
+                FakeQuest.AddToQuestLog(Game1.player, newQuest);
             }
-        }
-
-        public void OnDayEnding()
-        {
-            Game1.player.questLog.RemoveWhere(q => q is BaseQuest bq && bq.Controller == this);
         }
     }
 
@@ -254,27 +311,29 @@ namespace NermNermNerm.Stardew.QuestableTractor
 
         public TQuestState State
         {
-            get
-            {
-                string? rawState = this.RawQuestState;
-                if (rawState == null)
-                {
-                    throw new InvalidOperationException("State should not be queried when the quest isn't started");
-                }
-
-                if (!this.TryParse(rawState, out TQuestState result))
-                {
-                    // Part of the design of the state enums should include making sure that the default value of
-                    // the enum is the starting condition of the quest, so we can possibly recover from this error.
-                    this.LogError($"{this.GetType().Name} quest has invalid state: {rawState}");
-                }
-
-                return result;
-            }
+            get => this.GetState(Game1.player);
             set
             {
                 this.RawQuestState = value.ToString();
             }
+        }
+
+        public TQuestState GetState(Farmer player)
+        {
+            string? rawState = this.GetRawQuestState(player);
+            if (rawState == null)
+            {
+                throw new InvalidOperationException("State should not be queried when the quest isn't started");
+            }
+
+            if (!this.TryParse(rawState, out TQuestState result))
+            {
+                // Part of the design of the state enums should include making sure that the default value of
+                // the enum is the starting condition of the quest, so we can possibly recover from this error.
+                this.LogError($"{this.GetType().Name} quest has invalid state: {rawState}");
+            }
+
+            return result;
         }
 
         protected virtual bool TryParse(string rawState, out TQuestState result) => Enum.TryParse(rawState, out result);

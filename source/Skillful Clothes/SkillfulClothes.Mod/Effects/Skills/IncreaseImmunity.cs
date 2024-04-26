@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
+using StardewValley.Buffs;
 
 namespace SkillfulClothes.Effects.Skills
 {
@@ -37,6 +38,9 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override EffectIcon Icon => EffectIcon.Immunity;
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.immunity = Math.Max(0, farmer.immunity + amount);
+        protected override void UpdateEffects(Farmer farmer, BuffEffects targetEffects)
+        {            
+            targetEffects.Immunity.Value = Parameters.Amount;            
+        }
     }
 }

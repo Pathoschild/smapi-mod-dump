@@ -6,9 +6,9 @@ mods:
    Variable Seasons
 
 latest commit:
-   commit bd52739628dfadf9eb4e9a1e26e81b7e261819d3
+   commit 0272499627eff6cce607d418e51c3aa3c65ec269
    Author: Caleb Stein <caleb@calebstein.net>
-   Date:   Fri Mar 22 13:34:10 2024 -0700
+   Date:   Wed Apr 10 00:14:13 2024 -0700
    
        update readme
    

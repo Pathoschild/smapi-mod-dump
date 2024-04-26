@@ -10,9 +10,9 @@ mods:
    Incubate Pufferfish Eggs
 
 latest commit:
-   commit e3d15112a2f186529474d85d839dcac2d4b9d051
+   commit 6cd454bf6584c0d11d8cff8f00bdf479b8119f58
    Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
-   Date:   Mon Mar 25 18:49:58 2024 -0500
+   Date:   Sun Apr 7 18:43:35 2024 -0500
    
-       add drinking animation when an animal drinks outside
+       fix skip button appearing under bars and prepare for release
    

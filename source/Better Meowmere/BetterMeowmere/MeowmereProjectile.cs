@@ -21,6 +21,8 @@ using StardewValley.Monsters;
 using StardewValley.TerrainFeatures;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using StardewValley.BellsAndWhistles;
+using StardewValley.TokenizableStrings;
 
 namespace BetterMeowmere
 {
@@ -59,6 +61,7 @@ namespace BetterMeowmere
             base.position.Value = startingPosition;
             base.bouncesLeft.Value = bouncesTillDestruct;
             base.bounceSound.Value = soundonbounce == "" ? null : soundonbounce;
+            base.ignoreObjectCollisions.Value = true;
         }
         public override void updatePosition(GameTime time)
         {
@@ -68,15 +71,25 @@ namespace BetterMeowmere
 
         public override void behaviorOnCollisionWithPlayer(GameLocation location, Farmer player)
         {
+            if ((bool)base.damagesMonsters.Value)
+            {
+                return;
+            }
+            if (player.CanBeDamaged())
+            {
+                base.piercesLeft.Value--;
+            }
+            player.takeDamage(this.damage.Value, overrideParry: false, null);
             this.explosionAnimation(location);
         }
 
         public override void behaviorOnCollisionWithTerrainFeature(TerrainFeature t, Vector2 tileLocation, GameLocation location)
         {
-            if(config.ProjectileSound != "None")
+            if (config.ProjectileSound != "None")
             {
                 location.playSound("terraria_meowmere");
-            }           
+            }
+            t.performUseAction(tileLocation);
             this.explosionAnimation(location);
             base.piercesLeft.Value--;
         }
@@ -87,22 +100,36 @@ namespace BetterMeowmere
             {
                 location.playSound("terraria_meowmere");
             }
-            this.explosionAnimation(location);
+            if (base.ignoreObjectCollisions.Value == false)
+            {
+                this.explosionAnimation(location);
+            }
+
             base.piercesLeft.Value--;
+
+            if (base.piercesLeft.Value == 0)
+            {
+                this.explosionAnimation(location);
+            }
         }
 
-        public override void behaviorOnCollisionWithMonster(NPC n, GameLocation location)
+        public override void behaviorOnCollisionWithMonster(NPC npc, GameLocation location)
         {
             if (config.ProjectileSound != "None")
             {
                 location.playSound("terraria_meowmere");
             }
+            Farmer player = this.GetPlayerWhoFiredMe(location);
             this.explosionAnimation(location);
-            if (n is Monster)
+            if (npc is Monster)
             {
-                location.damageMonster(n.GetBoundingBox(), this.damage.Value, this.damage.Value, isBomb: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+                location.damageMonster(npc.GetBoundingBox(), this.damage.Value, this.damage.Value, isBomb: false, player, isProjectile: true);
+                if ((npc as Monster).IsInvisible == false)
+                {
+                    base.piercesLeft.Value--;
+                }
+                
             }
-            base.piercesLeft.Value--;
         }
 
         private void explosionAnimation(GameLocation location)
@@ -142,7 +169,7 @@ namespace BetterMeowmere
             return basevector;
         }
 
-        public static float GetAngleForTexture(float xVelocity, float yVelocity)
+        public static float GetAngleForTexture(float yVelocity)
         {
             var angle = 0f;           
 
@@ -165,7 +192,7 @@ namespace BetterMeowmere
 
             var tailoffset = TailOffset(new Vector2(32f, 32f), base.xVelocity.Value, base.yVelocity.Value);
 
-            var angle = GetAngleForTexture(base.xVelocity.Value, base.yVelocity.Value);
+            var angle = GetAngleForTexture(base.yVelocity.Value);
 
             float tail_scale = 1.67f * this.localScale;
 
@@ -196,14 +223,10 @@ namespace BetterMeowmere
             return spriteffect;
         }
 
-        //public override Rectangle getBoundingBox()
-        //{
-        //    Vector2 pos = this.position.Value;
-        //    int damageSize = (int)this.boundingBoxWidth.Value + (this.damagesMonsters.Value ? 8 : 0);
-        //    float current_scale = this.localScale * 1.5f;
-        //    damageSize = (int)((float)damageSize * current_scale);
-        //    return new Rectangle((int)pos.X + 32 - damageSize / 2, (int)pos.Y + 32 - damageSize / 2, damageSize, damageSize);
-        //}
+        public virtual Farmer GetPlayerWhoFiredMe(GameLocation location)
+        {
+            return (base.theOneWhoFiredMe.Get(location) as Farmer) ?? Game1.player;
+        }
     }
 }
 

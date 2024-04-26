@@ -22,25 +22,25 @@
           "Id": "(BC){{ModId}}_ClayMachine",
           "ItemId": "(BC){{ModId}}_ClayMachine",
           "IgnoreShopPriceModifiers": true,
-          "Price": 2000
+          "Price": 3000
         },
         "(BC){{ModId}}_FiberMachine": {
           "Id": "(BC){{ModId}}_FiberMachine",
           "ItemId": "(BC){{ModId}}_FiberMachine",
           "IgnoreShopPriceModifiers": true,
-          "Price": 1000
+          "Price": 2000
         },
         "(BC){{ModId}}_StoneMachine": {
           "Id": "(BC){{ModId}}_StoneMachine",
           "ItemId": "(BC){{ModId}}_StoneMachine",
           "IgnoreShopPriceModifiers": true,
-          "Price": 2000
+          "Price": 3000
         },
         "(BC){{ModId}}_WoodMachine": {
           "Id": "(BC){{ModId}}_WoodMachine",
           "ItemId": "(BC){{ModId}}_WoodMachine",
           "IgnoreShopPriceModifiers": true,
-          "Price": 2000
+          "Price": 3000
         }
       }
     }

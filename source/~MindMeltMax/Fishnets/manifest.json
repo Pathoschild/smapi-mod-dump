@@ -11,7 +11,7 @@
 {
   "Name": "Fishnets",
   "Author": "MindMeltMax",
-  "Version": "1.1.5",
+  "Version": "2.0.1",
   "Description": "Place in water to catch fish over night",
   "UniqueID": "MindMeltMax.Fishnets",
   "EntryDll": "Fishnets.dll",

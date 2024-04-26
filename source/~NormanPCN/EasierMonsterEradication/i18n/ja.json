@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+  "monsterPercent.Label": "討伐数の割合",
+  "monsterPercent.tooltip": "バニラのデフォルトに対する割合。0.5は半分の数のモンスターを討伐する必要があることを意味する。",
+  "VanillaMonsters": "バニラモンスターの討伐数\nスライム - 1000\nススおばけ - 500\nサーペント - 250\nコウモリ - 200\nうつろの精(シャドー系) - 150\nマグマおばけ - 150\n洞窟の昆虫 - 80\nミイラ - 100\n岩ガニ - 60\nスケルトン - 50\nペッパーレックス - 50\nダギー - 30"
+}

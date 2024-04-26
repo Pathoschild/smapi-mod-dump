@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/hbc-mods/stardew-valley**
+**Source repository: https://gitlab.com/hbc-mods/stardew-valley/sv-notepad**
 
 ----
 

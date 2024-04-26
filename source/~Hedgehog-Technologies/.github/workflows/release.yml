@@ -57,6 +57,14 @@ jobs:
         run: |
           echo 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
 
+      - name: Bundle Content Packs
+        if: ${{ steps.split.outputs._0 == 'AutoForager' }}
+        run: |
+          cd "src/Content Packs"
+          for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
+          cd ../..
+
+
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
         id: auto_release
@@ -64,8 +72,10 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           title: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
           prerelease: false
-          files: 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
           automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
+          files: |
+            src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip
+            src/Content Packs/**/*.zip
 
         env:
           CI: false

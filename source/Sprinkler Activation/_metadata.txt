@@ -6,9 +6,9 @@ mods:
    Sprinkler Activation
 
 latest commit:
-   commit e88c6f59cd9394d5f37e1e0a98413686c69608d4
+   commit ac8289bafd12a14c5e1cd7205d20d4a4d69e9b97
    Author: Blaxsmith <37184639+Blaxsmith@users.noreply.github.com>
-   Date:   Sun Jan 17 05:23:04 2021 +0100
+   Date:   Sun Apr 7 01:59:21 2024 +0200
    
-       Fixed pressure nozzles - version 1.0.3
+       Update README.md
    

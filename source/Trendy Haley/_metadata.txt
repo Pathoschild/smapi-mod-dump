@@ -6,9 +6,9 @@ mods:
    Trendy Haley
 
 latest commit:
-   commit 9ce79d24f6e045b10a5ad1d06f21c58953c4291a
+   commit 80b7288546b0ad8af4d426e4425bee0307f71a59
    Author: Candidus <candidus@xmail.net>
-   Date:   Sat Mar 23 17:06:47 2024 +0100
+   Date:   Tue Apr 2 17:56:18 2024 +0200
    
-       Support for SDV 1.6 vanilla winter outfit.
+       Add missing portraits.
    

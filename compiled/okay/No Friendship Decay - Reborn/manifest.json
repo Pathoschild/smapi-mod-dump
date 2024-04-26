@@ -1,0 +1,13 @@
+{
+  "Name": "No Friendship Decay - Reborn",
+  "Author": "CJBok, Pathoschild, and The Fluffy Robot",
+  "Version": "1.0.0",
+  "Description": "Prevents friendship from decaying.'",
+  "UniqueID": "TheFluffyRobot.No",
+  "EntryDll": "NoFriendshipDecayReborn.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:22922",
+    "GitHub:jamespfluger/Stardew-NoFriendshipDecayReborn"
+  ]
+}

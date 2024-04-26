@@ -11,7 +11,6 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 using Leclair.Stardew.Common.Enums;
@@ -25,7 +24,6 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Projectiles;
-using StardewValley.Tools;
 
 namespace Leclair.Stardew.Common;
 
@@ -47,9 +45,7 @@ public static class SpriteHelper {
 	[MemberNotNull(nameof(KeyTexture))]
 	public static void LoadKeyTexture() {
 		lock (loadLock) {
-			if (KeyTexture == null)
-				//KeyTexture = Helper!.Content.Load<Texture2D>("assets/keys.png");
-				KeyTexture = Helper!.ModContent.Load<Texture2D>("assets/keys.png");
+			KeyTexture ??= Helper!.ModContent.Load<Texture2D>("assets/keys.png");
 		}
 	}
 
@@ -95,6 +91,7 @@ public static class SpriteHelper {
 	}
 
 	public static Texture2D? GetTexture(GameTexture? tex) {
+
 		switch (tex) {
 			// Game1
 			case GameTexture.Concessions:
@@ -145,20 +142,6 @@ public static class SpriteHelper {
 				return Game1.rainTexture;
 			case GameTexture.Buffs:
 				return Game1.buffsIcons;
-			case GameTexture.Greenhouse:
-				return Game1.greenhouseTexture;
-			case GameTexture.Barn:
-				return Game1.currentBarnTexture;
-			case GameTexture.Coop:
-				return Game1.currentCoopTexture;
-			case GameTexture.House:
-				return Game1.currentHouseTexture;
-			case GameTexture.Mailbox:
-				return Game1.mailboxTexture;
-			case GameTexture.TVStation:
-				return Game1.tvStationTexture;
-			case GameTexture.Cloud:
-				return Game1.cloud;
 			case GameTexture.Tool:
 				return Game1.toolSpriteSheet;
 
@@ -174,12 +157,6 @@ public static class SpriteHelper {
 			case GameTexture.Accessories:
 				return FarmerRenderer.accessoriesTexture;
 
-			// Furniture
-			case GameTexture.Furniture:
-				return Furniture.furnitureTexture;
-			case GameTexture.FurnitureFront:
-				return Furniture.furnitureFrontTexture;
-
 			// Misc
 			case GameTexture.Chair:
 				return MapSeat.mapChairTexture;
@@ -188,17 +165,16 @@ public static class SpriteHelper {
 			case GameTexture.Projectile:
 				return Projectile.projectileSheet;
 			case GameTexture.Wallpaper:
-				return Game1.content.Load<Texture2D>("Maps\\walls_and_floors");
+				return Game1.content.Load<Texture2D>(@"Maps\walls_and_floors");
 			case GameTexture.Emoji:
-				if (ChatBox.emojiTexture == null)
-					ChatBox.emojiTexture = Game1.content.Load<Texture2D>("LooseSprites\\emojis");
+				ChatBox.emojiTexture ??= Game1.content.Load<Texture2D>(@"LooseSprites\emojis");
 				return ChatBox.emojiTexture;
 		}
 
 		return null;
 	}
 
-	public static SpriteInfo? GetSprite(SButton button) { 
+	public static SpriteInfo? GetSprite(SButton button) {
 		Texture2D texture = Game1.mouseCursors;
 		Rectangle source;
 
@@ -263,99 +239,20 @@ public static class SpriteHelper {
 		return new SpriteInfo(texture, source);
 	}
 
-
-	#region Stupid DynamicGameAssets Reflection
-
-	private static SpriteInfo? GetDGACustomObjectSprite(Item item) {
-		object? Data = Helper?.Reflection.GetProperty<object>(item, "Data", required: false)?.GetValue();
-		if (Data == null)
-			return null;
-
-		object? Tex = Helper?.Reflection.GetMethod(Data, "GetTexture", required: false)?.Invoke<object>();
-		if (Tex == null)
-			return null;
-
-		Texture2D? texture = Helper?.Reflection.GetProperty<Texture2D>(Tex, "Texture", required: false)?.GetValue();
-		Rectangle? rect = Helper?.Reflection.GetProperty<Rectangle?>(Tex, "Rect", required: false)?.GetValue();
-
-		if (texture == null)
-			return null;
-
-		return new SpriteInfo(
-			texture,
-			rect ?? texture.Bounds
-		);
-	}
-
-	#endregion
-
-	#region Stupid RaisedGardenBeds Reflection
-
-	private static Type? RGBEntry = null;
-
-	private static Texture2D? GetRGBTexture(string spriteKey) {
-		if (RGBEntry == null) {
-			RGBEntry = Type.GetType("RaisedGardenBeds.ModEntry, RaisedGardenBeds");
-			if (RGBEntry == null)
-				return null;
-		}
-
-		var dict = Helper?.Reflection.GetField<Dictionary<string, Texture2D>>(RGBEntry, "Sprites", required: false)?.GetValue();
-		if (dict == null)
-			return null;
-
-		dict.TryGetValue(spriteKey, out Texture2D? result);
-		return result;
-	}
-
-	private static SpriteInfo? GetGardenPotSprite(Item item) {
-		Type type = item.GetType();
-		if (type.ToString() != "RaisedGardenBeds.OutdoorPot")
-			return null;
-
-		string? spriteKey = Helper?.Reflection.GetProperty<string>(item, "SpriteKey", required: false)?.GetValue();
-		int spriteIndex = Helper?.Reflection.GetProperty<int>(item, "SpriteIndex", required: false)?.GetValue() ?? -1;
-		IReflectedMethod? method = Helper?.Reflection.GetMethod(type, "GetSpriteSourceRectangle", required: false);
-
-		if (!string.IsNullOrEmpty(spriteKey) && method != null) {
-			Texture2D? tex = GetRGBTexture(spriteKey);
-			Rectangle? source = null;
-			try {
-				source = method.Invoke<Rectangle>(spriteIndex, false);
-			} catch (Exception) { /* ignore */ }
-
-			if (tex != null && source.HasValue)
-				return new SpriteInfo(
-					texture: tex,
-					baseSource: source.Value
-				);
-		}
-
-		return null;
-	}
-
-	#endregion
-
 	public static Texture2D? GetTexture(Item? item) {
 		if (item is null)
 			return null;
 
+		// TODO: Not half ass this.
+		var data = ItemRegistry.GetData(item.QualifiedItemId);
+		if (data is null)
+			return null;
+
+		return data.GetTexture();
+
+		/*
 		Type type = item.GetType();
 		string ts = type.ToString();
-
-		// DynamicGameAssets Compatibility
-		if (ts.Equals("DynamicGameAssets.Game.CustomObject")) {
-			SpriteInfo? sprite = GetDGACustomObjectSprite(item);
-			if (sprite is not null)
-				return sprite.Texture;
-		}
-
-		// RaisedGardenBed Compatibility
-		if (ts.Equals("RaisedGardenBeds.OutdoorPot")) {
-			SpriteInfo? sprite = GetGardenPotSprite(item);
-			if (sprite is not null)
-				return sprite.Texture;
-		}
 
 		// Furniture
 		if (item is Furniture) {
@@ -379,7 +276,7 @@ public static class SpriteHelper {
 			if (moddata != null) {
 				try {
 					texture = Game1.content.Load<Texture2D>(moddata.Texture);
-				} catch (Exception) { /* no-op */ }
+				} catch (Exception) { /* no-op * / }
 			}
 
 			return texture ?? Game1.content.Load<Texture2D>("Maps\\walls_and_floors");
@@ -406,12 +303,10 @@ public static class SpriteHelper {
 		// Clothing
 		if (item is Clothing clothing)
 			switch(clothing.clothesType.Value) {
-				case (int) Clothing.ClothesType.SHIRT:
+				case Clothing.ClothesType.SHIRT:
 					return FarmerRenderer.shirtsTexture;
-				case (int) Clothing.ClothesType.PANTS:
+				case Clothing.ClothesType.PANTS:
 					return FarmerRenderer.pantsTexture;
-				case (int) Clothing.ClothesType.ACCESSORY:
-					return FarmerRenderer.accessoriesTexture;
 			}
 
 		// Hat
@@ -419,30 +314,25 @@ public static class SpriteHelper {
 			return FarmerRenderer.hatsTexture;
 
 		// Unknown
-		return null;
+		return null;*/
 	}
 
 	public static Rectangle? GetSourceRectangle(Item? item) {
 		if (item is null)
 			return null;
 
+		// TODO: Not half-ass this
+		var data = ItemRegistry.GetData(item.QualifiedItemId);
+		if (data is null)
+			return null;
+
+		return data.GetSourceRect();
+
+		/*
+
 		int tileSize = SObject.spriteSheetTileSize;
 		Type type = item.GetType();
 		string ts = type.ToString();
-
-		// DynamicGameAssets Compatibility
-		if (ts.Equals("DynamicGameAssets.Game.CustomObject")) {
-			SpriteInfo? sprite = GetDGACustomObjectSprite(item);
-			if (sprite is not null)
-				return sprite.BaseSource;
-		}
-
-		// RaisedGardenBed Compatibility
-		if (ts.Equals("RaisedGardenBeds.OutdoorPot")) {
-			SpriteInfo? sprite = GetGardenPotSprite(item);
-			if (sprite is not null)
-				return sprite.BaseSource;
-		}
 
 		// Furniture
 		if (item is Furniture furniture)
@@ -451,7 +341,8 @@ public static class SpriteHelper {
 		// Fence
 		if (item is Fence fence) {
 			Rectangle source;
-			int drawSum = fence.getDrawSum(Game1.currentLocation);
+			// TODO: We had to remove the location reference from this. Make sure it works as intended.
+			int drawSum = fence.getDrawSum();
 			int tile = Fence.fenceDrawGuide[drawSum];
 			bool gate = fence.isGate.Value;
 
@@ -539,30 +430,56 @@ public static class SpriteHelper {
 		}
 
 		// Unknown
-		return null;
+		return null;*/
 	}
 
 	public static SpriteInfo? GetSprite(Item? item) {
 		if (item is null)
 			return null;
 
+		var data = ItemRegistry.GetData(item.QualifiedItemId);
+		if (data is null)
+			return null;
+
+		// Colored Objects are Special
+		if (item is ColoredObject co) {
+			// Base Layer
+			Texture2D texture = data.GetTexture();
+			Rectangle baseSource = data.GetSourceRect(0, co.ParentSheetIndex);
+
+			if (co.ItemId == "SmokedFish")
+				return new SmokedFishSpriteInfo(co);
+
+			if (co.ColorSameIndexAsParentSheetIndex) {
+				// Colored Base Layer
+				return new SpriteInfo(
+					texture,
+					baseSource,
+					baseColor: co.color.Value
+				);
+
+			} else {
+				// Base + Colored Layer
+				return new SpriteInfo(
+					texture,
+					baseSource,
+					overlaySource: data.GetSourceRect(1, co.ParentSheetIndex),
+					overlayColor: co.color.Value
+				);
+			}
+		}
+
+		// Assume for now that other objects will only have a texture + rect.
+		// TODO: Actually put effort in.
+		return new SpriteInfo(
+			data.GetTexture(),
+			data.GetSourceRect()
+		);
+
+		/*
 		int tileSize = SObject.spriteSheetTileSize;
 		Type type = item.GetType();
 		string ts = type.ToString();
-
-		// DynamicGameAssets Compatibility
-		if (ts.Equals("DynamicGameAssets.Game.CustomObject")) {
-			SpriteInfo? sprite = GetDGACustomObjectSprite(item);
-			if (sprite is not null)
-				return sprite;
-		}
-
-		// RaisedGardenBed Compatibility
-		if (ts.Equals("RaisedGardenBeds.OutdoorPot")) {
-			SpriteInfo? sprite = GetGardenPotSprite(item);
-			if (sprite is not null)
-				return sprite;
-		}
 
 		// Furniture
 		if (item is Furniture furniture) {
@@ -583,7 +500,8 @@ public static class SpriteHelper {
 		// Fence
 		if (item is Fence fence) {
 			Rectangle source;
-			int drawSum = fence.getDrawSum(Game1.currentLocation);
+			// TODO: Check to see if this is problematic since we removed our location.
+			int drawSum = fence.getDrawSum();
 			int tile = Fence.fenceDrawGuide[drawSum];
 			bool gate = fence.isGate.Value;
 
@@ -603,12 +521,12 @@ public static class SpriteHelper {
 		// Wallpaper
 		if (item is Wallpaper wallpaper) {
 			// Logic taken from the Wallpaper drawInMenu method.
-			var moddata = wallpaper.GetModData();
+			var moddata = wallpaper.modData;
 			Texture2D? texture = null;
 			if (moddata != null) {
 				try {
-					texture = Game1.content.Load<Texture2D>(moddata.Texture);
-				} catch (Exception) { /* no-op */ }
+					texture = Game1.content.Load<Texture2D>(moddata.);
+				} catch (Exception) { /* no-op * / }
 			}
 
 			if (texture == null)
@@ -759,7 +677,7 @@ public static class SpriteHelper {
 		}
 
 		// Unknown
-		return null;
+		return null;*/
 	}
 
 

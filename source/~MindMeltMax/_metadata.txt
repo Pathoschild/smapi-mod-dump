@@ -7,6 +7,8 @@ mods:
    Change Farm Caves
    Chest Displays
    Crop Walker
+   Custom Names
+   Easy Island Puzzle
    Fishing Nets
    Fishing Nets → Automate
    Fishing Nets → Better Crafting
@@ -25,9 +27,9 @@ mods:
    Winter Pigs
 
 latest commit:
-   commit 1e93aa2b4ec8c07253a09b39ed6c747b21358bc7
+   commit a2807a8a5df623a1af2f1278ba209afa982bf5f1
    Author: MindMeltMax <49438916+MindMeltMax@users.noreply.github.com>
-   Date:   Mon Mar 25 15:34:19 2024 +0100
+   Date:   Wed Apr 24 16:47:02 2024 +0200
    
-       Add Hay Collection and GeodePreview
+       Added custom names
    

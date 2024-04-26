@@ -6,9 +6,9 @@ mods:
    Little NPCs
 
 latest commit:
-   commit 74edb4dd1b771f77cb231b9c4eda8e76d95787fb
+   commit 570a50062d324d8a82844e4d78340daa88172258
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Mar 25 20:22:03 2024 +0100
+   Date:   Sat Apr 20 21:18:29 2024 +0200
    
-       Fix return coordinates to make CurfewTime work again.
+       Hide shadows of hidden children when they appear in different locations, e.g. on festivals.
    

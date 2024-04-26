@@ -1,0 +1,10 @@
+{
+  "Name": "No Greenhouse Entrance Tiles",
+  "Author": "idermailer",
+  "Version": "1.0.0",
+  "Description": "Always not draw Greenhouse Entrance Tiles",
+  "UniqueID": "idermailer.greenhouseNoEntranceTiles",
+  "EntryDll": "NoGreenhouseEntranceTiles.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:21557" ]
+}

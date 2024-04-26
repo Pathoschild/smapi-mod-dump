@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HoverLabels.Drawing;
 
 namespace HoverLabels.Labels;
 internal class ExampleLabel : IHoverLabel
@@ -36,15 +37,16 @@ internal class ExampleLabel : IHoverLabel
             && Game1.currentLocation.terrainFeatures[cursorTile] is HoeDirt;
     }
 
-    public string GetName()
+    public IEnumerable<Border> GetContents()
     {
-        return "Tilled dirt";
-    }
+        List<Border> borders = new();
+        Border title_border = new(new TitleLabelText("Tilled Dirt"));
+        yield return title_border;
 
-    public IEnumerable<string> GetDescription()
-    {
-        yield return "This tile has been hoe'd";
-        yield return "Isn't that cool?";
+        Border desc = new();
+        desc.AddLabelText(new LabelText("This tile has been hoe'd"));
+        desc.AddLabelText(new LabelText("Isn't that cool?"));
+        yield return desc;
     }
 
 }

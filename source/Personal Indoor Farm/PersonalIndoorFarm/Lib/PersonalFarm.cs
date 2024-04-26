@@ -18,15 +18,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     public class PersonalFarm
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public const string BaseFarmerPidKey = "DLX.PIF_PersonalFarmID";
         private const string DayOfMonthKey = "DLX.PIF_DayOfMonth";
         private const string SeasonKey = "DLX.PIF_Season";
@@ -38,10 +35,6 @@ namespace PersonalIndoorFarm.Lib
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             GameLocation.RegisterTouchAction("DLX.PIF_WarpToFarmHouse", HandleWarpToFarmHouse);
             //I had to rename it to 'Door' because the game does a stupid .contains "Warp" check and throws a pointless warning 
             GameLocation.RegisterTileAction("DLX.PIF_DoorToFarmHouse", HandleWarpToFarmHouseAction);
@@ -51,9 +44,7 @@ namespace PersonalIndoorFarm.Lib
         private static bool HandleWarpToFarmHouseAction(GameLocation location, string[] args, Farmer player, Point tile)
         {
             Game1.currentLocation.playSound("doorOpen", Game1.player.Tile);
-            var warp = Door.getWarpToLast(player);
-            Game1.warpFarmer(warp.TargetName, warp.TargetX, warp.TargetY, 2, true);
-            player.currentLocation = Game1.getLocationFromName(warp.TargetName); //If I don't do this the targetX and Y are ignored :)
+            HandleWarpToFarmHouse(location, args, player, new Vector2());
             return true;
         }
 
@@ -63,10 +54,16 @@ namespace PersonalIndoorFarm.Lib
                 var data = e.ReadAs<ShareLocationModel>();
                 var farmer = Game1.getFarmerMaybeOffline(data.PlayerId);
                 createLocation(data.Pid, farmer, data.DoorId);
+
             } else if (e.Type == "removeFarmHand") {
                 var data = e.ReadAs<RemoveFarmhandModel>();
                 foreach (var location in data.PifLocations)
                     removeLocation(location, data.CabinLocation);
+
+            } else if (e.Type == "sealLocation") {
+                var name = e.ReadAs<string>();
+                removeLocation(name);
+
             }
         }
 
@@ -134,6 +131,15 @@ namespace PersonalIndoorFarm.Lib
             return Enum.Parse<Season>(season);
         }
 
+        public static KeyValuePair<string, string> getDoorModData(GameLocation location, Farmer owner)
+        {
+            foreach (var entry in owner.modData.Pairs)
+                if (entry.Key.StartsWith(BaseFarmerPidKey) && location.Name == generateLocationKey(entry.Value, owner.UniqueMultiplayerID, getDoorIdFromFarmerPIDKey(entry.Key)))
+                    return entry;
+
+            return default(KeyValuePair<string, string>);
+        }
+
         public static void incrementDayOfMonth(GameLocation location)
         {
             var day = getDayOfMonth(location);
@@ -196,9 +202,15 @@ namespace PersonalIndoorFarm.Lib
             }
         }
 
-        public static void removeLocation(string name, string homeLocation)
+        /// <summary></summary>
+        /// <param name="name">The PIF location to be removed</param>
+        /// <param name="homeLocation">The players homeLocation. Provide this only when a player cabin is being destroyed</param>
+        public static void removeLocation(string name, string homeLocation = null)
         {
-            if (Game1.currentLocation.NameOrUniqueName == name || Game1.currentLocation.NameOrUniqueName == homeLocation) {
+            if (homeLocation is null)
+                HandleWarpToFarmHouse(null, null, Game1.player, default(Vector2));
+
+            else if (Game1.currentLocation.NameOrUniqueName == name || Game1.currentLocation.NameOrUniqueName == homeLocation) {
                 if (Game1.player.lastSleepLocation.Value == homeLocation)
                     Game1.player.lastSleepLocation.Value = null;
 
@@ -214,5 +226,21 @@ namespace PersonalIndoorFarm.Lib
         }
         public static string generateLocationKey(string pid, long farmerId, string doorId) => $"{BaseLocationKey}_{pid}_{farmerId}_{doorId}";
         public static string generateFarmerPIDKey(string doorId) => $"{BaseFarmerPidKey}_{doorId}";
+
+        public static string getDoorIdFromFarmerPIDKey(string farmerPID) => farmerPID.Substring(generateFarmerPIDKey("").Length);
+
+        public static bool isOwner(GameLocation location, Farmer who)
+        {
+            if (location.modData.ContainsKey(OwnerKey) && location.modData[OwnerKey] == who.UniqueMultiplayerID.ToString())
+                return true;
+
+            if (location.Name is null)
+                return false;
+
+            if (who.modData.Pairs.Any(e => e.Key.StartsWith(BaseFarmerPidKey) && location.Name.StartsWith(generateLocationKey(e.Value, who.UniqueMultiplayerID, ""))))
+                return true;
+
+            return false;
+        }
     }
 }

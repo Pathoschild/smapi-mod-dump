@@ -8,18 +8,9 @@
 **
 *************************************************/
 
-using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using StardewValley.Network;
-using StardewValley.Objects;
-using System;
-using System.Collections.Generic;
-using xTile.Dimensions;
 
 namespace EscasModdingPlugins
 {

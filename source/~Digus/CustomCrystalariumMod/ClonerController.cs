@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewValley.Extensions;
 using Object = StardewValley.Object;
 
 namespace CustomCrystalariumMod
@@ -21,37 +22,38 @@ namespace CustomCrystalariumMod
     {
         private static Dictionary<string, CustomCloner> ClonerData =  new Dictionary<string, CustomCloner>();
 
-        public static CustomCloner GetCloner(string name)
+        public static CustomCloner GetCloner(string qualifiedItemId)
         {
-            ClonerData.TryGetValue(name, out CustomCloner result);
+            ClonerData.TryGetValue(qualifiedItemId, out CustomCloner result);
             return result;
         }
 
-        public static bool HasCloner(string name)
+        public static bool HasCloner(string qualifiedItemId)
         {
-            return ClonerData.ContainsKey(name);
+            return ClonerData.ContainsKey(qualifiedItemId);
         }
 
         public static void SetCloner(CustomCloner cloner)
         {
-            ClonerData[cloner.Name] = cloner;
+            ClonerData[cloner.QualifiedItemId] = cloner;
         }
 
         public static int? GetMinutesUntilReady(CustomCloner customCloner, Object clonable)
         {
-            if (customCloner.CloningDataId.ContainsKey(clonable.ParentSheetIndex))
+            int? minutesUntilReady = null;
+            if (customCloner.CloningDataId.TryGetValue(clonable.QualifiedItemId, out var value))
             {
-                return customCloner.CloningDataId[clonable.ParentSheetIndex];
-            }
-            else if (customCloner.CloningDataId.ContainsKey(clonable.Category))
+                minutesUntilReady = value;
+            } 
+            else if (customCloner.CloningDataId.TryGetValue(clonable.Category.ToString(), out value))
             {
-                return customCloner.CloningDataId[clonable.Category];
-            }
-            else if (customCloner.EnableCloneEveryObject)
+                minutesUntilReady = value;
+            } 
+            else if (customCloner.EnableCloneEveryObject && !clonable.HasTypeBigCraftable())
             {
-                return customCloner.DefaultCloningTime;
+                minutesUntilReady = customCloner.DefaultCloningTime;
             }
-            return null;
+            return minutesUntilReady;
         }
     }
 }

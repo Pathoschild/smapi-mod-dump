@@ -43,6 +43,7 @@ namespace AutoFish
             Config = Helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
             helper.Events.Display.MenuChanged += OnMenuChanged;
         }
@@ -143,6 +144,12 @@ namespace AutoFish
             var player = Game1.player;
             if (!Context.IsWorldReady || player == null)
                 return;
+
+            if (isContinusFishing && player.Stamina < 0)
+            {
+                isContinusFishing = false;
+                return;
+            }
             
             var onPressed = IsOnPressedUseToolButton();
 
@@ -264,6 +271,11 @@ namespace AutoFish
                 < 0 => -MathF.Sqrt(2 * deltaSpeed * -targetDisplacement),
                 _ => throw new ArgumentOutOfRangeException(nameof(targetDisplacement), targetDisplacement, null)
             };
+        }
+        
+        private void OnDayStarted(object? sender, DayStartedEventArgs e)
+        {
+            isContinusFishing = false;
         }
     }
 }

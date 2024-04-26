@@ -25,9 +25,9 @@ namespace StardewArchipelago.Archipelago
 
         Task<T?> ReadAsync(Scope scope, string key, Action<T> callback);
 
-        bool Add(Scope scope, string key, long amount);
+        bool Add(Scope scope, string key, T amount);
 
-        bool Subtract(Scope scope, string key, long amount, bool dontGoBelowZero);
+        bool Subtract(Scope scope, string key, T amount, bool dontGoBelowZero);
         bool Multiply(Scope scope, string key, int multiple);
         bool DivideByTwo(Scope scope, string key);
     }

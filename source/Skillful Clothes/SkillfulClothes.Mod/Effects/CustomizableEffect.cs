@@ -21,6 +21,7 @@ namespace SkillfulClothes.Effects
     public abstract class CustomizableEffect<TParameters> : IEffect, ICustomizableEffect
         where TParameters: IEffectParameters, new()
     {
+        public string EffectId => EffectHelper.GetEffectId(this);
 
         public Type ParameterType => typeof(TParameters);
         public object ParameterObject

@@ -114,8 +114,7 @@ namespace GardenPotAutomate {
                     // don't return true here since other items may be needed
                 }
             }
-            if (dirt?.fertilizer?.Value is null
-                && input.TryGetIngredient(this.FertilizerRecipes, out consumable, out recipe)
+            if (input.TryGetIngredient(this.FertilizerRecipes, out consumable, out recipe)
                 && recipe is FertilizerRecipe
             ) {
                 var seed = consumable.Take();

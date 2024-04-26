@@ -11,10 +11,10 @@
 {
   "Name": "Esca's Modding Plugins",
   "Author": "Esca",
-  "Version": "1.2.2",
+  "Version": "1.2.4",
   "Description": "Adds new data assets, map/tile properties, and features for other mods to use.",
   "UniqueID": "Esca.EMP",
   "EntryDll": "EMP.dll",
-  "MinimumApiVersion": "3.8.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:9296", "GitHub:Esca-MMC/EscasModdingPlugins", "ModDrop:1005443" ]
 }

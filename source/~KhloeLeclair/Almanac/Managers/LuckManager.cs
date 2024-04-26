@@ -239,7 +239,7 @@ public class LuckManager : BaseManager {
 
 	#region Events
 
-	public IRichEvent? HydrateEvent(LocalNotice notice, WorldDate date, GameStateQuery.GameState state, string? key = null) {
+	public IRichEvent? HydrateEvent(LocalNotice notice, WorldDate date, Common.GameStateQuery.GameState state, string? key = null) {
 		if (notice == null)
 			return null;
 
@@ -251,7 +251,7 @@ public class LuckManager : BaseManager {
 			return null;
 
 		// Season Validation
-		if (notice.ValidSeasons != null && !notice.ValidSeasons.Contains(Season.All) && !notice.ValidSeasons.Contains((Season) date.SeasonIndex))
+		if (notice.ValidSeasons != null && !notice.ValidSeasons.Contains(Common.Enums.Season.All) && !notice.ValidSeasons.Contains((Common.Enums.Season) date.SeasonIndex))
 			return null;
 
 		// Date Range Validation
@@ -290,7 +290,7 @@ public class LuckManager : BaseManager {
 		}
 
 		// Condition Validation
-		if (!string.IsNullOrEmpty(notice.Condition) && !GameStateQuery.CheckConditions(notice.Condition, state))
+		if (!string.IsNullOrEmpty(notice.Condition) && !Common.GameStateQuery.CheckConditions(notice.Condition, state))
 			return null;
 
 		// Get icon
@@ -363,7 +363,7 @@ public class LuckManager : BaseManager {
 
 		Load();
 
-		var state = new GameStateQuery.GameState(
+		var state = new Common.GameStateQuery.GameState(
 			Random: Game1.random,
 			Date: date,
 			TimeOfDay: 600,
@@ -535,7 +535,7 @@ public class LuckManager : BaseManager {
 			return new RichEvent(
 				I18n.Page_Fortune_Event_Owl(),
 				null,
-				SpriteHelper.GetSprite(new SObject(Vector2.Zero, 95))
+				SpriteHelper.GetSprite(new SObject(Vector2.Zero, "95"))
 			);
 
 		// Don't track Strange Capsule, because that relies on whether
@@ -596,14 +596,14 @@ public class LuckManager : BaseManager {
 			return new RichEvent(
 				I18n.Page_Fortune_Event_Ufo(),
 				null,
-				SpriteHelper.GetSprite(new SObject(Vector2.Zero, 96))
+				SpriteHelper.GetSprite(new SObject(Vector2.Zero, "96"))
 			);
 
 		if (rnd.NextDouble() < 0.005)
 			return new RichEvent(
 				I18n.Page_Fortune_Event_Owl(),
 				null,
-				SpriteHelper.GetSprite(new SObject(Vector2.Zero, 95))
+				SpriteHelper.GetSprite(new SObject(Vector2.Zero, "95"))
 			);
 
 		// Don't track Strange Capsule, because that relies on whether

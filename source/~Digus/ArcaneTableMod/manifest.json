@@ -9,14 +9,12 @@
 *************************************************/
 
 {
-  "Name": "[JA]Arcane Table Mod",
-  "Author": "Digus",
-  "Version": "1.1.0",
-  "Description": "",
-  "UniqueID": "Digus.ArcaneTableMod",
-  "MinimumApiVersion": "3.8.0",
+    "Name": "Arcane Table Mod",
+    "Author": "Digus",
+    "Version": "1.1.1",
+    "Description": "Fake manifest. Delete if found.",
+    "UniqueID": "Digus.ArcaneTableMod",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:8178" ],
-  "ContentPackFor": {
-    "UniqueID": "spacechase0.JsonAssets"
-  }
+    "EntryDll": "ArcaneTableMod.dll"
 }

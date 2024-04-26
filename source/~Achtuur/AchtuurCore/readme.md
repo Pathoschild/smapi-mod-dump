@@ -16,7 +16,20 @@ Core mod required for most of my other mods, available on [Nexus Mods](https://w
 
 
 # Changelog
+## 1.2.3
+* New/Changed
+  * Added borders from Hoverlabels here
 
+## 1.2.2
+* Fixes
+ * Fix Vector2.ContainsObject() to work with qualified id
+
+## 1.2.1
+* Fixes
+  * Fix compatibility issue with 1.6.3
+
+## 1.2.0
+* Updated to support Stardew 1.6.0
 
 ## 1.1.5
 * New/Changed

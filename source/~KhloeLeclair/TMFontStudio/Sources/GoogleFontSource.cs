@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,9 @@ using System.Threading.Tasks;
 
 using Pathoschild.Http.Client;
 
-using Leclair.Stardew.ThemeManagerFontStudio.Models;
 using StbTrueTypeSharp;
-using Pathoschild.Http.Client.Internal;
-using System.IO;
-using System.Buffers.Text;
-using System.Text.Unicode;
+
+using Leclair.Stardew.ThemeManagerFontStudio.Models;
 
 namespace Leclair.Stardew.ThemeManagerFontStudio.Sources;
 
@@ -69,10 +67,10 @@ public class GoogleFontSource : IFontSource {
 	}
 
 	private async Task LoadFontEntries() {
-		/*lock(this) {
+		lock(this) {
 			if (FontEntries is not null)
 				return;
-		}*/
+		}
 
 		var result = new Dictionary<string, WebFontEntry>(StringComparer.OrdinalIgnoreCase);
 
@@ -212,7 +210,7 @@ public class GoogleFontSource : IFontSource {
 			if (string.IsNullOrEmpty(entry.Family) || entry.Files is null || entry.Files.Count == 0)
 				continue;
 
-			foreach(var file in entry.Files) {
+			foreach (var file in entry.Files) {
 				if (!VariantNames.TryGetValue(file.Key, out string? variant))
 					variant = file.Key;
 
@@ -241,12 +239,26 @@ public class GoogleFontSource : IFontSource {
 					}
 				}
 
+				string vkey = file.Key;
+				switch(vkey) {
+					case "regular":
+						vkey = "400";
+						break;
+					case "italic":
+						vkey = "400italic";
+						break;
+				}
+
+				string family = FontUtilities.GetFamilyName(names) ?? entry.Family;
+				string subfamily = FontUtilities.GetSubfamilyName(names) ?? variant;
+
 				yield return new GoogleFontData(
-					uniqueId: $"{entry.Family}::{file.Key}",
+					uniqueId: $"{entry.Family}::{vkey}",
 					url: file.Value,
-					familyName: entry.Family,
-					subfamilyName: variant
+					familyName: family,
+					subfamilyName: subfamily
 				) {
+					Names = names,
 					Data = bytes,
 					DataIndex = 0,
 					DataOffset = offset,
@@ -285,8 +297,8 @@ public class GoogleFontData : IFontData {
 	public GoogleFontData(string uniqueId, string url, string familyName, string subfamilyName) {
 		UniqueId= uniqueId;
 		Url = url;
-		FamilyName= familyName;
-		SubfamilyName= subfamilyName;
+		FamilyName = familyName;
+		SubfamilyName = subfamilyName;
 	}
 
 }

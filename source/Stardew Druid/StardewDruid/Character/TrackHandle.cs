@@ -9,37 +9,31 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewDruid.Data;
 using StardewValley;
 using StardewValley.Locations;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using System.Xml.Linq;
+
 
 namespace StardewDruid.Character
 {
     public class TrackHandle
     {
-        public string trackFor;
+        public CharacterData.characters trackFor;
         
         public string trackLocation;
 
         public Farmer followPlayer;
-        
-        public Vector2 trackPlayer;
-        
-        public List<Vector2> trackVectors;
-        
-        public int trackLimit;
+
+        public Dictionary<Vector2, int> nodes = new();
 
         public bool standby;
 
-        public Vector2 trackOffset;
+        public int warpDelay;
 
-        public Vector2 trackDelay;
-
-        public TrackHandle(string For, Farmer follow = null)
+        public TrackHandle(CharacterData.characters For, Farmer follow = null)
         {
             
             if(follow == null)
@@ -55,12 +49,6 @@ namespace StardewDruid.Character
 
             }
 
-            trackVectors = new List<Vector2>();
-            
-            trackPlayer = new Vector2(-1);
-            
-            trackLimit = 24;
-           
             trackFor = For;
 
         }
@@ -72,11 +60,9 @@ namespace StardewDruid.Character
             {
 
                 trackLocation = followPlayer.currentLocation.Name;
-                
-                trackPlayer = new Vector2(-1);
-                
-                trackVectors.Clear();
-            
+
+                nodes.Clear();
+
             }
 
             if (followPlayer.currentLocation is FarmHouse || followPlayer.currentLocation is IslandFarmHouse)
@@ -86,117 +72,130 @@ namespace StardewDruid.Character
 
             }
 
-            Vector2 position = followPlayer.Position;
-
-            if(ModUtility.GroundCheck(followPlayer.currentLocation, followPlayer.Tile) == "water")
+            if (Mod.instance.characters[trackFor].currentLocation.Name != followPlayer.currentLocation.Name)
             {
+
+                if (Mod.instance.characters[trackFor].netSceneActive.Value)
+                {
+
+                    return;
+
+                }
                 
+                if(warpDelay > 0)
+                {
+
+                    warpDelay--;
+
+                    return;
+
+                }
+
+                // Player is not on the same map now
+
+                if (WarpToLocation())
+                { 
+                    
+                    return; 
+                
+                }
+
+                // attempt warp every second
+
+                warpDelay = 10;
+
+                return;
+
+            }
+
+            Vector2 center = new Vector2((int)(followPlayer.Position.X / 64), (int)(followPlayer.Position.Y / 64));
+
+            int access = ModUtility.TileAccessibility(followPlayer.currentLocation, center);
+
+            if (access == 2)
+            {
+
+                // Path is broken, possibly due to player warping, so will need to warp to player
+
+                nodes.Clear();
+
                 return;
             
             }
 
-            int offset = 0;
-
-            foreach (KeyValuePair<string, TrackHandle> tracker in Mod.instance.trackRegister)
+            if (nodes.Count == 0)
             {
 
-                if (tracker.Key == trackFor)
+                if(access == 1)
                 {
+                    
+                    // can't start path on a jump point
 
-                    break;
+                    return;
 
                 }
 
-                offset++;
-
-            }
-
-            if ((double)Vector2.Distance(position, trackPlayer) >= 64.0)
-            {
-
-                if(trackPlayer != new Vector2(-1))
-                {
-
-                    trackVectors.Add(trackPlayer);
-
-                    if (trackVectors.Count >= trackLimit)
-                    {
-
-                        trackVectors.RemoveAt(0);
-
-                    }
-
-                }
-
-                trackPlayer = position - (new Vector2(32,32) * offset);
-
-            }
-
-            if (trackVectors.Count < (1 + offset))
-            {
+                nodes.Add(center,access);
 
                 return;
 
             }
 
-            if(trackVectors.Count > 6)
+            if (center != nodes.Keys.Last())
             {
 
-                if(Vector2.Distance(trackVectors.First(),trackVectors.Last()) < 192)
+                if (nodes.ContainsKey(center))
                 {
 
-                    TruncateTo(3);
+                    // path doubles back
+
+                    nodes.Clear();
+
+                    nodes.Add(center, access);
+
+                    return;
 
                 }
 
-            }
+                // building a legitimate route to player
 
-            if (Mod.instance.characters[trackFor].netSceneActive.Value)
-            {
-
-                return;
-
-            }
-
-            if(trackVectors.Count == 0)
-            {
-
-                return;
-
-            }
-
-            if (Mod.instance.characters[trackFor].currentLocation.Name != followPlayer.currentLocation.Name)
-            {
-
-                WarpToTarget();
-
-            }
-
-            if (!Utility.isOnScreen(Mod.instance.characters[trackFor].Position, 128))
-            {
-
-                WarpToTarget();
-
-            }
-
-            if(Vector2.Distance(Mod.instance.characters[trackFor].Position, followPlayer.Position) > 800f)
-            {
-
-                WarpToTarget();
+                nodes.Add(center, access);
 
             }
 
         }
 
-        public void WarpToTarget()
+        public bool WarpToLocation()
         {
 
-            if(trackVectors.Count == 0)
+            int direction = -1;
+
+            if(Game1.xLocationAfterWarp > 0)
             {
-                return;
+
+                Vector2 afterWarp = new(Game1.xLocationAfterWarp, Game1.yLocationAfterWarp);
+
+                float afterSpace = Vector2.Distance(followPlayer.Position, afterWarp);
+
+                if (afterSpace >= 256)
+                {
+
+                    //warp between player and warp point
+
+                    direction = ModUtility.DirectionToTarget(followPlayer.Position, afterWarp)[2];
+
+                }
+                else
+                {
+                    // warp to other side of warp point
+
+                    direction = (direction + 4) % 8;
+
+                }
+
             }
 
-            if (Mod.instance.characters[trackFor].currentLocation.Name != followPlayer.currentLocation.Name)
+            if (WarpToPlayer(direction))
             {
 
                 Mod.instance.characters[trackFor].currentLocation.characters.Remove(Mod.instance.characters[trackFor]);
@@ -205,64 +204,162 @@ namespace StardewDruid.Character
 
                 Mod.instance.characters[trackFor].currentLocation.characters.Add(Mod.instance.characters[trackFor]);
 
+                ModUtility.AnimateQuickWarp(Mod.instance.characters[trackFor].currentLocation, Mod.instance.characters[trackFor].Position - new Vector2(0, 32));
+
+                //Mod.instance.characters[trackFor].DeactivateStandby();
+
+                Mod.instance.characters[trackFor].ResetActives();
+
+                Mod.instance.characters[trackFor].attentionTimer = 360;
+
+                Mod.instance.characters[trackFor].update(Game1.currentGameTime, Mod.instance.characters[trackFor].currentLocation);
+
+                warpDelay = 0;
+
+                return true;
+
             }
 
-            Mod.instance.characters[trackFor].Position = NextVector();
+            return false;
 
-            ModUtility.AnimateQuickWarp(Mod.instance.characters[trackFor].currentLocation, Mod.instance.characters[trackFor].Position - new Vector2(0, 32));
+        }
 
-            Mod.instance.characters[trackFor].DeactivateStandby();
+        public bool WarpToPlayer(int direction = -1)
+        {
 
-            Mod.instance.characters[trackFor].ResetActives();
+            if (direction == -1 && nodes.Count > 0)
+            {
+
+                direction = ModUtility.DirectionToTarget(followPlayer.Position, nodes.Keys.Last())[2];
+
+                nodes.Clear();
+
+            }
+
+            if (direction == -1)
+            {
+
+                // try for center
+
+                direction = ModUtility.DirectionToCenter(followPlayer.currentLocation, followPlayer.Position)[2];
+
+            }
+
+            // get player tile
+
+            Vector2 center = new Vector2((int)(followPlayer.Position.X / 64), (int)(followPlayer.Position.Y / 64));
+
+            // get occupiable tiles
+
+            List<Vector2> options = ModUtility.GetOccupiableTilesNearby(followPlayer.currentLocation, center, direction, 1, 1);
+
+            // check who else might warp there
+
+            List<Vector2> occupied = new();
+
+            foreach (KeyValuePair<CharacterData.characters, StardewDruid.Character.Character> friends in Mod.instance.characters)
+            {
+
+                if (friends.Key == trackFor) { continue; }
+
+                if (friends.Value is Actor) { continue; }
+
+                if (friends.Value.currentLocation.Name != followPlayer.currentLocation.Name) { continue; }
+
+                occupied.Add(friends.Value.occupied);
+
+            }
+
+            // if options available
+
+            if (options.Count > 0)
+            {
+
+                foreach (Vector2 warppoint in options)
+                {
+
+                    // avoid if another character got there first
+
+                    if (occupied.Contains(warppoint)) { continue; }
+
+                    Mod.instance.characters[trackFor].Position = warppoint*64;
+
+                    Mod.instance.characters[trackFor].occupied = warppoint;
+
+                    return true;
+
+                }
+
+            }
+
+            return false;
 
         }
 
 
-        public void TruncateTo(int requirement)
+        public Dictionary<Vector2,int> NodesToTraversal()
         {
-            
-            int num = Math.Min(requirement, trackVectors.Count);
-            
-            List<Vector2> vector2List = new List<Vector2>();
-            
-            for (int index = trackVectors.Count - num; index < trackVectors.Count; ++index)
+
+            // first get the closest vector on path from termination
+
+            if(nodes.Count == 0)
+            {
+
+                return new();
+
+            }
+
+            List<Vector2> paths = new() { nodes.Keys.Last(), };
+
+            Vector2 origin = Mod.instance.characters[trackFor].occupied;
+
+            int direct = ModUtility.DirectionToTarget(origin, nodes.Keys.Last())[2];
+
+            List<int> accept = new()
+            {
+                direct,
+                (direct + 1) % 8,
+                (direct + 7) % 8,
+            };
+
+            float threshold = Vector2.Distance(origin, nodes.Keys.Last());
+
+            if (nodes.Count > 1)
             {
                 
-                vector2List.Add(trackVectors[index]);
-            
+                for (int n = nodes.Count - 2; n >= 0; n--)
+                {
+
+                    KeyValuePair<Vector2, int> node = nodes.ElementAt(n);
+
+                    float closer = Vector2.Distance(origin, node.Key);
+
+                    int way = ModUtility.DirectionToTarget(origin, node.Key)[2];
+
+                    if (!accept.Contains(way))
+                    {
+
+                        break;
+
+                    }
+
+                    if (closer > threshold)
+                    {
+
+                        break;
+
+                    }
+
+                    paths.Prepend(node.Key);
+
+                }
+
             }
-            
-            trackVectors = vector2List;
+
+            return ModUtility.PathsToTraversal(Mod.instance.characters[trackFor].currentLocation, paths, nodes, 2);
 
         }
 
-        public Vector2 NextVector()
-        {
-            
-            if (trackVectors.Count == 0)
-            {
-                return Vector2.Zero;
-            }
-
-            Vector2 trackVector = trackVectors[0];
-            
-            trackVectors.RemoveAt(0);
-
-            return trackVector;
-        
-        }
-
-        public Vector2 LastVector()
-        {
-
-            Vector2 trackVector = trackVectors.Last();
-
-            trackVectors.Clear();
-
-            return trackVector;
-
-        }
-    
     }
 
 }

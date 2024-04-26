@@ -1,0 +1,168 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slimerrain/stardew-mods
+**
+*************************************************/
+
+{
+    "Format": "1.29.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/ObjectContextTags",
+            "TextOperations": [
+                // ========== VANILLA ITEMS ==========
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)454"],
+                    "Value": "brandy_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)613"],
+                    "Value": "cider_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)258"],
+                    "Value": "brandy_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)284"],
+                    "Value": "rum_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)90"],
+                    "Value": "brandy_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)282"],
+                    "Value": "brandy_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)270"],
+                    "Value": "whiskey_item, vodka_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)829"],
+                    "Value": "fire_cider_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)260"],
+                    "Value": "fire_cider_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)254"],
+                    "Value": "brandy_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)192"],
+                    "Value": "ale_item, vodka_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Radish"],
+                    "Value": "fire_cider_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Sugar"],
+                    "Value": "rum_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Starfruit"],
+                    "Value": "cider_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Salmonberry"],
+                    "Value": "cider_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Unmilled Rice"],
+                    "Value": "soju_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Wheat"],
+                    "Value": "vodka_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "(O)Yam"],
+                    "Value": "soju_item",
+                    "Delimiter": ","
+                },
+
+                // ========== GRAIN OVERHULL ITEMS ==========
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "{{ModId}}_Barley"],
+                    "Value": "whiskey_item, ale_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "{{ModId}}_Buckwheat_Seeds"],
+                    "Value": "whiskey_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "{{ModId}}_Millet"],
+                    "Value": "ale_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "{{ModId}}_Oat"],
+                    "Value": "whiskey_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "{{ModId}}_Rye"],
+                    "Value": "ale_item, vodka_item",
+                    "Delimiter": ","
+                },
+                {
+                    "Operation": "Append",
+                    "Target": [ "Entries", "{{ModId}}_Sorghum"],
+                    "Value": "ale_item, whiskey_item",
+                    "Delimiter": ","
+                }
+            ]
+        }
+    ]
+}

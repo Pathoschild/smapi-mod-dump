@@ -17,11 +17,11 @@
     "Recipe": {
         "ResultCount": 1,
         "CanPurchase": true,
-        "PurchaseFrom": "Robin",
-        "PurchasePrice": 50000,
-        "PurchaseRequirements": [
-            "n Achtuur.PrismaticStatue.StatueRecipeMail"
-        ],
+        "SkillUnlockName": "Mining",
+        "SkillUnlockLevel": 9,
+        //"PurchaseFrom": "Robin",
+        //"PurchaseRequirements": null,
+        //"PurchasePrice": 50000,
         "Ingredients": [
             {
                 "Object": 74, // 1 prismatic shard

@@ -101,3 +101,6 @@ v1.0.0:
 
  1.4.0
  Updates for Stardew Valley 1.6 and SMAPI 4.
+
+ 1.4.1
+ Faster fence life display. The keybind feature.

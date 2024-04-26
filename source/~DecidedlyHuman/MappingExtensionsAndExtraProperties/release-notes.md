@@ -7,7 +7,14 @@ for queries and analysis.**
 ----
 
 # MEEP Release Notes
-
+* 2.3.6
+  * Fixed the animal-removal command. Oops!
+* 2.3.5
+  * Correctly neutered farm animals (I think), and added a command to allow for sending farm animals to another dimension (read: remove them permanently).
+* 2.3.4
+  * Fixed a problem with CJB's cheat menu constantly trying to pet our farm animals.
+* 2.3.3
+  * Fixed a problem with spawned farm animals appearing in 1.6's new animals tab.
 * 2.3.2
   * Fixed a massive oversight with spawning invalid farm animals resulting in no later animals being spawned.
 * 2.3.0

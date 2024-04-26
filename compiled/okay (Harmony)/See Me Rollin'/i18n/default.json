@@ -1,0 +1,33 @@
+{
+	"mod-name": "See Me Rollin'",
+
+	// Buff
+	"buff.name": "They See Me Rollin'\nThey Hatin'",
+
+	// Settings
+
+	"setting.enable-animation": "Enable Animation",
+	"setting.enable-animation.desc": "When enabled, the farmer will display a different animation than walking when in rollin' mode.",
+
+	"setting.use-key": "Activation Key",
+	"setting.use-key.desc": "Holding this key activates rollin' mode.",
+
+	"setting.show-buff": "Display Rollin' Buff",
+	"setting.show-buff.desc": "When enabled, a buff appears in the usual spot when Rollin'.",
+
+	"setting.speed-mod": "Speed Modifier",
+	"setting.speed-mod.desc": "When Rollin', the player speed is increased by this amount. The default movement speed is 5.",
+
+	"setting.fall-off": "Speed Fall-Off Mode",
+	"setting.fall-off.desc": "When Rollin', the player's speed decreases over time. Modes:\n- None: The player never slows down.\n- Till Zero: The player slows down until they stop moving, at which point they stop Rollin'.\n- Slight: The player slows down slightly, and then speeds up again by switching foot.",
+
+	"setting.fall-off.none": "None",
+	"setting.fall-off.till-zero": "Till Zero",
+	"setting.fall-off.slight": "Slight",
+
+	"setting.allow-swim": "Allow when Swimming",
+	"setting.allow-swim.desc": "Whether or not to allow Rollin' when swimming.",
+
+	"setting.allow-slowed": "Allow when Slowed",
+	"setting.allow-slowed.desc": "Whether or not to allow Rollin' when debuffed with a movement penalty.",
+}

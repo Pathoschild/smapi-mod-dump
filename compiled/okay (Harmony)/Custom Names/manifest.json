@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Custom Names",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Give your own name to your tools, weapons, and trinkets",
+  "UniqueID": "MindMeltMax.CustomNames",
+  "EntryDll": "Custom Names.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "nexus:23131" ]
+}

@@ -70,7 +70,7 @@ namespace HorseOverhaul
 
             Vector2 emotePosition = horse.getLocalPosition(Game1.viewport);
 
-            emotePosition.X += 32f;
+            emotePosition.X += mod.Config.ThinHorse ? 0f : 32f;
             emotePosition.Y -= 96f;
 
             // draw one layer above the usual sprite of the horse so there is no z-fighting
@@ -116,8 +116,14 @@ namespace HorseOverhaul
                 return;
             }
 
-            float xOffset = 0f;
+            float xOffset = mod.Config.ThinHorse ? -32f : 0f;
             float yOffset = -80f;
+
+            // all player sprites being off by 1 is really obvious if using horsemanship and facing north
+            if (horse.FacingDirection == Game1.up && mod.IsUsingHorsemanship && mod.Config.ThinHorse)
+            {
+                xOffset += 1;
+            }
 
             // draw one layer above the usual sprite of the horse so there is no z-fighting
             float layer = horse.StandingPixel.Y + 1;

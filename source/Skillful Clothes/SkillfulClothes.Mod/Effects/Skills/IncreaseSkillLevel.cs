@@ -8,10 +8,13 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
+using StardewValley.Buffs;
+using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,18 +27,18 @@ namespace SkillfulClothes.Effects.Skills
     {        
         public override string SkillName => Parameters.Skill.ToString();
 
-        protected override EffectIcon Icon => Parameters?.Skill.GetIcon() ?? EffectIcon.None;        
+        protected override EffectIcon Icon => Parameters?.Skill.GetIcon() ?? EffectIcon.None;
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount)
+        protected override void UpdateEffects(Farmer farmer, BuffEffects targetEffects)
         {
             switch (Parameters.Skill)
             {
-                case Skill.Farming: farmer.addedFarmingLevel.Value = Math.Max(0, farmer.addedFarmingLevel.Value + amount); break;
-                case Skill.Fishing: farmer.addedFishingLevel.Value = Math.Max(0, farmer.addedFishingLevel.Value + amount); break;
-                case Skill.Foraging: farmer.addedForagingLevel.Value = Math.Max(0, farmer.addedForagingLevel.Value + amount); break;
-                case Skill.Mining: farmer.addedMiningLevel.Value = Math.Max(0, farmer.addedMiningLevel.Value + amount); break;
-                case Skill.Combat: farmer.addedCombatLevel.Value = Math.Max(0, farmer.addedCombatLevel.Value + amount); break;
-                case Skill.Luck: farmer.addedLuckLevel.Value = Math.Max(0, farmer.addedLuckLevel.Value + amount); break;
+                case Skill.Farming: targetEffects.FarmingLevel.Value = Parameters.Amount; break;
+                case Skill.Fishing: targetEffects.FishingLevel.Value = Parameters.Amount; break;
+                case Skill.Foraging: targetEffects.ForagingLevel.Value = Parameters.Amount; break;
+                case Skill.Mining: targetEffects.MiningLevel.Value = Parameters.Amount; break;
+                case Skill.Combat: targetEffects.CombatLevel.Value = Parameters.Amount; break;
+                case Skill.Luck: targetEffects.LuckLevel.Value = Parameters.Amount; break;
             }
         }
 
@@ -61,5 +64,4 @@ namespace SkillfulClothes.Effects.Skills
             return new IncreaseSkillLevelParameters() { Skill = skill, Amount = amount };
         }
     }
-
 }

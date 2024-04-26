@@ -1,0 +1,383 @@
+{
+	// Settings
+	"setting.show-adv": "고급 제작 정보 표시",
+	"setting.show-adv.tip": "재료의 수와 이전에 아이템을 제작한 횟수와 같은 고급 제작 정보를 표시합니다.\n이것은 바닐라 설정과 동일하며 편의상 여기에 표시됩니다.",
+
+	"setting.general": "일반 옵션",
+
+	"setting.priority": "메뉴 처리 우선순위",
+	"setting.priority.tip": "메뉴 처리 우선순위를 변경하면 Better Crafting과 다른 모드의 호환성이 향상될 수 있습니다.\n낮음으로 설정하면 Better Crafting은 다른 모드 이후에 실행 됩니다.\n높음으로 설정하면 Better Crafting이 다른 모드보다 우선순위가 됩니다.",
+
+	"setting.priority.low": "낮음",
+	"setting.priority.normal": "보통",
+	"setting.priority.high": "높음",
+
+	"setting.theme": "UI 테마",
+	"setting.theme-desc": "이 UI 테마는 Better Crafting의 버튼에 사용됩니다.\n대부분의 Better Crafting UI는 표준 게임 텍스처에서 가져온 것입니다.",
+
+	"setting.use-full-height": "전체 높이 사용",
+	"setting.use-full-height.tip": "이 옵션이 활성화되면 게임 메뉴가 열리지 않을 때 Better Crafting 메뉴가 화면의 전체 높이에 일치하도록 확장됩니다.",
+
+	"theme.automatic": "자동",
+	"theme.default": "기본",
+
+	"setting.gift-taste-style": "선물 선호도 스타일",
+	"setting.gift-taste-style.heads": "얼굴",
+	"setting.gift-taste-style.names": "이름",
+	"setting.gift-taste-style.tip": "얼굴로 설정하면 NPC의 얼굴 아이콘으로 선물 선호도가 표시됩니다.\n이름으로 설정하면  NPC의 이름으로 표시됩니다.",
+
+	"setting.gift-taste": "선물 선호도 표시",
+	"setting.gift-taste.tip": "알려진 선물 선호도가 아이템 툴팁에 표시됩니다.\n검색 시 일치하는 선물 선호도가 항상 표시됩니다.",
+	"setting.gift-taste.never": "없음",
+	"setting.gift-taste.shift": "Shift 키 클릭 시",
+	"setting.gift-taste.always": "항상",
+
+	"setting.gift-taste-all": "발견되지 않은 선물 선호도 표시",
+	"setting.gift-taste-all.tip": "Better Crafting은 모든 선물 선호도가 표시됩니다.\n아직 게임에서 발견하지 못한 선물도 마찬가지입니다.\n이는 약간의 부정행위일 수 있으므로 기본적으로 비활성화되어 있습니다.",
+	
+	"setting.alphabetic": "알파벳순으로 정렬",
+	"setting.alphabetic.tip": "이 옵션을 활성화하면 레시피가 기본 순서가 아닌 알파벳순으로 정렬됩니다.",
+
+	"setting.replace-crafting": "제작 메뉴 활성화",
+	"setting.replace-crafting.tip": "더 나은 제작 메뉴가 활성화 됩니다.",
+
+	"setting.replace-cooking": "요리 메뉴 활성화",
+	"setting.replace-cooking.tip": "더 나은 요리 메뉴가 활성화 됩니다.",
+
+	"setting.enable-categories": "카테고리 활성화",
+	"setting.enable-categories.tip": "제작 메뉴에 카테고리 탭을 추가합니다.",
+
+	"setting.new-recipes": "새로운 레시피 강조",
+	"setting.new-recipes.tip": "이 옵션이 활성화되면 새 레시피에 'NEW' 라벨이 표시됩니다.",
+	"setting.new-recipes.uncrafted": "아직 제작되지 않음",
+	"setting.new-recipes.unseen": "아직 본 적 없음",
+	"setting.new-recipes.disabled": "사용하지 안음",
+
+	"setting.new-recipes.prismatic": "새로운 레시피 프리즘 효과 강조",
+	"setting.new-recipes.prismatic.tip": "이 옵션이 활성화되면 새 레시피의 'NEW' 라벨이 색상이 바뀌면서 표시됩니다.",
+
+	"setting.settings": "설정 버튼 표시",
+	"setting.settings.tip": "설정을 여는 버튼이 제작 메뉴에 추가됩니다.",
+
+	"setting.bindings": "대량 제작 및 단축키 설정",
+	"setting.bindings.tip": "대량 제작 및 단축키 관련된 설정.",
+
+	"setting.suppress": "비활성화 키",
+	"setting.suppress.tip": "이 키를 누른 상태에서 제작 메뉴를 열면 Better Crafting모드로 대체되지 않습니다.",
+
+	"setting.key.modifier": "편집 키",
+	"setting.key.modifier.tip": "이 키를 누르고 있으면 다른 키가 수행한 작업을 수정할 수 있습니다.",
+
+	"setting.key.search": "검색 키",
+	"setting.key.search.tip": "단축키를 클릭하면 검색 기능을 사용 할 수 있습니다.",
+
+	"setting.key.favorite": "즐겨찾기",
+	"setting.key.favorite.tip": "제작할 아이템 위에서 이 키를 누르면 해당 아이템을 즐겨찾기 또는 즐겨찾기 해제할 수 있습니다.",
+
+	"setting.key.bulk": "대량 제작",
+	"setting.key.bulk.tip": "제작할 아이템 위에서 이 키를 누르면 해당 아이템에 대한 대량 제작이 가능합니다.",
+
+	"setting.key.behavior.left": "왼쪽 클릭 / A 컨트롤러",
+	"setting.key.behavior.left.tip": "레시피 왼쪽 클릭(컨트롤러 A)하면 이 작업이 수행됩니다.",
+	"setting.key.behavior.right": "오른쪽 클릭 / X 컨트롤러",
+	"setting.key.behavior.right.tip": "레시피 우클릭(컨트롤러 X)하면 이 작업이 수행됩니다.",
+
+	"setting.key.tooltip": "단축키 설명 표시",
+	"setting.key.tooltip.tip":"Better Crafting의 툴팁 아래에 단축키가 표시됩니다.",
+
+	"setting.ttwhen.Never": "표시 안함",
+	"setting.ttwhen.ForController": "컨트롤러 사용 시",
+	"setting.ttwhen.Always": "항상 표시",
+
+	"setting.action.None": "제작 안함",
+	"setting.action.Craft": "제작",
+	"setting.action.Favorite": "즐겨찾기 On/Off 키",
+	"setting.action.BulkCraft": "대량 제작",
+
+	"setting.nearby": "확장 작업대",
+	"setting.nearby.tip": "이 기능은 작업대와 주방을 한 번에 더 많은 상자에 연결할 수 있어 게임의 기본 범위인 한 블록이 향상됩니다.\n연결된 상자의 체인을 만들거나 허용된 연결장치를 사용하여 간격을 연결할 수 있습니다.",
+
+	"setting.nearby.enable": "작업대 확장 사용",
+
+	"setting.nearby.nearby": "근처 상자 사용",
+	"setting.nearby.nearby.tip": "이 값을 0보다 크게 설정하면 항상 이 타일만큼 떨어진 상자에 있는 아이템을 사용할 수 있습니다.",
+
+	"setting.nearby.nearby.active": "어디서나",
+	"setting.nearby.nearby.map": "전체 지도",
+	"setting.nearby.nearby.off": "비활성화",
+	"setting.nearby.nearby.tiles": "{{tiles}} 타일",
+	
+	"setting.nearby.diagonal": "대각선 연결 허용",
+	"setting.nearby.diagonal.tip": "활성화되면 상자와 연결장치를 대각선으로 배치할 수 있고 계속 연결할 수 있습니다.",
+
+	"setting.nearby.performance": "성능",
+	"setting.nearby.performance.tip": "성능 향상을 위해 확장 작업대의 범위를 제한할 수 있는 설정.",
+
+	"setting.nearby.max-chests": "최대 상자",
+	"setting.nearby.max-chests.tip": "확장 작업대가 사용할 최대 상자 수.",
+
+	"setting.nearby.max-distance": "최대 거리",
+	"setting.nearby.max-distance.tip": "작업대에서 상자까지의 최대 거리.",
+
+	"setting.nearby.max-check": "초대 타일",
+	"setting.nearby.max-check.tip": "근처 상자를 찾을 때 확인할 최대 타일 수입니다.",
+
+	"setting.nearby.connectors": "허용된 연결장치",
+	"setting.nearby.connectors.tip": "연결장치로 사용할 수 있는 배치 가능한 개체. 성능을 유지하려면 불필요한 연결장치 유형을 추가하지 않아야 합니다.\n이러한 항목은 예이며 구성 파일을 수동으로 편집하여 다른 개체 및 지형 옵션을 추가할 수 있습니다.",
+
+	"setting.nearby.floors": "바닥",
+	"setting.nearby.fences": "울타리",
+	"setting.nearby.other": "그외 다른",
+
+	"setting.recycle": "재활용",
+	"setting.recycle.about": "이 기능이 활성화되면 제작 메뉴를 사용하여 아이템을 재활용하고 제작에 사용된 아이템을 다시 가져올 수 있습니다.",
+
+	"setting.recycle.fuzzy": "애매한 아이템 매칭",
+	"setting.recycle.fuzzy.tip": "일부 제작 레시피는 특정 재료가 필요하지 않지만, \"달걀(아무거나)\"과 같은 종류의 아이템을 지정합니다.\n기본적으로 이 재료들은 반환되지 않습니다. 이 옵션을 활성화하면 가장 저렴한 아이템이 반환 됩니다.",
+
+	"setting.recycle.unknown": "알 수 없는 레시피 허용",
+	"setting.recycle.unknown.tip": "이 옵션을 활성화하면 제작법을 잠금 해제하지 않은 경우에도 아이템을 재활용할 수 있습니다.",
+
+	"setting.recycle.crafting": "제작 재활용",
+	"setting.recycle.crafting.tip": "제작 시 재활용을 허용할지 여부.",
+
+	"setting.recycle.cooking": "요리 재활용",
+	"setting.recycle.cooking.tip": "요리 시 재활용을 허용할지 여부.",
+
+	"setting.recycle-mode.enabled": "항상",
+	"setting.recycle-mode.disabled": "없음",
+	"setting.recycle-mode.automatic": "자동(재활용품 보유 시)",
+
+	"setting.recycle.click-toggle": "클릭하여 전환",
+	"setting.recycle.click-toggle.tip": "이 옵션이 활성화되면 제작 메뉴에서 휴지통을 클릭하면 재활용이 켜지거나 꺼집니다.\n이 기능은 항목을 보유하지 않을 때만 작동합니다.",
+
+	"setting.transfer": "보관함으로 전송",
+	"setting.transfer.about": "이 옵션을 사용하면 인벤토리의 아이템을 작업대나 주방에 연결된 상자에 빠르게 저장할 수 있습니다.\n일치하는 항목은 기존 스택에 추가와 유사하게 적절한 상자에 배치됩니다.",
+
+	"setting.transfer.enable": "보관함으로 전송 활성화",
+
+	"setting.transfer.action": "작동 ({{binding}})",
+	"setting.transfer.action-modifier": "수정자를 사용한 작업",
+	"setting.transfer.use-tool": "도구 사용 ({{binding}})",
+	"setting.transfer.use-tool-modifier": "수정자와 함께 도구 사용",
+
+	"setting.transfer.behavior": "모드",
+
+	"setting.transfer.behavior.none": "아무것도 하지 않음",
+	"setting.transfer.behavior.all": "모두 전송",
+	"setting.transfer.behavior.all-quantity": "수량을 제외한 모든 전송",
+	"setting.transfer.behavior.quantity": "수량 전송",
+	"setting.transfer.behavior.half": "절반 전송",
+
+	"setting.transfer.quantity": "수량",
+	"setting.transfer.quantity.tip": "\"이전 수량\"을 사용하는 경우 이전할 수량 또는 \"수량을 제외한 모든 항목 이전을 사용하는 경우 남겨둘 금액",
+
+	"setting.cookout": "요리 키트 조정",
+	"setting.cookout.about": "이러한 설정은 요리 키트의 동작을 조정하여 작업대처럼 작동하도록 만듭니다.",
+
+	"setting.cookout.workbench": "작업대와 비슷한 연결",
+	"setting.cookout.workbench.tip": "활성화되면 요리 키트는 작업대처럼 근처에서 재료를 가져옵니다.",
+
+	"setting.cookout.durable": "오래 지속되는 키트",
+	"setting.cookout.durable.tip": "활성화되면 요리 키트가 하룻밤 사이에 사라지지 않으며 부셔도 사라지지 않습니다.",
+
+	"setting.cookout.expensive": "더 비싼 키트",
+	"setting.cookout.expensive.tip": "활성화되면 요리 키트의 제작 레시피가 조정되어 수명 증가의 균형을 맞추는 데 도움이 되도록 조금 더 비싸게 됩니다.",
+
+
+	// Quality
+	"setting.quality": "품질",
+	"setting.quality.tip": "SpaceCore와 같은 다른 소스에서 추가한 일부 레시피는 API 제한으로 인해 이러한 설정을 준수하지 않을 수 있습니다.",
+
+	"setting.enable-quality": "품질 제한 사용",
+	"setting.enable-quality.tip": "이 옵션을 활성화하면 제작할 때 사용할 아이템의 최대 품질을 선택할 수 있는 버튼이 표시됩니다.",
+
+	"setting.sort-quality": "저품질 우선 사용",
+	"setting.sort-quality.tip": "이 옵션을 활성화하면 낮은 품질의 아이템을 먼저 사용하여 레시피를 제작합니다.",
+
+	// Crafting
+	"setting.crafting": "제작",
+	"setting.crafting.tip": "제작 메뉴에 대한 설정.",
+
+	"setting.uniform-grid": "균일 크기 적용",
+	"setting.uniform-grid.tip": "이 옵션을 활성화하면 큰 제작 아이템이 한 줄에 맞도록 정렬됩니다.",
+
+	"setting.big-craftables-last": "큰 제작 아이템을 마지막으로 정렬",
+	"setting.big-craftables-last.tip": "이 옵션을 활성화하면 큰 제작 아이템이 목록의 끝에 모두 배치됩니다.",
+
+	// Cooking
+	"setting.cooking": "요리",
+	"setting.cooking.tip": "요리 메뉴에 대한 설정.",
+
+	"setting.seasoning": "양념 사용",
+	"setting.seasoning.tip": "음식의 품질을 높이기 위한 치의 양념 사용 여부입니다. \"인벤토리 전용\"으로 설정하면 냉장고나 다른 소스가 아닌 인벤토리의 양념만 사용됩니다.",
+
+	"seasoning.disabled": "사용 안함",
+	"seasoning.enabled": "항상",
+	"seasoning.inventory": "인벤토리 전용",
+
+	"setting.hide-unknown": "알 수 없는 레시피 숨기기",
+	"setting.hide-unknown.tip": "아직 배우지 않은 레시피가 메뉴에 표시되지 않습니다.",
+
+	// Tool-tips
+	"tooltip.loves": "사랑하는 NPC : {{npcs}}",
+	"tooltip.likes": "좋아하는 NPC : {{npcs}}",
+
+	"tooltip.move-up": "카테고리 위로 이동",
+	"tooltip.move-down": "카테고리 아래로 이동",
+
+	"tooltip.crafted": "{{count}}번 제작함",
+
+	"tooltip.toggle-recipe": "카테고리 전환",
+	"tooltip.use-as-icon": "아이콘으로 사용",
+
+	"tooltip.transfer.to": "보관함에 아이템 추가",
+	"tooltip.transfer.to-item": "보관함에 보관됨 아이템 추가",
+
+	"tooltip.transfer.from": "보관함에 아이템 채우기",
+	"tooltip.transfer.from-item": "보관함에 보유한 아이템 채우기",
+
+	"tooltip.transfer.all": "모두 전송",
+	"tooltip.transfer.but-quantity": "{{count}}개를 제외하고 모두 전송",
+	"tooltip.transfer.half": "절반 전송",
+	"tooltip.transfer.quantity": "{{count}}개 전송",
+
+	"tooltip.edit-filter-locked": "카테고리에 동적 규칙을 사용하는 경우 개별 레시피를 활성화하거나 비활성화할 수 없습니다.\n규칙을 조정하거나 동적 규칙을 비활성화하세요.",
+
+	// Recycling
+	"tooltip.recycle": "{{item}} 재활용",
+	"tooltip.recycle.invalid": "이 아이템은 재활용할 수 없습니다.",
+	"tooltip.recycle.insufficient": "재활용하려면 이 아이템은 최소 {{count}}개 필요합니다.",
+	"tooltip.recycle.returns": "재활용 됨 :",
+	"tooltip.recycle.not-returned": "재활용 되지 않음 :",
+	"tooltip.recycle.all": "모두 재활용 ({{amount}})",
+	"tooltip.recycle.once": "일부 재활용 ({{amount}})",
+
+	// Buttons
+	"tooltip.edit-mode": "카테고리 편집",
+	"tooltip.favorites": "즐겨찾기 표시",
+	"tooltip.seasoning": "조미료 사용",
+	"tooltip.uniform": "균일 크기 사용",
+	"tooltip.settings": "설정",
+
+	"tooltip.filter.enabled": "동적 규칙: 활성화됨",
+	"tooltip.filter.disabled": "동적 규칙: 비활성화됨",
+	"tooltip.filter.about": "이를 통해 개별 레시피를 수동으로 선택하는 대신 규칙을 기반으로 카테고리를 생성할 수 있습니다.",
+
+	"tooltip.include-in-misc": "기타에 포함: 활성화됨",
+	"tooltip.include-in-misc.disabled": "기타에 포함: 비활성화됨",
+	"tooltip.include-in-misc.about": "일반적으로 레시피가 다른 카테고리에 있으면 기타 카테고리에 표시되지 않습니다.\n이 카테고리의 레시피가 기타 카테고리에도 표시되도록 하려면 이 옵션을 활성화하세요.",
+
+	"tooltip.search": "검색",
+	"tooltip.search.old-tip": "팁: 재료별로 검색하려면 \"@B{{prefix}}@b\"로 검색을 시작하세요. \"@B{{likes}}@b\"로 검색을 시작하여 아이템을 좋아하는 문자로도 검색하거나 \"@B{{loves}}@b\" 아이템을 좋아하는 문자로 검색할 수도 있습니다.",
+	"tooltip.search.tip": "팁: 검색하려면 다음 문자로 검색을 시작하세요:.\n\n \"@B{{prefix}}@b\": 재료\n \"@B{{likes}}@b\": 좋아하는 사람 \n \"@B{{loves}}@b\": 사랑하는 사람",
+
+	"search.ingredient-prefix": "!",
+	"search.like-prefix": "#",
+	"search.love-prefix": "^",
+
+	"search.none": "일치하는 레시피가 없습니다.",
+	"search.none.category": "이 카테고리에 일치하는 레시피가 없습니다.",
+
+	"tooltip.select-icon": "아이콘 선택",
+
+	"tooltip.quality.none": "품질이 낮은 아이템만 사용",
+	"tooltip.quality.silver": "낮은 품질과 은색 품질의 아이템만 사용",
+	"tooltip.quality.gold": "낮은 품질, 은색, 금색 품질 아이템만 사용",
+	"tooltip.quality.iridium": "모든 품질 아이템 사용",
+
+	"tooltip.quality-unsupported": "이 레시피는 품질 설정을 지원하지 않습니다.",
+
+	"ingredient.error": "잘못된 구성",
+
+	"error.locking": "일부 인벤토리에 접근할 수 없습니다.",
+
+	// Bulk Crafting
+	"bulk.crafting": "대량 제작",
+	"bulk.craftable": "{{count}}개 제작 가능",
+	"bulk.craft": "{{name}} - {{count}}개 제작함",
+
+	// Categories
+	"category.new": "새 카테고리",
+	"category.favorites": "즐겨찾기",
+	"category.combat_rings": "반지 & 폭탄",
+	"category.consumables": "소모품",
+	"category.decoration": "장식",
+	"category.fertilizer_seeds": "비료 & 씨앗",
+	"category.fishing": "낚시",
+	"category.machinery": "기계",
+	"category.misc": "기타",
+
+	"category.food.farming": "농사 & 채집",
+	"category.food.mining": "채광 & 자력",
+	"category.food.fishing": "낚시",
+	"category.food.combat": "전투",
+	"category.food.other": "행운 & 속도",
+
+	// Currencies
+	"currency.gold": "골드",
+	"currency.festival-points": "포인트",
+	"currency.club-coins": "클럽 코인",
+	"currency.qi-gems": "치 보석",
+
+	// Ingredient Categories
+	"item.category.cooking": "요리 (아무거나)",
+	"item.category.crafting": "제작 (아무거나)",
+	"item.category.mineral": "광물 (아무거나)",
+	"item.category.meat": "고기 (아무거나)",
+	"item.category.fertilizer": "Fertilizer (아무거나)",
+	"item.category.junk": "쓰레기 (아무거나)",
+	"item.category.seeds": "씨앗 (아무거나)",
+	"item.category.fruit": "과일 (아무거나)",
+	"item.category.flower": "꽃 (아무거나)",
+
+	// Dynamic Filters
+	"filter.add-new": "새 규칙 추가",
+	"filter.from-rule": "규칙에 의해 활성화됨",
+
+	"filter.storage": "저장고",
+	"filter.storage.about": "이 규칙은 상자나 호퍼와 같이 저장 역할을 하는 아이템에 적용됩니다.",
+
+	"filter.everything": "모두",
+	"filter.everything.about": "이 규칙은 모든 레시피에 적용됩니다.",
+
+	"filter.buff": "효과: {{type}}",
+	"filter.buff.about": "이 규칙은 사용 시 {{type}} 효과를 제공하는 아이템에 적용됩니다.",
+
+	"filter.uncrafted": "아직 제작하지 않음",
+	"filter.uncrafted.about": "이 규칙은 아직 제작하지 않은 아이템에 적용됩니다.",
+
+	"filter.search": "검색",
+	"filter.search.about": "이 규칙은 제작 메뉴 검색과 동일한 규칙을 사용하여 아이템 검색에 적용됩니다.",
+
+	"filter.mod": "모드 아이템",
+	"filter.mod.about": "이 규칙은 특정 모드에 의해 추가된 모든 레시피에 적용됩니다.",
+
+	"filter.machine": "기계",
+	"filter.machine.about": "이 규칙은 기계 역할을 하는 항목에 적용되거나 다른 기능을 수행하는 항목에 적용됩니다.",
+
+	"filter.sprinkler": "스프링클러",
+	"filter.sprinkler.about": "이 규칙은 스프링클러에 적용됩니다.",
+
+	"filter.floors": "바닥 및 경로",
+	"filter.floors.about": "이 규칙은 모든 바닥 및 경로에 적용됩니다.",
+
+	"filter.fences": "울타리",
+	"filter.fences.about": "이 규칙은 모든 울타리에 적용됩니다.",
+
+	"filter.furniture": "가구",
+	"filter.furniture.about": "이 규칙은 모든 가구에 적용됩니다.",
+
+	"filter.light": "조명",
+	"filter.light.about": "이 규칙은 배치 가능한 조명에 적용됩니다.",
+
+	"filter.error": "잘못된 규친",
+	"filter.error.about": "이 규칙 ID는 유효하지 않거나 등록되지 않았으며, 삭제된 모드에서 가져온 것일 수 있습니다",
+
+	// Kitchen
+	"station.kitchen": "주방",
+
+//=================
+// 번역 - 추억살이
+//=================
+}

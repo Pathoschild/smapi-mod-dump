@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewValley;
+using StardewValley.GameData.Pets;
 using System.Collections.Generic;
 
 namespace Randomizer
@@ -29,8 +31,7 @@ namespace Randomizer
         /// </summary>
         private static void Initialize()
 		{
-            DefaultMonsterData = Globals.ModRef.Helper.GameContent
-				.Load<Dictionary<string, string>>("Data/Monsters");
+			DefaultMonsterData = DataLoader.Monsters(Game1.content);
 
 			foreach(KeyValuePair<string, string> data in DefaultMonsterData)
 			{
@@ -81,15 +82,16 @@ namespace Randomizer
 			MissChance,
 			IsMinesMonster,
 			Experience,
-			Name
+			DisplayName
 		};
 
 		/// <summary>
 		/// Parses the xnb string into a Monster object
 		/// </summary>
+		/// <param name="name">The monster's name - that is, the key to the dictionary</param>
 		/// <param name="data">The xnb string</param>
 		/// <returns />
-		public static Monster ParseMonster(string data)
+		public static Monster ParseMonster(string name, string data)
 		{
 			string[] fields = data.Split('/');
 			if (fields.Length < 15)
@@ -98,7 +100,7 @@ namespace Randomizer
 				return null;
 			}
 
-			int hp = ParseIntField(fields[(int)MonsterFields.HP], data, "HP");
+            int hp = ParseIntField(fields[(int)MonsterFields.HP], data, "HP");
 			int damage = ParseIntField(fields[(int)MonsterFields.Damage], data, "Damage");
 			int minCoins = ParseIntField(fields[(int)MonsterFields.MinCoins], data, "Min Coins");
 			int maxCoins = ParseIntField(fields[(int)MonsterFields.MaxCoins], data, "Max Coins");
@@ -112,9 +114,9 @@ namespace Randomizer
 			double missChance = ParseDoubleField(fields[(int)MonsterFields.MissChance], data, "Miss Chance");
 			bool isMinesMonster = ParseBooleanField(fields[(int)MonsterFields.IsMinesMonster], data, "Is Mines Monster");
 			int experience = ParseIntField(fields[(int)MonsterFields.Experience], data, "Experience");
-			string name = fields[(int)MonsterFields.Name];
+            string displayName = fields[(int)MonsterFields.DisplayName];
 
-			return new Monster(
+            return new Monster(
 				hp,
 				damage,
 				minCoins,
@@ -129,8 +131,9 @@ namespace Randomizer
 				missChance,
 				isMinesMonster,
 				experience,
-				name
-			);
+				name,
+                displayName
+            );
 		}
 
 		/// <summary>
@@ -204,16 +207,17 @@ namespace Randomizer
             }
 
 			List<Monster> monsters = new();
-			foreach (string data in DefaultMonsterData.Values)
+			foreach (KeyValuePair<string, string> monsterKVPair in DefaultMonsterData)
 			{
-				Monster monster = ParseMonster(data);
+				string monsterName = monsterKVPair.Key;
+				string data = monsterKVPair.Value;
+				Monster monster = ParseMonster(monsterName, data);
 				if (monster != null && monster.IsMinesMonster)
 				{
 					monsters.Add(monster);
 				}
 			}
 
-			// count should be 45
 			return monsters;
 		}
 	}

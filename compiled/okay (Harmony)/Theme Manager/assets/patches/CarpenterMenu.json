@@ -1,0 +1,53 @@
+{
+	"ID": "CarpenterMenu",
+
+	"ColorVariables": {
+		"$CarpenterMenu:Text": "$Text",
+		"$CarpenterMenu:TextShadowAlt": "$TextShadowAlt",
+		"$CarpenterErrorText": "$ErrorText"
+	},
+
+	"FontVariables": {
+		"$CarpenterMenu:Dialogue": "$Dialogue",
+		"$CarpenterMenu:Small": "$Small"
+	},
+
+	"BmFontVariables": {
+		"$CarpenterMenu:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$CarpenterMenu:ST:Normal": "$ST:Normal",
+		"$CarpenterMenu:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"#CarpenterMenu:draw(SpriteBatch)": {
+			"Colors": {
+				"Red": { "*": "$CarpenterErrorText" },
+				"PaleGoldenrod": { "*": "$CarpenterMagicText" },
+				"RoyalBlue": { "*": "$CarpenterMagicBackground" }
+			},
+
+			"ColorFields": {
+				"Game1:textColor": { "*": "$CarpenterText" }
+			},
+
+			"FontFields": {
+				"Game1:dialogueFont": { "*": "$CarpenterMenu:Dialogue" },
+				"Game1:smallFont": { "*": "$CarpenterMenu:Small" }
+			},
+
+			"SpriteTextDraw": {
+				"*": [
+					"$CarpenterMenu:ST:Normal",
+					"$CarpenterMenu:ST:Colored",
+					"$CarpenterMenu:ST:Font",
+					"$CarpenterMenu:Colors"
+				]
+			},
+
+			"DrawTextWithShadow": { "*": "$CarpenterMenu:TextShadowAlt" }
+		}
+	}
+}

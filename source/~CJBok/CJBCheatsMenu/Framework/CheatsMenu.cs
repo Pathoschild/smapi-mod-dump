@@ -674,12 +674,12 @@ namespace CJBCheatsMenu.Framework
                         line += " " + word;
                     else
                     {
-                        this.Options.Add(new DescriptionElement(line));
+                        this.Options.Add(new DescriptionElement(line, splitLinesIfNeeded: false));
                         line = word;
                     }
                 }
                 if (line != "")
-                    this.Options.Add(new DescriptionElement(line));
+                    this.Options.Add(new DescriptionElement(line, splitLinesIfNeeded: false));
             }
         }
 
@@ -695,7 +695,12 @@ namespace CJBCheatsMenu.Framework
         private void AddOptions(params ICheat[] cheats)
         {
             foreach (OptionsElement field in cheats.SelectMany(p => p.GetFields(this.Cheats.Context)))
-                this.Options.Add(field);
+            {
+                if (field is DescriptionElement { SplitLinesIfNeeded: true } description)
+                    this.AddDescription(description.label);
+                else
+                    this.Options.Add(field);
+            }
         }
 
         /// <summary>Add cheats to the options list.</summary>

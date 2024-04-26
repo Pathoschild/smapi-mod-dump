@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
+using StardewArchipelago.Constants;
 using System.Linq;
 using StardewValley;
 using StardewValley.Locations;
@@ -18,11 +19,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
     public class Friends
     {
         public const string PET_NAME = "Pet";
-
-        private static Dictionary<string, string> _stardewNameToArchipelagoName = new Dictionary<string, string>{
-            {"MisterGinger", "Mr. Ginger"}, {"MarlonFay", "Marlon"}, {"GuntherSilvian", "Gunther"}, {"MorrisTod", "Morris"},
-            {"HatMouseLacey", "Lacey"}
-        };
 
         private List<ArchipelagoFriend> _friends;
         private Dictionary<string, ArchipelagoFriend> _friendsByName;
@@ -51,7 +47,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 var datable = villagerInfoParts[5] == "datable";
                 var spawnLocation = villagerInfoParts[10].Split(" ")[0];
                 var spawnsOnIsland = IsIslandLocation(spawnLocation);
-                var apName = _stardewNameToArchipelagoName.ContainsKey(name) ? _stardewNameToArchipelagoName[name] : name;
+                var apName = NameAliases.NPCNameAliases.ContainsKey(name) ? NameAliases.NPCNameAliases[name] : name;
 
                 var friend = new ArchipelagoFriend(name, apName, datable, false, spawnsOnIsland, name.Contains("Dwarf"), false);
                 _friends.Add(friend);

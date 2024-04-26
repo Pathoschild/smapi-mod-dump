@@ -9,24 +9,29 @@
 
 		<!-- build settings -->
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<Nullable>enable</Nullable>
 
 		<CodeAnalysisRuleSet>$(SolutionDir)\_build\Rules.ruleset</CodeAnalysisRuleSet>
 		<DefineConstants Condition="$(EnableHarmony) == 'True'">$(DefineConstants);HARMONY</DefineConstants>
+    <DefineConstants Condition="$(EnablePintail) == 'True'">$(DefineConstants);PINTAIL</DefineConstants>
 		<DefineConstants Condition="$(EnableTranslation) == 'True'">$(DefineConstants);TRANSLATION</DefineConstants>
 
 		<!-- game version -->
-		<GameVersion>1.5.6</GameVersion>
-		<SmapiVersion>3.14</SmapiVersion>
+		<GameVersion>1.6</GameVersion>
+		<SmapiVersion>4.0</SmapiVersion>
 		<ModSet>DevMods</ModSet>
+
+		<MinimumApiVersion>$(SmapiVersion)</MinimumApiVersion>
+    <MinimumGameVersion>$(GameVersion)</MinimumGameVersion>
 	</PropertyGroup>
 
-	<!-- paths -->
+  <!-- paths -->
 	<PropertyGroup>
-		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - $(GameVersion) with $(SmapiVersion)</GamePath>
+		<!--GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - $(GameVersion) with $(SmapiVersion)</GamePath-->
+		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
 		<GamePath Condition="!Exists('$(GamePath)')">C:\</GamePath>
 		<GameModsPath>$(GamePath)\$(ModSet)</GameModsPath>
 		<ModZipPath>$(SolutionDir)\_releases</ModZipPath>
@@ -47,16 +52,23 @@
 	<!-- mod build package -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
-    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+		<PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1" />
 		<Reference Include="Newtonsoft.Json">
 			<HintPath>$(GamePath)\smapi-internal\Newtonsoft.Json.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
-  
+	
 	<ItemGroup Condition="$(EnableTranslation) == 'True'">
 		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(EnablePintail) == 'True'">
+		<Reference Include="SMAPI.Toolkit">
+			<HintPath>$(GamePath)\smapi-internal\Pintail.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
 	
 </Project>

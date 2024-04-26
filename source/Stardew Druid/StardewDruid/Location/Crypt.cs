@@ -102,7 +102,9 @@ namespace StardewDruid.Location
                 for (int j = 8; j < 10; j++)
                 {
 
-                    back.Tiles[(int)i, (int)j].TileIndex = floor; 
+                    back.Tiles[(int)i, (int)j] = new StaticTile(back, quarry, BlendMode.Alpha, floor);
+
+                    back.Tiles[(int)i, (int)j].TileIndexProperties.Add("Type", "Stone");
 
                     building.Tiles[(int)i, (int)j] = null;
 

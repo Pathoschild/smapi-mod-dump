@@ -11,7 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
-using StardewDruid.Map;
+
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -28,8 +28,8 @@ namespace StardewDruid.Monster.Template
 
         }
 
-        public BlobSlime(Vector2 position, int combatModifier)
-            : base(position * 64, combatModifier * 10)
+        public BlobSlime(Vector2 tile, int combatModifier)
+            : base(tile, combatModifier * 10)
         {
 
         }

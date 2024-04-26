@@ -9,7 +9,7 @@ for queries and analysis.**
 # Buttplug Valley
 ## A [Buttplug.io](https://buttplug.io/) mod for Stardew Valley
 
-This mod allows you to connect your Buttplug.io compatible toys to Stardew Valley. It's a very simple mod, but it works.
+This mod allows you to connect your Buttplug.io compatible toys to Stardew Valley!
 ## [DOWNLOADS](https://github.com/DryIcedTea/Buttplug-Valley/releases)
 
 ## Installation and Setup
@@ -51,7 +51,7 @@ This mod allows you to connect your Buttplug.io compatible toys to Stardew Valle
 ### What toys does this work with?
 Check Out [https://iostindex.com/](https://iostindex.com/).
 ### Can I use this in multiplayer?
-This has not been tested, but I don't see why not. Your fellow players might be able to trigger certain events though.
+Yes! Your fellow players might be able to trigger certain events though.
 ### Does it support multiple toys at once?
 Yes!
 ### Will you add or change X feature?

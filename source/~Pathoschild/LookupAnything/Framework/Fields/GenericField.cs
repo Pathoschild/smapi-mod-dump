@@ -23,13 +23,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /*********
         ** Accessors
         *********/
-        /// <summary>A short field label.</summary>
+        /// <inheritdoc />
         public string Label { get; protected set; }
 
-        /// <summary>The field value.</summary>
+        /// <inheritdoc />
+        public LinkField? ExpandLink { get; protected set; }
+
+        /// <inheritdoc />
         public IFormattedText[]? Value { get; protected set; }
 
-        /// <summary>Whether the field should be displayed.</summary>
+        /// <inheritdoc />
         public bool HasValue { get; protected set; }
 
 
@@ -74,6 +77,17 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         public virtual Vector2? DrawValue(SpriteBatch spriteBatch, SpriteFont font, Vector2 position, float wrapWidth)
         {
             return null;
+        }
+
+        /// <summary>Collapse the field by default, so the user needs to click a link to expand it.</summary>
+        /// <param name="linkText">The link text to show.</param>
+        public void CollapseByDefault(string linkText)
+        {
+            this.ExpandLink = new LinkField(this.Label, linkText, () =>
+            {
+                this.ExpandLink = null;
+                return null;
+            });
         }
 
 

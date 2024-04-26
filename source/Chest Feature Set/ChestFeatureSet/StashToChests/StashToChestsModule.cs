@@ -94,18 +94,21 @@ namespace ChestFeatureSet.StashToChests
         {
             var movedAtLeastOne = false;
 
-            //Monitor.Log(Game1.player.currentLocation.parentLocationName, LogLevel.Info);
+            //Monitor.Log(Game1.player.currentLocation.Name.ToString(), LogLevel.Info);
 
             IEnumerable<Chest>? chests = null;
             if (this.Config.StashLocationSetting is "Anywhere")
                 chests = ChestExtension.GetAllChests().Select(chestPair => chestPair.Chest);
-            else if (this.Config.StashLocationSetting is "FarmArea" && LocationExtension.FarmArea.Contains(Game1.player.currentLocation.Name))
-                chests = ChestExtension.GetAreaChests(LocationExtension.FarmArea).Select(chestPair => chestPair.Chest);
+            else if (this.Config.StashLocationSetting is "FarmArea" && LocationExtension.GetFarmAndCustomArea().Contains(Game1.player.currentLocation.Name))
+                chests = ChestExtension.GetAreaChests(LocationExtension.GetFarmAndCustomArea()).Select(chestPair => chestPair.Chest);
             else
                 chests = Game1.player.GetNearbyChests(radius);
 
             if (!chests.Any())
+            {
+                Game1.showRedMessage("No Chest Can Be Stashed.");
                 return;
+            }
 
             foreach (var chest in chests)
             {
@@ -127,6 +130,9 @@ namespace ChestFeatureSet.StashToChests
 
         private List<Item> GetTheChestStashList(Chest chest)
         {
+            if (!chest.Items.Any())
+                return new List<Item>();
+
             var f = this.GetAcceptingFunction();
 
             if (this.Config.LockItems && this.ModEntry.LockItems != null)

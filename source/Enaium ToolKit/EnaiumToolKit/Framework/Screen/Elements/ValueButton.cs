@@ -15,7 +15,7 @@ using StardewValley;
 
 namespace EnaiumToolKit.Framework.Screen.Elements;
 
-public class ValueButton : Element
+public class ValueButton : BaseButton
 {
     public int Current;
     public int Min;
@@ -27,10 +27,9 @@ public class ValueButton : Element
 
     public override void Render(SpriteBatch b, int x, int y)
     {
-        Hovered = Render2DUtils.IsHovered(Game1.getMouseX(), Game1.getMouseY(), x, y, Width, Height);
-
-        Render2DUtils.DrawButton(b, x, y, Width, Height, Hovered ? Color.Wheat : Color.White);
-        FontUtils.DrawHvCentered(b, $"{Title}:({Min}-{Max}){Current}", x + Width / 2, y + Height / 2);
+        Render2DUtils.DrawButton(b, x, y, Width, Height, Hovered ? Color.White : Color.Wheat);
+        FontUtils.DrawHvCentered(b, $"{Title}:({Min}-{Max}){Current}", x, y, Width, Height);
+        base.Render(b, x, y);
     }
 
     public override void MouseLeftClicked(int x, int y)
@@ -43,7 +42,6 @@ public class ValueButton : Element
         {
             Current = Min;
         }
-
         base.MouseLeftClicked(x, y);
     }
 
@@ -58,6 +56,7 @@ public class ValueButton : Element
             Current = Max;
         }
 
+        Game1.playSound("drumkit5");
         base.MouseRightClicked(x, y);
     }
 }

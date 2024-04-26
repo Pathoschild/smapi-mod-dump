@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/zunderscore/StardewWebApi
+   Git: https://github.com/zunderscore/StardewWebApi.git
+
+mods:
+   Stardew Web API
+
+latest commit:
+   commit 45037657195484516f767ff697f03a2d4911bb38
+   Author: Zack Williamson <zwilliamson@outlook.com>
+   Date:   Thu Apr 25 16:54:10 2024 -0400
+   
+       Refactor endpoints, add play sound action, bump to 0.5.0
+   

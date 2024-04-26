@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pet-Slime/StardewValley
+**
+*************************************************/
+
+{
+
+    "moonslime.Spooky.strobberies.name": "Strobberies",
+    "moonslime.Spooky.strobberies.description": "Don't make them get the Turnip",
+
+    "moonslime.Spooky.candy_corn.name": "Candy Corn",
+    "moonslime.Spooky.candy_corn.description": "Pure surgar induced speed.",
+
+    "moonslime.Spooky.carrot_cake.name": "Carrot Cake",
+    "moonslime.Spooky.carrot_cake.description": "Yummy!",
+
+    "moonslime.Spooky.dark_floor.name": "Dark Floor",
+    "moonslime.Spooky.dark_floor.description": "Allows one to move fairly fast and silently on it.",
+
+    "moonslime.Spooky.skill_book.name": "Symphony of the Night",
+    "moonslime.Spooky.skill_book.description": "For all Children of the night.",
+
+    "moonslime.Spooky.scary_brazier.name": "Scary Brazier",
+    "moonslime.Spooky.scary_brazier.description": "Does it look like this brazier have a face on it?",
+
+    "moonslime.Spooky.dark_brazier.name": "Dark Brazier",
+    "moonslime.Spooky.dark_brazier.description": "Praise the moon!"
+
+
+}

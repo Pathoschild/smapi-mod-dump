@@ -1,0 +1,14 @@
+{
+  "config.Is24HourDefault.name": "Relógio de 24 horas",
+  "config.Is24HourDefault.desc": "Define o relógio para 24 horas.",
+  "config.ControlDayLightLevels.name": "Habilitar iluminação customizada",
+  "config.ControlDayLightLevels.desc": "Use a iluminação customizada do mod.",
+  "config.ControlDayWithKeys.name": "[debug] Habilitar controles de tempo",
+  "config.ControlDayWithKeys.desc": "Você pode usar as setas do teclado para mudar o tempo, dia e estações.",
+  "config.DisplaySunTimes.name": "Mostrar horário de nascer e pôr do sol",
+  "config.DisplaySunTimes.desc": "Mostra o horário de nascer e pôr do sol, quando a iluminação customizada está ativada.",
+  "config.MillisecondsPerSecond.name": "Milissegundos por tick do relógio",
+  "config.MillisecondsPerSecond.desc": "Quantos milissegundos por tick do relógio.",
+  "draw.hoverMenuText": "Diário (F)\nClique com o botão direito para mudar o relógio",
+  "draw.sunsetTime": "Hoje o sol vai nascer às {{sunrise}} e se pôr às {{sunset}}"
+}

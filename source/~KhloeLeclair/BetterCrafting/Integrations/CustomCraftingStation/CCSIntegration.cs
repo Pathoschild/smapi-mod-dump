@@ -28,9 +28,7 @@ public class CCSIntegration : BaseIntegration<ModEntry> {
 
 	// ModEntry
 	public readonly Type? EntryType;
-
 	private static object? Entry;
-
 
 	public CCSIntegration(ModEntry mod)
 	: base(mod, "Cherry.CustomCraftingStations", "1.1.3") {
@@ -56,34 +54,12 @@ public class CCSIntegration : BaseIntegration<ModEntry> {
 		);
 	}
 
-
-	public List<string>? GetCookingRecipes() {
+	public List<string>? GetRemovedRecipes(bool cooking) {
 		if (!IsLoaded || Entry == null)
 			return null;
 
-		List<string>? removed = Helper.GetField<List<string>>(Entry, "_cookingRecipesToRemove", false)?.GetValue();
-		if (removed == null)
-			return null;
-
-		Log($"Removed {removed.Count} cooking recipes due to CCS.", LogLevel.Debug);
-
-		return Self.Recipes.GetRecipes(true).Select(v => v.Name).Where(v => !removed.Contains(v)).ToList();
+		return Helper.GetField<List<string>>(Entry, cooking ? "_cookingRecipesToRemove" : "_craftingRecipesToRemove", false)?.GetValue();
 	}
-
-
-	public List<string>? GetCraftingRecipes() {
-		if (!IsLoaded || Entry == null)
-			return null;
-
-		List<string>? removed = Helper.GetField<List<string>>(Entry, "_craftingRecipesToRemove", false)?.GetValue();
-		if (removed == null)
-			return null;
-
-		Log($"Removed {removed.Count} crafting recipes due to CCS.", LogLevel.Debug);
-
-		return Self.Recipes.GetRecipes(false).Select(v => v.Name).Where(v => !removed.Contains(v)).ToList();
-	}
-
 
 	public static bool OnSaveLoaded_Prefix(object __instance) {
 		Entry = __instance;

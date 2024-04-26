@@ -10,10 +10,10 @@
 
 using StardewValley;
 using System.Collections.Generic;
-using Werewolf.Roles;
+using LandGrants.Roles;
 using System.Linq;
 
-namespace Werewolf.Game
+namespace LandGrants.Game
 {
     public class WerwolfPlayer
     {

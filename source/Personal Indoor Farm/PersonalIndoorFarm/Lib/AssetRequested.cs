@@ -20,23 +20,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PersonalIndoorFarm.ModEntry;
 
 namespace PersonalIndoorFarm.Lib
 {
     public class AssetRequested
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public const string FarmsAsset = "DLX.PIF/Farms";
         public const string SpriteSheetAsset = "DLX.PIF_SpriteSheet";
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
-
             Helper.Events.Content.AssetRequested += OnAssetRequested;
         }
 
@@ -58,46 +51,17 @@ namespace PersonalIndoorFarm.Lib
                 //If you want more dimensions just add a new furniture and make sure it's called "DLX.PIF_Door_<id>"
                 e.Edit(asset => {
                     var editor = asset.AsDictionary<string, string>();
-                    editor.Data.Add($"{Door.ItemId}_Aether",
-                        "Dimension Door - Aether" + //name
-                        "/painting" + //type
-                        "/1 3" + //tilesheet size
-                        "/1 3" + //bounding box size
-                        "/1" + //rotations
-                        "/1000" + //price
-                        "/-1" + //placement restriction
-                        $"/{Helper.Translation.Get("Door1.Name")}" + //display name
-                        "/0" + //Index in sprite sheet
-                        $"/{SpriteSheetAsset}"
-                    );
+                    var data = editor.Data;
 
-                    editor.Data.Add($"{Door.ItemId}_Erebus",
-                        "Dimension Door - Erebus" + //name
-                        "/painting" + //type
-                        "/1 3" + //tilesheet size
-                        "/1 3" + //bounding box size
-                        "/1" + //rotations
-                        "/15000" + //price
-                        "/-1" + //placement restriction
-                        $"/{Helper.Translation.Get("Door2.Name")}" + //display name
-                        "/6" + //Index in sprite sheet
-                        $"/{SpriteSheetAsset}"
-                    );
+                    addDoor(data, "Aether", 1000, "Door1.Name", 0);
+                    addDoor(data, "Erebus", 15000, "Door2.Name", 6);
+                    addDoor(data, "Chaos", 40000, "Door3.Name", 7);
 
-                    editor.Data.Add($"{Door.ItemId}_Chaos",
-                        "Dimension Door - Chaos" + //name
-                        "/painting" + //type
-                        "/1 3" + //tilesheet size
-                        "/1 3" + //bounding box size
-                        "/1" + //rotations
-                        "/40000" + //price
-                        "/-1" + //placement restriction
-                        $"/{Helper.Translation.Get("Door3.Name")}" + //display name
-                        "/7" + //Index in sprite sheet
-                        $"/{SpriteSheetAsset}"
-                    );
+                    addDoor(data, "Attic", 20000, "DoorAttic.Name", 30, Door.SoundWoodStep, 2);
+                    addDoor(data, "Loft", 20000, "DoorLoft.Name", 32, Door.SoundWoodStep, 2);
+                    addDoor(data, "Cellar", 20000, "DoorCellar.Name", 34, Door.SoundWoodStep, 2);
 
-                    editor.Data.Add(Painting.ItemId,
+                    data.Add(Painting.ItemId,
                         "Painting of the Season" + //name
                         "/painting" + //type
                         "/1 2" + //tilesheet size
@@ -105,10 +69,26 @@ namespace PersonalIndoorFarm.Lib
                         "/1" + //rotations
                         "/500" + //price
                         "/-1" + //placement restriction
-                        $"/{Helper.Translation.Get("Painting.Name")}" + //display name
+                        $"/[LocalizedText Strings\\Furniture:DLX.PIF.Painting.Name]" + //display name
                         "/1" + //Index in sprite sheet
                         $"/{SpriteSheetAsset}"
                     );
+                });
+
+            } else if(e.NameWithoutLocale.IsEquivalentTo("Strings/Furniture")) {
+                e.Edit(asset => {
+                    var editor = asset.AsDictionary<string, string>();
+                    var data = editor.Data;
+
+                    data.Add("DLX.PIF.Door1.Name", Helper.Translation.Get("Door1.Name"));
+                    data.Add("DLX.PIF.Door2.Name", Helper.Translation.Get("Door2.Name"));
+                    data.Add("DLX.PIF.Door3.Name", Helper.Translation.Get("Door3.Name"));
+
+                    data.Add("DLX.PIF.DoorAttic.Name", Helper.Translation.Get("DoorAttic.Name"));
+                    data.Add("DLX.PIF.DoorLoft.Name", Helper.Translation.Get("DoorLoft.Name"));
+                    data.Add("DLX.PIF.DoorCellar.Name", Helper.Translation.Get("DoorCellar.Name"));
+
+                    data.Add("DLX.PIF.Painting.Name", Helper.Translation.Get("Painting.Name"));
                 });
 
             } else if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects")) {
@@ -134,6 +114,26 @@ namespace PersonalIndoorFarm.Lib
                         ExcludeFromShippingCollection = true,
                         ExcludeFromFishingCollection = true,
                     });
+
+                    editor.Data.Add(VoidSeal.ItemId, new ObjectData() {
+                        Name = "Void Seal Liquid",
+                        DisplayName = Helper.Translation.Get("VoidSeal.Name"),
+                        Description = Helper.Translation.Get("VoidSeal.Description"),
+                        Type = "Cooking",
+                        Category = 0,
+                        Price = 250,
+                        Texture = SpriteSheetAsset,
+                        SpriteIndex = 15,
+                        Edibility = -10,
+                        IsDrink = true,
+                        Buffs = new List<ObjectBuffData>() { new ObjectBuffData() {
+                            BuffId = VoidSeal.BuffId,
+                            Duration = 30
+                        } },
+                        ExcludeFromRandomSale = true,
+                        ExcludeFromShippingCollection = true,
+                        ExcludeFromFishingCollection = true,
+                    });
                 });
 
             } else if (e.NameWithoutLocale.IsEquivalentTo("Data/Buffs")) {
@@ -149,6 +149,16 @@ namespace PersonalIndoorFarm.Lib
                         IconTexture = "TileSheets\\BuffsIcons",
                         ActionsOnApply = new() { SpaceTimeSynchronizer.BuffTriggerAction }
                     });
+
+                    editor.Data.Add(VoidSeal.BuffId, new BuffData {
+                        Duration = 30,
+                        GlowColor = "MediumPurple",
+                        DisplayName = Helper.Translation.Get("VoidSeal.Buff.Name"),
+                        Description = Helper.Translation.Get("VoidSeal.Buff.Description"),
+                        IconSpriteIndex = 14,
+                        IconTexture = "TileSheets\\BuffsIcons",
+                        ActionsOnApply = new() { VoidSeal.BuffTriggerAction }
+                    });
                 });
 
             } else if (e.NameWithoutLocale.IsEquivalentTo("Data/Shops")) {
@@ -158,12 +168,32 @@ namespace PersonalIndoorFarm.Lib
                         new ShopItemData() { Id = $"{Door.QualifiedItemId}_Aether", ItemId = $"{Door.QualifiedItemId}_Aether" },
                         new ShopItemData() { Id = $"{Door.QualifiedItemId}_Erebus", ItemId = $"{Door.QualifiedItemId}_Erebus" },
                         new ShopItemData() { Id = $"{Door.QualifiedItemId}_Chaos", ItemId = $"{Door.QualifiedItemId}_Chaos" },
+                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Attic", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Attic" },
+                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Loft", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Loft" },
+                        new ShopItemData() { Id = $"{Door.QualifiedItemId}_Cellar", ItemId = $"{Door.QualifiedItemId}_{Door.SoundWoodStep}Cellar" },
                         new ShopItemData() { Id = Painting.QualifiedItemId, ItemId = Painting.QualifiedItemId },
                         new ShopItemData() { Id = SpaceTimeSynchronizer.QualifiedItemId, ItemId = SpaceTimeSynchronizer.QualifiedItemId },
+                        new ShopItemData() { Id = VoidSeal.QualifiedItemId, ItemId = VoidSeal.QualifiedItemId },
                     });
 
                 });
             }
+        }
+
+        public static void addDoor(IDictionary<string, string> data, string name, int price, string translation, int index, string sound = "", int w = 1, int h = 3)
+        {
+            data.Add($"{Door.ItemId}_{sound}{name}",
+                $"Dimension Door - {name}" + //name
+                "/painting" + //type
+                $"/{w} {h}" + //tilesheet size
+                $"/{w} {h}" + //bounding box size
+                "/1" + //rotations
+                $"/{price}" + //price
+                "/-1" + //placement restriction
+                $"/[LocalizedText Strings\\Furniture:DLX.PIF.{translation}]" + //display name
+                $"/{index}" + //Index in sprite sheet
+                $"/{SpriteSheetAsset}"
+            );
         }
     }
 }

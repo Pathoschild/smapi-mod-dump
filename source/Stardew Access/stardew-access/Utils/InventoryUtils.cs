@@ -125,10 +125,14 @@ internal static class InventoryUtils
             ? string.Join(", ", customBuffs)
             : GetBuffsFromItem(item);
         string description = item.getDescription();
-        bool isShowingSellPrice = (Game1.player.stats.Get("Book_PriceCatalogue") != 0 && !(item is Furniture) && item.CanBeLostOnDeath() && !(item is Clothing) && !(item is Wallpaper) && (!(item is StardewValley.Object) || !(item as StardewValley.Object)!.bigCraftable.Value) && item.sellToStorePrice(-1L) > 0);
+        bool isShowingSellPrice = (Game1.player.stats.Get("Book_PriceCatalogue") != 0 && item is not Furniture && item.CanBeLostOnDeath() && item is not Clothing && item is not Wallpaper && (item is not StardewValley.Object || !(item as StardewValley.Object)!.bigCraftable.Value) && item.sellToStorePrice(-1L) > 0);
         string price = isShowingSellPrice ? GetPrice(item.sellToStorePrice() * item.Stack) : GetPrice(hoverPrice);
         string requirements = GetExtraItemInfo(extraItemToShowIndex, extraItemToShowAmount);
         string enchants = GetEnchantmentsFromItem(item);
+        string equippedBait = (item is FishingRod fishingRod && fishingRod.GetBait() is not null) ? GetPluralNameOfItem(fishingRod.GetBait()) : "";
+        string equippedTackles = (item is FishingRod fishingRod2 && fishingRod2.GetTackle().Count > 0)
+            ? string.Join(", ", fishingRod2.GetTackle().Select(x => x is not null ? x.DisplayName : "").Where(x => !string.IsNullOrWhiteSpace(x)))
+            : "";
 
         string details;
         string toReturn = name;
@@ -138,6 +142,8 @@ internal static class InventoryUtils
             details = string.Join(", ", new string[]
             {
                 quality,
+                equippedBait,
+                equippedTackles,
                 enchants,
                 requirements,
                 price,
@@ -151,6 +157,8 @@ internal static class InventoryUtils
             details = string.Join(", ", new string[]
             {
                 quality,
+                equippedBait,
+                equippedTackles,
                 enchants,
                 requirements,
                 price
@@ -185,7 +193,7 @@ internal static class InventoryUtils
             });
             prevTranslatedName = itemName;
 #if DEBUG
-            Log.Verbose("Updated inventory translation cache");
+            Log.Verbose($"Updated inventory translation cache for {itemName}", true);
 #endif
         }
 
@@ -248,7 +256,7 @@ internal static class InventoryUtils
         }
         else
         {
-            buffIconsToDisplay = new string[0];
+            buffIconsToDisplay = [];
         }
 
         string toReturn = "";

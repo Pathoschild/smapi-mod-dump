@@ -6,9 +6,9 @@ mods:
    Ultimate Fertilizer
 
 latest commit:
-   commit 282be0cd13076d0c523fed51dee817b43340bf8d
+   commit 1d62c70c592c2dee7551f09f0f87066a70ddbe8d
    Author: Fox_white <vct.xie@gmail.com>
-   Date:   Sat Mar 30 07:30:39 2024 +0800
+   Date:   Fri Apr 26 12:29:21 2024 +0800
    
-       tag: v1.0.4
+       i18n: translate options
    

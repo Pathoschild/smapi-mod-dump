@@ -17,6 +17,7 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using xTile.Dimensions;
 using xTile.Tiles;
+using System.Collections.Generic;
 
 namespace Shoplifter
 {
@@ -449,11 +450,12 @@ namespace Shoplifter
         /// <param name="tileLocation">The clicked tilelocation</param>
         public static void AnimalShopShopliftingMenu(GameLocation location, Farmer who, Location tileLocation)
         {
+            var marnie = location.getCharacterFromName("Marnie");
             // Player is in correct position for buying
             if (who.Tile.Y > tileLocation.Y)
             {
                 // Marnie is not in the location, she is on the island, ignore if can't shoplift
-                if (location.getCharacterFromName("Marnie") == null && Game1.IsVisitingIslandToday("Marnie") == true)
+                if (marnie == null && Game1.IsVisitingIslandToday("Marnie") == true)
                 {
                     Game1.dialogueUp = false;
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:AnimalShop_MoneyBox"));
@@ -472,7 +474,7 @@ namespace Shoplifter
                 }
 
                 // Marnie is not at the location and is absent for the day
-                else if (Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Tue") && location.animalShop(tileLocation) == true && location.getCharacterFromName("Marnie") == null)
+                else if (Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Tue") && location.animalShop(tileLocation) == true && marnie == null)
                 {
                     Game1.dialogueUp = false;
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:AnimalShop_Marnie_Absent").Replace('\n', '^'));
@@ -482,17 +484,50 @@ namespace Shoplifter
                     };
                 }
 
+                // Marnie can't sell, player has animal catalogue. shoplift or not?
+                else if (Game1.player.stats.Get("Book_AnimalCatalogue") != 0 && (marnie == null || (marnie != null && marnie.Tile != new Vector2(tileLocation.X, tileLocation.Y - 1) && marnie.Tile != new Vector2(tileLocation.X - 1, tileLocation.Y - 1))))
+                {
+                    Game1.dialogueUp = false;
+                    Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\1_6_Strings:Marnie_Counter"));
+                    Game1.afterDialogues = delegate
+                    {
+                        if (CanShoplift("AnimalShop") == true)
+                        {
+                            ShopliftingMenu(location, new string[2] { "Marnie", "Shane" }, "AnimalShop", 1, 15, true);
+                        }
+                        else
+                        {
+                            List<Response> list = new List<Response>
+                            {
+                                new Response("Supplies", Game1.content.LoadString("Strings\\Locations:AnimalShop_Marnie_Supplies")),
+                                new Response("Purchase", Game1.content.LoadString("Strings\\Locations:AnimalShop_Marnie_Animals")),
+                                new Response("Leave", Game1.content.LoadString("Strings\\Locations:AnimalShop_Marnie_Leave"))
+                            };
+
+                            if (Game1.player.mailReceived.Contains("MarniePetAdoption") || Game1.player.mailReceived.Contains("MarniePetRejectedAdoption"))
+                            {
+                                list.Insert(2, new Response("Adopt", Game1.content.LoadString("Strings\\1_6_Strings:AdoptPets")));
+                            }
+
+                            location.createQuestionDialogue("", list.ToArray(), "Marnie");
+                        }
+
+                    };
+                }
+
                 // Marnie can't sell. Period.
-                else if (location.animalShop(tileLocation) == false)
+                else if (location.animalShop(tileLocation) == false && Game1.player.stats.Get("Book_AnimalCatalogue") == 0)
                 {
                     ShopliftingMenu(location, new string[2] { "Marnie", "Shane" }, "AnimalShop", 1, 15);
                 }
+                             
 
                 // Marnie can sell and player can't steal
                 else if (location.animalShop(tileLocation) == true && ModEntry.PerScreenStolen.Value == true)
                 {
                     return;
                 }
+
             }
         }
 
@@ -575,6 +610,11 @@ namespace Shoplifter
             {
                 ShopliftingMenu(location, new string[1] { "Gus" }, "ResortBar", 2, 1, bannable: false);
             }
+        }
+
+        public static void JojaShopliftingMenu(GameLocation location)
+        {
+            ShopliftingMenu(location, new string[3] { "Morris", "Shane", "Sam" }, "Joja", 5, 5);
         }
     }
 }

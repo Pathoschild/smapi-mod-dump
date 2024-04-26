@@ -28,11 +28,11 @@ namespace HappyHomeDesigner.Menus
 		private readonly string KeyFavs;
 
 		protected readonly List<T> entries = new();
-		protected List<T> variants = new();
+		protected IReadOnlyList<VariantEntry<TE>> variants = Array.Empty<VariantEntry<TE>>();
 		protected readonly List<T> Favorites = new();
 		private bool showVariants = false;
 		private int variantIndex = -1;
-		private T? variantItem;
+		private T variantItem;
 		protected TE hovered;
 
 		protected int iconRow;
@@ -87,10 +87,9 @@ namespace HappyHomeDesigner.Menus
 
 		public abstract IEnumerable<T> GetItemsFrom(IEnumerable<ISalable> source, ICollection<string> favorites);
 
-		public override int Count()
-		{
-			return entries.Count;
-		}
+		public override int Count() 
+			=> entries.Count;
+
 		public void UpdateDisplay()
 		{
 			variantIndex = MainPanel.FilteredItems.Find(variantItem);
@@ -135,8 +134,16 @@ namespace HappyHomeDesigner.Menus
 		{
 			base.Resize(region);
 
+			int bottom_margin = ModEntry.config.LargeVariants ? 0 : 240;
+			const int top_margin = 256;
+
 			MainPanel.Resize(width - 36, height - 64, xPositionOnScreen + 55, yPositionOnScreen);
-			VariantPanel.Resize(CELL_SIZE * 3 + 32, height - 496, Game1.uiViewport.Width - CELL_SIZE * 3 - 64, yPositionOnScreen + 256);
+			VariantPanel.Resize(
+				CELL_SIZE * 3 + 32, 
+				height - (bottom_margin + top_margin), 
+				Game1.uiViewport.Width - CELL_SIZE * 3 - 80, 
+				yPositionOnScreen + top_margin
+			);
 			TrashSlot.setPosition(
 				MainPanel.xPositionOnScreen + MainPanel.width - 48 + GridPanel.BORDER_WIDTH,
 				MainPanel.yPositionOnScreen + MainPanel.height + GridPanel.BORDER_WIDTH + GridPanel.MARGIN_BOTTOM
@@ -185,7 +192,7 @@ namespace HappyHomeDesigner.Menus
 		{
 			variantIndex = index;
 			variantItem = entry;
-			variants = (List<T>)entry.GetVariants();
+			variants = entry.GetVariants();
 			VariantPanel.Items = variants;
 			showVariants = true;
 		}
@@ -199,8 +206,10 @@ namespace HappyHomeDesigner.Menus
 		public override void receiveScrollWheelAction(int direction)
 		{
 			var pos = Game1.getMousePosition(true);
+
 			if (MainPanel.isWithinBounds(pos.X, pos.Y))
 				MainPanel.receiveScrollWheelAction(direction);
+
 			else if (VariantPanel.isWithinBounds(pos.X, pos.Y))
 				VariantPanel.receiveScrollWheelAction(direction);
 		}

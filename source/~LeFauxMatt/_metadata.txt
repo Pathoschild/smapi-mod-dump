@@ -4,6 +4,7 @@ urls:
 
 mods:
    Better Chests
+   Crystalline Junimo Chests
    Custom Bush
    Cycle Tools
    Easy Access
@@ -20,11 +21,11 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit 71a43eae2aa3c87c0886b373762450773c261ae6
+   commit c882996551dfe0cdcc4f2ab09c239dbf4a38b862
    Author: FauxMatt <github@fauxmail.net>
-   Date:   Mon Mar 25 18:49:06 2024 -0700
+   Date:   Fri Apr 19 20:14:37 2024 -0700
    
-       Fix errors when custom maps are installed
+       Refactor menu management and fix Backpack Storage options
        
-       This commit fixes a bug that occurred when custom maps were installed. Updates have been made in the AssetHandler.cs, adding checks for empty properties and improving string comparison during garbage can scanning, ensuring a smoother software operation with custom maps.
+       The menu management has been updated to handle the current menu more uniformly across the codebase. Also, the inheritance of global storage options by Backpack Storage has been removed. Various issues with the backpack config, such as visibility in other menus and item placement restrictions, have also been addressed.
    

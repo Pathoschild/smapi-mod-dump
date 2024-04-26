@@ -31,6 +31,7 @@ using StardewValley.GameData.Movies;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using StardewValley.TokenizableStrings;
 using StardewValley.Tools;
 using SObject = StardewValley.Object;
 
@@ -72,6 +73,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         /// <summary>Which gift taste levels to show.</summary>
         private readonly ModGiftTasteConfig ShowGiftTastes;
 
+        /// <summary>The configured minimum field values needed before they're auto-collapsed.</summary>
+        private readonly ModCollapseLargeFieldsConfig CollapseFieldsConfig;
+
         /// <summary>Provides subject entries.</summary>
         private readonly ISubjectRegistry Codex;
 
@@ -88,6 +92,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         /// <param name="progressionMode">Whether to only show content once the player discovers it.</param>
         /// <param name="highlightUnrevealedGiftTastes">Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</param>
         /// <param name="showGiftTastes">Which gift taste levels to show.</param>
+        /// <param name="collapseFieldsConfig">The configured minimum field values needed before they're auto-collapsed.</param>
         /// <param name="item">The underlying target.</param>
         /// <param name="context">The context of the object being looked up.</param>
         /// <param name="knownQuality">Whether the item quality is known. This is <c>true</c> for an inventory item, <c>false</c> for a map object.</param>
@@ -95,13 +100,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         /// <param name="getCropSubject">Get a lookup subject for a crop.</param>
         /// <param name="fromCrop">The crop associated with the item (if applicable).</param>
         /// <param name="fromDirt">The dirt containing the crop (if applicable).</param>
-        public ItemSubject(ISubjectRegistry codex, GameHelper gameHelper, bool progressionMode, bool highlightUnrevealedGiftTastes, ModGiftTasteConfig showGiftTastes, Item item, ObjectContext context, bool knownQuality, GameLocation? location, Func<Crop, ObjectContext, HoeDirt?, ISubject> getCropSubject, Crop? fromCrop = null, HoeDirt? fromDirt = null)
+        public ItemSubject(ISubjectRegistry codex, GameHelper gameHelper, bool progressionMode, bool highlightUnrevealedGiftTastes, ModGiftTasteConfig showGiftTastes, ModCollapseLargeFieldsConfig collapseFieldsConfig, Item item, ObjectContext context, bool knownQuality, GameLocation? location, Func<Crop, ObjectContext, HoeDirt?, ISubject> getCropSubject, Crop? fromCrop = null, HoeDirt? fromDirt = null)
             : base(gameHelper)
         {
             this.Codex = codex;
             this.ProgressionMode = progressionMode;
             this.HighlightUnrevealedGiftTastes = highlightUnrevealedGiftTastes;
             this.ShowGiftTastes = showGiftTastes;
+            this.CollapseFieldsConfig = collapseFieldsConfig;
             this.Target = item;
             this.FromCrop = fromCrop ?? fromDirt?.crop;
             this.FromDirt = fromDirt;
@@ -292,8 +298,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     .Concat(this.GameHelper.GetRecipesForMachine(item as SObject))
                     .ToArray();
 
-                if (recipes.Any())
-                    yield return new ItemRecipesField(this.GameHelper, I18n.Item_Recipes(), item, recipes.ToArray());
+                if (recipes.Length > 0)
+                {
+                    var field = new ItemRecipesField(this.GameHelper, I18n.Item_Recipes(), item, recipes);
+                    if (this.CollapseFieldsConfig.Enabled && recipes.Length >= this.CollapseFieldsConfig.ItemRecipes)
+                        field.CollapseByDefault(I18n.Generic_ShowXResults(count: recipes.Length));
+                    yield return field;
+                }
             }
 
             // fish spawn rules
@@ -301,19 +312,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 yield return new FishSpawnRulesField(this.GameHelper, I18n.Item_FishSpawnRules(), item.ItemId);
 
             // fish pond data
-            // derived from FishPond::doAction and FishPond::isLegalFishForPonds
-            if (!item.HasContextTag("fish_legendary") && (item.Category == SObject.FishCategory || item.QualifiedItemId is "(O)393"/*coral*/ or "(O)397"/*sea urchin*/))
+            // derived from FishPond::doAction
+            if (item.HasTypeObject() && (item.Category is SObject.FishCategory || item.QualifiedItemId is "(O)393"/*coral*/ or "(O)397"/*sea urchin*/))
             {
-                foreach (FishPondData fishPondData in DataLoader.FishPondData(Game1.content))
+                FishPondData? fishPondData = FishPond.GetRawData(item.ItemId);
+                if (fishPondData is not null)
                 {
-                    if (!fishPondData.RequiredTags.All(item.HasContextTag))
-                        continue;
-
                     int minChanceOfAnyDrop = (int)Math.Round(Utility.Lerp(0.15f, 0.95f, 1 / 10f) * 100);
                     int maxChanceOfAnyDrop = (int)Math.Round(Utility.Lerp(0.15f, 0.95f, FishPond.MAXIMUM_OCCUPANCY / 10f) * 100);
                     string preface = I18n.Building_FishPond_Drops_Preface(chance: I18n.Generic_Range(min: minChanceOfAnyDrop, max: maxChanceOfAnyDrop));
                     yield return new FishPondDropsField(this.GameHelper, I18n.Item_FishPondDrops(), -1, fishPondData, preface);
-                    break;
                 }
             }
 
@@ -346,9 +354,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     // movie this week
                     yield return new GenericField(I18n.Item_MovieTicket_MovieThisWeek(), new IFormattedText[]
                     {
-                        new FormattedText(movie.Title, bold: true),
+                        new FormattedText(TokenParser.ParseText(movie.Title), bold: true),
                         new FormattedText(Environment.NewLine),
-                        new FormattedText(movie.Description)
+                        new FormattedText(TokenParser.ParseText(movie.Description))
                     });
 
                     // movie tastes

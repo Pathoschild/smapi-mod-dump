@@ -17,15 +17,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib.AdvancedPricing
 {
     public class AdvancedPricingItem : Item
     {
-        private static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-
         public const string ASSET = "UnlockableBundles/AdvancedPricing";
         public const string APTYPEDEFINITION = "(UB.AP)";
         public const string FLAVOREDTYPEDEFINITION = "(UB.Flavored)";
@@ -47,9 +45,6 @@ namespace Unlockable_Bundles.Lib.AdvancedPricing
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
         public static Item parseItem(string id, int initialStack = 0, int quality = 0)
         {

@@ -9,42 +9,31 @@
 *************************************************/
 
 using StardewValley;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Represents an item you make in your kitchen
-	/// </summary>
-	public class CookedItem : Item
+    /// <summary>
+    /// Represents an item you make in your kitchen
+    /// </summary>
+    public class CookedItem : Item
 	{
 		/// <summary>
 		/// Set up a dictionary to link cooked items to their recipe names
 		/// this will be used to fix the recipe tooltips of items in ObjectInformation
 		/// that do not match from their display names
 		/// </summary>
-		private readonly static Dictionary<int, string> CookedItemsToRecipeNames = new();
+		private readonly static Dictionary<string, string> CookedItemsToRecipeNames = new();
 		static CookedItem() {
             const int CookedItemIdIndex = 2;
-            var cookingRecipeData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, string>>("Data/CookingRecipes");
+			var cookingRecipeData = DataLoader.CookingRecipes(Game1.content);
 
             foreach (KeyValuePair<string, string> data in cookingRecipeData)
             {
                 string[] tokens = data.Value.Split("/");
-				int cookedItemId;
-				try
-				{
-                    cookedItemId = int.Parse(tokens[CookedItemIdIndex]);
-                }
-                catch(Exception) 
-				{
-					Globals.ConsoleTrace($"Cannot parse cooked item id (it was likely modded, so skipping): {data.Key}");
-					continue;
-				}
+				string cookedItemId = tokens[CookedItemIdIndex];
                 CookedItemsToRecipeNames[cookedItemId] = data.Key;
             }
         }
@@ -57,7 +46,7 @@ namespace Randomizer
 		/// <summary>
 		/// The id of the special ingredient used to cook this item
 		/// </summary>
-		public int? IngredientId { get; set; } = null;
+		public string IngredientId { get; set; } = null;
 
         /// <summary>
         /// The special ingredient used to cook this item
@@ -65,9 +54,9 @@ namespace Randomizer
         public string IngredientName { 
 			get 
 			{
-				return IngredientId == null
+				return string.IsNullOrWhiteSpace(IngredientId)
 					? string.Empty
-					: ItemList.Items[(ObjectIndexes)IngredientId.Value].Name;
+					: ItemList.Items[IngredientId].Name;
 			}
 		}
 
@@ -91,16 +80,16 @@ namespace Randomizer
 			}
 		}
 
-		public CookedItem(int id) : base(id)
+		public CookedItem(ObjectIndexes index) : base(index)
 		{
 			IsCooked = true;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
         }
 
 		public CookedItem(
-			int id, 
-			int? ingredientId,
-			bool isFishDish = false): this(id)
+			ObjectIndexes index, 
+			string ingredientId,
+			bool isFishDish = false): this(index)
 		{
 			IsCropOrFishDish = true;
 			IngredientId = ingredientId;
@@ -155,33 +144,12 @@ namespace Randomizer
 		/// <returns>The object that can be sold</returns>
         public override ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
         {
-			var svObject = new SVObject(Id, initialStack, isRecipe, price);
+			var svObject = new SVObject(Id.ToString(), initialStack, isRecipe, price);
 			if (isRecipe)
 			{
 				svObject.Name = RecipeName;
             }
 			return svObject;
         }
-
-        /// <summary>
-        /// Returns the ToString representation to be used for the cooked item object
-        /// </summary>
-        /// <returns />
-        public override string ToString()
-		{
-			if (!IsCropOrFishDish)
-			{
-				Globals.ConsoleWarn($"Unexpected ToString call of cooked item: {Id}: {EnglishName}");
-				return "";
-			}
-
-            string[] itemData = ItemList.OriginalItemList[Id].Split("/");
-            string[] nameAndDescription = Globals.GetTranslation($"item-{Id}-name-and-description", 
-				new { itemName = IngredientName }).Split("/");
-			itemData[(int)ObjectInformationIndexes.DisplayName] = nameAndDescription[0];
-            itemData[(int)ObjectInformationIndexes.Description] = nameAndDescription[1];
-
-            return string.Join("/", itemData);
-		}
     }
 }

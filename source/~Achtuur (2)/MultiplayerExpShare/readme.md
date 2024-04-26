@@ -24,10 +24,14 @@ This mod relies on the base game's exp and levelling system. Any mod that change
 
 # Changelog
 
-## Planned
+## Planne1d
 * Change config to use the host's options
 
-## 1.1.3 (unreleased)
+
+## 1.2.0 
+* Updated to Stardew Valley 1.6.3
+
+## 1.1.3
 
 * Fixes
   * fix bug where exp is "shared" with players who are above level 10 due to skill buff food 

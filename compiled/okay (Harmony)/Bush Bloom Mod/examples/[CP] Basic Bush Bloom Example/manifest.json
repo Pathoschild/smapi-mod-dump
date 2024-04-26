@@ -1,0 +1,11 @@
+﻿{
+	"Name": "[CP] Basic Bush Bloom Example",
+	"Author": "NCarigon",
+    "Version": "1.0.0",
+	"Description": "Example Content Patcher basic usage for Bush Bloom Mod.",
+	"UniqueID": "NCarigon.CPBasicExampleBBM",
+	"MinimumApiVersion": "4.0.0",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	}
+}

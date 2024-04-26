@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 2.1.1
+
+* Updated French translation from Tenebrosful
+
 ## Version 2.1.0
 
 * Add configuration option for adding new items at either the top or

@@ -18,7 +18,7 @@
 	},
 
 	"Patches": {
-		"#IClickableMenu:drawHoverText(SpriteBatch,StringBuilder,,,,,,,,,,,,,,,,)": {
+		"#IClickableMenu:drawHoverText(SpriteBatch,StringBuilder,*)": {
 			"Colors": {
 				"DimGray": { "*": "$ForgeCountText" },
 				"DarkRed": { "*": "$ForgedText" }

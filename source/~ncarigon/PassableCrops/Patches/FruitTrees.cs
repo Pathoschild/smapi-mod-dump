@@ -49,13 +49,18 @@ namespace PassableCrops.Patches {
             Character c
         ) {
             try {
-                if (AnyPassable(__instance) && c is Farmer farmer) {
-                    __result = true;
-                    if (Mod?.Config?.SlowDownWhenPassing ?? false)
-                        farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
-                    if (___maxShake == 0f) {
-                        ___shakeLeft.Value = Game1.player.StandingPixel.X > (__instance.Tile.X + 0.5f) * 64f || (Game1.player.Tile.X == __instance.Tile.X && Game1.random.NextBool());
-                        ___maxShake = (float)(Math.PI / 64.0);
+                if (AnyPassable(__instance)) {
+                    var farmer = c as Farmer;
+                    if (farmer is not null || (Mod?.Config?.PassableByAll ?? false)) {
+                        __result = true;
+                        if (farmer is not null && (Mod?.Config?.SlowDownWhenPassing ?? false)) {
+                            farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
+                        }
+                        if ((Mod?.Config?.ShakeWhenPassing ?? true) && c is not null && ___maxShake == 0f) {
+                            ___shakeLeft.Value = c.StandingPixel.X > (__instance.Tile.X + 0.5f) * 64f || (c.Tile.X == __instance.Tile.X && Game1.random.NextBool());
+                            ___maxShake = (float)(Math.PI / 64.0);
+                            Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                        }
                     }
                 }
             } catch { }

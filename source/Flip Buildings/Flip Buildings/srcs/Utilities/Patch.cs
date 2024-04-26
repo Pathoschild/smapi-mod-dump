@@ -18,7 +18,7 @@ using StardewValley.Mods;
 
 namespace FlipBuildings.Utilities
 {
-	internal class PatchHelper
+	internal class PatchUtility
 	{
 		internal class CodeReplacement {
 			internal readonly string				modDataKey;

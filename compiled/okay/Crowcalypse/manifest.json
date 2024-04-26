@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Crowcalypse",
+  "Author": "stardemod",
+  "Version": "1.3.0",
+  "Description": "Crowcalypse: Crows stealing everything",
+  "UniqueID": "stardemod.Crowcalypse",
+  "EntryDll": "Crowcalypse.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:22594" ]
+}

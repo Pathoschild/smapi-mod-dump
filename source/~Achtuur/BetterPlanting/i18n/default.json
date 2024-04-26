@@ -12,6 +12,8 @@
     /** Config Menu **/
     "cfg_section.general": "General settings",
 
+    "cfg_DefaultFillMode.Name": "Default Fill Mode",
+    "cfg_DefaultFillMode.Desc": "This fill mode will be automatically selected when holding seeds",
     "cfg_IncrementKeyBind.Name": "Next Fill Mode",
     "cfg_IncrementKeyBind.Desc": "Key to press when swapping to next fill mode",
     "cfg_DecrementKeyBind.Name": "Previous Fill Mode",

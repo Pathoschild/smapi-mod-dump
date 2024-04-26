@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7694
+IDs: aedenthorn.FishingChestsExpanded
+update keys: Nexus:7694, UpdateManifest:https://raw.githubusercontent.com/mouahrara/aedenthorn/master/update-manifest.json@FishingChestsExpanded, GitHub:aedenthorn/StardewValleyMods

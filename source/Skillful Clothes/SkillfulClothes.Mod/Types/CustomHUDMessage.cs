@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,11 @@ namespace SkillfulClothes.Types
             drawForItem = forItem;
 			this.itemColor = itemColor;
 			this.timeLeft = (float)displayDuration.TotalMilliseconds;
-		}
+		}        
 
-		public override void draw(SpriteBatch b, int i)
+        public override void draw(SpriteBatch b, int i, ref int heightUsed)
 		{
-			base.draw(b, i);
+			base.draw(b, i, ref heightUsed);
 
 			Rectangle tsarea = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
 

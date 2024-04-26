@@ -11,6 +11,7 @@
 using BZP_Allergies.Apis;
 using BZP_Allergies.AssetPatches;
 using BZP_Allergies.Config;
+using BZP_Allergies.ContentPackFramework;
 using BZP_Allergies.HarmonyPatches;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using System;
 using static BZP_Allergies.AllergenManager;
 
 namespace BZP_Allergies
@@ -42,9 +44,10 @@ namespace BZP_Allergies
         public override void Entry(IModHelper modHelper)
         {
             ModHelper = modHelper;
+            Initializable.Initialize(Monitor, ModHelper.GameContent, ModHelper.ModContent);
 
             // allergen manager
-            AllergenManager.Initialize(Monitor, ModHelper.GameContent, ModHelper.ModContent);
+            AllergenManager.InitDefaultDicts();
 
             // events
             modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -55,14 +58,14 @@ namespace BZP_Allergies
             Config = Helper.ReadConfig<ModConfig>();
 
             // harmony patches
-            PatchFarmerDoneEating.Initialize(Monitor, ModHelper.GameContent, ModHelper.ModContent);
-            PatchEatQuestionPopup.Initialize(Monitor, ModHelper.GameContent, ModHelper.ModContent);
 
             Harmony = new(ModManifest.UniqueID);
             Harmony.PatchAll();
 
             // console commands
-            modHelper.ConsoleCommands.Add("list_allergens", "Get a list of all possible allergens.", this.ListAllergens);
+            modHelper.ConsoleCommands.Add("bzpa_list_allergens", "Get a list of all possible allergens.", ListAllergens);
+            modHelper.ConsoleCommands.Add("bzpa_get_held_allergens", "Get the allergens of the currently-held item.", GetAllergensOfHeldItem);
+            modHelper.ConsoleCommands.Add("bzpa_reload", "Reload all content packs.", ReloadPacks);
         }
 
 
@@ -77,7 +80,7 @@ namespace BZP_Allergies
         {
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
             {
-                foreach (Allergens a in Enum.GetValues<Allergens>())
+                foreach (string a in ALLERGEN_TO_DISPLAY_NAME.Keys)
                 {
                     PatchObjects.AddAllergen(e, a);
                 }
@@ -100,10 +103,15 @@ namespace BZP_Allergies
                 return;
             }
 
-            // register mod
+            // content packs
+            LoadContentPacks.LoadPacks(Helper.ContentPacks.GetOwned(), Config);
+
+            // config
             configMenu.Register(
                 mod: ModManifest,
-                reset: () => Config = new ModConfig(),
+                reset: () => {
+                    Config = new ModConfig();
+                },
                 save: () => {
                     Helper.WriteConfig(Config);
                     Config = Helper.ReadConfig<ModConfig>();
@@ -112,6 +120,10 @@ namespace BZP_Allergies
             );
 
             ConfigMenuInit.SetupMenuUI(configMenu, ModManifest);
+            foreach (IContentPack pack in Helper.ContentPacks.GetOwned())
+            {
+                ConfigMenuInit.SetupContentPackConfig(configMenu, ModManifest, pack);
+            }
         }
 
         /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
@@ -123,7 +135,36 @@ namespace BZP_Allergies
         }
 
         private void ListAllergens(string command, string[] args) {
-            Monitor.Log("egg, wheat, fish, shellfish, treenuts, dairy", LogLevel.Info);
+
+            string result = "\n{Allergen Id}: {Allergen Display Name}";
+
+            foreach (var item in AllergenManager.ALLERGEN_TO_DISPLAY_NAME)
+            {
+                result += "\n\t" + item.Key + ": " + item.Value;
+            }
+
+            Monitor.Log(result, LogLevel.Info);
+        }
+
+        private void GetAllergensOfHeldItem(string command, string[] args)
+        {
+            ISet<string> result = new HashSet<string>();
+            Item currItem = Game1.player.CurrentItem;
+
+            if (currItem is StardewValley.Object currObj)
+            {
+                result = GetAllergensInObject(currObj);
+            }
+
+            Monitor.Log(string.Join(", ", result), LogLevel.Info);
+        }
+
+        private void ReloadPacks(string command, string[] args)
+        {
+            AllergenManager.InitDefaultDicts();
+            LoadContentPacks.LoadPacks(Helper.ContentPacks.GetOwned(), Config);
+            Helper.GameContent.InvalidateCache("Data/Objects");
+            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.StartsWith("Characters/Dialogue/"));
         }
     }
 }

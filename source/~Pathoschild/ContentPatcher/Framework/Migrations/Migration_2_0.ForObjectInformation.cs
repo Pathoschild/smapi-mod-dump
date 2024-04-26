@@ -38,6 +38,12 @@ namespace ContentPatcher.Framework.Migrations
             /// <summary>The 1.6 asset name.</summary>
             private const string NewAssetName = "Data/Objects";
 
+            /// <summary>The numeric object IDs added in Stardew Valley 1.6.</summary>
+            private readonly HashSet<string> NumericIdsAddedIn16 = new() { "6", "8", "10", "12", "14", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50", "52", "54", "56", "58", "742" };
+
+            /// <summary>The vanilla data without mod edits applied, used as the base when a pre-1.6 content pack loads the asset.</summary>
+            private readonly VanillaAssetFactory<Dictionary<string, ObjectData>> OriginalData = new(DataLoader.Objects);
+
 
             /*********
             ** Public methods
@@ -57,10 +63,13 @@ namespace ContentPatcher.Framework.Migrations
             /// <inheritdoc />
             public bool TryApplyLoadPatch<T>(LoadPatch patch, IAssetName assetName, [NotNullWhen(true)] ref T? asset, out string? error)
             {
-                Dictionary<string, string> tempData = patch.Load<Dictionary<string, string>>(this.GetOldAssetName(assetName));
-                Dictionary<string, ObjectData> newData = new();
-                this.MergeIntoNewFormat(newData, tempData, null, patch.ContentPack.Manifest.UniqueID);
-                asset = (T)(object)newData;
+                var data = this.OriginalData.GetFreshCopy();
+                var dataBackup = this.GetOldFormat(data);
+
+                var legacyLoad = patch.Load<Dictionary<string, string>>(this.GetOldAssetName(assetName));
+                this.MergeIntoNewFormat(data, legacyLoad, dataBackup, patch.ContentPack.Manifest.UniqueID);
+
+                asset = (T)(object)data;
 
                 error = null;
                 return true;
@@ -132,7 +141,12 @@ namespace ContentPatcher.Framework.Migrations
                 foreach (string key in asset.Keys)
                 {
                     if (!from.ContainsKey(key))
+                    {
+                        if (!int.TryParse(key, out _) || this.NumericIdsAddedIn16.Contains(key))
+                            continue; // don't remove 1.6 content for a pre-1.6 content pack (usually a load patch)
+
                         asset.Remove(key);
+                    }
                 }
 
                 // apply entries

@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Data;
 using StardewValley;
 using System.Collections.Generic;
 using xTile.Dimensions;
@@ -36,7 +37,7 @@ namespace StardewDruid.Cast.Weald
         public override void CastEffect()
         {
 
-            int objectIndex = Map.SpawnData.RandomPoolFish(targetLocation);
+            int objectIndex = SpawnData.RandomPoolFish(targetLocation);
 
             int objectQuality = 0;
 
@@ -56,7 +57,7 @@ namespace StardewDruid.Cast.Weald
 
             ModUtility.AnimateSplash(targetLocation, targetVector, targetDirection);
             Vector2 cursorVector = targetVector * 64;
-            ModUtility.AnimateCursor(targetLocation, cursorVector);
+            Mod.instance.iconData.CursorIndicator(targetLocation, cursorVector, IconData.cursors.weald);
         }
 
     }

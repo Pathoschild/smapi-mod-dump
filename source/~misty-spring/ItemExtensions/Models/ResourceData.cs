@@ -11,9 +11,12 @@
 using System.Text;
 using ItemExtensions.Models.Contained;
 using ItemExtensions.Models.Enums;
+using ItemExtensions.Models.Items;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace ItemExtensions.Models;
 
@@ -33,6 +36,7 @@ public class ResourceData
     
     // Required
     public string Name { get; set; }
+    public CustomResourceType Type { get; set; } = CustomResourceType.Stone;
     public string DisplayName { get; set; } = "[LocalizedText Strings\\Objects:Stone_Name]";
     public string Description { get; set; } = "[LocalizedText Strings\\Objects:Stone_Description]";
     public string Texture { get; set; } = "Maps/springobjects";
@@ -75,6 +79,7 @@ public class ResourceData
     public string Tool { get; set; } = "Pickaxe";
 
     public NotifyForTool? SayWrongTool { get; set; } = NotifyForTool.None;
+    public bool ImmuneToBombs { get; set; }
     /// <summary>
     /// Minimum upgrade tool should have. If a weapon, the minimum number is checked. 
     /// ("number": 10% of average damage)
@@ -99,7 +104,7 @@ public class ResourceData
     public List<MineSpawn> MineSpawns { get; set; } = new();
     //conditional
     internal List<MineSpawn> RealSpawnData { get; set; } = new();
-    
+
 
     public bool IsValid(bool skipTextureCheck)
     {
@@ -174,7 +179,7 @@ public class ResourceData
 
         if (string.IsNullOrWhiteSpace(ItemDropped))
         {
-            Log("Resource's dropped item is empty. The resource will still be added, but keep this in mind when debugging your content pack.", LogLevel.Debug);
+            Log("Resource's dropped item is empty. The resource will still be added, but keep this in mind when debugging your content pack.");
         }
 
         try

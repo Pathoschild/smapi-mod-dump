@@ -9,6 +9,7 @@
 *************************************************/
 
 using AchtuurCore.Extensions;
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
@@ -21,17 +22,15 @@ using System.Threading.Tasks;
 namespace HoverLabels.Labels.Buildings;
 internal class MillLabel : BuildingLabel
 {
-    Mill hoverMill;
     public override bool ShouldGenerateLabel(Vector2 cursorTile)
     {
         return ModEntry.IsPlayerOnFarm()
-            && BuildingLabel.GetFarmBuildings().Any(b => b is Mill && b.GetRect().Contains(cursorTile));
+            && BuildingLabel.GetFarmBuildings().Any(b => b.GetData().Name.Contains("mill") && b.GetRect().Contains(cursorTile));
     }
 
     public override void SetCursorTile(Vector2 cursorTile)
     {
         base.SetCursorTile(cursorTile);
-        hoverMill = hoverBuilding as Mill;
     }
 
     public override void GenerateLabel()
@@ -39,18 +38,19 @@ internal class MillLabel : BuildingLabel
         base.GenerateLabel();
 
         int labelMaxSize = ModEntry.GetLabelSizeLimit();
-        List<Item> inputItems = hoverMill.input.Value.items.Where(item => item is not null).ToList();
-        List<Item> outputItems = hoverMill.output.Value.items.Where(item => item is not null).ToList();
+
+        List<Item> inputItems = hoverBuilding.GetBuildingChest("Input").Items.Where(item => item is not null).ToList();
+        List<Item> outputItems = hoverBuilding.GetBuildingChest("Output").Items.Where(item => item is not null).ToList();
 
         if (outputItems.Count > 0)
         {
-            this.Description.Add("Finished:");
+            AddBorder(I18n.Ready() + ":");
             this.GenerateInventoryDescription(outputItems);
         }
 
         if (inputItems.Count > 0)
         {
-            this.Description.Add("Currently Processing:");
+            AddBorder(I18n.Processing() + ":");
             this.GenerateInventoryDescription(inputItems);
         }
     }
@@ -61,21 +61,29 @@ internal class MillLabel : BuildingLabel
     /// <param name="items"></param>
     /// <param name="labelSize"></param>
     /// <returns></returns>
-    public int GenerateInventoryDescription(IEnumerable<Item> items)
+    public void GenerateInventoryDescription(IEnumerable<Item> items)
     {
-        Dictionary<string, int> groupedItems = items
-            .GroupBy(item => item.DisplayName)
-            .ToDictionary(group => group.Key, group => group.Sum(item => item.Stack));
+        //Dictionary<string, int> groupedItems = items
+        //    .GroupBy(item => item.DisplayName)
+        //    .ToDictionary(group => group.Key, group => group.Sum(item => item.Stack));
             
-        var orderedItems = groupedItems
-            .OrderByDescending(entry => entry.Value)
-            .ThenBy(entry => entry.Key);
+        //var orderedItems = groupedItems
+        //    .OrderByDescending(entry => entry.Value)
+        //    .ThenBy(entry => entry.Key);
 
-        foreach ((string name, int amount) in orderedItems.Select(x => (x.Key, x.Value)))
+        //foreach ((string name, int amount) in orderedItems.Select(x => (x.Key, x.Value)))
+        //{
+        //    this.Description.Add($"> {name}: {amount}");
+        //}
+
+        var orderedItems = items
+            .OrderByDescending(item => item.Stack)
+            .ThenBy(item => item.DisplayName);
+    
+        foreach (Item item in orderedItems)
         {
-            this.Description.Add($"> {name}: {amount}");
+            ItemLabelText itemlabel = new(item);
+            AppendLabelToBorder(itemlabel);
         }
-
-        return groupedItems.Count;
     }
 }

@@ -9,5 +9,6 @@
 *************************************************/
 
 {
+  "Log.TileStats": "{{changed}} out of {{total}} checked tiles were editted to allow Sprinklers.",
   "Log.SprinklersAllowed": "Sprinklers can now be placed on sand on your farm."
 }

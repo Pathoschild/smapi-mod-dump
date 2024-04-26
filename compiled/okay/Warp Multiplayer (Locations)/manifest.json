@@ -1,0 +1,16 @@
+﻿{
+    "Name": "WarpMultiplayer_Locations",
+    "Author": "Shaklin",
+    "Version": "1.3",
+    "Description": "Add more Warps into WarpMultiplayer",
+    "UniqueID": "shaklin.warpmultiplayer_locations",
+    "EntryDll": "WarpMultiplayer_Locations.dll",
+    "UpdateKeys": [ "Nexus: 8950" ],
+    "MinimumApiVersion": "4.0.0",
+    "Dependencies": [
+      {
+        "UniqueID": "lesbiansheep.WarpToPlayer",
+        "IsRequired": true
+      }
+    ]
+}

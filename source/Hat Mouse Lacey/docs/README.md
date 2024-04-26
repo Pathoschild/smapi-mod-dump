@@ -133,6 +133,11 @@ More config settings may be added in future releases.
 
 
 ## Compatibility
+
+**This list is unchanged since the 1.1.3 release for SDV 1.5.6. I have not
+re-evaluated other mods for compatibility yet, since I'm still playing 1.6
+mostly unmodded. I will update this in the future as time permits.**
+
 &check; Fully supported\
 &rarrc; Partial or in-progress\
 &cross; Expect breakage or major issues

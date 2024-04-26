@@ -9,19 +9,13 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.GameData;
+using StardewModdingAPI;
 using StardewValley.Objects;
-using StardewValley.TokenizableStrings;
-using StardewValley.Tools;
+using Microsoft.Xna.Framework;
+using xTile.ObjectModel;
+using xTile.Tiles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using xTile;
-using Object = StardewValley.Object;
 
 namespace AnythingAnywhere.Framework.Patches.GameLocations
 {
@@ -39,27 +33,34 @@ namespace AnythingAnywhere.Framework.Patches.GameLocations
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.CanPlaceThisFurnitureHere), new[] { typeof(Furniture)}), postfix: new HarmonyMethod(GetType(), nameof(CanPlaceThisFurnitureHerePostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.isBuildable), new[] { typeof(Vector2), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(IsBuildablePostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.IsBuildableLocation)), postfix: new HarmonyMethod(GetType(), nameof(IsBuildableLocationPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.doesTileHaveProperty), new [] { typeof(int), typeof(int), typeof(string), typeof(string), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(DoesTileHavePropertyPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.CanFreePlaceFurniture)), postfix: new HarmonyMethod(GetType(), nameof(CanFreePlaceFurniturePostfix)));
+
         }
 
-        // Sets all furniture types as placeable in all locations. This lets you place beds outside.
+        // Sets all furniture types as placeable in all locations.
         private static void CanPlaceThisFurnitureHerePostfix(GameLocation __instance, Furniture furniture, ref bool __result)
         {
             if (ModEntry.modConfig.EnablePlacing)
                     __result = true;
         }
 
-        // Sets tiles buildable for construction
+        // Sets tiles buildable for construction (just visual)
         private static void IsBuildablePostfix(GameLocation __instance, Vector2 tileLocation, ref bool __result, bool onlyNeedsToBePassable = false)
         {
             if (ModEntry.modConfig.EnableBuilding)
             {
-                if (__instance.isTilePassable(tileLocation) && !__instance.isWaterTile((int)tileLocation.X, (int)tileLocation.Y))
-                {
-                    __result = !__instance.IsTileOccupiedBy(tileLocation, CollisionMask.All, CollisionMask.All);
-                }
-                else if (ModEntry.modConfig.EnableFreeBuild)
+                if (ModEntry.modConfig.EnableBuildAnywhere)
                 {
                     __result = true;
+                }
+                else if (!__instance.IsOutdoors && !ModEntry.modConfig.EnableBuildingIndoors)
+                {
+                    __result = false;
+                }
+                else if (__instance.isTilePassable(tileLocation) && !__instance.isWaterTile((int)tileLocation.X, (int)tileLocation.Y))
+                {
+                    __result = !__instance.IsTileOccupiedBy(tileLocation, CollisionMask.All, CollisionMask.All);
                 }
                 else
                 {
@@ -72,6 +73,58 @@ namespace AnythingAnywhere.Framework.Patches.GameLocations
         private static void IsBuildableLocationPostfix(GameLocation __instance, ref bool __result)
         {
             if (ModEntry.modConfig.EnableBuilding)
+            {
+                if (ModEntry.modConfig.EnableBuildingIndoors)
+                    __result = true;
+
+                if (__instance.IsOutdoors)
+                    __result = true;
+            }
+
+            if (ModEntry.modConfig.EnableBuildAnywhere)
+                __result = true;
+        }
+
+        // Set all tiles as diggable
+        private static void DoesTileHavePropertyPostfix(GameLocation __instance, int xTile, int yTile, string propertyName, string layerName, ref string __result)
+        {
+            if (!Context.IsWorldReady || !__instance.farmers.Any() || !(propertyName == "Diggable") || !(layerName == "Back") || !ModEntry.modConfig.EnablePlanting)
+            {
+                return;
+            }
+
+            Tile tile = __instance.Map.GetLayer("Back")?.Tiles[xTile, yTile];
+            if (tile?.TileSheet == null)
+            {
+                return;
+            }
+            string text = null;
+            IPropertyCollection tileIndexProperties = tile.TileIndexProperties;
+            if (tileIndexProperties != null && tileIndexProperties.TryGetValue("Type", out var value))
+            {
+                text = value?.ToString();
+            }
+            else
+            {
+                IPropertyCollection properties = tile.Properties;
+                if (properties != null && properties.TryGetValue("Type", out value))
+                {
+                    text = value?.ToString();
+                }
+            }
+            if (ModEntry.modConfig.EnableDiggingAll)
+            {
+                __result = "T";
+            }
+            if (text == "Dirt" || text == "Grass")
+            {
+                __result = "T";
+            }
+        }
+
+        private static void CanFreePlaceFurniturePostfix(GameLocation __instance, ref bool __result)
+        {
+            if (ModEntry.modConfig.EnablePlacing)
                 __result = true;
         }
     }

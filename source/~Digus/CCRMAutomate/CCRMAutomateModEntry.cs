@@ -41,7 +41,7 @@ namespace CCRMAutomate
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             IAutomateAPI automate = Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
-            automate.AddFactory(new CustomCrystalariumAutomationFactory());
+            automate?.AddFactory(new CustomCrystalariumAutomationFactory());
         }
     }
 }

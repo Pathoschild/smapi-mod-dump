@@ -32,35 +32,48 @@ namespace JsonAssets.Framework.ContentPatcher
             if (ContentPatcherIntegration.Cp == null)
                 return;
 
+            ContentPatcherIntegration.Ja.IdsAssigned += (s, e) => ContentPatcherIntegration.IdsAssigned = true;
+            ContentPatcherIntegration.Ja.IdsAssigned += (s, e) => ContentPatcherIntegration.IdsAssignedGen++;
             Mod.instance.Helper.Events.GameLoop.ReturnedToTitle += (s, e) => ContentPatcherIntegration.IdsAssigned = false;
 
             ContentPatcherIntegration.Tokens = new List<BaseToken>
             {
-                new IdToken("Object"),
-                new IdToken("Crop"),
-                new IdToken("FruitTree"),
-                new IdToken("BigCraftable"),
-                new IdToken("Hat"),
-                new IdToken("Weapon"),
-                new IdToken("Clothing"),
-                new SpriteTilesheetToken("Object", () => Mod.instance.Objects.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Object", true, () => Mod.instance.Objects.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Object", false, () => Mod.instance.Objects.ToList<DataNeedsIdWithTexture>()),
-                new SpriteTilesheetToken("Crop", () => Mod.instance.Crops.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Crop", true, () => Mod.instance.Crops.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Crop", false, () => Mod.instance.Crops.ToList<DataNeedsIdWithTexture>()),
-                new SpriteTilesheetToken("FruitTree", () => Mod.instance.FruitTrees.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("FruitTree", true, () => Mod.instance.FruitTrees.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("FruitTree", false, () => Mod.instance.FruitTrees.ToList<DataNeedsIdWithTexture>()),
-                new SpriteTilesheetToken("BigCraftable", () => Mod.instance.BigCraftables.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("BigCraftable", true, () => Mod.instance.BigCraftables.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("BigCraftable", false, () => Mod.instance.BigCraftables.ToList<DataNeedsIdWithTexture>()),
-                new SpriteTilesheetToken("Hat", () => Mod.instance.Hats.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Hat", true, () => Mod.instance.Hats.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Hat", false, () => Mod.instance.Hats.ToList<DataNeedsIdWithTexture>()),
-                new SpriteTilesheetToken("Weapon", () => Mod.instance.Weapons.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Weapon", true, () => Mod.instance.Weapons.ToList<DataNeedsIdWithTexture>()),
-                new SpriteCoordinateToken("Weapon", false, () => Mod.instance.Weapons.ToList<DataNeedsIdWithTexture>())
+                new IdToken("Object", ContentPatcherIntegration.Ja.GetAllObjectIds),
+                new IdToken("Crop", ContentPatcherIntegration.Ja.GetAllCropIds),
+                new IdToken("FruitTree", ContentPatcherIntegration.Ja.GetAllFruitTreeIds),
+                new IdToken("BigCraftable", ContentPatcherIntegration.Ja.GetAllBigCraftableIds),
+                new IdToken("Hat", ContentPatcherIntegration.Ja.GetAllHatIds),
+                new IdToken("Weapon", ContentPatcherIntegration.Ja.GetAllWeaponIds),
+                new IdToken("Pants", ContentPatcherIntegration.Ja.GetAllPantsIds),
+                new IdToken("Shirts", ContentPatcherIntegration.Ja.GetAllShirtIds),
+                new IdToken("Boots", ContentPatcherIntegration.Ja.GetAllBootsIds),
+                new SpriteTilesheetToken("Object", ContentPatcherIntegration.Ja.GetAllObjectIds),
+                new SpriteCoordinateToken("Object", true, ContentPatcherIntegration.Ja.GetAllObjectIds),
+                new SpriteCoordinateToken("Object", false, ContentPatcherIntegration.Ja.GetAllObjectIds),
+                new SpriteTilesheetToken("Crop", ContentPatcherIntegration.Ja.GetAllCropIds),
+                new SpriteCoordinateToken("Crop", true, ContentPatcherIntegration.Ja.GetAllCropIds),
+                new SpriteCoordinateToken("Crop", false, ContentPatcherIntegration.Ja.GetAllCropIds),
+                new SpriteTilesheetToken("FruitTree", ContentPatcherIntegration.Ja.GetAllFruitTreeIds),
+                new SpriteCoordinateToken("FruitTree", true, ContentPatcherIntegration.Ja.GetAllFruitTreeIds),
+                new SpriteCoordinateToken("FruitTree", false, ContentPatcherIntegration.Ja.GetAllFruitTreeIds),
+                new SpriteTilesheetToken("BigCraftable", ContentPatcherIntegration.Ja.GetAllBigCraftableIds),
+                new SpriteCoordinateToken("BigCraftable", true, ContentPatcherIntegration.Ja.GetAllBigCraftableIds),
+                new SpriteCoordinateToken("BigCraftable", false, ContentPatcherIntegration.Ja.GetAllBigCraftableIds),
+                new SpriteTilesheetToken("Hat", ContentPatcherIntegration.Ja.GetAllHatIds),
+                new SpriteCoordinateToken("Hat", true, ContentPatcherIntegration.Ja.GetAllHatIds),
+                new SpriteCoordinateToken("Hat", false, ContentPatcherIntegration.Ja.GetAllHatIds),
+                new SpriteTilesheetToken("Weapon", ContentPatcherIntegration.Ja.GetAllWeaponIds),
+                new SpriteCoordinateToken("Weapon", true, ContentPatcherIntegration.Ja.GetAllWeaponIds),
+                new SpriteCoordinateToken("Weapon", false, ContentPatcherIntegration.Ja.GetAllWeaponIds),
+                new SpriteTilesheetToken("Shirts", ContentPatcherIntegration.Ja.GetAllShirtIds),
+                new SpriteCoordinateToken("Shirts", true, ContentPatcherIntegration.Ja.GetAllShirtIds),
+                new SpriteCoordinateToken("Shirts", false, ContentPatcherIntegration.Ja.GetAllShirtIds),
+                new SpriteTilesheetToken("Pants", ContentPatcherIntegration.Ja.GetAllPantsIds),
+                new SpriteCoordinateToken("Pants", true, ContentPatcherIntegration.Ja.GetAllPantsIds),
+                new SpriteCoordinateToken("Pants", false, ContentPatcherIntegration.Ja.GetAllPantsIds),
+                new SpriteTilesheetToken("Boots", ContentPatcherIntegration.Ja.GetAllBootsIds),
+                new SpriteCoordinateToken("Boots", true, ContentPatcherIntegration.Ja.GetAllBootsIds),
+                new SpriteCoordinateToken("Boots", false, ContentPatcherIntegration.Ja.GetAllBootsIds)
             };
             // TODO: Shirt tilesheet
             // TODO: Shirt x

@@ -7,7 +7,6 @@
   "ShopsBetterAnimalPurchase": true,
   "ShopsBetterAnimalPurchasePreviousKey": "LeftShoulder",
   "ShopsBetterAnimalPurchaseNextKey": "RightShoulder",
-  "ShopsSimultaneousServices": true,
   "ShopsGeodesAutoProcess": true,
   "ShopsGeodesAutoProcessSpeedMultiplier": 2,
   "MachinesSafeReplacement": true,

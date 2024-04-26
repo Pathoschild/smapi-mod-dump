@@ -1,0 +1,203 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+   "Format": "2.0.0",
+   "Changes":
+   [
+      {
+         "Action": "EditData",
+         "Target": "Data/Shops",
+         "TargetField": [ "Carpenter", "Items" ],
+	      "Entries":
+         {
+               "NormanPCN.RobinSellsClay":
+               {
+                  "Id": "NormanPCN.RobinSellsClay",
+                  "ItemId": "(O)330",
+                  "Price": "50", // 2.5x sell price
+                  "AvailableStock": "10"
+               },
+               "NormanPCN.RobinSellsHardwood":
+               {
+                  "Id": "NormanPCN.RobinSellsHardwood",
+                  "ItemId": "(O)709",
+                  "Price": "250",// 5x year 2 wood price
+                  "AvailableStock" : "25",
+                  "Condition": "YEAR 2, PLAYER_FORAGING_LEVEL Current 7"
+               }
+     	   },
+         "MoveEntries":
+         [
+            { "Id": "NormanPCN.RobinSellsClay", "AfterID": "(O)390"},
+            { "Id": "NormanPCN.RobinSellsHardwood", "AfterID":  "NormanPCN.RobinSellsClay"}
+         ]
+      },
+      {
+         "Action": "EditData",
+         "Target": "Data/Shops",
+         "TargetField": ["AnimalShop", "Items"],
+         "Entries":
+         {
+            "NormanPCN.MarnieSellsAutoPetter": {
+               "Id": "NormanPCN.MarnieSellsAutoPetter",
+               "ItemId": "(BC)272",
+               "Price": "70000", // blackmarket price
+               "Condition": "YEAR 2, PLAYER_FARMING_LEVEL Current 10, PLAYER_FRIENDSHIP_POINTS Current Marnie 2000"//8 hearts
+            },
+            "NormanPCN.MarnieSellsEggs": {
+               "Id": "NormanPCN.MarnieSellsEggs",
+               "ItemId": "(O)176",
+               "Price": "100", // 2x sell price
+               //"Condition": "PLAYER_FRIENDSHIP_POINTS Current Marnie 500"//2 hearts
+            },
+            "NormanPCN.MarnieSellsMilk": {
+               "Id": "NormanPCN.MarnieSellsMilk",
+               "ItemId": "(O)184",
+               "Price": "250", // 2x sell price
+               //"Condition": "PLAYER_FRIENDSHIP_POINTS Current Marnie 500"//2 hearts
+            },
+            "NormanPCN.MarnieSellsWool": {
+               "Id": "NormanPCN.MarnieSellsWool",
+               "ItemId": "(O)440",
+               "Price": "700", // 2x sell price
+               "Condition": "YEAR 2, PLAYER_FRIENDSHIP_POINTS Current Marnie 1500"//6 hearts
+            }
+         },
+         "MoveEntries":
+         [
+            {"Id": "NormanPCN.MarnieSellsAutoPetter", "AfterID": "(BC)165"}, //auto grabber
+            {"Id": "NormanPCN.MarnieSellsEggs", "AfterID": "(BC)45" },//Ornamental Hay bale
+            {"Id": "NormanPCN.MarnieSellsMilk", "AfterID": "NormanPCN.MarnieSellsEggs"},
+            {"Id": "NormanPCN.MarnieSellsWool", "AfterID": "NormanPCN.MarnieSellsMilk"}
+         ]
+      },
+      {
+         "Action": "EditData",
+         "Target": "Data/Shops",
+         "TargetField": ["SeedShop", "Items"],
+         "Entries": {
+            "NormanPCN.PierreSellsTreeFertilizer": {
+               "Id": "NormanPCN.PierreSellsTreeFertilizer",
+               "ItemId": "(O)805",
+               "Price": "75",//150, same price as deluxe speedgro. price sold/listed is 2x this amount
+               "AvailableStock": "10",
+               "Condition": "YEAR 2, PLAYER_FORAGING_LEVEL Current 7"
+            }
+         },
+         "MoveEntries":
+         [
+            {"Id": "NormanPCN.PierreSellsTreeFertilizer", "AfterID": "(O)466"}//deluxe speed-gro
+         ]
+      },
+      {
+         "Action": "EditData",
+         "Target": "Data/Shops",
+         "TargetField": ["Blacksmith", "Items"],
+         "Entries":
+         {
+            "NormanPCN.ClintSellsFireQuartz": {
+               "Id": "NormanPCN.ClintSellsFireQuartz",
+               "ItemId": "(O)82",
+               "Price": "300",
+               "AvailableStock": "10",
+               "Condition": "PLAYER_MINING_LEVEL Current 6, PLAYER_FRIENDSHIP_POINTS Current Clint 1250"//5 hearts
+            },
+            "NormanPCN.ClintSellsGeode": {
+               "Id": "NormanPCN.ClintSellsGeode",
+               "ItemId": "(O)535",
+               "Price": "250",
+               "AvailableStock": "10",
+               "Condition": "YEAR 2, PLAYER_MINING_LEVEL Current 10, PLAYER_FRIENDSHIP_POINTS Current Clint 1500"//6 hearts
+            },
+            "NormanPCN.ClintSellsFrozenGeode": {
+               "Id": "NormanPCN.ClintSellsFrozenGeode",
+               "ItemId": "(O)536",
+               "Price": "500",
+               "AvailableStock": "10",
+               "Condition": "YEAR 2, PLAYER_MINING_LEVEL Current 10, PLAYER_FRIENDSHIP_POINTS Current Clint 1500"//6 hearts
+            },
+            "NormanPCN.ClintSellsMagmaGeode": {
+               "Id": "NormanPCN.ClintSellsMagmaGeode",
+               "ItemId": "(O)537",
+               "Price": "750",
+               "AvailableStock": "10",
+               "Condition": "YEAR 2, PLAYER_MINING_LEVEL Current 10, PLAYER_FRIENDSHIP_POINTS Current Clint 1500"//6 hearts
+            },
+            "NormanPCN.ClintSellsOmniGeode": {
+               "Id": "NormanPCN.ClintSellsOmniGeode",
+               "ItemId": "(O)749",
+               "Price": "1000",//price at Sandy's
+               "AvailableStock": "10",
+               "Condition": "YEAR 2, PLAYER_MINING_LEVEL Current 9, PLAYER_FRIENDSHIP_POINTS Current Clint 1500"//6 hearts
+            }
+         }
+      },
+      {
+         "Action": "EditData",
+         "Target": "Data/Shops",
+         "TargetField": ["FishShop", "Items"],
+         "Entries":
+         {
+            "NormanPCN.WillieSellsSeaweed": {
+               "Id": "NormanPCN.WillieSellsSeaweed",
+               "ItemId": "(O)152",
+               "Price": "40",
+               "AvailableStock": "5"
+            },
+            "NormanPCN.WillieSellsGreenAlgae": {
+               "Id": "NormanPCN.WillieSellsGreenAlgae",
+               "ItemId": "(0)153",
+               "Price": "30",
+               "AvailableStock": "5"
+            },
+            "NormanPCN.WillieSellsWhiteAlgae": {
+               "Id": "NormanPCN.WillieSellsWhiteAlgae",
+               "ItemId": "(0)157",
+               "Price": "50",
+               "AvailableStock": "5"
+            },
+            "NormanPCN.WillieSellsRecyclingMachine": {
+               "Id": "NormanPCN.WillieSellsRecyclingMachine",
+               "ItemId": "(BC)20",
+               "Price": "1000",
+               "Condition": "PLAYER_FISHING_LEVEL Current 4"
+            }
+         },
+         "MoveEntries": [
+               {"Id": "NormanPCN.WillieSellsSeaweed", "BeforeID": "(O)710"}, //crab pot
+               {"Id": "NormanPCN.WillieSellsGreenAlgae", "AfterID": "NormanPCN.WillieSellsSeaweed"},
+               {"Id": "NormanPCN.WillieSellsWhiteAlgae", "AfterID": "NormanPCN.WillieSellsGreenAlgae"},
+               {"Id": "NormanPCN.WillieSellsRecyclingMachine", "AfterID": "(O)710"} //crab pot
+         ]
+      },
+      {
+         "Action": "EditData",
+         "Target": "Data/Shops",
+         "TargetField": ["AdventureShop", "Items"],
+         "Entries":
+         {
+            "NormanPCN.MarlonSellsDwarfScrolls": {
+               "Id": "NormanPCN.MarlonSellsDwarfScrolls",
+               "Price": "10000",
+               "AvailableStock": "1",
+               "AvoidRepeat": true,
+               "RandomItemId": [
+                  "(0)96",
+                  "(0)97",
+                  "(0)98",
+                  "(0)99",
+               ],
+               "Condition": "MINE_LOWEST_LEVEL_REACHED 120"
+            }
+         }
+      }
+   ]
+}

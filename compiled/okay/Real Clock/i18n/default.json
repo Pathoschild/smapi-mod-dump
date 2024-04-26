@@ -1,0 +1,8 @@
+{
+    "config.TimeSpeedControl.name": "Time speed control",
+    "config.TimeSpeedControl.tooltip": "Disable this if you have another mod that you want to control time speed",
+    "config.SecondsToMinutes.name": "Seconds to minutes",
+    "config.SecondsToMinutes.tooltip": "In how many seconds should the clock change",
+    "config.Show24Hours.name": "24 hours mode",
+    "config.Show24Hours.tooltip": "Switch between 12 and 24h mode"
+}

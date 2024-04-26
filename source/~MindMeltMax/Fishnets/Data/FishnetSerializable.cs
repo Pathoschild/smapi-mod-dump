@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 
 namespace Fishnets.Data
 {
+    [Obsolete("Only for backwards compatibility, will be removed in a future version")]
     public class FishNetSerializable
     {
         public long Owner { get; set; } = 0L;
@@ -35,30 +36,5 @@ namespace Fishnets.Data
         public Vector2 Tile { get; set; }
 
         public FishNetSerializable() { }
-
-        public FishNetSerializable(Fishnet f)
-        {
-            Owner = f.owner.Value;
-            if (f.bait.Value is not null)
-            {
-                Bait = f.bait.Value.QualifiedItemId;
-                BaitQuality = f.bait.Value.Quality;
-            }
-            if (f.heldObject.Value is not null)
-            {
-                ObjectName = f.heldObject.Value.Name;
-                ObjectId = f.heldObject.Value.QualifiedItemId;
-                ObjectStack = f.heldObject.Value.Stack;
-                ObjectQuality = f.heldObject.Value.Quality;
-                if (ModEntry.HasJsonAssets)
-                    IsJAObject = !string.IsNullOrWhiteSpace(ModEntry.IJsonAssetsApi.GetObjectId(ObjectName));
-                if (ModEntry.HasDynamicGameAssets)
-                    IsDGAObject = ModEntry.IDynamicGameAssetsApi.GetDGAItemId(f.heldObject.Value) is not null;
-
-                if (IsDGAObject)
-                    ObjectName = ModEntry.IDynamicGameAssetsApi.GetDGAItemId(f.heldObject.Value);
-            }
-            Tile = f.TileLocation;
-        }
     }
 }

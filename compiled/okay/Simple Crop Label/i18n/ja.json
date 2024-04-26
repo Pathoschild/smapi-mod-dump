@@ -8,6 +8,10 @@
   "custom-tree.mushroom": "キノコの木",
   "custom-tree.mahogany": "マホガニーの木",
   "custom-tree.palm": "ヤシの木",
+  "custom-tree.green-rain-wild": "ワイルドグリーンレインツリー",
+  "custom-tree.green-rain-lush": "緑豊かなレイン ツリー",
+  "custom-tree.fiddlehead-fern": "フィドルヘッド シダの木",
+  "custom-tree.mystic": "ミスティックツリー",
 
   // growth info translation
   "growth-info.fully-grown": "完全な成長",

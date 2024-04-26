@@ -32,7 +32,7 @@
 	"fish-mountain-location": "山",
 	"fish-beach-location": "海洋",
 	"fish-undergroundmine-location": "鉱山",
-	"fish-nightmarket-location": "海底",
+	"fish-submarine-location": "海底",
 	"fish-bugland-location": "バグランド",
 	"fish-witchswamp-location": "魔女の沼",
 
@@ -45,8 +45,8 @@
 	"crop-tooltip-growth-time-reproduces": "成長するのに{{daysToGrow}}日かかりますが、その後も生産を続けます。",
 	"crop-tooltip-growth-time": "成熟するには{{daysToGrow}}日かかります。",
 	"crop-tooltip-seasons": "中に植える: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "屋内でのみ栽培できます。",
-	"crop-tooltip-rice-shoot": "水の近くでより速く成長します。",
+	"crop-tooltip-indoor-crop": "屋内でのみ栽培できます。",
+	"crop-tooltip-paddy-crop": "水の近くでより速く成長します。",
 
 	"bundle-random-all": "ランダム",
 	"bundle-random-letter": "英語 \"{{letter}}\"",

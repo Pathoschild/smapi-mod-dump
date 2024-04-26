@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using StardewValley.GameData;
+using StardewValley;
+using StardewValley.GameData.SpecialOrders;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,8 +33,8 @@ namespace Randomizer
                 return adjustments;
             }
 
-            Dictionary<string, SpecialOrderData> specialOrderData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, SpecialOrderData>>("Data/SpecialOrders");
+            Dictionary<string, SpecialOrderData> specialOrderData = 
+                DataLoader.SpecialOrders(Game1.content);
 
             FixSeasonalFishOrder(specialOrderData, adjustments);
 
@@ -80,11 +81,23 @@ namespace Randomizer
                 Locations.Beach
             };
 
+            // For simplicity - exclude the following locations, even if they're also local
+            var difficultLocations = new List<Locations>()
+            {
+                Locations.UndergroundMine,
+                Locations.Submarine
+            };
+
             // Include all fish from the above areas that are available this season
-            // Also exlcude fish that only show up with it's raining, since that's too hard
+            // Also exlcude difficult fish:
+            // - when it's raining
+            // - mines fish
+            // - submarine fish
             var allPossibleFish = FishItem.GetListAsFishItem().Where(item =>
                 item.AvailableSeasons.Contains(season) &&
-                item.AvailableLocations.Any(loc => localLocations.Contains(loc) &&
+                item.AvailableLocations.Any(loc => 
+                localLocations.Contains(loc) &&
+                !difficultLocations.Contains(loc) &&
                 (item.Weathers.Count != 1 || !item.IsRainFish))
             );
 

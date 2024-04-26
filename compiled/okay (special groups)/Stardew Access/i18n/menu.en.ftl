@@ -463,6 +463,17 @@ menu-level_up-profession_chooser_button = Selected: {$profession_description_lis
   Left click to choose.
 menu-level_up-ok_button = {$title}, {$extra_info}, Learned recipes: {$learned_recipes}, Left click to close.
 
+### Mastery Menus
+
+menu-mastery-pedestial_info = {$final_path_text} {$current_points} out of {$required_points},
+  {$stars ->
+    [1] 1 star
+    *[other] {$stars} stars
+  }
+menu-mastery-walls-claim_button = {$name},
+  {$rewards},
+  Claim button
+
 ### Naming Menu
 
 menu-naming-done_naming_button = Done button
@@ -483,6 +494,14 @@ menu-number_selection-value_and_price_info = {$value} {$price ->
 menu-pond_query-change_netting_button = Change netting button
 menu-pond_query-empty_pond_button = Empty pond button
 menu-pond_query-pond_info = {$pond_name}, {$population_info}, {$required_item_info}, Status: {$status}
+
+### Prize Ticket Menu
+
+menu-prize_ticket-collect_prize_button = Current prizes: {$prize_items}
+  You have {$prize_ticket_count ->
+    [1] 1 prize ticket
+    *[other] {$prize_ticket_count} prize tickets
+  }, collect prize button
 
 ### Purchase Animal Menu
 
@@ -572,6 +591,11 @@ menu-special_orders_board-quest_completed = Quest {$name} completed! Open journa
 
 ### Title Menu
 
+menu-title-stardew_access_loaded = Stardew Access version {$version} Loaded {$cheats ->
+    [1] with cheats enabled
+    *[0] {EMPTYSTRING()}
+  }
+menu-title-click_to_skip = Left click to skip the title screen
 menu-title-new_game_button = New game button
 menu-title-load_button = Load button
 menu-title-co_op_button = Co-op button

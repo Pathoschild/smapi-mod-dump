@@ -34,7 +34,7 @@ public static class HoeDirt_Patches {
 
 		try {
 			mod.Harmony!.Patch(
-				original: AccessTools.Method(typeof(HoeDirt), nameof(GiantCrop.performToolAction)),
+				original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.performToolAction)),
 				prefix: new HarmonyMethod(typeof(HoeDirt_Patches), nameof(performToolAction_Prefix))
 			);
 
@@ -44,7 +44,7 @@ public static class HoeDirt_Patches {
 
 	}
 
-	public static bool performToolAction_Prefix(HoeDirt __instance, GameLocation location, Vector2 tileLocation, ref bool __result) {
+	public static bool performToolAction_Prefix(HoeDirt __instance, ref bool __result) {
 		// It's important not to break crops as part of breaking a giant crop, so
 		// that our newly restored crops aren't immediately destroyed by the
 		// player's axe.

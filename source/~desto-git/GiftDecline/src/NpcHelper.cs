@@ -28,8 +28,8 @@ namespace GiftDecline
 		};
 
 		private static readonly Dictionary<string, string> DefaultTastesXnb = new Dictionary<string, string>();
-		private static readonly Dictionary<string, Dictionary<int, int>> DefaultTastesMap = new Dictionary<string, Dictionary<int, int>>();
-		private static readonly Dictionary<string, Dictionary<int, int>> GiftsReceived = new Dictionary<string, Dictionary<int, int>>();
+		private static readonly Dictionary<string, Dictionary<string, int>> DefaultTastesMap = new Dictionary<string, Dictionary<string, int>>();
+		private static readonly Dictionary<string, Dictionary<string, int>> GiftsReceived = new Dictionary<string, Dictionary<string, int>>();
 
 		/// <summary>Get the next lower gift taste level for an item from an NPC.</summary>
 		/// <param name="npc">NPC for getting their current gift taste.</param>
@@ -59,7 +59,7 @@ namespace GiftDecline
 			int currentGiftTaste = npc.getGiftTasteForThisItem(item);
 			if (desiredGiftTaste == currentGiftTaste) return currentGiftTaste;
 
-			int itemId = item.ParentSheetIndex;
+			string itemId = item.itemId.Value;
 			int originalGiftTaste;
 
 			if (!HasGiftTasteBeenOverwritten(npc.Name, itemId))
@@ -166,18 +166,18 @@ namespace GiftDecline
 			if (!giftedItems.ContainsKey(npc.Name)) return false;
 
 			var giftedToNpc = giftedItems[npc.Name];
-			if (!giftedToNpc.ContainsKey(item.ParentSheetIndex)) return false;
+			if (!giftedToNpc.ContainsKey(item.ItemId)) return false;
 
 			if (!GiftsReceived.ContainsKey(npc.Name)) return true;
-			if (!GiftsReceived[npc.Name].ContainsKey(item.ParentSheetIndex)) return true;
+			if (!GiftsReceived[npc.Name].ContainsKey(item.ItemId)) return true;
 
-			int lastAmount = GiftsReceived[npc.Name][item.ParentSheetIndex];
-			int currentAmount = giftedToNpc[item.ParentSheetIndex];
+			int lastAmount = GiftsReceived[npc.Name][item.ItemId];
+			int currentAmount = giftedToNpc[item.ItemId.ToString()];
 
 			bool didReceiveGift = lastAmount != currentAmount;
 			if (didReceiveGift)
 			{
-				StoreReceivedGift(npc.Name, item.ParentSheetIndex, currentAmount);
+				StoreReceivedGift(npc.Name, item.ItemId, currentAmount);
 			}
 
 			return didReceiveGift;
@@ -196,7 +196,7 @@ namespace GiftDecline
 				if (!giftedItems.ContainsKey(npc.Name)) continue;
 
 				var giftedToNpc = giftedItems[npc.Name];
-				foreach (int itemId in giftedToNpc.Keys)
+				foreach (string itemId in giftedToNpc.Keys)
 				{
 					StoreReceivedGift(npc.Name, itemId, giftedToNpc[itemId]);
 				}
@@ -208,31 +208,31 @@ namespace GiftDecline
 		/// <returns>Stringified item.</returns>
 		public static string GetItemString(Item item)
 		{
-			return "#" + item.ParentSheetIndex + " (" + item.Name + ")";
+			return "#" + item.itemId.Value + " (" + item.Name + ")";
 		}
 
-		private static void StoreReceivedGift(string npcName, int itemId, int amount)
+		private static void StoreReceivedGift(string npcName, string itemId, int amount)
 		{
 			if (!GiftsReceived.ContainsKey(npcName))
 			{
-				GiftsReceived.Add(npcName, new Dictionary<int, int>());
+				GiftsReceived.Add(npcName, new Dictionary<string, int>());
 			}
 
 			GiftsReceived[npcName][itemId] = amount;
 		}
 
-		private static void StoreDefaultGiftTasteForItem(string npcName, int itemId, int giftTaste)
+		private static void StoreDefaultGiftTasteForItem(string npcName, string itemId, int giftTaste)
 		{
 			Logger.Trace("Storing default gift taste: " + npcName + " -> #" + itemId + " = " + giftTaste);
 			if (!DefaultTastesMap.ContainsKey(npcName))
 			{
-				DefaultTastesMap.Add(npcName, new Dictionary<int, int>());
+				DefaultTastesMap.Add(npcName, new Dictionary<string, int>());
 			}
 
 			DefaultTastesMap[npcName][itemId] = giftTaste;
 		}
 
-		private static bool HasGiftTasteBeenOverwritten(string npcName, int itemId)
+		private static bool HasGiftTasteBeenOverwritten(string npcName, string itemId)
 		{
 			if (!DefaultTastesMap.ContainsKey(npcName)) return false;
 			if (!DefaultTastesMap[npcName].ContainsKey(itemId)) return false;
@@ -243,7 +243,7 @@ namespace GiftDecline
 		private static int GetCurrentReduction(NPC npc, Item item)
 		{
 			string npcName = npc.Name;
-			int itemId = item.ParentSheetIndex;
+			string itemId = item.itemId.Value;
 			if (!HasGiftTasteBeenOverwritten(npcName, itemId)) return 0;
 
 			int originalTasteLevel = DefaultTastesMap[npc.Name][itemId];

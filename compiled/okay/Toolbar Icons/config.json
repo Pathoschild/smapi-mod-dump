@@ -1,4 +1,37 @@
 {
-  "Icons": [],
+  "Icons": [
+    {
+      "Enabled": true,
+      "Id": "furyx639.EasyAccess/furyx639.EasyAccess/CollectService"
+    },
+    {
+      "Enabled": true,
+      "Id": "furyx639.EasyAccess/furyx639.EasyAccess/DispenseService"
+    },
+    {
+      "Enabled": true,
+      "Id": "furyx639.GarbageDay/GarbageCanManager"
+    },
+    {
+      "Enabled": true,
+      "Id": "CJBok.ItemSpawner.Show CJB Item Spawner"
+    },
+    {
+      "Enabled": true,
+      "Id": ".Check Daily Quests"
+    },
+    {
+      "Enabled": true,
+      "Id": ".Check Special Orders"
+    },
+    {
+      "Enabled": true,
+      "Id": "jltaylor-us.ToDew.Open To-Dew List"
+    },
+    {
+      "Enabled": true,
+      "Id": ".Toggle Collision"
+    }
+  ],
   "Scale": 2.0
 }

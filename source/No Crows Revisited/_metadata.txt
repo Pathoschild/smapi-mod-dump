@@ -6,9 +6,9 @@ mods:
    No Crows Revisited
 
 latest commit:
-   commit 780c2e2b406e60b6226e73446f9e4c3016d9aa44
+   commit 0cdacd41f46766e3d813de6cee0cec8a25148454
    Author: siweipancc <siweipancc@hotmail.com>
-   Date:   Fri Mar 29 15:34:11 2024 +0800
+   Date:   Thu Apr 4 03:23:27 2024 +0800
    
-       fix[Resources Generators]: broken script
+       fix[MoreEvents]: event loop
    

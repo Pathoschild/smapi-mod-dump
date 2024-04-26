@@ -11,9 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Werewolf.Game;
+using LandGrants.Game;
 
-namespace Werewolf.Roles.Actions
+namespace LandGrants.Roles.Actions
 {
     public abstract class WerwolfRoleActionBase : IWerwolfRoleAction
     {

@@ -6,9 +6,9 @@ mods:
    Goodbye American English
 
 latest commit:
-   commit 182156b217de2026a5c86ffd96826c32fe5d33d8
+   commit 7a0fd9f46d020d1a1b2dcd59ba54fcd6e85f681b
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Mar 20 07:48:08 2024 +1100
+   Date:   Mon Apr 8 16:15:53 2024 +1000
    
-       update manifest.json
+       fix recipe not unlocking
    

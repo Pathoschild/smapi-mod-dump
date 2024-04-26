@@ -1,0 +1,8 @@
+{
+  "NightLightEnabled": true,
+  "NightLightOutdoors": true,
+  "NightLightUnderground": true,
+  "NightLightToggleAllKey": "LeftAlt + L",
+  "NightLightToggleOutdoorsKey": "LeftAlt + O",
+  "NightLightToggleUndergroundKey": "LeftAlt + U"
+}

@@ -113,6 +113,7 @@
 	"winCraneGame": "电影院的抓娃娃机",
 	"voidEggEvent": "随机的女巫事件",
 	"mysteryBoxesLocked": "Not yet available (must get day-end event in which they're dropped)", // TODO
+	"foxbloom": "Appears in Ridge Forest on random Sunday each season\n(Weather must be sunny and Relic Fox Mask equipped)", // RSV // TODO
 	
 	// Concealed Source (for when entire suggestion is a spoiler)
 	"unknownSource": "???",
@@ -157,6 +158,7 @@
 	"locationSewer": "下水道",
 	"locationDesert": "卡利科沙漠",
 	"locationSkullPrehistoric": "头骨山洞的史前层",
+	"locationRidgeForest": "in Ridge Forest", // RSV // TODO
 	"locationUnknown": "in ???",
 	
 	// Water Locations (for fishing suggestions)
@@ -189,6 +191,10 @@
 	"waterShearwaterBridge": "海鸥桥", // SVE
 	"waterForestWest": "煤矿森林(西)", // SVE
 	"waterAdventurerSummit": "冒险家工会", // SVE (I'm not sure what the word "summit(峰会,山顶)" means here, so I'll take my own version of it as "guild(行会,工会)".）
+	"waterRidgesideRiver": "in Ridgeside Village river", // RSV // TODO
+	"waterRidge": "on the Ridge", // RSV // TODO
+	"waterRidgeForest": "in Ridge Forest", // RSV // TODO
+	"waterRidgeFalls": "at Ridge Falls", // RSV // TODO
 	"waterUnknown": "in ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -204,6 +210,8 @@
 	"shopBlacksmith": "铁匠",
 	"shopSaloon": "星之果实酒吧",
 	"shopClinic": "哈维的诊所",
+	"shopFish": "Fish Shop", // TODO
+	"shopGuild": "Adventurer's Guild", // TODO
 	"shopDwarf": "矮人",
 	"shopKrobus": "科罗布斯",
 	"shopKrobusWeekday": "科罗布斯({{day}})",
@@ -215,6 +223,11 @@
 	"shopEggFestival": "复活节中皮埃尔的摊位(春季第13日)",
 	"shopFlowerDance": "花舞节中皮埃尔的摊位(春季第24日)",
 	"shopSpiritsEve": "万灵节中皮埃尔的摊位(Fall 27)",
+	"shopSophiaLedger": "Sophia's ledger", // SVE // TODO
+	"shopWestForestBear": "Forest West bear", // SVE // TODO
+	"shopNightingaleOrchard": "Nightingale Orchard", // RSV // TODO
+	"shopHotelPastry": "Hotel Pastry Shop", // RSV // TODO
+	"shopPikaRestaurant": "Pika's Restaurant", // RSV // TODO
 	"shopUnknown": "???",
 	"randomlyAvailable": "随机", // appended in parentheses after shop name when item is only randomly in stock
 	"mustHaveShipped": "售卖{{item}}(出货箱)", // appended in parentheses after shop name if you have to have shipped a certain other item
@@ -242,12 +255,22 @@
 	"treePeach": "桃子树",
 	"treePomegranate": "石榴树",
 	"treeCherry": "樱桃树",
-	"treeLime": "青柠树", // PPJA
-	"treePapaya": "木瓜树", // PPJA
-	"treeWalnut": "胡桃树", // PPJA
-	"treePersimmon": "柿子树", // PPJA
-	"treeGranny": "澳洲青苹果树", // PPJA
-	"treeEucalyptus": "桉树", // PPJA
+	"treeMahogany": "Mahogany Tree", // TODO
+	"treeLime": "青柠树", // Cornucopia
+	"treePapaya": "木瓜树", // Cornucopia
+	"treeWalnut": "胡桃树", // Cornucopia
+	"treePersimmon": "柿子树", // Cornucopia
+	"treeEucalyptus": "桉树", // Cornucopia
+	"treeGranny": "澳洲青苹果树", // PPJA More Trees
+	"treeAvocado": "Avocado Tree", // Cornucopia // TODO
+	"treeCocoaPod": "Cocoa Pod Tree", // Cornucopia // TODO
+	"treePear": "Pear Tree", // Cornucopia // TODO
+	"treeCherryPluot": "Cherry Pluot Tree", // RSV // TODO
+	"treeMountainPlumcot": "Mountain Plumcot Tree", // RSV // TODO
+	"treeDesertTangelo": "Desert Tangelo Tree", // RSV // TODO
+	"treeTropiUgliFruit": "Tropi Ugli Fruit Tree", // RSV // TODO
+	"treeParadiseRangpur": "Paradise Rangpur Tree", // RSV // TODO
+	"treeEmberBloomLime": "Ember Blood Lime Tree", // RSV // TODO
 	"treeMaple": "枫树",
 	"treeOak": "橡树",
 	"treePine": "松树",
@@ -264,6 +287,8 @@
 	"monsterRedSlime": "岩浆史莱姆",
 	"monsterPurpleSlime": "紫色史莱姆",
 	"monsterBRPCISlime": "冰霜/岩浆/紫色/铜/铁史莱姆",
+	"monsterHauntedSkull": "Haunted Skull", // TODO
+	"monsterRidgeForest": "Ridge Forest monsters", // RSV // TODO
 	"monsterUnknown": "???",
 	
 	// Monster Locations (appended after monster names)
@@ -335,6 +360,7 @@
 	"conditionalMailTimeFriend": "在{{time}}之后,当{{friendReq}}时收到邮件",
 	"conditionalMailTimeSkill": "在{{time}}之后,当{{skillReq}}时收到邮件",
 	"conditionalMailFriendSkill": "当{{friendReq}}与{{skillReq}}时收到邮件",
+	"conditionalMailSpecialOrder": "mail after special order {{orderName}}", // TODO
 	"mailConditionFriendship": "{{person}}的友好度为{{hearts}}心时",
 	
 	// Times (for fishing)

@@ -5,11 +5,12 @@
   "MaxFullnessEnabled": false,
   "HarvestEnabled": true,
   "PettingEnabled": true,
+  "PettingPetEnabled": true,
   "MaxFriendshipEnabled": false,
   "CostPerAction": 25,
   "WhoChecks": "spouse",
   "EnableMessages": true,
-  "TakeTrufflesFromPigs": true,
+  "TakeTrufflesFromPigs": false,
   "BypassInventory": false,
   "ChestCoords": "73, 14",
   "ChestDefs": ""

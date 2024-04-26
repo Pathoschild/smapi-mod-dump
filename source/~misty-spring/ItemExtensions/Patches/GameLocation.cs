@@ -21,6 +21,7 @@ using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.GameData.Locations;
 using StardewValley.Internal;
+using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
 namespace ItemExtensions.Patches;
@@ -36,6 +37,13 @@ public class GameLocationPatches
     private static void Log(string msg, LogLevel lv = Level) => ModEntry.Mon.Log(msg, lv);
     internal static void Apply(Harmony harmony)
     {
+        Log($"Applying Harmony patch \"{nameof(GameLocationPatches)}\": postfixing SDV method \"GameLocation.explode\".");
+        
+        harmony.Patch(
+            original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.damageMonster), new[]{ typeof(Rectangle), typeof(int), typeof(int), typeof(bool), typeof(Farmer), typeof(bool)}),
+            postfix: new HarmonyMethod(typeof(GameLocationPatches), nameof(Post_damageMonster))
+        );
+        
         Log($"Applying Harmony patch \"{nameof(GameLocationPatches)}\": postfixing SDV method \"GameLocation.spawnObjects\".");
         
         harmony.Patch(
@@ -49,6 +57,95 @@ public class GameLocationPatches
             original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.spawnObjects)),
             transpiler: new HarmonyMethod(typeof(GameLocationPatches), nameof(Transpiler))
         );
+    }
+
+    /// <summary>
+    /// Sort-of hacky way of damaging clumps. Postfix this specific damageMonster as it's called by explosion
+    /// </summary>
+    /// <param name="__instance"></param>
+    /// <param name="areaOfEffect"></param>
+    /// <param name="minDamage"></param>
+    /// <param name="maxDamage">Max possible damage.</param>
+    /// <param name="isBomb">Whether the damage comes from a bomb.</param>
+    /// <param name="who"></param>
+    /// <param name="isProjectile"></param>
+    private static void Post_damageMonster(GameLocation __instance, Rectangle areaOfEffect, int minDamage, int maxDamage, bool isBomb,
+        Farmer who, bool isProjectile = false)
+    {
+        if (isBomb == false)
+            return;
+
+        var dmg = Game1.random.Next(minDamage, maxDamage);
+        
+        if (dmg > 8)
+            dmg /= 4;
+        
+        #if DEBUG
+        Log($"Calling clump damage code with dmg {dmg}. Rectangle bounds: {areaOfEffect.X}, {areaOfEffect.Y}, {areaOfEffect.Width}, {areaOfEffect.Height}");
+        #endif
+
+        var realRect = new Rectangle(areaOfEffect.X / 64, areaOfEffect.Y / 64, areaOfEffect.Width / 64,
+            areaOfEffect.Height / 64);
+        CheckClumpDamage(__instance, realRect, dmg);
+    }
+    
+    private static void CheckClumpDamage(GameLocation gameLocation, Rectangle rectangle, int damage_amount = -1)
+    {
+        var alreadyChecked = new List<ResourceClump>();
+        var toRemove = new List<ResourceClump>();
+        
+        foreach (var clump in gameLocation.resourceClumps)
+        {
+            if(alreadyChecked.Contains(clump))
+                continue;
+#if DEBUG
+            Log($"Checking clump at {clump.Tile}");
+#endif
+            if (rectangle.Contains(clump.Tile) == false)
+            {
+#if DEBUG
+                Log($"Clump not in range.");
+#endif
+                continue;
+            }
+            
+            if(clump.modData.TryGetValue(ModKeys.ClumpId, out var id) == false)
+            {
+#if DEBUG
+                Log($"Clump has no id.");
+#endif
+                continue;
+            }
+            
+            if (ModEntry.BigClumps.TryGetValue(id, out var resource) == false)
+            {
+#if DEBUG
+                Log($"Clump ID not found in files.");
+#endif
+                continue;
+            }
+
+            if (resource.ImmuneToBombs)
+            {
+#if DEBUG
+                Log($"Clump is immune to bombs.");
+#endif
+                continue;
+            }
+
+            clump.performToolAction(null, damage_amount, clump.Tile);
+
+            if (clump.health.Value <= 0)
+                toRemove.Add(clump);
+            
+            alreadyChecked.Add(clump);
+        }
+
+        foreach (var removal in toRemove)
+        {
+            var location = removal.Location;
+            location.resourceClumps.Remove(removal);
+        }
     }
 
     /// <summary>
@@ -198,7 +295,6 @@ public class GameLocationPatches
     /// <returns>Whether the spawn was a clump.</returns>
     public static bool CheckIfCustomClump(SpawnForageData forage, ItemQueryContext context, Vector2 vector2)
     {
-        //var log = ModEntry.Help.Reflection.GetField<IGameLogger>(typeof(Game1), "log").GetValue();
         #if DEBUG
         Log($"Called transpiled code for {forage?.Id}");
         #endif
@@ -290,6 +386,11 @@ public class GameLocationPatches
             //if no random is clump
             if (!isAnyRandomAClump)
             {
+                if (string.IsNullOrWhiteSpace(forage?.ItemId))
+                {
+                    return false;
+                }
+                
                 //prioritize clump
                 TryPlaceCustomClump(forage.ItemId, context, vector2);
                 return true;
@@ -373,32 +474,34 @@ public class GameLocationPatches
         #endif
 
         var clump = ExtensionClump.Create(clumpId, position);
+        
+        if (clump is null)
+            return;
+        
         var cf = context.Location.GetData().CustomFields;
 
-        try
+        if (cf is not null && cf.Any())
         {
-            if (cf is not null)
-            {
-                var hasRect = cf.TryGetValue(ModKeys.SpawnRect, out var rawRect);
+            var hasRect = cf.TryGetValue(ModKeys.SpawnRect, out var rawRect);
                 
-                //default true, but can be set off, idk why
-                var avoidOverlap = true;
-                if (cf.TryGetValue(ModKeys.AvoidOverlap, out var overlap))
-                    avoidOverlap = bool.Parse(overlap);
+            //default true, but can be set off, idk why
+            var avoidOverlap = true;
+            if (cf.TryGetValue(ModKeys.AvoidOverlap, out var overlap))
+                avoidOverlap = bool.Parse(overlap);
 
-                if (hasRect)
-                {
-                    var newPosition = CheckPosition(context, position, rawRect, avoidOverlap);
-                    clump.Tile = newPosition;
-                }
+            if (hasRect && !string.IsNullOrWhiteSpace(rawRect))
+            {
+                var newPosition = CheckPosition(context, position, rawRect, avoidOverlap);
+                clump.Tile = newPosition;
             }
-            
-            context.Location.resourceClumps.Add(clump);
         }
-        catch (Exception ex)
+
+        if (context.Location?.GetData()?.CustomFields != null && context.Location.GetData().CustomFields.TryGetValue(ModKeys.ClumpRemovalDays, out _))
         {
-            Log($"Error: {ex}", LogLevel.Error);
+            clump.modData.Add(ModKeys.Days, "0");
         }
+            
+        context.Location?.resourceClumps?.Add(clump);
     }
 
     /// <summary>
@@ -406,59 +509,89 @@ public class GameLocationPatches
     /// This might be heavy on resources, so it's recommended to just use FTM instead.
     /// </summary>
     /// <param name="context">Spawn context.</param>
-    /// <param name="position">Current position.</param>
+    /// <param name="defaultPosition">Current position.</param>
     /// <param name="rawRect">Spawn zone, unparsed.</param>
     /// <param name="avoidOverlap">If to avoid placing on a tile with content.</param>
     /// <returns></returns>
-    private static Vector2 CheckPosition(ItemQueryContext context, Vector2 position, string rawRect, bool avoidOverlap)
+    private static Vector2 CheckPosition(ItemQueryContext context, Vector2 defaultPosition, string rawRect, bool avoidOverlap)
     {
-        var result = position;
+        if (string.IsNullOrWhiteSpace(rawRect))
+            return defaultPosition;
         
-        //can either be "x y w h" for single one, or for multiple "\"x y w h\" \"x y w h\""
-        var split = ArgUtility.SplitBySpaceQuoteAware(rawRect);
-        var rects = new List<Rectangle>();
-        //if multiple, parse each. otherwise parse single one
-        if (split[0].Contains(' '))
+        try
         {
-            foreach (var raw in split)
+            var result = defaultPosition;
+
+            //can either be "x y w h" for single one, or for multiple "\"x y w h\" \"x y w h\""
+            var split = ArgUtility.SplitBySpaceQuoteAware(rawRect);
+            
+            if (split is null || split.Length < 1)
+                return defaultPosition;
+            
+            var rects = new List<Rectangle>();
+            //if multiple, parse each. otherwise parse single one
+            if (split[0].Contains(' ')) // it'd only have a space if there's quote split
             {
-                var args = ArgUtility.SplitBySpace(raw);
-                rects.Add(new Rectangle(int.Parse(args[0]), int.Parse(args[1]), int.Parse(args[2]), int.Parse(args[3])));
+                foreach (var raw in split)
+                {
+                    if (string.IsNullOrWhiteSpace(raw))
+                        return defaultPosition;
+                    
+                    var args = ArgUtility.SplitBySpace(raw);
+            
+                    if (args is null || args.Length < 4)
+                        return defaultPosition;
+                    
+                    rects.Add(new Rectangle(int.Parse(args[0]), int.Parse(args[1]), int.Parse(args[2]), int.Parse(args[3])));
+                }
             }
-        }
-        else
-        {
-            rects.Add(new Rectangle(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]), int.Parse(split[3])));
-        }
+            else
+            {
+                if (split.Length < 4)
+                    return defaultPosition;
+                
+                rects.Add(new Rectangle(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]), int.Parse(split[3])));
+            }
 
-        //if point isn't in allowed rect, set to a random point in any
-        if (rects.Any(r => r.Contains(position))) 
-            return result;
-        
-        var random = context.Random ?? Game1.random;
-        var randomRect = random.ChooseFrom(rects);
+            if (rects.Count <= 0 || rects.Any() == false)
+                return defaultPosition;
+            
+            //if point isn't in allowed rect, set to a random point in any
+            if (rects.Any(r => r.Contains(defaultPosition)))
+                return result;
 
-        if (!avoidOverlap)
-        {
-            result = new Vector2(
-                random.Next(randomRect.X, randomRect.X + randomRect.Width),
-                random.Next(randomRect.Y, randomRect.Y + randomRect.Height));
-        }
-        else
-        {
-            for (var i = 0; i < 30; i++)
+            var random = context.Random ?? Game1.random;
+            var randomRect = random.ChooseFrom(rects);
+
+            if (!avoidOverlap)
             {
                 result = new Vector2(
                     random.Next(randomRect.X, randomRect.X + randomRect.Width),
                     random.Next(randomRect.Y, randomRect.Y + randomRect.Height));
-
-                var cantSpawn = context.Location.IsTileOccupiedBy(result) || context.Location.IsNoSpawnTile(result) || !context.Location.CanItemBePlacedHere(result);
-                
-                if (cantSpawn == false)
-                    break;
             }
-        }
+            else
+            {
+                for (var i = 0; i < 30; i++)
+                {
+                    result = new Vector2(
+                        random.Next(randomRect.X, randomRect.X + randomRect.Width),
+                        random.Next(randomRect.Y, randomRect.Y + randomRect.Height));
 
-        return result;
+                    var cantSpawn = context.Location.IsTileOccupiedBy(result) ||
+                                    context.Location.IsNoSpawnTile(result) ||
+                                    !context.Location.CanItemBePlacedHere(result);
+
+                    if (cantSpawn == false)
+                        break;
+                }
+            }
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            Log($"Error: {e}.\n     Will use original position", LogLevel.Warn);
+            return defaultPosition;
+        }
     }
 }

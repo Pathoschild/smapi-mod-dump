@@ -1,0 +1,74 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/rokugin/StardewMods
+**
+*************************************************/
+
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Load textures",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Objects,",
+      "FromFile": "assets/sprites/{{TargetWithoutPath}}.png"
+    },
+    {
+      "LogName": "Add red velvet cake object",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_RedVelvetCake": {
+          "Name": "{{ModId}}_RedVelvetCake",
+          "Displayname": "Red Velvet Cake",
+          "Description": "Soft red-colored layer cake, covered in cream cheese frosting.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 600,
+          "Texture": "Mods/{{ModId}}/Objects",
+          "SpriteIndex": 0,
+          "Edibility": 120,
+          "ContextTags": [
+            "color_red",
+            "food_cake",
+            "food_sweet",
+            "food_bakery"
+          ]
+        }
+      }
+    },
+    {
+      "LogName": "Add red velvet cake cooking recipe",
+      "Action": "EditData",
+      "Target": "Data/CookingRecipes",
+      "Entries": {
+        "{{ModId}}_RedVelvetCake": "245 1 246 1 247 1 -5 1/0 0/{{ModId}}_RedVelvetCake/null/"
+      }
+    },
+    {
+      "LogName": "Add red velvet cake cooking recipe to saloon shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": [ "Saloon", "Items" ],
+      "Entries": {
+        "{{ModId}}_RedVelvetCake": {
+          "Id": "{{ModId}}_RedVelvetCake",
+          "ItemId": "{{ModId}}_RedVelvetCake",
+          "ObjectInternalName": "{{ModId}}_RedVelvetCake",
+          "IsRecipe": true,
+          "Price": 500
+        }
+      },
+      "MoveEntries": [
+        {
+          "ID": "{{ModId}}_RedVelvetCake",
+          "ToPosition": "Top"
+        }
+      ]
+    }
+  ]
+}

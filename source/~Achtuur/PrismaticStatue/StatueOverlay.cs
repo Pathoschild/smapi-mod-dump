@@ -19,10 +19,8 @@ using System.Linq;
 
 namespace PrismaticStatue;
 
-internal class StatueOverlay
+internal class StatueOverlay : AchtuurCore.Framework.Overlay
 {
-    internal bool Enabled;
-
     private readonly Color[] Colors = new Color[]
     {
         Color.MediumVioletRed,
@@ -49,13 +47,37 @@ internal class StatueOverlay
         this.Enabled = false;
     }
 
+    protected override void DrawOverlayToScreen(SpriteBatch spriteBatch)
+    {
+        foreach(SpedUpMachineGroup group in ModEntry.Instance.SpedupMachineGroups)
+        {
+            if (group.Location != Game1.currentLocation)
+                continue;
+
+
+            IEnumerable<Vector2> visibleTiles = Tiles.GetVisibleTiles(expand: 1);
+            IEnumerable<Vector2> machineTiles = visibleTiles
+                .Intersect(group.GetMachineTiles());
+
+            IEnumerable<Vector2> statueTiles = visibleTiles
+                .Intersect(group.GetStatueTiles());
+
+            IEnumerable<Vector2> otherTiles = group.Tiles.Except(machineTiles).Except(statueTiles);
+
+            DrawTiles(spriteBatch, machineTiles, color: Color.Magenta, tileTexture: TilePlacementTexture);
+            DrawTiles(spriteBatch, statueTiles, color: GetSpeedupStatueColor(), tileTexture: TilePlacementTexture);
+            DrawTiles(spriteBatch, otherTiles, color: Color.White, tileTexture: TilePlacementTexture);
+
+        }
+    }
+
     /// <summary>
     /// <para>Draw overlay for automated machines, heavy inspiration from Pathoschild's Automate.OverlayMenu.DrawWorld</para>
     /// <see href="https://github.com/Pathoschild/StardewMods/blob/stable/Automate/Framework/OverlayMenu.cs#L14"/>
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public void DrawOverlay(SpriteBatch spriteBatch)
+    public void DrawOverlay2(SpriteBatch spriteBatch)
     {
         if (!this.Enabled)
             return;
@@ -89,10 +111,14 @@ internal class StatueOverlay
             // Inside the group's tiles, but not on a processing machine
             else if (group is not null)
             {
-                if (ModEntry.GetPossibleStatueIDs().Any(id => tile.ContainsObject(id)))
+                if (tile.ContainsObject(SpeedupStatue.ID))
                 {
                     color = GetSpeedupStatueColor() * color_fac;
                 }
+                //if (ModEntry.GetPossibleStatueIDs().Any(id => tile.ContainsObject(id)))
+                //{
+                //    color = GetSpeedupStatueColor() * color_fac;
+                //}
                 // Non statue machine in group
                 else
                 {
@@ -167,4 +193,6 @@ internal class StatueOverlay
         return blended_color;
 
     }
+
+    
 }

@@ -11,42 +11,21 @@
 using Force.DeepCloner;
 using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
-using StardewDruid.Cast.Ether;
-using StardewDruid.Character;
-using StardewDruid.Dialogue;
+using StardewDruid.Data;
 using StardewDruid.Event;
-using StardewDruid.Event.Challenge;
 using StardewDruid.Journal;
 using StardewDruid.Location;
-using StardewDruid.Map;
-using StardewDruid.Monster;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buffs;
-using StardewValley.Events;
-using StardewValley.GameData.HomeRenovations;
-using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Network;
-using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Xml.Linq;
-using xTile.Dimensions;
-using xTile.Layers;
-using xTile.ObjectModel;
-using xTile.Tiles;
-using static StardewDruid.Event.SpellHandle;
-using static StardewValley.Minigames.TargetGame;
+
 
 namespace StardewDruid
 {
@@ -60,41 +39,33 @@ namespace StardewDruid
 
         public bool modReady;
 
-        //public ActiveData activeData;
+        public bool receivedData;
+
+        internal static Mod instance;
 
         public Rite rite;
 
-        private StaticData staticData;
+        public IconData iconData;
 
-        public Dictionary<int, string> weaponAttunement;
+        public QuestHandle questHandle;
 
-        private MultiplayerData multiplayerData;
+        internal StardewDruid.Data.StaticData save;
 
-        public Dictionary<string, Event.EventHandle> eventRegister;
+        public Dictionary<string, Event.EventHandle> eventRegister = new();
 
-        public Dictionary<int, string> clickRegister;
+        public Dictionary<string, string> activeEvent = new();
 
-        public Dictionary<string, List<TriggerHandle>> markerRegister;
+        public Dictionary<int, string> clickRegister = new();
 
-        public Dictionary<string, Character.TrackHandle> trackRegister;
+        public Dictionary<string, List<string>> specialCasts = new();
 
-        public Dictionary<string, int> rockCasts;
+        public Dictionary<string, Dictionary<Vector2, string>> targetCasts = new();
 
-        public Dictionary<string, List<string>> specialCasts;
+        public Dictionary<string, Dictionary<Vector2, string>> terrainCasts = new();
 
-        public Dictionary<string, Dictionary<Vector2, string>> targetCasts;
+        public Dictionary<string, Dictionary<Vector2, int>> featureCasts = new();
 
-        public Dictionary<string, Dictionary<Vector2, string>> terrainCasts;
-
-        public Dictionary<string, Dictionary<Vector2, int>> featureCasts;
-
-        public List<SpellHandle> spellRegister;
-
-        public List<string> triggerCasts;
-
-        public int updateRite;
-
-        public int updateEvent;
+        public List<SpellHandle> spellRegister = new();
 
         public double messageBuffer;
 
@@ -108,21 +79,65 @@ namespace StardewDruid
 
         public int currentTool;
 
-        public Dictionary<string, StardewDruid.Character.Character> characters;
+        public Dictionary<CharacterData.characters, StardewDruid.Character.Character> characters = new();
 
-        public Dictionary<string, StardewDruid.Dialogue.Dialogue> dialogue;
+        public Dictionary<CharacterData.characters, StardewDruid.Dialogue.Dialogue> dialogue = new();
 
-        public List<string> limits;
+        public Dictionary<CharacterData.characters, Character.TrackHandle> trackers = new();
 
-        public List<string> lessons;
+        public List<string> locations = new();
 
-        public List<string> blessingList;
+        public Random randomIndex = new();
 
-        public List<string> locationList;
+        public int PowerLevel
+        {
+            get
+            {
+                if(save.milestone > QuestHandle.milestones.fates_challenge)
+                {
+                    return 5;
+                }
+                if (save.milestone > QuestHandle.milestones.stars_challenge)
+                {
+                    return 4;
+                }
+                if (save.milestone > QuestHandle.milestones.mists_challenge)
+                {
+                    return 3;
+                }
+                if (save.milestone > QuestHandle.milestones.weald_challenge)
+                {
+                    return 2;
+                }
 
-        public bool receivedData;
+                return 1;
 
-        internal static Mod instance;
+            }
+
+        }
+
+        public int CurrentProgress
+        {
+
+            get
+            {
+                return save.progress.Count();
+            }
+
+
+        }
+
+        public Dictionary<int,Rite.rites> Attunement
+        {
+
+            get
+            {
+
+                return SpawnData.WeaponAttunement();
+
+            }
+
+        }
 
         override public void Entry(IModHelper helper)
         {
@@ -151,125 +166,77 @@ namespace StardewDruid
         {
 
             Config = Helper.ReadConfig<ModData>();
+            
             Customisation = Helper.Data.ReadJsonFile<CustomData>("customData.json");
+            
             if(Customisation == null) { Customisation = new(); }
+            
             //Helper.Data.WriteJsonFile("customData.json", Customisation);
 
             ConfigMenu.MenuConfig(this);
 
-            /*DragonRoar: Dinosaur Roar by Mike Koenig Attribute 3.0 SoundBank.com */
-            CueDefinition myCueDefinition = new CueDefinition();
-            myCueDefinition.name = "DragonRoar";
-            myCueDefinition.instanceLimit = 1;
-            myCueDefinition.limitBehavior = CueDefinition.LimitBehavior.ReplaceOldest;
-            FileStream soundstream = new(Path.Combine(Mod.instance.Helper.DirectoryPath, "Sounds", "Roar.wav"), FileMode.Open);
-            SoundEffect roarSound = SoundEffect.FromStream(soundstream);
-            myCueDefinition.SetSound(roarSound, Game1.audioEngine.GetCategoryIndex("Sound"), false);
-            Game1.soundBank.AddCue(myCueDefinition);
+            SoundData.AddSounds();
+
+            iconData = new IconData();
 
         }
 
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
 
-            if (Context.IsMainPlayer)
+            if (!Context.IsMainPlayer)
             {
 
-                staticData = Helper.Data.ReadSaveData<StaticData>("staticData");
-
-                //Game1.MasterPlayer.mailReceived.Add("ccCraftsRoom");
-
-                //(Game1.getLocationFromName("Mountain") as Mountain).MakeMapModifications(true);
-
-            }
-            else if (!receivedData)
-            {
-
-                StaticData loadData = new();
-
-                Helper.Multiplayer.SendMessage(loadData, "FarmhandRequest", modIDs: new[] { this.ModManifest.UniqueID });
+                Helper.Multiplayer.SendMessage(new QueryData(), "SaveRequest", modIDs: new[] { this.ModManifest.UniqueID });
 
                 return;
 
             }
 
-            StaticChecks();
+            save = Helper.Data.ReadSaveData<StardewDruid.Data.StaticData>("saveData_" +StaticData.version);
+
+            if (save == null)
+            {
+
+                save = VersionData.Reconfigure();
+
+            }
+
+            Helper.Data.WriteJsonFile("saveData.json", save);
+
+            questHandle = new QuestHandle();
+
+            if (save.milestone == QuestHandle.milestones.none)
+            {
+
+                questHandle.NewStart();
+
+            }
 
             ReadyState();
-
-        }
-
-        private void StaticChecks()
-        {
-
-            if (staticData == null)
-            {
-
-                staticData = new StaticData() { staticVersion = QuestData.StaticVersion() };
-
-            }
-
-            if (staticData.staticVersion != QuestData.StaticVersion())
-            {
-
-                staticData = QuestData.ReconfigureData(staticData);
-
-            }
-
-            if (Config.newProgress != -1 && staticData.setProgress != Config.newProgress)
-            {
-
-                staticData = QuestData.ConfigureProgress(staticData, Config.newProgress);
-
-            }
-
-            staticData.setProgress = Config.newProgress;
-
-            Helper.Data.WriteJsonFile("staticData.json", staticData);
 
         }
 
         private void SaveImminent(object sender, SavingEventArgs e)
         {
 
-            foreach (string lesson in lessons)
-            {
-
-                staticData.activeProgress = QuestData.AchieveProgress(lesson);
-
-            }
-
-            lessons.Clear();
-
-            limits.Clear();
-
             if (Context.IsMainPlayer)
             {
 
-                Helper.Data.WriteSaveData("staticData", staticData);
-
-            }
-            else
-            {
-
-                Helper.Multiplayer.SendMessage(staticData, "FarmhandSave", modIDs: new[] { this.ModManifest.UniqueID });
+                Helper.Data.WriteSaveData("saveData_" + StaticData.version, save);
 
             }
 
-            foreach (KeyValuePair<string, Event.EventHandle> challengeEntry in eventRegister)
+            foreach (KeyValuePair<string, Event.EventHandle> eventEntry in eventRegister)
             {
 
-                challengeEntry.Value.EventRemove();
+                eventEntry.Value.EventRemove();
 
             }
 
             eventRegister.Clear();
 
-            ClearTriggers();
-
-            trackRegister.Clear();
-
-            //activeData.castInterrupt = true;
+            trackers.Clear();
 
             rite.shutdown();
 
@@ -277,7 +244,7 @@ namespace StardewDruid
 
             if (Context.IsMainPlayer)
             {
-
+                
                 foreach (GameLocation location in (IEnumerable<GameLocation>)Game1.locations)
                 {
 
@@ -285,24 +252,21 @@ namespace StardewDruid
                     {
                         for (int index = location.characters.Count - 1; index >= 0; --index)
                         {
-                            NPC character = location.characters[index];
+                            NPC npc = location.characters[index];
 
-                            if (character is StardewDruid.Character.Character)
-                            {
-                                location.characters.RemoveAt(index);
-                            }
-
-                            if (character is StardewDruid.Character.Dragon)
+                            if (npc is StardewDruid.Character.Character)
                             {
                                 location.characters.RemoveAt(index);
                             }
 
                         }
+
                     }
 
                 }
-                foreach (KeyValuePair<string, StardewDruid.Character.Character> character in characters)
+                foreach (KeyValuePair<CharacterData.characters, StardewDruid.Character.Character> character in characters)
                 {
+
                     if (character.Value.currentLocation != null)
                     {
                         character.Value.currentLocation.characters.Remove(character.Value);
@@ -319,7 +283,7 @@ namespace StardewDruid
 
             Game1.objectDialoguePortraitPerson = null;
 
-            foreach(string locationName in locationList)
+            foreach(string locationName in locations)
             {
 
                 GameLocation customLocation = Game1.getLocationFromName(locationName);
@@ -335,21 +299,9 @@ namespace StardewDruid
 
             }
 
-            locationList.Clear();
+            locations.Clear();
 
-            /*if (Game1.buffsDisplay.otherBuffs.Count > 0)
-            {
-
-                foreach (Buff buff in Game1.buffsDisplay.otherBuffs)
-                {
-
-                    buff.removeBuff();
-
-                }
-
-            }
-
-            Game1.buffsDisplay.otherBuffs.Clear();*/
+            LocationData.WarpResets();
 
         }
 
@@ -357,17 +309,6 @@ namespace StardewDruid
         {
 
             ReadyState();
-
-        }
-
-        public void MultiplayerMessage(string requestString, long multiplayerId)
-        {
-
-            StaticData messageData = new();
-
-            messageData.staticId = multiplayerId;
-
-            Helper.Multiplayer.SendMessage(messageData, requestString, modIDs: new[] { this.ModManifest.UniqueID });
 
         }
 
@@ -380,81 +321,52 @@ namespace StardewDruid
 
             }
 
-            StaticData farmhandData;
-
             QueryData queryData;
 
             switch (e.Type)
             {
 
-                case "FarmhandSave":
+                case "SaveRequest":
 
                     if (!Context.IsMainPlayer) { return; }
 
-                    farmhandData = e.ReadAs<StaticData>();
-
-                    multiplayerData ??= Helper.Data.ReadSaveData<MultiplayerData>("multiplayerData");
-
-                    multiplayerData ??= new MultiplayerData();
-
-                    multiplayerData.farmhandData[e.FromPlayerID] = farmhandData;
-
-                    Helper.Data.WriteSaveData("multiplayerData", multiplayerData);
-
-                    Console.WriteLine($"Saved Stardew Druid data for Farmer ID {e.FromPlayerID}");
-
-                    break;
-
-                case "FarmhandRequest":
-
-                    if (!Context.IsMainPlayer) { return; }
-
-                    multiplayerData ??= Helper.Data.ReadSaveData<MultiplayerData>("multiplayerData");
-
-                    multiplayerData ??= new MultiplayerData();
-
-                    if (multiplayerData.farmhandData.ContainsKey(e.FromPlayerID))
-                    {
-
-                        farmhandData = multiplayerData.farmhandData[e.FromPlayerID];
-
-                    }
-                    else
-                    {
-
-                        farmhandData = new StaticData();
-
-                    }
-
-                    farmhandData.staticId = e.FromPlayerID;
-
-                    Helper.Multiplayer.SendMessage(farmhandData, "FarmhandLoad", modIDs: new[] { this.ModManifest.UniqueID });
+                    Helper.Multiplayer.SendMessage(save, "SaveSynchronise", modIDs: new[] { this.ModManifest.UniqueID });
 
                     Console.WriteLine($"Sent Stardew Druid data to Farmer ID {e.FromPlayerID}");
 
                     break;
 
-                case "FarmhandLoad":
-                case "FarmhandTrain":
+                case "SaveSynchronise":
 
-                    farmhandData = e.ReadAs<StaticData>();
+                    if (Context.IsMainPlayer) { return; }
 
-                    if (farmhandData.staticId != Game1.player.UniqueMultiplayerID)
-                    {
-                    
-                        return;
-                    
-                    }
-
-                    staticData = farmhandData;
-
-                    StaticChecks();
+                    save = e.ReadAs<StaticData>();
 
                     ReadyState();
 
                     receivedData = true;
 
                     Console.WriteLine($"Received Stardew Druid data for Farmer ID {e.FromPlayerID}");
+
+                    break;
+
+                case "QuestUpdate":
+
+                    if (!Context.IsMainPlayer) { return; }
+
+                    queryData = e.ReadAs<QueryData>();
+
+                    questHandle.UpdateTask(queryData.name, Convert.ToInt32(queryData.value));
+
+                    break;
+
+                case "QuestComplete":
+
+                    if (Context.IsMainPlayer) { return; }
+
+                    queryData = e.ReadAs<QueryData>();
+
+                    questHandle.CompleteQuest(queryData.name);
 
                     break;
 
@@ -490,7 +402,6 @@ namespace StardewDruid
 
                     break;
 
-
                 case "LocationReturn":
 
                     if (Context.IsMainPlayer) { return; }
@@ -501,39 +412,11 @@ namespace StardewDruid
 
                     break;
 
-                case "EventComplete":
-
-                    if (Context.IsMainPlayer) { return; }
-
-                    queryData = e.ReadAs<QueryData>();
-
-                    Location.LocationData.QuestComplete(queryData);
-
-                    if (!QuestGiven(queryData.value))
-                    {
-
-                        RegisterQuest(queryData.value);
-
-                    }
-
-                    if (!QuestComplete(queryData.value))
-                    {
-
-                        CompleteQuest(queryData.value);
-
-                    }
-
-                    Console.WriteLine(string.Format("Event completion triggered by {0}", e.FromPlayerID));
-
-                    SetTriggers();
-
-                    break;
-
                 case "EventAbort":
 
                     if (!Context.IsMainPlayer) { return; }
 
-                    if (!eventRegister.ContainsKey("active")) { return; }
+                    if (activeEvent.Count == 0) { return; }
 
                     queryData = e.ReadAs<QueryData>();
 
@@ -573,15 +456,22 @@ namespace StardewDruid
 
                     break;
 
-                case "DialogueSpecial":
+                /*case "DialogueEvent":
 
                     if (Context.IsMainPlayer) { return; }
 
                     queryData = e.ReadAs<QueryData>();
 
-                    dialogue[queryData.name].AddSpecial(queryData.name,queryData.value);
+                    CharacterData.characters character = (CharacterData.characters)Enum.Parse(typeof(CharacterData.characters), queryData.location);
 
-                    break;
+                    if (dialogue.ContainsKey(character))
+                    {
+
+                        dialogue[character].AddEventDialogue(queryData.name,Convert.ToInt32(queryData.value));
+
+                    }
+
+                    break;*/
 
                 case "SpellHandle":
 
@@ -603,18 +493,8 @@ namespace StardewDruid
 
                     List<int> spellData = System.Text.Json.JsonSerializer.Deserialize<List<int>>(queryData.value);
 
-                    SpellHandle spellEffect = new(
-                        Game1.player.currentLocation,
-                        new Vector2(spellData[0], spellData[1]),
-                        new Vector2(spellData[2], spellData[3]),
-                        spellData[4]
-                    );
-
-                    spellEffect.external = true;
-                    spellEffect.type = (barrages)Enum.Parse(typeof(barrages),spellData[5].ToString());
-                    spellEffect.scheme = (schemes)Enum.Parse(typeof(schemes), spellData[6].ToString());
-                    spellEffect.indicator = (indicators)Enum.Parse(typeof(indicators), spellData[7].ToString());
-
+                    SpellHandle spellEffect = new(Game1.player.currentLocation, spellData);
+                        
                     spellRegister.Add(spellEffect);
 
                     break;
@@ -628,212 +508,49 @@ namespace StardewDruid
 
             modReady = true;
 
-            limits = new();
-
-            lessons = new();
-
-            characters = new();
-
-            dialogue = new();
-
-            modReady = true;
-
-            eventRegister = new();
-
-            clickRegister = new();
-
-            markerRegister = new();
-
-            trackRegister = new();
-
-            spellRegister = new();
-
-            rockCasts = new();
-
-            targetCasts = new();
-
-            featureCasts = new();
-
-            terrainCasts = new();
-
-            specialCasts = new();
-
-            locationList = new();
-
-            triggerCasts = new();
-
             rite = new();
 
-            // ---------------------- trigger assignment
+            virtualPick = new Pickaxe();
+            virtualPick.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
+            virtualPick.UpgradeLevel = 5;
 
-            weaponAttunement = SpawnData.WeaponAttunement();
+            virtualAxe = new Axe();
+            virtualAxe.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
+            virtualAxe.UpgradeLevel = 5;
 
-            foreach (KeyValuePair<int, string> keyValuePair in staticData.weaponAttunement)
-            {
+            virtualHoe = new Hoe();
+            virtualHoe.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
+            virtualHoe.UpgradeLevel = 5;
 
-                if (!weaponAttunement.ContainsKey(keyValuePair.Key))
-                {
+            virtualCan = new WateringCan();
+            virtualCan.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
+            virtualCan.UpgradeLevel = 5;
 
-                    weaponAttunement[keyValuePair.Key] = keyValuePair.Value;
-                }
+            Game1.player.Stamina += Math.Min(8, Game1.player.MaxStamina - Game1.player.Stamina);
 
-            }
-
-            RiteTool();
-
-            blessingList = QuestData.RitesProgress();
-
-            if (Config.autoProgress)
-            {
-
-                QuestData.NextProgress();
-
-            }
-
-            SynchroniseQuest();
-
-            CreateCharacters();
+            questHandle.Ready();
 
             return;
 
         }
 
-        public void CreateCharacters()
-        {
-
-            CharacterData.CharacterCheck(staticData.activeProgress);
-
-            foreach (KeyValuePair<string, string> characterInfo in staticData.characterList)
-            {
-
-                CharacterData.CharacterLoad(characterInfo.Key, characterInfo.Value);
-
-            }
-
-        }
-
-        public void SynchroniseQuest()
-        {
-
-            if (staticData.activeProgress == 0)
-            {
-                QuestData.NextProgress();
-
-            }
-
-            Dictionary<string, string> questIds = new();
-
-            foreach (KeyValuePair<string, StardewDruid.Map.Quest> questData in Map.QuestData.QuestList())
-            {
-
-                if (questData.Value.questId != 0)
-                {
-
-                    questIds.Add(questData.Value.questId.ToString(), questData.Key);
-
-                }
-
-            }
-
-            List<string> logged = new();
-
-            for (int num = Game1.player.questLog.Count - 1; num >= 0; num--)
-            {
-
-                string gameId = Game1.player.questLog[num].id.Value;
-
-                if(gameId == null)
-                {
-
-                    if (Game1.player.questLog[num].questTitle == null)
-                    {
-
-                        Game1.player.questLog.RemoveAt(num);
-
-                    }
-
-                    continue;
-
-                }
-
-                if (questIds.ContainsKey(gameId)) // valid
-                {
-
-                    string questName = questIds[gameId];
-
-                    if (staticData.questList.ContainsKey(questName))
-                    {
-
-                        // player has a duplicate quest
-                        if (logged.Contains(questName))
-                        {
-
-                            Game1.player.questLog.RemoveAt(num);
-
-                            continue;
-
-                        }
-
-                        logged.Add(questName);
-
-                        // player can see unfinished quest but mod has already turned over
-                        if (staticData.questList[questName] && !Game1.player.questLog[num].completed.Value)
-                        {
-
-                            staticData.questList[questName] = false;
-
-                            continue;
-
-                        }
-
-                        // player has finished quest according to game but mod has not turned over
-                        if (!staticData.questList[questName] && Game1.player.questLog[num].completed.Value)
-                        {
-
-                            staticData.questList[questName] = true;
-
-                            continue;
-
-                        }
-
-                    }
-                    else
-                    {
-
-                        Game1.player.questLog.RemoveAt(num);
-
-                    }
-
-                }
-
-            }
-
-            Dictionary<string, Quest> questDatas = Map.QuestData.QuestList();
-
-            foreach (KeyValuePair<string, bool> questPair in staticData.questList)
-            {
-
-                if (questPair.Value)
-                {
-                    continue;
-                }
-
-                if(!logged.Contains(questPair.Key))
-                {
-
-                    RegisterQuest(questPair.Key, questDatas[questPair.Key]);
-
-                }
-
-                ReassignQuest(questPair.Key);
-
-            }
-
-        }
-
         public bool CasterBusy()
         {
-            
+
+            if (Game1.isWarping)
+            {
+
+                /*if (eventRegister.ContainsKey("transform"))
+                {
+
+                    (eventRegister["transform"] as Cast.Ether.Transform).EventWarp();
+
+                }*/
+
+                return true;
+
+            }
+
             if (Game1.eventUp)
             {
                 return true;
@@ -850,11 +567,6 @@ namespace StardewDruid
             }
 
             if (Game1.activeClickableMenu != null)
-            {
-                return true;
-            }
-
-            if (Game1.isWarping)
             {
                 return true;
             }
@@ -885,25 +597,14 @@ namespace StardewDruid
 
             rite.RiteBuff();
 
-            if (!markerRegister.ContainsKey(Game1.player.currentLocation.Name))
+            if (eventRegister.Count == 0)
             {
 
-                SetTriggers();
-
-            }
-
-            if (eventRegister.Count == 0 && markerRegister[Game1.player.currentLocation.Name].Count == 0)
-            {
-                
                 return;
             
             }
 
             bool exitAll = false;
-
-            bool extendAll = false;
-
-            List<string> removeList = new();
 
             if (Game1.eventUp || Game1.currentMinigame != null || Game1.isWarping || Game1.killScreen)
             {
@@ -911,6 +612,8 @@ namespace StardewDruid
                 exitAll = true;
 
             }
+
+            bool extendAll = false;
 
             if (Game1.paused || Game1.freezeControls || Game1.overlayMenu != null || Game1.isTimePaused || Game1.activeClickableMenu != null || !Game1.game1.IsActive)
             {
@@ -931,88 +634,107 @@ namespace StardewDruid
 
             }
 
-            if (markerRegister[Game1.player.currentLocation.Name].Count > 0 && !extendAll)
+            List<string> abort = new();
+
+            List<string> removal = new();
+
+            for(int er = eventRegister.Count - 1; er >= 0; er--)
             {
 
-                foreach (TriggerHandle markerHandle in markerRegister[Game1.player.currentLocation.Name])
+                KeyValuePair<string, Event.EventHandle> eventHandle = eventRegister.ElementAt(er);
+                
+                Event.EventHandle eventEntry = eventHandle.Value;
+
+                if (eventEntry.eventActive)
                 {
 
-                    markerHandle.EventInterval();
-
-                }
-
-            }
-
-            if (eventRegister.Count == 0)
-            {
-
-                return;
-
-            }
-
-            List<string> iterateList = new();
-
-            foreach (KeyValuePair<string, Event.EventHandle> eventEntry in eventRegister)
-            {
-
-                iterateList.Add(eventEntry.Key);
-
-            }
-
-            foreach (string eventKey in iterateList)
-            {
-
-                Event.EventHandle eventEntry = eventRegister[eventKey];
-
-                if (exitAll)
-                {
-
-                    if (eventEntry.AttemptAbort())
+                    if (exitAll)
                     {
-                        
-                        eventEntry.EventAbort();
+
+                        if (eventEntry.AttemptAbort())
+                        {
+
+                            eventEntry.EventAbort();
+
+                            eventEntry.EventRemove();
+
+                            removal.Add(eventHandle.Key);
+
+                            continue;
+
+                        }
+
+                    }
+
+                    if (extendAll)
+                    {
+
+                        if (eventEntry.EventExtend())
+                        {
+
+                            continue;
+
+                        }
+
+                    }
+
+                    if (!eventEntry.EventActive())
+                    {
 
                         eventEntry.EventRemove();
 
-                        removeList.Add(eventKey);
-                        
+                        removal.Add(eventHandle.Key);
+
                         continue;
-                    
+
                     }
 
-                }
+                    eventEntry.EventInterval();
 
-                if (extendAll)
+                }
+                else if (eventEntry.triggerEvent)
                 {
 
-                    if (eventEntry.EventExtend())
+                    if (!eventEntry.TriggerActive() || exitAll)
+                    {
+                        
+                        if (eventEntry.triggerActive)
+                        {
+
+                            eventEntry.TriggerRemove();
+
+                        }
+
+                    }
+                    else
                     {
 
-                        continue;
+                        if (!eventEntry.triggerActive)
+                        {
+                            
+                            eventEntry.TriggerMarker();
+
+                        }
+
+                        eventEntry.TriggerInterval();
 
                     }
 
                 }
-
-                if (!eventEntry.EventActive())
-                {
-
-                    removeList.Add(eventKey);
-
-                    eventEntry.EventRemove();
-
-                    continue;
-
-                }
-
-                eventEntry.EventInterval();
 
             }
 
-            foreach (string removeChallenge in removeList)
+            foreach (string remove in removal)
             {
 
-                eventRegister.Remove(removeChallenge);
+                eventRegister.Remove(remove);
+
+                if (activeEvent.ContainsKey(remove))
+                {
+
+                    activeEvent.Remove(remove);
+
+                }
 
             }
 
@@ -1083,7 +805,7 @@ namespace StardewDruid
 
             bool ritePressed = RiteButtonPressed();
 
-            bool journalPressed = JournalButtonPressed();
+            int journalPressed = JournalButtonPressed();
 
             if (casterBusy)
             {
@@ -1108,16 +830,16 @@ namespace StardewDruid
 
             }
 
-            if (journalPressed)
+            if (journalPressed != -1)
             {
 
                 //activeData.castInterrupt = true;
                 rite.shutdown();
 
-                if(Game1.currentLocation is Farm)
+                if(Game1.currentLocation is Farm && Context.IsMainPlayer)
                 {
 
-                    foreach(KeyValuePair<string,StardewDruid.Character.Character> farmHelp in characters)
+                    foreach(KeyValuePair<CharacterData.characters,StardewDruid.Character.Character> farmHelp in characters)
                     {
 
                         farmHelp.Value.SummonToPlayer(Game1.player.Position);
@@ -1126,7 +848,16 @@ namespace StardewDruid
 
                 }
 
-                Game1.activeClickableMenu = new Druid();
+                Druid journal = new();
+
+                if(journalPressed == 1)
+                {
+                    journal.quests = false;
+                    journal.effects = true;
+
+                }
+
+                Game1.activeClickableMenu = journal;
 
                 return;
 
@@ -1230,10 +961,22 @@ namespace StardewDruid
 
         }
 
-        public bool JournalButtonPressed()
+        public int JournalButtonPressed()
         {
 
-            return Config.journalButtons.GetState() == SButtonState.Pressed;
+            if(Config.journalButtons.GetState() == SButtonState.Pressed)
+            {
+                return 0;
+
+            }
+            else
+            if (Config.effectsButtons.GetState() == SButtonState.Pressed)
+            {
+                return 1;
+
+            }
+
+            return -1;
 
         }
 
@@ -1272,33 +1015,42 @@ namespace StardewDruid
 
             rite.update();
 
-            updateEvent = Math.Max(0, updateEvent - 1);
+            //===========================================
+            // Every tenth of a second
 
-            if (updateEvent <= 0)
+            if (e.IsMultipleOf(6))
             {
 
                 if (eventRegister.Count > 0)
                 {
-                    foreach (KeyValuePair<string, Event.EventHandle> eventEntry in eventRegister)
+                    
+                    for (int ev = eventRegister.Count - 1; ev >= 0; ev--)
                     {
 
-                        eventEntry.Value.EventDecimal();
+                        KeyValuePair<string, Event.EventHandle> eventEntry = eventRegister.ElementAt(ev);
+                        
+                        if (eventEntry.Value.eventActive)
+                        {
+                            
+                            eventEntry.Value.EventDecimal();
+                        
+                        }
 
                     }
 
                 }
 
-                if (trackRegister.Count > 0)
+                if (trackers.Count > 0)
                 {
                     
-                    for(int t = trackRegister.Count-1; t >= 0; t--)
+                    for(int tr = trackers.Count-1; tr >= 0; tr--)
                     {
-                        KeyValuePair<string, Character.TrackHandle> trackEntry = trackRegister.ElementAt(t);
+                        KeyValuePair<CharacterData.characters, Character.TrackHandle> trackEntry = trackers.ElementAt(tr);
 
                         if (trackEntry.Value.followPlayer == null)
                         {
 
-                            trackRegister.Remove(trackEntry.Key);
+                            trackers.Remove(trackEntry.Key);
 
                             continue;
 
@@ -1307,60 +1059,6 @@ namespace StardewDruid
                         trackEntry.Value.TrackPlayer();
 
                     }
-
-                }
-
-                updateEvent = 6;
-
-            }
-
-        }
-
-        public void ClearTriggers()
-        {
-
-            foreach (KeyValuePair<string, List<Event.TriggerHandle>> markers in markerRegister)
-            {
-
-                foreach (TriggerHandle marker in markers.Value)
-                {
-
-                    marker.EventRemove();
-
-                }
-
-            }
-
-            markerRegister.Clear();
-
-        }
-
-        public void SetTriggers()
-        {
-
-            ClearTriggers();
-
-            markerRegister.Add(Game1.player.currentLocation.Name, new());
-
-            Dictionary<string,Quest> questIndex = Map.QuestData.QuestList();
-
-            foreach (KeyValuePair<string, bool> questEntry in staticData.questList)
-            {
-
-                if (questEntry.Value) { continue; }
-
-                if (triggerCasts.Contains(questEntry.Key)) { continue; }
-
-                Map.Quest questData = questIndex[questEntry.Key];
-
-                if (questData.type == null) { continue; }
-
-                QuestData.MarkerInstance(Game1.player.currentLocation, questData);
-
-                if (markerRegister[Game1.player.currentLocation.Name].Count > 0)
-                {
-
-                    break;
 
                 }
 
@@ -1378,55 +1076,34 @@ namespace StardewDruid
 
             }
 
-            if (eventRegister.ContainsKey("active"))
+            if (activeEvent.Count > 0)
             {
 
                 return false;
             
             }
 
-            if (!markerRegister.ContainsKey(Game1.player.currentLocation.Name))
-            {
-
-                SetTriggers();
-
-            }
-
-            if (markerRegister.Count == 0)
+            if (eventRegister.Count == 0)
             {
                 
                 return false;
             
             }
 
-            List<TriggerHandle> triggered = new();
-
-            foreach (TriggerHandle marker in markerRegister[Game1.player.currentLocation.Name])
+            foreach(KeyValuePair<string, EventHandle> trigger in eventRegister)
             {
-                
-                if (marker.CheckMarker())
+
+                if (trigger.Value.triggerActive)
                 {
 
-                    triggered.Add(marker);
+                    if (trigger.Value.TriggerCheck())
+                    {
 
-                    break;
+                        return true;
+
+                    }
 
                 }
-
-            }
-
-            if(triggered.Count > 0)
-            {
-
-                ClearTriggers();
-
-                TriggerHandle trigger = triggered.First();
-
-                triggerCasts.Add(trigger.questData.name);
-
-                trigger.TriggerQuest();
-
-                return true;
 
             }
 
@@ -1469,12 +1146,12 @@ namespace StardewDruid
 
                 }
 
-                if (Game1.player.CurrentToolIndex == 999 && eventRegister.ContainsKey("transform"))
+                /*if (Game1.player.CurrentToolIndex == 999 && eventRegister.ContainsKey("transform"))
                 {
 
                     return (eventRegister["transform"] as Transform).attuneableIndex;
 
-                }
+                }*/
 
                 return -1;
 
@@ -1487,34 +1164,33 @@ namespace StardewDruid
 
             int toolIndex = -1;
 
-            if (Game1.player.CurrentTool is Pickaxe)
+            if (Game1.player.CurrentTool is MeleeWeapon)
+            {
+                toolIndex = Game1.player.CurrentTool.InitialParentTileIndex;
+            }
+            else if (Game1.player.CurrentTool is Pickaxe)
             {
                 toolIndex = 991;
-
-                //if (currentTool != toolIndex) { RiteTool(toolIndex, Game1.player.CurrentTool.UpgradeLevel); }
-
             }
             else if (Game1.player.CurrentTool is Axe)
             {
                 toolIndex = 992;
-
-                //if (currentTool != toolIndex) { RiteTool(toolIndex, Game1.player.CurrentTool.UpgradeLevel); }
             }
             else if (Game1.player.CurrentTool is Hoe)
             {
                 toolIndex = 993;
-
-                //if (currentTool != toolIndex) { RiteTool(toolIndex, Game1.player.CurrentTool.UpgradeLevel); }
             }
             else if (Game1.player.CurrentTool is WateringCan)
             {
                 toolIndex = 994;
-
-                //if (currentTool != toolIndex) { RiteTool(toolIndex, Game1.player.CurrentTool.UpgradeLevel); }
             }
-            else if (Game1.player.CurrentTool is MeleeWeapon)
+            else if (Game1.player.CurrentTool is FishingRod)
             {
-                toolIndex = Game1.player.CurrentTool.InitialParentTileIndex;
+                toolIndex = 995;
+            }
+            else if (Game1.player.CurrentTool is Pan)
+            {
+                toolIndex = 996;
             }
 
             currentTool = toolIndex;
@@ -1523,27 +1199,27 @@ namespace StardewDruid
 
         }
 
-        public int DamageLevel()
+        public int CombatDamage()
         {
 
-            int damageLevel = 175;
+            int damageLevel = 250;
 
             if (!Config.maxDamage)
             {
 
-                damageLevel = 5 * Game1.player.CombatLevel;
+                damageLevel = 5 * Game1.player.CombatLevel; // 50
 
-                damageLevel += 2 * Game1.player.MiningLevel;
+                damageLevel += 2 * Game1.player.MiningLevel; // 20
 
-                damageLevel += 2 * Game1.player.ForagingLevel;
+                damageLevel += 2 * Game1.player.ForagingLevel; // 20
 
-                damageLevel += 1 * Game1.player.FarmingLevel;
+                damageLevel += 1 * Game1.player.FarmingLevel; // 10
 
-                damageLevel += 1 * Game1.player.FishingLevel;
+                damageLevel += 1 * Game1.player.FishingLevel; // 10
 
-                damageLevel += staticData.activeProgress * 2;
+                damageLevel += save.progress.Count * 3; // 120
 
-                if (Game1.player.CurrentTool is Tool currentTool)
+                if (Game1.player.CurrentTool is Tool currentTool) // 25
                 {
                     if (currentTool.enchantments.Count > 0)
                     {
@@ -1551,14 +1227,14 @@ namespace StardewDruid
                     }
                 }
 
-                if (Game1.player.professions.Contains(24))
+                if (Game1.player.professions.Contains(24)) // 25
                 {
-                    damageLevel += 15;
+                    damageLevel += 25;
                 }
 
-                if (Game1.player.professions.Contains(26))
+                if (Game1.player.professions.Contains(26)) // 25
                 {
-                    damageLevel += 15;
+                    damageLevel += 25;
                 }
 
             }
@@ -1582,21 +1258,7 @@ namespace StardewDruid
         
         }
 
-        public int CurrentProgress()
-        {
-
-            return staticData.activeProgress;
-
-        }
-
-        public int PowerLevel()
-        {
-
-            return Math.Max(1,Math.Min(5,(int)staticData.activeProgress / 5));
-
-        }
-
-        public int CombatModifier()
+        public int CombatDifficulty()
         {
 
             int difficulty = 1;
@@ -1622,40 +1284,38 @@ namespace StardewDruid
 
             }
 
-            int progress = Math.Max(1,(int)staticData.activeProgress / 5);
-
-            return progress * difficulty;
+            return PowerLevel * difficulty;
 
         }
 
-        public string CurrentBlessing()
+        public void ChangeBlessing(Rite.rites type)
         {
 
-            return staticData.activeBlessing;
+            save.rite = type;
+
+            CastMessage(rite.displayNames[type] + " is now active");
 
         }
 
-        public void ChangeBlessing(string blessing)
+        public void RegisterEvent(Event.EventHandle eventHandle, string placeHolder, bool active = false)
         {
 
-            staticData.activeBlessing = blessing;
+            if (active)
+            {
 
-            CastMessage("Active rite is now " + blessing + ", consult the Effigy to change");
+                activeEvent[placeHolder] = "active";
 
-        }
-
-        public Dictionary<string, bool> QuestList()
-        {
-
-            return new Dictionary<string, bool>(staticData.questList);
-
-        }
-
-        public void RegisterEvent(Event.EventHandle eventHandle, string placeHolder)
-        {
+            }
 
             if (eventRegister.ContainsKey(placeHolder))
             {
+
+                if (eventRegister[placeHolder] == eventHandle) 
+                { 
+                    
+                    return; 
+                
+                }
 
                 eventRegister[placeHolder].EventAbort();
 
@@ -1665,9 +1325,32 @@ namespace StardewDruid
 
             eventRegister[placeHolder] = eventHandle;
 
+            Monitor.Log(placeHolder, LogLevel.Debug);
+
         }
 
-        public void EventQuery(QueryData querydata,string query = "EventComplete")
+        public void RegisterClick(string eventName, int place)
+        {
+
+            while(clickRegister.ContainsKey(place))
+            {
+
+                if(clickRegister[place] == eventName)
+                {
+
+                    return;
+
+                }
+
+                place++;
+
+            }
+
+            clickRegister[place] = eventName;
+
+        }
+
+        public void EventQuery(QueryData querydata,string query = "QuestComplete")
         {
 
             Helper.Multiplayer.SendMessage<QueryData>(
@@ -1685,7 +1368,8 @@ namespace StardewDruid
             if (Context.IsMainPlayer)
             {
 
-                if (!eventRegister.ContainsKey("active")) { return; }
+                //if (!eventRegister.ContainsKey("active")) { return; }
+                if(activeEvent.Count == 0) { return; }
 
                 AbortAllEvents();
                     
@@ -1720,381 +1404,35 @@ namespace StardewDruid
 
         }
 
-        public bool QuestComplete(string quest)
+        public void SyncMultiplayer()
         {
 
-            if (staticData.questList.ContainsKey(quest))
+            if (!Context.IsMultiplayer)
             {
 
-                return staticData.questList[quest];
+                return;
 
             }
 
-            return false;
+            if (!Context.IsMainPlayer)
+            {
+
+                return;
+
+            }
+
+            Helper.Multiplayer.SendMessage(save, "SaveSynchronise", modIDs: new[] { this.ModManifest.UniqueID });
 
         }
 
-        public bool QuestOpen(string quest)
-        {
-
-            if (staticData.questList.ContainsKey(quest))
-            {
-
-                return staticData.questList[quest] == false;
-
-
-            }
-
-            return false;
-
-        }
-
-        public bool QuestGiven(string quest)
-        {
-
-            return staticData.questList.ContainsKey(quest);
-
-        }
-
-        public void NewQuest(string quest, Map.Quest questData = null)
-        {
-
-            if (!staticData.questList.ContainsKey(quest))
-            {
-
-                staticData.questList[quest] = false;
-
-            }
-            if (questData == null)
-            {
-                questData = Map.QuestData.QuestList()[quest];
-
-            }
-
-            if (questData.questId != 0)
-            {
-
-                for (int num = Game1.player.questLog.Count - 1; num >= 0; num--)
-                {
-                    if (Game1.player.questLog[num].id.Value == questData.questId.ToString())
-                    {
-
-                        if (Game1.player.questLog[num].completed.Value)
-                        {
-                            
-                            Game1.player.questLog.RemoveAt(num);
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            RegisterQuest(quest, questData);
-
-            ReassignQuest(quest, questData);
-
-            ClearTriggers();
-
-            if (questData.questProgress == 2)
-            {
-
-                lessons.Add(quest);
-
-            }
-
-        }
-
-        public void RegisterQuest(string quest, Map.Quest questData = null)
-        {
-            
-            if(questData == null)
-            {
-                questData = Map.QuestData.QuestList()[quest];
-
-            }
-
-            for (int num = Game1.player.questLog.Count - 1; num >= 0; num--)
-            {
-
-                string gameId = Game1.player.questLog[num].id.Value;
-
-                if (gameId == questData.questId.ToString()) // valid
-                {
-
-                    Game1.player.questLog.RemoveAt(num);
-
-                }
-
-            }
-
-            StardewValley.Quests.Quest newQuest = new();
-
-            newQuest.questType.Value = questData.questValue;
-
-            newQuest.id.Value = questData.questId.ToString();
-
-            newQuest.questTitle = questData.questTitle;
-
-            newQuest.questDescription = questData.questDescription;
-
-            newQuest.currentObjective = questData.questObjective;
-
-            newQuest.showNew.Value = true;
-
-            newQuest.moneyReward.Value = questData.questReward;
-
-            Game1.player.questLog.Add(newQuest);
-
-        }
-
-        public void ReassignQuest(string quest, Map.Quest questData = null)
-        {
-
-            if (questData == null)
-            {
-                questData = Map.QuestData.QuestList()[quest];
-
-            }
-
-            if (triggerCasts.Contains(quest))
-            {
-
-                triggerCasts.Remove(quest);
-
-            }
-
-            if (questData.taskCounter != 0)
-            {
-
-                if (!staticData.taskList.ContainsKey(quest))
-                {
-
-                    staticData.taskList[quest] = 0;
-
-                }
-
-                if (staticData.taskList.ContainsKey(questData.taskFinish))
-                {
-
-                    staticData.taskList.Remove(questData.taskFinish);
-
-                }
-
-            }
-
-        }
-
-        public void CompleteQuest(string quest)
-        {
-
-            Map.Quest questData = Map.QuestData.QuestList()[quest];
-
-            staticData.questList[quest] = true;
-
-            if (questData.questId != 0)
-            {
-
-                Game1.player.completeQuest(questData.questId.ToString());
-
-            }
-
-            if (questData.taskFinish != null)
-            {
-                
-                staticData.taskList[questData.taskFinish] = 1;
-
-            }
-
-            if (questData.questProgress <= 1)
-            {
-
-                List<string> ritesList = QuestData.RitesProgress();
-
-                staticData.activeProgress = QuestData.AchieveProgress(quest);
-
-                blessingList = QuestData.RitesProgress();
-
-                if (blessingList.Count > ritesList.Count)
-                {
-
-                    ChangeBlessing(blessingList.Last());
-
-                }
-
-            }
-
-            blessingList = QuestData.RitesProgress();
-
-        }
-
-        public void RemoveQuest(string quest)
-        {
-
-            if (staticData.questList.ContainsKey(quest))
-            {
-
-                staticData.questList.Remove(quest);
-
-            }
-
-            SynchroniseQuest();
-
-        }
-
-        public Dictionary<string, int> TaskList()
-        {
-            return staticData.taskList;
-        }
-
-        public int UpdateTask(string quest, int update)
-        {
-
-            Dictionary<string, Quest> questDatas = Map.QuestData.QuestList();
-
-            if (!questDatas.ContainsKey(quest))
-            {
-
-                return -1;
-
-            }
-
-            Map.Quest questData = questDatas[quest];
-
-            if (questData.taskCounter == 0)
-            {
-                return -1;
-            }
-
-            if (!staticData.questList.ContainsKey(quest))
-            {
-                NewQuest(quest);
-            }
-
-            if (!staticData.taskList.ContainsKey(quest))
-            {
-                ReassignQuest(quest, questData);
-            }
-
-            if (staticData.questList[quest])
-            {
-                return -1;
-            }
-
-            staticData.taskList[quest] += update;
-
-            if (staticData.taskList[quest] >= questData.taskCounter)
-            {
-                CompleteQuest(quest);
-            }
-
-            rite.castTask = staticData.taskList;
-
-            return staticData.taskList[quest];
-
-        }
-
-        public void TaskSet(string task, int set)
-        {
-
-            staticData.taskList[task] = set;
-
-            rite.castTask = staticData.taskList;
-
-        }
-
-        public string CastControl()
-        {
-
-            return Config.riteButtons.ToString();
-
-        }
-
-        public void RiteTool()
-        {
-
-            int level = Math.Min(5, Math.Max(1,staticData.activeProgress / 5));
-
-            if (Config.maxDamage)
-            {
-
-                level = 5;
-
-            }
-
-            virtualPick = new Pickaxe();
-            virtualPick.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
-            virtualPick.UpgradeLevel = level;
-
-            virtualAxe = new Axe();
-            virtualAxe.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
-            virtualAxe.UpgradeLevel = level;
-
-            virtualHoe = new Hoe();
-            virtualHoe.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
-            virtualHoe.UpgradeLevel = level;
-
-            virtualCan = new WateringCan();
-            virtualCan.DoFunction(Game1.player.currentLocation, 0, 0, 1, Game1.player);
-            virtualCan.UpgradeLevel = level;
-
-            Game1.player.Stamina += Math.Min(8, Game1.player.MaxStamina - Game1.player.Stamina);
-
-        }
-
-        public void TrainFarmhands()
-        {
-
-            foreach (Farmer farmer in Game1.getOnlineFarmers())
-            {
-
-                if (Helper.Multiplayer.GetConnectedPlayer(farmer.UniqueMultiplayerID) != null)
-                {
-
-                    StaticData farmhandData = staticData.DeepClone();
-
-                    farmhandData.staticId = farmer.UniqueMultiplayerID;
-
-                    Helper.Multiplayer.SendMessage(farmhandData, "FarmhandTrain", modIDs: new[] { this.ModManifest.UniqueID });
-
-                }
-
-            }
-
-        }
-
-        public string AttunedWeapon(int toolIndex)
-        {
-
-            if (SpawnData.WeaponAttunement().ContainsKey(toolIndex))
-            {
-                return "reserved";
-            }
-
-            if (weaponAttunement.ContainsKey(toolIndex))
-            {
-                return weaponAttunement[toolIndex];
-
-            }
-
-            return "none";
-
-        }
-
-        public bool AttuneWeapon(string blessing)
+        public bool AttuneWeapon(Rite.rites blessing)
         {
 
             int toolIndex = AttuneableWeapon();
 
             if (toolIndex == -1) { return false; };
 
-            staticData.weaponAttunement[toolIndex] = blessing;
-
-            weaponAttunement[toolIndex] = blessing;
-
-            //activeData.castInterrupt = true;
+            save.attunement[toolIndex] = blessing;
 
             rite.shutdown();
 
@@ -2109,21 +1447,12 @@ namespace StardewDruid
 
             if (toolIndex == -1) { return false; };
 
-            if (staticData.weaponAttunement.ContainsKey(toolIndex))
+            if (save.attunement.ContainsKey(toolIndex))
             {
 
-                staticData.weaponAttunement.Remove(toolIndex);
+                save.attunement.Remove(toolIndex);
 
             }
-
-            if (weaponAttunement.ContainsKey(toolIndex))
-            {
-
-                weaponAttunement.Remove(toolIndex);
-
-            }
-
-            //activeData.castInterrupt = true;
 
             rite.shutdown();
 
@@ -2145,7 +1474,7 @@ namespace StardewDruid
 
                 bool snack = false;
 
-                Dictionary<int, int> coffeeList = Map.SpawnData.CoffeeList();
+                Dictionary<int, int> coffeeList = SpawnData.CoffeeList();
 
                 List<string> consumeList = new();
 
@@ -2373,97 +1702,6 @@ namespace StardewDruid
 
             }
 
-
-        }
-
-        public bool PartyHats()
-        {
-
-            return Config.partyHats;
-
-        }
-
-        public bool CastAnywhere()
-        {
-
-            return Config.castAnywhere;
-        }
-
-        public bool DisableHands()
-        {
-
-            return Config.disableHands;
-
-        }
-
-        public void CharacterRegister(string character, string map)
-        {
-
-            staticData.characterList[character] = map;
-
-        }
-
-        public string CharacterMap(string character)
-        {
-
-            if (staticData.characterList.ContainsKey(character))
-            {
-
-                return staticData.characterList[character];
-
-            }
-
-            return null;
-
-        }
-
-        public string ColourPreference()
-        {
-
-            string colour = Config.colourPreference;
-
-            if(colour == "Green")
-            {
-
-                colour = "Red";
-
-            }
-
-            return colour;
-
-        }
-
-        public bool ReverseJournal()
-        {
-
-            return Config.reverseJournal;
-
-        }
-
-        public int DifficultyLevel()
-        {
-            string difficulty = Config.combatDifficulty;
-
-            int level = 1;
-
-            switch (difficulty)
-            {
-
-                case "medium":
-
-                    level = 2;
-
-                    break;
-
-                case "hard":
-
-                    level = 3;
-
-                    break;
-
-            }
-
-            return level;
 
         }
 

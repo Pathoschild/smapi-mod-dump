@@ -12,6 +12,7 @@ using StardewValley;
 using StardewValley.Enchantments;
 using StardewValley.Tools;
 using System.Collections.Generic;
+using System.Linq;
 using SObject = StardewValley.Object;
 
 namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
@@ -20,11 +21,7 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
     {
         public FishingRod Instance { get; set; } = instance;
 
-        private readonly int _initialNumAttachmentSlots = instance.numAttachmentSlots.Value;
-
-        private readonly SObject _initialBait = instance.GetBait();
-
-        private readonly List<SObject> _initialTackles = instance.GetTackle();
+        private readonly int _initialAttachmentSlotsCount = instance.AttachmentSlotsCount;
 
         private readonly List<BaseEnchantment> _addedEnchantments = [];
 
@@ -40,49 +37,73 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
             ;
         }
 
-        public void AutoHook()
+        public void AutoHook(bool doVibrate)
         {
             if (this.CanHook())
             {
                 this.Instance.timePerBobberBob = 1f;
                 this.Instance.timeUntilFishingNibbleDone = FishingRod.maxTimeToNibble;
                 this.Instance.DoFunction(Game1.player.currentLocation, (int)this.Instance.bobber.X, (int)this.Instance.bobber.Y, 1, Game1.player);
-                Rumble.rumble(0.95f, 200f);
+
+                if (doVibrate)
+                    Rumble.rumble(0.95f, 200f);
             }
         }
 
-        public void SpawnBait(string baitId)
+        public void SpawnBait(List<string> baitIds, int amountOfBait = 1, bool overrideAttachmentLimit = false)
         {
-            this.Instance.attachments[0] = ItemRegistry.Create<SObject>(baitId);
-        }
-
-        public void SpawnTackle(string tackleId)
-        {
-            this.Instance.attachments[1] = ItemRegistry.Create<SObject>(tackleId);
-        }
-
-        public void ResetAttachments(bool resetBait, bool resetTackles)
-        {
-            // quick dirty fix to get it working with SV 1.6
-            // TODO: make this not garbage :)
-            if (this._initialNumAttachmentSlots <= 1 && resetTackles)
+            for (int i = FishingRod.BaitIndex; i < FishingRod.TackleIndex; i++)
             {
-                this.Instance.attachments[1] = null;
-            }
+                string baitId = baitIds.ElementAtOrDefault(i);
 
-            if (this.Instance.numAttachmentSlots.Value >= 1 && resetBait)
-                this.Instance.attachments[0] = this._initialBait;
-            if (this.Instance.numAttachmentSlots.Value >= 2 && resetTackles)
-            {
-                int i = 1;
-                foreach (SObject tackle in this._initialTackles)
+                if (baitId == null || baitId == "" || ItemRegistry.GetDataOrErrorItem(baitId).IsErrorItem)
+                    continue;
+
+                if (overrideAttachmentLimit && this.Instance.AttachmentSlotsCount < i + 1)
                 {
-                    this.Instance.attachments[i] = tackle;
-                    i++;
+                    if (Game1.server != null)
+                        return;
+
+                    this.Instance.AttachmentSlotsCount = i + 1;
                 }
+                if (this.Instance.AttachmentSlotsCount > i && this.Instance.attachments.ElementAt(i) == null)
+                    this.Instance.attachments[i] = ItemRegistry.Create<SObject>(baitId, amountOfBait);
+            }
+        }
+
+        public void SpawnTackles(List<string> tackleIds, bool overrideAttachmentLimit = false)
+        {
+            for (int i = FishingRod.TackleIndex; i < FishingRod.TackleIndex + 2; i++)
+            {
+                string tackleId = tackleIds.ElementAtOrDefault(i - FishingRod.TackleIndex);
+
+                if (tackleId == null || tackleId == "" || ItemRegistry.GetDataOrErrorItem(tackleId).IsErrorItem)
+                    continue;
+
+                if (overrideAttachmentLimit && this.Instance.AttachmentSlotsCount < i + 1)
+                {
+                    if (Game1.server != null)
+                        return;
+
+                    this.Instance.AttachmentSlotsCount = i + 1;
+                }
+
+                if (this.Instance.AttachmentSlotsCount > i && this.Instance.attachments.ElementAt(i) == null)
+                    this.Instance.attachments[i] = ItemRegistry.Create<SObject>(tackleId);
+            }
+        }
+
+        public void ResetAttachmentsLimit()
+        {
+            if (this._initialAttachmentSlotsCount == this.Instance.AttachmentSlotsCount)
+                return;
+
+            for (int i = this.Instance.AttachmentSlotsCount; i > this._initialAttachmentSlotsCount; i--)
+            {
+                this.Instance.attachments[i - 1] = null;
             }
 
-            this.Instance.numAttachmentSlots.Value = this._initialNumAttachmentSlots;
+            this.Instance.AttachmentSlotsCount = this._initialAttachmentSlotsCount;
         }
 
         public void AddEnchantment(BaseEnchantment enchantment)
@@ -95,20 +116,6 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod.Framework
         {
             foreach (BaseEnchantment enchantment in this._addedEnchantments)
                 this.Instance.enchantments.Remove(enchantment);
-        }
-
-        public void InfiniteBait()
-        {
-            SObject bait = this.Instance.GetBait();
-            if (bait is not null)
-                bait.Stack = bait.maximumStackSize();
-        }
-
-        public void InfiniteTackle()
-        {
-            foreach (SObject tackle in this.Instance.GetTackle())
-                if (tackle is not null)
-                    tackle.uses.Value = 0;
         }
 
         public void InstantBite()

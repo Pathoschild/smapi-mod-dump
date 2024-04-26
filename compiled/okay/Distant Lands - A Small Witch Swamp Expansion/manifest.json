@@ -1,10 +1,10 @@
 {
    "Name": "AimonsWitchSwampOverhaulPatches",
     "Author": "Aimon111",
-    "Version": "2.0.3",
+    "Version": "2.0.5",
     "Description": "Adds fireflies into witch swamp.",
     "UniqueID": "AimonsWitchSwampOverhaulPatches",
   "EntryDll": "AimonsWitchSwampOverhaulPatches.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": []
 }

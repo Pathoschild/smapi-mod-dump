@@ -15,6 +15,7 @@ using StardewDruid.Event;
 using StardewDruid.Monster.Boss;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Constants;
 using StardewValley.Locations;
 using StardewValley.Tools;
 using System;
@@ -30,22 +31,22 @@ namespace StardewDruid.Cast.Weald
     public class WispEvent : EventHandle
     {
 
-        public Dictionary<Vector2, WispHandle> wisps;
+        public Dictionary<Vector2, WispHandle> wisps = new();
 
-        public WispEvent(Vector2 target)
-            : base(target)
+        new public string eventId = "wisps";
+
+        new public int expireIn = 30;
+
+        public WispEvent()
+            : base()
         {
-
-            wisps = new();
-
-            expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 300;
 
         }
 
-        public override void EventTrigger()
+        public static Vector2 WispVector(Vector2 target)
         {
 
-            Mod.instance.RegisterEvent(this, "wisp");
+            return new((int)(target.X / 15), (int)(target.Y / 15));
 
         }
 
@@ -59,7 +60,7 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            if (targetPlayer.currentLocation.Name != targetLocation.Name)
+            if (Game1.player.currentLocation.Name != location.Name)
             {
 
                 return false;
@@ -84,8 +85,10 @@ namespace StardewDruid.Cast.Weald
 
         }
 
-        public void UpdateWisp(Vector2 vector, int level)
+        public void UpdateWisp(Vector2 castVector, int level)
         {
+
+            Vector2 vector = new((int)(castVector.X / 15), (int)(castVector.Y / 15));
 
             if (wisps.ContainsKey(vector))
             {
@@ -99,7 +102,7 @@ namespace StardewDruid.Cast.Weald
 
                     wisps.Remove(vector);
 
-                    wisps[vector] = new(targetLocation, tile, level, 20);
+                    wisps[vector] = new(location, tile, level, 20);
 
                 }
 
@@ -146,9 +149,9 @@ namespace StardewDruid.Cast.Weald
 
             float threshold = 300;
 
-            float damage = Mod.instance.DamageLevel();
+            float damage = Mod.instance.CombatDamage();
 
-            foreach (NPC nonPlayableCharacter in targetLocation.characters)
+            foreach (NPC nonPlayableCharacter in location.characters)
             {
 
                 if (nonPlayableCharacter is StardewValley.Monsters.Monster monster)
@@ -168,7 +171,7 @@ namespace StardewDruid.Cast.Weald
 
                     Vector2 tileVector = new((int)(monster.Position.X / 64), (int)(monster.Position.Y / 64));
 
-                    Vector2 terrainVector = new((int)(tileVector.X / 12), (int)(tileVector.Y / 12));
+                    Vector2 terrainVector = WispVector(tileVector);
 
                     if (!wisps.ContainsKey(terrainVector))
                     {
@@ -213,12 +216,12 @@ namespace StardewDruid.Cast.Weald
 
                                     Microsoft.Xna.Framework.Rectangle boundingBox = monster.GetBoundingBox();
 
-                                    targetLocation.debris.Add(new Debris("stun", 1, new Vector2(boundingBox.Center.X + 16, boundingBox.Center.Y), Microsoft.Xna.Framework.Color.Green,1,0));
+                                    location.debris.Add(new Debris("stun", 1, new Vector2(boundingBox.Center.X + 16, boundingBox.Center.Y), Microsoft.Xna.Framework.Color.Green,1,0));
 
                                     if (wisps[terrainVector].activation <= 0)
                                     {
 
-                                        ModUtility.AnimateDecoration(targetLocation, wisps[terrainVector].position, "weald", 0.5f);
+                                        Mod.instance.iconData.DecorativeIndicator(location, wisps[terrainVector].position, Data.IconData.decorations.weald, 0.5f);
 
                                         wisps[terrainVector].activation = 1;
 
@@ -228,14 +231,14 @@ namespace StardewDruid.Cast.Weald
 
                                 break;
 
-                            case 2:
+                            /*case 2:
 
                                 new Mists.Smite(monster.Tile, monster, damage / 2).CastEffect();
 
                                 if (wisps[terrainVector].activation <= 0)
                                 {
 
-                                    ModUtility.AnimateDecoration(targetLocation, wisps[terrainVector].position, "mists", 0.5f);
+                                    ModUtility.AnimateDecoration(location, wisps[terrainVector].position, "mists", 0.5f);
 
                                     wisps[terrainVector].activation = 1;
 
@@ -245,19 +248,11 @@ namespace StardewDruid.Cast.Weald
 
                             case 3:
 
-                                SpellHandle meteor = new(targetLocation, wisps[terrainVector].tile * 64, Game1.player.Position, 5, 1, -1, damage*4, 4);
-
-                                meteor.environment = 8;
-
-                                meteor.terrain = 5;
-
-                                meteor.type = SpellHandle.barrages.meteor;
-
-                                Mod.instance.spellRegister.Add(meteor);
+                                Mod.instance.rite.CastComet(wisps[terrainVector].location, wisps[terrainVector].tile);
 
                                 wisps[terrainVector].timer = 0;
 
-                                break;
+                                break;*/
 
                         }
 

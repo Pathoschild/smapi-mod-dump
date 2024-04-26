@@ -5,7 +5,7 @@
 
     <PropertyGroup>
         <Description>Adds a skill related to befriending villagers.</Description>
-        <Version>2.0.5</Version>
+        <Version>2.0.6</Version>
         <UpdateKeys>Nexus:14142</UpdateKeys>
     </PropertyGroup>
 

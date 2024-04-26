@@ -10,10 +10,12 @@
 
 using AchtuurCore.Extensions;
 using HarmonyLib;
+using HoverLabels.Drawing;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,66 +52,22 @@ internal class IndoorPotLabel : ObjectLabel
         hoverHoeDirt = hoverPot.hoeDirt.Value;
         hoverPotCrop = hoverHoeDirt.crop;
 
-        GenerateCropLabel();
-        GenerateFertilizerLabel();
-        GenerateSoilStateLabel();
+        SetCropTitle();
+        foreach (Border border in CropLabel.GenerateCropLabel(hoverPotCrop, hoverHoeDirt))
+            AddBorder(border);
     }
 
-    private void GenerateSoilStateLabel()
+    /// <summary>
+    /// Changes title from "Garden Pot" to "Garden Pot (<c>crop_display_name</c>)"
+    /// </summary>
+    private void SetCropTitle()
     {
-        if (hoverPotCrop is null || CropLabel.IsCropFullyGrown(hoverPotCrop))
+        if (this.hoverPotCrop is null)
             return;
 
-        if (hoverHoeDirt.state.Value == 0 && !hoverPotCrop.dead.Value)
-            Description.Add(I18n.LabelCropsWaterNeeded());
-    }
-
-    private void GenerateFertilizerLabel()
-    {
-        string fertilizerName = CropLabel.GetFertilizerName(hoverHoeDirt.fertilizer.Value);
-        if (fertilizerName.Length > 0)
-            Description.Add(I18n.LabelCropsFertilizer(fertilizerName));
-    }
-
-    private void GenerateCropLabel()
-    {
-        if (hoverPotCrop is null)
-        {
-            return;
-        }
-
+        ResetBorders();
         SObject harvestedItem = hoverPotCrop.programColored.Value ? new ColoredObject(hoverPotCrop.indexOfHarvest.Value, 1, hoverPotCrop.tintColor.Value) : new SObject(hoverPotCrop.indexOfHarvest.Value, 1, false, -1, 0);
-        Name += $" ({harvestedItem.DisplayName})";
-
-        //fully grown crop
-        if (CropLabel.IsCropFullyGrown(hoverPotCrop))
-        {
-            Description.Add(I18n.LabelCropsReadyHarvest());
-            // check if crop can harvest variable range
-            if (hoverPotCrop.minHarvest.Value == hoverPotCrop.maxHarvest.Value)
-            {
-                Description.Add(I18n.LabelCropsHarvestAmount(hoverPotCrop.minHarvest.Value));
-            }
-            else
-            {
-                Description.Add(I18n.LabelCropsHarvestRange(hoverPotCrop.minHarvest.Value, hoverPotCrop.maxHarvest.Value));
-            }
-        }
-        // dead crop
-        else if (hoverPotCrop.dead.Value)
-        {
-            Description.Add(I18n.LabelCropsDead());
-        }
-        // Not fully grown yet
-        else
-        {
-            int days = CropLabel.GetDaysUntilFullyGrown(hoverPotCrop);
-            string readyDate = ModEntry.GetDateAfterDays(days);
-
-            if (CropLabel.CropCanFullyGrowInTime(hoverPotCrop, hoverHoeDirt))
-                Description.Add(I18n.LabelCropsGrowTime(days, readyDate));
-            else
-                Description.Add(I18n.LabelCropsInsufficientTime(days));
-        }
+        string title = $"{hoverObject.DisplayName} ({harvestedItem.DisplayName})";
+        AddBorder(new TitleLabelText(title));
     }
 }

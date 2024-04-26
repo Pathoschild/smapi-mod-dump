@@ -1,0 +1,13 @@
+{
+  "EventListKey": "N",
+  "Blacklist": [
+    9348571,
+    10040609,
+    75160015
+  ],
+  "verbose": false,
+  "use24hClock": false,
+  "hideUnseenLocations": true,
+  "showNonHeartEvents": false,
+  "ShowCover": true
+}

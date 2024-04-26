@@ -48,7 +48,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "Badlands Entrance", "Custom_DesertRailway" },
             { "Enchanted Grove", "Custom_EnchantedGrove" },
             { "Grove Aurora Vineyard Warp", "Custom_EnchantedGrove|20|41" },
-            { "Grove Junimo Woods Warp", "Custom_EnchantedGrove|40|40" },
+            { "Grove Junimo Woods Warp", "Custom_EnchantedGrove|40|41" },
             { "Grove Outpost Warp", "Custom_EnchantedGrove|40|10" },
             { "Grove Farm Warp", "Custom_EnchantedGrove|30|14" },
             { "Grove Wizard Warp", "Custom_EnchantedGrove|17|25" },

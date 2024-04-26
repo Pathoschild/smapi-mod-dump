@@ -1,0 +1,104 @@
+{
+    "Format": "2.0.0",
+    "ConfigSchema": {
+        "Mechanic": {
+            "AllowValues": "duration, mix, replace",
+            "Default": "mix"
+        },
+        "SnowDurationStart": {
+            "AllowValues": "3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28",
+            "Default": "8",
+        },
+        "SnowDurationEnd": {
+            "AllowValues": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28",
+            "Default": "21",
+        },
+        "ChanceToRain_duration": {
+            "Default": "0.183"
+        },
+        "ChanceToSnow_duration": {
+            "Default": "0.63"
+        },
+        "ChanceToRain_mix": {
+            "Default": "0.331"
+        },
+        "ChanceToSnow_mix": {
+            "Default": "0.447"
+        },
+        "ChanceToRain_replace": {
+            "Default": "0.63"
+        },
+    },
+    "Changes": [
+        // duration
+        {
+            // snow
+            "Action": "EditData",
+            "When": {
+                "Mechanic": "duration",
+                "Query: {{Day}} +2 >= {{SnowDurationStart}} AND {{Day}} +2 <= {{SnowDurationEnd}}": true
+            },
+            "Target": "Data/LocationContexts",
+            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
+            "Entries": {
+                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToSnow_duration}}",
+            }
+        },
+        {
+            // rain
+            "Action": "EditData",
+            "When": {
+                "Mechanic": "duration",
+                "Query: {{Day}} +2 >= {{SnowDurationStart}} AND {{Day}} +2 <= {{SnowDurationEnd}}": false
+            },
+            "Target": "Data/LocationContexts",
+            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
+            "Entries": {
+                "Id": "WinterRain",
+                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToRain_duration}}",
+                "Weather": "Rain"
+            }
+        },
+        // mix
+        {
+            "Action": "EditData",
+            "When": {
+                "Mechanic": "mix"
+            },
+            "Target": "Data/LocationContexts",
+            "TargetField": [ "Default", "WeatherConditions", "#11"], // Id: "Default"
+            "Entries": {
+                "Id": "WinterSnow",
+                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToSnow_mix}}",
+                "Weather": "Snow"
+            }
+        },
+        {
+            "Action": "EditData",
+            "When": {
+                "Mechanic": "mix"
+            },
+            "Target": "Data/LocationContexts",
+            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
+            "Entries": {
+                "Id": "WinterRain",
+                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToRain_mix}}",
+                "Weather": "Rain"
+            }
+        },
+        // replace
+        {
+            "Action": "EditData",
+            "When": {
+                "Mechanic": "replace"
+            },
+            "Target": "Data/LocationContexts",
+            "TargetField": [ "Default", "WeatherConditions", "#6"], // Id: "WinterSnow"
+            "Entries": {
+                "Id": "WinterRain",
+                "Condition": "SEASON winter, SYNCED_RANDOM day location_weather {{ChanceToRain_replace}}",
+                "Weather": "Rain"
+            }
+        }
+    ]
+}

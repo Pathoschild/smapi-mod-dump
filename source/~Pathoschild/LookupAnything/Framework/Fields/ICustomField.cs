@@ -28,6 +28,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <summary>Whether the field should be displayed.</summary>
         bool HasValue { get; }
 
+        /// <summary>If the field is currently collapsed, the link to click to expand it.</summary>
+        LinkField? ExpandLink { get; }
+
 
         /*********
         ** Public methods

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/idermailer/NoGreenhouseEntranceTiles
+   Git: https://github.com/idermailer/NoGreenhouseEntranceTiles.git
+
+mods:
+   No Greenhouse Entrance Tiles
+
+latest commit:
+   commit d8d32c4ff14d1c90144d69218f5f53d1850cf625
+   Author: idermailer <idermailer@gmail.com>
+   Date:   Tue Apr 2 00:10:05 2024 +0900
+   
+       ì´ˆê¸° ì»¤ë°‹.
+   

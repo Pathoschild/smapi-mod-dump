@@ -1,0 +1,10 @@
+{
+    "Name": "Big Fridge",
+    "Author": "AlanBF",
+    "Version": "1.1.0",
+    "Description": "Give the fridges a bigger capacity and the ability to be colored",
+    "UniqueID": "AlanBF.BigFridge",
+    "EntryDll": "BigFridge.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:22457" ]
+}

@@ -24,7 +24,7 @@ public enum NameId {
 
 	Trademark = 7,
 	ManufacturerName = 8,
-	DsignerName = 9,
+	DesignerName = 9,
 
 	Description = 10,
 

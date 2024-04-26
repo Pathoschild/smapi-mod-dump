@@ -6,9 +6,9 @@ mods:
    Automate Tool Swap
 
 latest commit:
-   commit 80827620fd8bb8529ffd372d06e3e9507b23fe04
+   commit 4055f45d7030b064bb6c40e9fecfc296ee42cdc3
    Author: CauÃ£ Oliveira <101019088+Caua-Oliveira@users.noreply.github.com>
-   Date:   Sun Mar 31 21:44:56 2024 -0300
+   Date:   Tue Apr 23 22:08:38 2024 -0300
    
-       Merge branch 'main' of https://github.com/Caua-Oliveira/StardewValley-AutomateToolSwap
+       Update manifest.json
    

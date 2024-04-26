@@ -1,0 +1,25 @@
+{
+	"ID": "BuildingSkinMenu",
+
+	"BmFontVariables": {
+		"$BuildingSkinMenu:ST:Font": "$ST:Font"
+	},
+
+	"TextureVariables": {
+		"$BuildingSkinMenu:ST:Normal": "$ST:Normal",
+		"$BuildingSkinMenu:ST:Colored": "$ST:Colored"
+	},
+
+	"Patches": {
+		"#BuildingSkinMenu:draw": {
+			"SpriteTextDraw": {
+				"*": [
+					"$BuildingSkinMenu:ST:Normal",
+					"$BuildingSkinMenu:ST:Colored",
+					"$BuildingSkinMenu:ST:Font",
+					"$BuildingSkinMenu:Colors"
+				]
+			}
+		}
+	}
+}

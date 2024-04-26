@@ -25,12 +25,14 @@ namespace Randomizer
 		/// <returns>The dictionary of changes to make to the asset</returns>
 		public static Dictionary<string, string> Randomize()
 		{
-			if (Globals.Config.CraftingRecipes.Randomize)  
-			{ 
-				Globals.SpoilerWrite($"==== CRAFTING RECIPES ===="); 
-			}
+            Dictionary<string, string> replacements = new();
+            if (!Globals.Config.CraftingRecipes.Randomize)
+            {
+				return replacements;
+            }
 
-			Dictionary<string, string> replacements = new();
+			Globals.SpoilerWrite($"==== CRAFTING RECIPES ===="); 
+
 			var allCraftableItems = ItemList.Items.Values
 				.Concat(ItemList.BigCraftableItems.Values)
 				.Where(x => x.IsCraftable)
@@ -43,15 +45,19 @@ namespace Randomizer
 
 			// These two are not actually items, but we want to randomize their recipes anwyway
 			// The IDs passed in don't really matter
-			replacements["Transmute (Fe)"] = new CraftableItem(
-				-1000, CraftableCategories.Moderate, dataKey: "Transmute (Fe)").GetCraftingString();
-            replacements["Transmute (Au)"] = new CraftableItem(
-				-1000, CraftableCategories.Moderate, dataKey: "Transmute (Au)").GetCraftingString();
+			const string TransmuteIronName = "Transmute (Fe)";
+            const string TransmuteGoldName = "Transmute (Au)";
+			const string FakeId = "-1000";
+            replacements[TransmuteIronName] = new CraftableItem(
+				FakeId, 
+				CraftableCategories.Moderate, 
+				dataKey: TransmuteIronName).GetCraftingString(TransmuteIronName);
+            replacements[TransmuteGoldName] = new CraftableItem(
+                FakeId, 
+				CraftableCategories.Moderate, 
+				dataKey: TransmuteGoldName).GetCraftingString(TransmuteGoldName);
 
-            if (Globals.Config.CraftingRecipes.Randomize) 
-			{ 
-				Globals.SpoilerWrite(""); 
-			}
+			Globals.SpoilerWrite("");
 
 			return replacements;
 		}

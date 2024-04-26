@@ -17,20 +17,16 @@ using StardewValley;
 using StardewModdingAPI;
 using StardewValley.Menus;
 using Unlockable_Bundles.Lib.AdvancedPricing;
+using static Unlockable_Bundles.ModEntry;
+
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
     public class Inventory
     {
-        public static Mod Mod;
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
 
         public static void Initialize()
         {
-            Mod = ModEntry.Mod;
-            Monitor = Mod.Monitor;
-            Helper = Mod.Helper;
         }
 
         public static bool hasEnoughItems(Farmer who, KeyValuePair<string, int> requirement)

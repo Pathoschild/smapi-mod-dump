@@ -15,6 +15,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.GameModifications;
+using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Items.Traps;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
@@ -169,6 +170,12 @@ namespace StardewArchipelago.Archipelago
                 return true;
             }
 
+            if (HandlePrankCommand(messageLower))
+            {
+                _lastCommand = message;
+                return true;
+            }
+
             if (HandleHelpCommand(messageLower))
             {
                 return true;
@@ -306,6 +313,25 @@ namespace StardewArchipelago.Archipelago
             return true;
         }
 
+        private static bool HandlePrankCommand(string message)
+        {
+            if (message != $"{COMMAND_PREFIX}fish" &&
+                message != $"{COMMAND_PREFIX}prank" &&
+                message != $"{COMMAND_PREFIX}stop" &&
+                message != $"{COMMAND_PREFIX}zelda" &&
+                message != $"{COMMAND_PREFIX}april" &&
+                message != $"{COMMAND_PREFIX}fool" &&
+                message != $"{COMMAND_PREFIX}fools" &&
+                message != $"{COMMAND_PREFIX}aprilfool" &&
+                message != $"{COMMAND_PREFIX}aprilsfool")
+            {
+                return false;
+            }
+
+            ZeldaAnimationInjections.TogglePrank();
+            return true;
+        }
+
         private static bool HandleHideEmptyLettersCommand(string message)
         {
             if (message != $"{COMMAND_PREFIX}letters")
@@ -313,10 +339,10 @@ namespace StardewArchipelago.Archipelago
                 return false;
             }
 
-            var currentSetting = ModEntry.Instance.State.HideEmptyArchipelagoLetters;
+            var currentSetting = ModEntry.Instance.Config.HideEmptyArchipelagoLetters;
             var newSetting = !currentSetting;
             var status = newSetting ? "hidden" : "visible";
-            ModEntry.Instance.State.HideEmptyArchipelagoLetters = newSetting;
+            ModEntry.Instance.Config.HideEmptyArchipelagoLetters = newSetting;
             Game1.chatBox?.addMessage($"Empty archipelago letters are now {status}. Changes will take effect when opening your mailbox", Color.Gold);
             return true;
         }

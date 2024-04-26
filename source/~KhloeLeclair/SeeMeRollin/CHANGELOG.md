@@ -8,6 +8,12 @@ for queries and analysis.**
 
 # Changelog
 
+## 2.0.0
+Released April 4th, 2024.
+
+* Updated to Stardew Valley 1.6
+
+
 ## 1.1.1
 Released February 10th, 2022.
 

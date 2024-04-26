@@ -9,6 +9,7 @@
 *************************************************/
 
 using ChestFeatureSet.CraftFromChests;
+using ChestFeatureSet.Framework;
 using ChestFeatureSet.MoveChests;
 using ChestFeatureSet.StashToChests;
 using StardewModdingAPI;
@@ -42,49 +43,51 @@ namespace ChestFeatureSet
 
         private void LoadModules()
         {
-            if (Config.StashToChests)
+            LocationExtension.SetCustomArea(this.Config.CustomArea);
+
+            if (this.Config.StashToChests)
             {
-                StashToChests = new StashToChestsModule(this);
-                StashToChests.Activate();
+                this.StashToChests = new StashToChestsModule(this);
+                this.StashToChests.Activate();
             }
-            if (Config.LockItems)
+            if (this.Config.LockItems)
             {
-                LockItems = new LockItemsModule(this);
-                LockItems.Activate();
+                this.LockItems = new LockItemsModule(this);
+                this.LockItems.Activate();
             }
-            if (Config.CraftFromChests)
+            if (this.Config.CraftFromChests)
             {
-                CraftFromChests = new CraftFromChestsModule(this);
-                CraftFromChests.Activate();
+                this.CraftFromChests = new CraftFromChestsModule(this);
+                this.CraftFromChests.Activate();
             }
-            if (Config.MoveChests)
+            if (this.Config.MoveChests)
             {
-                MoveChests = new MoveChestsModule(this);
-                MoveChests.Activate();
+                this.MoveChests = new MoveChestsModule(this);
+                this.MoveChests.Activate();
             }
         }
 
         private void UnloadModules()
         {
-            if (StashToChests != null)
+            if (this.StashToChests != null)
             {
-                StashToChests.Deactivate();
-                StashToChests = null;
+                this.StashToChests.Deactivate();
+                this.StashToChests = null;
             }
-            if (LockItems != null)
+            if (this.LockItems != null)
             {
-                LockItems.Deactivate();
-                LockItems = null;
+                this.LockItems.Deactivate();
+                this.LockItems = null;
             }
-            if (CraftFromChests != null)
+            if (this.CraftFromChests != null)
             {
-                CraftFromChests.Deactivate();
-                CraftFromChests = null;
+                this.CraftFromChests.Deactivate();
+                this.CraftFromChests = null;
             }
-            if (MoveChests != null)
+            if (this.MoveChests != null)
             {
-                MoveChests.Deactivate();
-                MoveChests = null;
+                this.MoveChests.Deactivate();
+                this.MoveChests = null;
             }
         }
     }

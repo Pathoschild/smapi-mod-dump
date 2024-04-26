@@ -6,5 +6,4 @@ for queries and analysis.**
 
 ----
 
-# ChestFeatureSet
-Stardrew Valley Chest Feature Set
+# StardrewValley-Mods

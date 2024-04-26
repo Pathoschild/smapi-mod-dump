@@ -12,6 +12,8 @@ This document is intended to help mod authors create content packs using Theme M
 
 # Contents
 
+* [TL;DR](#tldr)
+
 * [Getting Started](#getting-started)
   * [What is a Theme?](#what-is-a-theme)
   * [What About Game Themes?](#what-about-game-themes)
@@ -36,6 +38,41 @@ This document is intended to help mod authors create content packs using Theme M
 * [Miscellaneous](#miscellaneous)
   * [Color Parsing](#color-parsing)
   * [Helpful Commands](#helpful-commands)
+
+
+# TLDR
+
+Just want to mod the game's hard-coded colors? Sure. Do this:
+
+1. If you have an existing mod, add a line like this to its `manifest.json`:
+   ```json
+   "stardew:theme": "theme.json",
+   ```
+2. Create a new file called `theme.json` in the same folder as your
+   mod's manifest, and put this in it:
+   ```json
+   {
+       "Name": "YOUR THEME'S NAME",
+	   "SupportedMods": [
+    	   "YourMods.UniqueId.GoesHere"
+	   ],
+	   "ColorVariables": {
+    	   "Text": "hotpink", // you want hot pink text, right?
+	   }
+   }
+   ```
+3. Start putting colors in the ColorVariables section. You can
+   get their names by checking [the built-in patches list](builtin-patches.md).
+4. In game, make sure your theme is selected by Theme Manager. You can
+   use Generic Mod Config Menu for that.
+5. Use the `retheme` command whenever you change your theme to reload it.
+6. Use the `tm_repatch` command if you ever make changes to patches.
+7. ???
+8. Profit!
+
+> P.S. Please bug Khloe on the Stardew discord if there are colors you
+> can't find, or try using the `tm_method_view` command and/or
+> `tm_method_genpatch` to make your own patches!
 
 
 # Getting Started
@@ -105,25 +142,31 @@ theme for the base game that would make all your text pink:
 {
     "Name": "Unnecessarily Pink",
 
-    "Variables": {
+    "ColorVariables": {
         "Text": "hotpink",
         "TextShadow": "maroon",
         "TextShadowAlt": "black"
     },
 
-    "SpriteTextColors": {
+	"SpriteTextColorSets": {
+		"*": {
+			"default": "hotpink"
+		}
+	},
+
+    "IndexedSpriteTextColors": {
         "-1": "hotpink"
     },
 
     "Patches": [
-        "DrawTextWithShadow"
+        "ItemTooltips"
     ]
 }
 ```
 
-In this example, `Variables` and `SpriteTextColors` are theme data that will
-be used by Theme Manager to overwrite colors used by the game. `Patches` is
-another type of data used by game themes specifically to tell Theme Manager
+In this example, `ColorVariables`, `SpriteTextColorSets`, and `IndexedSpriteTextColors`
+are theme data that will be used by Theme Manager to overwrite colors used by the game.
+`Patches` is another type of data used by game themes specifically to tell Theme Manager
 what patches should be applied. Check out the section on [Game Themes](#game-themes)
 for more details about how it all works.
 
@@ -271,7 +314,7 @@ A theme file for the game could be as simple as:
 {
     "Name": "Blue Drop",
 
-    "Variables": {
+    "ColorVariables": {
         "DropDownText": "navy"
     },
 
@@ -284,8 +327,8 @@ A theme file for the game could be as simple as:
 
 ## What are Color Variables?
 
-Variables are an easy way to specify certain colors to fulfill certain roles.
-Variables have names that start with a `$`, and they have a value that's
+ColorVariables are an easy way to specify certain colors to fulfill certain roles.
+ColorVariables have names that start with a `$`, and they have a value that's
 either a color or the name of another variable. Because of this, patches can
 define specific variables that fall back to more generic variables if the
 specific color hasn't been overwritten.
@@ -304,7 +347,10 @@ as they don't loop. (And don't worry, there's loop detection.)
 
 For a list of built-in color variables, please read the section on
 [Built-in Patches](#built-in-patches). Every patch is described with a list of
-supported variables, as well as example screenshots.
+supported variables, and I want to eventually add example screenshots.
+
+> Note: If someone wants to help with the screenshots and improved
+> documentation, I would appreciate you forever.
 
 
 ## What are Sprite Text Colors?
@@ -315,11 +361,15 @@ font, and by default it is a dark reddish brown. Here's an example of the text
 
 ![](docs/SpriteText.png)
 
-In Stardew Valley 1.5 and earlier, Sprite Text uses an index-based system for
-colors. Specifically, the following are the default colors:
+In previous versions of Stardew Valley, Sprite Text was limited to a few
+predefined colors. This is largely a thing of the past (you're welcome),
+but still applies to a few minor things in the game. Notably, this applies
+to mail.
+
+These are the default colors:
 ```json
 {
-    "SpriteTextColors": {
+    "IndexedSpriteTextColors": {
         "-1": "86, 22, 12", // #56160C
         "1": "SkyBlue",
         "2": "Red",
@@ -328,12 +378,13 @@ colors. Specifically, the following are the default colors:
         "5": "OrangeRed",
         "6": "LimeGreen",
         "7": "Cyan",
-        "8": "60, 60, 60" // #3C3C3C
+        "8": "60, 60, 60" // #3C3C3C,
+		"9": "JoJaBlue" // ##34327A
     }
 }
 ```
 
-All other colors are black by default.
+All other indexes are black by default.
 
 The color `-1` has special handling from the game. If the color is `-1` and you
 are using a language that uses latin characters (English, Spanish, French,
@@ -347,6 +398,38 @@ texture `LooseSprites\font_bold` instead.
 Here's the same `Journal` text but with the color `-1` set to `hotpink`:
 
 ![](docs/SpriteText-Pink.png)
+
+However, as of Stardew Valley 1.6, I was able to request that SpriteText would
+accept any arbitrary color. In order to deal with this increased flexibility,
+we have a secondary data type: `SpriteTextColorSets`
+
+There is a default color set named `*` (asterisk), but patches can add
+their own named color sets. For example, there's also a color set named
+`Billboard:Colors` that applies specifically to the `BillboardMenu` class
+that renders the calendar and help wanted board outside Pierre's shop.
+
+That same list of indexed colors above becomes this:
+```json
+"SpriteTextColorSets": {
+	"*": {
+		"default": null,
+		"skyblue": "skyblue",
+		"red": "red",
+		"#6E2BFF": "#6E2BFF",
+		"white": "white",
+		"orangered": "orangered",
+		"limegreen": "limegreen",
+		"cyan": "cyan",
+		"#3c3c3c": "#3c3c3c",
+		"jojablue": "jojablue"
+	}
+}
+```
+
+You can use this to override *any* SpriteText rendering in the entire
+game, be it from the base game or from mods, but due to the nature it can
+be imprecise, changing all text with a specific color, everywhere. That's
+why we have color sets, so you can focus your changes onto specific menus.
 
 
 ## What is a Patch?
@@ -362,19 +445,19 @@ the following example:
 {
     "ID": "OptionsDropDown",
 
-    "Variables": {
+    "ColorVariables": {
         "$DropDownHover": "$Hover",
         "$DropDownText": "$Text"
     },
 
     "Patches": {
-        "#OptionsDropDown:draw(SpriteBatch,,,)": {
+        "#OptionsDropDown:draw(SpriteBatch,*)": {
             "Colors": {
                 "Wheat": { "*": "$DropDownHover" }
             },
 
-            "Fields": {
-                "textColor": { "*": "$DropDownText" }
+            "ColorFields": {
+                "Game1:textColor": { "*": "$DropDownText" }
             }
         }
     }
@@ -386,9 +469,9 @@ class, and it's doing so by replacing every reference to the color `Wheat`
 with the variable `$DropDownHover` and by replacing every reference to the
 field `Game1.textColor` with the variable `$DropDownText`.
 
-As you can see above, there's also a `Variables` section in this patch. This
-lets a patch set up sensible defaults. In this case, the default value for
-`$DropDownText` is `$Text` and the default value for `$DropDownHover` is
+As you can see above, there's also a `ColorVariables` section in this patch.
+This lets a patch set up sensible defaults. In this case, the default value
+for `$DropDownText` is `$Text` and the default value for `$DropDownHover` is
 `$Hover`. These are only used if the current theme doesn't have them defined.
 
 
@@ -400,6 +483,28 @@ demonstrating their effects.
 
 
 ## Writing a Patch
+
+Sorry, the guide isn't very fleshed out yet. There are a few helpful
+commands for writing your own patches.
+
+### `tm_method_tree [method]`
+
+This command will display a rendering tree starting from the given method,
+showing you every single method it calls that (potentially) does any drawing.
+If you don't supply a method, this will try grabbing the currently visible
+menu's draw method.
+
+### `tm_method_view [method]`
+
+This command will display a list of every color, texture, SpriteText, Lerp,
+etc. that you can modify within a given method. If you don't supply a method,
+this will try grabbing the currently visible menu's draw method.
+
+### `tm_method_genpatch [method]`
+
+This command is similar to the `tm_method_view` command, but it will generate
+a basic patch JSON and print it to the console to give you a starting point.
+
 
 # Other Mod Themes
 

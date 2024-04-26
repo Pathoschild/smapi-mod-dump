@@ -215,7 +215,7 @@ public static class DoorUtils
             {
                 (int x, int y) coords = (warp.X, warp.Y);
                 if (!staticDoors.TryGetValue(coords, out string? warpName))
-                    warpName = lessInfo ? warp.TargetName : $"{warp.TargetName} {Translator.Instance.Translate("tile-entrance")}";
+                    warpName = lessInfo ? warp.TargetName.Replace("_", " ") : $"{warp.TargetName.Replace("_", " ")} {Translator.Instance.Translate("tile-entrance")}";
                 warpDict.TryAdd(coords, warpName);
             }
 
@@ -264,7 +264,7 @@ public static class DoorUtils
                     // If door has a name provided, use that instead of custom name.
                     if (door.Value != null)
                     {
-                        doorName = lessInfo ? door.Value : $"{door.Value} {Translator.Instance.Translate("tile-door")}";
+                        doorName = lessInfo ? door.Value.Replace("_"," ") : $"{door.Value.Replace("_"," ")} {Translator.Instance.Translate("tile-door")}";
                         lastUnnamedDoorCoords = null;  // Reset since this door has a name
                         lastUnnamedDoorName = null; // Reset the last unnamed door name
                     }

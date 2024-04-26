@@ -1,9 +1,22 @@
 {
   "Introduction": "Oh! You aren't exactly how I imagined... but that's okay! I'm Jodi.#$e#It's a quiet little town, so it's very exciting when someone new moves in! Having a farmer around could really change things.",
+  "AcceptGift_(O)StardropTea": "Ah... You sure you want to give away such a precious item? Well, thank you!",
   "Resort_Entering": "What a treat!",
   "Resort_Leaving": "I think I'll make seafood tonight.$h",
   "Resort": "The view is breathtaking! Deep blue as far as the eye can see...",
   "Resort_Bar": "We all love it when Gus shows up.",
+  "dating_Sam_memory_oneday": "I heard about you and Fin. Hopefully he won't cause you any trouble!$h",
+  "married_Sam": "I'm so happy for you and Fin. I think you two are the perfect match!#$e#I never thought I'd say it... but I'll miss those awful noises from Fin's guitar...$s",
+  "GreenRain": "Are you alright? We've never seen anything like this before...$s#$e#I wish my husband was here. He'd know exactly what to do.$s",
+  "GreenRain_2": "Vincent got up early to go play in the rain. I just hope they're right about it being completely harmless!",
+  "eventSeen_94": "Thanks again for bringing that fish! It was some of the best we've had in a while.",
+  "eventSeen_3910975": "*whisper* Did you hear about Shane? That's so terrible... I hope he's doing okay.$s",
+  "pamHouseUpgrade": "Wow... I heard what you did for Pam... Boy, I wonder what she did to get in your good graces like that?$s#$e#...I wish I had that kind of money to throw around...$s",
+  "pamHouseUpgradeAnonymous": "Did you see Pam's new house? Boy... I wish I had that kind of money... I'd love to get the kitchen remodeled, at least...$s",
+  "eventSeen_101": "Poor Clint... they say he's head-over-heels for Nayami, but I've heard she only thinks of him as a friend...",
+  "eventSeen_58": "I've been doing aerobics class with the ladies every week...#$b#Recently, someone new joined the class, but he made us all swear we wouldn't reveal his identity!",
+  "eventSeen_3102768": "Laphi's a sweet girl. She's been Vincent's teacher for a while now, and he really loves her.",
+  "cc_Bus": "They say the bus is back up and running. I'm sure Pam is happy about that...#$b#I heard she'd been drinking more after losing her job... so hopefully this helps.",
   "reject_864": "What's this? It looks like one of Kent's buddies from the war. Maybe you should show it to him?",
   "Mon": "Maintaining a household is difficult work... but somebody has to do it.#$e#Yes?",
   "Mon6": "It's nice to have a family... but I'd be lying if I said I never miss the freedom of being young...$s",
@@ -37,5 +50,6 @@
   "winter_Thu_inlaw_Sam": "How's Fin doing? I have to admit, there's less cooking and cleaning to do since he moved out...",
   "winter_Thu8": "We kind of rushed into our marriage, with Kent being a soldier and all... I hardly got a taste of youth and freedom, and now it's too late to ever go back.$s#$e#I can't believe I'm saying this to you.$4",
   "winter_Fri": "It would be nice to take a vacation once in a while...$s",
-  "winter_Sun": "If I was rich the first thing I'd do would be to hire a maid and a chef.#$e#My goodness, that would be nice!$h"
+  "winter_Sun": "If I was rich the first thing I'd do would be to hire a maid and a chef.#$e#My goodness, that would be nice!$h",
+  "fall_Mon6": "I should count my blessings more often. We have a good life here. Some people don't have enough food to eat.$s"
 }

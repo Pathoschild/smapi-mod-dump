@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrnithologistsGuild", "Orni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrnithologistsGuild.CP", "OrnithologistsGuild.CP\OrnithologistsGuild.CP.csproj", "{26BFD301-759D-4C15-954B-26EA70CA7019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrnithologistsGuild.STF", "OrnithologistsGuild.STF\OrnithologistsGuild.STF.csproj", "{83788DCA-08E1-4238-9970-48F68E575806}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{26BFD301-759D-4C15-954B-26EA70CA7019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26BFD301-759D-4C15-954B-26EA70CA7019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26BFD301-759D-4C15-954B-26EA70CA7019}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83788DCA-08E1-4238-9970-48F68E575806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83788DCA-08E1-4238-9970-48F68E575806}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83788DCA-08E1-4238-9970-48F68E575806}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83788DCA-08E1-4238-9970-48F68E575806}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

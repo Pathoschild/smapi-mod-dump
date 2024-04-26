@@ -1,0 +1,24 @@
+{
+	"Name": "Example",
+	"For": [
+		"ThisMod.Does.Not.Exist"
+	],
+
+	"CustomMouse": true,
+	"CustomScroll": true,
+	"CustomTooltip": true,
+
+	"TextColor": "#221122",
+	"TextShadowColor": "#ce9c5f",
+
+	"TooltipTextColor": "#221122",
+	"TooltipTextShadowColor": "#ce9c5f",
+
+	"SearchHighlightColor": "#FFD70050",
+
+	"QuantityCriticalTextColor": "red",
+	"QuantityCriticalShadowColor": null,
+
+	"QuantityWarningTextColor": "orangered",
+	"QuantityWarningShadowColor": null
+}

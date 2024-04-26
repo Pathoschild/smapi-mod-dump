@@ -1,0 +1,123 @@
+{      
+    "Spring": [        
+        
+        {
+            "cropName" : "Salal Berry",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Shrub_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Slime Berry",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Slime_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Joja Berry",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Joja_Berry_Starter",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Joja Veggie",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Joja_Veggie_Seeds",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        }
+        
+      ],
+
+      "Summer": [
+        {
+            "cropName" : "Ancient Fern",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Ancient_Ferns_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Monster Fruit",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Stalk_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },        
+        {
+            "cropName" : "Salal Berry",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Shrub_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Joja Berry",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Joja_Berry_Starter",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Joja Veggie",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Joja_Veggie_Seeds",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        }
+        
+      ],
+
+      "Fall": [
+        {
+            "cropName" : "Monster Mushroom",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Fungus_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Joja Berry",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Joja_Berry_Starter",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        },
+        {
+            "cropName" : "Joja Veggie",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Joja_Veggie_Seeds",
+            "dropChance" : 4,
+            "enabled" : false,
+            "isTrellis" : true,
+            "isFlower" : false
+        }
+        
+        
+      ],
+      
+      "Winter" : [
+        {
+            "cropName" : "Void Root",
+            "seedID" : "FlashShifter.StardewValleyExpandedCP_Void_Seed",
+            "dropChance" : 4,
+            "enabled" : true,
+            "isTrellis" : false,
+            "isFlower" : false
+        }
+      ]
+      
+}

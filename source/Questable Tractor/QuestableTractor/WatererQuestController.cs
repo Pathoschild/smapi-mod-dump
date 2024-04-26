@@ -23,6 +23,12 @@ namespace NermNermNerm.Stardew.QuestableTractor
     {
         public WatererQuestController(ModEntry mod) : base(mod) { }
 
+        public override void Fix()
+        {
+            this.EnsureInventory(ObjectIds.BustedWaterer, this.OverallQuestState == OverallQuestState.InProgress && this.State < WatererQuestState.WaitForMaruDay1);
+            this.EnsureInventory(ObjectIds.WorkingWaterer, this.OverallQuestState == OverallQuestState.InProgress && this.State == WatererQuestState.InstallPart);
+        }
+
         protected override WatererQuest CreatePartQuest() => new WatererQuest(this);
 
         protected override string QuestCompleteMessage => "Awesome!  You've now got a way to water your crops with your tractor!#$b#HINT: To use it, equip the watering can while on the tractor.";
@@ -53,6 +59,5 @@ namespace NermNermNerm.Stardew.QuestableTractor
                 return oldState;
             }
         }
-
     }
 }

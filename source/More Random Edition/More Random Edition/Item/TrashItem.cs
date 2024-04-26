@@ -18,8 +18,8 @@ namespace Randomizer
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The item id</param>
-		public TrashItem(int id) : base(id)
+		/// <param name="index">The item index</param>
+		public TrashItem(ObjectIndexes index) : base(index)
 		{
 			DifficultyToObtain = ObtainingDifficulties.NoRequirements;
 			IsTrash = true;
